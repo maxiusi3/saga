@@ -18,11 +18,9 @@
 
 4. **配置项目设置**
    - **Project Name**: `saga-backend` (或你喜欢的名字)
-   - **Framework Preset**: 选择 "Other"
+   - **Framework Preset**: 会自动检测为 "Other" 或 "Node.js"
    - **Root Directory**: 点击 "Edit" 然后输入 `packages/backend`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-   - **Install Command**: `npm ci`
+   - **Build and Output Settings**: 如果显示为灰色无法修改，这是正常的！直接跳过
 
 5. **点击 "Deploy"**
 
