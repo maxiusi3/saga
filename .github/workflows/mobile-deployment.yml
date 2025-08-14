@@ -1,0 +1,246 @@
+name: Mobile App Deployment
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/mobile/**'
+      - 'packages/shared/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/mobile/**'
+      - 'packages/shared/**'
+
+env:
+  EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+  EXPO_PROJECT_ID: ${{ secrets.EXPO_PROJECT_ID }}
+
+jobs:
+  # Test mobile app
+  test-mobile:
+    name: Test Mobile App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Expo CLI
+        run: npm install -g @expo/cli
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint --workspace=packages/mobile
+
+      - name: Run type checking
+        run: npm run type-check --workspace=packages/mobile
+
+      - name: Run unit tests
+        run: npm run test --workspace=packages/mobile
+
+      - name: Check Expo configuration
+        run: |
+          cd packages/mobile
+          npx expo config --type=public
+
+  # Build for development
+  build-development:
+    name: Build Development
+    runs-on: ubuntu-latest
+    needs: [test-mobile]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Expo CLI
+        run: npm install -g @expo/cli eas-cli
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Authenticate with Expo
+        run: expo login --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build development build
+        run: |
+          cd packages/mobile
+          eas build --platform all --profile development --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Upload to Expo
+        run: |
+          cd packages/mobile
+          expo publish --release-channel development
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+  # Build for staging
+  build-staging:
+    name: Build Staging
+    runs-on: ubuntu-latest
+    needs: [test-mobile]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Expo CLI
+        run: npm install -g @expo/cli eas-cli
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Authenticate with Expo
+        run: expo login --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build staging build
+        run: |
+          cd packages/mobile
+          eas build --platform all --profile staging --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Upload to Expo
+        run: |
+          cd packages/mobile
+          expo publish --release-channel staging
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+  # Build for production
+  build-production:
+    name: Build Production
+    runs-on: ubuntu-latest
+    needs: [test-mobile]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Expo CLI
+        run: npm install -g @expo/cli eas-cli
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Authenticate with Expo
+        run: expo login --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build production build
+        run: |
+          cd packages/mobile
+          eas build --platform all --profile production --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Submit to App Stores
+        run: |
+          cd packages/mobile
+          # Submit to Apple App Store
+          eas submit --platform ios --latest --non-interactive
+          # Submit to Google Play Store
+          eas submit --platform android --latest --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_APPLE_ID: ${{ secrets.EXPO_APPLE_ID }}
+          EXPO_APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }}
+          EXPO_ANDROID_SERVICE_ACCOUNT_KEY_PATH: ${{ secrets.EXPO_ANDROID_SERVICE_ACCOUNT_KEY_PATH }}
+
+      - name: Upload to Expo
+        run: |
+          cd packages/mobile
+          expo publish --release-channel production
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Notify deployment success
+        uses: 8398a7/action-slack@v3
+        if: success()
+        with:
+          status: success
+          text: '📱 Mobile app deployed to production!'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # E2E tests for mobile
+  test-e2e-mobile:
+    name: Mobile E2E Tests
+    runs-on: macos-latest
+    needs: [test-mobile]
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup iOS Simulator
+        run: |
+          xcrun simctl create "iPhone 14" "iPhone 14" "iOS16.0"
+          xcrun simctl boot "iPhone 14"
+
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
+
+      - name: Build iOS app for testing
+        run: |
+          cd packages/mobile
+          detox build --configuration ios.sim.debug
+
+      - name: Run Detox E2E tests
+        run: |
+          cd packages/mobile
+          detox test --configuration ios.sim.debug --cleanup
+
+      - name: Upload E2E test results
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: mobile-e2e-test-results
+          path: packages/mobile/e2e/artifacts/

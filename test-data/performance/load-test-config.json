@@ -1,0 +1,52 @@
+{
+  "loadTest": {
+    "baseUrl": "http://localhost:3001",
+    "scenarios": [
+      {
+        "name": "用户登录",
+        "endpoint": "/api/auth/login",
+        "method": "POST",
+        "payload": {
+          "email": "zhang.wei@test.com",
+          "password": "TestPassword123!"
+        },
+        "expectedResponseTime": 500,
+        "concurrentUsers": 50,
+        "duration": "2m"
+      },
+      {
+        "name": "获取项目列表",
+        "endpoint": "/api/projects",
+        "method": "GET",
+        "requiresAuth": true,
+        "expectedResponseTime": 300,
+        "concurrentUsers": 100,
+        "duration": "3m"
+      },
+      {
+        "name": "获取故事列表",
+        "endpoint": "/api/stories",
+        "method": "GET", 
+        "requiresAuth": true,
+        "expectedResponseTime": 400,
+        "concurrentUsers": 80,
+        "duration": "3m"
+      },
+      {
+        "name": "获取下一个提示",
+        "endpoint": "/api/prompts/next/project-001",
+        "method": "GET",
+        "requiresAuth": true,
+        "expectedResponseTime": 200,
+        "concurrentUsers": 60,
+        "duration": "2m"
+      }
+    ],
+    "thresholds": {
+      "responseTime95": 1000,
+      "responseTime99": 2000,
+      "errorRate": 0.01,
+      "throughput": 100
+    }
+  }
+}

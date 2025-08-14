@@ -1,0 +1,48 @@
+{{#extend "base"}}
+    {{#content "headerTitle"}}Welcome to Saga!{{/content}}
+    {{#content "headerSubtitle"}}Your journey of preserving family stories begins now{{/content}}
+    
+    {{#content "content"}}
+        <h2>Hello {{userName}}! 👋</h2>
+        
+        <p>Welcome to Saga, where family stories come alive and memories are preserved for generations to come. We're thrilled to have you join our community of storytellers and memory keepers.</p>
+        
+        <div class="highlight-box">
+            <p><strong>What's Next?</strong></p>
+            <p>Your Saga account comes with everything you need to start collecting and sharing precious family memories:</p>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li>{{projectVouchers}} Project Voucher{{#if (gt projectVouchers 1)}}s{{/if}} to create family story collections</li>
+                <li>{{facilitatorSeats}} Facilitator Seat{{#if (gt facilitatorSeats 1)}}s{{/if}} to collaborate with siblings</li>
+                <li>{{storytellerSeats}} Storyteller Seat{{#if (gt storytellerSeats 1)}}s{{/if}} to invite family members to share their stories</li>
+                <li>1 full year of interactive features</li>
+                <li>Permanent archival access to all your stories</li>
+            </ul>
+        </div>
+        
+        <p>Ready to create your first family story project? It only takes a few minutes to get started, and your family members will love sharing their memories with you.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{dashboardUrl}}" class="button">Create Your First Project</a>
+        </div>
+        
+        <h3 style="color: #2d3748; margin: 30px 0 15px 0;">Getting Started Tips:</h3>
+        
+        <p><strong>1. Start with one family member:</strong> Invite a parent or grandparent to share their stories. They'll receive simple prompts to guide their storytelling.</p>
+        
+        <p><strong>2. Use the mobile app:</strong> Stories are easiest to record on mobile devices. Your family members can download the Saga app and record stories anywhere, anytime.</p>
+        
+        <p><strong>3. Engage with stories:</strong> Ask follow-up questions and leave comments to encourage more storytelling and create deeper connections.</p>
+        
+        <div class="highlight-box">
+            <p><strong>Need Help?</strong></p>
+            <p>Our support team is here to help you every step of the way. Check out our <a href="{{helpCenterUrl}}" style="color: #667eea;">Help Center</a> or reach out to us directly at <a href="mailto:{{supportEmail}}" style="color: #667eea;">{{supportEmail}}</a>.</p>
+        </div>
+        
+        <p>Thank you for choosing Saga to preserve your family's precious memories. We can't wait to see the beautiful stories you'll collect together.</p>
+        
+        <p style="margin-top: 30px;">
+            Warm regards,<br>
+            <strong>The Saga Team</strong>
+        </p>
+    {{/content}}
+{{/extend}}

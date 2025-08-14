@@ -1,0 +1,49 @@
+{
+  "environment": "staging",
+  "region": "us-east-1",
+  "vpc": {
+    "maxAzs": 2,
+    "natGateways": 1
+  },
+  "database": {
+    "instanceType": "db.t3.small",
+    "multiAz": false,
+    "backupRetention": 3,
+    "deletionProtection": false,
+    "allocatedStorage": 20,
+    "maxAllocatedStorage": 100,
+    "monitoringInterval": null,
+    "performanceInsights": false
+  },
+  "redis": {
+    "nodeType": "cache.t3.micro"
+  },
+  "ecs": {
+    "api": {
+      "cpu": 512,
+      "memory": 1024,
+      "desiredCount": 1,
+      "autoScaling": {
+        "minCapacity": 1,
+        "maxCapacity": 3,
+        "targetCpuUtilization": 80
+      }
+    },
+    "web": {
+      "cpu": 256,
+      "memory": 512,
+      "desiredCount": 1,
+      "autoScaling": {
+        "minCapacity": 1,
+        "maxCapacity": 3,
+        "targetCpuUtilization": 80
+      }
+    }
+  },
+  "logging": {
+    "retention": "ONE_WEEK"
+  },
+  "monitoring": {
+    "containerInsights": false
+  }
+}

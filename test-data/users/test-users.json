@@ -1,0 +1,120 @@
+{
+  "facilitators": [
+    {
+      "id": "facilitator-001",
+      "email": "zhang.wei@test.com",
+      "name": "张伟",
+      "role": "facilitator",
+      "password": "TestPassword123!",
+      "resourceWallet": {
+        "projectVouchers": 2,
+        "facilitatorSeats": 3,
+        "storytellerSeats": 4
+      },
+      "profile": {
+        "avatar": "/test-data/images/avatar-zhang-wei.jpg",
+        "bio": "家族历史爱好者，希望记录父母的人生故事",
+        "location": "北京市",
+        "joinedDate": "2024-01-15"
+      }
+    },
+    {
+      "id": "facilitator-002", 
+      "email": "li.ming@test.com",
+      "name": "李明",
+      "role": "facilitator",
+      "password": "TestPassword123!",
+      "resourceWallet": {
+        "projectVouchers": 1,
+        "facilitatorSeats": 2,
+        "storytellerSeats": 2
+      },
+      "profile": {
+        "avatar": "/test-data/images/avatar-li-ming.jpg",
+        "bio": "想要为孩子们保存爷爷奶奶的故事",
+        "location": "上海市",
+        "joinedDate": "2024-02-20"
+      }
+    },
+    {
+      "id": "facilitator-003",
+      "email": "wang.xiaoli@test.com", 
+      "name": "王小丽",
+      "role": "facilitator",
+      "password": "TestPassword123!",
+      "resourceWallet": {
+        "projectVouchers": 0,
+        "facilitatorSeats": 1,
+        "storytellerSeats": 1
+      },
+      "profile": {
+        "avatar": "/test-data/images/avatar-wang-xiaoli.jpg",
+        "bio": "三个孩子的妈妈，想记录家族传统",
+        "location": "广州市",
+        "joinedDate": "2024-03-10"
+      }
+    }
+  ],
+  "storytellers": [
+    {
+      "id": "storyteller-001",
+      "email": "zhang.jianguo@test.com",
+      "name": "张建国",
+      "role": "storyteller", 
+      "password": "TestPassword123!",
+      "profile": {
+        "avatar": "/test-data/images/avatar-zhang-jianguo.jpg",
+        "bio": "退休教师，经历了改革开放的全过程",
+        "birthYear": 1945,
+        "location": "北京市",
+        "occupation": "退休教师",
+        "interests": ["读书", "书法", "园艺"]
+      }
+    },
+    {
+      "id": "storyteller-002",
+      "email": "liu.meifeng@test.com", 
+      "name": "刘美凤",
+      "role": "storyteller",
+      "password": "TestPassword123!",
+      "profile": {
+        "avatar": "/test-data/images/avatar-liu-meifeng.jpg",
+        "bio": "退休护士，见证了医疗事业的发展",
+        "birthYear": 1948,
+        "location": "北京市", 
+        "occupation": "退休护士",
+        "interests": ["烹饪", "太极拳", "养花"]
+      }
+    },
+    {
+      "id": "storyteller-003",
+      "email": "li.daqiang@test.com",
+      "name": "李大强", 
+      "role": "storyteller",
+      "password": "TestPassword123!",
+      "profile": {
+        "avatar": "/test-data/images/avatar-li-daqiang.jpg",
+        "bio": "退休工人，参与了多个重大工程建设",
+        "birthYear": 1950,
+        "location": "上海市",
+        "occupation": "退休工人", 
+        "interests": ["象棋", "钓鱼", "听戏"]
+      }
+    },
+    {
+      "id": "storyteller-004",
+      "email": "chen.xiulan@test.com",
+      "name": "陈秀兰",
+      "role": "storyteller",
+      "password": "TestPassword123!", 
+      "profile": {
+        "avatar": "/test-data/images/avatar-chen-xiulan.jpg",
+        "bio": "退休会计，管理家庭财务几十年",
+        "birthYear": 1952,
+        "location": "上海市",
+        "occupation": "退休会计",
+        "interests": ["编织", "广场舞", "旅游"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+# This workflow has been replaced by ci-cd.yml
+# Keeping this file for backward compatibility
+
+name: Legacy CI (Deprecated)
+
+on:
+  workflow_dispatch:  # Only allow manual trigger
+
+jobs:
+  deprecated:
+    name: Deprecated Workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow deprecated
+        run: |
+          echo "⚠️ This workflow has been deprecated and replaced by ci-cd.yml"
+          echo "Please use the new comprehensive CI/CD pipeline instead."
+          exit 1

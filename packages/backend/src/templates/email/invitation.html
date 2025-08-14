@@ -1,0 +1,66 @@
+{{#extend "base"}}
+    {{#content "headerTitle"}}You're Invited to Share Your Stories{{/content}}
+    {{#content "headerSubtitle"}}{{facilitatorName}} wants to preserve your family memories{{/content}}
+    
+    {{#content "content"}}
+        <h2>Hello! 👋</h2>
+        
+        <p><strong>{{facilitatorName}}</strong> has invited you to share your stories in their Saga project: <strong>"{{projectName}}"</strong>.</p>
+        
+        <p>Saga is a beautiful platform where families come together to preserve precious memories and stories for future generations. Your stories matter, and {{facilitatorName}} would love to hear them.</p>
+        
+        <div class="highlight-box">
+            <p><strong>What is Saga?</strong></p>
+            <p>Saga makes it easy to record and share family stories. Simply speak into your phone to record memories, and your family can listen, ask follow-up questions, and create a lasting collection of your life experiences.</p>
+        </div>
+        
+        {{#if (eq role "storyteller")}}
+            <h3 style="color: #2d3748; margin: 30px 0 15px 0;">As a Storyteller, you'll be able to:</h3>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li>📱 Record stories easily using your phone</li>
+                <li>🎯 Receive thoughtful prompts to guide your storytelling</li>
+                <li>💬 Respond to follow-up questions from family members</li>
+                <li>📸 Add photos to accompany your stories</li>
+                <li>👨‍👩‍👧‍👦 Connect with family members through shared memories</li>
+            </ul>
+        {{else}}
+            <h3 style="color: #2d3748; margin: 30px 0 15px 0;">As a Co-Facilitator, you'll be able to:</h3>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li>👂 Listen to family stories as they're shared</li>
+                <li>❓ Ask follow-up questions to learn more</li>
+                <li>💭 Leave comments and reactions on stories</li>
+                <li>👥 Help manage the family story collection</li>
+                <li>📤 Export and share the complete story collection</li>
+            </ul>
+        {{/if}}
+        
+        <div style="text-align: center; margin: 40px 0;">
+            <a href="{{invitationUrl}}" class="button">Accept Invitation & Start Sharing</a>
+        </div>
+        
+        <div class="highlight-box">
+            <p><strong>Getting Started is Easy:</strong></p>
+            <ol style="margin: 15px 0; padding-left: 20px;">
+                <li>Click the button above to accept your invitation</li>
+                <li>Create your account (it takes less than 2 minutes)</li>
+                <li>Download the Saga mobile app for the best experience</li>
+                {{#if (eq role "storyteller")}}
+                    <li>Start recording your first story when you're ready</li>
+                {{else}}
+                    <li>Explore the project and start engaging with stories</li>
+                {{/if}}
+            </ol>
+        </div>
+        
+        <p><strong>Your stories are precious.</strong> They're the threads that weave together your family's history, and sharing them helps strengthen the bonds between generations. {{facilitatorName}} believes your experiences and memories are worth preserving, and we're honored to help make that happen.</p>
+        
+        <p style="color: #718096; font-size: 14px; margin-top: 30px;">
+            <strong>Note:</strong> This invitation will expire in 7 days. If you have any questions or need help getting started, please don't hesitate to reach out to us at <a href="mailto:{{supportEmail}}" style="color: #667eea;">{{supportEmail}}</a>.
+        </p>
+        
+        <p style="margin-top: 30px;">
+            We can't wait to hear your stories,<br>
+            <strong>The Saga Team</strong>
+        </p>
+    {{/content}}
+{{/extend}}
