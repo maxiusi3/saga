@@ -25,10 +25,14 @@ __exportStar(require("./resource-wallet"), exports);
 __exportStar(require("./project-role"), exports);
 __exportStar(require("./chapter"), exports);
 __exportStar(require("./prompt"), exports);
+__exportStar(require("./payment"), exports);
 // Legacy types (for backward compatibility)
 __exportStar(require("./notification"), exports);
 __exportStar(require("./invitation"), exports);
 __exportStar(require("./recording"), exports);
 __exportStar(require("./export"), exports);
 __exportStar(require("./api"), exports);
+// Discovery and navigation types
+__exportStar(require("./story-discovery"), exports);
+__exportStar(require("./story-sharing"), exports);
 //# sourceMappingURL=index.js.map

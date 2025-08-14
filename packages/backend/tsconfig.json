@@ -15,8 +15,8 @@
     "sourceMap": true,
     "noEmit": false
   },
-  "include": ["src/**/*", "src/types/**/*"],
-  "exclude": ["dist", "**/*.test.ts", "**/*.spec.ts", "node_modules", "knexfile.js", "knexfile.test.js"],
+  "include": ["src/**/*"],
+  "exclude": ["dist", "**/*.test.ts", "**/*.spec.ts", "node_modules", "*.js", "**/*.js"],
   "ts-node": {
     "esm": false
   }

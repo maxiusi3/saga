@@ -1,5 +1,5 @@
 import knex from 'knex'
-import * as knexConfig from '../../knexfile'
+const knexConfig = require('../../knexfile')
 
 const environment = process.env.NODE_ENV || 'development'
 const config = (knexConfig as any)[environment]
