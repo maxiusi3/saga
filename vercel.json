@@ -1,19 +1,9 @@
 {
   "version": 2,
   "name": "saga-family-biography",
-  "functions": {
-    "packages/web/src/app/api/**/*.ts": {
-      "maxDuration": 30
-    }
-  },
   "build": {
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1"
     }
-  },
-  "installCommand": "npm ci",
-  "buildCommand": "npm run build --workspace=packages/web",
-  "outputDirectory": "packages/web/.next",
-  "framework": "nextjs",
-  "regions": ["iad1"]
+  }
 }
