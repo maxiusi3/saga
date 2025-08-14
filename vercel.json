@@ -1,37 +1,10 @@
 {
   "version": 2,
   "name": "saga-family-biography",
-  "builds": [
-    {
-      "src": "packages/web/package.json",
-      "use": "@vercel/next",
-      "config": {
-        "distDir": ".next"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "packages/web/src/app/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "packages/web/$1"
-    }
-  ],
   "functions": {
     "packages/web/src/app/api/**/*.ts": {
       "maxDuration": 30
     }
-  },
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@supabase-url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase-anon-key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase-service-key",
-    "OPENAI_API_KEY": "@openai-api-key",
-    "STRIPE_SECRET_KEY": "@stripe-secret-key",
-    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe-publishable-key"
   },
   "build": {
     "env": {
