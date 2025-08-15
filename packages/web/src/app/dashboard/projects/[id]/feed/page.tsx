@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { api } from '@/lib/api';
 import Link from 'next/link';
 
 interface Story {
@@ -190,28 +191,8 @@ export default function ProjectFeedPage() {
       setLoading(false);
     }
   };
-          timestamp: '2024-01-14T15:45:00Z',
-          storytellerName: 'John Doe',
-          audioUrl: '/audio/story2.mp3',
-          transcriptSnippet: 'It was at the church dance in 1952. She was wearing a blue dress and had the most beautiful smile. I knew right then that I had to ask her to dance...',
-          interactionCount: 5,
-          followUpCount: 2,
-          duration: 180
-        }
-      ]);
 
-      setChapterSummaries([
-        {
-          id: '1',
-          title: 'Early Life & Family',
-          summary: 'Stories about childhood, family traditions, and formative experiences during wartime.',
-          storyCount: 5
-        }
-      ]);
 
-      setLoading(false);
-    }, 1000);
-  }, [params.id]);
 
   const filteredStories = stories.filter(story =>
     story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

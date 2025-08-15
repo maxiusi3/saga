@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { api } from '@/lib/api';
 
 interface ProjectMember {
   id: string;
@@ -61,28 +62,8 @@ export default function ProjectSettingsPage() {
       setLoading(false);
     }
   };
-          name: 'Beth Smith',
-          email: 'beth@example.com',
-          role: 'facilitator' as const,
-          status: 'active' as const,
-          joinedAt: '2024-01-03T00:00:00Z'
-        },
-        {
-          id: '3',
-          name: 'Mike Johnson',
-          email: 'mike@example.com',
-          role: 'facilitator' as const,
-          status: 'invited' as const
-        }
-      ];
 
-      setProject(mockProject);
-      setProjectName(mockProject.name);
-      setProjectDescription(mockProject.description || '');
-      setMembers(mockMembers);
-      setLoading(false);
-    }, 1000);
-  }, [params.id]);
+
 
   const handleSaveProject = async () => {
     setSaving(true);
