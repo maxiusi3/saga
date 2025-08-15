@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build --workspace=packages/shared && npm run build --workspace=packages/web",
+  "buildCommand": "./build-vercel.sh",
   "outputDirectory": "packages/web/.next",
   "installCommand": "npm ci",
   "framework": null
