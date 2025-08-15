@@ -410,8 +410,9 @@ describe('Prompt Management System', () => {
       expect(trackUsageSpy).toHaveBeenCalled();
     });
   });
-});  de
-scribe('Prompt Localization', () => {
+});
+
+describe('Prompt Localization', () => {
     it('should get supported languages', async () => {
       const { PromptLocalizationService } = await import('../services/prompt-localization-service');
       
