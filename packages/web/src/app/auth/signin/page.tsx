@@ -93,9 +93,11 @@ export default function SignInPage() {
           {loading ? '登录中...' : '🔍 使用Google登录 (Debug Mode)'}
         </button>
         
-        {/* Debug info */}
+        {/* Debug info - Force deployment trigger */}
         <div className="text-xs text-gray-500 text-center">
           Supabase URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ 已配置' : '❌ 未配置'}
+          <br />
+          <span className="text-blue-500">部署时间: {new Date().toLocaleString()}</span>
         </div>
 
         <div className="relative">
