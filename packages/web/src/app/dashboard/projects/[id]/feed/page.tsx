@@ -166,34 +166,30 @@ export default function ProjectFeedPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: Fetch actual project and stories data from API
-    // For now, using mock data
-    setTimeout(() => {
-      setProject({
-        id: params.id as string,
-        name: "Dad's Life Story",
-        storyteller: {
-          name: "John Doe",
-          avatar: "/avatars/john.jpg"
-        }
-      });
+    if (params.id) {
+      loadProjectData(params.id as string);
+    }
+  }, [params.id]);
 
-      setStories([
-        {
-          id: '1',
-          title: 'Growing Up During the War',
-          timestamp: '2024-01-15T10:30:00Z',
-          storytellerName: 'John Doe',
-          audioUrl: '/audio/story1.mp3',
-          transcriptSnippet: 'I remember when I was just seven years old, the air raid sirens would go off and we\'d all rush to the basement. My mother would gather us children...',
-          photoThumbnail: '/photos/wartime.jpg',
-          interactionCount: 3,
-          followUpCount: 1,
-          duration: 245
-        },
-        {
-          id: '2',
-          title: 'Meeting Your Grandmother',
+  const loadProjectData = async (projectId: string) => {
+    try {
+      setLoading(true);
+      
+      // Load project details and stories in parallel
+      const [projectResponse, storiesResponse] = await Promise.all([
+        api.projects.get(projectId),
+        api.stories.list(projectId)
+      ]);
+
+      setProject(projectResponse.data);
+      setStories(storiesResponse.data || []);
+    } catch (error) {
+      console.error('Failed to load project data:', error);
+      // Handle error appropriately
+    } finally {
+      setLoading(false);
+    }
+  };
           timestamp: '2024-01-14T15:45:00Z',
           storytellerName: 'John Doe',
           audioUrl: '/audio/story2.mp3',

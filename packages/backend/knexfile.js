@@ -31,12 +31,12 @@ module.exports = {
     client: process.env.DATABASE_URL?.includes('sqlite') ? 'sqlite3' : 'postgresql',
     connection: process.env.DATABASE_URL?.includes('sqlite') 
       ? { filename: './test.db' }
-      : (process.env.DATABASE_TEST_URL || {
+      : (process.env.DATABASE_URL || process.env.DATABASE_TEST_URL || {
           host: 'localhost',
           port: 5432,
           database: 'saga_test',
-          user: 'saga_user',
-          password: 'saga_password',
+          user: 'postgres',
+          password: 'postgres',
         }),
     useNullAsDefault: true,
     pool: {

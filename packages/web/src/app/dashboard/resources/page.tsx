@@ -17,17 +17,34 @@ export default function ResourcesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: Fetch actual wallet data from API
-    // For now, using mock data
-    setTimeout(() => {
-      setWallet({
-        projectVouchers: 1,
-        facilitatorSeats: 0,
-        storytellerSeats: 1
-      });
-      setLoading(false);
-    }, 1000);
+    loadWalletData();
   }, []);
+
+  const loadWalletData = async () => {
+    try {
+      setLoading(true);
+      // TODO: Replace with actual API call when wallet endpoint is available
+      // const response = await api.wallet.get();
+      // setWallet(response.data);
+      
+      // For now, return empty wallet as default
+      setWallet({
+        projectVouchers: 0,
+        facilitatorSeats: 0,
+        storytellerSeats: 0
+      });
+    } catch (error) {
+      console.error('Failed to load wallet data:', error);
+      // Set default empty wallet on error
+      setWallet({
+        projectVouchers: 0,
+        facilitatorSeats: 0,
+        storytellerSeats: 0
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePurchasePackage = () => {
     router.push('/dashboard/purchase');

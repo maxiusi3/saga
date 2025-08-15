@@ -18,18 +18,23 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // 模拟加载项目数据
-    setTimeout(() => {
-      setProject({
-        id: params.id as string,
-        name: '示例项目',
-        description: '这是一个示例项目',
-        status: 'active',
-        created_at: new Date().toISOString()
-      })
-      setLoading(false)
-    }, 1000)
-  }, [params.id])
+    if (params.id) {
+      loadProject(params.id as string);
+    }
+  }, [params.id]);
+
+  const loadProject = async (projectId: string) => {
+    try {
+      setLoading(true);
+      const response = await api.projects.get(projectId);
+      setProject(response.data);
+    } catch (error) {
+      console.error('Failed to load project:', error);
+      // Handle error - maybe redirect to projects list or show error message
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (

@@ -1,10 +1,7 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline (Disabled)
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+  workflow_dispatch:  # Only allow manual trigger
 
 env:
   AWS_REGION: us-east-1

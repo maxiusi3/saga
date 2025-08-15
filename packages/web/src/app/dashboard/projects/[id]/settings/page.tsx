@@ -36,28 +36,31 @@ export default function ProjectSettingsPage() {
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
   useEffect(() => {
-    // TODO: Fetch actual project and members data from API
-    // For now, using mock data
-    setTimeout(() => {
-      const mockProject = {
-        id: params.id as string,
-        name: "Dad's Life Story",
-        description: "Capturing memories and stories from Dad's incredible life journey",
-        createdBy: 'current-user-id',
-        createdAt: '2024-01-01T00:00:00Z'
-      };
+    if (params.id) {
+      loadProjectSettings(params.id as string);
+    }
+  }, [params.id]);
 
-      const mockMembers = [
-        {
-          id: '1',
-          name: 'John Doe',
-          email: 'john@example.com',
-          role: 'storyteller' as const,
-          status: 'active' as const,
-          joinedAt: '2024-01-02T00:00:00Z'
-        },
-        {
-          id: '2',
+  const loadProjectSettings = async (projectId: string) => {
+    try {
+      setLoading(true);
+      
+      // Load project details
+      const projectResponse = await api.projects.get(projectId);
+      setProject(projectResponse.data);
+      
+      // TODO: Load project members when API is available
+      // const membersResponse = await api.projects.members(projectId);
+      // setMembers(membersResponse.data || []);
+      
+      // For now, set empty members array
+      setMembers([]);
+    } catch (error) {
+      console.error('Failed to load project settings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
           name: 'Beth Smith',
           email: 'beth@example.com',
           role: 'facilitator' as const,
