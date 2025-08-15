@@ -1,10 +1,7 @@
-name: E2E Tests
+name: E2E Tests (Disabled)
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+  workflow_dispatch:  # Only allow manual trigger
   schedule:
     # Run E2E tests daily at 2 AM UTC
     - cron: '0 2 * * *'
