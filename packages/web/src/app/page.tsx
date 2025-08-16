@@ -1,10 +1,13 @@
 import Link from 'next/link'
 import { EmailVerificationHandler } from '@/components/email-verification-handler'
+import { ClientOnly } from '@/components/client-only'
 
 export default function HomePage() {
   return (
     <>
-      <EmailVerificationHandler />
+      <ClientOnly>
+        <EmailVerificationHandler />
+      </ClientOnly>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center">

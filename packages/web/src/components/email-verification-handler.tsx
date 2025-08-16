@@ -14,11 +14,23 @@ function EmailVerificationContent() {
 
   useEffect(() => {
     const handleEmailVerification = async () => {
+      // 确保在客户端环境中运行
+      if (typeof window === 'undefined') {
+        return
+      }
+
       // 检查URL中是否有验证相关的参数
-      const hasVerificationParams = searchParams.has('token') || 
-                                   searchParams.has('access_token') ||
-                                   searchParams.has('refresh_token') ||
-                                   window.location.hash.includes('access_token')
+      let hasVerificationParams = false
+
+      try {
+        hasVerificationParams = searchParams.has('token') ||
+                               searchParams.has('access_token') ||
+                               searchParams.has('refresh_token') ||
+                               (window.location.hash && window.location.hash.includes('access_token'))
+      } catch (error) {
+        console.error('Error checking verification params:', error)
+        return
+      }
 
       if (!hasVerificationParams) {
         return // 不是验证重定向，正常显示首页
@@ -104,8 +116,8 @@ function EmailVerificationContent() {
       }
     }
 
-    // 延迟执行，确保组件完全挂载
-    const timer = setTimeout(handleEmailVerification, 100)
+    // 延迟执行，确保组件完全挂载和hydration完成
+    const timer = setTimeout(handleEmailVerification, 500)
     return () => clearTimeout(timer)
   }, [searchParams, router, supabase.auth, initialize])
 
