@@ -5,6 +5,12 @@ import type { Database } from '@/types/supabase'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
+// Debug: Log environment variables (remove in production)
+if (typeof window !== 'undefined') {
+  console.log('Supabase URL:', supabaseUrl)
+  console.log('Supabase Anon Key exists:', !!supabaseAnonKey)
+}
+
 // Client-side Supabase client
 export const createClientSupabase = () => 
   createClientComponentClient<Database>()
@@ -28,4 +34,13 @@ export const supabaseAdmin = createClient<Database>(
 )
 
 // Default client for general use (client-side)
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
+export const supabase = (() => {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Supabase configuration missing:', {
+      url: !!supabaseUrl,
+      key: !!supabaseAnonKey
+    })
+    throw new Error('Supabase configuration is incomplete')
+  }
+  return createClient<Database>(supabaseUrl, supabaseAnonKey)
+})()
