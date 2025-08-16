@@ -34,17 +34,33 @@ export const createServerSupabase = () => {
   return createClient<Database>(supabaseUrl, supabaseAnonKey)
 }
 
-// Admin client (server-side only)
-export const supabaseAdmin = createClient<Database>(
-  supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || '',
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
+// Admin client (server-side only) - lazy initialization
+let _supabaseAdmin: ReturnType<typeof createClient<Database>> | null = null
+
+export const getSupabaseAdmin = () => {
+  if (!_supabaseAdmin) {
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    if (!supabaseUrl || !serviceRoleKey) {
+      console.error('Supabase admin configuration missing:', {
+        url: !!supabaseUrl,
+        serviceKey: !!serviceRoleKey
+      })
+      throw new Error('Supabase admin configuration is incomplete')
     }
+
+    _supabaseAdmin = createClient<Database>(
+      supabaseUrl,
+      serviceRoleKey,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    )
   }
-)
+  return _supabaseAdmin
+}
 
 // Default client for general use (client-side) - use createClientSupabase() instead
 // Note: Don't create client at module level to avoid initialization errors
