@@ -82,7 +82,7 @@ export function Navigation() {
                 <span className="sr-only">Open user menu</span>
                 <div className="h-8 w-8 bg-primary-100 rounded-full flex items-center justify-center">
                   <span className="text-sm font-medium text-primary-700">
-                    {user ? generateInitials(user.name) : 'U'}
+                    {generateInitials(user?.user_metadata?.name || user?.email)}
                   </span>
                 </div>
               </button>
@@ -91,7 +91,7 @@ export function Navigation() {
                 <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                   <div className="py-1">
                     <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
-                      <p className="font-medium">{user?.name}</p>
+                      <p className="font-medium">{user?.user_metadata?.name || 'User'}</p>
                       <p className="text-gray-500">{user?.email}</p>
                     </div>
                     

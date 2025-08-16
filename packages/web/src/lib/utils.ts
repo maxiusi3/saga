@@ -85,9 +85,15 @@ export function truncateText(text: string, maxLength: number) {
   return text.slice(0, maxLength) + '...'
 }
 
-export function generateInitials(name: string) {
+export function generateInitials(name: string | undefined | null): string {
+  if (!name || typeof name !== 'string') {
+    return 'U' // Default to 'U' for User
+  }
+
   return name
+    .trim()
     .split(' ')
+    .filter(word => word.length > 0) // Filter out empty strings
     .map(word => word.charAt(0).toUpperCase())
     .slice(0, 2)
     .join('')
