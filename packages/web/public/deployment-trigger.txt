@@ -1,1 +1,1 @@
-// Deployment trigger - 20250815_124639
+// Deployment trigger - Supabase fix - 20250116_143000
