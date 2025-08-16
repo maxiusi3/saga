@@ -12,13 +12,27 @@ if (typeof window !== 'undefined') {
 }
 
 // Client-side Supabase client
-export const createClientSupabase = () => 
-  createClientComponentClient<Database>()
+export const createClientSupabase = () => {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Supabase configuration missing for client:', {
+      url: !!supabaseUrl,
+      key: !!supabaseAnonKey
+    })
+    throw new Error('Supabase client configuration is incomplete')
+  }
+  return createClient<Database>(supabaseUrl, supabaseAnonKey)
+}
 
 // Server-side Supabase client (use this in Server Components)
 export const createServerSupabase = () => {
-  const { cookies } = require('next/headers')
-  return createServerComponentClient<Database>({ cookies })
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Supabase configuration missing for server:', {
+      url: !!supabaseUrl,
+      key: !!supabaseAnonKey
+    })
+    throw new Error('Supabase server configuration is incomplete')
+  }
+  return createClient<Database>(supabaseUrl, supabaseAnonKey)
 }
 
 // Admin client (server-side only)
