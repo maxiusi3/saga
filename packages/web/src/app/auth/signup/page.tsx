@@ -30,33 +30,10 @@ export default function SignUpPage() {
     setError('')
     setMessage('')
 
-    // Debug: Log environment variables and configuration
-    console.log('=== 注册调试信息 ===')
-    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-    console.log('Supabase Key exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-    console.log('Current origin:', typeof window !== 'undefined' ? window.location.origin : 'server')
-    console.log('Form data:', { email: formData.email, name: formData.name })
-
     try {
-      // Test Supabase client creation
-      console.log('Creating Supabase client...')
-      const testClient = createClientSupabase()
-      console.log('Supabase client created successfully')
+      console.log('=== 注册调试信息 ===')
+      console.log('Email:', formData.email, 'Name:', formData.name)
 
-      // Test basic connectivity
-      console.log('Testing Supabase connectivity...')
-      const { data: healthCheck, error: healthError } = await testClient
-        .from('profiles')
-        .select('count')
-        .limit(1)
-
-      if (healthError) {
-        console.log('Supabase connectivity test failed:', healthError)
-      } else {
-        console.log('Supabase connectivity test passed')
-      }
-
-      console.log('Attempting sign up...')
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -67,17 +44,15 @@ export default function SignUpPage() {
         }
       })
 
-      console.log('Sign up response:', { data, error })
-
       if (error) {
-        console.error('Sign up error:', error)
+        console.error('注册错误:', error)
         setError(`注册失败: ${error.message}`)
       } else {
-        console.log('Sign up successful:', data)
+        console.log('注册成功:', data)
         setMessage('注册成功！请检查您的邮箱以验证账户。')
       }
     } catch (err) {
-      console.error('Sign up exception:', err)
+      console.error('注册异常:', err)
       setError(`注册异常: ${err instanceof Error ? err.message : '未知错误'}`)
     } finally {
       setLoading(false)

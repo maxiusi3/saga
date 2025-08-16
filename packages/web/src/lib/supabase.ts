@@ -1,14 +1,18 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/supabase'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// Clean environment variables (remove any whitespace/newlines)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()!
 
 // Debug: Log environment variables (remove in production)
 if (typeof window !== 'undefined') {
   console.log('Supabase URL:', supabaseUrl)
   console.log('Supabase Anon Key exists:', !!supabaseAnonKey)
 }
+
+// Singleton client instance to avoid multiple GoTrueClient instances
+let _supabaseClient: ReturnType<typeof createClient<Database>> | null = null
 
 // Client-side Supabase client
 export const createClientSupabase = () => {
@@ -19,7 +23,21 @@ export const createClientSupabase = () => {
     })
     throw new Error('Supabase client configuration is incomplete')
   }
-  return createClient<Database>(supabaseUrl, supabaseAnonKey)
+
+  // Return existing client if available (singleton pattern)
+  if (_supabaseClient) {
+    return _supabaseClient
+  }
+
+  // Create new client
+  _supabaseClient = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+    }
+  })
+
+  return _supabaseClient
 }
 
 // Server-side Supabase client (use this in Server Components)
