@@ -25,7 +25,14 @@ type AuthStore = AuthState & AuthActions
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set, get) => {
-      const supabase = createClientSupabase()
+      // Lazy initialization of Supabase client
+      let _supabase: ReturnType<typeof createClientSupabase> | null = null
+      const getSupabase = () => {
+        if (!_supabase) {
+          _supabase = createClientSupabase()
+        }
+        return _supabase
+      }
 
       return {
         // Initial state
@@ -37,8 +44,9 @@ export const useAuthStore = create<AuthStore>()(
         // Actions
         initialize: async () => {
           set({ isLoading: true })
-          
+
           try {
+            const supabase = getSupabase()
             const { data: { session } } = await supabase.auth.getSession()
             
             if (session?.user) {
@@ -83,8 +91,9 @@ export const useAuthStore = create<AuthStore>()(
 
         signin: async (email: string, password: string) => {
           set({ isLoading: true, error: null })
-          
+
           try {
+            const supabase = getSupabase()
             const { data, error } = await supabase.auth.signInWithPassword({
               email,
               password,
@@ -115,8 +124,9 @@ export const useAuthStore = create<AuthStore>()(
 
         signup: async (data: { name: string; email: string; password: string }) => {
           set({ isLoading: true, error: null })
-          
+
           try {
+            const supabase = getSupabase()
             const { data: authData, error } = await supabase.auth.signUp({
               email: data.email,
               password: data.password,
@@ -153,8 +163,9 @@ export const useAuthStore = create<AuthStore>()(
 
         signout: async () => {
           set({ isLoading: true })
-          
+
           try {
+            const supabase = getSupabase()
             await supabase.auth.signOut()
             
             set({
@@ -173,8 +184,9 @@ export const useAuthStore = create<AuthStore>()(
 
         googleSignIn: async () => {
           set({ isLoading: true, error: null })
-          
+
           try {
+            const supabase = getSupabase()
             const { error } = await supabase.auth.signInWithOAuth({
               provider: 'google',
               options: {
