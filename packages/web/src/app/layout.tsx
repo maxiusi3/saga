@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { Toaster } from 'react-hot-toast'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { AuthProvider } from '@/components/auth/auth-provider'
 import { ErrorTrackingProvider } from '@/components/error-tracking-provider'
+import { ClientOnly } from '@/components/client-only'
+import { AnalyticsProvider } from '@/components/analytics-provider'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -27,32 +27,33 @@ export default function RootLayout({
             {children}
           </AuthProvider>
         </ErrorTrackingProvider>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#363636',
-              color: '#fff',
-            },
-            success: {
-              duration: 3000,
-              iconTheme: {
-                primary: '#10b981',
-                secondary: '#fff',
+        <ClientOnly>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
               },
-            },
-            error: {
-              duration: 5000,
-              iconTheme: {
-                primary: '#ef4444',
-                secondary: '#fff',
+              success: {
+                duration: 3000,
+                iconTheme: {
+                  primary: '#10b981',
+                  secondary: '#fff',
+                },
               },
-            },
-          }}
-        />
-        <Analytics />
-        <SpeedInsights />
+              error: {
+                duration: 5000,
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
+        </ClientOnly>
+        <AnalyticsProvider />
       </body>
     </html>
   )

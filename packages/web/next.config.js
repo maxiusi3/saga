@@ -6,6 +6,13 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Enable detailed hydration error reporting
+  reactStrictMode: true,
+  // Disable minification temporarily for debugging
+  swcMinify: false,
+  compiler: {
+    removeConsole: false,
+  },
   images: {
     domains: [
       'localhost',
@@ -44,7 +51,7 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(self), microphone=(self), geolocation=(), payment=(self), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), ambient-light-sensor=(), autoplay=(), encrypted-media=(), fullscreen=(self), picture-in-picture=()',
+            value: 'camera=(self), microphone=(self), geolocation=(), payment=(self), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), autoplay=(), encrypted-media=(), fullscreen=(self), picture-in-picture=()',
           },
           {
             key: 'X-Permitted-Cross-Domain-Policies',

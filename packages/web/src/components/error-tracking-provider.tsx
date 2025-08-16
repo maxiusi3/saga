@@ -9,9 +9,12 @@ interface ErrorTrackingProviderProps {
 
 export function ErrorTrackingProvider({ children }: ErrorTrackingProviderProps) {
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return
+
     // Initialize error tracking
     errorTracking.init()
-    
+
     // Track page load
     errorTracking.captureMessage('Web app loaded', 'info', {
       component: 'app',

@@ -17,6 +17,9 @@ function sendToAnalytics(metric: any) {
 }
 
 export function reportWebVitals() {
+  // Only run on client side
+  if (typeof window === 'undefined') return
+
   getCLS(sendToAnalytics)
   getFID(sendToAnalytics)
   getFCP(sendToAnalytics)
