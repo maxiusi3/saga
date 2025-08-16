@@ -11,15 +11,41 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        const { data, error } = await supabase.auth.getSession()
-        
-        if (error) {
-          console.error('Auth callback error:', error)
+        // 首先尝试从URL hash中获取session
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+
+        if (sessionError) {
+          console.error('Auth callback error:', sessionError)
           router.push('/auth/signin?error=callback_error')
           return
         }
 
-        if (data.session) {
+        // 如果URL中有token参数，处理它们
+        const hashParams = new URLSearchParams(window.location.hash.substring(1))
+        const accessToken = hashParams.get('access_token')
+        const refreshToken = hashParams.get('refresh_token')
+
+        if (accessToken && refreshToken) {
+          // 设置session
+          const { data: authData, error: authError } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken
+          })
+
+          if (authError) {
+            console.error('Set session error:', authError)
+            router.push('/auth/signin?error=session_error')
+            return
+          }
+
+          if (authData.session) {
+            console.log('Email verification successful!')
+            router.push('/dashboard?verified=true')
+            return
+          }
+        }
+
+        if (sessionData.session) {
           // 用户已登录，重定向到仪表板
           router.push('/dashboard')
         } else {
