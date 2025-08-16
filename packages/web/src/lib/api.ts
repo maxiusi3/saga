@@ -5,10 +5,17 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
 
 class ApiClient {
   private baseURL: string
-  private supabase = createClientSupabase()
+  private _supabase: ReturnType<typeof createClientSupabase> | null = null
 
   constructor(baseURL: string = API_BASE_URL) {
     this.baseURL = baseURL
+  }
+
+  private get supabase() {
+    if (!this._supabase) {
+      this._supabase = createClientSupabase()
+    }
+    return this._supabase
   }
 
   private async getAuthHeaders() {

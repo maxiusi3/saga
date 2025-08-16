@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js'
-import { createClientComponentClient, createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import type { Database } from '@/types/supabase'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -47,14 +46,6 @@ export const supabaseAdmin = createClient<Database>(
   }
 )
 
-// Default client for general use (client-side)
-export const supabase = (() => {
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('Supabase configuration missing:', {
-      url: !!supabaseUrl,
-      key: !!supabaseAnonKey
-    })
-    throw new Error('Supabase configuration is incomplete')
-  }
-  return createClient<Database>(supabaseUrl, supabaseAnonKey)
-})()
+// Default client for general use (client-side) - use createClientSupabase() instead
+// Note: Don't create client at module level to avoid initialization errors
+// Use createClientSupabase() function instead
