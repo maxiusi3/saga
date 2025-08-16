@@ -21,9 +21,19 @@ export default function AuthCallback() {
         }
 
         // 如果URL中有token参数，处理它们
-        const hashParams = new URLSearchParams(window.location.hash.substring(1))
-        const accessToken = hashParams.get('access_token')
-        const refreshToken = hashParams.get('refresh_token')
+        let hashParams: URLSearchParams | null = null
+        let accessToken: string | null = null
+        let refreshToken: string | null = null
+
+        try {
+          if (window.location.hash && window.location.hash.length > 1) {
+            hashParams = new URLSearchParams(window.location.hash.substring(1))
+            accessToken = hashParams.get('access_token')
+            refreshToken = hashParams.get('refresh_token')
+          }
+        } catch (error) {
+          console.error('Error parsing URL hash:', error)
+        }
 
         if (accessToken && refreshToken) {
           // 设置session

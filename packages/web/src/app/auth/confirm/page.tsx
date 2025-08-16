@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClientSupabase } from '@/lib/supabase'
 
-function EmailVerifyContent() {
+function EmailConfirmContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClientSupabase()
@@ -12,71 +12,74 @@ function EmailVerifyContent() {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    const verifyEmail = async () => {
+    const confirmEmail = async () => {
       try {
-        // 从URL参数中获取token
-        let accessToken: string | null = null
-        let refreshToken: string | null = null
+        console.log('=== 邮箱确认调试信息 ===')
+        console.log('Current URL:', window.location.href)
+        console.log('Search params:', Object.fromEntries(searchParams.entries()))
+        console.log('Hash:', window.location.hash)
 
-        try {
-          accessToken = searchParams.get('access_token')
-          refreshToken = searchParams.get('refresh_token')
-        } catch (error) {
-          console.error('Error getting search params:', error)
-        }
+        // 尝试多种方式获取验证参数
+        let token: string | null = null
+        let type: string | null = null
 
-        // 如果URL参数中没有，尝试从hash中获取
-        if (!accessToken || !refreshToken) {
+        // 方法1: 从URL参数获取
+        token = searchParams.get('token') || searchParams.get('access_token')
+        type = searchParams.get('type') || 'signup'
+
+        // 方法2: 从hash获取
+        if (!token && window.location.hash) {
           try {
-            if (typeof window !== 'undefined' && window.location.hash) {
-              const hashParams = new URLSearchParams(window.location.hash.substring(1))
-              accessToken = hashParams.get('access_token')
-              refreshToken = hashParams.get('refresh_token')
-            }
+            const hashParams = new URLSearchParams(window.location.hash.substring(1))
+            token = hashParams.get('access_token') || hashParams.get('token')
+            type = hashParams.get('type') || 'signup'
           } catch (error) {
-            console.error('Error parsing hash params:', error)
+            console.error('Error parsing hash:', error)
           }
         }
 
-        if (!accessToken || !refreshToken) {
+        console.log('Extracted token exists:', !!token)
+        console.log('Type:', type)
+
+        if (!token) {
           setStatus('error')
-          setMessage('验证链接无效或已过期。请重新注册或联系支持。')
+          setMessage('验证链接无效。请检查邮箱中的完整链接。')
           return
         }
 
-        // 设置session
-        const { data, error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken
+        // 使用Supabase的verifyOtp方法
+        const { data, error } = await supabase.auth.verifyOtp({
+          token_hash: token,
+          type: type as any || 'signup'
         })
+
+        console.log('Verify OTP response:', { data, error })
 
         if (error) {
           console.error('Verification error:', error)
           setStatus('error')
-          setMessage('邮箱验证失败：' + error.message)
-          return
-        }
-
-        if (data.session) {
+          setMessage(`验证失败: ${error.message}`)
+        } else if (data.user) {
+          console.log('Verification successful:', data)
           setStatus('success')
           setMessage('邮箱验证成功！正在跳转到仪表板...')
           
-          // 延迟跳转，让用户看到成功消息
+          // 延迟跳转
           setTimeout(() => {
             router.push('/dashboard')
           }, 2000)
         } else {
           setStatus('error')
-          setMessage('验证失败，请重试')
+          setMessage('验证失败，请重试或联系支持。')
         }
       } catch (error) {
         console.error('Unexpected error:', error)
         setStatus('error')
-        setMessage('发生意外错误，请重试')
+        setMessage('发生意外错误，请重试。')
       }
     }
 
-    verifyEmail()
+    confirmEmail()
   }, [searchParams, router, supabase.auth])
 
   return (
@@ -86,7 +89,7 @@ function EmailVerifyContent() {
           {status === 'loading' && (
             <>
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <h2 className="mt-4 text-xl font-semibold text-gray-900">正在验证邮箱...</h2>
+              <h2 className="mt-4 text-xl font-semibold text-gray-900">正在确认邮箱...</h2>
               <p className="mt-2 text-gray-600">请稍候</p>
             </>
           )}
@@ -98,7 +101,7 @@ function EmailVerifyContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="mt-4 text-xl font-semibold text-green-900">验证成功！</h2>
+              <h2 className="mt-4 text-xl font-semibold text-green-900">确认成功！</h2>
               <p className="mt-2 text-green-600">{message}</p>
             </>
           )}
@@ -110,14 +113,22 @@ function EmailVerifyContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
-              <h2 className="mt-4 text-xl font-semibold text-red-900">验证失败</h2>
+              <h2 className="mt-4 text-xl font-semibold text-red-900">确认失败</h2>
               <p className="mt-2 text-red-600">{message}</p>
-              <button
-                onClick={() => router.push('/auth/signin')}
-                className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-              >
-                返回登录
-              </button>
+              <div className="mt-6 space-y-3">
+                <button
+                  onClick={() => router.push('/auth/signup')}
+                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  重新注册
+                </button>
+                <button
+                  onClick={() => router.push('/auth/signin')}
+                  className="w-full bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors"
+                >
+                  返回登录
+                </button>
+              </div>
             </>
           )}
         </div>
@@ -126,7 +137,7 @@ function EmailVerifyContent() {
   )
 }
 
-export default function EmailVerifyPage() {
+export default function EmailConfirmPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -136,7 +147,7 @@ export default function EmailVerifyPage() {
         </div>
       </div>
     }>
-      <EmailVerifyContent />
+      <EmailConfirmContent />
     </Suspense>
   )
 }
