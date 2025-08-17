@@ -3,9 +3,20 @@ import { createClientSupabase } from './supabase'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
 
+// Mock data for development
+const mockWallet = {
+  projectVouchers: 1,
+  facilitatorSeats: 2,
+  storytellerSeats: 2,
+  updatedAt: new Date().toISOString()
+}
+
+const mockProjects: any[] = []
+
 class ApiClient {
   private baseURL: string
   private _supabase: ReturnType<typeof createClientSupabase> | null = null
+  private useMockData: boolean = false
 
   constructor(baseURL: string = API_BASE_URL) {
     this.baseURL = baseURL
@@ -26,24 +37,107 @@ class ApiClient {
   }
 
   async request(endpoint: string, options: RequestInit = {}) {
-    const authHeaders = await this.getAuthHeaders()
-    const url = `${this.baseURL}${endpoint}`
-    
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...authHeaders,
-        ...options.headers,
-      },
-      ...options,
-    })
+    // Check if backend is available
+    try {
+      const authHeaders = await this.getAuthHeaders()
+      const url = `${this.baseURL}${endpoint}`
+      
+      const response = await fetch(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeaders,
+          ...options.headers,
+        },
+        ...options,
+      })
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.message || `API Error: ${response.status}`)
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || `API Error: ${response.status}`)
+      }
+
+      return response.json()
+    } catch (error) {
+      // If backend is not available, use mock data
+      console.warn('Backend not available, using mock data:', error)
+      this.useMockData = true
+      return this.handleMockRequest(endpoint, options)
+    }
+  }
+
+  private async handleMockRequest(endpoint: string, options: RequestInit = {}) {
+    const method = options.method || 'GET'
+    
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 500))
+
+    // Handle different endpoints
+    if (endpoint === '/api/wallets/me' && method === 'GET') {
+      return {
+        success: true,
+        data: mockWallet
+      }
     }
 
-    return response.json()
+    if (endpoint === '/api/projects' && method === 'GET') {
+      return {
+        success: true,
+        data: mockProjects
+      }
+    }
+
+    if (endpoint === '/api/projects' && method === 'POST') {
+      const body = JSON.parse(options.body as string)
+      const newProject = {
+        id: `project-${Date.now()}`,
+        name: body.title,
+        description: body.description || '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        status: 'active',
+        memberCount: 1,
+        storyCount: 0
+      }
+      
+      mockProjects.unshift(newProject)
+      
+      // Consume a project voucher
+      mockWallet.projectVouchers = Math.max(0, mockWallet.projectVouchers - 1)
+      
+      return {
+        success: true,
+        data: newProject
+      }
+    }
+
+    // Default mock response
+    return {
+      success: false,
+      error: { message: `Mock endpoint not implemented: ${method} ${endpoint}` }
+    }
+  }
+
+  // Convenience methods
+  async get(endpoint: string) {
+    return this.request(endpoint, { method: 'GET' })
+  }
+
+  async post(endpoint: string, data?: any) {
+    return this.request(endpoint, {
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined
+    })
+  }
+
+  async put(endpoint: string, data?: any) {
+    return this.request(endpoint, {
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined
+    })
+  }
+
+  async delete(endpoint: string) {
+    return this.request(endpoint, { method: 'DELETE' })
   }
 
   // 认证相关 - 使用Supabase

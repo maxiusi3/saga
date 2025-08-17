@@ -11,60 +11,69 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // 首先尝试从URL hash中获取session
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+        console.log('Auth callback started')
+        console.log('Current URL:', window.location.href)
+        console.log('Hash:', window.location.hash)
+        console.log('Search:', window.location.search)
 
-        if (sessionError) {
-          console.error('Auth callback error:', sessionError)
-          router.push('/auth/signin?error=callback_error')
+        // Handle the auth callback using Supabase's built-in method
+        const { data, error } = await supabase.auth.getSession()
+        
+        if (error) {
+          console.error('Session error:', error)
+          router.push('/auth/signin?error=session_error')
           return
         }
 
-        // 如果URL中有token参数，处理它们
-        let hashParams: URLSearchParams | null = null
-        let accessToken: string | null = null
-        let refreshToken: string | null = null
+        // Check if there are auth tokens in the URL
+        const hashParams = new URLSearchParams(window.location.hash.substring(1))
+        const accessToken = hashParams.get('access_token')
+        const refreshToken = hashParams.get('refresh_token')
+        const type = hashParams.get('type')
 
-        try {
-          if (window.location.hash && window.location.hash.length > 1) {
-            hashParams = new URLSearchParams(window.location.hash.substring(1))
-            accessToken = hashParams.get('access_token')
-            refreshToken = hashParams.get('refresh_token')
-          }
-        } catch (error) {
-          console.error('Error parsing URL hash:', error)
-        }
+        console.log('Auth tokens found:', { 
+          hasAccessToken: !!accessToken, 
+          hasRefreshToken: !!refreshToken, 
+          type 
+        })
 
         if (accessToken && refreshToken) {
-          // 设置session
-          const { data: authData, error: authError } = await supabase.auth.setSession({
+          // Set the session with the tokens from the URL
+          const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken
           })
 
-          if (authError) {
-            console.error('Set session error:', authError)
-            router.push('/auth/signin?error=session_error')
+          if (sessionError) {
+            console.error('Set session error:', sessionError)
+            router.push('/auth/signin?error=session_error&message=' + encodeURIComponent(sessionError.message))
             return
           }
 
-          if (authData.session) {
-            console.log('Email verification successful!')
-            router.push('/dashboard?verified=true')
+          if (sessionData.session) {
+            console.log('Session established successfully:', sessionData.session.user.email)
+            
+            // Check if this is email verification
+            if (type === 'signup') {
+              router.push('/dashboard?verified=true&welcome=true')
+            } else {
+              router.push('/dashboard')
+            }
             return
           }
         }
 
-        if (sessionData.session) {
-          // 用户已登录，重定向到仪表板
+        // If we have an existing session, redirect to dashboard
+        if (data.session) {
+          console.log('Existing session found:', data.session.user.email)
           router.push('/dashboard')
         } else {
-          // 没有会话，重定向到登录页面
+          console.log('No session found, redirecting to signin')
           router.push('/auth/signin')
         }
       } catch (error) {
-        console.error('Unexpected error:', error)
-        router.push('/auth/signin?error=unexpected_error')
+        console.error('Unexpected error in auth callback:', error)
+        router.push('/auth/signin?error=unexpected_error&message=' + encodeURIComponent(String(error)))
       }
     }
 
