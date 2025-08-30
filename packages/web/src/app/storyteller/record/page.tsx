@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { WebAudioRecorder } from '@/components/recording/WebAudioRecorder'
 import { RecordingDraftRecovery } from '@/components/recording/RecordingDraftRecovery'
@@ -17,7 +17,8 @@ interface AIPrompt {
   chapterName?: string
 }
 
-export default function StorytellerRecordPage() {
+// Component that uses useSearchParams - needs to be wrapped in Suspense
+function StorytellerRecordPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const { user, isAuthenticated } = useAuthStore()
@@ -380,5 +381,26 @@ export default function StorytellerRecordPage() {
       </div>
     </div>
     </MobileRecordingOptimizer>
+  )
+}
+
+// Loading component for Suspense fallback
+function StorytellerRecordPageLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-lg text-gray-600">Loading your story prompt...</p>
+      </div>
+    </div>
+  )
+}
+
+// Main export with Suspense boundary
+export default function StorytellerRecordPage() {
+  return (
+    <Suspense fallback={<StorytellerRecordPageLoading />}>
+      <StorytellerRecordPageContent />
+    </Suspense>
   )
 }

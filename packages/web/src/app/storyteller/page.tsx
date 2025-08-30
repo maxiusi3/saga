@@ -1,12 +1,13 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { StorytellerDashboard } from '@/components/storyteller/StorytellerDashboard'
 import { useAuthStore } from '@/stores/auth-store'
 import { api } from '@/lib/api'
 
-export default function StorytellerPage() {
+// Component that uses useSearchParams - needs to be wrapped in Suspense
+function StorytellerPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const { user, isAuthenticated } = useAuthStore()
@@ -107,9 +108,30 @@ export default function StorytellerPage() {
   }
 
   return (
-    <StorytellerDashboard 
-      projectId={projectId} 
-      userId={user.id} 
+    <StorytellerDashboard
+      projectId={projectId}
+      userId={user.id}
     />
+  )
+}
+
+// Loading component for Suspense fallback
+function StorytellerPageLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-lg text-gray-600">Loading your story space...</p>
+      </div>
+    </div>
+  )
+}
+
+// Main export with Suspense boundary
+export default function StorytellerPage() {
+  return (
+    <Suspense fallback={<StorytellerPageLoading />}>
+      <StorytellerPageContent />
+    </Suspense>
   )
 }

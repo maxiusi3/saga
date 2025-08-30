@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -89,11 +89,12 @@ const AVAILABLE_PACKAGES: Package[] = [
   }
 ]
 
-export default function PurchasePage() {
+// Component that uses useSearchParams - needs to be wrapped in Suspense
+function PurchasePageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { refreshWallet } = useResourceWallet()
-  
+
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null)
   const [showPaymentForm, setShowPaymentForm] = useState(false)
   const [purchaseComplete, setPurchaseComplete] = useState(false)
@@ -360,5 +361,26 @@ export default function PurchasePage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Loading component for Suspense fallback
+function PurchasePageLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-lg text-gray-600">Loading purchase options...</p>
+      </div>
+    </div>
+  )
+}
+
+// Main export with Suspense boundary
+export default function PurchasePage() {
+  return (
+    <Suspense fallback={<PurchasePageLoading />}>
+      <PurchasePageContent />
+    </Suspense>
   )
 }

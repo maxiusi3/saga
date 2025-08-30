@@ -1,14 +1,15 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
-export default function StorytellerSuccessPage() {
+// Component that uses useSearchParams - needs to be wrapped in Suspense
+function StorytellerSuccessPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  
+
   const [projectId, setProjectId] = useState<string | null>(null)
   const [storyId, setStoryId] = useState<string | null>(null)
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'extra-large'>('normal')
@@ -174,5 +175,26 @@ export default function StorytellerSuccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Loading component for Suspense fallback
+function StorytellerSuccessPageLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-lg text-gray-600">Loading success page...</p>
+      </div>
+    </div>
+  )
+}
+
+// Main export with Suspense boundary
+export default function StorytellerSuccessPage() {
+  return (
+    <Suspense fallback={<StorytellerSuccessPageLoading />}>
+      <StorytellerSuccessPageContent />
+    </Suspense>
   )
 }
