@@ -1,254 +1,145 @@
-// Supabase-integrated API客户端
-import { createClientSupabase } from './supabase'
+// 统一的Supabase API客户端 - 完全替换混合模式
+import { supabaseApi } from './api-supabase'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
-
-// Mock data for development
-const mockWallet = {
-  projectVouchers: 1,
-  facilitatorSeats: 2,
-  storytellerSeats: 2,
-  updatedAt: new Date().toISOString()
-}
-
-const mockProjects: any[] = []
+// 为了向后兼容，保持原有的API接口结构
+// 所有调用都委托给统一的Supabase API客户端
 
 class ApiClient {
-  private baseURL: string
-  private _supabase: ReturnType<typeof createClientSupabase> | null = null
-  private useMockData: boolean = false
-
-  constructor(baseURL: string = API_BASE_URL) {
-    this.baseURL = baseURL
-  }
-
-  private get supabase() {
-    if (!this._supabase) {
-      this._supabase = createClientSupabase()
-    }
-    return this._supabase
-  }
-
-  private async getAuthHeaders() {
-    const { data: { session } } = await this.supabase.auth.getSession()
-    return session?.access_token ? {
-      'Authorization': `Bearer ${session.access_token}`
-    } : {}
-  }
-
-  async request(endpoint: string, options: RequestInit = {}) {
-    // Check if backend is available
-    try {
-      const authHeaders = await this.getAuthHeaders()
-      const url = `${this.baseURL}${endpoint}`
-      
-      const response = await fetch(url, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...authHeaders,
-          ...options.headers,
-        },
-        ...options,
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.message || `API Error: ${response.status}`)
-      }
-
-      return response.json()
-    } catch (error) {
-      // If backend is not available, use mock data
-      console.warn('Backend not available, using mock data:', error)
-      this.useMockData = true
-      return this.handleMockRequest(endpoint, options)
-    }
-  }
-
-  private async handleMockRequest(endpoint: string, options: RequestInit = {}) {
-    const method = options.method || 'GET'
-    
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    // Handle different endpoints
-    if (endpoint === '/api/wallets/me' && method === 'GET') {
-      return {
-        success: true,
-        data: mockWallet
-      }
-    }
-
-    if (endpoint === '/api/projects' && method === 'GET') {
-      return {
-        success: true,
-        data: mockProjects
-      }
-    }
-
-    if (endpoint === '/api/projects' && method === 'POST') {
-      const body = JSON.parse(options.body as string)
-      const newProject = {
-        id: `project-${Date.now()}`,
-        name: body.title,
-        description: body.description || '',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        status: 'active',
-        memberCount: 1,
-        storyCount: 0
-      }
-      
-      mockProjects.unshift(newProject)
-      
-      // Consume a project voucher
-      mockWallet.projectVouchers = Math.max(0, mockWallet.projectVouchers - 1)
-      
-      return {
-        success: true,
-        data: newProject
-      }
-    }
-
-    // Default mock response
-    return {
-      success: false,
-      error: { message: `Mock endpoint not implemented: ${method} ${endpoint}` }
-    }
-  }
-
-  // Convenience methods
-  async get(endpoint: string) {
-    return this.request(endpoint, { method: 'GET' })
-  }
-
-  async post(endpoint: string, data?: any) {
-    return this.request(endpoint, {
-      method: 'POST',
-      body: data ? JSON.stringify(data) : undefined
-    })
-  }
-
-  async put(endpoint: string, data?: any) {
-    return this.request(endpoint, {
-      method: 'PUT',
-      body: data ? JSON.stringify(data) : undefined
-    })
-  }
-
-  async delete(endpoint: string) {
-    return this.request(endpoint, { method: 'DELETE' })
-  }
-
-  // 认证相关 - 使用Supabase
+  // 认证相关 - 完全使用Supabase Auth
   auth = {
     signin: async (email: string, password: string) => {
-      return this.supabase.auth.signInWithPassword({ email, password })
+      const result = await supabaseApi.auth.signIn(email, password)
+      return { data: result }
     },
-    signup: async (data: { name: string; email: string; password: string }) => {
-      return this.supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: { data: { name: data.name } }
-      })
+
+    signup: async (userData: { name: string; email: string; password: string }) => {
+      const result = await supabaseApi.auth.signUp(userData)
+      return { data: result }
     },
+
     signout: async () => {
-      return this.supabase.auth.signOut()
+      await supabaseApi.auth.signOut()
+      return { success: true }
     },
+
     profile: async () => {
-      const { data: { user } } = await this.supabase.auth.getUser()
+      const user = await supabaseApi.auth.getCurrentUser()
       return { data: { data: user } }
     }
   }
 
-  // 项目相关
+  // 项目管理 - 使用Supabase
   projects = {
     list: async () => {
-      return this.request('/api/projects')
+      const projects = await supabaseApi.projects.list()
+      return { data: projects }
     },
-    get: async (id: string) => {
-      return this.request(`/api/projects/${id}`)
+
+    get: async (projectId: string) => {
+      const project = await supabaseApi.projects.get(projectId)
+      return { data: project }
     },
-    create: async (data: any) => {
-      return this.request('/api/projects', {
-        method: 'POST',
-        body: JSON.stringify(data),
+
+    create: async (projectData: { title: string; description?: string }) => {
+      const project = await supabaseApi.projects.create({
+        name: projectData.title,
+        description: projectData.description || ''
       })
+      return { data: project }
     },
-    update: async (id: string, data: any) => {
-      return this.request(`/api/projects/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      })
-    },
-    delete: async (id: string) => {
-      return this.request(`/api/projects/${id}`, {
-        method: 'DELETE',
-      })
-    },
-    stats: async (id: string) => {
-      return this.request(`/api/projects/${id}/stats`)
-    },
-    generateInvitation: async (projectId: string, data: any) => {
-      return this.request(`/api/projects/${projectId}/invitations`, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      })
+
+    update: async (projectId: string, updates: { name?: string; description?: string }) => {
+      const project = await supabaseApi.projects.update(projectId, updates)
+      return { data: project }
     }
   }
 
-  // 故事相关
+  // 资源钱包管理 - 使用Supabase
+  wallets = {
+    me: async () => {
+      const wallet = await supabaseApi.wallet.get()
+      return { data: wallet }
+    },
+
+    transactions: async (limit = 20, offset = 0) => {
+      const transactions = await supabaseApi.wallet.getTransactions(limit, offset)
+      return { data: transactions }
+    }
+  }
+
+  // 邀请管理 - 使用Supabase
+  invitations = {
+    send: async (projectId: string, email: string, role: 'facilitator' | 'storyteller') => {
+      const invitation = await supabaseApi.invitations.send(projectId, email, role)
+      return { data: invitation }
+    },
+
+    accept: async (token: string) => {
+      const result = await supabaseApi.invitations.accept(token)
+      return { data: result }
+    },
+
+    list: async (projectId?: string) => {
+      const invitations = await supabaseApi.invitations.list(projectId)
+      return { data: invitations }
+    }
+  }
+
+  // 故事管理 - 使用Supabase
   stories = {
-    list: async (projectId: string, params?: any) => {
-      const queryString = params ? `?${new URLSearchParams(params).toString()}` : ''
-      return this.request(`/api/projects/${projectId}/stories${queryString}`)
+    list: async (projectId: string) => {
+      const stories = await supabaseApi.stories.list(projectId)
+      return { data: stories }
     },
-    get: async (id: string) => {
-      return this.request(`/api/stories/${id}`)
+
+    create: async (storyData: {
+      project_id: string
+      title: string
+      content?: string
+      audio_url?: string
+      audio_duration?: number
+    }) => {
+      const story = await supabaseApi.stories.create(storyData)
+      return { data: story }
     },
-    create: async (projectId: string, formData: FormData) => {
-      const authHeaders = await this.getAuthHeaders()
-      const response = await fetch(`${this.baseURL}/api/projects/${projectId}/stories`, {
-        method: 'POST',
-        headers: authHeaders,
-        body: formData,
-      })
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.message || `API Error: ${response.status}`)
-      }
-      
-      return response.json()
-    },
-    update: async (id: string, data: any) => {
-      return this.request(`/api/stories/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      })
-    },
-    delete: async (id: string) => {
-      return this.request(`/api/stories/${id}`, {
-        method: 'DELETE',
-      })
-    },
-    search: async (projectId: string, query: string) => {
-      return this.request(`/api/projects/${projectId}/stories/search?q=${encodeURIComponent(query)}`)
+
+    update: async (storyId: string, updates: {
+      title?: string
+      content?: string
+      transcript?: string
+      status?: string
+    }) => {
+      const story = await supabaseApi.stories.update(storyId, updates)
+      return { data: story }
     }
   }
 
-  // 用户相关
-  users = {
-    get: async (id: string) => {
-      return this.request(`/api/users/${id}`)
-    },
-    update: async (id: string, data: any) => {
-      return this.request(`/api/users/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      })
+  // 支付处理 - 保持Stripe集成，但使用Supabase存储
+  payments = {
+    purchasePackage: async (packageId: string, paymentIntentId: string) => {
+      const result = await supabaseApi.payments.purchasePackage(packageId, paymentIntentId)
+      return { data: result }
     }
   }
+
+  // 数据导出 - 使用Supabase
+  exports = {
+    request: async (projectId: string, options: {
+      includeAudio: boolean
+      includePhotos: boolean
+      includeTranscripts: boolean
+      includeInteractions: boolean
+    }) => {
+      const exportId = await supabaseApi.exports.request(projectId, options)
+      return { data: { exportId } }
+    },
+
+    status: async (exportId: string) => {
+      const status = await supabaseApi.exports.getStatus(exportId)
+      return { data: status }
+    }
+  }
+
 }
 
 export const api = new ApiClient()

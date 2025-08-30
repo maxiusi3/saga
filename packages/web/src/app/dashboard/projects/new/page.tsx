@@ -192,137 +192,161 @@ export default function NewProjectPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <Link
-          href="/dashboard/projects"
-          className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
-        >
-          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Projects
-        </Link>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="container-narrow responsive-padding">
+        {/* Back Navigation */}
+        <div className="mb-4 sm:mb-6">
+          <Link
+            href="/dashboard/projects"
+            className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus-visible touch-target"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span className="mobile-hide">Back to </span>Projects
+          </Link>
+        </div>
 
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-6 py-8">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900">Create New Project</h1>
-            <p className="mt-1 text-sm text-gray-600">
-              Start collecting and preserving your family's stories and memories.
-            </p>
-          </div>
-
-          {/* Wallet Status */}
-          <div className="mb-6">
-            <WalletStatus showDetails={true} />
-          </div>
-
-          {/* Insufficient Resources Alert */}
-          {!walletLoading && (() => {
-            const validation = canCreateProject()
-            return !validation.isValid && (
-              <div className="mb-6">
-                <ResourceErrorAlert
-                  errors={validation.errors}
-                  title="Cannot Create Project"
-                />
-              </div>
-            )
-          })()}
-
-          {error && (
-            <div className="mb-6 rounded-md bg-red-50 p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-800">{error}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                Project Title *
-              </label>
-              <input
-                {...register('title')}
-                type="text"
-                className={`mt-1 input ${errors.title ? 'input-error' : ''}`}
-                placeholder="e.g., Mom's Life Stories, Family History Project"
-              />
-              {errors.title && (
-                <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>
-              )}
-              <p className="mt-1 text-sm text-gray-500">
-                Choose a meaningful name that represents the stories you'll collect.
+        {/* Main Card */}
+        <div className="bg-white shadow-sm rounded-lg border">
+          <div className="responsive-padding">
+            {/* Header */}
+            <div className="mb-6 sm:mb-8">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Create New Project</h1>
+              <p className="text-sm sm:text-base text-gray-600">
+                Start collecting and preserving your family's stories and memories.
               </p>
             </div>
 
-            <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                Description
-              </label>
-              <textarea
-                {...register('description')}
-                rows={4}
-                className={`mt-1 input ${errors.description ? 'input-error' : ''}`}
-                placeholder="Describe what stories you plan to collect, who will be involved, or any special focus areas..."
-              />
-              {errors.description && (
-                <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
-              )}
-              <p className="mt-1 text-sm text-gray-500">
-                Optional: Add context about your project goals and scope.
-              </p>
+            {/* Wallet Status */}
+            <div className="mb-6">
+              <WalletStatus showDetails={true} />
             </div>
 
-            {/* Preview */}
-            {(title || description) && (
-              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                <h4 className="text-sm font-medium text-gray-900 mb-2">Preview</h4>
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                  <h3 className="font-medium text-gray-900">{title || 'Project Title'}</h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    {description || 'No description provided'}
-                  </p>
-                  <div className="flex items-center justify-between text-sm text-gray-500 mt-3">
-                    <span>0 stories</span>
-                    <span>Created just now</span>
+            {/* Insufficient Resources Alert */}
+            {!walletLoading && (() => {
+              const validation = canCreateProject()
+              return !validation.isValid && (
+                <div className="mb-6">
+                  <ResourceErrorAlert
+                    errors={validation.errors}
+                    title="Cannot Create Project"
+                  />
+                </div>
+              )
+            })()}
+
+            {/* Error Alert */}
+            {error && (
+              <div className="mb-6 rounded-lg bg-red-50 border border-red-200 p-4">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-red-800">{error}</p>
                   </div>
                 </div>
               </div>
             )}
 
-            <div className="flex items-center justify-between pt-6 border-t border-gray-200">
-              <Link
-                href="/dashboard/projects"
-                className="btn-outline"
-              >
-                Cancel
-              </Link>
-              <LoadingButton
-                type="submit"
-                isLoading={isLoading || walletLoading}
-                disabled={walletLoading || !canCreateProject().isValid}
-                className="px-8"
-              >
-                {walletLoading 
-                  ? 'Loading...' 
-                  : !canCreateProject().isValid 
-                    ? 'Need Project Voucher' 
-                    : 'Create Project'
-                }
-              </LoadingButton>
-            </div>
-          </form>
+            {/* Project Form */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {/* Title Field */}
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                  Project Title *
+                </label>
+                <input
+                  {...register('title')}
+                  type="text"
+                  id="title"
+                  className={`input w-full text-base sm:text-sm ${errors.title ? 'input-error' : ''}`}
+                  placeholder="e.g., Mom's Life Stories, Family History Project"
+                />
+                {errors.title && (
+                  <p className="mt-2 text-sm text-red-600" role="alert">{errors.title.message}</p>
+                )}
+                <p className="mt-2 text-sm text-gray-500">
+                  Choose a meaningful name that represents the stories you'll collect.
+                </p>
+              </div>
+
+              {/* Description Field */}
+              <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                  Description <span className="text-gray-400">(Optional)</span>
+                </label>
+                <textarea
+                  {...register('description')}
+                  id="description"
+                  rows={4}
+                  className={`input w-full text-base sm:text-sm resize-none ${errors.description ? 'input-error' : ''}`}
+                  placeholder="Describe what stories you plan to collect, who will be involved, or any special focus areas..."
+                />
+                {errors.description && (
+                  <p className="mt-2 text-sm text-red-600" role="alert">{errors.description.message}</p>
+                )}
+                <p className="mt-2 text-sm text-gray-500">
+                  Add context about your project goals and scope.
+                </p>
+              </div>
+
+              {/* Project Preview */}
+              {(title || description) && (
+                <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                  <h4 className="text-sm font-medium text-gray-900 mb-3">Preview</h4>
+                  <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                    <h3 className="font-semibold text-gray-900 text-base sm:text-lg">
+                      {title || 'Project Title'}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 mt-2">
+                      {description || 'No description provided'}
+                    </p>
+                    <div className="mobile-stack items-start sm:items-center justify-between text-xs sm:text-sm text-gray-500 mt-4 gap-2">
+                      <div className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2h4a1 1 0 110 2h-1v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6H3a1 1 0 110-2h4z" />
+                        </svg>
+                        <span>0 stories</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Created just now</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Form Actions */}
+              <div className="mobile-stack items-stretch sm:items-center justify-between pt-6 border-t border-gray-200 gap-4">
+                <Link
+                  href="/dashboard/projects"
+                  className="btn-outline mobile-full touch-target text-center"
+                >
+                  Cancel
+                </Link>
+                <LoadingButton
+                  type="submit"
+                  isLoading={isLoading || walletLoading}
+                  disabled={walletLoading || !canCreateProject().isValid}
+                  className="mobile-full touch-target px-6 sm:px-8 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  {walletLoading
+                    ? 'Loading...'
+                    : !canCreateProject().isValid
+                      ? 'Need Project Voucher'
+                      : 'Create Project'
+                  }
+                </LoadingButton>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

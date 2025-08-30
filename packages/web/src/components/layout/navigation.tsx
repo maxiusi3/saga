@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useRef } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { generateInitials } from '@/lib/utils'
@@ -9,9 +9,45 @@ import { toast } from 'react-hot-toast'
 
 export function Navigation() {
   const router = useRouter()
+  const pathname = usePathname()
   const { user, signout } = useAuthStore()
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const profileMenuRef = useRef<HTMLDivElement>(null)
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
+
+  // Close menus when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setIsProfileMenuOpen(false)
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [pathname])
+
+  // Handle escape key
+  useEffect(() => {
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsProfileMenuOpen(false)
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [])
 
   const handleSignOut = async () => {
     try {
@@ -23,40 +59,95 @@ export function Navigation() {
     }
   }
 
+  const isActivePath = (path: string) => {
+    return pathname === path || pathname.startsWith(path + '/')
+  }
+
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+    <>
+      {/* Skip to main content link */}
+      <a 
+        href="#main-content" 
+        className="skip-link"
+        onFocus={(e) => e.currentTarget.focus()}
+      >
+        Skip to main content
+      </a>
+      
+      <nav className="bg-white shadow-sm border-b border-gray-200" role="navigation" aria-label="Main navigation">
+        <div className="container-responsive">
+          <div className="flex justify-between h-16">
           <div className="flex items-center">
             {/* Mobile menu button */}
             <button
               type="button"
-              className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+              className="lg:hidden touch-target inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label={isMobileMenuOpen ? 'Close main menu' : 'Open main menu'}
             >
-              <span className="sr-only">Open main menu</span>
+              <span className="sr-only">{isMobileMenuOpen ? 'Close' : 'Open'} main menu</span>
               {isMobileMenuOpen ? (
-                <svg className="block h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="block h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg className="block h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="block h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
             </button>
 
             {/* Logo */}
-            <Link href="/dashboard" className="flex items-center ml-4 lg:ml-0">
+            <Link 
+              href="/dashboard" 
+              className="flex items-center ml-4 lg:ml-0 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md p-1"
+              aria-label="Saga - Go to dashboard"
+            >
               <div className="flex-shrink-0 flex items-center">
                 <div className="h-8 w-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                  <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">Saga</span>
+                <span className="ml-2 text-xl font-bold text-gray-900 mobile-hide">Saga</span>
               </div>
             </Link>
+
+            {/* Desktop navigation links */}
+            <div className="hidden lg:flex lg:space-x-8 lg:ml-8">
+              <Link
+                href="/dashboard"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  isActivePath('/dashboard') && !isActivePath('/dashboard/projects') && !isActivePath('/dashboard/stories')
+                    ? 'text-primary-600 bg-primary-50' 
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/dashboard/projects"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  isActivePath('/dashboard/projects')
+                    ? 'text-primary-600 bg-primary-50' 
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+                }`}
+              >
+                Projects
+              </Link>
+              <Link
+                href="/dashboard/stories"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  isActivePath('/dashboard/stories')
+                    ? 'text-primary-600 bg-primary-50' 
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+                }`}
+              >
+                Stories
+              </Link>
+            </div>
           </div>
 
           {/* Right side */}
@@ -64,20 +155,26 @@ export function Navigation() {
             {/* Notifications */}
             <button
               type="button"
-              className="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="touch-target p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 relative"
+              aria-label="View notifications"
             >
               <span className="sr-only">View notifications</span>
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM11 17H6l5 5v-5zM12 3v12" />
               </svg>
+              {/* Notification badge - hidden for now */}
+              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white hidden" aria-hidden="true"></span>
             </button>
 
             {/* Profile dropdown */}
-            <div className="relative">
+            <div className="relative" ref={profileMenuRef}>
               <button
                 type="button"
-                className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                className="touch-target flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 p-1"
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                aria-expanded={isProfileMenuOpen}
+                aria-haspopup="true"
+                aria-label={`User menu for ${user?.user_metadata?.name || user?.email}`}
               >
                 <span className="sr-only">Open user menu</span>
                 <div className="h-8 w-8 bg-primary-100 rounded-full flex items-center justify-center">
@@ -88,7 +185,12 @@ export function Navigation() {
               </button>
 
               {isProfileMenuOpen && (
-                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                <div 
+                  className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
+                >
                   <div className="py-1">
                     <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
                       <p className="font-medium">{user?.user_metadata?.name || 'User'}</p>
