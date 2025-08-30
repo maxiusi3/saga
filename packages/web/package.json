@@ -31,8 +31,8 @@
     "@radix-ui/react-progress": "^1.1.7",
     "@saga/shared": "file:../shared",
     "@sentry/nextjs": "^10.5.0",
+    "@stripe/react-stripe-js": "^3.9.2",
     "@stripe/stripe-js": "^2.2.0",
-
     "@supabase/supabase-js": "^2.38.0",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",

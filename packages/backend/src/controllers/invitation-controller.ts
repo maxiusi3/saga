@@ -19,7 +19,7 @@ export class InvitationController {
       throw createError('Validation failed', 400, 'VALIDATION_ERROR', errors.array())
     }
 
-    const { projectId, role } = req.body
+    const { projectId, role, email } = req.body
     const userId = req.user!.id
 
     // Check if project exists and user has permission
@@ -28,8 +28,9 @@ export class InvitationController {
       throw createError('Project not found', 404, 'PROJECT_NOT_FOUND')
     }
 
-    // Import ProjectRoleModel
+    // Import ProjectRoleModel and InvitationService
     const { ProjectRoleModel } = require('../models/project-role')
+    const { InvitationService } = require('../services/invitation-service')
     
     // Only facilitator can create invitations
     const isFacilitator = await ProjectRoleModel.hasRole(userId, projectId, 'facilitator')
@@ -45,29 +46,24 @@ export class InvitationController {
       }
     }
 
-    // Check if user has required seats for the role
-    const { ResourceWalletService } = require('../services/resource-wallet-service')
-    const resourceType = role === 'facilitator' ? 'facilitator_seat' : 'storyteller_seat'
-    const hasSeats = await ResourceWalletService.hasSufficientResources(userId, resourceType, 1)
+    // Create invitation with seat reservation through InvitationService
+    const result = await InvitationService.createInvitation(projectId, userId, role, email)
     
-    if (!hasSeats) {
+    if (!result.success) {
       throw createError(
-        `You need 1 ${resourceType.replace('_', ' ')} to invite a ${role}. Please purchase more seats.`,
+        result.error || 'Failed to create invitation',
         400,
-        'INSUFFICIENT_RESOURCES'
+        'INVITATION_CREATION_FAILED'
       )
     }
 
-    // Create invitation (72 hours expiry as per requirements)
-    const invitation = await InvitationModel.createInvitation({
-      projectId,
-      role,
-      expiresAt: new Date(Date.now() + 72 * 60 * 60 * 1000) // 72 hours from now
-    })
-
     const response: ApiResponse<any> = {
-      data: invitation,
-      message: `${role.charAt(0).toUpperCase() + role.slice(1)} invitation created successfully`,
+      data: {
+        invitation: result.invitation,
+        seatReserved: true,
+        expiresIn: '72 hours'
+      },
+      message: `${role.charAt(0).toUpperCase() + role.slice(1)} invitation created successfully with seat reserved`,
       timestamp: new Date().toISOString(),
     }
 
@@ -208,11 +204,11 @@ export class InvitationController {
       })
     }
 
-    // Import required models
+    // Import required services
     const { ProjectRoleModel } = require('../models/project-role')
-    const { ResourceWalletService } = require('../services/resource-wallet-service')
+    const { InvitationService } = require('../services/invitation-service')
 
-    // Validate role assignment before consuming resources
+    // Validate role assignment
     const roleValidation = await ProjectRoleModel.validateRoleAssignment(
       userId, 
       validInvitation.projectId, 
@@ -223,33 +219,16 @@ export class InvitationController {
       throw createError(roleValidation.error!, 400, 'ROLE_ASSIGNMENT_INVALID')
     }
 
-    // Get the project to find who created the invitation (facilitator)
-    const project = await ProjectModel.findById(validInvitation.projectId)
-    if (!project) {
-      throw createError('Project not found', 404, 'PROJECT_NOT_FOUND')
-    }
-
-    // Consume the appropriate seat from the project creator's wallet
-    const resourceType = validInvitation.role === 'facilitator' ? 'facilitator_seat' : 'storyteller_seat'
+    // Accept invitation through InvitationService (handles seat consumption)
+    const result = await InvitationService.acceptInvitation(token)
     
-    const consumptionResult = await ResourceWalletService.consumeResources({
-      userId: project.created_by,
-      resourceType,
-      amount: 1,
-      projectId: validInvitation.projectId,
-      description: `${validInvitation.role} invitation acceptance`
-    })
-    
-    if (!consumptionResult.success) {
+    if (!result.success) {
       throw createError(
-        `Unable to accept invitation. The project creator doesn't have enough ${resourceType.replace('_', ' ')}s. ${consumptionResult.error}`,
+        result.error || 'Failed to accept invitation',
         400,
-        'INSUFFICIENT_RESOURCES'
+        'INVITATION_ACCEPTANCE_FAILED'
       )
     }
-
-    // Accept invitation
-    await InvitationModel.acceptInvitation(token)
 
     // Assign role to user
     await ProjectRoleModel.assignRole(userId, validInvitation.projectId, validInvitation.role)
@@ -264,11 +243,12 @@ export class InvitationController {
         userId,
         role: validInvitation.role,
         projectRoles,
+        seatConsumed: true,
         message: req.user 
           ? `You have successfully joined the project as a ${validInvitation.role}!`
           : `Account created and joined project as a ${validInvitation.role} successfully!`,
       },
-      message: 'Invitation accepted successfully',
+      message: 'Invitation accepted successfully and seat consumed',
       timestamp: new Date().toISOString(),
     }
 
@@ -295,15 +275,28 @@ export class InvitationController {
       throw createError('Only project facilitators can view invitations', 403, 'ACCESS_DENIED')
     }
 
-    const invitations = await InvitationModel.findByProject(projectId)
+    // Get invitations with seat reservation status
+    const { InvitationService } = require('../services/invitation-service')
+    const invitationData = await InvitationService.getProjectInvitations(projectId)
     const stats = await InvitationModel.getInvitationStats(projectId)
+
+    // Get user's current wallet balance for context
+    const { ResourceWalletService } = require('../services/resource-wallet-service')
+    const walletBalance = await ResourceWalletService.getWalletBalance(userId)
 
     const response: ApiResponse<any> = {
       data: {
-        invitations,
-        stats
+        invitations: invitationData.invitations,
+        reservedSeats: invitationData.reservedSeats,
+        stats,
+        userWallet: {
+          facilitatorSeats: walletBalance.facilitatorSeats,
+          storytellerSeats: walletBalance.storytellerSeats,
+          canInviteFacilitator: walletBalance.facilitatorSeats > 0,
+          canInviteStoryteller: walletBalance.storytellerSeats > 0
+        }
       },
-      message: 'Project invitations retrieved successfully',
+      message: 'Project invitations retrieved successfully with seat status',
       timestamp: new Date().toISOString(),
     }
 
@@ -416,6 +409,118 @@ export class InvitationController {
     const response: ApiResponse<any> = {
       data: { expiredCount },
       message: 'Expired invitations cleaned up successfully',
+      timestamp: new Date().toISOString(),
+    }
+
+    res.json(response)
+  })
+
+  /**
+   * Cancel invitation and release reserved seat
+   */
+  static cancelInvitationValidation = [
+    param('invitationId').isUUID().withMessage('Valid invitation ID is required'),
+  ]
+
+  static cancelInvitation = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw createError('Validation failed', 400, 'VALIDATION_ERROR', errors.array())
+    }
+
+    const { invitationId } = req.params
+    const userId = req.user!.id
+
+    // Get invitation
+    const invitation = await InvitationModel.findById(invitationId)
+    if (!invitation) {
+      throw createError('Invitation not found', 404, 'INVITATION_NOT_FOUND')
+    }
+
+    // Check if user has permission (must be facilitator of the project)
+    const { ProjectRoleModel } = require('../models/project-role')
+    const isFacilitator = await ProjectRoleModel.hasRole(userId, invitation.projectId, 'facilitator')
+    if (!isFacilitator) {
+      throw createError('Only project facilitators can cancel invitations', 403, 'ACCESS_DENIED')
+    }
+
+    // Cancel invitation through InvitationService (handles seat release)
+    const { InvitationService } = require('../services/invitation-service')
+    const result = await InvitationService.cancelInvitation(invitationId, userId)
+    
+    if (!result.success) {
+      throw createError(
+        result.error || 'Failed to cancel invitation',
+        400,
+        'INVITATION_CANCELLATION_FAILED'
+      )
+    }
+
+    const response: ApiResponse<any> = {
+      data: {
+        invitationId,
+        cancelled: true,
+        seatReleased: invitation.seatReserved
+      },
+      message: 'Invitation cancelled successfully and seat released',
+      timestamp: new Date().toISOString(),
+    }
+
+    res.json(response)
+  })
+
+  /**
+   * Get invitation status with seat reservation info
+   */
+  static getInvitationStatusValidation = [
+    param('invitationId').isUUID().withMessage('Valid invitation ID is required'),
+  ]
+
+  static getInvitationStatus = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw createError('Validation failed', 400, 'VALIDATION_ERROR', errors.array())
+    }
+
+    const { invitationId } = req.params
+    const userId = req.user!.id
+
+    // Get invitation
+    const invitation = await InvitationModel.findById(invitationId)
+    if (!invitation) {
+      throw createError('Invitation not found', 404, 'INVITATION_NOT_FOUND')
+    }
+
+    // Check if user has permission
+    const { ProjectRoleModel } = require('../models/project-role')
+    const isFacilitator = await ProjectRoleModel.hasRole(userId, invitation.projectId, 'facilitator')
+    if (!isFacilitator) {
+      throw createError('Only project facilitators can view invitation status', 403, 'ACCESS_DENIED')
+    }
+
+    // Check if invitation is expired
+    const now = new Date()
+    const isExpired = invitation.expiresAt < now
+    const timeRemaining = isExpired ? 0 : Math.max(0, invitation.expiresAt.getTime() - now.getTime())
+
+    const response: ApiResponse<any> = {
+      data: {
+        invitation: {
+          id: invitation.id,
+          projectId: invitation.projectId,
+          role: invitation.role,
+          status: invitation.status,
+          seatReserved: invitation.seatReserved,
+          createdAt: invitation.createdAt,
+          expiresAt: invitation.expiresAt,
+          usedAt: invitation.usedAt
+        },
+        isExpired,
+        timeRemaining: Math.floor(timeRemaining / 1000), // seconds
+        timeRemainingHours: Math.floor(timeRemaining / (1000 * 60 * 60)), // hours
+        canCancel: !isExpired && invitation.status === 'pending'
+      },
+      message: 'Invitation status retrieved successfully',
       timestamp: new Date().toISOString(),
     }
 

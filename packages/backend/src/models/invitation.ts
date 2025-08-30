@@ -17,6 +17,7 @@ export class InvitationModel extends BaseModel {
       token,
       status: 'pending',
       expires_at: expiresAt,
+      seat_reserved: false, // Seat reservation will be handled by invitation service
     })
   }
 
@@ -50,6 +51,54 @@ export class InvitationModel extends BaseModel {
       status: 'accepted',
       used_at: new Date() 
     })
+  }
+
+  /**
+   * Reserve a seat for an invitation
+   */
+  static async reserveSeat(invitationId: string): Promise<Invitation> {
+    return this.update(invitationId, { 
+      seat_reserved: true 
+    })
+  }
+
+  /**
+   * Release a reserved seat for an invitation
+   */
+  static async releaseSeat(invitationId: string): Promise<Invitation> {
+    return this.update(invitationId, { 
+      seat_reserved: false 
+    })
+  }
+
+  /**
+   * Get invitations with reserved seats
+   */
+  static async getInvitationsWithReservedSeats(projectId?: string): Promise<Invitation[]> {
+    const query = this.query().where('seat_reserved', true)
+    
+    if (projectId) {
+      query.where('project_id', projectId)
+    }
+    
+    return query.orderBy('created_at', 'desc')
+  }
+
+  /**
+   * Get count of reserved seats by role
+   */
+  static async getReservedSeatsCount(projectId: string, role?: 'facilitator' | 'storyteller'): Promise<number> {
+    const query = this.query()
+      .where('project_id', projectId)
+      .where('seat_reserved', true)
+      .where('status', 'pending') // Only count pending invitations
+    
+    if (role) {
+      query.where('role', role)
+    }
+    
+    const result = await query.count('* as count').first()
+    return parseInt(result?.count as string) || 0
   }
 
   static async getInvitationWithProject(token: string) {

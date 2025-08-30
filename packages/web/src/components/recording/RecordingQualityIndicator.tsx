@@ -143,32 +143,32 @@ export function RecordingQualityIndicator({
   return (
     <div className={`text-center space-y-3 ${className}`}>
       {/* Audio Level Meter */}
-      <div className=\"flex items-center justify-center space-x-2\">
-        <span className=\"text-sm font-medium\">Audio Level:</span>
-        <div className=\"w-32 h-3 bg-gray-200 rounded-full overflow-hidden\">
+      <div className="flex items-center justify-center space-x-2">
+        <span className="text-sm font-medium">Audio Level:</span>
+        <div className="w-32 h-3 bg-gray-200 rounded-full overflow-hidden">
           <div 
-            className=\"h-full bg-gradient-to-r from-green-400 to-green-600 transition-all duration-100\"
+            className="h-full bg-gradient-to-r from-green-400 to-green-600 transition-all duration-100"
             style={{ width: `${Math.min(audioLevel, 100)}%` }}
           />
         </div>
-        <span className=\"text-sm font-mono w-8\">{Math.round(audioLevel)}%</span>
+        <span className="text-sm font-mono w-8">{Math.round(audioLevel)}%</span>
       </div>
 
       {/* Quality Indicator */}
       <div className={`flex items-center justify-center space-x-2 ${getQualityColor()}`}>
-        <span className=\"text-lg\">{getQualityIcon()}</span>
-        <span className=\"font-medium capitalize\">{qualityLevel} Quality</span>
+        <span className="text-lg">{getQualityIcon()}</span>
+        <span className="font-medium capitalize">{qualityLevel} Quality</span>
       </div>
 
       {/* Quality Message */}
       {qualityMessage && (
-        <div className=\"text-sm text-gray-600 max-w-xs mx-auto\">
+        <div className="text-sm text-gray-600 max-w-xs mx-auto">
           {qualityMessage}
         </div>
       )}
 
       {/* Visual Audio Bars */}
-      <div className=\"flex items-end justify-center space-x-1 h-8\">
+      <div className="flex items-end justify-center space-x-1 h-8">
         {Array.from({ length: 8 }, (_, i) => (
           <div
             key={i}

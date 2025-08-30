@@ -130,8 +130,8 @@ export function RecordingDraftRecovery({
   if (isLoading) {
     return (
       <div className={`text-center py-4 ${className}`}>
-        <div className=\"animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2\"></div>
-        <p className=\"text-sm text-gray-600\">Checking for saved recordings...</p>
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
+        <p className="text-sm text-gray-600">Checking for saved recordings...</p>
       </div>
     )
   }
@@ -142,55 +142,55 @@ export function RecordingDraftRecovery({
 
   return (
     <Card className={`p-6 border-yellow-200 bg-yellow-50 ${className}`}>
-      <div className=\"text-center space-y-4\">
-        <div className=\"text-yellow-600 text-4xl mb-2\">💾</div>
+      <div className="text-center space-y-4">
+        <div className="text-yellow-600 text-4xl mb-2">💾</div>
         
         <div>
-          <h3 className=\"text-lg font-bold text-yellow-800 mb-2\">
+          <h3 className="text-lg font-bold text-yellow-800 mb-2">
             Saved Recording Found
           </h3>
-          <p className=\"text-yellow-700 text-sm mb-4\">
+          <p className="text-yellow-700 text-sm mb-4">
             We found a recording you started earlier. Would you like to continue with it or start fresh?
           </p>
         </div>
 
-        <div className=\"bg-white rounded-lg p-4 border border-yellow-200\">
-          <div className=\"text-sm text-gray-600 space-y-1\">
-            <div className=\"flex justify-between\">
+        <div className="bg-white rounded-lg p-4 border border-yellow-200">
+          <div className="text-sm text-gray-600 space-y-1">
+            <div className="flex justify-between">
               <span>Duration:</span>
-              <span className=\"font-mono font-medium\">{formatDuration(draft.duration)}</span>
+              <span className="font-mono font-medium">{formatDuration(draft.duration)}</span>
             </div>
-            <div className=\"flex justify-between\">
+            <div className="flex justify-between">
               <span>Saved:</span>
               <span>{formatDate(draft.createdAt)}</span>
             </div>
             {draft.promptText && (
-              <div className=\"mt-2 pt-2 border-t border-gray-200\">
-                <p className=\"text-xs text-gray-500 italic\">
-                  \"{draft.promptText.substring(0, 100)}{draft.promptText.length > 100 ? '...' : ''}\"
+              <div className="mt-2 pt-2 border-t border-gray-200">
+                <p className="text-xs text-gray-500 italic">
+                  "{draft.promptText.substring(0, 100)}{draft.promptText.length > 100 ? '...' : ''}"
                 </p>
               </div>
             )}
           </div>
         </div>
 
-        <div className=\"flex flex-col sm:flex-row gap-3 justify-center\">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button
             onClick={handleRecoverDraft}
-            className=\"bg-green-600 hover:bg-green-700 text-white px-6 py-2\"
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2"
           >
             📁 Continue with Saved Recording
           </Button>
           <Button
             onClick={handleDiscardDraft}
-            variant=\"outline\"
-            className=\"border-red-300 text-red-600 hover:bg-red-50 px-6 py-2\"
+            variant="outline"
+            className="border-red-300 text-red-600 hover:bg-red-50 px-6 py-2"
           >
             🗑️ Start Fresh
           </Button>
         </div>
 
-        <div className=\"text-xs text-gray-500 mt-4\">
+        <div className="text-xs text-gray-500 mt-4">
           <p>💡 Tip: Saved recordings are automatically deleted after 24 hours</p>
         </div>
       </div>

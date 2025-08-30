@@ -1,9 +1,5 @@
 {
-  "name": "saga-web",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "packages/web/.next",
-  "installCommand": "npm install",
-  "github": {
-    "silent": true
-  }
+  "installCommand": "npm ci"
 }

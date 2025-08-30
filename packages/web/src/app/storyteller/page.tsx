@@ -50,9 +50,9 @@ export default function StorytellerPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className=\"min-h-screen flex items-center justify-center\">
-        <div className=\"text-center\">
-          <div className=\"animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4\"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p>Redirecting to sign in...</p>
         </div>
       </div>
@@ -61,10 +61,10 @@ export default function StorytellerPage() {
 
   if (isLoading) {
     return (
-      <div className=\"min-h-screen flex items-center justify-center bg-gray-50\">
-        <div className=\"text-center\">
-          <div className=\"animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4\"></div>
-          <p className=\"text-lg\">Loading your story space...</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-lg">Loading your story space...</p>
         </div>
       </div>
     )
@@ -72,21 +72,21 @@ export default function StorytellerPage() {
 
   if (error) {
     return (
-      <div className=\"min-h-screen flex items-center justify-center bg-gray-50\">
-        <div className=\"text-center max-w-md mx-auto p-6\">
-          <div className=\"text-red-500 text-6xl mb-4\">⚠️</div>
-          <h1 className=\"text-2xl font-bold text-gray-900 mb-4\">Unable to Load</h1>
-          <p className=\"text-gray-600 mb-6\">{error}</p>
-          <div className=\"space-y-3\">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Unable to Load</h1>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <div className="space-y-3">
             <button
               onClick={findStorytellerProject}
-              className=\"w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700\"
+              className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               Try Again
             </button>
             <button
               onClick={() => router.push('/dashboard')}
-              className=\"w-full bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300\"
+              className="w-full bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
               Go to Dashboard
             </button>
@@ -98,9 +98,9 @@ export default function StorytellerPage() {
 
   if (!projectId || !user) {
     return (
-      <div className=\"min-h-screen flex items-center justify-center bg-gray-50\">
-        <div className=\"text-center\">
-          <p className=\"text-lg text-gray-600\">Unable to load project information.</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <p className="text-lg text-gray-600">Unable to load project information.</p>
         </div>
       </div>
     )

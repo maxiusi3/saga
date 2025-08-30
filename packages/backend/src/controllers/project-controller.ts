@@ -35,7 +35,11 @@ export class ProjectController {
       throw createError(
         canCreate.error || 'Insufficient project vouchers',
         400,
-        'INSUFFICIENT_RESOURCES'
+        'INSUFFICIENT_RESOURCES',
+        { 
+          walletBalance: canCreate.walletBalance,
+          requiredResources: { projectVouchers: 1 }
+        }
       )
     }
 
@@ -60,8 +64,16 @@ export class ProjectController {
         updated_at: new Date()
       })
 
-      // Consume project voucher
-      await ResourceWalletService.consumeProjectVoucher(req.user.id, project.id, trx)
+      // Consume project voucher with transaction
+      const consumptionResult = await ResourceWalletService.consumeProjectVoucher(req.user.id, project.id, trx)
+      
+      if (!consumptionResult.success) {
+        throw createError(
+          consumptionResult.error || 'Failed to consume project voucher',
+          400,
+          'RESOURCE_CONSUMPTION_FAILED'
+        )
+      }
 
       // Initialize project subscription (1-year timer)
       const subscriptionEndDate = new Date()
@@ -83,8 +95,8 @@ export class ProjectController {
       // Commit transaction
       await trx.commit()
 
-      // Get wallet balance after creation for analytics
-      const walletAfter = await ResourceWalletService.getWallet(req.user.id)
+      // Get updated wallet balance
+      const updatedWalletBalance = await ResourceWalletService.getWalletBalance(req.user.id)
 
       // Track project creation analytics
       await ProjectAnalyticsService.trackProjectCreation({
@@ -100,18 +112,23 @@ export class ProjectController {
           facilitatorSeats: 0,
           storytellerSeats: 0
         },
-        walletBalanceAfter: {
-          projectVouchers: walletAfter?.projectVouchers || 0,
-          facilitatorSeats: walletAfter?.facilitatorSeats || 0,
-          storytellerSeats: walletAfter?.storytellerSeats || 0
-        }
+        walletBalanceAfter: updatedWalletBalance
       })
 
       // Get the complete project with subscription info
       const completeProject = await ProjectModel.getProjectWithDetails(project.id)
 
       const response: ApiResponse = {
-        data: completeProject,
+        data: {
+          project: completeProject,
+          resourceUsage: {
+            consumed: {
+              projectVouchers: 1
+            },
+            remaining: updatedWalletBalance,
+            transactionId: consumptionResult.transactionId
+          }
+        },
         message: 'Project created successfully with 1-year subscription',
         timestamp: new Date().toISOString(),
       }
@@ -120,6 +137,22 @@ export class ProjectController {
     } catch (error) {
       // Rollback transaction on error
       await trx.rollback()
+      
+      // If this is a resource-related error, try to refund any consumed resources
+      if (error.code === 'RESOURCE_CONSUMPTION_FAILED') {
+        try {
+          await ResourceWalletService.refundResources(
+            req.user.id,
+            'project_voucher',
+            1,
+            'Project creation failed - automatic refund',
+            project?.id
+          )
+        } catch (refundError) {
+          console.error('Failed to refund project voucher after creation failure:', refundError)
+        }
+      }
+      
       throw error
     }
   })
@@ -369,6 +402,104 @@ export class ProjectController {
     const response: ApiResponse = {
       data: project,
       message: 'Storyteller assigned successfully',
+      timestamp: new Date().toISOString(),
+    }
+
+    res.json(response)
+  })
+
+  /**
+   * Get project subscription status
+   */
+  static getProjectSubscriptionStatus = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw createError('Validation failed', 400, 'VALIDATION_ERROR', errors.array())
+    }
+
+    const { id } = req.params
+
+    // Check if project exists and user has access
+    const project = await ProjectModel.findById(id)
+    if (!project) {
+      throw createError('Project not found', 404, 'PROJECT_NOT_FOUND')
+    }
+
+    // Get subscription status
+    const subscriptionStatus = await SubscriptionModel.getProjectSubscriptionStatus(id)
+    
+    // Get subscription details if exists
+    const subscription = subscriptionStatus.subscription
+
+    const response: ApiResponse = {
+      data: {
+        projectId: id,
+        isActive: subscriptionStatus.isActive,
+        isExpired: subscriptionStatus.isExpired,
+        daysRemaining: subscriptionStatus.daysRemaining,
+        subscription: subscription ? {
+          id: subscription.id,
+          status: subscription.status,
+          currentPeriodStart: subscription.currentPeriodStart,
+          currentPeriodEnd: subscription.currentPeriodEnd,
+          planId: subscription.planId,
+          facilitatorId: subscription.facilitatorId,
+          metadata: subscription.metadata
+        } : null,
+        archivalMode: subscriptionStatus.isExpired,
+        canCreateStories: subscriptionStatus.isActive,
+        canInviteMembers: subscriptionStatus.isActive,
+        canExportData: true // Always available
+      },
+      message: 'Project subscription status retrieved successfully',
+      timestamp: new Date().toISOString(),
+    }
+
+    res.json(response)
+  })
+
+  /**
+   * Get project resource requirements and user's available resources
+   */
+  static getProjectResourceInfo = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    if (!req.user) {
+      throw createError('Authentication required', 401, 'AUTH_REQUIRED')
+    }
+
+    // Get user's current wallet balance
+    const walletBalance = await ResourceWalletService.getWalletBalance(req.user.id)
+
+    // Check what the user can do with current resources
+    const canCreateProject = await ResourceWalletService.canCreateProject(req.user.id)
+    const canInviteFacilitator = await ResourceWalletService.canInviteFacilitator(req.user.id)
+    const canInviteStoryteller = await ResourceWalletService.canInviteStoryteller(req.user.id)
+
+    const response: ApiResponse = {
+      data: {
+        currentBalance: walletBalance,
+        capabilities: {
+          canCreateProject,
+          canInviteFacilitator,
+          canInviteStoryteller
+        },
+        requirements: {
+          projectCreation: {
+            projectVouchers: 1
+          },
+          facilitatorInvitation: {
+            facilitatorSeats: 1
+          },
+          storytellerInvitation: {
+            storytellerSeats: 1
+          }
+        },
+        recommendations: {
+          needsMoreVouchers: !canCreateProject,
+          needsMoreFacilitatorSeats: !canInviteFacilitator,
+          needsMoreStorytellerSeats: !canInviteStoryteller
+        }
+      },
+      message: 'Project resource information retrieved successfully',
       timestamp: new Date().toISOString(),
     }
 

@@ -170,9 +170,9 @@ export default function StorytellerRecordPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className=\"min-h-screen flex items-center justify-center\">
-        <div className=\"text-center\">
-          <div className=\"animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4\"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p>Redirecting to sign in...</p>
         </div>
       </div>
@@ -181,10 +181,10 @@ export default function StorytellerRecordPage() {
 
   if (isLoading) {
     return (
-      <div className=\"min-h-screen flex items-center justify-center bg-gray-50\">
-        <div className=\"text-center\">
-          <div className=\"animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4\"></div>
-          <p className=\"text-lg\">Loading your story prompt...</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-lg">Loading your story prompt...</p>
         </div>
       </div>
     )
@@ -192,14 +192,14 @@ export default function StorytellerRecordPage() {
 
   if (error && !prompt) {
     return (
-      <div className=\"min-h-screen flex items-center justify-center bg-gray-50\">
-        <div className=\"text-center max-w-md mx-auto p-6\">
-          <div className=\"text-red-500 text-6xl mb-4\">⚠️</div>
-          <h1 className=\"text-2xl font-bold text-gray-900 mb-4\">Unable to Load</h1>
-          <p className=\"text-gray-600 mb-6\">{error}</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Unable to Load</h1>
+          <p className="text-gray-600 mb-6">{error}</p>
           <Button
             onClick={() => router.push('/storyteller')}
-            className=\"bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700\"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
           >
             Back to Dashboard
           </Button>
@@ -212,45 +212,45 @@ export default function StorytellerRecordPage() {
     <MobileRecordingOptimizer>
       <div className={`min-h-screen p-4 ${getContrastClass()} ${getFontSizeClass()}`}>
       {/* Accessibility Controls */}
-      <div className=\"mb-6 flex flex-wrap gap-4 justify-between items-center\">
+      <div className="mb-6 flex flex-wrap gap-4 justify-between items-center">
         <Button
           onClick={() => router.push('/storyteller')}
-          variant=\"outline\"
-          size=\"sm\"
+          variant="outline"
+          size="sm"
         >
           ← Back to Dashboard
         </Button>
         
-        <div className=\"flex flex-wrap gap-4\">
-          <div className=\"flex items-center gap-2\">
-            <label className=\"text-sm font-medium\">Font Size:</label>
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium">Font Size:</label>
             <select 
               value={fontSize} 
               onChange={(e) => handleFontSizeChange(e.target.value as typeof fontSize)}
               className={`px-3 py-1 border rounded ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-300'}`}
             >
-              <option value=\"normal\">Normal</option>
-              <option value=\"large\">Large</option>
-              <option value=\"extra-large\">Extra Large</option>
+              <option value="normal">Normal</option>
+              <option value="large">Large</option>
+              <option value="extra-large">Extra Large</option>
             </select>
           </div>
           <Button
             onClick={handleHighContrastToggle}
-            variant={highContrast ? \"default\" : \"outline\"}
-            size=\"sm\"
+            variant={highContrast ? "default" : "outline"}
+            size="sm"
           >
             {highContrast ? 'Normal Contrast' : 'High Contrast'}
           </Button>
         </div>
       </div>
 
-      <div className=\"max-w-4xl mx-auto\">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className=\"text-center mb-8\">
-          <h1 className=\"text-3xl md:text-4xl font-bold mb-4\">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">
             Record Your Story
           </h1>
-          <p className=\"text-lg text-gray-600\">
+          <p className="text-lg text-gray-600">
             Take your time and share your memories in your own words
           </p>
         </div>
@@ -258,7 +258,7 @@ export default function StorytellerRecordPage() {
         {/* Current Prompt */}
         {prompt && (
           <Card className={`p-6 mb-8 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-blue-50 border-blue-200'}`}>
-            <h2 className=\"text-2xl font-bold mb-4 text-center\">
+            <h2 className="text-2xl font-bold mb-4 text-center">
               Today's Prompt
             </h2>
             
@@ -273,17 +273,17 @@ export default function StorytellerRecordPage() {
             <div className={`p-4 rounded-lg ${
               highContrast ? 'bg-gray-700' : 'bg-white'
             } border-l-4 border-blue-500 mb-4`}>
-              <p className=\"text-lg leading-relaxed\">
+              <p className="text-lg leading-relaxed">
                 {prompt.text}
               </p>
             </div>
             
             {prompt.audioUrl && (
-              <div className=\"text-center\">
+              <div className="text-center">
                 <Button
                   onClick={playPromptAudio}
-                  variant=\"outline\"
-                  size=\"sm\"
+                  variant="outline"
+                  size="sm"
                 >
                   🔊 Listen to Prompt
                 </Button>
@@ -294,7 +294,7 @@ export default function StorytellerRecordPage() {
 
         {/* Draft Recovery */}
         {showDraftRecovery && projectId && promptId && (
-          <div className=\"mb-8\">
+          <div className="mb-8">
             <RecordingDraftRecovery
               projectId={projectId}
               promptId={promptId}
@@ -306,7 +306,7 @@ export default function StorytellerRecordPage() {
 
         {/* Recording Component */}
         {(!showDraftRecovery || hasDraftRecovered) && (
-          <div className=\"mb-8\">
+          <div className="mb-8">
             <WebAudioRecorder
               onRecordingComplete={handleRecordingComplete}
               onError={handleRecordingError}
@@ -322,8 +322,8 @@ export default function StorytellerRecordPage() {
 
         {/* Error Display */}
         {error && (
-          <Card className=\"p-4 mb-6 bg-red-50 border-red-200\">
-            <div className=\"flex items-center space-x-2 text-red-800\">
+          <Card className="p-4 mb-6 bg-red-50 border-red-200">
+            <div className="flex items-center space-x-2 text-red-800">
               <span>⚠️</span>
               <span>{error}</span>
             </div>
@@ -333,19 +333,19 @@ export default function StorytellerRecordPage() {
         {/* Send to Family Button */}
         {recordingBlob && (
           <Card className={`p-6 text-center ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-green-50 border-green-200'}`}>
-            <h3 className=\"text-xl font-bold mb-4\">Ready to Share?</h3>
-            <p className=\"text-gray-600 mb-6\">
+            <h3 className="text-xl font-bold mb-4">Ready to Share?</h3>
+            <p className="text-gray-600 mb-6">
               Your story is ready! Click below to send it to your family.
             </p>
             <Button
               onClick={handleSendToFamily}
               disabled={isUploading}
-              size=\"lg\"
-              className=\"bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-bold\"
+              size="lg"
+              className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-bold"
             >
               {isUploading ? (
                 <>
-                  <div className=\"animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2\"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                   Sending to Family...
                 </>
               ) : (
@@ -357,19 +357,19 @@ export default function StorytellerRecordPage() {
 
         {/* Recording Tips */}
         <Card className={`p-6 mt-8 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-yellow-50 border-yellow-200'}`}>
-          <h3 className=\"text-lg font-bold mb-3\">Recording Tips</h3>
-          <div className=\"grid grid-cols-1 md:grid-cols-2 gap-4 text-sm\">
+          <h3 className="text-lg font-bold mb-3">Recording Tips</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
-              <h4 className=\"font-semibold mb-2\">🎤 For Best Audio Quality:</h4>
-              <ul className=\"space-y-1\">
+              <h4 className="font-semibold mb-2">🎤 For Best Audio Quality:</h4>
+              <ul className="space-y-1">
                 <li>• Find a quiet room</li>
                 <li>• Speak clearly and at normal volume</li>
                 <li>• Stay close to your device</li>
               </ul>
             </div>
             <div>
-              <h4 className=\"font-semibold mb-2\">💭 Storytelling Tips:</h4>
-              <ul className=\"space-y-1\">
+              <h4 className="font-semibold mb-2">💭 Storytelling Tips:</h4>
+              <ul className="space-y-1">
                 <li>• Include specific details and names</li>
                 <li>• Share how things made you feel</li>
                 <li>• Don't worry about being perfect</li>

@@ -398,4 +398,32 @@ describe('Security Tests', () => {
       }
     });
   });
+
+  describe('JWT Security', () => {
+    let validToken: string;
+
+    beforeAll(async () => {
+      // Create a test user and get a valid token
+      await request(app)
+        .post('/api/auth/signup')
+        .send({
+          email: 'jwt-test@example.com',
+          password: 'ValidPassword123!',
+          name: 'JWT Test User'
+        });
+
+      const loginResponse = await request(app)
+        .post('/api/auth/signin')
+        .send({
+          email: 'jwt-test@example.com',
+          password: 'ValidPassword123!'
+        });
+
+      validToken = loginResponse.body.accessToken;
+    });
+
+    it('should reject malformed JWT tokens', async () => {
+      const malformedTokens = [
+        'invalid.token.here',
+   
 });

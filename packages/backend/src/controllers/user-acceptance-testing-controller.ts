@@ -8,7 +8,7 @@ export class UserAcceptanceTestingController {
 
   constructor() {
     this.uatService = new UserAcceptanceTestingService();
-    this.logger = new LoggingService();
+    this.logger = LoggingService; // LoggingService is already an instance
   }
 
   /**
@@ -16,6 +16,7 @@ export class UserAcceptanceTestingController {
    */
   async recruitBetaTesters(req: Request, res: Response): Promise<void> {
     try {
+      // Input validation
       const {
         targetCount = 50,
         familySizeRange = [2, 6],
@@ -24,33 +25,66 @@ export class UserAcceptanceTestingController {
         deviceTypes = ['ios', 'android', 'both']
       } = req.body;
 
-      const criteria = {
-        targetCount,
-        familySizeRange,
-        ageRanges,
-        techComfortLevels,
-        deviceTypes
-      };
+      // Validate targetCount
+      if (typeof targetCount !== 'number' || targetCount <= 0 || targetCount > 1000) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid targetCount',
+          details: 'Target count must be a number between 1 and 1000'
+        });
+        return;
+      }
 
-      const betaTesters = await this.uatService.recruitBetaTesters(criteria);
+      // Validate familySizeRange
+      if (!Array.isArray(familySizeRange) || familySizeRange.length !== 2 || 
+          typeof familySizeRange[0] !== 'number' || typeof familySizeRange[1] !== 'number' ||
+          familySizeRange[0] < 1 || familySizeRange[1] > 20 || familySizeRange[0] >= familySizeRange[1]) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid familySizeRange',
+          details: 'Family size range must be an array of two numbers [min, max] where min < max and both are between 1 and 20'
+        });
+        return;
+      }
 
-      res.status(200).json({
-        success: true,
-        message: 'Beta tester recruitment campaign started',
-        data: {
-          criteria,
-          recruitedCount: betaTesters.length,
-          betaTesters
-        }
-      });
-    } catch (error) {
-      this.logger.error('Failed to recruit beta testers:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to start recruitment campaign'
-      });
-    }
-  }
+      // Validate ageRanges
+      if (!Array.isArray(ageRanges) || ageRanges.length === 0) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid ageRanges',
+          details: 'Age ranges must be a non-empty array'
+        });
+        return;
+      }
+
+      const validAgeRanges = ['18-25', '25-35', '35-45', '45-55', '55-65', '65-75', '75+'];
+      const invalidAgeRanges = ageRanges.filter(range => !validAgeRanges.includes(range));
+      if (invalidAgeRanges.length > 0) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid ageRanges',
+          details: `Invalid age ranges: ${invalidAgeRanges.join(', ')}. Valid ranges are: ${validAgeRanges.join(', ')}`
+        });
+        return;
+      }
+
+      // Validate techComfortLevels
+      if (!Array.isArray(techComfortLevels) || techComfortLevels.length === 0) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid techComfortLevels',
+          details: 'Tech comfort levels must be a non-empty array'
+        });
+        return;
+      }
+
+      const validTechLevels = ['low', 'medium', 'high'];
+      const invalidTechLevels = techComfortLevels.filter(level => !validTechLevels.includes(level));
+      if (invalidTechLevels.length > 0) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid techComfortLevels',
+          details: `Invalid tech comfort levels: ${invalidTechLevels.join(', ')}. Valid levels are: ${validTechLevels.
 
   /**
    * Get all testing scenarios
@@ -174,37 +208,160 @@ export class UserAcceptanceTestingController {
         wouldRecommend
       } = req.body;
 
-      // Validate required fields
-      if (!betaTesterId || !scenarioId || rating === undefined || completionTime === undefined || completedSuccessfully === undefined || wouldRecommend === undefined) {
+      // Comprehensive input validation
+      if (!betaTesterId || typeof betaTesterId !== 'string' || betaTesterId.trim().length === 0) {
         res.status(400).json({
           success: false,
-          error: 'Missing required feedback fields'
+          error: 'Invalid betaTesterId',
+          details: 'Beta tester ID is required and must be a non-empty string'
         });
         return;
       }
 
-      // Validate rating range
-      if (rating < 1 || rating > 5) {
+      if (!scenarioId || typeof scenarioId !== 'string' || scenarioId.trim().length === 0) {
         res.status(400).json({
           success: false,
-          error: 'Rating must be between 1 and 5'
+          error: 'Invalid scenarioId',
+          details: 'Scenario ID is required and must be a non-empty string'
         });
         return;
       }
 
+      if (rating === undefined || typeof rating !== 'number' || rating < 1 || rating > 5) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid rating',
+          details: 'Rating is required and must be a number between 1 and 5'
+        });
+        return;
+      }
+
+      if (completionTime === undefined || typeof completionTime !== 'number' || completionTime < 0 || completionTime > 300) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid completionTime',
+          details: 'Completion time is required and must be a number between 0 and 300 minutes'
+        });
+        return;
+      }
+
+      if (completedSuccessfully === undefined || typeof completedSuccessfully !== 'boolean') {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid completedSuccessfully',
+          details: 'Completed successfully is required and must be a boolean'
+        });
+        return;
+      }
+
+      if (wouldRecommend === undefined || typeof wouldRecommend !== 'boolean') {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid wouldRecommend',
+          details: 'Would recommend is required and must be a boolean'
+        });
+        return;
+      }
+
+      // Validate usabilityIssues array
+      if (!Array.isArray(usabilityIssues)) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid usabilityIssues',
+          details: 'Usability issues must be an array'
+        });
+        return;
+      }
+
+      // Validate each usability issue
+      for (let i = 0; i < usabilityIssues.length; i++) {
+        const issue = usabilityIssues[i];
+        if (!issue || typeof issue !== 'object') {
+          res.status(400).json({
+            success: false,
+            error: 'Invalid usability issue',
+            details: `Usability issue at index ${i} must be an object`
+          });
+          return;
+        }
+
+        const validSeverities = ['low', 'medium', 'high', 'critical'];
+        if (!issue.severity || !validSeverities.includes(issue.severity)) {
+          res.status(400).json({
+            success: false,
+            error: 'Invalid usability issue severity',
+            details: `Usability issue at index ${i} must have a valid severity: ${validSeverities.join(', ')}`
+          });
+          return;
+        }
+
+        const validCategories = ['navigation', 'accessibility', 'performance', 'content', 'functionality'];
+        if (!issue.category || !validCategories.includes(issue.category)) {
+          res.status(400).json({
+            success: false,
+            error: 'Invalid usability issue category',
+            details: `Usability issue at index ${i} must have a valid category: ${validCategories.join(', ')}`
+          });
+          return;
+        }
+
+        if (!issue.description || typeof issue.description !== 'string' || issue.description.trim().length === 0) {
+          res.status(400).json({
+            success: false,
+            error: 'Invalid usability issue description',
+            details: `Usability issue at index ${i} must have a non-empty description`
+          });
+          return;
+        }
+      }
+
+      // Validate text fields
+      if (typeof generalFeedback !== 'string' || generalFeedback.length > 5000) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid generalFeedback',
+          details: 'General feedback must be a string with maximum 5000 characters'
+        });
+        return;
+      }
+
+      if (typeof suggestions !== 'string' || suggestions.length > 5000) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid suggestions',
+          details: 'Suggestions must be a string with maximum 5000 characters'
+        });
+        return;
+      }
+
+      // Sanitize input data
       const feedbackData = {
-        betaTesterId,
-        scenarioId,
-        rating,
-        completionTime,
+        betaTesterId: betaTesterId.trim(),
+        scenarioId: scenarioId.trim(),
+        rating: Math.round(rating * 10) / 10, // Round to 1 decimal place
+        completionTime: Math.round(completionTime),
         completedSuccessfully,
-        usabilityIssues,
-        generalFeedback,
-        suggestions,
+        usabilityIssues: usabilityIssues.map(issue => ({
+          ...issue,
+          description: issue.description.trim(),
+          location: issue.location ? issue.location.trim() : '',
+          reproductionSteps: Array.isArray(issue.reproductionSteps) 
+            ? issue.reproductionSteps.map(step => step.trim()).filter(step => step.length > 0)
+            : []
+        })),
+        generalFeedback: generalFeedback.trim(),
+        suggestions: suggestions.trim(),
         wouldRecommend
       };
 
       const feedback = await this.uatService.collectFeedback(feedbackData);
+
+      this.logger.info('User feedback submitted successfully', {
+        betaTesterId: feedbackData.betaTesterId,
+        scenarioId: feedbackData.scenarioId,
+        rating: feedbackData.rating,
+        completedSuccessfully: feedbackData.completedSuccessfully
+      });
 
       res.status(201).json({
         success: true,
@@ -212,10 +369,17 @@ export class UserAcceptanceTestingController {
         data: feedback
       });
     } catch (error) {
-      this.logger.error('Failed to submit feedback:', error);
+      this.logger.error('Failed to submit feedback', {
+        error: error.message,
+        stack: error.stack,
+        requestBody: req.body
+      });
+      
       res.status(500).json({
         success: false,
-        error: 'Failed to submit feedback'
+        error: 'Internal server error',
+        message: 'Failed to submit feedback',
+        ...(process.env.NODE_ENV === 'development' && { details: error.message })
       });
     }
   }

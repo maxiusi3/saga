@@ -28,6 +28,12 @@ router.delete('/:id', ProjectController.deleteProjectValidation, requireProjectA
 // Project stats
 router.get('/:id/stats', ProjectController.getProjectValidation, requireProjectAccess, archivalMiddleware, archivalHeadersMiddleware, ProjectController.getProjectStats)
 
+// Project subscription status
+router.get('/:id/subscription-status', ProjectController.getProjectValidation, requireProjectAccess, archivalHeadersMiddleware, ProjectController.getProjectSubscriptionStatus)
+
+// Project resource information
+router.get('/resource-info', ProjectController.getProjectResourceInfo)
+
 // Invitation management (facilitator only)
 router.post('/:id/invitation', ProjectController.generateInvitationValidation, requireProjectAccess, requireRole(['facilitator']), archivalMiddleware, ProjectController.generateInvitation)
 router.get('/:id/invitations', requireProjectAccess, requireRole(['facilitator']), archivalMiddleware, archivalHeadersMiddleware, InvitationController.getProjectInvitations)

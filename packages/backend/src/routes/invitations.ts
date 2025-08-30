@@ -7,6 +7,8 @@ const router = Router()
 // Protected invitation routes (auth required)
 router.post('/', authenticateToken, InvitationController.createInvitationValidation, InvitationController.createInvitation)
 router.post('/:invitationId/resend', authenticateToken, InvitationController.resendInvitationValidation, InvitationController.resendInvitation)
+router.delete('/:invitationId/cancel', authenticateToken, InvitationController.cancelInvitationValidation, InvitationController.cancelInvitation)
+router.get('/:invitationId/status', authenticateToken, InvitationController.getInvitationStatusValidation, InvitationController.getInvitationStatus)
 
 // Project-specific invitation routes
 router.get('/projects/:projectId', authenticateToken, InvitationController.getProjectInvitationsValidation, InvitationController.getProjectInvitations)

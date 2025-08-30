@@ -8,6 +8,7 @@ exports.up = function(knex) {
     table.integer('project_vouchers').defaultTo(0).notNullable();
     table.integer('facilitator_seats').defaultTo(0).notNullable();
     table.integer('storyteller_seats').defaultTo(0).notNullable();
+    table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
     table.timestamp('updated_at').defaultTo(knex.fn.now()).notNullable();
     
     // Add indexes for performance

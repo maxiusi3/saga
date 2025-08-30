@@ -107,8 +107,8 @@ export function StorytellerDashboard({ projectId, userId }: StorytellerDashboard
   if (isLoading) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${getContrastClass()}`}>
-        <div className=\"text-center\">
-          <div className=\"animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4\"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className={`${getFontSizeClass()}`}>Loading your stories...</p>
         </div>
       </div>
@@ -118,47 +118,47 @@ export function StorytellerDashboard({ projectId, userId }: StorytellerDashboard
   return (
     <div className={`min-h-screen p-4 ${getContrastClass()} ${getFontSizeClass()}`}>
       {/* Accessibility Controls */}
-      <div className=\"mb-6 flex flex-wrap gap-4 justify-end\">
-        <div className=\"flex items-center gap-2\">
-          <label className=\"text-sm font-medium\">Font Size:</label>
+      <div className="mb-6 flex flex-wrap gap-4 justify-end">
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium">Font Size:</label>
           <select 
             value={fontSize} 
             onChange={(e) => handleFontSizeChange(e.target.value as typeof fontSize)}
             className={`px-3 py-1 border rounded ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-300'}`}
           >
-            <option value=\"normal\">Normal</option>
-            <option value=\"large\">Large</option>
-            <option value=\"extra-large\">Extra Large</option>
+            <option value="normal">Normal</option>
+            <option value="large">Large</option>
+            <option value="extra-large">Extra Large</option>
           </select>
         </div>
         <Button
           onClick={handleHighContrastToggle}
-          variant={highContrast ? \"default\" : \"outline\"}
-          size=\"sm\"
+          variant={highContrast ? "default" : "outline"}
+          size="sm"
         >
           {highContrast ? 'Normal Contrast' : 'High Contrast'}
         </Button>
       </div>
 
       {/* Welcome Header */}
-      <div className=\"text-center mb-8\">
-        <h1 className=\"text-3xl md:text-4xl font-bold mb-4\">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">
           Welcome to Your Story Space
         </h1>
-        <p className=\"text-lg md:text-xl text-gray-600 max-w-2xl mx-auto\">
+        <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
           Share your memories and experiences with your family. Each story you tell becomes a treasured part of your family's history.
         </p>
       </div>
 
-      <div className=\"max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6\">
+      <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Current AI Prompt */}
         <Card className={`p-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-blue-50 border-blue-200'}`}>
-          <h2 className=\"text-2xl font-bold mb-4 text-center\">
+          <h2 className="text-2xl font-bold mb-4 text-center">
             Today's Story Prompt
           </h2>
           
           {currentPrompt ? (
-            <div className=\"space-y-4\">
+            <div className="space-y-4">
               {currentPrompt.chapterName && (
                 <div className={`text-sm font-medium px-3 py-1 rounded-full inline-block ${
                   highContrast ? 'bg-gray-700 text-gray-200' : 'bg-blue-100 text-blue-800'
@@ -170,40 +170,40 @@ export function StorytellerDashboard({ projectId, userId }: StorytellerDashboard
               <div className={`p-4 rounded-lg ${
                 highContrast ? 'bg-gray-700' : 'bg-white'
               } border-l-4 border-blue-500`}>
-                <p className=\"text-lg leading-relaxed mb-4\">
+                <p className="text-lg leading-relaxed mb-4">
                   {currentPrompt.text}
                 </p>
                 
                 {currentPrompt.audioUrl && (
                   <Button
                     onClick={playPromptAudio}
-                    variant=\"outline\"
-                    size=\"sm\"
-                    className=\"mb-4\"
+                    variant="outline"
+                    size="sm"
+                    className="mb-4"
                   >
                     🔊 Listen to Prompt
                   </Button>
                 )}
               </div>
 
-              <div className=\"text-center\">
+              <div className="text-center">
                 <Button
                   onClick={startRecording}
-                  size=\"lg\"
-                  className=\"text-xl px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg\"
+                  size="lg"
+                  className="text-xl px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg"
                 >
                   🎤 Start Recording Your Story
                 </Button>
               </div>
             </div>
           ) : (
-            <div className=\"text-center py-8\">
-              <p className=\"text-lg text-gray-600 mb-4\">
+            <div className="text-center py-8">
+              <p className="text-lg text-gray-600 mb-4">
                 No new prompts available right now.
               </p>
               <Button
                 onClick={loadDashboardData}
-                variant=\"outline\"
+                variant="outline"
               >
                 Check for New Prompts
               </Button>
@@ -213,12 +213,12 @@ export function StorytellerDashboard({ projectId, userId }: StorytellerDashboard
 
         {/* Family Feedback */}
         <Card className={`p-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-green-50 border-green-200'}`}>
-          <h2 className=\"text-2xl font-bold mb-4 text-center\">
+          <h2 className="text-2xl font-bold mb-4 text-center">
             Messages from Family
           </h2>
           
           {recentFeedback.length > 0 ? (
-            <div className=\"space-y-4 max-h-96 overflow-y-auto\">
+            <div className="space-y-4 max-h-96 overflow-y-auto">
               {recentFeedback.map((feedback) => (
                 <div 
                   key={feedback.id}
@@ -226,26 +226,26 @@ export function StorytellerDashboard({ projectId, userId }: StorytellerDashboard
                     highContrast ? 'bg-gray-700' : 'bg-white'
                   } border-l-4 border-green-500`}
                 >
-                  <div className=\"flex justify-between items-start mb-2\">
-                    <span className=\"font-medium text-green-700\">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="font-medium text-green-700">
                       {feedback.facilitatorName}
                     </span>
-                    <span className=\"text-sm text-gray-500\">
+                    <span className="text-sm text-gray-500">
                       {new Date(feedback.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-                  <p className=\"leading-relaxed\">
+                  <p className="leading-relaxed">
                     {feedback.message}
                   </p>
                 </div>
               ))}
             </div>
           ) : (
-            <div className=\"text-center py-8\">
-              <p className=\"text-lg text-gray-600 mb-4\">
+            <div className="text-center py-8">
+              <p className="text-lg text-gray-600 mb-4">
                 No recent messages from family.
               </p>
-              <p className=\"text-sm text-gray-500\">
+              <p className="text-sm text-gray-500">
                 Your family will see your stories and can send you messages and questions.
               </p>
             </div>
@@ -254,31 +254,31 @@ export function StorytellerDashboard({ projectId, userId }: StorytellerDashboard
       </div>
 
       {/* Quick Actions */}
-      <div className=\"max-w-4xl mx-auto mt-8\">
+      <div className="max-w-4xl mx-auto mt-8">
         <Card className={`p-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-gray-50'}`}>
-          <h2 className=\"text-xl font-bold mb-4 text-center\">Quick Actions</h2>
-          <div className=\"grid grid-cols-1 md:grid-cols-3 gap-4\">
+          <h2 className="text-xl font-bold mb-4 text-center">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Button
               onClick={() => router.push(`/storyteller/stories?projectId=${projectId}`)}
-              variant=\"outline\"
-              size=\"lg\"
-              className=\"h-16\"
+              variant="outline"
+              size="lg"
+              className="h-16"
             >
               📚 View My Stories
             </Button>
             <Button
               onClick={() => router.push(`/storyteller/help`)}
-              variant=\"outline\"
-              size=\"lg\"
-              className=\"h-16\"
+              variant="outline"
+              size="lg"
+              className="h-16"
             >
               ❓ Get Help
             </Button>
             <Button
               onClick={() => router.push(`/storyteller/settings?projectId=${projectId}`)}
-              variant=\"outline\"
-              size=\"lg\"
-              className=\"h-16\"
+              variant="outline"
+              size="lg"
+              className="h-16"
             >
               ⚙️ Settings
             </Button>
@@ -287,24 +287,24 @@ export function StorytellerDashboard({ projectId, userId }: StorytellerDashboard
       </div>
 
       {/* Instructions */}
-      <div className=\"max-w-4xl mx-auto mt-8\">
+      <div className="max-w-4xl mx-auto mt-8">
         <Card className={`p-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-yellow-50 border-yellow-200'}`}>
-          <h2 className=\"text-xl font-bold mb-4 text-center\">How It Works</h2>
-          <div className=\"grid grid-cols-1 md:grid-cols-3 gap-6 text-center\">
+          <h2 className="text-xl font-bold mb-4 text-center">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div>
-              <div className=\"text-3xl mb-2\">1️⃣</div>
-              <h3 className=\"font-bold mb-2\">Read the Prompt</h3>
-              <p className=\"text-sm\">Each day, you'll see a new question or topic to help spark your memories.</p>
+              <div className="text-3xl mb-2">1️⃣</div>
+              <h3 className="font-bold mb-2">Read the Prompt</h3>
+              <p className="text-sm">Each day, you'll see a new question or topic to help spark your memories.</p>
             </div>
             <div>
-              <div className=\"text-3xl mb-2\">2️⃣</div>
-              <h3 className=\"font-bold mb-2\">Record Your Story</h3>
-              <p className=\"text-sm\">Click the record button and share your memories in your own words.</p>
+              <div className="text-3xl mb-2">2️⃣</div>
+              <h3 className="font-bold mb-2">Record Your Story</h3>
+              <p className="text-sm">Click the record button and share your memories in your own words.</p>
             </div>
             <div>
-              <div className=\"text-3xl mb-2\">3️⃣</div>
-              <h3 className=\"font-bold mb-2\">Connect with Family</h3>
-              <p className=\"text-sm\">Your family can listen to your stories and send you messages.</p>
+              <div className="text-3xl mb-2">3️⃣</div>
+              <h3 className="font-bold mb-2">Connect with Family</h3>
+              <p className="text-sm">Your family can listen to your stories and send you messages.</p>
             </div>
           </div>
         </Card>
