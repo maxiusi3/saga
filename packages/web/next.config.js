@@ -57,18 +57,7 @@ const nextConfig = {
             key: 'X-Permitted-Cross-Domain-Policies',
             value: 'none',
           },
-          {
-            key: 'Cross-Origin-Embedder-Policy',
-            value: 'require-corp',
-          },
-          {
-            key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin',
-          },
-          {
-            key: 'Cross-Origin-Resource-Policy',
-            value: 'same-origin',
-          },
+          // Removed strict CORS policies that can cause module loading issues
         ],
       },
     ];
@@ -81,6 +70,17 @@ const nextConfig = {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
+      net: false,
+      tls: false,
+      crypto: false,
+      stream: false,
+      url: false,
+      zlib: false,
+      http: false,
+      https: false,
+      assert: false,
+      os: false,
+      path: false,
     }
     return config
   },
