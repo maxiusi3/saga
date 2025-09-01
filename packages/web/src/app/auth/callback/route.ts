@@ -10,17 +10,7 @@ export async function GET(request: NextRequest) {
   const error = requestUrl.searchParams.get('error')
   const error_description = requestUrl.searchParams.get('error_description')
 
-  // 详细日志所有参数
-  console.log('=== Auth Callback Debug ===')
-  console.log('Full URL:', requestUrl.toString())
-  console.log('Search params:', Object.fromEntries(requestUrl.searchParams))
-  console.log('All params:', {
-    code,
-    token_hash,
-    type,
-    error,
-    error_description
-  })
+
 
   // Handle error cases
   if (error) {
