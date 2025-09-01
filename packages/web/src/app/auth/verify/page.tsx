@@ -6,7 +6,7 @@ import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 
 function VerifyPageContent() {
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
@@ -17,7 +17,7 @@ function VerifyPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams?.get('email') || ''
-  const supabase = createClient(
+  const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )

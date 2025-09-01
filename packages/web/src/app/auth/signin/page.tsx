@@ -1,24 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
-import { createClient } from '@supabase/supabase-js'
-import { useRouter } from 'next/navigation'
+import { createBrowserClient } from '@supabase/ssr'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function SignInPage() {
+function SignInPageContent() {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const supabase = createClient(
+  const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  // Check for error from callback
+  useEffect(() => {
+    const error = searchParams?.get('error')
+    if (error) {
+      setMessage(`Error: ${error}`)
+    }
+  }, [searchParams])
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
@@ -163,5 +172,17 @@ export default function SignInPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      </div>
+    }>
+      <SignInPageContent />
+    </Suspense>
   )
 }

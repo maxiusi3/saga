@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 import { User } from '@supabase/supabase-js'
 import { Camera, Save } from 'lucide-react'
 
@@ -36,7 +36,7 @@ export default function ProfilePage() {
     bio: ''
   })
 
-  const supabase = createClient(
+  const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
