@@ -1,8 +1,9 @@
-# **Product Requirements Document: Saga (AI Family Biography App) - V1.5**
+# **Product Requirements Document: Saga (AI Family Biography App) - V1.6**
 
 ## 1. Revision History
 | Version | Date | Author | Revision Details |
 | :--- | :--- | :--- | :--- |
+| **V1.6** | YYYY-MM-DD | AIO-PM | **Strategic Pivot:** Refocused product from native mobile apps to a **Web-First platform** to de-risk development launch. Updated all relevant sections, including user scenarios, scope, and technical requirements. **Model Refinement:** Clarified the distinction between the unified **User Account** and project-specific **Roles** (Facilitator, Storyteller) throughout the document to accurately reflect the system architecture. |
 | **V1.5** | YYYY-MM-DD | AIO-PM | **Major Update:** Integrated comprehensive feedback. Introduced a flexible **Package/Seat model** to support multi-facilitator collaboration (the "Sibling Problem"). Refined the core recording loop with a confirmation step for better user experience. Clarified the "post-subscription" archival mode and long-term value proposition. Enhanced data export structure and added key metrics for engagement and content depth. Updated all relevant diagrams and element lists. |
 | V1.1 | YYYY-MM-DD | AI PM | Fully localized for the international market. Enhanced focus on user trust, data ownership, and a frictionless experience, based on anti-fragility stress testing. |
 | V1.0 | YYYY-MM-DD | AI PM | Initial draft, defining the core MVP feature loop. |
@@ -34,25 +35,25 @@ This MVP aims to validate a minimal yet complete "Family Storytelling Platform" 
     *   **Role:** **The Core Content Contributor, The Emotional Beneficiary.**
 
 ### 3.2 Core User Scenario
-Alex (The Facilitator) sees a targeted ad for the "Saga" app on Instagram. The message resonates.
+Alex (The Facilitator) sees a targeted ad for the "Saga" web platform on Instagram. The message resonates.
 
-1.  **Purchase & Initiate:** Alex downloads the app. Convinced by the value, they purchase "The Family Saga Package," which gives them credits for 1 Saga Project, 2 Facilitator seats, and 2 Storyteller seats. They use one Project credit to create "My Dad's Story."
+1.  **Purchase & Initiate:** Alex visits the Saga website. Convinced by the value, they purchase "The Family Saga Package," which gives them credits for 1 Saga Project, 2 Facilitator seats, and 2 Storyteller seats. They use one Project credit to create "My Dad's Story."
 2.  **Invite:** Alex uses a Facilitator seat for themself and immediately consumes a Storyteller seat to generate and share a unique invitation link with their father, John, via WhatsApp.
-3.  **Effortless Onboarding:** John receives the link. A single tap takes him to the App Store. Upon opening, the app greets him by name. He taps one button to accept and joins the project.
-4.  **First Story:** The app interface is minimalist. A warm AI voice asks a question. John presses and holds a large button, shares a story, and attaches a photo. When he releases, he sees a simple "Review & Send" screen. He taps "Send."
+3.  **Effortless Onboarding:** John receives the link. A single tap takes him to the Saga web app in his browser. Upon opening, Saga web app greets him by name. He clicks one button to accept and joins the project.
+4.  **First Story:** The web interface is minimalist. A warm AI voice asks a question. John clicks a large recording button, shares a story, and attaches a photo. When he clicks a stop button, he sees a simple "Review & Send" screen. He clicks "Send."
 5.  **Connection & Emotion:** Alex receives a notification, listens to the story, reads the transcript, and is deeply moved. Alex leaves a comment and adds a follow-up question.
 6.  **Closing the Loop:** John sees his son's reaction, feels appreciated, and is inspired to share more.
 7.  **Collaboration:** A week later, Alex decides to involve his sister, Beth. From the project settings, he uses his remaining Facilitator seat to send an invite to Beth, who can now also listen, comment, and ask questions, enriching the family conversation.
 
 ## 4. Feature Requirements (MVP)
 
-### **Module 1: Facilitator's App (Alex)**
+### **Module 1: Facilitator's Web App (Alex)**
 
 #### **1.1 Account, Packages & Projects**
 *   **User Story 1.1.1: Unified Sign Up / Log In**
-    *   **As a** new or returning user, **I want to** quickly sign up or log in to my single Saga account using my mobile number or social sign-on (Apple/Google), **so that** I can manage all my family story projects and roles from one place.
+    *   **As a** new or returning user, **I want to** quickly sign up or log in to my single Saga account using my mobile number or social sign-on (Google), **so that** I can manage all my family story projects and roles from one place.
     *   **Acceptance Criteria**:
-        1.  A single set of credentials grants access to all of a user's associated roles and projects.
+        1.  A single set of credentials (a `User Account`) grants access to all of a person's associated `Roles` across various projects.
         2.  The system correctly associates new roles with the existing core User Account.
 
 *   **User Story 1.1.2: Purchase & Manage Resource Packages**
@@ -119,11 +120,11 @@ Alex (The Facilitator) sees a targeted ad for the "Saga" app on Instagram. The m
     *   **Acceptance Criteria**:
         1.  The exported archive is complete and matches the specified structure.
 
-### **Module 2: The Storyteller's App (John)**
+### **Module 2: The Storyteller's Web App (John)**
 
 #### **2.1 Onboarding & Home Screen**
 *   **User Story 2.1.1: Accepting the Invitation**
-    *   **As a** parent, **I want to** join by simply tapping a link and pressing one button, **so that** I can start sharing my stories effortlessly.
+    *   **As a** parent, **I want to** join by simply tapping a link and pressing one button in my browser, **so that** I can start sharing my stories effortlessly without needing to install anything.
     *   **Business Logic**:
         1.  The welcome screen clearly states who invited them: "Your family ([Alex], [Beth], etc.) has invited you..."
         2.  A full-screen "Our Privacy Pledge" pop-up appears before the main interface. The text is updated to reflect potential multiple viewers: **"Everything you share is private and only visible to the family members in this project. Your stories belong to your family."**
@@ -170,12 +171,13 @@ Alex (The Facilitator) sees a targeted ad for the "Saga" app on Instagram. The m
 *   **IN-SCOPE for MVP:**
     *   **Multi-Facilitator, Single-Storyteller Model:** Multiple Facilitators can collaborate on a project with one Storyteller.
     *   Interactions limited to voice, text, and single photos per story.
-    *   Mobile App only (iOS & Android).
+    *   Web App only, fully responsive and optimized for modern desktop and mobile browsers (Chrome, Safari, Firefox).
     *   English language only.
 
 *   **OUT-OF-SCOPE for MVP:**
     *   PDF/Physical Book Export.
     *   Video, multi-photo uploads.
+    *   Native Mobile Apps (iOS & Android).
     *   Multiple Storytellers in a single project (e.g., interviewing Mom and Dad together).
     *   Advanced AI Features: Automated timeline generation, smart topic discovery.
 
@@ -196,11 +198,11 @@ Alex (The Facilitator) sees a targeted ad for the "Saga" app on Instagram. The m
     *   All user data must be encrypted in transit and at rest.
     *   Payment processing must be PCI DSS compliant.
 *   **Accessibility:**
-    *   **The Storyteller's App (A) must strictly adhere to WCAG 2.1 AA standards.**
+    *   **The Storyteller's interface must strictly adhere to WCAG 2.1 AA standards.**
     *   Offer "Standard," "Large," and "Extra Large" text size options.
     *   Provide a high-contrast mode.
-    *   All interactive elements must have a minimum tap target size of 44x44dp.
-*   **Compatibility:** Support iOS 14+ and Android 8.0+ on major devices.
+    *   All interactive elements must have a minimum tap/click target size of 44x44dp.
+*   **Compatibility:** Support the latest two major versions of Chrome, Safari, Firefox, and Edge on desktop and mobile operating systems.
 
 ## 7. MVP Success Metrics
 
@@ -268,18 +270,18 @@ graph TD
     end
 
     subgraph Storyteller (John)
-        A1(Receives Invite Link) --> A2(Taps link<br/>Opens App)
+        A1(Receives Invite Link) --> A2(Clicks link<br/>Opens App)
         A2 --> A3(Accepts Invite & Privacy Pledge)
         A3 --> A_Home(Enters Recording Home)
         A_Home --> A4(Listens to/Reads AI Prompt)
         A4 --> A5(Press & Hold to Record)
         A5 -- Release --> A6(Enters "Review & Send" Screen)
-        A6 --> A7(Taps "Send")
+        A6 --> A7(Clicks "Send")
         A7 --> A8(Views "Sent!" confirmation)
         A6 --> A_Home -- Re-record --> A5
 
         A13(Receives Push from Alex/Beth) --> A14(Opens App to view message)
-        A14 -- Taps message --> A15(Reads feedback in Story Detail)
+        A14 -- Clicks message --> A15(Reads feedback in Story Detail)
         A15 -- Has Follow-up --> A_Home
     end
 
@@ -356,18 +358,18 @@ mindmap
 
 ### **Diagram 3: Page Flow Diagram**
 
-#### **Journey 1: Facilitator - From Download to Project Launch (Updated)**
+#### **Journey 1: Facilitator - From Visit to Project Launch (Updated)**
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Arial, sans-serif'}}}%%
 graph TD
-    A[Launch App] --> B[Sign Up/In Screen]
+    A[Visit Website] --> B[Sign Up/In Screen]
     B -- Auth Success --> C[User Dashboard]
     C --> D{Has Project Voucher?}
     D -- No --> E[Product Package Screen]
-    E -- Taps "Purchase" --> F[Native Payment Sheet]
+    E -- Clicks "Purchase" --> F[Payment Gateway UI]
     F -- Success --> G[Dashboard updates<br/>Shows available seats/vouchers]
     D -- Yes --> G
-    G -- Taps "Create Project" --> H[Consume Voucher & Name Project Screen]
+    G -- Clicks "Create Project" --> H[Consume Voucher & Name Project Screen]
     H --> I[Project Home (Empty State)<br/>Elements: "Invite Storyteller", "Invite Co-Facilitator"]
 ```
 
@@ -375,12 +377,10 @@ graph TD
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Arial, sans-serif'}}}%%
 graph TD
-    A[Taps invite link] --> B{App installed?}
-    B -- No --> C[App Store] --> D[Install App]
-    B -- Yes --> D
-    D --> E[App opens to Invite Screen<br/>"The Smith Family has invited you..."]
-    E -- Taps "Accept" --> F["Our Privacy Pledge" Pop-up<br/>"Visible to members of this project..."]
-    F -- Taps "Agree" --> G[Recording Home Screen]
+    A[Clicks invite link in SMS/WhatsApp] --> D[Browser opens to Invite Screen<br/>"The Smith Family has invited you..."]
+    D --> E[Clicks "Accept"]
+    E --> F["Our Privacy Pledge" Screen<br/>"Visible to members of this project..."]
+    F -- Clicks "Agree" --> G[Recording Home Screen<br/>Browser may prompt for Microphone access]
 ```
 
 #### **Journey 3: The Core Interaction Loop (Updated with Confirmation Step)**
@@ -390,13 +390,13 @@ graph TD
     subgraph Storyteller's Flow (John)
         A1[Recording Home Screen] -- Press & Hold --> A2[Recording UI]
         A2 -- Release button --> A3["Review & Send" Screen<br/>Elements: Play button, Send button, Re-record button]
-        A3 -- Taps "Send" --> A4[Uploading Indicator]
+        A3 -- Clicks "Send" --> A4[Uploading Indicator]
         A4 -- Success --> A5["Sent!" Toast<br/>Returns to Recording Home]
     end
 
     subgraph Facilitator's Flow (Alex)
-        B1[Receives push] -- Taps Push --> B2[Project Home (Story Feed)]
-        B2 -- Taps story --> B3[Story Detail Screen]
+        B1[Receives push] -- Clicks Push --> B2[Project Home (Story Feed)]
+        B2 -- Clicks story --> B3[Story Detail Screen]
         B3 -- Sends comment/follow-up --> B4[Interaction Sent]
     end
     
@@ -409,8 +409,8 @@ graph TD
 ```mermaid
 graph TD
     A[Project Home] --> B[Navigates to "Settings"]
-    B -- Taps "Export" --> C[Confirmation Dialog]
-    C -- Taps "Confirm" --> D[Processing Indicator]
+    B -- Clicks "Export" --> C[Confirmation Dialog]
+    C -- Clicks "Confirm" --> D[Processing Indicator]
     D --> E[User checks email]
     E --> F[Email with download link]
     F -- Clicks link --> G[Browser downloads .zip]
@@ -422,7 +422,7 @@ graph TD
     A[Project Home] --> B[Navigates to Project Settings / Members]
     B --> C[Member List Screen<br/>Elements: List of current members, "Invite Co-Facilitator" button]
     C --> D{Has Facilitator Seat?}
-    D -- Yes --> E[Taps "Invite"]
+    D -- Yes --> E[Clicks "Invite"]
     E --> F[Confirmation Dialog<br/>"This will use one Facilitator seat. Proceed?"]
     F -- Confirms --> G[Share Invitation Sheet]
     G --> H[Link shared with sibling]
@@ -444,12 +444,11 @@ These components are used across both the Facilitator and Storyteller apps.
 
 #### **2. Sign Up / Log In Screen**
 *   **Purpose:** Authenticate any user (Facilitator or Storyteller) into their unified account.
-*   **Platform:** Mobile, Web (for Facilitator)
+*   **Platform:** Web App
 *   **Elements:**
     *   `App Logo`
     *   `Tagline`: e.g., "Your family's story, a conversation away."
     *   `Social Auth Buttons`:
-        *   `Sign in with Apple` (Button): **Interaction** -> Initiates Apple Sign-In flow.
         *   `Sign in with Google` (Button): **Interaction** -> Initiates Google Sign-In flow.
     *   `Email/Phone Auth Group`:
         *   `Input Field`: For mobile number or email address.
@@ -460,7 +459,7 @@ These components are used across both the Facilitator and Storyteller apps.
 
 #### **3. Phone/Email Verification Screen**
 *   **Purpose:** Verify the user's identity via a one-time password (OTP).
-*   **Platform:** Mobile, Web (for Facilitator)
+*   **Platform:** Web App
 *   **Elements:**
     *   `Header Text`: e.g., "Enter Verification Code"
     *   `Instructional Text`: e.g., "We sent a code to [user's phone/email]."
@@ -473,7 +472,7 @@ These components are used across both the Facilitator and Storyteller apps.
 
 #### **4. System Dialogs & Modals**
 *   **Purpose:** Provide contextual information or require user action.
-*   **Platform:** Mobile, Web
+*   **Platform:** Web App
 *   **Elements:**
     *   `Confirmation Dialog`: (e.g., for Logout, Delete, Export)
         *   `Title`, `Message Text`, `Confirm Button`, `Cancel Button`.
@@ -485,13 +484,13 @@ These components are used across both the Facilitator and Storyteller apps.
 
 ---
 
-### **B. Facilitator App (Alex - The Power User)**
+### **B. Facilitator Web App (Alex - The Power User)**
 
 **Design Principle:** Provide comprehensive tools for management, interaction, and curation. A web-based dashboard is highly recommended for a better experience with these complex tasks.
 
 #### **1. Facilitator Dashboard / Project List Screen**
 *   **Purpose:** Central hub to view all managed projects and available resources.
-*   **Platform:** Mobile, **Web (Primary)**
+*   **Platform: **Web App
 *   **States & Elements:**
     *   **Loading State:**
         *   `Skeleton UI`: Shimmering placeholders for the header and project cards.
@@ -604,13 +603,13 @@ These components are used across both the Facilitator and Storyteller apps.
 
 ---
 
-### **C. Storyteller App (John - The Contributor)**
+### **C. Storyteller Web App (John - The Contributor)**
 
-**Design Principle:** Extreme simplicity, clarity, and accessibility. Minimal cognitive load.
+**Design Principle:** Extreme simplicity, clarity, and accessibility. Minimal cognitive load. A mobile-first web design.
 
 #### **1. Onboarding Module**
 *   **Purpose:** Effortless entry into the app and project.
-*   **Platform:** Mobile
+*   **Platform:** Web App
 
 ##### **1.1. Invitation Landing Screen**
 *   **Elements:**
