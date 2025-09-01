@@ -36,6 +36,9 @@ export default function SignUpPage() {
       console.log('=== 注册调试信息 ===')
       console.log('Email:', formData.email, 'Name:', formData.name)
 
+      // 检查是否跳过邮件验证（开发环境）
+      const skipEmailVerification = process.env.NEXT_PUBLIC_SKIP_EMAIL_VERIFICATION === 'true'
+
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -43,7 +46,11 @@ export default function SignUpPage() {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
             name: formData.name,
-          }
+          },
+          // 在开发环境中跳过邮件验证
+          ...(skipEmailVerification && {
+            email_confirm: false
+          })
         }
       })
 
@@ -52,9 +59,18 @@ export default function SignUpPage() {
         setError(`注册失败: ${error.message}`)
       } else {
         console.log('注册成功:', data)
-        setRegistrationSuccess(true)
-        setRegisteredEmail(formData.email)
-        setMessage('注册成功！请检查您的邮箱以验证账户。')
+
+        // 如果跳过邮件验证，直接跳转到登录页面
+        if (skipEmailVerification && data.user && !data.user.email_confirmed_at) {
+          setMessage('注册成功！由于开发环境跳过了邮件验证，您现在可以直接登录。')
+          setTimeout(() => {
+            window.location.href = '/auth/signin?message=' + encodeURIComponent('注册成功，请使用您的邮箱和密码登录')
+          }, 2000)
+        } else {
+          setRegistrationSuccess(true)
+          setRegisteredEmail(formData.email)
+          setMessage('注册成功！请检查您的邮箱以验证账户。')
+        }
       }
     } catch (err) {
       console.error('注册异常:', err)
