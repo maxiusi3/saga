@@ -6,7 +6,7 @@ import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@supabase/supabase-js'
 
 export default function VerifyPage() {
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
@@ -17,7 +17,10 @@ export default function VerifyPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams.get('email') || ''
-  const supabase = createClientComponentClient()
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
 
   useEffect(() => {
     if (countdown > 0) {

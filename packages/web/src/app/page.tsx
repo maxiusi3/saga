@@ -1,30 +1,36 @@
 import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { FurbridgeCard } from '@/components/ui/furbridge-card'
-import { FurbridgeHero } from '@/components/ui/furbridge-hero'
 import Link from 'next/link'
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <FurbridgeHero
-        title="Your family's story, a conversation away"
-        subtitle="Capture precious memories through guided conversations with your loved ones"
-        primaryAction={
-          <Link href="/auth/signin">
-            <FurbridgeButton variant="orange" size="lg">
-              Get Started
-            </FurbridgeButton>
-          </Link>
-        }
-        secondaryAction={
-          <Link href="/learn-more">
-            <FurbridgeButton variant="outline" size="lg">
-              Learn More
-            </FurbridgeButton>
-          </Link>
-        }
-      />
+      <section className="relative bg-gradient-to-br from-background to-muted/20 py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="space-y-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
+              Your family's story, a conversation away
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Capture precious memories through guided conversations with your loved ones
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/auth/signin">
+              <FurbridgeButton variant="orange" size="lg">
+                Get Started
+              </FurbridgeButton>
+            </Link>
+            <Link href="/learn-more">
+              <FurbridgeButton variant="outline" size="lg">
+                Learn More
+              </FurbridgeButton>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Features Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
