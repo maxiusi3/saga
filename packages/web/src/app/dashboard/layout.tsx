@@ -60,7 +60,7 @@ export default function DashboardLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-furbridge-orange"></div>
       </div>
     )
@@ -71,9 +71,9 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-border bg-card">
+      <header className="border-b border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -85,19 +85,19 @@ export default function DashboardLayout({
             <nav className="hidden md:flex space-x-8">
               <Link 
                 href="/dashboard" 
-                className="text-foreground hover:text-furbridge-orange transition-colors"
+                className="text-gray-900 hover:text-furbridge-orange transition-colors"
               >
                 My Sagas
               </Link>
               <Link 
                 href="/dashboard/discover" 
-                className="text-muted-foreground hover:text-furbridge-orange transition-colors"
+                className="text-gray-600 hover:text-furbridge-orange transition-colors"
               >
                 Discover
               </Link>
               <Link 
                 href="/dashboard/resources" 
-                className="text-muted-foreground hover:text-furbridge-orange transition-colors"
+                className="text-gray-600 hover:text-furbridge-orange transition-colors"
               >
                 Resources
               </Link>
@@ -106,7 +106,7 @@ export default function DashboardLayout({
             {/* User Menu */}
             <div className="flex items-center space-x-4">
               {/* Resource Summary */}
-              <div className="hidden sm:block text-sm text-muted-foreground">
+              <div className="hidden sm:block text-sm text-gray-600">
                 Seats: 1 Project, 0 Facilitator, 1 Storyteller
               </div>
 
@@ -120,7 +120,7 @@ export default function DashboardLayout({
                         {user.email?.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="hidden sm:block text-sm font-medium text-foreground">
+                    <span className="hidden sm:block text-sm font-medium text-gray-900">
                       {user.user_metadata?.full_name || user.email}
                     </span>
                   </button>
@@ -151,7 +151,7 @@ export default function DashboardLayout({
       </main>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
         <div className="flex justify-around py-2">
           <Link 
             href="/dashboard" 
@@ -162,21 +162,21 @@ export default function DashboardLayout({
           </Link>
           <Link 
             href="/dashboard/discover" 
-            className="flex flex-col items-center py-2 px-3 text-xs text-muted-foreground"
+            className="flex flex-col items-center py-2 px-3 text-xs text-gray-600"
           >
             <div className="text-lg mb-1">🔍</div>
             <span>Discover</span>
           </Link>
           <Link 
             href="/dashboard/resources" 
-            className="flex flex-col items-center py-2 px-3 text-xs text-muted-foreground"
+            className="flex flex-col items-center py-2 px-3 text-xs text-gray-600"
           >
             <div className="text-lg mb-1">💎</div>
             <span>Resources</span>
           </Link>
           <Link 
             href="/dashboard/profile" 
-            className="flex flex-col items-center py-2 px-3 text-xs text-muted-foreground"
+            className="flex flex-col items-center py-2 px-3 text-xs text-gray-600"
           >
             <div className="text-lg mb-1">👤</div>
             <span>Profile</span>

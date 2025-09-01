@@ -212,12 +212,12 @@ Those were the days when a penny candy actually cost a penny, and you could get 
     return (
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
-          <div className="h-8 w-8 bg-muted rounded animate-pulse"></div>
-          <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
+          <div className="h-8 w-8 bg-gray-100 rounded animate-pulse"></div>
+          <div className="h-8 w-64 bg-gray-100 rounded animate-pulse"></div>
         </div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-muted rounded-lg animate-pulse"></div>
+            <div key={i} className="h-32 bg-gray-100 rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -227,7 +227,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
   if (!story) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Story not found</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Story not found</h1>
         <Link href={`/dashboard/projects/${projectId}`}>
           <FurbridgeButton variant="outline" className="mt-4">
             Back to Project
@@ -264,7 +264,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
           </div>
         ) : (
           <div className="flex-1 flex items-center space-x-2">
-            <h1 className="text-3xl font-bold text-foreground">{story.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{story.title}</h1>
             <FurbridgeButton variant="ghost" size="icon" onClick={() => setIsEditingTitle(true)}>
               <Edit className="h-4 w-4" />
             </FurbridgeButton>
@@ -273,7 +273,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
       </div>
 
       {/* Story Metadata */}
-      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+      <div className="flex items-center space-x-4 text-sm text-gray-600">
         <span>{formatTimestamp(story.timestamp)}</span>
         <span>•</span>
         <span>{story.storyteller_name}</span>
@@ -297,7 +297,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
             <FurbridgeButton 
               variant="ghost" 
               size="icon" 
-              className="absolute top-2 right-2 bg-background/80"
+              className="absolute top-2 right-2 bg-white/80"
             >
               <ZoomIn className="h-4 w-4" />
             </FurbridgeButton>
@@ -310,9 +310,9 @@ Those were the days when a penny candy actually cost a penny, and you could get 
         <FurbridgeCard className="p-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">Audio Recording</h3>
+              <h3 className="font-semibold text-gray-900">Audio Recording</h3>
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-muted-foreground">Speed:</span>
+                <span className="text-sm text-gray-600">Speed:</span>
                 {[1, 1.25, 1.5, 2].map((speed) => (
                   <FurbridgeButton
                     key={speed}
@@ -339,11 +339,11 @@ Those were the days when a penny candy actually cost a penny, and you could get 
                   max={story.audio_duration}
                   value={currentTime}
                   onChange={handleSeek}
-                  className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
-              <div className="text-sm text-muted-foreground min-w-fit">
+              <div className="text-sm text-gray-600 min-w-fit">
                 {formatTime(currentTime)} / {formatTime(story.audio_duration)}
               </div>
             </div>
@@ -362,7 +362,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
       <FurbridgeCard className="p-6">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <h3 className="font-semibold text-foreground">Transcript</h3>
+            <h3 className="font-semibold text-gray-900">Transcript</h3>
             <FurbridgeButton variant="outline" size="sm">
               <Edit className="h-4 w-4 mr-2" />
               Edit
@@ -370,7 +370,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
           </div>
           
           <div className="prose prose-gray max-w-none">
-            <div className="whitespace-pre-wrap text-foreground leading-relaxed">
+            <div className="whitespace-pre-wrap text-gray-900 leading-relaxed">
               {story.transcript}
             </div>
           </div>
@@ -380,7 +380,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
       {/* Interactions */}
       <FurbridgeCard className="p-6">
         <div className="space-y-6">
-          <h3 className="font-semibold text-foreground">Comments & Questions</h3>
+          <h3 className="font-semibold text-gray-900">Comments & Questions</h3>
 
           {/* Existing Interactions */}
           <div className="space-y-4">
@@ -394,17 +394,17 @@ Those were the days when a penny candy actually cost a penny, and you could get 
                 </Avatar>
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center space-x-2">
-                    <span className="font-medium text-foreground text-sm">
+                    <span className="font-medium text-gray-900 text-sm">
                       {interaction.author_name}
                     </span>
                     <Badge variant={interaction.type === 'followup' ? 'outline' : 'secondary'} className="text-xs">
                       {interaction.type === 'followup' ? 'Question' : 'Comment'}
                     </Badge>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-gray-600">
                       {formatTimestamp(interaction.timestamp)}
                     </span>
                   </div>
-                  <p className="text-foreground text-sm">{interaction.content}</p>
+                  <p className="text-gray-900 text-sm">{interaction.content}</p>
                 </div>
               </div>
             ))}
@@ -415,7 +415,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
           {/* Add New Interactions */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Leave a comment</label>
+              <label className="text-sm font-medium text-gray-900">Leave a comment</label>
               <div className="flex space-x-2">
                 <Textarea
                   placeholder="Share your thoughts..."
@@ -435,7 +435,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Ask a follow-up question</label>
+              <label className="text-sm font-medium text-gray-900">Ask a follow-up question</label>
               <div className="flex space-x-2">
                 <Textarea
                   placeholder="What would you like to know more about?"

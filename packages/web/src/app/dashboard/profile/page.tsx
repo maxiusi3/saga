@@ -114,10 +114,10 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="max-w-2xl mx-auto space-y-6">
-        <div className="h-8 w-48 bg-muted rounded animate-pulse"></div>
+        <div className="h-8 w-48 bg-gray-100 rounded animate-pulse"></div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-muted rounded-lg animate-pulse"></div>
+            <div key={i} className="h-32 bg-gray-100 rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -127,7 +127,7 @@ export default function ProfilePage() {
   if (!user || !profile) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Profile not found</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Profile not found</h1>
       </div>
     )
   }
@@ -136,7 +136,7 @@ export default function ProfilePage() {
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
+        <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
         {!isEditing && (
           <FurbridgeButton variant="outline" onClick={() => setIsEditing(true)}>
             Edit Profile
@@ -168,11 +168,11 @@ export default function ProfilePage() {
             </div>
             
             <div className="space-y-1">
-              <h2 className="text-2xl font-semibold text-foreground">
+              <h2 className="text-2xl font-semibold text-gray-900">
                 {profile.full_name}
               </h2>
-              <p className="text-muted-foreground">{profile.email}</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-gray-600">{profile.email}</p>
+              <p className="text-sm text-gray-600">
                 Member since {new Date(profile.joined_date).toLocaleDateString('en-US', {
                   month: 'long',
                   year: 'numeric'
@@ -196,14 +196,14 @@ export default function ProfilePage() {
                     className="mt-1"
                   />
                 ) : (
-                  <div className="mt-1 text-foreground">{profile.full_name}</div>
+                  <div className="mt-1 text-gray-900">{profile.full_name}</div>
                 )}
               </div>
 
               <div>
                 <Label htmlFor="email">Email</Label>
-                <div className="mt-1 text-muted-foreground">{profile.email}</div>
-                <p className="text-xs text-muted-foreground mt-1">
+                <div className="mt-1 text-gray-600">{profile.email}</div>
+                <p className="text-xs text-gray-600 mt-1">
                   Email cannot be changed
                 </p>
               </div>
@@ -221,7 +221,7 @@ export default function ProfilePage() {
                   className="mt-1"
                 />
               ) : (
-                <div className="mt-1 text-foreground">
+                <div className="mt-1 text-gray-900">
                   {profile.phone || 'Not provided'}
                 </div>
               )}
@@ -236,10 +236,10 @@ export default function ProfilePage() {
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                   placeholder="Tell us a little about yourself..."
                   rows={3}
-                  className="mt-1 w-full px-3 py-2 border border-border rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-furbridge-orange focus:border-furbridge-orange"
+                  className="mt-1 w-full px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-furbridge-orange focus:border-furbridge-orange"
                 />
               ) : (
-                <div className="mt-1 text-foreground">
+                <div className="mt-1 text-gray-900">
                   {profile.bio || 'No bio provided'}
                 </div>
               )}
@@ -272,14 +272,14 @@ export default function ProfilePage() {
       {/* Stats Card */}
       <FurbridgeCard className="p-6">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">Activity Summary</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Activity Summary</h3>
           
           <div className="grid grid-cols-2 gap-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-furbridge-orange">
                 {profile.total_projects}
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-600">
                 Active Projects
               </div>
             </div>
@@ -288,7 +288,7 @@ export default function ProfilePage() {
               <div className="text-3xl font-bold text-furbridge-teal">
                 {profile.total_stories}
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-600">
                 Stories Shared
               </div>
             </div>
@@ -299,13 +299,13 @@ export default function ProfilePage() {
       {/* Account Settings */}
       <FurbridgeCard className="p-6">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">Account Settings</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Account Settings</h3>
           
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-foreground">Email Notifications</div>
-                <div className="text-sm text-muted-foreground">
+                <div className="font-medium text-gray-900">Email Notifications</div>
+                <div className="text-sm text-gray-600">
                   Receive updates about your projects
                 </div>
               </div>
@@ -314,8 +314,8 @@ export default function ProfilePage() {
             
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-foreground">Privacy Settings</div>
-                <div className="text-sm text-muted-foreground">
+                <div className="font-medium text-gray-900">Privacy Settings</div>
+                <div className="text-sm text-gray-600">
                   Control who can see your profile
                 </div>
               </div>
@@ -326,8 +326,8 @@ export default function ProfilePage() {
             
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-foreground">Data Export</div>
-                <div className="text-sm text-muted-foreground">
+                <div className="font-medium text-gray-900">Data Export</div>
+                <div className="text-sm text-gray-600">
                   Download your account data
                 </div>
               </div>

@@ -4,15 +4,15 @@ import Link from 'next/link'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-background to-muted/20 py-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-gradient-to-br from-white to-gray-100/20 py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
               Your family's story, a conversation away
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Capture precious memories through guided conversations with your loved ones
             </p>
           </div>
@@ -36,10 +36,10 @@ export default function HomePage() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
               How Saga Works
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Simple, meaningful conversations that preserve your family's legacy
             </p>
           </div>
@@ -65,12 +65,12 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">
             Start Capturing Your Family's Story Today
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-xl text-gray-600 mb-8">
             Join thousands of families preserving their precious memories
           </p>
           <Link href="/auth/signin">

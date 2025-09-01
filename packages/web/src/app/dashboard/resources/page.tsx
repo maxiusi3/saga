@@ -91,10 +91,10 @@ export default function ResourcesPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
+        <div className="h-8 w-64 bg-gray-100 rounded animate-pulse"></div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-48 bg-muted rounded-lg animate-pulse"></div>
+            <div key={i} className="h-48 bg-gray-100 rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -106,8 +106,8 @@ export default function ResourcesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">My Resources</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-3xl font-bold text-gray-900">My Resources</h1>
+          <p className="text-gray-600 mt-1">
             Manage your available seats and purchase additional resources
           </p>
         </div>
@@ -129,7 +129,7 @@ export default function ResourcesPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   {getResourceIcon(resource.type)}
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="font-semibold text-gray-900">
                     {getResourceTitle(resource.type)}
                   </h3>
                 </div>
@@ -144,8 +144,8 @@ export default function ResourcesPage() {
               {/* Usage Stats */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Usage</span>
-                  <span className="text-foreground">
+                  <span className="text-gray-600">Usage</span>
+                  <span className="text-gray-900">
                     {resource.used} of {resource.total} used
                   </span>
                 </div>
@@ -156,7 +156,7 @@ export default function ResourcesPage() {
               </div>
 
               {/* Description */}
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-600">
                 {resource.description}
               </p>
 
@@ -176,44 +176,44 @@ export default function ResourcesPage() {
       {/* Usage History */}
       <FurbridgeCard className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-foreground">Recent Activity</h2>
+          <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>
           
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center space-x-3">
                 <BookOpen className="h-5 w-5 text-furbridge-orange" />
                 <div>
-                  <div className="font-medium text-foreground">Created "Dad's Life Story"</div>
-                  <div className="text-sm text-muted-foreground">Used 1 Project Voucher</div>
+                  <div className="font-medium text-gray-900">Created "Dad's Life Story"</div>
+                  <div className="text-sm text-gray-600">Used 1 Project Voucher</div>
                 </div>
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-600">
                 Jan 15, 2024
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center space-x-3">
                 <UserPlus className="h-5 w-5 text-furbridge-warm-gray" />
                 <div>
-                  <div className="font-medium text-foreground">Invited John Doe as Storyteller</div>
-                  <div className="text-sm text-muted-foreground">Used 1 Storyteller Seat</div>
+                  <div className="font-medium text-gray-900">Invited John Doe as Storyteller</div>
+                  <div className="text-sm text-gray-600">Used 1 Storyteller Seat</div>
                 </div>
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-600">
                 Jan 16, 2024
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center space-x-3">
                 <Users className="h-5 w-5 text-furbridge-teal" />
                 <div>
-                  <div className="font-medium text-foreground">Invited Beth Smith as Co-Facilitator</div>
-                  <div className="text-sm text-muted-foreground">Used 1 Facilitator Seat</div>
+                  <div className="font-medium text-gray-900">Invited Beth Smith as Co-Facilitator</div>
+                  <div className="text-sm text-gray-600">Used 1 Facilitator Seat</div>
                 </div>
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-600">
                 Jan 18, 2024
               </div>
             </div>
@@ -224,17 +224,17 @@ export default function ResourcesPage() {
       {/* Purchase Options */}
       <FurbridgeCard className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-foreground">Purchase Additional Seats</h2>
+          <h2 className="text-xl font-semibold text-gray-900">Purchase Additional Seats</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="border border-border rounded-lg p-4">
+            <div className="border border-gray-200 rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <BookOpen className="h-5 w-5 text-furbridge-orange" />
-                  <span className="font-medium text-foreground">Project Voucher</span>
+                  <span className="font-medium text-gray-900">Project Voucher</span>
                 </div>
                 <div className="text-2xl font-bold text-furbridge-orange">$15</div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Create one additional family story project
                 </p>
                 <FurbridgeButton variant="outline" size="sm" className="w-full">
@@ -243,14 +243,14 @@ export default function ResourcesPage() {
               </div>
             </div>
 
-            <div className="border border-border rounded-lg p-4">
+            <div className="border border-gray-200 rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <Users className="h-5 w-5 text-furbridge-teal" />
-                  <span className="font-medium text-foreground">Facilitator Seat</span>
+                  <span className="font-medium text-gray-900">Facilitator Seat</span>
                 </div>
                 <div className="text-2xl font-bold text-furbridge-teal">$10</div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Invite one co-facilitator to help manage projects
                 </p>
                 <FurbridgeButton variant="outline" size="sm" className="w-full">
@@ -259,14 +259,14 @@ export default function ResourcesPage() {
               </div>
             </div>
 
-            <div className="border border-border rounded-lg p-4">
+            <div className="border border-gray-200 rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <UserPlus className="h-5 w-5 text-furbridge-warm-gray" />
-                  <span className="font-medium text-foreground">Storyteller Seat</span>
+                  <span className="font-medium text-gray-900">Storyteller Seat</span>
                 </div>
                 <div className="text-2xl font-bold text-furbridge-warm-gray">$5</div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Invite one additional storyteller to your projects
                 </p>
                 <FurbridgeButton variant="outline" size="sm" className="w-full">
@@ -279,7 +279,7 @@ export default function ResourcesPage() {
           <Separator />
 
           <div className="text-center">
-            <p className="text-muted-foreground mb-4">
+            <p className="text-gray-600 mb-4">
               Need multiple seats? Get better value with our complete package.
             </p>
             <Link href="/dashboard/purchase">

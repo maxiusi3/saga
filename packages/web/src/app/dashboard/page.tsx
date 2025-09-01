@@ -122,10 +122,10 @@ export default function DashboardPage() {
       <div className="text-center py-16">
         <div className="max-w-md mx-auto space-y-6">
           <div className="text-6xl mb-4">📖</div>
-          <h1 className="text-3xl font-bold text-foreground">
+          <h1 className="text-3xl font-bold text-gray-900">
             Welcome, {user?.user_metadata?.full_name || user?.email}!
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-gray-600">
             Let's start by creating a home for your family's stories.
           </p>
           <Link href="/dashboard/purchase">
@@ -143,8 +143,8 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">My Sagas</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-3xl font-bold text-gray-900">My Sagas</h1>
+          <p className="text-gray-600 mt-1">
             Manage your family story projects
           </p>
         </div>
@@ -152,8 +152,8 @@ export default function DashboardPage() {
         {/* Resource Summary Card */}
         <FurbridgeCard className="p-4 min-w-fit">
           <div className="text-sm">
-            <div className="font-medium text-foreground mb-1">Available Seats</div>
-            <div className="text-muted-foreground space-y-1">
+            <div className="font-medium text-gray-900 mb-1">Available Seats</div>
+            <div className="text-gray-600 space-y-1">
               <div>• 1 Project</div>
               <div>• 0 Facilitator</div>
               <div>• 1 Storyteller</div>
@@ -170,7 +170,7 @@ export default function DashboardPage() {
               <div className="space-y-4">
                 {/* Project Header */}
                 <div className="flex justify-between items-start">
-                  <h3 className="text-lg font-semibold text-foreground line-clamp-2">
+                  <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
                     {project.title}
                   </h3>
                   {getStatusBadge(project.status, project.story_count)}
@@ -185,10 +185,10 @@ export default function DashboardPage() {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium text-foreground">
+                    <div className="font-medium text-gray-900">
                       {project.storyteller_name}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-gray-600">
                       Storyteller
                     </div>
                   </div>
@@ -197,7 +197,7 @@ export default function DashboardPage() {
                 {/* Co-facilitators */}
                 {project.co_facilitators.length > 0 && (
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm text-muted-foreground">Co-facilitators:</span>
+                    <span className="text-sm text-gray-600">Co-facilitators:</span>
                     <div className="flex -space-x-2">
                       {project.co_facilitators.map((facilitator) => (
                         <Avatar key={facilitator.id} className="h-6 w-6 border-2 border-background">
@@ -212,7 +212,7 @@ export default function DashboardPage() {
                 )}
 
                 {/* Story Count */}
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-600">
                   {project.story_count} {project.story_count === 1 ? 'story' : 'stories'}
                 </div>
               </div>
@@ -222,12 +222,12 @@ export default function DashboardPage() {
 
         {/* Create New Project Card */}
         <Link href="/dashboard/purchase">
-          <FurbridgeCard className="p-6 border-2 border-dashed border-muted-foreground/25 hover:border-furbridge-orange hover:bg-muted/50 transition-all cursor-pointer">
+          <FurbridgeCard className="p-6 border-2 border-dashed border-muted-foreground/25 hover:border-furbridge-orange hover:bg-gray-100/50 transition-all cursor-pointer">
             <div className="flex flex-col items-center justify-center h-full min-h-[200px] space-y-4">
-              <div className="text-4xl text-muted-foreground">+</div>
+              <div className="text-4xl text-gray-600">+</div>
               <div className="text-center">
-                <div className="font-medium text-foreground">Create New Saga</div>
-                <div className="text-sm text-muted-foreground mt-1">
+                <div className="font-medium text-gray-900">Create New Saga</div>
+                <div className="text-sm text-gray-600 mt-1">
                   Start a new family story project
                 </div>
               </div>

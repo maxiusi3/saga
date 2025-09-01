@@ -1,3 +1,5 @@
+'use client'
+
 import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import Link from 'next/link'
@@ -5,13 +7,13 @@ import { Home, ArrowLeft } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full text-center space-y-8">
         {/* 404 Illustration */}
         <div className="space-y-4">
           <div className="text-8xl font-bold text-furbridge-orange">404</div>
-          <h1 className="text-3xl font-bold text-foreground">Page Not Found</h1>
-          <p className="text-lg text-muted-foreground">
+          <h1 className="text-3xl font-bold text-gray-900">Page Not Found</h1>
+          <p className="text-lg text-gray-600">
             The page you're looking for doesn't exist or has been moved.
           </p>
         </div>
@@ -19,8 +21,8 @@ export default function NotFound() {
         {/* Suggestions */}
         <FurbridgeCard className="p-6">
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">What can you do?</h2>
-            <div className="space-y-2 text-sm text-muted-foreground text-left">
+            <h2 className="text-lg font-semibold text-gray-900">What can you do?</h2>
+            <div className="space-y-2 text-sm text-gray-600 text-left">
               <div className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-furbridge-orange rounded-full mt-2 flex-shrink-0"></div>
                 <span>Check the URL for any typos</span>
@@ -53,7 +55,7 @@ export default function NotFound() {
         </div>
 
         {/* Help Link */}
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-gray-600">
           Need help? <Link href="/dashboard/help" className="text-furbridge-orange hover:underline">Contact Support</Link>
         </div>
       </div>

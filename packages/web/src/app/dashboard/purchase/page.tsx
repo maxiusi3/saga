@@ -34,10 +34,10 @@ export default function PurchasePage() {
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">
+        <h1 className="text-4xl font-bold text-gray-900">
           The Saga Package
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Everything you need to capture and preserve your family's precious stories
         </p>
       </div>
@@ -50,7 +50,7 @@ export default function PurchasePage() {
               <div className="text-5xl font-bold text-furbridge-orange mb-2">
                 $29
               </div>
-              <div className="text-muted-foreground">
+              <div className="text-gray-600">
                 One-time purchase
               </div>
               <Badge variant="secondary" className="mt-2">
@@ -61,20 +61,20 @@ export default function PurchasePage() {
             <Separator />
 
             <div>
-              <h3 className="font-semibold text-foreground mb-4">
+              <h3 className="font-semibold text-gray-900 mb-4">
                 What's included:
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-foreground">Project Vouchers</span>
+                  <span className="text-gray-900">Project Vouchers</span>
                   <Badge variant="outline">1</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-foreground">Facilitator Seats</span>
+                  <span className="text-gray-900">Facilitator Seats</span>
                   <Badge variant="outline">1</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-foreground">Storyteller Seats</span>
+                  <span className="text-gray-900">Storyteller Seats</span>
                   <Badge variant="outline">1</Badge>
                 </div>
               </div>
@@ -83,14 +83,14 @@ export default function PurchasePage() {
             <Separator />
 
             <div>
-              <h3 className="font-semibold text-foreground mb-4">
+              <h3 className="font-semibold text-gray-900 mb-4">
                 Features:
               </h3>
               <div className="space-y-3">
                 {features.map((feature, index) => (
                   <div key={index} className="flex items-start space-x-3">
                     <Check className="h-5 w-5 text-furbridge-teal mt-0.5 flex-shrink-0" />
-                    <span className="text-muted-foreground">{feature}</span>
+                    <span className="text-gray-600">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -102,21 +102,21 @@ export default function PurchasePage() {
         <div className="space-y-6">
           <FurbridgeCard className="p-8">
             <div className="space-y-6">
-              <h2 className="text-2xl font-semibold text-foreground">
+              <h2 className="text-2xl font-semibold text-gray-900">
                 Complete Your Purchase
               </h2>
 
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-foreground">The Saga Package</span>
-                  <span className="font-semibold text-foreground">$29.00</span>
+                <div className="flex justify-between items-center py-3 border-b border-gray-200">
+                  <span className="text-gray-900">The Saga Package</span>
+                  <span className="font-semibold text-gray-900">$29.00</span>
                 </div>
-                <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-muted-foreground">Tax</span>
-                  <span className="text-muted-foreground">$0.00</span>
+                <div className="flex justify-between items-center py-3 border-b border-gray-200">
+                  <span className="text-gray-600">Tax</span>
+                  <span className="text-gray-600">$0.00</span>
                 </div>
                 <div className="flex justify-between items-center py-3 text-lg font-semibold">
-                  <span className="text-foreground">Total</span>
+                  <span className="text-gray-900">Total</span>
                   <span className="text-furbridge-orange">$29.00</span>
                 </div>
               </div>
@@ -132,10 +132,10 @@ export default function PurchasePage() {
               </FurbridgeButton>
 
               <div className="text-center space-y-2">
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-600">
                   Secure payment powered by Stripe
                 </div>
-                <div className="flex justify-center space-x-4 text-xs text-muted-foreground">
+                <div className="flex justify-center space-x-4 text-xs text-gray-600">
                   <span>💳 All major cards accepted</span>
                   <span>🔒 SSL encrypted</span>
                 </div>
@@ -145,31 +145,31 @@ export default function PurchasePage() {
 
           {/* Additional Options */}
           <FurbridgeCard className="p-6">
-            <h3 className="font-semibold text-foreground mb-4">
+            <h3 className="font-semibold text-gray-900 mb-4">
               Need more seats?
             </h3>
-            <p className="text-muted-foreground text-sm mb-4">
+            <p className="text-gray-600 text-sm mb-4">
               You can purchase additional seats individually after completing your first purchase.
             </p>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Extra Project Voucher</span>
-                <span className="text-foreground">$15</span>
+                <span className="text-gray-600">Extra Project Voucher</span>
+                <span className="text-gray-900">$15</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Extra Facilitator Seat</span>
-                <span className="text-foreground">$10</span>
+                <span className="text-gray-600">Extra Facilitator Seat</span>
+                <span className="text-gray-900">$10</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Extra Storyteller Seat</span>
-                <span className="text-foreground">$5</span>
+                <span className="text-gray-600">Extra Storyteller Seat</span>
+                <span className="text-gray-900">$5</span>
               </div>
             </div>
           </FurbridgeCard>
 
           {/* Mobile App Note */}
-          <div className="text-center text-sm text-muted-foreground">
-            <Link href="/restore" className="hover:text-foreground">
+          <div className="text-center text-sm text-gray-600">
+            <Link href="/restore" className="hover:text-gray-900">
               Already purchased? Restore Purchase
             </Link>
           </div>
@@ -177,16 +177,16 @@ export default function PurchasePage() {
       </div>
 
       {/* Terms */}
-      <div className="text-center text-sm text-muted-foreground space-x-4">
-        <Link href="/terms" className="hover:text-foreground">
+      <div className="text-center text-sm text-gray-600 space-x-4">
+        <Link href="/terms" className="hover:text-gray-900">
           Terms of Sale
         </Link>
         <span>•</span>
-        <Link href="/privacy" className="hover:text-foreground">
+        <Link href="/privacy" className="hover:text-gray-900">
           Privacy Policy
         </Link>
         <span>•</span>
-        <Link href="/refund" className="hover:text-foreground">
+        <Link href="/refund" className="hover:text-gray-900">
           Refund Policy
         </Link>
       </div>

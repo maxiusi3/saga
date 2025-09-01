@@ -105,11 +105,11 @@ export default function VerifyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground">Enter Verification Code</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-3xl font-bold text-gray-900">Enter Verification Code</h1>
+          <p className="mt-2 text-gray-600">
             We sent a code to {email}
           </p>
         </div>
@@ -167,7 +167,7 @@ export default function VerifyPage() {
                   Resend Code
                 </button>
               ) : (
-                <span className="text-muted-foreground text-sm">
+                <span className="text-gray-600 text-sm">
                   Resend in {countdown}s
                 </span>
               )}

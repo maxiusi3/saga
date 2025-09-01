@@ -42,10 +42,10 @@ export default function SuccessPage() {
 
         {/* Success Message */}
         <div className="space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">
+          <h1 className="text-4xl font-bold text-gray-900">
             Story Submitted Successfully!
           </h1>
-          <p className="text-xl text-muted-foreground max-w-lg mx-auto">
+          <p className="text-xl text-gray-600 max-w-lg mx-auto">
             Thank you for sharing your story. Your family will treasure these memories forever.
           </p>
         </div>
@@ -53,8 +53,8 @@ export default function SuccessPage() {
         {/* Story Details */}
         <FurbridgeCard className="p-6 text-left max-w-md mx-auto">
           <div className="space-y-3">
-            <h3 className="font-semibold text-foreground">What happens next?</h3>
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <h3 className="font-semibold text-gray-900">What happens next?</h3>
+            <div className="space-y-2 text-sm text-gray-600">
               <div className="flex items-start space-x-2">
                 <div className="w-2 h-2 bg-furbridge-orange rounded-full mt-2 flex-shrink-0"></div>
                 <span>Your story is being transcribed automatically</span>
@@ -89,8 +89,8 @@ export default function SuccessPage() {
         </div>
 
         {/* Encouragement Message */}
-        <div className="bg-muted/50 rounded-lg p-6 max-w-lg mx-auto">
-          <p className="text-sm text-muted-foreground italic">
+        <div className="bg-gray-100/50 rounded-lg p-6 max-w-lg mx-auto">
+          <p className="text-sm text-gray-600 italic">
             "Every story you share becomes a precious gift to future generations. 
             Your voice and memories are irreplaceable treasures."
           </p>

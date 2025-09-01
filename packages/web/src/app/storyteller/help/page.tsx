@@ -56,8 +56,8 @@ export default function StorytellerHelpPage() {
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold text-foreground">Storyteller Guide</h1>
-        <p className="text-lg text-muted-foreground">
+        <h1 className="text-3xl font-bold text-gray-900">Storyteller Guide</h1>
+        <p className="text-lg text-gray-600">
           Everything you need to know about sharing your stories
         </p>
       </div>
@@ -67,12 +67,12 @@ export default function StorytellerHelpPage() {
         {tips.map((tip, index) => (
           <FurbridgeCard key={index} className="p-6 text-center">
             <div className="space-y-4">
-              <div className="w-12 h-12 bg-muted/50 rounded-lg flex items-center justify-center mx-auto">
+              <div className="w-12 h-12 bg-gray-100/50 rounded-lg flex items-center justify-center mx-auto">
                 {tip.icon}
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-2">{tip.title}</h3>
-                <p className="text-sm text-muted-foreground">{tip.content}</p>
+                <h3 className="font-semibold text-gray-900 mb-2">{tip.title}</h3>
+                <p className="text-sm text-gray-600">{tip.content}</p>
               </div>
             </div>
           </FurbridgeCard>
@@ -82,7 +82,7 @@ export default function StorytellerHelpPage() {
       {/* Getting Started Guide */}
       <FurbridgeCard className="p-8">
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-foreground">Getting Started</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">Getting Started</h2>
           
           <div className="space-y-4">
             <div className="flex items-start space-x-4">
@@ -90,8 +90,8 @@ export default function StorytellerHelpPage() {
                 1
               </div>
               <div>
-                <h3 className="font-medium text-foreground">Choose a Comfortable Space</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-medium text-gray-900">Choose a Comfortable Space</h3>
+                <p className="text-sm text-gray-600">
                   Find a quiet, comfortable place where you won't be interrupted. This could be your favorite chair, the kitchen table, or anywhere you feel relaxed.
                 </p>
               </div>
@@ -102,8 +102,8 @@ export default function StorytellerHelpPage() {
                 2
               </div>
               <div>
-                <h3 className="font-medium text-foreground">Read the Prompt</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-medium text-gray-900">Read the Prompt</h3>
+                <p className="text-sm text-gray-600">
                   Each recording session starts with a prompt to help guide your story. Take a moment to think about the question before you start recording.
                 </p>
               </div>
@@ -114,8 +114,8 @@ export default function StorytellerHelpPage() {
                 3
               </div>
               <div>
-                <h3 className="font-medium text-foreground">Start Recording</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-medium text-gray-900">Start Recording</h3>
+                <p className="text-sm text-gray-600">
                   Press the record button and start sharing your memory. Speak naturally, as if you're talking to a close friend or family member.
                 </p>
               </div>
@@ -126,8 +126,8 @@ export default function StorytellerHelpPage() {
                 4
               </div>
               <div>
-                <h3 className="font-medium text-foreground">Take Your Time</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-medium text-gray-900">Take Your Time</h3>
+                <p className="text-sm text-gray-600">
                   You can pause anytime to collect your thoughts. There's no rush - the most important thing is sharing your authentic story.
                 </p>
               </div>
@@ -139,15 +139,15 @@ export default function StorytellerHelpPage() {
       {/* FAQ Section */}
       <FurbridgeCard className="p-6">
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-foreground">Common Questions</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">Common Questions</h2>
 
           <Accordion type="single" collapsible className="space-y-2">
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={index.toString()} className="border border-border rounded-lg px-4">
+              <AccordionItem key={index} value={index.toString()} className="border border-gray-200 rounded-lg px-4">
                 <AccordionTrigger className="text-left hover:no-underline">
-                  <span className="font-medium text-foreground">{faq.question}</span>
+                  <span className="font-medium text-gray-900">{faq.question}</span>
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pt-2 pb-4">
+                <AccordionContent className="text-gray-600 pt-2 pb-4">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -159,8 +159,8 @@ export default function StorytellerHelpPage() {
       {/* Encouragement Section */}
       <FurbridgeCard className="p-8 bg-gradient-to-r from-furbridge-orange/5 to-furbridge-teal/5">
         <div className="text-center space-y-4">
-          <h3 className="text-xl font-semibold text-foreground">Remember</h3>
-          <p className="text-muted-foreground italic max-w-2xl mx-auto">
+          <h3 className="text-xl font-semibold text-gray-900">Remember</h3>
+          <p className="text-gray-600 italic max-w-2xl mx-auto">
             "Your stories are precious gifts to your family. Every memory you share, 
             no matter how small it might seem to you, becomes a treasure for future generations. 
             Your voice, your experiences, and your wisdom are irreplaceable."
@@ -171,8 +171,8 @@ export default function StorytellerHelpPage() {
       {/* Contact Support */}
       <FurbridgeCard className="p-6 text-center">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">Need More Help?</h3>
-          <p className="text-muted-foreground">
+          <h3 className="text-lg font-semibold text-gray-900">Need More Help?</h3>
+          <p className="text-gray-600">
             Our support team is here to help you every step of the way.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -170,8 +170,8 @@ export default function RecordPage() {
   if (!currentPrompt) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">No prompt available</h1>
-        <p className="text-muted-foreground mt-2">Please check back later.</p>
+        <h1 className="text-2xl font-bold text-gray-900">No prompt available</h1>
+        <p className="text-gray-600 mt-2">Please check back later.</p>
       </div>
     )
   }
@@ -183,23 +183,23 @@ export default function RecordPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <Badge variant="outline">{currentPrompt.category}</Badge>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-gray-600">
               ~{currentPrompt.estimated_time} min
             </span>
           </div>
           
-          <h1 className="text-2xl font-semibold text-foreground">
+          <h1 className="text-2xl font-semibold text-gray-900">
             {currentPrompt.text}
           </h1>
 
           {currentPrompt.follow_up_questions && (
             <div className="space-y-2">
-              <h3 className="text-sm font-medium text-muted-foreground">
+              <h3 className="text-sm font-medium text-gray-600">
                 Consider these follow-up questions:
               </h3>
               <ul className="space-y-1">
                 {currentPrompt.follow_up_questions.map((question, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">
+                  <li key={index} className="text-sm text-gray-600">
                     • {question}
                   </li>
                 ))}
@@ -214,10 +214,10 @@ export default function RecordPage() {
         <div className="space-y-6">
           {/* Recording Status */}
           <div className="text-center space-y-2">
-            <div className="text-3xl font-mono text-foreground">
+            <div className="text-3xl font-mono text-gray-900">
               {formatTime(recordingTime)}
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               {recordingState === 'idle' && 'Ready to record'}
               {recordingState === 'recording' && 'Recording...'}
               {recordingState === 'paused' && 'Recording paused'}
@@ -228,7 +228,7 @@ export default function RecordPage() {
           {/* Progress Bar (estimated time) */}
           {recordingState !== 'idle' && (
             <div className="space-y-2">
-              <div className="flex justify-between text-sm text-muted-foreground">
+              <div className="flex justify-between text-sm text-gray-600">
                 <span>Progress</span>
                 <span>{Math.min(100, Math.round((recordingTime / (currentPrompt.estimated_time * 60)) * 100))}%</span>
               </div>
@@ -320,9 +320,9 @@ export default function RecordPage() {
 
           {/* Recording Tips */}
           {recordingState === 'idle' && (
-            <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-              <h3 className="text-sm font-medium text-foreground">Recording Tips:</h3>
-              <ul className="text-sm text-muted-foreground space-y-1">
+            <div className="bg-gray-100/50 rounded-lg p-4 space-y-2">
+              <h3 className="text-sm font-medium text-gray-900">Recording Tips:</h3>
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Find a quiet space with minimal background noise</li>
                 <li>• Speak clearly and at a comfortable pace</li>
                 <li>• Take your time - there's no rush</li>

@@ -63,12 +63,12 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Logo and Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground">Welcome to Saga</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-3xl font-bold text-gray-900">Welcome to Saga</h1>
+          <p className="mt-2 text-gray-600">
             Your family's story, a conversation away
           </p>
         </div>
@@ -109,7 +109,7 @@ export default function SignInPage() {
                 <Separator className="w-full" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
+                <span className="bg-white px-2 text-gray-600">
                   Or continue with
                 </span>
               </div>
@@ -152,12 +152,12 @@ export default function SignInPage() {
         </FurbridgeCard>
 
         {/* Footer Links */}
-        <div className="text-center text-sm text-muted-foreground space-x-4">
-          <Link href="/terms" className="hover:text-foreground">
+        <div className="text-center text-sm text-gray-600 space-x-4">
+          <Link href="/terms" className="hover:text-gray-900">
             Terms of Service
           </Link>
           <span>•</span>
-          <Link href="/privacy" className="hover:text-foreground">
+          <Link href="/privacy" className="hover:text-gray-900">
             Privacy Policy
           </Link>
         </div>

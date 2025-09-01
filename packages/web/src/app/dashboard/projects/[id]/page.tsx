@@ -144,7 +144,7 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Project not found</h1>
         <Link href="/dashboard">
           <FurbridgeButton variant="outline" className="mt-4">
             Back to Dashboard
@@ -159,7 +159,7 @@ export default function ProjectDetailPage() {
       <div className="space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">{project.title}</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{project.title}</h1>
           <Link href={`/dashboard/projects/${projectId}/settings`}>
             <FurbridgeButton variant="ghost" size="icon">
               <Settings className="h-5 w-5" />
@@ -171,10 +171,10 @@ export default function ProjectDetailPage() {
         <div className="text-center py-16">
           <div className="max-w-md mx-auto space-y-6">
             <div className="text-6xl mb-4">📬</div>
-            <h2 className="text-2xl font-semibold text-foreground">
+            <h2 className="text-2xl font-semibold text-gray-900">
               Invite a Storyteller to Begin
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Send an invitation to your family member to start capturing their stories.
             </p>
             <FurbridgeButton variant="orange" size="lg">
@@ -190,7 +190,7 @@ export default function ProjectDetailPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-foreground">{project.title}</h1>
+        <h1 className="text-3xl font-bold text-gray-900">{project.title}</h1>
         <Link href={`/dashboard/projects/${projectId}/settings`}>
           <FurbridgeButton variant="ghost" size="icon">
             <Settings className="h-5 w-5" />
@@ -200,7 +200,7 @@ export default function ProjectDetailPage() {
 
       {/* Search Bar */}
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
         <Input
           placeholder="Search stories..."
           value={searchQuery}
@@ -218,10 +218,10 @@ export default function ProjectDetailPage() {
                 {/* Story Header */}
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-foreground mb-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
                       {story.title}
                     </h3>
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                    <div className="flex items-center space-x-4 text-sm text-gray-600">
                       <span>{formatTimestamp(story.timestamp)}</span>
                       <span>{story.storyteller_name}</span>
                     </div>
@@ -233,31 +233,31 @@ export default function ProjectDetailPage() {
 
                 {/* Audio Player (for regular stories) */}
                 {story.type === 'story' && (
-                  <div className="flex items-center space-x-3 bg-muted/50 rounded-lg p-3">
+                  <div className="flex items-center space-x-3 bg-gray-100/50 rounded-lg p-3">
                     <FurbridgeButton variant="ghost" size="icon" className="h-8 w-8">
                       <Play className="h-4 w-4" />
                     </FurbridgeButton>
-                    <div className="flex-1 bg-muted rounded-full h-2">
+                    <div className="flex-1 bg-gray-100 rounded-full h-2">
                       <div className="bg-furbridge-orange h-2 rounded-full w-1/3"></div>
                     </div>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-gray-600">
                       {formatDuration(story.audio_duration)}
                     </span>
                   </div>
                 )}
 
                 {/* Transcript Snippet */}
-                <p className="text-muted-foreground line-clamp-2">
+                <p className="text-gray-600 line-clamp-2">
                   {story.transcript_snippet}
                 </p>
 
                 {/* Photo Thumbnail */}
                 {story.photo_url && (
-                  <div className="w-16 h-16 bg-muted rounded-lg"></div>
+                  <div className="w-16 h-16 bg-gray-100 rounded-lg"></div>
                 )}
 
                 {/* Interaction Summary */}
-                <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                <div className="flex items-center space-x-4 text-sm text-gray-600">
                   {story.comments_count > 0 && (
                     <div className="flex items-center space-x-1">
                       <MessageCircle className="h-4 w-4" />
@@ -278,7 +278,7 @@ export default function ProjectDetailPage() {
 
         {filteredStories.length === 0 && searchQuery && (
           <div className="text-center py-8">
-            <p className="text-muted-foreground">No stories found matching "{searchQuery}"</p>
+            <p className="text-gray-600">No stories found matching "{searchQuery}"</p>
           </div>
         )}
       </div>

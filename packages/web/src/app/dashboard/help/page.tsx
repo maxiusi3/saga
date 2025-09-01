@@ -93,15 +93,15 @@ export default function HelpPage() {
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">Help Center</h1>
-        <p className="text-xl text-muted-foreground">
+        <h1 className="text-4xl font-bold text-gray-900">Help Center</h1>
+        <p className="text-xl text-gray-600">
           Find answers to common questions and get support
         </p>
       </div>
 
       {/* Search */}
       <div className="relative max-w-2xl mx-auto">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-600" />
         <Input
           placeholder="Search for help..."
           value={searchQuery}
@@ -118,8 +118,8 @@ export default function HelpPage() {
               <Video className="h-6 w-6 text-furbridge-orange" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">Video Tutorials</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold text-gray-900">Video Tutorials</h3>
+              <p className="text-sm text-gray-600">
                 Step-by-step guides to get you started
               </p>
             </div>
@@ -132,8 +132,8 @@ export default function HelpPage() {
               <MessageCircle className="h-6 w-6 text-furbridge-teal" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">Live Chat</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold text-gray-900">Live Chat</h3>
+              <p className="text-sm text-gray-600">
                 Get instant help from our support team
               </p>
             </div>
@@ -146,8 +146,8 @@ export default function HelpPage() {
               <Mail className="h-6 w-6 text-furbridge-warm-gray" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">Email Support</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold text-gray-900">Email Support</h3>
+              <p className="text-sm text-gray-600">
                 Send us a message and we'll respond within 24 hours
               </p>
             </div>
@@ -176,31 +176,31 @@ export default function HelpPage() {
       {/* FAQ Section */}
       <FurbridgeCard className="p-6">
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-foreground">
+          <h2 className="text-2xl font-semibold text-gray-900">
             Frequently Asked Questions
           </h2>
 
           {filteredFAQs.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">
+              <p className="text-gray-600">
                 No questions found matching your search.
               </p>
             </div>
           ) : (
             <Accordion type="single" collapsible className="space-y-2">
               {filteredFAQs.map((faq) => (
-                <AccordionItem key={faq.id} value={faq.id} className="border border-border rounded-lg px-4">
+                <AccordionItem key={faq.id} value={faq.id} className="border border-gray-200 rounded-lg px-4">
                   <AccordionTrigger className="text-left hover:no-underline">
                     <div className="flex items-start space-x-3">
                       <Badge variant="outline" className="text-xs mt-1">
                         {categories.find(cat => cat.id === faq.category)?.label}
                       </Badge>
-                      <span className="font-medium text-foreground">
+                      <span className="font-medium text-gray-900">
                         {faq.question}
                       </span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pt-2 pb-4">
+                  <AccordionContent className="text-gray-600 pt-2 pb-4">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -213,10 +213,10 @@ export default function HelpPage() {
       {/* Contact Section */}
       <FurbridgeCard className="p-8 text-center">
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-foreground">
+          <h3 className="text-xl font-semibold text-gray-900">
             Still need help?
           </h3>
-          <p className="text-muted-foreground">
+          <p className="text-gray-600">
             Our support team is here to help you preserve your family's precious stories.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

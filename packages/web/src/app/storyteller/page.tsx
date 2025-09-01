@@ -95,12 +95,12 @@ export default function StorytellerHomePage() {
     return (
       <div className="space-y-8">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-muted rounded w-64"></div>
-          <div className="h-4 bg-muted rounded w-96"></div>
+          <div className="h-8 bg-gray-100 rounded w-64"></div>
+          <div className="h-4 bg-gray-100 rounded w-96"></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2].map((i) => (
-            <div key={i} className="h-48 bg-muted rounded-lg animate-pulse"></div>
+            <div key={i} className="h-48 bg-gray-100 rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -111,26 +111,26 @@ export default function StorytellerHomePage() {
     <div className="space-y-8">
       {/* Welcome Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold text-foreground">
+        <h1 className="text-3xl font-bold text-gray-900">
           Welcome back, Storyteller!
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-gray-600">
           Ready to share more of your story?
         </p>
       </div>
 
       {/* Active Projects */}
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-foreground">Your Projects</h2>
+        <h2 className="text-2xl font-semibold text-gray-900">Your Projects</h2>
         
         {projects.length === 0 ? (
           <FurbridgeCard className="p-8 text-center">
             <div className="space-y-4">
               <div className="text-6xl">📖</div>
-              <h3 className="text-xl font-semibold text-foreground">
+              <h3 className="text-xl font-semibold text-gray-900">
                 No Active Projects
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-600">
                 You'll see your story projects here once a facilitator invites you.
               </p>
             </div>
@@ -143,10 +143,10 @@ export default function StorytellerHomePage() {
                   {/* Project Header */}
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-lg font-semibold text-foreground">
+                      <h3 className="text-lg font-semibold text-gray-900">
                         {project.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-gray-600">
                         with {project.facilitator_name}
                       </p>
                     </div>
@@ -161,8 +161,8 @@ export default function StorytellerHomePage() {
                   {/* Progress */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Progress</span>
-                      <span className="text-foreground">
+                      <span className="text-gray-600">Progress</span>
+                      <span className="text-gray-900">
                         {project.completed_prompts} of {project.total_prompts} prompts
                       </span>
                     </div>
@@ -170,7 +170,7 @@ export default function StorytellerHomePage() {
                   </div>
 
                   {/* Last Activity */}
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <div className="flex items-center justify-between text-sm text-gray-600">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
                       <span>Last activity {formatLastActivity(project.last_activity)}</span>
@@ -194,7 +194,7 @@ export default function StorytellerHomePage() {
       {/* Recent Prompts */}
       {recentPrompts.length > 0 && (
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-foreground">Recent Prompts</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">Recent Prompts</h2>
           
           <div className="space-y-4">
             {recentPrompts.map((prompt) => (
@@ -205,11 +205,11 @@ export default function StorytellerHomePage() {
                       <Badge variant="outline" className="text-xs">
                         {prompt.category}
                       </Badge>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-gray-600">
                         ~{prompt.estimated_time} min
                       </span>
                     </div>
-                    <p className="text-foreground">{prompt.text}</p>
+                    <p className="text-gray-900">{prompt.text}</p>
                   </div>
                   <Link href="/storyteller/record">
                     <FurbridgeButton variant="outline" size="sm">
@@ -226,7 +226,7 @@ export default function StorytellerHomePage() {
 
       {/* Quick Actions */}
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-foreground">Quick Actions</h2>
+        <h2 className="text-2xl font-semibold text-gray-900">Quick Actions</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link href="/storyteller/record">
@@ -236,8 +236,8 @@ export default function StorytellerHomePage() {
                   <Mic className="h-6 w-6 text-furbridge-orange" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">Start Recording</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-semibold text-gray-900">Start Recording</h3>
+                  <p className="text-sm text-gray-600">
                     Begin a new story session
                   </p>
                 </div>
@@ -252,8 +252,8 @@ export default function StorytellerHomePage() {
                   <CheckCircle className="h-6 w-6 text-furbridge-teal" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">Get Help</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-semibold text-gray-900">Get Help</h3>
+                  <p className="text-sm text-gray-600">
                     Tips and guidance
                   </p>
                 </div>

@@ -55,7 +55,7 @@ export default function StorytellerLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-furbridge-orange"></div>
       </div>
     )
@@ -66,15 +66,15 @@ export default function StorytellerLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-border bg-card">
+      <header className="border-b border-gray-200 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link href="/storyteller" className="flex items-center space-x-2">
               <div className="text-2xl font-bold text-furbridge-orange">Saga</div>
-              <span className="text-sm text-muted-foreground">Storyteller</span>
+              <span className="text-sm text-gray-600">Storyteller</span>
             </Link>
 
             {/* Navigation */}
@@ -94,12 +94,12 @@ export default function StorytellerLayout({
                   </AvatarFallback>
                 </Avatar>
                 <div className="hidden sm:block">
-                  <div className="text-sm font-medium text-foreground">
+                  <div className="text-sm font-medium text-gray-900">
                     {user.user_metadata?.full_name || user.email}
                   </div>
                   <button
                     onClick={handleSignOut}
-                    className="text-xs text-muted-foreground hover:text-foreground"
+                    className="text-xs text-gray-600 hover:text-gray-900"
                   >
                     Sign Out
                   </button>
@@ -116,7 +116,7 @@ export default function StorytellerLayout({
       </main>
 
       {/* Mobile Navigation */}
-      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border">
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
         <div className="flex justify-around py-2">
           <Link 
             href="/storyteller" 
@@ -127,7 +127,7 @@ export default function StorytellerLayout({
           </Link>
           <Link 
             href="/storyteller/record" 
-            className="flex flex-col items-center py-2 px-3 text-xs text-muted-foreground"
+            className="flex flex-col items-center py-2 px-3 text-xs text-gray-600"
           >
             <div className="h-5 w-5 mb-1 rounded-full bg-furbridge-orange flex items-center justify-center">
               <div className="h-2 w-2 bg-white rounded-full"></div>
@@ -136,7 +136,7 @@ export default function StorytellerLayout({
           </Link>
           <Link 
             href="/storyteller/help" 
-            className="flex flex-col items-center py-2 px-3 text-xs text-muted-foreground"
+            className="flex flex-col items-center py-2 px-3 text-xs text-gray-600"
           >
             <HelpCircle className="h-5 w-5 mb-1" />
             <span>Help</span>

@@ -148,12 +148,12 @@ export default function ProjectSettingsPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
-          <div className="h-8 w-8 bg-muted rounded animate-pulse"></div>
-          <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
+          <div className="h-8 w-8 bg-gray-100 rounded animate-pulse"></div>
+          <div className="h-8 w-64 bg-gray-100 rounded animate-pulse"></div>
         </div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-muted rounded-lg animate-pulse"></div>
+            <div key={i} className="h-32 bg-gray-100 rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -163,7 +163,7 @@ export default function ProjectSettingsPage() {
   if (!project) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Project not found</h1>
         <Link href="/dashboard">
           <FurbridgeButton variant="outline" className="mt-4">
             Back to Dashboard
@@ -182,13 +182,13 @@ export default function ProjectSettingsPage() {
             <ArrowLeft className="h-5 w-5" />
           </FurbridgeButton>
         </Link>
-        <h1 className="text-3xl font-bold text-foreground">Project Settings</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Project Settings</h1>
       </div>
 
       {/* Project Details */}
       <FurbridgeCard className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-foreground">Project Details</h2>
+          <h2 className="text-xl font-semibold text-gray-900">Project Details</h2>
           
           <div className="space-y-4">
             <div>
@@ -210,7 +210,7 @@ export default function ProjectSettingsPage() {
               </div>
             </div>
 
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               Created on {new Date(project.created_at).toLocaleDateString()}
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function ProjectSettingsPage() {
       <FurbridgeCard className="p-6">
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-foreground">Members</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Members</h2>
             <FurbridgeButton variant="outline" onClick={handleInviteFacilitator}>
               <UserPlus className="h-4 w-4 mr-2" />
               Invite Co-Facilitator
@@ -230,7 +230,7 @@ export default function ProjectSettingsPage() {
 
           <div className="space-y-4">
             {project.members.map((member) => (
-              <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg">
+              <div key={member.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                 <div className="flex items-center space-x-4">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={member.avatar} />
@@ -239,8 +239,8 @@ export default function ProjectSettingsPage() {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium text-foreground">{member.name}</div>
-                    <div className="text-sm text-muted-foreground">{member.email}</div>
+                    <div className="font-medium text-gray-900">{member.name}</div>
+                    <div className="text-sm text-gray-600">{member.email}</div>
                   </div>
                 </div>
 
@@ -285,13 +285,13 @@ export default function ProjectSettingsPage() {
       {/* Data Management */}
       <FurbridgeCard className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-foreground">Data Management</h2>
+          <h2 className="text-xl font-semibold text-gray-900">Data Management</h2>
           
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-4 border border-border rounded-lg">
+            <div className="flex justify-between items-center p-4 border border-gray-200 rounded-lg">
               <div>
-                <div className="font-medium text-foreground">Export Full Archive</div>
-                <div className="text-sm text-muted-foreground">
+                <div className="font-medium text-gray-900">Export Full Archive</div>
+                <div className="text-sm text-gray-600">
                   Download all stories, transcripts, and media files
                 </div>
               </div>
