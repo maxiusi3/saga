@@ -1,204 +1,192 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Badge } from '@/components/ui/badge'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Mic, Play, HelpCircle, MessageCircle, Phone } from 'lucide-react'
 
 export default function StorytellerHelpPage() {
-  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'extra-large'>('normal')
-  const [highContrast, setHighContrast] = useState(false)
-
-  React.useEffect(() => {
-    // Load accessibility preferences from localStorage
-    const savedFontSize = localStorage.getItem('storyteller-font-size') as typeof fontSize
-    const savedHighContrast = localStorage.getItem('storyteller-high-contrast') === 'true'
-    
-    if (savedFontSize) setFontSize(savedFontSize)
-    if (savedHighContrast) setHighContrast(savedHighContrast)
-  }, [])
-
-  const handleFontSizeChange = (newSize: typeof fontSize) => {
-    setFontSize(newSize)
-    localStorage.setItem('storyteller-font-size', newSize)
-  }
-
-  const handleHighContrastToggle = () => {
-    const newValue = !highContrast
-    setHighContrast(newValue)
-    localStorage.setItem('storyteller-high-contrast', newValue.toString())
-  }
-
-  const getFontSizeClass = () => {
-    switch (fontSize) {
-      case 'large': return 'text-lg'
-      case 'extra-large': return 'text-xl'
-      default: return 'text-base'
+  const tips = [
+    {
+      icon: <Mic className="h-6 w-6 text-furbridge-orange" />,
+      title: 'Recording Tips',
+      content: 'Find a quiet space, speak clearly, and don\'t worry about being perfect. Your authentic voice is what matters most.'
+    },
+    {
+      icon: <Play className="h-6 w-6 text-furbridge-teal" />,
+      title: 'Getting Started',
+      content: 'Start with simple memories and let the conversation flow naturally. The prompts are there to guide you, not limit you.'
+    },
+    {
+      icon: <HelpCircle className="h-6 w-6 text-furbridge-warm-gray" />,
+      title: 'Need Help?',
+      content: 'If you get stuck or have questions, don\'t hesitate to ask your facilitator or contact our support team.'
     }
-  }
+  ]
 
-  const getContrastClass = () => {
-    return highContrast ? 'bg-black text-white' : 'bg-white text-gray-900'
-  }
+  const faqs = [
+    {
+      question: 'How do I start recording my first story?',
+      answer: 'Simply tap the "Record" button and start speaking. The app will guide you with prompts, but feel free to share whatever comes to mind. You can pause anytime if you need a break.'
+    },
+    {
+      question: 'What if I make a mistake while recording?',
+      answer: 'Don\'t worry about mistakes! You can pause, take a breath, and continue. Small mistakes make your story more authentic and human. You can always re-record if needed.'
+    },
+    {
+      question: 'How long should my stories be?',
+      answer: 'There\'s no perfect length. Some stories might be 2 minutes, others might be 20 minutes. Share as much or as little as feels right for each memory.'
+    },
+    {
+      question: 'What if I can\'t think of what to say?',
+      answer: 'The app provides helpful prompts to get you started. Think about specific moments, people, or places. Even small details can spark bigger memories.'
+    },
+    {
+      question: 'Who can hear my stories?',
+      answer: 'Only the family members invited to your project can hear your stories. Your memories are private and secure.'
+    },
+    {
+      question: 'Can I listen to my stories after recording?',
+      answer: 'Yes! You can listen to all your recorded stories anytime. Your family members can also listen, leave comments, and ask follow-up questions.'
+    }
+  ]
 
   return (
-    <div className={`min-h-screen p-4 ${getContrastClass()} ${getFontSizeClass()}`}>
-      {/* Accessibility Controls */}
-      <div className="mb-6 flex flex-wrap gap-4 justify-end">
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-medium">Font Size:</label>
-          <select 
-            value={fontSize} 
-            onChange={(e) => handleFontSizeChange(e.target.value as typeof fontSize)}
-            className={`px-3 py-1 border rounded ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-300'}`}
-          >
-            <option value="normal">Normal</option>
-            <option value="large">Large</option>
-            <option value="extra-large">Extra Large</option>
-          </select>
-        </div>
-        <Button
-          onClick={handleHighContrastToggle}
-          variant={highContrast ? "default" : "outline"}
-          size="sm"
-        >
-          {highContrast ? 'Normal Contrast' : 'High Contrast'}
-        </Button>
+    <div className="max-w-3xl mx-auto space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-4">
+        <h1 className="text-3xl font-bold text-foreground">Storyteller Guide</h1>
+        <p className="text-lg text-muted-foreground">
+          Everything you need to know about sharing your stories
+        </p>
       </div>
 
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            Help & Support
-          </h1>
-          <p className="text-lg text-gray-600">
-            Everything you need to know about sharing your stories
+      {/* Quick Tips */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {tips.map((tip, index) => (
+          <FurbridgeCard key={index} className="p-6 text-center">
+            <div className="space-y-4">
+              <div className="w-12 h-12 bg-muted/50 rounded-lg flex items-center justify-center mx-auto">
+                {tip.icon}
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground mb-2">{tip.title}</h3>
+                <p className="text-sm text-muted-foreground">{tip.content}</p>
+              </div>
+            </div>
+          </FurbridgeCard>
+        ))}
+      </div>
+
+      {/* Getting Started Guide */}
+      <FurbridgeCard className="p-8">
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold text-foreground">Getting Started</h2>
+          
+          <div className="space-y-4">
+            <div className="flex items-start space-x-4">
+              <div className="w-8 h-8 bg-furbridge-orange text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                1
+              </div>
+              <div>
+                <h3 className="font-medium text-foreground">Choose a Comfortable Space</h3>
+                <p className="text-sm text-muted-foreground">
+                  Find a quiet, comfortable place where you won't be interrupted. This could be your favorite chair, the kitchen table, or anywhere you feel relaxed.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <div className="w-8 h-8 bg-furbridge-orange text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                2
+              </div>
+              <div>
+                <h3 className="font-medium text-foreground">Read the Prompt</h3>
+                <p className="text-sm text-muted-foreground">
+                  Each recording session starts with a prompt to help guide your story. Take a moment to think about the question before you start recording.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <div className="w-8 h-8 bg-furbridge-orange text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                3
+              </div>
+              <div>
+                <h3 className="font-medium text-foreground">Start Recording</h3>
+                <p className="text-sm text-muted-foreground">
+                  Press the record button and start sharing your memory. Speak naturally, as if you're talking to a close friend or family member.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <div className="w-8 h-8 bg-furbridge-orange text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                4
+              </div>
+              <div>
+                <h3 className="font-medium text-foreground">Take Your Time</h3>
+                <p className="text-sm text-muted-foreground">
+                  You can pause anytime to collect your thoughts. There's no rush - the most important thing is sharing your authentic story.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </FurbridgeCard>
+
+      {/* FAQ Section */}
+      <FurbridgeCard className="p-6">
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold text-foreground">Common Questions</h2>
+
+          <Accordion type="single" collapsible className="space-y-2">
+            {faqs.map((faq, index) => (
+              <AccordionItem key={index} value={index.toString()} className="border border-border rounded-lg px-4">
+                <AccordionTrigger className="text-left hover:no-underline">
+                  <span className="font-medium text-foreground">{faq.question}</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground pt-2 pb-4">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </FurbridgeCard>
+
+      {/* Encouragement Section */}
+      <FurbridgeCard className="p-8 bg-gradient-to-r from-furbridge-orange/5 to-furbridge-teal/5">
+        <div className="text-center space-y-4">
+          <h3 className="text-xl font-semibold text-foreground">Remember</h3>
+          <p className="text-muted-foreground italic max-w-2xl mx-auto">
+            "Your stories are precious gifts to your family. Every memory you share, 
+            no matter how small it might seem to you, becomes a treasure for future generations. 
+            Your voice, your experiences, and your wisdom are irreplaceable."
           </p>
         </div>
+      </FurbridgeCard>
 
-        {/* Getting Started */}
-        <Card className={`p-6 mb-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-blue-50 border-blue-200'}`}>
-          <h2 className="text-2xl font-bold mb-4">Getting Started</h2>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">1. Read Today's Prompt</h3>
-              <p>Each day, you'll see a new question or topic designed to help you remember and share your experiences. Take your time to think about it.</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">2. Click "Start Recording"</h3>
-              <p>When you're ready, click the green recording button. You'll be asked to allow your browser to use your microphone.</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">3. Tell Your Story</h3>
-              <p>Speak naturally and share as much or as little as you'd like. There's no time limit, but most stories are 2-10 minutes long.</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">4. Review and Send</h3>
-              <p>After recording, you can listen to your story and re-record if needed. When you're happy with it, send it to your family.</p>
-            </div>
+      {/* Contact Support */}
+      <FurbridgeCard className="p-6 text-center">
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-foreground">Need More Help?</h3>
+          <p className="text-muted-foreground">
+            Our support team is here to help you every step of the way.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <FurbridgeButton variant="orange">
+              <MessageCircle className="h-4 w-4 mr-2" />
+              Chat with Support
+            </FurbridgeButton>
+            <FurbridgeButton variant="outline">
+              <Phone className="h-4 w-4 mr-2" />
+              Call Support
+            </FurbridgeButton>
           </div>
-        </Card>
-
-        {/* Recording Tips */}
-        <Card className={`p-6 mb-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-green-50 border-green-200'}`}>
-          <h2 className="text-2xl font-bold mb-4">Recording Tips</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">🎤 Good Audio Quality</h3>
-              <ul className="space-y-1 text-sm">
-                <li>• Find a quiet room</li>
-                <li>• Speak clearly and at normal volume</li>
-                <li>• Stay close to your device</li>
-                <li>• Avoid background noise</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">💭 Story Ideas</h3>
-              <ul className="space-y-1 text-sm">
-                <li>• Share specific memories</li>
-                <li>• Include names, dates, and places</li>
-                <li>• Describe how things made you feel</li>
-                <li>• Don't worry about being perfect</li>
-              </ul>
-            </div>
-          </div>
-        </Card>
-
-        {/* Technical Help */}
-        <Card className={`p-6 mb-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-yellow-50 border-yellow-200'}`}>
-          <h2 className="text-2xl font-bold mb-4">Technical Help</h2>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Microphone Not Working?</h3>
-              <ul className="space-y-1 text-sm">
-                <li>• Make sure you clicked "Allow" when asked for microphone permission</li>
-                <li>• Check that your microphone is plugged in and working</li>
-                <li>• Try refreshing the page and starting again</li>
-                <li>• Make sure no other apps are using your microphone</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Can't See the Text Clearly?</h3>
-              <ul className="space-y-1 text-sm">
-                <li>• Use the "Font Size" dropdown at the top of the page</li>
-                <li>• Try the "High Contrast" button for better visibility</li>
-                <li>• You can also zoom in using your browser (Ctrl/Cmd and +)</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Recording Didn't Save?</h3>
-              <ul className="space-y-1 text-sm">
-                <li>• Make sure you clicked "Send to Family" after recording</li>
-                <li>• Check your internet connection</li>
-                <li>• Try recording a shorter story (under 10 minutes)</li>
-                <li>• Contact support if the problem continues</li>
-              </ul>
-            </div>
-          </div>
-        </Card>
-
-        {/* Contact Support */}
-        <Card className={`p-6 mb-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-red-50 border-red-200'}`}>
-          <h2 className="text-2xl font-bold mb-4">Need More Help?</h2>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Contact Your Family</h3>
-              <p>The family member who invited you to Saga can help with any questions about your project or stories.</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Email Support</h3>
-              <p>For technical issues, you can email us at:</p>
-              <a 
-                href="mailto:support@saga.family" 
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                support@saga.family
-              </a>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Phone Support</h3>
-              <p>Call us during business hours (9 AM - 5 PM EST):</p>
-              <a 
-                href="tel:+1-555-SAGA-HELP" 
-                className="text-blue-600 hover:text-blue-800 font-medium text-lg"
-              >
-                1-555-SAGA-HELP
-              </a>
-            </div>
-          </div>
-        </Card>
-
-        {/* Back to Dashboard */}
-        <div className="text-center">
-          <Button
-            onClick={() => window.location.href = '/storyteller'}
-            size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
-          >
-            ← Back to Your Stories
-          </Button>
         </div>
-      </div>
+      </FurbridgeCard>
     </div>
   )
 }

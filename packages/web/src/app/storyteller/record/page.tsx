@@ -1,406 +1,337 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { WebAudioRecorder } from '@/components/recording/WebAudioRecorder'
-import { RecordingDraftRecovery } from '@/components/recording/RecordingDraftRecovery'
-import { MobileRecordingOptimizer } from '@/components/recording/MobileRecordingOptimizer'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { api } from '@/lib/api'
-import { useAuthStore } from '@/stores/auth-store'
+import { useState, useEffect, useRef } from 'react'
+import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
+import { Mic, MicOff, Square, Play, Pause, RotateCcw, Send } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
-interface AIPrompt {
+interface RecordingPrompt {
   id: string
   text: string
-  audioUrl?: string
-  chapterName?: string
+  category: string
+  estimated_time: number
+  follow_up_questions?: string[]
 }
 
-// Component that uses useSearchParams - needs to be wrapped in Suspense
-function StorytellerRecordPageContent() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const { user, isAuthenticated } = useAuthStore()
+type RecordingState = 'idle' | 'recording' | 'paused' | 'completed'
+
+export default function RecordPage() {
+  const [currentPrompt, setCurrentPrompt] = useState<RecordingPrompt | null>(null)
+  const [recordingState, setRecordingState] = useState<RecordingState>('idle')
+  const [recordingTime, setRecordingTime] = useState(0)
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [loading, setLoading] = useState(true)
   
-  const [projectId, setProjectId] = useState<string | null>(null)
-  const [promptId, setPromptId] = useState<string | null>(null)
-  const [prompt, setPrompt] = useState<AIPrompt | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [recordingBlob, setRecordingBlob] = useState<Blob | null>(null)
-  const [recordingDuration, setRecordingDuration] = useState(0)
-  const [isUploading, setIsUploading] = useState(false)
-  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'extra-large'>('normal')
-  const [highContrast, setHighContrast] = useState(false)
-  const [showDraftRecovery, setShowDraftRecovery] = useState(true)
-  const [hasDraftRecovered, setHasDraftRecovered] = useState(false)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/auth/signin?redirect=/storyteller/record')
-      return
+    // Load current prompt - mock data
+    const mockPrompt: RecordingPrompt = {
+      id: '1',
+      text: 'Tell me about your first job. What was it like walking in on your first day?',
+      category: 'Career',
+      estimated_time: 5,
+      follow_up_questions: [
+        'What were your colleagues like?',
+        'What was the most challenging part?',
+        'What did you learn from that experience?'
+      ]
     }
 
-    const urlProjectId = searchParams.get('projectId')
-    const urlPromptId = searchParams.get('promptId')
-    
-    if (urlProjectId && urlPromptId) {
-      setProjectId(urlProjectId)
-      setPromptId(urlPromptId)
-      loadPrompt(urlProjectId, urlPromptId)
-    } else {
-      setError('Missing project or prompt information')
-      setIsLoading(false)
+    setTimeout(() => {
+      setCurrentPrompt(mockPrompt)
+      setLoading(false)
+    }, 500)
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
     }
+  }, [])
 
-    // Load accessibility preferences
-    const savedFontSize = localStorage.getItem('storyteller-font-size') as typeof fontSize
-    const savedHighContrast = localStorage.getItem('storyteller-high-contrast') === 'true'
-    
-    if (savedFontSize) setFontSize(savedFontSize)
-    if (savedHighContrast) setHighContrast(savedHighContrast)
-  }, [isAuthenticated, searchParams, router])
-
-  const loadPrompt = async (projectId: string, promptId: string) => {
+  const startRecording = async () => {
     try {
-      setIsLoading(true)
-      const response = await api.get(`/prompts/${promptId}?projectId=${projectId}`)
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const mediaRecorder = new MediaRecorder(stream)
       
-      if (response.data?.prompt) {
-        setPrompt(response.data.prompt)
-      } else {
-        setError('Prompt not found')
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data)
+        }
       }
-    } catch (err: any) {
-      console.error('Failed to load prompt:', err)
-      setError('Failed to load prompt. Please try again.')
-    } finally {
-      setIsLoading(false)
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' })
+        setAudioBlob(audioBlob)
+        stream.getTracks().forEach(track => track.stop())
+      }
+
+      mediaRecorder.start()
+      setRecordingState('recording')
+      
+      // Start timer
+      timerRef.current = setInterval(() => {
+        setRecordingTime(prev => prev + 1)
+      }, 1000)
+
+    } catch (error) {
+      console.error('Error starting recording:', error)
+      alert('Unable to access microphone. Please check your permissions.')
     }
   }
 
-  const handleRecordingComplete = (audioBlob: Blob, duration: number) => {
-    setRecordingBlob(audioBlob)
-    setRecordingDuration(duration)
-  }
-
-  const handleDraftRecovered = (draft: any) => {
-    setRecordingBlob(draft.audioBlob)
-    setRecordingDuration(draft.duration)
-    setShowDraftRecovery(false)
-    setHasDraftRecovered(true)
-  }
-
-  const handleDraftDiscarded = () => {
-    setShowDraftRecovery(false)
-  }
-
-  const handleRecordingError = (errorMessage: string) => {
-    setError(errorMessage)
-  }
-
-  const handleSendToFamily = async () => {
-    if (!recordingBlob || !projectId || !promptId || !user) {
-      setError('Missing recording or project information')
-      return
+  const pauseRecording = () => {
+    if (mediaRecorderRef.current && recordingState === 'recording') {
+      mediaRecorderRef.current.pause()
+      setRecordingState('paused')
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
     }
+  }
 
+  const resumeRecording = () => {
+    if (mediaRecorderRef.current && recordingState === 'paused') {
+      mediaRecorderRef.current.resume()
+      setRecordingState('recording')
+      timerRef.current = setInterval(() => {
+        setRecordingTime(prev => prev + 1)
+      }, 1000)
+    }
+  }
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop()
+      setRecordingState('completed')
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }
+
+  const resetRecording = () => {
+    setRecordingState('idle')
+    setRecordingTime(0)
+    setAudioBlob(null)
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+    }
+  }
+
+  const submitRecording = async () => {
+    if (!audioBlob || !currentPrompt) return
+
+    setIsSubmitting(true)
+    
     try {
-      setIsUploading(true)
-      setError(null)
-
-      // Create FormData for file upload
-      const formData = new FormData()
-      formData.append('audio', recordingBlob, 'story.webm')
-      formData.append('projectId', projectId)
-      formData.append('promptId', promptId)
-      formData.append('duration', recordingDuration.toString())
-
-      const response = await api.post('/stories/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-
-      if (response.data?.success) {
-        // Success! Redirect to success page
-        router.push(`/storyteller/success?projectId=${projectId}&storyId=${response.data.story.id}`)
-      } else {
-        setError('Failed to upload story. Please try again.')
-      }
-    } catch (err: any) {
-      console.error('Failed to upload story:', err)
-      setError(err.response?.data?.error || 'Failed to upload story. Please try again.')
+      // TODO: Upload audio to Supabase Storage and create story record
+      // const formData = new FormData()
+      // formData.append('audio', audioBlob, 'recording.wav')
+      // formData.append('prompt_id', currentPrompt.id)
+      
+      // Simulate upload
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      router.push('/storyteller/success')
+    } catch (error) {
+      console.error('Error submitting recording:', error)
+      alert('Failed to submit recording. Please try again.')
     } finally {
-      setIsUploading(false)
+      setIsSubmitting(false)
     }
   }
 
-  const playPromptAudio = () => {
-    if (prompt?.audioUrl) {
-      const audio = new Audio(prompt.audioUrl)
-      audio.play().catch(error => {
-        console.error('Failed to play audio:', error)
-      })
-    }
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
   }
 
-  const handleFontSizeChange = (newSize: typeof fontSize) => {
-    setFontSize(newSize)
-    localStorage.setItem('storyteller-font-size', newSize)
-  }
-
-  const handleHighContrastToggle = () => {
-    const newValue = !highContrast
-    setHighContrast(newValue)
-    localStorage.setItem('storyteller-high-contrast', newValue.toString())
-  }
-
-  const getFontSizeClass = () => {
-    switch (fontSize) {
-      case 'large': return 'text-lg'
-      case 'extra-large': return 'text-xl'
-      default: return 'text-base'
-    }
-  }
-
-  const getContrastClass = () => {
-    return highContrast ? 'bg-black text-white' : 'bg-white text-gray-900'
-  }
-
-  if (!isAuthenticated) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p>Redirecting to sign in...</p>
-        </div>
+      <div className="flex items-center justify-center py-16">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-furbridge-orange"></div>
       </div>
     )
   }
 
-  if (isLoading) {
+  if (!currentPrompt) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-lg">Loading your story prompt...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (error && !prompt) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-md mx-auto p-6">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Unable to Load</h1>
-          <p className="text-gray-600 mb-6">{error}</p>
-          <Button
-            onClick={() => router.push('/storyteller')}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Back to Dashboard
-          </Button>
-        </div>
+      <div className="text-center py-16">
+        <h1 className="text-2xl font-bold text-foreground">No prompt available</h1>
+        <p className="text-muted-foreground mt-2">Please check back later.</p>
       </div>
     )
   }
 
   return (
-    <MobileRecordingOptimizer>
-      <div className={`min-h-screen p-4 ${getContrastClass()} ${getFontSizeClass()}`}>
-      {/* Accessibility Controls */}
-      <div className="mb-6 flex flex-wrap gap-4 justify-between items-center">
-        <Button
-          onClick={() => router.push('/storyteller')}
-          variant="outline"
-          size="sm"
-        >
-          ← Back to Dashboard
-        </Button>
-        
-        <div className="flex flex-wrap gap-4">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium">Font Size:</label>
-            <select 
-              value={fontSize} 
-              onChange={(e) => handleFontSizeChange(e.target.value as typeof fontSize)}
-              className={`px-3 py-1 border rounded ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-300'}`}
-            >
-              <option value="normal">Normal</option>
-              <option value="large">Large</option>
-              <option value="extra-large">Extra Large</option>
-            </select>
+    <div className="max-w-2xl mx-auto space-y-8">
+      {/* Prompt Card */}
+      <FurbridgeCard className="p-8">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <Badge variant="outline">{currentPrompt.category}</Badge>
+            <span className="text-sm text-muted-foreground">
+              ~{currentPrompt.estimated_time} min
+            </span>
           </div>
-          <Button
-            onClick={handleHighContrastToggle}
-            variant={highContrast ? "default" : "outline"}
-            size="sm"
-          >
-            {highContrast ? 'Normal Contrast' : 'High Contrast'}
-          </Button>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            Record Your Story
+          
+          <h1 className="text-2xl font-semibold text-foreground">
+            {currentPrompt.text}
           </h1>
-          <p className="text-lg text-gray-600">
-            Take your time and share your memories in your own words
-          </p>
+
+          {currentPrompt.follow_up_questions && (
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium text-muted-foreground">
+                Consider these follow-up questions:
+              </h3>
+              <ul className="space-y-1">
+                {currentPrompt.follow_up_questions.map((question, index) => (
+                  <li key={index} className="text-sm text-muted-foreground">
+                    • {question}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
+      </FurbridgeCard>
 
-        {/* Current Prompt */}
-        {prompt && (
-          <Card className={`p-6 mb-8 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-blue-50 border-blue-200'}`}>
-            <h2 className="text-2xl font-bold mb-4 text-center">
-              Today's Prompt
-            </h2>
-            
-            {prompt.chapterName && (
-              <div className={`text-sm font-medium px-3 py-1 rounded-full inline-block mb-4 ${
-                highContrast ? 'bg-gray-700 text-gray-200' : 'bg-blue-100 text-blue-800'
-              }`}>
-                {prompt.chapterName}
-              </div>
-            )}
-            
-            <div className={`p-4 rounded-lg ${
-              highContrast ? 'bg-gray-700' : 'bg-white'
-            } border-l-4 border-blue-500 mb-4`}>
-              <p className="text-lg leading-relaxed">
-                {prompt.text}
-              </p>
+      {/* Recording Interface */}
+      <FurbridgeCard className="p-8">
+        <div className="space-y-6">
+          {/* Recording Status */}
+          <div className="text-center space-y-2">
+            <div className="text-3xl font-mono text-foreground">
+              {formatTime(recordingTime)}
             </div>
-            
-            {prompt.audioUrl && (
-              <div className="text-center">
-                <Button
-                  onClick={playPromptAudio}
+            <div className="text-sm text-muted-foreground">
+              {recordingState === 'idle' && 'Ready to record'}
+              {recordingState === 'recording' && 'Recording...'}
+              {recordingState === 'paused' && 'Recording paused'}
+              {recordingState === 'completed' && 'Recording completed'}
+            </div>
+          </div>
+
+          {/* Progress Bar (estimated time) */}
+          {recordingState !== 'idle' && (
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Progress</span>
+                <span>{Math.min(100, Math.round((recordingTime / (currentPrompt.estimated_time * 60)) * 100))}%</span>
+              </div>
+              <Progress 
+                value={Math.min(100, (recordingTime / (currentPrompt.estimated_time * 60)) * 100)} 
+                className="h-2"
+              />
+            </div>
+          )}
+
+          {/* Recording Controls */}
+          <div className="flex justify-center space-x-4">
+            {recordingState === 'idle' && (
+              <FurbridgeButton
+                variant="orange"
+                size="lg"
+                onClick={startRecording}
+                className="px-8"
+              >
+                <Mic className="h-5 w-5 mr-2" />
+                Start Recording
+              </FurbridgeButton>
+            )}
+
+            {recordingState === 'recording' && (
+              <>
+                <FurbridgeButton
                   variant="outline"
-                  size="sm"
+                  size="lg"
+                  onClick={pauseRecording}
                 >
-                  🔊 Listen to Prompt
-                </Button>
-              </div>
+                  <Pause className="h-5 w-5 mr-2" />
+                  Pause
+                </FurbridgeButton>
+                <FurbridgeButton
+                  variant="teal"
+                  size="lg"
+                  onClick={stopRecording}
+                >
+                  <Square className="h-5 w-5 mr-2" />
+                  Stop
+                </FurbridgeButton>
+              </>
             )}
-          </Card>
-        )}
 
-        {/* Draft Recovery */}
-        {showDraftRecovery && projectId && promptId && (
-          <div className="mb-8">
-            <RecordingDraftRecovery
-              projectId={projectId}
-              promptId={promptId}
-              onDraftRecovered={handleDraftRecovered}
-              onDraftDiscarded={handleDraftDiscarded}
-            />
+            {recordingState === 'paused' && (
+              <>
+                <FurbridgeButton
+                  variant="orange"
+                  size="lg"
+                  onClick={resumeRecording}
+                >
+                  <Play className="h-5 w-5 mr-2" />
+                  Resume
+                </FurbridgeButton>
+                <FurbridgeButton
+                  variant="teal"
+                  size="lg"
+                  onClick={stopRecording}
+                >
+                  <Square className="h-5 w-5 mr-2" />
+                  Stop
+                </FurbridgeButton>
+              </>
+            )}
+
+            {recordingState === 'completed' && (
+              <>
+                <FurbridgeButton
+                  variant="outline"
+                  size="lg"
+                  onClick={resetRecording}
+                >
+                  <RotateCcw className="h-5 w-5 mr-2" />
+                  Re-record
+                </FurbridgeButton>
+                <FurbridgeButton
+                  variant="orange"
+                  size="lg"
+                  onClick={submitRecording}
+                  disabled={isSubmitting}
+                >
+                  <Send className="h-5 w-5 mr-2" />
+                  {isSubmitting ? 'Submitting...' : 'Submit Story'}
+                </FurbridgeButton>
+              </>
+            )}
           </div>
-        )}
 
-        {/* Recording Component */}
-        {(!showDraftRecovery || hasDraftRecovered) && (
-          <div className="mb-8">
-            <WebAudioRecorder
-              onRecordingComplete={handleRecordingComplete}
-              onError={handleRecordingError}
-              maxDuration={600} // 10 minutes
-              className={highContrast ? 'bg-gray-800 border-gray-600' : ''}
-              projectId={projectId || undefined}
-              promptId={promptId || undefined}
-              promptText={prompt?.text}
-              enableDraftSaving={true}
-            />
-          </div>
-        )}
-
-        {/* Error Display */}
-        {error && (
-          <Card className="p-4 mb-6 bg-red-50 border-red-200">
-            <div className="flex items-center space-x-2 text-red-800">
-              <span>⚠️</span>
-              <span>{error}</span>
-            </div>
-          </Card>
-        )}
-
-        {/* Send to Family Button */}
-        {recordingBlob && (
-          <Card className={`p-6 text-center ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-green-50 border-green-200'}`}>
-            <h3 className="text-xl font-bold mb-4">Ready to Share?</h3>
-            <p className="text-gray-600 mb-6">
-              Your story is ready! Click below to send it to your family.
-            </p>
-            <Button
-              onClick={handleSendToFamily}
-              disabled={isUploading}
-              size="lg"
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-bold"
-            >
-              {isUploading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Sending to Family...
-                </>
-              ) : (
-                '💌 Send to Family'
-              )}
-            </Button>
-          </Card>
-        )}
-
-        {/* Recording Tips */}
-        <Card className={`p-6 mt-8 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-yellow-50 border-yellow-200'}`}>
-          <h3 className="text-lg font-bold mb-3">Recording Tips</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <h4 className="font-semibold mb-2">🎤 For Best Audio Quality:</h4>
-              <ul className="space-y-1">
-                <li>• Find a quiet room</li>
-                <li>• Speak clearly and at normal volume</li>
-                <li>• Stay close to your device</li>
+          {/* Recording Tips */}
+          {recordingState === 'idle' && (
+            <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+              <h3 className="text-sm font-medium text-foreground">Recording Tips:</h3>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Find a quiet space with minimal background noise</li>
+                <li>• Speak clearly and at a comfortable pace</li>
+                <li>• Take your time - there's no rush</li>
+                <li>• You can pause and resume anytime</li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-2">💭 Storytelling Tips:</h4>
-              <ul className="space-y-1">
-                <li>• Include specific details and names</li>
-                <li>• Share how things made you feel</li>
-                <li>• Don't worry about being perfect</li>
-              </ul>
-            </div>
-          </div>
-        </Card>
-      </div>
+          )}
+        </div>
+      </FurbridgeCard>
     </div>
-    </MobileRecordingOptimizer>
-  )
-}
-
-// Loading component for Suspense fallback
-function StorytellerRecordPageLoading() {
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <p className="text-lg text-gray-600">Loading your story prompt...</p>
-      </div>
-    </div>
-  )
-}
-
-// Main export with Suspense boundary
-export default function StorytellerRecordPage() {
-  return (
-    <Suspense fallback={<StorytellerRecordPageLoading />}>
-      <StorytellerRecordPageContent />
-    </Suspense>
   )
 }

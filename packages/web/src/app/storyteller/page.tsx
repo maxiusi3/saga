@@ -1,137 +1,267 @@
 'use client'
 
-import React, { useEffect, useState, Suspense } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { StorytellerDashboard } from '@/components/storyteller/StorytellerDashboard'
-import { useAuthStore } from '@/stores/auth-store'
-import { api } from '@/lib/api'
+import { useState, useEffect } from 'react'
+import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
+import { Mic, Clock, CheckCircle } from 'lucide-react'
+import Link from 'next/link'
 
-// Component that uses useSearchParams - needs to be wrapped in Suspense
-function StorytellerPageContent() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const { user, isAuthenticated } = useAuthStore()
-  const [projectId, setProjectId] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+interface Project {
+  id: string
+  title: string
+  facilitator_name: string
+  progress: number
+  total_prompts: number
+  completed_prompts: number
+  last_activity: string
+  status: 'active' | 'completed' | 'paused'
+}
+
+interface RecentPrompt {
+  id: string
+  text: string
+  category: string
+  estimated_time: number
+}
+
+export default function StorytellerHomePage() {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [recentPrompts, setRecentPrompts] = useState<RecentPrompt[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/auth/signin?redirect=/storyteller')
-      return
+    const loadData = async () => {
+      // Mock data - replace with actual Supabase queries
+      const mockProjects: Project[] = [
+        {
+          id: '1',
+          title: "Dad's Life Story",
+          facilitator_name: 'Alex Smith',
+          progress: 65,
+          total_prompts: 20,
+          completed_prompts: 13,
+          last_activity: '2024-01-20T10:30:00Z',
+          status: 'active'
+        }
+      ]
+
+      const mockPrompts: RecentPrompt[] = [
+        {
+          id: '1',
+          text: 'Tell me about your first job. What was it like walking in on your first day?',
+          category: 'Career',
+          estimated_time: 5
+        },
+        {
+          id: '2',
+          text: 'What was your neighborhood like when you were growing up?',
+          category: 'Childhood',
+          estimated_time: 7
+        },
+        {
+          id: '3',
+          text: 'Describe a holiday tradition that was special to your family.',
+          category: 'Family',
+          estimated_time: 4
+        }
+      ]
+
+      setTimeout(() => {
+        setProjects(mockProjects)
+        setRecentPrompts(mockPrompts)
+        setLoading(false)
+      }, 1000)
     }
 
-    const urlProjectId = searchParams.get('projectId')
-    if (urlProjectId) {
-      setProjectId(urlProjectId)
-      setIsLoading(false)
+    loadData()
+  }, [])
+
+  const formatLastActivity = (timestamp: string) => {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
+    
+    if (diffInHours < 24) {
+      return `${diffInHours} hours ago`
     } else {
-      // Try to find the user's storyteller project
-      findStorytellerProject()
-    }
-  }, [isAuthenticated, searchParams, router])
-
-  const findStorytellerProject = async () => {
-    try {
-      setIsLoading(true)
-      const response = await api.get('/projects/storyteller')
-      
-      if (response.data?.project) {
-        setProjectId(response.data.project.id)
-      } else {
-        setError('No storyteller project found. Please contact your family member who invited you.')
-      }
-    } catch (err: any) {
-      console.error('Failed to find storyteller project:', err)
-      setError('Unable to load your project. Please try again or contact support.')
-    } finally {
-      setIsLoading(false)
+      const diffInDays = Math.floor(diffInHours / 24)
+      return `${diffInDays} days ago`
     }
   }
 
-  if (!isAuthenticated) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p>Redirecting to sign in...</p>
+      <div className="space-y-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-muted rounded w-64"></div>
+          <div className="h-4 bg-muted rounded w-96"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[1, 2].map((i) => (
+            <div key={i} className="h-48 bg-muted rounded-lg animate-pulse"></div>
+          ))}
         </div>
       </div>
     )
   }
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-lg">Loading your story space...</p>
-        </div>
+  return (
+    <div className="space-y-8">
+      {/* Welcome Header */}
+      <div className="text-center space-y-4">
+        <h1 className="text-3xl font-bold text-foreground">
+          Welcome back, Storyteller!
+        </h1>
+        <p className="text-lg text-muted-foreground">
+          Ready to share more of your story?
+        </p>
       </div>
-    )
-  }
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-md mx-auto p-6">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Unable to Load</h1>
-          <p className="text-gray-600 mb-6">{error}</p>
-          <div className="space-y-3">
-            <button
-              onClick={findStorytellerProject}
-              className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-              Try Again
-            </button>
-            <button
-              onClick={() => router.push('/dashboard')}
-              className="w-full bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
-            >
-              Go to Dashboard
-            </button>
+      {/* Active Projects */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold text-foreground">Your Projects</h2>
+        
+        {projects.length === 0 ? (
+          <FurbridgeCard className="p-8 text-center">
+            <div className="space-y-4">
+              <div className="text-6xl">📖</div>
+              <h3 className="text-xl font-semibold text-foreground">
+                No Active Projects
+              </h3>
+              <p className="text-muted-foreground">
+                You'll see your story projects here once a facilitator invites you.
+              </p>
+            </div>
+          </FurbridgeCard>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {projects.map((project) => (
+              <FurbridgeCard key={project.id} className="p-6">
+                <div className="space-y-4">
+                  {/* Project Header */}
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        with {project.facilitator_name}
+                      </p>
+                    </div>
+                    <Badge 
+                      variant={project.status === 'active' ? 'default' : 'secondary'}
+                      className={project.status === 'active' ? 'bg-furbridge-teal text-white' : ''}
+                    >
+                      {project.status === 'active' ? 'Active' : 'Completed'}
+                    </Badge>
+                  </div>
+
+                  {/* Progress */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Progress</span>
+                      <span className="text-foreground">
+                        {project.completed_prompts} of {project.total_prompts} prompts
+                      </span>
+                    </div>
+                    <Progress value={project.progress} className="h-2" />
+                  </div>
+
+                  {/* Last Activity */}
+                  <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-4 w-4" />
+                      <span>Last activity {formatLastActivity(project.last_activity)}</span>
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  <Link href="/storyteller/record">
+                    <FurbridgeButton variant="orange" className="w-full">
+                      <Mic className="h-4 w-4 mr-2" />
+                      Continue Recording
+                    </FurbridgeButton>
+                  </Link>
+                </div>
+              </FurbridgeCard>
+            ))}
           </div>
+        )}
+      </section>
+
+      {/* Recent Prompts */}
+      {recentPrompts.length > 0 && (
+        <section className="space-y-6">
+          <h2 className="text-2xl font-semibold text-foreground">Recent Prompts</h2>
+          
+          <div className="space-y-4">
+            {recentPrompts.map((prompt) => (
+              <FurbridgeCard key={prompt.id} className="p-6">
+                <div className="flex justify-between items-start space-x-4">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Badge variant="outline" className="text-xs">
+                        {prompt.category}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">
+                        ~{prompt.estimated_time} min
+                      </span>
+                    </div>
+                    <p className="text-foreground">{prompt.text}</p>
+                  </div>
+                  <Link href="/storyteller/record">
+                    <FurbridgeButton variant="outline" size="sm">
+                      <Mic className="h-4 w-4 mr-2" />
+                      Record
+                    </FurbridgeButton>
+                  </Link>
+                </div>
+              </FurbridgeCard>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Quick Actions */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold text-foreground">Quick Actions</h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Link href="/storyteller/record">
+            <FurbridgeCard className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-furbridge-orange/10 rounded-lg">
+                  <Mic className="h-6 w-6 text-furbridge-orange" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Start Recording</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Begin a new story session
+                  </p>
+                </div>
+              </div>
+            </FurbridgeCard>
+          </Link>
+
+          <Link href="/storyteller/help">
+            <FurbridgeCard className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-furbridge-teal/10 rounded-lg">
+                  <CheckCircle className="h-6 w-6 text-furbridge-teal" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Get Help</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Tips and guidance
+                  </p>
+                </div>
+              </div>
+            </FurbridgeCard>
+          </Link>
         </div>
-      </div>
-    )
-  }
-
-  if (!projectId || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <p className="text-lg text-gray-600">Unable to load project information.</p>
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <StorytellerDashboard
-      projectId={projectId}
-      userId={user.id}
-    />
-  )
-}
-
-// Loading component for Suspense fallback
-function StorytellerPageLoading() {
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <p className="text-lg text-gray-600">Loading your story space...</p>
-      </div>
+      </section>
     </div>
-  )
-}
-
-// Main export with Suspense boundary
-export default function StorytellerPage() {
-  return (
-    <Suspense fallback={<StorytellerPageLoading />}>
-      <StorytellerPageContent />
-    </Suspense>
   )
 }

@@ -1,200 +1,101 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { useEffect, useState } from 'react'
+import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { CheckCircle, Mic, Home } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
-// Component that uses useSearchParams - needs to be wrapped in Suspense
-function StorytellerSuccessPageContent() {
-  const searchParams = useSearchParams()
+export default function SuccessPage() {
+  const [showConfetti, setShowConfetti] = useState(false)
   const router = useRouter()
 
-  const [projectId, setProjectId] = useState<string | null>(null)
-  const [storyId, setStoryId] = useState<string | null>(null)
-  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'extra-large'>('normal')
-  const [highContrast, setHighContrast] = useState(false)
-
   useEffect(() => {
-    const urlProjectId = searchParams.get('projectId')
-    const urlStoryId = searchParams.get('storyId')
-    
-    setProjectId(urlProjectId)
-    setStoryId(urlStoryId)
-
-    // Load accessibility preferences
-    const savedFontSize = localStorage.getItem('storyteller-font-size') as typeof fontSize
-    const savedHighContrast = localStorage.getItem('storyteller-high-contrast') === 'true'
-    
-    if (savedFontSize) setFontSize(savedFontSize)
-    if (savedHighContrast) setHighContrast(savedHighContrast)
-  }, [searchParams])
-
-  const handleFontSizeChange = (newSize: typeof fontSize) => {
-    setFontSize(newSize)
-    localStorage.setItem('storyteller-font-size', newSize)
-  }
-
-  const handleHighContrastToggle = () => {
-    const newValue = !highContrast
-    setHighContrast(newValue)
-    localStorage.setItem('storyteller-high-contrast', newValue.toString())
-  }
-
-  const getFontSizeClass = () => {
-    switch (fontSize) {
-      case 'large': return 'text-lg'
-      case 'extra-large': return 'text-xl'
-      default: return 'text-base'
-    }
-  }
-
-  const getContrastClass = () => {
-    return highContrast ? 'bg-black text-white' : 'bg-white text-gray-900'
-  }
+    // Show success animation
+    setShowConfetti(true)
+    const timer = setTimeout(() => setShowConfetti(false), 3000)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
-    <div className={`min-h-screen p-4 ${getContrastClass()} ${getFontSizeClass()}`}>
-      {/* Accessibility Controls */}
-      <div className="mb-6 flex flex-wrap gap-4 justify-end">
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-medium">Font Size:</label>
-          <select 
-            value={fontSize} 
-            onChange={(e) => handleFontSizeChange(e.target.value as typeof fontSize)}
-            className={`px-3 py-1 border rounded ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-300'}`}
-          >
-            <option value="normal">Normal</option>
-            <option value="large">Large</option>
-            <option value="extra-large">Extra Large</option>
-          </select>
-        </div>
-        <Button
-          onClick={handleHighContrastToggle}
-          variant={highContrast ? "default" : "outline"}
-          size="sm"
-        >
-          {highContrast ? 'Normal Contrast' : 'High Contrast'}
-        </Button>
-      </div>
-
-      <div className="max-w-4xl mx-auto text-center">
-        {/* Success Animation */}
-        <div className="mb-8">
-          <div className="text-8xl mb-4 animate-bounce">🎉</div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-green-600">
-            Story Sent Successfully!
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-600">
-            Your family will be notified about your new story
-          </p>
-        </div>
-
-        {/* Success Details */}
-        <Card className={`p-8 mb-8 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-green-50 border-green-200'}`}>
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-4">What Happens Next?</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-4xl mb-3">📧</div>
-                  <h3 className="font-bold mb-2">Family Notified</h3>
-                  <p className="text-sm">Your family members will receive an email letting them know you've shared a new story.</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl mb-3">👂</div>
-                  <h3 className="font-bold mb-2">They Listen</h3>
-                  <p className="text-sm">Your family can listen to your story and see the transcript on their dashboard.</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl mb-3">💬</div>
-                  <h3 className="font-bold mb-2">They Respond</h3>
-                  <p className="text-sm">Family members can send you messages, ask follow-up questions, or share their own memories.</p>
-                </div>
-              </div>
+    <div className="max-w-2xl mx-auto">
+      <div className="text-center space-y-8 py-16">
+        {/* Success Icon with Animation */}
+        <div className="relative">
+          <div className={`transition-all duration-1000 ${showConfetti ? 'scale-110' : 'scale-100'}`}>
+            <div className="w-24 h-24 bg-furbridge-teal/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="h-12 w-12 text-furbridge-teal" />
             </div>
-
-            <div className={`p-4 rounded-lg ${
-              highContrast ? 'bg-gray-700' : 'bg-white'
-            } border-l-4 border-green-500`}>
-              <p className="font-medium text-green-800">
-                ✅ Your story has been saved and will be included in your family's permanent collection.
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        {/* Action Buttons */}
-        <div className="space-y-4 mb-8">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              onClick={() => router.push('/storyteller')}
-              size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
-            >
-              📚 Back to Dashboard
-            </Button>
-            <Button
-              onClick={() => router.push(`/storyteller/record?projectId=${projectId}`)}
-              size="lg"
-              variant="outline"
-              className="px-8 py-4 text-lg"
-            >
-              🎤 Record Another Story
-            </Button>
           </div>
           
-          {projectId && (
-            <Button
-              onClick={() => router.push(`/storyteller/stories?projectId=${projectId}`)}
-              variant="outline"
-              size="sm"
-            >
-              View All My Stories
-            </Button>
+          {/* Confetti Effect */}
+          {showConfetti && (
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="animate-bounce text-2xl absolute -top-4 -left-4">🎉</div>
+              <div className="animate-bounce text-2xl absolute -top-2 -right-6 animation-delay-200">✨</div>
+              <div className="animate-bounce text-2xl absolute -bottom-2 -left-6 animation-delay-400">🌟</div>
+              <div className="animate-bounce text-2xl absolute -bottom-4 -right-4 animation-delay-600">🎊</div>
+            </div>
           )}
         </div>
 
-        {/* Encouragement Message */}
-        <Card className={`p-6 ${highContrast ? 'bg-gray-800 border-gray-600' : 'bg-blue-50 border-blue-200'}`}>
-          <h3 className="text-xl font-bold mb-3">Thank You for Sharing!</h3>
-          <p className="text-gray-600 leading-relaxed">
-            Every story you share becomes a treasured part of your family's history. 
-            Your memories, experiences, and wisdom are gifts that will be cherished for generations to come.
+        {/* Success Message */}
+        <div className="space-y-4">
+          <h1 className="text-4xl font-bold text-foreground">
+            Story Submitted Successfully!
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-lg mx-auto">
+            Thank you for sharing your story. Your family will treasure these memories forever.
           </p>
-          <div className="mt-4 text-sm text-gray-500">
-            <p>💡 Tip: Check back tomorrow for a new story prompt!</p>
-          </div>
-        </Card>
+        </div>
 
-        {/* Quick Stats (if available) */}
-        <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500">
-            This is your story #{storyId ? storyId.slice(-6) : '...'} in this project
+        {/* Story Details */}
+        <FurbridgeCard className="p-6 text-left max-w-md mx-auto">
+          <div className="space-y-3">
+            <h3 className="font-semibold text-foreground">What happens next?</h3>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="flex items-start space-x-2">
+                <div className="w-2 h-2 bg-furbridge-orange rounded-full mt-2 flex-shrink-0"></div>
+                <span>Your story is being transcribed automatically</span>
+              </div>
+              <div className="flex items-start space-x-2">
+                <div className="w-2 h-2 bg-furbridge-orange rounded-full mt-2 flex-shrink-0"></div>
+                <span>Family members will be notified of your new story</span>
+              </div>
+              <div className="flex items-start space-x-2">
+                <div className="w-2 h-2 bg-furbridge-orange rounded-full mt-2 flex-shrink-0"></div>
+                <span>They can listen, comment, and ask follow-up questions</span>
+              </div>
+            </div>
+          </div>
+        </FurbridgeCard>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link href="/storyteller/record">
+            <FurbridgeButton variant="orange" size="lg" className="w-full sm:w-auto">
+              <Mic className="h-5 w-5 mr-2" />
+              Record Another Story
+            </FurbridgeButton>
+          </Link>
+          
+          <Link href="/storyteller">
+            <FurbridgeButton variant="outline" size="lg" className="w-full sm:w-auto">
+              <Home className="h-5 w-5 mr-2" />
+              Back to Home
+            </FurbridgeButton>
+          </Link>
+        </div>
+
+        {/* Encouragement Message */}
+        <div className="bg-muted/50 rounded-lg p-6 max-w-lg mx-auto">
+          <p className="text-sm text-muted-foreground italic">
+            "Every story you share becomes a precious gift to future generations. 
+            Your voice and memories are irreplaceable treasures."
           </p>
         </div>
       </div>
     </div>
-  )
-}
-
-// Loading component for Suspense fallback
-function StorytellerSuccessPageLoading() {
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <p className="text-lg text-gray-600">Loading success page...</p>
-      </div>
-    </div>
-  )
-}
-
-// Main export with Suspense boundary
-export default function StorytellerSuccessPage() {
-  return (
-    <Suspense fallback={<StorytellerSuccessPageLoading />}>
-      <StorytellerSuccessPageContent />
-    </Suspense>
   )
 }

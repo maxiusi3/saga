@@ -1,372 +1,308 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { api } from '@/lib/api';
+import { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { ArrowLeft, UserPlus, Trash2, Download, Share } from 'lucide-react'
+import Link from 'next/link'
 
 interface ProjectMember {
-  id: string;
-  name: string;
-  email: string;
-  role: 'facilitator' | 'storyteller';
-  status: 'active' | 'invited' | 'expired';
-  avatar?: string;
-  joinedAt?: string;
+  id: string
+  name: string
+  email: string
+  role: 'facilitator' | 'storyteller' | 'co_facilitator'
+  avatar?: string
+  status: 'active' | 'invited' | 'expired'
 }
 
 interface Project {
-  id: string;
-  name: string;
-  description?: string;
-  createdBy: string;
-  createdAt: string;
+  id: string
+  title: string
+  created_at: string
+  members: ProjectMember[]
 }
 
 export default function ProjectSettingsPage() {
-  const params = useParams();
-  const router = useRouter();
-  const [project, setProject] = useState<Project | null>(null);
-  const [members, setMembers] = useState<ProjectMember[]>([]);
-  const [projectName, setProjectName] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const params = useParams()
+  const router = useRouter()
+  const projectId = params.id as string
+  
+  const [project, setProject] = useState<Project | null>(null)
+  const [projectTitle, setProjectTitle] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    if (params.id) {
-      loadProjectSettings(params.id as string);
-    }
-  }, [params.id]);
-
-  const loadProjectSettings = async (projectId: string) => {
-    try {
-      setLoading(true);
-      
-      // Load project details
-      const projectResponse = await api.projects.get(projectId);
-      setProject(projectResponse.data);
-      
-      // TODO: Load project members when API is available
-      // const membersResponse = await api.projects.members(projectId);
-      // setMembers(membersResponse.data || []);
-      
-      // For now, set empty members array
-      setMembers([]);
-    } catch (error) {
-      console.error('Failed to load project settings:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-
-  const handleSaveProject = async () => {
-    setSaving(true);
-    try {
-      // TODO: Save project details to API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      if (project) {
-        setProject({
-          ...project,
-          name: projectName,
-          description: projectDescription
-        });
+    const loadProject = async () => {
+      // Mock data - replace with actual Supabase queries
+      const mockProject: Project = {
+        id: projectId,
+        title: "Dad's Life Story",
+        created_at: '2024-01-15T10:30:00Z',
+        members: [
+          {
+            id: '1',
+            name: 'Alex Smith',
+            email: 'alex@example.com',
+            role: 'facilitator',
+            avatar: '',
+            status: 'active'
+          },
+          {
+            id: '2',
+            name: 'John Doe',
+            email: 'john@example.com',
+            role: 'storyteller',
+            avatar: '',
+            status: 'active'
+          },
+          {
+            id: '3',
+            name: 'Beth Smith',
+            email: 'beth@example.com',
+            role: 'co_facilitator',
+            avatar: '',
+            status: 'active'
+          }
+        ]
       }
-    } catch (error) {
-      console.error('Failed to save project:', error);
-    } finally {
-      setSaving(false);
+
+      setTimeout(() => {
+        setProject(mockProject)
+        setProjectTitle(mockProject.title)
+        setLoading(false)
+      }, 1000)
     }
-  };
+
+    loadProject()
+  }, [projectId])
+
+  const handleSaveTitle = async () => {
+    if (!project || projectTitle.trim() === project.title) return
+
+    setSaving(true)
+    try {
+      // TODO: Update project title in Supabase
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      setProject({ ...project, title: projectTitle })
+    } catch (error) {
+      console.error('Error updating project title:', error)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleInviteFacilitator = async () => {
+    // TODO: Check for available facilitator seats and open invitation flow
+    alert('Invite facilitator functionality coming soon')
+  }
 
   const handleRemoveMember = async (memberId: string) => {
-    if (window.confirm('Are you sure you want to remove this member?')) {
-      // TODO: Remove member via API
-      setMembers(members.filter(m => m.id !== memberId));
-    }
-  };
-
-  const handleInviteFacilitator = () => {
-    // TODO: Check for available facilitator seats
-    router.push(`/dashboard/projects/${params.id}/invite/facilitator`);
-  };
-
-  const handleInviteStoryteller = () => {
-    // TODO: Check for available storyteller seats
-    router.push(`/dashboard/projects/${params.id}/invite/storyteller`);
-  };
-
-  const handleExportProject = () => {
-    router.push(`/dashboard/projects/${params.id}/export`);
-  };
-
-  const handleDeleteProject = async () => {
-    if (deleteConfirmText !== project?.name) {
-      alert('Please type the project name exactly to confirm deletion.');
-      return;
-    }
+    if (!project) return
 
     try {
-      // TODO: Delete project via API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      router.push('/dashboard/projects');
+      // TODO: Remove member from project in Supabase
+      const updatedMembers = project.members.filter(m => m.id !== memberId)
+      setProject({ ...project, members: updatedMembers })
     } catch (error) {
-      console.error('Failed to delete project:', error);
+      console.error('Error removing member:', error)
     }
-  };
+  }
 
-  const getRoleColor = (role: string) => {
+  const handleExportArchive = async () => {
+    // TODO: Generate and download full project archive
+    alert('Export functionality coming soon')
+  }
+
+  const getRoleBadge = (role: ProjectMember['role']) => {
     switch (role) {
       case 'facilitator':
-        return 'bg-blue-100 text-blue-800';
+        return <Badge variant="default" className="bg-furbridge-orange text-white">Facilitator</Badge>
       case 'storyteller':
-        return 'bg-purple-100 text-purple-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+        return <Badge variant="secondary">Storyteller</Badge>
+      case 'co_facilitator':
+        return <Badge variant="outline">Co-Facilitator</Badge>
     }
-  };
+  }
 
-  const getStatusColor = (status: string) => {
+  const getStatusBadge = (status: ProjectMember['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800';
+        return <Badge variant="default" className="bg-furbridge-teal text-white">Active</Badge>
       case 'invited':
-        return 'bg-yellow-100 text-yellow-800';
+        return <Badge variant="outline">Invited</Badge>
       case 'expired':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+        return <Badge variant="destructive">Expired</Badge>
     }
-  };
+  }
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
-          <div className="space-y-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-32 bg-gray-200 rounded"></div>
-            ))}
-          </div>
+      <div className="space-y-6">
+        <div className="flex items-center space-x-4">
+          <div className="h-8 w-8 bg-muted rounded animate-pulse"></div>
+          <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
+        </div>
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-32 bg-muted rounded-lg animate-pulse"></div>
+          ))}
         </div>
       </div>
-    );
+    )
+  }
+
+  if (!project) {
+    return (
+      <div className="text-center py-16">
+        <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
+        <Link href="/dashboard">
+          <FurbridgeButton variant="outline" className="mt-4">
+            Back to Dashboard
+          </FurbridgeButton>
+        </Link>
+      </div>
+    )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center mb-4">
-          <Button
-            onClick={() => router.back()}
-            variant="outline"
-            size="sm"
-            className="mr-4"
-          >
-            ← Back
-          </Button>
-          <h1 className="text-3xl font-bold text-gray-900">Project Settings</h1>
-        </div>
-        <p className="text-gray-600">
-          Manage project details, members, and settings
-        </p>
+      <div className="flex items-center space-x-4">
+        <Link href={`/dashboard/projects/${projectId}`}>
+          <FurbridgeButton variant="ghost" size="icon">
+            <ArrowLeft className="h-5 w-5" />
+          </FurbridgeButton>
+        </Link>
+        <h1 className="text-3xl font-bold text-foreground">Project Settings</h1>
       </div>
 
-      <div className="space-y-8">
-        {/* Project Details */}
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Project Details</h2>
+      {/* Project Details */}
+      <FurbridgeCard className="p-6">
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-foreground">Project Details</h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Project Name
-              </label>
-              <input
-                type="text"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter project name"
-              />
+              <Label htmlFor="project-title">Project Name</Label>
+              <div className="flex space-x-2 mt-1">
+                <Input
+                  id="project-title"
+                  value={projectTitle}
+                  onChange={(e) => setProjectTitle(e.target.value)}
+                  className="flex-1"
+                />
+                <FurbridgeButton
+                  variant="outline"
+                  onClick={handleSaveTitle}
+                  disabled={saving || projectTitle.trim() === project.title}
+                >
+                  {saving ? 'Saving...' : 'Save'}
+                </FurbridgeButton>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description (Optional)
-              </label>
-              <textarea
-                value={projectDescription}
-                onChange={(e) => setProjectDescription(e.target.value)}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Describe this project..."
-              />
-            </div>
-
-            <div className="flex justify-end">
-              <Button
-                onClick={handleSaveProject}
-                disabled={saving}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                {saving ? 'Saving...' : 'Save Changes'}
-              </Button>
+            <div className="text-sm text-muted-foreground">
+              Created on {new Date(project.created_at).toLocaleDateString()}
             </div>
           </div>
-        </Card>
+        </div>
+      </FurbridgeCard>
 
-        {/* Members Section */}
-        <Card className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Members</h2>
-            <div className="flex space-x-2">
-              <Button
-                onClick={handleInviteFacilitator}
-                variant="outline"
-                size="sm"
-              >
-                Invite Co-Facilitator
-              </Button>
-              {!members.some(m => m.role === 'storyteller' && m.status === 'active') && (
-                <Button
-                  onClick={handleInviteStoryteller}
-                  size="sm"
-                  className="bg-purple-600 hover:bg-purple-700 text-white"
-                >
-                  Invite Storyteller
-                </Button>
-              )}
-            </div>
+      {/* Members Management */}
+      <FurbridgeCard className="p-6">
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-foreground">Members</h2>
+            <FurbridgeButton variant="outline" onClick={handleInviteFacilitator}>
+              <UserPlus className="h-4 w-4 mr-2" />
+              Invite Co-Facilitator
+            </FurbridgeButton>
           </div>
 
           <div className="space-y-4">
-            {members.map((member) => (
-              <div key={member.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-sm font-medium text-gray-600">
+            {project.members.map((member) => (
+              <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={member.avatar} />
+                    <AvatarFallback>
                       {member.name.charAt(0)}
-                    </span>
-                  </div>
+                    </AvatarFallback>
+                  </Avatar>
                   <div>
-                    <div className="flex items-center space-x-2">
-                      <h3 className="font-medium text-gray-900">{member.name}</h3>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleColor(member.role)}`}>
-                        {member.role}
-                      </span>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(member.status)}`}>
-                        {member.status}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600">{member.email}</p>
-                    {member.joinedAt && (
-                      <p className="text-xs text-gray-500">
-                        Joined {new Date(member.joinedAt).toLocaleDateString()}
-                      </p>
-                    )}
+                    <div className="font-medium text-foreground">{member.name}</div>
+                    <div className="text-sm text-muted-foreground">{member.email}</div>
                   </div>
                 </div>
-                
-                {member.role === 'facilitator' && (
-                  <Button
-                    onClick={() => handleRemoveMember(member.id)}
-                    variant="outline"
-                    size="sm"
-                    className="text-red-600 hover:text-red-700 hover:border-red-300"
-                  >
-                    Remove
-                  </Button>
-                )}
+
+                <div className="flex items-center space-x-3">
+                  {getRoleBadge(member.role)}
+                  {getStatusBadge(member.status)}
+                  
+                  {member.role !== 'facilitator' && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <FurbridgeButton variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                          <Trash2 className="h-4 w-4" />
+                        </FurbridgeButton>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Remove Member</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to remove {member.name} from this project? 
+                            This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={() => handleRemoveMember(member.id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Remove
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                </div>
               </div>
             ))}
           </div>
-        </Card>
+        </div>
+      </FurbridgeCard>
 
-        {/* Data Section */}
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Data Management</h2>
+      {/* Data Management */}
+      <FurbridgeCard className="p-6">
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-foreground">Data Management</h2>
           
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div className="flex justify-between items-center p-4 border border-border rounded-lg">
               <div>
-                <h3 className="font-medium text-gray-900">Export Full Archive</h3>
-                <p className="text-sm text-gray-600">
-                  Download all stories, transcripts, and photos as a complete archive
-                </p>
+                <div className="font-medium text-foreground">Export Full Archive</div>
+                <div className="text-sm text-muted-foreground">
+                  Download all stories, transcripts, and media files
+                </div>
               </div>
-              <Button
-                onClick={handleExportProject}
-                variant="outline"
-              >
-                Export Project
-              </Button>
+              <FurbridgeButton variant="outline" onClick={handleExportArchive}>
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </FurbridgeButton>
             </div>
           </div>
-        </Card>
-
-        {/* Danger Zone */}
-        <Card className="p-6 border-red-200">
-          <h2 className="text-xl font-semibold text-red-900 mb-4">Danger Zone</h2>
-          
-          <div className="bg-red-50 rounded-lg p-4">
-            <h3 className="font-medium text-red-900 mb-2">Delete Project</h3>
-            <p className="text-sm text-red-700 mb-4">
-              This action cannot be undone. This will permanently delete the project and all associated stories, transcripts, and data.
-            </p>
-            
-            {!showDeleteConfirm ? (
-              <Button
-                onClick={() => setShowDeleteConfirm(true)}
-                className="bg-red-600 hover:bg-red-700 text-white"
-              >
-                Delete Project
-              </Button>
-            ) : (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-red-700 mb-2">
-                    Type the project name "{project?.name}" to confirm:
-                  </label>
-                  <input
-                    type="text"
-                    value={deleteConfirmText}
-                    onChange={(e) => setDeleteConfirmText(e.target.value)}
-                    className="w-full px-3 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder={project?.name}
-                  />
-                </div>
-                <div className="flex space-x-2">
-                  <Button
-                    onClick={handleDeleteProject}
-                    disabled={deleteConfirmText !== project?.name}
-                    className="bg-red-600 hover:bg-red-700 text-white"
-                  >
-                    I understand, delete this project
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setShowDeleteConfirm(false);
-                      setDeleteConfirmText('');
-                    }}
-                    variant="outline"
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
-        </Card>
-      </div>
+        </div>
+      </FurbridgeCard>
     </div>
-  );
+  )
 }

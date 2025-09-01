@@ -1,198 +1,237 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { WelcomeFlow } from '@/components/onboarding/welcome-flow'
-import { OnboardingHints, OnboardingEmptyState } from '@/components/onboarding/onboarding-hints'
-import { useOnboarding } from '@/hooks/use-onboarding'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { User } from '@supabase/supabase-js'
 
 interface Project {
   id: string
-  name: string
-  description?: string
-  storyCount: number
-  lastActivity: string
+  title: string
+  storyteller_name: string
+  storyteller_avatar?: string
+  co_facilitators: Array<{
+    id: string
+    name: string
+    avatar?: string
+  }>
+  status: 'active' | 'invite_sent' | 'invite_expired' | 'new_story'
+  story_count: number
+  created_at: string
 }
 
 export default function DashboardPage() {
+  const [user, setUser] = useState<User | null>(null)
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
-  const {
-    shouldShowWelcome,
-    completeWelcome,
-    completeFirstProject,
-    onboardingState
-  } = useOnboarding()
+  const [isFirstTime, setIsFirstTime] = useState(false)
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
-    // 模拟加载数据
-    setTimeout(() => {
-      const mockProjects = [
-        {
-          id: '1',
-          name: '我的家庭故事',
-          description: '记录我们家庭的珍贵回忆',
-          storyCount: 5,
-          lastActivity: '2天前'
-        },
-        {
-          id: '2',
-          name: '爷爷的回忆录',
-          description: '爷爷的人生故事',
-          storyCount: 12,
-          lastActivity: '1周前'
-        }
-      ]
+    const loadDashboard = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
 
-      // Only show projects if user has completed welcome or has projects
-      if (onboardingState.hasCompletedWelcome || mockProjects.length > 0) {
-        setProjects(mockProjects)
+        // Mock data for now - replace with actual Supabase queries
+        const mockProjects: Project[] = [
+          {
+            id: '1',
+            title: "Dad's Life Story",
+            storyteller_name: 'John Doe',
+            storyteller_avatar: '',
+            co_facilitators: [
+              { id: '1', name: 'Beth Smith', avatar: '' }
+            ],
+            status: 'new_story',
+            story_count: 3,
+            created_at: '2024-01-15'
+          },
+          {
+            id: '2',
+            title: "Grandma's Memories",
+            storyteller_name: 'Mary Johnson',
+            storyteller_avatar: '',
+            co_facilitators: [],
+            status: 'active',
+            story_count: 7,
+            created_at: '2024-01-10'
+          }
+        ]
+
+        // Simulate loading delay
+        setTimeout(() => {
+          setProjects(mockProjects)
+          setIsFirstTime(mockProjects.length === 0)
+          setLoading(false)
+        }, 1000)
+
+      } catch (error) {
+        console.error('Error loading dashboard:', error)
+        setLoading(false)
       }
+    }
 
-      setLoading(false)
-    }, 1000)
-  }, [onboardingState.hasCompletedWelcome])
+    loadDashboard()
+  }, [supabase])
+
+  const getStatusBadge = (status: Project['status'], storyCount: number) => {
+    switch (status) {
+      case 'new_story':
+        return <Badge variant="default" className="bg-furbridge-orange text-white">1 New Story!</Badge>
+      case 'active':
+        return <Badge variant="secondary">Active</Badge>
+      case 'invite_sent':
+        return <Badge variant="outline">Invite Sent</Badge>
+      case 'invite_expired':
+        return <Badge variant="destructive">Invite Expired</Badge>
+      default:
+        return null
+    }
+  }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center responsive-padding">
-        <div className="text-center">
-          <div className="skeleton w-8 h-8 rounded-full mx-auto mb-4"></div>
-          <div className="text-lg">加载中...</div>
+      <div className="space-y-8">
+        <div className="flex justify-between items-center">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-10 w-32" />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="space-y-4">
+              <Skeleton className="h-48 w-full rounded-lg" />
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (isFirstTime) {
+    return (
+      <div className="text-center py-16">
+        <div className="max-w-md mx-auto space-y-6">
+          <div className="text-6xl mb-4">📖</div>
+          <h1 className="text-3xl font-bold text-foreground">
+            Welcome, {user?.user_metadata?.full_name || user?.email}!
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Let's start by creating a home for your family's stories.
+          </p>
+          <Link href="/dashboard/purchase">
+            <FurbridgeButton variant="orange" size="lg">
+              Create a New Saga
+            </FurbridgeButton>
+          </Link>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Welcome Flow */}
-      {shouldShowWelcome && (
-        <WelcomeFlow
-          onComplete={() => completeWelcome('facilitator')} // Default to facilitator, can be enhanced
-          userRole={onboardingState.userRole || undefined}
-        />
-      )}
-
-      {/* Skip to main content anchor */}
-      <a id="main-content" className="sr-only" tabIndex={-1}>
-        Main content
-      </a>
-
+    <div className="space-y-8">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b" role="banner">
-        <div className="container-responsive">
-          <div className="mobile-stack items-start sm:items-center justify-between py-4 sm:py-6 gap-4">
-            <div className="mobile-center">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">我的项目</h1>
-              <p className="text-gray-600 mt-1 mobile-hide">管理您的家庭故事项目</p>
-            </div>
-            <Button
-              asChild
-              size="lg"
-              className="mobile-full touch-target bg-blue-600 hover:bg-blue-700 text-white"
-              aria-label="创建新的家庭故事项目"
-            >
-              <Link href="/dashboard/projects/new">
-                <span className="mobile-only" aria-hidden="true">+ </span>创建新项目
-              </Link>
-            </Button>
-          </div>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">My Sagas</h1>
+          <p className="text-muted-foreground mt-1">
+            Manage your family story projects
+          </p>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container-responsive responsive-padding" role="main" id="main-content">
-        {/* Onboarding Hints */}
-        <OnboardingHints className="mb-6" />
-
-        {projects.length === 0 ? (
-          /* Enhanced Empty State with Onboarding */
-          onboardingState.userRole ? (
-            <OnboardingEmptyState userRole={onboardingState.userRole} />
-          ) : (
-            <section className="text-center py-8 sm:py-12 lg:py-16" aria-labelledby="empty-state-heading">
-              <div className="max-w-md mx-auto">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6" aria-hidden="true">
-                  <svg className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="书本图标">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-                <h2 id="empty-state-heading" className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                  还没有项目
-                </h2>
-                <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
-                  创建您的第一个家庭故事项目，开始记录珍贵的回忆
-                </p>
-                <Button
-                  asChild
-                  size="lg"
-                  className="touch-target-large bg-blue-600 hover:bg-blue-700 text-white"
-                  aria-label="创建您的第一个家庭故事项目"
-                  onClick={() => {
-                    // Mark first project creation when user clicks
-                    if (onboardingState.userRole === 'facilitator') {
-                      completeFirstProject()
-                    }
-                  }}
-                >
-                  <Link href="/dashboard/projects/new">
-                    开始创建项目
-                  </Link>
-                </Button>
-              </div>
-            </section>
-          )
-        ) : (
-          /* Projects Grid */
-          <section aria-labelledby="projects-heading">
-            <h2 id="projects-heading" className="sr-only">项目列表</h2>
-            <div className="grid-responsive" role="list" aria-label={`${projects.length} 个项目`}>
-              {projects.map((project, index) => (
-                <Card key={project.id} className="hover:shadow-lg transition-all duration-200 group" role="listitem">
-                  <Link
-                    href={`/dashboard/projects/${project.id}`}
-                    className="block p-4 sm:p-6 focus-visible"
-                    aria-label={`查看项目: ${project.name}${project.description ? `, ${project.description}` : ''}`}
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                        {project.name}
-                      </h3>
-                      <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-
-                    {project.description && (
-                      <p className="text-gray-600 mb-4 text-sm sm:text-base line-clamp-2">
-                        {project.description}
-                      </p>
-                    )}
-
-                    <div className="mobile-stack items-start sm:items-center justify-between text-xs sm:text-sm text-gray-500 gap-2">
-                      <div className="flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2h4a1 1 0 110 2h-1v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6H3a1 1 0 110-2h4z" />
-                        </svg>
-                        <span aria-label={`包含 ${project.storyCount} 个故事`}>{project.storyCount} 个故事</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>最后活动: <time dateTime={project.lastActivity}>{project.lastActivity}</time></span>
-                      </div>
-                    </div>
-                  </Link>
-                </Card>
-              ))}
+        
+        {/* Resource Summary Card */}
+        <FurbridgeCard className="p-4 min-w-fit">
+          <div className="text-sm">
+            <div className="font-medium text-foreground mb-1">Available Seats</div>
+            <div className="text-muted-foreground space-y-1">
+              <div>• 1 Project</div>
+              <div>• 0 Facilitator</div>
+              <div>• 1 Storyteller</div>
             </div>
-          </section>
-        )}
-      </main>
+          </div>
+        </FurbridgeCard>
+      </div>
+
+      {/* Projects Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((project) => (
+          <Link key={project.id} href={`/dashboard/projects/${project.id}`}>
+            <FurbridgeCard className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="space-y-4">
+                {/* Project Header */}
+                <div className="flex justify-between items-start">
+                  <h3 className="text-lg font-semibold text-foreground line-clamp-2">
+                    {project.title}
+                  </h3>
+                  {getStatusBadge(project.status, project.story_count)}
+                </div>
+
+                {/* Storyteller */}
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={project.storyteller_avatar} />
+                    <AvatarFallback>
+                      {project.storyteller_name.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="font-medium text-foreground">
+                      {project.storyteller_name}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Storyteller
+                    </div>
+                  </div>
+                </div>
+
+                {/* Co-facilitators */}
+                {project.co_facilitators.length > 0 && (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-muted-foreground">Co-facilitators:</span>
+                    <div className="flex -space-x-2">
+                      {project.co_facilitators.map((facilitator) => (
+                        <Avatar key={facilitator.id} className="h-6 w-6 border-2 border-background">
+                          <AvatarImage src={facilitator.avatar} />
+                          <AvatarFallback className="text-xs">
+                            {facilitator.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Story Count */}
+                <div className="text-sm text-muted-foreground">
+                  {project.story_count} {project.story_count === 1 ? 'story' : 'stories'}
+                </div>
+              </div>
+            </FurbridgeCard>
+          </Link>
+        ))}
+
+        {/* Create New Project Card */}
+        <Link href="/dashboard/purchase">
+          <FurbridgeCard className="p-6 border-2 border-dashed border-muted-foreground/25 hover:border-furbridge-orange hover:bg-muted/50 transition-all cursor-pointer">
+            <div className="flex flex-col items-center justify-center h-full min-h-[200px] space-y-4">
+              <div className="text-4xl text-muted-foreground">+</div>
+              <div className="text-center">
+                <div className="font-medium text-foreground">Create New Saga</div>
+                <div className="text-sm text-muted-foreground mt-1">
+                  Start a new family story project
+                </div>
+              </div>
+            </div>
+          </FurbridgeCard>
+        </Link>
+      </div>
     </div>
   )
 }

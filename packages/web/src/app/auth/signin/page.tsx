@@ -1,176 +1,163 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
-import { createClientSupabase } from '@/lib/supabase'
 
 export default function SignInPage() {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const supabase = createClientComponentClient()
   const router = useRouter()
-  const supabase = createClientSupabase()
-
-  // 检查URL参数中的消息
-  useEffect(() => {
-    // 只在客户端执行
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search)
-      const urlMessage = urlParams.get('message')
-      if (urlMessage) {
-        setMessage(decodeURIComponent(urlMessage))
-      }
-    }
-  }, [])
-
-  const handleEmailSignIn = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-    
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-
-      if (error) {
-        setError(error.message)
-      } else {
-        router.push('/dashboard')
-      }
-    } catch (err) {
-      setError('登录失败，请重试')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleGoogleSignIn = async () => {
-    setLoading(true)
-    setError('')
-    
+    setIsLoading(true)
     try {
-      console.log('🔍 Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-      console.log('🔍 Attempting Google OAuth...')
-      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`
         }
       })
+      if (error) throw error
+    } catch (error) {
+      setMessage('Error signing in with Google')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-      if (error) {
-        console.error('❌ Google OAuth Error:', error)
-        setError(error.message)
-        setLoading(false)
-      }
-    } catch (err) {
-      console.error('❌ Google OAuth Exception:', err)
-      setError('Google登录失败，请重试')
-      setLoading(false)
+  const handleEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setIsLoading(true)
+    setMessage('')
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      })
+      
+      if (error) throw error
+      
+      setMessage('Check your email for the login link!')
+    } catch (error) {
+      setMessage('Error sending login email')
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        {/* Logo and Header */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">登录账户</h2>
-          <p className="mt-2 text-gray-600">继续您的家庭故事记录之旅</p>
-          {/* Force deployment update - Google OAuth should be visible */}
+          <h1 className="text-3xl font-bold text-foreground">Welcome to Saga</h1>
+          <p className="mt-2 text-muted-foreground">
+            Your family's story, a conversation away
+          </p>
         </div>
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            {error}
-          </div>
-        )}
+        <FurbridgeCard className="p-8">
+          {/* Google Sign In */}
+          <div className="space-y-4">
+            <FurbridgeButton
+              variant="outline"
+              size="lg"
+              className="w-full"
+              onClick={handleGoogleSignIn}
+              disabled={isLoading}
+            >
+              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                <path
+                  fill="currentColor"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                />
+              </svg>
+              Sign in with Google
+            </FurbridgeButton>
 
-        {message && (
-          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            {message}
-          </div>
-        )}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <Separator className="w-full" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
 
-        {/* Google登录按钮 - Updated for debugging */}
-        <button
-          onClick={handleGoogleSignIn}
-          disabled={loading}
-          className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-        >
-          <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-          {loading ? '登录中...' : '🔍 使用Google登录 (Debug Mode)'}
-        </button>
-        
-        {/* Debug info - Force deployment trigger */}
-        <div className="text-xs text-gray-500 text-center">
-          Supabase URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ 已配置' : '❌ 未配置'}
-          <br />
-          <span className="text-blue-500">部署时间: {new Date().toLocaleString()}</span>
+            {/* Email Sign In */}
+            <form onSubmit={handleEmailSignIn} className="space-y-4">
+              <div>
+                <Label htmlFor="email">Email address</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="mt-1"
+                />
+              </div>
+
+              <FurbridgeButton
+                type="submit"
+                variant="orange"
+                size="lg"
+                className="w-full"
+                disabled={isLoading || !email}
+              >
+                {isLoading ? 'Sending...' : 'Continue'}
+              </FurbridgeButton>
+            </form>
+
+            {message && (
+              <div className={`text-sm text-center ${
+                message.includes('Error') ? 'text-destructive' : 'text-furbridge-teal'
+              }`}>
+                {message}
+              </div>
+            )}
+          </div>
+        </FurbridgeCard>
+
+        {/* Footer Links */}
+        <div className="text-center text-sm text-muted-foreground space-x-4">
+          <Link href="/terms" className="hover:text-foreground">
+            Terms of Service
+          </Link>
+          <span>•</span>
+          <Link href="/privacy" className="hover:text-foreground">
+            Privacy Policy
+          </Link>
         </div>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300" />
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-gray-50 text-gray-500">或</span>
-          </div>
-        </div>
-
-        <form className="space-y-6" onSubmit={handleEmailSignIn}>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              邮箱地址
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              密码
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-          >
-            {loading ? '登录中...' : '登录'}
-          </button>
-
-          <div className="text-center">
-            <Link href="/auth/signup" className="text-blue-600 hover:text-blue-500">
-              还没有账户？立即注册
-            </Link>
-          </div>
-        </form>
       </div>
     </div>
   )

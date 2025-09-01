@@ -1,142 +1,177 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
+import { useState, useEffect } from 'react'
+import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { createClientSupabase } from '@/lib/supabase'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
-function EmailVerifyContent() {
+export default function VerifyPage() {
+  const [otp, setOtp] = useState(['', '', '', '', '', ''])
+  const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState('')
+  const [canResend, setCanResend] = useState(false)
+  const [countdown, setCountdown] = useState(60)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const supabase = createClientSupabase()
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
-  const [message, setMessage] = useState('')
+  const email = searchParams.get('email') || ''
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
-    const verifyEmail = async () => {
-      try {
-        // 从URL参数中获取token
-        let accessToken: string | null = null
-        let refreshToken: string | null = null
-
-        try {
-          accessToken = searchParams.get('access_token')
-          refreshToken = searchParams.get('refresh_token')
-        } catch (error) {
-          console.error('Error getting search params:', error)
-        }
-
-        // 如果URL参数中没有，尝试从hash中获取
-        if (!accessToken || !refreshToken) {
-          try {
-            if (typeof window !== 'undefined' && window.location.hash) {
-              const hashParams = new URLSearchParams(window.location.hash.substring(1))
-              accessToken = hashParams.get('access_token')
-              refreshToken = hashParams.get('refresh_token')
-            }
-          } catch (error) {
-            console.error('Error parsing hash params:', error)
-          }
-        }
-
-        if (!accessToken || !refreshToken) {
-          setStatus('error')
-          setMessage('验证链接无效或已过期。请重新注册或联系支持。')
-          return
-        }
-
-        // 设置session
-        const { data, error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken
-        })
-
-        if (error) {
-          console.error('Verification error:', error)
-          setStatus('error')
-          setMessage('邮箱验证失败：' + error.message)
-          return
-        }
-
-        if (data.session) {
-          setStatus('success')
-          setMessage('邮箱验证成功！正在跳转到仪表板...')
-          
-          // 延迟跳转，让用户看到成功消息
-          setTimeout(() => {
-            router.push('/dashboard')
-          }, 2000)
-        } else {
-          setStatus('error')
-          setMessage('验证失败，请重试')
-        }
-      } catch (error) {
-        console.error('Unexpected error:', error)
-        setStatus('error')
-        setMessage('发生意外错误，请重试')
-      }
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000)
+      return () => clearTimeout(timer)
+    } else {
+      setCanResend(true)
     }
+  }, [countdown])
 
-    verifyEmail()
-  }, [searchParams, router, supabase.auth])
+  const handleOtpChange = (index: number, value: string) => {
+    if (value.length > 1) return
+    
+    const newOtp = [...otp]
+    newOtp[index] = value
+    setOtp(newOtp)
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      const nextInput = document.getElementById(`otp-${index + 1}`)
+      nextInput?.focus()
+    }
+  }
+
+  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      const prevInput = document.getElementById(`otp-${index - 1}`)
+      prevInput?.focus()
+    }
+  }
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const otpCode = otp.join('')
+    if (otpCode.length !== 6) return
+
+    setIsLoading(true)
+    setMessage('')
+
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email,
+        token: otpCode,
+        type: 'email'
+      })
+
+      if (error) throw error
+      
+      router.push('/dashboard')
+    } catch (error) {
+      setMessage('Invalid verification code. Please try again.')
+      setOtp(['', '', '', '', '', ''])
+      const firstInput = document.getElementById('otp-0')
+      firstInput?.focus()
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleResend = async () => {
+    if (!canResend) return
+
+    setIsLoading(true)
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      })
+      
+      if (error) throw error
+      
+      setMessage('New verification code sent!')
+      setCanResend(false)
+      setCountdown(60)
+    } catch (error) {
+      setMessage('Error sending new code')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          {status === 'loading' && (
-            <>
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <h2 className="mt-4 text-xl font-semibold text-gray-900">正在验证邮箱...</h2>
-              <p className="mt-2 text-gray-600">请稍候</p>
-            </>
-          )}
-          
-          {status === 'success' && (
-            <>
-              <div className="w-12 h-12 mx-auto bg-green-100 rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h2 className="mt-4 text-xl font-semibold text-green-900">验证成功！</h2>
-              <p className="mt-2 text-green-600">{message}</p>
-            </>
-          )}
-          
-          {status === 'error' && (
-            <>
-              <div className="w-12 h-12 mx-auto bg-red-100 rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
-              <h2 className="mt-4 text-xl font-semibold text-red-900">验证失败</h2>
-              <p className="mt-2 text-red-600">{message}</p>
-              <button
-                onClick={() => router.push('/auth/signin')}
-                className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-              >
-                返回登录
-              </button>
-            </>
-          )}
+          <h1 className="text-3xl font-bold text-foreground">Enter Verification Code</h1>
+          <p className="mt-2 text-muted-foreground">
+            We sent a code to {email}
+          </p>
         </div>
+
+        <FurbridgeCard className="p-8">
+          <form onSubmit={handleVerify} className="space-y-6">
+            <div>
+              <Label className="text-center block mb-4">Verification Code</Label>
+              <div className="flex justify-center space-x-2">
+                {otp.map((digit, index) => (
+                  <Input
+                    key={index}
+                    id={`otp-${index}`}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    className="w-12 h-12 text-center text-lg font-semibold"
+                    autoComplete="one-time-code"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <FurbridgeButton
+              type="submit"
+              variant="orange"
+              size="lg"
+              className="w-full"
+              disabled={isLoading || otp.join('').length !== 6}
+            >
+              {isLoading ? 'Verifying...' : 'Verify & Continue'}
+            </FurbridgeButton>
+
+            {message && (
+              <div className={`text-sm text-center ${
+                message.includes('Error') || message.includes('Invalid') 
+                  ? 'text-destructive' 
+                  : 'text-furbridge-teal'
+              }`}>
+                {message}
+              </div>
+            )}
+
+            <div className="text-center">
+              {canResend ? (
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  className="text-furbridge-orange hover:text-furbridge-orange-hover text-sm"
+                  disabled={isLoading}
+                >
+                  Resend Code
+                </button>
+              ) : (
+                <span className="text-muted-foreground text-sm">
+                  Resend in {countdown}s
+                </span>
+              )}
+            </div>
+          </form>
+        </FurbridgeCard>
       </div>
     </div>
-  )
-}
-
-export default function EmailVerifyPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">正在加载...</p>
-        </div>
-      </div>
-    }>
-      <EmailVerifyContent />
-    </Suspense>
   )
 }
