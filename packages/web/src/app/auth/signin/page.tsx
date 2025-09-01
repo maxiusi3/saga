@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { createClientSupabase } from '@/lib/supabase'
 
 export default function SignInPage() {
@@ -12,16 +12,19 @@ export default function SignInPage() {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const router = useRouter()
-  const searchParams = useSearchParams()
   const supabase = createClientSupabase()
 
   // 检查URL参数中的消息
   useEffect(() => {
-    const urlMessage = searchParams.get('message')
-    if (urlMessage) {
-      setMessage(decodeURIComponent(urlMessage))
+    // 只在客户端执行
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search)
+      const urlMessage = urlParams.get('message')
+      if (urlMessage) {
+        setMessage(decodeURIComponent(urlMessage))
+      }
     }
-  }, [searchParams])
+  }, [])
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault()

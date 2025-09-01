@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from '@/components/auth/auth-provider'
 import { ErrorTrackingProvider } from '@/components/error-tracking-provider'
@@ -12,11 +12,15 @@ export const metadata: Metadata = {
   description: 'AI-powered family biography platform for intergenerational storytelling',
   keywords: ['family', 'biography', 'storytelling', 'memories', 'AI'],
   authors: [{ name: 'Saga Team' }],
-  viewport: 'width=device-width, initial-scale=1',
   other: {
     'color-scheme': 'light',
     'theme-color': '#2563eb',
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
