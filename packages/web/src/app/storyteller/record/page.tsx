@@ -231,10 +231,7 @@ function RecordPageContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 p-4">
       <div className="max-w-2xl mx-auto space-y-6">
-        <Link
-          href="/storyteller"
-          className="inline-flex items-center text-gray-600 hover:text-gray-900"
-        >
+        <Link href="/storyteller" className="inline-flex items-center text-gray-600 hover:text-gray-900">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Stories
         </Link>
@@ -344,10 +341,10 @@ function RecordPageContent() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm text-gray-600">
                 <span>Progress</span>
-                <span>{Math.min(100, Math.round((recordingTime / (currentPrompt.estimated_time * 60)) * 100))}%</span>
+                <span>{Math.min(100, Math.round((recordingTime / (currentPrompt.estimatedTime * 60)) * 100))}%</span>
               </div>
-              <Progress 
-                value={Math.min(100, (recordingTime / (currentPrompt.estimated_time * 60)) * 100)} 
+              <Progress
+                value={Math.min(100, (recordingTime / (currentPrompt.estimatedTime * 60)) * 100)}
                 className="h-2"
               />
             </div>
