@@ -5,8 +5,10 @@ import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Play, Pause, MessageCircle, HelpCircle, Heart, Clock, Sparkles, Volume2 } from 'lucide-react'
+import { Play, Pause, MessageCircle, HelpCircle, Heart, Clock, Sparkles, Volume2, Edit, Trash2, MoreHorizontal } from 'lucide-react'
 import { AIGeneratedContent } from '../../../shared/src/lib/ai-services'
+import { ActionPermissionGate, usePermissionContext } from '@/components/permissions/PermissionGate'
+import { UserRole } from '@saga/shared'
 
 interface Story {
   id: string
@@ -31,10 +33,23 @@ interface StoryCardProps {
   story: Story
   onPlay?: (storyId: string) => void
   onViewDetails?: (storyId: string) => void
+  onEdit?: (storyId: string) => void
+  onDelete?: (storyId: string) => void
   showAIContent?: boolean
+  userRole?: UserRole
+  isProjectOwner?: boolean
 }
 
-export function StoryCard({ story, onPlay, onViewDetails, showAIContent = true }: StoryCardProps) {
+export function StoryCard({
+  story,
+  onPlay,
+  onViewDetails,
+  onEdit,
+  onDelete,
+  showAIContent = true,
+  userRole,
+  isProjectOwner = false
+}: StoryCardProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -103,7 +118,7 @@ export function StoryCard({ story, onPlay, onViewDetails, showAIContent = true }
                 </Badge>
               )}
             </div>
-            
+
             {/* Category and Date */}
             <div className="flex items-center space-x-3 text-sm text-gray-600">
               <Badge variant="outline" className="text-xs">{story.category}</Badge>
@@ -116,10 +131,45 @@ export function StoryCard({ story, onPlay, onViewDetails, showAIContent = true }
               </div>
             </div>
           </div>
-          
-          {story.has_new_interactions && (
-            <Badge className="bg-furbridge-orange text-white">New</Badge>
-          )}
+
+          <div className="flex items-center space-x-2">
+            {story.has_new_interactions && (
+              <Badge className="bg-furbridge-orange text-white">New</Badge>
+            )}
+
+            {/* Edit and Delete Actions - Only for facilitators */}
+            <ActionPermissionGate
+              action="canEditStoryTitles"
+              userRole={userRole}
+              isProjectOwner={isProjectOwner}
+            >
+              <div className="flex items-center space-x-1">
+                <FurbridgeButton
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onEdit?.(story.id)
+                  }}
+                  className="h-8 w-8 p-0 hover:bg-furbridge-teal/10"
+                >
+                  <Edit className="h-3 w-3" />
+                </FurbridgeButton>
+
+                <FurbridgeButton
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete?.(story.id)
+                  }}
+                  className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </FurbridgeButton>
+              </div>
+            </ActionPermissionGate>
+          </div>
         </div>
 
         {/* Storyteller */}

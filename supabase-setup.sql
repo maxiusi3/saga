@@ -24,14 +24,46 @@ CREATE TABLE IF NOT EXISTS public.projects (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Create project_members table for role-based access control
+CREATE TABLE IF NOT EXISTS public.project_members (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  project_id UUID REFERENCES public.projects(id) ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('facilitator', 'co_facilitator', 'storyteller')),
+  invited_by UUID REFERENCES auth.users(id),
+  invited_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  joined_at TIMESTAMP WITH TIME ZONE,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'active', 'declined', 'removed')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(project_id, user_id)
+);
+
 -- Create stories table
 CREATE TABLE IF NOT EXISTS public.stories (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   project_id UUID REFERENCES public.projects(id) ON DELETE CASCADE NOT NULL,
+  storyteller_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   title TEXT NOT NULL,
   content TEXT,
   audio_url TEXT,
   transcript TEXT,
+  ai_generated_title TEXT,
+  ai_summary TEXT,
+  ai_follow_up_questions JSONB,
+  ai_confidence_score DECIMAL(3,2),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create story_comments table for discussions
+CREATE TABLE IF NOT EXISTS public.story_comments (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  story_id UUID REFERENCES public.stories(id) ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  content TEXT NOT NULL,
+  is_follow_up_question BOOLEAN DEFAULT FALSE,
+  parent_comment_id UUID REFERENCES public.story_comments(id) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -39,7 +71,9 @@ CREATE TABLE IF NOT EXISTS public.stories (
 -- Enable Row Level Security
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.project_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.stories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.story_comments ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies if they exist
 DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
@@ -61,60 +95,165 @@ CREATE POLICY "Users can insert own profile" ON public.profiles
   FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- Create RLS policies for projects
-CREATE POLICY "Users can view own projects" ON public.projects
-  FOR SELECT USING (auth.uid() = owner_id);
+CREATE POLICY "Users can view projects they are members of" ON public.projects
+  FOR SELECT USING (
+    auth.uid() = owner_id OR
+    EXISTS (
+      SELECT 1 FROM public.project_members
+      WHERE project_id = projects.id
+      AND user_id = auth.uid()
+      AND status = 'active'
+    )
+  );
 
 CREATE POLICY "Users can create projects" ON public.projects
   FOR INSERT WITH CHECK (auth.uid() = owner_id);
 
-CREATE POLICY "Users can update own projects" ON public.projects
-  FOR UPDATE USING (auth.uid() = owner_id);
+CREATE POLICY "Only facilitators can update projects" ON public.projects
+  FOR UPDATE USING (
+    auth.uid() = owner_id OR
+    EXISTS (
+      SELECT 1 FROM public.project_members
+      WHERE project_id = projects.id
+      AND user_id = auth.uid()
+      AND role = 'facilitator'
+      AND status = 'active'
+    )
+  );
 
-CREATE POLICY "Users can delete own projects" ON public.projects
+CREATE POLICY "Only project owners can delete projects" ON public.projects
   FOR DELETE USING (auth.uid() = owner_id);
 
--- Drop existing story policies if they exist
+-- Drop existing policies if they exist
 DROP POLICY IF EXISTS "Users can view stories from own projects" ON public.stories;
 DROP POLICY IF EXISTS "Users can create stories in own projects" ON public.stories;
 DROP POLICY IF EXISTS "Users can update stories in own projects" ON public.stories;
 DROP POLICY IF EXISTS "Users can delete stories from own projects" ON public.stories;
 
+-- Create RLS policies for project_members
+CREATE POLICY "Users can view project memberships they are part of" ON public.project_members
+  FOR SELECT USING (
+    user_id = auth.uid() OR
+    EXISTS (
+      SELECT 1 FROM public.projects
+      WHERE id = project_id AND owner_id = auth.uid()
+    ) OR
+    EXISTS (
+      SELECT 1 FROM public.project_members pm2
+      WHERE pm2.project_id = project_members.project_id
+      AND pm2.user_id = auth.uid()
+      AND pm2.role IN ('facilitator', 'co_facilitator')
+      AND pm2.status = 'active'
+    )
+  );
+
+CREATE POLICY "Only facilitators can manage project members" ON public.project_members
+  FOR ALL USING (
+    EXISTS (
+      SELECT 1 FROM public.projects
+      WHERE id = project_id AND owner_id = auth.uid()
+    ) OR
+    EXISTS (
+      SELECT 1 FROM public.project_members
+      WHERE project_id = project_members.project_id
+      AND user_id = auth.uid()
+      AND role = 'facilitator'
+      AND status = 'active'
+    )
+  );
+
 -- Create RLS policies for stories
-CREATE POLICY "Users can view stories from own projects" ON public.stories
+CREATE POLICY "Users can view stories from projects they are members of" ON public.stories
   FOR SELECT USING (
     EXISTS (
-      SELECT 1 FROM public.projects
-      WHERE projects.id = stories.project_id
-      AND projects.owner_id = auth.uid()
-    )
-  );
-
-CREATE POLICY "Users can create stories in own projects" ON public.stories
-  FOR INSERT WITH CHECK (
+      SELECT 1 FROM public.project_members pm
+      WHERE pm.project_id = stories.project_id
+      AND pm.user_id = auth.uid()
+      AND pm.status = 'active'
+    ) OR
     EXISTS (
-      SELECT 1 FROM public.projects
-      WHERE projects.id = stories.project_id
-      AND projects.owner_id = auth.uid()
+      SELECT 1 FROM public.projects p
+      WHERE p.id = stories.project_id AND p.owner_id = auth.uid()
     )
   );
 
-CREATE POLICY "Users can update stories in own projects" ON public.stories
+CREATE POLICY "Only storytellers can create stories" ON public.stories
+  FOR INSERT WITH CHECK (
+    auth.uid() = storyteller_id AND
+    EXISTS (
+      SELECT 1 FROM public.project_members pm
+      WHERE pm.project_id = project_id
+      AND pm.user_id = auth.uid()
+      AND pm.role = 'storyteller'
+      AND pm.status = 'active'
+    )
+  );
+
+CREATE POLICY "Only facilitators can edit story content" ON public.stories
   FOR UPDATE USING (
     EXISTS (
-      SELECT 1 FROM public.projects
-      WHERE projects.id = stories.project_id
-      AND projects.owner_id = auth.uid()
+      SELECT 1 FROM public.projects p
+      WHERE p.id = stories.project_id AND p.owner_id = auth.uid()
+    ) OR
+    EXISTS (
+      SELECT 1 FROM public.project_members pm
+      WHERE pm.project_id = stories.project_id
+      AND pm.user_id = auth.uid()
+      AND pm.role = 'facilitator'
+      AND pm.status = 'active'
     )
   );
 
-CREATE POLICY "Users can delete stories from own projects" ON public.stories
+CREATE POLICY "Only facilitators can delete stories" ON public.stories
   FOR DELETE USING (
     EXISTS (
-      SELECT 1 FROM public.projects
-      WHERE projects.id = stories.project_id
-      AND projects.owner_id = auth.uid()
+      SELECT 1 FROM public.projects p
+      WHERE p.id = stories.project_id AND p.owner_id = auth.uid()
+    ) OR
+    EXISTS (
+      SELECT 1 FROM public.project_members pm
+      WHERE pm.project_id = stories.project_id
+      AND pm.user_id = auth.uid()
+      AND pm.role = 'facilitator'
+      AND pm.status = 'active'
     )
   );
+
+-- Create RLS policies for story_comments
+CREATE POLICY "Users can view comments on stories they have access to" ON public.story_comments
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.stories s
+      JOIN public.project_members pm ON s.project_id = pm.project_id
+      WHERE s.id = story_comments.story_id
+      AND pm.user_id = auth.uid()
+      AND pm.status = 'active'
+    ) OR
+    EXISTS (
+      SELECT 1 FROM public.stories s
+      JOIN public.projects p ON s.project_id = p.id
+      WHERE s.id = story_comments.story_id
+      AND p.owner_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Project members can add comments" ON public.story_comments
+  FOR INSERT WITH CHECK (
+    auth.uid() = user_id AND
+    EXISTS (
+      SELECT 1 FROM public.stories s
+      JOIN public.project_members pm ON s.project_id = pm.project_id
+      WHERE s.id = story_id
+      AND pm.user_id = auth.uid()
+      AND pm.status = 'active'
+    )
+  );
+
+CREATE POLICY "Users can update their own comments" ON public.story_comments
+  FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own comments" ON public.story_comments
+  FOR DELETE USING (auth.uid() = user_id);
 
 -- Create function to handle new user signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
