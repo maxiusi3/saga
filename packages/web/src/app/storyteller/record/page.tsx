@@ -154,11 +154,11 @@ function RecordPageContent() {
   }
 
   const submitRecording = async () => {
-    if (!audioBlob || !currentPrompt) return
+    if (!audioBlob || !currentPrompt) return;
 
-    setIsSubmitting(true)
-    setAiProcessing(true)
-    setAiProgress(0)
+    setIsSubmitting(true);
+    setAiProcessing(true);
+    setAiProgress(0);
 
     try {
       // Process audio with AI services
@@ -166,11 +166,11 @@ function RecordPageContent() {
         audioBlob,
         currentPrompt.text,
         (step: string, progress: number) => {
-          setAiProgress(progress)
+          setAiProgress(progress);
         }
-      )
+      );
 
-      setAiContent(aiResult)
+      setAiContent(aiResult);
 
       // TODO: Upload audio to Supabase Storage and create story record with AI content
       // const formData = new FormData()
@@ -182,41 +182,41 @@ function RecordPageContent() {
       // formData.append('ai_follow_up_questions', JSON.stringify(aiResult.followUpQuestions || []))
 
       // Simulate final upload
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Navigate to review page with AI content
-      router.push('/storyteller/review?processed=true')
+      router.push('/storyteller/review?processed=true');
     } catch (error) {
-      console.error('Error submitting recording:', error)
-      alert('Failed to submit recording. Please try again.')
+      console.error('Error submitting recording:', error);
+      alert('Failed to submit recording. Please try again.');
     } finally {
-      setIsSubmitting(false)
-      setAiProcessing(false)
+      setIsSubmitting(false);
+      setAiProcessing(false);
     }
-  }
+  };
 
   const handlePlayPrompt = () => {
     // Mock audio playback - in real implementation, this would play a TTS version of the prompt
-    setIsPlayingPrompt(true)
+    setIsPlayingPrompt(true);
 
     // Simulate audio duration
     setTimeout(() => {
-      setIsPlayingPrompt(false)
-    }, 3000)
-  }
+      setIsPlayingPrompt(false);
+    }, 3000);
+  };
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const remainingSeconds = seconds % 60
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
-  }
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-furbridge-orange"></div>
       </div>
-    )
+    );
   }
 
   if (!currentPrompt) {
@@ -225,7 +225,7 @@ function RecordPageContent() {
         <h1 className="text-2xl font-bold text-gray-900">No prompt available</h1>
         <p className="text-gray-600 mt-2">Please check back later.</p>
       </div>
-    )
+    );
   }
 
   return (
