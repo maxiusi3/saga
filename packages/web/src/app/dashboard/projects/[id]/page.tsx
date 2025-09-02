@@ -12,7 +12,7 @@ import { Settings, Search, Play, MessageCircle, HelpCircle, Sparkles, BookOpen, 
 import Link from 'next/link'
 import { StoryCard } from '@/components/story/story-card'
 import { ChapterSummaryCard } from '@/components/story/chapter-summary-card'
-import { AIGeneratedContent } from '@/../../shared/src/lib/ai-services'
+import { AIGeneratedContent } from '../../../../../shared/src/lib/ai-services'
 
 interface Story {
   id: string

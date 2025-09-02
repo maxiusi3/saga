@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import { Badge } from '@/components/ui/badge'
@@ -8,12 +8,12 @@ import { Progress } from '@/components/ui/progress'
 import { Mic, MicOff, Square, Play, Pause, RotateCcw, Send, Volume2, Sparkles, Clock, ArrowLeft } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { AIPrompt, getNextPrompt, getPromptById } from '@/../../shared/src/lib/ai-prompts'
-import { AIService, AIGeneratedContent } from '@/../../shared/src/lib/ai-services'
+import { AIPrompt, getNextPrompt, getPromptById } from '../../../shared/src/lib/ai-prompts'
+import { AIService, AIGeneratedContent } from '../../../shared/src/lib/ai-services'
 
 type RecordingState = 'idle' | 'recording' | 'paused' | 'completed'
 
-export default function RecordPage() {
+function RecordPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -463,5 +463,17 @@ export default function RecordPage() {
         </div>
       </FurbridgeCard>
     </div>
+  )
+}
+
+export default function RecordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-furbridge-orange"></div>
+      </div>
+    }>
+      <RecordPageContent />
+    </Suspense>
   )
 }

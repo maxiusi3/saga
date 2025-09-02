@@ -213,9 +213,9 @@ export function getProcessingStatusMessage(status: AIGeneratedContent['processin
 
 export function shouldShowAIContent(content: AIGeneratedContent): boolean {
   return content.processingStatus === 'completed' && (
-    !!content.title || 
-    !!content.transcript || 
-    !!content.summary || 
-    (content.followUpQuestions && content.followUpQuestions.length > 0)
+    !!content.title ||
+    !!content.transcript ||
+    !!content.summary ||
+    (!!content.followUpQuestions && content.followUpQuestions.length > 0)
   )
 }

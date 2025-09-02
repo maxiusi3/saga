@@ -6,7 +6,7 @@ import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Play, Pause, MessageCircle, HelpCircle, Heart, Clock, Sparkles, Volume2 } from 'lucide-react'
-import { AIGeneratedContent } from '@/../../shared/src/lib/ai-services'
+import { AIGeneratedContent } from '../../../shared/src/lib/ai-services'
 
 interface Story {
   id: string
