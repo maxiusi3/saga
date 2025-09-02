@@ -8,6 +8,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Furbridge Design System Colors
+        'furbridge-orange': '#F97316',
+        'furbridge-orange-hover': '#EA580C',
+        'furbridge-teal': '#14B8A6',
+        'furbridge-teal-hover': '#0D9488',
+        'furbridge-warm-gray': '#78716C',
+        'furbridge-light-gray': '#F5F5F4',
+
         primary: {
           50: '#fef7ee',
           100: '#fdedd6',
