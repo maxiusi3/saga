@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { generateInitials } from '@/lib/utils'
 import { toast } from 'react-hot-toast'
+import { NotificationBell } from '@/components/notifications/NotificationBell'
 
 export function Navigation() {
   const router = useRouter()
@@ -153,18 +154,7 @@ export function Navigation() {
           {/* Right side */}
           <div className="flex items-center space-x-4">
             {/* Notifications */}
-            <button
-              type="button"
-              className="touch-target p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 relative"
-              aria-label="View notifications"
-            >
-              <span className="sr-only">View notifications</span>
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM11 17H6l5 5v-5zM12 3v12" />
-              </svg>
-              {/* Notification badge - hidden for now */}
-              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white hidden" aria-hidden="true"></span>
-            </button>
+            <NotificationBell />
 
             {/* Profile dropdown */}
             <div className="relative" ref={profileMenuRef}>

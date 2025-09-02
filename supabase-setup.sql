@@ -68,12 +68,53 @@ CREATE TABLE IF NOT EXISTS public.story_comments (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Create notifications table
+CREATE TABLE IF NOT EXISTS public.notifications (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  recipient_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  sender_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  project_id UUID REFERENCES public.projects(id) ON DELETE CASCADE NOT NULL,
+  story_id UUID REFERENCES public.stories(id) ON DELETE CASCADE,
+  comment_id UUID REFERENCES public.story_comments(id) ON DELETE CASCADE,
+  notification_type TEXT NOT NULL CHECK (notification_type IN (
+    'new_story',
+    'new_comment',
+    'new_follow_up_question',
+    'story_response',
+    'project_invitation',
+    'member_joined'
+  )),
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  preview_text TEXT,
+  action_url TEXT,
+  is_read BOOLEAN DEFAULT FALSE,
+  read_at TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create notification_settings table for user preferences
+CREATE TABLE IF NOT EXISTS public.notification_settings (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  project_id UUID REFERENCES public.projects(id) ON DELETE CASCADE,
+  notification_type TEXT NOT NULL,
+  enabled BOOLEAN DEFAULT TRUE,
+  email_enabled BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(user_id, project_id, notification_type)
+);
+
 -- Enable Row Level Security
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.project_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.stories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.story_comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notification_settings ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies if they exist
 DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
@@ -255,6 +296,142 @@ CREATE POLICY "Users can update their own comments" ON public.story_comments
 CREATE POLICY "Users can delete their own comments" ON public.story_comments
   FOR DELETE USING (auth.uid() = user_id);
 
+-- Create RLS policies for notifications
+CREATE POLICY "Users can view their own notifications" ON public.notifications
+  FOR SELECT USING (auth.uid() = recipient_id);
+
+CREATE POLICY "System can create notifications" ON public.notifications
+  FOR INSERT WITH CHECK (true); -- Allow system to create notifications
+
+CREATE POLICY "Users can update their own notifications" ON public.notifications
+  FOR UPDATE USING (auth.uid() = recipient_id);
+
+CREATE POLICY "Users can delete their own notifications" ON public.notifications
+  FOR DELETE USING (auth.uid() = recipient_id);
+
+-- Create RLS policies for notification_settings
+CREATE POLICY "Users can manage their own notification settings" ON public.notification_settings
+  FOR ALL USING (auth.uid() = user_id);
+
+-- Create function to generate notifications for new stories
+CREATE OR REPLACE FUNCTION public.notify_new_story()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Notify all project members except the storyteller
+  INSERT INTO public.notifications (
+    recipient_id,
+    sender_id,
+    project_id,
+    story_id,
+    notification_type,
+    title,
+    message,
+    preview_text,
+    action_url
+  )
+  SELECT
+    pm.user_id,
+    NEW.storyteller_id,
+    NEW.project_id,
+    NEW.id,
+    'new_story',
+    'New story recorded',
+    CASE
+      WHEN pm.role = 'facilitator' THEN 'A new story "' || NEW.title || '" has been recorded in your project'
+      WHEN pm.role = 'co_facilitator' THEN 'A new story "' || NEW.title || '" has been recorded'
+      ELSE 'A new story has been recorded'
+    END,
+    LEFT(NEW.content, 100),
+    '/dashboard/projects/' || NEW.project_id || '/stories/' || NEW.id
+  FROM public.project_members pm
+  WHERE pm.project_id = NEW.project_id
+    AND pm.user_id != NEW.storyteller_id
+    AND pm.status = 'active'
+    AND pm.role IN ('facilitator', 'co_facilitator');
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create function to generate notifications for new comments
+CREATE OR REPLACE FUNCTION public.notify_new_comment()
+RETURNS TRIGGER AS $$
+DECLARE
+  story_record RECORD;
+  project_record RECORD;
+BEGIN
+  -- Get story and project information
+  SELECT s.*, p.title as project_title
+  INTO story_record, project_record
+  FROM public.stories s
+  JOIN public.projects p ON s.project_id = p.id
+  WHERE s.id = NEW.story_id;
+
+  -- Notify the storyteller if someone else commented
+  IF NEW.user_id != story_record.storyteller_id THEN
+    INSERT INTO public.notifications (
+      recipient_id,
+      sender_id,
+      project_id,
+      story_id,
+      comment_id,
+      notification_type,
+      title,
+      message,
+      preview_text,
+      action_url
+    ) VALUES (
+      story_record.storyteller_id,
+      NEW.user_id,
+      story_record.project_id,
+      NEW.story_id,
+      NEW.id,
+      CASE WHEN NEW.is_follow_up_question THEN 'new_follow_up_question' ELSE 'new_comment' END,
+      CASE WHEN NEW.is_follow_up_question THEN 'New follow-up question' ELSE 'New comment on your story' END,
+      CASE WHEN NEW.is_follow_up_question
+        THEN 'Someone asked a follow-up question on "' || story_record.title || '"'
+        ELSE 'Someone commented on your story "' || story_record.title || '"'
+      END,
+      LEFT(NEW.content, 100),
+      '/dashboard/projects/' || story_record.project_id || '/stories/' || NEW.story_id || '#comment-' || NEW.id
+    );
+  END IF;
+
+  -- Notify facilitators and co-facilitators (except the commenter)
+  INSERT INTO public.notifications (
+    recipient_id,
+    sender_id,
+    project_id,
+    story_id,
+    comment_id,
+    notification_type,
+    title,
+    message,
+    preview_text,
+    action_url
+  )
+  SELECT
+    pm.user_id,
+    NEW.user_id,
+    story_record.project_id,
+    NEW.story_id,
+    NEW.id,
+    'story_response',
+    'New activity on story',
+    'New activity on "' || story_record.title || '"',
+    LEFT(NEW.content, 100),
+    '/dashboard/projects/' || story_record.project_id || '/stories/' || NEW.story_id || '#comment-' || NEW.id
+  FROM public.project_members pm
+  WHERE pm.project_id = story_record.project_id
+    AND pm.user_id != NEW.user_id
+    AND pm.user_id != story_record.storyteller_id
+    AND pm.status = 'active'
+    AND pm.role IN ('facilitator', 'co_facilitator');
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- Create function to handle new user signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
@@ -295,3 +472,17 @@ CREATE TRIGGER update_projects_updated_at BEFORE UPDATE ON public.projects
 
 CREATE TRIGGER update_stories_updated_at BEFORE UPDATE ON public.stories
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
+
+-- Create notification triggers
+CREATE TRIGGER on_story_created
+  AFTER INSERT ON public.stories
+  FOR EACH ROW EXECUTE FUNCTION public.notify_new_story();
+
+CREATE TRIGGER on_comment_created
+  AFTER INSERT ON public.story_comments
+  FOR EACH ROW EXECUTE FUNCTION public.notify_new_comment();
+
+-- Create trigger for new user signup
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();

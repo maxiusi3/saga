@@ -2,6 +2,7 @@ export * from './types'
 export * from './utils'
 export * from './lib/ai-services'
 export * from './lib/permissions'
+export * from './lib/notifications'
 export {
   StoryPrompt,
   PromptChapter,
