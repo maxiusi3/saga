@@ -23,6 +23,7 @@ interface Project {
   status: 'active' | 'invite_sent' | 'invite_expired' | 'new_story'
   story_count: number
   created_at: string
+  user_role: 'facilitator' | 'storyteller' | 'co_facilitator'
 }
 
 export default function DashboardPage() {
@@ -53,7 +54,8 @@ export default function DashboardPage() {
             ],
             status: 'new_story',
             story_count: 3,
-            created_at: '2024-01-15'
+            created_at: '2024-01-15',
+            user_role: 'facilitator'
           },
           {
             id: '2',
@@ -63,7 +65,21 @@ export default function DashboardPage() {
             co_facilitators: [],
             status: 'active',
             story_count: 7,
-            created_at: '2024-01-10'
+            created_at: '2024-01-10',
+            user_role: 'storyteller'
+          },
+          {
+            id: '3',
+            title: "Family History Project",
+            storyteller_name: 'Robert Wilson',
+            storyteller_avatar: '',
+            co_facilitators: [
+              { id: '4', name: 'Sarah Wilson', avatar: '' }
+            ],
+            status: 'active',
+            story_count: 8,
+            created_at: '2024-01-05',
+            user_role: 'co_facilitator'
           }
         ]
 
@@ -95,6 +111,17 @@ export default function DashboardPage() {
         return <Badge variant="destructive">Invite Expired</Badge>
       default:
         return null
+    }
+  }
+
+  const getRoleBadge = (role: Project['user_role']) => {
+    switch (role) {
+      case 'facilitator':
+        return <Badge className="bg-furbridge-teal text-white">Facilitator</Badge>
+      case 'storyteller':
+        return <Badge className="bg-furbridge-orange text-white">Storyteller</Badge>
+      case 'co_facilitator':
+        return <Badge className="bg-furbridge-warm-gray text-white">Co-Facilitator</Badge>
     }
   }
 
@@ -173,7 +200,10 @@ export default function DashboardPage() {
                   <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
                     {project.title}
                   </h3>
-                  {getStatusBadge(project.status, project.story_count)}
+                  <div className="flex flex-col items-end space-y-2">
+                    {getStatusBadge(project.status, project.story_count)}
+                    {getRoleBadge(project.user_role)}
+                  </div>
                 </div>
 
                 {/* Storyteller */}

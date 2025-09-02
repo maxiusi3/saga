@@ -31,6 +31,7 @@ interface Project {
   storyteller_name: string
   storyteller_avatar?: string
   status: 'awaiting_invitation' | 'active'
+  user_role: 'facilitator' | 'storyteller' | 'co_facilitator'
 }
 
 export default function ProjectDetailPage() {
@@ -50,7 +51,8 @@ export default function ProjectDetailPage() {
         title: "Dad's Life Story",
         storyteller_name: 'John Doe',
         storyteller_avatar: '',
-        status: 'active'
+        status: 'active',
+        user_role: projectId === '2' ? 'storyteller' : 'facilitator'
       }
 
       const mockStories: Story[] = [
@@ -190,12 +192,33 @@ export default function ProjectDetailPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">{project.title}</h1>
-        <Link href={`/dashboard/projects/${projectId}/settings`}>
-          <FurbridgeButton variant="ghost" size="icon">
-            <Settings className="h-5 w-5" />
-          </FurbridgeButton>
-        </Link>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">{project.title}</h1>
+          <div className="flex items-center space-x-2 mt-2">
+            <Badge className={
+              project.user_role === 'facilitator' ? 'bg-furbridge-teal text-white' :
+              project.user_role === 'storyteller' ? 'bg-furbridge-orange text-white' :
+              'bg-furbridge-warm-gray text-white'
+            }>
+              {project.user_role === 'facilitator' ? 'Facilitator' :
+               project.user_role === 'storyteller' ? 'Storyteller' : 'Co-Facilitator'}
+            </Badge>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          {project.user_role === 'storyteller' && (
+            <Link href="/storyteller/record">
+              <FurbridgeButton variant="orange">
+                Record Story
+              </FurbridgeButton>
+            </Link>
+          )}
+          <Link href={`/dashboard/projects/${projectId}/settings`}>
+            <FurbridgeButton variant="ghost" size="icon">
+              <Settings className="h-5 w-5" />
+            </FurbridgeButton>
+          </Link>
+        </div>
       </div>
 
       {/* Search Bar */}
