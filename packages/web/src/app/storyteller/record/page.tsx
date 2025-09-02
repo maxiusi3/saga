@@ -5,57 +5,80 @@ import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { Mic, MicOff, Square, Play, Pause, RotateCcw, Send } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-
-interface RecordingPrompt {
-  id: string
-  text: string
-  category: string
-  estimated_time: number
-  follow_up_questions?: string[]
-}
+import { Mic, MicOff, Square, Play, Pause, RotateCcw, Send, Volume2, Sparkles, Clock, ArrowLeft } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { AIPrompt, getNextPrompt, getPromptById } from '@/../../shared/src/lib/ai-prompts'
+import { AIService, AIGeneratedContent } from '@/../../shared/src/lib/ai-services'
 
 type RecordingState = 'idle' | 'recording' | 'paused' | 'completed'
 
 export default function RecordPage() {
-  const [currentPrompt, setCurrentPrompt] = useState<RecordingPrompt | null>(null)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const [currentPrompt, setCurrentPrompt] = useState<AIPrompt | null>(null)
   const [recordingState, setRecordingState] = useState<RecordingState>('idle')
   const [recordingTime, setRecordingTime] = useState(0)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [aiProcessing, setAiProcessing] = useState(false)
+  const [aiProgress, setAiProgress] = useState(0)
+  const [aiContent, setAiContent] = useState<AIGeneratedContent | null>(null)
+  const [isPlayingPrompt, setIsPlayingPrompt] = useState(false)
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
   const timerRef = useRef<NodeJS.Timeout | null>(null)
-  const router = useRouter()
+  const promptAudioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    // Load current prompt - mock data
-    const mockPrompt: RecordingPrompt = {
-      id: '1',
-      text: 'Tell me about your first job. What was it like walking in on your first day?',
-      category: 'Career',
-      estimated_time: 5,
-      follow_up_questions: [
-        'What were your colleagues like?',
-        'What was the most challenging part?',
-        'What did you learn from that experience?'
-      ]
+    const loadPrompt = async () => {
+      try {
+        // Check if there's a specific prompt ID or custom prompt from URL params
+        const promptId = searchParams?.get('promptId')
+        const customPrompt = searchParams?.get('prompt')
+        const promptType = searchParams?.get('type')
+
+        let prompt: AIPrompt | null = null
+
+        if (customPrompt) {
+          // Handle custom follow-up questions
+          prompt = {
+            id: 'custom-followup',
+            chapter: 'Follow-up',
+            chapterNumber: 0,
+            category: promptType === 'followup' ? 'Follow-up Question' : 'Custom',
+            text: decodeURIComponent(customPrompt),
+            estimatedTime: 5
+          }
+        } else if (promptId) {
+          // Load specific prompt by ID
+          prompt = getPromptById(promptId)
+        } else {
+          // Get next prompt in sequence (for now, just get the first one)
+          prompt = getNextPrompt()
+        }
+
+        if (prompt) {
+          setCurrentPrompt(prompt)
+        }
+      } catch (error) {
+        console.error('Failed to load prompt:', error)
+      } finally {
+        setLoading(false)
+      }
     }
 
-    setTimeout(() => {
-      setCurrentPrompt(mockPrompt)
-      setLoading(false)
-    }, 500)
+    loadPrompt()
 
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current)
       }
     }
-  }, [])
+  }, [searchParams])
 
   const startRecording = async () => {
     try {
@@ -134,23 +157,52 @@ export default function RecordPage() {
     if (!audioBlob || !currentPrompt) return
 
     setIsSubmitting(true)
-    
+    setAiProcessing(true)
+    setAiProgress(0)
+
     try {
-      // TODO: Upload audio to Supabase Storage and create story record
+      // Process audio with AI services
+      const aiResult = await AIService.processStoryAudio(
+        audioBlob,
+        currentPrompt.text,
+        (step: string, progress: number) => {
+          setAiProgress(progress)
+        }
+      )
+
+      setAiContent(aiResult)
+
+      // TODO: Upload audio to Supabase Storage and create story record with AI content
       // const formData = new FormData()
       // formData.append('audio', audioBlob, 'recording.wav')
       // formData.append('prompt_id', currentPrompt.id)
-      
-      // Simulate upload
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      router.push('/storyteller/success')
+      // formData.append('ai_title', aiResult.title || '')
+      // formData.append('ai_transcript', aiResult.transcript || '')
+      // formData.append('ai_summary', aiResult.summary || '')
+      // formData.append('ai_follow_up_questions', JSON.stringify(aiResult.followUpQuestions || []))
+
+      // Simulate final upload
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      // Navigate to review page with AI content
+      router.push('/storyteller/review?processed=true')
     } catch (error) {
       console.error('Error submitting recording:', error)
       alert('Failed to submit recording. Please try again.')
     } finally {
       setIsSubmitting(false)
+      setAiProcessing(false)
     }
+  }
+
+  const handlePlayPrompt = () => {
+    // Mock audio playback - in real implementation, this would play a TTS version of the prompt
+    setIsPlayingPrompt(true)
+
+    // Simulate audio duration
+    setTimeout(() => {
+      setIsPlayingPrompt(false)
+    }, 3000)
   }
 
   const formatTime = (seconds: number) => {
@@ -177,53 +229,116 @@ export default function RecordPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
-      {/* Prompt Card */}
-      <FurbridgeCard className="p-8">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <Badge variant="outline">{currentPrompt.category}</Badge>
-            <span className="text-sm text-gray-600">
-              ~{currentPrompt.estimated_time} min
-            </span>
-          </div>
-          
-          <h1 className="text-2xl font-semibold text-gray-900">
-            {currentPrompt.text}
-          </h1>
+    <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 p-4">
+      <div className="max-w-2xl mx-auto space-y-6">
+        {/* Back Navigation */}
+        <Link
+          href="/storyteller"
+          className="inline-flex items-center text-gray-600 hover:text-gray-900"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Stories
+        </Link>
 
-          {currentPrompt.follow_up_questions && (
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium text-gray-600">
-                Consider these follow-up questions:
-              </h3>
-              <ul className="space-y-1">
-                {currentPrompt.follow_up_questions.map((question, index) => (
-                  <li key={index} className="text-sm text-gray-600">
-                    • {question}
-                  </li>
-                ))}
-              </ul>
+        {/* AI Prompt Section */}
+        <FurbridgeCard className="p-8 bg-gradient-to-r from-furbridge-orange/5 to-furbridge-teal/5 border-2 border-furbridge-orange/20">
+          <div className="space-y-6">
+            {/* Chapter & Category */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Badge className="bg-furbridge-orange text-white">
+                  <Sparkles className="h-3 w-3 mr-1" />
+                  {currentPrompt.chapter}
+                </Badge>
+                <Badge variant="outline">{currentPrompt.category}</Badge>
+              </div>
+              <div className="flex items-center space-x-2 text-gray-600">
+                <Clock className="h-4 w-4" />
+                <span className="text-sm">~{currentPrompt.estimatedTime} min</span>
+              </div>
             </div>
-          )}
-        </div>
-      </FurbridgeCard>
 
-      {/* Recording Interface */}
-      <FurbridgeCard className="p-8">
-        <div className="space-y-6">
-          {/* Recording Status */}
-          <div className="text-center space-y-2">
-            <div className="text-3xl font-mono text-gray-900">
-              {formatTime(recordingTime)}
+            {/* Prompt Text */}
+            <div className="space-y-4">
+              <h1 className="text-2xl font-semibold text-gray-900 leading-relaxed">
+                {currentPrompt.text}
+              </h1>
+
+              {/* Hear Prompt Button */}
+              <FurbridgeButton
+                variant="outline"
+                size="sm"
+                onClick={handlePlayPrompt}
+                disabled={isPlayingPrompt}
+                className="flex items-center space-x-2"
+              >
+                <Volume2 className="h-4 w-4" />
+                <span>{isPlayingPrompt ? 'Playing...' : 'Hear Prompt'}</span>
+              </FurbridgeButton>
             </div>
-            <div className="text-sm text-gray-600">
-              {recordingState === 'idle' && 'Ready to record'}
-              {recordingState === 'recording' && 'Recording...'}
-              {recordingState === 'paused' && 'Recording paused'}
-              {recordingState === 'completed' && 'Recording completed'}
-            </div>
+
+            {/* Follow-up Suggestions */}
+            {currentPrompt.followUpSuggestions && currentPrompt.followUpSuggestions.length > 0 && (
+              <div className="space-y-3 bg-white/50 p-4 rounded-lg">
+                <h3 className="text-sm font-medium text-gray-700 flex items-center">
+                  <Sparkles className="h-4 w-4 mr-2 text-furbridge-teal" />
+                  Consider exploring these aspects:
+                </h3>
+                <ul className="space-y-2">
+                  {currentPrompt.followUpSuggestions.map((question, index) => (
+                    <li key={index} className="text-sm text-gray-600 flex items-start">
+                      <span className="text-furbridge-orange mr-2 mt-1">•</span>
+                      <span>{question}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
+        </FurbridgeCard>
+
+        {/* AI Processing Status */}
+        {aiProcessing && (
+          <FurbridgeCard className="p-6 bg-furbridge-teal/5 border-furbridge-teal/20">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <Sparkles className="h-5 w-5 text-furbridge-teal animate-pulse" />
+                <h3 className="font-semibold text-gray-900">AI Processing Your Story</h3>
+              </div>
+
+              <div className="space-y-2">
+                <Progress value={aiProgress} className="h-3" />
+                <div className="text-sm text-gray-600 text-center">
+                  {aiProgress < 40 ? 'Transcribing your story...' :
+                   aiProgress < 70 ? 'Generating title suggestions...' :
+                   aiProgress < 90 ? 'Creating follow-up questions...' :
+                   'Almost done!'}
+                </div>
+              </div>
+            </div>
+          </FurbridgeCard>
+        )}
+
+        {/* Recording Interface */}
+        <FurbridgeCard className="p-8">
+          <div className="space-y-6">
+            {/* Recording Status */}
+            <div className="text-center space-y-2">
+              <div className="text-4xl font-mono text-gray-900">
+                {formatTime(recordingTime)}
+              </div>
+              <div className="text-sm text-gray-600">
+                {recordingState === 'idle' && 'Ready to record your story'}
+                {recordingState === 'recording' && (
+                  <span className="flex items-center justify-center space-x-2">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    <span>Recording...</span>
+                  </span>
+                )}
+                {recordingState === 'paused' && 'Recording paused'}
+                {recordingState === 'completed' && 'Recording completed'}
+              </div>
+            </div>
 
           {/* Progress Bar (estimated time) */}
           {recordingState !== 'idle' && (
@@ -309,10 +424,25 @@ export default function RecordPage() {
                   variant="orange"
                   size="lg"
                   onClick={submitRecording}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || aiProcessing}
+                  className="min-w-48"
                 >
-                  <Send className="h-5 w-5 mr-2" />
-                  {isSubmitting ? 'Submitting...' : 'Submit Story'}
+                  {aiProcessing ? (
+                    <>
+                      <Sparkles className="h-5 w-5 mr-2 animate-pulse" />
+                      Processing with AI...
+                    </>
+                  ) : isSubmitting ? (
+                    <>
+                      <Send className="h-5 w-5 mr-2" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-5 w-5 mr-2" />
+                      Submit Story
+                    </>
+                  )}
                 </FurbridgeButton>
               </>
             )}

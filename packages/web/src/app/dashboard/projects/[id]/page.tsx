@@ -8,21 +8,43 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Settings, Search, Play, MessageCircle, HelpCircle } from 'lucide-react'
+import { Settings, Search, Play, MessageCircle, HelpCircle, Sparkles, BookOpen, Clock, Heart, Filter, Plus } from 'lucide-react'
 import Link from 'next/link'
+import { StoryCard } from '@/components/story/story-card'
+import { ChapterSummaryCard } from '@/components/story/chapter-summary-card'
+import { AIGeneratedContent } from '@/../../shared/src/lib/ai-services'
 
 interface Story {
   id: string
   title: string
-  timestamp: string
   storyteller_name: string
   storyteller_avatar?: string
-  audio_duration: number
-  transcript_snippet: string
-  photo_url?: string
-  comments_count: number
-  followup_count: number
+  duration: number
+  created_at: string
+  audio_url: string
+  category: string
+  prompt: string
+  ai_content?: AIGeneratedContent
+  interaction_summary: {
+    comments: number
+    followups: number
+    appreciations: number
+  }
+  has_new_interactions: boolean
   type: 'story' | 'chapter_summary'
+}
+
+interface ChapterSummary {
+  id: string
+  chapter_number: number
+  chapter_title: string
+  ai_summary: string
+  story_count: number
+  total_duration: number
+  created_at: string
+  themes: string[]
+  key_moments: string[]
+  type: 'chapter_summary'
 }
 
 interface Project {
@@ -40,8 +62,10 @@ export default function ProjectDetailPage() {
   
   const [project, setProject] = useState<Project | null>(null)
   const [stories, setStories] = useState<Story[]>([])
+  const [chapterSummaries, setChapterSummaries] = useState<ChapterSummary[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
+  const [filterType, setFilterType] = useState<'all' | 'stories' | 'chapters'>('all')
 
   useEffect(() => {
     const loadProject = async () => {
@@ -59,52 +83,127 @@ export default function ProjectDetailPage() {
         {
           id: '1',
           title: 'Growing Up in the 1950s',
-          timestamp: '2024-01-20T10:30:00Z',
           storyteller_name: 'John Doe',
           storyteller_avatar: '',
-          audio_duration: 420, // 7 minutes
-          transcript_snippet: 'I remember when I was just seven years old, living in that small house on Maple Street...',
-          photo_url: '',
-          comments_count: 3,
-          followup_count: 1,
+          duration: 420, // 7 minutes
+          created_at: '2024-01-20T10:30:00Z',
+          audio_url: '/mock-audio-1.mp3',
+          category: 'Childhood Memories',
+          prompt: 'Tell me about your earliest childhood memory. Can you describe what you remember about that moment?',
+          ai_content: {
+            title: 'Growing Up in the 1950s',
+            transcript: 'I remember when I was just seven years old, living in that small house on Maple Street. The neighborhood was so different back then - kids played outside until the streetlights came on, and everyone knew each other. My mother would call us in for dinner by ringing a bell from the front porch.',
+            summary: 'A vivid recollection of childhood in the 1950s, highlighting the close-knit community and simpler times.',
+            followUpQuestions: [
+              'What games did you and the neighborhood kids play?',
+              'Can you tell me more about your house on Maple Street?',
+              'What was your favorite thing about that neighborhood?'
+            ],
+            processingStatus: 'completed',
+            confidence: 0.94
+          },
+          interaction_summary: {
+            comments: 3,
+            followups: 1,
+            appreciations: 2
+          },
+          has_new_interactions: true,
           type: 'story'
-        },
-        {
-          id: '2',
-          title: 'Chapter 1: Early Years Summary',
-          timestamp: '2024-01-19T15:45:00Z',
-          storyteller_name: 'AI Assistant',
-          storyteller_avatar: '',
-          audio_duration: 0,
-          transcript_snippet: 'This chapter covers John\'s early childhood memories from ages 5-12, including his family life, school experiences, and the neighborhood he grew up in...',
-          comments_count: 0,
-          followup_count: 0,
-          type: 'chapter_summary'
         },
         {
           id: '3',
           title: 'My First Job at the Factory',
-          timestamp: '2024-01-18T14:20:00Z',
           storyteller_name: 'John Doe',
           storyteller_avatar: '',
-          audio_duration: 680, // 11 minutes
-          transcript_snippet: 'It was 1965 when I walked through those factory doors for the first time. I was nervous but excited...',
-          photo_url: '',
-          comments_count: 5,
-          followup_count: 2,
+          duration: 680, // 11 minutes
+          created_at: '2024-01-18T14:20:00Z',
+          audio_url: '/mock-audio-3.mp3',
+          category: 'Career',
+          prompt: 'Tell me about your first job. What was it like walking in on your first day?',
+          ai_content: {
+            title: 'My First Day at the Factory',
+            transcript: 'It was 1965 when I walked through those factory doors for the first time. I was nervous but excited to start earning my own money. The sound of the machines was overwhelming, and there were people everywhere. My supervisor, Mr. Johnson, showed me around and introduced me to my coworkers.',
+            summary: 'A memorable account of starting work at a factory in 1965, capturing the excitement and nervousness of a first job.',
+            followUpQuestions: [
+              'What were your coworkers like?',
+              'What was the most challenging part of learning the job?',
+              'How did you feel at the end of that first day?'
+            ],
+            processingStatus: 'completed',
+            confidence: 0.91
+          },
+          interaction_summary: {
+            comments: 5,
+            followups: 2,
+            appreciations: 3
+          },
+          has_new_interactions: false,
           type: 'story'
+        }
+      ]
+
+      const mockChapterSummaries: ChapterSummary[] = [
+        {
+          id: 'chapter-1',
+          chapter_number: 1,
+          chapter_title: 'Childhood Memories',
+          ai_summary: 'This chapter captures the essence of growing up in the 1950s through vivid childhood memories. John shares stories of his neighborhood on Maple Street, family traditions, and the simple joys of childhood. The stories reveal a time when communities were close-knit and children had more freedom to explore and play.',
+          story_count: 3,
+          total_duration: 1200, // 20 minutes
+          created_at: '2024-01-19T15:45:00Z',
+          themes: ['Community', 'Family', 'Innocence', 'Nostalgia'],
+          key_moments: [
+            'Playing outside until streetlights came on',
+            'Mother calling for dinner with a bell',
+            'Knowing all the neighbors by name'
+          ],
+          type: 'chapter_summary'
         }
       ]
 
       setTimeout(() => {
         setProject(mockProject)
         setStories(mockStories)
+        setChapterSummaries(mockChapterSummaries)
         setLoading(false)
       }, 1000)
     }
 
     loadProject()
   }, [projectId])
+
+  // Filter and combine stories and chapter summaries
+  const filteredContent = () => {
+    let content: (Story | ChapterSummary)[] = []
+
+    if (filterType === 'all' || filterType === 'stories') {
+      content = [...content, ...stories]
+    }
+
+    if (filterType === 'all' || filterType === 'chapters') {
+      content = [...content, ...chapterSummaries]
+    }
+
+    // Filter by search query
+    if (searchQuery) {
+      content = content.filter(item => {
+        if (item.type === 'story') {
+          const story = item as Story
+          return story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                 story.ai_content?.transcript?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                 story.category.toLowerCase().includes(searchQuery.toLowerCase())
+        } else {
+          const chapter = item as ChapterSummary
+          return chapter.chapter_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                 chapter.ai_summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                 chapter.themes.some(theme => theme.toLowerCase().includes(searchQuery.toLowerCase()))
+        }
+      })
+    }
+
+    // Sort by creation date (newest first)
+    return content.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+  }
 
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
@@ -221,89 +320,115 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
-        <Input
-          placeholder="Search stories..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10"
-        />
+      {/* Search and Filter Bar */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
+          <Input
+            placeholder="Search stories and chapters..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Filter className="h-4 w-4 text-gray-600" />
+          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+            <button
+              onClick={() => setFilterType('all')}
+              className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                filterType === 'all'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              All
+            </button>
+            <button
+              onClick={() => setFilterType('stories')}
+              className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                filterType === 'stories'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Stories
+            </button>
+            <button
+              onClick={() => setFilterType('chapters')}
+              className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                filterType === 'chapters'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Sparkles className="h-3 w-3 mr-1 inline" />
+              AI Summaries
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Stories Feed */}
-      <div className="space-y-4">
-        {filteredStories.map((story) => (
-          <Link key={story.id} href={`/dashboard/projects/${projectId}/stories/${story.id}`}>
-            <FurbridgeCard className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="space-y-4">
-                {/* Story Header */}
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                      {story.title}
-                    </h3>
-                    <div className="flex items-center space-x-4 text-sm text-gray-600">
-                      <span>{formatTimestamp(story.timestamp)}</span>
-                      <span>{story.storyteller_name}</span>
-                    </div>
-                  </div>
-                  {story.type === 'chapter_summary' && (
-                    <Badge variant="secondary">Chapter Summary</Badge>
-                  )}
-                </div>
-
-                {/* Audio Player (for regular stories) */}
-                {story.type === 'story' && (
-                  <div className="flex items-center space-x-3 bg-gray-100/50 rounded-lg p-3">
-                    <FurbridgeButton variant="ghost" size="icon" className="h-8 w-8">
-                      <Play className="h-4 w-4" />
-                    </FurbridgeButton>
-                    <div className="flex-1 bg-gray-100 rounded-full h-2">
-                      <div className="bg-furbridge-orange h-2 rounded-full w-1/3"></div>
-                    </div>
-                    <span className="text-sm text-gray-600">
-                      {formatDuration(story.audio_duration)}
-                    </span>
-                  </div>
-                )}
-
-                {/* Transcript Snippet */}
-                <p className="text-gray-600 line-clamp-2">
-                  {story.transcript_snippet}
-                </p>
-
-                {/* Photo Thumbnail */}
-                {story.photo_url && (
-                  <div className="w-16 h-16 bg-gray-100 rounded-lg"></div>
-                )}
-
-                {/* Interaction Summary */}
-                <div className="flex items-center space-x-4 text-sm text-gray-600">
-                  {story.comments_count > 0 && (
-                    <div className="flex items-center space-x-1">
-                      <MessageCircle className="h-4 w-4" />
-                      <span>{story.comments_count} Comments</span>
-                    </div>
-                  )}
-                  {story.followup_count > 0 && (
-                    <div className="flex items-center space-x-1">
-                      <HelpCircle className="h-4 w-4" />
-                      <span>{story.followup_count} Follow-up</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </FurbridgeCard>
-          </Link>
-        ))}
-
-        {filteredStories.length === 0 && searchQuery && (
-          <div className="text-center py-8">
-            <p className="text-gray-600">No stories found matching "{searchQuery}"</p>
+      {/* AI-Powered Stories Feed */}
+      <div className="space-y-6">
+        {filteredContent().length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">📖</div>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+              {searchQuery ? 'No matching content found' : 'No stories yet'}
+            </h2>
+            <p className="text-gray-600 mb-6">
+              {searchQuery
+                ? 'Try adjusting your search terms or filters'
+                : project.user_role === 'storyteller'
+                  ? 'Start sharing your memories by recording your first story'
+                  : 'Invite your storyteller to begin capturing precious memories'
+              }
+            </p>
+            {!searchQuery && project.user_role === 'storyteller' && (
+              <Link href="/storyteller/record">
+                <FurbridgeButton variant="orange" size="lg">
+                  <Plus className="h-5 w-5 mr-2" />
+                  Record Your First Story
+                </FurbridgeButton>
+              </Link>
+            )}
           </div>
+        ) : (
+          filteredContent().map((item) => {
+            if (item.type === 'chapter_summary') {
+              const chapterSummary = item as ChapterSummary
+              return (
+                <ChapterSummaryCard
+                  key={chapterSummary.id}
+                  chapterSummary={chapterSummary}
+                  onClick={() => {
+                    // Navigate to chapter view or expand
+                    console.log('View chapter:', chapterSummary.id)
+                  }}
+                />
+              )
+            } else {
+              const story = item as Story
+              return (
+                <StoryCard
+                  key={story.id}
+                  story={story}
+                  onPlay={(storyId) => {
+                    console.log('Play story:', storyId)
+                  }}
+                  onViewDetails={(storyId) => {
+                    window.location.href = `/dashboard/projects/${projectId}/stories/${storyId}`
+                  }}
+                  showAIContent={true}
+                />
+              )
+            }
+          })
         )}
+
+
       </div>
     </div>
   )
