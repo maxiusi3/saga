@@ -1,4 +1,4 @@
-export interface AIPrompt {
+export interface StoryPrompt {
   id: string
   chapter: string
   chapterNumber: number
@@ -8,16 +8,16 @@ export interface AIPrompt {
   estimatedTime: number // in minutes
 }
 
-export interface Chapter {
+export interface PromptChapter {
   id: string
   title: string
   number: number
   description: string
-  prompts: AIPrompt[]
+  prompts: StoryPrompt[]
 }
 
 // AI Prompt Library organized by chapters
-export const AI_PROMPT_CHAPTERS: Chapter[] = [
+export const AI_PROMPT_CHAPTERS: PromptChapter[] = [
   {
     id: 'childhood',
     title: 'Childhood Memories',
@@ -269,34 +269,37 @@ export const AI_PROMPT_CHAPTERS: Chapter[] = [
 ]
 
 // Helper functions
-export function getAllPrompts(): AIPrompt[] {
+export function getAllPrompts(): StoryPrompt[] {
   return AI_PROMPT_CHAPTERS.flatMap(chapter => chapter.prompts)
 }
 
-export function getPromptsByChapter(chapterNumber: number): AIPrompt[] {
+export function getPromptsByChapter(chapterNumber: number): StoryPrompt[] {
   const chapter = AI_PROMPT_CHAPTERS.find(c => c.number === chapterNumber)
   return chapter ? chapter.prompts : []
 }
 
-export function getNextPrompt(currentPromptId?: string): AIPrompt | null {
+export function getNextPrompt(currentPromptId?: string): StoryPrompt | null {
   const allPrompts = getAllPrompts()
-  
+
   if (!currentPromptId) {
     return allPrompts[0] || null
   }
-  
+
   const currentIndex = allPrompts.findIndex(p => p.id === currentPromptId)
   if (currentIndex === -1 || currentIndex === allPrompts.length - 1) {
     return null
   }
-  
+
   return allPrompts[currentIndex + 1]
 }
 
-export function getPromptById(id: string): AIPrompt | null {
+export function getPromptById(id: string): StoryPrompt | null {
   const allPrompts = getAllPrompts()
   return allPrompts.find(p => p.id === id) || null
 }
+
+// For backward compatibility, export StoryPrompt as AIPrompt
+export type AIPrompt = StoryPrompt
 
 export function getChapterProgress(completedPromptIds: string[]): { [chapterNumber: number]: { completed: number; total: number } } {
   const progress: { [chapterNumber: number]: { completed: number; total: number } } = {}
