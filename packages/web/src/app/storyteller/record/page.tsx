@@ -343,10 +343,12 @@ function RecordPageContent() {
                 <span>Progress</span>
                 <span>{Math.min(100, Math.round((recordingTime / (currentPrompt.estimatedTime * 60)) * 100))}%</span>
               </div>
-              <Progress
-                value={Math.min(100, (recordingTime / (currentPrompt.estimatedTime * 60)) * 100)}
-                className="h-2"
-              />
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-furbridge-orange h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${Math.min(100, (recordingTime / (currentPrompt.estimatedTime * 60)) * 100)}%` }}
+                ></div>
+              </div>
             </div>
           )}
 
