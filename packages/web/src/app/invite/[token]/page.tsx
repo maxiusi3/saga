@@ -81,8 +81,8 @@ export default function InvitationLandingPage() {
       // 3. Add user to project
       // 4. Redirect to appropriate page
 
-      // For now, redirect to privacy pledge
-      router.push('/privacy-pledge?next=' + encodeURIComponent(`/storyteller?project=${invitation.id}`))
+      // For now, redirect to privacy pledge, then to the specific project
+      router.push('/privacy-pledge?next=' + encodeURIComponent(`/dashboard/projects/${invitation.id}`))
     } catch (err) {
       setError('Failed to accept invitation. Please try again.')
     } finally {

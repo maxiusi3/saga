@@ -44,8 +44,8 @@ export function OnboardingHints({ className = '' }: OnboardingHintsProps) {
       case 'record-story':
         return (
           <Button asChild className="bg-green-600 hover:bg-green-700 text-white">
-            <Link href="/storyteller">
-              Go to Storyteller Dashboard
+            <Link href="/dashboard">
+              Go to Dashboard
             </Link>
           </Button>
         )

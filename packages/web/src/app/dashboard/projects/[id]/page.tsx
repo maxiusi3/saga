@@ -306,7 +306,7 @@ export default function ProjectDetailPage() {
         </div>
         <div className="flex items-center space-x-2">
           {project.user_role === 'storyteller' && (
-            <Link href="/storyteller/record">
+            <Link href={`/dashboard/projects/${projectId}/record`}>
               <FurbridgeButton variant="orange">
                 Record Story
               </FurbridgeButton>
@@ -387,7 +387,7 @@ export default function ProjectDetailPage() {
               }
             </p>
             {!searchQuery && project.user_role === 'storyteller' && (
-              <Link href="/storyteller/record">
+              <Link href={`/dashboard/projects/${projectId}/record`}>
                 <FurbridgeButton variant="orange" size="lg">
                   <Plus className="h-5 w-5 mr-2" />
                   Record Your First Story

@@ -13,7 +13,7 @@ function PrivacyPledgeContent() {
   const [isAgreed, setIsAgreed] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   
-  const nextUrl = searchParams?.get('next') || '/storyteller'
+  const nextUrl = searchParams?.get('next') || '/dashboard'
 
   const handleAgree = async () => {
     setIsLoading(true)
