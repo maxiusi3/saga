@@ -109,49 +109,49 @@ function RecordPageContent() {
       }, 1000)
 
     } catch (error) {
-      console.error('Error starting recording:', error)
-      alert('Unable to access microphone. Please check your permissions.')
+      console.error('Error starting recording:', error);
+      alert('Unable to access microphone. Please check your permissions.');
     }
-  }
+  };
 
   const pauseRecording = () => {
     if (mediaRecorderRef.current && recordingState === 'recording') {
-      mediaRecorderRef.current.pause()
-      setRecordingState('paused')
+      mediaRecorderRef.current.pause();
+      setRecordingState('paused');
       if (timerRef.current) {
-        clearInterval(timerRef.current)
+        clearInterval(timerRef.current);
       }
     }
-  }
+  };
 
   const resumeRecording = () => {
     if (mediaRecorderRef.current && recordingState === 'paused') {
-      mediaRecorderRef.current.resume()
-      setRecordingState('recording')
+      mediaRecorderRef.current.resume();
+      setRecordingState('recording');
       timerRef.current = setInterval(() => {
-        setRecordingTime(prev => prev + 1)
-      }, 1000)
+        setRecordingTime(prev => prev + 1);
+      }, 1000);
     }
-  }
+  };
 
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop()
-      setRecordingState('completed')
+      mediaRecorderRef.current.stop();
+      setRecordingState('completed');
       if (timerRef.current) {
-        clearInterval(timerRef.current)
+        clearInterval(timerRef.current);
       }
     }
-  }
+  };
 
   const resetRecording = () => {
-    setRecordingState('idle')
-    setRecordingTime(0)
-    setAudioBlob(null)
+    setRecordingState('idle');
+    setRecordingTime(0);
+    setAudioBlob(null);
     if (timerRef.current) {
-      clearInterval(timerRef.current)
+      clearInterval(timerRef.current);
     }
-  }
+  };
 
   const submitRecording = async () => {
     if (!audioBlob || !currentPrompt) return;
@@ -206,9 +206,9 @@ function RecordPageContent() {
   };
 
   const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60)
-    const remainingSeconds = seconds % 60
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   if (loading) {
@@ -231,7 +231,6 @@ function RecordPageContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 p-4">
       <div className="max-w-2xl mx-auto space-y-6">
-        {/* Back Navigation */}
         <Link
           href="/storyteller"
           className="inline-flex items-center text-gray-600 hover:text-gray-900"
@@ -463,7 +462,7 @@ function RecordPageContent() {
         </div>
       </FurbridgeCard>
     </div>
-  )
+  );
 }
 
 export default function RecordPage() {
