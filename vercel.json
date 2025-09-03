@@ -1,5 +1,13 @@
 {
+  "version": 2,
+  "name": "saga-web",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "packages/web/.next",
-  "installCommand": "npm ci"
+  "installCommand": "npm ci",
+  "framework": "nextjs",
+  "functions": {
+    "packages/web/src/app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

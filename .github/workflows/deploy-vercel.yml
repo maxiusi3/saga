@@ -1,10 +1,13 @@
 name: Deploy Saga MVP to Vercel
 
+# Temporarily disabled - using Vercel's native GitHub integration instead
+# This avoids permission issues with team access
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
+  workflow_dispatch: # Manual trigger only
+  # push:
+  #   branches: [main, develop]
+  # pull_request:
+  #   branches: [main]
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -59,13 +62,16 @@ jobs:
         run: npm ci
 
       - name: Pull Vercel Environment Information
+        working-directory: ./packages/web
         run: vercel pull --yes --environment=${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }} --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
+        working-directory: ./packages/web
         run: vercel build ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
         id: deploy
+        working-directory: ./packages/web
         run: |
           DEPLOYMENT_URL=$(vercel deploy --prebuilt ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }})
           echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
