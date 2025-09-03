@@ -32,7 +32,13 @@ export function useNotifications(): UseNotificationsReturn {
   const [error, setError] = useState<string | null>(null)
 
   const fetchNotifications = useCallback(async () => {
-    if (!user?.id) return
+    if (!user?.id) {
+      setLoading(false)
+      setNotifications([])
+      setUnreadCount(0)
+      setSummary(null)
+      return
+    }
 
     try {
       setLoading(true)

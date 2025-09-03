@@ -4,14 +4,21 @@ import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { Badge } from '@/components/ui/badge'
 import { useNotifications } from '@/hooks/useNotifications'
 import { NotificationDropdown } from './NotificationDropdown'
+import { useAuthStore } from '@/stores/auth-store'
 
 interface NotificationBellProps {
   className?: string
 }
 
 export function NotificationBell({ className }: NotificationBellProps) {
+  const { user } = useAuthStore()
   const { unreadCount, loading } = useNotifications()
   const [isOpen, setIsOpen] = useState(false)
+
+  // Don't show notification bell if user is not authenticated
+  if (!user) {
+    return null
+  }
 
   return (
     <div className="relative">

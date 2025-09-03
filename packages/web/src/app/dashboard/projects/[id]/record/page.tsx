@@ -1,12 +1,14 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import { Badge } from '@/components/ui/badge'
-import { Mic, MicOff, Play, Pause, Square, RotateCcw, Send, Volume2, Sparkles } from 'lucide-react'
+import { Send, Sparkles, ArrowLeft } from 'lucide-react'
 import { StoryPrompt, getNextPrompt, getPromptById, AI_PROMPT_CHAPTERS } from '@saga/shared'
+import { AudioRecorder } from '@/components/audio/AudioRecorder'
+import { AudioPlayer } from '@/components/audio/AudioPlayer'
 
 interface AIContent {
   title?: string
@@ -21,24 +23,20 @@ export default function ProjectRecordPage() {
   const router = useRouter()
   const projectId = params.id as string
   
-  // Recording states
-  const [isRecording, setIsRecording] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-  const [recordingTime, setRecordingTime] = useState(0)
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
-  const [recordingProgress, setRecordingProgress] = useState(0)
-  
-  // AI states
+  // Story states
   const [currentPrompt, setCurrentPrompt] = useState<StoryPrompt | null>(null)
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
+  const [audioUrl, setAudioUrl] = useState<string | null>(null)
+  const [recordingDuration, setRecordingDuration] = useState(0)
+
+  // AI states
   const [aiProcessing, setAiProcessing] = useState(false)
   const [aiProgress, setAiProgress] = useState(0)
   const [aiContent, setAiContent] = useState<AIContent | null>(null)
-  
-  // Refs
-  const timerRef = useRef<NodeJS.Timeout | null>(null)
-  const progressRef = useRef<NodeJS.Timeout | null>(null)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Submission states
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   // Load initial prompt
   useEffect(() => {
@@ -46,156 +44,128 @@ export default function ProjectRecordPage() {
     setCurrentPrompt(prompt)
   }, [])
 
-  // Timer effect
-  useEffect(() => {
-    if (isRecording && !isPaused) {
-      timerRef.current = setInterval(() => {
-        setRecordingTime(prev => prev + 1)
-      }, 1000)
-    } else {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-      }
-    }
+  // Handle recording completion
+  const handleRecordingComplete = (blob: Blob, duration: number) => {
+    setAudioBlob(blob)
+    setAudioUrl(URL.createObjectURL(blob))
+    setRecordingDuration(duration)
 
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-      }
-    }
-  }, [isRecording, isPaused])
-
-  // Progress bar effect
-  useEffect(() => {
-    if (isRecording && !isPaused) {
-      progressRef.current = setInterval(() => {
-        setRecordingProgress(prev => Math.min(prev + 0.5, 100))
-      }, 100)
-    } else {
-      if (progressRef.current) {
-        clearInterval(progressRef.current)
-      }
-    }
-
-    return () => {
-      if (progressRef.current) {
-        clearInterval(progressRef.current)
-      }
-    }
-  }, [isRecording, isPaused])
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, '0')}`
+    // Start AI processing
+    processAudioWithAI(blob)
   }
 
-  const startRecording = async () => {
+  // Process audio with AI (mock implementation for now)
+  const processAudioWithAI = async (audioBlob: Blob) => {
+    setAiProcessing(true)
+    setAiProgress(0)
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const recorder = new MediaRecorder(stream)
-      const chunks: BlobPart[] = []
+      // Simulate AI processing with progress updates
+      const progressInterval = setInterval(() => {
+        setAiProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval)
+            return 90
+          }
+          return prev + 10
+        })
+      }, 500)
 
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          chunks.push(e.data)
-        }
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 5000))
+
+      clearInterval(progressInterval)
+      setAiProgress(100)
+
+      // Mock AI results
+      const mockAiContent: AIContent = {
+        title: "A Childhood Memory from the 1950s",
+        summary: "A vivid recollection of growing up in a small neighborhood where children played outside until dark and everyone knew each other.",
+        transcript: "I remember when I was just seven years old, living in that small house on Maple Street. The neighborhood was so different back then - kids played outside until the streetlights came on, and everyone knew each other. My mother would call us in for dinner by ringing a bell from the front porch...",
+        followUpQuestions: [
+          "What games did you and the neighborhood kids play?",
+          "Can you tell me more about your house on Maple Street?",
+          "What was your favorite thing about that neighborhood?"
+        ],
+        confidence: 0.92
       }
 
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/webm' })
-        setAudioBlob(blob)
-        stream.getTracks().forEach(track => track.stop())
-      }
-
-      recorder.start()
-      setMediaRecorder(recorder)
-      setIsRecording(true)
-      setIsPaused(false)
-      setRecordingTime(0)
-      setRecordingProgress(0)
+      setAiContent(mockAiContent)
     } catch (error) {
-      console.error('Error starting recording:', error)
+      console.error('AI processing failed:', error)
+      setAiContent({
+        title: "Untitled Story",
+        summary: "AI processing failed. Please try again or add details manually.",
+        transcript: "Transcript generation failed.",
+        followUpQuestions: [],
+        confidence: 0
+      })
+    } finally {
+      setAiProcessing(false)
     }
   }
 
-  const pauseRecording = () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-      mediaRecorder.pause()
-      setIsPaused(true)
+  // Handle story submission
+  const handleSubmitStory = async () => {
+    if (!audioBlob || !aiContent) return
+
+    setIsSubmitting(true)
+    setSubmitError(null)
+
+    try {
+      // TODO: Implement real story submission to Supabase
+      console.log('Submitting story:', {
+        projectId,
+        audioBlob,
+        duration: recordingDuration,
+        aiContent,
+        promptId: currentPrompt?.id
+      })
+
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+
+      // Redirect to project page on success
+      router.push(`/dashboard/projects/${projectId}`)
+    } catch (error) {
+      console.error('Story submission failed:', error)
+      setSubmitError('Failed to save story. Please try again.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-  const resumeRecording = () => {
-    if (mediaRecorder && mediaRecorder.state === 'paused') {
-      mediaRecorder.resume()
-      setIsPaused(false)
+  // Reset recording and start over
+  const handleStartOver = () => {
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl)
     }
-  }
-
-  const stopRecording = () => {
-    if (mediaRecorder) {
-      mediaRecorder.stop()
-      setIsRecording(false)
-      setIsPaused(false)
-    }
-  }
-
-  const reRecord = () => {
     setAudioBlob(null)
-    setRecordingTime(0)
-    setRecordingProgress(0)
+    setAudioUrl(null)
+    setRecordingDuration(0)
     setAiContent(null)
-    startRecording()
+    setAiProcessing(false)
+    setAiProgress(0)
+    setSubmitError(null)
   }
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl)
+      }
+    }
+  }, [audioUrl])
+
+
 
   const playPrompt = () => {
-    if (currentPrompt && audioRef.current) {
+    if (currentPrompt) {
       // This would play the AI-generated audio prompt
       // For now, we'll use text-to-speech or show a placeholder
       console.log('Playing prompt:', currentPrompt.text)
     }
-  }
-
-  const processWithAI = async () => {
-    if (!audioBlob) return
-
-    setAiProcessing(true)
-    setAiProgress(0)
-
-    // Simulate AI processing with progress updates
-    const progressSteps = [
-      { progress: 25, message: 'Transcribing audio...' },
-      { progress: 50, message: 'Generating title...' },
-      { progress: 75, message: 'Creating summary...' },
-      { progress: 100, message: 'Preparing follow-up questions...' }
-    ]
-
-    for (const step of progressSteps) {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      setAiProgress(step.progress)
-    }
-
-    // Mock AI-generated content
-    const mockAIContent: AIContent = {
-      title: "My First Day at Work",
-      summary: "A heartwarming story about starting a new job and the nervousness that comes with new beginnings. The storyteller shares their experience of walking into their first workplace and the mix of excitement and anxiety they felt.",
-      transcript: "Well, I remember my first day at work like it was yesterday. I was so nervous, my hands were shaking as I walked through those office doors...",
-      followUpQuestions: [
-        "What was the most surprising thing about your first day?",
-        "How did your colleagues welcome you?",
-        "What advice would you give to someone starting their first job?"
-      ],
-      confidence: 0.92
-    }
-
-    setAiContent(mockAIContent)
-    setAiProcessing(false)
-  }
-
-  const submitStory = () => {
-    // Navigate to project page with success message
-    router.push(`/dashboard/projects/${projectId}?story_added=true`)
   }
 
   if (!currentPrompt) {
@@ -263,132 +233,43 @@ export default function ProjectRecordPage() {
         </FurbridgeCard>
 
         {/* Recording Interface */}
-        <FurbridgeCard className="p-6">
-          <div className="space-y-6">
-            {/* Timer and Progress */}
-            <div className="text-center space-y-4">
-              <div className="text-4xl font-mono font-bold text-gray-900">
-                {formatTime(recordingTime)}
-              </div>
-              
-              {(isRecording || recordingTime > 0) && (
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span>Recording Progress</span>
-                    <span>{Math.round(recordingProgress)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-furbridge-teal h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${recordingProgress}%` }}
-                    ></div>
-                  </div>
-                </div>
-              )}
-            </div>
+        <AudioRecorder
+          onRecordingComplete={handleRecordingComplete}
+          onRecordingStart={() => console.log('Recording started')}
+          onRecordingStop={() => console.log('Recording stopped')}
+          className="w-full"
+        />
 
-            {/* Recording Controls */}
-            <div className="flex justify-center space-x-4">
-              {!isRecording && !audioBlob && (
+        {/* Audio Preview */}
+        {audioUrl && !aiProcessing && (
+          <FurbridgeCard className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Preview Your Recording</h3>
+            <AudioPlayer
+              src={audioUrl}
+              title="Your Story Recording"
+              className="w-full"
+            />
+            <div className="mt-4 flex justify-center space-x-4">
+              <FurbridgeButton
+                onClick={handleStartOver}
+                variant="outline"
+                className="border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Record Again
+              </FurbridgeButton>
+              {!aiContent && (
                 <FurbridgeButton
-                  onClick={startRecording}
-                  className="bg-furbridge-teal hover:bg-furbridge-teal/90 text-white px-8 py-3"
+                  onClick={() => processAudioWithAI(audioBlob!)}
+                  className="bg-furbridge-orange hover:bg-furbridge-orange/90 text-white"
                 >
-                  <Mic className="h-5 w-5 mr-2" />
-                  Start Recording
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Process with AI
                 </FurbridgeButton>
               )}
-
-              {isRecording && !isPaused && (
-                <>
-                  <FurbridgeButton
-                    variant="outline"
-                    onClick={pauseRecording}
-                    className="border-furbridge-orange text-furbridge-orange hover:bg-furbridge-orange hover:text-white"
-                  >
-                    <Pause className="h-4 w-4 mr-2" />
-                    Pause
-                  </FurbridgeButton>
-                  <FurbridgeButton
-                    variant="outline"
-                    onClick={stopRecording}
-                    className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
-                  >
-                    <Square className="h-4 w-4 mr-2" />
-                    Stop
-                  </FurbridgeButton>
-                </>
-              )}
-
-              {isRecording && isPaused && (
-                <>
-                  <FurbridgeButton
-                    onClick={resumeRecording}
-                    className="bg-furbridge-teal hover:bg-furbridge-teal/90 text-white"
-                  >
-                    <Play className="h-4 w-4 mr-2" />
-                    Resume
-                  </FurbridgeButton>
-                  <FurbridgeButton
-                    variant="outline"
-                    onClick={stopRecording}
-                    className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
-                  >
-                    <Square className="h-4 w-4 mr-2" />
-                    Stop
-                  </FurbridgeButton>
-                </>
-              )}
-
-              {audioBlob && !aiProcessing && !aiContent && (
-                <>
-                  <FurbridgeButton
-                    variant="outline"
-                    onClick={reRecord}
-                    className="border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white"
-                  >
-                    <RotateCcw className="h-4 w-4 mr-2" />
-                    Re-record
-                  </FurbridgeButton>
-                  <FurbridgeButton
-                    onClick={processWithAI}
-                    className="bg-furbridge-orange hover:bg-furbridge-orange/90 text-white"
-                  >
-                    <Sparkles className="h-4 w-4 mr-2" />
-                    Process with AI
-                  </FurbridgeButton>
-                </>
-              )}
             </div>
-
-            {/* Recording Status */}
-            {isRecording && (
-              <div className="text-center">
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="animate-pulse bg-red-500 rounded-full h-3 w-3"></div>
-                  <span className="text-sm text-gray-600">
-                    {isPaused ? 'Recording paused' : 'Recording in progress...'}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Recording Tips */}
-            {!isRecording && !audioBlob && (
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">
-                  📝 Recording Tips:
-                </h4>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Find a quiet space with minimal background noise</li>
-                  <li>• Speak clearly and at a comfortable pace</li>
-                  <li>• Take your time - you can pause and resume anytime</li>
-                  <li>• Don't worry about being perfect - natural is better</li>
-                </ul>
-              </div>
-            )}
-          </div>
-        </FurbridgeCard>
+          </FurbridgeCard>
+        )}
 
         {/* AI Processing Status */}
         {aiProcessing && (
@@ -511,21 +392,37 @@ export default function ProjectRecordPage() {
               <div className="flex justify-center space-x-4 pt-4">
                 <FurbridgeButton
                   variant="outline"
-                  onClick={reRecord}
+                  onClick={handleStartOver}
                   className="border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white"
                 >
-                  <RotateCcw className="h-4 w-4 mr-2" />
-                  Re-record
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Start Over
                 </FurbridgeButton>
                 <FurbridgeButton
-                  variant="orange"
-                  onClick={submitStory}
-                  className="px-8"
+                  onClick={handleSubmitStory}
+                  disabled={isSubmitting}
+                  className="bg-furbridge-teal hover:bg-furbridge-teal/90 text-white px-8"
                 >
-                  <Send className="h-4 w-4 mr-2" />
-                  Add to Project
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4 mr-2" />
+                      Save Story
+                    </>
+                  )}
                 </FurbridgeButton>
               </div>
+
+              {/* Submission Error */}
+              {submitError && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
+                  <p className="text-red-700 text-sm">{submitError}</p>
+                </div>
+              )}
             </div>
           </FurbridgeCard>
         )}
