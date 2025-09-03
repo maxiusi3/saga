@@ -22,7 +22,7 @@ export interface AIProcessingOptions {
 
 export class AIService {
   private static readonly API_BASE_URL = '/api/ai'
-  private static readonly MOCK_MODE = !process.env.NEXT_PUBLIC_OPENAI_API_KEY
+  private static readonly MOCK_MODE = !process.env.NEXT_PUBLIC_OPENROUTER_API_KEY
 
   /**
    * Transcribe audio using OpenAI Whisper API

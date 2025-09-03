@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-// Initialize OpenAI client only if API key is available
-const openai = process.env.OPENAI_API_KEY ? new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+// Initialize OpenRouter client (compatible with OpenAI SDK)
+const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: 'https://openrouter.ai/api/v1',
 }) : null
 
 export async function POST(request: NextRequest) {
   try {
-    // Check if OpenAI API key is configured
-    if (!process.env.OPENAI_API_KEY) {
+    // Check if OpenRouter API key is configured
+    if (!process.env.OPENROUTER_API_KEY) {
       return NextResponse.json(
-        { error: 'OpenAI API key not configured' },
+        { error: 'OpenRouter API key not configured' },
         { status: 500 }
       )
     }
@@ -66,14 +67,14 @@ export async function POST(request: NextRequest) {
     const fileName = `audio.${fileExtension}`
     const audioFileForAPI = new File([audioBlob], fileName, { type: audioFile.type })
 
-    // Call OpenAI Whisper API
+    // Call OpenRouter Whisper API (using OpenAI's Whisper model)
     if (!openai) {
-      throw new Error('OpenAI client not initialized')
+      throw new Error('OpenRouter client not initialized')
     }
 
     const transcription = await openai.audio.transcriptions.create({
       file: audioFileForAPI,
-      model: 'whisper-1',
+      model: 'openai/whisper-1',  // OpenRouter model format
       language: language,
       response_format: 'verbose_json',
       temperature: 0.2, // Lower temperature for more consistent results

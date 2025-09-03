@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-// Initialize OpenAI client only if API key is available
-const openai = process.env.OPENAI_API_KEY ? new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+// Initialize OpenRouter client (compatible with OpenAI SDK)
+const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: 'https://openrouter.ai/api/v1',
 }) : null
 
 export async function POST(request: NextRequest) {
   try {
-    // Check if OpenAI API key is configured
-    if (!process.env.OPENAI_API_KEY) {
+    // Check if OpenRouter API key is configured
+    if (!process.env.OPENROUTER_API_KEY) {
       return NextResponse.json(
-        { error: 'OpenAI API key not configured' },
+        { error: 'OpenRouter API key not configured' },
         { status: 500 }
       )
     }
@@ -53,13 +54,13 @@ ${prompt ? `Story context/prompt: ${prompt}\n\n` : ''}Story transcript:
 
 Generate a title, summary, and follow-up questions that would help this person share more meaningful memories.`
 
-    // Call OpenAI GPT API
+    // Call OpenRouter GPT API
     if (!openai) {
-      throw new Error('OpenAI client not initialized')
+      throw new Error('OpenRouter client not initialized')
     }
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini', // Use the more cost-effective model
+      model: 'openai/gpt-4o-mini', // OpenRouter model format
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
