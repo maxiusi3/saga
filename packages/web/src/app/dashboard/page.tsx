@@ -7,122 +7,64 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
-import { createBrowserClient } from '@supabase/ssr'
-import { User } from '@supabase/supabase-js'
-
-interface Project {
-  id: string
-  title: string
-  storyteller_name: string
-  storyteller_avatar?: string
-  co_facilitators: Array<{
-    id: string
-    name: string
-    avatar?: string
-  }>
-  status: 'active' | 'invite_sent' | 'invite_expired' | 'new_story'
-  story_count: number
-  created_at: string
-  user_role: 'facilitator' | 'storyteller' | 'co_facilitator'
-}
+import { useAuthStore } from '@/stores/auth-store'
+import { projectService, ProjectWithMembers } from '@/lib/projects'
+import { UserRole, getRoleDisplayInfo } from '@saga/shared'
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<User | null>(null)
-  const [projects, setProjects] = useState<Project[]>([])
+  const { user } = useAuthStore()
+  const [projects, setProjects] = useState<ProjectWithMembers[]>([])
   const [loading, setLoading] = useState(true)
   const [isFirstTime, setIsFirstTime] = useState(false)
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const loadDashboard = async () => {
+      if (!user?.id) {
+        setLoading(false)
+        return
+      }
+
       try {
-        const { data: { user } } = await supabase.auth.getUser()
-        setUser(user)
+        setLoading(true)
+        setError(null)
 
-        // Mock data for now - replace with actual Supabase queries
-        const mockProjects: Project[] = [
-          {
-            id: '1',
-            title: "Dad's Life Story",
-            storyteller_name: 'John Doe',
-            storyteller_avatar: '',
-            co_facilitators: [
-              { id: '1', name: 'Beth Smith', avatar: '' }
-            ],
-            status: 'new_story',
-            story_count: 3,
-            created_at: '2024-01-15',
-            user_role: 'facilitator'
-          },
-          {
-            id: '2',
-            title: "Grandma's Memories",
-            storyteller_name: 'Mary Johnson',
-            storyteller_avatar: '',
-            co_facilitators: [],
-            status: 'active',
-            story_count: 7,
-            created_at: '2024-01-10',
-            user_role: 'storyteller'
-          },
-          {
-            id: '3',
-            title: "Family History Project",
-            storyteller_name: 'Robert Wilson',
-            storyteller_avatar: '',
-            co_facilitators: [
-              { id: '4', name: 'Sarah Wilson', avatar: '' }
-            ],
-            status: 'active',
-            story_count: 8,
-            created_at: '2024-01-05',
-            user_role: 'co_facilitator'
-          }
-        ]
+        // Load user's projects
+        const userProjects = await projectService.getUserProjects(user.id)
 
-        // Simulate loading delay
-        setTimeout(() => {
-          setProjects(mockProjects)
-          setIsFirstTime(mockProjects.length === 0)
-          setLoading(false)
-        }, 1000)
+        setProjects(userProjects)
+        setIsFirstTime(userProjects.length === 0)
 
       } catch (error) {
         console.error('Error loading dashboard:', error)
+        setError('Failed to load projects')
+      } finally {
         setLoading(false)
       }
     }
 
     loadDashboard()
-  }, [supabase])
+  }, [user?.id])
 
-  const getStatusBadge = (status: Project['status'], storyCount: number) => {
-    switch (status) {
-      case 'new_story':
-        return <Badge variant="default" className="bg-furbridge-orange text-white">1 New Story!</Badge>
-      case 'active':
-        return <Badge variant="secondary">Active</Badge>
-      case 'invite_sent':
-        return <Badge variant="outline">Invite Sent</Badge>
-      case 'invite_expired':
-        return <Badge variant="destructive">Invite Expired</Badge>
-      default:
-        return null
+  const getStatusBadge = (storyCount: number) => {
+    if (storyCount === 0) {
+      return <Badge variant="outline">No Stories Yet</Badge>
+    } else if (storyCount === 1) {
+      return <Badge variant="default" className="bg-furbridge-orange text-white">1 Story</Badge>
+    } else {
+      return <Badge variant="secondary">{storyCount} Stories</Badge>
     }
   }
 
-  const getRoleBadge = (role: Project['user_role']) => {
-    switch (role) {
-      case 'facilitator':
-        return <Badge className="bg-furbridge-teal text-white">Facilitator</Badge>
-      case 'storyteller':
-        return <Badge className="bg-furbridge-orange text-white">Storyteller</Badge>
-      case 'co_facilitator':
-        return <Badge className="bg-furbridge-warm-gray text-white">Co-Facilitator</Badge>
+  const getRoleBadge = (role?: UserRole, isOwner?: boolean) => {
+    if (isOwner) {
+      return <Badge className="bg-furbridge-teal text-white">👑 Owner</Badge>
     }
+
+    if (!role) return null
+
+    const roleInfo = getRoleDisplayInfo(role)
+    return <Badge className={roleInfo.color}>{roleInfo.icon} {roleInfo.label}</Badge>
   }
 
   if (loading) {
@@ -140,6 +82,22 @@ export default function DashboardPage() {
             </div>
           ))}
         </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-16">
+        <h1 className="text-2xl font-bold text-gray-900">Error</h1>
+        <p className="text-gray-600 mt-2">{error}</p>
+        <FurbridgeButton
+          variant="outline"
+          className="mt-4"
+          onClick={() => window.location.reload()}
+        >
+          Try Again
+        </FurbridgeButton>
       </div>
     )
   }
@@ -201,45 +159,27 @@ export default function DashboardPage() {
                     {project.title}
                   </h3>
                   <div className="flex flex-col items-end space-y-2">
-                    {getStatusBadge(project.status, project.story_count)}
-                    {getRoleBadge(project.user_role)}
+                    {getStatusBadge(project.story_count)}
+                    {getRoleBadge(project.user_role, project.is_owner)}
                   </div>
                 </div>
 
-                {/* Storyteller */}
-                <div className="flex items-center space-x-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={project.storyteller_avatar} />
-                    <AvatarFallback>
-                      {project.storyteller_name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      {project.storyteller_name}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Storyteller
-                    </div>
-                  </div>
-                </div>
-
-                {/* Co-facilitators */}
-                {project.co_facilitators.length > 0 && (
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-600">Co-facilitators:</span>
-                    <div className="flex -space-x-2">
-                      {project.co_facilitators.map((facilitator) => (
-                        <Avatar key={facilitator.id} className="h-6 w-6 border-2 border-background">
-                          <AvatarImage src={facilitator.avatar} />
-                          <AvatarFallback className="text-xs">
-                            {facilitator.name.charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
-                      ))}
-                    </div>
-                  </div>
+                {/* Project Description */}
+                {project.description && (
+                  <p className="text-sm text-gray-600 line-clamp-2">
+                    {project.description}
+                  </p>
                 )}
+
+                {/* Project Members */}
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-600">
+                    {project.member_count} member{project.member_count !== 1 ? 's' : ''}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {project.story_count} stor{project.story_count !== 1 ? 'ies' : 'y'}
+                  </div>
+                </div>
 
                 {/* Story Count */}
                 <div className="text-sm text-gray-600">

@@ -9,6 +9,9 @@ import { Send, Sparkles, ArrowLeft } from 'lucide-react'
 import { StoryPrompt, getNextPrompt, getPromptById, AI_PROMPT_CHAPTERS } from '@saga/shared'
 import { AudioRecorder } from '@/components/audio/AudioRecorder'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
+import { storyService } from '@/lib/stories'
+import { useAuthStore } from '@/stores/auth-store'
+import { toast } from 'react-hot-toast'
 
 interface AIContent {
   title?: string
@@ -21,6 +24,7 @@ interface AIContent {
 export default function ProjectRecordPage() {
   const params = useParams()
   const router = useRouter()
+  const { user } = useAuthStore()
   const projectId = params.id as string
   
   // Story states
@@ -107,29 +111,42 @@ export default function ProjectRecordPage() {
 
   // Handle story submission
   const handleSubmitStory = async () => {
-    if (!audioBlob || !aiContent) return
+    if (!audioBlob || !aiContent || !user?.id) {
+      setSubmitError('Missing required data for story submission.')
+      return
+    }
 
     setIsSubmitting(true)
     setSubmitError(null)
 
     try {
-      // TODO: Implement real story submission to Supabase
-      console.log('Submitting story:', {
-        projectId,
-        audioBlob,
-        duration: recordingDuration,
-        aiContent,
-        promptId: currentPrompt?.id
+      // Create story in database
+      const story = await storyService.createStory({
+        project_id: projectId,
+        storyteller_id: user.id,
+        title: aiContent.title,
+        content: aiContent.summary,
+        audio_blob: audioBlob,
+        transcript: aiContent.transcript,
+        ai_generated_title: aiContent.title,
+        ai_summary: aiContent.summary,
+        ai_follow_up_questions: aiContent.followUpQuestions,
+        ai_confidence_score: aiContent.confidence
       })
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      if (!story) {
+        throw new Error('Failed to create story')
+      }
+
+      // Show success message
+      toast.success('Story saved successfully!')
 
       // Redirect to project page on success
       router.push(`/dashboard/projects/${projectId}`)
     } catch (error) {
       console.error('Story submission failed:', error)
       setSubmitError('Failed to save story. Please try again.')
+      toast.error('Failed to save story')
     } finally {
       setIsSubmitting(false)
     }

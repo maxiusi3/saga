@@ -15,25 +15,25 @@ import { ChapterSummaryCard } from '@/components/story/chapter-summary-card'
 import { AIGeneratedContent } from '../../../../../shared/src/lib/ai-services'
 import { ActionPermissionGate, RolePermissionGate, PermissionProvider } from '@/components/permissions/PermissionGate'
 import { UserRole, getRoleDisplayInfo } from '@saga/shared'
+import { projectService, ProjectWithMembers } from '@/lib/projects'
+import { storyService, Story } from '@/lib/stories'
+import { useAuthStore } from '@/stores/auth-store'
+import { toast } from 'react-hot-toast'
 
-interface Story {
-  id: string
-  title: string
-  storyteller_name: string
+interface StoryWithDetails extends Story {
+  storyteller_name?: string
   storyteller_avatar?: string
-  duration: number
-  created_at: string
-  audio_url: string
-  category: string
-  prompt: string
+  duration?: number
+  category?: string
+  prompt?: string
   ai_content?: AIGeneratedContent
-  interaction_summary: {
+  interaction_summary?: {
     comments: number
     followups: number
     appreciations: number
   }
-  has_new_interactions: boolean
-  type: 'story' | 'chapter_summary'
+  has_new_interactions?: boolean
+  type?: 'story' | 'chapter_summary'
 }
 
 interface ChapterSummary {
@@ -49,89 +49,96 @@ interface ChapterSummary {
   type: 'chapter_summary'
 }
 
-interface Project {
-  id: string
-  title: string
-  description?: string
-  owner_id: string
-  storyteller_name: string
-  storyteller_avatar?: string
-  status: 'awaiting_invitation' | 'active'
-  user_role: UserRole
-  is_owner: boolean
-  member_count: number
-  story_count: number
-}
-
 export default function ProjectDetailPage() {
   const params = useParams()
+  const { user } = useAuthStore()
   const projectId = params.id as string
-  
-  const [project, setProject] = useState<Project | null>(null)
-  const [stories, setStories] = useState<Story[]>([])
+
+  const [project, setProject] = useState<ProjectWithMembers | null>(null)
+  const [stories, setStories] = useState<StoryWithDetails[]>([])
   const [chapterSummaries, setChapterSummaries] = useState<ChapterSummary[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [filterType, setFilterType] = useState<'all' | 'stories' | 'chapters'>('all')
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const loadProject = async () => {
-      // Mock data - replace with actual Supabase queries
-      const mockProject: Project = {
-        id: projectId,
-        title: "Dad's Life Story",
-        description: "A collection of stories about our father's incredible life journey",
-        owner_id: 'owner-123',
-        storyteller_name: 'John Doe',
-        storyteller_avatar: '',
-        status: 'active',
-        user_role: projectId === '2' ? 'storyteller' : projectId === '3' ? 'co_facilitator' : 'facilitator',
-        is_owner: projectId === '1',
-        member_count: 3,
-        story_count: 12
+      if (!user?.id) {
+        setLoading(false)
+        setError('User not authenticated')
+        return
       }
 
-      const mockStories: Story[] = [
-        {
-          id: '1',
-          title: 'Growing Up in the 1950s',
-          storyteller_name: 'John Doe',
-          storyteller_avatar: '',
-          duration: 420, // 7 minutes
-          created_at: '2024-01-20T10:30:00Z',
-          audio_url: '/mock-audio-1.mp3',
-          category: 'Childhood Memories',
-          prompt: 'Tell me about your earliest childhood memory. Can you describe what you remember about that moment?',
-          ai_content: {
-            title: 'Growing Up in the 1950s',
-            transcript: 'I remember when I was just seven years old, living in that small house on Maple Street. The neighborhood was so different back then - kids played outside until the streetlights came on, and everyone knew each other. My mother would call us in for dinner by ringing a bell from the front porch.',
-            summary: 'A vivid recollection of childhood in the 1950s, highlighting the close-knit community and simpler times.',
-            followUpQuestions: [
-              'What games did you and the neighborhood kids play?',
-              'Can you tell me more about your house on Maple Street?',
-              'What was your favorite thing about that neighborhood?'
-            ]
-          },
-          interaction_summary: {
-            comments: 3,
-            followups: 2,
-            appreciations: 8
-          },
-          has_new_interactions: true,
-          type: 'story'
-        }
-      ]
+      try {
+        setLoading(true)
+        setError(null)
 
-      // Simulate loading delay
-      setTimeout(() => {
-        setProject(mockProject)
-        setStories(mockStories)
+        // Load project data
+        const projectData = await projectService.getProjectById(projectId, user.id)
+        if (!projectData) {
+          setError('Project not found or access denied')
+          setLoading(false)
+          return
+        }
+
+        // Load stories for the project
+        const storiesData = await storyService.getStoriesByProject(projectId)
+
+        // Transform stories to include additional UI data
+        const storiesWithDetails: StoryWithDetails[] = storiesData.map(story => ({
+          ...story,
+          storyteller_name: 'Storyteller', // TODO: Get from user profile
+          duration: 420, // TODO: Calculate from audio
+          category: 'Personal Story', // TODO: Add category field
+          prompt: 'Story prompt', // TODO: Link to prompts
+          ai_content: story.ai_generated_title ? {
+            title: story.ai_generated_title,
+            transcript: story.transcript || '',
+            summary: story.ai_summary || '',
+            followUpQuestions: story.ai_follow_up_questions || []
+          } : undefined,
+          interaction_summary: {
+            comments: 0, // TODO: Count from comments table
+            followups: 0,
+            appreciations: 0
+          },
+          has_new_interactions: false,
+          type: 'story' as const
+        }))
+
+        setProject(projectData)
+        setStories(storiesWithDetails)
+      } catch (error) {
+        console.error('Error loading project:', error)
+        setError('Failed to load project data')
+      } finally {
         setLoading(false)
-      }, 1000)
+      }
     }
 
     loadProject()
-  }, [projectId])
+  }, [projectId, user?.id])
+
+  // Handle story deletion
+  const handleDeleteStory = async (storyId: string) => {
+    if (!confirm('Are you sure you want to delete this story? This action cannot be undone.')) {
+      return
+    }
+
+    try {
+      const success = await storyService.deleteStory(storyId)
+      if (success) {
+        setStories(prev => prev.filter(story => story.id !== storyId))
+        toast.success('Story deleted successfully')
+      } else {
+        toast.error('Failed to delete story')
+      }
+    } catch (error) {
+      console.error('Error deleting story:', error)
+      toast.error('Failed to delete story')
+    }
+  }
 
   if (loading) {
     return (
@@ -146,6 +153,20 @@ export default function ProjectDetailPage() {
             <Skeleton key={i} className="h-32 w-full" />
           ))}
         </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-16">
+        <h1 className="text-2xl font-bold text-gray-900">Error</h1>
+        <p className="text-gray-600 mt-2">{error}</p>
+        <Link href="/dashboard">
+          <FurbridgeButton variant="outline" className="mt-4">
+            Back to Dashboard
+          </FurbridgeButton>
+        </Link>
       </div>
     )
   }
@@ -277,11 +298,7 @@ export default function ProjectDetailPage() {
                 onEdit={(storyId) => {
                   window.location.href = `/dashboard/projects/${projectId}/stories/${storyId}/edit`
                 }}
-                onDelete={(storyId) => {
-                  if (confirm('Are you sure you want to delete this story?')) {
-                    console.log('Delete story:', storyId)
-                  }
-                }}
+                onDelete={handleDeleteStory}
                 showAIContent={true}
                 userRole={project.user_role}
                 isProjectOwner={project.is_owner}
