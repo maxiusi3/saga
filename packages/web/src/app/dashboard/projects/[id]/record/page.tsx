@@ -11,6 +11,7 @@ import { AudioRecorder } from '@/components/audio/AudioRecorder'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
+import { aiService, AIContent } from '@/lib/ai-service'
 import { toast } from 'react-hot-toast'
 
 interface AIContent {
@@ -42,10 +43,21 @@ export default function ProjectRecordPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
 
-  // Load initial prompt
+  // AI service status
+  const [aiServiceStatus, setAiServiceStatus] = useState<{ available: boolean; mode: 'production' | 'mock' } | null>(null)
+
+  // Load initial prompt and check AI service status
   useEffect(() => {
     const prompt = getNextPrompt()
     setCurrentPrompt(prompt)
+
+    // Check AI service status
+    const status = aiService.getServiceStatus()
+    setAiServiceStatus(status)
+
+    if (status.mode === 'mock') {
+      console.log('AI service running in mock mode - no OpenAI API key configured')
+    }
   }, [])
 
   // Handle recording completion
@@ -58,52 +70,43 @@ export default function ProjectRecordPage() {
     processAudioWithAI(blob)
   }
 
-  // Process audio with AI (mock implementation for now)
+  // Process audio with AI using real AI service
   const processAudioWithAI = async (audioBlob: Blob) => {
     setAiProcessing(true)
     setAiProgress(0)
 
     try {
-      // Simulate AI processing with progress updates
-      const progressInterval = setInterval(() => {
-        setAiProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval)
-            return 90
+      // Use real AI service to process audio
+      const aiContent = await aiService.processAudioWithAI(
+        audioBlob,
+        currentPrompt?.text,
+        {
+          onProgress: (step, progress) => {
+            setAiProgress(progress)
+            console.log(`AI Processing: ${step} (${progress}%)`)
           }
-          return prev + 10
-        })
-      }, 500)
+        }
+      )
 
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 5000))
-
-      clearInterval(progressInterval)
-      setAiProgress(100)
-
-      // Mock AI results
-      const mockAiContent: AIContent = {
-        title: "A Childhood Memory from the 1950s",
-        summary: "A vivid recollection of growing up in a small neighborhood where children played outside until dark and everyone knew each other.",
-        transcript: "I remember when I was just seven years old, living in that small house on Maple Street. The neighborhood was so different back then - kids played outside until the streetlights came on, and everyone knew each other. My mother would call us in for dinner by ringing a bell from the front porch...",
-        followUpQuestions: [
-          "What games did you and the neighborhood kids play?",
-          "Can you tell me more about your house on Maple Street?",
-          "What was your favorite thing about that neighborhood?"
-        ],
-        confidence: 0.92
-      }
-
-      setAiContent(mockAiContent)
+      setAiContent(aiContent)
+      toast.success('AI processing completed successfully!')
     } catch (error) {
       console.error('AI processing failed:', error)
+
+      // Fallback to basic content if AI fails
       setAiContent({
         title: "Untitled Story",
-        summary: "AI processing failed. Please try again or add details manually.",
-        transcript: "Transcript generation failed.",
-        followUpQuestions: [],
+        summary: "AI processing failed. Please add a title and description manually.",
+        transcript: "Transcript generation failed. Please try again or add content manually.",
+        followUpQuestions: [
+          "Can you tell me more about this experience?",
+          "What was most memorable about this moment?",
+          "How did this experience affect you?"
+        ],
         confidence: 0
       })
+
+      toast.error('AI processing failed. You can still save your story manually.')
     } finally {
       setAiProcessing(false)
     }
@@ -349,6 +352,11 @@ export default function ProjectRecordPage() {
                 <Badge className="bg-furbridge-teal text-white text-xs">
                   {Math.round((aiContent.confidence || 0) * 100)}% confidence
                 </Badge>
+                {aiServiceStatus?.mode === 'mock' && (
+                  <Badge variant="outline" className="text-xs border-furbridge-orange text-furbridge-orange">
+                    Demo Mode
+                  </Badge>
+                )}
               </div>
 
               {aiContent.title && (
