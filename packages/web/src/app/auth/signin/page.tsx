@@ -35,11 +35,12 @@ function SignInPageContent() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`
+          redirectTo: 'https://saga-web-livid.vercel.app/auth/callback'
         }
       })
       if (error) throw error
     } catch (error) {
+      console.error('Google sign in error:', error)
       setMessage('Error signing in with Google')
     } finally {
       setIsLoading(false)
@@ -57,7 +58,7 @@ function SignInPageContent() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`
+          emailRedirectTo: 'https://saga-web-livid.vercel.app/auth/callback'
         }
       })
       
