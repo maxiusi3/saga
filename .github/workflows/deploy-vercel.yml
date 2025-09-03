@@ -1,13 +1,11 @@
 name: Deploy Saga MVP to Vercel
 
-# Temporarily disabled - using Vercel's native GitHub integration instead
-# This avoids permission issues with team access
 on:
-  workflow_dispatch: # Manual trigger only
-  # push:
-  #   branches: [main, develop]
-  # pull_request:
-  #   branches: [main]
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # Manual trigger option
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
