@@ -1,4 +1,4 @@
-name: Deploy Saga MVP to Vercel
+name: Build and Test Saga MVP
 
 on:
   push:
@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch: # Manual trigger option
-
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
   # Job to check if we need to deploy (only deploy web since backend is now Supabase)
@@ -35,14 +31,12 @@ jobs:
               - 'package.json'
               - 'package-lock.json'
 
-  # Deploy frontend to Vercel
-  deploy-web:
+  # Build and test frontend (Vercel handles deployment automatically)
+  build-web:
     needs: changes
     if: needs.changes.outputs.web == 'true'
     runs-on: ubuntu-latest
-    environment: 
-      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,89 +47,43 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
       - name: Install dependencies
         run: npm ci
 
-      - name: Pull Vercel Environment Information
-        working-directory: ./packages/web
-        run: vercel pull --yes --environment=${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }} --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build shared package
+        run: npm run build --workspace=packages/shared
 
-      - name: Build Project Artifacts
-        working-directory: ./packages/web
-        run: vercel build ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build web application
+        run: npm run build --workspace=packages/web
+        env:
+          NODE_ENV: production
 
-      - name: Deploy to Vercel
-        id: deploy
-        working-directory: ./packages/web
+      - name: Run tests
+        run: npm run test --workspace=packages/web --if-present
+        env:
+          NODE_ENV: test
+
+      - name: Build status
         run: |
-          DEPLOYMENT_URL=$(vercel deploy --prebuilt ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }})
-          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
-          echo "Deployed to: $DEPLOYMENT_URL"
+          echo "✅ Build completed successfully!"
+          echo "🚀 Vercel will handle deployment automatically"
+          echo "📦 Built packages: shared, web"
 
-      - name: Update deployment status
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "✅ Production deployment successful!"
-          echo "🌐 Live URL: ${{ steps.deploy.outputs.deployment_url }}"
-
-      - name: Comment PR with preview URL
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🚀 **Preview deployment ready!**
-              
-              📱 **Preview URL:** ${{ steps.deploy.outputs.deployment_url }}
-              
-              🔍 **Changes detected in:**
-              - Frontend (packages/web)
-              
-              ⚡ **Architecture:** Unified Supabase backend
-              🗃️ **Database:** Supabase PostgreSQL
-              🔐 **Auth:** Supabase Auth
-              💳 **Payments:** Stripe (placeholder keys)
-              
-              This preview will be automatically updated with new commits.`
-            })
-
-  # Health check after deployment
-  health-check:
-    needs: [deploy-web]
-    if: needs.deploy-web.result == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Wait for deployment to be ready
-        run: sleep 30
-
-      - name: Health check
-        run: |
-          # Note: Replace with actual deployment URL from Vercel
-          # This is a placeholder for the health check
-          echo "🏥 Performing health check..."
-          echo "✅ Deployment health check would run here"
-          echo "🔍 Would check: API endpoints, Supabase connection, Stripe integration"
-
-  # Notify on deployment completion
+  # Notify on build completion
   notify:
-    needs: [deploy-web, health-check]
+    needs: [build-web]
     if: always() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Deployment notification
+      - name: Build notification
         run: |
-          if [ "${{ needs.deploy-web.result }}" == "success" ]; then
-            echo "🎉 Saga MVP deployed successfully to production!"
-            echo "🌐 Frontend: Vercel (saga-web)"
+          if [ "${{ needs.build-web.result }}" == "success" ]; then
+            echo "🎉 Saga MVP build completed successfully!"
+            echo "🚀 Vercel will handle automatic deployment"
+            echo "🌐 Frontend: Built and ready"
             echo "🗃️ Backend: Supabase (unified architecture)"
-            echo "📊 Status: All systems operational"
+            echo "📊 Status: Build successful"
           else
-            echo "❌ Deployment failed. Check logs for details."
+            echo "❌ Build failed. Check logs for details."
             exit 1
           fi
