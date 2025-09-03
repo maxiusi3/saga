@@ -12,135 +12,202 @@ import { Separator } from '@/components/ui/separator'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { ArrowLeft, UserPlus, Trash2, Download, Share } from 'lucide-react'
 import Link from 'next/link'
-
-interface ProjectMember {
-  id: string
-  name: string
-  email: string
-  role: 'facilitator' | 'storyteller' | 'co_facilitator'
-  avatar?: string
-  status: 'active' | 'invited' | 'expired'
-}
-
-interface Project {
-  id: string
-  title: string
-  created_at: string
-  members: ProjectMember[]
-}
+import { useAuthStore } from '@/stores/auth-store'
+import { projectService, ProjectWithMembers } from '@/lib/projects'
+import { UserRole, getRoleDisplayInfo } from '@saga/shared'
+import { toast } from 'react-hot-toast'
 
 export default function ProjectSettingsPage() {
   const params = useParams()
   const router = useRouter()
+  const { user } = useAuthStore()
   const projectId = params.id as string
-  
-  const [project, setProject] = useState<Project | null>(null)
+
+  const [project, setProject] = useState<ProjectWithMembers | null>(null)
   const [projectTitle, setProjectTitle] = useState('')
+  const [projectDescription, setProjectDescription] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteRole, setInviteRole] = useState<UserRole>('storyteller')
+  const [inviting, setInviting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const loadProject = async () => {
-      // Mock data - replace with actual Supabase queries
-      const mockProject: Project = {
-        id: projectId,
-        title: "Dad's Life Story",
-        created_at: '2024-01-15T10:30:00Z',
-        members: [
-          {
-            id: '1',
-            name: 'Alex Smith',
-            email: 'alex@example.com',
-            role: 'facilitator',
-            avatar: '',
-            status: 'active'
-          },
-          {
-            id: '2',
-            name: 'John Doe',
-            email: 'john@example.com',
-            role: 'storyteller',
-            avatar: '',
-            status: 'active'
-          },
-          {
-            id: '3',
-            name: 'Beth Smith',
-            email: 'beth@example.com',
-            role: 'co_facilitator',
-            avatar: '',
-            status: 'active'
-          }
-        ]
+      if (!user?.id) {
+        setLoading(false)
+        setError('User not authenticated')
+        return
       }
 
-      setTimeout(() => {
-        setProject(mockProject)
-        setProjectTitle(mockProject.title)
+      try {
+        setLoading(true)
+        setError(null)
+
+        const projectData = await projectService.getProjectById(projectId, user.id)
+        if (!projectData) {
+          setError('Project not found or access denied')
+          setLoading(false)
+          return
+        }
+
+        // Check if user has permission to access settings
+        if (!projectData.is_owner && projectData.user_role !== 'facilitator') {
+          setError('You do not have permission to access project settings')
+          setLoading(false)
+          return
+        }
+
+        setProject(projectData)
+        setProjectTitle(projectData.title)
+        setProjectDescription(projectData.description || '')
+      } catch (error) {
+        console.error('Error loading project:', error)
+        setError('Failed to load project data')
+      } finally {
         setLoading(false)
-      }, 1000)
+      }
     }
 
     loadProject()
-  }, [projectId])
+  }, [projectId, user?.id])
 
+  // Handle project update
   const handleSaveTitle = async () => {
-    if (!project || projectTitle.trim() === project.title) return
+    if (!project || !user?.id) return
+
+    if (!projectTitle.trim()) {
+      toast.error('Project title is required')
+      return
+    }
 
     setSaving(true)
     try {
-      // TODO: Update project title in Supabase
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      setProject({ ...project, title: projectTitle })
+      const updatedProject = await projectService.updateProject(project.id, {
+        title: projectTitle.trim(),
+        description: projectDescription.trim() || undefined
+      })
+
+      if (updatedProject) {
+        setProject(prev => prev ? { ...prev, ...updatedProject } : null)
+        toast.success('Project updated successfully')
+      } else {
+        toast.error('Failed to update project')
+      }
     } catch (error) {
-      console.error('Error updating project title:', error)
+      console.error('Error updating project:', error)
+      toast.error('Failed to update project')
     } finally {
       setSaving(false)
     }
   }
 
-  const handleInviteFacilitator = async () => {
-    // TODO: Check for available facilitator seats and open invitation flow
-    alert('Invite facilitator functionality coming soon')
-  }
+  // Handle member invitation
+  const handleInviteMember = async () => {
+    if (!project || !user?.id) return
 
-  const handleRemoveMember = async (memberId: string) => {
-    if (!project) return
+    if (!inviteEmail.trim()) {
+      toast.error('Email is required')
+      return
+    }
 
+    setInviting(true)
     try {
-      // TODO: Remove member from project in Supabase
-      const updatedMembers = project.members.filter(m => m.id !== memberId)
-      setProject({ ...project, members: updatedMembers })
+      const member = await projectService.inviteMember({
+        project_id: project.id,
+        user_email: inviteEmail.trim(),
+        role: inviteRole,
+        invited_by: user.id
+      })
+
+      if (member) {
+        toast.success('Invitation sent successfully')
+        setInviteEmail('')
+        // Reload project to get updated member list
+        const updatedProject = await projectService.getProjectById(projectId, user.id)
+        if (updatedProject) {
+          setProject(updatedProject)
+        }
+      } else {
+        toast.error('Failed to send invitation. User may not exist.')
+      }
     } catch (error) {
-      console.error('Error removing member:', error)
+      console.error('Error inviting member:', error)
+      toast.error('Failed to send invitation')
+    } finally {
+      setInviting(false)
     }
   }
+
+  // Handle member removal
+  const handleRemoveMember = async (memberId: string) => {
+    if (!project || !user?.id) return
+
+    try {
+      const success = await projectService.removeMember(memberId)
+      if (success) {
+        toast.success('Member removed successfully')
+        // Reload project to get updated member list
+        const updatedProject = await projectService.getProjectById(projectId, user.id)
+        if (updatedProject) {
+          setProject(updatedProject)
+        }
+      } else {
+        toast.error('Failed to remove member')
+      }
+    } catch (error) {
+      console.error('Error removing member:', error)
+      toast.error('Failed to remove member')
+    }
+  }
+
+  // Handle role update
+  const handleUpdateRole = async (memberId: string, newRole: UserRole) => {
+    if (!project || !user?.id) return
+
+    try {
+      const success = await projectService.updateMemberRole(memberId, newRole)
+      if (success) {
+        toast.success('Role updated successfully')
+        // Reload project to get updated member list
+        const updatedProject = await projectService.getProjectById(projectId, user.id)
+        if (updatedProject) {
+          setProject(updatedProject)
+        }
+      } else {
+        toast.error('Failed to update role')
+      }
+    } catch (error) {
+      console.error('Error updating role:', error)
+      toast.error('Failed to update role')
+    }
+  }
+
+
 
   const handleExportArchive = async () => {
     // TODO: Generate and download full project archive
     alert('Export functionality coming soon')
   }
 
-  const getRoleBadge = (role: ProjectMember['role']) => {
-    switch (role) {
-      case 'facilitator':
-        return <Badge variant="default" className="bg-furbridge-orange text-white">Facilitator</Badge>
-      case 'storyteller':
-        return <Badge variant="secondary">Storyteller</Badge>
-      case 'co_facilitator':
-        return <Badge variant="outline">Co-Facilitator</Badge>
-    }
+  const getRoleBadge = (role: UserRole) => {
+    const roleInfo = getRoleDisplayInfo(role)
+    return <Badge className={roleInfo.color}>{roleInfo.icon} {roleInfo.label}</Badge>
   }
 
-  const getStatusBadge = (status: ProjectMember['status']) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
         return <Badge variant="default" className="bg-furbridge-teal text-white">Active</Badge>
-      case 'invited':
+      case 'pending':
         return <Badge variant="outline">Invited</Badge>
-      case 'expired':
-        return <Badge variant="destructive">Expired</Badge>
+      case 'declined':
+        return <Badge variant="destructive">Declined</Badge>
+      case 'removed':
+        return <Badge variant="destructive">Removed</Badge>
+      default:
+        return <Badge variant="outline">{status}</Badge>
     }
   }
 
@@ -156,6 +223,20 @@ export default function ProjectSettingsPage() {
             <div key={i} className="h-32 bg-gray-100 rounded-lg animate-pulse"></div>
           ))}
         </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-16">
+        <h1 className="text-2xl font-bold text-gray-900">Error</h1>
+        <p className="text-gray-600 mt-2">{error}</p>
+        <Link href="/dashboard">
+          <FurbridgeButton variant="outline" className="mt-4">
+            Back to Dashboard
+          </FurbridgeButton>
+        </Link>
       </div>
     )
   }
@@ -202,11 +283,25 @@ export default function ProjectSettingsPage() {
                 />
                 <FurbridgeButton
                   variant="outline"
-                  onClick={handleSaveTitle}
-                  disabled={saving || projectTitle.trim() === project.title}
+                  onClick={handleSaveProject}
+                  disabled={saving || (projectTitle.trim() === project.title && projectDescription.trim() === (project.description || ''))}
                 >
                   {saving ? 'Saving...' : 'Save'}
                 </FurbridgeButton>
+              </div>
+            </div>
+
+            {/* Project Description */}
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <div className="flex space-x-2">
+                <textarea
+                  id="description"
+                  value={projectDescription}
+                  onChange={(e) => setProjectDescription(e.target.value)}
+                  className="flex-1 min-h-[80px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-furbridge-teal focus:border-transparent"
+                  placeholder="Add a description for your project..."
+                />
               </div>
             </div>
 
@@ -222,33 +317,93 @@ export default function ProjectSettingsPage() {
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-900">Members</h2>
-            <FurbridgeButton variant="outline" onClick={handleInviteFacilitator}>
-              <UserPlus className="h-4 w-4 mr-2" />
-              Invite Co-Facilitator
-            </FurbridgeButton>
+          </div>
+
+          {/* Invite Member Form */}
+          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+            <h3 className="text-sm font-medium text-gray-900 mb-3">Invite New Member</h3>
+            <div className="flex space-x-2">
+              <Input
+                type="email"
+                placeholder="Enter email address"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                className="flex-1"
+              />
+              <select
+                value={inviteRole}
+                onChange={(e) => setInviteRole(e.target.value as UserRole)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-furbridge-teal"
+              >
+                <option value="storyteller">Storyteller</option>
+                <option value="co_facilitator">Co-Facilitator</option>
+                <option value="facilitator">Facilitator</option>
+              </select>
+              <FurbridgeButton
+                onClick={handleInviteMember}
+                disabled={inviting || !inviteEmail.trim()}
+              >
+                {inviting ? 'Inviting...' : 'Invite'}
+              </FurbridgeButton>
+            </div>
           </div>
 
           <div className="space-y-4">
+            {/* Project Owner */}
+            {project.is_owner && (
+              <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-furbridge-teal/5">
+                <div className="flex items-center space-x-4">
+                  <Avatar className="h-10 w-10">
+                    <AvatarFallback>
+                      {user?.email?.charAt(0).toUpperCase() || 'O'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="font-medium text-gray-900">You (Owner)</div>
+                    <div className="text-sm text-gray-600">{user?.email}</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Badge className="bg-furbridge-teal text-white">👑 Owner</Badge>
+                  {getStatusBadge('active')}
+                </div>
+              </div>
+            )}
+
+            {/* Project Members */}
             {project.members.map((member) => (
               <div key={member.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                 <div className="flex items-center space-x-4">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src={member.avatar} />
                     <AvatarFallback>
-                      {member.name.charAt(0)}
+                      {member.user_id?.charAt(0).toUpperCase() || 'M'}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium text-gray-900">{member.name}</div>
-                    <div className="text-sm text-gray-600">{member.email}</div>
+                    <div className="font-medium text-gray-900">Member</div>
+                    <div className="text-sm text-gray-600">Role: {member.role}</div>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-3">
                   {getRoleBadge(member.role)}
                   {getStatusBadge(member.status)}
-                  
-                  {member.role !== 'facilitator' && (
+
+                  {/* Role Update Dropdown */}
+                  {project.is_owner && member.status === 'active' && (
+                    <select
+                      value={member.role}
+                      onChange={(e) => handleUpdateRole(member.id, e.target.value as UserRole)}
+                      className="text-sm px-2 py-1 border border-gray-300 rounded"
+                    >
+                      <option value="storyteller">Storyteller</option>
+                      <option value="co_facilitator">Co-Facilitator</option>
+                      <option value="facilitator">Facilitator</option>
+                    </select>
+                  )}
+
+                  {/* Remove Member Button */}
+                  {project.is_owner && (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <FurbridgeButton variant="ghost" size="icon" className="text-destructive hover:text-destructive">
@@ -259,13 +414,13 @@ export default function ProjectSettingsPage() {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Remove Member</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to remove {member.name} from this project? 
+                            Are you sure you want to remove this member from the project?
                             This action cannot be undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction 
+                          <AlertDialogAction
                             onClick={() => handleRemoveMember(member.id)}
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           >

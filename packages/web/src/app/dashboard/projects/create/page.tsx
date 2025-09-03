@@ -10,7 +10,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Users, Sparkles, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
-import { createBrowserClient } from '@supabase/ssr'
+import { useAuthStore } from '@/stores/auth-store'
+import { projectService } from '@/lib/projects'
+import { toast } from 'react-hot-toast'
 
 interface UserResources {
   project_vouchers: number
@@ -20,6 +22,7 @@ interface UserResources {
 
 export default function CreateProjectPage() {
   const router = useRouter()
+  const { user } = useAuthStore()
   const [projectName, setProjectName] = useState('')
   const [projectDescription, setProjectDescription] = useState('')
   const [storytellerEmail, setStorytellerEmail] = useState('')
@@ -28,25 +31,31 @@ export default function CreateProjectPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  // Pre-fill storyteller email with current user's email
+  useEffect(() => {
+    if (user?.email && !storytellerEmail) {
+      setStorytellerEmail(user.email)
+    }
+  }, [user?.email, storytellerEmail])
 
   useEffect(() => {
     const loadUserResources = async () => {
+      if (!user?.id) {
+        setLoading(false)
+        return
+      }
+
       try {
-        // Mock data - replace with actual Supabase query
+        // For now, use mock data for user resources
+        // TODO: Implement real user resource tracking
         const mockResources: UserResources = {
-          project_vouchers: 2,
-          facilitator_seats: 5,
-          storyteller_seats: 10
+          project_vouchers: 5, // Unlimited for now
+          facilitator_seats: 10,
+          storyteller_seats: 20
         }
 
-        setTimeout(() => {
-          setResources(mockResources)
-          setLoading(false)
-        }, 1000)
+        setResources(mockResources)
+        setLoading(false)
       } catch (err) {
         setError('Failed to load your resources')
         setLoading(false)
@@ -54,11 +63,11 @@ export default function CreateProjectPage() {
     }
 
     loadUserResources()
-  }, [])
+  }, [user?.id])
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!projectName.trim()) {
       setError('Project name is required')
       return
@@ -66,6 +75,11 @@ export default function CreateProjectPage() {
 
     if (!storytellerEmail.trim()) {
       setError('Storyteller email is required')
+      return
+    }
+
+    if (!user?.id) {
+      setError('User not authenticated')
       return
     }
 
@@ -78,19 +92,41 @@ export default function CreateProjectPage() {
     setError('')
 
     try {
-      // TODO: Implement actual project creation
       // 1. Create project in database
-      // 2. Consume project voucher
-      // 3. Send invitation to storyteller
-      // 4. Create project roles
+      const project = await projectService.createProject({
+        title: projectName.trim(),
+        description: projectDescription.trim() || undefined,
+        owner_id: user.id
+      })
 
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      if (!project) {
+        throw new Error('Failed to create project')
+      }
 
-      // Redirect to project page
-      router.push('/dashboard/projects/1')
+      // 2. Invite storyteller if email is different from current user
+      if (storytellerEmail.trim().toLowerCase() !== user.email?.toLowerCase()) {
+        try {
+          await projectService.inviteMember({
+            project_id: project.id,
+            user_email: storytellerEmail.trim(),
+            role: 'storyteller',
+            invited_by: user.id
+          })
+          toast.success('Project created and invitation sent!')
+        } catch (inviteError) {
+          console.error('Failed to invite storyteller:', inviteError)
+          toast.success('Project created! Please invite the storyteller manually.')
+        }
+      } else {
+        toast.success('Project created successfully!')
+      }
+
+      // 3. Redirect to project page
+      router.push(`/dashboard/projects/${project.id}`)
     } catch (err) {
+      console.error('Error creating project:', err)
       setError('Failed to create project. Please try again.')
+      toast.error('Failed to create project')
     } finally {
       setIsCreating(false)
     }
@@ -102,6 +138,22 @@ export default function CreateProjectPage() {
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="h-8 w-48 bg-gray-200 rounded animate-pulse"></div>
           <div className="h-96 bg-gray-200 rounded-lg animate-pulse"></div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 p-4">
+        <div className="max-w-2xl mx-auto text-center py-16">
+          <h1 className="text-2xl font-bold text-gray-900">Authentication Required</h1>
+          <p className="text-gray-600 mt-2">Please sign in to create a project.</p>
+          <Link href="/auth/signin">
+            <FurbridgeButton className="mt-4">
+              Sign In
+            </FurbridgeButton>
+          </Link>
         </div>
       </div>
     )
