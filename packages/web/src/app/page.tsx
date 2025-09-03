@@ -3,7 +3,7 @@ import { FurbridgeCard } from '@/components/ui/furbridge-card'
 import Link from 'next/link'
 
 export default function HomePage() {
-  // Testing Vercel deployment with updated token - v1.2
+  // Force Vercel deployment trigger - v1.3 - 2025-01-03
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
