@@ -134,17 +134,19 @@ export default function DashboardPage() {
           </p>
         </div>
         
-        {/* Resource Summary Card */}
-        <FurbridgeCard className="p-4 min-w-fit">
-          <div className="text-sm">
-            <div className="font-medium text-gray-900 mb-1">Available Seats</div>
-            <div className="text-gray-600 space-y-1">
-              <div>• 1 Project</div>
-              <div>• 0 Facilitator</div>
-              <div>• 1 Storyteller</div>
-            </div>
-          </div>
-        </FurbridgeCard>
+        {/* Action Buttons */}
+        <div className="flex space-x-3">
+          <Link href="/dashboard/test-notifications">
+            <FurbridgeButton variant="outline" className="border-furbridge-orange text-furbridge-orange hover:bg-furbridge-orange hover:text-white">
+              Test Notifications
+            </FurbridgeButton>
+          </Link>
+          <Link href="/dashboard/projects/create">
+            <FurbridgeButton className="bg-furbridge-teal hover:bg-furbridge-teal/90 text-white">
+              Create Project
+            </FurbridgeButton>
+          </Link>
+        </div>
       </div>
 
       {/* Projects Grid */}
