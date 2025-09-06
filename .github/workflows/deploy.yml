@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
