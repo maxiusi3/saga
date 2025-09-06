@@ -20,10 +20,10 @@ export const StoryQualityIndicator: React.FC<StoryQualityIndicatorProps> = ({
   showDetails = false
 }) => {
   const getQualityLevel = (score: number): { level: string; color: string; bgColor: string } => {
-    if (score >= 0.8) return { level: 'Excellent', color: 'text-green-600', bgColor: 'bg-green-100' };
-    if (score >= 0.6) return { level: 'Good', color: 'text-blue-600', bgColor: 'bg-blue-100' };
-    if (score >= 0.4) return { level: 'Fair', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
-    return { level: 'Needs Improvement', color: 'text-red-600', bgColor: 'bg-red-100' };
+    if (score >= 0.8) return { level: 'Excellent', color: 'text-success-foreground', bgColor: 'bg-success/10' };
+    if (score >= 0.6) return { level: 'Good', color: 'text-info-foreground', bgColor: 'bg-info/10' };
+    if (score >= 0.4) return { level: 'Fair', color: 'text-warning-foreground', bgColor: 'bg-warning/10' };
+    return { level: 'Needs Improvement', color: 'text-destructive-foreground', bgColor: 'bg-destructive/10' };
   };
 
   const quality = getQualityLevel(qualityScore);
@@ -45,13 +45,13 @@ export const StoryQualityIndicator: React.FC<StoryQualityIndicatorProps> = ({
       </div>
 
       {/* Quality Bar */}
-      <div className="w-16 bg-gray-200 rounded-full h-2">
+      <div className="w-16 bg-muted rounded-full h-2">
         <div 
           className={`h-2 rounded-full transition-all duration-300 ${
-            qualityScore >= 0.8 ? 'bg-green-500' :
-            qualityScore >= 0.6 ? 'bg-blue-500' :
-            qualityScore >= 0.4 ? 'bg-yellow-500' : 'bg-red-500'
-          }`}
+            qualityScore >= 0.8 ? 'bg-success' :
+            qualityScore >= 0.6 ? 'bg-info' :
+            qualityScore >= 0.4 ? 'bg-warning' : 'bg-destructive'
+          }`.replace('text-success', 'text-success-foreground').replace('bg-success/10', 'bg-success/10').replace('text-info', 'text-info-foreground').replace('bg-info/10', 'bg-info/10').replace('text-warning', 'text-warning-foreground').replace('bg-warning/10', 'bg-warning/10').replace('text-destructive', 'text-destructive-foreground').replace('bg-destructive/10', 'bg-destructive/10')}
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -65,8 +65,8 @@ export const StoryQualityIndicator: React.FC<StoryQualityIndicatorProps> = ({
                 key={key}
                 className={`text-xs px-2 py-1 rounded ${
                   value 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-gray-100 text-gray-500'
+                    ? 'bg-success/10 text-success-foreground' 
+                    : 'bg-muted text-muted-foreground'
                 }`}
                 title={factorLabels[key as keyof typeof factorLabels]}
               >

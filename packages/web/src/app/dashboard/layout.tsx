@@ -3,16 +3,11 @@
 import { useEffect, useState } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu'
+import { Navigation } from '@/components/layout/navigation'
 import Link from 'next/link'
 import { User } from '@supabase/supabase-js'
+import { BookOpen, Gem, User as UserIcon } from 'lucide-react'
+import { Button } from '@/components/ui'
 
 export default function DashboardLayout({
   children,
@@ -53,15 +48,10 @@ export default function DashboardLayout({
     return () => subscription.unsubscribe()
   }, [supabase, router])
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-furbridge-orange"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     )
   }
@@ -71,121 +61,41 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-200 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <div className="text-2xl font-bold text-furbridge-orange">Saga</div>
-            </Link>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex space-x-8">
-              <Link 
-                href="/dashboard" 
-                className="text-gray-900 hover:text-furbridge-orange transition-colors"
-              >
-                My Sagas
-              </Link>
-              <Link 
-                href="/dashboard/discover" 
-                className="text-gray-600 hover:text-furbridge-orange transition-colors"
-              >
-                Discover
-              </Link>
-              <Link 
-                href="/dashboard/resources" 
-                className="text-gray-600 hover:text-furbridge-orange transition-colors"
-              >
-                Resources
-              </Link>
-            </nav>
-
-            {/* User Menu */}
-            <div className="flex items-center space-x-4">
-              {/* Resource Summary */}
-              <div className="hidden sm:block text-sm text-gray-600">
-                Seats: 1 Project, 0 Facilitator, 1 Storyteller
-              </div>
-
-              {/* User Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.user_metadata?.avatar_url} />
-                      <AvatarFallback>
-                        {user.email?.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="hidden sm:block text-sm font-medium text-gray-900">
-                      {user.user_metadata?.full_name || user.email}
-                    </span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard/profile">Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard/settings">Settings</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard/help">Help</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <Navigation />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="flex justify-around py-2">
-          <Link 
-            href="/dashboard" 
-            className="flex flex-col items-center py-2 px-3 text-xs"
-          >
-            <div className="text-lg mb-1">📖</div>
-            <span>My Sagas</span>
-          </Link>
-          <Link 
-            href="/dashboard/discover" 
-            className="flex flex-col items-center py-2 px-3 text-xs text-gray-600"
-          >
-            <div className="text-lg mb-1">🔍</div>
-            <span>Discover</span>
-          </Link>
-          <Link 
-            href="/dashboard/resources" 
-            className="flex flex-col items-center py-2 px-3 text-xs text-gray-600"
-          >
-            <div className="text-lg mb-1">💎</div>
-            <span>Resources</span>
-          </Link>
-          <Link 
-            href="/dashboard/profile" 
-            className="flex flex-col items-center py-2 px-3 text-xs text-gray-600"
-          >
-            <div className="text-lg mb-1">👤</div>
-            <span>Profile</span>
-          </Link>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg">
+        <div className="flex justify-around">
+          <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
+            <Link href="/dashboard">
+              <BookOpen className="w-5 h-5 mb-1" />
+              <span className="font-medium">My Sagas</span>
+            </Link>
+          </Button>
+          <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
+            <Link href="/dashboard/resources">
+              <Gem className="w-5 h-5 mb-1" />
+              <span>Resources</span>
+            </Link>
+          </Button>
+          <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
+            <Link href="/dashboard/profile">
+              <UserIcon className="w-5 h-5 mb-1" />
+              <span>Profile</span>
+            </Link>
+          </Button>
         </div>
       </nav>
 
       {/* Bottom padding for mobile nav */}
-      <div className="md:hidden h-16"></div>
+      <div className="md:hidden h-20"></div>
     </div>
   )
 }

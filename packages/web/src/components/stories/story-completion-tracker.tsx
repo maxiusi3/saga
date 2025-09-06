@@ -27,23 +27,23 @@ export const StoryCompletionTracker: React.FC<StoryCompletionTrackerProps> = ({
   const overallPercentage = Math.round(completionData.completionRate * 100);
 
   const getProgressColor = (rate: number): string => {
-    if (rate >= 0.8) return 'bg-green-500';
-    if (rate >= 0.6) return 'bg-blue-500';
-    if (rate >= 0.4) return 'bg-yellow-500';
-    return 'bg-red-500';
+    if (rate >= 0.8) return 'bg-success';
+    if (rate >= 0.6) return 'bg-primary';
+    if (rate >= 0.4) return 'bg-warning';
+    return 'bg-destructive';
   };
 
   const getProgressTextColor = (rate: number): string => {
-    if (rate >= 0.8) return 'text-green-600';
-    if (rate >= 0.6) return 'text-blue-600';
-    if (rate >= 0.4) return 'text-yellow-600';
-    return 'text-red-600';
+    if (rate >= 0.8) return 'text-success';
+    if (rate >= 0.6) return 'text-primary';
+    if (rate >= 0.4) return 'text-warning';
+    return 'text-destructive';
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-card rounded-lg shadow p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Story Completion Progress</h3>
+        <h3 className="text-lg font-semibold text-foreground">Story Completion Progress</h3>
         <div className={`text-2xl font-bold ${getProgressTextColor(completionData.completionRate)}`}>
           {overallPercentage}%
         </div>
@@ -51,11 +51,11 @@ export const StoryCompletionTracker: React.FC<StoryCompletionTrackerProps> = ({
 
       {/* Overall Progress */}
       <div className="mb-6">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
+        <div className="flex justify-between text-sm text-muted-foreground mb-2">
           <span>Overall Progress</span>
           <span>{completionData.answeredPrompts} of {completionData.totalPrompts} prompts</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-3">
+        <div className="w-full bg-muted rounded-full h-3">
           <div 
             className={`h-3 rounded-full transition-all duration-500 ${getProgressColor(completionData.completionRate)}`}
             style={{ width: `${overallPercentage}%` }}
@@ -65,26 +65,26 @@ export const StoryCompletionTracker: React.FC<StoryCompletionTrackerProps> = ({
 
       {/* Chapter Breakdown */}
       <div>
-        <h4 className="font-medium text-gray-900 mb-4">Chapter Progress</h4>
+        <h4 className="font-medium text-foreground mb-4">Chapter Progress</h4>
         <div className="space-y-4">
           {completionData.chapterProgress.map(chapter => {
             const chapterPercentage = Math.round(chapter.completionRate * 100);
             
             return (
-              <div key={chapter.chapterId} className="border border-gray-200 rounded-lg p-4">
+              <div key={chapter.chapterId} className="border border-border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h5 className="font-medium text-gray-800">{chapter.chapterName}</h5>
+                  <h5 className="font-medium text-foreground">{chapter.chapterName}</h5>
                   <span className={`text-sm font-semibold ${getProgressTextColor(chapter.completionRate)}`}>
                     {chapterPercentage}%
                   </span>
                 </div>
                 
-                <div className="flex justify-between text-xs text-gray-500 mb-2">
+                <div className="flex justify-between text-xs text-muted-foreground mb-2">
                   <span>{chapter.answeredPrompts} answered</span>
                   <span>{chapter.totalPrompts} total prompts</span>
                 </div>
                 
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-muted rounded-full h-2">
                   <div 
                     className={`h-2 rounded-full transition-all duration-300 ${getProgressColor(chapter.completionRate)}`}
                     style={{ width: `${chapterPercentage}%` }}
@@ -100,13 +100,13 @@ export const StoryCompletionTracker: React.FC<StoryCompletionTrackerProps> = ({
                         <div
                           key={index}
                           className={`w-2 h-2 rounded-full ${
-                            isAnswered ? getProgressColor(chapter.completionRate) : 'bg-gray-300'
+                            isAnswered ? getProgressColor(chapter.completionRate) : 'bg-muted'
                           }`}
                         />
                       );
                     })}
                     {chapter.totalPrompts > 10 && (
-                      <span className="text-xs text-gray-400 ml-1">
+                      <span className="text-xs text-muted-foreground ml-1">
                         +{chapter.totalPrompts - 10} more
                       </span>
                     )}
@@ -119,9 +119,9 @@ export const StoryCompletionTracker: React.FC<StoryCompletionTrackerProps> = ({
       </div>
 
       {/* Completion Insights */}
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-        <h5 className="font-medium text-gray-800 mb-2">Insights</h5>
-        <div className="text-sm text-gray-600 space-y-1">
+      <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+        <h5 className="font-medium text-foreground mb-2">Insights</h5>
+        <div className="text-sm text-muted-foreground space-y-1">
           {completionData.completionRate >= 0.8 && (
             <p>🎉 Excellent progress! You're doing great at capturing family stories.</p>
           )}

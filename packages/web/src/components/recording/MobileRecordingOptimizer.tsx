@@ -107,9 +107,9 @@ export function MobileRecordingOptimizer({ children, className = '' }: MobileRec
   return (
     <div className={`mobile-recording-optimizer ${className}`}>
       {/* Mobile-specific tips */}
-      <Card className="p-4 mb-4 bg-blue-50 border-blue-200">
-        <h3 className="font-bold text-blue-800 mb-2">📱 Mobile Recording Tips</h3>
-        <div className="text-sm text-blue-700 space-y-1">
+      <Card className="p-4 mb-4 bg-primary/10 border-primary/20">
+        <h3 className="font-bold text-primary mb-2">📱 Mobile Recording Tips</h3>
+        <div className="text-sm text-primary/90 space-y-1">
           <p>• Hold your phone close to your mouth (6-8 inches)</p>
           <p>• Find a quiet room to reduce background noise</p>
           <p>• Keep your phone charged or plugged in</p>
@@ -122,12 +122,12 @@ export function MobileRecordingOptimizer({ children, className = '' }: MobileRec
 
       {/* Orientation suggestion */}
       {!isLandscape && (
-        <Card className="p-4 mb-4 bg-yellow-50 border-yellow-200">
+        <Card className="p-4 mb-4 bg-yellow-500/10 border-yellow-500/20">
           <div className="flex items-center space-x-3">
             <div className="text-2xl">🔄</div>
             <div>
-              <h4 className="font-bold text-yellow-800">Better Experience Available</h4>
-              <p className="text-sm text-yellow-700">
+              <h4 className="font-bold text-yellow-500">Better Experience Available</h4>
+              <p className="text-sm text-yellow-500/90">
                 Rotate your device to landscape mode for larger buttons and better controls.
               </p>
             </div>
@@ -136,17 +136,17 @@ export function MobileRecordingOptimizer({ children, className = '' }: MobileRec
       )}
 
       {/* Recording optimization controls */}
-      <Card className="p-4 mb-4 bg-green-50 border-green-200">
-        <h4 className="font-bold text-green-800 mb-3">Recording Optimization</h4>
+      <Card className="p-4 mb-4 bg-success/10 border-success/20">
+        <h4 className="font-bold text-success-foreground mb-3">Recording Optimization</h4>
         <div className="flex flex-col space-y-2">
           <Button
             onClick={optimizeForRecording}
             size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white"
+            className="bg-success hover:bg-success/90 text-success-foreground"
           >
             🎯 Optimize for Recording
           </Button>
-          <div className="text-xs text-green-700">
+          <div className="text-xs text-success-foreground/90">
             This will keep your screen on and hide distractions during recording.
           </div>
         </div>

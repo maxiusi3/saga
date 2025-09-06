@@ -35,12 +35,12 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
   return (
     <FurbridgeCard className="w-96 max-h-96 overflow-hidden shadow-lg border">
       {/* Header */}
-      <div className="p-4 border-b bg-gray-50">
+      <div className="p-4 border-b bg-muted/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <h3 className="font-semibold text-gray-900">Notifications</h3>
+            <h3 className="font-semibold text-foreground">Notifications</h3>
             {unreadCount > 0 && (
-              <Badge className="bg-furbridge-orange text-white text-xs">
+              <Badge className="bg-primary text-primary-foreground text-xs">
                 {unreadCount} new
               </Badge>
             )}
@@ -87,12 +87,12 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
             ))}
           </div>
         ) : error ? (
-          <div className="p-4 text-center text-red-600">
+          <div className="p-4 text-center text-destructive">
             <p className="text-sm">Failed to load notifications</p>
-            <p className="text-xs text-gray-500 mt-1">{error}</p>
+            <p className="text-xs text-muted-foreground mt-1">{error}</p>
           </div>
         ) : notifications.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
+          <div className="p-8 text-center text-muted-foreground">
             <div className="text-4xl mb-2">🔔</div>
             <p className="text-sm font-medium">No notifications yet</p>
             <p className="text-xs mt-1">
@@ -114,12 +114,12 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
 
       {/* Footer */}
       {notifications.length > 10 && (
-        <div className="p-3 border-t bg-gray-50">
+        <div className="p-3 border-t bg-muted/50">
           <Link href="/dashboard/notifications">
             <FurbridgeButton
               variant="ghost"
               size="sm"
-              className="w-full text-furbridge-teal"
+              className="w-full text-primary"
               onClick={onClose}
             >
               <ExternalLink className="h-3 w-3 mr-1" />

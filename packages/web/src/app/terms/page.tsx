@@ -1,95 +1,83 @@
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
-import Link from 'next/link'
+import { Card } from '@/components/ui/card';
 import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900">
-            <ArrowLeft className="h-4 w-4 mr-2" />
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-12">
+        <div className="mb-8">
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
           </Link>
         </div>
-      </header>
+        <Card className="prose prose-gray mx-auto max-w-4xl dark:prose-invert">
+          <h1 className="text-foreground">Terms of Service</h1>
+          <p className="text-muted-foreground">Last updated: July 29, 2024</p>
 
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="space-y-8">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Terms of Service</h1>
-            <p className="text-gray-600">Last updated: January 2024</p>
-          </div>
+          <p>
+            Welcome to Saga! These Terms of Service ("Terms") govern your use of
+            the Saga website, applications, and services (collectively, the
+            "Services"). By using our Services, you agree to be bound by these
+            Terms.
+          </p>
 
-          <FurbridgeCard className="p-8">
-            <div className="prose prose-gray max-w-none space-y-6">
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. Acceptance of Terms</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  By accessing and using Saga, you accept and agree to be bound by the terms and provision of this agreement.
-                </p>
-              </section>
+          <h2>1. Your Account</h2>
+          <p>
+            You may need to create an account to use some of our Services. You
+            are responsible for safeguarding your account and for all activities
+            that occur under your account.
+          </p>
 
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">2. Description of Service</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  Saga is a platform that helps families capture, organize, and preserve their stories through guided conversations and automatic transcription.
-                </p>
-              </section>
+          <h2>2. Privacy</h2>
+          <p>
+            Our Privacy Policy describes how we handle the information you
+            provide to us when you use our Services. You understand that through
+            your use of the Services you consent to the collection and use of
+            this information.
+          </p>
 
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">3. User Accounts</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  You are responsible for maintaining the confidentiality of your account and password and for restricting access to your computer.
-                </p>
-              </section>
+          <h2>3. Content on the Services</h2>
+          <p>
+            You are responsible for your use of the Services and for any content
+            you provide, including compliance with applicable laws, rules, and
+            regulations.
+          </p>
 
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">4. Privacy and Data Protection</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  Your privacy is important to us. Please review our Privacy Policy, which also governs your use of the Service.
-                </p>
-              </section>
+          <h2>4. Prohibited Uses</h2>
+          <p>
+            You may not use the Services to post or transmit any content that is
+            unlawful, threatening, abusive, libelous, defamatory, obscene,
+            vulgar, pornographic, profane, or indecent.
+          </p>
 
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">5. Content Ownership</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  You retain ownership of all content you upload, record, or create using our service. We do not claim ownership of your family stories.
-                </p>
-              </section>
+          <h2>5. Limitation of Liability</h2>
+          <p>
+            In no event shall Saga, its directors, employees, or agents be
+            liable for any indirect, incidental, special, consequential or
+            punitive damages, including without limitation, loss of profits,
 
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">6. Prohibited Uses</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  You may not use our service for any unlawful purpose or to solicit others to perform unlawful acts.
-                </p>
-              </section>
+            data, use, goodwill, or other intangible losses.
+          </p>
 
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">7. Limitation of Liability</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  In no event shall Saga be liable for any indirect, incidental, special, consequential, or punitive damages.
-                </p>
-              </section>
+          <h2>6. Changes to These Terms</h2>
+          <p>
+            We may revise these Terms from time to time. The most current
+            version will always be on this page. By continuing to access or use
+            the Services after those revisions become effective, you agree to be
+            bound by the revised Terms.
+          </p>
 
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">8. Changes to Terms</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  We reserve the right to modify these terms at any time. We will notify users of any material changes.
-                </p>
-              </section>
-
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">9. Contact Information</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  If you have any questions about these Terms of Service, please contact us at support@saga.family.
-                </p>
-              </section>
-            </div>
-          </FurbridgeCard>
-        </div>
+          <h2>7. Contact Us</h2>
+          <p>
+            If you have any questions about these Terms, please contact us at{' '}
+            <a href="mailto:support@saga.com">support@saga.com</a>.
+          </p>
+        </Card>
       </div>
     </div>
   )

@@ -57,29 +57,29 @@ export const StoryShareModal: React.FC<StoryShareModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+    <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
+      <div className="bg-card rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Share Story</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-muted-foreground hover:text-foreground"
           >
             ✕
           </button>
         </div>
 
         <div className="mb-4">
-          <h4 className="font-medium text-gray-900 mb-2">
+          <h4 className="font-medium text-foreground mb-2">
             "{story.title || 'Untitled Story'}"
           </h4>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Share this story with other project members
           </p>
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Select Members
           </label>
           <div className="space-y-2 max-h-32 overflow-y-auto">
@@ -93,7 +93,7 @@ export const StoryShareModal: React.FC<StoryShareModalProps> = ({
                 />
                 <span className="text-sm">{member.name}</span>
                 {member.email && (
-                  <span className="text-xs text-gray-500 ml-1">
+                  <span className="text-xs text-muted-foreground ml-1">
                     ({member.email})
                   </span>
                 )}
@@ -103,14 +103,14 @@ export const StoryShareModal: React.FC<StoryShareModalProps> = ({
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Message (Optional)
           </label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Add a personal message..."
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            className="w-full p-2 border border-input rounded-md text-sm bg-background"
             rows={3}
           />
         </div>
@@ -118,14 +118,14 @@ export const StoryShareModal: React.FC<StoryShareModalProps> = ({
         <div className="flex justify-end space-x-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+            className="px-4 py-2 text-sm font-medium text-foreground bg-muted rounded-md hover:bg-muted/90"
           >
             Cancel
           </button>
           <button
             onClick={handleShare}
             disabled={selectedMembers.length === 0 || isSharing}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSharing ? 'Sharing...' : 'Share Story'}
           </button>

@@ -60,7 +60,7 @@ export function Sidebar() {
   return (
     <div className="hidden lg:flex lg:flex-shrink-0">
       <div className="flex flex-col w-64">
-        <div className="flex flex-col flex-grow bg-white border-r border-gray-200 pt-5 pb-4 overflow-y-auto">
+        <div className="flex flex-col flex-grow bg-background border-r border-border pt-5 pb-4 overflow-y-auto">
           <div className="flex-grow flex flex-col">
             <nav className="flex-1 px-2 space-y-1">
               {navigation.map((item) => {
@@ -74,14 +74,14 @@ export function Sidebar() {
                     className={cn(
                       'group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors',
                       isActive
-                        ? 'bg-primary-100 text-primary-900'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     )}
                   >
                     <span
                       className={cn(
                         'mr-3 flex-shrink-0',
-                        isActive ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500'
+                        isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-muted-foreground/80'
                       )}
                     >
                       {item.icon}
@@ -95,18 +95,18 @@ export function Sidebar() {
           
           {/* Subscription status */}
           <div className="flex-shrink-0 px-2">
-            <div className="bg-primary-50 rounded-lg p-3">
+            <div className="bg-primary/10 rounded-lg p-3">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5 text-primary/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-primary-800">
+                  <p className="text-sm font-medium text-primary">
                     Saga Package
                   </p>
-                  <p className="text-xs text-primary-600">
+                  <p className="text-xs text-primary/90">
                     Active until Dec 2024
                   </p>
                 </div>

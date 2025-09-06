@@ -93,7 +93,7 @@ export function StoryShareButton({
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowShareMenu(false)}
-                className="w-full text-gray-500"
+                className="w-full text-muted-foreground"
               >
                 Cancel
               </Button>

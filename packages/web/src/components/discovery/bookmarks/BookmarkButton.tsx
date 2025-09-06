@@ -59,7 +59,7 @@ export function BookmarkButton({
       className={`bookmark-button ${className}`}
       title={bookmarked ? 'Remove bookmark' : 'Add bookmark'}
     >
-      <span className={`transition-colors ${bookmarked ? 'text-yellow-500' : 'text-gray-400'}`}>
+      <span className={`transition-colors ${bookmarked ? 'text-warning' : 'text-muted-foreground'}`}>
         {bookmarked ? '★' : '☆'}
       </span>
       {showText && (

@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -212,12 +212,12 @@ Those were the days when a penny candy actually cost a penny, and you could get 
     return (
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
-          <div className="h-8 w-8 bg-gray-100 rounded animate-pulse"></div>
-          <div className="h-8 w-64 bg-gray-100 rounded animate-pulse"></div>
+          <div className="h-8 w-8 bg-muted rounded animate-pulse"></div>
+          <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
         </div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div key={i} className="h-32 bg-muted rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -227,11 +227,11 @@ Those were the days when a penny candy actually cost a penny, and you could get 
   if (!story) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-gray-900">Story not found</h1>
+        <h1 className="text-2xl font-bold text-foreground">Story not found</h1>
         <Link href={`/dashboard/projects/${projectId}`}>
-          <FurbridgeButton variant="outline" className="mt-4">
+          <Button variant="outline" className="mt-4">
             Back to Project
-          </FurbridgeButton>
+          </Button>
         </Link>
       </div>
     )
@@ -242,9 +242,9 @@ Those were the days when a penny candy actually cost a penny, and you could get 
       {/* Header */}
       <div className="flex items-center space-x-4">
         <Link href={`/dashboard/projects/${projectId}`}>
-          <FurbridgeButton variant="ghost" size="icon">
+          <Button variant="ghost" size="icon">
             <ArrowLeft className="h-5 w-5" />
-          </FurbridgeButton>
+          </Button>
         </Link>
         
         {isEditingTitle ? (
@@ -255,25 +255,25 @@ Those were the days when a penny candy actually cost a penny, and you could get 
               className="text-2xl font-bold h-auto py-2"
               onKeyDown={(e) => e.key === 'Enter' && saveTitle()}
             />
-            <FurbridgeButton variant="outline" onClick={saveTitle}>
+            <Button variant="outline" onClick={saveTitle}>
               Save
-            </FurbridgeButton>
-            <FurbridgeButton variant="ghost" onClick={() => setIsEditingTitle(false)}>
+            </Button>
+            <Button variant="ghost" onClick={() => setIsEditingTitle(false)}>
               Cancel
-            </FurbridgeButton>
+            </Button>
           </div>
         ) : (
           <div className="flex-1 flex items-center space-x-2">
-            <h1 className="text-3xl font-bold text-gray-900">{story.title}</h1>
-            <FurbridgeButton variant="ghost" size="icon" onClick={() => setIsEditingTitle(true)}>
+            <h1 className="text-3xl font-bold text-foreground">{story.title}</h1>
+            <Button variant="ghost" size="icon" onClick={() => setIsEditingTitle(true)}>
               <Edit className="h-4 w-4" />
-            </FurbridgeButton>
+            </Button>
           </div>
         )}
       </div>
 
       {/* Story Metadata */}
-      <div className="flex items-center space-x-4 text-sm text-gray-600">
+      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
         <span>{formatTimestamp(story.timestamp)}</span>
         <span>•</span>
         <span>{story.storyteller_name}</span>
@@ -287,34 +287,34 @@ Those were the days when a penny candy actually cost a penny, and you could get 
 
       {/* Photo Viewer */}
       {story.photo_url && (
-        <FurbridgeCard className="p-4">
+        <Card className="p-4">
           <div className="relative">
             <img 
               src={story.photo_url} 
               alt="Story photo" 
               className="w-full max-w-2xl mx-auto rounded-lg"
             />
-            <FurbridgeButton 
+            <Button 
               variant="ghost" 
               size="icon" 
-              className="absolute top-2 right-2 bg-white/80"
+              className="absolute top-2 right-2 bg-background/80"
             >
               <ZoomIn className="h-4 w-4" />
-            </FurbridgeButton>
+            </Button>
           </div>
-        </FurbridgeCard>
+        </Card>
       )}
 
       {/* Audio Player */}
       {story.type === 'story' && (
-        <FurbridgeCard className="p-6">
+        <Card className="p-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900">Audio Recording</h3>
+              <h3 className="font-semibold text-foreground">Audio Recording</h3>
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-600">Speed:</span>
+                <span className="text-sm text-muted-foreground">Speed:</span>
                 {[1, 1.25, 1.5, 2].map((speed) => (
-                  <FurbridgeButton
+                  <Button
                     key={speed}
                     variant={playbackSpeed === speed ? "default" : "ghost"}
                     size="sm"
@@ -322,15 +322,15 @@ Those were the days when a penny candy actually cost a penny, and you could get 
                     className="text-xs"
                   >
                     {speed}x
-                  </FurbridgeButton>
+                  </Button>
                 ))}
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
-              <FurbridgeButton variant="outline" size="icon" onClick={togglePlayback}>
+              <Button variant="outline" size="icon" onClick={togglePlayback}>
                 {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-              </FurbridgeButton>
+              </Button>
 
               <div className="flex-1">
                 <input
@@ -339,11 +339,11 @@ Those were the days when a penny candy actually cost a penny, and you could get 
                   max={story.audio_duration}
                   value={currentTime}
                   onChange={handleSeek}
-                  className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
-              <div className="text-sm text-gray-600 min-w-fit">
+              <div className="text-sm text-muted-foreground min-w-fit">
                 {formatTime(currentTime)} / {formatTime(story.audio_duration)}
               </div>
             </div>
@@ -355,32 +355,32 @@ Those were the days when a penny candy actually cost a penny, and you could get 
               onEnded={() => setIsPlaying(false)}
             />
           </div>
-        </FurbridgeCard>
+        </Card>
       )}
 
       {/* Transcript */}
-      <FurbridgeCard className="p-6">
+      <Card className="p-6">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <h3 className="font-semibold text-gray-900">Transcript</h3>
-            <FurbridgeButton variant="outline" size="sm">
+            <h3 className="font-semibold text-foreground">Transcript</h3>
+            <Button variant="outline" size="sm">
               <Edit className="h-4 w-4 mr-2" />
               Edit
-            </FurbridgeButton>
+            </Button>
           </div>
           
-          <div className="prose prose-gray max-w-none">
-            <div className="whitespace-pre-wrap text-gray-900 leading-relaxed">
+          <div className="prose prose-foreground max-w-none">
+            <div className="whitespace-pre-wrap text-foreground leading-relaxed">
               {story.transcript}
             </div>
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
 
       {/* Interactions */}
-      <FurbridgeCard className="p-6">
+      <Card className="p-6">
         <div className="space-y-6">
-          <h3 className="font-semibold text-gray-900">Comments & Questions</h3>
+          <h3 className="font-semibold text-foreground">Comments & Questions</h3>
 
           {/* Existing Interactions */}
           <div className="space-y-4">
@@ -394,17 +394,17 @@ Those were the days when a penny candy actually cost a penny, and you could get 
                 </Avatar>
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center space-x-2">
-                    <span className="font-medium text-gray-900 text-sm">
+                    <span className="font-medium text-foreground text-sm">
                       {interaction.author_name}
                     </span>
                     <Badge variant={interaction.type === 'followup' ? 'outline' : 'secondary'} className="text-xs">
                       {interaction.type === 'followup' ? 'Question' : 'Comment'}
                     </Badge>
-                    <span className="text-xs text-gray-600">
+                    <span className="text-xs text-muted-foreground">
                       {formatTimestamp(interaction.timestamp)}
                     </span>
                   </div>
-                  <p className="text-gray-900 text-sm">{interaction.content}</p>
+                  <p className="text-foreground text-sm">{interaction.content}</p>
                 </div>
               </div>
             ))}
@@ -415,7 +415,7 @@ Those were the days when a penny candy actually cost a penny, and you could get 
           {/* Add New Interactions */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-900">Leave a comment</label>
+              <label className="text-sm font-medium text-foreground">Leave a comment</label>
               <div className="flex space-x-2">
                 <Textarea
                   placeholder="Share your thoughts..."
@@ -424,18 +424,18 @@ Those were the days when a penny candy actually cost a penny, and you could get 
                   className="flex-1"
                   rows={2}
                 />
-                <FurbridgeButton 
+                <Button 
                   variant="outline" 
                   onClick={submitComment}
                   disabled={!commentText.trim()}
                 >
                   <Send className="h-4 w-4" />
-                </FurbridgeButton>
+                </Button>
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-900">Ask a follow-up question</label>
+              <label className="text-sm font-medium text-foreground">Ask a follow-up question</label>
               <div className="flex space-x-2">
                 <Textarea
                   placeholder="What would you like to know more about?"
@@ -444,18 +444,19 @@ Those were the days when a penny candy actually cost a penny, and you could get 
                   className="flex-1"
                   rows={2}
                 />
-                <FurbridgeButton 
-                  variant="orange" 
+                <Button 
+                  variant="default" 
                   onClick={submitFollowup}
                   disabled={!followupText.trim()}
+                  className="bg-primary"
                 >
                   <Send className="h-4 w-4" />
-                </FurbridgeButton>
+                </Button>
               </div>
             </div>
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
     </div>
   )
 }

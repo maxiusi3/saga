@@ -1,485 +1,490 @@
-# Saga - Family Biography Platform
+# Claude Code PM
 
-Saga is an AI-powered family biography platform that facilitates meaningful intergenerational storytelling through asynchronous conversation. The system connects Facilitators (typically adult children) with Storytellers (typically parents) to preserve and share family memories through AI-guided prompts, voice recordings, and interactive feedback loops.
+[![Automaze](https://img.shields.io/badge/By-automaze.io-4b3baf)](https://automaze.io)
+&nbsp;
+[![Claude Code](https://img.shields.io/badge/+-Claude%20Code-d97757)](https://github.com/automazeio/ccpm/blob/main/README.md)
+[![GitHub Issues](https://img.shields.io/badge/+-GitHub%20Issues-1f2328)](https://github.com/automazeio/ccpm)
+&nbsp;
+[![MIT License](https://img.shields.io/badge/License-MIT-28a745)](https://github.com/automazeio/ccpm/blob/main/LICENSE)
+&nbsp;
+[![Follow on 𝕏](https://img.shields.io/badge/𝕏-@aroussi-1c9bf0)](http://x.com/intent/follow?screen_name=aroussi)
+&nbsp;
+[![Star this repo](https://img.shields.io/badge/★-Star%20this%20repo-e7b10b)](https://github.com/automazeio/ccpm)
 
-## 🏗️ Architecture
+### Claude Code workflow to ship ~~faster~~ _better_ using spec-driven development, GitHub issues, Git worktrees, and mutiple AI agents running in parallel.
 
-This is a monorepo containing:
+Stop losing context. Stop blocking on tasks. Stop shipping bugs. This battle-tested system turns PRDs into epics, epics into GitHub issues, and issues into production code – with full traceability at every step.
 
-- **Backend** (`packages/backend`): Node.js/Express API server
-- **Web App** (`packages/web`): Next.js application for Facilitators
-- **Mobile App** (`packages/mobile`): React Native app for Storytellers
-- **Shared** (`packages/shared`): Common TypeScript types and utilities
+![Claude Code PM](screenshot.webp)
 
-## 🚀 Quick Start
+## Table of Contents
 
-### Prerequisites
+- [Background](#background)
+- [The Workflow](#the-workflow)
+- [What Makes This Different?](#what-makes-this-different)
+- [Why GitHub Issues?](#why-github-issues)
+- [Core Principle: No Vibe Coding](#core-principle-no-vibe-coding)
+- [System Architecture](#system-architecture)
+- [Workflow Phases](#workflow-phases)
+- [Command Reference](#command-reference)
+- [The Parallel Execution System](#the-parallel-execution-system)
+- [Key Features & Benefits](#key-features--benefits)
+- [Proven Results](#proven-results)
+- [Example Flow](#example-flow)
+- [Get Started Now](#get-started-now)
+- [Local vs Remote](#local-vs-remote)
+- [Technical Notes](#technical-notes)
+- [Support This Project](#support-this-project)
 
-- Node.js 18+
-- npm 9+
-- Optional: Docker and Docker Compose (for full environment)
-- Optional: PostgreSQL and Redis (for native environment)
+## Background
 
-### Installation
+Every team struggles with the same problems:
+- **Context evaporates** between sessions, forcing constant re-discovery
+- **Parallel work creates conflicts** when multiple developers touch the same code
+- **Requirements drift** as verbal decisions override written specs
+- **Progress becomes invisible** until the very end
 
-1. **Clone the repository**
+This system solves all of that.
+
+## The Workflow
+
+```mermaid
+graph LR
+    A[PRD Creation] --> B[Epic Planning]
+    B --> C[Task Decomposition]
+    C --> D[GitHub Sync]
+    D --> E[Parallel Execution]
+```
+
+### See It In Action (60 seconds)
+
+```bash
+# Create a comprehensive PRD through guided brainstorming
+/pm:prd-new memory-system
+
+# Transform PRD into a technical epic with task breakdown
+/pm:prd-parse memory-system
+
+# Push to GitHub and start parallel execution
+/pm:epic-oneshot memory-system
+/pm:issue-start 1235
+```
+
+## What Makes This Different?
+
+| Traditional Development | Claude Code PM System |
+|------------------------|----------------------|
+| Context lost between sessions | **Persistent context** across all work |
+| Serial task execution | **Parallel agents** on independent tasks |
+| "Vibe coding" from memory | **Spec-driven** with full traceability |
+| Progress hidden in branches | **Transparent audit trail** in GitHub |
+| Manual task coordination | **Intelligent prioritization** with `/pm:next` |
+
+## Why GitHub Issues?
+
+Most Claude Code workflows operate in isolation – a single developer working with AI in their local environment. This creates a fundamental problem: **AI-assisted development becomes a silo**.
+
+By using GitHub Issues as our database, we unlock something powerful:
+
+### 🤝 **True Team Collaboration**
+- Multiple Claude instances can work on the same project simultaneously
+- Human developers see AI progress in real-time through issue comments
+- Team members can jump in anywhere – the context is always visible
+- Managers get transparency without interrupting flow
+
+### 🔄 **Seamless Human-AI Handoffs**
+- AI can start a task, human can finish it (or vice versa)
+- Progress updates are visible to everyone, not trapped in chat logs
+- Code reviews happen naturally through PR comments
+- No "what did the AI do?" meetings
+
+### 📈 **Scalable Beyond Solo Work**
+- Add team members without onboarding friction
+- Multiple AI agents working in parallel on different issues
+- Distributed teams stay synchronized automatically
+- Works with existing GitHub workflows and tools
+
+### 🎯 **Single Source of Truth**
+- No separate databases or project management tools
+- Issue state is the project state
+- Comments are the audit trail
+- Labels provide organization
+
+This isn't just a project management system – it's a **collaboration protocol** that lets humans and AI agents work together at scale, using infrastructure your team already trusts.
+
+## Core Principle: No Vibe Coding
+
+> **Every line of code must trace back to a specification.**
+
+We follow a strict 5-phase discipline:
+
+1. **🧠 Brainstorm** - Think deeper than comfortable
+2. **📝 Document** - Write specs that leave nothing to interpretation
+3. **📐 Plan** - Architect with explicit technical decisions
+4. **⚡ Execute** - Build exactly what was specified
+5. **📊 Track** - Maintain transparent progress at every step
+
+No shortcuts. No assumptions. No regrets.
+
+## System Architecture
+
+```
+.claude/
+├── CLAUDE.md          # Always-on instructions (copy content to your project's CLAUDE.md file)
+├── agents/            # Task-oriented agents (for context preservation)
+├── commands/          # Command definitions
+│   ├── context/       # Create, update, and prime context
+│   ├── pm/            # ← Project management commands (this system)
+│   └── testing/       # Prime and execute tests (edit this)
+├── context/           # Project-wide context files
+├── epics/             # ← PM's local workspace (place in .gitignore)
+│   └── [epic-name]/   # Epic and related tasks
+│       ├── epic.md    # Implementation plan
+│       ├── [#].md     # Individual task files
+│       └── updates/   # Work-in-progress updates
+├── prds/              # ← PM's PRD files
+├── rules/             # Place any rule files you'd like to reference here
+└── scripts/           # Place any script files you'd like to use here
+```
+
+## Workflow Phases
+
+### 1. Product Planning Phase
+
+```bash
+/pm:prd-new feature-name
+```
+Launches comprehensive brainstorming to create a Product Requirements Document capturing vision, user stories, success criteria, and constraints.
+
+**Output:** `.claude/prds/feature-name.md`
+
+### 2. Implementation Planning Phase
+
+```bash
+/pm:prd-parse feature-name
+```
+Transforms PRD into a technical implementation plan with architectural decisions, technical approach, and dependency mapping.
+
+**Output:** `.claude/epics/feature-name/epic.md`
+
+### 3. Task Decomposition Phase
+
+```bash
+/pm:epic-decompose feature-name
+```
+Breaks epic into concrete, actionable tasks with acceptance criteria, effort estimates, and parallelization flags.
+
+**Output:** `.claude/epics/feature-name/[task].md`
+
+### 4. GitHub Synchronization
+
+```bash
+/pm:epic-sync feature-name
+# Or for confident workflows:
+/pm:epic-oneshot feature-name
+```
+Pushes epic and tasks to GitHub as issues with appropriate labels and relationships.
+
+### 5. Execution Phase
+
+```bash
+/pm:issue-start 1234  # Launch specialized agent
+/pm:issue-sync 1234   # Push progress updates
+/pm:next             # Get next priority task
+```
+Specialized agents implement tasks while maintaining progress updates and an audit trail.
+
+## Command Reference
+
+> [!TIP]
+> Type `/pm:help` for a concise command summary
+
+### Initial Setup
+- `/pm:init` - Install dependencies and configure GitHub
+
+### PRD Commands
+- `/pm:prd-new` - Launch brainstorming for new product requirement
+- `/pm:prd-parse` - Convert PRD to implementation epic
+- `/pm:prd-list` - List all PRDs
+- `/pm:prd-edit` - Edit existing PRD
+- `/pm:prd-status` - Show PRD implementation status
+
+### Epic Commands
+- `/pm:epic-decompose` - Break epic into task files
+- `/pm:epic-sync` - Push epic and tasks to GitHub
+- `/pm:epic-oneshot` - Decompose and sync in one command
+- `/pm:epic-list` - List all epics
+- `/pm:epic-show` - Display epic and its tasks
+- `/pm:epic-close` - Mark epic as complete
+- `/pm:epic-edit` - Edit epic details
+- `/pm:epic-refresh` - Update epic progress from tasks
+
+### Issue Commands
+- `/pm:issue-show` - Display issue and sub-issues
+- `/pm:issue-status` - Check issue status
+- `/pm:issue-start` - Begin work with specialized agent
+- `/pm:issue-sync` - Push updates to GitHub
+- `/pm:issue-close` - Mark issue as complete
+- `/pm:issue-reopen` - Reopen closed issue
+- `/pm:issue-edit` - Edit issue details
+
+### Workflow Commands
+- `/pm:next` - Show next priority issue with epic context
+- `/pm:status` - Overall project dashboard
+- `/pm:standup` - Daily standup report
+- `/pm:blocked` - Show blocked tasks
+- `/pm:in-progress` - List work in progress
+
+### Sync Commands
+- `/pm:sync` - Full bidirectional sync with GitHub
+- `/pm:import` - Import existing GitHub issues
+
+### Maintenance Commands
+- `/pm:validate` - Check system integrity
+- `/pm:clean` - Archive completed work
+- `/pm:search` - Search across all content
+
+## The Parallel Execution System
+
+### Issues Aren't Atomic
+
+Traditional thinking: One issue = One developer = One task
+
+**Reality: One issue = Multiple parallel work streams**
+
+A single "Implement user authentication" issue isn't one task. It's...
+
+- **Agent 1**: Database tables and migrations
+- **Agent 2**: Service layer and business logic
+- **Agent 3**: API endpoints and middleware
+- **Agent 4**: UI components and forms
+- **Agent 5**: Test suites and documentation
+
+All running **simultaneously** in the same worktree.
+
+### The Math of Velocity
+
+**Traditional Approach:**
+- Epic with 3 issues
+- Sequential execution
+
+**This System:**
+- Same epic with 3 issues
+- Each issue splits into ~4 parallel streams
+- **12 agents working simultaneously**
+
+We're not assigning agents to issues. We're **leveraging multiple agents** to ship faster.
+
+### Context Optimization
+
+**Traditional single-thread approach:**
+- Main conversation carries ALL the implementation details
+- Context window fills with database schemas, API code, UI components
+- Eventually hits context limits and loses coherence
+
+**Parallel agent approach:**
+- Main thread stays clean and strategic
+- Each agent handles its own context in isolation
+- Implementation details never pollute the main conversation
+- Main thread maintains oversight without drowning in code
+
+Your main conversation becomes the conductor, not the orchestra.
+
+### GitHub vs Local: Perfect Separation
+
+**What GitHub Sees:**
+- Clean, simple issues
+- Progress updates
+- Completion status
+
+**What Actually Happens Locally:**
+- Issue #1234 explodes into 5 parallel agents
+- Agents coordinate through Git commits
+- Complex orchestration hidden from view
+
+GitHub doesn't need to know HOW the work got done – just that it IS done.
+
+### The Command Flow
+
+```bash
+# Analyze what can be parallelized
+/pm:issue-analyze 1234
+
+# Launch the swarm
+/pm:epic-start memory-system
+
+# Watch the magic
+# 12 agents working across 3 issues
+# All in: ../epic-memory-system/
+
+# One clean merge when done
+/pm:epic-merge memory-system
+```
+
+## Key Features & Benefits
+
+### 🧠 **Context Preservation**
+Never lose project state again. Each epic maintains its own context, agents read from `.claude/context/`, and updates locally before syncing.
+
+### ⚡ **Parallel Execution**
+Ship faster with multiple agents working simultaneously. Tasks marked `parallel: true` enable conflict-free concurrent development.
+
+### 🔗 **GitHub Native**
+Works with tools your team already uses. Issues are the source of truth, comments provide history, and there is no dependency on the Projects API.
+
+### 🤖 **Agent Specialization**
+Right tool for every job. Different agents for UI, API, and database work. Each reads requirements and posts updates automatically.
+
+### 📊 **Full Traceability**
+Every decision is documented. PRD → Epic → Task → Issue → Code → Commit. Complete audit trail from idea to production.
+
+### 🚀 **Developer Productivity**
+Focus on building, not managing. Intelligent prioritization, automatic context loading, and incremental sync when ready.
+
+## Proven Results
+
+Teams using this system report:
+- **89% less time** lost to context switching – you'll use `/compact` and `/clear` a LOT less
+- **5-8 parallel tasks** vs 1 previously – editing/testing multiple files at the same time
+- **75% reduction** in bug rates – due to the breaking down features into detailed tasks
+- **Up to 3x faster** feature delivery – based on feature size and complexity
+
+## Example Flow
+
+```bash
+# Start a new feature
+/pm:prd-new memory-system
+
+# Review and refine the PRD...
+
+# Create implementation plan
+/pm:prd-parse memory-system
+
+# Review the epic...
+
+# Break into tasks and push to GitHub
+/pm:epic-oneshot memory-system
+# Creates issues: #1234 (epic), #1235, #1236 (tasks)
+
+# Start development on a task
+/pm:issue-start 1235
+# Agent begins work, maintains local progress
+
+# Sync progress to GitHub
+/pm:issue-sync 1235
+# Updates posted as issue comments
+
+# Check overall status
+/pm:epic-show memory-system
+```
+
+## Get Started Now
+
+### Quick Setup (2 minutes)
+
+1. **Install this repository into your project**:
+
+   #### Unix/Linux/macOS
+
    ```bash
-   git clone <repository-url>
-   cd saga-family-biography
+   cd path/to/your/project/
+   curl -sSL https://raw.githubusercontent.com/automazeio/ccpm/main/ccpm.sh | bash
+   # or: wget -qO- https://raw.githubusercontent.com/automazeio/ccpm/main/ccpm.sh | bash
    ```
 
-2. **Install dependencies**
+   #### Windows (PowerShell)
    ```bash
-   npm install
+   cd path/to/your/project/
+   iwr -useb https://raw.githubusercontent.com/automazeio/ccpm/main/ccpm.bat | iex
+   ```
+   > ⚠️ **IMPORTANT**: If you already have a `.claude` directory, clone this repository to a different directory and copy the contents of the cloned `.claude` directory to your project's `.claude` directory.
+
+   See full/other installation options in the [installation guide ›](https://github.com/automazeio/ccpm/tree/main/install)
+
+
+2. **Initialize the PM system**:
+   ```bash
+   /pm:init
+   ```
+   This command will:
+   - Install GitHub CLI (if needed)
+   - Authenticate with GitHub
+   - Install [gh-sub-issue extension](https://github.com/yahsan2/gh-sub-issue) for proper parent-child relationships
+   - Create required directories
+   - Update .gitignore
+
+3. **Create `CLAUDE.md`** with your repository information
+   ```bash
+   /init include rules from .claude/CLAUDE.md
+   ```
+   > If you already have a `CLAUDE.md` file, run: `/re-init` to update it with important rules from `.claude/CLAUDE.md`.
+
+4. **Prime the system**:
+   ```bash
+   /context:create
    ```
 
-### 🎯 Choose Your Environment
 
-#### Option 1: Demo Mode (Fastest - No Dependencies)
-Perfect for quick testing and demos with in-memory data:
 
-```bash
-# Start demo environment (no Docker/database required)
-npm run demo:start
-
-# Access the app at http://localhost:3000
-# Demo credentials: demo@saga.app (any password)
-```
-
-#### Option 2: Native Environment (Docker-free)
-Uses local PostgreSQL/Redis if available, falls back to SQLite/memory cache:
+### Start Your First Feature
 
 ```bash
-# Start native test environment
-npm run test-env:native
-
-# Stop the environment
-npm run test-env:native:stop
+/pm:prd-new your-feature-name
 ```
 
-#### Option 3: Docker Environment (Full Setup)
-Complete environment with all services in containers:
-
-```bash
-# Start PostgreSQL and Redis
-npm run docker:up
-
-# Start all development servers
-npm run dev
-
-# Or use the complete test environment
-npm run test-env:start
-```
-
-### 🔧 Environment Setup
-
-4. **Set up environment variables** (for non-demo modes)
-   ```bash
-   cp packages/backend/.env.example packages/backend/.env
-   # Edit the .env file with your configuration
-   ```
-
-5. **Run database migrations** (for non-demo modes)
-   ```bash
-   npm run db:migrate
-   npm run db:seed
-   ```
-
-## 🧪 Testing Environments
-
-Saga provides multiple testing environments for different use cases:
-
-### 🎭 Demo Mode (No Dependencies)
-
-Perfect for quick demos and testing without any setup:
-
-```bash
-# Start demo environment
-npm run demo:start
-
-# Access the application
-open http://localhost:3000
-
-# Demo credentials
-# Email: demo@saga.app
-# Password: any password
-
-# Stop demo
-npm run demo:stop
-```
-
-**Features:**
-- ✅ No Docker required
-- ✅ No database setup needed
-- ✅ In-memory data storage
-- ✅ Pre-loaded demo data
-- ✅ Full UI functionality
-
-### 🏠 Native Test Environment (Docker-free)
-
-Uses local services when available, with intelligent fallbacks:
-
-```bash
-# Start native test environment
-npm run test-env:native
-
-# Access the application
-open http://localhost:3003
-
-# Stop environment
-npm run test-env:native:stop
-```
-
-**Features:**
-- ✅ No Docker required
-- ✅ Uses local PostgreSQL if available (falls back to SQLite)
-- ✅ Uses local Redis if available (falls back to memory cache)
-- ✅ Full database migrations and seeding
-- ✅ Complete API functionality
-
-### 🐳 Docker Test Environment (Full Setup)
-
-Complete containerized environment:
-
-```bash
-# Start full test environment
-npm run test-env:start
-
-# Access the application
-open http://localhost:8080
-
-# Test credentials
-# Email: test@saga.app
-# Password: TestPassword123!
-```
-
-**Features:**
-- ✅ Complete isolation
-- ✅ Production-like environment
-- ✅ All services containerized
-- ✅ Nginx proxy included
-
-### ☁️ Cloud Test Environment
-
-Deploy to AWS test environment:
-
-```bash
-# Deploy to AWS test environment
-npm run deploy:test
-
-# Validate deployment
-npm run deploy:test:validate
-```
-
-### 🚫 Docker-Free Development
-
-If you prefer to avoid Docker entirely, use these commands:
-
-```bash
-# Quick demo (fastest)
-npm run demo:start
-
-# Native environment (more complete)
-npm run test-env:native
-
-# Regular development (requires local PostgreSQL/Redis)
-npm run dev
-```
-
-For detailed testing information, see [Test Environment Guide](docs/TEST_ENVIRONMENT.md).
-
-### 🚫 Need Docker-Free Options?
-
-If you can't or don't want to use Docker, we have you covered! See our [Docker-Free Development Guide](docs/DOCKER_FREE_GUIDE.md) for multiple alternatives:
-
-- **Quick API Demo**: `npm run demo:simple` (30 seconds setup)
-- **Native Environment**: `npm run test-env:native` (uses local PostgreSQL/Redis or fallbacks)
-- **Full Demo**: `npm run demo:start` (complete web interface)
-
-## 📚 Documentation
-
-- [Local Development Guide](docs/LOCAL_DEVELOPMENT.md) - Setting up local development
-- [Test Environment Guide](docs/TEST_ENVIRONMENT.md) - Testing environments and strategies
-- [Security Documentation](docs/SECURITY.md) - Security measures and best practices
-- [CI/CD Guide](docs/CI-CD.md) - Deployment and automation
-- [API Documentation](packages/backend/README.md) - Backend API reference
-
-## 🛠️ Development Commands
-
-### General Commands
-
-```bash
-# Install dependencies
-npm install
-
-# Start all development servers
-npm run dev
-
-# Build all packages
-npm run build
-
-# Run all tests
-npm test
-
-# Run linting
-npm run lint
-
-# Type checking
-npm run type-check
-```
-
-### Package-Specific Commands
-
-```bash
-# Backend development
-npm run dev:backend
-
-# Web development  
-npm run dev:web
-
-# Mobile development
-npm run dev:mobile
-
-# Run backend tests
-npm run test:backend
-
-# Run web tests
-npm run test:web
-
-# Run E2E tests
-npm run test:e2e
-```
-
-### Database Commands
-
-```bash
-# Run migrations
-npm run db:migrate
-
-# Seed database
-npm run db:seed
-
-# Reset database
-npm run db:reset
-```
-
-### Docker Commands
-
-```bash
-# Start services
-npm run docker:up
-
-# Stop services
-npm run docker:down
-
-# View logs
-npm run docker:logs
-```
-
-### Test Environment Commands
-
-```bash
-# Start test environment
-npm run test-env:start
-
-# Stop test environment
-npm run test-env:stop
-
-# Run tests in test environment
-npm run test-env:test
-
-# View test environment logs
-npm run test-env:logs
-
-# Clean test environment
-npm run test-env:clean
-```
-
-## 🏃‍♂️ Quick Development Setup
-
-For the fastest way to get started:
-
-```bash
-# One-command setup
-npm run setup
-
-# Or use the quick start script
-npm run quick-start
-```
-
-This will:
-- Install all dependencies
-- Start Docker services
-- Run database migrations
-- Start development servers
-- Open the application in your browser
-   ```bash
-   npm run db:migrate
-   npm run db:seed
-   ```
-
-### Development URLs
-
-- **API Server**: http://localhost:3001
-- **Web App**: http://localhost:3000
-- **Mobile App**: Use Expo Go app with QR code
-
-## 📦 Package Scripts
-
-### Root Level Commands
-
-```bash
-# Development
-npm run dev                 # Start all development servers
-npm run dev:backend        # Start backend only
-npm run dev:web           # Start web app only
-npm run dev:mobile        # Start mobile app only
-
-# Building
-npm run build             # Build all packages
-npm run build:backend     # Build backend only
-npm run build:web         # Build web app only
-npm run build:mobile      # Build mobile app only
-
-# Testing
-npm run test              # Run all tests
-npm run test:backend      # Run backend tests
-npm run test:web          # Run web tests
-npm run test:mobile       # Run mobile tests
-npm run test:e2e          # Run end-to-end tests
-
-# Code Quality
-npm run lint              # Lint all packages
-npm run lint:fix          # Fix linting issues
-npm run type-check        # TypeScript type checking
-
-# Database
-npm run db:migrate        # Run database migrations
-npm run db:seed           # Seed database with test data
-npm run db:reset          # Reset database (rollback + migrate + seed)
-
-# Docker
-npm run docker:up         # Start PostgreSQL and Redis
-npm run docker:down       # Stop containers
-npm run docker:logs       # View container logs
-```
-
-## 🛠️ Technology Stack
-
-### Backend
-- **Runtime**: Node.js 18+ with Express.js
-- **Database**: PostgreSQL 15+ with Knex.js migrations
-- **Cache**: Redis 7+ for sessions and real-time data
-- **Storage**: AWS S3 + CloudFront CDN
-- **Real-time**: Socket.io for WebSocket connections
-- **Queue**: Bull Queue for background processing
-- **Auth**: JWT with refresh token rotation
-
-### Web Frontend (Facilitators)
-- **Framework**: Next.js 14+ with App Router
-- **UI**: React 18 + Tailwind CSS
-- **State**: Zustand for client state management
-- **Forms**: React Hook Form with Zod validation
-- **HTTP**: Axios with request/response interceptors
-
-### Mobile App (Storytellers)
-- **Framework**: React Native 0.72+ with Expo
-- **Navigation**: React Navigation 6
-- **Audio**: expo-av for recording and playback
-- **State**: Zustand for state management
-- **Forms**: React Hook Form with Zod validation
-
-### External Services
-- **AI**: OpenAI GPT-4 for prompts and summarization
-- **STT**: Google Cloud Speech-to-Text
-- **Payments**: Stripe (web), Apple Pay/Google Pay (mobile)
-- **Push Notifications**: Firebase Cloud Messaging
-- **Email**: SendGrid for transactional emails
-
-## 🏃‍♂️ Development Workflow
-
-### Code Quality Standards
-
-- **TypeScript**: Strict mode enabled, no `any` types
-- **ESLint**: Airbnb config with accessibility rules
-- **Prettier**: Consistent code formatting
-- **Testing**: Minimum 80% code coverage required
-- **Commits**: Conventional commit format
-
-### Branch Strategy
-
-- `main`: Production-ready code
-- `develop`: Integration branch for features
-- `feature/*`: Feature development branches
-- `hotfix/*`: Critical production fixes
-
-### Testing Strategy
-
-- **Unit Tests**: Jest for all packages
-- **Integration Tests**: API and database testing
-- **E2E Tests**: Playwright (web) and Detox (mobile)
-- **Performance Tests**: Load testing with Artillery
-
-## 🚢 Deployment
-
-### Environments
-
-- **Development**: Local Docker containers
-- **Staging**: AWS ECS with reduced capacity
-- **Production**: AWS ECS with auto-scaling
-
-### CI/CD Pipeline
-
-GitHub Actions workflow includes:
-- Linting and type checking
-- Unit and integration tests
-- Docker image building
-- Automated deployment to staging/production
-
-### Infrastructure (AWS)
-
-- **Compute**: ECS Fargate with Application Load Balancer
-- **Database**: RDS PostgreSQL with Multi-AZ
-- **Cache**: ElastiCache Redis cluster
-- **Storage**: S3 with CloudFront CDN
-- **Monitoring**: CloudWatch + DataDog
-
-## 🔒 Security
-
-- **Data Encryption**: TLS 1.3 in transit, AES-256 at rest
-- **Authentication**: JWT with secure refresh rotation
-- **File Upload**: Type validation, size limits, virus scanning
-- **Rate Limiting**: API endpoint protection
-- **Input Validation**: Comprehensive sanitization
-
-## 📚 Documentation
-
-- [Requirements](/.kiro/specs/saga-family-biography/requirements.md)
-- [Design Document](/.kiro/specs/saga-family-biography/design.md)
-- [Implementation Tasks](/.kiro/specs/saga-family-biography/tasks.md)
-- [API Documentation](packages/backend/README.md)
-- [Web App Guide](packages/web/README.md)
-- [Mobile App Guide](packages/mobile/README.md)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is proprietary software. All rights reserved.
-
-## 🆘 Support
-
-For development support, please check:
-- [Troubleshooting Guide](docs/troubleshooting.md)
-- [Development Setup](docs/development.md)
-- [Deployment Guide](docs/deployment.md)
+Watch as structured planning transforms into shipped code.
+
+## Local vs Remote
+
+| Operation | Local | GitHub |
+|-----------|-------|--------|
+| PRD Creation | ✅ | — |
+| Implementation Planning | ✅ | — |
+| Task Breakdown | ✅ | ✅ (sync) |
+| Execution | ✅ | — |
+| Status Updates | ✅ | ✅ (sync) |
+| Final Deliverables | — | ✅ |
+
+## Technical Notes
+
+### GitHub Integration
+- Uses **gh-sub-issue extension** for proper parent-child relationships
+- Falls back to task lists if extension not installed
+- Epic issues track sub-task completion automatically
+- Labels provide additional organization (`epic:feature`, `task:feature`)
+
+### File Naming Convention
+- Tasks start as `001.md`, `002.md` during decomposition
+- After GitHub sync, renamed to `{issue-id}.md` (e.g., `1234.md`)
+- Makes it easy to navigate: issue #1234 = file `1234.md`
+
+### Design Decisions
+- Intentionally avoids GitHub Projects API complexity
+- All commands operate on local files first for speed
+- Synchronization with GitHub is explicit and controlled
+- Worktrees provide clean git isolation for parallel work
+- GitHub Projects can be added separately for visualization
 
 ---
 
-**Built with ❤️ for preserving family memories across generations**
+## Support This Project
+
+Claude Code PM was developed at [Automaze](https://automaze.io) **for developers who ship, by developers who ship**.
+
+If Claude Code PM helps your team ship better software:
+
+- ⭐ **[Star this repository](https://github.com/automazeio/ccpm)** to show your support
+- 🐦 **[Follow @aroussi on X](https://x.com/aroussi)** for updates and tips
+
+
+---
+
+> [!TIP]
+> **Ship faster with Automaze.** We partner with founders to bring their vision to life, scale their business, and optimize for success.
+> **[Visit Automaze to book a call with me ›](https://automaze.io)**
+
+---
+
+## Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=automazeio/ccpm)

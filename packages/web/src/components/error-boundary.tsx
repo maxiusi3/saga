@@ -42,11 +42,11 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
 function DefaultErrorFallback({ error, resetError }: { error?: Error; resetError: () => void }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
-        <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="max-w-md w-full bg-card shadow-lg rounded-lg p-6">
+        <div className="flex items-center justify-center w-12 h-12 mx-auto bg-destructive/10 rounded-full mb-4">
           <svg
-            className="w-6 h-6 text-red-600"
+            className="w-6 h-6 text-destructive"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -61,20 +61,20 @@ function DefaultErrorFallback({ error, resetError }: { error?: Error; resetError
         </div>
         
         <div className="text-center">
-          <h1 className="text-lg font-semibold text-gray-900 mb-2">
+          <h1 className="text-lg font-semibold text-foreground mb-2">
             Something went wrong
           </h1>
           
-          <p className="text-gray-600 mb-4">
+          <p className="text-muted-foreground mb-4">
             We're sorry, but something unexpected happened. Please try again.
           </p>
           
           {process.env.NODE_ENV === 'development' && error && (
             <details className="mb-4 text-left">
-              <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
+              <summary className="cursor-pointer text-sm text-muted-foreground hover:text-muted-foreground/80">
                 Error details
               </summary>
-              <pre className="mt-2 text-xs text-red-600 bg-red-50 p-2 rounded overflow-auto">
+              <pre className="mt-2 text-xs text-destructive bg-destructive/5 p-2 rounded overflow-auto">
                 {error.message}
                 {error.stack && '\n\n' + error.stack}
               </pre>

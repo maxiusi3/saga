@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
 
@@ -34,7 +34,7 @@ export default function Error({
 
         {/* Error Details */}
         {process.env.NODE_ENV === 'development' && (
-          <FurbridgeCard className="p-4 text-left">
+          <Card className="p-4 text-left">
             <div className="space-y-2">
               <h3 className="font-semibold text-gray-900 text-sm">Error Details:</h3>
               <p className="text-xs text-gray-600 font-mono break-all">
@@ -46,28 +46,28 @@ export default function Error({
                 </p>
               )}
             </div>
-          </FurbridgeCard>
+          </Card>
         )}
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <FurbridgeButton variant="orange" onClick={reset}>
+          <Button variant="default" onClick={reset}>
             <RefreshCw className="h-4 w-4 mr-2" />
             Try Again
-          </FurbridgeButton>
+          </Button>
           
-          <FurbridgeButton variant="outline" asChild>
+          <Button variant="outline" asChild>
             <Link href="/dashboard">
               <Home className="h-4 w-4 mr-2" />
               Go to Dashboard
             </Link>
-          </FurbridgeButton>
+          </Button>
         </div>
 
         {/* Help Link */}
         <div className="text-sm text-gray-600">
           If this problem persists, please{' '}
-          <Link href="/dashboard/help" className="text-furbridge-orange hover:underline">
+          <Link href="/dashboard/help" className="text-primary hover:underline">
             contact support
           </Link>
         </div>

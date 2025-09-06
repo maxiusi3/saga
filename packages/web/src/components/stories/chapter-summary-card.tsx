@@ -4,6 +4,13 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ChapterSummary } from '@saga/shared'
 import { formatRelativeTime } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 interface ChapterSummaryCardProps {
   chapter: ChapterSummary
@@ -24,13 +31,13 @@ export function ChapterSummaryCard({
   const getEmotionalToneColor = (tone: string) => {
     switch (tone) {
       case 'positive':
-        return 'bg-green-100 text-green-800 border-green-200'
+        return 'bg-success/10 text-success-foreground border-success/20'
       case 'reflective':
-        return 'bg-blue-100 text-blue-800 border-blue-200'
+        return 'bg-primary/10 text-primary-foreground border-primary/20'
       case 'bittersweet':
-        return 'bg-purple-100 text-purple-800 border-purple-200'
+        return 'bg-secondary/10 text-secondary-foreground border-secondary/20'
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200'
+        return 'bg-muted text-muted-foreground border-border'
     }
   }
 
@@ -64,19 +71,19 @@ export function ChapterSummaryCard({
   }
 
   return (
-    <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+    <div className="bg-gradient-to-r from-primary/5 to-secondary/5 border-2 border-primary/20 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
       {/* Chapter Header */}
-      <div className="p-6 border-b border-indigo-100">
+      <div className="p-6 border-b border-primary/10">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-2">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                  <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold text-foreground">
                   {chapter.title}
                 </h3>
               </div>
@@ -87,7 +94,7 @@ export function ChapterSummaryCard({
               </div>
             </div>
 
-            <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
+            <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
               <div className="flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
@@ -117,14 +124,14 @@ export function ChapterSummaryCard({
               <span>{formatRelativeTime(chapter.createdAt)}</span>
             </div>
 
-            <p className={`text-gray-700 leading-relaxed ${!isExpanded ? 'line-clamp-2' : ''}`}>
+            <p className={`text-card-foreground leading-relaxed ${!isExpanded ? 'line-clamp-2' : ''}`}>
               {chapter.description}
             </p>
 
             {chapter.description.length > 150 && (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="mt-2 text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                className="mt-2 text-sm text-primary hover:text-primary/90 font-medium"
               >
                 {isExpanded ? 'Show less' : 'Read more'}
               </button>
@@ -134,7 +141,7 @@ export function ChapterSummaryCard({
           <div className="relative ml-4">
             <button
               onClick={() => setShowActions(!showActions)}
-              className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-white/50"
+              className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-background/50"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -142,7 +149,7 @@ export function ChapterSummaryCard({
             </button>
 
             {showActions && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+              <div className="absolute right-0 mt-2 w-48 bg-background rounded-md shadow-lg z-10 border">
                 <div className="py-1">
                   {onEdit && (
                     <button
@@ -150,14 +157,14 @@ export function ChapterSummaryCard({
                         onEdit(chapter)
                         setShowActions(false)
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      className="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-muted"
                     >
                       Edit Chapter
                     </button>
                   )}
                   <Link
                     href={`/dashboard/projects/${projectId}/chapters/${chapter.id}`}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    className="block px-4 py-2 text-sm text-foreground hover:bg-muted"
                     onClick={() => setShowActions(false)}
                   >
                     View Details
@@ -168,7 +175,7 @@ export function ChapterSummaryCard({
                         onDelete(chapter.id)
                         setShowActions(false)
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                      className="block w-full text-left px-4 py-2 text-sm text-destructive hover:bg-destructive/10"
                     >
                       Delete Chapter
                     </button>
@@ -183,14 +190,14 @@ export function ChapterSummaryCard({
       {/* Key Highlights */}
       {chapter.keyHighlights && chapter.keyHighlights.length > 0 && (
         <div className="px-6 py-4">
-          <h4 className="text-sm font-medium text-gray-900 mb-3">Key Highlights</h4>
+          <h4 className="text-sm font-medium text-foreground mb-3">Key Highlights</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {chapter.keyHighlights.map((highlight, index) => (
               <div
                 key={index}
-                className="flex items-start space-x-2 text-sm text-gray-700"
+                className="flex items-start space-x-2 text-sm text-card-foreground"
               >
-                <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-1.5 h-1.5 bg-primary/40 rounded-full mt-2 flex-shrink-0"></div>
                 <span>{highlight}</span>
               </div>
             ))}
@@ -199,14 +206,14 @@ export function ChapterSummaryCard({
       )}
 
       {/* Actions */}
-      <div className="px-6 py-4 bg-white/50 border-t border-indigo-100 rounded-b-lg">
+      <div className="px-6 py-4 bg-background/50 border-t border-primary/10 rounded-b-lg">
         <div className="flex items-center justify-between">
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-muted-foreground">
             Chapter Summary • AI Generated
           </div>
           <Link
             href={`/dashboard/projects/${projectId}/chapters/${chapter.id}`}
-            className="inline-flex items-center px-3 py-1.5 border border-indigo-300 text-sm font-medium rounded-md text-indigo-700 bg-white hover:bg-indigo-50 transition-colors duration-200"
+            className="inline-flex items-center px-3 py-1.5 border border-primary/30 text-sm font-medium rounded-md text-primary bg-background hover:bg-primary/5 transition-colors duration-200"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -224,6 +231,102 @@ export function ChapterSummaryCard({
           onClick={() => setShowActions(false)}
         />
       )}
+    </div>
+  )
+}
+
+const getEmotionalToneColor = (tone: string) => {
+  switch (tone.toLowerCase()) {
+    case 'positive':
+      return 'bg-success/10 text-success'
+    case 'negative':
+      return 'bg-destructive/10 text-destructive'
+    case 'neutral':
+      return 'bg-muted text-muted-foreground'
+    case 'mixed':
+      return 'bg-primary/10 text-primary'
+    default:
+      return 'bg-muted text-muted-foreground'
+  }
+}
+
+export function ChapterSummaryCard({ 
+  chapter, 
+  projectId, 
+  onEdit, 
+  onDelete 
+}: ChapterSummaryCardProps) {
+  return (
+    <div
+      className={`bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-6 ${className}`}
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold text-foreground">
+            {chapter.title}
+          </h3>
+          <div
+            className={`inline-block px-2 py-1 text-xs font-medium rounded-full mt-2 ${getEmotionalToneColor(
+              chapter.emotionalTone
+            )}`}
+          >
+            {chapter.emotionalTone}
+          </div>
+        </div>
+        {chapter.audioUrl && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="ml-4">
+                  <PlayCircle className="h-6 w-6 text-primary" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Listen to chapter summary</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+      </div>
+
+      <div className="mt-4">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {chapter.summary}
+        </p>
+      </div>
+
+      <div className="mt-6">
+        <h4 className="text-sm font-semibold text-foreground mb-3">
+          Key Highlights
+        </h4>
+        <ul className="space-y-2">
+          {chapter.keyHighlights.map((highlight, index) => (
+            <li key={index} className="flex items-start">
+              <CheckCircle2 className="h-4 w-4 text-success mt-1 mr-3 flex-shrink-0" />
+              <span className="text-sm text-foreground">{highlight}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-6 border-t border-border pt-4 flex items-center justify-between">
+        <span className="text-xs text-muted-foreground">
+          Chapter Summary
+        </span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <MessageSquarePlus className="h-4 w-4 mr-2" />
+                Add Note
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Add a note or comment to this chapter</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
     </div>
   )
 }

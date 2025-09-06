@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
@@ -93,15 +93,15 @@ export default function HelpPage() {
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-gray-900">Help Center</h1>
-        <p className="text-xl text-gray-600">
+        <h1 className="text-4xl font-bold text-foreground">Help Center</h1>
+        <p className="text-xl text-muted-foreground">
           Find answers to common questions and get support
         </p>
       </div>
 
       {/* Search */}
       <div className="relative max-w-2xl mx-auto">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-600" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <Input
           placeholder="Search for help..."
           value={searchQuery}
@@ -112,95 +112,94 @@ export default function HelpPage() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <FurbridgeCard className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+        <Card className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
           <div className="space-y-4">
-            <div className="w-12 h-12 bg-furbridge-orange/10 rounded-lg flex items-center justify-center mx-auto">
-              <Video className="h-6 w-6 text-furbridge-orange" />
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
+              <Video className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Video Tutorials</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="font-semibold text-foreground">Video Tutorials</h3>
+              <p className="text-sm text-muted-foreground">
                 Step-by-step guides to get you started
               </p>
             </div>
           </div>
-        </FurbridgeCard>
+        </Card>
 
-        <FurbridgeCard className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+        <Card className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
           <div className="space-y-4">
-            <div className="w-12 h-12 bg-furbridge-teal/10 rounded-lg flex items-center justify-center mx-auto">
-              <MessageCircle className="h-6 w-6 text-furbridge-teal" />
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
+              <MessageCircle className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Live Chat</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="font-semibold text-foreground">Live Chat</h3>
+              <p className="text-sm text-muted-foreground">
                 Get instant help from our support team
               </p>
             </div>
           </div>
-        </FurbridgeCard>
+        </Card>
 
-        <FurbridgeCard className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+        <Card className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
           <div className="space-y-4">
-            <div className="w-12 h-12 bg-furbridge-warm-gray/10 rounded-lg flex items-center justify-center mx-auto">
-              <Mail className="h-6 w-6 text-furbridge-warm-gray" />
+            <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mx-auto">
+              <Mail className="h-6 w-6 text-secondary-foreground" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Email Support</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="font-semibold text-foreground">Email Support</h3>
+              <p className="text-sm text-muted-foreground">
                 Send us a message and we'll respond within 24 hours
               </p>
             </div>
           </div>
-        </FurbridgeCard>
+        </Card>
       </div>
 
       {/* Category Filters */}
       <div className="flex flex-wrap gap-2">
         {categories.map((category) => (
-          <FurbridgeButton
+          <Button
             key={category.id}
             variant={selectedCategory === category.id ? "default" : "outline"}
             size="sm"
             onClick={() => setSelectedCategory(category.id)}
-            className={selectedCategory === category.id ? "bg-furbridge-orange text-white" : ""}
           >
             {category.label}
             <Badge variant="secondary" className="ml-2 text-xs">
               {category.count}
             </Badge>
-          </FurbridgeButton>
+          </Button>
         ))}
       </div>
 
       {/* FAQ Section */}
-      <FurbridgeCard className="p-6">
+      <Card className="p-6">
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-gray-900">
+          <h2 className="text-2xl font-semibold text-foreground">
             Frequently Asked Questions
           </h2>
 
           {filteredFAQs.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 No questions found matching your search.
               </p>
             </div>
           ) : (
             <Accordion type="single" collapsible className="space-y-2">
               {filteredFAQs.map((faq) => (
-                <AccordionItem key={faq.id} value={faq.id} className="border border-gray-200 rounded-lg px-4">
+                <AccordionItem key={faq.id} value={faq.id} className="border border-border rounded-lg px-4">
                   <AccordionTrigger className="text-left hover:no-underline">
                     <div className="flex items-start space-x-3">
                       <Badge variant="outline" className="text-xs mt-1">
                         {categories.find(cat => cat.id === faq.category)?.label}
                       </Badge>
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-foreground">
                         {faq.question}
                       </span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 pt-2 pb-4">
+                  <AccordionContent className="text-muted-foreground pt-2 pb-4">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -208,29 +207,29 @@ export default function HelpPage() {
             </Accordion>
           )}
         </div>
-      </FurbridgeCard>
+      </Card>
 
       {/* Contact Section */}
-      <FurbridgeCard className="p-8 text-center">
+      <Card className="p-8 text-center">
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-gray-900">
+          <h3 className="text-xl font-semibold text-foreground">
             Still need help?
           </h3>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Our support team is here to help you preserve your family's precious stories.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <FurbridgeButton variant="orange">
+            <Button>
               <MessageCircle className="h-4 w-4 mr-2" />
               Start Live Chat
-            </FurbridgeButton>
-            <FurbridgeButton variant="outline">
+            </Button>
+            <Button variant="outline">
               <Mail className="h-4 w-4 mr-2" />
               Email Support
-            </FurbridgeButton>
+            </Button>
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
     </div>
   )
 }

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect, Suspense } from 'react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -73,20 +73,20 @@ function SignInPageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Logo and Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">Welcome to Saga</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground">Welcome to Saga</h1>
+          <p className="mt-2 text-muted-foreground">
             Your family's story, a conversation away
           </p>
         </div>
 
-        <FurbridgeCard className="p-8">
+        <Card className="p-8">
           {/* Google Sign In */}
           <div className="space-y-4">
-            <FurbridgeButton
+            <Button
               variant="outline"
               size="lg"
               className="w-full"
@@ -112,14 +112,14 @@ function SignInPageContent() {
                 />
               </svg>
               Sign in with Google
-            </FurbridgeButton>
+            </Button>
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <Separator className="w-full" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-600">
+                <span className="bg-background px-2 text-muted-foreground">
                   Or continue with
                 </span>
               </div>
@@ -140,34 +140,33 @@ function SignInPageContent() {
                 />
               </div>
 
-              <FurbridgeButton
+              <Button
                 type="submit"
-                variant="orange"
                 size="lg"
                 className="w-full"
                 disabled={isLoading || !email}
               >
                 {isLoading ? 'Sending...' : 'Continue'}
-              </FurbridgeButton>
+              </Button>
             </form>
 
             {message && (
               <div className={`text-sm text-center ${
-                message.includes('Error') ? 'text-destructive' : 'text-furbridge-teal'
+                message.includes('Error') ? 'text-destructive' : 'text-primary'
               }`}>
                 {message}
               </div>
             )}
           </div>
-        </FurbridgeCard>
+        </Card>
 
         {/* Footer Links */}
-        <div className="text-center text-sm text-gray-600 space-x-4">
-          <Link href="/terms" className="hover:text-gray-900">
+        <div className="text-center text-sm text-muted-foreground space-x-4">
+          <Link href="/terms" className="hover:text-foreground">
             Terms of Service
           </Link>
           <span>•</span>
-          <Link href="/privacy" className="hover:text-gray-900">
+          <Link href="/privacy" className="hover:text-foreground">
             Privacy Policy
           </Link>
         </div>
@@ -179,8 +178,8 @@ function SignInPageContent() {
 export default function SignInPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     }>
       <SignInPageContent />

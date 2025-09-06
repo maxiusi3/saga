@@ -116,7 +116,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
     
     return parts.map((part, index) => 
       regex.test(part) ? (
-        <mark key={index} className="bg-yellow-200 text-yellow-900 px-1 rounded">
+        <mark key={index} className="bg-highlight text-highlight-foreground px-1 rounded">
           {part}
         </mark>
       ) : part
@@ -145,7 +145,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
       {/* Search Input */}
       <div className="relative">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
           <input
             ref={searchInputRef}
             type="text"
@@ -158,7 +158,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
             onKeyDown={handleKeyDown}
             onFocus={() => setShowSuggestions(true)}
             placeholder="Search stories by title or content..."
-            className="w-full pl-10 pr-20 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+            className="w-full pl-10 pr-20 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
             aria-label="Search stories"
             aria-expanded={showSuggestions}
             aria-haspopup="listbox"
@@ -166,7 +166,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
           <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+              className="p-1 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Toggle filters"
             >
               <Filter className="w-5 h-5" />
@@ -174,7 +174,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
             {query && (
               <button
                 onClick={handleClear}
-                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-1 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Clear search"
               >
                 <X className="w-5 h-5" />
@@ -187,20 +187,20 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
         {showSuggestions && suggestions.length > 0 && (
           <div
             ref={suggestionsRef}
-            className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+            className="absolute z-10 w-full mt-1 bg-background border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto"
             role="listbox"
           >
             {suggestions.map((suggestion, index) => (
               <button
                 key={suggestion}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className={`w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
-                  index === selectedSuggestion ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                className={`w-full px-4 py-2 text-left hover:bg-muted transition-colors ${
+                  index === selectedSuggestion ? 'bg-primary/10 text-primary' : 'text-foreground'
                 }`}
                 role="option"
                 aria-selected={index === selectedSuggestion}
               >
-                <Search className="inline w-4 h-4 mr-2 text-gray-400" />
+                <Search className="inline w-4 h-4 mr-2 text-muted-foreground" />
                 {suggestion}
               </button>
             ))}
@@ -210,17 +210,17 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
 
       {/* Filters */}
       {showFilters && (
-        <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
+        <div className="mt-4 p-4 bg-muted rounded-lg border">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center space-x-2">
-              <label htmlFor="sortBy" className="text-sm font-medium text-gray-700">
+              <label htmlFor="sortBy" className="text-sm font-medium text-foreground">
                 Sort by:
               </label>
               <select
                 id="sortBy"
                 value={filters.sortBy}
                 onChange={(e) => handleFilterChange({ sortBy: e.target.value as 'relevance' | 'date' })}
-                className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1 border border-border rounded text-sm focus:ring-2 focus:ring-primary"
               >
                 <option value="relevance">Relevance</option>
                 <option value="date">Date</option>
@@ -228,7 +228,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
             </div>
 
             <div className="flex items-center space-x-2">
-              <label htmlFor="dateFrom" className="text-sm font-medium text-gray-700">
+              <label htmlFor="dateFrom" className="text-sm font-medium text-foreground">
                 From:
               </label>
               <input
@@ -238,12 +238,12 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
                 onChange={(e) => handleFilterChange({ 
                   dateFrom: e.target.value ? new Date(e.target.value) : undefined 
                 })}
-                className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1 border border-border rounded text-sm focus:ring-2 focus:ring-primary"
               />
             </div>
 
             <div className="flex items-center space-x-2">
-              <label htmlFor="dateTo" className="text-sm font-medium text-gray-700">
+              <label htmlFor="dateTo" className="text-sm font-medium text-foreground">
                 To:
               </label>
               <input
@@ -253,7 +253,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
                 onChange={(e) => handleFilterChange({ 
                   dateTo: e.target.value ? new Date(e.target.value) : undefined 
                 })}
-                className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1 border border-border rounded text-sm focus:ring-2 focus:ring-primary"
               />
             </div>
           </div>
@@ -265,7 +265,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
         <div className="mt-6">
           {/* Results Header */}
           {!loading && (
-            <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
+            <div className="flex items-center justify-between mb-4 text-sm text-muted-foreground">
               <div className="flex items-center space-x-4">
                 <span>
                   {total > 0 ? `${total} result${total !== 1 ? 's' : ''}` : 'No results'}
@@ -279,7 +279,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
                 )}
               </div>
               {filters.sortBy === 'relevance' && total > 0 && (
-                <span className="flex items-center text-blue-600">
+                <span className="flex items-center text-primary">
                   <TrendingUp className="w-4 h-4 mr-1" />
                   Sorted by relevance
                 </span>
@@ -290,14 +290,14 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
           {/* Loading State */}
           {loading && (
             <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-2 text-gray-600">Searching...</span>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <span className="ml-2 text-muted-foreground">Searching...</span>
             </div>
           )}
 
           {/* Error State */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 text-destructive">
               <p className="font-medium">Search Error</p>
               <p className="text-sm mt-1">{error}</p>
             </div>
@@ -309,12 +309,12 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
               {results.map((result) => (
                 <div
                   key={result.story.id}
-                  className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                  className="bg-background border border-border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
                   onClick={() => onResultClick?.(result)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900 mb-2">
+                      <h3 className="font-medium text-foreground mb-2">
                         {result.story.title ? 
                           highlightText(result.story.title, query) : 
                           'Untitled Story'
@@ -323,12 +323,12 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
                       
                       {result.headline && (
                         <div 
-                          className="text-gray-600 text-sm mb-2 leading-relaxed"
+                          className="text-muted-foreground text-sm mb-2 leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: result.headline }}
                         />
                       )}
                       
-                      <div className="flex items-center space-x-4 text-xs text-gray-500">
+                      <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                         <span>
                           {new Date(result.story.createdAt).toLocaleDateString()}
                         </span>
@@ -364,7 +364,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
                   <button
                     onClick={loadMore}
                     disabled={loading}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {loading ? 'Loading...' : 'Load More Results'}
                   </button>
@@ -376,14 +376,14 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
           {/* No Results */}
           {!loading && !error && query && results.length === 0 && (
             <div className="text-center py-8">
-              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No stories found</h3>
-              <p className="text-gray-600 mb-4">
+              <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-foreground mb-2">No stories found</h3>
+              <p className="text-muted-foreground mb-4">
                 Try adjusting your search terms or filters
               </p>
               <button
                 onClick={handleClear}
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-primary hover:text-primary/90 font-medium"
               >
                 Clear search
               </button>

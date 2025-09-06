@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Heart, Users, Shield, Clock } from 'lucide-react'
@@ -92,31 +92,30 @@ export default function InvitationLandingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 flex items-center justify-center p-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-furbridge-orange"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     )
   }
 
   if (error || !invitation) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 flex items-center justify-center p-4">
-        <FurbridgeCard className="max-w-md w-full p-8 text-center">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="max-w-md w-full p-8 text-center">
           <div className="text-6xl mb-4">😔</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
             Invitation Not Found
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-muted-foreground mb-6">
             {error || 'This invitation link is invalid or has expired.'}
           </p>
-          <FurbridgeButton 
-            variant="orange" 
+          <Button 
             onClick={() => router.push('/')}
             className="w-full"
           >
             Go to Homepage
-          </FurbridgeButton>
-        </FurbridgeCard>
+          </Button>
+        </Card>
       </div>
     )
   }
@@ -128,43 +127,43 @@ export default function InvitationLandingPage() {
     : 'Help manage and organize family stories'
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="max-w-2xl w-full space-y-6">
         {/* Main Invitation Card */}
-        <FurbridgeCard className="p-8 text-center">
+        <Card className="p-8 text-center">
           <div className="space-y-6">
             {/* Heart Icon */}
             <div className="flex justify-center">
-              <div className="w-16 h-16 bg-furbridge-orange/10 rounded-full flex items-center justify-center">
-                <Heart className="h-8 w-8 text-furbridge-orange" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <Heart className="h-8 w-8 text-primary" />
               </div>
             </div>
 
             {/* Invitation Message */}
             <div className="space-y-4">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-foreground">
                 You're Invited!
               </h1>
               
               <div className="flex items-center justify-center space-x-3">
                 <Avatar className="h-12 w-12">
                   <AvatarImage src={invitation.inviter_avatar} />
-                  <AvatarFallback className="bg-furbridge-teal text-white">
+                  <AvatarFallback className="bg-primary text-primary-foreground">
                     {invitation.inviter_name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
                 <div className="text-left">
-                  <p className="text-lg text-gray-900">
+                  <p className="text-lg text-foreground">
                     <span className="font-semibold">{invitation.inviter_name}</span> has invited you to join
                   </p>
-                  <p className="text-2xl font-bold text-furbridge-orange">
+                  <p className="text-2xl font-bold text-primary">
                     "{invitation.project_name}"
                   </p>
                 </div>
               </div>
 
               {invitation.project_description && (
-                <p className="text-gray-600 max-w-md mx-auto">
+                <p className="text-muted-foreground max-w-md mx-auto">
                   {invitation.project_description}
                 </p>
               )}
@@ -179,7 +178,7 @@ export default function InvitationLandingPage() {
             </div>
 
             {/* Role Description */}
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               {roleDescription}
             </p>
 
@@ -190,23 +189,22 @@ export default function InvitationLandingPage() {
                   <Clock className="h-5 w-5" />
                   <span className="font-medium">This invitation has expired</span>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   Please contact {invitation.inviter_name} for a new invitation.
                 </p>
               </div>
             ) : (
-              <FurbridgeButton
-                variant="orange"
+              <Button
                 size="lg"
                 className="w-full max-w-sm mx-auto"
                 onClick={handleAcceptInvitation}
                 disabled={accepting}
               >
                 {accepting ? 'Accepting...' : 'Accept & Join'}
-              </FurbridgeButton>
+              </Button>
             )}
           </div>
-        </FurbridgeCard>
+        </Card>
 
         {/* Privacy & Security Note */}
         <FurbridgeCard className="p-6">

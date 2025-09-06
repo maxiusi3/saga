@@ -40,32 +40,32 @@ export function FacilitatorActivityFeed({
     switch (type) {
       case 'interaction_added':
         return (
-          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+            <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           </div>
         )
       case 'transcript_updated':
         return (
-          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-8 h-8 bg-success/10 rounded-full flex items-center justify-center">
+            <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
           </div>
         )
       case 'story_uploaded':
         return (
-          <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-            <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center">
+            <svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
             </svg>
           </div>
         )
       default:
         return (
-          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+            <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -78,31 +78,31 @@ export function FacilitatorActivityFeed({
       case 'interaction_added':
         return (
           <span>
-            <span className="font-medium text-gray-900">{activity.facilitatorName}</span>
+            <span className="font-medium text-foreground">{activity.facilitatorName}</span>
             {' '}added a comment to{' '}
-            <span className="font-medium text-gray-900">"{activity.storyTitle}"</span>
+            <span className="font-medium text-foreground">"{activity.storyTitle}"</span>
           </span>
         )
       case 'transcript_updated':
         return (
           <span>
-            <span className="font-medium text-gray-900">{activity.facilitatorName}</span>
+            <span className="font-medium text-foreground">{activity.facilitatorName}</span>
             {' '}updated the transcript for{' '}
-            <span className="font-medium text-gray-900">"{activity.storyTitle}"</span>
+            <span className="font-medium text-foreground">"{activity.storyTitle}"</span>
           </span>
         )
       case 'story_uploaded':
         return (
           <span>
-            <span className="font-medium text-gray-900">{activity.facilitatorName}</span>
+            <span className="font-medium text-foreground">{activity.facilitatorName}</span>
             {' '}uploaded a new story{' '}
-            <span className="font-medium text-gray-900">"{activity.storyTitle}"</span>
+            <span className="font-medium text-foreground">"{activity.storyTitle}"</span>
           </span>
         )
       default:
         return (
           <span>
-            <span className="font-medium text-gray-900">{activity.facilitatorName}</span>
+            <span className="font-medium text-foreground">{activity.facilitatorName}</span>
             {' '}performed an action
           </span>
         )
@@ -111,14 +111,14 @@ export function FacilitatorActivityFeed({
 
   if (displayActivities.length === 0) {
     return (
-      <div className={`bg-white rounded-lg shadow ${className}`}>
+      <div className={`bg-background rounded-lg shadow ${className}`}>
         <div className="p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
+          <h3 className="text-lg font-medium text-foreground mb-4">Recent Activity</h3>
           <div className="text-center py-6">
-            <svg className="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="mx-auto h-8 w-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p className="mt-2 text-sm text-gray-500">No recent activity</p>
+            <p className="mt-2 text-sm text-muted-foreground">No recent activity</p>
           </div>
         </div>
       </div>
@@ -126,9 +126,9 @@ export function FacilitatorActivityFeed({
   }
 
   return (
-    <div className={`bg-white rounded-lg shadow ${className}`}>
+    <div className={`bg-background rounded-lg shadow ${className}`}>
       <div className="p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
+        <h3 className="text-lg font-medium text-foreground mb-4">Recent Activity</h3>
         <div className="flow-root">
           <ul className="-mb-8">
             {displayActivities.map((activity, activityIdx) => (
@@ -136,7 +136,7 @@ export function FacilitatorActivityFeed({
                 <div className="relative pb-8">
                   {activityIdx !== displayActivities.length - 1 ? (
                     <span
-                      className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                      className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-border"
                       aria-hidden="true"
                     />
                   ) : null}
@@ -144,18 +144,18 @@ export function FacilitatorActivityFeed({
                     <div>{getActivityIcon(activity.type)}</div>
                     <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                       <div>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           {getActivityDescription(activity)}
                         </p>
                         {activity.content && (
-                          <p className="mt-1 text-sm text-gray-600 italic">
+                          <p className="mt-1 text-sm text-muted-foreground italic">
                             "{activity.content.length > 100 
                               ? `${activity.content.substring(0, 100)}...` 
                               : activity.content}"
                           </p>
                         )}
                       </div>
-                      <div className="text-right text-sm whitespace-nowrap text-gray-500">
+                      <div className="text-right text-sm whitespace-nowrap text-muted-foreground">
                         {formatRelativeTime(activity.timestamp)}
                       </div>
                     </div>

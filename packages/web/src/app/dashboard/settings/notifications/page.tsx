@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Switch } from '@/components/ui/switch'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -122,29 +122,29 @@ export default function NotificationSettingsPage() {
       {/* Header */}
       <div className="flex items-center space-x-4">
         <Link href="/dashboard/notifications">
-          <FurbridgeButton variant="ghost" size="icon">
+          <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
-          </FurbridgeButton>
+          </Button>
         </Link>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Notification Settings</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-foreground">Notification Settings</h1>
+          <p className="text-muted-foreground mt-1">
             Manage how and when you receive notifications
           </p>
         </div>
       </div>
 
       {error && (
-        <FurbridgeCard className="p-4 border-red-200 bg-red-50">
-          <p className="text-red-600 text-sm">{error}</p>
-        </FurbridgeCard>
+        <Card className="p-4 border-destructive bg-destructive/10 text-destructive">
+          <p className="text-sm">{error}</p>
+        </Card>
       )}
 
       {/* Global Settings */}
-      <FurbridgeCard>
+      <Card>
         <div className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Global Notification Preferences</h2>
-          <p className="text-sm text-gray-600 mb-6">
+          <h2 className="text-lg font-semibold text-foreground mb-4">Global Notification Preferences</h2>
+          <p className="text-sm text-muted-foreground mb-6">
             These settings apply to all your projects. You can override them for specific projects later.
           </p>
 
@@ -155,23 +155,23 @@ export default function NotificationSettingsPage() {
 
               return (
                 <div key={type} className="flex items-start space-x-4 p-4 border rounded-lg">
-                  <div className={`p-2 rounded-lg ${displayInfo.bgColor}`}>
-                    <span className="text-lg">{displayInfo.icon}</span>
+                  <div className={`p-2 rounded-lg bg-primary/10`}>
+                    <span className={`text-lg text-primary`}>{displayInfo.icon}</span>
                   </div>
                   
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-medium text-gray-900">{title}</h3>
+                      <h3 className="font-medium text-foreground">{title}</h3>
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-2">
-                          <Bell className="h-4 w-4 text-gray-400" />
+                          <Bell className="h-4 w-4 text-muted-foreground" />
                           <Switch
                             checked={setting.enabled}
                             onCheckedChange={(checked) => handleToggle(type, 'enabled', checked)}
                           />
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Mail className="h-4 w-4 text-gray-400" />
+                          <Mail className="h-4 w-4 text-muted-foreground" />
                           <Switch
                             checked={setting.emailEnabled}
                             onCheckedChange={(checked) => handleToggle(type, 'emailEnabled', checked)}
@@ -180,17 +180,17 @@ export default function NotificationSettingsPage() {
                         </div>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600">{description}</p>
+                    <p className="text-sm text-muted-foreground">{description}</p>
                     
                     <div className="flex items-center space-x-4 mt-2">
-                      <Badge variant="outline" className={`text-xs ${displayInfo.color}`}>
+                      <Badge variant="outline">
                         {displayInfo.label}
                       </Badge>
                       {setting.enabled && (
-                        <span className="text-xs text-green-600">✓ In-app notifications enabled</span>
+                        <span className="text-xs text-positive-foreground">✓ In-app notifications enabled</span>
                       )}
                       {setting.emailEnabled && (
-                        <span className="text-xs text-blue-600">✓ Email notifications enabled</span>
+                        <span className="text-xs text-primary">✓ Email notifications enabled</span>
                       )}
                     </div>
                   </div>
@@ -199,31 +199,31 @@ export default function NotificationSettingsPage() {
             })}
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
 
       {/* Save Button */}
       {hasChanges() && (
         <div className="flex justify-end space-x-4">
-          <FurbridgeButton
+          <Button
             variant="outline"
             onClick={() => window.location.reload()}
           >
             Cancel
-          </FurbridgeButton>
-          <FurbridgeButton
+          </Button>
+          <Button
             onClick={handleSave}
             disabled={saving}
           >
             <Save className="h-4 w-4 mr-2" />
             {saving ? 'Saving...' : 'Save Settings'}
-          </FurbridgeButton>
+          </Button>
         </div>
       )}
 
       {/* Additional Info */}
-      <FurbridgeCard className="p-6 bg-gray-50">
-        <h3 className="font-medium text-gray-900 mb-2">About Notifications</h3>
-        <div className="text-sm text-gray-600 space-y-2">
+      <Card className="p-6 bg-muted">
+        <h3 className="font-medium text-foreground mb-2">About Notifications</h3>
+        <div className="text-sm text-muted-foreground space-y-2">
           <p>
             • <strong>In-app notifications</strong> appear in your notification bell and on the notifications page
           </p>
@@ -237,7 +237,7 @@ export default function NotificationSettingsPage() {
             • You can customize notification settings for individual projects in their settings pages
           </p>
         </div>
-      </FurbridgeCard>
+      </Card>
     </div>
   )
 }

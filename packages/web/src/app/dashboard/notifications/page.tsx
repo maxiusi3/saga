@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -74,14 +74,14 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
+          <h1 className="text-3xl font-bold text-foreground">Notifications</h1>
           <div className="flex items-center space-x-2 mt-2">
             {unreadCount > 0 && (
-              <Badge className="bg-furbridge-orange text-white">
+              <Badge variant="primary">
                 {unreadCount} unread
               </Badge>
             )}
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-muted-foreground">
               {notifications.length} total notifications
             </span>
           </div>
@@ -89,20 +89,20 @@ export default function NotificationsPage() {
         
         <div className="flex items-center space-x-2">
           {unreadCount > 0 && (
-            <FurbridgeButton
+            <Button
               variant="outline"
               onClick={markAllAsRead}
             >
               <CheckCheck className="h-4 w-4 mr-2" />
               Mark all read
-            </FurbridgeButton>
+            </Button>
           )}
           
           <Link href="/dashboard/settings/notifications">
-            <FurbridgeButton variant="ghost">
+            <Button variant="ghost">
               <Settings className="h-4 w-4 mr-2" />
               Settings
-            </FurbridgeButton>
+            </Button>
           </Link>
         </div>
       </div>
@@ -110,7 +110,7 @@ export default function NotificationsPage() {
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search notifications..."
             value={searchQuery}
@@ -120,20 +120,18 @@ export default function NotificationsPage() {
         </div>
 
         <div className="flex items-center space-x-2">
-          <Filter className="h-4 w-4 text-gray-600" />
-          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+          <Filter className="h-4 w-4 text-muted-foreground" />
+          <div className="flex space-x-1 bg-muted rounded-lg p-1">
             {notificationTypes.map((type) => (
-              <button
+              <Button
                 key={type.value}
+                variant={filterType === type.value ? 'default' : 'ghost'}
+                size="sm"
                 onClick={() => setFilterType(type.value)}
-                className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                  filterType === type.value
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                className="h-auto py-1"
               >
                 {type.label}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -141,25 +139,25 @@ export default function NotificationsPage() {
 
       {/* Notifications List */}
       {error ? (
-        <FurbridgeCard className="p-8 text-center">
-          <div className="text-red-600 mb-4">
+        <Card className="p-8 text-center">
+          <div className="text-destructive mb-4">
             <p className="font-medium">Failed to load notifications</p>
-            <p className="text-sm text-gray-500 mt-1">{error}</p>
+            <p className="text-sm text-muted-foreground mt-1">{error}</p>
           </div>
-          <FurbridgeButton onClick={refresh} variant="outline">
+          <Button onClick={refresh} variant="outline">
             Try Again
-          </FurbridgeButton>
-        </FurbridgeCard>
+          </Button>
+        </Card>
       ) : filteredNotifications.length === 0 ? (
-        <FurbridgeCard className="p-8 text-center">
+        <Card className="p-8 text-center">
           {searchQuery || filterType !== 'all' ? (
             <>
               <div className="text-4xl mb-4">🔍</div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No matching notifications</h3>
-              <p className="text-gray-600 mb-4">
+              <h3 className="text-lg font-medium text-foreground mb-2">No matching notifications</h3>
+              <p className="text-muted-foreground mb-4">
                 Try adjusting your search or filter criteria
               </p>
-              <FurbridgeButton 
+              <Button 
                 variant="outline" 
                 onClick={() => {
                   setSearchQuery('')
@@ -167,20 +165,20 @@ export default function NotificationsPage() {
                 }}
               >
                 Clear filters
-              </FurbridgeButton>
+              </Button>
             </>
           ) : (
             <>
               <div className="text-4xl mb-4">🔔</div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No notifications yet</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg font-medium text-foreground mb-2">No notifications yet</h3>
+              <p className="text-muted-foreground">
                 You'll see notifications here when there's activity in your projects
               </p>
             </>
           )}
-        </FurbridgeCard>
+        </Card>
       ) : (
-        <FurbridgeCard className="divide-y">
+        <Card className="divide-y">
           {filteredNotifications.map((notification) => (
             <NotificationItem
               key={notification.id}
@@ -189,15 +187,15 @@ export default function NotificationsPage() {
               showActions={true}
             />
           ))}
-        </FurbridgeCard>
+        </Card>
       )}
 
       {/* Load More */}
       {notifications.length >= 50 && (
         <div className="text-center">
-          <FurbridgeButton variant="outline" onClick={refresh}>
+          <Button variant="outline" onClick={refresh}>
             Load More
-          </FurbridgeButton>
+          </Button>
         </div>
       )}
     </div>

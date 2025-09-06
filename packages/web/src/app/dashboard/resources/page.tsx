@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
@@ -28,25 +28,25 @@ export default function ResourcesPage() {
       const mockResources: ResourceSeat[] = [
         {
           type: 'project',
-          available: 1,
-          used: 1,
-          total: 2,
+          available: 0,
+          used: 0,
+          total: 0,
           price: 15,
           description: 'Create new family story projects'
         },
         {
           type: 'facilitator',
           available: 0,
-          used: 1,
-          total: 1,
+          used: 0,
+          total: 0,
           price: 10,
           description: 'Invite co-facilitators to help manage projects'
         },
         {
           type: 'storyteller',
-          available: 1,
-          used: 1,
-          total: 2,
+          available: 0,
+          used: 0,
+          total: 0,
           price: 5,
           description: 'Invite family members to share their stories'
         }
@@ -64,11 +64,11 @@ export default function ResourcesPage() {
   const getResourceIcon = (type: ResourceSeat['type']) => {
     switch (type) {
       case 'project':
-        return <BookOpen className="h-6 w-6 text-furbridge-orange" />
+        return <BookOpen className="h-6 w-6 text-primary" />
       case 'facilitator':
-        return <Users className="h-6 w-6 text-furbridge-teal" />
+        return <Users className="h-6 w-6 text-primary" />
       case 'storyteller':
-        return <UserPlus className="h-6 w-6 text-furbridge-warm-gray" />
+        return <UserPlus className="h-6 w-6 text-primary" />
     }
   }
 
@@ -91,10 +91,10 @@ export default function ResourcesPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-64 bg-gray-100 rounded animate-pulse"></div>
+        <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-48 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div key={i} className="h-48 bg-muted rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -106,36 +106,35 @@ export default function ResourcesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Resources</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-foreground">My Resources</h1>
+          <p className="text-muted-foreground mt-1">
             Manage your available seats and purchase additional resources
           </p>
         </div>
         
         <Link href="/dashboard/purchase">
-          <FurbridgeButton variant="orange">
+          <Button>
             <ShoppingCart className="h-4 w-4 mr-2" />
             Buy More Seats
-          </FurbridgeButton>
+          </Button>
         </Link>
       </div>
 
       {/* Resource Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {resources.map((resource) => (
-          <FurbridgeCard key={resource.type} className="p-6">
+          <Card key={resource.type} className="p-6">
             <div className="space-y-4">
               {/* Header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   {getResourceIcon(resource.type)}
-                  <h3 className="font-semibold text-gray-900">
+                  <h3 className="font-semibold text-foreground">
                     {getResourceTitle(resource.type)}
                   </h3>
                 </div>
                 <Badge 
                   variant={resource.available > 0 ? "default" : "secondary"}
-                  className={resource.available > 0 ? "bg-furbridge-teal text-white" : ""}
                 >
                   {resource.available} Available
                 </Badge>
@@ -144,8 +143,8 @@ export default function ResourcesPage() {
               {/* Usage Stats */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Usage</span>
-                  <span className="text-gray-900">
+                  <span className="text-muted-foreground">Usage</span>
+                  <span className="text-foreground">
                     {resource.used} of {resource.total} used
                   </span>
                 </div>
@@ -156,122 +155,122 @@ export default function ResourcesPage() {
               </div>
 
               {/* Description */}
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 {resource.description}
               </p>
 
               {/* Purchase Button */}
-              <FurbridgeButton
+              <Button
                 variant="outline"
                 className="w-full"
                 onClick={() => handlePurchase(resource.type)}
               >
                 Buy More (${resource.price} each)
-              </FurbridgeButton>
+              </Button>
             </div>
-          </FurbridgeCard>
+          </Card>
         ))}
       </div>
 
       {/* Usage History */}
-      <FurbridgeCard className="p-6">
+      <Card className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>
+          <h2 className="text-xl font-semibold text-foreground">Recent Activity</h2>
           
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
               <div className="flex items-center space-x-3">
-                <BookOpen className="h-5 w-5 text-furbridge-orange" />
+                <BookOpen className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="font-medium text-gray-900">Created "Dad's Life Story"</div>
-                  <div className="text-sm text-gray-600">Used 1 Project Voucher</div>
+                  <div className="font-medium text-foreground">Created "Dad's Life Story"</div>
+                  <div className="text-sm text-muted-foreground">Used 1 Project Voucher</div>
                 </div>
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 Jan 15, 2024
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
               <div className="flex items-center space-x-3">
-                <UserPlus className="h-5 w-5 text-furbridge-warm-gray" />
+                <UserPlus className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="font-medium text-gray-900">Invited John Doe as Storyteller</div>
-                  <div className="text-sm text-gray-600">Used 1 Storyteller Seat</div>
+                  <div className="font-medium text-foreground">Invited John Doe as Storyteller</div>
+                  <div className="text-sm text-muted-foreground">Used 1 Storyteller Seat</div>
                 </div>
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 Jan 16, 2024
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
               <div className="flex items-center space-x-3">
-                <Users className="h-5 w-5 text-furbridge-teal" />
+                <Users className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="font-medium text-gray-900">Invited Beth Smith as Co-Facilitator</div>
-                  <div className="text-sm text-gray-600">Used 1 Facilitator Seat</div>
+                  <div className="font-medium text-foreground">Invited Beth Smith as Co-Facilitator</div>
+                  <div className="text-sm text-muted-foreground">Used 1 Facilitator Seat</div>
                 </div>
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 Jan 18, 2024
               </div>
             </div>
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
 
       {/* Purchase Options */}
-      <FurbridgeCard className="p-6">
+      <Card className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">Purchase Additional Seats</h2>
+          <h2 className="text-xl font-semibold text-foreground">Purchase Additional Seats</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="border border-gray-200 rounded-lg p-4">
+            <div className="border border-border rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
-                  <BookOpen className="h-5 w-5 text-furbridge-orange" />
-                  <span className="font-medium text-gray-900">Project Voucher</span>
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <span className="font-medium text-foreground">Project Voucher</span>
                 </div>
-                <div className="text-2xl font-bold text-furbridge-orange">$15</div>
-                <p className="text-sm text-gray-600">
+                <div className="text-2xl font-bold text-primary">$15</div>
+                <p className="text-sm text-muted-foreground">
                   Create one additional family story project
                 </p>
-                <FurbridgeButton variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full">
                   Purchase
-                </FurbridgeButton>
+                </Button>
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4">
+            <div className="border border-border rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
-                  <Users className="h-5 w-5 text-furbridge-teal" />
-                  <span className="font-medium text-gray-900">Facilitator Seat</span>
+                  <Users className="h-5 w-5 text-primary" />
+                  <span className="font-medium text-foreground">Facilitator Seat</span>
                 </div>
-                <div className="text-2xl font-bold text-furbridge-teal">$10</div>
-                <p className="text-sm text-gray-600">
+                <div className="text-2xl font-bold text-primary">$10</div>
+                <p className="text-sm text-muted-foreground">
                   Invite one co-facilitator to help manage projects
                 </p>
-                <FurbridgeButton variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full">
                   Purchase
-                </FurbridgeButton>
+                </Button>
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-4">
+            <div className="border border-border rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
-                  <UserPlus className="h-5 w-5 text-furbridge-warm-gray" />
-                  <span className="font-medium text-gray-900">Storyteller Seat</span>
+                  <UserPlus className="h-5 w-5 text-primary" />
+                  <span className="font-medium text-foreground">Storyteller Seat</span>
                 </div>
-                <div className="text-2xl font-bold text-furbridge-warm-gray">$5</div>
-                <p className="text-sm text-gray-600">
+                <div className="text-2xl font-bold text-primary">$5</div>
+                <p className="text-sm text-muted-foreground">
                   Invite one additional storyteller to your projects
                 </p>
-                <FurbridgeButton variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full">
                   Purchase
-                </FurbridgeButton>
+                </Button>
               </div>
             </div>
           </div>
@@ -279,17 +278,17 @@ export default function ResourcesPage() {
           <Separator />
 
           <div className="text-center">
-            <p className="text-gray-600 mb-4">
+            <p className="text-muted-foreground mb-4">
               Need multiple seats? Get better value with our complete package.
             </p>
             <Link href="/dashboard/purchase">
-              <FurbridgeButton variant="orange">
+              <Button>
                 View Saga Package ($29)
-              </FurbridgeButton>
+              </Button>
             </Link>
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
     </div>
   )
 }

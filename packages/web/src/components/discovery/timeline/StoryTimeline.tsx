@@ -66,8 +66,8 @@ export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps)
     return (
       <div className={`timeline-container ${className}`}>
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-2 text-gray-600">Loading timeline...</span>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <span className="ml-2 text-muted-foreground">Loading timeline...</span>
         </div>
       </div>
     );
@@ -77,8 +77,8 @@ export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps)
     return (
       <div className={`timeline-container ${className}`}>
         <Card className="p-6 text-center">
-          <div className="text-red-600 mb-2">Failed to load timeline</div>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <div className="text-destructive mb-2">Failed to load timeline</div>
+          <p className="text-muted-foreground mb-4">{error}</p>
           <Button onClick={refreshTimeline} variant="outline">
             Try Again
           </Button>
@@ -99,8 +99,8 @@ export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps)
           onViewModeChange={setViewMode}
         />
         <Card className="p-8 text-center mt-4">
-          <div className="text-gray-500 mb-2">No stories found</div>
-          <p className="text-gray-400">Try adjusting your filters or create some stories to get started.</p>
+          <div className="text-muted-foreground mb-2">No stories found</div>
+          <p className="text-muted-foreground">Try adjusting your filters or create some stories to get started.</p>
         </Card>
       </div>
     );
@@ -120,7 +120,7 @@ export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps)
 
       {/* Timeline Stats */}
       <div className="timeline-stats mb-6">
-        <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
           <span>{timeline.totalCount} stories</span>
           <span>
             {format(parseISO(timeline.dateRange.start), 'MMM yyyy')} - 
@@ -166,7 +166,7 @@ export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps)
               <Badge
                 key={category.name}
                 variant="outline"
-                className="cursor-pointer hover:bg-gray-50"
+                className="cursor-pointer hover:bg-muted/50"
                 style={{ borderColor: category.color, color: category.color }}
                 onClick={() => {
                   const isSelected = filters.categories?.includes(category.name);

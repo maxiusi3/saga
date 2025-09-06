@@ -58,8 +58,8 @@ export function TimelineItem({
         <div
           className={`w-4 h-4 rounded-full border-2 cursor-pointer transition-all duration-200 ${
             isSelected
-              ? 'bg-blue-600 border-blue-600 scale-125'
-              : 'bg-white border-gray-400 hover:border-blue-500'
+              ? 'bg-primary border-primary scale-125'
+              : 'bg-background border-border hover:border-primary'
           }`}
           onClick={onClick}
         />
@@ -68,8 +68,8 @@ export function TimelineItem({
         <Card
           className={`mt-4 p-3 w-64 cursor-pointer transition-all duration-200 ${
             isSelected
-              ? 'ring-2 ring-blue-500 shadow-lg'
-              : 'hover:shadow-md hover:ring-1 hover:ring-gray-300'
+              ? 'ring-2 ring-primary shadow-lg'
+              : 'hover:shadow-md hover:ring-1 hover:ring-border'
           }`}
           onClick={onClick}
         >
@@ -87,11 +87,11 @@ export function TimelineItem({
             </div>
             
             {/* Story metadata */}
-            <div className="text-xs text-gray-500 space-y-1">
+            <div className="text-xs text-muted-foreground space-y-1">
               <div>{format(parseISO(story.createdAt), 'MMM d, yyyy')}</div>
               <div>by {story.facilitatorName}</div>
               {story.chapterTitle && (
-                <div className="text-blue-600">{story.chapterTitle}</div>
+                <div className="text-primary">{story.chapterTitle}</div>
               )}
             </div>
             
@@ -113,7 +113,7 @@ export function TimelineItem({
             
             {/* Description preview */}
             {story.description && (
-              <p className="text-xs text-gray-600 line-clamp-2">
+              <p className="text-xs text-muted-foreground line-clamp-2">
                 {story.description}
               </p>
             )}
@@ -131,8 +131,8 @@ export function TimelineItem({
         <div
           className={`w-4 h-4 rounded-full border-2 cursor-pointer transition-all duration-200 ${
             isSelected
-              ? 'bg-blue-600 border-blue-600 scale-125'
-              : 'bg-white border-gray-400 hover:border-blue-500'
+              ? 'bg-primary border-primary scale-125'
+              : 'bg-background border-border hover:border-primary'
           }`}
           onClick={onClick}
         />
@@ -142,8 +142,8 @@ export function TimelineItem({
       <Card
         className={`flex-1 p-4 cursor-pointer transition-all duration-200 ${
           isSelected
-            ? 'ring-2 ring-blue-500 shadow-lg'
-            : 'hover:shadow-md hover:ring-1 hover:ring-gray-300'
+            ? 'ring-2 ring-primary shadow-lg'
+            : 'hover:shadow-md hover:ring-1 hover:ring-border'
         }`}
         onClick={onClick}
       >
@@ -154,7 +154,7 @@ export function TimelineItem({
               <h4 className="font-medium text-base mb-1">
                 {story.title || 'Untitled Story'}
               </h4>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-muted-foreground">
                 {format(parseISO(story.createdAt), 'MMMM d, yyyy')} • by {story.facilitatorName}
               </div>
             </div>
@@ -167,14 +167,14 @@ export function TimelineItem({
           
           {/* Chapter info */}
           {story.chapterTitle && (
-            <div className="text-sm text-blue-600 font-medium">
+            <div className="text-sm text-primary font-medium">
               {story.chapterTitle}
             </div>
           )}
           
           {/* Description */}
           {story.description && (
-            <p className="text-sm text-gray-600 line-clamp-3">
+            <p className="text-sm text-muted-foreground line-clamp-3">
               {story.description}
             </p>
           )}

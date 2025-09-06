@@ -8,8 +8,6 @@ const nextConfig = {
   },
   // Enable detailed hydration error reporting
   reactStrictMode: true,
-  // Disable minification temporarily for debugging
-  swcMinify: false,
   compiler: {
     removeConsole: false,
   },

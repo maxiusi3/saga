@@ -43,8 +43,8 @@ export function NotificationItem({
 
   return (
     <div
-      className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
-        !notification.is_read ? 'bg-furbridge-teal/5 border-l-2 border-l-furbridge-teal' : ''
+      className={`p-4 hover:bg-muted/50 cursor-pointer transition-colors ${
+        !notification.is_read ? 'bg-primary/5 border-l-2 border-l-primary' : ''
       }`}
       onClick={handleClick}
     >
@@ -69,15 +69,15 @@ export function NotificationItem({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <p className={`text-sm ${!notification.is_read ? 'font-semibold' : 'font-medium'} text-gray-900`}>
+              <p className={`text-sm ${!notification.is_read ? 'font-semibold' : 'font-medium'} text-foreground`}>
                 {notification.title}
               </p>
-              <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+              <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
                 {notification.message}
               </p>
               
               {notification.preview_text && (
-                <p className="text-xs text-gray-500 mt-1 line-clamp-1 italic">
+                <p className="text-xs text-muted-foreground mt-1 line-clamp-1 italic">
                   "{notification.preview_text}"
                 </p>
               )}
@@ -88,12 +88,12 @@ export function NotificationItem({
                 </Badge>
                 
                 {notification.project_title && (
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-muted-foreground">
                     in {notification.project_title}
                   </span>
                 )}
                 
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-muted-foreground/80">
                   {formatNotificationTime(notification.created_at)}
                 </span>
               </div>
@@ -118,7 +118,7 @@ export function NotificationItem({
                   variant="ghost"
                   size="sm"
                   onClick={handleDelete}
-                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-600"
+                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity hover:text-destructive"
                   title="Delete notification"
                 >
                   <Trash2 className="h-3 w-3" />
@@ -131,7 +131,7 @@ export function NotificationItem({
 
       {/* Unread indicator */}
       {!notification.is_read && (
-        <div className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-furbridge-teal rounded-full" />
+        <div className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full" />
       )}
     </div>
   )

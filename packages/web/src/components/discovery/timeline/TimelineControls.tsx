@@ -78,8 +78,8 @@ export function TimelineControls({
       <div className="flex flex-wrap items-center gap-4 mb-4">
         {/* View Mode Toggle */}
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700">View:</span>
-          <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+          <span className="text-sm font-medium text-muted-foreground">View:</span>
+          <div className="flex rounded-lg border border-border overflow-hidden">
             <Button
               variant={viewMode === 'horizontal' ? 'default' : 'ghost'}
               size="sm"
@@ -101,7 +101,7 @@ export function TimelineControls({
 
         {/* Quick Date Filters */}
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700">Quick filters:</span>
+          <span className="text-sm font-medium text-muted-foreground">Quick filters:</span>
           <Button
             variant="outline"
             size="sm"
@@ -147,7 +147,7 @@ export function TimelineControls({
             variant="outline"
             size="sm"
             onClick={clearAllFilters}
-            className="text-red-600 border-red-200 hover:bg-red-50"
+            className="text-destructive border-destructive/50 hover:bg-destructive/10"
           >
             Clear All
           </Button>
@@ -159,21 +159,21 @@ export function TimelineControls({
         <div className="border-t pt-4 space-y-4">
           {/* Date Range */}
           <div className="flex flex-wrap items-center gap-4">
-            <span className="text-sm font-medium text-gray-700">Date Range:</span>
+            <span className="text-sm font-medium text-muted-foreground">Date Range:</span>
             <div className="flex items-center gap-2">
               <input
                 type="date"
                 value={filters.startDate || ''}
                 onChange={(e) => handleDateRangeChange('start', e.target.value)}
-                className="px-3 py-1 border border-gray-300 rounded text-sm"
+                className="px-3 py-1 border border-border rounded text-sm"
                 placeholder="Start date"
               />
-              <span className="text-gray-500">to</span>
+              <span className="text-muted-foreground">to</span>
               <input
                 type="date"
                 value={filters.endDate || ''}
                 onChange={(e) => handleDateRangeChange('end', e.target.value)}
-                className="px-3 py-1 border border-gray-300 rounded text-sm"
+                className="px-3 py-1 border border-border rounded text-sm"
                 placeholder="End date"
               />
             </div>
@@ -182,17 +182,17 @@ export function TimelineControls({
           {/* Categories */}
           {categories.length > 0 && (
             <div className="space-y-2">
-              <span className="text-sm font-medium text-gray-700">Categories:</span>
+              <span className="text-sm font-medium text-muted-foreground">Categories:</span>
               <div className="flex flex-wrap gap-2">
                 {categories.map(category => (
                   <Badge
                     key={category.name}
                     variant={filters.categories?.includes(category.name) ? 'default' : 'outline'}
-                    className="cursor-pointer hover:bg-gray-50"
+                    className="cursor-pointer hover:bg-muted/50"
                     style={{
                       borderColor: category.color,
                       backgroundColor: filters.categories?.includes(category.name) ? category.color : 'transparent',
-                      color: filters.categories?.includes(category.name) ? 'white' : category.color
+                      color: filters.categories?.includes(category.name) ? 'hsl(var(--background))' : category.color
                     }}
                     onClick={() => handleCategoryToggle(category.name)}
                   >

@@ -279,12 +279,12 @@ export function WebAudioRecorder({
     return (
       <Card className={`p-6 ${className}`}>
         <div className="text-center">
-          <div className="text-red-500 text-4xl mb-4">⚠️</div>
+          <div className="text-destructive text-4xl mb-4">⚠️</div>
           <h3 className="text-lg font-semibold mb-2">Browser Not Supported</h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-muted-foreground mb-4">
             Your browser doesn't support audio recording. Please use a modern browser like:
           </p>
-          <ul className="text-sm text-gray-500 space-y-1">
+          <ul className="text-sm text-muted-foreground space-y-1">
             <li>• Google Chrome (recommended)</li>
             <li>• Mozilla Firefox</li>
             <li>• Safari (on Mac/iOS)</li>
@@ -302,14 +302,14 @@ export function WebAudioRecorder({
         <div>
           <h3 id="recorder-heading" className="text-xl font-semibold mb-2">{getRecordingStateText()}</h3>
           <div
-            className="text-2xl font-mono font-bold text-blue-600"
+            className="text-2xl font-mono font-bold text-primary"
             aria-live="polite"
             aria-label={`Recording duration: ${formatDuration(duration)}`}
           >
             {formatDuration(duration)}
           </div>
           {maxDuration > 0 && (
-            <div className="text-sm text-gray-500 mt-1">
+            <div className="text-sm text-muted-foreground mt-1">
               Maximum: {formatDuration(maxDuration)}
             </div>
           )}
@@ -319,20 +319,20 @@ export function WebAudioRecorder({
         <div className="flex justify-center">
           {recordingState === 'recording' && (
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="text-red-500 font-medium">RECORDING</span>
+              <div className="w-4 h-4 bg-destructive rounded-full animate-pulse"></div>
+              <span className="text-destructive font-medium">RECORDING</span>
             </div>
           )}
           {recordingState === 'paused' && (
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
-              <span className="text-yellow-500 font-medium">PAUSED</span>
+              <div className="w-4 h-4 bg-warning rounded-full"></div>
+              <span className="text-warning font-medium">PAUSED</span>
             </div>
           )}
           {recordingState === 'completed' && (
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-              <span className="text-green-500 font-medium">COMPLETED</span>
+              <div className="w-4 h-4 bg-success rounded-full"></div>
+              <span className="text-success font-medium">COMPLETED</span>
             </div>
           )}
         </div>
@@ -343,7 +343,7 @@ export function WebAudioRecorder({
             <Button
               onClick={startRecording}
               size="lg"
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg font-bold touch-target-large"
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-8 py-4 text-lg font-bold touch-target-large"
               aria-label="Start recording your story"
             >
               <span aria-hidden="true">🎤 </span>Start Recording
@@ -364,7 +364,7 @@ export function WebAudioRecorder({
               <Button
                 onClick={stopRecording}
                 size="lg"
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 touch-target"
+                className="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-6 py-3 touch-target"
                 aria-label="Stop recording"
               >
                 <span aria-hidden="true">⏹️ </span>Stop
@@ -377,14 +377,14 @@ export function WebAudioRecorder({
               <Button
                 onClick={resumeRecording}
                 size="lg"
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3"
+                className="bg-success hover:bg-success/90 text-success-foreground px-6 py-3"
               >
                 ▶️ Resume
               </Button>
               <Button
                 onClick={stopRecording}
                 size="lg"
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3"
+                className="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-6 py-3"
               >
                 ⏹️ Stop
               </Button>
@@ -435,7 +435,7 @@ export function WebAudioRecorder({
               stream={streamRef.current}
               isRecording={recordingState === 'recording'}
             />
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-muted-foreground">
               <p>💡 Tip: Watch the quality indicator above for the best recording</p>
             </div>
           </div>
@@ -443,8 +443,8 @@ export function WebAudioRecorder({
 
         {/* Completion Message */}
         {recordingState === 'completed' && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4" role="status" aria-live="polite">
-            <p className="text-green-800 font-medium">
+          <div className="bg-success/10 border border-success/20 rounded-lg p-4" role="status" aria-live="polite">
+            <p className="text-success-foreground font-medium">
               <span aria-hidden="true">✅ </span>Recording completed! You can play it back to review, or record again if needed.
             </p>
           </div>

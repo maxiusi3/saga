@@ -62,8 +62,8 @@ export function StoryRecommendations({
     return (
       <div className={`recommendations-container ${className}`}>
         <div className="flex items-center justify-center h-32">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-          <span className="ml-2 text-gray-600">Loading recommendations...</span>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+          <span className="ml-2 text-muted-foreground">Loading recommendations...</span>
         </div>
       </div>
     );
@@ -73,8 +73,8 @@ export function StoryRecommendations({
     return (
       <div className={`recommendations-container ${className}`}>
         <Card className="p-4 text-center">
-          <div className="text-red-600 mb-2">Failed to load recommendations</div>
-          <p className="text-gray-600 mb-3 text-sm">{error}</p>
+          <div className="text-destructive mb-2">Failed to load recommendations</div>
+          <p className="text-muted-foreground mb-3 text-sm">{error}</p>
           <Button onClick={refreshRecommendations} variant="outline" size="sm">
             Try Again
           </Button>
@@ -91,8 +91,8 @@ export function StoryRecommendations({
     return (
       <div className={`recommendations-container ${className}`}>
         <Card className="p-6 text-center">
-          <div className="text-gray-500 mb-2">No recommendations available</div>
-          <p className="text-gray-400 text-sm">
+          <div className="text-muted-foreground mb-2">No recommendations available</div>
+          <p className="text-muted-foreground text-sm">
             Listen to more stories to get personalized recommendations.
           </p>
         </Card>
@@ -103,7 +103,7 @@ export function StoryRecommendations({
   return (
     <div className={`recommendations-container ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-foreground">
           Recommended for You
         </h3>
         <Button
@@ -130,7 +130,7 @@ export function StoryRecommendations({
                   <h4 className="font-medium text-sm line-clamp-2 mb-1">
                     {story.title || 'Untitled Story'}
                   </h4>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-muted-foreground">
                     {format(parseISO(story.createdAt), 'MMM d, yyyy')} • by {story.facilitatorName}
                   </div>
                 </div>
@@ -141,7 +141,7 @@ export function StoryRecommendations({
                     e.stopPropagation();
                     handleDismiss(story.id);
                   }}
-                  className="text-gray-400 hover:text-gray-600 ml-2"
+                  className="text-muted-foreground hover:text-muted-foreground/80 ml-2"
                   title="Dismiss recommendation"
                 >
                   ×
@@ -151,7 +151,7 @@ export function StoryRecommendations({
               {/* Chapter and duration */}
               <div className="flex items-center justify-between">
                 {story.chapterTitle && (
-                  <div className="text-xs text-blue-600 font-medium">
+                  <div className="text-xs text-primary font-medium">
                     {story.chapterTitle}
                   </div>
                 )}
@@ -164,7 +164,7 @@ export function StoryRecommendations({
 
               {/* Description */}
               {story.description && (
-                <p className="text-xs text-gray-600 line-clamp-2">
+                <p className="text-xs text-muted-foreground line-clamp-2">
                   {story.description}
                 </p>
               )}
@@ -186,14 +186,14 @@ export function StoryRecommendations({
               )}
 
               {/* Recommendation reasoning */}
-              <div className="text-xs text-gray-500 italic">
+              <div className="text-xs text-muted-foreground italic">
                 {story.reasoning.join(', ')}
               </div>
 
               {/* Recommendation score */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-muted-foreground">
                     Match: {Math.round(story.score * 100)}%
                   </div>
                 </div>

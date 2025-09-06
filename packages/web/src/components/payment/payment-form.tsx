@@ -139,11 +139,11 @@ function PaymentFormContent({ packageId, packageName, amount, currency = 'usd', 
   return (
     <Card className="max-w-md mx-auto p-6">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Complete Your Purchase</h2>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h2 className="text-xl font-semibold text-foreground mb-2">Complete Your Purchase</h2>
+        <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
           <div className="flex justify-between items-center">
-            <span className="font-medium text-blue-900">{packageName}</span>
-            <span className="text-xl font-bold text-blue-900">
+            <span className="font-medium text-primary">{packageName}</span>
+            <span className="text-xl font-bold text-primary">
               {formatAmount(amount, currency)}
             </span>
           </div>
@@ -153,31 +153,31 @@ function PaymentFormContent({ packageId, packageName, amount, currency = 'usd', 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Card Information */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
             Card Information
           </label>
-          <div className="border border-gray-300 rounded-lg p-3 bg-white">
+          <div className="border border-border rounded-lg p-3 bg-background">
             <CardElement
               options={cardElementOptions}
               onChange={handleCardChange}
             />
           </div>
           {cardError && (
-            <p className="mt-2 text-sm text-red-600" role="alert">
+            <p className="mt-2 text-sm text-destructive" role="alert">
               {cardError}
             </p>
           )}
         </div>
 
         {/* Security Notice */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div className="bg-muted border border-border rounded-lg p-4">
           <div className="flex items-start space-x-3">
             <svg className="w-5 h-5 text-green-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
             <div className="text-sm">
-              <p className="font-medium text-gray-900 mb-1">Secure Payment</p>
-              <p className="text-gray-600">
+              <p className="font-medium text-foreground mb-1">Secure Payment</p>
+              <p className="text-muted-foreground">
                 Your payment information is encrypted and secure. We never store your card details.
               </p>
             </div>
@@ -186,7 +186,7 @@ function PaymentFormContent({ packageId, packageName, amount, currency = 'usd', 
 
         {/* Development Notice */}
         {process.env.NODE_ENV === 'development' && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
             <div className="flex items-start space-x-3">
               <svg className="w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -215,11 +215,11 @@ function PaymentFormContent({ packageId, packageName, amount, currency = 'usd', 
           <Button
             type="submit"
             disabled={!stripe || !cardComplete || isProcessing}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             {isProcessing ? (
               <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
                 <span>Processing...</span>
               </div>
             ) : (
@@ -248,12 +248,12 @@ export function TestCardInfo() {
 
   return (
     <Card className="max-w-md mx-auto p-4 mb-4">
-      <h3 className="font-medium text-gray-900 mb-3">Test Cards (Development Only)</h3>
+      <h3 className="font-medium text-foreground mb-3">Test Cards (Development Only)</h3>
       <div className="space-y-2">
         {testCards.map((card, index) => (
           <div key={index} className="text-sm">
-            <div className="font-mono text-blue-600">{card.number}</div>
-            <div className="text-gray-600">{card.brand} - {card.description}</div>
+            <div className="font-mono text-primary">{card.number}</div>
+            <div className="text-muted-foreground">{card.brand} - {card.description}</div>
           </div>
         ))}
       </div>

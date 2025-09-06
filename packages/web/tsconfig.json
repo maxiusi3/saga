@@ -27,7 +27,9 @@
       "@/hooks/*": ["./src/hooks/*"],
       "@/stores/*": ["./src/stores/*"],
       "@/types/*": ["./src/types/*"],
-      "@saga/shared": ["../shared/src"]
+      "@saga/shared": ["../shared/src"],
+      "@furbridge-design-system/*": ["../../furbridge-design-system/*"],
+      "@furbridge-components/*": ["../../furbridge-design-system/components/*"]
     }
   },
   "include": [

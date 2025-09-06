@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -74,7 +74,7 @@ export default function ProjectSettingsPage() {
   }, [projectId, user?.id])
 
   // Handle project update
-  const handleSaveTitle = async () => {
+  const handleSaveProjectDetails = async () => {
     if (!project || !user?.id) return
 
     if (!projectTitle.trim()) {
@@ -193,13 +193,13 @@ export default function ProjectSettingsPage() {
 
   const getRoleBadge = (role: UserRole) => {
     const roleInfo = getRoleDisplayInfo(role)
-    return <Badge className={roleInfo.color}>{roleInfo.icon} {roleInfo.label}</Badge>
+    return <Badge variant={roleInfo.color as any}>{roleInfo.icon} {roleInfo.label}</Badge>
   }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge variant="default" className="bg-furbridge-teal text-white">Active</Badge>
+        return <Badge variant="primary">Active</Badge>
       case 'pending':
         return <Badge variant="outline">Invited</Badge>
       case 'declined':
@@ -215,12 +215,12 @@ export default function ProjectSettingsPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
-          <div className="h-8 w-8 bg-gray-100 rounded animate-pulse"></div>
-          <div className="h-8 w-64 bg-gray-100 rounded animate-pulse"></div>
+          <div className="h-8 w-8 bg-muted rounded animate-pulse"></div>
+          <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
         </div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div key={i} className="h-32 bg-muted rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -230,12 +230,12 @@ export default function ProjectSettingsPage() {
   if (error) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-gray-900">Error</h1>
-        <p className="text-gray-600 mt-2">{error}</p>
+        <h1 className="text-2xl font-bold text-foreground">Error</h1>
+        <p className="text-muted-foreground mt-2">{error}</p>
         <Link href="/dashboard">
-          <FurbridgeButton variant="outline" className="mt-4">
+          <Button variant="outline" className="mt-4">
             Back to Dashboard
-          </FurbridgeButton>
+          </Button>
         </Link>
       </div>
     )
@@ -244,11 +244,11 @@ export default function ProjectSettingsPage() {
   if (!project) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-gray-900">Project not found</h1>
+        <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
         <Link href="/dashboard">
-          <FurbridgeButton variant="outline" className="mt-4">
+          <Button variant="outline" className="mt-4">
             Back to Dashboard
-          </FurbridgeButton>
+          </Button>
         </Link>
       </div>
     )
@@ -259,17 +259,17 @@ export default function ProjectSettingsPage() {
       {/* Header */}
       <div className="flex items-center space-x-4">
         <Link href={`/dashboard/projects/${projectId}`}>
-          <FurbridgeButton variant="ghost" size="icon">
+          <Button variant="ghost" size="icon">
             <ArrowLeft className="h-5 w-5" />
-          </FurbridgeButton>
+          </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Project Settings</h1>
+        <h1 className="text-3xl font-bold text-foreground">Project Settings</h1>
       </div>
 
       {/* Project Details */}
-      <FurbridgeCard className="p-6">
+      <Card className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">Project Details</h2>
+          <h2 className="text-xl font-semibold text-foreground">Project Details</h2>
           
           <div className="space-y-4">
             <div>
@@ -281,13 +281,13 @@ export default function ProjectSettingsPage() {
                   onChange={(e) => setProjectTitle(e.target.value)}
                   className="flex-1"
                 />
-                <FurbridgeButton
+                <Button
                   variant="outline"
-                  onClick={handleSaveProject}
+                  onClick={handleSaveProjectDetails}
                   disabled={saving || (projectTitle.trim() === project.title && projectDescription.trim() === (project.description || ''))}
                 >
                   {saving ? 'Saving...' : 'Save'}
-                </FurbridgeButton>
+                </Button>
               </div>
             </div>
 
@@ -299,29 +299,29 @@ export default function ProjectSettingsPage() {
                   id="description"
                   value={projectDescription}
                   onChange={(e) => setProjectDescription(e.target.value)}
-                  className="flex-1 min-h-[80px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-furbridge-teal focus:border-transparent"
+                  className="flex-1 min-h-[80px] px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="Add a description for your project..."
                 />
               </div>
             </div>
 
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-muted-foreground">
               Created on {new Date(project.created_at).toLocaleDateString()}
             </div>
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
 
       {/* Members Management */}
-      <FurbridgeCard className="p-6">
+      <Card className="p-6">
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-900">Members</h2>
+            <h2 className="text-xl font-semibold text-foreground">Members</h2>
           </div>
 
           {/* Invite Member Form */}
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <h3 className="text-sm font-medium text-gray-900 mb-3">Invite New Member</h3>
+          <div className="border border-border rounded-lg p-4 bg-muted">
+            <h3 className="text-sm font-medium text-foreground mb-3">Invite New Member</h3>
             <div className="flex space-x-2">
               <Input
                 type="email"
@@ -333,25 +333,25 @@ export default function ProjectSettingsPage() {
               <select
                 value={inviteRole}
                 onChange={(e) => setInviteRole(e.target.value as UserRole)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-furbridge-teal"
+                className="px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="storyteller">Storyteller</option>
                 <option value="co_facilitator">Co-Facilitator</option>
                 <option value="facilitator">Facilitator</option>
               </select>
-              <FurbridgeButton
+              <Button
                 onClick={handleInviteMember}
                 disabled={inviting || !inviteEmail.trim()}
               >
                 {inviting ? 'Inviting...' : 'Invite'}
-              </FurbridgeButton>
+              </Button>
             </div>
           </div>
 
           <div className="space-y-4">
             {/* Project Owner */}
             {project.is_owner && (
-              <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-furbridge-teal/5">
+              <div className="flex items-center justify-between p-4 border border-border rounded-lg bg-primary/5">
                 <div className="flex items-center space-x-4">
                   <Avatar className="h-10 w-10">
                     <AvatarFallback>
@@ -359,12 +359,12 @@ export default function ProjectSettingsPage() {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium text-gray-900">You (Owner)</div>
-                    <div className="text-sm text-gray-600">{user?.email}</div>
+                    <div className="font-medium text-foreground">You (Owner)</div>
+                    <div className="text-sm text-muted-foreground">{user?.email}</div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Badge className="bg-furbridge-teal text-white">👑 Owner</Badge>
+                  <Badge variant="primary">👑 Owner</Badge>
                   {getStatusBadge('active')}
                 </div>
               </div>
@@ -372,7 +372,7 @@ export default function ProjectSettingsPage() {
 
             {/* Project Members */}
             {project.members.map((member) => (
-              <div key={member.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div key={member.id} className="flex items-center justify-between p-4 border border-border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <Avatar className="h-10 w-10">
                     <AvatarFallback>
@@ -380,8 +380,8 @@ export default function ProjectSettingsPage() {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium text-gray-900">Member</div>
-                    <div className="text-sm text-gray-600">Role: {member.role}</div>
+                    <div className="font-medium text-foreground">Member</div>
+                    <div className="text-sm text-muted-foreground">Role: {member.role}</div>
                   </div>
                 </div>
 
@@ -394,7 +394,7 @@ export default function ProjectSettingsPage() {
                     <select
                       value={member.role}
                       onChange={(e) => handleUpdateRole(member.id, e.target.value as UserRole)}
-                      className="text-sm px-2 py-1 border border-gray-300 rounded"
+                      className="text-sm px-2 py-1 border border-border rounded"
                     >
                       <option value="storyteller">Storyteller</option>
                       <option value="co_facilitator">Co-Facilitator</option>
@@ -406,9 +406,9 @@ export default function ProjectSettingsPage() {
                   {project.is_owner && (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <FurbridgeButton variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
                           <Trash2 className="h-4 w-4" />
-                        </FurbridgeButton>
+                        </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
@@ -435,29 +435,29 @@ export default function ProjectSettingsPage() {
             ))}
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
 
       {/* Data Management */}
-      <FurbridgeCard className="p-6">
+      <Card className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">Data Management</h2>
+          <h2 className="text-xl font-semibold text-foreground">Data Management</h2>
           
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-4 border border-gray-200 rounded-lg">
+            <div className="flex justify-between items-center p-4 border border-border rounded-lg">
               <div>
-                <div className="font-medium text-gray-900">Export Full Archive</div>
-                <div className="text-sm text-gray-600">
+                <div className="font-medium text-foreground">Export Full Archive</div>
+                <div className="text-sm text-muted-foreground">
                   Download all stories, transcripts, and media files
                 </div>
               </div>
-              <FurbridgeButton variant="outline" onClick={handleExportArchive}>
+              <Button variant="outline" onClick={handleExportArchive}>
                 <Download className="h-4 w-4 mr-2" />
                 Export
-              </FurbridgeButton>
+              </Button>
             </div>
           </div>
         </div>
-      </FurbridgeCard>
+      </Card>
     </div>
   )
 }

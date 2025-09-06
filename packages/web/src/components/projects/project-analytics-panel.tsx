@@ -85,23 +85,23 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-medium text-gray-900">Project Analytics</h2>
+      <div className="bg-background rounded-lg shadow">
+        <div className="px-6 py-4 border-b border-border">
+          <h2 className="text-lg font-medium text-foreground">Project Analytics</h2>
         </div>
         <div className="p-6">
           <div className="animate-pulse">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="text-center">
-                  <div className="h-8 bg-gray-200 rounded w-12 mx-auto mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-16 mx-auto"></div>
+                  <div className="h-8 bg-muted rounded w-12 mx-auto mb-2"></div>
+                  <div className="h-4 bg-muted rounded w-16 mx-auto"></div>
                 </div>
               ))}
             </div>
             <div className="space-y-4">
-              <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-muted rounded w-1/3"></div>
+              <div className="h-32 bg-muted rounded"></div>
             </div>
           </div>
         </div>
@@ -111,16 +111,16 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
 
   if (!analytics) {
     return (
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-medium text-gray-900">Project Analytics</h2>
+      <div className="bg-background rounded-lg shadow">
+        <div className="px-6 py-4 border-b border-border">
+          <h2 className="text-lg font-medium text-foreground">Project Analytics</h2>
         </div>
         <div className="p-6">
           <div className="text-center py-6">
-            <svg className="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="mx-auto h-8 w-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <p className="mt-2 text-sm text-gray-500">No analytics data available</p>
+            <p className="mt-2 text-sm text-muted-foreground">No analytics data available</p>
           </div>
         </div>
       </div>
@@ -128,14 +128,14 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
   }
 
   return (
-    <div className="bg-white rounded-lg shadow">
-      <div className="px-6 py-4 border-b border-gray-200">
+    <div className="bg-background rounded-lg shadow">
+      <div className="px-6 py-4 border-b border-border">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium text-gray-900">Project Analytics</h2>
+          <h2 className="text-lg font-medium text-foreground">Project Analytics</h2>
           <select
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value as any)}
-            className="text-sm border-gray-300 rounded-md"
+            className="text-sm border-border rounded-md"
           >
             <option value="week">This Week</option>
             <option value="month">This Month</option>
@@ -148,23 +148,23 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
         {/* Key Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="text-center">
-            <div className="text-2xl font-bold text-primary-600">
+            <div className="text-2xl font-bold text-primary">
               {analytics.totalStories}
             </div>
-            <div className="text-sm text-gray-500">Total Stories</div>
+            <div className="text-sm text-muted-foreground">Total Stories</div>
             {timeRange !== 'all' && (
-              <div className="text-xs text-gray-400 mt-1">
+              <div className="text-xs text-muted-foreground/80 mt-1">
                 +{timeRange === 'week' ? analytics.storiesThisWeek : analytics.storiesThisMonth} this {timeRange}
               </div>
             )}
           </div>
           
           <div className="text-center">
-            <div className="text-2xl font-bold text-secondary-600">
+            <div className="text-2xl font-bold text-secondary">
               {formatDuration(analytics.totalDuration)}
             </div>
-            <div className="text-sm text-gray-500">Total Duration</div>
-            <div className="text-xs text-gray-400 mt-1">
+            <div className="text-sm text-muted-foreground">Total Duration</div>
+            <div className="text-xs text-muted-foreground/80 mt-1">
               Avg: {formatDuration(analytics.averageStoryLength)}
             </div>
           </div>
@@ -173,8 +173,8 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
             <div className="text-2xl font-bold text-green-600">
               {analytics.totalInteractions}
             </div>
-            <div className="text-sm text-gray-500">Interactions</div>
-            <div className="text-xs text-gray-400 mt-1">
+            <div className="text-sm text-muted-foreground">Interactions</div>
+            <div className="text-xs text-muted-foreground/80 mt-1">
               Comments & Questions
             </div>
           </div>
@@ -183,8 +183,8 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
             <div className="text-2xl font-bold text-purple-600">
               {getProgressPercentage(analytics.completedChapters, analytics.totalChapters)}%
             </div>
-            <div className="text-sm text-gray-500">Progress</div>
-            <div className="text-xs text-gray-400 mt-1">
+            <div className="text-sm text-muted-foreground">Progress</div>
+            <div className="text-xs text-muted-foreground/80 mt-1">
               {analytics.completedChapters}/{analytics.totalChapters} chapters
             </div>
           </div>
@@ -192,23 +192,23 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
 
         {/* Chapter Progress */}
         <div className="mb-8">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">Chapter Progress</h3>
+          <h3 className="text-sm font-medium text-foreground mb-4">Chapter Progress</h3>
           <div className="space-y-3">
             {analytics.chapterProgress.map((chapter) => (
               <div key={chapter.chapterId} className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm font-medium text-foreground">
                       {chapter.chapterName}
                     </span>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-muted-foreground">
                       {chapter.storyCount} stories
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className={`h-2 rounded-full ${
-                        chapter.isCompleted ? 'bg-green-500' : 'bg-blue-500'
+                        chapter.isCompleted ? 'bg-green-500' : 'bg-primary'
                       }`}
                       style={{
                         width: chapter.isCompleted ? '100%' : `${Math.min(chapter.storyCount * 20, 80)}%`
@@ -231,26 +231,26 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
         {/* Facilitator Activity */}
         {analytics.facilitatorStats.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Facilitator Activity</h3>
+            <h3 className="text-sm font-medium text-foreground mb-4">Facilitator Activity</h3>
             <div className="space-y-3">
               {analytics.facilitatorStats.map((facilitator) => (
                 <div
                   key={facilitator.facilitatorId}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
                 >
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-foreground">
                       {facilitator.facilitatorName}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       {facilitator.interactionCount} interactions • Active {formatRelativeTime(facilitator.lastActive)}
                     </p>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-sm font-medium text-foreground">
                       {facilitator.interactionCount}
                     </div>
-                    <div className="text-xs text-gray-500">interactions</div>
+                    <div className="text-xs text-muted-foreground">interactions</div>
                   </div>
                 </div>
               ))}
@@ -261,26 +261,26 @@ export function ProjectAnalyticsPanel({ projectId }: ProjectAnalyticsPanelProps)
         {/* Storyteller Activity */}
         {analytics.storytellerStats.length > 0 && (
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Storyteller Activity</h3>
+            <h3 className="text-sm font-medium text-foreground mb-4">Storyteller Activity</h3>
             <div className="space-y-3">
               {analytics.storytellerStats.map((storyteller) => (
                 <div
                   key={storyteller.storytellerId}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
                 >
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-foreground">
                       {storyteller.storytellerName}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       {storyteller.storyCount} stories • {formatDuration(storyteller.totalDuration)} • Last story {formatRelativeTime(storyteller.lastStory)}
                     </p>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-sm font-medium text-foreground">
                       {storyteller.storyCount}
                     </div>
-                    <div className="text-xs text-gray-500">stories</div>
+                    <div className="text-xs text-muted-foreground">stories</div>
                   </div>
                 </div>
               ))}

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect, Suspense } from 'react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -105,19 +105,23 @@ function VerifyPageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">Enter Verification Code</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground">
+            Enter Verification Code
+          </h1>
+          <p className="mt-2 text-muted-foreground">
             We sent a code to {email}
           </p>
         </div>
 
-        <FurbridgeCard className="p-8">
+        <Card className="p-8">
           <form onSubmit={handleVerify} className="space-y-6">
             <div>
-              <Label className="text-center block mb-4">Verification Code</Label>
+              <Label className="text-center block mb-4">
+                Verification Code
+              </Label>
               <div className="flex justify-center space-x-2">
                 {otp.map((digit, index) => (
                   <Input
@@ -136,22 +140,23 @@ function VerifyPageContent() {
               </div>
             </div>
 
-            <FurbridgeButton
+            <Button
               type="submit"
-              variant="orange"
               size="lg"
               className="w-full"
               disabled={isLoading || otp.join('').length !== 6}
             >
               {isLoading ? 'Verifying...' : 'Verify & Continue'}
-            </FurbridgeButton>
+            </Button>
 
             {message && (
-              <div className={`text-sm text-center ${
-                message.includes('Error') || message.includes('Invalid') 
-                  ? 'text-destructive' 
-                  : 'text-furbridge-teal'
-              }`}>
+              <div
+                className={`text-sm text-center ${
+                  message.includes('Error') || message.includes('Invalid')
+                    ? 'text-destructive'
+                    : 'text-primary'
+                }`}
+              >
                 {message}
               </div>
             )}
@@ -161,19 +166,19 @@ function VerifyPageContent() {
                 <button
                   type="button"
                   onClick={handleResend}
-                  className="text-furbridge-orange hover:text-furbridge-orange-hover text-sm"
+                  className="text-primary hover:text-primary/90 text-sm"
                   disabled={isLoading}
                 >
                   Resend Code
                 </button>
               ) : (
-                <span className="text-gray-600 text-sm">
+                <span className="text-muted-foreground text-sm">
                   Resend in {countdown}s
                 </span>
               )}
             </div>
           </form>
-        </FurbridgeCard>
+        </Card>
       </div>
     </div>
   )
@@ -181,11 +186,13 @@ function VerifyPageContent() {
 
 export default function VerifyPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      }
+    >
       <VerifyPageContent />
     </Suspense>
   )

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -134,10 +134,10 @@ export default function CreateProjectPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-secondary/10 to-primary/10 p-4">
         <div className="max-w-2xl mx-auto space-y-6">
-          <div className="h-8 w-48 bg-gray-200 rounded animate-pulse"></div>
-          <div className="h-96 bg-gray-200 rounded-lg animate-pulse"></div>
+          <div className="h-8 w-48 bg-muted rounded animate-pulse"></div>
+          <div className="h-96 bg-muted rounded-lg animate-pulse"></div>
         </div>
       </div>
     )
@@ -145,14 +145,14 @@ export default function CreateProjectPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-secondary/10 to-primary/10 p-4">
         <div className="max-w-2xl mx-auto text-center py-16">
-          <h1 className="text-2xl font-bold text-gray-900">Authentication Required</h1>
-          <p className="text-gray-600 mt-2">Please sign in to create a project.</p>
+          <h1 className="text-2xl font-bold text-foreground">Authentication Required</h1>
+          <p className="text-muted-foreground mt-2">Please sign in to create a project.</p>
           <Link href="/auth/signin">
-            <FurbridgeButton className="mt-4">
+            <Button className="mt-4">
               Sign In
-            </FurbridgeButton>
+            </Button>
           </Link>
         </div>
       </div>
@@ -162,12 +162,12 @@ export default function CreateProjectPage() {
   const canCreateProject = resources && resources.project_vouchers > 0
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-furbridge-warm-gray/10 to-furbridge-teal/10 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-secondary/10 to-primary/10 p-4">
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Back Navigation */}
-        <Link 
+        <Link
           href="/dashboard"
-          className="inline-flex items-center text-gray-600 hover:text-gray-900"
+          className="inline-flex items-center text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Dashboard
@@ -176,87 +176,50 @@ export default function CreateProjectPage() {
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-furbridge-orange/10 rounded-full flex items-center justify-center">
-              <Sparkles className="h-8 w-8 text-furbridge-orange" />
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+              <Sparkles className="h-8 w-8 text-primary" />
             </div>
           </div>
           
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-foreground">
             Create New Project
           </h1>
           
-          <p className="text-gray-600 max-w-md mx-auto">
+          <p className="text-muted-foreground max-w-md mx-auto">
             Start capturing precious family stories by creating a new story project
           </p>
         </div>
 
         {/* Resource Check */}
         {!canCreateProject ? (
-          <FurbridgeCard className="p-6 border-amber-200 bg-amber-50">
+          <Card className="p-6 border-warning bg-warning/10">
             <div className="flex items-start space-x-3">
-              <AlertCircle className="h-6 w-6 text-amber-600 mt-1 flex-shrink-0" />
+              <AlertCircle className="h-6 w-6 text-warning mt-1 flex-shrink-0" />
               <div>
-                <h3 className="font-semibold text-amber-900 mb-2">
+                <h3 className="font-semibold text-warning-foreground mb-2">
                   No Project Vouchers Available
                 </h3>
-                <p className="text-amber-800 mb-4">
-                  You need at least 1 project voucher to create a new project. 
-                  Purchase a Saga Package to get project vouchers and seats.
+                <p className="text-warning-foreground/80">
+                  You have used all your available project vouchers. To create more projects, please upgrade your plan or contact support for more options.
                 </p>
-                <Link href="/dashboard/purchase">
-                  <FurbridgeButton variant="orange" size="sm">
-                    Purchase Package
-                  </FurbridgeButton>
-                </Link>
+                <div className="mt-4 space-x-3">
+                  <Link href="/dashboard/billing">
+                    <Button variant="outline" className="border-warning text-warning-foreground hover:bg-warning/20">
+                      Upgrade Plan
+                    </Button>
+                  </Link>
+                  <Button variant="ghost" className="text-warning-foreground hover:bg-warning/20">
+                    Contact Support
+                  </Button>
+                </div>
               </div>
             </div>
-          </FurbridgeCard>
+          </Card>
         ) : (
-          <>
-            {/* Resource Status */}
-            <FurbridgeCard className="p-6">
-              <div className="space-y-4">
-                <h3 className="font-semibold text-gray-900 flex items-center">
-                  <Users className="h-5 w-5 mr-2 text-furbridge-teal" />
-                  Your Available Resources
-                </h3>
-                
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-furbridge-orange">
-                      {resources.project_vouchers}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Project Vouchers
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-furbridge-teal">
-                      {resources.facilitator_seats}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Facilitator Seats
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-furbridge-warm-gray">
-                      {resources.storyteller_seats}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Storyteller Seats
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-                  <strong>Creating this project will consume:</strong> 1 Project Voucher + 1 Storyteller Seat
-                </div>
-              </div>
-            </FurbridgeCard>
-
-            {/* Project Form */}
-            <FurbridgeCard className="p-8">
-              <form onSubmit={handleCreateProject} className="space-y-6">
+          <form onSubmit={handleCreateProject}>
+            <Card className="p-8">
+              <div className="space-y-6">
+                {/* Project Name */}
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="projectName">Project Name *</Label>
@@ -294,53 +257,43 @@ export default function CreateProjectPage() {
                       className="mt-1"
                       required
                     />
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       We'll send an invitation to this email address
                     </p>
                   </div>
                 </div>
 
                 {error && (
-                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="p-4 bg-destructive/10 border border-destructive rounded-lg">
                     <div className="flex items-center space-x-2">
-                      <AlertCircle className="h-5 w-5 text-red-600" />
-                      <span className="text-red-800">{error}</span>
+                      <AlertCircle className="h-5 w-5 text-destructive" />
+                      <span className="text-destructive-foreground">{error}</span>
                     </div>
                   </div>
                 )}
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <FurbridgeButton
+                  <Button
                     type="button"
                     variant="outline"
                     onClick={() => router.back()}
                     className="sm:w-auto"
                   >
                     Cancel
-                  </FurbridgeButton>
+                  </Button>
                   
-                  <FurbridgeButton
+                  <Button
                     type="submit"
-                    variant="orange"
+                    variant="default"
                     disabled={isCreating}
                     className="flex-1 sm:flex-none sm:min-w-48"
                   >
                     {isCreating ? 'Creating Project...' : 'Create Project'}
-                  </FurbridgeButton>
+                  </Button>
                 </div>
-              </form>
-            </FurbridgeCard>
-
-            {/* Help Text */}
-            <div className="text-center text-sm text-gray-600">
-              <p>
-                Need help getting started?{' '}
-                <a href="mailto:support@saga.family" className="text-furbridge-orange hover:underline">
-                  Contact Support
-                </a>
-              </p>
-            </div>
-          </>
+              </div>
+            </Card>
+          </form>
         )}
       </div>
     </div>

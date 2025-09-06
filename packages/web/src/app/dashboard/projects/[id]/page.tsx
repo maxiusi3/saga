@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -12,9 +12,13 @@ import { Settings, Search, Play, MessageCircle, HelpCircle, Sparkles, BookOpen, 
 import Link from 'next/link'
 import { StoryCard } from '@/components/story/story-card'
 import { ChapterSummaryCard } from '@/components/story/chapter-summary-card'
-import { AIGeneratedContent } from '../../../../../shared/src/lib/ai-services'
-import { ActionPermissionGate, RolePermissionGate, PermissionProvider } from '@/components/permissions/PermissionGate'
-import { UserRole, getRoleDisplayInfo } from '@saga/shared'
+import { AIGeneratedContent } from '@saga/shared/lib/ai-services'
+import {
+  ActionPermissionGate,
+  RolePermissionGate,
+  PermissionProvider,
+} from '@/components/permissions/PermissionGate'
+import { UserRole, getRoleDisplayInfo } from '@saga/shared/lib/permissions'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
@@ -160,12 +164,12 @@ export default function ProjectDetailPage() {
   if (error) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-gray-900">Error</h1>
-        <p className="text-gray-600 mt-2">{error}</p>
+        <h1 className="text-2xl font-bold text-foreground">Error</h1>
+        <p className="text-muted-foreground mt-2">{error}</p>
         <Link href="/dashboard">
-          <FurbridgeButton variant="outline" className="mt-4">
+          <Button variant="outline" className="mt-4">
             Back to Dashboard
-          </FurbridgeButton>
+          </Button>
         </Link>
       </div>
     )
@@ -174,47 +178,17 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-gray-900">Project not found</h1>
+        <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
         <Link href="/dashboard">
-          <FurbridgeButton variant="outline" className="mt-4">
+          <Button variant="outline" className="mt-4">
             Back to Dashboard
-          </FurbridgeButton>
+          </Button>
         </Link>
       </div>
     )
   }
 
-  if (project.status === 'awaiting_invitation') {
-    return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">{project.title}</h1>
-          <Link href={`/dashboard/projects/${projectId}/settings`}>
-            <FurbridgeButton variant="ghost" size="icon">
-              <Settings className="h-5 w-5" />
-            </FurbridgeButton>
-          </Link>
-        </div>
-
-        <div className="text-center py-16">
-          <div className="max-w-md mx-auto space-y-6">
-            <div className="text-6xl mb-4">📬</div>
-            <h2 className="text-2xl font-semibold text-gray-900">
-              Invite a Storyteller to Begin
-            </h2>
-            <p className="text-gray-600">
-              Send an invitation to your family member to start capturing their stories.
-            </p>
-            <FurbridgeButton variant="orange" size="lg">
-              Invite Storyteller
-            </FurbridgeButton>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const roleInfo = getRoleDisplayInfo(project.user_role)
+  const roleInfo = project.user_role ? getRoleDisplayInfo(project.user_role) : null
 
   return (
     <PermissionProvider 
@@ -226,17 +200,19 @@ export default function ProjectDetailPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{project.title}</h1>
+            <h1 className="text-3xl font-bold text-foreground">{project.title}</h1>
             {project.description && (
-              <p className="text-gray-600 mt-1">{project.description}</p>
+              <p className="text-muted-foreground mt-1">{project.description}</p>
             )}
             <div className="flex items-center space-x-3 mt-3">
-              <Badge className={roleInfo.color}>
-                <span className="mr-1">{roleInfo.icon}</span>
-                {roleInfo.label}
-                {project.is_owner && ' (Owner)'}
-              </Badge>
-              <div className="text-sm text-gray-500">
+              {roleInfo && (
+                <Badge variant={roleInfo.color as any}>
+                  <span className="mr-1">{roleInfo.icon}</span>
+                  {roleInfo.label}
+                  {project.is_owner && ' (Owner)'}
+                </Badge>
+              )}
+              <div className="text-sm text-muted-foreground">
                 {project.member_count} members • {project.story_count} stories
               </div>
             </div>
@@ -244,22 +220,22 @@ export default function ProjectDetailPage() {
           <div className="flex items-center space-x-2">
             <RolePermissionGate allowedRoles={['storyteller']} userRole={project.user_role}>
               <Link href={`/dashboard/projects/${projectId}/record`}>
-                <FurbridgeButton variant="orange">
+                <Button variant="default">
                   <Plus className="h-4 w-4 mr-2" />
                   Record Story
-                </FurbridgeButton>
+                </Button>
               </Link>
             </RolePermissionGate>
 
-            <ActionPermissionGate 
-              action="canEditProjectSettings" 
-              userRole={project.user_role} 
+            <ActionPermissionGate
+              action="manageProject"
+              userRole={project.user_role}
               isProjectOwner={project.is_owner}
             >
               <Link href={`/dashboard/projects/${projectId}/settings`}>
-                <FurbridgeButton variant="ghost" size="icon">
+                <Button variant="ghost" size="icon">
                   <Settings className="h-5 w-5" />
-                </FurbridgeButton>
+                </Button>
               </Link>
             </ActionPermissionGate>
           </div>
@@ -270,8 +246,8 @@ export default function ProjectDetailPage() {
           {stories.length === 0 ? (
             <div className="text-center py-16">
               <div className="text-6xl mb-4">📖</div>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-2">No stories yet</h2>
-              <p className="text-gray-600 mb-6">
+              <h2 className="text-2xl font-semibold text-foreground mb-2">No stories yet</h2>
+              <p className="text-muted-foreground mb-6">
                 {project.user_role === 'storyteller'
                   ? 'Start sharing your memories by recording your first story'
                   : 'Invite your storyteller to begin capturing precious memories'
@@ -279,10 +255,10 @@ export default function ProjectDetailPage() {
               </p>
               <RolePermissionGate allowedRoles={['storyteller']} userRole={project.user_role}>
                 <Link href={`/dashboard/projects/${projectId}/record`}>
-                  <FurbridgeButton variant="orange" size="lg">
+                  <Button variant="default" size="lg">
                     <Plus className="h-5 w-5 mr-2" />
                     Record Your First Story
-                  </FurbridgeButton>
+                  </Button>
                 </Link>
               </RolePermissionGate>
             </div>

@@ -87,19 +87,19 @@ export function ProjectSettingsPanel({
     switch (settings.subscriptionStatus) {
       case 'active':
         return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success-foreground">
             Active
           </span>
         )
       case 'trial':
         return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
             Trial
           </span>
         )
       case 'expired':
         return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-destructive/10 text-destructive-foreground">
             Expired
           </span>
         )
@@ -109,7 +109,7 @@ export function ProjectSettingsPanel({
   const getArchivalStatusBadge = () => {
     if (settings.archivalStatus === 'archived') {
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
           Archived (Read-only)
         </span>
       )
@@ -118,10 +118,10 @@ export function ProjectSettingsPanel({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-lg font-medium text-gray-900">Project Settings</h2>
-        <p className="text-sm text-gray-500 mt-1">
+    <div className="bg-background rounded-lg shadow">
+      <div className="px-6 py-4 border-b border-border">
+        <h2 className="text-lg font-medium text-foreground">Project Settings</h2>
+        <p className="text-sm text-muted-foreground mt-1">
           Manage your project configuration and preferences
         </p>
       </div>
@@ -129,12 +129,12 @@ export function ProjectSettingsPanel({
       <div className="p-6 space-y-6">
         {/* Project Status */}
         <div>
-          <h3 className="text-sm font-medium text-gray-900 mb-3">Project Status</h3>
+          <h3 className="text-sm font-medium text-foreground mb-3">Project Status</h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-700">Subscription Status</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-sm font-medium text-muted-foreground">Subscription Status</p>
+                <p className="text-xs text-muted-foreground">
                   {settings.subscriptionExpiresAt && (
                     <>Expires {formatRelativeTime(settings.subscriptionExpiresAt)}</>
                   )}
@@ -145,7 +145,7 @@ export function ProjectSettingsPanel({
                 {settings.subscriptionStatus === 'expired' && isProjectOwner && (
                   <button
                     onClick={handleRenewSubscription}
-                    className="text-sm font-medium text-primary-600 hover:text-primary-700"
+                    className="text-sm font-medium text-primary hover:text-primary/90"
                   >
                     Renew
                   </button>
@@ -156,8 +156,8 @@ export function ProjectSettingsPanel({
             {settings.archivalStatus === 'archived' && (
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Archival Status</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm font-medium text-muted-foreground">Archival Status</p>
+                  <p className="text-xs text-muted-foreground">
                     Project is in read-only mode
                   </p>
                 </div>
@@ -170,10 +170,10 @@ export function ProjectSettingsPanel({
         {/* Basic Settings */}
         {isProjectOwner && (
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-3">Basic Settings</h3>
+            <h3 className="text-sm font-medium text-foreground mb-3">Basic Settings</h3>
             <div className="space-y-4">
               <div>
-                <label htmlFor="project-name" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="project-name" className="block text-sm font-medium text-muted-foreground">
                   Project Name
                 </label>
                 <input
@@ -181,13 +181,13 @@ export function ProjectSettingsPanel({
                   id="project-name"
                   value={settings.name}
                   onChange={(e) => handleSettingChange('name', e.target.value)}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  className="mt-1 block w-full border-border rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
                   disabled={settings.archivalStatus === 'archived'}
                 />
               </div>
               
               <div>
-                <label htmlFor="project-description" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="project-description" className="block text-sm font-medium text-muted-foreground">
                   Description
                 </label>
                 <textarea
@@ -195,7 +195,7 @@ export function ProjectSettingsPanel({
                   rows={3}
                   value={settings.description}
                   onChange={(e) => handleSettingChange('description', e.target.value)}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  className="mt-1 block w-full border-border rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
                   disabled={settings.archivalStatus === 'archived'}
                 />
               </div>
@@ -206,12 +206,12 @@ export function ProjectSettingsPanel({
         {/* Feature Settings */}
         {isProjectOwner && settings.archivalStatus !== 'archived' && (
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-3">Features</h3>
+            <h3 className="text-sm font-medium text-foreground mb-3">Features</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Auto-generate Chapter Summaries</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm font-medium text-muted-foreground">Auto-generate Chapter Summaries</p>
+                  <p className="text-xs text-muted-foreground">
                     Automatically create AI-powered summaries when chapters are completed
                   </p>
                 </div>
@@ -222,7 +222,7 @@ export function ProjectSettingsPanel({
                     onChange={(e) => handleSettingChange('autoGenerateChapterSummaries', e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                  <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                 </label>
               </div>
             </div>
@@ -231,12 +231,12 @@ export function ProjectSettingsPanel({
 
         {/* Notification Settings */}
         <div>
-          <h3 className="text-sm font-medium text-gray-900 mb-3">Notifications</h3>
+          <h3 className="text-sm font-medium text-foreground mb-3">Notifications</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-700">New Story Notifications</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-sm font-medium text-muted-foreground">New Story Notifications</p>
+                <p className="text-xs text-muted-foreground">
                   Get notified when new stories are recorded
                 </p>
               </div>
@@ -247,14 +247,14 @@ export function ProjectSettingsPanel({
                   onChange={(e) => handleNotificationChange('newStoryNotifications', e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-700">New Interaction Notifications</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-sm font-medium text-muted-foreground">New Interaction Notifications</p>
+                <p className="text-xs text-muted-foreground">
                   Get notified when someone comments or asks questions
                 </p>
               </div>
@@ -265,14 +265,14 @@ export function ProjectSettingsPanel({
                   onChange={(e) => handleNotificationChange('newInteractionNotifications', e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-700">Weekly Digest</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-sm font-medium text-muted-foreground">Weekly Digest</p>
+                <p className="text-xs text-muted-foreground">
                   Receive a weekly summary of project activity
                 </p>
               </div>
@@ -283,7 +283,7 @@ export function ProjectSettingsPanel({
                   onChange={(e) => handleNotificationChange('weeklyDigest', e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
           </div>
@@ -291,7 +291,7 @@ export function ProjectSettingsPanel({
 
         {/* Save Button */}
         {hasChanges && (
-          <div className="pt-4 border-t border-gray-200">
+          <div className="pt-4 border-t border-border">
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => {

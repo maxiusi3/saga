@@ -162,28 +162,28 @@ export function getRoleDisplayInfo(role: UserRole) {
       return {
         label: 'Facilitator',
         description: 'Can manage project settings and edit all content',
-        color: 'bg-furbridge-teal text-white',
+        color: 'bg-primary text-primary-foreground',
         icon: '👑'
       }
     case 'co_facilitator':
       return {
         label: 'Co-Facilitator',
         description: 'Can view all content and participate in discussions',
-        color: 'bg-furbridge-warm-gray text-white',
+        color: 'bg-secondary text-secondary-foreground',
         icon: '🤝'
       }
     case 'storyteller':
       return {
         label: 'Storyteller',
         description: 'Can record stories and respond to comments',
-        color: 'bg-furbridge-orange text-white',
+        color: 'bg-accent text-accent-foreground',
         icon: '🎙️'
       }
     default:
       return {
         label: 'Unknown',
         description: 'Unknown role',
-        color: 'bg-gray-500 text-white',
+        color: 'bg-muted text-muted-foreground',
         icon: '❓'
       }
   }

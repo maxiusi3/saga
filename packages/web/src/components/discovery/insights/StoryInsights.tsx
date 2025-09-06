@@ -70,11 +70,11 @@ export function StoryInsights({ storyId, className = '' }: StoryInsightsProps) {
     return (
       <Card className={`story-insights p-4 ${className}`}>
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
+          <div className="h-4 bg-muted rounded w-1/3 mb-4"></div>
           <div className="space-y-3">
-            <div className="h-3 bg-gray-200 rounded"></div>
-            <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            <div className="h-3 bg-muted rounded"></div>
+            <div className="h-3 bg-muted rounded w-2/3"></div>
+            <div className="h-3 bg-muted rounded w-1/2"></div>
           </div>
         </div>
       </Card>
@@ -84,9 +84,9 @@ export function StoryInsights({ storyId, className = '' }: StoryInsightsProps) {
   if (error || !stats) {
     return (
       <Card className={`story-insights p-4 ${className}`}>
-        <div className="text-center text-gray-500">
+        <div className="text-center text-muted-foreground">
           <div className="text-sm">Unable to load story insights</div>
-          {error && <div className="text-xs text-red-500 mt-1">{error}</div>}
+          {error && <div className="text-xs text-destructive mt-1">{error}</div>}
         </div>
       </Card>
     );
@@ -94,48 +94,48 @@ export function StoryInsights({ storyId, className = '' }: StoryInsightsProps) {
 
   return (
     <Card className={`story-insights p-4 ${className}`}>
-      <h3 className="font-semibold text-gray-900 mb-4">Story Insights</h3>
+      <h3 className="font-semibold text-foreground mb-4">Story Insights</h3>
       
       <div className="space-y-4">
         {/* Key Metrics */}
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-primary">
               {stats.totalListens}
             </div>
-            <div className="text-xs text-gray-600">Total Listens</div>
+            <div className="text-xs text-muted-foreground">Total Listens</div>
           </div>
           
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-success">
               {formatPercentage(stats.completionRate)}
             </div>
-            <div className="text-xs text-gray-600">Completion Rate</div>
+            <div className="text-xs text-muted-foreground">Completion Rate</div>
           </div>
         </div>
 
         {/* Engagement Metrics */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Average Listen Duration:</span>
+            <span className="text-muted-foreground">Average Listen Duration:</span>
             <span className="font-medium">
               {formatDuration(stats.averageListenDuration)}
             </span>
           </div>
           
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Bookmarks:</span>
+            <span className="text-muted-foreground">Bookmarks:</span>
             <span className="font-medium">{stats.bookmarkCount}</span>
           </div>
           
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Shares:</span>
+            <span className="text-muted-foreground">Shares:</span>
             <span className="font-medium">{stats.shareCount}</span>
           </div>
           
           {stats.lastListened && (
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Last Listened:</span>
+              <span className="text-muted-foreground">Last Listened:</span>
               <span className="font-medium">
                 {new Date(stats.lastListened).toLocaleDateString()}
               </span>
@@ -146,7 +146,7 @@ export function StoryInsights({ storyId, className = '' }: StoryInsightsProps) {
         {/* Device Breakdown */}
         {stats.deviceBreakdown.length > 0 && (
           <div>
-            <div className="text-sm font-medium text-gray-700 mb-2">
+            <div className="text-sm font-medium text-muted-foreground mb-2">
               Listening Devices
             </div>
             <div className="flex flex-wrap gap-1">
@@ -162,13 +162,13 @@ export function StoryInsights({ storyId, className = '' }: StoryInsightsProps) {
         {/* Popular Times */}
         {stats.popularTimeRanges.length > 0 && (
           <div>
-            <div className="text-sm font-medium text-gray-700 mb-2">
+            <div className="text-sm font-medium text-muted-foreground mb-2">
               Popular Listening Times
             </div>
             <div className="space-y-1">
               {stats.popularTimeRanges.slice(0, 3).map((timeRange, index) => (
                 <div key={index} className="flex justify-between text-xs">
-                  <span className="text-gray-600">
+                  <span className="text-muted-foreground">
                     {timeRange.hour}:00 - {timeRange.hour + 1}:00
                   </span>
                   <span className="font-medium">{timeRange.count} listens</span>

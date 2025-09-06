@@ -99,7 +99,7 @@ export function MonitoringDashboard() {
       case 'unhealthy':
         return 'text-red-600 bg-red-100'
       default:
-        return 'text-gray-600 bg-gray-100'
+        return 'text-muted-foreground bg-muted'
     }
   }
 
@@ -128,12 +128,12 @@ export function MonitoringDashboard() {
     return (
       <div className="p-6">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+          <div className="h-8 bg-muted rounded w-1/4 mb-6"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg shadow p-6">
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-8 bg-gray-200 rounded"></div>
+              <div key={i} className="bg-background rounded-lg shadow p-6">
+                <div className="h-4 bg-muted rounded mb-2"></div>
+                <div className="h-8 bg-muted rounded"></div>
               </div>
             ))}
           </div>
@@ -145,19 +145,19 @@ export function MonitoringDashboard() {
   if (error) {
     return (
       <div className="p-6">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
           <div className="flex">
             <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-destructive/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Monitoring Error</h3>
-              <p className="mt-1 text-sm text-red-700">{error}</p>
+              <h3 className="text-sm font-medium text-destructive-foreground">Monitoring Error</h3>
+              <p className="mt-1 text-sm text-destructive-foreground/80">{error}</p>
               <button
                 onClick={fetchHealthData}
-                className="mt-2 text-sm text-red-600 hover:text-red-500 underline"
+                className="mt-2 text-sm text-destructive hover:text-destructive/80 underline"
               >
                 Retry
               </button>
@@ -173,8 +173,8 @@ export function MonitoringDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">System Monitoring</h1>
-          <p className="text-sm text-gray-600">
+          <h1 className="text-2xl font-bold text-foreground">System Monitoring</h1>
+          <p className="text-sm text-muted-foreground">
             Last updated: {new Date(health?.timestamp || Date.now()).toLocaleString()}
           </p>
         </div>
@@ -184,13 +184,13 @@ export function MonitoringDashboard() {
               type="checkbox"
               checked={autoRefresh}
               onChange={(e) => setAutoRefresh(e.target.checked)}
-              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              className="rounded border-border text-primary focus:ring-primary"
             />
-            <span className="ml-2 text-sm text-gray-700">Auto-refresh</span>
+            <span className="ml-2 text-sm text-foreground">Auto-refresh</span>
           </label>
           <button
             onClick={fetchHealthData}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             Refresh
           </button>
@@ -200,41 +200,41 @@ export function MonitoringDashboard() {
       {/* System Status Overview */}
       {health && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-background rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(health.status)}`}>
                 {health.status.toUpperCase()}
               </div>
             </div>
             <div className="mt-2">
-              <h3 className="text-lg font-semibold text-gray-900">System Status</h3>
-              <p className="text-sm text-gray-600">Overall system health</p>
+              <h3 className="text-lg font-semibold text-foreground">System Status</h3>
+              <p className="text-sm text-muted-foreground">Overall system health</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-2xl font-bold text-gray-900">{formatUptime(health.uptime)}</div>
+          <div className="bg-background rounded-lg shadow p-6">
+            <div className="text-2xl font-bold text-foreground">{formatUptime(health.uptime)}</div>
             <div className="mt-2">
-              <h3 className="text-lg font-semibold text-gray-900">Uptime</h3>
-              <p className="text-sm text-gray-600">System running time</p>
+              <h3 className="text-lg font-semibold text-foreground">Uptime</h3>
+              <p className="text-sm text-muted-foreground">System running time</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="text-2xl font-bold text-gray-900">{health.version}</div>
+          <div className="bg-background rounded-lg shadow p-6">
+            <div className="text-2xl font-bold text-foreground">{health.version}</div>
             <div className="mt-2">
-              <h3 className="text-lg font-semibold text-gray-900">Version</h3>
-              <p className="text-sm text-gray-600">{health.environment} environment</p>
+              <h3 className="text-lg font-semibold text-foreground">Version</h3>
+              <p className="text-sm text-muted-foreground">{health.environment} environment</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-background rounded-lg shadow p-6">
             <div className="text-2xl font-bold text-green-600">{health.summary.healthy}</div>
             <div className="mt-2">
-              <h3 className="text-lg font-semibold text-gray-900">Healthy Services</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="text-lg font-semibold text-foreground">Healthy Services</h3>
+              <p className="text-sm text-muted-foreground">
                 {health.summary.unhealthy > 0 && (
-                  <span className="text-red-600">{health.summary.unhealthy} unhealthy</span>
+                  <span className="text-destructive">{health.summary.unhealthy} unhealthy</span>
                 )}
                 {health.summary.degraded > 0 && (
                   <span className="text-yellow-600">{health.summary.degraded} degraded</span>
@@ -248,61 +248,61 @@ export function MonitoringDashboard() {
       {/* Performance Metrics */}
       {metrics && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance</h3>
+          <div className="bg-background rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Performance</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Requests (5min)</span>
+                <span className="text-sm text-muted-foreground">Requests (5min)</span>
                 <span className="text-sm font-medium">{metrics.performance.requestCount}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Avg Response Time</span>
+                <span className="text-sm text-muted-foreground">Avg Response Time</span>
                 <span className="text-sm font-medium">{Math.round(metrics.performance.averageResponseTime)}ms</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Error Rate</span>
-                <span className={`text-sm font-medium ${metrics.performance.errorRate > 5 ? 'text-red-600' : 'text-green-600'}`}>
+                <span className="text-sm text-muted-foreground">Error Rate</span>
+                <span className={`text-sm font-medium ${metrics.performance.errorRate > 5 ? 'text-destructive' : 'text-green-600'}`}>
                   {metrics.performance.errorRate.toFixed(2)}%
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Active Connections</span>
+                <span className="text-sm text-muted-foreground">Active Connections</span>
                 <span className="text-sm font-medium">{metrics.performance.activeConnections}</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Resources</h3>
+          <div className="bg-background rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Resources</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Memory Usage</span>
+                <span className="text-sm text-muted-foreground">Memory Usage</span>
                 <span className="text-sm font-medium">{formatBytes(metrics.performance.memoryUsage)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">CPU Usage</span>
+                <span className="text-sm text-muted-foreground">CPU Usage</span>
                 <span className="text-sm font-medium">{metrics.performance.cpuUsage.toFixed(1)}%</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Business Metrics (24h)</h3>
+          <div className="bg-background rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Business Metrics (24h)</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Active Users</span>
+                <span className="text-sm text-muted-foreground">Active Users</span>
                 <span className="text-sm font-medium">{metrics.business.activeUsers}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Stories Uploaded</span>
+                <span className="text-sm text-muted-foreground">Stories Uploaded</span>
                 <span className="text-sm font-medium">{metrics.business.storiesUploaded}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Chapters Generated</span>
+                <span className="text-sm text-muted-foreground">Chapters Generated</span>
                 <span className="text-sm font-medium">{metrics.business.chaptersGenerated}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Exports Requested</span>
+                <span className="text-sm text-muted-foreground">Exports Requested</span>
                 <span className="text-sm font-medium">{metrics.business.exportsRequested}</span>
               </div>
             </div>
@@ -312,11 +312,11 @@ export function MonitoringDashboard() {
 
       {/* Service Health Checks */}
       {health && (
-        <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Service Health Checks</h3>
+        <div className="bg-background rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-border">
+            <h3 className="text-lg font-semibold text-foreground">Service Health Checks</h3>
           </div>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-border">
             {health.checks.map((check, index) => (
               <div key={index} className="px-6 py-4">
                 <div className="flex items-center justify-between">
@@ -324,21 +324,21 @@ export function MonitoringDashboard() {
                     <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(check.status)}`}>
                       {check.status}
                     </div>
-                    <span className="text-sm font-medium text-gray-900 capitalize">
+                    <span className="text-sm font-medium text-foreground capitalize">
                       {check.service.replace(/[-_]/g, ' ')}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-4 text-sm text-gray-600">
+                  <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                     <span>{check.responseTime}ms</span>
                     {check.error && (
-                      <span className="text-red-600 truncate max-w-xs" title={check.error}>
+                      <span className="text-destructive truncate max-w-xs" title={check.error}>
                         {check.error}
                       </span>
                     )}
                   </div>
                 </div>
                 {check.details && (
-                  <div className="mt-2 text-xs text-gray-500">
+                  <div className="mt-2 text-xs text-muted-foreground">
                     <pre className="whitespace-pre-wrap">
                       {JSON.stringify(check.details, null, 2)}
                     </pre>

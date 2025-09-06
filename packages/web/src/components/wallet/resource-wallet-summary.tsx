@@ -29,9 +29,9 @@ export default function ResourceWalletSummary({
     // For now, using mock data
     setTimeout(() => {
       setWallet({
-        projectVouchers: 1,
+        projectVouchers: 0,
         facilitatorSeats: 0,
-        storytellerSeats: 1
+        storytellerSeats: 0
       });
       setLoading(false);
     }, 500);

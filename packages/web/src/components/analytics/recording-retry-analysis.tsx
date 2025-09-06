@@ -99,9 +99,9 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
   };
 
   const getRetryRateColor = (retryCount: number): string => {
-    if (retryCount <= 1) return 'text-green-600';
-    if (retryCount <= 2) return 'text-yellow-600';
-    return 'text-red-600';
+    if (retryCount <= 1) return 'text-success';
+    if (retryCount <= 2) return 'text-warning';
+    return 'text-destructive';
   };
 
   const getRetryRateBadge = (retryCount: number): { variant: 'default' | 'secondary' | 'destructive', text: string } => {
@@ -114,8 +114,8 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
     return (
       <div className={`flex items-center justify-center h-64 ${className}`}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Analyzing retry patterns...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Analyzing retry patterns...</p>
         </div>
       </div>
     );
@@ -129,7 +129,7 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
           Failed to load retry analysis: {error}
           <button 
             onClick={fetchRetryAnalysis}
-            className="ml-2 text-blue-600 hover:text-blue-800 underline"
+            className="ml-2 text-primary hover:text-primary/80 underline"
           >
             Try again
           </button>
@@ -142,7 +142,7 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
     return (
       <Card className={className}>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-gray-600">No retry data available</p>
+          <p className="text-muted-foreground">No retry data available</p>
         </CardContent>
       </Card>
     );
@@ -150,25 +150,25 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
 
   const trendIcon = data.retryTrend === 'increasing' ? TrendingUp : 
                    data.retryTrend === 'decreasing' ? TrendingDown : Target;
-  const trendColor = data.retryTrend === 'increasing' ? 'text-red-600' : 
-                    data.retryTrend === 'decreasing' ? 'text-green-600' : 'text-gray-600';
+  const trendColor = data.retryTrend === 'increasing' ? 'text-destructive' : 
+                    data.retryTrend === 'decreasing' ? 'text-success' : 'text-muted-foreground';
 
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Recording Retry Analysis</h3>
-          <p className="text-gray-600">Understanding user recording behavior and friction points</p>
+          <h3 className="text-lg font-semibold text-foreground">Recording Retry Analysis</h3>
+          <p className="text-muted-foreground">Understanding user recording behavior and friction points</p>
         </div>
-        <RefreshCw className="h-6 w-6 text-blue-600" />
+        <RefreshCw className="h-6 w-6 text-primary" />
       </div>
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Average Retries</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Average Retries</CardTitle>
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${getRetryRateColor(data.averageRetryCount)}`}>
@@ -182,31 +182,31 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Max Retries</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Max Retries</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900">
+            <div className="text-2xl font-bold text-foreground">
               {data.maxRetryCount}
             </div>
-            <p className="text-xs text-gray-500 mt-1">Highest retry count</p>
+            <p className="text-xs text-muted-foreground mt-1">Highest retry count</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">First-Try Success</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">First-Try Success</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-success">
               {data.retryDistribution.find(d => d.retryCount === 0)?.percentage.toFixed(1) || '0'}%
             </div>
-            <p className="text-xs text-gray-500 mt-1">No retries needed</p>
+            <p className="text-xs text-muted-foreground mt-1">No retries needed</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">Retry Trend</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Retry Trend</CardTitle>
           </CardHeader>
           <CardContent>
             <div className={`flex items-center gap-2 ${trendColor}`}>
@@ -270,9 +270,9 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
                 <Line 
                   type="monotone" 
                   dataKey="successRate" 
-                  stroke="#10B981" 
+                  stroke="var(--success)" 
                   strokeWidth={2}
-                  dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }}
+                  dot={{ fill: 'var(--success)', strokeWidth: 2, r: 4 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -344,9 +344,9 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
               <Line 
                 type="monotone" 
                 dataKey="averageRetries" 
-                stroke="#EF4444" 
+                stroke="var(--destructive)" 
                 strokeWidth={2}
-                dot={{ fill: '#EF4444', strokeWidth: 2, r: 4 }}
+                dot={{ fill: 'var(--destructive)', strokeWidth: 2, r: 4 }}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -367,8 +367,8 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
               <CardContent>
                 <ul className="space-y-2">
                   {data.insights.map((insight, index) => (
-                    <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                    <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
                       {insight}
                     </li>
                   ))}
@@ -388,11 +388,11 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
               <CardContent>
                 <ul className="space-y-2">
                   {data.recommendations.map((recommendation, index) => (
-                    <li key={index} className="text-sm text-gray-700 flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0" />
+                    <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-warning rounded-full mt-2 flex-shrink-0" />
                       {recommendation}
                     </li>
-                  ))}
+                  ))}\
                 </ul>
               </CardContent>
             </Card>
