@@ -17,17 +17,6 @@ export async function GET(request: NextRequest) {
     // If OpenRouter is configured, mark content generation as available
     if (process.env.OPENROUTER_API_KEY) {
       status.services.content_generation = true
-      } catch (error: any) {
-        console.error('OpenAI health check failed:', error)
-        
-        // Still return success but mark services as unavailable
-        status.services.transcription = false
-        status.services.content_generation = false
-      }
-    } else {
-      // Mock mode - services are "available"
-      status.services.transcription = true
-      status.services.content_generation = true
     }
 
     return NextResponse.json(status)
@@ -38,7 +27,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         timestamp: new Date().toISOString(),
-        openai_configured: !!process.env.OPENAI_API_KEY,
+        openrouter_configured: !!process.env.OPENROUTER_API_KEY,
         services: {
           transcription: false,
           content_generation: false
