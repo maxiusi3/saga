@@ -1,5 +1,9 @@
 'use client'
 
+// 避免构建期预渲染导致的环境变量缺失问题
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import { useState, useEffect, Suspense } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -17,10 +21,13 @@ function VerifyPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams?.get('email') || ''
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+
+  // 仅在客户端事件中创建 Supabase 实例
+  const getSupabase = () =>
+    createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
   useEffect(() => {
     if (countdown > 0) {
@@ -61,6 +68,7 @@ function VerifyPageContent() {
     setMessage('')
 
     try {
+      const supabase = getSupabase()
       const { error } = await supabase.auth.verifyOtp({
         email,
         token: otpCode,
@@ -68,7 +76,7 @@ function VerifyPageContent() {
       })
 
       if (error) throw error
-      
+
       router.push('/dashboard')
     } catch (error) {
       setMessage('Invalid verification code. Please try again.')
@@ -85,15 +93,16 @@ function VerifyPageContent() {
 
     setIsLoading(true)
     try {
+      const supabase = getSupabase()
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`
         }
       })
-      
+
       if (error) throw error
-      
+
       setMessage('New verification code sent!')
       setCanResend(false)
       setCountdown(60)

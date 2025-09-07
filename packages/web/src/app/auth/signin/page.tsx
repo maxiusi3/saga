@@ -1,5 +1,9 @@
 'use client'
 
+// 避免构建期预渲染导致的环境变量缺失问题
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import { useState, useEffect, Suspense } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -14,12 +18,15 @@ function SignInPageContent() {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
   const router = useRouter()
   const searchParams = useSearchParams()
+
+  // 仅在客户端事件中创建 Supabase 实例，避免服务端渲染阶段访问环境变量
+  const getSupabase = () =>
+    createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
   // Check for error from callback
   useEffect(() => {
@@ -32,10 +39,12 @@ function SignInPageContent() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
     try {
+      const supabase = getSupabase()
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'https://saga-web-livid.vercel.app/auth/callback'
+          // 使用运行时当前域名，避免硬编码 Vercel 预览/生产域名
+          redirectTo: `${window.location.origin}/auth/callback`
         }
       })
       if (error) throw error
@@ -55,15 +64,16 @@ function SignInPageContent() {
     setMessage('')
 
     try {
+      const supabase = getSupabase()
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: 'https://saga-web-livid.vercel.app/auth/callback'
+          emailRedirectTo: `${window.location.origin}/auth/callback`
         }
       })
-      
+
       if (error) throw error
-      
+
       setMessage('Check your email for the login link!')
     } catch (error) {
       setMessage('Error sending login email')
