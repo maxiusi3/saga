@@ -14,50 +14,50 @@ function getNotificationDisplayInfo(type) {
         case 'new_story':
             return {
                 icon: '📖',
-                color: 'text-furbridge-teal',
-                bgColor: 'bg-furbridge-teal/10',
+                color: 'text-primary',
+                bgColor: 'bg-primary/10',
                 label: 'New Story'
             };
         case 'new_comment':
             return {
                 icon: '💬',
-                color: 'text-furbridge-orange',
-                bgColor: 'bg-furbridge-orange/10',
+                color: 'text-secondary',
+                bgColor: 'bg-secondary/10',
                 label: 'New Comment'
             };
         case 'new_follow_up_question':
             return {
                 icon: '❓',
-                color: 'text-furbridge-warm-gray',
-                bgColor: 'bg-furbridge-warm-gray/10',
+                color: 'text-muted-foreground',
+                bgColor: 'bg-muted',
                 label: 'Follow-up Question'
             };
         case 'story_response':
             return {
                 icon: '💭',
-                color: 'text-blue-600',
-                bgColor: 'bg-blue-50',
+                color: 'text-primary',
+                bgColor: 'bg-primary/10',
                 label: 'Story Activity'
             };
         case 'project_invitation':
             return {
                 icon: '📨',
-                color: 'text-purple-600',
-                bgColor: 'bg-purple-50',
+                color: 'text-secondary',
+                bgColor: 'bg-secondary/10',
                 label: 'Project Invitation'
             };
         case 'member_joined':
             return {
                 icon: '👋',
-                color: 'text-green-600',
-                bgColor: 'bg-green-50',
+                color: 'text-success',
+                bgColor: 'bg-success/10',
                 label: 'New Member'
             };
         default:
             return {
                 icon: '🔔',
-                color: 'text-gray-600',
-                bgColor: 'bg-gray-50',
+                color: 'text-muted-foreground',
+                bgColor: 'bg-muted',
                 label: 'Notification'
             };
     }

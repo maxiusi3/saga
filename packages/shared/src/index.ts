@@ -6,7 +6,6 @@ export * from './lib/notifications'
 export {
   StoryPrompt,
   PromptChapter,
-  AIPrompt,
   getAllPrompts,
   getPromptsByChapter,
   getNextPrompt,

@@ -1,6 +1,10 @@
 // FurBridge Design System - Component Exports
 // Centralized export file for all FurBridge UI components
 
+export * from "./button"
+export * from "./card"
+export * from "./header"
+
 export { FurbridgeButton } from "./furbridge-button"
 export type { FurbridgeButtonProps } from "./furbridge-button"
 
@@ -20,5 +24,5 @@ export { FurbridgeSection } from "./furbridge-section"
 export type { FurbridgeSectionProps } from "./furbridge-section"
 
 // Design tokens
-export { designTokens } from "../lib/design-tokens"
-export type { DesignTokens } from "../lib/design-tokens"
+export { designTokens } from "../../lib/design-tokens"
+export type { DesignTokens } from "../../lib/design-tokens"
