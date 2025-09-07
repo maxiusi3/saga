@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { UserRole, getRoleDisplayInfo } from '@saga/shared'
-import { BookOpen, Users, MessageCircle, Plus, Crown } from 'lucide-react'
+import { BookOpen, Users, MessageCircle, Crown } from 'lucide-react'
 
 export default function DashboardPage() {
   const { user } = useAuthStore()
@@ -148,10 +148,10 @@ export default function DashboardPage() {
         
         {/* Action Buttons */}
         <div className="flex space-x-3">
-          <Link href="/dashboard/projects/create">
+          <Link href="/dashboard/purchase">
             <Button variant="secondary">
-              <Plus className="w-4 h-4 mr-2" />
-              Create Project
+              <BookOpen className="w-4 h-4 mr-2" />
+              Create New Saga
             </Button>
           </Link>
         </div>
