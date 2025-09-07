@@ -21,7 +21,8 @@ export interface CreateStoryData {
   storyteller_id: string
   title: string
   content?: string
-  audio_blob?: Blob
+  audio_url?: string
+  audio_duration?: number
   transcript?: string
   ai_generated_title?: string
   ai_summary?: string
@@ -79,7 +80,7 @@ export class StoryService {
    */
   async createStory(storyData: CreateStoryData): Promise<Story | null> {
     try {
-      // First create the story record
+      // Create the story record with all data
       const { data: story, error: storyError } = await this.supabase
         .from('stories')
         .insert({
@@ -87,6 +88,8 @@ export class StoryService {
           storyteller_id: storyData.storyteller_id,
           title: storyData.title,
           content: storyData.content,
+          audio_url: storyData.audio_url,
+          audio_duration: storyData.audio_duration,
           transcript: storyData.transcript,
           ai_generated_title: storyData.ai_generated_title,
           ai_summary: storyData.ai_summary,
@@ -99,28 +102,6 @@ export class StoryService {
       if (storyError) {
         console.error('Error creating story:', storyError)
         return null
-      }
-
-      // Upload audio if provided
-      if (storyData.audio_blob && story) {
-        const audioUrl = await this.uploadAudio(storyData.audio_blob, story.id)
-        
-        if (audioUrl) {
-          // Update story with audio URL
-          const { data: updatedStory, error: updateError } = await this.supabase
-            .from('stories')
-            .update({ audio_url: audioUrl })
-            .eq('id', story.id)
-            .select()
-            .single()
-
-          if (updateError) {
-            console.error('Error updating story with audio URL:', updateError)
-            return story // Return story without audio URL
-          }
-
-          return updatedStory
-        }
       }
 
       return story

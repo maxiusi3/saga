@@ -283,64 +283,7 @@ describe('AuthStore', () => {
     })
   })
 
-  describe('appleSignIn', () => {
-    it('should sign in with Apple successfully', async () => {
-      const mockUser = { id: '1', name: 'Test User', email: 'test@example.com' }
-      const mockResponse = {
-        data: {
-          data: {
-            user: mockUser,
-            accessToken: 'access-token',
-            refreshToken: 'refresh-token',
-          },
-        },
-      }
 
-      ;(apiClient.auth.appleOAuth as jest.Mock).mockResolvedValue(mockResponse)
-
-      const { result } = renderHook(() => useAuthStore())
-
-      await act(async () => {
-        await result.current.appleSignIn('apple-id-token', { name: { firstName: 'Test', lastName: 'User' } })
-      })
-
-      expect(result.current.user).toEqual(mockUser)
-      expect(result.current.isAuthenticated).toBe(true)
-      expect(result.current.isLoading).toBe(false)
-      expect(result.current.error).toBeNull()
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('accessToken', 'access-token')
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('refreshToken', 'refresh-token')
-    })
-
-    it('should handle Apple sign in error', async () => {
-      const mockError = {
-        response: {
-          data: {
-            error: {
-              message: 'Invalid Apple token',
-            },
-          },
-        },
-      }
-
-      ;(apiClient.auth.appleOAuth as jest.Mock).mockRejectedValue(mockError)
-
-      const { result } = renderHook(() => useAuthStore())
-
-      await act(async () => {
-        try {
-          await result.current.appleSignIn('invalid-token')
-        } catch (error) {
-          // Expected to throw
-        }
-      })
-
-      expect(result.current.user).toBeNull()
-      expect(result.current.isAuthenticated).toBe(false)
-      expect(result.current.isLoading).toBe(false)
-      expect(result.current.error).toBe('Invalid Apple token')
-    })
-  })
 
   describe('setLoading', () => {
     it('should set loading state', () => {

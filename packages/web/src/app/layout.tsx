@@ -4,8 +4,22 @@ import { AuthProvider } from '@/components/auth/auth-provider'
 import { ErrorTrackingProvider } from '@/components/error-tracking-provider'
 import { ClientOnly } from '@/components/client-only'
 import { AnalyticsProvider } from '@/components/analytics-provider'
+import { validateConfigOnStartup } from '@/lib/config'
 
 import './globals.css'
+
+// 验证配置（仅在服务端）
+if (typeof window === 'undefined') {
+  try {
+    validateConfigOnStartup()
+  } catch (error) {
+    console.error('Configuration validation failed:', error)
+    // 在开发环境中抛出错误，生产环境中记录错误但继续运行
+    if (process.env.NODE_ENV === 'development') {
+      throw error
+    }
+  }
+}
 
 export const metadata: Metadata = {
   title: 'Saga - Family Biography Platform',

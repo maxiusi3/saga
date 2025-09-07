@@ -13,6 +13,7 @@ import { WebSpeechRecorder } from '@/components/audio/WebSpeechRecorder'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { aiService, AIContent as AIContentType } from '@/lib/ai-service'
+import { uploadStoryAudio } from '@/lib/storage'
 import { toast } from 'react-hot-toast'
 
 interface AIContent {
@@ -176,7 +177,7 @@ export default function ProjectRecordPage() {
 
   // Handle story submission
   const handleSubmitStory = async () => {
-    if (!audioBlob || !aiContent || !user?.id) {
+    if ((!audioBlob && !transcript) || !aiContent || !user?.id) {
       setSubmitError('Missing required data for story submission.')
       return
     }
@@ -185,14 +186,32 @@ export default function ProjectRecordPage() {
     setSubmitError(null)
 
     try {
+      let audioUrl = null
+      let audioDuration = recordingDuration
+
+      // Upload audio file if available
+      if (audioBlob) {
+        toast.loading('Uploading audio file...')
+        const uploadResult = await uploadStoryAudio(audioBlob, projectId)
+
+        if (!uploadResult.success) {
+          throw new Error(uploadResult.error || 'Failed to upload audio file')
+        }
+
+        audioUrl = uploadResult.url
+        toast.dismiss()
+        toast.success('Audio uploaded successfully')
+      }
+
       // Create story in database
       const story = await storyService.createStory({
         project_id: projectId,
         storyteller_id: user.id,
         title: aiContent.title || 'Untitled Story',
         content: aiContent.summary || '',
-        audio_blob: audioBlob,
-        transcript: aiContent.transcript,
+        audio_url: audioUrl,
+        audio_duration: audioDuration,
+        transcript: aiContent.transcript || transcript,
         ai_generated_title: aiContent.title,
         ai_summary: aiContent.summary,
         ai_follow_up_questions: aiContent.followUpQuestions,

@@ -15,12 +15,7 @@ declare global {
         }
       }
     }
-    AppleID?: {
-      auth: {
-        init: (config: any) => void
-        signIn: () => Promise<any>
-      }
-    }
+
   }
 }
 
@@ -30,16 +25,11 @@ export interface GoogleOAuthConfig {
   onError: (error: string) => void
 }
 
-export interface AppleOAuthConfig {
-  clientId: string
-  redirectURI: string
-  onSuccess: (idToken: string, user?: any) => void
-  onError: (error: string) => void
-}
+
 
 export class OAuthUtils {
   private static googleScriptLoaded = false
-  private static appleScriptLoaded = false
+
 
   static async loadGoogleScript(): Promise<void> {
     if (this.googleScriptLoaded) return
@@ -58,21 +48,7 @@ export class OAuthUtils {
     })
   }
 
-  static async loadAppleScript(): Promise<void> {
-    if (this.appleScriptLoaded) return
 
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js'
-      script.async = true
-      script.onload = () => {
-        this.appleScriptLoaded = true
-        resolve()
-      }
-      script.onerror = () => reject(new Error('Failed to load Apple OAuth script'))
-      document.head.appendChild(script)
-    })
-  }
 
   static async initializeGoogleOAuth(config: GoogleOAuthConfig): Promise<void> {
     await this.loadGoogleScript()
@@ -97,36 +73,14 @@ export class OAuthUtils {
     return client
   }
 
-  static async initializeAppleOAuth(config: AppleOAuthConfig): Promise<void> {
-    await this.loadAppleScript()
 
-    if (!window.AppleID) {
-      throw new Error('Apple OAuth library not loaded')
-    }
-
-    window.AppleID.auth.init({
-      clientId: config.clientId,
-      scope: 'name email',
-      redirectURI: config.redirectURI,
-      usePopup: true,
-    })
-  }
 
   static async signInWithGoogle(config: GoogleOAuthConfig): Promise<void> {
     const client = await this.initializeGoogleOAuth(config)
     client.requestAccessToken()
   }
 
-  static async signInWithApple(config: AppleOAuthConfig): Promise<void> {
-    await this.initializeAppleOAuth(config)
 
-    try {
-      const data = await window.AppleID!.auth.signIn()
-      config.onSuccess(data.authorization.id_token, data.user)
-    } catch (error: any) {
-      config.onError(error.error || 'Apple sign in failed')
-    }
-  }
 
   static renderGoogleButton(
     element: HTMLElement,
@@ -168,8 +122,5 @@ export const OAUTH_CONFIG = {
   google: {
     clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
   },
-  apple: {
-    clientId: process.env.NEXT_PUBLIC_APPLE_CLIENT_ID || '',
-    redirectURI: process.env.NEXT_PUBLIC_APPLE_REDIRECT_URI || (typeof window !== 'undefined' ? `${window.location.origin}/auth/apple/callback` : ''),
-  },
+
 }
