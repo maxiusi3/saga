@@ -5,39 +5,18 @@ export async function GET(request: NextRequest) {
   try {
     const status = {
       timestamp: new Date().toISOString(),
-      openai_configured: !!process.env.OPENAI_API_KEY,
+      openrouter_configured: !!process.env.OPENROUTER_API_KEY,
       services: {
-        transcription: false,
+        transcription: true, // Web Speech API
         content_generation: false
       },
-      mode: process.env.OPENAI_API_KEY ? 'production' : 'mock'
+      mode: process.env.OPENROUTER_API_KEY ? 'production' : 'mock',
+      model: 'deepseek/deepseek-chat-v3.1:free'
     }
 
-    // If OpenAI is configured, test the connection
-    if (process.env.OPENAI_API_KEY) {
-      try {
-        const openai = new OpenAI({
-          apiKey: process.env.OPENAI_API_KEY,
-        })
-
-        // Test with a minimal API call (only during runtime, not build)
-        if (process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV === 'production') {
-          const testCompletion = await openai.chat.completions.create({
-          model: 'gpt-4o-mini',
-          messages: [{ role: 'user', content: 'Hello' }],
-          max_tokens: 5,
-          temperature: 0
-        })
-
-          if (testCompletion.choices[0]?.message?.content) {
-            status.services.transcription = true
-            status.services.content_generation = true
-          }
-        } else {
-          // Skip API test during build, assume services are available
-          status.services.transcription = true
-          status.services.content_generation = true
-        }
+    // If OpenRouter is configured, mark content generation as available
+    if (process.env.OPENROUTER_API_KEY) {
+      status.services.content_generation = true
       } catch (error: any) {
         console.error('OpenAI health check failed:', error)
         
