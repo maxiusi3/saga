@@ -10,13 +10,7 @@ export default function HomePage() {
       <nav className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-4 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="flex items-center space-x-8">
           <div className="flex items-center">
-            <div className="font-bold text-primary text-xl">FurBridge</div>
-          </div>
-          <div className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground">Features</a>
-            <a href="#how-it-works" className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground">How it Works</a>
-            <Link href="/pricing" className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground">Pricing</Link>
-            <Link href="/about" className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground">About</Link>
+            <div className="font-bold text-primary text-xl">Saga</div>
           </div>
         </div>
         <div className="flex items-center space-x-4">
@@ -47,11 +41,6 @@ export default function HomePage() {
                 <Button size="lg">
                   Start Your Saga
                   <BookOpen className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
-              <Link href="/learn-more">
-                <Button variant="outline" size="lg">
-                  Learn More
                 </Button>
               </Link>
             </div>
@@ -197,6 +186,209 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Detailed Features Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Everything You Need to Capture Family Stories
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Our platform is designed to make storytelling natural, meaningful, and accessible for everyone.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="p-6">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    AI-Powered Prompts
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Thoughtfully crafted questions that help guide meaningful conversations and unlock precious memories.
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    Automatic Transcription
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Every story is automatically transcribed with high accuracy, making them searchable and easy to share.
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    Family Collaboration
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Invite multiple family members to participate, ask follow-up questions, and add their own memories.
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    Secure & Private
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Your family stories are kept private and secure, accessible only to invited family members.
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    Multiple Export Options
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Export your complete family archive in various formats for safekeeping and sharing.
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    Mobile Friendly
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Easy-to-use interface designed for storytellers of all ages and technical comfort levels.
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              How Saga Works
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Three simple steps to start preserving your family's stories
+            </p>
+          </div>
+
+          <div className="space-y-12">
+            <div className="flex items-start space-x-6">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold">
+                  1
+                </div>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Create Your Project
+                </h3>
+                <p className="text-muted-foreground">
+                  Set up a family story project and invite your storyteller. Our platform guides you through
+                  the setup process and helps you get started with meaningful prompts.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-6">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold">
+                  2
+                </div>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Record Stories
+                </h3>
+                <p className="text-muted-foreground">
+                  Your storyteller uses our simple recording interface to share their memories.
+                  AI-powered prompts help guide the conversation and unlock precious stories.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-6">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold">
+                  3
+                </div>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Preserve & Share
+                </h3>
+                <p className="text-muted-foreground">
+                  Stories are automatically transcribed and organized. Family members can listen,
+                  comment, ask follow-up questions, and export the complete archive.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
@@ -212,11 +404,6 @@ export default function HomePage() {
                 <Button variant="secondary" size="lg">
                   Begin Your Journey
                   <BookOpen className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
-              <Link href="/learn-more">
-                <Button variant="outline" size="lg">
-                  Learn More
                 </Button>
               </Link>
             </div>
