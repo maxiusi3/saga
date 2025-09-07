@@ -5,6 +5,10 @@ import OpenAI from 'openai'
 const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
   apiKey: process.env.OPENROUTER_API_KEY,
   baseURL: 'https://openrouter.ai/api/v1',
+  defaultHeaders: {
+    'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
+    'X-Title': 'Saga Family Biography Platform'
+  }
 }) : null
 
 export async function POST(request: NextRequest) {
@@ -60,7 +64,7 @@ Generate a title, summary, and follow-up questions that would help this person s
     }
 
     const completion = await openai.chat.completions.create({
-      model: 'openai/gpt-4o-mini', // OpenRouter model format
+      model: 'deepseek/deepseek-chat-v3.1:free', // DeepSeek model via OpenRouter
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }

@@ -5,10 +5,11 @@ import { useParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Send, Sparkles, ArrowLeft, Volume2 } from 'lucide-react'
+import { Send, Sparkles, ArrowLeft, Volume2, Mic } from 'lucide-react'
 import { StoryPrompt, getNextPrompt, getPromptById, AI_PROMPT_CHAPTERS } from '@saga/shared'
 import { AudioRecorder } from '@/components/audio/AudioRecorder'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
+import { WebSpeechRecorder } from '@/components/audio/WebSpeechRecorder'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { aiService, AIContent as AIContentType } from '@/lib/ai-service'
@@ -38,6 +39,8 @@ export default function ProjectRecordPage() {
   const [aiProcessing, setAiProcessing] = useState(false)
   const [aiProgress, setAiProgress] = useState(0)
   const [aiContent, setAiContent] = useState<AIContentType | null>(null)
+  const [transcript, setTranscript] = useState('')
+  const [useWebSpeech, setUseWebSpeech] = useState(true)
 
   // Submission states
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -60,7 +63,20 @@ export default function ProjectRecordPage() {
     }
   }, [])
 
-  // Handle recording completion
+  // Handle Web Speech transcript update
+  const handleTranscriptUpdate = (newTranscript: string, isFinal: boolean) => {
+    setTranscript(newTranscript)
+  }
+
+  // Handle Web Speech recording completion
+  const handleWebSpeechComplete = (finalTranscript: string) => {
+    setTranscript(finalTranscript)
+    if (finalTranscript.trim()) {
+      processTranscriptWithAI(finalTranscript)
+    }
+  }
+
+  // Handle traditional recording completion
   const handleRecordingComplete = (blob: Blob, duration: number) => {
     setAudioBlob(blob)
     setAudioUrl(URL.createObjectURL(blob))
@@ -68,6 +84,52 @@ export default function ProjectRecordPage() {
 
     // Start AI processing
     processAudioWithAI(blob)
+  }
+
+  // Process transcript with AI (for Web Speech API)
+  const processTranscriptWithAI = async (transcriptText: string) => {
+    setAiProcessing(true)
+    setAiProgress(0)
+
+    try {
+      setAiProgress(30)
+
+      // Call AI service to generate content from transcript
+      const response = await fetch('/api/ai/generate-content', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          transcript: transcriptText,
+          prompt: currentPrompt?.text,
+          language: 'zh-CN'
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate AI content')
+      }
+
+      setAiProgress(80)
+      const result = await response.json()
+
+      setAiContent({
+        title: result.title,
+        summary: result.summary,
+        followUpQuestions: result.followUpQuestions,
+        confidence: result.confidence,
+        transcript: transcriptText
+      })
+
+      setAiProgress(100)
+      toast.success('AI 处理完成！')
+    } catch (error) {
+      console.error('AI processing failed:', error)
+      toast.error('AI 处理失败，请重试')
+    } finally {
+      setAiProcessing(false)
+    }
   }
 
   // Process audio with AI using real AI service
@@ -251,13 +313,55 @@ export default function ProjectRecordPage() {
           </div>
         </Card>
 
+        {/* Recording Method Selection */}
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold text-foreground mb-4">选择录音方式</h3>
+          <div className="flex space-x-4 mb-6">
+            <Button
+              variant={useWebSpeech ? "default" : "outline"}
+              onClick={() => setUseWebSpeech(true)}
+              className="flex-1"
+            >
+              <Mic className="h-4 w-4 mr-2" />
+              实时语音识别
+            </Button>
+            <Button
+              variant={!useWebSpeech ? "default" : "outline"}
+              onClick={() => setUseWebSpeech(false)}
+              className="flex-1"
+            >
+              <Volume2 className="h-4 w-4 mr-2" />
+              传统录音
+            </Button>
+          </div>
+
+          <div className="text-sm text-muted-foreground mb-4">
+            {useWebSpeech ? (
+              <p>• 实时语音识别：边说边转录，支持中文，需要网络连接</p>
+            ) : (
+              <p>• 传统录音：先录音后转录，支持离线录音，音质更好</p>
+            )}
+          </div>
+        </Card>
+
         {/* Recording Interface */}
-        <AudioRecorder
-          onRecordingComplete={handleRecordingComplete}
-          onRecordingStart={() => console.log('Recording started')}
-          onRecordingStop={() => console.log('Recording stopped')}
-          className="w-full"
-        />
+        {useWebSpeech ? (
+          <WebSpeechRecorder
+            onTranscriptUpdate={handleTranscriptUpdate}
+            onRecordingComplete={handleWebSpeechComplete}
+            onError={(error) => toast.error(error)}
+            language="zh-CN"
+            maxDuration={1200}
+            className="w-full"
+          />
+        ) : (
+          <AudioRecorder
+            onRecordingComplete={handleRecordingComplete}
+            onRecordingStart={() => console.log('Recording started')}
+            onRecordingStop={() => console.log('Recording stopped')}
+            className="w-full"
+          />
+        )}
 
         {/* Audio Preview */}
         {audioUrl && !aiProcessing && (
