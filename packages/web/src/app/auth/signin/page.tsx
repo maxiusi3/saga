@@ -1,8 +1,7 @@
 'use client'
 
 // 避免构建期预渲染导致的环境变量缺失问题
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// 在 Next.js 15 中，我们通过运行时检查来避免 SSG
 
 import { useState, useEffect, Suspense } from 'react'
 import { Button } from '@/components/ui/button'
@@ -18,15 +17,23 @@ function SignInPageContent() {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [isClient, setIsClient] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
 
+  // 确保只在客户端执行
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   // 仅在客户端事件中创建 Supabase 实例，避免服务端渲染阶段访问环境变量
-  const getSupabase = () =>
-    createBrowserClient(
+  const getSupabase = () => {
+    if (typeof window === 'undefined') return null
+    return createBrowserClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
+  }
 
   // Check for error from callback
   useEffect(() => {
@@ -37,9 +44,11 @@ function SignInPageContent() {
   }, [searchParams])
 
   const handleGoogleSignIn = async () => {
+    if (!isClient) return
     setIsLoading(true)
     try {
       const supabase = getSupabase()
+      if (!supabase) throw new Error('Supabase client not available')
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -58,13 +67,14 @@ function SignInPageContent() {
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email) return
+    if (!email || !isClient) return
 
     setIsLoading(true)
     setMessage('')
 
     try {
       const supabase = getSupabase()
+      if (!supabase) throw new Error('Supabase client not available')
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
