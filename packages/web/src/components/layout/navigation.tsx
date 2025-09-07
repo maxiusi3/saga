@@ -66,15 +66,7 @@ export function Navigation() {
 
   return (
     <>
-      {/* Skip to main content link */}
-      <a 
-        href="#main-content" 
-        className="skip-link"
-        onFocus={(e) => e.currentTarget.focus()}
-      >
-        Skip to main content
-      </a>
-      
+
       <nav className="bg-background shadow-sm border-b border-border" role="navigation" aria-label="Main navigation">
         <div className="container-responsive">
           <div className="flex justify-between h-16">

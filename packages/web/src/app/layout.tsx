@@ -4,7 +4,7 @@ import { AuthProvider } from '@/components/auth/auth-provider'
 import { ErrorTrackingProvider } from '@/components/error-tracking-provider'
 import { ClientOnly } from '@/components/client-only'
 import { AnalyticsProvider } from '@/components/analytics-provider'
-import { SkipLinks } from '@/components/accessibility/skip-links'
+
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -31,8 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans">
-        {/* Skip Links for Screen Readers */}
-        <SkipLinks />
+
 
         {/* Main Application */}
         <ErrorTrackingProvider>
