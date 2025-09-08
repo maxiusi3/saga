@@ -99,6 +99,7 @@ export interface Database {
           project_id: string
           user_id: string
           role: string
+          status: string
           created_at: string
         }
         Insert: {
@@ -106,6 +107,7 @@ export interface Database {
           project_id: string
           user_id: string
           role: string
+          status?: string
           created_at?: string
         }
         Update: {
@@ -113,6 +115,7 @@ export interface Database {
           project_id?: string
           user_id?: string
           role?: string
+          status?: string
           created_at?: string
         }
       }

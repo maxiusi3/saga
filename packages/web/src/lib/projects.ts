@@ -94,10 +94,12 @@ export class ProjectService {
             id,
             user_id,
             role,
+            status,
             created_at
           )
         `)
         .or(`facilitator_id.eq.${userId},project_roles.user_id.eq.${userId}`)
+        .eq('project_roles.status', 'active')
 
       if (projectsError) {
         console.error('Error fetching user projects:', projectsError)
@@ -116,6 +118,7 @@ export class ProjectService {
             .from('project_roles')
             .select('*')
             .eq('project_id', project.id)
+            .eq('status', 'active')
 
           const userMember = members?.find(m => m.user_id === userId)
           const isOwner = project.facilitator_id === userId
@@ -164,6 +167,7 @@ export class ProjectService {
           .select('*')
           .eq('project_id', projectId)
           .eq('user_id', userId)
+          .eq('status', 'active')
           .single()
 
         if (!member) {
@@ -177,6 +181,7 @@ export class ProjectService {
         .from('project_roles')
         .select('*')
         .eq('project_id', projectId)
+        .eq('status', 'active')
 
       // Get story count
       const { count: storyCount } = await this.supabase
@@ -270,7 +275,8 @@ export class ProjectService {
         .insert({
           project_id: inviteData.project_id,
           user_id: user.id,
-          role: inviteData.role
+          role: inviteData.role,
+          status: 'active'
         })
         .select()
         .single()
