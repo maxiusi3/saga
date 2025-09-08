@@ -5,7 +5,7 @@ export interface Project {
   id: string
   name: string
   description?: string
-  created_by: string
+  facilitator_id: string
   status: string
   created_at: string
   updated_at: string
@@ -35,7 +35,7 @@ export interface ProjectWithMembers extends Project {
 export interface CreateProjectData {
   name: string
   description?: string
-  created_by: string
+  facilitator_id: string
 }
 
 export interface UpdateProjectData {
@@ -63,7 +63,7 @@ export class ProjectService {
         .insert({
           name: projectData.name,
           description: projectData.description,
-          created_by: projectData.created_by,
+          facilitator_id: projectData.facilitator_id,
         })
         .select()
         .single()
@@ -97,7 +97,7 @@ export class ProjectService {
             created_at
           )
         `)
-        .or(`created_by.eq.${userId},project_roles.user_id.eq.${userId}`)
+        .or(`facilitator_id.eq.${userId},project_roles.user_id.eq.${userId}`)
 
       if (projectsError) {
         console.error('Error fetching user projects:', projectsError)
@@ -118,7 +118,7 @@ export class ProjectService {
             .eq('project_id', project.id)
 
           const userMember = members?.find(m => m.user_id === userId)
-          const isOwner = project.created_by === userId
+          const isOwner = project.facilitator_id === userId
 
           return {
             ...project,
@@ -155,7 +155,7 @@ export class ProjectService {
       }
 
       // Check if user has access to this project
-      const isOwner = project.created_by === userId
+      const isOwner = project.facilitator_id === userId
       let userMember = null
 
       if (!isOwner) {
