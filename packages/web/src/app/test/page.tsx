@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Button } from '@/components/ui'
+import { Button } from '@/components/ui/button'
 import { Mic, Square, Play, Pause } from 'lucide-react'
 import { aiService } from '@/lib/ai'
 import { storyService } from '@/lib/stories'
