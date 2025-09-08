@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Mic, Square, Play, Pause } from 'lucide-react'
-import { aiService } from '@/lib/ai'
+import { aiService } from '@/lib/ai-service'
 import { storyService } from '@/lib/stories'
 
 export default function TestPage() {
