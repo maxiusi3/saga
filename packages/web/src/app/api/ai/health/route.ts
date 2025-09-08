@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
         content_generation: false
       },
       mode: process.env.OPENROUTER_API_KEY ? 'production' : 'mock',
-      model: 'openai/gpt-3.5-turbo'
+      model: 'openai/gpt-oss-20b:free'
     }
 
     // If OpenRouter is configured, mark content generation as available
