@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
         content_generation: false
       },
       mode: process.env.OPENROUTER_API_KEY ? 'production' : 'mock',
-      model: 'deepseek/deepseek-chat-v3.1:free'
+      model: 'z-ai/glm-4.5-air:free'
     }
 
     // If OpenRouter is configured, mark content generation as available

@@ -64,7 +64,7 @@ Generate a title, summary, and follow-up questions that would help this person s
     }
 
     const completion = await openai.chat.completions.create({
-      model: 'deepseek/deepseek-chat-v3.1:free', // DeepSeek model via OpenRouter
+      model: 'z-ai/glm-4.5-air:free', // GLM model via OpenRouter
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
