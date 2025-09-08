@@ -155,7 +155,7 @@ ${storiesForQuestions}
     console.log(`Processing ${action} for ${stories.length} stories`)
 
     const completion = await openai.chat.completions.create({
-      model: 'z-ai/glm-4.5-air:free',
+      model: 'openai/gpt-3.5-turbo',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
@@ -185,7 +185,7 @@ ${storiesForQuestions}
     result.processedAt = new Date().toISOString()
     result.action = action
     result.storiesCount = stories.length
-    result.model = 'z-ai/glm-4.5-air:free'
+    result.model = 'openai/gpt-3.5-turbo'
 
     return NextResponse.json(result)
 
@@ -211,6 +211,6 @@ export async function GET() {
       'generate_summary', 
       'suggest_questions'
     ],
-    model: 'z-ai/glm-4.5-air:free'
+    model: 'openai/gpt-3.5-turbo'
   })
 }

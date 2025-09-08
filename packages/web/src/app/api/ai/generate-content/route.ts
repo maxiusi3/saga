@@ -64,7 +64,7 @@ Generate a title, summary, and follow-up questions that would help this person s
     }
 
     const completion = await openai.chat.completions.create({
-      model: 'z-ai/glm-4.5-air:free', // GLM model via OpenRouter
+      model: 'openai/gpt-3.5-turbo', // GPT-3.5 model via OpenRouter
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
