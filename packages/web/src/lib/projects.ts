@@ -3,9 +3,10 @@ import { UserRole } from '@saga/shared'
 
 export interface Project {
   id: string
-  title: string
+  name: string
   description?: string
-  owner_id: string
+  created_by: string
+  status: string
   created_at: string
   updated_at: string
 }
@@ -32,13 +33,13 @@ export interface ProjectWithMembers extends Project {
 }
 
 export interface CreateProjectData {
-  title: string
+  name: string
   description?: string
-  owner_id: string
+  created_by: string
 }
 
 export interface UpdateProjectData {
-  title?: string
+  name?: string
   description?: string
 }
 
@@ -60,9 +61,9 @@ export class ProjectService {
       const { data, error } = await this.supabase
         .from('projects')
         .insert({
-          title: projectData.title,
+          name: projectData.name,
           description: projectData.description,
-          owner_id: projectData.owner_id,
+          created_by: projectData.created_by,
         })
         .select()
         .single()
@@ -89,17 +90,14 @@ export class ProjectService {
         .from('projects')
         .select(`
           *,
-          project_members!inner(
+          project_roles!inner(
             id,
             user_id,
             role,
-            status,
-            invited_at,
-            joined_at
+            created_at
           )
         `)
-        .or(`owner_id.eq.${userId},project_members.user_id.eq.${userId}`)
-        .eq('project_members.status', 'active')
+        .or(`created_by.eq.${userId},project_roles.user_id.eq.${userId}`)
 
       if (projectsError) {
         console.error('Error fetching user projects:', projectsError)
@@ -115,18 +113,17 @@ export class ProjectService {
             .eq('project_id', project.id)
 
           const { data: members } = await this.supabase
-            .from('project_members')
+            .from('project_roles')
             .select('*')
             .eq('project_id', project.id)
-            .eq('status', 'active')
 
           const userMember = members?.find(m => m.user_id === userId)
-          const isOwner = project.owner_id === userId
+          const isOwner = project.created_by === userId
 
           return {
             ...project,
             members: members || [],
-            member_count: (members?.length || 0) + (isOwner ? 1 : 0),
+            member_count: members?.length || 0,
             story_count: storyCount || 0,
             user_role: isOwner ? 'facilitator' as UserRole : userMember?.role,
             is_owner: isOwner
@@ -158,16 +155,15 @@ export class ProjectService {
       }
 
       // Check if user has access to this project
-      const isOwner = project.owner_id === userId
+      const isOwner = project.created_by === userId
       let userMember = null
 
       if (!isOwner) {
         const { data: member } = await this.supabase
-          .from('project_members')
+          .from('project_roles')
           .select('*')
           .eq('project_id', projectId)
           .eq('user_id', userId)
-          .eq('status', 'active')
           .single()
 
         if (!member) {
@@ -178,10 +174,9 @@ export class ProjectService {
 
       // Get all members
       const { data: members } = await this.supabase
-        .from('project_members')
+        .from('project_roles')
         .select('*')
         .eq('project_id', projectId)
-        .eq('status', 'active')
 
       // Get story count
       const { count: storyCount } = await this.supabase
@@ -192,7 +187,7 @@ export class ProjectService {
       return {
         ...project,
         members: members || [],
-        member_count: (members?.length || 0) + (isOwner ? 1 : 0),
+        member_count: members?.length || 0,
         story_count: storyCount || 0,
         user_role: isOwner ? 'facilitator' as UserRole : userMember?.role,
         is_owner: isOwner
@@ -269,15 +264,13 @@ export class ProjectService {
         return null
       }
 
-      // Create the project member invitation
+      // Create the project role invitation
       const { data, error } = await this.supabase
-        .from('project_members')
+        .from('project_roles')
         .insert({
           project_id: inviteData.project_id,
           user_id: user.id,
-          role: inviteData.role,
-          invited_by: inviteData.invited_by,
-          status: 'pending'
+          role: inviteData.role
         })
         .select()
         .single()
@@ -347,7 +340,7 @@ export class ProjectService {
   async updateMemberRole(memberId: string, newRole: UserRole): Promise<boolean> {
     try {
       const { error } = await this.supabase
-        .from('project_members')
+        .from('project_roles')
         .update({ role: newRole })
         .eq('id', memberId)
 

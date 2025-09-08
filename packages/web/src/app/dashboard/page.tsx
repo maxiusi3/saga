@@ -165,7 +165,7 @@ export default function DashboardPage() {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                    {project.title}
+                    {project.name}
                   </CardTitle>
                   <div className="flex flex-col items-end space-y-2">
                     {getStatusBadge(project.story_count)}
