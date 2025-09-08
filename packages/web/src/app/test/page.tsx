@@ -71,7 +71,7 @@ export default function TestPage() {
       setTranscript(mockTranscript)
 
       // 测试 AI 处理
-      const result = await aiService.processStoryContent(mockTranscript)
+      const result = await aiService.generateAIContent(mockTranscript)
       setAiResult(result)
       setMessage('AI 处理完成')
 
