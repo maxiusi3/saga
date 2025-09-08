@@ -106,7 +106,7 @@ export function validateConfig(): ConfigValidationResult {
 
   // 验证 Supabase URL 格式
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (supabaseUrl && !supabaseUrl.match(/^https:\/\/[a-z0-9]+\.supabase\.co$/)) {
+  if (supabaseUrl && !supabaseUrl.match(/^https:\/\/[a-zA-Z0-9]+\.supabase\.co$/)) {
     errors.push('NEXT_PUBLIC_SUPABASE_URL format is invalid (should be https://xxx.supabase.co)')
   }
 

@@ -22,7 +22,6 @@ export interface AIProcessingOptions {
 
 export class AIService {
   private static readonly API_BASE_URL = '/api/ai'
-  private static readonly MOCK_MODE = !process.env.NEXT_PUBLIC_OPENROUTER_API_KEY
 
   /**
    * Transcribe audio using OpenAI Whisper API
@@ -33,7 +32,14 @@ export class AIService {
   ): Promise<TranscriptionResult> {
     const { onProgress, language = 'en', maxRetries = 3 } = options
 
-    if (this.MOCK_MODE) {
+    // Try real API first, fallback to mock if service unavailable
+    try {
+      const serviceAvailable = await this.checkAvailability()
+      if (!serviceAvailable) {
+        return this.mockTranscribeAudio(audioBlob, onProgress)
+      }
+    } catch (error) {
+      console.warn('Service availability check failed, using mock mode:', error)
       return this.mockTranscribeAudio(audioBlob, onProgress)
     }
 
@@ -89,7 +95,14 @@ export class AIService {
   ): Promise<AIContent> {
     const { onProgress, maxRetries = 3 } = options
 
-    if (this.MOCK_MODE) {
+    // Try real API first, fallback to mock if service unavailable
+    try {
+      const serviceAvailable = await this.checkAvailability()
+      if (!serviceAvailable) {
+        return this.mockGenerateAIContent(transcript, onProgress)
+      }
+    } catch (error) {
+      console.warn('Service availability check failed, using mock mode:', error)
       return this.mockGenerateAIContent(transcript, onProgress)
     }
 
@@ -279,10 +292,6 @@ export class AIService {
    * Check if AI services are available
    */
   static async checkAvailability(): Promise<boolean> {
-    if (this.MOCK_MODE) {
-      return true
-    }
-
     try {
       const response = await fetch(`${this.API_BASE_URL}/health`, {
         method: 'GET',
@@ -297,10 +306,11 @@ export class AIService {
   /**
    * Get AI service status
    */
-  static getServiceStatus(): { available: boolean; mode: 'production' | 'mock' } {
+  static async getServiceStatus(): Promise<{ available: boolean; mode: 'production' | 'mock' }> {
+    const available = await this.checkAvailability()
     return {
-      available: true,
-      mode: this.MOCK_MODE ? 'mock' : 'production'
+      available,
+      mode: available ? 'production' : 'mock'
     }
   }
 }
