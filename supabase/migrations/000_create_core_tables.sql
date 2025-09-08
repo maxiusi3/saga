@@ -113,7 +113,8 @@ CREATE TABLE IF NOT EXISTS stories (
   project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
   storyteller_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   title VARCHAR(255),
-  audio_url VARCHAR(500) NOT NULL,
+  content TEXT,
+  audio_url VARCHAR(500),
   audio_duration INTEGER, -- in seconds
   transcript TEXT,
   original_transcript TEXT,
@@ -121,6 +122,10 @@ CREATE TABLE IF NOT EXISTS stories (
   prompt_id UUID REFERENCES prompts(id) ON DELETE SET NULL,
   user_prompt_id UUID REFERENCES user_prompts(id) ON DELETE SET NULL,
   chapter_id UUID REFERENCES chapters(id) ON DELETE SET NULL,
+  ai_generated_title VARCHAR(255),
+  ai_summary TEXT,
+  ai_follow_up_questions JSONB,
+  ai_confidence_score DECIMAL(3,2),
   status VARCHAR(20) DEFAULT 'processing' CHECK (status IN ('processing', 'ready', 'failed')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

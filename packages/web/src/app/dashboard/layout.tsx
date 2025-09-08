@@ -1,54 +1,36 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { createBrowserClient } from '@supabase/ssr'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/layout/navigation'
 import Link from 'next/link'
-import { User } from '@supabase/supabase-js'
 import { BookOpen, Gem, User as UserIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
+import { useAuthStore } from '@/stores/auth-store'
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const { user, isAuthenticated, isLoading, initialize } = useAuthStore()
   const router = useRouter()
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-      setLoading(false)
-      
-      if (!user) {
-        router.push('/auth/signin')
-      }
+    // Initialize auth store if not already done
+    if (!user && !isLoading) {
+      initialize()
     }
+  }, [user, isLoading, initialize])
 
-    getUser()
+  useEffect(() => {
+    // Redirect to signin if not authenticated
+    if (!isLoading && !isAuthenticated) {
+      router.push('/auth/signin')
+    }
+  }, [isAuthenticated, isLoading, router])
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === 'SIGNED_OUT' || !session) {
-          router.push('/auth/signin')
-        } else {
-          setUser(session.user)
-        }
-      }
-    )
-
-    return () => subscription.unsubscribe()
-  }, [supabase, router])
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -56,7 +38,7 @@ export default function DashboardLayout({
     )
   }
 
-  if (!user) {
+  if (!isAuthenticated || !user) {
     return null
   }
 

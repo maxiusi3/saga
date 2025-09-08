@@ -80,7 +80,7 @@ export class StoryService {
    */
   async createStory(storyData: CreateStoryData): Promise<Story | null> {
     try {
-      // Create the story record with all data
+      // Create the story record with all available data
       const { data: story, error: storyError } = await this.supabase
         .from('stories')
         .insert({
@@ -88,13 +88,14 @@ export class StoryService {
           storyteller_id: storyData.storyteller_id,
           title: storyData.title,
           content: storyData.content,
-          audio_url: storyData.audio_url,
+          audio_url: storyData.audio_url || null, // Make audio_url optional
           audio_duration: storyData.audio_duration,
           transcript: storyData.transcript,
           ai_generated_title: storyData.ai_generated_title,
           ai_summary: storyData.ai_summary,
           ai_follow_up_questions: storyData.ai_follow_up_questions,
           ai_confidence_score: storyData.ai_confidence_score,
+          status: 'ready'
         })
         .select()
         .single()

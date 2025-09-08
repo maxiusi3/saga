@@ -10,10 +10,10 @@ import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { UserRole, getRoleDisplayInfo } from '@saga/shared'
-import { BookOpen, Users, MessageCircle, Crown } from 'lucide-react'
+import { BookOpen, Users, MessageCircle, Crown, Plus } from 'lucide-react'
 
 export default function DashboardPage() {
-  const { user } = useAuthStore()
+  const { user, isAuthenticated, isLoading: authLoading } = useAuthStore()
   const [projects, setProjects] = useState<ProjectWithMembers[]>([])
   const [loading, setLoading] = useState(true)
   const [isFirstTime, setIsFirstTime] = useState(false)
@@ -21,8 +21,14 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const loadDashboard = async () => {
-      if (!user?.id) {
+      // Wait for auth to be ready
+      if (authLoading) {
+        return
+      }
+
+      if (!user?.id || !isAuthenticated) {
         setLoading(false)
+        setError('Please sign in to view your projects')
         return
       }
 
@@ -38,14 +44,14 @@ export default function DashboardPage() {
 
       } catch (error) {
         console.error('Error loading dashboard:', error)
-        setError('Failed to load projects')
+        setError('Failed to load projects. Please try refreshing the page.')
       } finally {
         setLoading(false)
       }
     }
 
     loadDashboard()
-  }, [user?.id])
+  }, [user?.id, isAuthenticated, authLoading])
 
   const getStatusBadge = (storyCount: number) => {
     if (storyCount === 0) {

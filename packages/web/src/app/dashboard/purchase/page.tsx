@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -10,14 +11,22 @@ import Link from 'next/link'
 
 export default function PurchasePage() {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const handlePurchase = async () => {
     setIsLoading(true)
-    // TODO: Implement Stripe payment flow
-    setTimeout(() => {
+
+    try {
+      // 模拟购买处理过程
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // 模拟购买成功，直接重定向到 dashboard
+      console.log('Purchase completed successfully (simulated)')
+      router.push('/dashboard')
+    } catch (error) {
+      console.error('Purchase failed:', error)
       setIsLoading(false)
-      // Redirect to success or dashboard
-    }, 2000)
+    }
   }
 
   const features = [

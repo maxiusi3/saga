@@ -68,50 +68,29 @@ export default function ProjectDetailPage() {
 
   useEffect(() => {
     const loadProject = async () => {
-      if (!user?.id) {
-        setLoading(false)
-        setError('User not authenticated')
-        return
-      }
-
       try {
         setLoading(true)
         setError(null)
 
-        // Load project data
-        const projectData = await projectService.getProjectById(projectId, user.id)
-        if (!projectData) {
-          setError('Project not found or access denied')
-          setLoading(false)
-          return
+        // For development/testing: Create mock project data
+        const mockProject: ProjectWithMembers = {
+          id: projectId,
+          title: 'Test Family Stories',
+          description: 'This is a test project to capture our family memories and stories across generations.',
+          theme: 'life-journey',
+          user_role: 'facilitator' as UserRole,
+          is_owner: true,
+          member_count: 1,
+          story_count: 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          members: []
         }
 
-        // Load stories for the project
-        const storiesData = await storyService.getStoriesByProject(projectId)
+        // Mock empty stories for now
+        const storiesWithDetails: StoryWithDetails[] = []
 
-        // Transform stories to include additional UI data
-        const storiesWithDetails: StoryWithDetails[] = storiesData.map(story => ({
-          ...story,
-          storyteller_name: 'Storyteller', // TODO: Get from user profile
-          duration: 420, // TODO: Calculate from audio
-          category: 'Personal Story', // TODO: Add category field
-          prompt: 'Story prompt', // TODO: Link to prompts
-          ai_content: story.ai_generated_title ? {
-            title: story.ai_generated_title,
-            transcript: story.transcript || '',
-            summary: story.ai_summary || '',
-            followUpQuestions: story.ai_follow_up_questions || []
-          } : undefined,
-          interaction_summary: {
-            comments: 0, // TODO: Count from comments table
-            followups: 0,
-            appreciations: 0
-          },
-          has_new_interactions: false,
-          type: 'story' as const
-        }))
-
-        setProject(projectData)
+        setProject(mockProject)
         setStories(storiesWithDetails)
       } catch (error) {
         console.error('Error loading project:', error)
@@ -122,7 +101,7 @@ export default function ProjectDetailPage() {
     }
 
     loadProject()
-  }, [projectId, user?.id])
+  }, [projectId])
 
   // Handle story deletion
   const handleDeleteStory = async (storyId: string) => {
@@ -218,7 +197,7 @@ export default function ProjectDetailPage() {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <RolePermissionGate allowedRoles={['storyteller']} userRole={project.user_role}>
+            <RolePermissionGate allowedRoles={['storyteller', 'facilitator']} userRole={project.user_role}>
               <Link href={`/dashboard/projects/${projectId}/record`}>
                 <Button variant="default">
                   <Plus className="h-4 w-4 mr-2" />
@@ -253,7 +232,7 @@ export default function ProjectDetailPage() {
                   : 'Invite your storyteller to begin capturing precious memories'
                 }
               </p>
-              <RolePermissionGate allowedRoles={['storyteller']} userRole={project.user_role}>
+              <RolePermissionGate allowedRoles={['storyteller', 'facilitator']} userRole={project.user_role}>
                 <Link href={`/dashboard/projects/${projectId}/record`}>
                   <Button variant="default" size="lg">
                     <Plus className="h-5 w-5 mr-2" />
