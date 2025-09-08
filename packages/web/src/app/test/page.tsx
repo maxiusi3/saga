@@ -94,7 +94,11 @@ export default function TestPage() {
       }
 
       const savedStory = await storyService.createStory(storyData)
-      setMessage(`故事保存成功！ID: ${savedStory.id}`)
+      if (savedStory) {
+        setMessage(`故事保存成功！ID: ${savedStory.id}`)
+      } else {
+        setMessage('故事保存失败：数据库连接问题')
+      }
 
     } catch (error) {
       console.error('处理失败:', error)
