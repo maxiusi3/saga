@@ -1,6 +1,7 @@
 {
   "buildCommand": "npm run build:vercel",
-  "outputDirectory": ".next",
+  "outputDirectory": "packages/web/.next",
   "installCommand": "npm ci",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "rootDirectory": "."
 }
