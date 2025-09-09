@@ -11,13 +11,43 @@ import { useAuthStore } from '@/stores/auth-store'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { UserRole, getRoleDisplayInfo } from '@saga/shared'
 import { BookOpen, Users, MessageCircle, Crown, Plus } from 'lucide-react'
+import { createClientSupabase } from '@/lib/supabase'
 
 export default function DashboardPage() {
-  const { user, isAuthenticated, isLoading: authLoading } = useAuthStore()
+  const { user, isAuthenticated, isLoading: authLoading, initialize } = useAuthStore()
   const [projects, setProjects] = useState<ProjectWithMembers[]>([])
   const [loading, setLoading] = useState(true)
   const [isFirstTime, setIsFirstTime] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Handle Magic Link tokens from URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const accessToken = urlParams.get('access_token')
+    const refreshToken = urlParams.get('refresh_token')
+    const type = urlParams.get('type')
+
+    if (accessToken && refreshToken && type === 'magiclink') {
+      console.log('Dashboard: Magic Link tokens found, setting session')
+
+      // Set the session using the tokens
+      const supabase = createClientSupabase()
+      supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      }).then(({ data, error }) => {
+        if (error) {
+          console.error('Dashboard: Error setting session:', error)
+        } else {
+          console.log('Dashboard: Session set successfully')
+          // Re-initialize auth store to pick up the new session
+          initialize()
+          // Clean up URL
+          window.history.replaceState({}, document.title, '/dashboard')
+        }
+      })
+    }
+  }, [initialize])
 
   useEffect(() => {
     console.log('Dashboard useEffect triggered:', {

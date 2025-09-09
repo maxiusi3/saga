@@ -1,9 +1,31 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, MessageCircle, Heart, BookOpen } from 'lucide-react'
 
 export default function HomePage() {
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if URL contains auth tokens from Supabase Magic Link
+    const urlParams = new URLSearchParams(window.location.search)
+    const accessToken = urlParams.get('access_token')
+    const refreshToken = urlParams.get('refresh_token')
+    const tokenType = urlParams.get('token_type')
+    const type = urlParams.get('type')
+
+    console.log('Home page: Checking URL params', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type })
+
+    if (accessToken && refreshToken && type === 'magiclink') {
+      console.log('Home page: Magic Link tokens found, redirecting to dashboard')
+      // Redirect to dashboard with tokens
+      router.push(`/dashboard?access_token=${accessToken}&refresh_token=${refreshToken}&token_type=${tokenType}&type=${type}`)
+    }
+  }, [router])
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
