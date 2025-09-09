@@ -59,8 +59,13 @@ export async function GET(request: NextRequest) {
       const { data: { session } } = await supabase.auth.getSession()
       console.log('Session after OAuth:', session ? 'exists' : 'null')
 
-      // Successful OAuth authentication - redirect to dashboard
-      return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
+      // Force page refresh to ensure client gets the session
+      const response = NextResponse.redirect(`${requestUrl.origin}/dashboard`)
+      response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+      response.headers.set('Pragma', 'no-cache')
+      response.headers.set('Expires', '0')
+
+      return response
     }
 
     // Handle Magic Link callback (token_hash parameter)
@@ -83,8 +88,13 @@ export async function GET(request: NextRequest) {
       const { data: { session } } = await supabase.auth.getSession()
       console.log('Session after verification:', session ? 'exists' : 'null')
 
-      // Successful Magic Link authentication - redirect to dashboard
-      return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
+      // Force page refresh to ensure client gets the session
+      const response = NextResponse.redirect(`${requestUrl.origin}/dashboard`)
+      response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+      response.headers.set('Pragma', 'no-cache')
+      response.headers.set('Expires', '0')
+
+      return response
     }
 
     // No valid parameters - redirect to signin

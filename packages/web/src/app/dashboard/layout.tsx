@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/layout/navigation'
 import Link from 'next/link'
@@ -15,16 +15,18 @@ export default function DashboardLayout({
 }) {
   const { user, isAuthenticated, isLoading, initialize } = useAuthStore()
   const router = useRouter()
+  const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
-    console.log('Dashboard Layout: Auth state check', { user: !!user, isLoading, isAuthenticated })
+    console.log('Dashboard Layout: Auth state check', { user: !!user, isLoading, isAuthenticated, initialized })
 
-    // Initialize auth store if not already done
-    if (!user && !isLoading) {
-      console.log('Dashboard Layout: Initializing auth store')
+    // Initialize auth store only once
+    if (!user && !isLoading && !initialized) {
+      console.log('Dashboard Layout: Initializing auth store (first time)')
+      setInitialized(true)
       initialize()
     }
-  }, [user, isLoading, initialize])
+  }, [user, isLoading, initialized, initialize])
 
   useEffect(() => {
     console.log('Dashboard Layout: Redirect check', { isLoading, isAuthenticated })
