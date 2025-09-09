@@ -49,8 +49,9 @@ export async function GET(request: NextRequest) {
 
       console.log('OAuth authentication successful')
 
-      // Wait for session to be properly set before redirecting
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // Get the session after successful OAuth
+      const { data: { session } } = await supabase.auth.getSession()
+      console.log('Session after OAuth:', session ? 'exists' : 'null')
 
       // Successful OAuth authentication - redirect to dashboard
       return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
@@ -72,9 +73,9 @@ export async function GET(request: NextRequest) {
 
       console.log('Magic Link verification successful')
 
-      // Wait for session to be properly set before redirecting
-      // This ensures the auth store can pick up the session state
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // Get the session after successful verification
+      const { data: { session } } = await supabase.auth.getSession()
+      console.log('Session after verification:', session ? 'exists' : 'null')
 
       // Successful Magic Link authentication - redirect to dashboard
       return NextResponse.redirect(`${requestUrl.origin}/dashboard`)

@@ -24,9 +24,13 @@ export default function DashboardLayout({
   }, [user, isLoading, initialize])
 
   useEffect(() => {
-    // Redirect to signin if not authenticated
+    // Add delay before redirecting to allow session sync
     if (!isLoading && !isAuthenticated) {
-      router.push('/auth/signin')
+      const timer = setTimeout(() => {
+        router.push('/auth/signin')
+      }, 2000) // Wait 2 seconds for auth state to sync
+
+      return () => clearTimeout(timer)
     }
   }, [isAuthenticated, isLoading, router])
 
