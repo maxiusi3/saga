@@ -59,13 +59,28 @@ export async function GET(request: NextRequest) {
       const { data: { session } } = await supabase.auth.getSession()
       console.log('Session after OAuth:', session ? 'exists' : 'null')
 
-      // Force page refresh to ensure client gets the session
-      const response = NextResponse.redirect(`${requestUrl.origin}/dashboard`)
-      response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
-      response.headers.set('Pragma', 'no-cache')
-      response.headers.set('Expires', '0')
-
-      return response
+      // Force complete page refresh using JavaScript redirect
+      const dashboardUrl = `${requestUrl.origin}/dashboard`
+      return new Response(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Redirecting...</title>
+        </head>
+        <body>
+          <script>
+            console.log('OAuth: Forcing page refresh to dashboard');
+            window.location.href = '${dashboardUrl}';
+          </script>
+          <p>Redirecting to dashboard...</p>
+        </body>
+        </html>
+      `, {
+        headers: {
+          'Content-Type': 'text/html',
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
+        }
+      })
     }
 
     // Handle Magic Link callback (token_hash parameter)
@@ -88,13 +103,28 @@ export async function GET(request: NextRequest) {
       const { data: { session } } = await supabase.auth.getSession()
       console.log('Session after verification:', session ? 'exists' : 'null')
 
-      // Force page refresh to ensure client gets the session
-      const response = NextResponse.redirect(`${requestUrl.origin}/dashboard`)
-      response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
-      response.headers.set('Pragma', 'no-cache')
-      response.headers.set('Expires', '0')
-
-      return response
+      // Force complete page refresh using JavaScript redirect
+      const dashboardUrl = `${requestUrl.origin}/dashboard`
+      return new Response(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Redirecting...</title>
+        </head>
+        <body>
+          <script>
+            console.log('Magic Link: Forcing page refresh to dashboard');
+            window.location.href = '${dashboardUrl}';
+          </script>
+          <p>Redirecting to dashboard...</p>
+        </body>
+        </html>
+      `, {
+        headers: {
+          'Content-Type': 'text/html',
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
+        }
+      })
     }
 
     // No valid parameters - redirect to signin
