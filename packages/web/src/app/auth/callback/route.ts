@@ -4,13 +4,19 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
+
+  // 详细日志记录所有参数
+  console.log('=== Auth Callback Debug ===')
+  console.log('Full URL:', requestUrl.toString())
+  console.log('All search params:', Object.fromEntries(requestUrl.searchParams.entries()))
+
   const code = requestUrl.searchParams.get('code')
   const token_hash = requestUrl.searchParams.get('token_hash')
   const type = requestUrl.searchParams.get('type')
   const error = requestUrl.searchParams.get('error')
   const error_description = requestUrl.searchParams.get('error_description')
 
-
+  console.log('Parsed params:', { code, token_hash, type, error, error_description })
 
   // Handle error cases
   if (error) {
@@ -82,6 +88,7 @@ export async function GET(request: NextRequest) {
     }
 
     // No valid parameters - redirect to signin
+    console.log('No valid auth parameters found, redirecting to signin')
     return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent('Invalid authentication request')}`)
 
   } catch (error) {
