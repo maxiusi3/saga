@@ -17,24 +17,37 @@ export default function DashboardLayout({
   const router = useRouter()
 
   useEffect(() => {
+    console.log('Dashboard Layout: Auth state check', { user: !!user, isLoading, isAuthenticated })
+
     // Initialize auth store if not already done
     if (!user && !isLoading) {
+      console.log('Dashboard Layout: Initializing auth store')
       initialize()
     }
   }, [user, isLoading, initialize])
 
   useEffect(() => {
+    console.log('Dashboard Layout: Redirect check', { isLoading, isAuthenticated })
+
     // Add delay before redirecting to allow session sync
     if (!isLoading && !isAuthenticated) {
+      console.log('Dashboard Layout: Setting redirect timer (2s)')
       const timer = setTimeout(() => {
+        console.log('Dashboard Layout: Redirecting to signin')
         router.push('/auth/signin')
       }, 2000) // Wait 2 seconds for auth state to sync
 
-      return () => clearTimeout(timer)
+      return () => {
+        console.log('Dashboard Layout: Clearing redirect timer')
+        clearTimeout(timer)
+      }
     }
   }, [isAuthenticated, isLoading, router])
 
+  console.log('Dashboard Layout: Render decision', { isLoading, isAuthenticated, user: !!user })
+
   if (isLoading) {
+    console.log('Dashboard Layout: Showing loading spinner')
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -43,6 +56,7 @@ export default function DashboardLayout({
   }
 
   if (!isAuthenticated || !user) {
+    console.log('Dashboard Layout: Not authenticated, returning null')
     return null
   }
 
