@@ -46,7 +46,8 @@ function SignInPageContent() {
     const accessTokenMatch = fullUrl.match(/access_token=([^&]+)/)
     const refreshTokenMatch = fullUrl.match(/refresh_token=([^&]+)/)
     const tokenTypeMatch = fullUrl.match(/token_type=([^&]+)/)
-    const typeMatch = fullUrl.match(/type=([^&]+)/)
+    // Use more specific regex to avoid matching token_type instead of type
+    const typeMatch = fullUrl.match(/[?&]type=([^&]+)/)
 
     const accessToken = accessTokenMatch ? decodeURIComponent(accessTokenMatch[1]) : null
     const refreshToken = refreshTokenMatch ? decodeURIComponent(refreshTokenMatch[1]) : null
