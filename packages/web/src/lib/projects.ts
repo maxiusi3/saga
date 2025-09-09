@@ -87,19 +87,10 @@ export class ProjectService {
     try {
       console.log('ProjectService: Fetching projects for user:', userId)
 
-      // Get projects where user is facilitator (owner)
+      // Get projects where user is facilitator (owner) - simplified query to avoid RLS recursion
       const { data: projects, error: projectsError } = await this.supabase
         .from('projects')
-        .select(`
-          *,
-          project_roles(
-            id,
-            user_id,
-            role,
-            status,
-            created_at
-          )
-        `)
+        .select('*')
         .eq('facilitator_id', userId)
 
       console.log('ProjectService: Query result:', { projects, projectsError })
