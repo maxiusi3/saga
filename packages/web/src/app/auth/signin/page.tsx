@@ -38,37 +38,41 @@ function SignInPageContent() {
     if (!isClient) return
 
     // Debug: Log full URL information
-    console.log('SignIn page: Full URL:', window.location.href)
+    const fullUrl = window.location.href
+    console.log('SignIn page: Full URL:', fullUrl)
     console.log('SignIn page: Search string:', window.location.search)
 
-    const urlParams = new URLSearchParams(window.location.search)
-    const accessToken = urlParams.get('access_token')
-    const refreshToken = urlParams.get('refresh_token')
-    const tokenType = urlParams.get('token_type')
-    const type = urlParams.get('type')
+    // Extract tokens using regex from full URL (more reliable than URLSearchParams)
+    const accessTokenMatch = fullUrl.match(/access_token=([^&]+)/)
+    const refreshTokenMatch = fullUrl.match(/refresh_token=([^&]+)/)
+    const tokenTypeMatch = fullUrl.match(/token_type=([^&]+)/)
+    const typeMatch = fullUrl.match(/type=([^&]+)/)
 
-    // Also try with searchParams
+    const accessToken = accessTokenMatch ? decodeURIComponent(accessTokenMatch[1]) : null
+    const refreshToken = refreshTokenMatch ? decodeURIComponent(refreshTokenMatch[1]) : null
+    const tokenType = tokenTypeMatch ? decodeURIComponent(tokenTypeMatch[1]) : null
+    const type = typeMatch ? decodeURIComponent(typeMatch[1]) : null
+
+    // Also try with traditional methods for comparison
+    const urlParams = new URLSearchParams(window.location.search)
     const accessTokenFromSearch = searchParams?.get('access_token')
     const refreshTokenFromSearch = searchParams?.get('refresh_token')
     const typeFromSearch = searchParams?.get('type')
 
-    console.log('SignIn page: URLSearchParams results:', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type })
+    console.log('SignIn page: Regex extraction results:', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type })
+    console.log('SignIn page: URLSearchParams results:', { accessToken: !!urlParams.get('access_token'), refreshToken: !!urlParams.get('refresh_token'), type: urlParams.get('type') })
     console.log('SignIn page: useSearchParams results:', { accessToken: !!accessTokenFromSearch, refreshToken: !!refreshTokenFromSearch, type: typeFromSearch })
 
-    // Use either source of tokens
-    const finalAccessToken = accessToken || accessTokenFromSearch
-    const finalRefreshToken = refreshToken || refreshTokenFromSearch
-    const finalType = type || typeFromSearch
-
-    if (finalAccessToken && finalRefreshToken && finalType === 'magiclink') {
+    // Use regex-extracted tokens (most reliable)
+    if (accessToken && refreshToken && type === 'magiclink') {
       console.log('SignIn page: Magic Link tokens found, setting session and redirecting')
 
       // Set the session using the tokens
       const supabase = getSupabase()
       if (supabase) {
         supabase.auth.setSession({
-          access_token: finalAccessToken,
-          refresh_token: finalRefreshToken
+          access_token: accessToken,
+          refresh_token: refreshToken
         }).then(({ data, error }) => {
           if (error) {
             console.error('SignIn page: Error setting session:', error)
