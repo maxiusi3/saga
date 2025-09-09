@@ -10,8 +10,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
-import { createBrowserClient } from '@supabase/ssr'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { createClientSupabase } from '@/lib/supabase'
 
 function SignInPageContent() {
   const [email, setEmail] = useState('')
@@ -29,10 +29,8 @@ function SignInPageContent() {
   // 仅在客户端事件中创建 Supabase 实例，避免服务端渲染阶段访问环境变量
   const getSupabase = () => {
     if (typeof window === 'undefined') return null
-    return createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    )
+    // 统一使用单例客户端，避免多个 GoTrueClient 导致的异常
+    return createClientSupabase()
   }
 
   // Check for error from callback
