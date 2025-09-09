@@ -9,7 +9,6 @@ import { Plus, BookOpen, Users, MessageCircle, Crown } from 'lucide-react'
 import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
-import { useAuthStore } from '@/stores/auth-store'
 
 // 模拟项目数据类型
 interface Project {

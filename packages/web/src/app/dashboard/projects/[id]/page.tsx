@@ -22,7 +22,6 @@ import { UserRole, getRoleDisplayInfo } from '@saga/shared/lib/permissions'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
-import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { toast } from 'react-hot-toast'
 
 interface StoryWithDetails extends Story {
