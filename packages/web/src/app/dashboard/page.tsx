@@ -20,19 +20,32 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    console.log('Dashboard useEffect triggered:', {
+      userId: user?.id,
+      isAuthenticated,
+      authLoading
+    })
+
     const loadDashboard = async () => {
+      console.log('loadDashboard called, authLoading:', authLoading)
+
       // Wait for auth to be ready
       if (authLoading) {
+        console.log('Auth still loading, returning early')
         return
       }
 
+      console.log('Auth check:', { userId: user?.id, isAuthenticated })
+
       if (!user?.id || !isAuthenticated) {
+        console.log('User not authenticated, setting error')
         setLoading(false)
         setError('Please sign in to view your projects')
         return
       }
 
       try {
+        console.log('Starting dashboard load for user:', user.id)
         setLoading(true)
         setError(null)
 
@@ -49,6 +62,7 @@ export default function DashboardPage() {
         console.error('Error loading dashboard:', error)
         setError('Failed to load projects. Please try refreshing the page.')
       } finally {
+        console.log('Dashboard loading finished')
         setLoading(false)
       }
     }
