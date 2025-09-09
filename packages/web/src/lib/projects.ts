@@ -85,6 +85,8 @@ export class ProjectService {
    */
   async getUserProjects(userId: string): Promise<ProjectWithMembers[]> {
     try {
+      console.log('ProjectService: Fetching projects for user:', userId)
+
       // Get projects where user is owner or member
       const { data: projects, error: projectsError } = await this.supabase
         .from('projects')
@@ -100,6 +102,8 @@ export class ProjectService {
         `)
         .or(`facilitator_id.eq.${userId},project_roles.user_id.eq.${userId}`)
         .eq('project_roles.status', 'active')
+
+      console.log('ProjectService: Query result:', { projects, projectsError })
 
       if (projectsError) {
         console.error('Error fetching user projects:', projectsError)

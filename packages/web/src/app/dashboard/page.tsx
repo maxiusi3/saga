@@ -36,9 +36,12 @@ export default function DashboardPage() {
         setLoading(true)
         setError(null)
 
+        console.log('Loading dashboard for user:', user.id)
+
         // Load user's projects
         const userProjects = await projectService.getUserProjects(user.id)
 
+        console.log('Loaded projects:', userProjects)
         setProjects(userProjects)
         setIsFirstTime(userProjects.length === 0)
 
