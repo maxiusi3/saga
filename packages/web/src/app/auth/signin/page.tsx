@@ -37,23 +37,38 @@ function SignInPageContent() {
   useEffect(() => {
     if (!isClient) return
 
+    // Debug: Log full URL information
+    console.log('SignIn page: Full URL:', window.location.href)
+    console.log('SignIn page: Search string:', window.location.search)
+
     const urlParams = new URLSearchParams(window.location.search)
     const accessToken = urlParams.get('access_token')
     const refreshToken = urlParams.get('refresh_token')
     const tokenType = urlParams.get('token_type')
     const type = urlParams.get('type')
 
-    console.log('SignIn page: Checking URL params', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type })
+    // Also try with searchParams
+    const accessTokenFromSearch = searchParams?.get('access_token')
+    const refreshTokenFromSearch = searchParams?.get('refresh_token')
+    const typeFromSearch = searchParams?.get('type')
 
-    if (accessToken && refreshToken && type === 'magiclink') {
+    console.log('SignIn page: URLSearchParams results:', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type })
+    console.log('SignIn page: useSearchParams results:', { accessToken: !!accessTokenFromSearch, refreshToken: !!refreshTokenFromSearch, type: typeFromSearch })
+
+    // Use either source of tokens
+    const finalAccessToken = accessToken || accessTokenFromSearch
+    const finalRefreshToken = refreshToken || refreshTokenFromSearch
+    const finalType = type || typeFromSearch
+
+    if (finalAccessToken && finalRefreshToken && finalType === 'magiclink') {
       console.log('SignIn page: Magic Link tokens found, setting session and redirecting')
 
       // Set the session using the tokens
       const supabase = getSupabase()
       if (supabase) {
         supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken
+          access_token: finalAccessToken,
+          refresh_token: finalRefreshToken
         }).then(({ data, error }) => {
           if (error) {
             console.error('SignIn page: Error setting session:', error)
@@ -66,7 +81,7 @@ function SignInPageContent() {
         })
       }
     }
-  }, [isClient, router])
+  }, [isClient, router, searchParams])
 
   // Check for error from callback
   useEffect(() => {
