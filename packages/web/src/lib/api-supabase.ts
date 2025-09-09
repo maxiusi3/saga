@@ -113,7 +113,7 @@ class SupabaseApiClient {
       
       // 如果没有钱包记录，创建一个
       if (!data) {
-        const { data: newWallet, error: createError } = await this.supabase
+        const { error: createError } = await this.supabase
           .from('user_resource_wallets')
           .insert({
             user_id: user.id,
@@ -121,10 +121,17 @@ class SupabaseApiClient {
             facilitator_seats: 0,
             storyteller_seats: 0
           })
-          .select()
-          .single()
 
         if (createError) throw createError
+
+        // 重新查询以获取触发器修改后的值
+        const { data: newWallet, error: refetchError } = await this.supabase
+          .from('user_resource_wallets')
+          .select('*')
+          .eq('user_id', user.id)
+          .single()
+
+        if (refetchError) throw refetchError
         return newWallet
       }
 

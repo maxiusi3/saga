@@ -36,7 +36,7 @@ export function useResourceWallet() {
       if (fetchError) {
         if (fetchError.code === 'PGRST116') {
           // No wallet found, create one
-          const { data: newWallet, error: createError } = await supabase
+          const { error: createError } = await supabase
             .from('user_resource_wallets')
             .insert({
               user_id: user.id,
@@ -44,11 +44,20 @@ export function useResourceWallet() {
               facilitator_seats: 0,
               storyteller_seats: 0
             })
-            .select()
-            .single()
 
           if (createError) {
             throw createError
+          }
+
+          // 重新查询以获取触发器修改后的值
+          const { data: newWallet, error: refetchError } = await supabase
+            .from('user_resource_wallets')
+            .select('*')
+            .eq('user_id', user.id)
+            .single()
+
+          if (refetchError) {
+            throw refetchError
           }
 
           setWallet(newWallet)
