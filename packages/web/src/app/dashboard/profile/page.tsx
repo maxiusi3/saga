@@ -48,23 +48,29 @@ export default function ProfilePage() {
         setUser(user)
 
         if (user) {
-          // Mock profile data - replace with actual Supabase queries
-          const mockProfile: UserProfile = {
-            full_name: user.user_metadata?.full_name || user.email || '',
+          // Load real profile data from Supabase
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single()
+
+          const realProfile: UserProfile = {
+            full_name: profile?.name || user.user_metadata?.full_name || user.email || '',
             email: user.email || '',
-            avatar_url: user.user_metadata?.avatar_url,
-            phone: '',
-            bio: '',
-            joined_date: '2024-01-15T10:30:00Z',
-            total_projects: 2,
-            total_stories: 8
+            avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url,
+            phone: profile?.phone || '',
+            bio: profile?.bio || '',
+            joined_date: user.created_at || new Date().toISOString(),
+            total_projects: 0, // TODO: Count from projects table
+            total_stories: 0   // TODO: Count from stories table
           }
 
-          setProfile(mockProfile)
+          setProfile(realProfile)
           setFormData({
-            full_name: mockProfile.full_name,
-            phone: mockProfile.phone || '',
-            bio: mockProfile.bio || ''
+            full_name: realProfile.full_name,
+            phone: realProfile.phone || '',
+            bio: realProfile.bio || ''
           })
         }
       } catch (error) {

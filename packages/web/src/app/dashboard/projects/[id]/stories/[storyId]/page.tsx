@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, Play, Pause, Edit, Send, ZoomIn } from 'lucide-react'
 import Link from 'next/link'
+import { storyService } from '@/lib/stories'
 
 interface Story {
   id: string
@@ -54,61 +55,37 @@ export default function StoryDetailPage() {
 
   useEffect(() => {
     const loadStory = async () => {
-      // Mock data - replace with actual Supabase queries
-      const mockStory: Story = {
-        id: storyId,
-        title: 'Growing Up in the 1950s',
-        timestamp: '2024-01-20T10:30:00Z',
-        storyteller_name: 'John Doe',
-        storyteller_avatar: '',
-        audio_url: '/mock-audio.mp3',
-        audio_duration: 420, // 7 minutes
-        transcript: `I remember when I was just seven years old, living in that small house on Maple Street. It was 1952, and the world seemed so much simpler then. 
-
-Every morning, I'd wake up to the smell of my mother's pancakes cooking on the old cast iron skillet. She'd always make them in the shape of Mickey Mouse ears - two small circles connected to a larger one. I thought she was the most creative person in the world.
-
-Our neighborhood was filled with kids, and we'd spend entire summer days outside, only coming in when the streetlights came on. We didn't have video games or computers - our entertainment was our imagination. We'd build forts out of cardboard boxes, play kick the can until dark, and catch fireflies in mason jars.
-
-The ice cream truck would come around every Tuesday and Thursday at exactly 3 PM. You could hear that familiar jingle from three blocks away, and all the kids would come running with their nickels and dimes. I always got the rocket pop - red, white, and blue, just like the flag.
-
-Those were the days when a penny candy actually cost a penny, and you could get a full bag of treats for a quarter. The corner store owner, Mr. Peterson, knew every kid in the neighborhood by name. He'd always slip an extra piece of bubble gum into our bags when our parents weren't looking.`,
-        photo_url: '',
-        type: 'story'
-      }
-
-      const mockInteractions: Interaction[] = [
-        {
-          id: '1',
-          type: 'comment',
-          author_name: 'Alex Smith',
-          author_avatar: '',
-          content: 'This brings back so many memories of my own childhood! The ice cream truck story is so sweet.',
-          timestamp: '2024-01-20T11:15:00Z'
-        },
-        {
-          id: '2',
-          type: 'followup',
-          author_name: 'Beth Smith',
-          author_avatar: '',
-          content: 'What happened to Mr. Peterson? Did he run the store for a long time?',
-          timestamp: '2024-01-20T14:30:00Z'
-        },
-        {
-          id: '3',
-          type: 'comment',
-          author_name: 'Sarah Johnson',
-          author_avatar: '',
-          content: 'I love how you describe the Mickey Mouse pancakes. What a special memory with your mom.',
-          timestamp: '2024-01-20T16:45:00Z'
+      try {
+        // Load real story data from Supabase
+        const story = await storyService.getStoryById(storyId)
+        if (!story) {
+          setError('Story not found')
+          setLoading(false)
+          return
         }
-      ]
 
-      setTimeout(() => {
-        setStory(mockStory)
-        setEditedTitle(mockStory.title)
-        setInteractions(mockInteractions)
+        setStory({
+          id: story.id,
+          title: story.title || 'Untitled Story',
+          timestamp: story.created_at,
+          storyteller_name: 'Storyteller', // TODO: Get from user profile
+          storyteller_avatar: '',
+          audio_url: story.audio_url || '',
+          audio_duration: story.audio_duration || 0,
+          transcript: story.transcript || story.content || 'No transcript available',
+          photo_url: '',
+          type: 'story'
+        })
+        setEditedTitle(story.title || 'Untitled Story')
+
+        // TODO: Load real interactions from database
+        setInteractions([])
         setLoading(false)
-      }, 1000)
+      } catch (error) {
+        console.error('Error loading story:', error)
+        setError('Failed to load story')
+        setLoading(false)
+      }
     }
 
     loadStory()

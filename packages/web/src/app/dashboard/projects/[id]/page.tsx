@@ -22,6 +22,7 @@ import { UserRole, getRoleDisplayInfo } from '@saga/shared/lib/permissions'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
+import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { toast } from 'react-hot-toast'
 
 interface StoryWithDetails extends Story {
@@ -68,30 +69,30 @@ export default function ProjectDetailPage() {
 
   useEffect(() => {
     const loadProject = async () => {
+      if (!user?.id) {
+        setError('User not authenticated')
+        setLoading(false)
+        return
+      }
+
       try {
         setLoading(true)
         setError(null)
 
-        // For development/testing: Create mock project data
-        const mockProject: ProjectWithMembers = {
-          id: projectId,
-          title: 'Test Family Stories',
-          description: 'This is a test project to capture our family memories and stories across generations.',
-          theme: 'life-journey',
-          user_role: 'facilitator' as UserRole,
-          is_owner: true,
-          member_count: 1,
-          story_count: 0,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          members: []
+        // Load real project data
+        const userProjects = await projectService.getUserProjects(user.id)
+        const project = userProjects.find(p => p.id === projectId)
+
+        if (!project) {
+          setError('Project not found or access denied')
+          setLoading(false)
+          return
         }
 
-        // Mock empty stories for now
-        const storiesWithDetails: StoryWithDetails[] = []
+        setProject(project)
 
-        setProject(mockProject)
-        setStories(storiesWithDetails)
+        // TODO: Load real stories from database
+        setStories([])
       } catch (error) {
         console.error('Error loading project:', error)
         setError('Failed to load project data')
@@ -101,7 +102,7 @@ export default function ProjectDetailPage() {
     }
 
     loadProject()
-  }, [projectId])
+  }, [projectId, user?.id])
 
   // Handle story deletion
   const handleDeleteStory = async (storyId: string) => {

@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge'
 import { Plus, BookOpen, Users, MessageCircle, Crown } from 'lucide-react'
 import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
+import { projectService, ProjectWithMembers } from '@/lib/projects'
+import { useAuthStore } from '@/stores/auth-store'
 
 // 模拟项目数据类型
 interface Project {
@@ -24,41 +26,21 @@ interface Project {
 export default function ProjectsPage() {
   const { user } = useAuthStore()
   const router = useRouter()
-  const [projects, setProjects] = useState<Project[]>([])
+  const [projects, setProjects] = useState<ProjectWithMembers[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // 模拟加载项目数据
     const loadProjects = async () => {
+      if (!user?.id) {
+        setLoading(false)
+        return
+      }
+
       try {
-        // 模拟 API 调用延迟
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        
-        // 模拟项目数据
-        const mockProjects: Project[] = [
-          {
-            id: '1',
-            name: 'Smith Family Stories',
-            description: 'Capturing three generations of family memories',
-            story_count: 12,
-            member_count: 8,
-            user_role: 'facilitator',
-            is_owner: true,
-            created_at: '2024-01-15'
-          },
-          {
-            id: '2', 
-            name: 'Grandma\'s Kitchen Tales',
-            description: 'Stories from the heart of our home',
-            story_count: 5,
-            member_count: 4,
-            user_role: 'storyteller',
-            is_owner: false,
-            created_at: '2024-02-01'
-          }
-        ]
-        
-        setProjects(mockProjects)
+        console.log('Loading projects for user:', user.id)
+        const userProjects = await projectService.getUserProjects(user.id)
+        console.log('Loaded projects:', userProjects)
+        setProjects(userProjects)
       } catch (error) {
         console.error('Error loading projects:', error)
       } finally {
@@ -67,7 +49,7 @@ export default function ProjectsPage() {
     }
 
     loadProjects()
-  }, [])
+  }, [user?.id])
 
   const getStatusBadge = (storyCount: number) => {
     if (storyCount === 0) {
@@ -102,8 +84,8 @@ export default function ProjectsPage() {
   }
 
   const handleCreateProject = () => {
-    // 直接跳转到项目创建页面，跳过购买
-    router.push('/dashboard/projects/create')
+    // 跳转到购买页面，完成购买后再创建项目
+    router.push('/dashboard/purchase')
   }
 
   if (loading) {
@@ -167,7 +149,7 @@ export default function ProjectsPage() {
                     {project.name}
                   </CardTitle>
                   <div className="flex flex-col items-end space-y-2">
-                    {getStatusBadge(project.story_count)}
+                    {getStatusBadge(project.story_count || 0)}
                     {getRoleBadge(project.user_role, project.is_owner)}
                   </div>
                 </div>
@@ -181,11 +163,11 @@ export default function ProjectsPage() {
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center">
                       <BookOpen className="w-4 h-4 mr-1" />
-                      <span>{project.story_count} stories</span>
+                      <span>{project.story_count || 0} stories</span>
                     </div>
                     <div className="flex items-center">
                       <Users className="w-4 h-4 mr-1" />
-                      <span>{project.member_count} members</span>
+                      <span>{project.member_count || 0} members</span>
                     </div>
                   </div>
                 </div>

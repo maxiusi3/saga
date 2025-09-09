@@ -24,38 +24,42 @@ export default function ResourcesPage() {
 
   useEffect(() => {
     const loadResources = async () => {
-      // Mock data - replace with actual Supabase queries
-      const mockResources: ResourceSeat[] = [
-        {
-          type: 'project',
-          available: 0,
-          used: 0,
-          total: 0,
-          price: 15,
-          description: 'Create new family story projects'
-        },
-        {
-          type: 'facilitator',
-          available: 0,
-          used: 0,
-          total: 0,
-          price: 10,
-          description: 'Invite co-facilitators to help manage projects'
-        },
-        {
-          type: 'storyteller',
-          available: 0,
-          used: 0,
-          total: 0,
-          price: 5,
-          description: 'Invite family members to share their stories'
-        }
-      ]
+      try {
+        // TODO: Load real resource data from Supabase
+        // For now, show empty resources since user needs to purchase
+        const realResources: ResourceSeat[] = [
+          {
+            type: 'project',
+            available: 0,
+            used: 0,
+            total: 0,
+            price: 15,
+            description: 'Create new family story projects'
+          },
+          {
+            type: 'facilitator',
+            available: 0,
+            used: 0,
+            total: 0,
+            price: 10,
+            description: 'Invite co-facilitators to help manage projects'
+          },
+          {
+            type: 'storyteller',
+            available: 0,
+            used: 0,
+            total: 0,
+            price: 5,
+            description: 'Invite family members to share their stories'
+          }
+        ]
 
-      setTimeout(() => {
-        setResources(mockResources)
+        setResources(realResources)
         setLoading(false)
-      }, 1000)
+      } catch (error) {
+        console.error('Error loading resources:', error)
+        setLoading(false)
+      }
     }
 
     loadResources()
