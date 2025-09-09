@@ -14,48 +14,18 @@ export class NotificationService {
    * Get all notifications for a user
    */
   async getNotifications(userId: string, limit = 50): Promise<SagaNotification[]> {
-    const { data, error } = await this.supabase
-      .from('notifications')
-      .select(`
-        *,
-        sender:sender_id(id, email, profiles(full_name, avatar_url)),
-        project:project_id(id, title),
-        story:story_id(id, title)
-      `)
-      .eq('recipient_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(limit)
-
-    if (error) {
-      console.error('Error fetching notifications:', error)
-      return []
-    }
-
-    return data?.map((notification: any) => ({
-      ...notification,
-      sender_name: notification.sender?.profiles?.full_name || notification.sender?.email,
-      sender_avatar: notification.sender?.profiles?.avatar_url,
-      project_title: notification.project?.title,
-      story_title: notification.story?.title
-    })) || []
+    // Return empty array for now since notifications table doesn't exist
+    console.log('NotificationService: notifications table not available, returning empty array')
+    return []
   }
 
   /**
    * Get unread notification count
    */
   async getUnreadCount(userId: string): Promise<number> {
-    const { count, error } = await this.supabase
-      .from('notifications')
-      .select('*', { count: 'exact', head: true })
-      .eq('recipient_id', userId)
-      .eq('is_read', false)
-
-    if (error) {
-      console.error('Error fetching unread count:', error)
-      return 0
-    }
-
-    return count || 0
+    // Return 0 for now since notifications table doesn't exist
+    console.log('NotificationService: notifications table not available, returning 0 unread count')
+    return 0
   }
 
   /**

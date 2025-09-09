@@ -87,12 +87,12 @@ export class ProjectService {
     try {
       console.log('ProjectService: Fetching projects for user:', userId)
 
-      // Get projects where user is owner or member
+      // Get projects where user is facilitator (owner)
       const { data: projects, error: projectsError } = await this.supabase
         .from('projects')
         .select(`
           *,
-          project_roles!inner(
+          project_roles(
             id,
             user_id,
             role,
@@ -100,8 +100,7 @@ export class ProjectService {
             created_at
           )
         `)
-        .or(`facilitator_id.eq.${userId},project_roles.user_id.eq.${userId}`)
-        .eq('project_roles.status', 'active')
+        .eq('facilitator_id', userId)
 
       console.log('ProjectService: Query result:', { projects, projectsError })
 
