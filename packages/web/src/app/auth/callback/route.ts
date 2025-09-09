@@ -53,6 +53,8 @@ export async function GET(request: NextRequest) {
 
     // Handle Magic Link callback (token_hash parameter)
     if (token_hash && type) {
+      console.log('Magic Link verification attempt:', { token_hash: token_hash.substring(0, 8) + '...', type })
+
       const { error: verifyError } = await supabase.auth.verifyOtp({
         token_hash,
         type: type as any
@@ -60,9 +62,10 @@ export async function GET(request: NextRequest) {
 
       if (verifyError) {
         console.error('Magic Link verification error:', verifyError)
-        return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent('Magic link verification failed')}`)
+        return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent(`Magic link verification failed: ${verifyError.message}`)}`)
       }
 
+      console.log('Magic Link verification successful')
       // Successful Magic Link authentication - redirect to dashboard
       return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
     }
