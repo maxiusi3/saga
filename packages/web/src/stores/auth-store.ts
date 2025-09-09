@@ -43,13 +43,17 @@ export const useAuthStore = create<AuthStore>()(
 
         // Actions
         initialize: async () => {
+          console.log('Auth Store: Initialize called')
           set({ isLoading: true })
 
           try {
             const supabase = getSupabase()
+            console.log('Auth Store: Getting session...')
             const { data: { session } } = await supabase.auth.getSession()
-            
+            console.log('Auth Store: Session result:', session ? 'exists' : 'null')
+
             if (session?.user) {
+              console.log('Auth Store: Setting authenticated user:', session.user.id)
               set({
                 user: session.user,
                 isAuthenticated: true,
@@ -57,6 +61,7 @@ export const useAuthStore = create<AuthStore>()(
                 error: null,
               })
             } else {
+              console.log('Auth Store: No session, setting unauthenticated')
               set({
                 user: null,
                 isAuthenticated: false,
@@ -66,14 +71,18 @@ export const useAuthStore = create<AuthStore>()(
             }
 
             // Listen for auth changes
+            console.log('Auth Store: Setting up auth state listener')
             supabase.auth.onAuthStateChange((event, session) => {
+              console.log('Auth Store: Auth state changed:', event, session ? 'session exists' : 'no session')
               if (session?.user) {
+                console.log('Auth Store: Auth change - setting authenticated')
                 set({
                   user: session.user,
                   isAuthenticated: true,
                   error: null,
                 })
               } else {
+                console.log('Auth Store: Auth change - setting unauthenticated')
                 set({
                   user: null,
                   isAuthenticated: false,
@@ -82,6 +91,7 @@ export const useAuthStore = create<AuthStore>()(
               }
             })
           } catch (error: any) {
+            console.error('Auth Store: Initialize error:', error)
             set({
               isLoading: false,
               error: error.message || 'Failed to initialize auth',
