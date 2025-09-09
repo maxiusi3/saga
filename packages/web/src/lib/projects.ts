@@ -76,7 +76,11 @@ export class ProjectService {
    */
   async createProject(projectData: CreateProjectData): Promise<Project | null> {
     try {
-      const { data, error } = await this.supabase
+      // Use admin client to bypass RLS for project creation
+      const client = this.supabaseAdmin || this.supabase
+      console.log('ProjectService: Creating project with client:', this.supabaseAdmin ? 'admin' : 'regular')
+
+      const { data, error } = await client
         .from('projects')
         .insert({
           name: projectData.name,

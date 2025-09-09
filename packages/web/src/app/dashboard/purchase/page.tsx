@@ -17,14 +17,11 @@ export default function PurchasePage() {
     setIsLoading(true)
 
     try {
-      // 模拟购买处理过程
-      await new Promise(resolve => setTimeout(resolve, 1500))
-
-      // 模拟购买成功，直接重定向到 dashboard
-      console.log('Purchase completed successfully (simulated)')
-      router.push('/dashboard')
+      // 直接跳转到项目创建页面，跳过购买流程
+      console.log('Redirecting to project creation (purchase flow skipped)')
+      router.push('/dashboard/projects/create')
     } catch (error) {
-      console.error('Purchase failed:', error)
+      console.error('Navigation failed:', error)
       setIsLoading(false)
     }
   }

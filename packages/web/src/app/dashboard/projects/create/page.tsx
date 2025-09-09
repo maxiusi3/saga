@@ -9,9 +9,12 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { ArrowLeft, BookOpen, Users, Sparkles } from 'lucide-react'
 import Link from 'next/link'
+import { useAuthStore } from '@/stores/auth-store'
+import { projectService } from '@/lib/projects'
 
 export default function CreateProjectPage() {
   const router = useRouter()
+  const { user } = useAuthStore()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -21,19 +24,32 @@ export default function CreateProjectPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!user?.id) {
+      console.error('User not authenticated')
+      return
+    }
+
     setLoading(true)
 
     try {
-      // 模拟项目创建过程
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // 模拟创建成功，生成项目 ID
-      const projectId = 'proj_' + Math.random().toString(36).substr(2, 9)
-      
-      console.log('Project created successfully:', { ...formData, id: projectId })
-      
-      // 重定向到新创建的项目页面
-      router.push(`/dashboard/projects/${projectId}`)
+      console.log('Creating project:', formData)
+
+      // 使用真实的项目创建服务
+      const project = await projectService.createProject({
+        name: formData.name,
+        description: formData.description,
+        facilitator_id: user.id,
+        theme: formData.theme
+      })
+
+      if (project) {
+        console.log('Project created successfully:', project)
+        // 重定向到新创建的项目页面
+        router.push(`/dashboard/projects/${project.id}`)
+      } else {
+        throw new Error('Failed to create project')
+      }
     } catch (error) {
       console.error('Error creating project:', error)
       setLoading(false)
