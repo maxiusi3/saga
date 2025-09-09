@@ -1,4 +1,5 @@
 import { createClientSupabase } from '@/lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 import { UserRole } from '@saga/shared'
 
 export interface Project {
@@ -52,6 +53,16 @@ export interface InviteMemberData {
 
 export class ProjectService {
   private supabase = createClientSupabase()
+  private supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    }
+  )
 
   /**
    * Create a new project
@@ -87,8 +98,8 @@ export class ProjectService {
     try {
       console.log('ProjectService: Fetching projects for user:', userId)
 
-      // Get projects where user is facilitator (owner) - simplified query to avoid RLS recursion
-      const { data: projects, error: projectsError } = await this.supabase
+      // Get projects where user is facilitator (owner) - use admin client to bypass RLS recursion
+      const { data: projects, error: projectsError } = await this.supabaseAdmin
         .from('projects')
         .select('*')
         .eq('facilitator_id', userId)
