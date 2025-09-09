@@ -39,6 +39,13 @@ export interface CreateProjectData {
   facilitator_id: string
 }
 
+export interface CreateProjectWithRoleData {
+  name: string
+  description?: string
+  facilitator_id: string
+  role: 'facilitator' | 'storyteller'
+}
+
 export interface UpdateProjectData {
   name?: string
   description?: string
@@ -99,6 +106,44 @@ export class ProjectService {
     } catch (error) {
       console.error('Error creating project:', error)
       return null
+    }
+  }
+
+  /**
+   * Create a new project with role and resource consumption
+   */
+  async createProjectWithRole(projectData: CreateProjectWithRoleData): Promise<Project | null> {
+    try {
+      console.log('ProjectService: Creating project with role:', projectData)
+
+      // 调用数据库函数创建项目并消耗资源
+      const { data, error } = await this.supabase.rpc('create_project_with_role', {
+        project_name: projectData.name,
+        project_description: projectData.description || '',
+        facilitator_id: projectData.facilitator_id
+      })
+
+      if (error) {
+        console.error('Error creating project with role:', error)
+        throw new Error(error.message)
+      }
+
+      // 获取创建的项目详情
+      const { data: project, error: fetchError } = await this.supabase
+        .from('projects')
+        .select('*')
+        .eq('id', data)
+        .single()
+
+      if (fetchError) {
+        console.error('Error fetching created project:', fetchError)
+        throw new Error('Project created but failed to fetch details')
+      }
+
+      return project
+    } catch (error) {
+      console.error('Error creating project with role:', error)
+      throw error
     }
   }
 

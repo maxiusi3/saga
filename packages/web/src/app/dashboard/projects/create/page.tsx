@@ -7,19 +7,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { ArrowLeft, BookOpen, Users, Sparkles } from 'lucide-react'
+import { ArrowLeft, BookOpen, Users, Sparkles, Crown, Mic } from 'lucide-react'
 import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { projectService } from '@/lib/projects'
+import { useResourceWallet } from '@/hooks/use-resource-wallet'
+import { toast } from 'react-hot-toast'
 
 export default function CreateProjectPage() {
   const router = useRouter()
   const { user } = useAuthStore()
+  const { wallet, loading: walletLoading, hasResources } = useResourceWallet()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    theme: 'family-memories'
+    theme: 'family-memories',
+    role: 'storyteller' // 默认选择 storyteller
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,28 +34,57 @@ export default function CreateProjectPage() {
       return
     }
 
+    // 检查资源余额
+    if (!wallet) {
+      toast.error('无法获取资源余额信息')
+      return
+    }
+
+    // 检查项目券
+    if (!hasResources('project_vouchers', 1)) {
+      toast.error('项目额度不足，无法创建新项目')
+      return
+    }
+
+    // 检查角色席位
+    const seatType = formData.role === 'facilitator' ? 'facilitator_seats' : 'storyteller_seats'
+    if (!hasResources(seatType, 1)) {
+      toast.error(`${formData.role === 'facilitator' ? 'Facilitator' : 'Storyteller'}席位不足`)
+      return
+    }
+
     setLoading(true)
 
     try {
       console.log('Creating project:', formData)
 
-      // 使用真实的项目创建服务
-      const project = await projectService.createProject({
+      // 使用数据库函数创建项目并消耗资源
+      const project = await projectService.createProjectWithRole({
         name: formData.name,
         description: formData.description,
         facilitator_id: user.id,
-        theme: formData.theme
+        role: formData.role as 'facilitator' | 'storyteller'
       })
 
       if (project) {
         console.log('Project created successfully:', project)
+        toast.success('项目创建成功！')
         // 重定向到新创建的项目页面
         router.push(`/dashboard/projects/${project.id}`)
       } else {
         throw new Error('Failed to create project')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating project:', error)
+
+      // 处理特定的错误消息
+      if (error.message?.includes('Insufficient project vouchers')) {
+        toast.error('项目额度不足，无法创建新项目')
+      } else if (error.message?.includes('Insufficient')) {
+        toast.error('席位不足，无法创建项目')
+      } else {
+        toast.error('创建项目失败，请重试')
+      }
       setLoading(false)
     }
   }
@@ -171,6 +204,73 @@ export default function CreateProjectPage() {
                   ))}
                 </div>
               </div>
+
+              {/* Role Selection */}
+              <div className="space-y-3">
+                <Label>Your Role in This Project</Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div
+                    className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                      formData.role === 'storyteller'
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:border-primary/50'
+                    }`}
+                    onClick={() => handleInputChange('role', 'storyteller')}
+                  >
+                    <div className="flex items-start space-x-3">
+                      <Mic className="w-6 h-6 text-primary mt-1" />
+                      <div>
+                        <h3 className="font-medium text-foreground">Storyteller</h3>
+                        <p className="text-sm text-muted-foreground">Record and share your stories</p>
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          消耗: 1个Storyteller席位
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                      formData.role === 'facilitator'
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:border-primary/50'
+                    }`}
+                    onClick={() => handleInputChange('role', 'facilitator')}
+                  >
+                    <div className="flex items-start space-x-3">
+                      <Crown className="w-6 h-6 text-primary mt-1" />
+                      <div>
+                        <h3 className="font-medium text-foreground">Facilitator</h3>
+                        <p className="text-sm text-muted-foreground">Manage project and invite others</p>
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          消耗: 1个Facilitator席位
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Resource Status */}
+              {wallet && (
+                <div className="bg-muted/30 rounded-lg p-4">
+                  <h4 className="text-sm font-medium text-foreground mb-2">当前余额</h4>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div className="text-center">
+                      <div className="font-medium text-foreground">{wallet.project_vouchers}</div>
+                      <div className="text-muted-foreground">项目额度</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-medium text-foreground">{wallet.facilitator_seats}</div>
+                      <div className="text-muted-foreground">Facilitator席位</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-medium text-foreground">{wallet.storyteller_seats}</div>
+                      <div className="text-muted-foreground">Storyteller席位</div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Submit Button */}
               <div className="flex justify-end space-x-3 pt-6">

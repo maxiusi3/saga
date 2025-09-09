@@ -7,6 +7,7 @@ import { useAuthStore } from '@/stores/auth-store'
 import { generateInitials } from '@/lib/utils'
 import { toast } from 'react-hot-toast'
 import { NotificationBell } from '@/components/notifications/NotificationBell'
+import { WalletBalanceDropdown } from '@/components/wallet/wallet-balance-dropdown'
 
 export function Navigation() {
   const router = useRouter()
@@ -147,6 +148,9 @@ export function Navigation() {
           <div className="flex items-center space-x-4">
             {/* Notifications */}
             <NotificationBell />
+
+            {/* Wallet Balance */}
+            <WalletBalanceDropdown />
 
             {/* Profile dropdown */}
             <div className="relative" ref={profileMenuRef}>

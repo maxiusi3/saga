@@ -421,3 +421,56 @@ BEGIN
   RETURN export_id;
 END;
 $$;
+
+-- 6. 新用户自动分配初始资源的函数（临时免费体验功能）
+-- 注意：这是临时措施，测试完成后可以通过修改这些常量来调整初始资源
+CREATE OR REPLACE FUNCTION initialize_user_wallet()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  -- 临时免费体验配置（测试完成后可以将这些值改为0）
+  initial_project_vouchers INTEGER := 1;
+  initial_facilitator_seats INTEGER := 2;
+  initial_storyteller_seats INTEGER := 2;
+BEGIN
+  -- 为新用户创建资源钱包并分配初始资源
+  NEW.project_vouchers := initial_project_vouchers;
+  NEW.facilitator_seats := initial_facilitator_seats;
+  NEW.storyteller_seats := initial_storyteller_seats;
+
+  -- 记录初始资源分配交易
+  INSERT INTO seat_transactions (
+    user_id,
+    transaction_type,
+    resource_type,
+    amount,
+    metadata
+  )
+  VALUES (
+    NEW.user_id,
+    'grant',
+    'initial_package',
+    1,
+    jsonb_build_object(
+      'action', 'initial_resource_grant',
+      'project_vouchers', initial_project_vouchers,
+      'facilitator_seats', initial_facilitator_seats,
+      'storyteller_seats', initial_storyteller_seats,
+      'note', 'Temporary free trial resources'
+    )
+  );
+
+  RETURN NEW;
+END;
+$$;
+
+-- 创建触发器：当用户钱包记录被插入时自动分配初始资源
+-- 注意：这个触发器会在用户首次访问钱包时触发（懒加载创建钱包时）
+DROP TRIGGER IF EXISTS trigger_initialize_user_wallet ON user_resource_wallets;
+CREATE TRIGGER trigger_initialize_user_wallet
+  BEFORE INSERT ON user_resource_wallets
+  FOR EACH ROW
+  WHEN (NEW.project_vouchers = 0 AND NEW.facilitator_seats = 0 AND NEW.storyteller_seats = 0)
+  EXECUTE FUNCTION initialize_user_wallet();
