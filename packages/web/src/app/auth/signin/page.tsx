@@ -65,8 +65,10 @@ function SignInPageContent() {
     console.log('SignIn page: useSearchParams results:', { accessToken: !!accessTokenFromSearch, refreshToken: !!refreshTokenFromSearch, type: typeFromSearch })
 
     // Use regex-extracted tokens (most reliable)
-    if (accessToken && refreshToken && type === 'magiclink') {
-      console.log('SignIn page: Magic Link tokens found, setting session and redirecting')
+    // Support both Magic Link (type=magiclink) and Google OAuth (no type parameter)
+    if (accessToken && refreshToken) {
+      const authType = type === 'magiclink' ? 'Magic Link' : 'Google OAuth'
+      console.log(`SignIn page: ${authType} tokens found, setting session and redirecting`)
 
       // Set the session using the tokens
       const supabase = getSupabase()
@@ -79,7 +81,7 @@ function SignInPageContent() {
             console.error('SignIn page: Error setting session:', error)
             setMessage(`Error setting session: ${error.message}`)
           } else {
-            console.log('SignIn page: Session set successfully, redirecting to dashboard')
+            console.log(`SignIn page: ${authType} session set successfully, redirecting to dashboard`)
             // Redirect to dashboard
             router.push('/dashboard')
           }
