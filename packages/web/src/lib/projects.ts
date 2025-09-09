@@ -53,16 +53,23 @@ export interface InviteMemberData {
 
 export class ProjectService {
   private supabase = createClientSupabase()
-  private supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
+  private supabaseAdmin: any = null
+
+  constructor() {
+    // Only create admin client on server side to avoid client-side errors
+    if (typeof window === 'undefined' && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      this.supabaseAdmin = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        {
+          auth: {
+            autoRefreshToken: false,
+            persistSession: false
+          }
+        }
+      )
     }
-  )
+  }
 
   /**
    * Create a new project
@@ -98,13 +105,24 @@ export class ProjectService {
     try {
       console.log('ProjectService: Fetching projects for user:', userId)
 
-      // Get projects where user is facilitator (owner) - use admin client to bypass RLS recursion
-      const { data: projects, error: projectsError } = await this.supabaseAdmin
-        .from('projects')
-        .select('*')
-        .eq('facilitator_id', userId)
+      // Try to use admin client if available (server-side only)
+      let projects = null
+      let projectsError = null
 
-      console.log('ProjectService: Query result:', { projects, projectsError })
+      if (this.supabaseAdmin) {
+        console.log('ProjectService: Using admin client to fetch projects')
+        const result = await this.supabaseAdmin
+          .from('projects')
+          .select('*')
+          .eq('facilitator_id', userId)
+
+        projects = result.data
+        projectsError = result.error
+        console.log('ProjectService: Admin query result:', { projects, projectsError })
+      } else {
+        console.log('ProjectService: Admin client not available, returning empty array')
+        return []
+      }
 
       if (projectsError) {
         console.error('Error fetching user projects:', projectsError)
