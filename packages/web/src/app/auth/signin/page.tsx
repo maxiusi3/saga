@@ -33,6 +33,41 @@ function SignInPageContent() {
     return createClientSupabase()
   }
 
+  // Handle Magic Link tokens from URL
+  useEffect(() => {
+    if (!isClient) return
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const accessToken = urlParams.get('access_token')
+    const refreshToken = urlParams.get('refresh_token')
+    const tokenType = urlParams.get('token_type')
+    const type = urlParams.get('type')
+
+    console.log('SignIn page: Checking URL params', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type })
+
+    if (accessToken && refreshToken && type === 'magiclink') {
+      console.log('SignIn page: Magic Link tokens found, setting session and redirecting')
+
+      // Set the session using the tokens
+      const supabase = getSupabase()
+      if (supabase) {
+        supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken
+        }).then(({ data, error }) => {
+          if (error) {
+            console.error('SignIn page: Error setting session:', error)
+            setMessage(`Error setting session: ${error.message}`)
+          } else {
+            console.log('SignIn page: Session set successfully, redirecting to dashboard')
+            // Redirect to dashboard
+            router.push('/dashboard')
+          }
+        })
+      }
+    }
+  }, [isClient, router])
+
   // Check for error from callback
   useEffect(() => {
     const error = searchParams?.get('error')
