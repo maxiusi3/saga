@@ -47,6 +47,11 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent('Authentication failed')}`)
       }
 
+      console.log('OAuth authentication successful')
+
+      // Wait for session to be properly set before redirecting
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
       // Successful OAuth authentication - redirect to dashboard
       return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
     }
@@ -66,6 +71,11 @@ export async function GET(request: NextRequest) {
       }
 
       console.log('Magic Link verification successful')
+
+      // Wait for session to be properly set before redirecting
+      // This ensures the auth store can pick up the session state
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
       // Successful Magic Link authentication - redirect to dashboard
       return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
     }
