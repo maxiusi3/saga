@@ -14,18 +14,33 @@ export class NotificationService {
    * Get all notifications for a user
    */
   async getNotifications(userId: string, limit = 50): Promise<SagaNotification[]> {
-    // Return empty array for now since notifications table doesn't exist
-    console.log('NotificationService: notifications table not available, returning empty array')
-    return []
+    try {
+      const response = await fetch(`/api/notifications?limit=${limit}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch notifications')
+      }
+      return await response.json()
+    } catch (error) {
+      console.error('Error fetching notifications:', error)
+      return []
+    }
   }
 
   /**
    * Get unread notification count
    */
   async getUnreadCount(userId: string): Promise<number> {
-    // Return 0 for now since notifications table doesn't exist
-    console.log('NotificationService: notifications table not available, returning 0 unread count')
-    return 0
+    try {
+      const response = await fetch('/api/notifications/unread-count')
+      if (!response.ok) {
+        throw new Error('Failed to fetch unread count')
+      }
+      const data = await response.json()
+      return data.unread_count || 0
+    } catch (error) {
+      console.error('Error fetching unread count:', error)
+      return 0
+    }
   }
 
   /**
@@ -40,20 +55,27 @@ export class NotificationService {
    * Mark notification as read
    */
   async markAsRead(notificationId: string): Promise<boolean> {
-    const { error } = await this.supabase
-      .from('notifications')
-      .update({ 
-        is_read: true, 
-        read_at: new Date().toISOString() 
+    try {
+      const response = await fetch('/api/notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'mark_as_read',
+          notification_ids: [notificationId]
+        })
       })
-      .eq('id', notificationId)
 
-    if (error) {
+      if (!response.ok) {
+        throw new Error('Failed to mark notification as read')
+      }
+
+      return true
+    } catch (error) {
       console.error('Error marking notification as read:', error)
       return false
     }
-
-    return true
   }
 
   /**
@@ -80,38 +102,46 @@ export class NotificationService {
    * Mark all notifications as read for a user
    */
   async markAllAsRead(userId: string): Promise<boolean> {
-    const { error } = await this.supabase
-      .from('notifications')
-      .update({ 
-        is_read: true, 
-        read_at: new Date().toISOString() 
+    try {
+      const response = await fetch('/api/notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'mark_as_read'
+        })
       })
-      .eq('recipient_id', userId)
-      .eq('is_read', false)
 
-    if (error) {
+      if (!response.ok) {
+        throw new Error('Failed to mark all notifications as read')
+      }
+
+      return true
+    } catch (error) {
       console.error('Error marking all notifications as read:', error)
       return false
     }
-
-    return true
   }
 
   /**
    * Delete notification
    */
   async deleteNotification(notificationId: string): Promise<boolean> {
-    const { error } = await this.supabase
-      .from('notifications')
-      .delete()
-      .eq('id', notificationId)
+    try {
+      const response = await fetch(`/api/notifications?id=${notificationId}`, {
+        method: 'DELETE'
+      })
 
-    if (error) {
+      if (!response.ok) {
+        throw new Error('Failed to delete notification')
+      }
+
+      return true
+    } catch (error) {
       console.error('Error deleting notification:', error)
       return false
     }
-
-    return true
   }
 
   /**
