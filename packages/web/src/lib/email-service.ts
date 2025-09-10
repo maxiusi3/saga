@@ -1,15 +1,26 @@
 import { createClient } from '@supabase/supabase-js'
 
-// 使用Supabase内置的邮件服务
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+// 懒加载Supabase客户端，避免构建时初始化
+let _supabaseAdmin: ReturnType<typeof createClient> | null = null
 
-const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
+const getSupabaseAdmin = () => {
+  if (!_supabaseAdmin) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Supabase configuration missing for email service')
+    }
+
+    _supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
   }
-})
+  return _supabaseAdmin
+}
 
 interface EmailTemplate {
   subject: string
@@ -44,6 +55,7 @@ export class EmailService {
       const template = this.generateInvitationTemplate(data)
       
       // 使用Supabase Auth发送邮件
+      const supabaseAdmin = getSupabaseAdmin()
       const { error } = await supabaseAdmin.auth.admin.inviteUserByEmail(
         recipientEmail,
         {
