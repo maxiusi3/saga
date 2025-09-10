@@ -1,12 +1,12 @@
 import React from 'react'
 import { Check, CheckCheck, Settings, Trash2, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNotifications } from '@/hooks/useNotifications'
 import { NotificationItem } from './NotificationItem'
 import Link from 'next/link'
+import { sagaDropdownPanel, sagaDropdownItem, sagaDropdownSeparator } from '@/components/shared/dropdown-styles'
 
 interface NotificationDropdownProps {
   onClose: () => void
@@ -33,9 +33,9 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
   }
 
   return (
-    <Card className="w-96 max-h-96 overflow-hidden shadow-xl border-border/50">
+    <div className={`${sagaDropdownPanel} w-96 max-h-96`}>
       {/* Header */}
-      <div className="p-4 border-b border-border/50 bg-muted/30">
+      <div className="p-4 border-b border-border/50 bg-muted/30 rounded-t-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <h3 className="font-semibold text-foreground">通知</h3>

@@ -171,14 +171,14 @@ export function Navigation() {
               </button>
 
               {isProfileMenuOpen && (
-                <div 
-                  className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-background ring-1 ring-foreground ring-opacity-5 focus:outline-none z-50"
+                <div
+                  className="origin-top-right absolute right-0 mt-2 w-56 z-50"
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="user-menu-button"
                 >
-                  <div className="py-1">
-                    <div className="px-4 py-2 text-sm text-muted-foreground border-b border-border">
+                  <div className="bg-popover text-popover-foreground rounded-md border shadow-md py-1">
+                    <div className="px-4 py-2 text-sm text-muted-foreground border-b border-border rounded-t-md">
                       <p className="font-medium">{user?.user_metadata?.name || 'User'}</p>
                       <p className="text-muted-foreground">{user?.email}</p>
                     </div>

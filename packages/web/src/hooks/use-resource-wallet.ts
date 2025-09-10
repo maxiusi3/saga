@@ -60,6 +60,49 @@ export function useResourceWallet() {
             throw refetchError
           }
 
+          // 兜底：触发器未生效时，进行一次性初始化（幂等）
+          if (
+            newWallet &&
+            newWallet.project_vouchers === 0 &&
+            newWallet.facilitator_seats === 0 &&
+            newWallet.storyteller_seats === 0
+          ) {
+            const { error: fallbackError } = await supabase
+              .from('user_resource_wallets')
+              .update({
+                project_vouchers: 1,
+                facilitator_seats: 2,
+                storyteller_seats: 2,
+                updated_at: new Date().toISOString(),
+              })
+              .match({ user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 })
+
+            if (!fallbackError) {
+              await supabase.from('seat_transactions').insert({
+                user_id: user.id,
+                transaction_type: 'grant',
+                resource_type: 'initial_package',
+                amount: 1,
+                metadata: {
+                  action: 'initial_resource_grant_fallback',
+                  project_vouchers: 1,
+                  facilitator_seats: 2,
+                  storyteller_seats: 2,
+                  note: 'Fallback initialization due to missing trigger',
+                },
+              })
+
+              const { data: refreshed } = await supabase
+                .from('user_resource_wallets')
+                .select('*')
+                .eq('user_id', user.id)
+                .single()
+
+              setWallet(refreshed)
+              return
+            }
+          }
+
           setWallet(newWallet)
         } else {
           throw fetchError

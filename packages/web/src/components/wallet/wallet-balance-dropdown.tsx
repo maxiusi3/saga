@@ -60,10 +60,10 @@ export function WalletBalanceDropdown() {
         <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </Button>
 
-      {/* 下拉菜单 - 更紧凑的设计 */}
+      {/* 下拉菜单 - 统一样式 */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-56 bg-background border border-border rounded-lg shadow-lg z-50">
-          <div className="p-3">
+        <div className="absolute right-0 top-full mt-2 w-64 z-50">
+          <div className="bg-popover text-popover-foreground rounded-lg border shadow-md p-3">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-foreground">资源余额</h3>
               <div className="flex items-center gap-1">

@@ -132,7 +132,94 @@ class SupabaseApiClient {
           .single()
 
         if (refetchError) throw refetchError
+
+        // 兜底：如果触发器未生效且仍为0，进行一次性初始化（幂等）
+        if (
+          newWallet &&
+          newWallet.project_vouchers === 0 &&
+          newWallet.facilitator_seats === 0 &&
+          newWallet.storyteller_seats === 0
+        ) {
+          // 仅当仍为0时才更新，避免重复发放
+          const { error: fallbackError } = await this.supabase
+            .from('user_resource_wallets')
+            .update({
+              project_vouchers: 1,
+              facilitator_seats: 2,
+              storyteller_seats: 2,
+              updated_at: new Date().toISOString(),
+            })
+            .match({ user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 })
+
+          if (fallbackError) throw fallbackError
+
+          // 写入一条交易记录（用户自身可写，符合RLS）
+          await this.supabase.from('seat_transactions').insert({
+            user_id: user.id,
+            transaction_type: 'grant',
+            resource_type: 'initial_package',
+            amount: 1,
+            metadata: {
+              action: 'initial_resource_grant_fallback',
+              project_vouchers: 1,
+              facilitator_seats: 2,
+              storyteller_seats: 2,
+              note: 'Fallback initialization due to missing trigger',
+            },
+          })
+
+          // 再次查询返回
+          const { data: afterFallback } = await this.supabase
+            .from('user_resource_wallets')
+            .select('*')
+            .eq('user_id', user.id)
+            .single()
+
+          return afterFallback as typeof newWallet
+        }
+
         return newWallet
+      }
+
+      // 兜底：已有钱包但为0时也进行幂等初始化（极少数情况下触发）
+      if (
+        data.project_vouchers === 0 &&
+        data.facilitator_seats === 0 &&
+        data.storyteller_seats === 0
+      ) {
+        const { error: fallbackError } = await this.supabase
+          .from('user_resource_wallets')
+          .update({
+            project_vouchers: 1,
+            facilitator_seats: 2,
+            storyteller_seats: 2,
+            updated_at: new Date().toISOString(),
+          })
+          .match({ user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 })
+
+        if (!fallbackError) {
+          await this.supabase.from('seat_transactions').insert({
+            user_id: user.id,
+            transaction_type: 'grant',
+            resource_type: 'initial_package',
+            amount: 1,
+            metadata: {
+              action: 'initial_resource_grant_fallback_existing_row',
+              project_vouchers: 1,
+              facilitator_seats: 2,
+              storyteller_seats: 2,
+              note: 'Fallback initialization on existing row',
+            },
+          })
+
+          const { data: refreshed } = await this.supabase
+            .from('user_resource_wallets')
+            .select('*')
+            .eq('user_id', user.id)
+            .single()
+
+          return refreshed as typeof data
+        }
       }
 
       return data
