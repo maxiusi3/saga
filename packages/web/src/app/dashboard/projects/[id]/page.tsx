@@ -92,8 +92,16 @@ export default function ProjectDetailPage() {
 
         setProject(project)
 
-        // TODO: Load real stories from database
-        setStories([])
+        // Load real stories from database
+        try {
+          const projectStories = await storyService.getStoriesByProject(projectId)
+          console.log('Loaded stories for project:', projectStories)
+          setStories(projectStories)
+        } catch (storyError) {
+          console.error('Error loading stories:', storyError)
+          // Don't fail the whole page if stories can't be loaded
+          setStories([])
+        }
       } catch (error) {
         console.error('Error loading project:', error)
         setError('Failed to load project data')

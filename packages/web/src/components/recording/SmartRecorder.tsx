@@ -501,16 +501,28 @@ export function SmartRecorder({
 
           {recordingState === 'completed' && (
             <>
-              {audioUrl && (
+              {/* Show playback button for traditional recording with audio */}
+              {audioUrl && !shouldUseRealtime() && (
                 <Button
                   onClick={isPlaying ? stopAudio : playAudio}
                   variant="outline"
                   size="lg"
                 >
                   {isPlaying ? <Square className="h-5 w-5 mr-2" /> : <Play className="h-5 w-5 mr-2" />}
-                  {isPlaying ? '停止' : '试听'}
+                  {isPlaying ? '停止播放' : '试听录音'}
                 </Button>
               )}
+
+              {/* Show transcript playback for realtime recording */}
+              {shouldUseRealtime() && transcript && (
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground mb-2">实时转录内容：</p>
+                  <div className="bg-muted p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                    {transcript}
+                  </div>
+                </div>
+              )}
+
               <Button
                 onClick={handleComplete}
                 size="lg"
