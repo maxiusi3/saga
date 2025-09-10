@@ -154,24 +154,14 @@ export class ProjectService {
     try {
       console.log('ProjectService: Fetching projects for user:', userId)
 
-      // Try to use admin client if available (server-side only)
-      let projects = null
-      let projectsError = null
+      // Use regular client with RLS policies (works for both server and client side)
+      console.log('ProjectService: Using regular client to fetch projects')
+      const { data: projects, error: projectsError } = await this.supabase
+        .from('projects')
+        .select('*')
+        .eq('facilitator_id', userId)
 
-      if (this.supabaseAdmin) {
-        console.log('ProjectService: Using admin client to fetch projects')
-        const result = await this.supabaseAdmin
-          .from('projects')
-          .select('*')
-          .eq('facilitator_id', userId)
-
-        projects = result.data
-        projectsError = result.error
-        console.log('ProjectService: Admin query result:', { projects, projectsError })
-      } else {
-        console.log('ProjectService: Admin client not available, returning empty array')
-        return []
-      }
+      console.log('ProjectService: Regular client query result:', { projects, projectsError })
 
       if (projectsError) {
         console.error('Error fetching user projects:', projectsError)
