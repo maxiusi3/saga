@@ -1,7 +1,7 @@
 import React from 'react'
 import { Check, CheckCheck, Settings, Trash2, ExternalLink } from 'lucide-react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNotifications } from '@/hooks/useNotifications'
@@ -33,40 +33,43 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
   }
 
   return (
-    <FurbridgeCard className="w-96 max-h-96 overflow-hidden shadow-lg border">
+    <Card className="w-96 max-h-96 overflow-hidden shadow-xl border-border/50">
       {/* Header */}
-      <div className="p-4 border-b bg-muted/50">
+      <div className="p-4 border-b border-border/50 bg-muted/30">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <h3 className="font-semibold text-foreground">Notifications</h3>
+            <h3 className="font-semibold text-foreground">通知</h3>
             {unreadCount > 0 && (
-              <Badge className="bg-primary text-primary-foreground text-xs">
-                {unreadCount} new
+              <Badge className="bg-primary text-primary-foreground text-xs animate-pulse">
+                {unreadCount} 条新消息
               </Badge>
             )}
           </div>
           
           <div className="flex items-center space-x-1">
             {unreadCount > 0 && (
-              <FurbridgeButton
+              <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleMarkAllAsRead}
-                className="text-xs"
+                className="text-xs hover:bg-primary/10 hover:text-primary"
+                title="标记所有为已读"
               >
                 <CheckCheck className="h-3 w-3 mr-1" />
-                Mark all read
-              </FurbridgeButton>
+                全部已读
+              </Button>
             )}
-            
+
             <Link href="/dashboard/settings/notifications">
-              <FurbridgeButton
+              <Button
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
+                className="hover:bg-muted"
+                title="通知设置"
               >
                 <Settings className="h-4 w-4" />
-              </FurbridgeButton>
+              </Button>
             </Link>
           </div>
         </div>
@@ -114,20 +117,20 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
 
       {/* Footer */}
       {notifications.length > 10 && (
-        <div className="p-3 border-t bg-muted/50">
+        <div className="p-3 border-t border-border/50 bg-muted/30">
           <Link href="/dashboard/notifications">
-            <FurbridgeButton
+            <Button
               variant="ghost"
               size="sm"
-              className="w-full text-primary"
+              className="w-full text-primary hover:bg-primary/10"
               onClick={onClose}
             >
               <ExternalLink className="h-3 w-3 mr-1" />
-              View all notifications
-            </FurbridgeButton>
+              查看所有通知
+            </Button>
           </Link>
         </div>
       )}
-    </FurbridgeCard>
+    </Card>
   )
 }

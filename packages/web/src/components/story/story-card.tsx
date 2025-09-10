@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { FurbridgeCard } from '@/components/ui/furbridge-card'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Play, Pause, MessageCircle, HelpCircle, Heart, Clock, Sparkles, Volume2, Edit, Trash2, MoreHorizontal } from 'lucide-react'
@@ -101,18 +101,18 @@ export function StoryCard({
   }
 
   return (
-    <FurbridgeCard className="p-6 hover:shadow-md transition-shadow cursor-pointer" onClick={() => onViewDetails?.(story.id)}>
+    <Card className="group p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 hover:border-primary/20" onClick={() => onViewDetails?.(story.id)}>
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex-1 space-y-2">
             {/* AI-Generated Title */}
             <div className="flex items-start space-x-2">
-              <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+              <h3 className="text-lg font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors">
                 {showAIContent && story.ai_content?.title ? story.ai_content.title : story.title}
               </h3>
               {showAIContent && story.ai_content?.title && (
-                <Badge variant="secondary" className="bg-furbridge-orange/10 text-furbridge-orange text-xs">
+                <Badge variant="secondary" className="bg-primary/10 text-primary text-xs">
                   <Sparkles className="h-3 w-3 mr-1" />
                   AI
                 </Badge>
@@ -120,11 +120,11 @@ export function StoryCard({
             </div>
 
             {/* Category and Date */}
-            <div className="flex items-center space-x-3 text-sm text-gray-600">
-              <Badge variant="outline" className="text-xs">{story.category}</Badge>
-              <span>•</span>
+            <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+              <Badge variant="outline" className="text-xs border-muted-foreground/30">{story.category}</Badge>
+              <span className="text-muted-foreground/60">•</span>
               <span>{formatDate(story.created_at)}</span>
-              <span>•</span>
+              <span className="text-muted-foreground/60">•</span>
               <div className="flex items-center space-x-1">
                 <Clock className="h-3 w-3" />
                 <span>{formatTime(story.duration)}</span>
@@ -134,7 +134,7 @@ export function StoryCard({
 
           <div className="flex items-center space-x-2">
             {story.has_new_interactions && (
-              <Badge className="bg-furbridge-orange text-white">New</Badge>
+              <Badge className="bg-orange-500 text-white animate-pulse">New</Badge>
             )}
 
             {/* Edit and Delete Actions - Only for facilitators */}
@@ -143,30 +143,32 @@ export function StoryCard({
               userRole={userRole}
               isProjectOwner={isProjectOwner}
             >
-              <div className="flex items-center space-x-1">
-                <FurbridgeButton
+              <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button
                   variant="ghost"
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation()
                     onEdit?.(story.id)
                   }}
-                  className="h-8 w-8 p-0 hover:bg-furbridge-teal/10"
+                  className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary"
+                  title="编辑故事"
                 >
                   <Edit className="h-3 w-3" />
-                </FurbridgeButton>
+                </Button>
 
-                <FurbridgeButton
+                <Button
                   variant="ghost"
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation()
                     onDelete?.(story.id)
                   }}
-                  className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600"
+                  className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
+                  title="删除故事"
                 >
                   <Trash2 className="h-3 w-3" />
-                </FurbridgeButton>
+                </Button>
               </div>
             </ActionPermissionGate>
           </div>
@@ -202,26 +204,27 @@ export function StoryCard({
         {/* Audio Player */}
         <div className="space-y-3">
           <div className="flex items-center space-x-4">
-            <FurbridgeButton
+            <Button
               variant="outline"
               size="sm"
               onClick={(e) => {
                 e.stopPropagation()
                 handlePlayPause()
               }}
-              className="w-10 h-10 rounded-full p-0"
+              className="w-10 h-10 rounded-full p-0 hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+              title={isPlaying ? "暂停播放" : "播放故事"}
             >
               {isPlaying ? (
                 <Pause className="h-4 w-4" />
               ) : (
                 <Play className="h-4 w-4 ml-0.5" />
               )}
-            </FurbridgeButton>
+            </Button>
             
             <div className="flex-1">
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-furbridge-orange h-2 rounded-full transition-all duration-300"
+              <div className="w-full bg-muted rounded-full h-2">
+                <div
+                  className="bg-primary h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(currentTime / story.duration) * 100}%` }}
                 ></div>
               </div>
@@ -235,23 +238,26 @@ export function StoryCard({
 
         {/* Interaction Summary */}
         {getTotalInteractions() > 0 && (
-          <div className="flex items-center space-x-4 pt-2 border-t border-gray-100">
+          <div className="flex items-center space-x-4 pt-3 border-t border-border/50">
             {story.interaction_summary.comments > 0 && (
-              <div className="flex items-center space-x-1 text-gray-600">
+              <div className="flex items-center space-x-1 text-muted-foreground hover:text-blue-600 transition-colors">
                 <MessageCircle className="h-4 w-4" />
-                <span className="text-sm">{story.interaction_summary.comments}</span>
+                <span className="text-sm font-medium">{story.interaction_summary.comments}</span>
+                <span className="text-xs">评论</span>
               </div>
             )}
             {story.interaction_summary.followups > 0 && (
-              <div className="flex items-center space-x-1 text-furbridge-orange">
+              <div className="flex items-center space-x-1 text-muted-foreground hover:text-orange-600 transition-colors">
                 <HelpCircle className="h-4 w-4" />
-                <span className="text-sm">{story.interaction_summary.followups}</span>
+                <span className="text-sm font-medium">{story.interaction_summary.followups}</span>
+                <span className="text-xs">问题</span>
               </div>
             )}
             {story.interaction_summary.appreciations > 0 && (
-              <div className="flex items-center space-x-1 text-furbridge-teal">
+              <div className="flex items-center space-x-1 text-muted-foreground hover:text-red-500 transition-colors">
                 <Heart className="h-4 w-4" />
-                <span className="text-sm">{story.interaction_summary.appreciations}</span>
+                <span className="text-sm font-medium">{story.interaction_summary.appreciations}</span>
+                <span className="text-xs">点赞</span>
               </div>
             )}
           </div>
@@ -266,7 +272,7 @@ export function StoryCard({
           className="hidden"
         />
       </div>
-    </FurbridgeCard>
+    </Card>
   )
 }
 

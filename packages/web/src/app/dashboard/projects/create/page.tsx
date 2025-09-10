@@ -136,68 +136,72 @@ export default function CreateProjectPage() {
       </div>
 
       <div className="space-y-8">
-        <div className="text-center">
-          <div className="text-6xl mb-4">📖</div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Create a New Saga
-          </h1>
-          <p className="text-muted-foreground">
-            Start capturing your family's precious stories
-          </p>
+        <div className="text-center space-y-4">
+          <div className="text-6xl mb-4">🎭</div>
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-foreground">
+              创建新的家族传记
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              开始记录您家族的珍贵故事
+            </p>
+          </div>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <BookOpen className="w-5 h-5 mr-2" />
-              Project Details
+        <Card className="border-border/50 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center text-xl">
+              <BookOpen className="w-5 h-5 mr-2 text-primary" />
+              项目详情
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Project Name */}
               <div className="space-y-2">
-                <Label htmlFor="name">Project Name *</Label>
+                <Label htmlFor="name" className="text-sm font-medium">项目名称 *</Label>
                 <Input
                   id="name"
-                  placeholder="e.g., Smith Family Stories"
+                  placeholder="例如：张家族故事、爷爷的回忆录"
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   required
+                  className="focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 />
               </div>
 
               {/* Project Description */}
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description" className="text-sm font-medium">项目描述</Label>
                 <Textarea
                   id="description"
-                  placeholder="What stories do you want to capture? Who will be involved?"
+                  placeholder="您想要记录什么样的故事？谁会参与其中？"
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
                   rows={3}
+                  className="focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
                 />
               </div>
 
               {/* Theme Selection */}
               <div className="space-y-3">
-                <Label>Project Theme</Label>
+                <Label className="text-sm font-medium">项目主题</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {themes.map((theme) => (
                     <div
                       key={theme.id}
-                      className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                      className={`group p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
                         formData.theme === theme.id
-                          ? 'border-primary bg-primary/5'
-                          : 'border-border hover:border-primary/50'
+                          ? 'border-primary bg-primary/5 shadow-sm'
+                          : 'border-border hover:border-primary/50 hover:bg-muted/30'
                       }`}
                       onClick={() => handleInputChange('theme', theme.id)}
                     >
                       <div className="flex items-start space-x-3">
-                        <div className="text-2xl">{theme.icon}</div>
-                        <div>
-                          <h3 className="font-medium text-foreground">{theme.name}</h3>
-                          <p className="text-sm text-muted-foreground">{theme.description}</p>
+                        <div className="text-2xl group-hover:scale-110 transition-transform">{theme.icon}</div>
+                        <div className="flex-1">
+                          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">{theme.name}</h3>
+                          <p className="text-sm text-muted-foreground mt-1">{theme.description}</p>
                         </div>
                       </div>
                     </div>
