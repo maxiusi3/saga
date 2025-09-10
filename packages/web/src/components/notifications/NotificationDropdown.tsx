@@ -131,6 +131,6 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
           </Link>
         </div>
       )}
-    </Card>
+    </div>
   )
 }
