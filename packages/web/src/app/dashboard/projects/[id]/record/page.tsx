@@ -7,9 +7,8 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Send, Sparkles, ArrowLeft, Volume2, Mic } from 'lucide-react'
 import { StoryPrompt, getNextPrompt, getPromptById, AI_PROMPT_CHAPTERS } from '@saga/shared'
-import { AudioRecorder } from '@/components/audio/AudioRecorder'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
-import { WebSpeechRecorder } from '@/components/audio/WebSpeechRecorder'
+import { SmartRecorder } from '@/components/recording/SmartRecorder'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { aiService, AIContent as AIContentType } from '@/lib/ai-service'
@@ -41,7 +40,12 @@ export default function ProjectRecordPage() {
   const [aiProgress, setAiProgress] = useState(0)
   const [aiContent, setAiContent] = useState<AIContentType | null>(null)
   const [transcript, setTranscript] = useState('')
-  const [useWebSpeech, setUseWebSpeech] = useState(true)
+  const [recordingResult, setRecordingResult] = useState<{
+    audioBlob?: Blob
+    transcript: string
+    duration: number
+    method: 'realtime' | 'traditional'
+  } | null>(null)
 
   // Submission states
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -64,27 +68,28 @@ export default function ProjectRecordPage() {
     }
   }, [])
 
-  // Handle Web Speech transcript update
-  const handleTranscriptUpdate = (newTranscript: string, isFinal: boolean) => {
-    setTranscript(newTranscript)
-  }
+  // Handle smart recorder completion
+  const handleSmartRecordingComplete = (result: {
+    audioBlob?: Blob
+    transcript: string
+    duration: number
+    method: 'realtime' | 'traditional'
+  }) => {
+    setRecordingResult(result)
+    setRecordingDuration(result.duration)
 
-  // Handle Web Speech recording completion
-  const handleWebSpeechComplete = (finalTranscript: string) => {
-    setTranscript(finalTranscript)
-    if (finalTranscript.trim()) {
-      processTranscriptWithAI(finalTranscript)
+    if (result.audioBlob) {
+      setAudioBlob(result.audioBlob)
+      setAudioUrl(URL.createObjectURL(result.audioBlob))
     }
-  }
 
-  // Handle traditional recording completion
-  const handleRecordingComplete = (blob: Blob, duration: number) => {
-    setAudioBlob(blob)
-    setAudioUrl(URL.createObjectURL(blob))
-    setRecordingDuration(duration)
-
-    // Start AI processing
-    processAudioWithAI(blob)
+    if (result.transcript.trim()) {
+      setTranscript(result.transcript)
+      processTranscriptWithAI(result.transcript)
+    } else if (result.audioBlob) {
+      // If no transcript but have audio, process with AI
+      processAudioWithAI(result.audioBlob)
+    }
   }
 
   // Process transcript with AI (for Web Speech API)
@@ -328,55 +333,14 @@ export default function ProjectRecordPage() {
           </div>
         </Card>
 
-        {/* Recording Method Selection */}
-        <Card className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">选择录音方式</h3>
-          <div className="flex space-x-4 mb-6">
-            <Button
-              variant={useWebSpeech ? "default" : "outline"}
-              onClick={() => setUseWebSpeech(true)}
-              className="flex-1"
-            >
-              <Mic className="h-4 w-4 mr-2" />
-              实时语音识别
-            </Button>
-            <Button
-              variant={!useWebSpeech ? "default" : "outline"}
-              onClick={() => setUseWebSpeech(false)}
-              className="flex-1"
-            >
-              <Volume2 className="h-4 w-4 mr-2" />
-              传统录音
-            </Button>
-          </div>
-
-          <div className="text-sm text-muted-foreground mb-4">
-            {useWebSpeech ? (
-              <p>• 实时语音识别：边说边转录，支持中文，需要网络连接</p>
-            ) : (
-              <p>• 传统录音：先录音后转录，支持离线录音，音质更好</p>
-            )}
-          </div>
-        </Card>
-
-        {/* Recording Interface */}
-        {useWebSpeech ? (
-          <WebSpeechRecorder
-            onTranscriptUpdate={handleTranscriptUpdate}
-            onRecordingComplete={handleWebSpeechComplete}
-            onError={(error) => toast.error(error)}
-            language="zh-CN"
-            maxDuration={1200}
-            className="w-full"
-          />
-        ) : (
-          <AudioRecorder
-            onRecordingComplete={handleRecordingComplete}
-            onRecordingStart={() => console.log('Recording started')}
-            onRecordingStop={() => console.log('Recording stopped')}
-            className="w-full"
-          />
-        )}
+        {/* Smart Recording Interface */}
+        <SmartRecorder
+          onRecordingComplete={handleSmartRecordingComplete}
+          onError={(error) => toast.error(error)}
+          maxDuration={1200}
+          promptText={currentPrompt?.text}
+          className="w-full"
+        />
 
         {/* Audio Preview */}
         {audioUrl && !aiProcessing && (

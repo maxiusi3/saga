@@ -239,24 +239,51 @@ export default function ProjectDetailPage() {
         {/* Stories */}
         <div className="space-y-6">
           {stories.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">📖</div>
-              <h2 className="text-2xl font-semibold text-foreground mb-2">No stories yet</h2>
-              <p className="text-muted-foreground mb-6">
-                {project.user_role === 'storyteller'
-                  ? 'Start sharing your memories by recording your first story'
-                  : 'Invite your storyteller to begin capturing precious memories'
-                }
-              </p>
-              <RolePermissionGate allowedRoles={['storyteller', 'facilitator']} userRole={project.user_role}>
-                <Link href={`/dashboard/projects/${projectId}/record`}>
-                  <Button variant="default" size="lg">
-                    <Plus className="h-5 w-5 mr-2" />
-                    Record Your First Story
-                  </Button>
-                </Link>
-              </RolePermissionGate>
-            </div>
+            <Card className="p-12 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+              <div className="max-w-md mx-auto space-y-6">
+                <div className="text-5xl mb-4">🎭</div>
+                <div className="space-y-3">
+                  <h2 className="text-2xl font-semibold text-foreground">开始您的故事之旅</h2>
+                  <p className="text-muted-foreground">
+                    {project.user_role === 'storyteller'
+                      ? '分享您珍贵的回忆，让家族故事传承下去'
+                      : '邀请家人开始记录和分享他们的故事'
+                    }
+                  </p>
+                </div>
+
+                <RolePermissionGate allowedRoles={['storyteller', 'facilitator']} userRole={project.user_role}>
+                  <Link href={`/dashboard/projects/${projectId}/record`}>
+                    <Button size="lg" className="bg-primary hover:bg-primary/90">
+                      <BookOpen className="h-5 w-5 mr-2" />
+                      录制第一个故事
+                    </Button>
+                  </Link>
+                </RolePermissionGate>
+
+                {/* Quick Tips */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 text-sm">
+                  <div className="space-y-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                    </div>
+                    <p className="text-muted-foreground">AI智能转录</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                      <MessageCircle className="w-4 h-4 text-primary" />
+                    </div>
+                    <p className="text-muted-foreground">家人互动评论</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                      <Heart className="w-4 h-4 text-primary" />
+                    </div>
+                    <p className="text-muted-foreground">永久保存回忆</p>
+                  </div>
+                </div>
+              </div>
+            </Card>
           ) : (
             stories.map((story) => (
               <StoryCard

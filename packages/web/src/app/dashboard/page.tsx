@@ -168,21 +168,77 @@ export default function DashboardPage() {
 
   if (isFirstTime) {
     return (
-      <div className="container py-16 text-center">
-        <div className="max-w-md mx-auto space-y-6">
-          <div className="text-6xl mb-4">📖</div>
-          <h1 className="text-display text-foreground">
-            Welcome, {user?.user_metadata?.full_name || user?.email}!
-          </h1>
-          <p className="text-subtitle text-muted-foreground">
-            Let's start by creating a home for your family's stories.
-          </p>
-          <Link href="/dashboard/purchase">
-            <Button variant="default" size="lg">
-              <BookOpen className="w-5 h-5 mr-2" />
-              Create a New Saga
-            </Button>
-          </Link>
+      <div className="container py-16">
+        <div className="max-w-2xl mx-auto">
+          {/* Welcome Header */}
+          <div className="text-center mb-12">
+            <div className="text-6xl mb-6">🎭</div>
+            <h1 className="text-4xl font-bold text-foreground mb-4">
+              Welcome to Saga
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              Start capturing your family's stories with AI-powered tools that help preserve memories for future generations.
+            </p>
+          </div>
+
+          {/* Main CTA Card */}
+          <Card className="p-8 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <h2 className="text-2xl font-semibold text-foreground">
+                  Create Your First Family Biography
+                </h2>
+                <p className="text-muted-foreground">
+                  Get started with our free experience - no payment required to begin your family's story journey.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Link href="/dashboard/purchase">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    <BookOpen className="w-5 h-5 mr-2" />
+                    Start Your Family Saga
+                  </Button>
+                </Link>
+                <Link href="/learn-more">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                    Learn More
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </Card>
+
+          {/* Features Preview */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <div className="text-center space-y-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                <BookOpen className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-semibold text-foreground">Record Stories</h3>
+              <p className="text-sm text-muted-foreground">
+                Capture family memories with our easy-to-use recording tools
+              </p>
+            </div>
+            <div className="text-center space-y-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                <Users className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-semibold text-foreground">Collaborate</h3>
+              <p className="text-sm text-muted-foreground">
+                Invite family members to contribute and share their stories
+              </p>
+            </div>
+            <div className="text-center space-y-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                <MessageCircle className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-semibold text-foreground">AI-Powered</h3>
+              <p className="text-sm text-muted-foreground">
+                Get transcripts, summaries, and follow-up questions automatically
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     )
