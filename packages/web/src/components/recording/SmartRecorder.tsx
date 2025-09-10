@@ -118,6 +118,31 @@ export function SmartRecorder({
     recognition.onerror = (event) => {
       console.error('Speech recognition error:', event.error)
       if (event.error === 'network') {
+        toast.error('网络连接问题，切换到传统录音模式')
+        setNetworkQuality('offline')
+        // Restart with traditional recording
+        stopRecording()
+        setTimeout(() => {
+          setRecordingMethod('traditional')
+          startRecording()
+        }, 1000)
+      }
+    }
+
+    recognition.onend = () => {
+      // Auto-restart recognition if still recording (to handle timeout)
+      if (recordingState === 'recording' && recognitionRef.current) {
+        try {
+          recognition.start()
+        } catch (error) {
+          console.warn('Failed to restart recognition:', error)
+        }
+      }
+    }
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error)
+      if (event.error === 'network') {
         // Network error, fallback to traditional recording
         toast.error('网络连接不稳定，自动切换到传统录音模式')
         setRecordingMethod('traditional')
