@@ -16,14 +16,36 @@ function PrivacyPledgeContent() {
 
   const handleAgree = async () => {
     setIsLoading(true)
-    
-    // TODO: Record user's agreement in database
-    // await recordPrivacyAgreement()
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      // Record user's agreement in database
+      const response = await fetch('/api/privacy-pledge', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          version: '1.0',
+          ip_address: null // Could be obtained from a service if needed
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to record privacy agreement')
+      }
+
+      const result = await response.json()
+      console.log('Privacy agreement recorded:', result)
+
+      // Navigate to next page
       router.push(nextUrl)
-    }, 1000)
+    } catch (error) {
+      console.error('Error recording privacy agreement:', error)
+      // Still navigate even if recording fails
+      router.push(nextUrl)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const privacyPoints = [

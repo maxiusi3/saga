@@ -11,7 +11,7 @@ import { MessageCircle, HelpCircle, Send, Clock, CheckCircle } from 'lucide-reac
 import { interactionService, Interaction } from '@/lib/interactions'
 import { useAuthStore } from '@/stores/auth-store'
 import { canUserPerformAction } from '@saga/shared'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast'
 
 interface StoryInteractionsProps {
   storyId: string

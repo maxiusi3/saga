@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { EmailService } from '@/lib/email-service'
 
 export async function GET(
   request: NextRequest,
@@ -216,8 +217,30 @@ export async function POST(
       )
     }
 
-    // TODO: 发送邮件通知（可以集成邮件服务）
-    // await sendInvitationEmail(fullInvitation)
+    // 获取项目信息用于邮件发送
+    const { data: projectInfo } = await supabase
+      .from('projects')
+      .select('name, description')
+      .eq('id', projectId)
+      .single()
+
+    // 发送邀请邮件
+    try {
+      const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/invite/${fullInvitation.token}`
+
+      await EmailService.sendInvitationEmail(fullInvitation.invitee_email, {
+        inviterName: fullInvitation.inviter?.user_metadata?.full_name ||
+                    fullInvitation.inviter?.email ||
+                    'A family member',
+        projectName: projectInfo?.name || 'Family Biography Project',
+        role: fullInvitation.role,
+        inviteUrl,
+        expiresAt: fullInvitation.expires_at
+      })
+    } catch (emailError) {
+      console.error('Failed to send invitation email:', emailError)
+      // 不因为邮件发送失败而阻止邀请创建
+    }
 
     return NextResponse.json(fullInvitation, { status: 201 })
   } catch (error) {
