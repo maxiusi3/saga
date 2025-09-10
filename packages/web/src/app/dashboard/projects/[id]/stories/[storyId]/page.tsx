@@ -12,6 +12,9 @@ import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, Play, Pause, Edit, Send, ZoomIn } from 'lucide-react'
 import Link from 'next/link'
 import { storyService } from '@/lib/stories'
+import { useAuthStore } from '@/stores/auth-store'
+import { StoryInteractions } from '@/components/interactions/story-interactions'
+import { toast } from 'sonner'
 
 interface Story {
   id: string
@@ -26,30 +29,26 @@ interface Story {
   type: 'story' | 'chapter_summary'
 }
 
-interface Interaction {
-  id: string
-  type: 'comment' | 'followup'
-  author_name: string
-  author_avatar?: string
-  content: string
-  timestamp: string
-}
+
 
 export default function StoryDetailPage() {
   const params = useParams()
+  const { user } = useAuthStore()
   const projectId = params.id as string
   const storyId = params.storyId as string
-  
+
   const [story, setStory] = useState<Story | null>(null)
-  const [interactions, setInteractions] = useState<Interaction[]>([])
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [playbackSpeed, setPlaybackSpeed] = useState(1)
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [editedTitle, setEditedTitle] = useState('')
-  const [commentText, setCommentText] = useState('')
-  const [followupText, setFollowupText] = useState('')
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // 用户权限 - 这里简化处理，实际应该从项目角色获取
+  const userRole = 'facilitator' // TODO: 从项目成员关系获取实际角色
+  const isProjectOwner = true // TODO: 从项目数据获取
   
   const audioRef = useRef<HTMLAudioElement>(null)
 
@@ -138,37 +137,7 @@ export default function StoryDetailPage() {
     }
   }
 
-  const submitComment = async () => {
-    if (!commentText.trim()) return
 
-    const newComment: Interaction = {
-      id: Date.now().toString(),
-      type: 'comment',
-      author_name: 'Current User', // TODO: Get from auth context
-      author_avatar: '',
-      content: commentText,
-      timestamp: new Date().toISOString()
-    }
-
-    setInteractions([...interactions, newComment])
-    setCommentText('')
-  }
-
-  const submitFollowup = async () => {
-    if (!followupText.trim()) return
-
-    const newFollowup: Interaction = {
-      id: Date.now().toString(),
-      type: 'followup',
-      author_name: 'Current User', // TODO: Get from auth context
-      author_avatar: '',
-      content: followupText,
-      timestamp: new Date().toISOString()
-    }
-
-    setInteractions([...interactions, newFollowup])
-    setFollowupText('')
-  }
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
@@ -355,85 +324,11 @@ export default function StoryDetailPage() {
       </Card>
 
       {/* Interactions */}
-      <Card className="p-6">
-        <div className="space-y-6">
-          <h3 className="font-semibold text-foreground">Comments & Questions</h3>
-
-          {/* Existing Interactions */}
-          <div className="space-y-4">
-            {interactions.map((interaction) => (
-              <div key={interaction.id} className="flex space-x-3">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={interaction.author_avatar} />
-                  <AvatarFallback>
-                    {interaction.author_name.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-medium text-foreground text-sm">
-                      {interaction.author_name}
-                    </span>
-                    <Badge variant={interaction.type === 'followup' ? 'outline' : 'secondary'} className="text-xs">
-                      {interaction.type === 'followup' ? 'Question' : 'Comment'}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">
-                      {formatTimestamp(interaction.timestamp)}
-                    </span>
-                  </div>
-                  <p className="text-foreground text-sm">{interaction.content}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <Separator />
-
-          {/* Add New Interactions */}
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Leave a comment</label>
-              <div className="flex space-x-2">
-                <Textarea
-                  placeholder="Share your thoughts..."
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  className="flex-1"
-                  rows={2}
-                />
-                <Button 
-                  variant="outline" 
-                  onClick={submitComment}
-                  disabled={!commentText.trim()}
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Ask a follow-up question</label>
-              <div className="flex space-x-2">
-                <Textarea
-                  placeholder="What would you like to know more about?"
-                  value={followupText}
-                  onChange={(e) => setFollowupText(e.target.value)}
-                  className="flex-1"
-                  rows={2}
-                />
-                <Button 
-                  variant="default" 
-                  onClick={submitFollowup}
-                  disabled={!followupText.trim()}
-                  className="bg-primary"
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Card>
+      <StoryInteractions
+        storyId={storyId}
+        userRole={userRole}
+        isProjectOwner={isProjectOwner}
+      />
     </div>
   )
 }
