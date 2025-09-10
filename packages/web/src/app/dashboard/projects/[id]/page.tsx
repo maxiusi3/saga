@@ -12,6 +12,8 @@ import { Settings, Search, Play, MessageCircle, HelpCircle, Sparkles, BookOpen, 
 import Link from 'next/link'
 import { StoryCard } from '@/components/story/story-card'
 import { ChapterSummaryCard } from '@/components/story/chapter-summary-card'
+import { ChapterProgress } from '@/components/chapters/chapter-progress'
+import { PromptQueue } from '@/components/prompts/prompt-queue'
 import { AIGeneratedContent } from '@saga/shared/lib/ai-services'
 import {
   ActionPermissionGate,
@@ -219,6 +221,20 @@ export default function ProjectDetailPage() {
             </ActionPermissionGate>
           </div>
         </div>
+
+        {/* Chapter Progress and Prompt Queue */}
+        <RolePermissionGate allowedRoles={['facilitator']} userRole={project.user_role}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ChapterProgress projectId={projectId} />
+            <PromptQueue
+              projectId={projectId}
+              onPromptDelivered={() => {
+                // Refresh stories when a prompt is delivered
+                fetchStories()
+              }}
+            />
+          </div>
+        </RolePermissionGate>
 
         {/* Stories */}
         <div className="space-y-6">
