@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Bell, BellRing } from 'lucide-react'
-import { FurbridgeButton } from '@/components/ui/furbridge-button'
+import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useNotifications } from '@/hooks/useNotifications'
 import { NotificationDropdown } from './NotificationDropdown'
@@ -22,11 +22,11 @@ export function NotificationBell({ className }: NotificationBellProps) {
 
   return (
     <div className="relative">
-      <FurbridgeButton
+      <Button
         variant="ghost"
         size="icon"
         onClick={() => setIsOpen(!isOpen)}
-        className={`relative ${className}`}
+        className={`relative h-8 w-8 rounded-full ${className}`}
         disabled={loading}
       >
         {unreadCount > 0 ? (
@@ -42,7 +42,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
             {unreadCount > 99 ? '99+' : unreadCount}
           </Badge>
         )}
-      </FurbridgeButton>
+      </Button>
 
       {isOpen && (
         <>

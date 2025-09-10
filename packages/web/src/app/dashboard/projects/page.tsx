@@ -83,8 +83,8 @@ export default function ProjectsPage() {
   }
 
   const handleCreateProject = () => {
-    // 跳转到购买页面，完成购买后再创建项目
-    router.push('/dashboard/purchase')
+    // 统一跳转到创建页，资源消费在RPC中进行；不足时再引导购买
+    router.push('/dashboard/projects/create')
   }
 
   if (loading) {
@@ -128,13 +128,15 @@ export default function ProjectsPage() {
           </p>
         </div>
         
-        {/* Action Buttons */}
-        <div className="flex space-x-3">
-          <Button onClick={handleCreateProject} variant="default">
-            <Plus className="w-4 h-4 mr-2" />
-            Create New Project
-          </Button>
-        </div>
+        {/* Action Buttons（仅在非空时展示）*/}
+        {projects.length > 0 && (
+          <div className="flex space-x-3">
+            <Button onClick={handleCreateProject} variant="default">
+              <Plus className="w-4 h-4 mr-2" />
+              Create New Project
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Projects Grid */}
@@ -175,23 +177,25 @@ export default function ProjectsPage() {
           </Link>
         ))}
 
-        {/* Create New Project Card */}
-        <Card 
-          className="group border-2 border-dashed border-border hover:border-primary hover:bg-muted/50 transition-all cursor-pointer"
-          onClick={handleCreateProject}
-        >
-          <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px] space-y-4 p-6">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <Plus className="w-6 h-6 text-primary" />
-            </div>
-            <div className="text-center">
-              <h3 className="font-semibold text-foreground mb-2">Create New Project</h3>
-              <p className="text-sm text-muted-foreground">
-                Start a new family story project
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Create New Project Card（仅在非空时展示）*/}
+        {projects.length > 0 && (
+          <Card
+            className="group border-2 border-dashed border-border hover:border-primary hover:bg-muted/50 transition-all cursor-pointer"
+            onClick={handleCreateProject}
+          >
+            <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px] space-y-4 p-6">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <Plus className="w-6 h-6 text-primary" />
+              </div>
+              <div className="text-center">
+                <h3 className="font-semibold text-foreground mb-2">Create New Project</h3>
+                <p className="text-sm text-muted-foreground">
+                  Start a new family story project
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Empty State */}

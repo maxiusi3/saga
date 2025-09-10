@@ -8,6 +8,7 @@ import { generateInitials } from '@/lib/utils'
 import { toast } from 'react-hot-toast'
 import { NotificationBell } from '@/components/notifications/NotificationBell'
 import { WalletBalanceDropdown } from '@/components/wallet/wallet-balance-dropdown'
+import { Button } from '@/components/ui/button'
 
 export function Navigation() {
   const router = useRouter()
@@ -154,9 +155,11 @@ export function Navigation() {
 
             {/* Profile dropdown */}
             <div className="relative" ref={profileMenuRef}>
-              <button
+              <Button
                 type="button"
-                className="touch-target flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary p-1"
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full"
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                 aria-expanded={isProfileMenuOpen}
                 aria-haspopup="true"
@@ -168,7 +171,7 @@ export function Navigation() {
                     {generateInitials(user?.user_metadata?.name || user?.email)}
                   </span>
                 </div>
-              </button>
+              </Button>
 
               {isProfileMenuOpen && (
                 <div

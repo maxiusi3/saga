@@ -42,14 +42,17 @@ export default function CreateProjectPage() {
 
     // 检查项目券
     if (!hasResources('project_vouchers', 1)) {
-      toast.error('项目额度不足，无法创建新项目')
+      // 资源不足时引导到购买页面
+      toast.error('项目额度不足，前往购买更多资源')
+      router.push('/dashboard/purchase')
       return
     }
 
     // 检查角色席位
     const seatType = formData.role === 'facilitator' ? 'facilitator_seats' : 'storyteller_seats'
     if (!hasResources(seatType, 1)) {
-      toast.error(`${formData.role === 'facilitator' ? 'Facilitator' : 'Storyteller'}席位不足`)
+      toast.error(`${formData.role === 'facilitator' ? 'Facilitator' : 'Storyteller'}席位不足，前往购买更多资源`)
+      router.push('/dashboard/purchase')
       return
     }
 

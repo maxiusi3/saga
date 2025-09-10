@@ -194,15 +194,10 @@ export default function DashboardPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link href="/dashboard/purchase">
+                <Link href="/dashboard/projects/create">
                   <Button size="lg" className="w-full sm:w-auto">
                     <BookOpen className="w-5 h-5 mr-2" />
                     Start Your Family Saga
-                  </Button>
-                </Link>
-                <Link href="/learn-more">
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                    Learn More
                   </Button>
                 </Link>
               </div>
@@ -257,7 +252,7 @@ export default function DashboardPage() {
         
         {/* Action Buttons */}
         <div className="flex space-x-3">
-          <Link href="/dashboard/purchase">
+          <Link href="/dashboard/projects/create">
             <Button variant="secondary">
               <BookOpen className="w-4 h-4 mr-2" />
               Create New Saga
@@ -308,7 +303,7 @@ export default function DashboardPage() {
         ))}
 
         {/* Create New Project Card */}
-        <Link href="/dashboard/purchase">
+        <Link href="/dashboard/projects/create">
           <Card className="group border-2 border-dashed border-border hover:border-primary hover:bg-muted/50 transition-all cursor-pointer">
             <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px] space-y-4 p-6">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
