@@ -8,6 +8,14 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 检查环境变量
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      )
+    }
+
     const supabase = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
@@ -88,6 +96,14 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 检查环境变量
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      )
+    }
+
     const supabase = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
