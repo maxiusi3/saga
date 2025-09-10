@@ -379,10 +379,11 @@ describe('Accessibility Tests', () => {
       const buttons = screen.getAllByRole('button')
       const links = screen.getAllByRole('link')
       
-      [...buttons, ...links].forEach(element => {
+      const allInteractiveElements = [...buttons, ...links]
+      allInteractiveElements.forEach(element => {
         const styles = window.getComputedStyle(element)
         // Touch targets should be at least 44px (this is a simplified check)
-        expect(element).toHaveClass(/touch-target/)
+        expect(element).toHaveClass('touch-target')
       })
     })
 
