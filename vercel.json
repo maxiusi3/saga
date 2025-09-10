@@ -1,6 +1,0 @@
-{
-  "buildCommand": "npm run build:vercel",
-  "outputDirectory": ".next",
-  "installCommand": "npm ci",
-  "framework": "nextjs"
-}
