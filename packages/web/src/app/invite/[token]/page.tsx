@@ -38,26 +38,13 @@ export default function InvitationLandingPage() {
   useEffect(() => {
     const loadInvitation = async () => {
       try {
-        // TODO: Replace with actual Supabase query
-        // const { data, error } = await supabase
-        //   .from('invitations')
-        //   .select('*')
-        //   .eq('token', token)
-        //   .single()
-
-        // Mock data for now
-        const mockInvitation: Invitation = {
-          id: '1',
-          project_name: "Dad's Life Story",
-          inviter_name: 'Alex Johnson',
-          inviter_avatar: '',
-          role: 'storyteller',
-          status: 'pending',
-          expires_at: '2024-02-15T10:30:00Z',
-          project_description: 'A collection of stories about our father\'s incredible life journey'
+        const response = await fetch(`/api/invitations/${token}`)
+        if (!response.ok) {
+          throw new Error('Invalid or expired invitation')
         }
 
-        setInvitation(mockInvitation)
+        const data = await response.json()
+        setInvitation(data)
       } catch (err) {
         setError('Invalid or expired invitation link')
       } finally {
@@ -75,16 +62,24 @@ export default function InvitationLandingPage() {
 
     setAccepting(true)
     try {
-      // TODO: Implement invitation acceptance logic
-      // 1. Check if user is authenticated
-      // 2. Accept invitation in database
-      // 3. Add user to project
-      // 4. Redirect to appropriate page
+      const response = await fetch(`/api/invitations/${token}/accept`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
 
-      // For now, redirect to privacy pledge, then to the specific project
-      router.push('/privacy-pledge?next=' + encodeURIComponent(`/dashboard/projects/${invitation.id}`))
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to accept invitation')
+      }
+
+      const result = await response.json()
+
+      // Redirect to the project dashboard
+      router.push(`/dashboard/projects/${result.project_id}`)
     } catch (err) {
-      setError('Failed to accept invitation. Please try again.')
+      setError(err instanceof Error ? err.message : 'Failed to accept invitation. Please try again.')
     } finally {
       setAccepting(false)
     }

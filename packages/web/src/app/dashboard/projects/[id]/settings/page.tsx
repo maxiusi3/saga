@@ -10,11 +10,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
-import { ArrowLeft, UserPlus, Trash2, Download, Share } from 'lucide-react'
+import { ArrowLeft, UserPlus, Trash2, Download, Share, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { UserRole, getRoleDisplayInfo } from '@saga/shared'
+import { InvitationManager } from '@/components/invitations/invitation-manager'
 import { toast } from 'react-hot-toast'
 
 export default function ProjectSettingsPage() {
@@ -187,8 +188,45 @@ export default function ProjectSettingsPage() {
 
 
   const handleExportArchive = async () => {
-    // TODO: Generate and download full project archive
-    alert('Export functionality coming soon')
+    try {
+      setSaving(true)
+      toast.loading('Preparing export archive...', { id: 'export' })
+
+      const response = await fetch(`/api/projects/${projectId}/export`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate export archive')
+      }
+
+      // 获取文件名
+      const contentDisposition = response.headers.get('Content-Disposition')
+      const filename = contentDisposition
+        ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
+        : `${project?.name || 'project'}_export.zip`
+
+      // 下载文件
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+
+      toast.success('Export archive downloaded successfully!', { id: 'export' })
+    } catch (error) {
+      console.error('Error exporting archive:', error)
+      toast.error('Failed to export archive. Please try again.', { id: 'export' })
+    } finally {
+      setSaving(false)
+    }
   }
 
   const getRoleBadge = (role: UserRole) => {
@@ -437,6 +475,11 @@ export default function ProjectSettingsPage() {
         </div>
       </Card>
 
+      {/* Invitation Management */}
+      {project.is_owner && (
+        <InvitationManager projectId={projectId} />
+      )}
+
       {/* Data Management */}
       <Card className="p-6">
         <div className="space-y-6">
@@ -450,9 +493,22 @@ export default function ProjectSettingsPage() {
                   Download all stories, transcripts, and media files
                 </div>
               </div>
-              <Button variant="outline" onClick={handleExportArchive}>
-                <Download className="h-4 w-4 mr-2" />
-                Export
+              <Button
+                variant="outline"
+                onClick={handleExportArchive}
+                disabled={saving}
+              >
+                {saving ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Exporting...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Export
+                  </>
+                )}
               </Button>
             </div>
           </div>

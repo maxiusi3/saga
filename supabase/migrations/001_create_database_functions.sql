@@ -135,7 +135,7 @@ BEGIN
     invitation_role,
     'pending',
     invitation_token,
-    NOW() + INTERVAL '7 days'
+    NOW() + INTERVAL '72 hours'
   )
   RETURNING id INTO invitation_id;
 
