@@ -10,11 +10,14 @@ export async function GET(request: NextRequest) {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
     if (authError || !user || !user.email) {
+      console.log('Check pending: Auth failed or no email', { authError, userId: user?.id, email: user?.email })
       return NextResponse.json(
         { hasPendingInvitations: false },
         { status: 200 }
       )
     }
+
+    console.log('Check pending: User authenticated', { userId: user.id, email: user.email })
 
     // 使用 admin 客户端查询待处理的邀请
     const adminSupabase = createClient(
@@ -23,6 +26,8 @@ export async function GET(request: NextRequest) {
     )
 
     // 查找用户邮箱对应的待处理邀请
+    console.log('Check pending: Searching for invitations with email:', user.email.toLowerCase())
+
     const { data: invitations, error } = await adminSupabase
       .from('invitations')
       .select(`
@@ -42,6 +47,8 @@ export async function GET(request: NextRequest) {
       .eq('invitee_email', user.email.toLowerCase())
       .eq('status', 'pending')
       .gt('expires_at', new Date().toISOString())
+
+    console.log('Check pending: Query result', { invitations, error, searchEmail: user.email.toLowerCase() })
 
     if (error) {
       console.error('Error checking pending invitations:', error)
