@@ -1,4 +1,4 @@
-export type UserRole = 'facilitator' | 'co_facilitator' | 'storyteller'
+export type UserRole = 'facilitator' | 'storyteller'
 export type MemberStatus = 'pending' | 'active' | 'declined' | 'removed'
 
 export interface ProjectMember {
@@ -84,23 +84,7 @@ export function calculateUserPermissions(
         canViewAIContent: true,
       }
 
-    case 'co_facilitator':
-      return {
-        canEditProjectSettings: false, // Read-only access to project settings
-        canInviteMembers: false,
-        canRemoveMembers: false,
-        canDeleteProject: false,
-        canCreateStories: false,
-        canEditStoryTitles: false, // Cannot edit story titles or transcripts
-        canEditStoryTranscripts: false,
-        canDeleteStories: false,
-        canViewAllStories: true,
-        canAddComments: true,
-        canAskFollowUpQuestions: true,
-        canViewComments: true,
-        canEditAIContent: false, // Cannot modify AI content
-        canViewAIContent: true,
-      }
+
 
     case 'storyteller':
       return {

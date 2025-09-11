@@ -17,7 +17,7 @@ import { toast } from 'sonner'
 interface Invitation {
   id: string
   email: string
-  role: 'facilitator' | 'co_facilitator' | 'storyteller'
+  role: 'facilitator' | 'storyteller'
   status: 'pending' | 'accepted' | 'declined' | 'expired'
   invited_at: string
   expires_at: string
@@ -36,7 +36,7 @@ export default function InvitationsPage() {
   
   // New invitation form
   const [email, setEmail] = useState('')
-  const [role, setRole] = useState<'facilitator' | 'co_facilitator' | 'storyteller'>('storyteller')
+  const [role, setRole] = useState<'facilitator' | 'storyteller'>('storyteller')
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -135,8 +135,6 @@ export default function InvitationsPage() {
     switch (role) {
       case 'facilitator':
         return <Badge variant="default">Facilitator</Badge>
-      case 'co_facilitator':
-        return <Badge variant="secondary">Co-Facilitator</Badge>
       case 'storyteller':
         return <Badge variant="outline">Storyteller</Badge>
       default:
@@ -200,7 +198,6 @@ export default function InvitationsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="storyteller">Storyteller</SelectItem>
-                  <SelectItem value="co_facilitator">Co-Facilitator</SelectItem>
                   <SelectItem value="facilitator">Facilitator</SelectItem>
                 </SelectContent>
               </Select>

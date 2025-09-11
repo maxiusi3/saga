@@ -19,7 +19,6 @@ interface UsePermissionsReturn {
   hasRole: (role: UserRole) => boolean
   isOwner: boolean
   isFacilitator: boolean
-  isCoFacilitator: boolean
   isStoryteller: boolean
 }
 
@@ -59,7 +58,6 @@ export function usePermissions({
     hasRole,
     isOwner: isProjectOwner,
     isFacilitator: userRole === 'facilitator',
-    isCoFacilitator: userRole === 'co_facilitator',
     isStoryteller: userRole === 'storyteller',
   }
 }
