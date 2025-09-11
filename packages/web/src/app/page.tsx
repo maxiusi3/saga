@@ -11,19 +11,24 @@ export default function HomePage() {
   const router = useRouter()
 
   useEffect(() => {
-    // Check if URL contains auth tokens from Supabase Magic Link
+    // Check if URL contains auth tokens from Supabase
     const urlParams = new URLSearchParams(window.location.search)
     const accessToken = urlParams.get('access_token')
     const refreshToken = urlParams.get('refresh_token')
     const tokenType = urlParams.get('token_type')
     const type = urlParams.get('type')
+    const token = urlParams.get('token')
 
-    console.log('Home page: Checking URL params', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type })
+    console.log('Home page: Checking URL params', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type, token: !!token })
 
     if (accessToken && refreshToken && type === 'magiclink') {
       console.log('Home page: Magic Link tokens found, redirecting to dashboard')
       // Redirect to dashboard with tokens
       router.push(`/dashboard?access_token=${accessToken}&refresh_token=${refreshToken}&token_type=${tokenType}&type=${type}`)
+    } else if (type === 'invite' && token) {
+      console.log('Home page: Invitation token found, redirecting to accept-invitation')
+      // Redirect to invitation acceptance page
+      router.push(`/accept-invitation?token=${token}&type=invite`)
     }
   }, [router])
   return (
