@@ -308,7 +308,8 @@ class SupabaseApiClient {
       const { data, error } = await this.supabase.rpc('create_project_with_role', {
         project_name: projectData.name,
         project_description: projectData.description,
-        facilitator_id: user.id
+        facilitator_id: user.id,
+        creator_role: 'facilitator' // API 默认创建者为 facilitator
       })
 
       if (error) throw error

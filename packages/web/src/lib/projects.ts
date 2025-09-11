@@ -120,7 +120,8 @@ export class ProjectService {
       const { data, error } = await this.supabase.rpc('create_project_with_role', {
         project_name: projectData.name,
         project_description: projectData.description || '',
-        facilitator_id: projectData.facilitator_id
+        facilitator_id: projectData.facilitator_id,
+        creator_role: projectData.role || 'facilitator'
       })
 
       if (error) {

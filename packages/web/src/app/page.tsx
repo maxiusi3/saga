@@ -13,13 +13,23 @@ export default function HomePage() {
   useEffect(() => {
     // Check if URL contains auth tokens from Supabase
     const urlParams = new URLSearchParams(window.location.search)
-    const accessToken = urlParams.get('access_token')
-    const refreshToken = urlParams.get('refresh_token')
-    const tokenType = urlParams.get('token_type')
-    const type = urlParams.get('type')
-    const token = urlParams.get('token')
+    const hashParams = new URLSearchParams(window.location.hash.substring(1))
 
-    console.log('Home page: Checking URL params', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type, token: !!token })
+    const accessToken = urlParams.get('access_token') || hashParams.get('access_token')
+    const refreshToken = urlParams.get('refresh_token') || hashParams.get('refresh_token')
+    const tokenType = urlParams.get('token_type') || hashParams.get('token_type')
+    const type = urlParams.get('type') || hashParams.get('type')
+    const token = urlParams.get('token') || hashParams.get('token')
+
+    console.log('Home page: Checking URL params', {
+      accessToken: !!accessToken,
+      refreshToken: !!refreshToken,
+      tokenType,
+      type,
+      token: !!token,
+      search: window.location.search,
+      hash: window.location.hash
+    })
 
     if (accessToken && refreshToken && type === 'magiclink') {
       console.log('Home page: Magic Link tokens found, redirecting to dashboard')
