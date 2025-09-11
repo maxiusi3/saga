@@ -89,6 +89,11 @@ export async function GET(request: NextRequest) {
 
     console.log('Check pending: Query result', { invitations, error, searchEmail: user.email.toLowerCase() })
 
+    // 调试项目信息
+    if (invitations && invitations.length > 0) {
+      console.log('Check pending: First invitation projects data', invitations[0].projects)
+    }
+
     if (error) {
       console.error('Error checking pending invitations:', error)
       return NextResponse.json(

@@ -15,10 +15,41 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 验证用户身份
+    // 尝试多种认证方式
+    let user: any = null
+    let authError: any = null
+
+    // 方法1: 尝试从 cookies 获取
     const supabase = createRouteHandlerClient({ cookies })
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
+    const cookieAuth = await supabase.auth.getUser()
+
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else {
+      // 方法2: 尝试从 Authorization header 获取
+      const authHeader = request.headers.get('authorization')
+      const token = authHeader?.replace('Bearer ', '')
+
+      if (token) {
+        try {
+          const adminSupabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+          )
+          const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
+          if (tokenUser.user && !tokenError) {
+            user = tokenUser.user
+          } else {
+            authError = tokenError
+          }
+        } catch (error) {
+          authError = error
+        }
+      } else {
+        authError = cookieAuth.error
+      }
+    }
+
     if (authError || !user || user.id !== user_id) {
       return NextResponse.json(
         { error: 'Unauthorized' },
