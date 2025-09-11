@@ -200,35 +200,36 @@ export function SmartRecorder({
 
       const useRealtime = shouldUseRealtime()
       
+      // Always start MediaRecorder for audio recording (both modes need audio)
+      const mediaRecorder = new MediaRecorder(stream)
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data)
+        }
+      }
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        setAudioBlob(audioBlob)
+        setAudioUrl(URL.createObjectURL(audioBlob))
+      }
+
+      mediaRecorder.start()
+
       if (useRealtime) {
-        // Start real-time speech recognition
+        // Also start real-time speech recognition
         const recognition = initializeRealTimeRecognition()
         if (recognition) {
           recognitionRef.current = recognition
           recognition.start()
-          toast.success('开始实时语音识别录音')
+          toast.success('开始实时语音识别录音（含音频录制）')
         } else {
           throw new Error('语音识别不可用')
         }
       } else {
-        // Start traditional recording
-        const mediaRecorder = new MediaRecorder(stream)
-        mediaRecorderRef.current = mediaRecorder
-        audioChunksRef.current = []
-
-        mediaRecorder.ondataavailable = (event) => {
-          if (event.data.size > 0) {
-            audioChunksRef.current.push(event.data)
-          }
-        }
-
-        mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
-          setAudioBlob(audioBlob)
-          setAudioUrl(URL.createObjectURL(audioBlob))
-        }
-
-        mediaRecorder.start()
         toast.success('开始传统录音')
       }
 
@@ -501,8 +502,8 @@ export function SmartRecorder({
 
           {recordingState === 'completed' && (
             <>
-              {/* Show playback button for traditional recording with audio */}
-              {audioUrl && !shouldUseRealtime() && (
+              {/* Show playback button for both recording modes when audio is available */}
+              {audioUrl && (
                 <Button
                   onClick={isPlaying ? stopAudio : playAudio}
                   variant="outline"
@@ -513,9 +514,9 @@ export function SmartRecorder({
                 </Button>
               )}
 
-              {/* Show transcript playback for realtime recording */}
+              {/* Show transcript for realtime recording */}
               {shouldUseRealtime() && transcript && (
-                <div className="text-center">
+                <div className="text-center mb-4">
                   <p className="text-sm text-muted-foreground mb-2">实时转录内容：</p>
                   <div className="bg-muted p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
                     {transcript}
