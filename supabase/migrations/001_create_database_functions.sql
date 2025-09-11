@@ -84,12 +84,16 @@ DECLARE
   required_seats INTEGER;
   available_seats INTEGER;
 BEGIN
-  -- 验证邀请者是否是项目的facilitator
+  -- 验证邀请者是否是项目的facilitator (检查 projects.facilitator_id 或 project_roles)
   IF NOT EXISTS (
-    SELECT 1 FROM project_roles 
-    WHERE project_id = send_project_invitation.project_id 
-    AND user_id = inviter_id 
-    AND role = 'facilitator' 
+    SELECT 1 FROM projects
+    WHERE id = send_project_invitation.project_id
+    AND facilitator_id = inviter_id
+  ) AND NOT EXISTS (
+    SELECT 1 FROM project_roles
+    WHERE project_id = send_project_invitation.project_id
+    AND user_id = inviter_id
+    AND role = 'facilitator'
     AND status = 'active'
   ) THEN
     RAISE EXCEPTION 'Only project facilitators can send invitations';
