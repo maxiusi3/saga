@@ -16,11 +16,12 @@ import { toast } from 'sonner'
 
 interface Invitation {
   id: string
-  email: string
+  invitee_email: string
   role: 'facilitator' | 'storyteller'
   status: 'pending' | 'accepted' | 'declined' | 'expired'
-  invited_at: string
+  created_at: string
   expires_at: string
+  message?: string
   invited_by_name?: string
 }
 
@@ -268,13 +269,18 @@ export default function InvitationsPage() {
                 <div key={invitation.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center space-x-3">
-                      <span className="font-medium">{invitation.email}</span>
+                      <span className="font-medium">{invitation.invitee_email}</span>
                       {getRoleBadge(invitation.role)}
                       {getStatusBadge(invitation.status)}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      Invited {formatDate(invitation.invited_at)} • Expires {formatDate(invitation.expires_at)}
+                      Invited {formatDate(invitation.created_at)} • Expires {formatDate(invitation.expires_at)}
                     </div>
+                    {invitation.message && (
+                      <div className="text-sm text-muted-foreground italic">
+                        "{invitation.message}"
+                      </div>
+                    )}
                   </div>
                   
                   {invitation.status === 'pending' && (

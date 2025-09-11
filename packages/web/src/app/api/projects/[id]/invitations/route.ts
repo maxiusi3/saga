@@ -231,7 +231,7 @@ export async function POST(
     }
 
     const body = await request.json()
-    const { email, role } = body
+    const { email, role, message } = body
 
     if (!email || !role) {
       return NextResponse.json(
@@ -300,7 +300,8 @@ export async function POST(
       project_id: projectId,
       inviter_id: user.id,
       invitee_email: email.toLowerCase(),
-      invitation_role: role
+      invitation_role: role,
+      invitation_message: message || null
     })
 
     if (error) {
