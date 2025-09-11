@@ -77,6 +77,10 @@ class AIService {
     static async generateStorySummary(transcript, maxLength = 150) {
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, this.MOCK_DELAY / 2));
+        // Handle null/undefined transcript
+        if (!transcript || typeof transcript !== 'string') {
+            return 'No content available';
+        }
         // Mock summary generation
         const words = transcript.split(' ');
         if (words.length <= maxLength / 6) { // Rough estimate of words to characters

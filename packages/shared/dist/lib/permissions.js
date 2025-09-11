@@ -45,23 +45,6 @@ function calculateUserPermissions(userRole, isProjectOwner = false) {
                 canEditAIContent: true,
                 canViewAIContent: true,
             };
-        case 'co_facilitator':
-            return {
-                canEditProjectSettings: false, // Read-only access to project settings
-                canInviteMembers: false,
-                canRemoveMembers: false,
-                canDeleteProject: false,
-                canCreateStories: false,
-                canEditStoryTitles: false, // Cannot edit story titles or transcripts
-                canEditStoryTranscripts: false,
-                canDeleteStories: false,
-                canViewAllStories: true,
-                canAddComments: true,
-                canAskFollowUpQuestions: true,
-                canViewComments: true,
-                canEditAIContent: false, // Cannot modify AI content
-                canViewAIContent: true,
-            };
         case 'storyteller':
             return {
                 canEditProjectSettings: false,
@@ -117,13 +100,6 @@ function getRoleDisplayInfo(role) {
                 description: 'Can manage project settings and edit all content',
                 color: 'bg-primary text-primary-foreground',
                 icon: '👑'
-            };
-        case 'co_facilitator':
-            return {
-                label: 'Co-Facilitator',
-                description: 'Can view all content and participate in discussions',
-                color: 'bg-secondary text-secondary-foreground',
-                icon: '🤝'
             };
         case 'storyteller':
             return {

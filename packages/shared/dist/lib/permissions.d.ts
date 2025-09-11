@@ -1,4 +1,4 @@
-export type UserRole = 'facilitator' | 'co_facilitator' | 'storyteller';
+export type UserRole = 'facilitator' | 'storyteller';
 export type MemberStatus = 'pending' | 'active' | 'declined' | 'removed';
 export interface ProjectMember {
     id: string;
