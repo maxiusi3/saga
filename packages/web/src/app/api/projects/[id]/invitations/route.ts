@@ -154,7 +154,14 @@ export async function POST(
       )
     }
 
-    // 验证用户是否是项目所有者
+    // 验证用户是否是项目所有者 - 先查看项目是否存在
+    const { data: allProjects, error: allProjectsError } = await supabase
+      .from('projects')
+      .select('id, facilitator_id, name')
+      .eq('id', projectId)
+
+    console.log('All projects check:', { allProjects, allProjectsError, projectId })
+
     const { data: project, error: projectError } = await supabase
       .from('projects')
       .select('facilitator_id')
