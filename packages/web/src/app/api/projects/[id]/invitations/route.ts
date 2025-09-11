@@ -16,11 +16,47 @@ export async function GET(
       )
     }
 
-    const supabase = createRouteHandlerClient({ cookies })
+    // 尝试从 Authorization header 获取 token
+    const authHeader = request.headers.get('authorization')
+    const token = authHeader?.replace('Bearer ', '')
+
+    let supabase = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    // 验证用户身份 - 使用与 POST 相同的逻辑
+    let user: any = null
+    let authError: any = null
+
+    // 首先尝试从 cookies 获取用户
+    const cookieAuth = await supabase.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else if (token) {
+      // 如果 cookies 失败，尝试使用 token 验证
+      try {
+        const { createClient } = await import('@supabase/supabase-js')
+        const adminSupabase = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.SUPABASE_SERVICE_ROLE_KEY!
+        )
+        const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
+        if (tokenUser.user && !tokenError) {
+          user = tokenUser.user
+          // 为后续查询创建带用户上下文的客户端
+          supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+          )
+        } else {
+          authError = tokenError
+        }
+      } catch (error) {
+        authError = error
+      }
+    } else {
+      authError = cookieAuth.error
+    }
+
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -28,8 +64,14 @@ export async function GET(
       )
     }
 
-    // 验证用户是否是项目所有者
-    const { data: project, error: projectError } = await supabase
+    // 验证用户是否是项目所有者 - 使用 admin 客户端
+    const { createClient } = await import('@supabase/supabase-js')
+    const adminSupabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+
+    const { data: project, error: projectError } = await adminSupabase
       .from('projects')
       .select('facilitator_id')
       .eq('id', projectId)
@@ -42,17 +84,10 @@ export async function GET(
       )
     }
 
-    // 获取项目的邀请列表
-    const { data: invitations, error } = await supabase
+    // 获取项目的邀请列表 - 使用 admin 客户端
+    const { data: invitations, error } = await adminSupabase
       .from('invitations')
-      .select(`
-        *,
-        inviter:inviter_id (
-          id,
-          email,
-          user_metadata
-        )
-      `)
+      .select('*')
       .eq('project_id', projectId)
       .order('created_at', { ascending: false })
 
@@ -64,18 +99,18 @@ export async function GET(
       )
     }
 
-    // 更新过期状态
+    // 更新过期状态 - 使用 admin 客户端
     const now = new Date()
     const updatedInvitations = invitations.map(invitation => {
       if (invitation.status === 'pending' && new Date(invitation.expires_at) < now) {
         // 异步更新数据库中的过期状态
-        supabase
+        adminSupabase
           .from('invitations')
           .update({ status: 'expired', updated_at: now.toISOString() })
           .eq('id', invitation.id)
           .then(() => {})
           .catch(err => console.error('Error updating expired invitation:', err))
-        
+
         return { ...invitation, status: 'expired' }
       }
       return invitation
