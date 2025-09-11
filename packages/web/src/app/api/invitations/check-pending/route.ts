@@ -76,6 +76,7 @@ export async function GET(request: NextRequest) {
         expires_at,
         status,
         project_id,
+        token,
         projects!inner (
           id,
           name,
@@ -103,11 +104,12 @@ export async function GET(request: NextRequest) {
       invitationCount: invitations?.length || 0,
       invitations: hasPendingInvitations ? invitations.map(inv => ({
         id: inv.id,
-        project_name: inv.projects?.name || 'Unknown Project',
+        project_name: inv.projects?.[0]?.name || 'Unknown Project',
         role: inv.role,
         message: inv.message,
         expires_at: inv.expires_at,
-        project_id: inv.project_id
+        project_id: inv.project_id,
+        token: inv.token // 包含 token 用于接受邀请
       })) : []
     })
 

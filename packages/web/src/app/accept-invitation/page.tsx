@@ -18,6 +18,7 @@ interface InvitationDetails {
   role: 'facilitator' | 'storyteller'
   message?: string
   expires_at: string
+  token?: string
 }
 
 function AcceptInvitationContent() {
@@ -134,7 +135,8 @@ function AcceptInvitationContent() {
             inviter_name: 'Project Owner',
             role: firstInvitation.role,
             message: firstInvitation.message,
-            expires_at: firstInvitation.expires_at
+            expires_at: firstInvitation.expires_at,
+            token: firstInvitation.token
           })
           setNeedsSignup(false)
         } else {
@@ -202,7 +204,7 @@ function AcceptInvitationContent() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token,
+          token: (invitation as any).token, // 使用邀请的 token 字段
           user_id: user.id
         })
       })
