@@ -56,11 +56,25 @@ export default function HomePage() {
           console.log(`Home page: Checking pending invitations API... (attempt ${retryCount + 1})`)
 
           try {
+            // 获取认证 token
+            const { createClient } = await import('@supabase/supabase-js')
+            const supabase = createClient(
+              process.env.NEXT_PUBLIC_SUPABASE_URL!,
+              process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            )
+            const { data: { session } } = await supabase.auth.getSession()
+
+            const headers: Record<string, string> = {
+              'Content-Type': 'application/json'
+            }
+
+            if (session?.access_token) {
+              headers['Authorization'] = `Bearer ${session.access_token}`
+            }
+
             const response = await fetch('/api/invitations/check-pending', {
-              credentials: 'include', // 确保包含认证信息
-              headers: {
-                'Content-Type': 'application/json'
-              }
+              credentials: 'include',
+              headers
             })
             console.log('Home page: API response status:', response.status)
 

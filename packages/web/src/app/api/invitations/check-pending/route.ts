@@ -5,10 +5,48 @@ import { cookies } from 'next/headers'
 
 export async function GET(request: NextRequest) {
   try {
-    // 验证用户身份
+    // 尝试多种认证方式
+    let user: any = null
+    let authError: any = null
+
+    // 方法1: 尝试从 cookies 获取
     const supabase = createRouteHandlerClient({ cookies })
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
+    const cookieAuth = await supabase.auth.getUser()
+
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+      console.log('Check pending: Auth via cookies successful', { userId: user.id, email: user.email })
+    } else {
+      console.log('Check pending: Cookie auth failed', { error: cookieAuth.error })
+
+      // 方法2: 尝试从 Authorization header 获取
+      const authHeader = request.headers.get('authorization')
+      const token = authHeader?.replace('Bearer ', '')
+
+      if (token) {
+        try {
+          const { createClient } = await import('@supabase/supabase-js')
+          const adminSupabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+          )
+          const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
+          if (tokenUser.user && !tokenError) {
+            user = tokenUser.user
+            console.log('Check pending: Auth via token successful', { userId: user.id, email: user.email })
+          } else {
+            authError = tokenError
+            console.log('Check pending: Token auth failed', { error: tokenError })
+          }
+        } catch (error) {
+          authError = error
+          console.log('Check pending: Token auth error', { error })
+        }
+      } else {
+        authError = cookieAuth.error
+      }
+    }
+
     if (authError || !user || !user.email) {
       console.log('Check pending: Auth failed or no email', { authError, userId: user?.id, email: user?.email })
       return NextResponse.json(
