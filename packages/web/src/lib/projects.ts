@@ -191,7 +191,7 @@ export class ProjectService {
             members: members || [],
             member_count: members?.length || 0,
             story_count: storyCount || 0,
-            user_role: isOwner ? 'facilitator' as UserRole : userMember?.role,
+            user_role: userMember?.role, // 使用实际角色，不强制为 facilitator
             is_owner: isOwner
           }
         })
