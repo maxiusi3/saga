@@ -119,11 +119,11 @@ export async function POST(
     // 验证用户是否是项目所有者
     const { data: project, error: projectError } = await supabase
       .from('projects')
-      .select('owner_id')
+      .select('facilitator_id')
       .eq('id', projectId)
       .single()
 
-    if (projectError || !project || project.owner_id !== user.id) {
+    if (projectError || !project || project.facilitator_id !== user.id) {
       return NextResponse.json(
         { error: 'Access denied. Only project owners can send invitations.' },
         { status: 403 }
