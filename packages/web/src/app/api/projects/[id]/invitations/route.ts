@@ -154,23 +154,41 @@ export async function POST(
       )
     }
 
-    // 验证用户是否是项目所有者 - 先查看项目是否存在
-    const { data: allProjects, error: allProjectsError } = await supabase
+    // 验证用户是否是项目所有者 - 使用 service role 绕过 RLS 进行调试
+    const { createClient } = await import('@supabase/supabase-js')
+    const adminSupabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+
+    // 使用 admin 客户端查看项目实际数据
+    const { data: adminProject, error: adminError } = await adminSupabase
       .from('projects')
       .select('id, facilitator_id, name')
       .eq('id', projectId)
+      .single()
 
-    console.log('All projects check:', { allProjects, allProjectsError, projectId })
+    console.log('Admin project check:', { adminProject, adminError, userId: user.id })
 
-    const { data: project, error: projectError } = await supabase
+    // 使用普通客户端查看 RLS 过滤后的结果
+    const { data: userProject, error: userError } = await supabase
       .from('projects')
-      .select('facilitator_id')
+      .select('id, facilitator_id, name')
       .eq('id', projectId)
       .single()
 
-    console.log('Project check:', { project, projectError, userId: user.id })
-    if (projectError || !project || project.facilitator_id !== user.id) {
-      console.log('Project access denied:', { projectError, project, userId: user.id })
+    console.log('User project check:', { userProject, userError, userId: user.id })
+
+    // 如果项目不存在
+    if (adminError || !adminProject) {
+      return NextResponse.json(
+        { error: 'Project not found.' },
+        { status: 404 }
+      )
+    }
+
+    // 如果用户不是项目所有者
+    if (adminProject.facilitator_id !== user.id) {
       return NextResponse.json(
         { error: 'Access denied. Only project owners can send invitations.' },
         { status: 403 }
