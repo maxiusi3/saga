@@ -246,7 +246,11 @@ export default function ProjectDetailPage() {
         {/* Chapter Progress and Prompt Queue */}
         <RolePermissionGate allowedRoles={['facilitator']} userRole={project.user_role}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ChapterProgress projectId={projectId} />
+            <ChapterProgress
+              projectId={projectId}
+              projectCreatedAt={project.created_at}
+              servicePlanId="basic_annual"
+            />
             <PromptQueue
               projectId={projectId}
               onPromptDelivered={() => {

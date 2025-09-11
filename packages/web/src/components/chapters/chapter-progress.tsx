@@ -5,13 +5,21 @@ import { Badge } from '@/components/ui/badge'
 import { CheckCircle, Circle, Clock, BookOpen } from 'lucide-react'
 import { ChapterProgress as ChapterProgressType } from '@saga/shared'
 import { chapterService } from '@/lib/chapters'
+import { getDefaultServicePlan, formatServiceStatus, getServiceProgress } from '@saga/shared/config/service-plans'
 
 interface ChapterProgressProps {
   projectId: string
   className?: string
+  projectCreatedAt?: string
+  servicePlanId?: string
 }
 
-export function ChapterProgress({ projectId, className }: ChapterProgressProps) {
+export function ChapterProgress({
+  projectId,
+  className,
+  projectCreatedAt,
+  servicePlanId
+}: ChapterProgressProps) {
   const [progress, setProgress] = useState<ChapterProgressType[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -69,12 +77,66 @@ export function ChapterProgress({ projectId, className }: ChapterProgressProps) 
 
   const totalPrompts = progress.reduce((sum, chapter) => sum + chapter.total_prompts, 0)
   const completedPrompts = progress.reduce((sum, chapter) => sum + chapter.completed_prompts, 0)
-  const overallProgress = totalPrompts > 0 ? (completedPrompts / totalPrompts) * 100 : 0
+  const promptProgress = totalPrompts > 0 ? (completedPrompts / totalPrompts) * 100 : 0
+
+  // 计算基于时间的服务期进度
+  const calculateTimeProgress = () => {
+    if (!projectCreatedAt) return null
+
+    const servicePlan = getDefaultServicePlan() // 可以后续根据 servicePlanId 获取具体计划
+    const startDate = new Date(projectCreatedAt)
+    const endDate = new Date(startDate.getTime() + servicePlan.durationDays * 24 * 60 * 60 * 1000)
+
+    const progress = getServiceProgress(startDate, endDate)
+    const status = formatServiceStatus(endDate)
+
+    return {
+      progress,
+      endDate,
+      status: status.status,
+      message: status.message,
+      daysRemaining: status.daysRemaining,
+      planName: servicePlan.name
+    }
+  }
+
+  const timeProgress = calculateTimeProgress()
 
   return (
     <Card className={`p-6 ${className}`}>
       <div className="space-y-6">
-        {/* Overall Progress */}
+        {/* Service Period Progress */}
+        {timeProgress && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-foreground flex items-center gap-2">
+                <Clock className="h-5 w-5" />
+                Service Period
+              </h3>
+              <Badge variant={
+                timeProgress.status === 'expired' ? "destructive" :
+                timeProgress.status === 'expiring_soon' ? "secondary" :
+                "outline"
+              }>
+                {timeProgress.status === 'expired' ? 'Expired' : `${timeProgress.daysRemaining} days left`}
+              </Badge>
+            </div>
+            <Progress
+              value={timeProgress.progress}
+              className="h-2"
+              indicatorClassName={
+                timeProgress.status === 'expired' ? 'bg-red-500' :
+                timeProgress.status === 'expiring_soon' ? 'bg-yellow-500' :
+                'bg-primary'
+              }
+            />
+            <p className="text-sm text-muted-foreground">
+              {timeProgress.planName} • {timeProgress.message}
+            </p>
+          </div>
+        )}
+
+        {/* Story Progress */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-foreground flex items-center gap-2">
@@ -85,9 +147,9 @@ export function ChapterProgress({ projectId, className }: ChapterProgressProps) 
               {completedPrompts}/{totalPrompts} prompts
             </Badge>
           </div>
-          <Progress value={overallProgress} className="h-2" />
+          <Progress value={promptProgress} className="h-2" />
           <p className="text-sm text-muted-foreground">
-            {Math.round(overallProgress)}% complete
+            {Math.round(promptProgress)}% complete
           </p>
         </div>
 
