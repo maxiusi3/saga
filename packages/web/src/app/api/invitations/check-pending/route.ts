@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
         status,
         project_id,
         token,
-        projects!inner (
+        projects (
           id,
           name,
           facilitator_id
@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
       invitationCount: invitations?.length || 0,
       invitations: hasPendingInvitations ? invitations.map(inv => ({
         id: inv.id,
-        project_name: inv.projects?.[0]?.name || 'Unknown Project',
+        project_name: inv.projects?.name || 'Unknown Project',
         role: inv.role,
         message: inv.message,
         expires_at: inv.expires_at,
