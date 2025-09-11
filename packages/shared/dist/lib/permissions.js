@@ -8,28 +8,11 @@ exports.canChangeRole = canChangeRole;
  * Calculate user permissions based on their role in a project
  */
 function calculateUserPermissions(userRole, isProjectOwner = false) {
-    // Project owner (facilitator) has all permissions
-    if (isProjectOwner) {
-        return {
-            canEditProjectSettings: true,
-            canInviteMembers: true,
-            canRemoveMembers: true,
-            canDeleteProject: true,
-            canCreateStories: false, // Project owners typically don't record stories
-            canEditStoryTitles: true,
-            canEditStoryTranscripts: true,
-            canDeleteStories: true,
-            canViewAllStories: true,
-            canAddComments: true,
-            canAskFollowUpQuestions: true,
-            canViewComments: true,
-            canEditAIContent: true,
-            canViewAIContent: true,
-        };
-    }
+    // 基于用户的实际角色计算权限，项目所有者额外获得管理权限
+    let basePermissions;
     switch (userRole) {
         case 'facilitator':
-            return {
+            basePermissions = {
                 canEditProjectSettings: true,
                 canInviteMembers: true,
                 canRemoveMembers: true,
@@ -45,8 +28,9 @@ function calculateUserPermissions(userRole, isProjectOwner = false) {
                 canEditAIContent: true,
                 canViewAIContent: true,
             };
+            break;
         case 'storyteller':
-            return {
+            basePermissions = {
                 canEditProjectSettings: false,
                 canInviteMembers: false,
                 canRemoveMembers: false,
@@ -62,9 +46,10 @@ function calculateUserPermissions(userRole, isProjectOwner = false) {
                 canEditAIContent: false,
                 canViewAIContent: true, // Can view AI-generated content for their stories
             };
+            break;
         default:
             // No permissions for unknown roles
-            return {
+            basePermissions = {
                 canEditProjectSettings: false,
                 canInviteMembers: false,
                 canRemoveMembers: false,
@@ -80,7 +65,28 @@ function calculateUserPermissions(userRole, isProjectOwner = false) {
                 canEditAIContent: false,
                 canViewAIContent: false,
             };
+            break;
     }
+    // 如果是项目所有者，额外获得管理权限
+    if (isProjectOwner) {
+        return {
+            ...basePermissions,
+            canEditProjectSettings: true,
+            canInviteMembers: true,
+            canRemoveMembers: true,
+            canDeleteProject: true,
+            canEditStoryTitles: true,
+            canEditStoryTranscripts: true,
+            canDeleteStories: true,
+            canViewAllStories: true,
+            canAddComments: true,
+            canAskFollowUpQuestions: true,
+            canViewComments: true,
+            canEditAIContent: true,
+            canViewAIContent: true,
+        };
+    }
+    return basePermissions;
 }
 /**
  * Check if a user can perform a specific action

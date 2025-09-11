@@ -30,6 +30,7 @@ function AcceptInvitationContent() {
   const [invitation, setInvitation] = useState<InvitationDetails | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [needsSignup, setNeedsSignup] = useState(false)
+  const [hasLoaded, setHasLoaded] = useState(false)
   const [signupData, setSignupData] = useState({
     email: '',
     password: '',
@@ -41,21 +42,25 @@ function AcceptInvitationContent() {
   const type = searchParams.get('type')
 
   useEffect(() => {
+    if (hasLoaded) return // 防止重复加载
+
     console.log('Accept invitation: useEffect triggered', { token, type, user: !!user })
 
     if (token && type === 'invite') {
       console.log('Accept invitation: Loading invitation details with token')
+      setHasLoaded(true)
       loadInvitationDetails()
     } else if (user) {
       // 如果没有 token 但用户已登录，检查待处理的邀请
       console.log('Accept invitation: Loading pending invitations for user')
+      setHasLoaded(true)
       loadPendingInvitations()
     } else {
       console.log('Accept invitation: No token and no user, showing error')
       setError('Invalid invitation link')
       setLoading(false)
     }
-  }, [token, type, user])
+  }, [token, type, user, hasLoaded])
 
   const loadInvitationDetails = async () => {
     try {
