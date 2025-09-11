@@ -109,7 +109,9 @@ export async function POST(
 
     // 验证用户身份
     const { data: { user }, error: authError } = await supabase.auth.getUser()
+    console.log('Auth check:', { user: user?.id, authError })
     if (authError || !user) {
+      console.log('Auth failed:', authError)
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -123,7 +125,9 @@ export async function POST(
       .eq('id', projectId)
       .single()
 
+    console.log('Project check:', { project, projectError, userId: user.id })
     if (projectError || !project || project.facilitator_id !== user.id) {
+      console.log('Project access denied:', { projectError, project, userId: user.id })
       return NextResponse.json(
         { error: 'Access denied. Only project owners can send invitations.' },
         { status: 403 }
