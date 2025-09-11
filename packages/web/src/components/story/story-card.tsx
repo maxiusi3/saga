@@ -54,16 +54,25 @@ export function StoryCard({
   const [currentTime, setCurrentTime] = useState(0)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
-  const handlePlayPause = () => {
-    if (!audioRef.current) return
-    
-    if (isPlaying) {
-      audioRef.current.pause()
-    } else {
-      audioRef.current.play()
-      onPlay?.(story.id)
+  const handlePlayPause = async () => {
+    if (!audioRef.current || !story.audio_url) {
+      console.warn('No audio available for story:', story.id)
+      return
     }
-    setIsPlaying(!isPlaying)
+
+    try {
+      if (isPlaying) {
+        audioRef.current.pause()
+        setIsPlaying(false)
+      } else {
+        await audioRef.current.play()
+        setIsPlaying(true)
+        onPlay?.(story.id)
+      }
+    } catch (error) {
+      console.error('Error playing audio:', error)
+      setIsPlaying(false)
+    }
   }
 
   const handleTimeUpdate = () => {
@@ -265,13 +274,22 @@ export function StoryCard({
         )}
 
         {/* Hidden Audio Element */}
-        <audio
-          ref={audioRef}
-          src={story.audio_url}
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={() => setIsPlaying(false)}
-          className="hidden"
-        />
+        {story.audio_url && (
+          <audio
+            ref={audioRef}
+            src={story.audio_url}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={() => setIsPlaying(false)}
+            onError={(e) => {
+              console.error('Audio error:', e)
+              setIsPlaying(false)
+            }}
+            onLoadStart={() => console.log('Audio loading started')}
+            onCanPlay={() => console.log('Audio can play')}
+            className="hidden"
+            preload="metadata"
+          />
+        )}
       </div>
     </Card>
   )

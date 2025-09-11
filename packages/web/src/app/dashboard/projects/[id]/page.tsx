@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Settings, Search, Play, MessageCircle, HelpCircle, Sparkles, BookOpen, Clock, Heart, Filter, Plus, Edit, Trash2 } from 'lucide-react'
+import { Settings, Search, Play, MessageCircle, HelpCircle, Sparkles, BookOpen, Clock, Heart, Filter, Plus, Edit, Trash2, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 import { StoryCard } from '@/components/story/story-card'
 import { ChapterSummaryCard } from '@/components/story/chapter-summary-card'
@@ -207,14 +207,31 @@ export default function ProjectDetailPage() {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <RolePermissionGate allowedRoles={['storyteller', 'facilitator']} userRole={project.user_role}>
+            <ActionPermissionGate
+              action="canCreateStories"
+              userRole={project.user_role}
+              isProjectOwner={project.is_owner}
+            >
               <Link href={`/dashboard/projects/${projectId}/record`}>
                 <Button variant="default">
                   <Plus className="h-4 w-4 mr-2" />
                   Record Story
                 </Button>
               </Link>
-            </RolePermissionGate>
+            </ActionPermissionGate>
+
+            <ActionPermissionGate
+              action="canInviteMembers"
+              userRole={project.user_role}
+              isProjectOwner={project.is_owner}
+            >
+              <Link href={`/dashboard/projects/${projectId}/invitations`}>
+                <Button variant="outline">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Invite Members
+                </Button>
+              </Link>
+            </ActionPermissionGate>
 
             <ActionPermissionGate
               action="manageProject"
@@ -260,14 +277,18 @@ export default function ProjectDetailPage() {
                   </p>
                 </div>
 
-                <RolePermissionGate allowedRoles={['storyteller', 'facilitator']} userRole={project.user_role}>
+                <ActionPermissionGate
+                  action="canCreateStories"
+                  userRole={project.user_role}
+                  isProjectOwner={project.is_owner}
+                >
                   <Link href={`/dashboard/projects/${projectId}/record`}>
                     <Button size="lg" className="bg-primary hover:bg-primary/90">
                       <BookOpen className="h-5 w-5 mr-2" />
                       录制第一个故事
                     </Button>
                   </Link>
-                </RolePermissionGate>
+                </ActionPermissionGate>
 
                 {/* Quick Tips */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 text-sm">
