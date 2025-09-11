@@ -149,13 +149,7 @@ export function getRoleDisplayInfo(role: UserRole) {
         color: 'bg-primary text-primary-foreground',
         icon: '👑'
       }
-    case 'co_facilitator':
-      return {
-        label: 'Co-Facilitator',
-        description: 'Can view all content and participate in discussions',
-        color: 'bg-secondary text-secondary-foreground',
-        icon: '🤝'
-      }
+
     case 'storyteller':
       return {
         label: 'Storyteller',
