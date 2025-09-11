@@ -21,7 +21,7 @@ interface Story {
   category: string
   prompt: string
   ai_content?: AIGeneratedContent
-  interaction_summary: {
+  interaction_summary?: {
     comments: number
     followups: number
     appreciations: number
@@ -95,9 +95,10 @@ export function StoryCard({
   }
 
   const getTotalInteractions = () => {
-    return story.interaction_summary.comments + 
-           story.interaction_summary.followups + 
-           story.interaction_summary.appreciations
+    if (!story.interaction_summary) return 0
+    return (story.interaction_summary.comments || 0) +
+           (story.interaction_summary.followups || 0) +
+           (story.interaction_summary.appreciations || 0)
   }
 
   return (
@@ -239,21 +240,21 @@ export function StoryCard({
         {/* Interaction Summary */}
         {getTotalInteractions() > 0 && (
           <div className="flex items-center space-x-4 pt-3 border-t border-border/50">
-            {story.interaction_summary.comments > 0 && (
+            {story.interaction_summary?.comments && story.interaction_summary.comments > 0 && (
               <div className="flex items-center space-x-1 text-muted-foreground hover:text-blue-600 transition-colors">
                 <MessageCircle className="h-4 w-4" />
                 <span className="text-sm font-medium">{story.interaction_summary.comments}</span>
                 <span className="text-xs">评论</span>
               </div>
             )}
-            {story.interaction_summary.followups > 0 && (
+            {story.interaction_summary?.followups && story.interaction_summary.followups > 0 && (
               <div className="flex items-center space-x-1 text-muted-foreground hover:text-orange-600 transition-colors">
                 <HelpCircle className="h-4 w-4" />
                 <span className="text-sm font-medium">{story.interaction_summary.followups}</span>
                 <span className="text-xs">问题</span>
               </div>
             )}
-            {story.interaction_summary.appreciations > 0 && (
+            {story.interaction_summary?.appreciations && story.interaction_summary.appreciations > 0 && (
               <div className="flex items-center space-x-1 text-muted-foreground hover:text-red-500 transition-colors">
                 <Heart className="h-4 w-4" />
                 <span className="text-sm font-medium">{story.interaction_summary.appreciations}</span>
