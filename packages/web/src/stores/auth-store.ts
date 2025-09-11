@@ -18,6 +18,7 @@ interface AuthActions {
   googleSignIn: () => Promise<void>
   clearError: () => void
   setLoading: (loading: boolean) => void
+  getAccessToken: () => Promise<string | null>
 }
 
 type AuthStore = AuthState & AuthActions
@@ -229,6 +230,17 @@ export const useAuthStore = create<AuthStore>()(
 
         setLoading: (loading: boolean) => {
           set({ isLoading: loading })
+        },
+
+        getAccessToken: async () => {
+          try {
+            const supabase = getSupabase()
+            const { data: { session } } = await supabase.auth.getSession()
+            return session?.access_token || null
+          } catch (error) {
+            console.error('Failed to get access token:', error)
+            return null
+          }
         },
       }
     },

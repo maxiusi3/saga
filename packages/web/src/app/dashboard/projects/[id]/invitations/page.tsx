@@ -27,7 +27,7 @@ interface Invitation {
 export default function InvitationsPage() {
   const params = useParams()
   const router = useRouter()
-  const { user } = useAuthStore()
+  const { user, getAccessToken } = useAuthStore()
   const projectId = params.id as string
 
   const [invitations, setInvitations] = useState<Invitation[]>([])
@@ -45,7 +45,17 @@ export default function InvitationsPage() {
 
   const loadInvitations = async () => {
     try {
-      const response = await fetch(`/api/projects/${projectId}/invitations`)
+      const token = await getAccessToken()
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      }
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
+      const response = await fetch(`/api/projects/${projectId}/invitations`, {
+        headers
+      })
       if (response.ok) {
         const data = await response.json()
         setInvitations(data)
@@ -68,11 +78,17 @@ export default function InvitationsPage() {
 
     setSending(true)
     try {
+      const token = await getAccessToken()
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      }
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
       const response = await fetch(`/api/projects/${projectId}/invitations`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           email: email.trim(),
           role,
@@ -100,8 +116,15 @@ export default function InvitationsPage() {
 
   const deleteInvitation = async (invitationId: string) => {
     try {
+      const token = await getAccessToken()
+      const headers: HeadersInit = {}
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
       const response = await fetch(`/api/projects/${projectId}/invitations/${invitationId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers
       })
 
       if (response.ok) {

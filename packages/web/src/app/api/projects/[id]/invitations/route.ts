@@ -104,12 +104,24 @@ export async function POST(
       )
     }
 
+    // 尝试从 Authorization header 获取 token
+    const authHeader = request.headers.get('authorization')
+    const token = authHeader?.replace('Bearer ', '')
+
     const supabase = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
+    // 如果有 token，设置会话
+    if (token) {
+      await supabase.auth.setSession({
+        access_token: token,
+        refresh_token: ''
+      })
+    }
+
     // 验证用户身份
     const { data: { user }, error: authError } = await supabase.auth.getUser()
-    console.log('Auth check:', { user: user?.id, authError })
+    console.log('Auth check:', { user: user?.id, authError, hasToken: !!token })
     if (authError || !user) {
       console.log('Auth failed:', authError)
       return NextResponse.json(
