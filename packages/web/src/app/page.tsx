@@ -48,26 +48,56 @@ export default function HomePage() {
 
     async function checkPendingInvitations() {
       try {
-        // Wait a bit for auth to fully initialize
-        setTimeout(async () => {
-          console.log('Home page: Checking pending invitations API...')
-          const response = await fetch('/api/invitations/check-pending')
-          console.log('Home page: API response status:', response.status)
+        // Wait longer for auth to fully initialize and retry multiple times
+        let retryCount = 0
+        const maxRetries = 3
 
-          if (response.ok) {
-            const data = await response.json()
-            console.log('Home page: API response data:', data)
+        const checkWithRetry = async () => {
+          console.log(`Home page: Checking pending invitations API... (attempt ${retryCount + 1})`)
 
-            if (data.hasPendingInvitations) {
-              console.log('Home page: Found pending invitations, redirecting to accept-invitation')
-              router.push('/accept-invitation')
+          try {
+            const response = await fetch('/api/invitations/check-pending', {
+              credentials: 'include', // 确保包含认证信息
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            console.log('Home page: API response status:', response.status)
+
+            if (response.ok) {
+              const data = await response.json()
+              console.log('Home page: API response data:', data)
+
+              if (data.hasPendingInvitations) {
+                console.log('Home page: Found pending invitations, redirecting to accept-invitation')
+                router.push('/accept-invitation')
+                return true
+              } else {
+                console.log('Home page: No pending invitations found')
+                return false
+              }
+            } else if (response.status === 401 && retryCount < maxRetries - 1) {
+              console.log('Home page: Auth not ready, retrying...')
+              retryCount++
+              setTimeout(checkWithRetry, 2000) // 等待更长时间重试
+              return
             } else {
-              console.log('Home page: No pending invitations found')
+              console.log('Home page: API call failed:', response.status)
+              return false
             }
-          } else {
-            console.log('Home page: API call failed:', response.status)
+          } catch (error) {
+            console.error('Home page: API call error:', error)
+            if (retryCount < maxRetries - 1) {
+              retryCount++
+              setTimeout(checkWithRetry, 2000)
+              return
+            }
+            return false
           }
-        }, 1000)
+        }
+
+        // 初始延迟后开始检查
+        setTimeout(checkWithRetry, 2000)
       } catch (error) {
         console.error('Error checking pending invitations:', error)
       }
