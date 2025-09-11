@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     const audioBlob = new Blob([audioBuffer], { type: audioFile.type })
     
     // Create a File object with proper extension
-    const fileExtension = audioFile.type.split('/')[1] || 'webm'
+    const fileExtension = audioFile.type ? audioFile.type.split('/')[1] || 'webm' : 'webm'
     const fileName = `audio.${fileExtension}`
     const audioFileForAPI = new File([audioBlob], fileName, { type: audioFile.type })
 

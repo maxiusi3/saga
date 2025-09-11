@@ -194,7 +194,7 @@ export class StoryService {
       const story = await this.getStoryById(storyId)
       
       // Delete audio file if it exists
-      if (story?.audio_url) {
+      if (story?.audio_url && typeof story.audio_url === 'string') {
         const fileName = story.audio_url.split('/').pop()
         if (fileName) {
           await this.supabase.storage

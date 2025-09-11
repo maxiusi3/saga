@@ -179,7 +179,7 @@ export function StoryCard({
           <Avatar className="h-8 w-8">
             <AvatarImage src={story.storyteller_avatar} />
             <AvatarFallback className="bg-furbridge-teal text-white text-sm">
-              {story.storyteller_name.split(' ').map(n => n[0]).join('')}
+              {story.storyteller_name ? story.storyteller_name.split(' ').map(n => n[0]).join('') : 'U'}
             </AvatarFallback>
           </Avatar>
           <div>
