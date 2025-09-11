@@ -130,9 +130,13 @@ function AcceptInvitationContent() {
           setError('No pending invitations found')
         }
       } else {
+        console.log('Accept invitation: API call failed', { status: response.status, statusText: response.statusText })
+        const errorText = await response.text()
+        console.log('Accept invitation: Error response', errorText)
         setError('Failed to load pending invitations')
       }
     } catch (error) {
+      console.error('Accept invitation: Exception caught', error)
       setError('Failed to load pending invitations')
     } finally {
       setLoading(false)

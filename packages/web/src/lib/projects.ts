@@ -222,21 +222,19 @@ export class ProjectService {
 
       // Check if user has access to this project
       const isOwner = project.facilitator_id === userId
-      let userMember = null
 
-      if (!isOwner) {
-        const { data: member } = await this.supabase
-          .from('project_roles')
-          .select('*')
-          .eq('project_id', projectId)
-          .eq('user_id', userId)
-          .eq('status', 'active')
-          .single()
+      // 总是查询用户的角色记录，无论是否为项目所有者
+      const { data: userMember } = await this.supabase
+        .from('project_roles')
+        .select('*')
+        .eq('project_id', projectId)
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .single()
 
-        if (!member) {
-          return null // User doesn't have access
-        }
-        userMember = member
+      // 如果用户不是所有者且没有角色记录，则无权访问
+      if (!isOwner && !userMember) {
+        return null // User doesn't have access
       }
 
       // Get all members
