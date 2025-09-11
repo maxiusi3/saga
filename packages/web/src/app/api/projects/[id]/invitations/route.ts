@@ -276,17 +276,10 @@ export async function POST(
       )
     }
 
-    // 获取完整的邀请信息 - 使用 admin 客户端
+    // 获取完整的邀请信息 - 使用 admin 客户端，简化查询
     const { data: fullInvitation, error: fetchError } = await adminSupabase
       .from('invitations')
-      .select(`
-        *,
-        inviter:inviter_id (
-          id,
-          email,
-          user_metadata
-        )
-      `)
+      .select('*')
       .eq('id', invitation.invitation_id)
       .single()
 
