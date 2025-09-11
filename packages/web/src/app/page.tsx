@@ -50,13 +50,22 @@ export default function HomePage() {
       try {
         // Wait a bit for auth to fully initialize
         setTimeout(async () => {
+          console.log('Home page: Checking pending invitations API...')
           const response = await fetch('/api/invitations/check-pending')
+          console.log('Home page: API response status:', response.status)
+
           if (response.ok) {
             const data = await response.json()
+            console.log('Home page: API response data:', data)
+
             if (data.hasPendingInvitations) {
               console.log('Home page: Found pending invitations, redirecting to accept-invitation')
               router.push('/accept-invitation')
+            } else {
+              console.log('Home page: No pending invitations found')
             }
+          } else {
+            console.log('Home page: API call failed:', response.status)
           }
         }, 1000)
       } catch (error) {
