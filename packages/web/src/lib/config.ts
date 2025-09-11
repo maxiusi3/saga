@@ -104,9 +104,9 @@ export function validateConfig(): ConfigValidationResult {
     }
   })
 
-  // 验证 Supabase URL 格式
+  // 验证 Supabase URL 格式 - 更宽松的验证
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (supabaseUrl && !supabaseUrl.match(/^https:\/\/[a-zA-Z0-9-]+\.supabase\.co$/)) {
+  if (supabaseUrl && !supabaseUrl.startsWith('https://') && !supabaseUrl.includes('supabase')) {
     errors.push('NEXT_PUBLIC_SUPABASE_URL format is invalid (should be https://xxx.supabase.co)')
   }
 

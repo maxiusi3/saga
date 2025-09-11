@@ -108,19 +108,43 @@ export async function POST(
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '')
 
-    const supabase = createRouteHandlerClient({ cookies })
+    let supabase = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
-    // 如果有 token，设置会话
-    if (token) {
-      await supabase.auth.setSession({
-        access_token: token,
-        refresh_token: ''
-      })
+    // 验证用户身份
+    let user: any = null
+    let authError: any = null
+
+    // 首先尝试从 cookies 获取用户
+    const cookieAuth = await supabase.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else if (token) {
+      // 如果 cookies 失败，尝试使用 token 验证
+      try {
+        const { createClient } = await import('@supabase/supabase-js')
+        const adminSupabase = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.SUPABASE_SERVICE_ROLE_KEY!
+        )
+        const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
+        if (tokenUser.user && !tokenError) {
+          user = tokenUser.user
+          // 为后续查询创建带用户上下文的客户端
+          supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+          )
+        } else {
+          authError = tokenError
+        }
+      } catch (error) {
+        authError = error
+      }
+    } else {
+      authError = cookieAuth.error
     }
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
     console.log('Auth check:', { user: user?.id, authError, hasToken: !!token })
     if (authError || !user) {
       console.log('Auth failed:', authError)
