@@ -19,7 +19,9 @@ export default function HomePage() {
     const refreshToken = urlParams.get('refresh_token') || hashParams.get('refresh_token')
     const tokenType = urlParams.get('token_type') || hashParams.get('token_type')
     const type = urlParams.get('type') || hashParams.get('type')
-    const token = urlParams.get('token') || hashParams.get('token')
+    const token = urlParams.get('token') || hashParams.get('token') ||
+                  urlParams.get('confirmation_token') || hashParams.get('confirmation_token') ||
+                  urlParams.get('invite_token') || hashParams.get('invite_token')
 
     console.log('Home page: Checking URL params', {
       accessToken: !!accessToken,
@@ -28,17 +30,38 @@ export default function HomePage() {
       type,
       token: !!token,
       search: window.location.search,
-      hash: window.location.hash
+      hash: window.location.hash,
+      allSearchParams: Object.fromEntries(urlParams.entries()),
+      allHashParams: Object.fromEntries(hashParams.entries())
     })
 
     if (accessToken && refreshToken && type === 'magiclink') {
       console.log('Home page: Magic Link tokens found, redirecting to dashboard')
       // Redirect to dashboard with tokens
       router.push(`/dashboard?access_token=${accessToken}&refresh_token=${refreshToken}&token_type=${tokenType}&type=${type}`)
-    } else if (type === 'invite' && token) {
-      console.log('Home page: Invitation token found, redirecting to accept-invitation')
-      // Redirect to invitation acceptance page
-      router.push(`/accept-invitation?token=${token}&type=invite`)
+    } else if (type === 'invite') {
+      console.log('Home page: Invitation type detected, checking for pending invitations')
+      // For invitations, we need to check if the user has pending invitations
+      // Since the user is already authenticated, we can check their email against pending invitations
+      checkPendingInvitations()
+    }
+
+    async function checkPendingInvitations() {
+      try {
+        // Wait a bit for auth to fully initialize
+        setTimeout(async () => {
+          const response = await fetch('/api/invitations/check-pending')
+          if (response.ok) {
+            const data = await response.json()
+            if (data.hasPendingInvitations) {
+              console.log('Home page: Found pending invitations, redirecting to accept-invitation')
+              router.push('/accept-invitation')
+            }
+          }
+        }, 1000)
+      } catch (error) {
+        console.error('Error checking pending invitations:', error)
+      }
     }
   }, [router])
   return (

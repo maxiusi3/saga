@@ -42,11 +42,14 @@ function AcceptInvitationContent() {
   useEffect(() => {
     if (token && type === 'invite') {
       loadInvitationDetails()
+    } else if (user) {
+      // 如果没有 token 但用户已登录，检查待处理的邀请
+      loadPendingInvitations()
     } else {
       setError('Invalid invitation link')
       setLoading(false)
     }
-  }, [token, type])
+  }, [token, type, user])
 
   const loadInvitationDetails = async () => {
     try {
@@ -54,7 +57,7 @@ function AcceptInvitationContent() {
       if (response.ok) {
         const data = await response.json()
         setInvitation(data)
-        
+
         // 检查用户是否已登录且邮箱匹配
         if (user && user.email === data.invitee_email) {
           // 用户已登录且邮箱匹配，可以直接接受邀请
@@ -73,6 +76,37 @@ function AcceptInvitationContent() {
       }
     } catch (error) {
       setError('Failed to load invitation details')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const loadPendingInvitations = async () => {
+    try {
+      const response = await fetch('/api/invitations/check-pending')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.hasPendingInvitations && data.invitations.length > 0) {
+          // 如果有多个邀请，显示第一个
+          const firstInvitation = data.invitations[0]
+          setInvitation({
+            id: firstInvitation.id,
+            invitee_email: user?.email || '',
+            project_name: firstInvitation.project_name,
+            inviter_name: 'Project Owner',
+            role: firstInvitation.role,
+            message: firstInvitation.message,
+            expires_at: firstInvitation.expires_at
+          })
+          setNeedsSignup(false)
+        } else {
+          setError('No pending invitations found')
+        }
+      } else {
+        setError('Failed to load pending invitations')
+      }
+    } catch (error) {
+      setError('Failed to load pending invitations')
     } finally {
       setLoading(false)
     }
