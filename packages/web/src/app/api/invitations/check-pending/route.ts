@@ -103,10 +103,11 @@ export async function GET(request: NextRequest) {
       invitationCount: invitations?.length || 0,
       invitations: hasPendingInvitations ? invitations.map(inv => ({
         id: inv.id,
-        project_name: inv.projects.name,
+        project_name: inv.projects?.name || 'Unknown Project',
         role: inv.role,
         message: inv.message,
-        expires_at: inv.expires_at
+        expires_at: inv.expires_at,
+        project_id: inv.project_id
       })) : []
     })
 

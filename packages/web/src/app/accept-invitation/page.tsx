@@ -83,16 +83,37 @@ function AcceptInvitationContent() {
 
   const loadPendingInvitations = async () => {
     try {
-      const response = await fetch('/api/invitations/check-pending')
+      // 获取认证信息
+      const { data: { session } } = await supabase.auth.getSession()
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
+      }
+
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`
+      }
+
+      const response = await fetch('/api/invitations/check-pending', {
+        credentials: 'include',
+        headers
+      })
+
+      console.log('Accept invitation: API response', { status: response.status })
+
       if (response.ok) {
         const data = await response.json()
+        console.log('Accept invitation: API data', data)
+
         if (data.hasPendingInvitations && data.invitations.length > 0) {
           // 如果有多个邀请，显示第一个
           const firstInvitation = data.invitations[0]
+          console.log('Accept invitation: First invitation', firstInvitation)
+
           setInvitation({
             id: firstInvitation.id,
             invitee_email: user?.email || '',
             project_name: firstInvitation.project_name,
+            project_id: firstInvitation.project_id,
             inviter_name: 'Project Owner',
             role: firstInvitation.role,
             message: firstInvitation.message,
@@ -100,6 +121,7 @@ function AcceptInvitationContent() {
           })
           setNeedsSignup(false)
         } else {
+          console.log('Accept invitation: No pending invitations')
           setError('No pending invitations found')
         }
       } else {
