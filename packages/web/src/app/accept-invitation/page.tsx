@@ -40,12 +40,17 @@ function AcceptInvitationContent() {
   const type = searchParams.get('type')
 
   useEffect(() => {
+    console.log('Accept invitation: useEffect triggered', { token, type, user: !!user })
+
     if (token && type === 'invite') {
+      console.log('Accept invitation: Loading invitation details with token')
       loadInvitationDetails()
     } else if (user) {
       // 如果没有 token 但用户已登录，检查待处理的邀请
+      console.log('Accept invitation: Loading pending invitations for user')
       loadPendingInvitations()
     } else {
+      console.log('Accept invitation: No token and no user, showing error')
       setError('Invalid invitation link')
       setLoading(false)
     }
