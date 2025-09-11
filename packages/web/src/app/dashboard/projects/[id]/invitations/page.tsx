@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ArrowLeft, UserPlus, Mail, Clock, CheckCircle, XCircle, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth-store'
 import { toast } from 'sonner'
 
 interface Invitation {

@@ -220,18 +220,14 @@ export default function ProjectDetailPage() {
               </Link>
             </ActionPermissionGate>
 
-            <ActionPermissionGate
-              action="canInviteMembers"
-              userRole={project.user_role}
-              isProjectOwner={project.is_owner}
-            >
+            {project.is_owner && (
               <Link href={`/dashboard/projects/${projectId}/invitations`}>
                 <Button variant="outline">
                   <UserPlus className="h-4 w-4 mr-2" />
                   Invite Members
                 </Button>
               </Link>
-            </ActionPermissionGate>
+            )}
 
             <ActionPermissionGate
               action="manageProject"
