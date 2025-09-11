@@ -238,8 +238,8 @@ export async function POST(
       }
     }
 
-    // 检查用户资源钱包是否有足够的座位
-    const { data: wallet, error: walletError } = await supabase
+    // 检查用户资源钱包是否有足够的座位 - 使用 admin 客户端
+    const { data: wallet, error: walletError } = await adminSupabase
       .from('user_resource_wallets')
       .select('facilitator_seats, storyteller_seats')
       .eq('user_id', user.id)
@@ -260,8 +260,8 @@ export async function POST(
       )
     }
 
-    // 使用数据库函数发送邀请
-    const { data: invitation, error } = await supabase.rpc('send_project_invitation', {
+    // 使用数据库函数发送邀请 - 使用 admin 客户端
+    const { data: invitation, error } = await adminSupabase.rpc('send_project_invitation', {
       project_id: projectId,
       inviter_id: user.id,
       invitee_email: email.toLowerCase(),
@@ -276,8 +276,8 @@ export async function POST(
       )
     }
 
-    // 获取完整的邀请信息
-    const { data: fullInvitation, error: fetchError } = await supabase
+    // 获取完整的邀请信息 - 使用 admin 客户端
+    const { data: fullInvitation, error: fetchError } = await adminSupabase
       .from('invitations')
       .select(`
         *,
