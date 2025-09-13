@@ -4,14 +4,26 @@ import { createClient } from '@supabase/supabase-js'
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const token = searchParams.get('token')
+    const raw = searchParams.get('token')
 
-    if (!token) {
+    if (!raw) {
       return NextResponse.json(
         { error: 'Token is required' },
         { status: 400 }
       )
     }
+
+    // 兼容 query 中 "+" 被当作空格，以及多次编码/URL-safe 变体
+    let token = raw
+    try { token = decodeURIComponent(token) } catch {}
+    try { token = decodeURIComponent(token) } catch {}
+    const candidates = Array.from(new Set([
+      token,
+      token.replace(/\s/g, '+'),
+      token.replace(/%2B/gi, '+'),
+      token.replace(/%3D/gi, '='),
+      token.replace(/-/g, '+').replace(/_/g, '/')
+    ]))
 
     // 使用 admin 客户端查询邀请
     const adminSupabase = createClient(
@@ -20,7 +32,7 @@ export async function GET(request: NextRequest) {
     )
 
     // 查找邀请
-    const { data: invitation, error } = await adminSupabase
+    const { data: invitations, error } = await adminSupabase
       .from('invitations')
       .select(`
         id,
@@ -36,9 +48,11 @@ export async function GET(request: NextRequest) {
           facilitator_id
         )
       `)
-      .eq('token', token)
+      .in('token', candidates)
       .eq('status', 'pending')
-      .single()
+      .limit(1)
+
+    const invitation = Array.isArray(invitations) ? invitations[0] : null
 
     if (error || !invitation) {
       return NextResponse.json(

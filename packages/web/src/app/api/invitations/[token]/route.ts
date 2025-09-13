@@ -6,6 +6,9 @@ export async function GET(
   { params }: { params: { token: string } }
 ) {
   try {
+    const url = new URL(request.url)
+    const debug = url.searchParams.get('debug') === '1'
+
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!supabaseUrl || !serviceKey) {
@@ -50,8 +53,9 @@ export async function GET(
     const invitation = Array.isArray(list) ? list[0] : null
 
     if (error || !invitation) {
+      const debugPayload = debug ? { candidates, token, supabaseUrl } : undefined
       return NextResponse.json(
-        { error: 'Invitation not found' },
+        { error: 'Invitation not found', debug: debugPayload },
         { status: 404 }
       )
     }
