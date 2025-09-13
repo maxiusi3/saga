@@ -122,57 +122,29 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 开始事务：接受邀请
-    const { error: roleError } = await adminSupabase
-      .from('project_roles')
-      .insert({
-        project_id: invitation.project_id,
-        user_id: user_id,
-        role: invitation.role,
-        status: 'active'
-      })
+    // 使用数据库函数执行接受逻辑（包含角色绑定与交易记录）
+    const { data: result, error: acceptError } = await adminSupabase.rpc('accept_project_invitation', {
+      invitation_token: token,
+      user_id
+    })
 
-    if (roleError) {
-      console.error('Error creating project role:', roleError)
-      return NextResponse.json(
-        { error: 'Failed to accept invitation' },
-        { status: 500 }
-      )
+    if (acceptError) {
+      console.error('Error accepting invitation via RPC:', acceptError)
+      // 将常见错误映射到合适的状态码
+      const msg = String(acceptError.message || '')
+      if (msg.includes('Invalid or expired invitation')) {
+        return NextResponse.json({ error: 'Invalid or expired invitation' }, { status: 404 })
+      }
+      if (msg.includes('already has this role')) {
+        return NextResponse.json({ error: 'You are already a member of this project' }, { status: 409 })
+      }
+      return NextResponse.json({ error: 'Failed to accept invitation' }, { status: 500 })
     }
-
-    // 更新邀请状态
-    const { error: updateError } = await adminSupabase
-      .from('invitations')
-      .update({ 
-        status: 'accepted',
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', invitation.id)
-
-    if (updateError) {
-      console.error('Error updating invitation status:', updateError)
-      // 不返回错误，因为主要操作（添加用户到项目）已经成功
-    }
-
-    // 记录座位使用交易
-    await adminSupabase
-      .from('seat_transactions')
-      .insert({
-        user_id: user_id,
-        transaction_type: 'use',
-        resource_type: invitation.role + '_seat',
-        amount: 1,
-        project_id: invitation.project_id,
-        metadata: {
-          action: 'invitation_accepted',
-          invitation_id: invitation.id
-        }
-      })
 
     return NextResponse.json({
       success: true,
-      project_id: invitation.project_id,
-      role: invitation.role
+      project_id: result?.project_id || invitation.project_id,
+      role: result?.role || invitation.role
     })
 
   } catch (error) {

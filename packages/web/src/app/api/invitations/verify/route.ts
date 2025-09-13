@@ -76,7 +76,8 @@ export async function GET(request: NextRequest) {
       inviter_name: inviterProfile?.full_name || inviterProfile?.email || 'Unknown',
       role: invitation.role,
       message: invitation.message,
-      expires_at: invitation.expires_at
+      expires_at: invitation.expires_at,
+      token // 前端在接受时需要携带
     })
 
   } catch (error) {

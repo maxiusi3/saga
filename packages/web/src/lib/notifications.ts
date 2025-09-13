@@ -10,12 +10,26 @@ import {
 export class NotificationService {
   private supabase = createClientSupabase()
 
+  // 统一的鉴权 fetch：自动附带 Supabase access token 与 cookies
+  private async authFetch(input: RequestInfo | URL, init: RequestInit = {}) {
+    const { data: { session } } = await this.supabase.auth.getSession()
+    const headers = new Headers(init.headers || {})
+    // 仅在未显式设置时添加 Content-Type
+    if (!headers.has('Content-Type') && init.body) {
+      headers.set('Content-Type', 'application/json')
+    }
+    if (session?.access_token) {
+      headers.set('Authorization', `Bearer ${session.access_token}`)
+    }
+    return fetch(input, { ...init, headers, credentials: 'include' })
+  }
+
   /**
    * Get all notifications for a user
    */
   async getNotifications(userId: string, limit = 50): Promise<SagaNotification[]> {
     try {
-      const response = await fetch(`/api/notifications?limit=${limit}`)
+      const response = await this.authFetch(`/api/notifications?limit=${limit}`)
       if (!response.ok) {
         throw new Error('Failed to fetch notifications')
       }
@@ -31,7 +45,7 @@ export class NotificationService {
    */
   async getUnreadCount(userId: string): Promise<number> {
     try {
-      const response = await fetch('/api/notifications/unread-count')
+      const response = await this.authFetch('/api/notifications/unread-count')
       if (!response.ok) {
         throw new Error('Failed to fetch unread count')
       }
@@ -56,7 +70,7 @@ export class NotificationService {
    */
   async markAsRead(notificationId: string): Promise<boolean> {
     try {
-      const response = await fetch('/api/notifications', {
+      const response = await this.authFetch('/api/notifications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +117,7 @@ export class NotificationService {
    */
   async markAllAsRead(userId: string): Promise<boolean> {
     try {
-      const response = await fetch('/api/notifications', {
+      const response = await this.authFetch('/api/notifications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +143,7 @@ export class NotificationService {
    */
   async deleteNotification(notificationId: string): Promise<boolean> {
     try {
-      const response = await fetch(`/api/notifications?id=${notificationId}`, {
+      const response = await this.authFetch(`/api/notifications?id=${notificationId}`, {
         method: 'DELETE'
       })
 
