@@ -64,8 +64,15 @@ export default function InvitationLandingPage() {
 
     setAccepting(true)
     try {
-      // 携带会话 token 以避免 401（移动端或跨域 cookie 被屏蔽时）
+      // 未登录则先跳转登录页，登录后回到邀请页
       const session = await supabase.auth.getSession()
+      const nextPath = `/invite/${token}`
+      if (!session.data.session) {
+        window.location.href = `/auth/signin?next=${encodeURIComponent(nextPath)}`
+        return
+      }
+
+      // 携带会话 token 以避免 401（移动端或跨域 cookie 被屏蔽时）
       const accessToken = session.data.session?.access_token
       const response = await fetch(`/api/invitations/${token}/accept`, {
         method: 'POST',

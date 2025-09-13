@@ -60,7 +60,8 @@ export async function GET(request: NextRequest) {
       console.log('Session after OAuth:', session ? 'exists' : 'null')
 
       // Force complete page refresh using JavaScript redirect
-      const dashboardUrl = `${requestUrl.origin}/dashboard`
+      const next = requestUrl.searchParams.get('next')
+      const targetUrl = next ? `${requestUrl.origin}${next}` : `${requestUrl.origin}/dashboard`
       return new Response(`
         <!DOCTYPE html>
         <html>
@@ -69,10 +70,10 @@ export async function GET(request: NextRequest) {
         </head>
         <body>
           <script>
-            console.log('OAuth: Forcing page refresh to dashboard');
-            window.location.href = '${dashboardUrl}';
+            console.log('OAuth: Forcing page refresh');
+            window.location.href = '${targetUrl}';
           </script>
-          <p>Redirecting to dashboard...</p>
+          <p>Redirecting...</p>
         </body>
         </html>
       `, {
@@ -104,7 +105,8 @@ export async function GET(request: NextRequest) {
       console.log('Session after verification:', session ? 'exists' : 'null')
 
       // Force complete page refresh using JavaScript redirect
-      const dashboardUrl = `${requestUrl.origin}/dashboard`
+      const next2 = requestUrl.searchParams.get('next')
+      const targetUrl2 = next2 ? `${requestUrl.origin}${next2}` : `${requestUrl.origin}/dashboard`
       return new Response(`
         <!DOCTYPE html>
         <html>
@@ -113,10 +115,10 @@ export async function GET(request: NextRequest) {
         </head>
         <body>
           <script>
-            console.log('Magic Link: Forcing page refresh to dashboard');
-            window.location.href = '${dashboardUrl}';
+            console.log('Magic Link: Forcing page refresh');
+            window.location.href = '${targetUrl2}';
           </script>
-          <p>Redirecting to dashboard...</p>
+          <p>Redirecting...</p>
         </body>
         </html>
       `, {

@@ -37,10 +37,13 @@ function SignInPageContent() {
   useEffect(() => {
     if (!isClient) return
 
+    const next = searchParams?.get('next')
+
     // Debug: Log full URL information
     const fullUrl = window.location.href
     console.log('SignIn page: Full URL:', fullUrl)
     console.log('SignIn page: Search string:', window.location.search)
+    console.log('SignIn page: next param:', next)
 
     // Extract tokens using regex from full URL (more reliable than URLSearchParams)
     const accessTokenMatch = fullUrl.match(/access_token=([^&]+)/)
@@ -81,9 +84,9 @@ function SignInPageContent() {
             console.error('SignIn page: Error setting session:', error)
             setMessage(`Error setting session: ${error.message}`)
           } else {
-            console.log(`SignIn page: ${authType} session set successfully, redirecting to dashboard`)
-            // Redirect to dashboard
-            router.push('/dashboard')
+            console.log(`SignIn page: ${authType} session set successfully, redirecting`)
+            const next = searchParams?.get('next')
+            router.push(next || '/dashboard')
           }
         })
       }
@@ -104,11 +107,12 @@ function SignInPageContent() {
     try {
       const supabase = getSupabase()
       if (!supabase) throw new Error('Supabase client not available')
+      const next = searchParams?.get('next')
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           // 使用运行时当前域名，避免硬编码 Vercel 预览/生产域名
-          redirectTo: `${window.location.origin}/auth/callback`
+          redirectTo: `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
         }
       })
       if (error) throw error
@@ -130,10 +134,11 @@ function SignInPageContent() {
     try {
       const supabase = getSupabase()
       if (!supabase) throw new Error('Supabase client not available')
+      const next = searchParams?.get('next')
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`
+          emailRedirectTo: `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
         }
       })
 
