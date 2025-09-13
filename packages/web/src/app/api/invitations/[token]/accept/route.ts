@@ -8,8 +8,9 @@ export async function POST(
 ) {
   try {
     const supabase = createRouteHandlerClient({ cookies })
-    const rawToken = params.token
-    const token = decodeURIComponent(rawToken)
+    let token = params.token
+    try { token = decodeURIComponent(token) } catch {}
+    try { token = decodeURIComponent(token) } catch {}
 
     // 验证用户身份
     const { data: { user }, error: authError } = await supabase.auth.getUser()

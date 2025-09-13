@@ -15,8 +15,9 @@ export async function GET(
       )
     }
     const adminSupabase = createClient(supabaseUrl, serviceKey)
-    const rawToken = params.token
-    const token = decodeURIComponent(rawToken)
+    let token = params.token
+    try { token = decodeURIComponent(token) } catch {}
+    try { token = decodeURIComponent(token) } catch {}
 
     // 获取邀请信息
     const { data: invitation, error } = await adminSupabase
