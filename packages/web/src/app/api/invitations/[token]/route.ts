@@ -18,6 +18,22 @@ export async function GET(
       )
     }
     const adminSupabase = createClient(supabaseUrl, serviceKey)
+
+    // 检查 service key 角色（不输出密钥，仅解码中段判断 role）
+    const decodeJwtRole = (jwt?: string) => {
+      try {
+        if (!jwt) return undefined
+        const parts = jwt.split('.')
+        if (parts.length < 2) return undefined
+        const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/')
+        const json = JSON.parse(Buffer.from(b64, 'base64').toString('utf8'))
+        return json?.role || json?.['role']
+      } catch {
+        return undefined
+      }
+    }
+    const serviceRole = decodeJwtRole(serviceKey)
+
     let token = params.token
     try { token = decodeURIComponent(token) } catch {}
     try { token = decodeURIComponent(token) } catch {}
@@ -63,7 +79,24 @@ export async function GET(
     }
 
     if (!invitation) {
-      const debugPayload = debug ? { candidates, token, supabaseUrl, error: error ? String(error.message || error) : undefined } : undefined
+      // 额外探测：尝试读取任意一条邀请，判断是否因 RLS/密钥错误导致始终为空
+      let sampleExists: boolean | undefined = undefined
+      try {
+        const { data: sample } = await adminSupabase
+          .from('invitations')
+          .select('id')
+          .limit(1)
+        sampleExists = Array.isArray(sample) ? sample.length > 0 : false
+      } catch {}
+
+      const debugPayload = debug ? {
+        candidates,
+        token,
+        supabaseUrl,
+        serviceRole,
+        sampleExists,
+        error: error ? String(error.message || error) : undefined
+      } : undefined
       return NextResponse.json(
         { error: 'Invitation not found', debug: debugPayload },
         { status: 404 }
