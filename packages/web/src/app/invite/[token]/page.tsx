@@ -64,10 +64,14 @@ export default function InvitationLandingPage() {
 
     setAccepting(true)
     try {
+      // 携带会话 token 以避免 401（移动端或跨域 cookie 被屏蔽时）
+      const session = await supabase.auth.getSession()
+      const accessToken = session.data.session?.access_token
       const response = await fetch(`/api/invitations/${token}/accept`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
         }
       })
 

@@ -1,24 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { createClient } from '@supabase/supabase-js'
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { token: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookieClient = createRouteHandlerClient({ cookies })
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!supabaseUrl || !anonKey) {
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+    }
+
     let token = params.token
     try { token = decodeURIComponent(token) } catch {}
     try { token = decodeURIComponent(token) } catch {}
+    token = token.trim()
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Please sign in to accept this invitation' },
-        { status: 401 }
-      )
+    // 验证用户身份（优先 cookies，不行则用 Authorization Bearer）
+    let user: any = null
+    let supabaseClientForRpc: any = supabaseCookieClient
+    {
+      const { data, error } = await supabaseCookieClient.auth.getUser()
+      if (!error && data.user) user = data.user
+    }
+    if (!user) {
+      const authHeader = request.headers.get('authorization')
+      const bearer = authHeader?.replace('Bearer ', '')
+      if (bearer) {
+        const bearerClient = createClient(supabaseUrl, anonKey, {
+          global: { headers: { Authorization: `Bearer ${bearer}` } }
+        })
+        const { data: u, error: e } = await bearerClient.auth.getUser(bearer)
+        if (!e && u?.user) {
+          user = u.user
+          supabaseClientForRpc = bearerClient
+        }
+      }
+    }
+    if (!user) {
+      return NextResponse.json({ error: 'Please sign in to accept this invitation' }, { status: 401 })
     }
 
     // 兼容多种 token 变体
@@ -26,13 +51,19 @@ export async function POST(
       token,
       token.replace(/\s/g, '+'),
       token.replace(/%2B/gi, '+'),
-      token.replace(/%3D/gi, '=')
+      token.replace(/%3D/gi, '='),
+      token.replace(/-/g, '+').replace(/_/g, '/'),
+      token.replace(/=+$/, ''),
+      token.endsWith('=') ? token.slice(0, -1) : token,
+      token.endsWith('==') ? token.slice(0, -2) : token,
+      token + '=',
+      token + '=='
     ]))
 
-    let result = null
-    let error = null as any
+    let result: any = null
+    let error: any = null
     for (const t of candidates) {
-      const r = await supabase.rpc('accept_project_invitation', {
+      const r = await supabaseClientForRpc.rpc('accept_project_invitation', {
         invitation_token: t,
         user_id: user.id
       })
@@ -62,58 +93,10 @@ export async function POST(
       }
     }
 
-    // 获取项目信息用于重定向
-    const { data: invitation, error: invitationError } = await supabase
-      .from('invitations')
-      .select(`
-        project_id,
-        project:project_id (
-          name
-        )
-      `)
-      .eq('token', token)
-      .single()
-
-    if (invitationError || !invitation) {
-      return NextResponse.json(
-        { error: 'Failed to retrieve project information' },
-        { status: 500 }
-      )
-    }
-
-    // 发送成功通知给邀请者
-    const { data: inviterInfo } = await supabase
-      .from('invitations')
-      .select(`
-        inviter_id,
-        role,
-        inviter:inviter_id (
-          user_metadata
-        )
-      `)
-      .eq('token', token)
-      .single()
-
-    if (inviterInfo) {
-      // 创建通知
-      await supabase.rpc('send_notification', {
-        recipient_user_id: inviterInfo.inviter_id,
-        sender_user_id: user.id,
-        notification_type: 'member_joined',
-        notification_title: 'Invitation Accepted',
-        notification_message: `${user.user_metadata?.full_name || user.email} has joined your project as a ${inviterInfo.role}`,
-        notification_data: {
-          project_id: invitation.project_id,
-          accepted_role: inviterInfo.role
-        },
-        notification_action_url: `/dashboard/projects/${invitation.project_id}`
-      })
-    }
-
+    // 直接使用 RPC 返回的项目 ID
     return NextResponse.json({
       success: true,
-      project_id: invitation.project_id,
-      project_name: invitation.project?.name,
+      project_id: result?.project_id,
       message: 'Successfully joined the project!'
     })
   } catch (error) {
