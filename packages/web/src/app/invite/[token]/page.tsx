@@ -38,7 +38,7 @@ export default function InvitationLandingPage() {
   useEffect(() => {
     const loadInvitation = async () => {
       try {
-        const response = await fetch(`/api/invitations/${token}`)
+        const response = await fetch(`/api/invitations/${encodeURIComponent(token)}`)
         if (!response.ok) {
           throw new Error('Invalid or expired invitation')
         }
@@ -62,7 +62,7 @@ export default function InvitationLandingPage() {
 
     setAccepting(true)
     try {
-      const response = await fetch(`/api/invitations/${token}/accept`, {
+      const response = await fetch(`/api/invitations/${encodeURIComponent(token)}/accept`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

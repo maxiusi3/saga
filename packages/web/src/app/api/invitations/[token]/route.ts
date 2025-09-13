@@ -1,17 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@supabase/supabase-js'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { token: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
-    const { token } = params
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    if (!supabaseUrl || !serviceKey) {
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      )
+    }
+    const adminSupabase = createClient(supabaseUrl, serviceKey)
+    const rawToken = params.token
+    const token = decodeURIComponent(rawToken)
 
     // 获取邀请信息
-    const { data: invitation, error } = await supabase
+    const { data: invitation, error } = await adminSupabase
       .from('invitations')
       .select(`
         *,
@@ -42,7 +50,7 @@ export async function GET(
     
     if (expiresAt < now && invitation.status === 'pending') {
       // 更新过期状态
-      await supabase
+      await adminSupabase
         .from('invitations')
         .update({ 
           status: 'expired',
