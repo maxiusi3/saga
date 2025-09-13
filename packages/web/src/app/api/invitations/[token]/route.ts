@@ -19,8 +19,17 @@ export async function GET(
     try { token = decodeURIComponent(token) } catch {}
     try { token = decodeURIComponent(token) } catch {}
 
-    // 获取邀请信息
-    const { data: invitation, error } = await adminSupabase
+    // 生成 token 候选集合，兼容多次编码、空格替换与 url-safe 变体
+    const candidates = Array.from(new Set([
+      token,
+      token.replace(/\s/g, '+'),
+      token.replace(/%2B/gi, '+'),
+      token.replace(/%3D/gi, '='),
+      token.replace(/-/g, '+').replace(/_/g, '/'),
+    ]))
+
+    // 获取邀请信息（使用 in 查询以兼容多变体）
+    const { data: list, error } = await adminSupabase
       .from('invitations')
       .select(`
         *,
@@ -35,8 +44,10 @@ export async function GET(
           user_metadata
         )
       `)
-      .eq('token', token)
-      .single()
+      .in('token', candidates)
+      .limit(1)
+
+    const invitation = Array.isArray(list) ? list[0] : null
 
     if (error || !invitation) {
       return NextResponse.json(

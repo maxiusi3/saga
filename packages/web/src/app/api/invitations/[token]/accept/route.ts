@@ -21,11 +21,24 @@ export async function POST(
       )
     }
 
-    // 使用数据库函数接受邀请
-    const { data: result, error } = await supabase.rpc('accept_project_invitation', {
-      invitation_token: token,
-      user_id: user.id
-    })
+    // 兼容多种 token 变体
+    const candidates = Array.from(new Set([
+      token,
+      token.replace(/\s/g, '+'),
+      token.replace(/%2B/gi, '+'),
+      token.replace(/%3D/gi, '=')
+    ]))
+
+    let result = null
+    let error = null as any
+    for (const t of candidates) {
+      const r = await supabase.rpc('accept_project_invitation', {
+        invitation_token: t,
+        user_id: user.id
+      })
+      if (!r.error) { result = r.data; error = null; break }
+      error = r.error
+    }
 
     if (error) {
       console.error('Error accepting invitation:', error)
