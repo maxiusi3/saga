@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge'
 import { Heart, Users, Shield, Clock } from 'lucide-react'
 import { createBrowserClient } from '@supabase/ssr'
 
+import { FurbridgeCard } from '@/components/ui'
+
 interface Invitation {
   id: string
   project_name: string
@@ -24,7 +26,7 @@ export default function InvitationLandingPage() {
   const params = useParams()
   const router = useRouter()
   const token = params.token as string
-  
+
   const [invitation, setInvitation] = useState<Invitation | null>(null)
   const [loading, setLoading] = useState(true)
   const [accepting, setAccepting] = useState(false)
@@ -104,7 +106,7 @@ export default function InvitationLandingPage() {
           <p className="text-muted-foreground mb-6">
             {error || 'This invitation link is invalid or has expired.'}
           </p>
-          <Button 
+          <Button
             onClick={() => router.push('/')}
             className="w-full"
           >
@@ -117,7 +119,7 @@ export default function InvitationLandingPage() {
 
   const isExpired = new Date(invitation.expires_at) < new Date()
   const roleTitle = invitation.role === 'storyteller' ? 'Storyteller' : 'Co-Facilitator'
-  const roleDescription = invitation.role === 'storyteller' 
+  const roleDescription = invitation.role === 'storyteller'
     ? 'Share your precious memories and stories'
     : 'Help manage and organize family stories'
 
@@ -139,7 +141,7 @@ export default function InvitationLandingPage() {
               <h1 className="text-3xl font-bold text-foreground">
                 You're Invited!
               </h1>
-              
+
               <div className="flex items-center justify-center space-x-3">
                 <Avatar className="h-12 w-12">
                   <AvatarImage src={invitation.inviter_avatar} />
@@ -210,7 +212,7 @@ export default function InvitationLandingPage() {
                 Your Privacy is Protected
               </h3>
               <p className="text-sm text-gray-600">
-                Everything you share is only visible to the family members in this project. 
+                Everything you share is only visible to the family members in this project.
                 Your stories are private, secure, and will never be shared with anyone outside your family.
               </p>
             </div>
