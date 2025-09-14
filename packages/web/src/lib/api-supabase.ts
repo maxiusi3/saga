@@ -107,10 +107,10 @@ class SupabaseApiClient {
         .from('user_resource_wallets')
         .select('*')
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
-      if (error && error.code !== 'PGRST116') throw error // PGRST116 = no rows returned
-      
+      if (error) throw error
+
       // 如果没有钱包记录，创建一个
       if (!data) {
         const { error: createError } = await this.supabase

@@ -31,7 +31,9 @@ export function useResourceWallet() {
         .from('user_resource_wallets')
         .select('*')
         .eq('user_id', user.id)
-        .single()
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
 
       if (fetchError) {
         if (fetchError.code === 'PGRST116') {
@@ -54,7 +56,7 @@ export function useResourceWallet() {
             .from('user_resource_wallets')
             .select('*')
             .eq('user_id', user.id)
-            .maybeSingle()
+            .single()
 
           if (refetchError) {
             throw refetchError

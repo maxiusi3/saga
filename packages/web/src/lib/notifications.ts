@@ -238,21 +238,84 @@ export class NotificationService {
     userId: string,
     onNotification: (notification: SagaNotification) => void
   ) {
-    return this.supabase
-      .channel('notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
-          filter: `recipient_id=eq.${userId}`
-        },
-        (payload: any) => {
-          onNotification(payload.new as SagaNotification)
+    // 兜底策略：若 WebSocket/SSL 失败，降级为轮询，避免影响功能
+    let pollTimer: NodeJS.Timeout | null = null
+    const startPolling = () => {
+      if (pollTimer) return
+      let lastSeenId: string | null = null
+      pollTimer = setInterval(async () => {
+        try {
+          // 先取未读数量，减少压力；若有变化再取列表
+          const unread = await this.getUnreadCount(userId)
+          if (unread > 0) {
+            const list = await this.getNotifications(userId)
+            if (list && list.length > 0) {
+              // 寻找新的通知（简单按 id 去重）
+              for (const n of list) {
+                if (n.id !== lastSeenId) {
+                  onNotification(n)
+                } else {
+                  break
+                }
+              }
+              lastSeenId = list[0]?.id || lastSeenId
+            }
+          }
+        } catch (e) {
+          // 轮询失败时静默，避免打扰用户
+          console.warn('Notifications polling failed (fallback):', e)
         }
-      )
-      .subscribe()
+      }, 15000) // 每15秒轮询
+    }
+    const stopPolling = () => {
+      if (pollTimer) {
+        clearInterval(pollTimer)
+        pollTimer = null
+      }
+    }
+
+    try {
+      const channel = this.supabase
+        .channel(`notifications-${userId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `recipient_id=eq.${userId}`
+          },
+          (payload: any) => {
+            onNotification(payload.new as SagaNotification)
+          }
+        )
+
+      // 订阅并监听状态，失败则降级轮询
+      channel.subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          // 成功，若之前有轮询则停掉
+          stopPolling()
+        } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
+          console.warn('Realtime subscription issue, falling back to polling:', status)
+          startPolling()
+        }
+      })
+
+      return {
+        unsubscribe: () => {
+          try {
+            channel.unsubscribe()
+          } catch (e) {
+            // 忽略
+          }
+          stopPolling()
+        }
+      }
+    } catch (e) {
+      console.warn('Realtime subscribe failed, fallback to polling:', e)
+      startPolling()
+      return { unsubscribe: stopPolling }
+    }
   }
 
   /**
