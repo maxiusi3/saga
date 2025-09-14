@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取未读通知数量
-    const db = user && cookieAuth.data.user ? supabaseCookie : getSupabaseAdmin()
+    const db = cookieAuth.data.user ? supabaseCookie : getSupabaseAdmin()
 
     const { data: unreadCount, error } = await db.rpc('get_unread_notification_count', {
       user_id: user.id

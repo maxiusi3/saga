@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getSupabaseAdmin } from '@/lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 
 export async function GET(request: NextRequest) {
   try {
@@ -48,7 +49,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取用户的通知
-    const db = user && cookieAuth.data.user ? supabaseCookie : getSupabaseAdmin()
+    const db = cookieAuth.data.user ? supabaseCookie : getSupabaseAdmin()
 
     const { data: notifications, error } = await db
       .from('notifications')
@@ -108,11 +109,16 @@ export async function POST(request: NextRequest) {
       const authHeader = request.headers.get('authorization')
       const token = authHeader?.replace('Bearer ', '')
       if (token) {
-        const admin = getSupabaseAdmin()
-        const { data: tokenUser } = await admin.auth.getUser(token)
+        const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
+        const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        const userClient = createClient(url, anon, {
+          global: { headers: { Authorization: `Bearer ${token}` } },
+          auth: { persistSession: false, autoRefreshToken: false }
+        })
+        const { data: tokenUser } = await userClient.auth.getUser()
         if (tokenUser?.user) {
           user = tokenUser.user
-          db = admin
+          db = userClient
         }
       }
     }
