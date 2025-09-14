@@ -28,11 +28,17 @@ export function useResourceWallet() {
       setError(null)
 
       // 改为走同源 API，避免浏览器侧 CORS/SSL 问题
-      const response = await fetch('/api/wallets/me', { credentials: 'include' })
-      if (!response.ok) {
+      // 尝试读取 cookie 会话；若因时序造成 401，短暂重试
+      let resp = await fetch('/api/wallets/me', { credentials: 'include' })
+      if (resp.status === 401) {
+        // 等待 supabase-js 刷新 cookie/session
+        await new Promise(r => setTimeout(r, 800))
+        resp = await fetch('/api/wallets/me', { credentials: 'include' })
+      }
+      if (!resp.ok) {
         throw new Error('Failed to fetch wallet')
       }
-      const data = await response.json()
+      const data = await resp.json()
 
       if (fetchError) {
         if (fetchError.code === 'PGRST116') {

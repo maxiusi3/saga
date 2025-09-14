@@ -1,24 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 /**
  * 钱包查询（服务端）
- * - 通过 Cookie 会话鉴权，避免浏览器侧 CORS/SSL 问题
+ * - 优先使用 Cookie 会话鉴权；失败则回退 Authorization: Bearer <token>
  * - 首次访问自动插入并进行幂等初始化
+ * - 增加调试日志（仅错误路径），便于定位 401/SSL 相关问题
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
 
-    // 鉴权
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
+    // 鉴权：Cookies 优先，Bearer 回退
+    let user: any = null
+    let db: any = supabaseCookie
+
+    const cookieAuth = await supabaseCookie.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else {
+      const authHeader = request.headers.get('authorization')
+      const token = authHeader?.replace('Bearer ', '')
+      if (token) {
+        const admin = getSupabaseAdmin()
+        const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
+        if (tokenUser?.user && !tokenErr) {
+          user = tokenUser.user
+          db = admin
+        }
+      }
+    }
+
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     // 读取钱包（无记录时 maybeSingle 返回 null）
-    const { data: wallet, error: fetchError } = await supabase
+    const { data: wallet, error: fetchError } = await db
       .from('user_resource_wallets')
       .select('*')
       .eq('user_id', user.id)
@@ -31,7 +51,7 @@ export async function GET(request: NextRequest) {
 
     // 无记录 -> 插入一条 0 值记录
     if (!wallet) {
-      const { error: insertError } = await supabase
+      const { error: insertError } = await db
         .from('user_resource_wallets')
         .insert({
           user_id: user.id,
@@ -46,7 +66,7 @@ export async function GET(request: NextRequest) {
       }
 
       // 再次查询，读取触发器可能发放后的数据
-      const { data: newWallet, error: refetchError } = await supabase
+      const { data: newWallet, error: refetchError } = await db
         .from('user_resource_wallets')
         .select('*')
         .eq('user_id', user.id)
@@ -64,7 +84,7 @@ export async function GET(request: NextRequest) {
         newWallet.facilitator_seats === 0 &&
         newWallet.storyteller_seats === 0
       ) {
-        const { error: fallbackError } = await supabase
+        const { error: fallbackError } = await db
           .from('user_resource_wallets')
           .update({
             project_vouchers: 1,
@@ -75,8 +95,8 @@ export async function GET(request: NextRequest) {
           .match({ user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 })
 
         if (!fallbackError) {
-          // 交易记录（用户自身可写，符合 RLS）
-          await supabase.from('seat_transactions').insert({
+          // 交易记录（用户自身可写，符合 RLS）。注意：db 可能为 admin，但仅写入 user 自己的记录
+          await db.from('seat_transactions').insert({
             user_id: user.id,
             transaction_type: 'grant',
             resource_type: 'initial_package',
@@ -90,7 +110,7 @@ export async function GET(request: NextRequest) {
             },
           })
 
-          const { data: afterFallback } = await supabase
+          const { data: afterFallback } = await db
             .from('user_resource_wallets')
             .select('*')
             .eq('user_id', user.id)
