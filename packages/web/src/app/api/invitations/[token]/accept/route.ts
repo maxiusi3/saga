@@ -10,8 +10,12 @@ export async function POST(
   try {
     const supabaseCookieClient = createRouteHandlerClient({ cookies })
 
+    const urlObj = new URL(request.url)
+    const debug = urlObj.searchParams.get('debug') === '1'
+
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!supabaseUrl || !anonKey) {
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
     }
@@ -39,11 +43,24 @@ export async function POST(
         if (!e && u?.user) {
           user = u.user
           supabaseClientForRpc = bearerClient
+        } else if (serviceKey) {
+          // 回退：使用 admin 客户端解析 JWT（某些环境下 anonKey.getUser(jwt) 会失败）
+          try {
+            const adminClient = createClient(supabaseUrl, serviceKey)
+            const { data: u2, error: e2 } = await adminClient.auth.getUser(bearer)
+            if (!e2 && u2?.user) {
+              user = u2.user
+              supabaseClientForRpc = bearerClient // 仍使用 bearerClient 调用 RPC（RLS 依据用户）
+            }
+          } catch {}
         }
       }
     }
     if (!user) {
-      return NextResponse.json({ error: 'Please sign in to accept this invitation' }, { status: 401 })
+      const authHeader = request.headers.get('authorization')
+      const bearer = authHeader?.replace('Bearer ', '')
+      const payload = debug ? { reason: 'no_user', hasCookie: false, hasBearer: !!bearer } : undefined
+      return NextResponse.json({ error: 'Please sign in to accept this invitation', debug: payload }, { status: 401 })
     }
 
     // 兼容多种 token 变体
