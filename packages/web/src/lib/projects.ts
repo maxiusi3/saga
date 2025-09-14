@@ -245,16 +245,27 @@ export class ProjectService {
       // 统计与成员信息
       const projectsWithCounts = await Promise.all(
         (projects || []).map(async (project) => {
-          const { count: storyCount } = await this.supabase
-            .from('stories')
-            .select('*', { count: 'exact', head: true })
-            .eq('project_id', project.id)
-
-          const { data: members } = await this.supabase
-            .from('project_roles')
-            .select('*')
-            .eq('project_id', project.id)
-            .eq('status', 'active')
+          // 统一通过 /api 概览接口，避免多次直连
+          const headers3: Record<string, string> = { 'Content-Type': 'application/json' }
+          try {
+            const { createClient } = await import('@supabase/supabase-js')
+            const supa = createClient(
+              process.env.NEXT_PUBLIC_SUPABASE_URL!,
+              process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            )
+            const { data: { session } } = await supa.auth.getSession()
+            if (session?.access_token) headers3['Authorization'] = `Bearer ${session.access_token}`
+          } catch {}
+          const resp3 = await fetch(`/api/projects/${project.id}/overview`, { credentials: 'include', headers: headers3 })
+          let members: any[] = []
+          let storyCount = 0
+          if (resp3.ok) {
+            const j = await resp3.json()
+            members = j.members || []
+            storyCount = j.storyCount || 0
+          } else {
+            console.warn('ProjectService: /api/projects/[id]/overview failed with', resp3.status)
+          }
 
           const userMember = members?.find((m) => m.user_id === userId)
           const isOwner = project.facilitator_id === userId

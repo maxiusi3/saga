@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-export const dynamic = 'force-dynamic'
-
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
-// 返回某项目的 stories 列表（权限：项目成员或所有者）
+// 返回单个项目的概览（成员列表与故事计数），避免前端多次直连
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -38,39 +35,42 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // 权限：项目拥有者或 active 成员
-    const { data: role } = await db
-      .from('project_roles')
-      .select('id')
-      .eq('project_id', projectId)
-      .eq('user_id', user.id)
-      .eq('status', 'active')
-      .maybeSingle()
-
-    const { data: project } = await db
+    const { data: project, error: projectError } = await db
       .from('projects')
-      .select('facilitator_id')
+      .select('*')
       .eq('id', projectId)
-      .maybeSingle()
+      .single()
 
-    if (!role && project?.facilitator_id !== user.id) {
-      return NextResponse.json({ error: 'Access denied to project' }, { status: 403 })
+    if (projectError || !project) {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 })
     }
 
-    const { data: stories, error } = await db
-      .from('stories')
+    // 权限：所有者或 active 成员
+    if (project.facilitator_id !== user.id) {
+      const { data: role } = await db
+        .from('project_roles')
+        .select('id')
+        .eq('project_id', projectId)
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .maybeSingle()
+      if (!role) return NextResponse.json({ error: 'Access denied' }, { status: 403 })
+    }
+
+    const { data: members } = await db
+      .from('project_roles')
       .select('*')
       .eq('project_id', projectId)
-      .order('created_at', { ascending: false })
+      .eq('status', 'active')
 
-    if (error) {
-      console.error('GET /api/projects/[id]/stories error:', error)
-      return NextResponse.json({ stories: [] })
-    }
+    const { count: storyCount } = await db
+      .from('stories')
+      .select('*', { count: 'exact', head: true })
+      .eq('project_id', projectId)
 
-    return NextResponse.json({ stories: stories || [] })
+    return NextResponse.json({ project, members: members || [], storyCount: storyCount || 0 })
   } catch (err) {
-    console.error('GET /api/projects/[id]/stories unexpected error:', err)
+    console.error('GET /api/projects/[id]/overview unexpected error:', err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
