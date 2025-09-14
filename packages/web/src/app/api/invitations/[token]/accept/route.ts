@@ -169,6 +169,27 @@ export async function POST(
         } catch {}
       }
 
+
+      // debug=1 时直接透传 RPC 错误，避免被下方的通用映射覆盖
+      if (debug) {
+        const rpcErr = error as any
+        return NextResponse.json(
+          {
+            error: 'RPC_ERROR',
+            rpc_error: {
+              name: rpcErr?.name,
+              message: rpcErr?.message,
+              code: rpcErr?.code,
+              details: rpcErr?.details,
+              hint: rpcErr?.hint,
+              status: rpcErr?.status
+            },
+            debug: debugInfo
+          },
+          { status: (rpcErr?.status as number) || 400 }
+        )
+      }
+
       // 更具体的错误分类
       if (invitationRow) {
         if (invitationRow.invitee_email && (user as any)?.email && invitationRow.invitee_email.toLowerCase() !== (user as any).email.toLowerCase()) {
