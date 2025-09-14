@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
     // 尝试多种认证方式
     let user: any = null
     let authError: any = null
+    let authedViaBearer = false
 
     // 方法1: 尝试从 cookies 获取
     const cookieAuth = await supabaseCookie.auth.getUser()
@@ -30,6 +31,7 @@ export async function GET(request: NextRequest) {
           const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
           if (tokenUser.user && !tokenError) {
             user = tokenUser.user
+            authedViaBearer = true
           } else {
             authError = tokenError
           }
@@ -49,7 +51,8 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取用户的通知
-    const db = cookieAuth.data.user ? supabaseCookie : getSupabaseAdmin()
+    // 规则：如 Bearer 验证成功，无论 cookies 是否存在，都使用 admin，规避 RLS 造成的 500
+    const db = authedViaBearer ? getSupabaseAdmin() : supabaseCookie
 
     const { data: notifications, error } = await db
       .from('notifications')
@@ -101,6 +104,7 @@ export async function POST(request: NextRequest) {
     // 鉴权：Cookies 优先，Bearer 回退
     let user: any = null
     let db: any = supabaseCookie
+    let authedViaBearer = false
 
     const cookieAuth = await supabaseCookie.auth.getUser()
     if (cookieAuth.data.user && !cookieAuth.error) {
@@ -109,16 +113,12 @@ export async function POST(request: NextRequest) {
       const authHeader = request.headers.get('authorization')
       const token = authHeader?.replace('Bearer ', '')
       if (token) {
-        const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
-        const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        const userClient = createClient(url, anon, {
-          global: { headers: { Authorization: `Bearer ${token}` } },
-          auth: { persistSession: false, autoRefreshToken: false }
-        })
-        const { data: tokenUser } = await userClient.auth.getUser()
+        const admin = getSupabaseAdmin()
+        const { data: tokenUser } = await admin.auth.getUser(token)
         if (tokenUser?.user) {
           user = tokenUser.user
-          db = userClient
+          db = admin
+          authedViaBearer = true
         }
       }
     }

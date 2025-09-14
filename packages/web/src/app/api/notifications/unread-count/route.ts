@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
     // 尝试多种认证方式
     let user: any = null
     let authError: any = null
+    let authedViaBearer = false
 
     // 方法1: 尝试从 cookies 获取
     const cookieAuth = await supabaseCookie.auth.getUser()
@@ -27,6 +28,7 @@ export async function GET(request: NextRequest) {
           const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
           if (tokenUser.user && !tokenError) {
             user = tokenUser.user
+            authedViaBearer = true
           } else {
             authError = tokenError
           }
@@ -46,7 +48,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取未读通知数量
-    const db = cookieAuth.data.user ? supabaseCookie : getSupabaseAdmin()
+    const db = authedViaBearer ? getSupabaseAdmin() : supabaseCookie
 
     const { data: unreadCount, error } = await db.rpc('get_unread_notification_count', {
       user_id: user.id
