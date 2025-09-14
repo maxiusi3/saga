@@ -161,18 +161,28 @@ export class ProjectService {
         .select('*')
         .eq('facilitator_id', userId)
 
-      // 2) 查询用户作为成员的项目（通过 project_roles）
-      const { data: memberRoles, error: memberError } = await this.supabase
-        .from('project_roles')
-        .select('project_id, role, status')
-        .eq('user_id', userId)
-        .eq('status', 'active')
-
-      if (memberError) {
-        console.error('ProjectService: Error fetching member roles:', memberError)
+      // 2) 查询用户作为成员的项目（通过同源 API 代理，避免 SSL/CORS）
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      // 尝试带上 Bearer（若在浏览器环境）
+      try {
+        const { createClient } = await import('@supabase/supabase-js')
+        const supa = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        )
+        const { data: { session } } = await supa.auth.getSession()
+        if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+      } catch {}
+      const rolesResp = await fetch('/api/project-roles', { credentials: 'include', headers })
+      let memberRoles: any[] = []
+      if (rolesResp.ok) {
+        const json = await rolesResp.json()
+        memberRoles = json.roles || []
+      } else {
+        console.warn('ProjectService: /api/project-roles failed with', rolesResp.status)
       }
 
-      const memberProjectIds = (memberRoles || []).map((r) => r.project_id)
+      const memberProjectIds = (memberRoles || []).map((r: any) => r.project_id)
 
       let memberProjects: any[] = []
       if (memberProjectIds.length > 0) {

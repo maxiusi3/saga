@@ -398,17 +398,14 @@ class SupabaseApiClient {
       const user = await this.auth.getCurrentUser()
       if (!user) throw new Error('Not authenticated')
 
-      const { data, error } = await this.supabase
-        .from('stories')
-        .select(`
-          *,
-          profiles(name, email)
-        `)
-        .eq('project_id', projectId)
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      return data
+      // 统一通过服务端代理避免 SSL/CORS
+      const token = (await this.supabase.auth.getSession()).data.session?.access_token
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (token) headers['Authorization'] = `Bearer ${token}`
+      const resp = await fetch(`/api/projects/${projectId}/stories`, { credentials: 'include', headers })
+      if (!resp.ok) throw new Error('Failed to fetch stories')
+      const json = await resp.json()
+      return json.stories || []
     },
 
     create: async (storyData: {
