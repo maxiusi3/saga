@@ -124,9 +124,11 @@ export async function POST(
     }
 
     // 通过 RPC 完成接受（RLS 依然依据 user 上下文）
+    // debug=1 时仅用数据库命中的原始 token 进行调用，以便精准定位
+    const tokensToTry = (debug && invitationRow?.token) ? [invitationRow.token] : candidates
     let result: any = null
     let error: any = null
-    for (const t of candidates) {
+    for (const t of tokensToTry) {
       const r = await supabaseClientForRpc.rpc('accept_project_invitation', {
         invitation_token: t,
         user_id: user.id
@@ -157,6 +159,8 @@ export async function POST(
             status: invitationRow?.status,
             invitee_email: invitationRow?.invitee_email,
             candidates,
+            db_token: invitationRow?.token,
+            tokens_to_try: (typeof tokensToTry !== 'undefined') ? tokensToTry : undefined,
             rpc_error: error ? {
               name: (error as any)?.name,
               message: (error as any)?.message,
