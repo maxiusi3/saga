@@ -117,18 +117,14 @@ export class StoryService {
    */
   async getStoriesByProject(projectId: string): Promise<Story[]> {
     try {
-      const { data, error } = await this.supabase
-        .from('stories')
-        .select('*')
-        .eq('project_id', projectId)
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        console.error('Error fetching stories:', error)
-        return []
-      }
-
-      return data || []
+      // 通过同源 API 代理，避免 SSL/CORS
+      const { data: { session } } = await this.supabase.auth.getSession()
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+      const resp = await fetch(`/api/projects/${projectId}/stories`, { credentials: 'include', headers })
+      if (!resp.ok) return []
+      const json = await resp.json()
+      return json.stories || []
     } catch (error) {
       console.error('Error fetching stories:', error)
       return []

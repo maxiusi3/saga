@@ -156,10 +156,25 @@ export class ProjectService {
       console.log('ProjectService: Fetching projects for user:', userId)
 
       // 1) 查询用户作为所有者（facilitator_id）的项目
-      const ownedPromise = this.supabase
-        .from('projects')
-        .select('*')
-        .eq('facilitator_id', userId)
+      const ownedPromise = (async () => {
+        const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+        try {
+          const { createClient } = await import('@supabase/supabase-js')
+          const supa = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+          )
+          const { data: { session } } = await supa.auth.getSession()
+          if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+        } catch {}
+        const resp = await fetch('/api/projects/owned', { credentials: 'include', headers })
+        if (!resp.ok) {
+          console.warn('ProjectService: /api/projects/owned failed with', resp.status)
+          return { data: [], error: null } as any
+        }
+        const json = await resp.json()
+        return { data: json.projects, error: null } as any
+      })()
 
       // 2) 查询用户作为成员的项目（通过同源 API 代理，避免 SSL/CORS）
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
@@ -186,14 +201,27 @@ export class ProjectService {
 
       let memberProjects: any[] = []
       if (memberProjectIds.length > 0) {
-        const { data: projs, error: projsErr } = await this.supabase
-          .from('projects')
-          .select('*')
-          .in('id', memberProjectIds)
-        if (projsErr) {
-          console.error('ProjectService: Error fetching member projects:', projsErr)
+        const headers2: Record<string, string> = { 'Content-Type': 'application/json' }
+        try {
+          const { createClient } = await import('@supabase/supabase-js')
+          const supa = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+          )
+          const { data: { session } } = await supa.auth.getSession()
+          if (session?.access_token) headers2['Authorization'] = `Bearer ${session.access_token}`
+        } catch {}
+        const resp2 = await fetch('/api/projects/by-ids', {
+          method: 'POST',
+          credentials: 'include',
+          headers: headers2,
+          body: JSON.stringify({ ids: memberProjectIds })
+        })
+        if (resp2.ok) {
+          const json2 = await resp2.json()
+          memberProjects = json2.projects || []
         } else {
-          memberProjects = projs || []
+          console.warn('ProjectService: /api/projects/by-ids failed with', resp2.status)
         }
       }
 
