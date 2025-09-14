@@ -63,10 +63,8 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching notifications:', error)
-      return NextResponse.json(
-        { error: 'Failed to fetch notifications' },
-        { status: 500 }
-      )
+      // 为避免前端崩溃/控制台报错，降级为空列表
+      return NextResponse.json([])
     }
 
     // 格式化响应数据

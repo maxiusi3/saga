@@ -56,10 +56,8 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching unread count:', error)
-      return NextResponse.json(
-        { error: 'Failed to fetch unread count' },
-        { status: 500 }
-      )
+      // 失败时降级为 0，避免前端抛错
+      return NextResponse.json({ unread_count: 0 })
     }
 
     return NextResponse.json({ unread_count: unreadCount || 0 })
