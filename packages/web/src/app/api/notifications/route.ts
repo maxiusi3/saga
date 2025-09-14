@@ -51,8 +51,8 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取用户的通知
-    // 为彻底规避 RLS，在服务端路由中统一使用 admin 客户端执行查询，但始终按 user.id 过滤
-    const db = getSupabaseAdmin()
+    // 规则：仅当 Bearer 鉴权成功时才使用 admin；cookies 鉴权使用 cookie 客户端，避免依赖服务密钥
+    const db = authedViaBearer ? getSupabaseAdmin() : supabaseCookie
 
     const { data: notifications, error } = await db
       .from('notifications')
@@ -130,8 +130,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 统一使用 admin 执行后续数据库操作
-    db = getSupabaseAdmin()
+    // Bearer 路径使用 admin 执行后续数据库操作；有 cookie 时继续使用 cookie 客户端
+    if (authedViaBearer) {
+      db = getSupabaseAdmin()
+    }
 
     const body = await request.json()
     const { action, notification_ids } = body
