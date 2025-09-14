@@ -38,23 +38,7 @@ export async function GET(
       )
     }
 
-    // 验证用户是否有权限访问该项目
-    const { data: projectRole, error: roleError } = await db
-      .from('project_roles')
-      .select('role, status')
-      .eq('project_id', projectId)
-      .eq('user_id', user.id)
-      .eq('status', 'active')
-      .single()
-
-    if (roleError || !projectRole) {
-      return NextResponse.json(
-        { error: 'Project not found or access denied' },
-        { status: 404 }
-      )
-    }
-
-    // 获取所有活跃章节
+    // 获取所有活跃章节（公共数据，不依赖项目权限）
     const { data: chapters, error: chaptersError } = await db
       .from('chapters')
       .select('*')
@@ -63,27 +47,51 @@ export async function GET(
 
     if (chaptersError) {
       console.error('Error fetching chapters:', chaptersError)
-      return NextResponse.json(
-        { error: 'Failed to fetch chapters' },
-        { status: 500 }
-      )
+      return NextResponse.json({ chapters: [], progress: [], prompt_state: null })
     }
 
-    // 获取项目的提示状态
-    const { data: promptState } = await db
+    // 验证用户是否有权限访问该项目（用于进度等个性化数据）
+    const { data: projectRole } = await db
+      .from('project_roles')
+      .select('role, status')
+      .eq('project_id', projectId)
+      .eq('user_id', user.id)
+      .eq('status', 'active')
+      .maybeSingle()
+
+    // 获取项目的提示状态（仅在成员情况下获取）
+    const { data: promptState } = projectRole ? await db
       .from('project_prompt_state')
       .select('*')
       .eq('project_id', projectId)
-      .single()
+      .single() : { data: null }
 
-    // 获取每个章节的进度信息
+    // 获取每个章节的进度信息（非成员降级为 0）
     const progressPromises = chapters.map(async (chapter) => {
-      // 获取章节的提示数量
+      // 获取章节的提示数量（公开数据）
       const { count: totalPrompts } = await db
         .from('prompts')
         .select('*', { count: 'exact', head: true })
         .eq('chapter_id', chapter.id)
         .eq('is_active', true)
+
+      // 若用户非项目成员，则不查询个性化进度，降级为 0
+      if (!projectRole) {
+        return {
+          chapter: {
+            id: chapter.id,
+            name: chapter.name,
+            description: chapter.description,
+            order_index: chapter.order_index,
+            is_active: chapter.is_active,
+            created_at: chapter.created_at
+          },
+          completed_prompts: 0,
+          total_prompts: totalPrompts || 0,
+          stories_count: 0,
+          is_current: false
+        }
+      }
 
       // 获取该章节已完成的故事数量
       const { data: completedStories } = await db
@@ -100,7 +108,7 @@ export async function GET(
         .eq('is_active', true)
 
       const chapterPromptIds = chapterPrompts?.map(p => p.id) || []
-      const completedPromptsInChapter = completedStories?.filter(story => 
+      const completedPromptsInChapter = completedStories?.filter(story =>
         chapterPromptIds.includes(story.prompt_id)
       ).length || 0
 
