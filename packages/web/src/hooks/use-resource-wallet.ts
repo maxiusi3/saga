@@ -31,7 +31,7 @@ export function useResourceWallet() {
         .from('user_resource_wallets')
         .select('*')
         .eq('user_id', user.id)
-        .maybeSingle()
+        .single()
 
       if (fetchError) {
         if (fetchError.code === 'PGRST116') {
