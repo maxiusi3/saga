@@ -11,9 +11,9 @@ export async function GET(
     const supabaseCookie = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
-    // 鉴权：Cookies 优先，Bearer 回退
+    // 鉴权：Cookies 优先，Bearer 回退（查询统一使用 admin 以避免 RLS 造成 401/404）
     let user: any = null
-    let db: any = supabaseCookie
+    let db: any = getSupabaseAdmin()
 
     const cookieAuth = await supabaseCookie.auth.getUser()
     if (cookieAuth.data.user && !cookieAuth.error) {
@@ -26,7 +26,7 @@ export async function GET(
         const { data: tokenUser } = await admin.auth.getUser(token)
         if (tokenUser?.user) {
           user = tokenUser.user
-          db = admin
+          // db 已为 admin
         }
       }
     }
