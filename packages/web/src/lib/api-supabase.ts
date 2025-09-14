@@ -418,17 +418,29 @@ class SupabaseApiClient {
       const user = await this.auth.getCurrentUser()
       if (!user) throw new Error('Not authenticated')
 
-      const { data, error } = await this.supabase
-        .from('stories')
-        .insert({
-          ...storyData,
-          storyteller_id: user.id
+      // 通过同源 API 创建，避免 SSL/CORS
+      const token = (await this.supabase.auth.getSession()).data.session?.access_token
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (token) headers['Authorization'] = `Bearer ${token}`
+      const resp = await fetch(`/api/projects/${storyData.project_id}/stories`, {
+        method: 'POST',
+        credentials: 'include',
+        headers,
+        body: JSON.stringify({
+          title: storyData.title,
+          content: storyData.content,
+          audio_url: storyData.audio_url,
+          audio_duration: storyData.audio_duration,
+          transcript: storyData.transcript,
+          ai_generated_title: storyData.ai_generated_title,
+          ai_summary: storyData.ai_summary,
+          ai_follow_up_questions: storyData.ai_follow_up_questions,
+          ai_confidence_score: storyData.ai_confidence_score,
         })
-        .select()
-        .single()
-
-      if (error) throw error
-      return data
+      })
+      if (!resp.ok) throw new Error('Failed to create story')
+      const json = await resp.json()
+      return json.story
     },
 
     update: async (storyId: string, updates: {
