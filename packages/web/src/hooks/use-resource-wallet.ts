@@ -27,13 +27,12 @@ export function useResourceWallet() {
       setLoading(true)
       setError(null)
 
-      const { data, error: fetchError } = await supabase
-        .from('user_resource_wallets')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('updated_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
+      // 改为走同源 API，避免浏览器侧 CORS/SSL 问题
+      const response = await fetch('/api/wallets/me', { credentials: 'include' })
+      if (!response.ok) {
+        throw new Error('Failed to fetch wallet')
+      }
+      const data = await response.json()
 
       if (fetchError) {
         if (fetchError.code === 'PGRST116') {

@@ -103,15 +103,14 @@ class SupabaseApiClient {
       const user = await this.auth.getCurrentUser()
       if (!user) throw new Error('Not authenticated')
 
-      const { data, error } = await this.supabase
-        .from('user_resource_wallets')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle()
+      // 统一走同源 API，避免 CORS/SSL
+      const response = await fetch('/api/wallets/me', { credentials: 'include' })
+      if (!response.ok) {
+        throw new Error('Failed to fetch wallet')
+      }
+      const data = await response.json()
 
-      if (error) throw error
-
-      // 如果没有钱包记录，创建一个
+      // 如果没有钱包记录，创建一个（正常情况下 API 已经处理）
       if (!data) {
         const { error: createError } = await this.supabase
           .from('user_resource_wallets')
