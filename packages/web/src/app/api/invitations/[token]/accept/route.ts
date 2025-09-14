@@ -90,24 +90,65 @@ export async function POST(
 
     if (error) {
       console.error('Error accepting invitation:', error)
-      
-      // 处理特定错误
-      if (error.message.includes('Invalid or expired invitation')) {
+
+      // 可选：诊断信息（仅当提供了 serviceKey 且 debug=1）
+      let debugInfo: any = undefined
+      let invitationRow: any = null
+      if (debug && serviceKey) {
+        try {
+          const admin = createClient(supabaseUrl, serviceKey)
+          const { data: invs } = await admin
+            .from('invitations')
+            .select('id, token, status, invitee_email, expires_at')
+            .in('token', candidates)
+            .limit(1)
+          invitationRow = Array.isArray(invs) ? invs[0] : null
+          debugInfo = {
+            user_id: user.id,
+            user_email: (user as any)?.email,
+            exists: !!invitationRow,
+            status: invitationRow?.status,
+            invitee_email: invitationRow?.invitee_email,
+            candidates,
+          }
+        } catch {}
+      }
+
+      // 更具体的错误分类
+      if (invitationRow) {
+        if (invitationRow.invitee_email && (user as any)?.email && invitationRow.invitee_email.toLowerCase() !== (user as any).email.toLowerCase()) {
+          return NextResponse.json(
+            { error: 'Email address does not match the invitation', debug: debug ? debugInfo : undefined },
+            { status: 403 }
+          )
+        }
+        // 过期
+        if (new Date(invitationRow.expires_at) < new Date() || invitationRow.status === 'expired') {
+          return NextResponse.json(
+            { error: 'This invitation has expired', debug: debug ? debugInfo : undefined },
+            { status: 410 }
+          )
+        }
+      }
+
+      // RPC 报错模式匹配
+      if (error.message?.includes('Invalid or expired invitation')) {
         return NextResponse.json(
-          { error: 'This invitation is invalid or has expired' },
+          { error: 'This invitation is invalid or has expired', debug: debug ? debugInfo : undefined },
           { status: 400 }
         )
-      } else if (error.message.includes('already has this role')) {
+      }
+      if (error.message?.includes('already has this role')) {
         return NextResponse.json(
-          { error: 'You already have this role in the project' },
+          { error: 'You already have this role in the project', debug: debug ? debugInfo : undefined },
           { status: 409 }
         )
-      } else {
-        return NextResponse.json(
-          { error: 'Failed to accept invitation' },
-          { status: 500 }
-        )
       }
+
+      return NextResponse.json(
+        { error: 'Failed to accept invitation', debug: debug ? debugInfo : undefined },
+        { status: 500 }
+      )
     }
 
     // 直接使用 RPC 返回的项目 ID
