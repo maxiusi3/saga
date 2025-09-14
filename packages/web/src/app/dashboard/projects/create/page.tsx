@@ -26,6 +26,9 @@ export default function CreateProjectPage() {
     role: 'storyteller' // 默认选择 storyteller
   })
 
+  // 在钱包加载完成且有数据前，禁止提交，避免“看似失败”的体验
+  const submitDisabled = loading || walletLoading || !wallet || !formData.name
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -159,7 +162,7 @@ export default function CreateProjectPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" aria-busy={loading}>
               {/* Project Name */}
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm font-medium">项目名称 *</Label>
@@ -286,9 +289,9 @@ export default function CreateProjectPage() {
                     Cancel
                   </Button>
                 </Link>
-                <Button 
-                  type="submit" 
-                  disabled={!formData.name || loading}
+                <Button
+                  type="submit"
+                  disabled={submitDisabled}
                   className="min-w-[120px]"
                 >
                   {loading ? (

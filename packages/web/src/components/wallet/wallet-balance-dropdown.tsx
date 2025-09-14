@@ -24,21 +24,18 @@ export function WalletBalanceDropdown() {
     }
   }, [])
 
-  if (loading || !wallet) {
-    return (
-      <div className="flex items-center">
-        <div className="w-8 h-8 bg-muted rounded-full animate-pulse"></div>
-      </div>
-    )
-  }
+  // 当钱包加载中或尚未可用时，依然渲染交互入口，避免“无响应”的体验
+  const isLoadingOrEmpty = loading || !wallet
 
-  const hasLowResources = wallet.project_vouchers === 0 || 
-                         wallet.facilitator_seats === 0 || 
-                         wallet.storyteller_seats === 0
+  const hasLowResources = wallet ? (
+    wallet.project_vouchers === 0 ||
+    wallet.facilitator_seats === 0 ||
+    wallet.storyteller_seats === 0
+  ) : false
 
   return (
     <div className="relative" ref={dropdownRef}>
-      {/* 触发按钮 - 更简洁的设计 */}
+      {/* 触发按钮 - 更简洁的设计（在加载中也允许点击以展示占位） */}
       <Button
         variant="ghost"
         size="sm"
@@ -48,6 +45,7 @@ export function WalletBalanceDropdown() {
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="true"
+        aria-busy={isLoadingOrEmpty}
         title="查看资源余额"
       >
         <Wallet className="w-4 h-4" />
@@ -55,69 +53,77 @@ export function WalletBalanceDropdown() {
           <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></div>
         )}
         <span className="text-xs font-medium">
-          {wallet.project_vouchers + wallet.facilitator_seats + wallet.storyteller_seats}
+          {isLoadingOrEmpty ? '...' : (wallet!.project_vouchers + wallet!.facilitator_seats + wallet!.storyteller_seats)}
         </span>
         <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </Button>
 
-      {/* 下拉菜单 - 统一样式 */}
+      {/* 下拉菜单 - 统一样式（加载时展示骨架占位）*/}
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 w-64 z-50">
           <div className="bg-popover text-popover-foreground rounded-lg border shadow-md p-3">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-foreground">资源余额</h3>
               <div className="flex items-center gap-1">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-xs text-muted-foreground">免费体验</span>
+                <div className={`w-2 h-2 rounded-full ${isLoadingOrEmpty ? 'bg-gray-300' : 'bg-green-500'}`}></div>
+                <span className="text-xs text-muted-foreground">{isLoadingOrEmpty ? '加载中' : '免费体验'}</span>
               </div>
             </div>
-            
-            <div className="space-y-2">
-              {/* 项目额度 */}
-              <div className="flex items-center justify-between py-1">
-                <div className="flex items-center space-x-2">
-                  <Coins className="w-3.5 h-3.5 text-blue-500" />
-                  <span className="text-sm text-foreground">项目</span>
-                </div>
-                <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
-                  wallet.project_vouchers === 0
-                    ? 'text-orange-700 bg-orange-100'
-                    : 'text-green-700 bg-green-100'
-                }`}>
-                  {wallet.project_vouchers}
-                </div>
-              </div>
 
-              {/* Facilitator席位 */}
-              <div className="flex items-center justify-between py-1">
-                <div className="flex items-center space-x-2">
-                  <Crown className="w-3.5 h-3.5 text-purple-500" />
-                  <span className="text-sm text-foreground">管理员</span>
-                </div>
-                <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
-                  wallet.facilitator_seats === 0
-                    ? 'text-orange-700 bg-orange-100'
-                    : 'text-green-700 bg-green-100'
-                }`}>
-                  {wallet.facilitator_seats}
-                </div>
+            {isLoadingOrEmpty ? (
+              <div className="space-y-2 animate-pulse" aria-live="polite">
+                <div className="h-4 bg-muted rounded" />
+                <div className="h-4 bg-muted rounded" />
+                <div className="h-4 bg-muted rounded" />
               </div>
+            ) : (
+              <div className="space-y-2">
+                {/* 项目额度 */}
+                <div className="flex items-center justify-between py-1">
+                  <div className="flex items-center space-x-2">
+                    <Coins className="w-3.5 h-3.5 text-blue-500" />
+                    <span className="text-sm text-foreground">项目</span>
+                  </div>
+                  <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
+                    wallet!.project_vouchers === 0
+                      ? 'text-orange-700 bg-orange-100'
+                      : 'text-green-700 bg-green-100'
+                  }`}>
+                    {wallet!.project_vouchers}
+                  </div>
+                </div>
 
-              {/* Storyteller席位 */}
-              <div className="flex items-center justify-between py-1">
-                <div className="flex items-center space-x-2">
-                  <Mic className="w-3.5 h-3.5 text-green-500" />
-                  <span className="text-sm text-foreground">讲述者</span>
+                {/* Facilitator席位 */}
+                <div className="flex items-center justify-between py-1">
+                  <div className="flex items-center space-x-2">
+                    <Crown className="w-3.5 h-3.5 text-purple-500" />
+                    <span className="text-sm text-foreground">管理员</span>
+                  </div>
+                  <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
+                    wallet!.facilitator_seats === 0
+                      ? 'text-orange-700 bg-orange-100'
+                      : 'text-green-700 bg-green-100'
+                  }`}>
+                    {wallet!.facilitator_seats}
+                  </div>
                 </div>
-                <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
-                  wallet.storyteller_seats === 0
-                    ? 'text-orange-700 bg-orange-100'
-                    : 'text-green-700 bg-green-100'
-                }`}>
-                  {wallet.storyteller_seats}
+
+                {/* Storyteller席位 */}
+                <div className="flex items-center justify-between py-1">
+                  <div className="flex items-center space-x-2">
+                    <Mic className="w-3.5 h-3.5 text-green-500" />
+                    <span className="text-sm text-foreground">讲述者</span>
+                  </div>
+                  <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
+                    wallet!.storyteller_seats === 0
+                      ? 'text-orange-700 bg-orange-100'
+                      : 'text-green-700 bg-green-100'
+                  }`}>
+                    {wallet!.storyteller_seats}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* 底部说明 - 更简洁 */}
             <div className="mt-3 pt-2 border-t border-border">
