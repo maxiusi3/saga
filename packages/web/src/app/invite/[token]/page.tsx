@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Heart, Users, Shield, Clock } from 'lucide-react'
-import { createBrowserClient } from '@supabase/ssr'
+import { createClientSupabase } from '@/lib/supabase'
 
 import { FurbridgeCard } from '@/components/ui'
 
@@ -32,10 +32,8 @@ export default function InvitationLandingPage() {
   const [accepting, setAccepting] = useState(false)
   const [error, setError] = useState('')
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  // 统一使用单例 Supabase 客户端，避免与 signin 页使用 localStorage 的客户端不一致导致的会话读取失败
+  const supabase = createClientSupabase()
 
   useEffect(() => {
     const loadInvitation = async () => {
@@ -76,6 +74,7 @@ export default function InvitationLandingPage() {
       const accessToken = session.data.session?.access_token
       const response = await fetch(`/api/invitations/${token}/accept`, {
         method: 'POST',
+        credentials: 'include', // 确保同源请求也附带 Cookie
         headers: {
           'Content-Type': 'application/json',
           ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
