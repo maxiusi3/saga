@@ -77,6 +77,53 @@ export async function POST(
       token + '=='
     ]))
 
+    // 在调用 RPC 前先用 admin 客户端做一次精确检查，给出可读错误（邮箱不匹配/已过期等）
+    let invitationRow: any = null
+    if (serviceKey) {
+      try {
+        const admin = createClient(supabaseUrl, serviceKey)
+        // 优先 in 查询，减少 round-trip
+        const { data: list } = await admin
+          .from('invitations')
+          .select('id, token, status, invitee_email, expires_at, project_id, role')
+          .in('token', candidates)
+          .limit(1)
+        invitationRow = Array.isArray(list) ? list[0] : null
+        // 回退逐个 eq
+        if (!invitationRow) {
+          for (const t of candidates) {
+            const { data: one } = await admin
+              .from('invitations')
+              .select('id, token, status, invitee_email, expires_at, project_id, role')
+              .eq('token', t)
+              .limit(1)
+            if (Array.isArray(one) && one[0]) { invitationRow = one[0]; break }
+          }
+        }
+      } catch {}
+    }
+
+    // 可读校验
+    if (!invitationRow) {
+      return NextResponse.json(
+        { error: 'This invitation is invalid or has expired' },
+        { status: 400 }
+      )
+    }
+    if (new Date(invitationRow.expires_at) < new Date() || invitationRow.status === 'expired') {
+      return NextResponse.json(
+        { error: 'This invitation has expired' },
+        { status: 410 }
+      )
+    }
+    if ((invitationRow.invitee_email || '').toLowerCase() !== ((user as any)?.email || '').toLowerCase()) {
+      return NextResponse.json(
+        { error: 'Email address does not match the invitation', expected: invitationRow.invitee_email },
+        { status: 403 }
+      )
+    }
+
+    // 通过 RPC 完成接受（RLS 依然依据 user 上下文）
     let result: any = null
     let error: any = null
     for (const t of candidates) {
