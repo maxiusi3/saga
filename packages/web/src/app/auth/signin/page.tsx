@@ -38,6 +38,10 @@ function SignInPageContent() {
     if (!isClient) return
 
     const next = searchParams?.get('next')
+    // 将 next 暂存到 localStorage，防止回调丢失
+    if (next && typeof window !== 'undefined') {
+      try { localStorage.setItem('auth_next', next) } catch {}
+    }
 
     // Debug: Log full URL information
     const fullUrl = window.location.href
@@ -85,7 +89,12 @@ function SignInPageContent() {
             setMessage(`Error setting session: ${error.message}`)
           } else {
             console.log(`SignIn page: ${authType} session set successfully, redirecting`)
-            const next = searchParams?.get('next')
+            let next = searchParams?.get('next')
+            if (!next && typeof window !== 'undefined') {
+              try { next = localStorage.getItem('auth_next') || undefined } catch {}
+            }
+            // 清理暂存
+            try { localStorage.removeItem('auth_next') } catch {}
             router.push(next || '/dashboard')
           }
         })
@@ -108,6 +117,7 @@ function SignInPageContent() {
       const supabase = getSupabase()
       if (!supabase) throw new Error('Supabase client not available')
       const next = searchParams?.get('next')
+      if (next) { try { localStorage.setItem('auth_next', next) } catch {} }
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -135,6 +145,7 @@ function SignInPageContent() {
       const supabase = getSupabase()
       if (!supabase) throw new Error('Supabase client not available')
       const next = searchParams?.get('next')
+      if (next) { try { localStorage.setItem('auth_next', next) } catch {} }
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
