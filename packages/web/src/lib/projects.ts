@@ -155,21 +155,56 @@ export class ProjectService {
     try {
       console.log('ProjectService: Fetching projects for user:', userId)
 
-      // Use regular client with RLS policies (works for both server and client side)
-      console.log('ProjectService: Using regular client to fetch projects')
-      const { data: projects, error: projectsError } = await this.supabase
+      // 1) 查询用户作为所有者（facilitator_id）的项目
+      const ownedPromise = this.supabase
         .from('projects')
         .select('*')
         .eq('facilitator_id', userId)
 
-      console.log('ProjectService: Regular client query result:', { projects, projectsError })
+      // 2) 查询用户作为成员的项目（通过 project_roles）
+      const { data: memberRoles, error: memberError } = await this.supabase
+        .from('project_roles')
+        .select('project_id, role, status')
+        .eq('user_id', userId)
+        .eq('status', 'active')
 
-      if (projectsError) {
-        console.error('Error fetching user projects:', projectsError)
-        return []
+      if (memberError) {
+        console.error('ProjectService: Error fetching member roles:', memberError)
       }
 
-      // Get story counts for each project
+      const memberProjectIds = (memberRoles || []).map((r) => r.project_id)
+
+      let memberProjects: any[] = []
+      if (memberProjectIds.length > 0) {
+        const { data: projs, error: projsErr } = await this.supabase
+          .from('projects')
+          .select('*')
+          .in('id', memberProjectIds)
+        if (projsErr) {
+          console.error('ProjectService: Error fetching member projects:', projsErr)
+        } else {
+          memberProjects = projs || []
+        }
+      }
+
+      const { data: owned, error: ownedError } = await ownedPromise
+      if (ownedError) {
+        console.error('ProjectService: Error fetching owned projects:', ownedError)
+      }
+
+      // 合并并去重（owned 优先，成员项目后覆盖无影响）
+      const map = new Map<string, any>()
+      ;(owned || []).forEach((p) => map.set(p.id, p))
+      ;(memberProjects || []).forEach((p) => map.set(p.id, p))
+      const projects = Array.from(map.values())
+
+      console.log('ProjectService: Combined projects:', {
+        owned: (owned || []).length,
+        member: memberProjects.length,
+        total: projects.length,
+      })
+
+      // 统计与成员信息
       const projectsWithCounts = await Promise.all(
         (projects || []).map(async (project) => {
           const { count: storyCount } = await this.supabase
@@ -183,7 +218,7 @@ export class ProjectService {
             .eq('project_id', project.id)
             .eq('status', 'active')
 
-          const userMember = members?.find(m => m.user_id === userId)
+          const userMember = members?.find((m) => m.user_id === userId)
           const isOwner = project.facilitator_id === userId
 
           return {
@@ -192,7 +227,7 @@ export class ProjectService {
             member_count: members?.length || 0,
             story_count: storyCount || 0,
             user_role: userMember?.role, // 使用实际角色，不强制为 facilitator
-            is_owner: isOwner
+            is_owner: isOwner,
           }
         })
       )

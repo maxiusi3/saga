@@ -128,7 +128,7 @@ export default function InvitationLandingPage() {
   }
 
   const isExpired = new Date(invitation.expires_at) < new Date()
-  const roleTitle = invitation.role === 'storyteller' ? 'Storyteller' : 'Co-Facilitator'
+  const roleTitle = invitation.role === 'storyteller' ? 'Storyteller' : 'Facilitator'
   const roleDescription = invitation.role === 'storyteller'
     ? 'Share your precious memories and stories'
     : 'Help manage and organize family stories'

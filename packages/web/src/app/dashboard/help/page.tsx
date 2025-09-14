@@ -29,7 +29,7 @@ export default function HelpPage() {
     {
       id: '2',
       question: 'How do I invite family members to participate?',
-      answer: 'From your project settings, you can invite storytellers and co-facilitators. Click "Invite Storyteller" or "Invite Co-Facilitator" and enter their email address. They\'ll receive an invitation link to join your project.',
+      answer: 'From your project settings, you can invite storytellers and facilitators. Click "Invite Storyteller" or "Invite Facilitator" and enter their email address. They\'ll receive an invitation link to join your project.',
       category: 'sharing'
     },
     {

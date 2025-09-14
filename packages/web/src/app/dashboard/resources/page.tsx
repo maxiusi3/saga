@@ -42,7 +42,7 @@ export default function ResourcesPage() {
             used: 0,
             total: 0,
             price: 10,
-            description: 'Invite co-facilitators to help manage projects'
+            description: 'Invite facilitators to help manage projects'
           },
           {
             type: 'storyteller',
@@ -212,7 +212,7 @@ export default function ResourcesPage() {
               <div className="flex items-center space-x-3">
                 <Users className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="font-medium text-foreground">Invited Beth Smith as Co-Facilitator</div>
+                  <div className="font-medium text-foreground">Invited Beth Smith as Facilitator</div>
                   <div className="text-sm text-muted-foreground">Used 1 Facilitator Seat</div>
                 </div>
               </div>
@@ -254,7 +254,7 @@ export default function ResourcesPage() {
                 </div>
                 <div className="text-2xl font-bold text-primary">$10</div>
                 <p className="text-sm text-muted-foreground">
-                  Invite one co-facilitator to help manage projects
+                  Invite one facilitator to help manage projects
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
                   Purchase
