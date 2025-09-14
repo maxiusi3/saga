@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
 
     // 尝试多种认证方式
     let user: any = null
     let authError: any = null
 
     // 方法1: 尝试从 cookies 获取
-    const cookieAuth = await supabase.auth.getUser()
+    const cookieAuth = await supabaseCookie.auth.getUser()
 
     if (cookieAuth.data.user && !cookieAuth.error) {
       user = cookieAuth.data.user
@@ -23,10 +23,7 @@ export async function GET(request: NextRequest) {
 
       if (token) {
         try {
-          const adminSupabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-          )
+          const adminSupabase = getSupabaseAdmin()
           const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
           if (tokenUser.user && !tokenError) {
             user = tokenUser.user
@@ -49,7 +46,9 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取未读通知数量
-    const { data: unreadCount, error } = await supabase.rpc('get_unread_notification_count', {
+    const db = user && cookieAuth.data.user ? supabaseCookie : getSupabaseAdmin()
+
+    const { data: unreadCount, error } = await db.rpc('get_unread_notification_count', {
       user_id: user.id
     })
 

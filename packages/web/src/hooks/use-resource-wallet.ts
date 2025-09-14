@@ -78,10 +78,11 @@ export function useResourceWallet() {
               .match({ user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 })
 
             if (!fallbackError) {
+              // 注意：schema 中 resource_type 应为 'project_voucher' | 'facilitator_seat' | 'storyteller_seat'
               await supabase.from('seat_transactions').insert({
                 user_id: user.id,
                 transaction_type: 'grant',
-                resource_type: 'initial_package',
+                resource_type: 'project_voucher',
                 amount: 1,
                 metadata: {
                   action: 'initial_resource_grant_fallback',

@@ -132,16 +132,17 @@ export function Navigation() {
               >
                 Projects
               </Link>
-              <Link
+              {/* Stories nav temporarily hidden (no route yet) */}
+              {/* <Link
                 href="/dashboard/stories"
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                   isActivePath('/dashboard/stories')
-                    ? 'text-primary bg-primary/10' 
+                    ? 'text-primary bg-primary/10'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
               >
                 Stories
-              </Link>
+              </Link> */}
             </div>
           </div>
 
@@ -237,13 +238,14 @@ export function Navigation() {
             >
               Projects
             </Link>
-            <Link
+            {/* Stories nav temporarily hidden (no route yet) */}
+            {/* <Link
               href="/dashboard/stories"
               className="block pl-3 pr-4 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Stories
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '50')
 
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     let authError: any = null
 
     // 方法1: 尝试从 cookies 获取
-    const cookieAuth = await supabase.auth.getUser()
+    const cookieAuth = await supabaseCookie.auth.getUser()
 
     if (cookieAuth.data.user && !cookieAuth.error) {
       user = cookieAuth.data.user
@@ -25,10 +25,7 @@ export async function GET(request: NextRequest) {
 
       if (token) {
         try {
-          const adminSupabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-          )
+          const adminSupabase = getSupabaseAdmin()
           const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
           if (tokenUser.user && !tokenError) {
             user = tokenUser.user
@@ -51,16 +48,11 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取用户的通知
-    const { data: notifications, error } = await supabase
+    const db = user && cookieAuth.data.user ? supabaseCookie : getSupabaseAdmin()
+
+    const { data: notifications, error } = await db
       .from('notifications')
-      .select(`
-        *,
-        sender:sender_id (
-          id,
-          email,
-          user_metadata
-        )
-      `)
+      .select('*')
       .eq('recipient_id', user.id)
       .order('created_at', { ascending: false })
       .limit(limit)
@@ -74,14 +66,12 @@ export async function GET(request: NextRequest) {
     }
 
     // 格式化响应数据
-    const formattedNotifications = notifications.map(notification => ({
+    const formattedNotifications = (notifications || []).map((notification: any) => ({
       id: notification.id,
       recipient_id: notification.recipient_id,
       sender_id: notification.sender_id,
-      sender_name: notification.sender?.user_metadata?.full_name || 
-                  notification.sender?.email || 
-                  'System',
-      sender_avatar: notification.sender?.user_metadata?.avatar_url,
+      sender_name: 'System',
+      sender_avatar: null,
       type: notification.type,
       title: notification.title,
       message: notification.message,
@@ -105,11 +95,29 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
+    // 鉴权：Cookies 优先，Bearer 回退
+    let user: any = null
+    let db: any = supabaseCookie
+
+    const cookieAuth = await supabaseCookie.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else {
+      const authHeader = request.headers.get('authorization')
+      const token = authHeader?.replace('Bearer ', '')
+      if (token) {
+        const admin = getSupabaseAdmin()
+        const { data: tokenUser } = await admin.auth.getUser(token)
+        if (tokenUser?.user) {
+          user = tokenUser.user
+          db = admin
+        }
+      }
+    }
+
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -122,7 +130,7 @@ export async function POST(request: NextRequest) {
     if (action === 'mark_as_read') {
       if (notification_ids && Array.isArray(notification_ids)) {
         // 标记指定通知为已读
-        const { data, error } = await supabase.rpc('mark_notifications_as_read', {
+        const { data, error } = await db.rpc('mark_notifications_as_read', {
           user_id: user.id,
           notification_ids
         })
@@ -138,7 +146,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true, updated_count: data })
       } else {
         // 标记所有通知为已读
-        const { data, error } = await supabase.rpc('mark_notifications_as_read', {
+        const { data, error } = await db.rpc('mark_notifications_as_read', {
           user_id: user.id
         })
 
@@ -169,12 +177,12 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
     const { searchParams } = new URL(request.url)
     const notificationId = searchParams.get('id')
 
     // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { data: { user }, error: authError } = await supabaseCookie.auth.getUser()
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -190,7 +198,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // 删除通知（只能删除自己的通知）
-    const { error } = await supabase
+    const { error } = await supabaseCookie
       .from('notifications')
       .delete()
       .eq('id', notificationId)

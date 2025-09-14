@@ -1,30 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+    // 鉴权：Cookies 优先，Bearer 回退
+    let user: any = null
+    let db: any = supabaseCookie
+
+    const cookieAuth = await supabaseCookie.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else {
+      const authHeader = request.headers.get('authorization')
+      const token = authHeader?.replace('Bearer ', '')
+      if (token) {
+        const admin = getSupabaseAdmin()
+        const { data: tokenUser } = await admin.auth.getUser(token)
+        if (tokenUser?.user) {
+          user = tokenUser.user
+          db = admin
+        }
+      }
     }
 
-    // 验证用户是否有权限访问该项目
-    const { data: projectRole, error: roleError } = await supabase
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // 验证用户是否有权限访问该项目（使用与鉴权一致的客户端）
+    const { data: projectRole, error: roleError } = await db
       .from('project_roles')
-      .select('role')
+      .select('role, status')
       .eq('project_id', projectId)
       .eq('user_id', user.id)
+      .eq('status', 'active')
       .single()
 
     if (roleError || !projectRole) {
@@ -35,7 +52,7 @@ export async function GET(
     }
 
     // 首先检查是否有用户提示（优先级更高）
-    const { data: userPrompts, error: userPromptError } = await supabase
+    const { data: userPrompts, error: userPromptError } = await db
       .from('user_prompts')
       .select(`
         *,
@@ -78,7 +95,7 @@ export async function GET(
     }
 
     // 如果没有用户提示，获取系统提示
-    const { data: promptState } = await supabase
+    const { data: promptState } = await db
       .from('project_prompt_state')
       .select('*')
       .eq('project_id', projectId)
@@ -86,7 +103,7 @@ export async function GET(
 
     if (!promptState || !promptState.current_chapter_id) {
       // 初始化项目提示状态
-      const { data: firstChapter } = await supabase
+      const { data: firstChapter } = await db
         .from('chapters')
         .select('id')
         .eq('is_active', true)
@@ -99,7 +116,7 @@ export async function GET(
       }
 
       // 创建初始状态
-      const { data: newPromptState, error: createError } = await supabase
+      const { data: newPromptState, error: createError } = await db
         .from('project_prompt_state')
         .insert({
           project_id: projectId,
@@ -121,7 +138,7 @@ export async function GET(
       const currentPromptState = newPromptState
       
       // 获取第一个提示
-      const { data: prompts, error: promptsError } = await supabase
+      const { data: prompts, error: promptsError } = await db
         .from('prompts')
         .select(`
           *,
@@ -160,7 +177,7 @@ export async function GET(
     }
 
     // 获取当前章节的提示
-    const { data: prompts, error: promptsError } = await supabase
+    const { data: prompts, error: promptsError } = await db
       .from('prompts')
       .select(`
         *,
@@ -190,11 +207,11 @@ export async function GET(
     const currentPrompt = prompts[promptState.current_prompt_index]
     if (!currentPrompt) {
       // 当前章节已完成，检查是否有下一章节
-      const { data: nextChapter } = await supabase
+      const { data: nextChapter } = await db
         .from('chapters')
         .select('id')
         .eq('is_active', true)
-        .gt('order_index', (await supabase
+        .gt('order_index', (await db
           .from('chapters')
           .select('order_index')
           .eq('id', promptState.current_chapter_id)
@@ -206,7 +223,7 @@ export async function GET(
 
       if (nextChapter) {
         // 移动到下一章节
-        await supabase
+        await db
           .from('project_prompt_state')
           .update({
             current_chapter_id: nextChapter.id,
@@ -249,16 +266,31 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+    // 鉴权：Cookies 优先，Bearer 回退
+    let user: any = null
+    let db: any = supabaseCookie
+
+    const cookieAuth = await supabaseCookie.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else {
+      const authHeader = request.headers.get('authorization')
+      const token = authHeader?.replace('Bearer ', '')
+      if (token) {
+        const admin = getSupabaseAdmin()
+        const { data: tokenUser } = await admin.auth.getUser(token)
+        if (tokenUser?.user) {
+          user = tokenUser.user
+          db = admin
+        }
+      }
+    }
+
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await request.json()
@@ -273,7 +305,7 @@ export async function POST(
 
     if (is_user_prompt) {
       // 标记用户提示为已交付
-      const { error } = await supabase
+      const { error } = await db
         .from('user_prompts')
         .update({ 
           is_delivered: true,
@@ -291,10 +323,10 @@ export async function POST(
       }
     } else {
       // 更新项目提示状态
-      const { error } = await supabase
+      const { error } = await db
         .from('project_prompt_state')
         .update({
-          current_prompt_index: supabase.raw('current_prompt_index + 1'),
+          current_prompt_index: db.rpc ? db.raw('current_prompt_index + 1') : (undefined as any),
           last_prompt_delivered_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         })
