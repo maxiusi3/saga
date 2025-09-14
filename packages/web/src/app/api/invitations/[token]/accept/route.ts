@@ -157,6 +157,14 @@ export async function POST(
             status: invitationRow?.status,
             invitee_email: invitationRow?.invitee_email,
             candidates,
+            rpc_error: error ? {
+              name: (error as any)?.name,
+              message: (error as any)?.message,
+              code: (error as any)?.code,
+              details: (error as any)?.details,
+              hint: (error as any)?.hint,
+              status: (error as any)?.status
+            } : undefined,
           }
         } catch {}
       }
