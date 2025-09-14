@@ -131,7 +131,7 @@ export async function POST(
     for (const t of tokensToTry) {
       const r = await supabaseClientForRpc.rpc('accept_project_invitation', {
         invitation_token: t,
-        user_id: user.id
+        _user_id: user.id
       })
       if (!r.error) { result = r.data; error = null; break }
       error = r.error
