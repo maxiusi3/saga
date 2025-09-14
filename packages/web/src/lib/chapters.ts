@@ -4,6 +4,19 @@ import { Chapter, ChapterProgress, ProjectPromptState } from '@saga/shared'
 export class ChapterService {
   private supabase = createClientSupabase()
 
+  // 统一带鉴权的 fetch：附带 Supabase access token 与 cookies
+  private async authFetch(input: RequestInfo | URL, init: RequestInit = {}) {
+    const { data: { session } } = await this.supabase.auth.getSession()
+    const headers = new Headers(init.headers || {})
+    if (!headers.has('Content-Type') && init.body) {
+      headers.set('Content-Type', 'application/json')
+    }
+    if (session?.access_token) {
+      headers.set('Authorization', `Bearer ${session.access_token}`)
+    }
+    return fetch(input, { ...init, headers, credentials: 'include' })
+  }
+
   /**
    * 获取所有活跃章节
    */
@@ -39,7 +52,7 @@ export class ChapterService {
    */
   async getProjectChapterProgress(projectId: string): Promise<ChapterProgress[]> {
     try {
-      const response = await fetch(`/api/projects/${projectId}/chapters`)
+      const response = await this.authFetch(`/api/projects/${projectId}/chapters`)
       if (!response.ok) {
         throw new Error('Failed to fetch chapter progress')
       }
@@ -131,7 +144,7 @@ export class ChapterService {
    */
   async getNextPrompt(projectId: string): Promise<{ prompt: any; isUserPrompt: boolean } | null> {
     try {
-      const response = await fetch(`/api/projects/${projectId}/prompts/next`)
+      const response = await this.authFetch(`/api/projects/${projectId}/prompts/next`)
       if (!response.ok) {
         throw new Error('Failed to fetch next prompt')
       }
@@ -156,7 +169,7 @@ export class ChapterService {
    */
   async markPromptAsDelivered(projectId: string, promptId: string, isUserPrompt: boolean): Promise<boolean> {
     try {
-      const response = await fetch(`/api/projects/${projectId}/prompts/next`, {
+      const response = await this.authFetch(`/api/projects/${projectId}/prompts/next`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
