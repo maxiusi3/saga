@@ -3,6 +3,7 @@ import { createBrowserClient } from '@supabase/ssr'
 export interface Interaction {
   id: string
   story_id: string
+  // 服务端统一返回字段名 facilitator_id，但真实表结构为 interactions.user_id
   facilitator_id: string
   type: 'comment' | 'followup'
   content: string
@@ -115,14 +116,7 @@ class InteractionService {
       // 获取交互统计
       const { data: interactions, error } = await this.supabase
         .from('interactions')
-        .select(`
-          *,
-          facilitator:facilitator_id (
-            id,
-            email,
-            user_metadata
-          )
-        `)
+        .select(`*`)
         .in('story_id', storyIds)
         .order('created_at', { ascending: false })
         .limit(10)
@@ -135,18 +129,16 @@ class InteractionService {
       const totalComments = interactions.filter(i => i.type === 'comment').length
       const totalFollowups = interactions.filter(i => i.type === 'followup').length
 
-      const recentInteractions = interactions.map(interaction => ({
+      const recentInteractions = interactions.map((interaction: any) => ({
         id: interaction.id,
         story_id: interaction.story_id,
-        facilitator_id: interaction.facilitator_id,
+        facilitator_id: interaction.user_id,
         type: interaction.type,
         content: interaction.content,
         answered_at: interaction.answered_at,
         created_at: interaction.created_at,
-        facilitator_name: interaction.facilitator?.user_metadata?.full_name || 
-                         interaction.facilitator?.email || 
-                         'Unknown User',
-        facilitator_avatar: interaction.facilitator?.user_metadata?.avatar_url
+        facilitator_name: undefined,
+        facilitator_avatar: undefined,
       }))
 
       return {

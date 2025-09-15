@@ -30,17 +30,14 @@ export async function GET(
       }
     }
 
-    // 获取故事的所有交互记录
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // 获取故事的所有交互记录（按实际表结构：interactions.user_id）
     const { data: interactions, error } = await db
       .from('interactions')
-      .select(`
-        *,
-        facilitator:facilitator_id (
-          id,
-          email,
-          user_metadata
-        )
-      `)
+      .select('*')
       .eq('story_id', storyId)
       .order('created_at', { ascending: true })
 
@@ -52,20 +49,39 @@ export async function GET(
       )
     }
 
-    // 格式化响应数据
-    const formattedInteractions = interactions.map(interaction => ({
-      id: interaction.id,
-      story_id: interaction.story_id,
-      facilitator_id: interaction.facilitator_id,
-      type: interaction.type,
-      content: interaction.content,
-      answered_at: interaction.answered_at,
-      created_at: interaction.created_at,
-      facilitator_name: interaction.facilitator?.user_metadata?.full_name || 
-                       interaction.facilitator?.email || 
-                       'Unknown User',
-      facilitator_avatar: interaction.facilitator?.user_metadata?.avatar_url
-    }))
+    const list = interactions || []
+
+    // 批量查询用户资料以展示名称与头像
+    const userIds = Array.from(new Set(list.map((it: any) => it.user_id).filter(Boolean)))
+    let profilesMap: Record<string, { name?: string | null; email?: string | null; avatar_url?: string | null }> = {}
+    if (userIds.length > 0) {
+      const { data: profiles, error: pErr } = await db
+        .from('user_profiles')
+        .select('id, name, email, avatar_url')
+        .in('id', userIds)
+
+      if (pErr) {
+        console.warn('Warning: failed to fetch user profiles for interactions:', pErr)
+      } else {
+        profilesMap = Object.fromEntries((profiles || []).map((p: any) => [p.id, p]))
+      }
+    }
+
+    // 格式化响应数据，维持前端所需字段名称（facilitator_id 等）
+    const formattedInteractions = list.map((interaction: any) => {
+      const profile = profilesMap[interaction.user_id] || {}
+      return {
+        id: interaction.id,
+        story_id: interaction.story_id,
+        facilitator_id: interaction.user_id, // 向下兼容前端字段名
+        type: interaction.type,
+        content: interaction.content,
+        created_at: interaction.created_at,
+        answered_at: interaction.answered_at, // 若无此列则为 undefined
+        facilitator_name: profile.name || profile.email || 'Unknown User',
+        facilitator_avatar: profile.avatar_url || null,
+      }
+    })
 
     return NextResponse.json(formattedInteractions)
   } catch (error) {
@@ -123,10 +139,10 @@ export async function POST(
     }
 
     // 权限：仅允许项目 Facilitator 或项目拥有者评论/追问
-    // 首先找到该故事所属项目及讲述者
+    // 首先找到该故事所属项目及讲述者（按实际表结构：stories.user_id 为讲述者）
     const { data: storyRow, error: storyErr } = await db
       .from('stories')
-      .select('id, project_id, storyteller_id')
+      .select('id, project_id, user_id')
       .eq('id', storyId)
       .maybeSingle()
 
@@ -155,28 +171,21 @@ export async function POST(
 
     if (!isFacilitator) {
       // 允许故事讲述者对“自己的故事”回复评论（若需求如此，可放开）
-      if (!(storyRow.storyteller_id === user.id && type === 'comment')) {
+      if (!(storyRow.user_id === user.id && type === 'comment')) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
       }
     }
 
-    // 创建交互记录
+    // 创建交互记录（按实际表结构：interactions.user_id）
     const { data: interaction, error } = await db
       .from('interactions')
       .insert({
         story_id: storyId,
-        facilitator_id: user.id,
+        user_id: user.id,
         type,
         content: content.trim()
       })
-      .select(`
-        *,
-        facilitator:facilitator_id (
-          id,
-          email,
-          user_metadata
-        )
-      `)
+      .select('*')
       .single()
 
     if (error) {
@@ -189,25 +198,36 @@ export async function POST(
 
     // 如果是跟进问题，创建用户提示
     if (type === 'followup') {
-      await createUserPromptFromFollowup(supabase, storyId, content, user.id)
+      await createUserPromptFromFollowup(db, storyId, content, user.id)
     }
 
     // 发送通知
-    await sendInteractionNotification(supabase, interaction)
+    await sendInteractionNotification(db, interaction)
+
+    // 查询提交者资料
+    let facilitator_name = 'Unknown User'
+    let facilitator_avatar: string | null = null
+    const { data: selfProfile } = await db
+      .from('user_profiles')
+      .select('name, email, avatar_url')
+      .eq('id', user.id)
+      .maybeSingle()
+    if (selfProfile) {
+      facilitator_name = selfProfile.name || selfProfile.email || 'Unknown User'
+      facilitator_avatar = selfProfile.avatar_url || null
+    }
 
     // 格式化响应
     const formattedInteraction = {
       id: interaction.id,
       story_id: interaction.story_id,
-      facilitator_id: interaction.facilitator_id,
+      facilitator_id: interaction.user_id,
       type: interaction.type,
       content: interaction.content,
       answered_at: interaction.answered_at,
       created_at: interaction.created_at,
-      facilitator_name: interaction.facilitator?.user_metadata?.full_name || 
-                       interaction.facilitator?.email || 
-                       'Unknown User',
-      facilitator_avatar: interaction.facilitator?.user_metadata?.avatar_url
+      facilitator_name,
+      facilitator_avatar
     }
 
     return NextResponse.json(formattedInteraction, { status: 201 })
@@ -263,18 +283,10 @@ async function createUserPromptFromFollowup(
 // 辅助函数：发送交互通知
 async function sendInteractionNotification(supabase: any, interaction: any) {
   try {
-    // 获取故事信息
+    // 获取故事信息（按实际表结构：stories.user_id 为讲述者）
     const { data: story, error: storyError } = await supabase
       .from('stories')
-      .select(`
-        id,
-        title,
-        storyteller_id,
-        project_id,
-        project:project_id (
-          name
-        )
-      `)
+      .select('id, title, user_id, project_id')
       .eq('id', interaction.story_id)
       .single()
 
@@ -283,17 +295,16 @@ async function sendInteractionNotification(supabase: any, interaction: any) {
       return
     }
 
-    // 创建通知
+    // 创建通知（简化 data 结构，避免跨 schema 关联）
     const notificationType = interaction.type === 'comment' ? 'new_comment' : 'new_follow_up_question'
-    
     const { error } = await supabase
       .from('notifications')
       .insert({
-        recipient_id: story.storyteller_id,
-        sender_id: interaction.facilitator_id,
+        recipient_id: story.user_id,
+        sender_id: interaction.user_id,
         type: notificationType,
         title: interaction.type === 'comment' ? 'New Comment' : 'New Follow-up Question',
-        message: interaction.type === 'comment' 
+        message: interaction.type === 'comment'
           ? `Someone commented on your story "${story.title || 'Untitled'}"`
           : `Someone asked a follow-up question about your story "${story.title || 'Untitled'}"`,
         data: {
