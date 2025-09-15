@@ -34,7 +34,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // 获取故事的所有交互记录（按实际表结构：interactions.user_id）
+    // 获取故事的所有交互记录（按实际表结构：interactions.facilitator_id）
     const { data: interactions, error } = await db
       .from('interactions')
       .select('*')
@@ -49,10 +49,7 @@ export async function GET(
       )
     }
 
-    const list = (interactions || []).map((it: any) => ({
-      ...it,
-      facilitator_id: it.user_id // 统一返回给前端的字段名
-    }))
+    const list = interactions || []
 
     // 批量查询用户资料以展示名称与头像
     const userIds = Array.from(new Set(list.map((it: any) => it.facilitator_id).filter(Boolean)))
@@ -76,11 +73,11 @@ export async function GET(
       return {
         id: interaction.id,
         story_id: interaction.story_id,
-        facilitator_id: interaction.facilitator_id, // 向下兼容前端字段名
+        facilitator_id: interaction.facilitator_id,
         type: interaction.type,
         content: interaction.content,
         created_at: interaction.created_at,
-        answered_at: interaction.answered_at, // 若无此列则为 undefined
+        answered_at: interaction.answered_at,
         facilitator_name: profile.name || profile.email || 'Unknown User',
         facilitator_avatar: profile.avatar_url || null,
       }
@@ -147,13 +144,15 @@ export async function POST(
     }
 
     // 权限：仅允许项目 Facilitator 或项目拥有者评论/追问
-    // 首先找到该故事所属项目及讲述者（按实际表结构：stories.user_id 为讲述者）
+    // 首先找到该故事所属项目及讲述者（按实际表结构：stories.storyteller_id 为讲述者）
+    console.log('[POST /interactions] start', { userId: user.id, storyId })
     const { data: storyRow, error: storyErr } = await dbRead
       .from('stories')
-      .select('id, project_id, user_id')
+      .select('id, project_id, storyteller_id')
       .eq('id', storyId)
       .maybeSingle()
 
+    console.log('[POST /interactions] storyRow', { storyErr, storyRow })
     if (storyErr || !storyRow) {
       console.error('Error fetching story before interaction insert:', storyErr)
       return NextResponse.json({ error: 'Story not found' }, { status: 404 })
@@ -173,23 +172,26 @@ export async function POST(
       .eq('user_id', user.id)
       .maybeSingle()
 
+    console.log('[POST /interactions] project/role', { projectRow, roleRow })
+
     const isOwner = projectRow?.facilitator_id === user.id
     const isActiveMember = !!roleRow && roleRow.status === 'active'
     const isFacilitator = isOwner || (roleRow?.role === 'facilitator' && isActiveMember)
 
     if (!isFacilitator) {
       // 允许故事讲述者对“自己的故事”回复评论（若需求如此，可放开）
-      if (!(storyRow.user_id === user.id && type === 'comment')) {
+      if (!(storyRow.storyteller_id === user.id && type === 'comment')) {
+        console.warn('[POST /interactions] forbidden', { isOwner, roleRow, isActiveMember, storytellerId: storyRow.storyteller_id, userId: user.id, type })
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
       }
     }
 
-    // 创建交互记录（按实际表结构：interactions.user_id）
+    // 创建交互记录（按实际表结构：interactions.facilitator_id）
     const { data: interaction, error } = await dbWrite
       .from('interactions')
       .insert({
         story_id: storyId,
-        user_id: user.id,
+        facilitator_id: user.id,
         type,
         content: content.trim()
       })
@@ -229,7 +231,7 @@ export async function POST(
     const formattedInteraction = {
       id: interaction.id,
       story_id: interaction.story_id,
-      facilitator_id: interaction.user_id,
+      facilitator_id: interaction.facilitator_id,
       type: interaction.type,
       content: interaction.content,
       answered_at: interaction.answered_at,
@@ -238,6 +240,7 @@ export async function POST(
       facilitator_avatar
     }
 
+    console.log('[POST /interactions] created', { interaction: formattedInteraction })
     return NextResponse.json(formattedInteraction, { status: 201 })
   } catch (error) {
     console.error('Error in POST /api/stories/[storyId]/interactions:', error)
@@ -291,10 +294,10 @@ async function createUserPromptFromFollowup(
 // 辅助函数：发送交互通知
 async function sendInteractionNotification(supabase: any, interaction: any) {
   try {
-    // 获取故事信息（按实际表结构：stories.user_id 为讲述者）
+    // 获取故事信息（按实际表结构：stories.storyteller_id 为讲述者）
     const { data: story, error: storyError } = await supabase
       .from('stories')
-      .select('id, title, user_id, project_id')
+      .select('id, title, storyteller_id, project_id')
       .eq('id', interaction.story_id)
       .single()
 
@@ -308,8 +311,8 @@ async function sendInteractionNotification(supabase: any, interaction: any) {
     const { error } = await supabase
       .from('notifications')
       .insert({
-        recipient_id: story.user_id,
-        sender_id: interaction.user_id,
+        recipient_id: story.storyteller_id,
+        sender_id: interaction.facilitator_id,
         type: notificationType,
         title: interaction.type === 'comment' ? 'New Comment' : 'New Follow-up Question',
         message: interaction.type === 'comment'
