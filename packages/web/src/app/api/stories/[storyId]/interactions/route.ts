@@ -49,10 +49,13 @@ export async function GET(
       )
     }
 
-    const list = interactions || []
+    const list = (interactions || []).map((it: any) => ({
+      ...it,
+      facilitator_id: it.user_id // 统一返回给前端的字段名
+    }))
 
     // 批量查询用户资料以展示名称与头像
-    const userIds = Array.from(new Set(list.map((it: any) => it.user_id).filter(Boolean)))
+    const userIds = Array.from(new Set(list.map((it: any) => it.facilitator_id).filter(Boolean)))
     let profilesMap: Record<string, { name?: string | null; email?: string | null; avatar_url?: string | null }> = {}
     if (userIds.length > 0) {
       const { data: profiles, error: pErr } = await db
@@ -69,11 +72,11 @@ export async function GET(
 
     // 格式化响应数据，维持前端所需字段名称（facilitator_id 等）
     const formattedInteractions = list.map((interaction: any) => {
-      const profile = profilesMap[interaction.user_id] || {}
+      const profile = profilesMap[interaction.facilitator_id] || {}
       return {
         id: interaction.id,
         story_id: interaction.story_id,
-        facilitator_id: interaction.user_id, // 向下兼容前端字段名
+        facilitator_id: interaction.facilitator_id, // 向下兼容前端字段名
         type: interaction.type,
         content: interaction.content,
         created_at: interaction.created_at,
