@@ -187,19 +187,43 @@ export async function POST(
     }
 
     // 创建交互记录（按实际表结构：interactions.facilitator_id）
-    const { data: interaction, error } = await dbWrite
-      .from('interactions')
-      .insert({
-        story_id: storyId,
-        facilitator_id: user.id,
-        type,
-        content: content.trim()
-      })
-      .select('*')
-      .single()
+    let interaction: any = null
+    let insertErr: any = null
+    {
+      const { data, error } = await dbWrite
+        .from('interactions')
+        .insert({
+          story_id: storyId,
+          facilitator_id: user.id,
+          type,
+          content: content.trim()
+        })
+        .select('*')
+        .single()
+      interaction = data
+      insertErr = error
+    }
 
-    if (error) {
-      console.error('Error creating interaction:', error)
+    // 针对生产库可能存在的历史检查约束不一致(23514)，做一次兼容性降级重试
+    if (insertErr && (insertErr as any).code === '23514') {
+      console.warn('[POST /interactions] insert failed with 23514, retrying with { status = type } for legacy constraint...')
+      const { data: data2, error: error2 } = await dbWrite
+        .from('interactions')
+        .insert({
+          story_id: storyId,
+          facilitator_id: user.id,
+          type,
+          status: type, // 兼容旧库若将 check 约束错误地施加在 status 上
+          content: content.trim()
+        })
+        .select('*')
+        .single()
+      interaction = data2
+      insertErr = error2
+    }
+
+    if (insertErr || !interaction) {
+      console.error('Error creating interaction (after optional fallback):', insertErr)
       return NextResponse.json(
         { error: 'Failed to create interaction' },
         { status: 500 }
