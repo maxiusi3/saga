@@ -77,8 +77,7 @@ export default function StoryDetailPage() {
         })
         setEditedTitle(story.title || 'Untitled Story')
 
-        // TODO: Load real interactions from database
-        setInteractions([])
+        // Interactions are loaded within the StoryInteractions component
         setLoading(false)
       } catch (error) {
         console.error('Error loading story:', error)

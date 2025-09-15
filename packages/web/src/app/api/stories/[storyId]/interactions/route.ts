@@ -1,17 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { storyId: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
     const { storyId } = params
 
+    // Cookies 优先，Bearer 回退（避免跨域或预览环境下 cookie 丢失导致 401）
+    let user: any = null
+    let db: any = supabaseCookie
+
+    const cookieAuth = await supabaseCookie.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else {
+      const token = request.headers.get('authorization')?.replace('Bearer ', '')
+      if (token) {
+        const admin = getSupabaseAdmin()
+        const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
+        if (tokenUser?.user && !tokenErr) {
+          user = tokenUser.user
+          db = admin
+        }
+      }
+    }
+
     // 获取故事的所有交互记录
-    const { data: interactions, error } = await supabase
+    const { data: interactions, error } = await db
       .from('interactions')
       .select(`
         *,
@@ -62,12 +82,29 @@ export async function POST(
   { params }: { params: { storyId: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabaseCookie = createRouteHandlerClient({ cookies })
     const { storyId } = params
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
+    // Cookies 优先，Bearer 回退
+    let user: any = null
+    let db: any = supabaseCookie
+
+    const cookieAuth = await supabaseCookie.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+    } else {
+      const token = request.headers.get('authorization')?.replace('Bearer ', '')
+      if (token) {
+        const admin = getSupabaseAdmin()
+        const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
+        if (tokenUser?.user && !tokenErr) {
+          user = tokenUser.user
+          db = admin
+        }
+      }
+    }
+
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -85,8 +122,46 @@ export async function POST(
       )
     }
 
+    // 权限：仅允许项目 Facilitator 或项目拥有者评论/追问
+    // 首先找到该故事所属项目及讲述者
+    const { data: storyRow, error: storyErr } = await db
+      .from('stories')
+      .select('id, project_id, storyteller_id')
+      .eq('id', storyId)
+      .maybeSingle()
+
+    if (storyErr || !storyRow) {
+      console.error('Error fetching story before interaction insert:', storyErr)
+      return NextResponse.json({ error: 'Story not found' }, { status: 404 })
+    }
+
+    // 读取该项目的 facilitator_id 与成员角色
+    const { data: projectRow } = await db
+      .from('projects')
+      .select('facilitator_id')
+      .eq('id', storyRow.project_id)
+      .maybeSingle()
+
+    const { data: roleRow } = await db
+      .from('project_roles')
+      .select('role, status')
+      .eq('project_id', storyRow.project_id)
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    const isOwner = projectRow?.facilitator_id === user.id
+    const isActiveMember = !!roleRow && roleRow.status === 'active'
+    const isFacilitator = isOwner || (roleRow?.role === 'facilitator' && isActiveMember)
+
+    if (!isFacilitator) {
+      // 允许故事讲述者对“自己的故事”回复评论（若需求如此，可放开）
+      if (!(storyRow.storyteller_id === user.id && type === 'comment')) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      }
+    }
+
     // 创建交互记录
-    const { data: interaction, error } = await supabase
+    const { data: interaction, error } = await db
       .from('interactions')
       .insert({
         story_id: storyId,

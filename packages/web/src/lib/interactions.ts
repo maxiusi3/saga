@@ -30,7 +30,18 @@ class InteractionService {
    */
   async getStoryInteractions(storyId: string): Promise<Interaction[]> {
     try {
-      const response = await fetch(`/api/stories/${storyId}/interactions`)
+      // 带上凭证，以便服务器路由读取 cookies；同时尽量在 headers 中附带 Bearer（在浏览器环境存在会话时）
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      try {
+        const { createClient } = await import('@supabase/supabase-js')
+        const supa = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        )
+        const { data: { session } } = await supa.auth.getSession()
+        if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+      } catch {}
+      const response = await fetch(`/api/stories/${storyId}/interactions`, { credentials: 'include', headers })
       if (!response.ok) {
         throw new Error('Failed to fetch interactions')
       }
@@ -46,11 +57,21 @@ class InteractionService {
    */
   async createInteraction(data: CreateInteractionData): Promise<Interaction | null> {
     try {
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      try {
+        const { createClient } = await import('@supabase/supabase-js')
+        const supa = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        )
+        const { data: { session } } = await supa.auth.getSession()
+        if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+      } catch {}
+
       const response = await fetch(`/api/stories/${data.story_id}/interactions`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        credentials: 'include',
+        headers,
         body: JSON.stringify({
           type: data.type,
           content: data.content
