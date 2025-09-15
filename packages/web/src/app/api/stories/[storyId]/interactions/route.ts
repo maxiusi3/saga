@@ -127,6 +127,11 @@ export async function POST(
       )
     }
 
+    // 为避免 RLS 导致 Facilitator 无法读取他人故事，这里使用 Admin 客户端执行权限判定与写入
+    const admin = getSupabaseAdmin()
+    const dbRead = admin
+    const dbWrite = admin
+
     // 解析请求体
     const body = await request.json()
     const { type, content } = body
@@ -140,7 +145,7 @@ export async function POST(
 
     // 权限：仅允许项目 Facilitator 或项目拥有者评论/追问
     // 首先找到该故事所属项目及讲述者（按实际表结构：stories.user_id 为讲述者）
-    const { data: storyRow, error: storyErr } = await db
+    const { data: storyRow, error: storyErr } = await dbRead
       .from('stories')
       .select('id, project_id, user_id')
       .eq('id', storyId)
@@ -152,13 +157,13 @@ export async function POST(
     }
 
     // 读取该项目的 facilitator_id 与成员角色
-    const { data: projectRow } = await db
+    const { data: projectRow } = await dbRead
       .from('projects')
       .select('facilitator_id')
       .eq('id', storyRow.project_id)
       .maybeSingle()
 
-    const { data: roleRow } = await db
+    const { data: roleRow } = await dbRead
       .from('project_roles')
       .select('role, status')
       .eq('project_id', storyRow.project_id)
@@ -177,7 +182,7 @@ export async function POST(
     }
 
     // 创建交互记录（按实际表结构：interactions.user_id）
-    const { data: interaction, error } = await db
+    const { data: interaction, error } = await dbWrite
       .from('interactions')
       .insert({
         story_id: storyId,
