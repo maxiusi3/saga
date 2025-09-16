@@ -12,27 +12,50 @@ export async function GET(
     const supabaseCookie = createRouteHandlerClient({ cookies })
     const projectId = params.id
 
-    // Cookies 优先，Bearer 回退，使用admin客户端避免RLS问题
+    // 详细的认证调试
     let user: any = null
     const db = getSupabaseAdmin() // 统一使用admin客户端
 
+    console.log('[Overview API] Starting auth check for project:', projectId)
+
+    // 尝试Cookie认证
     const cookieAuth = await supabaseCookie.auth.getUser()
+    console.log('[Overview API] Cookie auth result:', {
+      hasUser: !!cookieAuth.data.user,
+      error: cookieAuth.error?.message,
+      userId: cookieAuth.data.user?.id
+    })
+
     if (cookieAuth.data.user && !cookieAuth.error) {
       user = cookieAuth.data.user
+      console.log('[Overview API] Using cookie auth for user:', user.id)
     } else {
+      // 尝试Bearer token认证
       const token = request.headers.get('authorization')?.replace('Bearer ', '')
+      console.log('[Overview API] Trying bearer token auth, hasToken:', !!token)
+
       if (token) {
         const admin = getSupabaseAdmin()
         const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
+        console.log('[Overview API] Bearer auth result:', {
+          hasUser: !!tokenUser?.user,
+          error: tokenErr?.message,
+          userId: tokenUser?.user?.id
+        })
+
         if (tokenUser?.user && !tokenErr) {
           user = tokenUser.user
+          console.log('[Overview API] Using bearer auth for user:', user.id)
         }
       }
     }
 
     if (!user) {
+      console.log('[Overview API] No valid authentication found')
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    console.log('[Overview API] Authenticated user:', user.id)
 
     const { data: project, error: projectError } = await db
       .from('projects')
