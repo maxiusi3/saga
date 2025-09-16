@@ -13,6 +13,7 @@ import { ArrowLeft, Play, Pause, Edit, Send, ZoomIn } from 'lucide-react'
 import Link from 'next/link'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
+import { createClientSupabase } from '@/lib/supabase'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
 import { toast } from 'sonner'
 
