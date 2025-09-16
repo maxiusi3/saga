@@ -154,7 +154,7 @@ export async function POST(
 
     // 发送通知给所有项目的 facilitators
     try {
-      await sendNewStoryNotifications(db, story, user.id)
+      await sendNewStoryNotifications(db, story, user.id, body.responding_to_prompt_id)
     } catch (notificationError) {
       console.warn('Failed to send new story notifications:', notificationError)
       // 不影响故事创建的成功响应
@@ -168,7 +168,7 @@ export async function POST(
 }
 
 // 辅助函数：发送新故事通知给所有 facilitators
-async function sendNewStoryNotifications(supabase: any, story: any, storytellerId: string) {
+async function sendNewStoryNotifications(supabase: any, story: any, storytellerId: string, respondingToPromptId?: string) {
   try {
     // 获取项目信息
     const { data: project } = await supabase
@@ -212,19 +212,44 @@ async function sendNewStoryNotifications(supabase: any, story: any, storytellerI
       })
     }
 
+    // 检查是否是回应follow-up question
+    let isResponseToFollowup = false
+    let originalQuestionCreator = null
+
+    if (respondingToPromptId) {
+      const { data: userPrompt } = await supabase
+        .from('user_prompts')
+        .select('created_by, text')
+        .eq('id', respondingToPromptId)
+        .single()
+
+      if (userPrompt) {
+        isResponseToFollowup = true
+        originalQuestionCreator = userPrompt.created_by
+      }
+    }
+
     // 为每个 facilitator 创建通知
-    const notifications = Array.from(facilitatorIds).map(facilitatorId => ({
-      recipient_id: facilitatorId,
-      sender_id: storytellerId,
-      type: 'new_story',
-      title: 'New Story Recorded',
-      message: `${storytellerName} recorded a new story "${story.title || story.ai_generated_title || 'Untitled'}"`,
-      data: {
-        story_id: story.id,
-        project_id: story.project_id
-      },
-      action_url: `/dashboard/projects/${story.project_id}/stories/${story.id}`
-    }))
+    const notifications = Array.from(facilitatorIds).map(facilitatorId => {
+      const isOriginalQuestioner = isResponseToFollowup && facilitatorId === originalQuestionCreator
+
+      return {
+        recipient_id: facilitatorId,
+        sender_id: storytellerId,
+        type: isOriginalQuestioner ? 'story_response' : 'new_story',
+        title: isOriginalQuestioner ? 'Follow-up Question Answered' : 'New Story Recorded',
+        message: isOriginalQuestioner
+          ? `${storytellerName} answered your follow-up question with a new story "${story.title || story.ai_generated_title || 'Untitled'}"`
+          : `${storytellerName} recorded a new story "${story.title || story.ai_generated_title || 'Untitled'}"`,
+        data: {
+          story_id: story.id,
+          project_id: story.project_id,
+          is_response_to_followup: isResponseToFollowup,
+          responding_to_prompt_id: respondingToPromptId || null
+        },
+        action_url: `/dashboard/projects/${story.project_id}/stories/${story.id}`
+      }
+    })
 
     if (notifications.length > 0) {
       const { error } = await supabase

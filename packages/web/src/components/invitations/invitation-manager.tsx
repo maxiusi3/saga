@@ -87,7 +87,19 @@ export function InvitationManager({ projectId, className }: InvitationManagerPro
       })
 
       if (!response.ok) {
-        throw new Error('Failed to send invitation')
+        const errorData = await response.json()
+
+        // 处理席位不足的情况
+        if (response.status === 402 && errorData.errorCode === 'INSUFFICIENT_SEATS') {
+          toast.error(errorData.error || 'Insufficient seats')
+          // 显示购买提示
+          if (confirm('You need more seats to send this invitation. Would you like to purchase more seats now?')) {
+            window.location.href = errorData.purchaseUrl || '/dashboard/purchase'
+          }
+          return
+        }
+
+        throw new Error(errorData.error || 'Failed to send invitation')
       }
 
       const newInvitation = await response.json()
@@ -96,7 +108,7 @@ export function InvitationManager({ projectId, className }: InvitationManagerPro
       toast.success('Invitation sent successfully!')
     } catch (error) {
       console.error('Error sending invitation:', error)
-      toast.error('Failed to send invitation')
+      toast.error(error instanceof Error ? error.message : 'Failed to send invitation')
     } finally {
       setSending(false)
     }

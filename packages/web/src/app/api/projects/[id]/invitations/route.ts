@@ -273,6 +273,42 @@ export async function POST(
       }
     }
 
+    // 如果是邀请storyteller，检查项目中是否已经有storyteller
+    if (role === 'storyteller') {
+      // 检查是否已有active的storyteller
+      const { data: existingStoryteller } = await adminSupabase
+        .from('project_roles')
+        .select('id')
+        .eq('project_id', projectId)
+        .eq('role', 'storyteller')
+        .eq('status', 'active')
+        .single()
+
+      if (existingStoryteller) {
+        return NextResponse.json(
+          { error: 'This project already has a storyteller. Only one storyteller is allowed per project.' },
+          { status: 409 }
+        )
+      }
+
+      // 检查是否有pending的storyteller邀请
+      const { data: pendingStoryteller } = await adminSupabase
+        .from('invitations')
+        .select('id')
+        .eq('project_id', projectId)
+        .eq('role', 'storyteller')
+        .eq('status', 'pending')
+        .gt('expires_at', new Date().toISOString())
+        .single()
+
+      if (pendingStoryteller) {
+        return NextResponse.json(
+          { error: 'There is already a pending storyteller invitation for this project. Only one storyteller is allowed per project.' },
+          { status: 409 }
+        )
+      }
+    }
+
     // 检查用户资源钱包是否有足够的座位 - 使用 admin 客户端
     const { data: wallet, error: walletError } = await adminSupabase
       .from('user_resource_wallets')
@@ -290,7 +326,13 @@ export async function POST(
     const requiredSeats = role === 'facilitator' ? 'facilitator_seats' : 'storyteller_seats'
     if (wallet[requiredSeats] <= 0) {
       return NextResponse.json(
-        { error: `Insufficient ${role} seats. Please purchase more seats to send this invitation.` },
+        {
+          error: `Insufficient ${role} seats. Please purchase more seats to send this invitation.`,
+          errorCode: 'INSUFFICIENT_SEATS',
+          purchaseUrl: '/dashboard/purchase',
+          requiredSeats: 1,
+          availableSeats: wallet[requiredSeats]
+        },
         { status: 402 }
       )
     }

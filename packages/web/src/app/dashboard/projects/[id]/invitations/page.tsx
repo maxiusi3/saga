@@ -105,7 +105,17 @@ export default function InvitationsPage() {
         loadInvitations()
       } else {
         const error = await response.json()
-        toast.error(error.error || 'Failed to send invitation')
+
+        // 处理席位不足的情况
+        if (response.status === 402 && error.errorCode === 'INSUFFICIENT_SEATS') {
+          toast.error(error.error || 'Insufficient seats')
+          // 显示购买提示
+          if (confirm('You need more seats to send this invitation. Would you like to purchase more seats now?')) {
+            window.location.href = error.purchaseUrl || '/dashboard/purchase'
+          }
+        } else {
+          toast.error(error.error || 'Failed to send invitation')
+        }
       }
     } catch (error) {
       console.error('Error sending invitation:', error)
