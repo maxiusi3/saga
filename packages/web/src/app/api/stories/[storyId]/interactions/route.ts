@@ -180,10 +180,12 @@ export async function POST(
 
     if (!isFacilitator) {
       // 允许故事讲述者对“自己的故事”回复评论（若需求如此，可放开）
-      if (!(storyRow.storyteller_id === user.id && type === 'comment')) {
-        console.warn('[POST /interactions] forbidden', { isOwner, roleRow, isActiveMember, storytellerId: storyRow.storyteller_id, userId: user.id, type })
-        return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-      }
+      // 只有 facilitators 可以创建评论和追问
+      // Storytellers 通过录制新故事来回应，而不是通过评论界面
+      console.warn('[POST /interactions] forbidden - only facilitators can create interactions', {
+        isOwner, roleRow, isActiveMember, storytellerId: storyRow.storyteller_id, userId: user.id, type
+      })
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     // 创建交互记录（按实际表结构：interactions.facilitator_id）

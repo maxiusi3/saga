@@ -40,7 +40,7 @@ function calculateUserPermissions(userRole, isProjectOwner = false) {
                 canEditStoryTranscripts: false, // Cannot edit transcripts
                 canDeleteStories: false,
                 canViewAllStories: true, // Can view all stories in the project
-                canAddComments: true, // Can respond to comments on their stories
+                canAddComments: false, // Cannot add comments - respond via recording new stories
                 canAskFollowUpQuestions: false, // Cannot ask follow-up questions
                 canViewComments: true,
                 canEditAIContent: false,
