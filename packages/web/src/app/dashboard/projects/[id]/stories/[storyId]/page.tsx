@@ -327,6 +327,7 @@ export default function StoryDetailPage() {
         storyId={storyId}
         userRole={userRole}
         isProjectOwner={isProjectOwner}
+        isStoryteller={false}
       />
     </div>
   )

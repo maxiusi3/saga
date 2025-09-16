@@ -76,6 +76,7 @@ export async function GET(
         facilitator_id: interaction.facilitator_id,
         type: interaction.type,
         content: interaction.content,
+        answer_text: interaction.answer_text || null,
         created_at: interaction.created_at,
         answered_at: interaction.answered_at,
         facilitator_name: profile.name || profile.email || 'Unknown User',
@@ -189,41 +190,79 @@ export async function POST(
     // 创建交互记录（按实际表结构：interactions.facilitator_id）
     let interaction: any = null
     let insertErr: any = null
+
+    const basePayload: any = {
+      story_id: storyId,
+      facilitator_id: user.id,
+      type: (typeof type === 'string' ? type.toLowerCase() : type),
+      content: content.trim()
+    }
+
+    console.log('[POST /interactions] insert try #1', basePayload)
     {
       const { data, error } = await dbWrite
         .from('interactions')
-        .insert({
-          story_id: storyId,
-          facilitator_id: user.id,
-          type,
-          content: content.trim()
-        })
+        .insert(basePayload)
         .select('*')
         .single()
       interaction = data
       insertErr = error
     }
 
-    // 针对生产库可能存在的历史检查约束不一致(23514)，做一次兼容性降级重试
+    // 若违反检查约束，记录约束定义并执行兼容性重试
     if (insertErr && (insertErr as any).code === '23514') {
-      console.warn('[POST /interactions] insert failed with 23514, retrying with { status = type } for legacy constraint...')
-      const { data: data2, error: error2 } = await dbWrite
-        .from('interactions')
-        .insert({
-          story_id: storyId,
-          facilitator_id: user.id,
-          type,
-          status: type, // 兼容旧库若将 check 约束错误地施加在 status 上
-          content: content.trim()
-        })
-        .select('*')
-        .single()
-      interaction = data2
-      insertErr = error2
+      console.warn('[POST /interactions] insert failed 23514 on try #1:', insertErr)
+
+      // 打印 interactions 的检查约束，便于在 Vercel 日志中定位生产库差异
+      try {
+        const { data: cons } = await dbRead
+          .from('pg_catalog.pg_constraint')
+          .select('conname, conrelid')
+          .eq('conrelid', 'public.interactions' as any)
+        console.log('[POST /interactions] constraints (names only):', cons)
+      } catch (e) {
+        console.warn('[POST /interactions] failed to read pg_constraint:', e)
+      }
+
+      // 兼容性重试 #2：若库要求 status 有检查约束，则显式提供 status='pending'
+      const payload2: any = { ...basePayload, status: 'pending' }
+      console.log('[POST /interactions] insert try #2 with status=pending', payload2)
+      {
+        const { data, error } = await dbWrite
+          .from('interactions')
+          .insert(payload2)
+          .select('*')
+          .single()
+        if (!error && data) {
+          interaction = data
+          insertErr = null
+        } else {
+          insertErr = error
+          console.warn('[POST /interactions] try #2 failed:', error)
+        }
+      }
+
+      // 兼容性重试 #3：若仍失败，尝试将 type 大写（某些库可能使用大写枚举）
+      if (!interaction && insertErr && (insertErr as any).code === '23514') {
+        const payload3: any = { ...basePayload, type: String(basePayload.type).toUpperCase(), status: 'pending' }
+        console.log('[POST /interactions] insert try #3 with TYPE=UPPER + status=pending', payload3)
+        const { data, error } = await dbWrite
+          .from('interactions')
+          .insert(payload3)
+          .select('*')
+          .single()
+        if (!error && data) {
+          interaction = data
+          insertErr = null
+        } else {
+          insertErr = error
+          console.warn('[POST /interactions] try #3 failed:', error)
+        }
+      }
     }
 
     if (insertErr || !interaction) {
-      console.error('Error creating interaction (after optional fallback):', insertErr)
+      console.error('Error creating interaction (after fallbacks):', insertErr)
       return NextResponse.json(
         { error: 'Failed to create interaction' },
         { status: 500 }
@@ -258,6 +297,7 @@ export async function POST(
       facilitator_id: interaction.facilitator_id,
       type: interaction.type,
       content: interaction.content,
+      answer_text: interaction.answer_text || null,
       answered_at: interaction.answered_at,
       created_at: interaction.created_at,
       facilitator_name,
@@ -330,8 +370,20 @@ async function sendInteractionNotification(supabase: any, interaction: any) {
       return
     }
 
-    // 创建通知（简化 data 结构，避免跨 schema 关联）
+    // 创建通知（data 中包含 story/project/interaction，便于前端拼接 action_url 与展示标题）
     const notificationType = interaction.type === 'comment' ? 'new_comment' : 'new_follow_up_question'
+
+    // 获取发送者信息（名称/头像），用于消息文案
+    let senderName = 'Unknown User'
+    try {
+      const { data: senderProfile } = await supabase
+        .from('user_profiles')
+        .select('name, email')
+        .eq('id', interaction.facilitator_id)
+        .maybeSingle()
+      senderName = senderProfile?.name || senderProfile?.email || senderName
+    } catch {}
+
     const { error } = await supabase
       .from('notifications')
       .insert({
@@ -340,13 +392,14 @@ async function sendInteractionNotification(supabase: any, interaction: any) {
         type: notificationType,
         title: interaction.type === 'comment' ? 'New Comment' : 'New Follow-up Question',
         message: interaction.type === 'comment'
-          ? `Someone commented on your story "${story.title || 'Untitled'}"`
-          : `Someone asked a follow-up question about your story "${story.title || 'Untitled'}"`,
+          ? `${senderName} commented on your story "${story.title || 'Untitled'}"`
+          : `${senderName} asked a follow-up question on your story "${story.title || 'Untitled'}"`,
         data: {
           story_id: story.id,
           project_id: story.project_id,
           interaction_id: interaction.id
-        }
+        },
+        action_url: `/dashboard/projects/${story.project_id}/stories/${story.id}`
       })
 
     if (error) {

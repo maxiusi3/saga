@@ -50,8 +50,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // 获取用户的通知
-    // 规则：仅当 Bearer 鉴权成功时才使用 admin；cookies 鉴权使用 cookie 客户端，避免依赖服务密钥
+    // 获取用户的通知（并补充 sender/profile 与 story/project 标题信息）
     const db = authedViaBearer ? getSupabaseAdmin() : supabaseCookie
 
     const { data: notifications, error } = await db
@@ -63,27 +62,71 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching notifications:', error)
-      // 为避免前端崩溃/控制台报错，降级为空列表
       return NextResponse.json([])
     }
 
-    // 格式化响应数据
-    const formattedNotifications = (notifications || []).map((notification: any) => ({
-      id: notification.id,
-      recipient_id: notification.recipient_id,
-      sender_id: notification.sender_id,
-      sender_name: 'System',
-      sender_avatar: null,
-      type: notification.type,
-      title: notification.title,
-      message: notification.message,
-      data: notification.data,
-      action_url: notification.action_url,
-      is_read: notification.is_read,
-      read_at: notification.read_at,
-      created_at: notification.created_at,
-      updated_at: notification.updated_at
-    }))
+    const list = notifications || []
+
+    // 解析需要补充的 sender/story/project id 集合
+    const senderIds = Array.from(new Set(list.map((n: any) => n.sender_id).filter(Boolean)))
+    const projectIds = Array.from(new Set(list.map((n: any) => n.data?.project_id).filter(Boolean)))
+    const storyIds = Array.from(new Set(list.map((n: any) => n.data?.story_id).filter(Boolean)))
+
+    // 批量拉取 sender profiles
+    let senderProfiles: Record<string, any> = {}
+    if (senderIds.length > 0) {
+      const { data: profiles } = await db
+        .from('user_profiles')
+        .select('id, name, email, avatar_url')
+        .in('id', senderIds)
+      senderProfiles = Object.fromEntries((profiles || []).map((p: any) => [p.id, p]))
+    }
+
+    // 批量拉取项目与故事标题
+    let projectTitles: Record<string, string> = {}
+    if (projectIds.length > 0) {
+      const { data: projects } = await db
+        .from('projects')
+        .select('id, title')
+        .in('id', projectIds)
+      projectTitles = Object.fromEntries((projects || []).map((p: any) => [p.id, p.title]))
+    }
+
+    let storyTitles: Record<string, string> = {}
+    if (storyIds.length > 0) {
+      const { data: stories } = await db
+        .from('stories')
+        .select('id, title')
+        .in('id', storyIds)
+      storyTitles = Object.fromEntries((stories || []).map((s: any) => [s.id, s.title]))
+    }
+
+    const formattedNotifications = list.map((n: any) => {
+      const data = n.data || {}
+      const sender = (n.sender_id && senderProfiles[n.sender_id]) || {}
+      const actionUrl = n.action_url || (data.project_id && data.story_id ? `/dashboard/projects/${data.project_id}/stories/${data.story_id}` : null)
+      return {
+        id: n.id,
+        recipient_id: n.recipient_id,
+        sender_id: n.sender_id,
+        sender_name: sender.name || sender.email || 'System',
+        sender_avatar: sender.avatar_url || null,
+        project_id: data.project_id || null,
+        story_id: data.story_id || null,
+        comment_id: data.interaction_id || null,
+        notification_type: n.type,
+        title: n.title,
+        message: n.message,
+        preview_text: data.preview_text || null,
+        action_url: actionUrl,
+        is_read: n.is_read,
+        read_at: n.read_at,
+        created_at: n.created_at,
+        updated_at: n.updated_at,
+        project_title: data.project_id ? projectTitles[data.project_id] || null : null,
+        story_title: data.story_id ? storyTitles[data.story_id] || null : null
+      }
+    })
 
     return NextResponse.json(formattedNotifications)
   } catch (error) {
