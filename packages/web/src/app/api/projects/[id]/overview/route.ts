@@ -12,9 +12,9 @@ export async function GET(
     const supabaseCookie = createRouteHandlerClient({ cookies })
     const projectId = params.id
 
-    // Cookies 优先，Bearer 回退
+    // Cookies 优先，Bearer 回退，使用admin客户端避免RLS问题
     let user: any = null
-    let db: any = supabaseCookie
+    const db = getSupabaseAdmin() // 统一使用admin客户端
 
     const cookieAuth = await supabaseCookie.auth.getUser()
     if (cookieAuth.data.user && !cookieAuth.error) {
@@ -26,7 +26,6 @@ export async function GET(
         const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
         if (tokenUser?.user && !tokenErr) {
           user = tokenUser.user
-          db = admin
         }
       }
     }
