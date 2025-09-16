@@ -235,76 +235,85 @@ export function StoryInteractions({
 
         <Separator />
 
-        {/* Add New Interactions */}
-        <div className="space-y-4">
-          {/* Comment Section */}
-          {canAddComments && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Leave a comment</label>
-              <div className="flex space-x-2">
-                <Textarea
-                  placeholder="Share your thoughts or encouragement..."
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  className="flex-1"
-                  rows={2}
-                />
-                <Button 
-                  variant="outline" 
-                  onClick={submitComment}
-                  disabled={!commentText.trim() || submittingComment}
-                  className="self-end"
-                >
-                  {submittingComment ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-                  ) : (
-                    <Send className="h-4 w-4" />
-                  )}
-                </Button>
+        {/* Add New Interactions - Only for facilitators */}
+        {!isStoryteller && (
+          <div className="space-y-4">
+            {/* Comment Section */}
+            {canAddComments && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Leave a comment</label>
+                <div className="flex space-x-2">
+                  <Textarea
+                    placeholder="Share your thoughts or encouragement..."
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    className="flex-1"
+                    rows={2}
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={submitComment}
+                    disabled={!commentText.trim() || submittingComment}
+                    className="self-end"
+                  >
+                    {submittingComment ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                    ) : (
+                      <Send className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Comments are sent as warm, encouraging messages to the storyteller.
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Comments are sent as warm, encouraging messages to the storyteller.
-              </p>
-            </div>
-          )}
+            )}
 
-          {/* Follow-up Question Section */}
-          {canAskFollowups && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Ask a follow-up question</label>
-              <div className="flex space-x-2">
-                <Textarea
-                  placeholder="What would you like to know more about?"
-                  value={followupText}
-                  onChange={(e) => setFollowupText(e.target.value)}
-                  className="flex-1"
-                  rows={2}
-                />
-                <Button 
-                  variant="default" 
-                  onClick={submitFollowup}
-                  disabled={!followupText.trim() || submittingFollowup}
-                  className="self-end"
-                >
-                  {submittingFollowup ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-                  ) : (
-                    <HelpCircle className="h-4 w-4" />
-                  )}
-                </Button>
+            {/* Follow-up Question Section - Only for facilitators */}
+            {canAskFollowups && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Ask a follow-up question</label>
+                <div className="flex space-x-2">
+                  <Textarea
+                    placeholder="What would you like to know more about?"
+                    value={followupText}
+                    onChange={(e) => setFollowupText(e.target.value)}
+                    className="flex-1"
+                    rows={2}
+                  />
+                  <Button
+                    variant="default"
+                    onClick={submitFollowup}
+                    disabled={!followupText.trim() || submittingFollowup}
+                    className="self-end"
+                  >
+                    {submittingFollowup ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                    ) : (
+                      <HelpCircle className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Follow-up questions become new recording prompts for the storyteller.
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Follow-up questions become new recording prompts for the storyteller.
-              </p>
-            </div>
-          )}
+            )}
 
-          {!canAddComments && !canAskFollowups && (
-            <div className="text-center py-4 text-muted-foreground">
-              <p className="text-sm">You don't have permission to add interactions.</p>
-            </div>
-          )}
-        </div>
+            {!canAddComments && !canAskFollowups && (
+              <div className="text-center py-4 text-muted-foreground">
+                <p className="text-sm">You don't have permission to add interactions.</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Message for storytellers */}
+        {isStoryteller && (
+          <div className="text-center py-4 text-muted-foreground">
+            <p className="text-sm">You can respond to follow-up questions by clicking "Record Answer" above.</p>
+          </div>
+        )}
       </div>
     </Card>
   )
