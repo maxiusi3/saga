@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { MessageCircle, HelpCircle, Send, Clock, CheckCircle, Reply } from 'lucide-react'
+import { MessageCircle, HelpCircle, Send, Clock, CheckCircle, Mic } from 'lucide-react'
 import { interactionService, Interaction } from '@/lib/interactions'
 import { useAuthStore } from '@/stores/auth-store'
 import { canUserPerformAction } from '@saga/shared'
@@ -15,6 +15,7 @@ import { toast } from 'react-hot-toast'
 
 interface StoryInteractionsProps {
   storyId: string
+  projectId: string
   userRole: string
   isProjectOwner: boolean
   isStoryteller?: boolean
@@ -23,6 +24,7 @@ interface StoryInteractionsProps {
 
 export function StoryInteractions({
   storyId,
+  projectId,
   userRole,
   isProjectOwner,
   isStoryteller = false,
@@ -35,13 +37,10 @@ export function StoryInteractions({
   const [followupText, setFollowupText] = useState('')
   const [submittingComment, setSubmittingComment] = useState(false)
   const [submittingFollowup, setSubmittingFollowup] = useState(false)
-  const [answeringId, setAnsweringId] = useState<string | null>(null)
-  const [answerText, setAnswerText] = useState('')
 
   // 权限检查
   const canAddComments = canUserPerformAction('canAddComments', userRole as any, isProjectOwner)
   const canAskFollowups = canUserPerformAction('canAskFollowUpQuestions', userRole as any, isProjectOwner)
-  const canAnswerFollowups = isStoryteller || isProjectOwner
 
   // 加载交互记录
   useEffect(() => {
@@ -201,14 +200,18 @@ export function StoryInteractions({
                       {interaction.facilitator_name}
                     </span>
                     {getInteractionBadge(interaction.type, interaction.answered_at)}
-                    {interaction.type === 'followup' && !interaction.answered_at && canAnswerFollowups && (
+                    {interaction.type === 'followup' && isStoryteller && (
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => setAnsweringId(answeringId === interaction.id ? null : interaction.id)}
+                        onClick={() => {
+                          // 根据需求，storyteller 点击 "Record Answer" 应该跳转到录音页面
+                          // 系统会自动将 follow-up question 作为下一个 prompt 提供
+                          window.location.href = `/dashboard/projects/${projectId}/record`
+                        }}
                         className="h-7 px-2"
                       >
-                        <Reply className="h-3 w-3 mr-1" /> Answer
+                        <Mic className="h-3 w-3 mr-1" /> Record Answer
                       </Button>
                     )}
                     <span className="text-xs text-muted-foreground">
@@ -218,57 +221,6 @@ export function StoryInteractions({
                   <p className="text-foreground text-sm bg-muted p-3 rounded-lg">
                     {interaction.content}
                   </p>
-
-                  {interaction.type === 'followup' && interaction.answer_text && (
-                    <div className="ml-0 mt-2 border-l-2 border-muted pl-3">
-                      <div className="text-xs text-muted-foreground mb-1">
-                        Answered at {interaction.answered_at ? formatTimestamp(interaction.answered_at) : ''}
-                      </div>
-                      <div className="text-sm text-foreground bg-card p-3 rounded">
-                        {interaction.answer_text}
-                      </div>
-                    </div>
-                  )}
-
-                  {interaction.type === 'followup' && !interaction.answered_at && answeringId === interaction.id && (
-                    <div className="mt-2 flex space-x-2">
-                      <Textarea
-                        placeholder="Write your answer..."
-                        value={answerText}
-                        onChange={(e) => setAnswerText(e.target.value)}
-                        rows={2}
-                        className="flex-1"
-                      />
-                      <Button
-                        variant="default"
-                        onClick={async () => {
-                          if (!answerText.trim()) return
-                          try {
-                            const ok = await fetch(`/api/interactions/${interaction.id}/answer`, {
-                              method: 'POST',
-                              credentials: 'include',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ answer: answerText.trim() })
-                            })
-                            if (ok.ok) {
-                              const updated = await ok.json()
-                              setInteractions(prev => prev.map(it => it.id === interaction.id ? { ...it, answered_at: updated.answered_at, answer_text: updated.answer_text } as any : it))
-                              setAnsweringId(null)
-                              setAnswerText('')
-                              toast.success('Answered')
-                            } else {
-                              toast.error('Failed to answer')
-                            }
-                          } catch {
-                            toast.error('Failed to answer')
-                          }
-                        }}
-                        disabled={!answerText.trim()}
-                      >
-                        <Send className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}

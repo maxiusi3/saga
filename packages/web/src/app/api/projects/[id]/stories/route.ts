@@ -152,9 +152,91 @@ export async function POST(
       return NextResponse.json({ error: 'Failed to create story' }, { status: 500 })
     }
 
+    // 发送通知给所有项目的 facilitators
+    try {
+      await sendNewStoryNotifications(db, story, user.id)
+    } catch (notificationError) {
+      console.warn('Failed to send new story notifications:', notificationError)
+      // 不影响故事创建的成功响应
+    }
+
     return NextResponse.json({ story })
   } catch (err) {
     console.error('POST /api/projects/[id]/stories unexpected error:', err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+  }
+}
+
+// 辅助函数：发送新故事通知给所有 facilitators
+async function sendNewStoryNotifications(supabase: any, story: any, storytellerId: string) {
+  try {
+    // 获取项目信息
+    const { data: project } = await supabase
+      .from('projects')
+      .select('id, title, facilitator_id')
+      .eq('id', story.project_id)
+      .maybeSingle()
+
+    if (!project) return
+
+    // 获取故事讲述者信息
+    let storytellerName = 'Unknown User'
+    const { data: storytellerProfile } = await supabase
+      .from('user_profiles')
+      .select('name, email')
+      .eq('id', storytellerId)
+      .maybeSingle()
+    if (storytellerProfile) {
+      storytellerName = storytellerProfile.name || storytellerProfile.email || storytellerName
+    }
+
+    // 收集所有需要通知的 facilitators（包括项目所有者和协作 facilitators）
+    const facilitatorIds = new Set<string>()
+
+    // 添加项目所有者（facilitator_id）
+    if (project.facilitator_id) {
+      facilitatorIds.add(project.facilitator_id)
+    }
+
+    // 添加项目中的协作 facilitators
+    const { data: projectRoles } = await supabase
+      .from('project_roles')
+      .select('user_id')
+      .eq('project_id', story.project_id)
+      .eq('role', 'facilitator')
+      .eq('status', 'active')
+
+    if (projectRoles) {
+      projectRoles.forEach((role: any) => {
+        if (role.user_id) facilitatorIds.add(role.user_id)
+      })
+    }
+
+    // 为每个 facilitator 创建通知
+    const notifications = Array.from(facilitatorIds).map(facilitatorId => ({
+      recipient_id: facilitatorId,
+      sender_id: storytellerId,
+      type: 'new_story',
+      title: 'New Story Recorded',
+      message: `${storytellerName} recorded a new story "${story.title || story.ai_generated_title || 'Untitled'}"`,
+      data: {
+        story_id: story.id,
+        project_id: story.project_id
+      },
+      action_url: `/dashboard/projects/${story.project_id}/stories/${story.id}`
+    }))
+
+    if (notifications.length > 0) {
+      const { error } = await supabase
+        .from('notifications')
+        .insert(notifications)
+
+      if (error) {
+        console.error('Error creating new story notifications:', error)
+      }
+    }
+  } catch (error) {
+    console.error('Error in sendNewStoryNotifications:', error)
+    throw error
   }
 }

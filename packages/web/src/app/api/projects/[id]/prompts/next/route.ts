@@ -64,6 +64,10 @@ export async function GET(
         parent_story:parent_story_id (
           id,
           title
+        ),
+        creator_profile:created_by (
+          name,
+          email
         )
       `)
       .eq('project_id', projectId)
@@ -83,8 +87,10 @@ export async function GET(
           type: 'user',
           priority: userPrompt.priority,
           created_by: userPrompt.created_by,
-          creator_name: userPrompt.creator?.user_metadata?.full_name || 
-                       userPrompt.creator?.email || 
+          creator_name: userPrompt.creator_profile?.name ||
+                       userPrompt.creator_profile?.email ||
+                       userPrompt.creator?.user_metadata?.full_name ||
+                       userPrompt.creator?.email ||
                        'Unknown User',
           parent_story_id: userPrompt.parent_story_id,
           parent_story_title: userPrompt.parent_story?.title,

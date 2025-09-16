@@ -325,9 +325,10 @@ export default function StoryDetailPage() {
       {/* Interactions */}
       <StoryInteractions
         storyId={storyId}
+        projectId={projectId}
         userRole={userRole}
         isProjectOwner={isProjectOwner}
-        isStoryteller={false}
+        isStoryteller={story?.storyteller_id === user?.id}
       />
     </div>
   )
