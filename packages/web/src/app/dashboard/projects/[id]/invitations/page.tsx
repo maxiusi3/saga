@@ -113,6 +113,9 @@ export default function InvitationsPage() {
           if (confirm('You need more seats to send this invitation. Would you like to purchase more seats now?')) {
             window.location.href = error.purchaseUrl || '/dashboard/purchase'
           }
+        } else if (response.status === 409) {
+          // 处理冲突错误（如storyteller唯一性）
+          toast.error(error.error || 'Invitation conflict')
         } else {
           toast.error(error.error || 'Failed to send invitation')
         }

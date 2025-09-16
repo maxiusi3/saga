@@ -357,6 +357,8 @@ async function createUserPromptFromFollowup(
 
 // 辅助函数：发送交互通知
 async function sendInteractionNotification(supabase: any, interaction: any) {
+  // 使用admin客户端确保有足够权限创建通知
+  const adminSupabase = getSupabaseAdmin()
   try {
     // 获取故事信息（按实际表结构：stories.storyteller_id 为讲述者）
     const { data: story, error: storyError } = await supabase
@@ -384,7 +386,7 @@ async function sendInteractionNotification(supabase: any, interaction: any) {
       senderName = senderProfile?.name || senderProfile?.email || senderName
     } catch {}
 
-    const { error } = await supabase
+    const { error } = await adminSupabase
       .from('notifications')
       .insert({
         recipient_id: story.storyteller_id,

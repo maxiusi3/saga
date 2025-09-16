@@ -56,8 +56,8 @@ export function calculateUserPermissions(
         canRemoveMembers: true,
         canDeleteProject: false, // Only project owner can delete
         canCreateStories: false,
-        canEditStoryTitles: true,
-        canEditStoryTranscripts: true,
+        canEditStoryTitles: false, // Cannot edit story titles (only owner can)
+        canEditStoryTranscripts: false, // Cannot edit transcripts (only owner can)
         canDeleteStories: true,
         canViewAllStories: true,
         canAddComments: true,
@@ -77,11 +77,11 @@ export function calculateUserPermissions(
         canRemoveMembers: false,
         canDeleteProject: false,
         canCreateStories: true, // Primary function - can record stories
-        canEditStoryTitles: false, // Cannot edit their own story titles
-        canEditStoryTranscripts: false, // Cannot edit transcripts
+        canEditStoryTitles: true, // Can edit their own story titles
+        canEditStoryTranscripts: true, // Can edit transcripts
         canDeleteStories: false,
         canViewAllStories: true, // Can view all stories in the project
-        canAddComments: false, // Cannot add comments - respond via recording new stories
+        canAddComments: true, // Can add comments
         canAskFollowUpQuestions: false, // Cannot ask follow-up questions
         canViewComments: true,
         canEditAIContent: false,
@@ -112,22 +112,24 @@ export function calculateUserPermissions(
 
   // 如果是项目所有者，额外获得管理权限
   if (isProjectOwner) {
-    return {
+    const ownerPermissions = {
       ...basePermissions,
       canEditProjectSettings: true,
       canInviteMembers: true,
       canRemoveMembers: true,
       canDeleteProject: true,
-      canEditStoryTitles: true,
-      canEditStoryTranscripts: true,
+      canEditStoryTitles: true, // Owner can always edit story titles
+      canEditStoryTranscripts: true, // Owner can always edit transcripts
       canDeleteStories: true,
       canViewAllStories: true,
       canAddComments: true,
-      canAskFollowUpQuestions: true,
+      canAskFollowUpQuestions: userRole === 'storyteller' ? false : true, // Storyteller owner still can't ask follow-ups
       canViewComments: true,
       canEditAIContent: true,
       canViewAIContent: true,
     }
+
+    return ownerPermissions
   }
 
   return basePermissions

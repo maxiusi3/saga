@@ -46,9 +46,9 @@ export default function StoryDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // 用户权限 - 这里简化处理，实际应该从项目角色获取
-  const userRole = 'facilitator' // TODO: 从项目成员关系获取实际角色
-  const isProjectOwner = true // TODO: 从项目数据获取
+  // 用户权限状态
+  const [userRole, setUserRole] = useState<string>('')
+  const [isProjectOwner, setIsProjectOwner] = useState(false)
   
   const audioRef = useRef<HTMLAudioElement>(null)
 
@@ -87,7 +87,36 @@ export default function StoryDetailPage() {
     }
 
     loadStory()
-  }, [storyId])
+    loadUserRole()
+  }, [storyId, projectId, user])
+
+  const loadUserRole = async () => {
+    if (!user || !projectId) return
+
+    try {
+      // 获取项目信息和用户角色
+      const response = await fetch(`/api/projects/${projectId}/overview`)
+      if (response.ok) {
+        const data = await response.json()
+
+        // 检查是否是项目所有者
+        const isOwner = data.project?.facilitator_id === user.id
+        setIsProjectOwner(isOwner)
+
+        // 获取用户在项目中的角色
+        const userMember = data.members?.find((member: any) => member.user_id === user.id)
+        if (userMember) {
+          setUserRole(userMember.role)
+        } else if (isOwner) {
+          setUserRole('facilitator')
+        }
+      }
+    } catch (error) {
+      console.error('Error loading user role:', error)
+      // 默认设置为facilitator以避免权限问题
+      setUserRole('facilitator')
+    }
+  }
 
   const togglePlayback = () => {
     if (!audioRef.current) return

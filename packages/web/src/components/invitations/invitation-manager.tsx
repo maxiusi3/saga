@@ -97,6 +97,10 @@ export function InvitationManager({ projectId, className }: InvitationManagerPro
             window.location.href = errorData.purchaseUrl || '/dashboard/purchase'
           }
           return
+        } else if (response.status === 409) {
+          // 处理冲突错误（如storyteller唯一性）
+          toast.error(errorData.error || 'Invitation conflict')
+          return
         }
 
         throw new Error(errorData.error || 'Failed to send invitation')

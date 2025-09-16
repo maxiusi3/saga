@@ -169,6 +169,8 @@ export async function POST(
 
 // 辅助函数：发送新故事通知给所有 facilitators
 async function sendNewStoryNotifications(supabase: any, story: any, storytellerId: string, respondingToPromptId?: string) {
+  // 使用admin客户端确保有足够权限创建通知
+  const adminSupabase = getSupabaseAdmin()
   try {
     // 获取项目信息
     const { data: project } = await supabase
@@ -252,7 +254,7 @@ async function sendNewStoryNotifications(supabase: any, story: any, storytellerI
     })
 
     if (notifications.length > 0) {
-      const { error } = await supabase
+      const { error } = await adminSupabase
         .from('notifications')
         .insert(notifications)
 
