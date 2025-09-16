@@ -94,8 +94,22 @@ export default function StoryDetailPage() {
     if (!user || !projectId) return
 
     try {
+      // 获取认证token
+      const supabase = createClientSupabase()
+      const { data: { session } } = await supabase.auth.getSession()
+
+      // 构建认证头
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`
+      }
+
       // 获取项目信息和用户角色
-      const response = await fetch(`/api/projects/${projectId}/overview`)
+      const response = await fetch(`/api/projects/${projectId}/overview`, {
+        credentials: 'include',
+        headers
+      })
+
       if (response.ok) {
         const data = await response.json()
 
