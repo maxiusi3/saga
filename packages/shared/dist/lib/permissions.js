@@ -67,27 +67,38 @@ function calculateUserPermissions(userRole, isProjectOwner = false) {
             };
             break;
     }
-    // 如果是项目所有者，额外获得管理权限
+    // 如果是项目所有者，叠加owner权限（角色权限 OR owner权限）
     if (isProjectOwner) {
-        const ownerPermissions = {
+        // Owner权限矩阵：A=N, B=N, C=N, D=Y, E=Y, F=N
+        const ownerBasePermissions = {
+            canCreateStories: false, // A=N
+            canAddComments: false, // B=N
+            canAskFollowUpQuestions: false, // C=N
+            canEditStoryTitles: true, // D=Y
+            canEditStoryTranscripts: true, // E=Y
+            canViewComments: false, // F=N (这里应该是canRespondToFollowups，但我们用canViewComments代替)
+        };
+        // 叠加逻辑：角色权限 OR owner权限
+        const combinedPermissions = {
             ...basePermissions,
+            // 管理权限：owner总是有这些权限
             canEditProjectSettings: true,
             canInviteMembers: true,
             canRemoveMembers: true,
             canDeleteProject: true,
-            canEditStoryTitles: true, // Owner can always edit story titles
-            canEditStoryTranscripts: true, // Owner can always edit transcripts
             canDeleteStories: true,
             canViewAllStories: true,
-            // Owner权限矩阵：A=N, B=N, C=N, D=Y, E=Y, F=N
-            canCreateStories: false, // Owner cannot create stories
-            canAddComments: false, // Owner cannot add comments
-            canAskFollowUpQuestions: false, // Owner cannot ask follow-up questions
-            canViewComments: true,
             canEditAIContent: true,
             canViewAIContent: true,
+            canViewComments: true,
+            // 叠加权限：任何一个为true，结果就是true
+            canCreateStories: basePermissions.canCreateStories || ownerBasePermissions.canCreateStories,
+            canAddComments: basePermissions.canAddComments || ownerBasePermissions.canAddComments,
+            canAskFollowUpQuestions: basePermissions.canAskFollowUpQuestions || ownerBasePermissions.canAskFollowUpQuestions,
+            canEditStoryTitles: basePermissions.canEditStoryTitles || ownerBasePermissions.canEditStoryTitles,
+            canEditStoryTranscripts: basePermissions.canEditStoryTranscripts || ownerBasePermissions.canEditStoryTranscripts,
         };
-        return ownerPermissions;
+        return combinedPermissions;
     }
     return basePermissions;
 }

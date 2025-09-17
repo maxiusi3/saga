@@ -45,6 +45,8 @@ export default function StoryDetailPage() {
   const [playbackSpeed, setPlaybackSpeed] = useState(1)
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [editedTitle, setEditedTitle] = useState('')
+  const [isEditingTranscript, setIsEditingTranscript] = useState(false)
+  const [editedTranscript, setEditedTranscript] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -85,7 +87,7 @@ export default function StoryDetailPage() {
           console.warn('Failed to fetch storyteller profile:', profileError)
         }
 
-        setStory({
+        const storyData = {
           id: story.id,
           title: story.title || 'Untitled Story',
           timestamp: story.created_at,
@@ -96,8 +98,10 @@ export default function StoryDetailPage() {
           transcript: story.transcript || story.content || 'No transcript available',
           photo_url: '',
           type: 'story'
-        })
-        setEditedTitle(story.title || 'Untitled Story')
+        }
+        setStory(storyData)
+        setEditedTitle(storyData.title)
+        setEditedTranscript(storyData.transcript)
 
         // Interactions are loaded within the StoryInteractions component
         setLoading(false)
@@ -193,15 +197,54 @@ export default function StoryDetailPage() {
     }
 
     try {
-      // TODO: Update story title in Supabase
-      setStory({ ...story, title: editedTitle })
+      const supabase = createClientSupabase()
+      const { error } = await supabase
+        .from('stories')
+        .update({ title: editedTitle.trim() })
+        .eq('id', storyId)
+
+      if (error) {
+        console.error('Error updating title:', error)
+        toast.error('Failed to update title')
+        return
+      }
+
+      setStory({ ...story, title: editedTitle.trim() })
       setIsEditingTitle(false)
+      toast.success('Title updated successfully')
     } catch (error) {
       console.error('Error updating title:', error)
+      toast.error('Failed to update title')
     }
   }
 
+  const saveTranscript = async () => {
+    if (!story || editedTranscript.trim() === story.transcript) {
+      setIsEditingTranscript(false)
+      return
+    }
 
+    try {
+      const supabase = createClientSupabase()
+      const { error } = await supabase
+        .from('stories')
+        .update({ transcript: editedTranscript.trim() })
+        .eq('id', storyId)
+
+      if (error) {
+        console.error('Error updating transcript:', error)
+        toast.error('Failed to update transcript')
+        return
+      }
+
+      setStory({ ...story, transcript: editedTranscript.trim() })
+      setIsEditingTranscript(false)
+      toast.success('Transcript updated successfully')
+    } catch (error) {
+      console.error('Error updating transcript:', error)
+      toast.error('Failed to update transcript')
+    }
+  }
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
@@ -385,18 +428,40 @@ export default function StoryDetailPage() {
           <div className="flex justify-between items-center">
             <h3 className="font-semibold text-foreground">Transcript</h3>
             {canUserPerformAction('canEditStoryTranscripts', userRole as any, isProjectOwner) && (
-              <Button variant="outline" size="sm">
-                <Edit className="h-4 w-4 mr-2" />
-                Edit
-              </Button>
+              <div className="flex space-x-2">
+                {isEditingTranscript ? (
+                  <>
+                    <Button variant="outline" size="sm" onClick={saveTranscript}>
+                      Save
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => setIsEditingTranscript(false)}>
+                      Cancel
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="outline" size="sm" onClick={() => setIsEditingTranscript(true)}>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit
+                  </Button>
+                )}
+              </div>
             )}
           </div>
-          
-          <div className="prose prose-foreground max-w-none">
-            <div className="whitespace-pre-wrap text-foreground leading-relaxed">
-              {story.transcript}
+
+          {isEditingTranscript ? (
+            <Textarea
+              value={editedTranscript}
+              onChange={(e) => setEditedTranscript(e.target.value)}
+              className="min-h-[200px] text-foreground leading-relaxed"
+              placeholder="Enter transcript..."
+            />
+          ) : (
+            <div className="prose prose-foreground max-w-none">
+              <div className="whitespace-pre-wrap text-foreground leading-relaxed">
+                {story.transcript}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </Card>
 

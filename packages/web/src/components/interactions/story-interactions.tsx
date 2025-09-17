@@ -235,8 +235,8 @@ export function StoryInteractions({
 
         <Separator />
 
-        {/* Add New Interactions - Only for facilitators */}
-        {!isStoryteller && (
+        {/* Add New Interactions */}
+        {(canAddComments || canAskFollowups) && (
           <div className="space-y-4">
             {/* Comment Section */}
             {canAddComments && (
