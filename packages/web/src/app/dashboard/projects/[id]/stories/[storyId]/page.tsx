@@ -22,6 +22,7 @@ interface Story {
   id: string
   title: string
   timestamp: string
+  storyteller_id: string
   storyteller_name: string
   storyteller_avatar?: string
   audio_url: string
@@ -92,6 +93,7 @@ export default function StoryDetailPage() {
           id: story.id,
           title: story.title || 'Untitled Story',
           timestamp: story.created_at,
+          storyteller_id: story.storyteller_id, // 添加这个关键字段！
           storyteller_name: storytellerName,
           storyteller_avatar: storytellerAvatar,
           audio_url: story.audio_url || '',
