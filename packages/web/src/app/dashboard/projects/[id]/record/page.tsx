@@ -65,8 +65,19 @@ export default function ProjectRecordPage() {
       if (followupId) {
         // 获取追问信息
         try {
+          // 获取认证token
+          const { createClientSupabase } = await import('@/lib/supabase')
+          const supabase = createClientSupabase()
+          const { data: { session } } = await supabase.auth.getSession()
+
+          const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+          if (session?.access_token) {
+            headers['Authorization'] = `Bearer ${session.access_token}`
+          }
+
           const response = await fetch(`/api/interactions/${followupId}`, {
-            credentials: 'include'
+            credentials: 'include',
+            headers
           })
           if (response.ok) {
             const interaction = await response.json()
@@ -270,11 +281,19 @@ export default function ProjectRecordPage() {
       // 如果这是回应追问，更新追问状态
       if (followupInteraction) {
         try {
+          // 获取认证token
+          const { createClientSupabase } = await import('@/lib/supabase')
+          const supabase = createClientSupabase()
+          const { data: { session } } = await supabase.auth.getSession()
+
+          const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+          if (session?.access_token) {
+            headers['Authorization'] = `Bearer ${session.access_token}`
+          }
+
           const response = await fetch(`/api/interactions/${followupInteraction.id}/answer`, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers,
             credentials: 'include',
             body: JSON.stringify({
               answer_story_id: story.id
