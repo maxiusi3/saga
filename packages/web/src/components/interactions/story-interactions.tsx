@@ -205,8 +205,12 @@ export function StoryInteractions({
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          // 传递追问ID到录音页面
-                          window.location.href = `/dashboard/projects/${projectId}/record?followup=${interaction.id}`
+                          // 传递追问ID和内容到录音页面
+                          const params = new URLSearchParams({
+                            followup: interaction.id,
+                            content: interaction.content
+                          })
+                          window.location.href = `/dashboard/projects/${projectId}/record?${params.toString()}`
                         }}
                         className="h-7 px-2"
                       >

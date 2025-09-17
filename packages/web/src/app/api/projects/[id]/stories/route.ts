@@ -177,6 +177,26 @@ export async function POST(
       return NextResponse.json({ error: 'Failed to create story' }, { status: 500 })
     }
 
+    // 如果这是回应追问，更新追问状态
+    if (body.followup_interaction_id) {
+      try {
+        const { error: updateError } = await db
+          .from('interactions')
+          .update({
+            answered_at: new Date().toISOString(),
+            answer_story_id: story.id
+          })
+          .eq('id', body.followup_interaction_id)
+          .eq('type', 'followup')
+
+        if (updateError) {
+          console.error('Failed to update followup status:', updateError)
+        }
+      } catch (followupError) {
+        console.error('Error updating followup status:', followupError)
+      }
+    }
+
     // 发送通知给所有项目的 facilitators
     try {
       await sendNewStoryNotifications(db, story, user.id, body.responding_to_prompt_id)
