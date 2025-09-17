@@ -214,6 +214,12 @@ export function StoryInteractions({
                         <Mic className="h-3 w-3 mr-1" /> Record Answer
                       </Button>
                     )}
+                    {/* Debug info for followup button */}
+                    {process.env.NODE_ENV === 'development' && interaction.type === 'followup' && (
+                      <span className="text-xs bg-yellow-200 px-1 rounded">
+                        isStoryteller: {String(isStoryteller)}
+                      </span>
+                    )}
                     <span className="text-xs text-muted-foreground">
                       {formatTimestamp(interaction.created_at)}
                     </span>

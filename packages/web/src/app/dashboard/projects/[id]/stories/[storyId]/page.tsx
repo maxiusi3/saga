@@ -158,15 +158,35 @@ export default function StoryDetailPage() {
     }
   }
 
-  const togglePlayback = () => {
+  const togglePlayback = async () => {
     if (!audioRef.current) return
 
-    if (isPlaying) {
-      audioRef.current.pause()
-    } else {
-      audioRef.current.play()
+    try {
+      if (isPlaying) {
+        audioRef.current.pause()
+        setIsPlaying(false)
+      } else {
+        // 确保音频已经加载
+        if (audioRef.current.readyState < 2) {
+          console.log('Audio not ready, loading...')
+          await new Promise((resolve) => {
+            const onCanPlay = () => {
+              audioRef.current?.removeEventListener('canplay', onCanPlay)
+              resolve(void 0)
+            }
+            audioRef.current?.addEventListener('canplay', onCanPlay)
+            audioRef.current?.load()
+          })
+        }
+
+        await audioRef.current.play()
+        setIsPlaying(true)
+      }
+    } catch (error) {
+      console.error('Audio playback error:', error)
+      setIsPlaying(false)
+      toast.error('Failed to play audio')
     }
-    setIsPlaying(!isPlaying)
   }
 
   const handleTimeUpdate = () => {
@@ -408,14 +428,19 @@ export default function StoryDetailPage() {
               src={story.audio_url}
               onTimeUpdate={handleTimeUpdate}
               onEnded={() => setIsPlaying(false)}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
               onError={(e) => {
                 console.error('Audio error:', e)
                 console.error('Audio URL:', story.audio_url)
                 setIsPlaying(false)
+                toast.error('Audio failed to load')
               }}
               onLoadStart={() => console.log('Audio loading started')}
               onCanPlay={() => console.log('Audio can play')}
               onLoadedData={() => console.log('Audio data loaded')}
+              onWaiting={() => console.log('Audio waiting for data')}
+              onStalled={() => console.log('Audio stalled')}
               preload="metadata"
             />
           </div>
@@ -473,6 +498,18 @@ export default function StoryDetailPage() {
         isProjectOwner={isProjectOwner}
         isStoryteller={story?.storyteller_id === user?.id}
       />
+
+      {/* Debug info - remove in production */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="mt-4 p-4 bg-gray-100 text-xs">
+          <p>Debug Info:</p>
+          <p>story.storyteller_id: {story?.storyteller_id}</p>
+          <p>user.id: {user?.id}</p>
+          <p>isStoryteller: {String(story?.storyteller_id === user?.id)}</p>
+          <p>userRole: {userRole}</p>
+          <p>isProjectOwner: {String(isProjectOwner)}</p>
+        </div>
+      )}
     </div>
   )
 }
