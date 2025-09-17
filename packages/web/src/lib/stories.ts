@@ -99,6 +99,7 @@ export class StoryService {
           ai_summary: storyData.ai_summary,
           ai_follow_up_questions: storyData.ai_follow_up_questions,
           ai_confidence_score: storyData.ai_confidence_score,
+          followup_interaction_id: storyData.followup_interaction_id,
         })
       })
       if (!resp.ok) return null
