@@ -200,26 +200,33 @@ export function StoryInteractions({
                       {interaction.facilitator_name}
                     </span>
                     {getInteractionBadge(interaction.type, interaction.answered_at)}
-                    {interaction.type === 'followup' && isStoryteller && (
+                    {interaction.type === 'followup' && isStoryteller && !interaction.answered_at && (
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          // 根据需求，storyteller 点击 "Record Answer" 应该跳转到录音页面
-                          // 系统会自动将 follow-up question 作为下一个 prompt 提供
-                          window.location.href = `/dashboard/projects/${projectId}/record`
+                          // 传递追问ID到录音页面
+                          window.location.href = `/dashboard/projects/${projectId}/record?followup=${interaction.id}`
                         }}
                         className="h-7 px-2"
                       >
                         <Mic className="h-3 w-3 mr-1" /> Record Answer
                       </Button>
                     )}
-                    {/* Debug info for followup button */}
-                    {interaction.type === 'followup' && (
-                      <span className="text-xs bg-yellow-200 px-1 rounded">
-                        isStoryteller: {String(isStoryteller)}
-                      </span>
+                    {interaction.type === 'followup' && interaction.answered_at && interaction.answer_story_id && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          // 跳转到回答故事
+                          window.location.href = `/dashboard/projects/${projectId}/stories/${interaction.answer_story_id}`
+                        }}
+                        className="h-7 px-2"
+                      >
+                        View Answer
+                      </Button>
                     )}
+
                     <span className="text-xs text-muted-foreground">
                       {formatTimestamp(interaction.created_at)}
                     </span>

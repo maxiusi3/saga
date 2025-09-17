@@ -62,7 +62,6 @@ export default function StoryDetailPage() {
       try {
         // Load real story data from Supabase
         const story = await storyService.getStoryById(storyId)
-        console.log('Raw story data from database:', story)
         if (!story) {
           setError('Story not found')
           setLoading(false)
@@ -502,21 +501,7 @@ export default function StoryDetailPage() {
         isStoryteller={story?.storyteller_id === user?.id}
       />
 
-      {/* Debug info - temporary */}
-      <div className="mt-4 p-4 bg-gray-100 text-xs">
-        <p>Debug Info:</p>
-        <p>story.storyteller_id: {story?.storyteller_id}</p>
-        <p>user.id: {user?.id}</p>
-        <p>isStoryteller: {String(story?.storyteller_id === user?.id)}</p>
-        <p>userRole: {userRole}</p>
-        <p>isProjectOwner: {String(isProjectOwner)}</p>
-        <details className="mt-2">
-          <summary>Raw story object:</summary>
-          <pre className="mt-1 text-xs overflow-auto max-h-40">
-            {JSON.stringify(story, null, 2)}
-          </pre>
-        </details>
-      </div>
+
     </div>
   )
 }

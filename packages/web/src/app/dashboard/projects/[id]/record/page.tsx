@@ -28,9 +28,10 @@ export default function ProjectRecordPage() {
   const router = useRouter()
   const { user } = useAuthStore()
   const projectId = params.id as string
-  
+
   // Story states
   const [currentPrompt, setCurrentPrompt] = useState<StoryPrompt | null>(null)
+  const [followupInteraction, setFollowupInteraction] = useState<any>(null)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [recordingDuration, setRecordingDuration] = useState(0)
@@ -56,8 +57,49 @@ export default function ProjectRecordPage() {
 
   // Load initial prompt and check AI service status
   useEffect(() => {
-    const prompt = getNextPrompt()
-    setCurrentPrompt(prompt)
+    const loadPromptAndFollowup = async () => {
+      // 检查URL参数中是否有追问ID
+      const urlParams = new URLSearchParams(window.location.search)
+      const followupId = urlParams.get('followup')
+
+      if (followupId) {
+        // 获取追问信息
+        try {
+          const response = await fetch(`/api/interactions/${followupId}`)
+          if (response.ok) {
+            const interaction = await response.json()
+            setFollowupInteraction(interaction)
+
+            // 创建基于追问的prompt
+            const followupPrompt: StoryPrompt = {
+              id: `followup-${followupId}`,
+              chapter: 'Follow-up Response',
+              chapterNumber: 0,
+              category: 'Response',
+              text: interaction.content,
+              estimatedTime: 5
+            }
+            setCurrentPrompt(followupPrompt)
+          } else {
+            console.error('Failed to fetch followup interaction')
+            // 回退到默认prompt
+            const prompt = getNextPrompt()
+            setCurrentPrompt(prompt)
+          }
+        } catch (error) {
+          console.error('Error fetching followup interaction:', error)
+          // 回退到默认prompt
+          const prompt = getNextPrompt()
+          setCurrentPrompt(prompt)
+        }
+      } else {
+        // 没有追问ID，使用默认prompt
+        const prompt = getNextPrompt()
+        setCurrentPrompt(prompt)
+      }
+    }
+
+    loadPromptAndFollowup()
 
     // Check AI service status
     const status = aiService.getServiceStatus()
@@ -221,6 +263,27 @@ export default function ProjectRecordPage() {
 
       if (!story) {
         throw new Error('Failed to create story')
+      }
+
+      // 如果这是回应追问，更新追问状态
+      if (followupInteraction) {
+        try {
+          const response = await fetch(`/api/interactions/${followupInteraction.id}/answer`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              answer_story_id: story.id
+            })
+          })
+
+          if (!response.ok) {
+            console.error('Failed to update followup status')
+          }
+        } catch (error) {
+          console.error('Error updating followup status:', error)
+        }
       }
 
       // Show success message
