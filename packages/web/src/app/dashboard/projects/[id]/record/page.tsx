@@ -65,7 +65,9 @@ export default function ProjectRecordPage() {
       if (followupId) {
         // 获取追问信息
         try {
-          const response = await fetch(`/api/interactions/${followupId}`)
+          const response = await fetch(`/api/interactions/${followupId}`, {
+            credentials: 'include'
+          })
           if (response.ok) {
             const interaction = await response.json()
             setFollowupInteraction(interaction)
@@ -273,6 +275,7 @@ export default function ProjectRecordPage() {
             headers: {
               'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({
               answer_story_id: story.id
             })
