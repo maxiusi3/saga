@@ -177,7 +177,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     
     try {
       const response = await apiClient.stories.list(projectId, params)
-      const stories = response.data.data.stories
+      const stories = response.data
 
       set({
         stories,

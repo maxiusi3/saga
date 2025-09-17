@@ -59,13 +59,7 @@ export async function GET(
 
     const { data: stories, error } = await db
       .from('stories')
-      .select(`
-        *,
-        storyteller:storyteller_id (
-          id,
-          email
-        )
-      `)
+      .select('*')
       .eq('project_id', projectId)
       .order('created_at', { ascending: false })
 
