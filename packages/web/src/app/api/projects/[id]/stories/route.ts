@@ -179,8 +179,16 @@ export async function POST(
 
     // 如果这是回应追问，更新追问状态
     if (body.followup_interaction_id) {
+      console.log('[Story Creation] Updating followup interaction:', {
+        followup_interaction_id: body.followup_interaction_id,
+        answer_story_id: story.id,
+        user_id: user.id
+      })
+
       try {
-        const { error: updateError } = await db
+        // 使用admin客户端来确保有权限更新interactions
+        const admin = getSupabaseAdmin()
+        const { error: updateError } = await admin
           .from('interactions')
           .update({
             answered_at: new Date().toISOString(),
@@ -190,11 +198,15 @@ export async function POST(
           .eq('type', 'followup')
 
         if (updateError) {
-          console.error('Failed to update followup status:', updateError)
+          console.error('[Story Creation] Failed to update followup status:', updateError)
+        } else {
+          console.log('[Story Creation] Successfully updated followup status')
         }
       } catch (followupError) {
-        console.error('Error updating followup status:', followupError)
+        console.error('[Story Creation] Error updating followup status:', followupError)
       }
+    } else {
+      console.log('[Story Creation] No followup_interaction_id provided')
     }
 
     // 发送通知给所有项目的 facilitators

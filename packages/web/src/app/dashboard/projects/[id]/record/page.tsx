@@ -253,6 +253,9 @@ export default function ProjectRecordPage() {
       // 如果这是回应追问，添加追问ID
       if (followupInteraction?.id) {
         storyData.followup_interaction_id = followupInteraction.id
+        console.log('[Record Page] Adding followup_interaction_id to story:', followupInteraction.id)
+      } else {
+        console.log('[Record Page] No followup interaction found')
       }
 
       const story = await storyService.createStory(storyData)
