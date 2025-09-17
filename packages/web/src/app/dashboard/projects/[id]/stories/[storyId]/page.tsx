@@ -499,17 +499,15 @@ export default function StoryDetailPage() {
         isStoryteller={story?.storyteller_id === user?.id}
       />
 
-      {/* Debug info - remove in production */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mt-4 p-4 bg-gray-100 text-xs">
-          <p>Debug Info:</p>
-          <p>story.storyteller_id: {story?.storyteller_id}</p>
-          <p>user.id: {user?.id}</p>
-          <p>isStoryteller: {String(story?.storyteller_id === user?.id)}</p>
-          <p>userRole: {userRole}</p>
-          <p>isProjectOwner: {String(isProjectOwner)}</p>
-        </div>
-      )}
+      {/* Debug info - temporary */}
+      <div className="mt-4 p-4 bg-gray-100 text-xs">
+        <p>Debug Info:</p>
+        <p>story.storyteller_id: {story?.storyteller_id}</p>
+        <p>user.id: {user?.id}</p>
+        <p>isStoryteller: {String(story?.storyteller_id === user?.id)}</p>
+        <p>userRole: {userRole}</p>
+        <p>isProjectOwner: {String(isProjectOwner)}</p>
+      </div>
     </div>
   )
 }
