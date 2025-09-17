@@ -122,8 +122,10 @@ export function calculateUserPermissions(
       canEditStoryTranscripts: true, // Owner can always edit transcripts
       canDeleteStories: true,
       canViewAllStories: true,
-      canAddComments: true,
-      canAskFollowUpQuestions: userRole === 'storyteller' ? false : true, // Storyteller owner still can't ask follow-ups
+      // Owner权限矩阵：A=N, B=N, C=N, D=Y, E=Y, F=N
+      canCreateStories: false, // Owner cannot create stories
+      canAddComments: false, // Owner cannot add comments
+      canAskFollowUpQuestions: false, // Owner cannot ask follow-up questions
       canViewComments: true,
       canEditAIContent: true,
       canViewAIContent: true,

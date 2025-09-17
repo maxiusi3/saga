@@ -59,7 +59,13 @@ export async function GET(
 
     const { data: stories, error } = await db
       .from('stories')
-      .select('*')
+      .select(`
+        *,
+        storyteller:storyteller_id (
+          id,
+          email
+        )
+      `)
       .eq('project_id', projectId)
       .order('created_at', { ascending: false })
 
@@ -68,7 +74,32 @@ export async function GET(
       return NextResponse.json({ stories: [] })
     }
 
-    return NextResponse.json({ stories: stories || [] })
+    // 获取storyteller的用户资料信息
+    const storytellerIds = Array.from(new Set(stories?.map((story: any) => story.storyteller_id).filter(Boolean)))
+    let profilesMap: Record<string, { name?: string | null; email?: string | null; avatar_url?: string | null }> = {}
+
+    if (storytellerIds.length > 0) {
+      const { data: profiles, error: pErr } = await db
+        .from('user_profiles')
+        .select('id, name, email, avatar_url')
+        .in('id', storytellerIds)
+
+      if (!pErr && profiles) {
+        profilesMap = Object.fromEntries(profiles.map((p: any) => [p.id, p]))
+      }
+    }
+
+    // 为每个story添加storyteller信息
+    const storiesWithProfiles = stories?.map((story: any) => {
+      const profile = profilesMap[story.storyteller_id]
+      return {
+        ...story,
+        storyteller_name: profile?.name || profile?.email || 'Unknown User',
+        storyteller_avatar: profile?.avatar_url || null
+      }
+    })
+
+    return NextResponse.json({ stories: storiesWithProfiles || [] })
   } catch (err) {
     console.error('GET /api/projects/[id]/stories unexpected error:', err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

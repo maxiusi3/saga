@@ -15,6 +15,7 @@ import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { createClientSupabase } from '@/lib/supabase'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
+import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
 
 interface Story {
@@ -64,12 +65,32 @@ export default function StoryDetailPage() {
           return
         }
 
+        // 获取storyteller的用户资料
+        const supabase = createClientSupabase()
+        let storytellerName = 'Unknown User'
+        let storytellerAvatar = ''
+
+        try {
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('name, email, avatar_url')
+            .eq('id', story.storyteller_id)
+            .single()
+
+          if (profile) {
+            storytellerName = profile.name || profile.email || 'Unknown User'
+            storytellerAvatar = profile.avatar_url || ''
+          }
+        } catch (profileError) {
+          console.warn('Failed to fetch storyteller profile:', profileError)
+        }
+
         setStory({
           id: story.id,
           title: story.title || 'Untitled Story',
           timestamp: story.created_at,
-          storyteller_name: 'Storyteller', // TODO: Get from user profile
-          storyteller_avatar: '',
+          storyteller_name: storytellerName,
+          storyteller_avatar: storytellerAvatar,
           audio_url: story.audio_url || '',
           audio_duration: story.audio_duration || 0,
           transcript: story.transcript || story.content || 'No transcript available',
@@ -254,9 +275,11 @@ export default function StoryDetailPage() {
         ) : (
           <div className="flex-1 flex items-center space-x-2">
             <h1 className="text-3xl font-bold text-foreground">{story.title}</h1>
-            <Button variant="ghost" size="icon" onClick={() => setIsEditingTitle(true)}>
-              <Edit className="h-4 w-4" />
-            </Button>
+            {canUserPerformAction('canEditStoryTitles', userRole as any, isProjectOwner) && (
+              <Button variant="ghost" size="icon" onClick={() => setIsEditingTitle(true)}>
+                <Edit className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         )}
       </div>
@@ -342,6 +365,15 @@ export default function StoryDetailPage() {
               src={story.audio_url}
               onTimeUpdate={handleTimeUpdate}
               onEnded={() => setIsPlaying(false)}
+              onError={(e) => {
+                console.error('Audio error:', e)
+                console.error('Audio URL:', story.audio_url)
+                setIsPlaying(false)
+              }}
+              onLoadStart={() => console.log('Audio loading started')}
+              onCanPlay={() => console.log('Audio can play')}
+              onLoadedData={() => console.log('Audio data loaded')}
+              preload="metadata"
             />
           </div>
         </Card>
@@ -352,10 +384,12 @@ export default function StoryDetailPage() {
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="font-semibold text-foreground">Transcript</h3>
-            <Button variant="outline" size="sm">
-              <Edit className="h-4 w-4 mr-2" />
-              Edit
-            </Button>
+            {canUserPerformAction('canEditStoryTranscripts', userRole as any, isProjectOwner) && (
+              <Button variant="outline" size="sm">
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+            )}
           </div>
           
           <div className="prose prose-foreground max-w-none">

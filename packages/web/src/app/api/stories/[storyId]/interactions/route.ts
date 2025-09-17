@@ -177,13 +177,31 @@ export async function POST(
     const isOwner = projectRow?.facilitator_id === user.id
     const isActiveMember = !!roleRow && roleRow.status === 'active'
     const isFacilitator = isOwner || (roleRow?.role === 'facilitator' && isActiveMember)
+    const isStoryteller = roleRow?.role === 'storyteller' && isActiveMember
 
-    if (!isFacilitator) {
+    // 根据权限矩阵检查权限
+    // facilitator: B=Y, C=Y (可以评论和追问)
+    // storyteller: B=Y, C=N (可以评论，不能追问)
+    // owner: B=N, C=N (不能评论和追问)
+
+    let hasPermission = false
+    if (type === 'comment') {
+      // 评论权限：facilitator=Y, storyteller=Y, owner=N
+      hasPermission = isFacilitator || isStoryteller
+      if (isOwner && !isFacilitator && !isStoryteller) {
+        hasPermission = false // owner单独时不能评论
+      }
+    } else if (type === 'followup') {
+      // 追问权限：facilitator=Y, storyteller=N, owner=N
+      hasPermission = isFacilitator && !isOwner
+    }
+
+    if (!hasPermission) {
       // 允许故事讲述者对“自己的故事”回复评论（若需求如此，可放开）
       // 只有 facilitators 可以创建评论和追问
       // Storytellers 通过录制新故事来回应，而不是通过评论界面
-      console.warn('[POST /interactions] forbidden - only facilitators can create interactions', {
-        isOwner, roleRow, isActiveMember, storytellerId: storyRow.storyteller_id, userId: user.id, type
+      console.warn('[POST /interactions] forbidden - insufficient permissions', {
+        isOwner, isFacilitator, isStoryteller, roleRow, type, userId: user.id
       })
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
