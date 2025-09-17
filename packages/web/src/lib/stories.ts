@@ -28,6 +28,7 @@ export interface CreateStoryData {
   ai_summary?: string
   ai_follow_up_questions?: string[]
   ai_confidence_score?: number
+  followup_interaction_id?: string
 }
 
 export interface UpdateStoryData {

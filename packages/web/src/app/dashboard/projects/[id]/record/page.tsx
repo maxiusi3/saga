@@ -329,51 +329,7 @@ export default function ProjectRecordPage() {
           <p className="text-muted-foreground">Share your memories with AI-powered guidance</p>
         </div>
 
-        {/* Current Prompt */}
-        <Card className="p-6 bg-gradient-to-r from-primary/10 to-primary/10 border-2 border-primary/20">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Badge variant="primary">
-                  {currentPrompt.category}
-                </Badge>
-                <Badge variant="outline">
-                  ~{currentPrompt.estimatedTime} min
-                </Badge>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={playPrompt}
-              >
-                <Volume2 className="h-4 w-4 mr-2" />
-                Listen to Prompt
-              </Button>
-            </div>
-            
-            <div className="bg-background/50 rounded-lg p-4">
-              <p className="text-lg text-foreground/90 leading-relaxed">
-                {currentPrompt.text}
-              </p>
-            </div>
 
-            {currentPrompt.followUpSuggestions && currentPrompt.followUpSuggestions.length > 0 && (
-              <div className="bg-background/30 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-muted-foreground mb-2">
-                  💡 Consider exploring:
-                </h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  {currentPrompt.followUpSuggestions.map((suggestion, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                      <span className="text-primary">•</span>
-                      <span>{suggestion}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </Card>
 
         {/* Smart Recording Interface */}
         <SmartRecorder
@@ -384,34 +340,7 @@ export default function ProjectRecordPage() {
           className="w-full"
         />
 
-        {/* Audio Preview */}
-        {audioUrl && !aiProcessing && (
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Preview Your Recording</h3>
-            <AudioPlayer
-              src={audioUrl}
-              title="Your Story Recording"
-              className="w-full"
-            />
-            <div className="mt-4 flex justify-center space-x-4">
-              <Button
-                onClick={handleStartOver}
-                variant="outline"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Record Again
-              </Button>
-              {!aiContent && (
-                <Button
-                  onClick={() => processAudioWithAI(audioBlob!)}
-                >
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Process with AI
-                </Button>
-              )}
-            </div>
-          </Card>
-        )}
+
 
         {/* AI Processing Status */}
         {aiProcessing && (

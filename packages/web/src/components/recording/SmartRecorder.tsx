@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Mic, Square, Pause, Play, RotateCcw, Wifi, WifiOff, Zap } from 'lucide-react'
 import { toast } from 'react-hot-toast'
+import { AudioPlayer } from '@/components/audio/AudioPlayer'
 
 interface SmartRecorderProps {
   onRecordingComplete: (result: RecordingResult) => void
@@ -502,27 +503,19 @@ export function SmartRecorder({
 
           {recordingState === 'completed' && (
             <>
-              {/* Show playback button for both recording modes when audio is available */}
+              {/* Show AudioPlayer for both recording modes when audio is available */}
               {audioUrl && (
-                <Button
-                  onClick={isPlaying ? stopAudio : playAudio}
-                  variant="outline"
-                  size="lg"
-                >
-                  {isPlaying ? <Square className="h-5 w-5 mr-2" /> : <Play className="h-5 w-5 mr-2" />}
-                  {isPlaying ? '停止播放' : '试听录音'}
-                </Button>
-              )}
-
-              {/* Show transcript for realtime recording */}
-              {shouldUseRealtime() && transcript && (
-                <div className="text-center mb-4">
-                  <p className="text-sm text-muted-foreground mb-2">实时转录内容：</p>
-                  <div className="bg-muted p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
-                    {transcript}
-                  </div>
+                <div className="w-full mb-4">
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">试听录音：</h4>
+                  <AudioPlayer
+                    src={audioUrl}
+                    title="Your Story Recording"
+                    className="w-full"
+                  />
                 </div>
               )}
+
+
 
               <Button
                 onClick={handleComplete}
