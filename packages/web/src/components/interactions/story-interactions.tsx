@@ -47,6 +47,16 @@ export function StoryInteractions({
     loadInteractions()
   }, [storyId])
 
+  // 当页面获得焦点时重新加载数据（用户从录音页面返回时）
+  useEffect(() => {
+    const handleFocus = () => {
+      loadInteractions()
+    }
+
+    window.addEventListener('focus', handleFocus)
+    return () => window.removeEventListener('focus', handleFocus)
+  }, [])
+
   const loadInteractions = async () => {
     try {
       setLoading(true)
