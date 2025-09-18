@@ -328,19 +328,26 @@ export default function StoryDetailPage() {
         </Card>
       )}
 
-      {/* Audio Player */}
-      {story.type === 'story' && story.audio_url && (
-        <Card className="p-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Audio Recording</h3>
-            <AudioPlayer
-              src={story.audio_url}
-              title={story.title}
-              className="w-full"
-            />
-          </div>
-        </Card>
+{/* Audio Player */}
+{story.type === 'story' && (
+  <Card className="p-6">
+    <div className="space-y-4">
+      <h3 className="font-semibold text-foreground">Audio Recording</h3>
+      {story.audio_url ? (
+        <AudioPlayer
+          src={story.audio_url}
+          title={story.title}
+          className="w-full"
+        />
+      ) : (
+        <div className="text-sm text-muted-foreground p-4 bg-muted rounded-lg">
+          No audio file available for this story.
+        </div>
       )}
+    </div>
+  </Card>
+)}
+
 
       {/* Transcript */}
       <Card className="p-6">
