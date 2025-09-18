@@ -74,10 +74,11 @@ export function StoryCard({
            (story.interaction_summary.appreciations || 0)
   }
 
-  return React.createElement(Card, {
-    className: "group p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 hover:border-primary/20",
-    onClick: () => onViewDetails?.(story.id)
-  },
+  return (
+    <Card
+      className="group p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 hover:border-primary/20"
+      onClick={() => onViewDetails?.(story.id)}
+    >
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -95,57 +96,50 @@ export function StoryCard({
               )}
             </div>
 
-            {/* Category and Date */}
-            <div className="flex items-center space-x-3 text-sm text-muted-foreground">
-              <Badge variant="outline" className="text-xs border-muted-foreground/30">{story.category}</Badge>
-              <span className="text-muted-foreground/60">•</span>
-              <span>{formatDate(story.created_at)}</span>
-              <span className="text-muted-foreground/60">•</span>
-              <div className="flex items-center space-x-1">
-                <Clock className="h-3 w-3" />
-                <span>{formatTime(story.duration)}</span>
-              </div>
+            {/* Category & Prompt */}
+            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+              <Badge variant="outline" className="text-xs">
+                {story.category}
+              </Badge>
+              <span>•</span>
+              <span className="line-clamp-1">{story.prompt}</span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          {/* Actions */}
+          <div className="flex items-center space-x-2 ml-4">
+            {/* Interaction Indicator */}
             {story.has_new_interactions && (
-              <Badge className="bg-orange-500 text-white animate-pulse">New</Badge>
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
             )}
 
-            {/* Edit and Delete Actions - Only for facilitators */}
-            <ActionPermissionGate
-              action="canEditStoryTitles"
-              userRole={userRole}
-              isProjectOwner={isProjectOwner}
-            >
-              <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onEdit?.(story.id)
-                  }}
-                  className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary"
-                  title="编辑故事"
-                >
-                  <Edit className="h-3 w-3" />
-                </Button>
+            {/* Permission-based Actions */}
+            <ActionPermissionGate action="canEditStoryTitles" userRole={userRole} isProjectOwner={isProjectOwner}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onEdit?.(story.id)
+                }}
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <Edit className="h-4 w-4" />
+              </Button>
+            </ActionPermissionGate>
 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onDelete?.(story.id)
-                  }}
-                  className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
-                  title="删除故事"
-                >
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
+            <ActionPermissionGate action="canDeleteStories" userRole={userRole} isProjectOwner={isProjectOwner}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onDelete?.(story.id)
+                }}
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
             </ActionPermissionGate>
           </div>
         </div>
@@ -197,43 +191,36 @@ export function StoryCard({
             {formatDateTime(story.created_at)}
           </div>
         </div>
-            
-            <span className="text-xs text-gray-500 min-w-12">
-              {formatTime(currentTime)} / {formatTime(story.duration)}
-            </span>
-          </div>
-        </div>
 
         {/* Interaction Summary */}
         {getTotalInteractions() > 0 && (
-          <div className="flex items-center space-x-4 pt-3 border-t border-border/50">
-            {story.interaction_summary?.comments && story.interaction_summary.comments > 0 && (
-              <div className="flex items-center space-x-1 text-muted-foreground hover:text-blue-600 transition-colors">
-                <MessageCircle className="h-4 w-4" />
-                <span className="text-sm font-medium">{story.interaction_summary.comments}</span>
-                <span className="text-xs">评论</span>
-              </div>
-            )}
-            {story.interaction_summary?.followups && story.interaction_summary.followups > 0 && (
-              <div className="flex items-center space-x-1 text-muted-foreground hover:text-orange-600 transition-colors">
-                <HelpCircle className="h-4 w-4" />
-                <span className="text-sm font-medium">{story.interaction_summary.followups}</span>
-                <span className="text-xs">问题</span>
-              </div>
-            )}
-            {story.interaction_summary?.appreciations && story.interaction_summary.appreciations > 0 && (
-              <div className="flex items-center space-x-1 text-muted-foreground hover:text-red-500 transition-colors">
-                <Heart className="h-4 w-4" />
-                <span className="text-sm font-medium">{story.interaction_summary.appreciations}</span>
-                <span className="text-xs">点赞</span>
-              </div>
-            )}
+          <div className="flex items-center justify-between pt-2 border-t border-border/50">
+            <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+              {story.interaction_summary?.comments && story.interaction_summary.comments > 0 && (
+                <div className="flex items-center space-x-1">
+                  <MessageCircle className="h-3 w-3" />
+                  <span>{story.interaction_summary.comments} comment{story.interaction_summary.comments !== 1 ? 's' : ''}</span>
+                </div>
+              )}
+              {story.interaction_summary?.followups && story.interaction_summary.followups > 0 && (
+                <div className="flex items-center space-x-1">
+                  <HelpCircle className="h-3 w-3" />
+                  <span>{story.interaction_summary.followups} follow-up{story.interaction_summary.followups !== 1 ? 's' : ''}</span>
+                </div>
+              )}
+              {story.interaction_summary?.appreciations && story.interaction_summary.appreciations > 0 && (
+                <div className="flex items-center space-x-1">
+                  <Heart className="h-3 w-3" />
+                  <span>{story.interaction_summary.appreciations}</span>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
 
       </div>
-    )
+    </Card>
   )
 }
 
