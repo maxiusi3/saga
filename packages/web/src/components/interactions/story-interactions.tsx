@@ -61,6 +61,7 @@ export function StoryInteractions({
     try {
       setLoading(true)
       const data = await interactionService.getStoryInteractions(storyId)
+      console.log('[StoryInteractions] Loaded interactions data:', data)
       setInteractions(data)
     } catch (error) {
       console.error('Error loading interactions:', error)
@@ -227,18 +228,28 @@ export function StoryInteractions({
                         <Mic className="h-3 w-3 mr-1" /> Record Answer
                       </Button>
                     )}
-                    {interaction.type === 'followup' && interaction.answered_at && interaction.answer_story_id && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          // 跳转到回答故事
-                          window.location.href = `/dashboard/projects/${projectId}/stories/${interaction.answer_story_id}`
-                        }}
-                        className="h-7 px-2"
-                      >
-                        View Answer
-                      </Button>
+                    {interaction.type === 'followup' && (
+                      <>
+                        {/* Debug info */}
+                        <span className="text-xs bg-yellow-200 px-1 rounded">
+                          answered_at: {interaction.answered_at ? 'YES' : 'NO'},
+                          answer_story_id: {interaction.answer_story_id || 'NONE'}
+                        </span>
+
+                        {interaction.answered_at && interaction.answer_story_id && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              // 跳转到回答故事
+                              window.location.href = `/dashboard/projects/${projectId}/stories/${interaction.answer_story_id}`
+                            }}
+                            className="h-7 px-2"
+                          >
+                            View Answer
+                          </Button>
+                        )}
+                      </>
                     )}
 
                     <span className="text-xs text-muted-foreground">
