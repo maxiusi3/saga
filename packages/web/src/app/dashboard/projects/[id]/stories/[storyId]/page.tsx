@@ -9,12 +9,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, Play, Pause, Edit, Send, ZoomIn } from 'lucide-react'
+import { ArrowLeft, Edit, Send, ZoomIn } from 'lucide-react'
 import Link from 'next/link'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { createClientSupabase } from '@/lib/supabase'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
+import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
 
@@ -41,9 +42,6 @@ export default function StoryDetailPage() {
   const storyId = params.storyId as string
 
   const [story, setStory] = useState<Story | null>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [playbackSpeed, setPlaybackSpeed] = useState(1)
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [editedTitle, setEditedTitle] = useState('')
   const [isEditingTranscript, setIsEditingTranscript] = useState(false)
@@ -54,8 +52,6 @@ export default function StoryDetailPage() {
   // 用户权限状态
   const [userRole, setUserRole] = useState<string>('')
   const [isProjectOwner, setIsProjectOwner] = useState(false)
-  
-  const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     const loadStory = async () => {
@@ -160,57 +156,7 @@ export default function StoryDetailPage() {
     }
   }
 
-  const togglePlayback = async () => {
-    if (!audioRef.current) return
 
-    try {
-      if (isPlaying) {
-        audioRef.current.pause()
-        setIsPlaying(false)
-      } else {
-        // 确保音频已经加载
-        if (audioRef.current.readyState < 2) {
-          console.log('Audio not ready, loading...')
-          await new Promise((resolve) => {
-            const onCanPlay = () => {
-              audioRef.current?.removeEventListener('canplay', onCanPlay)
-              resolve(void 0)
-            }
-            audioRef.current?.addEventListener('canplay', onCanPlay)
-            audioRef.current?.load()
-          })
-        }
-
-        await audioRef.current.play()
-        setIsPlaying(true)
-      }
-    } catch (error) {
-      console.error('Audio playback error:', error)
-      setIsPlaying(false)
-      toast.error('Failed to play audio')
-    }
-  }
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime)
-    }
-  }
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const time = parseFloat(e.target.value)
-    if (audioRef.current) {
-      audioRef.current.currentTime = time
-      setCurrentTime(time)
-    }
-  }
-
-  const changePlaybackSpeed = (speed: number) => {
-    if (audioRef.current) {
-      audioRef.current.playbackRate = speed
-      setPlaybackSpeed(speed)
-    }
-  }
 
   const saveTitle = async () => {
     if (!story || editedTitle.trim() === story.title) {
@@ -383,67 +329,14 @@ export default function StoryDetailPage() {
       )}
 
       {/* Audio Player */}
-      {story.type === 'story' && (
+      {story.type === 'story' && story.audio_url && (
         <Card className="p-6">
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">Audio Recording</h3>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-muted-foreground">Speed:</span>
-                {[1, 1.25, 1.5, 2].map((speed) => (
-                  <Button
-                    key={speed}
-                    variant={playbackSpeed === speed ? "default" : "ghost"}
-                    size="sm"
-                    onClick={() => changePlaybackSpeed(speed)}
-                    className="text-xs"
-                  >
-                    {speed}x
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="icon" onClick={togglePlayback}>
-                {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-              </Button>
-
-              <div className="flex-1">
-                <input
-                  type="range"
-                  min="0"
-                  max={story.audio_duration}
-                  value={currentTime}
-                  onChange={handleSeek}
-                  className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-
-              <div className="text-sm text-muted-foreground min-w-fit">
-                {formatTime(currentTime)} / {formatTime(story.audio_duration)}
-              </div>
-            </div>
-
-            <audio
-              ref={audioRef}
+            <h3 className="font-semibold text-foreground">Audio Recording</h3>
+            <AudioPlayer
               src={story.audio_url}
-              onTimeUpdate={handleTimeUpdate}
-              onEnded={() => setIsPlaying(false)}
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
-              onError={(e) => {
-                console.error('Audio error:', e)
-                console.error('Audio URL:', story.audio_url)
-                setIsPlaying(false)
-                toast.error('Audio failed to load')
-              }}
-              onLoadStart={() => console.log('Audio loading started')}
-              onCanPlay={() => console.log('Audio can play')}
-              onLoadedData={() => console.log('Audio data loaded')}
-              onWaiting={() => console.log('Audio waiting for data')}
-              onStalled={() => console.log('Audio stalled')}
-              preload="metadata"
+              title={story.title}
+              className="w-full"
             />
           </div>
         </Card>
