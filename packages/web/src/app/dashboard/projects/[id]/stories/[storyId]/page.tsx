@@ -84,26 +84,49 @@ useEffect(() => {
         console.warn('Failed to fetch storyteller profile:', profileError)
       }
 
-      // 生成音频URL - 如果数据库中没有，尝试从Supabase Storage生成
-      let audioUrl = story.audio_url
-      if (!audioUrl && story.audio_duration > 0) {
-        // 尝试不同的可能文件格式
-        const possibleFormats = ['webm', 'mp3', 'wav', 'm4a']
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-        
-        for (const format of possibleFormats) {
-          const testUrl = `${supabaseUrl}/storage/v1/object/public/audio-files/${story.id}.${format}`
-          try {
-            const response = await fetch(testUrl, { method: 'HEAD' })
-            if (response.ok) {
-              audioUrl = testUrl
-              break
-            }
-          } catch (e) {
-            // 继续尝试下一个格式
-          }
+// 生成音频URL - 检查实际的存储桶
+let audioUrl = story.audio_url
+if (!audioUrl && story.audio_duration > 0) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const buckets = ['saga', 'audio-recordings']
+  const possibleFormats = ['webm', 'mp3', 'wav', 'm4a']
+  
+  for (const bucket of buckets) {
+    for (const format of possibleFormats) {
+      const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.id}.${format}`
+      try {
+        const response = await fetch(testUrl, { method: 'HEAD' })
+        if (response.ok) {
+          audioUrl = testUrl
+          console.log('Found audio at:', testUrl)
+          break
         }
+      } catch (e) {
+        // 继续尝试
       }
+    }
+    if (audioUrl) break
+  }
+  
+  // 如果还没找到，尝试项目ID作为文件夹
+  if (!audioUrl) {
+    for (const bucket of buckets) {
+      for (const format of possibleFormats) {
+        const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.project_id}/${story.id}.${format}`
+        try {
+          const response = await fetch(testUrl, { method: 'HEAD' })
+          if (response.ok) {
+            audioUrl = testUrl
+            console.log('Found audio at:', testUrl)
+            break
+          }
+        } catch (e) {}
+      }
+      if (audioUrl) break
+    }
+  }
+}
+
 
       const storyData = {
         id: story.id,
