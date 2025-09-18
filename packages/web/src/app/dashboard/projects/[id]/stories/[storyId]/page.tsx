@@ -49,77 +49,93 @@ export default function StoryDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // 用户权限状态
-  const [userRole, setUserRole] = useState<string>('')
-  const [isProjectOwner, setIsProjectOwner] = useState(false)
+// 用户权限状态
+const [userRole, setUserRole] = useState<string>('')
+const [isProjectOwner, setIsProjectOwner] = useState(false)
 
-  useEffect(() => {
-    const loadStory = async () => {
-      try {
-        // Load real story data from Supabase
-        const story = await storyService.getStoryById(storyId)
-        if (!story) {
-          setError('Story not found')
-          setLoading(false)
-          return
-        }
-
-        // 获取storyteller的用户资料
-        const supabase = createClientSupabase()
-        let storytellerName = 'Unknown User'
-        let storytellerAvatar = ''
-
-        try {
-          const { data: profile } = await supabase
-            .from('user_profiles')
-            .select('name, email, avatar_url')
-            .eq('id', story.storyteller_id)
-            .single()
-
-          if (profile) {
-            storytellerName = profile.name || profile.email || 'Unknown User'
-            storytellerAvatar = profile.avatar_url || ''
-          }
-        } catch (profileError) {
-          console.warn('Failed to fetch storyteller profile:', profileError)
-        }
-
-        const storyData = {
-          id: story.id,
-          title: story.title || 'Untitled Story',
-          timestamp: story.created_at,
-          storyteller_id: story.storyteller_id,
-          storyteller_name: storytellerName,
-          storyteller_avatar: storytellerAvatar,
-          audio_url: story.audio_url || story.audio_file_url, // 修复这里
-          audio_duration: story.audio_duration || 0,
-          transcript: story.transcript || story.content || 'No transcript available',
-          photo_url: '',
-          type: 'story'
-        }
-
-        // 在 setStory(storyData) 之前添加这行调试
-        console.log('Raw story from database:', story)
-        console.log('Story audio fields:', {
-          audio_url: story.audio_url,
-          audio_file_url: story.audio_file_url,
-          audio_path: story.audio_path,
-          file_url: story.file_url,
-          url: story.url
-        })
-
-        setStory(storyData)
-        setEditedTitle(storyData.title)
-        setEditedTranscript(storyData.transcript)
-
-        // Interactions are loaded within the StoryInteractions component
+useEffect(() => {
+  const loadStory = async () => {
+    try {
+      // Load real story data from Supabase
+      const story = await storyService.getStoryById(storyId)
+      if (!story) {
+        setError('Story not found')
         setLoading(false)
-      } catch (error) {
-        console.error('Error loading story:', error)
-        setError('Failed to load story')
-        setLoading(false)
+        return
       }
+
+      // 获取storyteller的用户资料
+      const supabase = createClientSupabase()
+      let storytellerName = 'Unknown User'
+      let storytellerAvatar = ''
+
+      try {
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('name, email, avatar_url')
+          .eq('id', story.storyteller_id)
+          .single()
+
+        if (profile) {
+          storytellerName = profile.name || profile.email || 'Unknown User'
+          storytellerAvatar = profile.avatar_url || ''
+        }
+      } catch (profileError) {
+        console.warn('Failed to fetch storyteller profile:', profileError)
+      }
+
+      // 生成音频URL - 如果数据库中没有，尝试从Supabase Storage生成
+      let audioUrl = story.audio_url
+      if (!audioUrl && story.audio_duration > 0) {
+        // 尝试不同的可能文件格式
+        const possibleFormats = ['webm', 'mp3', 'wav', 'm4a']
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+        
+        for (const format of possibleFormats) {
+          const testUrl = `${supabaseUrl}/storage/v1/object/public/audio-files/${story.id}.${format}`
+          try {
+            const response = await fetch(testUrl, { method: 'HEAD' })
+            if (response.ok) {
+              audioUrl = testUrl
+              break
+            }
+          } catch (e) {
+            // 继续尝试下一个格式
+          }
+        }
+      }
+
+      const storyData = {
+        id: story.id,
+        title: story.title || 'Untitled Story',
+        timestamp: story.created_at,
+        storyteller_id: story.storyteller_id,
+        storyteller_name: storytellerName,
+        storyteller_avatar: storytellerAvatar,
+        audio_url: audioUrl, // 使用生成或检测到的URL
+        audio_duration: story.audio_duration || 0,
+        transcript: story.transcript || story.content || 'No transcript available',
+        photo_url: '',
+        type: 'story'
+      }
+
+      // 调试信息
+      console.log('Raw story from database:', story)
+      console.log('Generated audio URL:', audioUrl)
+
+      setStory(storyData)
+      setEditedTitle(storyData.title)
+      setEditedTranscript(storyData.transcript)
+
+      // Interactions are loaded within the StoryInteractions component
+      setLoading(false)
+    } catch (error) {
+      console.error('Error loading story:', error)
+      setError('Failed to load story')
+      setLoading(false)
     }
+  }
+
 
     loadStory()
     loadUserRole()
