@@ -68,28 +68,6 @@ export function StoryCard({
   isProjectOwner = false
 }: StoryCardProps) {
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins}:${secs.toString().padStart(2, '0')}`
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60)
-    
-    if (diffInHours < 24) {
-      return 'Today'
-    } else if (diffInHours < 48) {
-      return 'Yesterday'
-    } else if (diffInHours < 168) { // 7 days
-      return date.toLocaleDateString('en-US', { weekday: 'short' })
-    } else {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    }
-  }
-
   const getTotalInteractions = () => {
     if (!story.interaction_summary) return 0
     return (story.interaction_summary.comments || 0) +
