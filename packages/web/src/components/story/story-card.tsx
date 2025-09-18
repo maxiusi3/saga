@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import * as React from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -67,7 +67,6 @@ export function StoryCard({
   userRole,
   isProjectOwner = false
 }: StoryCardProps) {
-
   const getTotalInteractions = () => {
     if (!story.interaction_summary) return 0
     return (story.interaction_summary.comments || 0) +
@@ -75,11 +74,10 @@ export function StoryCard({
            (story.interaction_summary.appreciations || 0)
   }
 
-  return (
-    <Card
-      className="group p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 hover:border-primary/20"
-      onClick={() => onViewDetails?.(story.id)}
-    >
+  return React.createElement(Card, {
+    className: "group p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 hover:border-primary/20",
+    onClick: () => onViewDetails?.(story.id)
+  },
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -235,7 +233,7 @@ export function StoryCard({
 
 
       </div>
-    </Card>
+    )
   )
 }
 
