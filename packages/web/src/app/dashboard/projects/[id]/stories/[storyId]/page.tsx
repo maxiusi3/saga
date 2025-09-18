@@ -33,8 +33,6 @@ interface Story {
   type: 'story' | 'chapter_summary'
 }
 
-
-
 export default function StoryDetailPage() {
   const params = useParams()
   const { user } = useAuthStore()
@@ -49,116 +47,114 @@ export default function StoryDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-// 用户权限状态
-const [userRole, setUserRole] = useState<string>('')
-const [isProjectOwner, setIsProjectOwner] = useState(false)
+  // 用户权限状态
+  const [userRole, setUserRole] = useState<string>('')
+  const [isProjectOwner, setIsProjectOwner] = useState(false)
 
-useEffect(() => {
-  const loadStory = async () => {
-    try {
-      // Load real story data from Supabase
-      const story = await storyService.getStoryById(storyId)
-      if (!story) {
-        setError('Story not found')
-        setLoading(false)
-        return
-      }
-
-      // 获取storyteller的用户资料
-      const supabase = createClientSupabase()
-      let storytellerName = 'Unknown User'
-      let storytellerAvatar = ''
-
+  useEffect(() => {
+    const loadStory = async () => {
       try {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('name, email, avatar_url')
-          .eq('id', story.storyteller_id)
-          .single()
-
-        if (profile) {
-          storytellerName = profile.name || profile.email || 'Unknown User'
-          storytellerAvatar = profile.avatar_url || ''
+        // Load real story data from Supabase
+        const story = await storyService.getStoryById(storyId)
+        if (!story) {
+          setError('Story not found')
+          setLoading(false)
+          return
         }
-      } catch (profileError) {
-        console.warn('Failed to fetch storyteller profile:', profileError)
-      }
 
-// 生成音频URL - 检查实际的存储桶
-let audioUrl = story.audio_url
-if (!audioUrl && story.audio_duration > 0) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const buckets = ['saga', 'audio-recordings']
-  const possibleFormats = ['webm', 'mp3', 'wav', 'm4a']
-  
-  for (const bucket of buckets) {
-    for (const format of possibleFormats) {
-      const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.id}.${format}`
-      try {
-        const response = await fetch(testUrl, { method: 'HEAD' })
-        if (response.ok) {
-          audioUrl = testUrl
-          console.log('Found audio at:', testUrl)
-          break
-        }
-      } catch (e) {
-        // 继续尝试
-      }
-    }
-    if (audioUrl) break
-  }
-  
-  // 如果还没找到，尝试项目ID作为文件夹
-  if (!audioUrl) {
-    for (const bucket of buckets) {
-      for (const format of possibleFormats) {
-        const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.project_id}/${story.id}.${format}`
+        // 获取storyteller的用户资料
+        const supabase = createClientSupabase()
+        let storytellerName = 'Unknown User'
+        let storytellerAvatar = ''
+
         try {
-          const response = await fetch(testUrl, { method: 'HEAD' })
-          if (response.ok) {
-            audioUrl = testUrl
-            console.log('Found audio at:', testUrl)
-            break
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('name, email, avatar_url')
+            .eq('id', story.storyteller_id)
+            .single()
+
+          if (profile) {
+            storytellerName = profile.name || profile.email || 'Unknown User'
+            storytellerAvatar = profile.avatar_url || ''
           }
-        } catch (e) {}
+        } catch (profileError) {
+          console.warn('Failed to fetch storyteller profile:', profileError)
+        }
+
+        // 生成音频URL - 检查实际的存储桶
+        let audioUrl = story.audio_url
+        if (!audioUrl && story.audio_duration > 0) {
+          const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+          const buckets = ['saga', 'audio-recordings']
+          const possibleFormats = ['webm', 'mp3', 'wav', 'm4a']
+          
+          for (const bucket of buckets) {
+            for (const format of possibleFormats) {
+              const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.id}.${format}`
+              try {
+                const response = await fetch(testUrl, { method: 'HEAD' })
+                if (response.ok) {
+                  audioUrl = testUrl
+                  console.log('Found audio at:', testUrl)
+                  break
+                }
+              } catch (e) {
+                // 继续尝试
+              }
+            }
+            if (audioUrl) break
+          }
+          
+          // 如果还没找到，尝试项目ID作为文件夹
+          if (!audioUrl) {
+            for (const bucket of buckets) {
+              for (const format of possibleFormats) {
+                const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.project_id}/${story.id}.${format}`
+                try {
+                  const response = await fetch(testUrl, { method: 'HEAD' })
+                  if (response.ok) {
+                    audioUrl = testUrl
+                    console.log('Found audio at:', testUrl)
+                    break
+                  }
+                } catch (e) {}
+              }
+              if (audioUrl) break
+            }
+          }
+        }
+
+        const storyData = {
+          id: story.id,
+          title: story.title || 'Untitled Story',
+          timestamp: story.created_at,
+          storyteller_id: story.storyteller_id,
+          storyteller_name: storytellerName,
+          storyteller_avatar: storytellerAvatar,
+          audio_url: audioUrl, // 使用生成或检测到的URL
+          audio_duration: story.audio_duration || 0,
+          transcript: story.transcript || story.content || 'No transcript available',
+          photo_url: '',
+          type: 'story'
+        }
+
+        // 调试信息
+        console.log('Raw story from database:', story)
+        console.log('Generated audio URL:', audioUrl)
+
+        setStory(storyData)
+        setEditedTitle(storyData.title)
+        setEditedTranscript(storyData.transcript)
+
+        // Interactions are loaded within the StoryInteractions component
+        setLoading(false)
+      } catch (error) {
+        console.error('Error loading story:', error)
+        setError('Failed to load story')
+        setLoading(false)
       }
-      if (audioUrl) break
     }
-  }
-}
-
-
-      const storyData = {
-        id: story.id,
-        title: story.title || 'Untitled Story',
-        timestamp: story.created_at,
-        storyteller_id: story.storyteller_id,
-        storyteller_name: storytellerName,
-        storyteller_avatar: storytellerAvatar,
-        audio_url: audioUrl, // 使用生成或检测到的URL
-        audio_duration: story.audio_duration || 0,
-        transcript: story.transcript || story.content || 'No transcript available',
-        photo_url: '',
-        type: 'story'
-      }
-
-      // 调试信息
-      console.log('Raw story from database:', story)
-      console.log('Generated audio URL:', audioUrl)
-
-      setStory(storyData)
-      setEditedTitle(storyData.title)
-      setEditedTranscript(storyData.transcript)
-
-      // Interactions are loaded within the StoryInteractions component
-      setLoading(false)
-    } catch (error) {
-      console.error('Error loading story:', error)
-      setError('Failed to load story')
-      setLoading(false)
-    }
-  }
-
 
     loadStory()
     loadUserRole()
@@ -205,8 +201,6 @@ if (!audioUrl && story.audio_duration > 0) {
       setUserRole('facilitator')
     }
   }
-
-
 
   const saveTitle = async () => {
     if (!story || editedTitle.trim() === story.title) {
@@ -378,43 +372,42 @@ if (!audioUrl && story.audio_duration > 0) {
         </Card>
       )}
 
-{/* Audio Player Debug */}
-{story.type === 'story' && (
-  <Card className="p-6">
-    <div className="space-y-4">
-      <h3 className="font-semibold text-foreground">Audio Recording Debug</h3>
-      
-      {/* 原始数据调试 */}
-      <div className="bg-yellow-100 p-4 rounded">
-        <h4 className="font-bold">原始Story对象所有字段：</h4>
-        <pre className="text-xs overflow-auto max-h-40">
-          {JSON.stringify(story, null, 2)}
-        </pre>
-      </div>
+      {/* Audio Player Debug */}
+      {story.type === 'story' && (
+        <Card className="p-6">
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground">Audio Recording Debug</h3>
+            
+            {/* 原始数据调试 */}
+            <div className="bg-yellow-100 p-4 rounded">
+              <h4 className="font-bold">原始Story对象所有字段：</h4>
+              <pre className="text-xs overflow-auto max-h-40">
+                {JSON.stringify(story, null, 2)}
+              </pre>
+            </div>
 
-      <div className="text-sm bg-gray-100 p-4 rounded">
-        <p><strong>Story Type:</strong> {story.type}</p>
-        <p><strong>Audio URL:</strong> {story.audio_url || 'null/undefined'}</p>
-        <p><strong>Audio Duration:</strong> {story.audio_duration || 'null/undefined'}</p>
-        <p><strong>Story ID:</strong> {story.id}</p>
-      </div>
+            <div className="text-sm bg-gray-100 p-4 rounded">
+              <p><strong>Story Type:</strong> {story.type}</p>
+              <p><strong>Audio URL:</strong> {story.audio_url || 'null/undefined'}</p>
+              <p><strong>Audio Duration:</strong> {story.audio_duration || 'null/undefined'}</p>
+              <p><strong>Story ID:</strong> {story.id}</p>
+            </div>
 
-      {story.audio_url ? (
-        <div>
-          <p className="text-green-600">✅ Audio URL exists, loading player...</p>
-          <AudioPlayer
-            src={story.audio_url}
-            title={story.title}
-            className="w-full"
-          />
-        </div>
-      ) : (
-        <p className="text-red-600">❌ No audio URL found</p>
+            {story.audio_url ? (
+              <div>
+                <p className="text-green-600">✅ Audio URL exists, loading player...</p>
+                <AudioPlayer
+                  src={story.audio_url}
+                  title={story.title}
+                  className="w-full"
+                />
+              </div>
+            ) : (
+              <p className="text-red-600">❌ No audio URL found</p>
+            )}
+          </div>
+        </Card>
       )}
-    </div>
-  </Card>
-)}
-
 
       {/* Transcript */}
       <Card className="p-6">
@@ -467,8 +460,6 @@ if (!audioUrl && story.audio_duration > 0) {
         isProjectOwner={isProjectOwner}
         isStoryteller={story?.storyteller_id === user?.id}
       />
-
-
     </div>
   )
 }
