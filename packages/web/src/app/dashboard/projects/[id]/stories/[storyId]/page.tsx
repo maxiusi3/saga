@@ -98,6 +98,16 @@ export default function StoryDetailPage() {
           type: 'story'
         }
 
+        // 在 setStory(storyData) 之前添加这行调试
+        console.log('Raw story from database:', story)
+        console.log('Story audio fields:', {
+          audio_url: story.audio_url,
+          audio_file_url: story.audio_file_url,
+          audio_path: story.audio_path,
+          file_url: story.file_url,
+          url: story.url
+        })
+
         setStory(storyData)
         setEditedTitle(storyData.title)
         setEditedTranscript(storyData.transcript)
@@ -355,6 +365,18 @@ export default function StoryDetailPage() {
       )}
     </div>
   </Card>
+  <div className="text-sm bg-gray-100 p-4 rounded">
+  <p><strong>Raw Story Keys:</strong> {Object.keys(story).join(', ')}</p>
+  <p><strong>Audio URL:</strong> {story.audio_url || 'null/undefined'}</p>
+  <p><strong>All Audio Fields:</strong></p>
+  <pre>{JSON.stringify({
+    audio_url: story.audio_url,
+    audio_file_url: story.audio_file_url,
+    audio_path: story.audio_path,
+    file_url: story.file_url,
+    url: story.url
+  }, null, 2)}</pre>
+</div>
 )}
 
 
