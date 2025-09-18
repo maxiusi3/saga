@@ -78,6 +78,7 @@ export async function GET(
         content: interaction.content,
         created_at: interaction.created_at,
         answered_at: interaction.answered_at,
+        answer_story_id: interaction.answer_story_id,
         facilitator_name: profile.name || profile.email || 'Unknown User',
         facilitator_avatar: profile.avatar_url || null,
       }
