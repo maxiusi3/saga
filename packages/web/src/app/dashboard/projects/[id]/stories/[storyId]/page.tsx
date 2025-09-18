@@ -88,15 +88,16 @@ export default function StoryDetailPage() {
           id: story.id,
           title: story.title || 'Untitled Story',
           timestamp: story.created_at,
-          storyteller_id: story.storyteller_id, // 添加这个关键字段！
+          storyteller_id: story.storyteller_id,
           storyteller_name: storytellerName,
           storyteller_avatar: storytellerAvatar,
-          audio_url: story.audio_url,
+          audio_url: story.audio_url || story.audio_file_url, // 修复这里
           audio_duration: story.audio_duration || 0,
           transcript: story.transcript || story.content || 'No transcript available',
           photo_url: '',
           type: 'story'
         }
+
         setStory(storyData)
         setEditedTitle(storyData.title)
         setEditedTranscript(storyData.transcript)
