@@ -76,7 +76,10 @@ export function StoryCard({
   }
 
   return (
-    <Card className="group p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 hover:border-primary/20" onClick={() => onViewDetails?.(story.id)}>
+    <Card
+      className="group p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 hover:border-primary/20"
+      onClick={() => onViewDetails?.(story.id)}
+    >
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-start justify-between">
