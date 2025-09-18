@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import React from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Play, Pause, MessageCircle, HelpCircle, Heart, Clock, Sparkles, Volume2, Edit, Trash2, MoreHorizontal } from 'lucide-react'
+import { MessageCircle, HelpCircle, Heart, Clock, Sparkles, Volume2, Edit, Trash2, MoreHorizontal } from 'lucide-react'
 import { AIGeneratedContent } from '../../../shared/src/lib/ai-services'
 import { ActionPermissionGate, usePermissionContext } from '@/components/permissions/PermissionGate'
 import { UserRole } from '@saga/shared'
@@ -40,6 +40,23 @@ interface StoryCardProps {
   isProjectOwner?: boolean
 }
 
+// Helper functions
+const formatDuration = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = Math.floor(seconds % 60)
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+}
+
+const formatDateTime = (dateString: string) => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
+  })
+}
+
 export function StoryCard({
   story,
   onPlay,
@@ -50,36 +67,6 @@ export function StoryCard({
   userRole,
   isProjectOwner = false
 }: StoryCardProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  const handlePlayPause = async () => {
-    if (!audioRef.current || !story.audio_url) {
-      console.warn('No audio available for story:', story.id)
-      return
-    }
-
-    try {
-      if (isPlaying) {
-        audioRef.current.pause()
-        setIsPlaying(false)
-      } else {
-        await audioRef.current.play()
-        setIsPlaying(true)
-        onPlay?.(story.id)
-      }
-    } catch (error) {
-      console.error('Error playing audio:', error)
-      setIsPlaying(false)
-    }
-  }
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime)
-    }
-  }
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -211,34 +198,26 @@ export function StoryCard({
           </div>
         )}
 
-        {/* Audio Player */}
-        <div className="space-y-3">
+        {/* Story Metadata */}
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center space-x-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation()
-                handlePlayPause()
-              }}
-              className="w-10 h-10 rounded-full p-0 hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
-              title={isPlaying ? "暂停播放" : "播放故事"}
-            >
-              {isPlaying ? (
-                <Pause className="h-4 w-4" />
-              ) : (
-                <Play className="h-4 w-4 ml-0.5" />
-              )}
-            </Button>
-            
-            <div className="flex-1">
-              <div className="w-full bg-muted rounded-full h-2">
-                <div
-                  className="bg-primary h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${(currentTime / story.duration) * 100}%` }}
-                ></div>
-              </div>
+            <div className="flex items-center space-x-1">
+              <Clock className="h-4 w-4" />
+              <span>{formatDuration(story.duration)}</span>
             </div>
+            <div className="flex items-center space-x-1">
+              <MessageCircle className="h-4 w-4" />
+              <span>{story.interaction_summary?.comments || 0}</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <HelpCircle className="h-4 w-4" />
+              <span>{story.interaction_summary?.followups || 0}</span>
+            </div>
+          </div>
+          <div>
+            {formatDateTime(story.created_at)}
+          </div>
+        </div>
             
             <span className="text-xs text-gray-500 min-w-12">
               {formatTime(currentTime)} / {formatTime(story.duration)}
@@ -273,23 +252,7 @@ export function StoryCard({
           </div>
         )}
 
-        {/* Hidden Audio Element */}
-        {story.audio_url && (
-          <audio
-            ref={audioRef}
-            src={story.audio_url}
-            onTimeUpdate={handleTimeUpdate}
-            onEnded={() => setIsPlaying(false)}
-            onError={(e) => {
-              console.error('Audio error:', e)
-              setIsPlaying(false)
-            }}
-            onLoadStart={() => console.log('Audio loading started')}
-            onCanPlay={() => console.log('Audio can play')}
-            className="hidden"
-            preload="metadata"
-          />
-        )}
+
       </div>
     </Card>
   )

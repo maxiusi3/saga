@@ -91,7 +91,7 @@ export default function StoryDetailPage() {
           storyteller_id: story.storyteller_id, // 添加这个关键字段！
           storyteller_name: storytellerName,
           storyteller_avatar: storytellerAvatar,
-          audio_url: story.audio_url || '',
+          audio_url: story.audio_url,
           audio_duration: story.audio_duration || 0,
           transcript: story.transcript || story.content || 'No transcript available',
           photo_url: '',
