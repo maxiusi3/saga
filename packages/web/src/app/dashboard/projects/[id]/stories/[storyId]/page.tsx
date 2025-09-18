@@ -328,25 +328,34 @@ export default function StoryDetailPage() {
         </Card>
       )}
 
-{/* Audio Player */}
+{/* Audio Player Debug */}
 {story.type === 'story' && (
   <Card className="p-6">
     <div className="space-y-4">
-      <h3 className="font-semibold text-foreground">Audio Recording</h3>
+      <h3 className="font-semibold text-foreground">Audio Recording Debug</h3>
+      <div className="text-sm bg-gray-100 p-4 rounded">
+        <p><strong>Story Type:</strong> {story.type}</p>
+        <p><strong>Audio URL:</strong> {story.audio_url || 'null/undefined'}</p>
+        <p><strong>Audio Duration:</strong> {story.audio_duration || 'null/undefined'}</p>
+        <p><strong>Story ID:</strong> {story.id}</p>
+        <p><strong>Story Object:</strong> {JSON.stringify(story, null, 2)}</p>
+      </div>
       {story.audio_url ? (
-        <AudioPlayer
-          src={story.audio_url}
-          title={story.title}
-          className="w-full"
-        />
-      ) : (
-        <div className="text-sm text-muted-foreground p-4 bg-muted rounded-lg">
-          No audio file available for this story.
+        <div>
+          <p className="text-green-600">✅ Audio URL exists, loading player...</p>
+          <AudioPlayer
+            src={story.audio_url}
+            title={story.title}
+            className="w-full"
+          />
         </div>
+      ) : (
+        <p className="text-red-600">❌ No audio URL found</p>
       )}
     </div>
   </Card>
 )}
+
 
 
       {/* Transcript */}
