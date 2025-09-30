@@ -1,114 +1,107 @@
 @import "tailwindcss";
+@import "../styles/design-tokens.css";
 @import "../styles/accessibility.css";
 
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Saga Design System Integration */
+  --color-saga-green-primary: #2D5A3D;
+  --color-saga-green-secondary: #4A7C59;
+  --color-saga-green-success: #22C55E;
+  --color-saga-yellow-warning: #F59E0B;
+  --color-saga-red-error: #EF4444;
+  
+  /* Updated primary colors to match Saga design */
+  --color-primary: var(--color-saga-green-primary);
+  --color-primary-foreground: white;
+  --color-secondary: var(--color-saga-green-secondary);
+  --color-secondary-foreground: white;
+  --color-success: var(--color-saga-green-success);
+  --color-warning: var(--color-saga-yellow-warning);
+  --color-destructive: var(--color-saga-red-error);
+  --color-destructive-foreground: white;
+  
+  /* Existing theme tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-
-  /* Furbridge Design System Colors */
-  --color-furbridge-orange: var(--furbridge-orange);
-  --color-furbridge-orange-hover: var(--furbridge-orange-hover);
-  --color-furbridge-teal: var(--furbridge-teal);
-  --color-furbridge-teal-hover: var(--furbridge-teal-hover);
-  --color-furbridge-warm-gray: var(--furbridge-warm-gray);
-  --color-furbridge-light-gray: var(--furbridge-light-gray);
-
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-200: #e5e7eb;
-  --color-gray-300: #d1d5db;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
-  --color-gray-600: #4b5563;
-  --color-gray-700: #374151;
-  --color-gray-800: #1f2937;
-  --color-gray-900: #111827;
-  --color-gray-950: #030712;
+  
+  /* Updated radius system */
+  --radius-sm: 0.375rem; /* 6px */
+  --radius-md: 0.75rem; /* 12px */
+  --radius-lg: 1rem; /* 16px */
+  --radius-xl: 1.5rem; /* 24px */
+  
+  /* Saga Gray Scale */
+  --color-gray-50: #F8FAFC;
+  --color-gray-100: #F1F5F9;
+  --color-gray-200: #E2E8F0;
+  --color-gray-300: #CBD5E1;
+  --color-gray-400: #94A3B8;
+  --color-gray-500: #64748B;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1E293B;
+  --color-gray-900: #0F172A;
+  --color-gray-950: #020617;
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-
-  /* Furbridge Design System Colors */
-  --furbridge-orange: oklch(0.646 0.222 41.116);
-  --furbridge-orange-hover: oklch(0.596 0.222 41.116);
-  --furbridge-teal: oklch(0.6 0.118 184.704);
-  --furbridge-teal-hover: oklch(0.55 0.118 184.704);
-  --furbridge-warm-gray: oklch(0.556 0 0);
-  --furbridge-light-gray: oklch(0.97 0 0);
+  /* Base colors */
+  --background: #ffffff;
+  --foreground: #0F172A;
+  --card: #ffffff;
+  --card-foreground: #0F172A;
+  --popover: #ffffff;
+  --popover-foreground: #0F172A;
   
-  /* Design System Color Tokens */
-  --primary: oklch(0.45 0.15 180); /* Using design system primary */
-  --secondary: oklch(0.65 0.18 45); /* Using design system secondary */
-  --brown: oklch(0.35 0.08 45); /* Using design system brown */
+  /* Saga primary colors */
+  --primary: #2D5A3D;
+  --primary-foreground: #ffffff;
+  --secondary: #4A7C59;
+  --secondary-foreground: #ffffff;
+  
+  /* Muted colors */
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --accent: #F1F5F9;
+  --accent-foreground: #0F172A;
+  
+  /* Status colors */
+  --destructive: #EF4444;
+  --destructive-foreground: #ffffff;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  
+  /* Border and input colors */
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #2D5A3D;
+  
+  /* Updated radius */
+  --radius: 0.75rem;
+  
+  /* Sidebar colors */
+  --sidebar: #F8FAFC;
+  --sidebar-foreground: #0F172A;
+  --sidebar-primary: #2D5A3D;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #F1F5F9;
+  --sidebar-accent-foreground: #0F172A;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #2D5A3D;
 }
 
 .dark {
@@ -155,50 +148,104 @@
   }
 }
 
-/* Design System Typography Classes */
+/* Saga Design System Utility Classes */
 @layer utilities {
-  .text-hero {
-    @apply text-4xl sm:text-5xl lg:text-6xl font-bold;
-  }
-  
+  /* Typography Scale */
   .text-display {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-bold;
+    font-size: 3rem; /* 48px */
+    line-height: 3.5rem; /* 56px */
+    font-weight: 700;
   }
   
-  .text-subtitle {
-    @apply text-lg sm:text-xl;
+  .text-h1 {
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.75rem; /* 44px */
+    font-weight: 700;
   }
   
-  .text-stat-number {
-    @apply text-2xl sm:text-3xl font-bold;
+  .text-h2 {
+    font-size: 1.875rem; /* 30px */
+    line-height: 2.25rem; /* 36px */
+    font-weight: 600;
   }
   
-  .text-stat-label {
-    @apply text-sm font-medium uppercase tracking-wide;
+  .text-h3 {
+    font-size: 1.5rem; /* 24px */
+    line-height: 2rem; /* 32px */
+    font-weight: 600;
   }
   
-  .text-brown {
-    @apply text-[var(--brown)];
+  .text-h4 {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.75rem; /* 28px */
+    font-weight: 600;
   }
   
-  .text-primary {
-    @apply text-[var(--primary)];
+  .text-body-large {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.75rem; /* 28px */
   }
   
-  .text-secondary {
-    @apply text-[var(--secondary)];
+  .text-body {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
   }
   
-  .bg-primary {
-    @apply bg-[var(--primary)];
+  .text-body-small {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
   }
   
-  .bg-secondary {
-    @apply bg-[var(--secondary)];
+  .text-caption {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1rem; /* 16px */
   }
   
-  .bg-brown {
-    @apply bg-[var(--brown)];
+  /* Color Utilities */
+  .text-saga-green {
+    color: var(--primary);
+  }
+  
+  .text-saga-green-secondary {
+    color: var(--secondary);
+  }
+  
+  .bg-saga-green {
+    background-color: var(--primary);
+  }
+  
+  .bg-saga-green-secondary {
+    background-color: var(--secondary);
+  }
+  
+  .border-saga-green {
+    border-color: var(--primary);
+  }
+  
+  /* Card Utilities */
+  .card-base {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
+  }
+  
+  .card-hover {
+    @apply hover:shadow-md transition-shadow duration-200;
+  }
+  
+  .card-elevated {
+    @apply shadow-lg;
+  }
+  
+  /* Button Utilities */
+  .btn-primary {
+    @apply bg-saga-green text-white px-6 py-3 rounded-lg font-medium hover:bg-saga-green-secondary transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-saga-green text-saga-green px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200;
+  }
+  
+  .btn-tertiary {
+    @apply text-saga-green px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200;
   }
 }
 

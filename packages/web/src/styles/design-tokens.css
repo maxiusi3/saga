@@ -1,0 +1,96 @@
+/* Saga Design System Tokens */
+
+@theme {
+  /* Color Palette - Based on Prototype Designs */
+  --color-saga-green-primary: #2D5A3D;
+  --color-saga-green-secondary: #4A7C59;
+  --color-saga-green-success: #22C55E;
+  --color-saga-yellow-warning: #F59E0B;
+  --color-saga-red-error: #EF4444;
+  
+  /* Neutral Gray Scale */
+  --color-saga-gray-50: #F8FAFC;
+  --color-saga-gray-100: #F1F5F9;
+  --color-saga-gray-200: #E2E8F0;
+  --color-saga-gray-300: #CBD5E1;
+  --color-saga-gray-400: #94A3B8;
+  --color-saga-gray-500: #64748B;
+  --color-saga-gray-600: #475569;
+  --color-saga-gray-700: #334155;
+  --color-saga-gray-800: #1E293B;
+  --color-saga-gray-900: #0F172A;
+
+  /* Typography Scale */
+  --font-size-display: 3rem; /* 48px */
+  --line-height-display: 3.5rem; /* 56px */
+  
+  --font-size-h1: 2.25rem; /* 36px */
+  --line-height-h1: 2.75rem; /* 44px */
+  
+  --font-size-h2: 1.875rem; /* 30px */
+  --line-height-h2: 2.25rem; /* 36px */
+  
+  --font-size-h3: 1.5rem; /* 24px */
+  --line-height-h3: 2rem; /* 32px */
+  
+  --font-size-h4: 1.25rem; /* 20px */
+  --line-height-h4: 1.75rem; /* 28px */
+  
+  --font-size-body-large: 1.125rem; /* 18px */
+  --line-height-body-large: 1.75rem; /* 28px */
+  
+  --font-size-body: 1rem; /* 16px */
+  --line-height-body: 1.5rem; /* 24px */
+  
+  --font-size-body-small: 0.875rem; /* 14px */
+  --line-height-body-small: 1.25rem; /* 20px */
+  
+  --font-size-caption: 0.75rem; /* 12px */
+  --line-height-caption: 1rem; /* 16px */
+
+  /* Spacing System - Base unit: 4px */
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-16: 4rem; /* 64px */
+  --spacing-24: 6rem; /* 96px */
+
+  /* Border Radius */
+  --radius-small: 0.375rem; /* 6px */
+  --radius-medium: 0.75rem; /* 12px */
+  --radius-large: 1rem; /* 16px */
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-small: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-large: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-elevated: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Component-specific tokens */
+  --card-background: white;
+  --card-border: var(--color-saga-gray-200);
+  --card-shadow: var(--shadow-small);
+  --card-shadow-hover: var(--shadow-medium);
+  
+  --button-primary-bg: var(--color-saga-green-primary);
+  --button-primary-hover: var(--color-saga-green-secondary);
+  --button-primary-text: white;
+  
+  --button-secondary-border: var(--color-saga-green-primary);
+  --button-secondary-text: var(--color-saga-green-primary);
+  --button-secondary-hover-bg: var(--color-saga-gray-50);
+  
+  --input-border: var(--color-saga-gray-300);
+  --input-focus-border: var(--color-saga-green-primary);
+  --input-background: white;
+  
+  --badge-success-bg: var(--color-saga-green-success);
+  --badge-warning-bg: var(--color-saga-yellow-warning);
+  --badge-error-bg: var(--color-saga-red-error);
+  --badge-neutral-bg: var(--color-saga-gray-500);
+}

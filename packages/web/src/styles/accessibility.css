@@ -1,125 +1,10 @@
-/* Accessibility Styles for WCAG 2.1 AA Compliance */
+/**
+ * Accessibility Styles for Saga UI
+ * WCAG 2.1 AA compliant styles and utilities
+ */
 
-/* High Contrast Mode */
-.high-contrast {
-  --background: #000000;
-  --foreground: #ffffff;
-  --muted: #333333;
-  --muted-foreground: #cccccc;
-  --border: #ffffff;
-  --input: #000000;
-  --primary: #ffff00;
-  --primary-foreground: #000000;
-  --secondary: #666666;
-  --secondary-foreground: #ffffff;
-  --accent: #00ffff;
-  --accent-foreground: #000000;
-  --destructive: #ff0000;
-  --destructive-foreground: #ffffff;
-  --ring: #ffff00;
-}
-
-.high-contrast * {
-  border-color: var(--border) !important;
-}
-
-.high-contrast button,
-.high-contrast input,
-.high-contrast select,
-.high-contrast textarea {
-  border: 2px solid var(--border) !important;
-}
-
-/* Large Text Mode */
-.large-text {
-  --font-size-multiplier: 1.25;
-}
-
-.large-text * {
-  font-size: calc(1rem * var(--font-size-multiplier));
-}
-
-.large-text h1 {
-  font-size: calc(2.25rem * var(--font-size-multiplier));
-}
-
-.large-text h2 {
-  font-size: calc(1.875rem * var(--font-size-multiplier));
-}
-
-.large-text h3 {
-  font-size: calc(1.5rem * var(--font-size-multiplier));
-}
-
-.large-text h4 {
-  font-size: calc(1.25rem * var(--font-size-multiplier));
-}
-
-.large-text .text-sm {
-  font-size: calc(0.875rem * var(--font-size-multiplier));
-}
-
-.large-text .text-xs {
-  font-size: calc(0.75rem * var(--font-size-multiplier));
-}
-
-/* Reduced Motion */
-.reduced-motion *,
-.reduced-motion *::before,
-.reduced-motion *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
-}
-
-.reduced-motion .animate-spin {
-  animation: none !important;
-}
-
-.reduced-motion .animate-pulse {
-  animation: none !important;
-  opacity: 0.5;
-}
-
-/* Enhanced Keyboard Navigation */
-.keyboard-navigation *:focus {
-  outline: 3px solid var(--ring) !important;
-  outline-offset: 2px !important;
-}
-
-.keyboard-navigation button:focus,
-.keyboard-navigation input:focus,
-.keyboard-navigation select:focus,
-.keyboard-navigation textarea:focus,
-.keyboard-navigation [tabindex]:focus {
-  box-shadow: 0 0 0 3px var(--ring) !important;
-}
-
-.keyboard-navigation .focus\:ring-2:focus {
-  --tw-ring-width: 3px;
-}
-
-/* Skip Links */
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 6px;
-  background: var(--primary);
-  color: var(--primary-foreground);
-  padding: 8px;
-  text-decoration: none;
-  border-radius: 4px;
-  z-index: 1000;
-  font-weight: bold;
-}
-
-.skip-link:focus {
-  top: 6px;
-}
-
-/* Screen Reader Optimization */
-.screen-reader-optimized .sr-only {
+/* Screen Reader Only Content */
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -131,169 +16,133 @@
   border: 0;
 }
 
-.screen-reader-optimized .sr-only:focus {
+.sr-only:focus {
   position: static;
   width: auto;
   height: auto;
-  padding: 0.5rem;
-  margin: 0;
+  padding: inherit;
+  margin: inherit;
   overflow: visible;
   clip: auto;
   white-space: normal;
-  background: var(--primary);
-  color: var(--primary-foreground);
-  border-radius: 4px;
 }
 
-/* Enhanced Focus Indicators */
-.keyboard-navigation [role="button"]:focus,
-.keyboard-navigation [role="link"]:focus,
-.keyboard-navigation [role="tab"]:focus,
-.keyboard-navigation [role="menuitem"]:focus {
-  outline: 3px solid var(--ring);
+/* Skip Links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  font-weight: 600;
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Focus Indicators */
+.focus-visible-ring {
+  outline: none;
+}
+
+.focus-visible-ring:focus-visible {
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-/* Color Scheme Specific Styles */
-[data-color-scheme="high-contrast"] {
-  --background: #000000;
-  --foreground: #ffffff;
-  --muted: #333333;
-  --muted-foreground: #cccccc;
-  --border: #ffffff;
-  --primary: #ffff00;
-  --primary-foreground: #000000;
-}
-
-/* Font Size Adjustments */
-:root {
-  --font-size-multiplier: 1;
-}
-
-.text-base {
-  font-size: calc(1rem * var(--font-size-multiplier));
-}
-
-.text-sm {
-  font-size: calc(0.875rem * var(--font-size-multiplier));
-}
-
-.text-xs {
-  font-size: calc(0.75rem * var(--font-size-multiplier));
-}
-
-.text-lg {
-  font-size: calc(1.125rem * var(--font-size-multiplier));
-}
-
-.text-xl {
-  font-size: calc(1.25rem * var(--font-size-multiplier));
-}
-
-.text-2xl {
-  font-size: calc(1.5rem * var(--font-size-multiplier));
-}
-
-.text-3xl {
-  font-size: calc(1.875rem * var(--font-size-multiplier));
-}
-
-/* Improved Touch Targets */
-@media (pointer: coarse) {
-  button,
-  input,
-  select,
-  textarea,
-  [role="button"],
-  [role="link"] {
-    min-height: 44px;
-    min-width: 44px;
-  }
-}
-
-/* High Contrast Media Query Support */
+/* High Contrast Mode Support */
 @media (prefers-contrast: high) {
-  :root {
-    --border: currentColor;
+  .high-contrast-border {
+    border: 2px solid currentColor !important;
   }
   
-  button,
-  input,
-  select,
-  textarea {
-    border: 2px solid currentColor;
+  .high-contrast-text {
+    color: black !important;
+    font-weight: bold !important;
+  }
+  
+  .high-contrast-bg {
+    background-color: white !important;
+  }
+  
+  .high-contrast-button {
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid black !important;
   }
 }
 
-/* Reduced Motion Media Query Support */
+/* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  .motion-reduce-safe {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-/* Color Blind Friendly Patterns */
-.pattern-dots {
-  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
-  background-size: 8px 8px;
+/* Touch Target Minimum Sizes */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
 }
 
-.pattern-stripes {
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 2px,
-    currentColor 2px,
-    currentColor 4px
-  );
+.touch-target-large {
+  min-height: 48px;
+  min-width: 48px;
 }
 
-/* Error and Success States with Patterns */
-.error-with-pattern {
-  background-color: var(--destructive);
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 2px,
-    rgba(255, 255, 255, 0.1) 2px,
-    rgba(255, 255, 255, 0.1) 4px
-  );
+/* Font Size Accessibility */
+.font-size-standard {
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-.success-with-pattern {
-  background-color: #22c55e;
-  background-image: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.1) 1px,
-    transparent 1px
-  );
-  background-size: 8px 8px;
+.font-size-large {
+  font-size: 1.125rem;
+  line-height: 1.6;
 }
 
-/* Ensure sufficient color contrast */
-.contrast-check {
-  color: var(--foreground);
-  background-color: var(--background);
+.font-size-extra-large {
+  font-size: 1.25rem;
+  line-height: 1.7;
 }
 
-/* Focus management for modals and dialogs */
-.modal-focus-trap {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
+/* Color Contrast Utilities */
+.contrast-safe-text {
+  color: var(--color-foreground);
+  background-color: var(--color-background);
 }
 
-.modal-focus-trap:focus {
+.contrast-safe-inverse {
+  color: var(--color-background);
+  background-color: var(--color-foreground);
+}
+
+/* Focus Management */
+.focus-trap {
+  position: relative;
+}
+
+.focus-trap:focus {
   outline: none;
 }
 
-/* Announcement region for screen readers */
-.sr-announcement {
+/* Live Region Styling */
+.live-region {
   position: absolute;
   left: -10000px;
   width: 1px;
@@ -301,11 +150,203 @@
   overflow: hidden;
 }
 
-[aria-live="polite"],
-[aria-live="assertive"] {
-  position: absolute;
-  left: -10000px;
-  width: 1px;
-  height: 1px;
+.live-region.visible {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+}
+
+/* Error and Status Indicators */
+.error-indicator {
+  color: var(--color-destructive);
+  font-weight: 600;
+}
+
+.success-indicator {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.warning-indicator {
+  color: var(--color-warning);
+  font-weight: 600;
+}
+
+/* Form Accessibility */
+.form-field-error {
+  border-color: var(--color-destructive);
+  box-shadow: 0 0 0 1px var(--color-destructive);
+}
+
+.form-field-error:focus {
+  outline: 2px solid var(--color-destructive);
+  outline-offset: 2px;
+}
+
+.required-indicator::after {
+  content: " *";
+  color: var(--color-destructive);
+  font-weight: bold;
+}
+
+/* Interactive Element States */
+.interactive-element {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.interactive-element:hover {
+  opacity: 0.8;
+}
+
+.interactive-element:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.interactive-element:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Keyboard Navigation Indicators */
+.keyboard-navigation .focusable:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Modal and Dialog Accessibility */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-background);
+  border-radius: 8px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  z-index: 51;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content:focus {
+  outline: none;
+}
+
+/* Table Accessibility */
+.accessible-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.accessible-table th,
+.accessible-table td {
+  border: 1px solid var(--color-border);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.accessible-table th {
+  background-color: var(--color-muted);
+  font-weight: 600;
+}
+
+.accessible-table th[aria-sort] {
+  cursor: pointer;
+}
+
+.accessible-table th[aria-sort]:hover {
+  background-color: var(--color-muted-foreground);
+}
+
+/* Loading States */
+.loading-indicator {
+  position: relative;
   overflow: hidden;
+}
+
+.loading-indicator::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-indicator::after {
+    animation: none;
+  }
+}
+
+/* Print Accessibility */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  
+  .skip-link {
+    display: none;
+  }
+}
+
+/* Dark Mode Accessibility */
+@media (prefers-color-scheme: dark) {
+  .auto-dark-mode {
+    color-scheme: dark;
+  }
+}
+
+/* Utility Classes for Common Accessibility Patterns */
+.visually-hidden {
+  @apply sr-only;
+}
+
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+}
+
+.touch-friendly {
+  @apply min-h-[44px] min-w-[44px] p-2;
+}
+
+.high-contrast-safe {
+  @apply contrast-more:border-black contrast-more:text-black contrast-more:bg-white;
+}
+
+.motion-safe {
+  @apply motion-reduce:transition-none motion-reduce:animate-none;
 }
