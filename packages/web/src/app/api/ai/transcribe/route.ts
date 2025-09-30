@@ -1,144 +1,138 @@
-import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
+import { NextRequest, NextResponse } from 'next/server';
 
-// Initialize OpenRouter client (compatible with OpenAI SDK)
-const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
-  apiKey: process.env.OPENROUTER_API_KEY,
-  baseURL: 'https://openrouter.ai/api/v1',
-}) : null
+// SiliconFlow Audio Transcription API endpoint
+// Docs: https://docs.siliconflow.cn/cn/api-reference/audio/create-audio-transcriptions
+const SILICONFLOW_ENDPOINT = 'https://api.siliconflow.cn/v1/audio/transcriptions';
 
-export async function POST(request: NextRequest) {
+/**
+ * A simple retry wrapper with exponential backoff.
+ * @param fn The async function to retry.
+ * @param retries The number of retries.
+ * @returns The result of the function.
+ */
+async function withRetry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
   try {
-    // Check if OpenRouter API key is configured
-    if (!process.env.OPENROUTER_API_KEY) {
-      return NextResponse.json(
-        { error: 'OpenRouter API key not configured' },
-        { status: 500 }
-      )
-    }
-
-    // Parse form data
-    const formData = await request.formData()
-    const audioFile = formData.get('audio') as File
-    const language = formData.get('language') as string || 'en'
-
-    if (!audioFile) {
-      return NextResponse.json(
-        { error: 'No audio file provided' },
-        { status: 400 }
-      )
-    }
-
-    // Validate file size (OpenAI has a 25MB limit)
-    const maxSize = 25 * 1024 * 1024 // 25MB
-    if (audioFile.size > maxSize) {
-      return NextResponse.json(
-        { error: 'Audio file too large. Maximum size is 25MB.' },
-        { status: 400 }
-      )
-    }
-
-    // Validate file type
-    const allowedTypes = [
-      'audio/webm',
-      'audio/mp3',
-      'audio/mp4',
-      'audio/mpeg',
-      'audio/m4a',
-      'audio/wav',
-      'audio/flac'
-    ]
-    
-    if (!allowedTypes.includes(audioFile.type)) {
-      return NextResponse.json(
-        { error: `Unsupported audio format: ${audioFile.type}` },
-        { status: 400 }
-      )
-    }
-
-    console.log(`Transcribing audio file: ${audioFile.name}, size: ${audioFile.size} bytes, type: ${audioFile.type}`)
-
-    // Convert File to format expected by OpenAI
-    const audioBuffer = await audioFile.arrayBuffer()
-    const audioBlob = new Blob([audioBuffer], { type: audioFile.type })
-    
-    // Create a File object with proper extension
-    const fileExtension = audioFile.type ? audioFile.type.split('/')[1] || 'webm' : 'webm'
-    const fileName = `audio.${fileExtension}`
-    const audioFileForAPI = new File([audioBlob], fileName, { type: audioFile.type })
-
-    // Call OpenRouter Whisper API (using OpenAI's Whisper model)
-    if (!openai) {
-      throw new Error('OpenRouter client not initialized')
-    }
-
-    const transcription = await openai.audio.transcriptions.create({
-      file: audioFileForAPI,
-      model: 'openai/whisper-1',  // OpenRouter model format
-      language: language,
-      response_format: 'verbose_json',
-      temperature: 0.2, // Lower temperature for more consistent results
-    })
-
-    console.log('Transcription completed successfully')
-
-    // Calculate confidence score based on duration and text length
-    const duration = transcription.duration || 0
-    const textLength = transcription.text?.length || 0
-    const confidence = Math.min(0.95, Math.max(0.7, textLength / (duration * 10)))
-
-    return NextResponse.json({
-      text: transcription.text || '',
-      confidence: confidence,
-      duration: duration,
-      language: transcription.language || language,
-      segments: transcription.segments || []
-    })
-
-  } catch (error: any) {
-    console.error('Transcription error:', error)
-
-    // Handle specific OpenAI errors
-    if (error?.error?.type === 'invalid_request_error') {
-      return NextResponse.json(
-        { error: 'Invalid audio file format or corrupted file' },
-        { status: 400 }
-      )
-    }
-
-    if (error?.error?.code === 'rate_limit_exceeded') {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded. Please try again later.' },
-        { status: 429 }
-      )
-    }
-
-    if (error?.error?.code === 'insufficient_quota') {
-      return NextResponse.json(
-        { error: 'OpenAI quota exceeded. Please check your billing.' },
-        { status: 402 }
-      )
-    }
-
-    // Generic error response
-    return NextResponse.json(
-      { 
-        error: 'Transcription failed. Please try again.',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
-      },
-      { status: 500 }
-    )
+    return await fn();
+  } catch (err) {
+    if (retries <= 0) throw err;
+    // Exponential backoff: 0.8s, 1.6s
+    const delay = (3 - retries) * 800;
+    await new Promise(resolve => setTimeout(resolve, delay));
+    return withRetry(fn, retries - 1);
   }
 }
 
-// Handle OPTIONS request for CORS
-export async function OPTIONS(request: NextRequest) {
+/**
+ * Safely parse JSON from a Response object.
+ * @param res The Response object.
+ * @returns The parsed JSON or the response text if parsing fails.
+ */
+async function safeJson(res: Response) {
+  try {
+    return await res.json();
+  } catch {
+    try {
+      return await res.text();
+    } catch {
+      return '';
+    }
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const formData = await request.formData();
+    const audioFile = formData.get('audio') as File | null;
+    const language = (formData.get('language') as string) || 'zh-CN';
+
+    if (!audioFile) {
+      return NextResponse.json({ error: 'No audio file provided' }, { status: 400 });
+    }
+
+    const apiKey = process.env.SILICONFLOW_API_KEY;
+    const model = process.env.SILICONFLOW_MODEL || 'FunAudioLLM/SenseVoiceSmall';
+
+    if (!apiKey) {
+      console.error('SiliconFlow API key not configured.');
+      return NextResponse.json(
+        { error: 'Server configuration error: Missing SiliconFlow API key.' },
+        { status: 500 }
+      );
+    }
+
+    const outForm = new FormData();
+    outForm.append('file', audioFile);
+    outForm.append('model', model);
+    outForm.append('language', language); // Supported by SenseVoice for better accuracy
+
+    console.log(`Transcribing audio file of size ${audioFile.size} bytes using model ${model}`);
+
+    const doRequest = async () => {
+      const response = await fetch(SILICONFLOW_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: outForm,
+      });
+
+      if (!response.ok) {
+        const errorBody = await safeJson(response);
+        const { status } = response;
+        console.error(`SiliconFlow API error: ${status}`, errorBody);
+        if (status === 401) {
+          throw new Error('Unauthorized: Invalid SiliconFlow API key.');
+        }
+        if (status === 429) {
+          throw new Error('Rate limit exceeded. Please try again later.');
+        }
+        throw new Error(`SiliconFlow API request failed with status ${status}`);
+      }
+
+      const data = await response.json();
+
+      // Ensure compatibility with the expected response structure
+      const text = data.text || '';
+      const detectedLanguage = data.language || language;
+      const confidence = typeof data.confidence === 'number' ? data.confidence : 0.9; // Default confidence
+
+      return { text, confidence, language: detectedLanguage };
+    };
+
+    const result = await withRetry(doRequest, 2);
+
+    return NextResponse.json(result);
+
+  } catch (error: any) {
+    console.error('Transcription API error:', error.message);
+
+    const message = error.message || 'An unknown error occurred.';
+    let status = 500;
+
+    if (message.includes('Unauthorized')) {
+      status = 401;
+    } else if (message.includes('Rate limit')) {
+      status = 429;
+    }
+
+    return NextResponse.json(
+      {
+        error: 'Transcription failed. Please try again.',
+        details: process.env.NODE_ENV === 'development' ? message : undefined,
+      },
+      { status }
+    );
+  }
+}
+
+// Handle CORS preflight requests
+export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
-  })
+  });
 }

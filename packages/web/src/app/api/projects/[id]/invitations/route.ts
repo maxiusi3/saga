@@ -23,16 +23,16 @@ export async function GET(
     let supabase = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
-    // 验证用户身份 - 使用与 POST 相同的逻辑
+    // Verify user identity - use same logic as POST
     let user: any = null
     let authError: any = null
 
-    // 首先尝试从 cookies 获取用户
+    // First try to get user from cookies
     const cookieAuth = await supabase.auth.getUser()
     if (cookieAuth.data.user && !cookieAuth.error) {
       user = cookieAuth.data.user
     } else if (token) {
-      // 如果 cookies 失败，尝试使用 token 验证
+      // If cookies fail, try using token for verification
       try {
         const { createClient } = await import('@supabase/supabase-js')
         const adminSupabase = createClient(
@@ -42,7 +42,7 @@ export async function GET(
         const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
         if (tokenUser.user && !tokenError) {
           user = tokenUser.user
-          // 为后续查询创建带用户上下文的客户端
+          // Create client with user context for subsequent queries
           supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
             process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -64,7 +64,7 @@ export async function GET(
       )
     }
 
-    // 验证用户是否是项目所有者 - 使用 admin 客户端
+    // Verify if user is project owner - use admin client
     const { createClient } = await import('@supabase/supabase-js')
     const adminSupabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -84,7 +84,15 @@ export async function GET(
       )
     }
 
-    // 获取项目的邀请列表 - 使用 admin 客户端
+    // Run cleanup for expired invitations before fetching
+    try {
+      await adminSupabase.rpc('cleanup_expired_invitations')
+    } catch (cleanupError) {
+      console.warn('Failed to run invitation cleanup:', cleanupError)
+      // Continue with normal operation even if cleanup fails
+    }
+
+    // Get project invitations list - using admin client
     const { data: invitations, error } = await adminSupabase
       .from('invitations')
       .select('*')
@@ -99,17 +107,16 @@ export async function GET(
       )
     }
 
-    // 更新过期状态 - 使用 admin 客户端
+    // Update expired status - use admin client
     const now = new Date()
     const updatedInvitations = invitations.map(invitation => {
       if (invitation.status === 'pending' && new Date(invitation.expires_at) < now) {
-        // 异步更新数据库中的过期状态
+        // Async update expired status in database
         adminSupabase
           .from('invitations')
           .update({ status: 'expired', updated_at: now.toISOString() })
           .eq('id', invitation.id)
           .then(() => {})
-          .catch(err => console.error('Error updating expired invitation:', err))
 
         return { ...invitation, status: 'expired' }
       }
@@ -146,16 +153,16 @@ export async function POST(
     let supabase = createRouteHandlerClient({ cookies })
     const { id: projectId } = params
 
-    // 验证用户身份
+    // Verify user identity
     let user: any = null
     let authError: any = null
 
-    // 首先尝试从 cookies 获取用户
+    // First try to get user from cookies
     const cookieAuth = await supabase.auth.getUser()
     if (cookieAuth.data.user && !cookieAuth.error) {
       user = cookieAuth.data.user
     } else if (token) {
-      // 如果 cookies 失败，尝试使用 token 验证
+      // If cookies fail, try using token for verification
       try {
         const { createClient } = await import('@supabase/supabase-js')
         const adminSupabase = createClient(
@@ -165,7 +172,7 @@ export async function POST(
         const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
         if (tokenUser.user && !tokenError) {
           user = tokenUser.user
-          // 为后续查询创建带用户上下文的客户端
+          // Create client with user context for subsequent queries
           supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
             process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -189,14 +196,14 @@ export async function POST(
       )
     }
 
-    // 验证用户是否是项目所有者 - 使用 service role 绕过 RLS 进行调试
+    // Verify if user is project owner - use service role to bypass RLS for debugging
     const { createClient } = await import('@supabase/supabase-js')
     const adminSupabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    // 使用 admin 客户端查看项目实际数据
+    // Use admin client to view actual project data
     const { data: adminProject, error: adminError } = await adminSupabase
       .from('projects')
       .select('id, facilitator_id, name')
@@ -414,7 +421,7 @@ export async function DELETE(
     const { searchParams } = new URL(request.url)
     const invitationId = searchParams.get('invitation_id')
 
-    // 验证用户身份
+    // Verify user identity
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json(
@@ -476,15 +483,26 @@ export async function DELETE(
       )
     }
 
-    // 释放预留的座位
+    // Release reserved seats
     const seatColumn = invitation.role === 'facilitator' ? 'facilitator_seats' : 'storyteller_seats'
-    await supabase
+    
+    // Get current wallet state and increment the appropriate seat count
+    const { data: wallet } = await supabase
       .from('user_resource_wallets')
-      .update({
-        [seatColumn]: supabase.raw(`${seatColumn} + 1`),
-        updated_at: new Date().toISOString()
-      })
+      .select('facilitator_seats, storyteller_seats')
       .eq('user_id', user.id)
+      .single()
+    
+    if (wallet) {
+      const currentSeats = (wallet as any)[seatColumn] || 0
+      await supabase
+        .from('user_resource_wallets')
+        .update({
+          [seatColumn]: currentSeats + 1,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', user.id)
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

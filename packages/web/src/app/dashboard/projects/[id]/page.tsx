@@ -8,9 +8,8 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Settings, Search, Play, MessageCircle, HelpCircle, Sparkles, BookOpen, Clock, Heart, Filter, Plus, Edit, Trash2, UserPlus } from 'lucide-react'
+import { Settings, Search, Play, Sparkles, BookOpen, Clock, Heart, Filter, Plus, Edit, Trash2, UserPlus, MessageCircle, HelpCircle } from 'lucide-react'
 import Link from 'next/link'
-import { StoryCard } from '@/components/story/story-card'
 import { ChapterSummaryCard } from '@/components/story/chapter-summary-card'
 import { ChapterProgress } from '@/components/chapters/chapter-progress'
 import { PromptQueue } from '@/components/prompts/prompt-queue'
@@ -40,6 +39,9 @@ interface StoryWithDetails extends Story {
   }
   has_new_interactions?: boolean
   type?: 'story' | 'chapter_summary'
+  comments_count?: number
+  follow_ups_count?: number
+  latest_interaction_time?: string | null
 }
 
 interface ChapterSummary {
@@ -189,7 +191,7 @@ export default function ProjectDetailPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">{project.title}</h1>
+            <h1 className="text-3xl font-bold text-foreground">{project.name}</h1>
             {project.description && (
               <p className="text-muted-foreground mt-1">{project.description}</p>
             )}
@@ -230,7 +232,7 @@ export default function ProjectDetailPage() {
             )}
 
             <ActionPermissionGate
-              action="manageProject"
+              action="canEditProjectSettings"
               userRole={project.user_role}
               isProjectOwner={project.is_owner}
             >
@@ -255,7 +257,7 @@ export default function ProjectDetailPage() {
               projectId={projectId}
               onPromptDelivered={() => {
                 // Refresh stories when a prompt is delivered
-                fetchStories()
+                // fetchStories()
               }}
             />
           </div>
@@ -268,11 +270,11 @@ export default function ProjectDetailPage() {
               <div className="max-w-md mx-auto space-y-6">
                 <div className="text-5xl mb-4">🎭</div>
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold text-foreground">开始您的故事之旅</h2>
+                  <h2 className="text-2xl font-semibold text-foreground">Start Your Story Journey</h2>
                   <p className="text-muted-foreground">
                     {project.user_role === 'storyteller'
-                      ? '分享您珍贵的回忆，让家族故事传承下去'
-                      : '邀请家人开始记录和分享他们的故事'
+                      ? 'Share your precious memories and let family stories be passed down'
+                      : 'Invite family members to start recording and sharing their stories'
                     }
                   </p>
                 </div>
@@ -285,7 +287,7 @@ export default function ProjectDetailPage() {
                   <Link href={`/dashboard/projects/${projectId}/record`}>
                     <Button size="lg" className="bg-primary hover:bg-primary/90">
                       <BookOpen className="h-5 w-5 mr-2" />
-                      录制第一个故事
+                      Record Your First Story
                     </Button>
                   </Link>
                 </ActionPermissionGate>
@@ -296,41 +298,75 @@ export default function ProjectDetailPage() {
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                       <Sparkles className="w-4 h-4 text-primary" />
                     </div>
-                    <p className="text-muted-foreground">AI智能转录</p>
+                    <p className="text-muted-foreground">AI Smart Transcription</p>
                   </div>
                   <div className="space-y-2">
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                       <MessageCircle className="w-4 h-4 text-primary" />
                     </div>
-                    <p className="text-muted-foreground">家人互动评论</p>
+                    <p className="text-muted-foreground">Family Interactive Comments</p>
                   </div>
                   <div className="space-y-2">
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                       <Heart className="w-4 h-4 text-primary" />
                     </div>
-                    <p className="text-muted-foreground">永久保存回忆</p>
+                    <p className="text-muted-foreground">Permanent Memory Storage</p>
                   </div>
                 </div>
               </div>
             </Card>
           ) : (
-            stories.map((story) => (
-              <StoryCard
-                key={story.id}
-                story={story}
-                onPlay={(storyId) => console.log('Play story:', storyId)}
-                onViewDetails={(storyId) => {
-                  window.location.href = `/dashboard/projects/${projectId}/stories/${storyId}`
-                }}
-                onEdit={(storyId) => {
-                  window.location.href = `/dashboard/projects/${projectId}/stories/${storyId}/edit`
-                }}
-                onDelete={handleDeleteStory}
-                showAIContent={true}
-                userRole={project.user_role}
-                isProjectOwner={project.is_owner}
-              />
-            ))
+            <div className="space-y-3">
+              {stories.map((story) => (
+                <Link key={story.id} href={`/dashboard/projects/${projectId}/stories/${story.id}`}>
+                  <div className="flex items-start space-x-3 p-4 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border border-border/50 hover:border-primary/20 bg-card">
+                    <Avatar className="h-10 w-10 flex-shrink-0">
+                      <AvatarImage src={story.storyteller_avatar} />
+                      <AvatarFallback>
+                        {story.storyteller_name?.charAt(0)?.toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-base font-medium text-foreground truncate">
+                          {story.title || story.ai_generated_title || 'Untitled'}
+                        </p>
+                        <span className="text-sm text-muted-foreground flex-shrink-0 ml-2">
+                          {story.latest_interaction_time
+                            ? new Date(story.latest_interaction_time).toLocaleDateString()
+                            : new Date(story.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                        {story.ai_summary || story.content || 'No summary available'}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                          <div className="flex items-center space-x-1">
+                            <MessageCircle className="w-4 h-4" />
+                            <span>{story.comments_count || 0}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <HelpCircle className="w-4 h-4" />
+                            <span>{story.follow_ups_count || 0}</span>
+                          </div>
+                          {story.duration && (
+                            <div className="text-sm text-muted-foreground">
+                              {Math.floor(story.duration / 60)}:{String(story.duration % 60).padStart(2, '0')}
+                            </div>
+                          )}
+                        </div>
+                        {story.latest_interaction_time && (
+                          <span className="text-sm text-muted-foreground">
+                            Last activity: {new Date(story.latest_interaction_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           )}
         </div>
       </div>

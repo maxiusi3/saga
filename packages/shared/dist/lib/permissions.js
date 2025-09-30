@@ -8,7 +8,7 @@ exports.canChangeRole = canChangeRole;
  * Calculate user permissions based on their role in a project
  */
 function calculateUserPermissions(userRole, isProjectOwner = false) {
-    // 基于用户的实际角色计算权限，项目所有者额外获得管理权限
+    // Calculate permissions based on user's actual role, project owners get additional management permissions
     let basePermissions;
     switch (userRole) {
         case 'facilitator':
@@ -67,21 +67,21 @@ function calculateUserPermissions(userRole, isProjectOwner = false) {
             };
             break;
     }
-    // 如果是项目所有者，叠加owner权限（角色权限 OR owner权限）
+    // If user is project owner, add owner permissions (role permissions OR owner permissions)
     if (isProjectOwner) {
-        // Owner权限矩阵：A=N, B=N, C=N, D=Y, E=Y, F=N
+        // Owner permission matrix: A=N, B=N, C=N, D=Y, E=Y, F=N
         const ownerBasePermissions = {
             canCreateStories: false, // A=N
             canAddComments: false, // B=N
             canAskFollowUpQuestions: false, // C=N
             canEditStoryTitles: true, // D=Y
             canEditStoryTranscripts: true, // E=Y
-            canViewComments: false, // F=N (这里应该是canRespondToFollowups，但我们用canViewComments代替)
+            canViewComments: false, // F=N (This should be canRespondToFollowups, but we use canViewComments as substitute)
         };
-        // 叠加逻辑：角色权限 OR owner权限
+        // Overlay logic: role permissions OR owner permissions
         const combinedPermissions = {
             ...basePermissions,
-            // 管理权限：owner总是有这些权限
+            // Management permissions: owners always have these permissions
             canEditProjectSettings: true,
             canInviteMembers: true,
             canRemoveMembers: true,
@@ -91,7 +91,7 @@ function calculateUserPermissions(userRole, isProjectOwner = false) {
             canEditAIContent: true,
             canViewAIContent: true,
             canViewComments: true,
-            // 叠加权限：任何一个为true，结果就是true
+            // Overlay permissions: if any one is true, result is true
             canCreateStories: basePermissions.canCreateStories || ownerBasePermissions.canCreateStories,
             canAddComments: basePermissions.canAddComments || ownerBasePermissions.canAddComments,
             canAskFollowUpQuestions: basePermissions.canAskFollowUpQuestions || ownerBasePermissions.canAskFollowUpQuestions,

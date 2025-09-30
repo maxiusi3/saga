@@ -58,20 +58,20 @@ export default function ProjectRecordPage() {
   // Load initial prompt and check AI service status
   useEffect(() => {
     const loadPromptAndFollowup = async () => {
-      // 检查URL参数中是否有追问ID和内容
+      // Check URL parameters for follow-up ID and content
       const urlParams = new URLSearchParams(window.location.search)
       const followupId = urlParams.get('followup')
       const followupContent = urlParams.get('content')
 
       if (followupId && followupContent) {
-        // 直接使用URL参数中的追问信息
+        // Use follow-up information directly from URL parameters
         const followupInteractionData = {
           id: followupId,
           content: followupContent
         }
         setFollowupInteraction(followupInteractionData)
 
-        // 创建基于追问的prompt
+        // Create prompt based on follow-up
         const followupPrompt: StoryPrompt = {
           id: `followup-${followupId}`,
           chapter: 'Follow-up Response',
@@ -82,7 +82,7 @@ export default function ProjectRecordPage() {
         }
         setCurrentPrompt(followupPrompt)
       } else {
-        // 没有追问信息，使用默认prompt
+        // No follow-up information, use default prompt
         const prompt = getNextPrompt()
         setCurrentPrompt(prompt)
       }
@@ -160,10 +160,10 @@ export default function ProjectRecordPage() {
       })
 
       setAiProgress(100)
-      toast.success('AI 处理完成！')
+      toast.success('AI processing completed!')
     } catch (error) {
       console.error('AI processing failed:', error)
-      toast.error('AI 处理失败，请重试')
+      toast.error('AI processing failed, please try again')
     } finally {
       setAiProcessing(false)
     }
@@ -250,7 +250,7 @@ export default function ProjectRecordPage() {
         ai_confidence_score: aiContent.confidence
       }
 
-      // 如果这是回应追问，添加追问ID
+      // If this is responding to a follow-up, add follow-up ID
       if (followupInteraction?.id) {
         storyData.followup_interaction_id = followupInteraction.id
         console.log('[Record Page] Adding followup_interaction_id to story:', followupInteraction.id)

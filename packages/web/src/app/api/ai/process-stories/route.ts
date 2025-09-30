@@ -49,26 +49,26 @@ export async function POST(request: NextRequest) {
 
     switch (action) {
       case 'generate_chapter':
-        systemPrompt = `你是一位专业的家族传记编辑，擅长将多个相关故事整理成有条理的章节。
+        systemPrompt = `You are a professional family biography editor, skilled at organizing multiple related stories into structured chapters.
 
-你的任务是：
-1. 分析提供的故事内容，找出共同主题和时间线
-2. 为这些故事创建一个有意义的章节标题
-3. 写一个章节介绍，概括这些故事的共同主题
-4. 提供一个章节总结，突出关键信息和情感价值
-5. 建议相关的后续问题，帮助挖掘更多相关记忆
+Your task is:
+1. Analyze the provided story content, finding common themes and timelines
+2. Create a meaningful chapter title for these stories
+3. Write a chapter introduction that summarizes the common themes of these stories
+4. Provide a chapter summary highlighting key information and emotional value
+5. Suggest relevant follow-up questions to help uncover more related memories
 
-请以JSON格式返回结果，包含以下字段：
-- title: 章节标题
-- introduction: 章节介绍（100-200字）
-- summary: 章节总结（150-300字）
-- themes: 主要主题列表（3-5个）
-- timeline: 时间线信息
-- followUpQuestions: 后续问题建议（3-5个）
-- confidence: 处理质量评分（0.7-1.0）`
+Please return results in JSON format with the following fields:
+- title: Chapter title
+- introduction: Chapter introduction (100-200 words)
+- summary: Chapter summary (150-300 words)
+- themes: List of main themes (3-5 items)
+- timeline: Timeline information
+- followUpQuestions: Follow-up question suggestions (3-5 items)
+- confidence: Processing quality score (0.7-1.0)`
 
         const storiesText = stories.map((story: any, index: number) => 
-          `故事 ${index + 1}: ${story.title || '无标题'}\n内容: ${story.content || story.transcript || ''}\n时间: ${story.createdAt || '未知'}\n`
+          `Story ${index + 1}: ${story.title || 'Untitled'}\nContent: ${story.content || story.transcript || ''}\nTime: ${story.createdAt || 'Unknown'}\n`
         ).join('\n---\n')
 
         userPrompt = `项目: ${projectTitle || '家族传记'}

@@ -3,7 +3,10 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
-// Get pending follow-up questions for a project
+/**
+ * Get answered follow-up questions created by the current user for a specific project
+ * This endpoint is used by facilitators to see their follow-up questions that have been answered
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -12,14 +15,16 @@ export async function GET(
     const supabaseCookie = createRouteHandlerClient({ cookies })
     const projectId = params.id
 
-    // Cookies 优先，Bearer 回退 (same as stories API)
+    // Use the same auth pattern as working endpoints
     let user: any = null
     let db: any = supabaseCookie
 
+    // First try cookies
     const cookieAuth = await supabaseCookie.auth.getUser()
     if (cookieAuth.data.user && !cookieAuth.error) {
       user = cookieAuth.data.user
     } else {
+      // Fallback to Bearer token with admin client
       const token = request.headers.get('authorization')?.replace('Bearer ', '')
       if (token) {
         const admin = getSupabaseAdmin()
@@ -35,7 +40,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user has access to this project (same logic as stories API)
+    // Check if user has access to this project
     const { data: role } = await db
       .from('project_roles')
       .select('id')
@@ -70,48 +75,38 @@ export async function GET(
     }
 
     // Get story IDs for this project
-    const storyIds = projectStories.map(s => s.id)
+    const storyIds = projectStories.map((s: any) => s.id)
 
-    // Get pending follow-up questions for stories in this project
+    // Get answered follow-up questions created by the current user for stories in this project
     const { data: interactions, error: interactionsError } = await db
       .from('interactions')
-      .select('id, content, created_at, story_id')
+      .select('id, content, created_at, answered_at, story_id, answer_story_id')
       .eq('type', 'followup')
-      .is('answer_story_id', null)
-      .is('answered_at', null)
+      .eq('facilitator_id', user.id) // Only questions created by this user
+      .not('answered_at', 'is', null) // Only answered questions
       .in('story_id', storyIds)
-      .order('created_at', { ascending: false })
+      .order('answered_at', { ascending: false })
+
+    if (interactionsError) {
+      console.error('Error fetching answered interactions:', interactionsError)
+      return NextResponse.json({ error: 'Failed to fetch interactions' }, { status: 500 })
+    }
 
     // Create a map of story titles
     const storyTitleMap = Object.fromEntries(
-      projectStories.map(s => [s.id, s.title])
+      projectStories.map((s: any) => [s.id, s.title])
     )
 
-    if (interactionsError) {
-      console.error('Error fetching pending interactions:', {
-        error: interactionsError,
-        projectId,
-        userId: user.id,
-        query: 'interactions with stories join'
-      })
-      return NextResponse.json({
-        error: 'Failed to fetch interactions',
-        details: interactionsError.message
-      }, { status: 500 })
-    }
-
-    // Format the response to include story title
-    const formattedInteractions = interactions?.map((interaction: any) => ({
-      id: interaction.id,
-      content: interaction.content,
-      created_at: interaction.created_at,
-      story_id: interaction.story_id,
+    // Add story titles to interactions
+    const interactionsWithTitles = (interactions || []).map((interaction: any) => ({
+      ...interaction,
       story_title: storyTitleMap[interaction.story_id] || 'Unknown Story'
-    })) || []
+    }))
 
-    return NextResponse.json({ interactions: formattedInteractions })
-  } catch (err) {
-    console.error('GET /api/projects/[id]/interactions/pending unexpected error:', err)
+    return NextResponse.json({ interactions: interactionsWithTitles })
+
+  } catch (error) {
+    console.error('Error in answered-by-user API:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

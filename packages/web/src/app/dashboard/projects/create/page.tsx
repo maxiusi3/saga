@@ -39,14 +39,14 @@ export default function CreateProjectPage() {
 
     // 检查资源余额
     if (!wallet) {
-      toast.error('无法获取资源余额信息')
+      toast.error('Unable to fetch resource balance information')
       return
     }
 
     // 检查项目券
     if (!hasResources('project_vouchers', 1)) {
-      // 资源不足时引导到购买页面
-      toast.error('项目额度不足，前往购买更多资源')
+      // Redirect to purchase page when resources are insufficient
+      toast.error('Insufficient project vouchers, please purchase more resources')
       router.push('/dashboard/purchase')
       return
     }
@@ -54,7 +54,7 @@ export default function CreateProjectPage() {
     // 检查角色席位
     const seatType = formData.role === 'facilitator' ? 'facilitator_seats' : 'storyteller_seats'
     if (!hasResources(seatType, 1)) {
-      toast.error(`${formData.role === 'facilitator' ? 'Facilitator' : 'Storyteller'}席位不足，前往购买更多资源`)
+      toast.error(`Insufficient ${formData.role === 'facilitator' ? 'Facilitator' : 'Storyteller'} seats, please purchase more resources`)
       router.push('/dashboard/purchase')
       return
     }
@@ -74,7 +74,7 @@ export default function CreateProjectPage() {
 
       if (project) {
         console.log('Project created successfully:', project)
-        toast.success('项目创建成功！')
+        toast.success('Project created successfully!')
         // 重定向到新创建的项目页面
         router.push(`/dashboard/projects/${project.id}`)
       } else {
@@ -83,13 +83,13 @@ export default function CreateProjectPage() {
     } catch (error: any) {
       console.error('Error creating project:', error)
 
-      // 处理特定的错误消息
+      // Handle specific error messages
       if (error.message?.includes('Insufficient project vouchers')) {
-        toast.error('项目额度不足，无法创建新项目')
+        toast.error('Insufficient project vouchers, unable to create new project')
       } else if (error.message?.includes('Insufficient')) {
-        toast.error('席位不足，无法创建项目')
+        toast.error('Insufficient seats, unable to create project')
       } else {
-        toast.error('创建项目失败，请重试')
+        toast.error('Failed to create project, please try again')
       }
       setLoading(false)
     }
@@ -146,10 +146,10 @@ export default function CreateProjectPage() {
           <div className="text-6xl mb-4">🎭</div>
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-foreground">
-              创建新的家族传记
+              Create New Family Biography
             </h1>
             <p className="text-lg text-muted-foreground">
-              开始记录您家族的珍贵故事
+              Start recording your family's precious stories
             </p>
           </div>
         </div>
@@ -158,17 +158,17 @@ export default function CreateProjectPage() {
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center text-xl">
               <BookOpen className="w-5 h-5 mr-2 text-primary" />
-              项目详情
+              Project Details
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6" aria-busy={loading}>
               {/* Project Name */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium">项目名称 *</Label>
+                <Label htmlFor="name" className="text-sm font-medium">Project Name *</Label>
                 <Input
                   id="name"
-                  placeholder="例如：张家族故事、爷爷的回忆录"
+                  placeholder="e.g., Zhang Family Stories, Grandpa's Memoirs"
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   required
@@ -178,10 +178,10 @@ export default function CreateProjectPage() {
 
               {/* Project Description */}
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium">项目描述</Label>
+                <Label htmlFor="description" className="text-sm font-medium">Project Description</Label>
                 <Textarea
                   id="description"
-                  placeholder="您想要记录什么样的故事？谁会参与其中？"
+                  placeholder="What kind of stories do you want to record? Who will participate?"
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
                   rows={3}
@@ -191,7 +191,7 @@ export default function CreateProjectPage() {
 
               {/* Theme Selection */}
               <div className="space-y-3">
-                <Label className="text-sm font-medium">项目主题</Label>
+                <Label className="text-sm font-medium">Project Theme</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {themes.map((theme) => (
                     <div
@@ -233,7 +233,7 @@ export default function CreateProjectPage() {
                         <h3 className="font-medium text-foreground">Storyteller</h3>
                         <p className="text-sm text-muted-foreground">Record and share your stories</p>
                         <div className="mt-2 text-xs text-muted-foreground">
-                          消耗: 1个Storyteller席位
+                          Resource Cost: 1 Storyteller seat
                         </div>
                       </div>
                     </div>
@@ -253,7 +253,7 @@ export default function CreateProjectPage() {
                         <h3 className="font-medium text-foreground">Facilitator</h3>
                         <p className="text-sm text-muted-foreground">Manage project and invite others</p>
                         <div className="mt-2 text-xs text-muted-foreground">
-                          消耗: 1个Facilitator席位
+                          Resource Cost: 1 Facilitator seat
                         </div>
                       </div>
                     </div>
@@ -264,19 +264,19 @@ export default function CreateProjectPage() {
               {/* Resource Status */}
               {wallet && (
                 <div className="bg-muted/30 rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-foreground mb-2">当前余额</h4>
+                  <h4 className="text-sm font-medium text-foreground mb-2">Current Balance</h4>
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div className="text-center">
                       <div className="font-medium text-foreground">{wallet.project_vouchers}</div>
-                      <div className="text-muted-foreground">项目额度</div>
+                      <div className="text-muted-foreground">Project Vouchers</div>
                     </div>
                     <div className="text-center">
                       <div className="font-medium text-foreground">{wallet.facilitator_seats}</div>
-                      <div className="text-muted-foreground">Facilitator席位</div>
+                      <div className="text-muted-foreground">Facilitator Seats</div>
                     </div>
                     <div className="text-center">
                       <div className="font-medium text-foreground">{wallet.storyteller_seats}</div>
-                      <div className="text-muted-foreground">Storyteller席位</div>
+                      <div className="text-muted-foreground">Storyteller Seats</div>
                     </div>
                   </div>
                 </div>

@@ -65,7 +65,7 @@ export function WebSpeechRecorder({
     setIsSupported(!!SpeechRecognition)
     
     if (!SpeechRecognition) {
-      setError('您的浏览器不支持语音识别功能。请使用 Chrome、Edge 或 Safari 浏览器。')
+      setError('Your browser does not support speech recognition. Please use Chrome, Edge, or Safari browser.')
     }
   }, [])
 
@@ -79,7 +79,7 @@ export function WebSpeechRecorder({
         // Auto-stop at max duration
         if (elapsed >= maxDuration * 1000) {
           stopRecording()
-          toast.error(`录音已达到最大时长 ${maxDuration / 60} 分钟，自动停止`)
+          toast.error(`Recording has reached maximum duration of ${maxDuration / 60} minutes, automatically stopped`)
         }
       }, 1000)
     } else {
@@ -107,7 +107,7 @@ export function WebSpeechRecorder({
     recognition.maxAlternatives = 1
 
     recognition.onstart = () => {
-      console.log('语音识别已开始')
+      console.log('Speech recognition started')
       setError(null)
     }
 
@@ -137,27 +137,27 @@ export function WebSpeechRecorder({
     }
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.error('语音识别错误:', event.error)
-      let errorMessage = '语音识别出现错误'
+      console.error('Speech recognition error:', event.error)
+      let errorMessage = 'Speech recognition error occurred'
       
       switch (event.error) {
         case 'no-speech':
-          errorMessage = '未检测到语音，请重试'
+          errorMessage = 'No speech detected, please try again'
           break
         case 'audio-capture':
-          errorMessage = '无法访问麦克风，请检查权限设置'
+          errorMessage = 'Unable to access microphone, please check permission settings'
           break
         case 'not-allowed':
-          errorMessage = '麦克风权限被拒绝，请允许访问麦克风'
+          errorMessage = 'Microphone permission denied, please allow microphone access'
           break
         case 'network':
-          errorMessage = '网络连接错误，请检查网络连接'
+          errorMessage = 'Network connection error, please check network connection'
           break
         case 'service-not-allowed':
-          errorMessage = '语音识别服务不可用'
+          errorMessage = 'Speech recognition service unavailable'
           break
         default:
-          errorMessage = `语音识别错误: ${event.error}`
+          errorMessage = `Speech recognition error: ${event.error}`
       }
       
       setError(errorMessage)
@@ -167,9 +167,9 @@ export function WebSpeechRecorder({
     }
 
     recognition.onend = () => {
-      console.log('语音识别已结束')
+      console.log('Speech recognition ended')
       if (isRecording && !isPaused) {
-        // 如果还在录音状态但识别结束了，重新启动
+        // If still in recording state but recognition ended, restart
         setTimeout(() => {
           if (recognitionRef.current && isRecording && !isPaused) {
             try {

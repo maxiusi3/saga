@@ -4,29 +4,37 @@ import * as React from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { MessageCircle, HelpCircle, Heart, Clock, Sparkles, Volume2, Edit, Trash2, MoreHorizontal } from 'lucide-react'
-import { AIGeneratedContent } from '../../../shared/src/lib/ai-services'
-import { ActionPermissionGate, usePermissionContext } from '@/components/permissions/PermissionGate'
+import {
+  Heart,
+  Clock,
+  Sparkles,
+  Volume2,
+  Edit,
+  Trash2,
+  MoreHorizontal,
+} from 'lucide-react'
+import { AIGeneratedContent } from '@saga/shared/lib/ai-services'
+import {
+  ActionPermissionGate,
+  usePermissionContext,
+} from '@/components/permissions/PermissionGate'
 import { UserRole } from '@saga/shared'
+import { formatDistanceToNow } from 'date-fns'
 
 interface Story {
   id: string
   title: string
-  storyteller_name: string
-  storyteller_avatar?: string
+  content: string
   duration: number
   created_at: string
   audio_url: string
   category: string
   prompt: string
   ai_content?: AIGeneratedContent
-  interaction_summary?: {
-    comments: number
-    followups: number
-    appreciations: number
-  }
   has_new_interactions: boolean
+  comments_count: number
+  follow_ups_count: number
+  latest_interaction_time: string | null
 }
 
 interface StoryCardProps {
@@ -53,7 +61,7 @@ const formatDateTime = (dateString: string) => {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 
@@ -65,13 +73,10 @@ export function StoryCard({
   onDelete,
   showAIContent = true,
   userRole,
-  isProjectOwner = false
+  isProjectOwner = false,
 }: StoryCardProps) {
   const getTotalInteractions = () => {
-    if (!story.interaction_summary) return 0
-    return (story.interaction_summary.comments || 0) +
-           (story.interaction_summary.followups || 0) +
-           (story.interaction_summary.appreciations || 0)
+    return (story.comments_count || 0) + (story.follow_ups_count || 0)
   }
 
   return (
@@ -86,10 +91,15 @@ export function StoryCard({
             {/* AI-Generated Title */}
             <div className="flex items-start space-x-2">
               <h3 className="text-lg font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                {showAIContent && story.ai_content?.title ? story.ai_content.title : story.title}
+                {showAIContent && story.ai_content?.title
+                  ? story.ai_content.title
+                  : story.title}
               </h3>
               {showAIContent && story.ai_content?.title && (
-                <Badge variant="secondary" className="bg-primary/10 text-primary text-xs">
+                <Badge
+                  variant="secondary"
+                  className="bg-primary/10 text-primary text-xs"
+                >
                   <Sparkles className="h-3 w-3 mr-1" />
                   AI
                 </Badge>
@@ -114,11 +124,15 @@ export function StoryCard({
             )}
 
             {/* Permission-based Actions */}
-            <ActionPermissionGate action="canEditStoryTitles" userRole={userRole} isProjectOwner={isProjectOwner}>
+            <ActionPermissionGate
+              action="canEditStoryTitles"
+              userRole={userRole}
+              isProjectOwner={isProjectOwner}
+            >
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation()
                   onEdit?.(story.id)
                 }}
@@ -128,11 +142,15 @@ export function StoryCard({
               </Button>
             </ActionPermissionGate>
 
-            <ActionPermissionGate action="canDeleteStories" userRole={userRole} isProjectOwner={isProjectOwner}>
+            <ActionPermissionGate
+              action="canDeleteStories"
+              userRole={userRole}
+              isProjectOwner={isProjectOwner}
+            >
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation()
                   onDelete?.(story.id)
                 }}
@@ -144,20 +162,12 @@ export function StoryCard({
           </div>
         </div>
 
-        {/* Storyteller */}
-        <div className="flex items-center space-x-3">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={story.storyteller_avatar} />
-            <AvatarFallback className="bg-furbridge-teal text-white text-sm">
-              {story.storyteller_name ? story.storyteller_name.split(' ').map(n => n[0]).join('') : 'U'}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <div className="font-medium text-gray-900 text-sm">
-              {story.storyteller_name}
-            </div>
-          </div>
-        </div>
+        {/* Story Content */}
+        {story.content && (
+          <p className="text-sm text-muted-foreground line-clamp-3">
+            {story.content}
+          </p>
+        )}
 
         {/* AI Transcript Snippet */}
         {showAIContent && story.ai_content?.transcript && (
@@ -165,7 +175,8 @@ export function StoryCard({
             <div className="flex items-start space-x-2">
               <Volume2 className="h-4 w-4 text-furbridge-teal mt-0.5 flex-shrink-0" />
               <p className="text-sm text-gray-700 line-clamp-3">
-                {story.ai_content.summary || story.ai_content.transcript.substring(0, 150) + '...'}
+                {story.ai_content.summary ||
+                  story.ai_content.transcript.substring(0, 150) + '...'}
               </p>
             </div>
           </div>
@@ -178,47 +189,28 @@ export function StoryCard({
               <Clock className="h-4 w-4" />
               <span>{formatDuration(story.duration)}</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <MessageCircle className="h-4 w-4" />
-              <span>{story.interaction_summary?.comments || 0}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <HelpCircle className="h-4 w-4" />
-              <span>{story.interaction_summary?.followups || 0}</span>
+            
+            {/* Interaction counts */}
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-1">
+                <Heart className="h-3 w-3" />
+                <span>{story.comments_count || 0}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Sparkles className="h-3 w-3" />
+                <span>{story.follow_ups_count || 0}</span>
+              </div>
             </div>
           </div>
+          
           <div>
-            {formatDateTime(story.created_at)}
+            {story.latest_interaction_time
+              ? formatDistanceToNow(new Date(story.latest_interaction_time), {
+                  addSuffix: true,
+                })
+              : formatDateTime(story.created_at)}
           </div>
         </div>
-
-        {/* Interaction Summary */}
-        {getTotalInteractions() > 0 && (
-          <div className="flex items-center justify-between pt-2 border-t border-border/50">
-            <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-              {story.interaction_summary?.comments && story.interaction_summary.comments > 0 && (
-                <div className="flex items-center space-x-1">
-                  <MessageCircle className="h-3 w-3" />
-                  <span>{story.interaction_summary.comments} comment{story.interaction_summary.comments !== 1 ? 's' : ''}</span>
-                </div>
-              )}
-              {story.interaction_summary?.followups && story.interaction_summary.followups > 0 && (
-                <div className="flex items-center space-x-1">
-                  <HelpCircle className="h-3 w-3" />
-                  <span>{story.interaction_summary.followups} follow-up{story.interaction_summary.followups !== 1 ? 's' : ''}</span>
-                </div>
-              )}
-              {story.interaction_summary?.appreciations && story.interaction_summary.appreciations > 0 && (
-                <div className="flex items-center space-x-1">
-                  <Heart className="h-3 w-3" />
-                  <span>{story.interaction_summary.appreciations}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-
       </div>
     </Card>
   )

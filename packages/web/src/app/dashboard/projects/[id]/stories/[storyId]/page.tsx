@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, Edit, Send, ZoomIn } from 'lucide-react'
+import { ArrowLeft, Edit, Send, ZoomIn, Volume2 } from 'lucide-react'
 import Link from 'next/link'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
@@ -26,11 +26,13 @@ interface Story {
   storyteller_id: string
   storyteller_name: string
   storyteller_avatar?: string
-  audio_url: string
+  audio_url: string | undefined
   audio_duration: number
   transcript: string
   photo_url?: string
   type: 'story' | 'chapter_summary'
+  ai_summary?: string
+  ai_follow_up_questions?: string[]
 }
 
 
@@ -49,7 +51,7 @@ export default function StoryDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // 用户权限状态
+  // User permission state
   const [userRole, setUserRole] = useState<string>('')
   const [isProjectOwner, setIsProjectOwner] = useState(false)
 
@@ -64,7 +66,7 @@ export default function StoryDetailPage() {
           return
         }
 
-        // 获取storyteller的用户资料
+        // Get storyteller's user profile
         const supabase = createClientSupabase()
         let storytellerName = 'Unknown User'
         let storytellerAvatar = ''
@@ -74,7 +76,7 @@ export default function StoryDetailPage() {
             .from('user_profiles')
             .select('name, email, avatar_url')
             .eq('id', story.storyteller_id)
-            .single()
+            .single() as { data: { name?: string; email?: string; avatar_url?: string } | null }
 
           if (profile) {
             storytellerName = profile.name || profile.email || 'Unknown User'
@@ -84,18 +86,20 @@ export default function StoryDetailPage() {
           console.warn('Failed to fetch storyteller profile:', profileError)
         }
 
-        const storyData = {
+        const storyData: Story = {
           id: story.id,
           title: story.title || 'Untitled Story',
           timestamp: story.created_at,
-          storyteller_id: story.storyteller_id, // 添加这个关键字段！
+          storyteller_id: story.storyteller_id, // Add this key field!
           storyteller_name: storytellerName,
           storyteller_avatar: storytellerAvatar,
           audio_url: story.audio_url,
-          audio_duration: story.audio_duration || 0,
+          audio_duration: (story as any).audio_duration || 0,
           transcript: story.transcript || story.content || 'No transcript available',
           photo_url: '',
-          type: 'story'
+          type: 'story',
+          ai_summary: story.ai_summary,
+          ai_follow_up_questions: story.ai_follow_up_questions
         }
         setStory(storyData)
         setEditedTitle(storyData.title)
@@ -118,17 +122,17 @@ export default function StoryDetailPage() {
     if (!user || !projectId) return
 
     try {
-      // 获取认证token
+      // Get authentication token
       const supabase = createClientSupabase()
       const { data: { session } } = await supabase.auth.getSession()
 
-      // 构建认证头
+      // Build authentication headers
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       if (session?.access_token) {
         headers['Authorization'] = `Bearer ${session.access_token}`
       }
 
-      // 获取项目信息和用户角色
+      // Get project information and user role
       const response = await fetch(`/api/projects/${projectId}/overview`, {
         credentials: 'include',
         headers
@@ -137,11 +141,11 @@ export default function StoryDetailPage() {
       if (response.ok) {
         const data = await response.json()
 
-        // 检查是否是项目所有者
+        // Check if user is project owner
         const isOwner = data.project?.facilitator_id === user.id
         setIsProjectOwner(isOwner)
 
-        // 获取用户在项目中的角色
+        // Get user's role in the project
         const userMember = data.members?.find((member: any) => member.user_id === user.id)
         if (userMember) {
           setUserRole(userMember.role)
@@ -151,7 +155,7 @@ export default function StoryDetailPage() {
       }
     } catch (error) {
       console.error('Error loading user role:', error)
-      // 默认设置为facilitator以避免权限问题
+      // Default to facilitator to avoid permission issues
       setUserRole('facilitator')
     }
   }
@@ -168,7 +172,7 @@ export default function StoryDetailPage() {
       const supabase = createClientSupabase()
       const { error } = await supabase
         .from('stories')
-        .update({ title: editedTitle.trim() })
+        .update({ title: editedTitle.trim() } as any)
         .eq('id', storyId)
 
       if (error) {
@@ -196,7 +200,7 @@ export default function StoryDetailPage() {
       const supabase = createClientSupabase()
       const { error } = await supabase
         .from('stories')
-        .update({ transcript: editedTranscript.trim() })
+        .update({ transcript: editedTranscript.trim() } as any)
         .eq('id', storyId)
 
       if (error) {
@@ -308,6 +312,40 @@ export default function StoryDetailPage() {
         )}
       </div>
 
+      {/* Primary Audio Player */}
+      <Card className="p-6 bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+              <Volume2 className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">Story Recording</h3>
+              <p className="text-sm text-muted-foreground">
+                {story.audio_url ? (
+                  `${formatTime(story.audio_duration)} • ${story.storyteller_name}`
+                ) : (
+                  `No audio recording • ${story.storyteller_name}`
+                )}
+              </p>
+            </div>
+          </div>
+          {story.audio_url ? (
+            <AudioPlayer
+              src={story.audio_url}
+              title={story.title}
+              className="w-full"
+            />
+          ) : (
+            <div className="p-4 bg-muted/30 rounded-lg text-center">
+              <p className="text-muted-foreground text-sm">
+                No audio recording available for this story.
+              </p>
+            </div>
+          )}
+        </div>
+      </Card>
+
       {/* Photo Viewer */}
       {story.photo_url && (
         <Card className="p-4">
@@ -324,20 +362,6 @@ export default function StoryDetailPage() {
             >
               <ZoomIn className="h-4 w-4" />
             </Button>
-          </div>
-        </Card>
-      )}
-
-      {/* Audio Player */}
-      {story.type === 'story' && story.audio_url && (
-        <Card className="p-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Audio Recording</h3>
-            <AudioPlayer
-              src={story.audio_url}
-              title={story.title}
-              className="w-full"
-            />
           </div>
         </Card>
       )}
@@ -384,6 +408,43 @@ export default function StoryDetailPage() {
           )}
         </div>
       </Card>
+
+      {/* AI Generated Summary */}
+      {story.ai_summary && (
+        <Card className="p-6">
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground flex items-center">
+              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+              AI Summary
+            </h3>
+            <div className="prose prose-foreground max-w-none">
+              <p className="text-foreground leading-relaxed">{story.ai_summary}</p>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* AI Follow-up Questions */}
+      {story.ai_follow_up_questions && story.ai_follow_up_questions.length > 0 && (
+        <Card className="p-6">
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground flex items-center">
+              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+              Suggested Follow-up Questions
+            </h3>
+            <div className="space-y-3">
+              {story.ai_follow_up_questions.map((question: string, index: number) => (
+                <div key={index} className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
+                  <span className="text-primary font-semibold text-sm mt-0.5">
+                    {index + 1}.
+                  </span>
+                  <p className="text-foreground flex-1">{question}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Interactions */}
       <StoryInteractions

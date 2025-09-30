@@ -203,13 +203,13 @@ export default function ProjectSettingsPage() {
         throw new Error('Failed to generate export archive')
       }
 
-      // 获取文件名
+      // Get filename
       const contentDisposition = response.headers.get('Content-Disposition')
       const filename = contentDisposition
         ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
         : `${project?.name || 'project'}_export.zip`
 
-      // 下载文件
+      // Download file
       const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')

@@ -70,25 +70,25 @@ export function AccessibilityToolbar({ className }: AccessibilityToolbarProps) {
   const applySettings = (settings: AccessibilitySettings) => {
     const root = document.documentElement
 
-    // 应用字体大小
+    // Apply font size
     const fontSizeMultiplier = getFontSizeMultiplier(settings.fontSize)
     root.style.setProperty('--font-size-multiplier', fontSizeMultiplier)
 
-    // 应用高对比度
+    // Apply high contrast
     if (settings.highContrast) {
       root.classList.add('high-contrast')
     } else {
       root.classList.remove('high-contrast')
     }
 
-    // 应用减少动画
+    // Apply reduced motion
     if (settings.reducedMotion) {
       root.classList.add('reduced-motion')
     } else {
       root.classList.remove('reduced-motion')
     }
 
-    // 应用大文本
+    // Apply large text
     if (settings.largeText) {
       root.classList.add('large-text')
     } else {
@@ -113,7 +113,7 @@ export function AccessibilityToolbar({ className }: AccessibilityToolbarProps) {
     const newSettings = { ...settings, [key]: value }
     saveSettings(newSettings)
     
-    // 提供反馈
+    // Provide feedback
     const settingNames = {
       highContrast: 'High Contrast',
       largeText: 'Large Text',

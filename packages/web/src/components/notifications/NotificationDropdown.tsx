@@ -38,10 +38,10 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
       <div className="p-4 border-b border-border/50 bg-muted/30 rounded-t-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <h3 className="font-semibold text-foreground">通知</h3>
+            <h3 className="font-semibold text-foreground">Notifications</h3>
             {unreadCount > 0 && (
               <Badge className="bg-primary text-primary-foreground text-xs animate-pulse">
-                {unreadCount} 条新消息
+                {unreadCount} new
               </Badge>
             )}
           </div>
@@ -53,10 +53,10 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                 size="sm"
                 onClick={handleMarkAllAsRead}
                 className="text-xs hover:bg-primary/10 hover:text-primary"
-                title="标记所有为已读"
+                title="Mark all as read"
               >
                 <CheckCheck className="h-3 w-3 mr-1" />
-                全部已读
+                Mark All Read
               </Button>
             )}
 
@@ -66,7 +66,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                 size="sm"
                 onClick={onClose}
                 className="hover:bg-muted"
-                title="通知设置"
+                title="Notification Settings"
               >
                 <Settings className="h-4 w-4" />
               </Button>
@@ -126,7 +126,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
               onClick={onClose}
             >
               <ExternalLink className="h-3 w-3 mr-1" />
-              查看所有通知
+              View All Notifications
             </Button>
           </Link>
         </div>

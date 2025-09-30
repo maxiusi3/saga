@@ -79,14 +79,10 @@ export function SmartRecorder({
     }
   }, [])
 
+  // 已禁用实时转录（Web Speech API），统一使用传统录音 + 事后转写
   const shouldUseRealtime = useCallback(() => {
-    if (recordingMethod === 'realtime') return true
-    if (recordingMethod === 'traditional') return false
-    
-    // Auto mode: use realtime if network is good and browser supports it
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    return networkQuality === 'good' && !!SpeechRecognition
-  }, [recordingMethod, networkQuality])
+    return false
+  }, [])
 
   const initializeRealTimeRecognition = useCallback(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
@@ -97,7 +93,7 @@ export function SmartRecorder({
     recognition.interimResults = true
     recognition.lang = 'zh-CN'
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       let interimTranscript = ''
       let finalTranscript = ''
 
@@ -116,10 +112,10 @@ export function SmartRecorder({
       setInterimTranscript(interimTranscript)
     }
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error)
       if (event.error === 'network') {
-        toast.error('网络连接问题，切换到传统录音模式')
+        toast.error('Network connection issue, switching to traditional recording mode')
         setNetworkQuality('offline')
         // Restart with traditional recording
         stopRecording()
@@ -141,11 +137,11 @@ export function SmartRecorder({
       }
     }
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error)
       if (event.error === 'network') {
         // Network error, fallback to traditional recording
-        toast.error('网络连接不稳定，自动切换到传统录音模式')
+        toast.error('Network connection unstable, automatically switching to traditional recording mode')
         setRecordingMethod('traditional')
         stopRecording()
         setTimeout(() => startRecording(), 1000)
@@ -181,7 +177,7 @@ export function SmartRecorder({
 
       if (seconds >= maxDuration) {
         stopRecording()
-        toast.warning(`已达到最大录音时长 ${maxDuration / 60} 分钟`)
+        toast.error(`Reached maximum recording duration of ${maxDuration / 60} minutes`)
       }
     }, 1000)
   }, [maxDuration])
@@ -201,8 +197,13 @@ export function SmartRecorder({
 
       const useRealtime = shouldUseRealtime()
       
-      // Always start MediaRecorder for audio recording (both modes need audio)
-      const mediaRecorder = new MediaRecorder(stream)
+      // Always start MediaRecorder for audio recording
+      // 
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm'
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType,
+        audioBitsPerSecond: 64000 // 64 kbps: keep ~20min < 10MB for reliable STT upload
+      })
       mediaRecorderRef.current = mediaRecorder
       audioChunksRef.current = []
 
@@ -213,7 +214,7 @@ export function SmartRecorder({
       }
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType })
         setAudioBlob(audioBlob)
         setAudioUrl(URL.createObjectURL(audioBlob))
       }
@@ -226,12 +227,12 @@ export function SmartRecorder({
         if (recognition) {
           recognitionRef.current = recognition
           recognition.start()
-          toast.success('开始实时语音识别录音（含音频录制）')
+          toast.success('Started real-time speech recognition recording (with audio recording)')
         } else {
-          throw new Error('语音识别不可用')
+          throw new Error('Speech recognition unavailable')
         }
       } else {
-        toast.success('开始传统录音')
+        toast.success('Started traditional recording')
       }
 
       setRecordingState('recording')
@@ -242,7 +243,7 @@ export function SmartRecorder({
 
     } catch (error) {
       console.error('Failed to start recording:', error)
-      const errorMessage = error instanceof Error ? error.message : '启动录音失败'
+      const errorMessage = error instanceof Error ? error.message : 'Failed to start recording'
       onError?.(errorMessage)
       toast.error(errorMessage)
     }
@@ -261,7 +262,7 @@ export function SmartRecorder({
     pausedTimeRef.current += Date.now() - startTimeRef.current
     stopTimer()
     setRecordingState('paused')
-    toast.success('录音已暂停')
+    toast.success('Recording paused')
   }, [recordingState, stopTimer])
 
   const resumeRecording = useCallback(() => {
@@ -277,7 +278,7 @@ export function SmartRecorder({
     startTimeRef.current = Date.now()
     startTimer()
     setRecordingState('recording')
-    toast.success('录音已继续')
+    toast.success('Recording resumed')
   }, [recordingState, startTimer])
 
   const stopRecording = useCallback(() => {
@@ -295,7 +296,7 @@ export function SmartRecorder({
 
     stopTimer()
     setRecordingState('completed')
-    toast.success('录音完成')
+    toast.success('Recording completed')
   }, [stopTimer])
 
   const resetRecording = useCallback(() => {
@@ -416,10 +417,10 @@ export function SmartRecorder({
               <div className="w-3 h-3 rounded-full bg-green-500" />
             )}
             <span className="text-lg font-semibold">
-              {recordingState === 'idle' && '准备录音'}
-              {recordingState === 'recording' && '正在录音...'}
-              {recordingState === 'paused' && '录音已暂停'}
-              {recordingState === 'completed' && '录音完成'}
+              {recordingState === 'idle' && 'Ready to Record'}
+              {recordingState === 'recording' && 'Recording...'}
+              {recordingState === 'paused' && 'Recording Paused'}
+              {recordingState === 'completed' && 'Recording Completed'}
             </span>
           </div>
 
@@ -475,7 +476,7 @@ export function SmartRecorder({
                 size="lg"
               >
                 <Square className="h-5 w-5 mr-2" />
-                停止
+                Stop
               </Button>
             </>
           )}
@@ -488,7 +489,7 @@ export function SmartRecorder({
                 className="bg-green-500 hover:bg-green-600 text-white"
               >
                 <Play className="h-5 w-5 mr-2" />
-                继续
+                Continue
               </Button>
               <Button
                 onClick={stopRecording}
@@ -496,7 +497,7 @@ export function SmartRecorder({
                 size="lg"
               >
                 <Square className="h-5 w-5 mr-2" />
-                停止
+                Stop
               </Button>
             </>
           )}
@@ -506,7 +507,7 @@ export function SmartRecorder({
               {/* Show AudioPlayer for both recording modes when audio is available */}
               {audioUrl && (
                 <div className="w-full mb-4">
-                  <h4 className="text-sm font-medium text-muted-foreground mb-2">试听录音：</h4>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">Listen to recording:</h4>
                   <AudioPlayer
                     src={audioUrl}
                     title="Your Story Recording"

@@ -6,7 +6,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
-// 返回某项目的 stories 列表（权限：项目成员或所有者）
+// Return stories list for a project (permission: project members or owners)
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -15,7 +15,7 @@ export async function GET(
     const supabaseCookie = createRouteHandlerClient({ cookies })
     const projectId = params.id
 
-    // Cookies 优先，Bearer 回退
+    // Cookies priority, Bearer fallback
     let user: any = null
     let db: any = supabaseCookie
 
@@ -38,7 +38,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // 权限：项目拥有者或 active 成员
+    // Permission: project owner or active members
     const { data: role } = await db
       .from('project_roles')
       .select('id')
@@ -64,36 +64,46 @@ export async function GET(
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('GET /api/projects/[id]/stories error:', error)
-      return NextResponse.json({ stories: [] })
+      console.error('Error fetching stories:', error)
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 
-    // 获取storyteller的用户资料信息
-    const storytellerIds = Array.from(new Set(stories?.map((story: any) => story.storyteller_id).filter(Boolean)))
-    let profilesMap: Record<string, { name?: string | null; email?: string | null; avatar_url?: string | null }> = {}
+    // For each story, get the interaction summary
+    const storiesWithDetails = await Promise.all(
+      stories.map(async (story: any) => {
+        const { data: interactions, error: interactionsError } = await db
+          .from('interactions')
+          .select('id, type, created_at')
+          .eq('story_id', story.id)
 
-    if (storytellerIds.length > 0) {
-      const { data: profiles, error: pErr } = await db
-        .from('user_profiles')
-        .select('id, name, email, avatar_url')
-        .in('id', storytellerIds)
+        if (interactionsError) {
+          console.error(
+            `Error fetching interactions for story ${story.id}:`,
+            interactionsError
+          )
+          return story // Return story without details on error
+        }
 
-      if (!pErr && profiles) {
-        profilesMap = Object.fromEntries(profiles.map((p: any) => [p.id, p]))
-      }
-    }
+        const comments_count = interactions.filter((i: any) => i.type === 'comment').length
+        const follow_ups_count = interactions.filter((i: any) => i.type === 'followup').length
 
-    // 为每个story添加storyteller信息
-    const storiesWithProfiles = stories?.map((story: any) => {
-      const profile = profilesMap[story.storyteller_id]
-      return {
-        ...story,
-        storyteller_name: profile?.name || profile?.email || 'Unknown User',
-        storyteller_avatar: profile?.avatar_url || null
-      }
-    })
+        const latest_interaction_time = interactions.length > 0
+            ? interactions.reduce((latest: number, a: any) => {
+                const a_time = new Date(a.created_at).getTime()
+                return a_time > latest ? a_time : latest
+              }, 0)
+            : null
 
-    return NextResponse.json({ stories: storiesWithProfiles || [] })
+        return {
+          ...story,
+          comments_count,
+          follow_ups_count,
+          latest_interaction_time: latest_interaction_time ? new Date(latest_interaction_time).toISOString() : null
+        }
+      })
+    )
+
+    return NextResponse.json({ stories: storiesWithDetails || [] })
   } catch (err) {
     console.error('GET /api/projects/[id]/stories unexpected error:', err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
@@ -101,7 +111,7 @@ export async function GET(
 }
 
 
-// 创建故事（权限：项目成员或所有者），字段与前端保持一致
+// Create story (permission: project members or owners), fields consistent with frontend
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -132,7 +142,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // 权限：项目拥有者或 active 成员
+    // Permission: project owner or active members
     const { data: role } = await db
       .from('project_roles')
       .select('id')

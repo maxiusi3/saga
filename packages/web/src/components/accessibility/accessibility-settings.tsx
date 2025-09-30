@@ -84,41 +84,41 @@ export function AccessibilitySettingsComponent({ className }: AccessibilitySetti
   const applySettings = (settings: AccessibilitySettings) => {
     const root = document.documentElement
 
-    // 应用字体大小
+    // Apply font size
     root.style.setProperty('--font-size-multiplier', getFontSizeMultiplier(settings.fontSize))
 
-    // 应用高对比度
+    // Apply high contrast
     if (settings.highContrast) {
       root.classList.add('high-contrast')
     } else {
       root.classList.remove('high-contrast')
     }
 
-    // 应用减少动画
+    // Apply reduced motion
     if (settings.reducedMotion) {
       root.classList.add('reduced-motion')
     } else {
       root.classList.remove('reduced-motion')
     }
 
-    // 应用大文本
+    // Apply large text
     if (settings.largeText) {
       root.classList.add('large-text')
     } else {
       root.classList.remove('large-text')
     }
 
-    // 应用颜色方案
+    // Apply color scheme
     root.setAttribute('data-color-scheme', settings.colorScheme)
 
-    // 应用键盘导航优化
+    // Apply keyboard navigation optimization
     if (settings.keyboardNavigation) {
       root.classList.add('keyboard-navigation')
     } else {
       root.classList.remove('keyboard-navigation')
     }
 
-    // 应用屏幕阅读器优化
+    // Apply screen reader optimization
     if (settings.screenReaderOptimized) {
       root.classList.add('screen-reader-optimized')
     } else {

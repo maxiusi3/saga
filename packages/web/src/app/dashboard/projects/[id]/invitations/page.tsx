@@ -106,15 +106,15 @@ export default function InvitationsPage() {
       } else {
         const error = await response.json()
 
-        // 处理席位不足的情况
+        // Handle insufficient seats scenario
         if (response.status === 402 && error.errorCode === 'INSUFFICIENT_SEATS') {
           toast.error(error.error || 'Insufficient seats')
-          // 显示购买提示
+          // Show purchase prompt
           if (confirm('You need more seats to send this invitation. Would you like to purchase more seats now?')) {
             window.location.href = error.purchaseUrl || '/dashboard/purchase'
           }
         } else if (response.status === 409) {
-          // 处理冲突错误（如storyteller唯一性）
+          // Handle conflict errors (like storyteller uniqueness)
           toast.error(error.error || 'Invitation conflict')
         } else {
           toast.error(error.error || 'Failed to send invitation')
