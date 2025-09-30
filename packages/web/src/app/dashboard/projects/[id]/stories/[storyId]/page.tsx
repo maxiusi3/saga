@@ -35,8 +35,6 @@ interface Story {
   ai_follow_up_questions?: string[]
 }
 
-
-
 export default function StoryDetailPage() {
   const params = useParams()
   const { user } = useAuthStore()
@@ -86,21 +84,69 @@ export default function StoryDetailPage() {
           console.warn('Failed to fetch storyteller profile:', profileError)
         }
 
+        // Generate audio URL - check actual storage buckets
+        let audioUrl = story.audio_url
+        if (!audioUrl && story.audio_duration > 0) {
+          const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+          const buckets = ['saga', 'audio-recordings']
+          const possibleFormats = ['webm', 'mp3', 'wav', 'm4a']
+          
+          for (const bucket of buckets) {
+            for (const format of possibleFormats) {
+              const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.id}.${format}`
+              try {
+                const response = await fetch(testUrl, { method: 'HEAD' })
+                if (response.ok) {
+                  audioUrl = testUrl
+                  console.log('Found audio at:', testUrl)
+                  break
+                }
+              } catch (e) {
+                // Continue trying
+              }
+            }
+            if (audioUrl) break
+          }
+          
+          // If still not found, try project ID as folder
+          if (!audioUrl) {
+            for (const bucket of buckets) {
+              for (const format of possibleFormats) {
+                const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.project_id}/${story.id}.${format}`
+                try {
+                  const response = await fetch(testUrl, { method: 'HEAD' })
+                  if (response.ok) {
+                    audioUrl = testUrl
+                    console.log('Found audio at:', testUrl)
+                    break
+                  }
+                } catch (e) {}
+              }
+              if (audioUrl) break
+            }
+          }
+        }
+
         const storyData: Story = {
           id: story.id,
           title: story.title || 'Untitled Story',
           timestamp: story.created_at,
-          storyteller_id: story.storyteller_id, // Add this key field!
+          storyteller_id: story.storyteller_id,
           storyteller_name: storytellerName,
           storyteller_avatar: storytellerAvatar,
-          audio_url: story.audio_url,
-          audio_duration: (story as any).audio_duration || 0,
+          audio_url: audioUrl, // Use generated or detected URL
+          audio_duration: story.audio_duration || 0,
           transcript: story.transcript || story.content || 'No transcript available',
           photo_url: '',
           type: 'story',
           ai_summary: story.ai_summary,
           ai_follow_up_questions: story.ai_follow_up_questions
         }
+
+        // 调试信息
+        console.log('Raw story from database:', story)
+        console.log('Generated audio URL:', audioUrl)
+
         setStory(storyData)
         setEditedTitle(storyData.title)
         setEditedTranscript(storyData.transcript)
@@ -159,8 +205,6 @@ export default function StoryDetailPage() {
       setUserRole('facilitator')
     }
   }
-
-
 
   const saveTitle = async () => {
     if (!story || editedTitle.trim() === story.title) {
@@ -366,6 +410,7 @@ export default function StoryDetailPage() {
         </Card>
       )}
 
+
       {/* Transcript */}
       <Card className="p-6">
         <div className="space-y-4">
@@ -454,8 +499,6 @@ export default function StoryDetailPage() {
         isProjectOwner={isProjectOwner}
         isStoryteller={story?.storyteller_id === user?.id}
       />
-
-
     </div>
   )
 }

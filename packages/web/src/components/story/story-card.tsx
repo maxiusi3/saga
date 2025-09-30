@@ -1,5 +1,7 @@
 'use client'
 
+// Fixed StoryCard component for CI build compatibility
+
 import * as React from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
