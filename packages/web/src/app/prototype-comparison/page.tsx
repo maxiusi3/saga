@@ -73,12 +73,12 @@ export default function PrototypeComparisonPage() {
             基于6张原型截图优化的现代化页面 vs 原有页面
           </p>
           <div className="flex justify-center gap-4">
-            <EnhancedButton asChild>
-              <Link href="/design-showcase">
+            <Link href="/design-showcase">
+              <EnhancedButton>
                 <Eye className="w-4 h-4 mr-2" />
                 查看组件展示
-              </Link>
-            </EnhancedButton>
+              </EnhancedButton>
+            </Link>
           </div>
         </div>
 
@@ -102,22 +102,22 @@ export default function PrototypeComparisonPage() {
                 <div className="space-y-3">
                   <div>
                     <p className="text-xs font-medium text-gray-500 mb-1">现代化版本</p>
-                    <EnhancedButton asChild size="sm" className="w-full">
-                      <Link href={page.modernRoute}>
+                    <Link href={page.modernRoute}>
+                      <EnhancedButton size="sm" className="w-full">
                         <ExternalLink className="w-4 h-4 mr-2" />
                         查看优化后页面
-                      </Link>
-                    </EnhancedButton>
+                      </EnhancedButton>
+                    </Link>
                   </div>
                   
                   <div>
                     <p className="text-xs font-medium text-gray-500 mb-1">原始版本</p>
-                    <EnhancedButton asChild variant="secondary" size="sm" className="w-full">
-                      <Link href={page.originalRoute.includes('[id]') ? page.originalRoute.replace('[id]', '1').replace('[storyId]', '1') : page.originalRoute}>
+                    <Link href={page.originalRoute.includes('[id]') ? page.originalRoute.replace('[id]', '1').replace('[storyId]', '1') : page.originalRoute}>
+                      <EnhancedButton variant="secondary" size="sm" className="w-full">
                         <ExternalLink className="w-4 h-4 mr-2" />
                         查看原有页面
-                      </Link>
-                    </EnhancedButton>
+                      </EnhancedButton>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -149,16 +149,16 @@ export default function PrototypeComparisonPage() {
                 你可以对比查看优化前后的效果，决定是否保留优化版本。
               </p>
               <div className="flex justify-center gap-4">
-                <EnhancedButton asChild>
-                  <Link href="/dashboard-modern">
+                <Link href="/dashboard-modern">
+                  <EnhancedButton>
                     开始体验现代化界面
-                  </Link>
-                </EnhancedButton>
-                <EnhancedButton asChild variant="secondary">
-                  <Link href="/dashboard">
+                  </EnhancedButton>
+                </Link>
+                <Link href="/dashboard">
+                  <EnhancedButton variant="secondary">
                     查看原有界面
-                  </Link>
-                </EnhancedButton>
+                  </EnhancedButton>
+                </Link>
               </div>
             </div>
           </EnhancedCard>
