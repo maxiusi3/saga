@@ -4,8 +4,10 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, MessageCircle, Heart, BookOpen } from 'lucide-react'
+import { EnhancedButton } from '@/components/ui/enhanced-button'
+import { EnhancedCard, EnhancedCardContent, EnhancedCardDescription, EnhancedCardHeader, EnhancedCardTitle } from '@/components/ui/enhanced-card'
+import { StatsCard } from '@/components/ui/stats-card'
+import { Users, MessageCircle, Heart, BookOpen, Star, CheckCircle, Shield, Zap } from 'lucide-react'
 
 export default function HomePage() {
   const router = useRouter()
@@ -120,18 +122,23 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-4 bg-background/95 backdrop-blur-sm border-b border-border">
+      <nav className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-6 bg-background/95 backdrop-blur-sm border-b border-border/50">
         <div className="flex items-center space-x-8">
-          <div className="flex items-center">
-            <div className="font-bold text-primary text-xl">Saga</div>
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+              <BookOpen className="h-5 w-5 text-white" />
+            </div>
+            <div className="font-bold text-primary text-2xl">Saga</div>
           </div>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           <Link href="/auth/signin">
-            <Button variant="ghost">Sign In</Button>
+            <EnhancedButton variant="ghost" size="default">Sign In</EnhancedButton>
           </Link>
           <Link href="/auth/signin">
-            <Button>Get Started</Button>
+            <EnhancedButton variant="default" size="default" rightIcon={<Star className="h-4 w-4" />}>
+              Get Started
+            </EnhancedButton>
           </Link>
         </div>
       </nav>
@@ -150,47 +157,66 @@ export default function HomePage() {
         
         <div className="relative z-10 container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold text-foreground animate-fade-in">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
+              <Star className="h-4 w-4 mr-2" />
+              Trusted by 1000+ families worldwide
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold text-foreground animate-fade-in leading-tight">
               <span className="font-bold">
                 Your family's story,{' '}
-                <span className="text-primary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
                   a conversation away
                 </span>
               </span>
             </h1>
-            <p className="text-lg md:text-xl max-w-2xl mx-auto text-muted-foreground animate-fade-in-delay">
-              Capture precious memories through guided conversations with your loved ones. Preserve your family's legacy with AI-powered storytelling tools.
+            <p className="text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground animate-fade-in-delay leading-relaxed">
+              Capture precious memories through guided conversations with your loved ones. Preserve your family's legacy with AI-powered storytelling tools that make every story unforgettable.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-fade-in-delay-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 animate-fade-in-delay-2">
               <Link href="/auth/signin">
-                <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
+                <EnhancedButton 
+                  size="xl" 
+                  className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-xl hover:shadow-2xl"
+                  rightIcon={<BookOpen className="w-5 h-5" />}
+                >
                   Start Your Saga
-                  <BookOpen className="w-5 h-5 ml-2" />
-                </Button>
+                </EnhancedButton>
+              </Link>
+              <Link href="/design-showcase">
+                <EnhancedButton 
+                  variant="outline" 
+                  size="xl"
+                  className="border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+                >
+                  View Demo
+                </EnhancedButton>
               </Link>
             </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-8">
-              <div className="flex items-center gap-2 text-brown">
-                <Users className="w-6 h-6" />
-                <div className="text-left">
-                  <div className="text-2xl font-bold">1000+</div>
-                  <div className="text-sm text-muted-foreground">Families</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-brown">
-                <MessageCircle className="w-6 h-6" />
-                <div className="text-left">
-                  <div className="text-2xl font-bold">5000+</div>
-                  <div className="text-sm text-muted-foreground">Stories Preserved</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-brown">
-                <Heart className="w-6 h-6" />
-                <div className="text-left">
-                  <div className="text-2xl font-bold">99%</div>
-                  <div className="text-sm text-muted-foreground">Satisfaction</div>
-                </div>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-12 max-w-4xl mx-auto">
+              <StatsCard
+                title="Happy Families"
+                value="1000+"
+                description="Trust us with their memories"
+                icon={<Users className="w-6 h-6" />}
+                variant="success"
+                className="bg-white/50 backdrop-blur-sm border-primary/20"
+              />
+              <StatsCard
+                title="Stories Preserved"
+                value="5000+"
+                description="Precious memories captured"
+                icon={<MessageCircle className="w-6 h-6" />}
+                variant="info"
+                className="bg-white/50 backdrop-blur-sm border-secondary/20"
+              />
+              <StatsCard
+                title="Satisfaction Rate"
+                value="99%"
+                description="Users love our platform"
+                icon={<Heart className="w-6 h-6" />}
+                variant="success"
+                className="bg-white/50 backdrop-blur-sm border-primary/20"
+              />
             </div>
           </div>
         </div>
@@ -315,47 +341,53 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="group card-enhanced bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-2xl animate-float group-hover:animate-glow">
-                  📖
+            <EnhancedCard variant="interactive" className="group bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40">
+              <EnhancedCardHeader className="text-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center animate-float group-hover:animate-glow">
+                  <BookOpen className="w-8 h-8 text-primary" />
                 </div>
-                <CardTitle className="text-foreground group-hover:text-primary transition-colors">Create Your Project</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Set up a family story project and invite your storyteller. Our platform makes it easy to get started.
-                </CardDescription>
-              </CardContent>
-            </Card>
+                <EnhancedCardTitle className="text-xl text-foreground group-hover:text-primary transition-colors">
+                  Create Your Project
+                </EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <EnhancedCardDescription className="text-center text-base">
+                  Set up a family story project and invite your storyteller. Our platform makes it easy to get started with guided setup.
+                </EnhancedCardDescription>
+              </EnhancedCardContent>
+            </EnhancedCard>
 
-            <Card className="group card-enhanced bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center text-2xl animate-float delay-200 group-hover:animate-glow">
-                  💬
+            <EnhancedCard variant="interactive" className="group bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40">
+              <EnhancedCardHeader className="text-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center animate-float delay-200 group-hover:animate-glow">
+                  <MessageCircle className="w-8 h-8 text-secondary" />
                 </div>
-                <CardTitle className="text-foreground group-hover:text-secondary transition-colors">Guided Conversations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  AI-powered prompts help facilitate meaningful discussions and capture the essence of your family's story.
-                </CardDescription>
-              </CardContent>
-            </Card>
+                <EnhancedCardTitle className="text-xl text-foreground group-hover:text-secondary transition-colors">
+                  Guided Conversations
+                </EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <EnhancedCardDescription className="text-center text-base">
+                  AI-powered prompts help facilitate meaningful discussions and capture the essence of your family's unique story.
+                </EnhancedCardDescription>
+              </EnhancedCardContent>
+            </EnhancedCard>
 
-            <Card className="group card-enhanced bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-2xl animate-float delay-500 group-hover:animate-glow">
-                  💎
+            <EnhancedCard variant="interactive" className="group bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40">
+              <EnhancedCardHeader className="text-center">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center animate-float delay-500 group-hover:animate-glow">
+                  <Shield className="w-8 h-8 text-primary" />
                 </div>
-                <CardTitle className="text-foreground group-hover:text-primary transition-colors">Preserve Forever</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
+                <EnhancedCardTitle className="text-xl text-foreground group-hover:text-primary transition-colors">
+                  Preserve Forever
+                </EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <EnhancedCardDescription className="text-center text-base">
                   Stories are transcribed, organized, and beautifully formatted, ready to share with future generations.
-                </CardDescription>
-              </CardContent>
-            </Card>
+                </EnhancedCardDescription>
+              </EnhancedCardContent>
+            </EnhancedCard>
           </div>
         </div>
       </section>
@@ -372,55 +404,42 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="p-6 text-center card-enhanced bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40 group">
-              <div className="flex justify-center mb-4 text-primary group-hover:scale-110 transition-transform">
-                <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <Users className="w-8 h-8" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl font-bold gradient-text">1000+</div>
-                <div className="text-md font-medium text-foreground">Happy Families</div>
-                <p className="text-sm text-muted-foreground">Families trust us with their most precious memories</p>
-              </div>
-            </Card>
-            <Card className="p-6 text-center card-enhanced bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40 group">
-              <div className="flex justify-center mb-4 text-secondary group-hover:scale-110 transition-transform">
-                <div className="p-3 rounded-full bg-secondary/10 group-hover:bg-secondary/20 transition-colors">
-                  <MessageCircle className="w-8 h-8" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl font-bold gradient-text">5000+</div>
-                <div className="text-md font-medium text-foreground">Stories Preserved</div>
-                <p className="text-sm text-muted-foreground">Unique family stories captured and organized</p>
-              </div>
-            </Card>
-            <Card className="p-6 text-center card-enhanced bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40 group">
-              <div className="flex justify-center mb-4 text-primary group-hover:scale-110 transition-transform">
-                <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <Heart className="w-8 h-8" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl font-bold gradient-text">99%</div>
-                <div className="text-md font-medium text-foreground">Satisfaction Rate</div>
-                <p className="text-sm text-muted-foreground">Our users love the experience we provide</p>
-              </div>
-            </Card>
-            <Card className="p-6 text-center card-enhanced bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40 group">
-              <div className="flex justify-center mb-4 text-secondary group-hover:scale-110 transition-transform">
-                <div className="p-3 rounded-full bg-secondary/10 group-hover:bg-secondary/20 transition-colors">
-                  <BookOpen className="w-8 h-8" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl font-bold gradient-text">24/7</div>
-                <div className="text-md font-medium text-foreground">Support</div>
-                <p className="text-sm text-muted-foreground">We're here whenever you need assistance</p>
-              </div>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <StatsCard
+              title="Happy Families"
+              value="1000+"
+              description="Trust us with their precious memories"
+              icon={<Users className="w-6 h-6" />}
+              trend={{ value: 15, label: "vs last month", direction: "up" }}
+              variant="success"
+              className="bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40"
+            />
+            <StatsCard
+              title="Stories Preserved"
+              value="5000+"
+              description="Unique family stories captured"
+              icon={<MessageCircle className="w-6 h-6" />}
+              trend={{ value: 23, label: "vs last month", direction: "up" }}
+              variant="info"
+              className="bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40"
+            />
+            <StatsCard
+              title="Satisfaction Rate"
+              value="99%"
+              description="Users love our experience"
+              icon={<Heart className="w-6 h-6" />}
+              trend={{ value: 2, label: "vs last month", direction: "up" }}
+              variant="success"
+              className="bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40"
+            />
+            <StatsCard
+              title="24/7 Support"
+              value="100%"
+              description="Always here to help"
+              icon={<Shield className="w-6 h-6" />}
+              variant="info"
+              className="bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40"
+            />
           </div>
         </div>
       </section>
@@ -438,125 +457,113 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="p-6">
-              <div className="flex items-start space-x-3">
+            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                    <Zap className="h-6 w-6 text-white" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
                     AI-Powered Prompts
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Thoughtfully crafted questions that help guide meaningful conversations and unlock precious memories.
                   </p>
                 </div>
               </div>
-            </Card>
+            </EnhancedCard>
 
-            <Card className="p-6">
-              <div className="flex items-start space-x-3">
+            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                  <div className="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-xl flex items-center justify-center">
+                    <MessageCircle className="h-6 w-6 text-white" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
                     Automatic Transcription
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Every story is automatically transcribed with high accuracy, making them searchable and easy to share.
                   </p>
                 </div>
               </div>
-            </Card>
+            </EnhancedCard>
 
-            <Card className="p-6">
-              <div className="flex items-start space-x-3">
+            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                    <Users className="h-6 w-6 text-white" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
                     Family Collaboration
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Invite multiple family members to participate, ask follow-up questions, and add their own memories.
                   </p>
                 </div>
               </div>
-            </Card>
+            </EnhancedCard>
 
-            <Card className="p-6">
-              <div className="flex items-start space-x-3">
+            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                  <div className="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-xl flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-white" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
                     Secure & Private
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Your family stories are kept private and secure, accessible only to invited family members.
                   </p>
                 </div>
               </div>
-            </Card>
+            </EnhancedCard>
 
-            <Card className="p-6">
-              <div className="flex items-start space-x-3">
+            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                    <BookOpen className="h-6 w-6 text-white" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
                     Multiple Export Options
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Export your complete family archive in various formats for safekeeping and sharing.
                   </p>
                 </div>
               </div>
-            </Card>
+            </EnhancedCard>
 
-            <Card className="p-6">
-              <div className="flex items-start space-x-3">
+            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <svg className="h-4 w-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                  <div className="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-xl flex items-center justify-center">
+                    <CheckCircle className="h-6 w-6 text-white" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
                     Mobile Friendly
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Easy-to-use interface designed for storytellers of all ages and technical comfort levels.
                   </p>
                 </div>
               </div>
-            </Card>
+            </EnhancedCard>
           </div>
         </div>
       </section>
@@ -646,12 +653,25 @@ export default function HomePage() {
             <p className="text-lg md:text-xl mb-8 opacity-90 animate-fade-in-delay">
               Join thousands of families preserving their precious memories with Saga's intelligent storytelling platform.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-delay-2">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-delay-2">
               <Link href="/auth/signin">
-                <Button variant="secondary" size="lg" className="btn-enhanced bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                <EnhancedButton 
+                  variant="secondary" 
+                  size="xl" 
+                  className="bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl border-2 border-white/20"
+                  rightIcon={<BookOpen className="w-5 h-5" />}
+                >
                   Begin Your Journey
-                  <BookOpen className="w-5 h-5 ml-2" />
-                </Button>
+                </EnhancedButton>
+              </Link>
+              <Link href="/design-showcase">
+                <EnhancedButton 
+                  variant="outline" 
+                  size="xl"
+                  className="border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50"
+                >
+                  View Demo
+                </EnhancedButton>
               </Link>
             </div>
           </div>
