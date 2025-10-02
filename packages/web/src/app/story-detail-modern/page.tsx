@@ -4,7 +4,7 @@ import { useState } from "react"
 import { EnhancedButton } from "@/components/ui/enhanced-button"
 import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from "@/components/ui/enhanced-card"
 import { ModernAudioPlayer } from "@/components/ui/modern-audio-player"
-import { Share, Export, Edit, Heart, MessageCircle, User, Calendar, Tag, ChevronLeft, MoreHorizontal, Send } from "lucide-react"
+import { Share, Download, Edit, Heart, MessageCircle, User, Calendar, Tag, ChevronLeft, MoreHorizontal, Send } from "lucide-react"
 import Image from "next/image"
 
 export default function StoryDetailModernPage() {
@@ -116,7 +116,7 @@ That house, it held all of us - our parents, our laughter, our tears, when we le
               <EnhancedButton variant="outline" size="sm" leftIcon={<Share className="h-4 w-4" />}>
                 Share
               </EnhancedButton>
-              <EnhancedButton variant="outline" size="sm" leftIcon={<Export className="h-4 w-4" />}>
+              <EnhancedButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
                 Export
               </EnhancedButton>
             </div>
@@ -217,7 +217,7 @@ That house, it held all of us - our parents, our laughter, our tears, when we le
                     <EnhancedButton variant="outline" size="sm" leftIcon={<Edit className="h-4 w-4" />}>
                       Edit
                     </EnhancedButton>
-                    <EnhancedButton variant="outline" size="sm" leftIcon={<Export className="h-4 w-4" />}>
+                    <EnhancedButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
                       Export
                     </EnhancedButton>
                   </div>
