@@ -1,674 +1,297 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Skeleton } from '@/components/ui/skeleton'
-import Link from 'next/link'
-import { useAuthStore } from '@/stores/auth-store'
-import { projectService, ProjectWithMembers } from '@/lib/projects'
-import { UserRole, getRoleDisplayInfo } from '@saga/shared'
-import { BookOpen, Users, MessageCircle, Crown, Plus, HelpCircle } from 'lucide-react'
-import { createClientSupabase } from '@/lib/supabase'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ProjectServiceTime } from '@/components/project/project-service-time'
+import { EnhancedButton } from "@/components/ui/enhanced-button"
+import { StatsCard } from "@/components/ui/stats-card"
+import { ProjectCard } from "@/components/ui/project-card"
+import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from "@/components/ui/enhanced-card"
+import { Users, BookOpen, Settings, Plus, TrendingUp, Clock, Star, Lightbulb } from "lucide-react"
 
 export default function DashboardPage() {
-  const { user, isAuthenticated, isLoading: authLoading, initialize } = useAuthStore()
-  const [projects, setProjects] = useState<ProjectWithMembers[]>([])
-  const [activeProjectId, setActiveProjectId] = useState<string>('')
-  const [projectData, setProjectData] = useState<Record<string, {
-    stories: any[]
-    pendingInteractions: any[]
-    answeredInteractions?: any[]
-    stats: {
-      totalStories: number
-      pendingFollowups: number
-      answeredFollowups?: number
-      totalMembers: number
+  // Mock data based on prototype
+  const mockProjects = [
+    {
+      id: '1',
+      title: '奶奶的回忆录',
+      description: '记录奶奶的人生故事和家族传统',
+      createdAt: '2023年12月',
+      storyCount: 37,
+      status: 'active' as const,
+      members: [
+        { id: '1', name: '张伟', role: 'owner' as const, status: 'active' as const },
+        { id: '2', name: '李明', role: 'facilitator' as const, status: 'active' as const },
+        { id: '3', name: '王奶奶', role: 'storyteller' as const, status: 'active' as const }
+      ],
+      isOwner: true
+    },
+    {
+      id: '2', 
+      title: '家族传说故事',
+      description: '收集和整理家族中流传的故事和传说',
+      createdAt: '2023年11月',
+      storyCount: 17,
+      status: 'active' as const,
+      members: [
+        { id: '4', name: '陈红', role: 'owner' as const, status: 'active' as const },
+        { id: '5', name: '张伟', role: 'facilitator' as const, status: 'active' as const }
+      ],
+      isOwner: false
+    },
+    {
+      id: '3',
+      title: '童年的夏天',
+      description: '回忆童年时光和成长经历',
+      createdAt: '2023年10月',
+      storyCount: 27,
+      status: 'active' as const,
+      members: [
+        { id: '6', name: '李华', role: 'owner' as const, status: 'active' as const },
+        { id: '7', name: '张伟', role: 'facilitator' as const, status: 'active' as const }
+      ],
+      isOwner: false
+    },
+    {
+      id: '4',
+      title: '妈妈的故事集',
+      description: '记录妈妈的人生经历和智慧分享',
+      createdAt: '2023年9月',
+      storyCount: 17,
+      status: 'completed' as const,
+      members: [
+        { id: '8', name: '王红', role: 'owner' as const, status: 'active' as const },
+        { id: '9', name: '张伟', role: 'facilitator' as const, status: 'active' as const }
+      ],
+      isOwner: false
     }
-  }>>({})
-  const [loading, setLoading] = useState(true)
-  const [isFirstTime, setIsFirstTime] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  ]
 
-  // Handle Magic Link tokens from URL
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const accessToken = urlParams.get('access_token')
-    const refreshToken = urlParams.get('refresh_token')
-    const type = urlParams.get('type')
-
-    if (accessToken && refreshToken && type === 'magiclink') {
-      console.log('Dashboard: Magic Link tokens found, setting session')
-
-      // Set the session using the tokens
-      const supabase = createClientSupabase()
-      supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken
-      }).then(({ data, error }) => {
-        if (error) {
-          console.error('Dashboard: Error setting session:', error)
-        } else {
-          console.log('Dashboard: Session set successfully')
-          // Re-initialize auth store to pick up the new session
-          initialize()
-          // Clean up URL
-          window.history.replaceState({}, document.title, '/dashboard')
-        }
-      })
-    }
-  }, [initialize])
-
-  useEffect(() => {
-    console.log('Dashboard useEffect triggered:', {
-      userId: user?.id,
-      isAuthenticated,
-      authLoading
-    })
-
-    const loadDashboard = async () => {
-      console.log('loadDashboard called, authLoading:', authLoading)
-
-      // Wait for auth to be ready
-      if (authLoading) {
-        console.log('Auth still loading, returning early')
-        return
-      }
-
-      console.log('Auth check:', { userId: user?.id, isAuthenticated })
-
-      if (!user?.id || !isAuthenticated) {
-        console.log('User not authenticated, setting error')
-        setLoading(false)
-        setError('Please sign in to view your projects')
-        return
-      }
-
-      try {
-        console.log('Starting dashboard load for user:', user.id)
-        setLoading(true)
-        setError(null)
-
-        console.log('Loading dashboard for user:', user.id)
-
-        // Load user's projects
-        const userProjects = await projectService.getUserProjects(user.id)
-
-        console.log('Loaded projects:', userProjects)
-        setProjects(userProjects)
-        setIsFirstTime(userProjects.length === 0)
-
-        // Set the first project as active by default
-        if (userProjects.length > 0) {
-          setActiveProjectId(userProjects[0].id)
-
-          // Load data for all projects
-          await loadAllProjectsData(userProjects)
-        }
-
-      } catch (error) {
-        console.error('Error loading dashboard:', error)
-        setError('Failed to load projects. Please try refreshing the page.')
-      } finally {
-        console.log('Dashboard loading finished')
-        setLoading(false)
-      }
-    }
-
-    loadDashboard()
-  }, [user?.id, isAuthenticated, authLoading])
-
-  // Load data for all projects
-  const loadAllProjectsData = async (userProjects: ProjectWithMembers[]) => {
-    try {
-      const supabase = createClientSupabase()
-      const { data: { session } } = await supabase.auth.getSession()
-
-      if (!session?.access_token) {
-        console.error('No session token available')
-        return
-      }
-
-      const newProjectData: Record<string, any> = {}
-
-      for (const project of userProjects) {
-        const projectId = project.id
-
-        // Fetch stories for this project
-        const storiesResponse = await fetch(`/api/projects/${projectId}/stories`, {
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`,
-            'Content-Type': 'application/json'
-          }
-        })
-
-        // Fetch pending interactions for this project
-        const pendingResponse = await fetch(`/api/projects/${projectId}/interactions/pending`, {
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`,
-            'Content-Type': 'application/json'
-          }
-        })
-
-        const stories = storiesResponse.ok ? (await storiesResponse.json()).stories || [] : []
-        const pendingInteractions = pendingResponse.ok ? (await pendingResponse.json()).interactions || [] : []
-
-        // For facilitators, also fetch their answered follow-ups
-        let answeredInteractions: any[] = []
-        let answeredCount = 0
-        
-        if (project.user_role === 'facilitator' || project.is_owner) {
-          try {
-            const answeredResponse = await fetch(`/api/projects/${projectId}/interactions/answered-by-user`, {
-              headers: {
-                'Authorization': `Bearer ${session.access_token}`,
-                'Content-Type': 'application/json'
-              }
-            })
-            
-            if (answeredResponse.ok) {
-              const answeredData = await answeredResponse.json()
-              answeredInteractions = answeredData.interactions || []
-              answeredCount = answeredInteractions.length
-            }
-          } catch (error) {
-            console.warn('Failed to fetch answered interactions:', error)
-          }
-        }
-
-        newProjectData[projectId] = {
-          stories: stories.sort((a: any, b: any) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          ).slice(0, 10), // Keep recent 10 stories per project
-          pendingInteractions: pendingInteractions.sort((a: any, b: any) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          ),
-          answeredInteractions: answeredInteractions.sort((a: any, b: any) =>
-            new Date(b.answered_at || b.created_at).getTime() - new Date(a.answered_at || a.created_at).getTime()
-          ),
-          stats: {
-            totalStories: stories.length,
-            pendingFollowups: pendingInteractions.length,
-            answeredFollowups: answeredCount,
-            totalMembers: project.member_count
-          }
-        }
-      }
-
-      setProjectData(newProjectData)
-    } catch (error) {
-      console.error('Error loading projects data:', error)
-    }
-  }
-
-  const getStatusBadge = (storyCount: number) => {
-    if (storyCount === 0) {
-      return <Badge variant="outline">No Stories Yet</Badge>
-    } else if (storyCount === 1) {
-      return <Badge variant="default">1 Story</Badge>
-    } else {
-      return <Badge variant="secondary">{storyCount} Stories</Badge>
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="container py-8">
-        <div className="flex justify-between items-center mb-8">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-10 w-32" />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="p-6">
-              <div className="space-y-4">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-1/2" />
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="container py-16 text-center">
-        <div className="max-w-md mx-auto space-y-6">
-          <div className="text-6xl mb-4">⚠️</div>
-          <h1 className="text-display text-foreground">Error</h1>
-          <p className="text-muted-foreground">{error}</p>
-          <Button
-            variant="outline"
-            onClick={() => window.location.reload()}
-          >
-            Try Again
-          </Button>
-        </div>
-      </div>
-    )
-  }
-
-  if (isFirstTime) {
-    return (
-      <div className="container py-16">
-        <div className="max-w-2xl mx-auto">
-          {/* Welcome Header */}
-          <div className="text-center mb-12">
-            <div className="text-6xl mb-6">🎭</div>
-            <h1 className="text-4xl font-bold text-foreground mb-4">
-              Welcome to Saga
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              Start capturing your family's stories with AI-powered tools that help preserve memories for future generations.
-            </p>
-          </div>
-
-          {/* Main CTA Card */}
-          <Card className="p-8 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <h2 className="text-2xl font-semibold text-foreground">
-                  Create Your First Family Biography
-                </h2>
-                <p className="text-muted-foreground">
-                  Get started with our free experience - no payment required to begin your family's story journey.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link href="/dashboard/projects/create">
-                  <Button size="lg" className="w-full sm:w-auto">
-                    <BookOpen className="w-5 h-5 mr-2" />
-                    Start Your Family Saga
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </Card>
-
-          {/* Features Preview */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            <div className="text-center space-y-3">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                <BookOpen className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground">Record Stories</h3>
-              <p className="text-sm text-muted-foreground">
-                Capture family memories with our easy-to-use recording tools
-              </p>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground">Collaborate</h3>
-              <p className="text-sm text-muted-foreground">
-                Invite family members to contribute and share their stories
-              </p>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                <MessageCircle className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground">AI-Powered</h3>
-              <p className="text-sm text-muted-foreground">
-                Get transcripts, summaries, and follow-up questions automatically
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  const ownedProjects = mockProjects.filter(p => p.isOwner)
+  const participatingProjects = mockProjects.filter(p => !p.isOwner)
 
   return (
-    <div className="container py-8">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <div>
-          <h1 className="text-display text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground mt-2">
-            Your story projects and activities
-          </p>
+      <div className="border-b border-border bg-background/95 backdrop-blur-sm">
+        <div className="container mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                <BookOpen className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">欢迎回来，张伟</h1>
+                <p className="text-muted-foreground">2个项目 • 1个协助者 • 3个故事讲述者 可用</p>
+              </div>
+            </div>
+            <EnhancedButton 
+              size="lg"
+              rightIcon={<Plus className="h-5 w-5" />}
+              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+            >
+              创建新Saga
+            </EnhancedButton>
+          </div>
         </div>
-
-
       </div>
 
-      {/* Project Tabs with improved styling */}
-      <Tabs value={activeProjectId} onValueChange={setActiveProjectId} className="w-full">
-        <TabsList className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8 bg-muted/30 p-1 rounded-xl border border-border/50">
-          {projects.map((project) => (
-            <TabsTrigger 
-              key={project.id} 
-              value={project.id} 
-              className="text-left data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-border/50 rounded-lg transition-all duration-200 hover:bg-muted/50"
-            >
-              <div className="flex items-center justify-between w-full min-w-0">
-                <div className="flex items-center space-x-2 min-w-0">
-                  <span className="truncate font-medium">{project.name}</span>
-                  {project.user_role && (
-                    <Badge variant="secondary" className="text-xs">
-                      {project.user_role.charAt(0).toUpperCase()}{project.user_role.slice(1)}
-                    </Badge>
-                  )}
-                </div>
-                {projectData[project.id]?.stats.pendingFollowups > 0 && (
-                  <Badge variant="destructive" className="text-xs ml-2 flex-shrink-0">
-                    {projectData[project.id].stats.pendingFollowups}
-                  </Badge>
-                )}
+      <div className="container mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-8">
+            {/* Resource Overview */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-foreground">您的资源</h2>
+                <EnhancedButton variant="outline" size="sm">
+                  购买更多
+                </EnhancedButton>
               </div>
-            </TabsTrigger>
-          ))}
-        </TabsList>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <StatsCard
+                  title="可用项目数量"
+                  value="2/5"
+                  description="剩余项目配额"
+                  icon={<BookOpen className="w-5 h-5" />}
+                  variant="info"
+                  className="bg-gradient-to-br from-info/5 to-info/10"
+                />
+                <StatsCard
+                  title="协助者席位"
+                  value="1/4"
+                  description="可邀请协助者"
+                  icon={<Users className="w-5 h-5" />}
+                  variant="success"
+                  className="bg-gradient-to-br from-success/5 to-success/10"
+                />
+                <StatsCard
+                  title="讲述者席位"
+                  value="3/10"
+                  description="可邀请讲述者"
+                  icon={<Star className="w-5 h-5" />}
+                  variant="warning"
+                  className="bg-gradient-to-br from-warning/5 to-warning/10"
+                />
+              </div>
+            </section>
 
-        {projects.map((project) => (
-          <TabsContent key={project.id} value={project.id}>
-            {/* Project Service Time with conditional owner display */}
-            <div className="mb-6">
-              <div className="flex gap-4">
-                <div className={project.is_owner ? "flex-1" : "w-full"}>
-                  <ProjectServiceTime
-                    projectId={project.id}
-                    servicePlan={{
-                      id: 'basic_annual',
-                      name: 'Basic Annual',
-                      startDate: project.created_at,
-                      endDate: new Date(new Date(project.created_at).getTime() + 365 * 24 * 60 * 60 * 1000).toISOString()
-                    }}
-                    onRenew={() => {
-                      // Navigate to purchase/renewal page
-                      window.location.href = '/dashboard/purchase'
-                    }}
+            {/* My Projects */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-foreground">我拥有的项目</h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">{ownedProjects.length} 个项目</span>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {ownedProjects.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    {...project}
+                    onEnter={() => console.log('Enter project:', project.id)}
+                    onManage={() => console.log('Manage project:', project.id)}
+                    onMore={() => console.log('More options:', project.id)}
                   />
-                </div>
-                {project.is_owner && (
-                  <div className="flex items-center">
-                    <Card className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 h-full">
-                      <div className="flex items-center space-x-3 h-full">
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Crown className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-blue-900">
-                            Project Owner
-                          </p>
-                        </div>
-                      </div>
-                    </Card>
-                  </div>
-                )}
+                ))}
               </div>
-            </div>
+            </section>
 
-            {/* Project Stats and Actions - Role-based content */}
-            <div className="flex flex-col lg:flex-row gap-6 mb-8">
-              {/* Role-based Action Button */}
-              {project.user_role === 'storyteller' && (
-                <div className="flex items-center justify-center lg:justify-start">
-                  <Link href={`/dashboard/projects/${project.id}/record`}>
-                    <Button size="lg" className="h-auto py-4 px-6">
-                      <MessageCircle className="w-5 h-5 mr-2" />
-                      Record Story
-                    </Button>
-                  </Link>
+            {/* Participating Projects */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-foreground">我参与的项目</h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">{participatingProjects.length} 个项目</span>
                 </div>
-              )}
-
-              {/* Stats Cards - Role-based */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center space-x-2">
-                      <MessageCircle className="h-8 w-8 text-primary" />
-                      <div>
-                        <p className="text-2xl font-bold text-foreground">
-                          {projectData[project.id]?.stats.totalStories || 0}
-                        </p>
-                        <p className="text-sm text-muted-foreground">Stories</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {project.user_role === 'storyteller' ? (
-                  <Card>
-                    <CardContent className="p-6">
-                      <div className="flex items-center space-x-2">
-                        <HelpCircle className="h-8 w-8 text-orange-600" />
-                        <div>
-                          <p className="text-2xl font-bold text-foreground">
-                            {projectData[project.id]?.stats.pendingFollowups || 0}
-                          </p>
-                          <p className="text-sm text-muted-foreground">Pending Follow-ups</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ) : project.user_role === 'facilitator' || project.is_owner ? (
-                  <Card>
-                    <CardContent className="p-6">
-                      <div className="flex items-center space-x-2">
-                        <HelpCircle className="h-8 w-8 text-green-600" />
-                        <div>
-                          <p className="text-2xl font-bold text-foreground">
-                            {projectData[project.id]?.stats.answeredFollowups || 0}
-                          </p>
-                          <p className="text-sm text-muted-foreground">Answered Follow-ups</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ) : null}
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-8 w-8 text-blue-600" />
-                      <div>
-                        <p className="text-2xl font-bold text-foreground">
-                          {projectData[project.id]?.stats.totalMembers || 0}
-                        </p>
-                        <p className="text-sm text-muted-foreground">Members</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {participatingProjects.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    {...project}
+                    onEnter={() => console.log('Enter project:', project.id)}
+                    onMore={() => console.log('More options:', project.id)}
+                  />
+                ))}
+              </div>
+            </section>
 
-            </div>
-
-            {/* Project Stories & Interactions */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Recent Stories for this project */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Stories</CardTitle>
-                  <CardDescription>Latest stories in {project.name}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {projectData[project.id]?.stories.map((story) => (
-                      <Link key={story.id} href={`/dashboard/projects/${project.id}/stories/${story.id}`}>
-                        <div className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
-                          <Avatar className="h-8 w-8 flex-shrink-0">
-                            <AvatarImage src={story.storyteller_avatar} />
-                            <AvatarFallback>
-                              {story.storyteller_name?.charAt(0)?.toUpperCase() || 'U'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
-                              <p className="text-sm font-medium text-foreground truncate">
-                                {story.title || story.ai_generated_title || 'Untitled'}
-                              </p>
-                              <span className="text-xs text-muted-foreground flex-shrink-0">
-                                {story.latest_interaction_time
-                                  ? new Date(story.latest_interaction_time).toLocaleDateString()
-                                  : new Date(story.created_at).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <p className="text-sm text-muted-foreground line-clamp-2">
-                              {story.ai_summary || story.content || 'No summary available'}
-                            </p>
-                            <div className="flex items-center justify-between mt-2">
-                              <div className="flex items-center space-x-3 text-xs text-muted-foreground">
-                                <div className="flex items-center space-x-1">
-                                  <MessageCircle className="w-3 h-3" />
-                                  <span>{story.comments_count || 0}</span>
-                                </div>
-                                <div className="flex items-center space-x-1">
-                                  <HelpCircle className="w-3 h-3" />
-                                  <span>{story.follow_ups_count || 0}</span>
-                                </div>
-                              </div>
-                              {story.latest_interaction_time && (
-                                <span className="text-xs text-muted-foreground">
-                                  Last activity: {new Date(story.latest_interaction_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    )) || []}
-                      {(!projectData[project.id]?.stories || projectData[project.id]?.stories.length === 0) && (project.user_role === 'storyteller' || project.is_owner) && (
-                        <div className="text-center py-8">
-                          <MessageCircle className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
-                          <p className="text-muted-foreground mb-4">No stories yet</p>
-                          <Link href={`/dashboard/projects/${project.id}/record`}>
-                            <Button>Record Your First Story</Button>
-                          </Link>
-                        </div>
-                      )}
-                      {(!projectData[project.id]?.stories || projectData[project.id]?.stories.length === 0) && project.user_role === 'facilitator' && !project.is_owner && (
-                        <div className="text-center py-8">
-                          <MessageCircle className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
-                          <p className="text-muted-foreground mb-4">No stories yet</p>
-                          <p className="text-sm text-muted-foreground/70">
-                            Stories will appear here once storytellers start sharing
-                          </p>
-                        </div>
-                      )}
+            {/* Quick Actions */}
+            <section>
+              <EnhancedCard className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+                <EnhancedCardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
+                      <Lightbulb className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <EnhancedCardTitle>快速操作</EnhancedCardTitle>
+                      <p className="text-sm text-muted-foreground">基于您的角色，这些是您可以执行的操作。</p>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-
-              {/* Role-based Interactions */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>
-                    {project.user_role === 'storyteller' 
-                      ? 'Pending Follow-ups'
-                      : 'My Answered Follow-ups'
-                    }
-                  </CardTitle>
-                  <CardDescription>
-                    {project.user_role === 'storyteller'
-                      ? 'Questions on your stories'
-                      : 'Follow-ups you asked that have been answered'
-                    }
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {project.user_role === 'storyteller' ? (
-                      // Storyteller view - pending follow-ups
-                      projectData[project.id]?.pendingInteractions.map((interaction) => (
-                        <Link key={interaction.id} href={`/dashboard/projects/${project.id}/stories/${interaction.story_id}`}>
-                          <div className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
-                            <HelpCircle className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium text-foreground">
-                                  Re: {interaction.story_title}
-                                </p>
-                                <span className="text-xs text-muted-foreground flex-shrink-0">
-                                  {new Date(interaction.created_at).toLocaleDateString()}
-                                </span>
-                              </div>
-                              <p className="text-sm text-muted-foreground line-clamp-2">
-                                {interaction.content}
-                              </p>
-                              <div className="flex items-center justify-between mt-2">
-                                <Badge variant="outline" className="text-xs">
-                                  Follow-up Question
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                        </Link>
-                      )) || []
-                    ) : project.user_role === 'facilitator' || project.is_owner ? (
-                      // Facilitator view - answered follow-ups
-                      projectData[project.id]?.answeredInteractions?.map((interaction) => (
-                        <Link key={interaction.id} href={`/dashboard/projects/${project.id}/stories/${interaction.answer_story_id || interaction.story_id}`}>
-                          <div className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
-                            <div className="h-5 w-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <HelpCircle className="h-3 w-3 text-green-600" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium text-foreground">
-                                  Re: {interaction.story_title}
-                                </p>
-                                <span className="text-xs text-muted-foreground flex-shrink-0">
-                                  Answered {new Date(interaction.answered_at).toLocaleDateString()}
-                                </span>
-                              </div>
-                              <p className="text-sm text-muted-foreground line-clamp-2">
-                                {interaction.content}
-                              </p>
-                              <div className="flex items-center justify-between mt-2">
-                                <Badge variant="default" className="text-xs bg-green-100 text-green-700">
-                                  Answered
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                        </Link>
-                      )) || []
-                    ) : null}
-                    
-                    {/* Empty states */}
-                    {project.user_role === 'storyteller' && 
-                     (!projectData[project.id]?.pendingInteractions || projectData[project.id]?.pendingInteractions.length === 0) && (
-                      <div className="text-center py-8">
-                        <HelpCircle className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
-                        <p className="text-muted-foreground">No pending follow-ups</p>
-                        <p className="text-sm text-muted-foreground/70 mt-2">
-                          All caught up! 🎉
-                        </p>
-                      </div>
-                    )}
-                    
-                    {project.user_role === 'facilitator' || project.is_owner ? (
-                     (!projectData[project.id]?.answeredInteractions || projectData[project.id].answeredInteractions?.length === 0) && (
-                      <div className="text-center py-8">
-                        <HelpCircle className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
-                        <p className="text-muted-foreground">No answered follow-ups yet</p>
-                        <p className="text-sm text-muted-foreground/70 mt-2">
-                          Ask questions to get started! 💭
-                        </p>
-                      </div>
-                    )
-                    ) : null}
+                </EnhancedCardHeader>
+                <EnhancedCardContent>
+                  <div className="flex flex-wrap gap-3">
+                    <EnhancedButton variant="default" size="sm">
+                      快速录制故事
+                    </EnhancedButton>
+                    <EnhancedButton variant="outline" size="sm">
+                      查看待审核故事
+                    </EnhancedButton>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        ))}
-      </Tabs>
+                </EnhancedCardContent>
+              </EnhancedCard>
+            </section>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Resource Management */}
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <EnhancedCardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-primary" />
+                  资源管理详情
+                </EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">项目总数</span>
+                    <span className="font-medium">2</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">已使用 2/5</span>
+                    <span className="text-sm text-success">剩余 3</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full w-2/5"></div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">协助者席位</span>
+                    <span className="font-medium">1</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">已使用 1/4</span>
+                    <span className="text-sm text-success">剩余 3</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full w-1/4"></div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">讲述者席位</span>
+                    <span className="font-medium">3</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">已使用 3/10</span>
+                    <span className="text-sm text-success">剩余 7</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full w-3/10"></div>
+                  </div>
+                </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
+
+            {/* Usage History */}
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <EnhancedCardTitle className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-secondary" />
+                  使用历史
+                </EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent className="space-y-3">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-muted-foreground">本月</span>
+                    <span className="font-medium">6 个席位</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-muted-foreground">上月</span>
+                    <span className="font-medium">4 个席位</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-muted-foreground">平均</span>
+                    <span className="font-medium">5 个席位</span>
+                  </div>
+                </div>
+                
+                <EnhancedButton variant="outline" size="sm" className="w-full">
+                  购买资源
+                </EnhancedButton>
+              </EnhancedCardContent>
+            </EnhancedCard>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

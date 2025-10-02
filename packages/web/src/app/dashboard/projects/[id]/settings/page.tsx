@@ -1,296 +1,107 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useParams } from 'next/navigation'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
 import { EnhancedCard } from '@/components/ui/enhanced-card'
 import { ModernSwitch } from '@/components/ui/modern-switch'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
-import { ArrowLeft, UserPlus, Trash2, Download, Share, RefreshCw, Settings, Users, Crown, Shield, Eye, Calendar, BarChart3, FileText, AlertTriangle, Copy, ExternalLink } from 'lucide-react'
+import { ArrowLeft, UserPlus, Trash2, Download, Share, RefreshCw, Users, Crown, Shield, Calendar, FileText, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
-import { useAuthStore } from '@/stores/auth-store'
-import { projectService, ProjectWithMembers } from '@/lib/projects'
-import { UserRole, getRoleDisplayInfo } from '@saga/shared'
-import { InvitationManager } from '@/components/invitations/invitation-manager'
-import { toast } from 'react-hot-toast'
+
+// Mock data for the project management page
+const mockProject = {
+  id: '1',
+  title: '奶奶的回忆录',
+  description: '记录奶奶一生的珍贵回忆和家族故事',
+  created_at: '2024-01-15T10:00:00Z',
+  is_owner: true,
+  members: [
+    {
+      id: '1',
+      user_id: 'user1',
+      role: 'facilitator' as const,
+      status: 'active',
+      name: '张小明',
+      email: 'xiaoming@example.com'
+    },
+    {
+      id: '2', 
+      user_id: 'user2',
+      role: 'storyteller' as const,
+      status: 'active',
+      name: '李阿姨',
+      email: 'liayi@example.com'
+    },
+    {
+      id: '3',
+      user_id: 'user3', 
+      role: 'co_facilitator' as const,
+      status: 'pending',
+      name: '王叔叔',
+      email: 'wangshu@example.com'
+    }
+  ]
+}
+
+const mockUser = {
+  id: 'current-user',
+  email: 'current@example.com'
+}
 
 export default function ProjectSettingsPage() {
   const params = useParams()
-  const router = useRouter()
-  const { user } = useAuthStore()
   const projectId = params.id as string
-
-  const [project, setProject] = useState<ProjectWithMembers | null>(null)
-  const [projectTitle, setProjectTitle] = useState('')
-  const [projectDescription, setProjectDescription] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
+  
+  const [projectTitle, setProjectTitle] = useState(mockProject.title)
+  const [projectDescription, setProjectDescription] = useState(mockProject.description)
   const [inviteEmail, setInviteEmail] = useState('')
-  const [inviteRole, setInviteRole] = useState<UserRole>('storyteller')
+  const [inviteRole, setInviteRole] = useState<'storyteller' | 'co_facilitator' | 'facilitator'>('storyteller')
+  const [saving, setSaving] = useState(false)
   const [inviting, setInviting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    const loadProject = async () => {
-      if (!user?.id) {
-        setLoading(false)
-        setError('User not authenticated')
-        return
-      }
-
-      try {
-        setLoading(true)
-        setError(null)
-
-        const projectData = await projectService.getProjectById(projectId, user.id)
-        if (!projectData) {
-          setError('Project not found or access denied')
-          setLoading(false)
-          return
-        }
-
-        // Check if user has permission to access settings
-        if (!projectData.is_owner && projectData.user_role !== 'facilitator') {
-          setError('You do not have permission to access project settings')
-          setLoading(false)
-          return
-        }
-
-        setProject(projectData)
-        setProjectTitle(projectData.title)
-        setProjectDescription(projectData.description || '')
-      } catch (error) {
-        console.error('Error loading project:', error)
-        setError('Failed to load project data')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadProject()
-  }, [projectId, user?.id])
-
-  // Handle project update
   const handleSaveProjectDetails = async () => {
-    if (!project || !user?.id) return
-
-    if (!projectTitle.trim()) {
-      toast.error('Project title is required')
-      return
-    }
-
     setSaving(true)
-    try {
-      const updatedProject = await projectService.updateProject(project.id, {
-        title: projectTitle.trim(),
-        description: projectDescription.trim() || undefined
-      })
-
-      if (updatedProject) {
-        setProject(prev => prev ? { ...prev, ...updatedProject } : null)
-        toast.success('Project updated successfully')
-      } else {
-        toast.error('Failed to update project')
-      }
-    } catch (error) {
-      console.error('Error updating project:', error)
-      toast.error('Failed to update project')
-    } finally {
-      setSaving(false)
-    }
+    // Mock API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    setSaving(false)
+    console.log('Project updated:', { title: projectTitle, description: projectDescription })
   }
 
-  // Handle member invitation
   const handleInviteMember = async () => {
-    if (!project || !user?.id) return
-
-    if (!inviteEmail.trim()) {
-      toast.error('Email is required')
-      return
-    }
-
+    if (!inviteEmail.trim()) return
+    
     setInviting(true)
-    try {
-      const member = await projectService.inviteMember({
-        project_id: project.id,
-        user_email: inviteEmail.trim(),
-        role: inviteRole,
-        invited_by: user.id
-      })
-
-      if (member) {
-        toast.success('Invitation sent successfully')
-        setInviteEmail('')
-        // Reload project to get updated member list
-        const updatedProject = await projectService.getProjectById(projectId, user.id)
-        if (updatedProject) {
-          setProject(updatedProject)
-        }
-      } else {
-        toast.error('Failed to send invitation. User may not exist.')
-      }
-    } catch (error) {
-      console.error('Error inviting member:', error)
-      toast.error('Failed to send invitation')
-    } finally {
-      setInviting(false)
-    }
+    // Mock API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    setInviting(false)
+    setInviteEmail('')
+    console.log('Member invited:', { email: inviteEmail, role: inviteRole })
   }
 
-  // Handle member removal
   const handleRemoveMember = async (memberId: string) => {
-    if (!project || !user?.id) return
-
-    try {
-      const success = await projectService.removeMember(memberId)
-      if (success) {
-        toast.success('Member removed successfully')
-        // Reload project to get updated member list
-        const updatedProject = await projectService.getProjectById(projectId, user.id)
-        if (updatedProject) {
-          setProject(updatedProject)
-        }
-      } else {
-        toast.error('Failed to remove member')
-      }
-    } catch (error) {
-      console.error('Error removing member:', error)
-      toast.error('Failed to remove member')
-    }
+    console.log('Removing member:', memberId)
+    // Mock API call
+    await new Promise(resolve => setTimeout(resolve, 500))
   }
 
-  // Handle role update
-  const handleUpdateRole = async (memberId: string, newRole: UserRole) => {
-    if (!project || !user?.id) return
-
-    try {
-      const success = await projectService.updateMemberRole(memberId, newRole)
-      if (success) {
-        toast.success('Role updated successfully')
-        // Reload project to get updated member list
-        const updatedProject = await projectService.getProjectById(projectId, user.id)
-        if (updatedProject) {
-          setProject(updatedProject)
-        }
-      } else {
-        toast.error('Failed to update role')
-      }
-    } catch (error) {
-      console.error('Error updating role:', error)
-      toast.error('Failed to update role')
-    }
+  const handleUpdateRole = async (memberId: string, newRole: string) => {
+    console.log('Updating role:', { memberId, newRole })
+    // Mock API call
+    await new Promise(resolve => setTimeout(resolve, 500))
   }
-
-
 
   const handleExportArchive = async () => {
-    try {
-      setSaving(true)
-      toast.loading('Preparing export archive...', { id: 'export' })
-
-      const response = await fetch(`/api/projects/${projectId}/export`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to generate export archive')
-      }
-
-      // Get filename
-      const contentDisposition = response.headers.get('Content-Disposition')
-      const filename = contentDisposition
-        ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
-        : `${project?.name || 'project'}_export.zip`
-
-      // Download file
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = filename
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
-
-      toast.success('Export archive downloaded successfully!', { id: 'export' })
-    } catch (error) {
-      console.error('Error exporting archive:', error)
-      toast.error('Failed to export archive. Please try again.', { id: 'export' })
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  const getRoleBadge = (role: UserRole) => {
-    const roleInfo = getRoleDisplayInfo(role)
-    return <Badge variant={roleInfo.color as any}>{roleInfo.icon} {roleInfo.label}</Badge>
-  }
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'active':
-        return <Badge variant="primary">Active</Badge>
-      case 'pending':
-        return <Badge variant="outline">Invited</Badge>
-      case 'declined':
-        return <Badge variant="destructive">Declined</Badge>
-      case 'removed':
-        return <Badge variant="destructive">Removed</Badge>
-      default:
-        return <Badge variant="outline">{status}</Badge>
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <div className="h-8 w-8 bg-muted rounded animate-pulse"></div>
-          <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
-        </div>
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-muted rounded-lg animate-pulse"></div>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Error</h1>
-        <p className="text-muted-foreground mt-2">{error}</p>
-        <Link href="/dashboard">
-          <Button variant="outline" className="mt-4">
-            Back to Dashboard
-          </Button>
-        </Link>
-      </div>
-    )
-  }
-
-  if (!project) {
-    return (
-      <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
-        <Link href="/dashboard">
-          <Button variant="outline" className="mt-4">
-            Back to Dashboard
-          </Button>
-        </Link>
-      </div>
-    )
+    setSaving(true)
+    // Mock API call
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    setSaving(false)
+    console.log('Archive exported')
   }
 
   return (
@@ -306,7 +117,7 @@ export default function ProjectSettingsPage() {
           </Link>
           <div>
             <h1 className="text-3xl font-bold text-gray-900">项目管理</h1>
-            <p className="text-gray-600 mt-1">{project?.title}</p>
+            <p className="text-gray-600 mt-1">{mockProject.title}</p>
           </div>
         </div>
 
@@ -336,7 +147,7 @@ export default function ProjectSettingsPage() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">创建时间</span>
-                      <span className="text-gray-900">{new Date(project?.created_at || '').toLocaleDateString('zh-CN')}</span>
+                      <span className="text-gray-900">{new Date(mockProject.created_at).toLocaleDateString('zh-CN')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">故事数量</span>
@@ -344,7 +155,7 @@ export default function ProjectSettingsPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">成员数量</span>
-                      <span className="text-gray-900">{(project?.members?.length || 0) + 1}</span>
+                      <span className="text-gray-900">{mockProject.members.length + 1}</span>
                     </div>
                   </div>
                 </div>
@@ -354,7 +165,6 @@ export default function ProjectSettingsPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
-
             {/* Project Overview */}
             <EnhancedCard>
               <div className="p-6">
@@ -366,7 +176,7 @@ export default function ProjectSettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                   <div className="text-center p-4 bg-sage-50 rounded-lg">
                     <Calendar className="w-8 h-8 text-sage-600 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">{new Date(project?.created_at || '').toLocaleDateString('zh-CN')}</div>
+                    <div className="text-2xl font-bold text-gray-900">{new Date(mockProject.created_at).toLocaleDateString('zh-CN')}</div>
                     <div className="text-sm text-gray-600">创建时间</div>
                   </div>
                   <div className="text-center p-4 bg-sage-50 rounded-lg">
@@ -376,7 +186,7 @@ export default function ProjectSettingsPage() {
                   </div>
                   <div className="text-center p-4 bg-sage-50 rounded-lg">
                     <Users className="w-8 h-8 text-sage-600 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">{(project?.members?.length || 0) + 1}</div>
+                    <div className="text-2xl font-bold text-gray-900">{mockProject.members.length + 1}</div>
                     <div className="text-sm text-gray-600">成员数量</div>
                   </div>
                 </div>
@@ -393,7 +203,7 @@ export default function ProjectSettingsPage() {
                       />
                       <EnhancedButton
                         onClick={handleSaveProjectDetails}
-                        disabled={saving || (projectTitle.trim() === project?.title && projectDescription.trim() === (project?.description || ''))}
+                        disabled={saving || (projectTitle.trim() === mockProject.title && projectDescription.trim() === mockProject.description)}
                         size="sm"
                       >
                         {saving ? '保存中...' : '保存'}
@@ -440,7 +250,7 @@ export default function ProjectSettingsPage() {
                     />
                     <select
                       value={inviteRole}
-                      onChange={(e) => setInviteRole(e.target.value as UserRole)}
+                      onChange={(e) => setInviteRole(e.target.value as any)}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sage-500"
                     >
                       <option value="storyteller">讲述者</option>
@@ -460,41 +270,39 @@ export default function ProjectSettingsPage() {
                 {/* Members List */}
                 <div className="space-y-4">
                   {/* Project Owner */}
-                  {project?.is_owner && (
-                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-lg">
-                      <div className="flex items-center gap-4">
-                        <Avatar className="w-12 h-12">
-                          <AvatarFallback className="bg-amber-100 text-amber-700">
-                            {user?.email?.charAt(0).toUpperCase() || 'O'}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium text-gray-900 flex items-center gap-2">
-                            您 (所有者)
-                            <Crown className="w-4 h-4 text-amber-500" />
-                          </div>
-                          <div className="text-sm text-gray-600">{user?.email}</div>
+                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-center gap-4">
+                      <Avatar className="w-12 h-12">
+                        <AvatarFallback className="bg-amber-100 text-amber-700">
+                          您
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="font-medium text-gray-900 flex items-center gap-2">
+                          您 (所有者)
+                          <Crown className="w-4 h-4 text-amber-500" />
                         </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Badge className="bg-amber-100 text-amber-800">所有者</Badge>
-                        <Badge className="bg-green-100 text-green-800">活跃</Badge>
+                        <div className="text-sm text-gray-600">{mockUser.email}</div>
                       </div>
                     </div>
-                  )}
+                    <div className="flex items-center gap-3">
+                      <Badge className="bg-amber-100 text-amber-800">所有者</Badge>
+                      <Badge className="bg-green-100 text-green-800">活跃</Badge>
+                    </div>
+                  </div>
 
                   {/* Project Members */}
-                  {project?.members?.map((member) => (
+                  {mockProject.members.map((member) => (
                     <div key={member.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                       <div className="flex items-center gap-4">
                         <Avatar className="w-12 h-12">
                           <AvatarFallback className="bg-sage-100 text-sage-700">
-                            {member.user_id?.charAt(0).toUpperCase() || 'M'}
+                            {member.name?.charAt(0) || 'M'}
                           </AvatarFallback>
                         </Avatar>
                         <div>
                           <div className="font-medium text-gray-900 flex items-center gap-2">
-                            成员
+                            {member.name}
                             {member.role === 'facilitator' && <Shield className="w-4 h-4 text-blue-500" />}
                             {member.role === 'storyteller' && <Users className="w-4 h-4 text-green-500" />}
                           </div>
@@ -527,45 +335,43 @@ export default function ProjectSettingsPage() {
                         </Badge>
 
                         {/* Actions */}
-                        {project?.is_owner && (
-                          <div className="flex items-center gap-2">
-                            {member.status === 'active' && (
-                              <select
-                                value={member.role}
-                                onChange={(e) => handleUpdateRole(member.id, e.target.value as UserRole)}
-                                className="text-xs px-2 py-1 border border-gray-300 rounded"
-                              >
-                                <option value="storyteller">讲述者</option>
-                                <option value="co_facilitator">协助者</option>
-                                <option value="facilitator">管理者</option>
-                              </select>
-                            )}
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <EnhancedButton variant="destructive" size="sm">
-                                  <Trash2 className="h-4 w-4" />
-                                </EnhancedButton>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>移除成员</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    确定要从项目中移除此成员吗？此操作无法撤销。
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>取消</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={() => handleRemoveMember(member.id)}
-                                    className="bg-red-600 text-white hover:bg-red-700"
-                                  >
-                                    移除
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </div>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {member.status === 'active' && (
+                            <select
+                              value={member.role}
+                              onChange={(e) => handleUpdateRole(member.id, e.target.value)}
+                              className="text-xs px-2 py-1 border border-gray-300 rounded"
+                            >
+                              <option value="storyteller">讲述者</option>
+                              <option value="co_facilitator">协助者</option>
+                              <option value="facilitator">管理者</option>
+                            </select>
+                          )}
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <EnhancedButton variant="destructive" size="sm">
+                                <Trash2 className="h-4 w-4" />
+                              </EnhancedButton>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>移除成员</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  确定要从项目中移除此成员吗？此操作无法撤销。
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>取消</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleRemoveMember(member.id)}
+                                  className="bg-red-600 text-white hover:bg-red-700"
+                                >
+                                  移除
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
                       </div>
                     </div>
                   ))}
