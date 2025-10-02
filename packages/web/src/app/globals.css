@@ -1,7 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss";
 @import "../styles/design-tokens.css";
 @import "../styles/accessibility.css";
 
