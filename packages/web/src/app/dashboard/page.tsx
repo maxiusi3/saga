@@ -34,8 +34,8 @@ export default function DashboardPage() {
         setResourceWallet(wallet)
       } catch (error) {
         console.error('Error loading dashboard data:', error)
-        // Use mock data as fallback
-        setProjects(mockProjects)
+        // Use fallback data when backend is not available
+        setProjects([])
         setResourceWallet({
           user_id: user.id,
           project_vouchers: 2,
@@ -49,62 +49,6 @@ export default function DashboardPage() {
 
     loadDashboardData()
   }, [user?.id])
-  // Mock data based on prototype
-  const mockProjects = [
-    {
-      id: '1',
-      title: "Grandma's Memoir",
-      description: 'Recording grandma\'s life stories and family traditions',
-      createdAt: 'December 2023',
-      storyCount: 37,
-      status: 'active' as const,
-      members: [
-        { id: '1', name: 'John', role: 'owner' as const, status: 'active' as const },
-        { id: '2', name: 'Mike', role: 'facilitator' as const, status: 'active' as const },
-        { id: '3', name: 'Grandma Rose', role: 'storyteller' as const, status: 'active' as const }
-      ],
-      isOwner: true
-    },
-    {
-      id: '2', 
-      title: 'Family Legend Stories',
-      description: 'Collecting and organizing family stories and legends',
-      createdAt: 'November 2023',
-      storyCount: 17,
-      status: 'active' as const,
-      members: [
-        { id: '4', name: 'Sarah', role: 'owner' as const, status: 'active' as const },
-        { id: '5', name: 'John', role: 'facilitator' as const, status: 'active' as const }
-      ],
-      isOwner: false
-    },
-    {
-      id: '3',
-      title: 'Childhood Summers',
-      description: 'Memories of childhood and growing up experiences',
-      createdAt: 'October 2023',
-      storyCount: 27,
-      status: 'active' as const,
-      members: [
-        { id: '6', name: 'Lisa', role: 'owner' as const, status: 'active' as const },
-        { id: '7', name: 'John', role: 'facilitator' as const, status: 'active' as const }
-      ],
-      isOwner: false
-    },
-    {
-      id: '4',
-      title: "Mom's Story Collection",
-      description: 'Recording mom\'s life experiences and wisdom sharing',
-      createdAt: 'September 2023',
-      storyCount: 17,
-      status: 'completed' as const,
-      members: [
-        { id: '8', name: 'Mary', role: 'owner' as const, status: 'active' as const },
-        { id: '9', name: 'John', role: 'facilitator' as const, status: 'active' as const }
-      ],
-      isOwner: false
-    }
-  ]
 
   const ownedProjects = projects.filter(p => p.is_owner)
   const participatingProjects = projects.filter(p => !p.is_owner)
@@ -154,7 +98,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-foreground">Welcome back, John</h1>
-                <p className="text-muted-foreground">2 projects • 1 facilitator • 3 storytellers available</p>
+                <p className="text-muted-foreground">{projects.length} projects • {resourceWallet?.facilitator_seats || 0} facilitator seats • {resourceWallet?.storyteller_seats || 0} storyteller seats available</p>
               </div>
             </div>
             <EnhancedButton 
@@ -184,7 +128,7 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <StatsCard
                   title="Available Projects"
-                  value={`${projects.length}/${(resourceWallet?.project_vouchers || 0) + projects.length}`}
+                  value={`${resourceWallet?.project_vouchers || 0}/${(resourceWallet?.project_vouchers || 0) + projects.length}`}
                   description="Remaining project quota"
                   icon={<BookOpen className="w-5 h-5" />}
                   variant="info"
@@ -192,7 +136,7 @@ export default function DashboardPage() {
                 />
                 <StatsCard
                   title="Facilitator Seats"
-                  value={`${Math.max(0, 4 - (resourceWallet?.facilitator_seats || 0))}/${4}`}
+                  value={`${resourceWallet?.facilitator_seats || 0}/4`}
                   description="Can invite facilitators"
                   icon={<Users className="w-5 h-5" />}
                   variant="success"
@@ -200,7 +144,7 @@ export default function DashboardPage() {
                 />
                 <StatsCard
                   title="Storyteller Seats"
-                  value={`${Math.max(0, 10 - (resourceWallet?.storyteller_seats || 0))}/${10}`}
+                  value={`${resourceWallet?.storyteller_seats || 0}/10`}
                   description="Can invite storytellers"
                   icon={<Star className="w-5 h-5" />}
                   variant="warning"
@@ -218,29 +162,43 @@ export default function DashboardPage() {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {ownedProjects.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    id={project.id}
-                    title={project.name}
-                    description={project.description || 'No description'}
-                    createdAt={new Date(project.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                    storyCount={project.story_count}
-                    status={project.status as 'active' | 'completed'}
-                    members={project.members.map(m => ({
-                      id: m.id,
-                      name: `User ${m.user_id.slice(0, 8)}`,
-                      role: m.role as 'owner' | 'facilitator' | 'storyteller',
-                      status: m.status as 'active' | 'pending'
-                    }))}
-                    isOwner={project.is_owner}
-                    onEnter={() => window.location.href = `/dashboard/projects/${project.id}`}
-                    onManage={() => window.location.href = `/dashboard/projects/${project.id}/settings`}
-                    onMore={() => console.log('More options:', project.id)}
-                  />
-                ))}
-              </div>
+              {ownedProjects.length === 0 ? (
+                <EnhancedCard className="p-8 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+                  <div className="space-y-4">
+                    <div className="text-4xl mb-4">📚</div>
+                    <h3 className="text-lg font-semibold text-foreground">No Projects Yet</h3>
+                    <p className="text-muted-foreground">Create your first project to start collecting family stories.</p>
+                    <EnhancedButton>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create New Saga
+                    </EnhancedButton>
+                  </div>
+                </EnhancedCard>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {ownedProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      id={project.id}
+                      title={project.name}
+                      description={project.description || 'No description'}
+                      createdAt={new Date(project.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                      storyCount={project.story_count}
+                      status={project.status as 'active' | 'completed'}
+                      members={project.members.map(m => ({
+                        id: m.id,
+                        name: `User ${m.user_id.slice(0, 8)}`,
+                        role: m.role as 'owner' | 'facilitator' | 'storyteller',
+                        status: m.status as 'active' | 'pending'
+                      }))}
+                      isOwner={project.is_owner}
+                      onEnter={() => window.location.href = `/dashboard/projects/${project.id}`}
+                      onManage={() => window.location.href = `/dashboard/projects/${project.id}/settings`}
+                      onMore={() => console.log('More options:', project.id)}
+                    />
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Participating Projects */}
@@ -252,28 +210,38 @@ export default function DashboardPage() {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {participatingProjects.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    id={project.id}
-                    title={project.name}
-                    description={project.description || 'No description'}
-                    createdAt={new Date(project.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                    storyCount={project.story_count}
-                    status={project.status as 'active' | 'completed'}
-                    members={project.members.map(m => ({
-                      id: m.id,
-                      name: `User ${m.user_id.slice(0, 8)}`,
-                      role: m.role as 'owner' | 'facilitator' | 'storyteller',
-                      status: m.status as 'active' | 'pending'
-                    }))}
-                    isOwner={project.is_owner}
-                    onEnter={() => window.location.href = `/dashboard/projects/${project.id}`}
-                    onMore={() => console.log('More options:', project.id)}
-                  />
-                ))}
-              </div>
+              {participatingProjects.length === 0 ? (
+                <EnhancedCard className="p-8 text-center">
+                  <div className="space-y-4">
+                    <div className="text-4xl mb-4">👥</div>
+                    <h3 className="text-lg font-semibold text-foreground">No Participating Projects</h3>
+                    <p className="text-muted-foreground">You haven't been invited to any projects yet.</p>
+                  </div>
+                </EnhancedCard>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {participatingProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      id={project.id}
+                      title={project.name}
+                      description={project.description || 'No description'}
+                      createdAt={new Date(project.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                      storyCount={project.story_count}
+                      status={project.status as 'active' | 'completed'}
+                      members={project.members.map(m => ({
+                        id: m.id,
+                        name: `User ${m.user_id.slice(0, 8)}`,
+                        role: m.role as 'owner' | 'facilitator' | 'storyteller',
+                        status: m.status as 'active' | 'pending'
+                      }))}
+                      isOwner={project.is_owner}
+                      onEnter={() => window.location.href = `/dashboard/projects/${project.id}`}
+                      onMore={() => console.log('More options:', project.id)}
+                    />
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Quick Actions */}
@@ -325,35 +293,35 @@ export default function DashboardPage() {
                     <span className="text-sm text-success">{resourceWallet?.project_vouchers || 0} remaining</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: `${Math.min(100, (projects.length / ((resourceWallet?.project_vouchers || 0) + projects.length)) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: `${Math.min(100, (projects.length / Math.max(1, (resourceWallet?.project_vouchers || 0) + projects.length)) * 100)}%` }}></div>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Facilitator Seats</span>
-                    <span className="font-medium">{Math.max(0, 4 - (resourceWallet?.facilitator_seats || 0))}</span>
+                    <span className="font-medium">{resourceWallet?.facilitator_seats || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used {Math.max(0, 4 - (resourceWallet?.facilitator_seats || 0))}/4</span>
-                    <span className="text-sm text-success">{resourceWallet?.facilitator_seats || 0} remaining</span>
+                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.facilitator_seats || 0}/4</span>
+                    <span className="text-sm text-success">{resourceWallet?.facilitator_seats || 0} available</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full" style={{ width: `${Math.min(100, ((4 - (resourceWallet?.facilitator_seats || 0)) / 4) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.facilitator_seats || 0) / 4) * 100)}%` }}></div>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Storyteller Seats</span>
-                    <span className="font-medium">{Math.max(0, 10 - (resourceWallet?.storyteller_seats || 0))}</span>
+                    <span className="font-medium">{resourceWallet?.storyteller_seats || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used {Math.max(0, 10 - (resourceWallet?.storyteller_seats || 0))}/10</span>
-                    <span className="text-sm text-success">{resourceWallet?.storyteller_seats || 0} remaining</span>
+                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.storyteller_seats || 0}/10</span>
+                    <span className="text-sm text-success">{resourceWallet?.storyteller_seats || 0} available</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full" style={{ width: `${Math.min(100, ((10 - (resourceWallet?.storyteller_seats || 0)) / 10) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.storyteller_seats || 0) / 10) * 100)}%` }}></div>
                   </div>
                 </div>
               </EnhancedCardContent>

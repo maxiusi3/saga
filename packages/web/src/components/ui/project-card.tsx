@@ -30,23 +30,23 @@ interface ProjectCardProps {
 
 const statusConfig = {
   active: {
-    label: "进行中",
+    label: "Active",
     className: "bg-success/10 text-success border-success/20"
   },
   completed: {
-    label: "已完成", 
+    label: "Completed", 
     className: "bg-info/10 text-info border-info/20"
   },
   archived: {
-    label: "已归档",
+    label: "Archived",
     className: "bg-muted text-muted-foreground border-border"
   }
 }
 
 const roleConfig = {
-  owner: { label: "所有者", color: "text-primary" },
-  facilitator: { label: "协助者", color: "text-secondary" },
-  storyteller: { label: "讲述者", color: "text-info" }
+  owner: { label: "Owner", color: "text-primary" },
+  facilitator: { label: "Facilitator", color: "text-secondary" },
+  storyteller: { label: "Storyteller", color: "text-info" }
 }
 
 export function ProjectCard({
@@ -101,11 +101,11 @@ export function ProjectCard({
               </div>
               <div className="flex items-center gap-1">
                 <BookOpen className="h-3 w-3" />
-                <span>{storyCount} 个故事</span>
+                <span>{storyCount} stories</span>
               </div>
               <div className="flex items-center gap-1">
                 <Users className="h-3 w-3" />
-                <span>{members.length} 位成员</span>
+                <span>{members.length} members</span>
               </div>
             </div>
           </div>
@@ -163,7 +163,7 @@ export function ProjectCard({
             
             {members.length > 0 && (
               <div className="ml-3 text-xs text-muted-foreground">
-                {isOwner ? "你拥有的项目" : "你参与的项目"}
+                {isOwner ? "Your project" : "Participating"}
               </div>
             )}
           </div>
@@ -178,7 +178,7 @@ export function ProjectCard({
             className="flex-1"
             leftIcon={<Play className="h-3 w-3" />}
           >
-            进入项目
+            Enter Project
           </EnhancedButton>
           
           {isOwner && (
@@ -188,7 +188,7 @@ export function ProjectCard({
               onClick={onManage}
               leftIcon={<Settings className="h-3 w-3" />}
             >
-              管理
+              Manage
             </EnhancedButton>
           )}
         </div>
