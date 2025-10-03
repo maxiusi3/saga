@@ -248,6 +248,12 @@ export default function ProjectDetailPage() {
     )
   }
 
+  // CRITICAL: Ensure all arrays are initialized before any rendering
+  if (!project.members || !Array.isArray(project.members)) {
+    console.error('CRITICAL: project.members is not an array!', project.members)
+    project.members = []
+  }
+
   const roleInfo = project.user_role ? getRoleDisplayInfo(project.user_role) : null
 
   // Add safety check for project data
