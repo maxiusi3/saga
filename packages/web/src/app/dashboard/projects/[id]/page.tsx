@@ -89,10 +89,19 @@ export default function ProjectDetailPage() {
 
         // Load real project data
         const userProjects = await projectService.getUserProjects(user.id)
-        const project = userProjects?.find(p => p.id === projectId)
+        console.log('User projects loaded:', userProjects)
+        
+        if (!userProjects || !Array.isArray(userProjects)) {
+          console.error('Invalid user projects response:', userProjects)
+          setError('Failed to load projects')
+          setLoading(false)
+          return
+        }
+        
+        const project = userProjects.find(p => p.id === projectId)
 
         if (!project) {
-          console.error('Project not found in user projects:', { projectId, userProjectsCount: userProjects?.length })
+          console.error('Project not found in user projects:', { projectId, userProjectsCount: userProjects.length })
           setError('Project not found or access denied')
           setLoading(false)
           return
