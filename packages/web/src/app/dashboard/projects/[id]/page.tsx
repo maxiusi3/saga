@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { EnhancedButton } from '@/components/ui/enhanced-button'
+import { EnhancedCard } from '@/components/ui/enhanced-card'
+import { StoryCard } from '@/components/ui/story-card'
+import { FilterTabs } from '@/components/ui/filter-tabs'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Settings, Search, Play, Sparkles, BookOpen, Clock, Heart, Filter, Plus, Edit, Trash2, UserPlus, MessageCircle, HelpCircle } from 'lucide-react'
+import { Settings, Search, Play, Sparkles, BookOpen, Clock, Heart, Filter, Plus, Edit, Trash2, UserPlus, MessageCircle, HelpCircle, Users, BarChart3, Download, Share, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { ChapterSummaryCard } from '@/components/story/chapter-summary-card'
 import { ChapterProgress } from '@/components/chapters/chapter-progress'
@@ -68,6 +70,9 @@ export default function ProjectDetailPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [filterType, setFilterType] = useState<'all' | 'stories' | 'chapters'>('all')
+  const [selectedStorytellerFilter, setSelectedStorytellerFilter] = useState<string>('all')
+  const [selectedThemeFilter, setSelectedThemeFilter] = useState<string>('all')
+  const [sortBy, setSortBy] = useState<'latest' | 'oldest' | 'most-comments'>('latest')
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -135,6 +140,32 @@ export default function ProjectDetailPage() {
     }
   }
 
+  // Filter and sort stories
+  const filteredStories = stories.filter(story => {
+    if (searchQuery && !story.title?.toLowerCase().includes(searchQuery.toLowerCase()) && 
+        !story.ai_summary?.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false
+    }
+    if (selectedStorytellerFilter !== 'all' && story.storyteller_name !== selectedStorytellerFilter) {
+      return false
+    }
+    return true
+  }).sort((a, b) => {
+    switch (sortBy) {
+      case 'latest':
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      case 'oldest':
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      case 'most-comments':
+        return (b.comments_count || 0) - (a.comments_count || 0)
+      default:
+        return 0
+    }
+  })
+
+  // Get unique storytellers for filter
+  const storytellers = Array.from(new Set(stories.map(s => s.storyteller_name).filter(Boolean)))
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -158,9 +189,9 @@ export default function ProjectDetailPage() {
         <h1 className="text-2xl font-bold text-foreground">Error</h1>
         <p className="text-muted-foreground mt-2">{error}</p>
         <Link href="/dashboard">
-          <Button variant="outline" className="mt-4">
+          <EnhancedButton variant="outline">
             Back to Dashboard
-          </Button>
+          </EnhancedButton>
         </Link>
       </div>
     )
@@ -171,9 +202,9 @@ export default function ProjectDetailPage() {
       <div className="text-center py-16">
         <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
         <Link href="/dashboard">
-          <Button variant="outline" className="mt-4">
+          <EnhancedButton variant="outline">
             Back to Dashboard
-          </Button>
+          </EnhancedButton>
         </Link>
       </div>
     )
@@ -187,187 +218,247 @@ export default function ProjectDetailPage() {
       isProjectOwner={project.is_owner}
       projectId={projectId}
     >
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">{project.name}</h1>
-            {project.description && (
-              <p className="text-muted-foreground mt-1">{project.description}</p>
-            )}
-            <div className="flex items-center space-x-3 mt-3">
-              {roleInfo && (
-                <Badge variant={roleInfo.color as any}>
-                  <span className="mr-1">{roleInfo.icon}</span>
-                  {roleInfo.label}
-                  {project.is_owner && ' (Owner)'}
-                </Badge>
-              )}
-              <div className="text-sm text-muted-foreground">
-                {project.member_count} members • {project.story_count} stories
+      <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Family Stories</h1>
+              <div className="flex items-center gap-4">
+                <Badge className="bg-yellow-100 text-yellow-800">{stories.length} Stories</Badge>
+                {roleInfo && (
+                  <Badge variant={roleInfo.color as any}>
+                    <span className="mr-1">{roleInfo.icon}</span>
+                    {roleInfo.label}
+                    {project.is_owner && ' (Owner)'}
+                  </Badge>
+                )}
               </div>
             </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <ActionPermissionGate
-              action="canCreateStories"
-              userRole={project.user_role}
-              isProjectOwner={project.is_owner}
-            >
-              <Link href={`/dashboard/projects/${projectId}/record`}>
-                <Button variant="default">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Record Story
-                </Button>
-              </Link>
-            </ActionPermissionGate>
-
-            {project.is_owner && (
-              <Link href={`/dashboard/projects/${projectId}/invitations`}>
-                <Button variant="outline">
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Invite Members
-                </Button>
-              </Link>
-            )}
-
-            <ActionPermissionGate
-              action="canEditProjectSettings"
-              userRole={project.user_role}
-              isProjectOwner={project.is_owner}
-            >
-              <Link href={`/dashboard/projects/${projectId}/settings`}>
-                <Button variant="ghost" size="icon">
-                  <Settings className="h-5 w-5" />
-                </Button>
-              </Link>
-            </ActionPermissionGate>
-          </div>
-        </div>
-
-        {/* Chapter Progress and Prompt Queue */}
-        <RolePermissionGate allowedRoles={['facilitator']} userRole={project.user_role}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ChapterProgress
-              projectId={projectId}
-              projectCreatedAt={project.created_at}
-              servicePlanId="basic_annual"
-            />
-            <PromptQueue
-              projectId={projectId}
-              onPromptDelivered={() => {
-                // Refresh stories when a prompt is delivered
-                // fetchStories()
-              }}
-            />
-          </div>
-        </RolePermissionGate>
-
-        {/* Stories */}
-        <div className="space-y-6">
-          {stories.length === 0 ? (
-            <Card className="p-12 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-              <div className="max-w-md mx-auto space-y-6">
-                <div className="text-5xl mb-4">🎭</div>
-                <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold text-foreground">Start Your Story Journey</h2>
-                  <p className="text-muted-foreground">
-                    {project.user_role === 'storyteller'
-                      ? 'Share your precious memories and let family stories be passed down'
-                      : 'Invite family members to start recording and sharing their stories'
-                    }
-                  </p>
-                </div>
-
-                <ActionPermissionGate
-                  action="canCreateStories"
-                  userRole={project.user_role}
-                  isProjectOwner={project.is_owner}
-                >
-                  <Link href={`/dashboard/projects/${projectId}/record`}>
-                    <Button size="lg" className="bg-primary hover:bg-primary/90">
-                      <BookOpen className="h-5 w-5 mr-2" />
-                      Record Your First Story
-                    </Button>
-                  </Link>
-                </ActionPermissionGate>
-
-                {/* Quick Tips */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 text-sm">
-                  <div className="space-y-2">
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                    </div>
-                    <p className="text-muted-foreground">AI Smart Transcription</p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                      <MessageCircle className="w-4 h-4 text-primary" />
-                    </div>
-                    <p className="text-muted-foreground">Family Interactive Comments</p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                      <Heart className="w-4 h-4 text-primary" />
-                    </div>
-                    <p className="text-muted-foreground">Permanent Memory Storage</p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ) : (
-            <div className="space-y-3">
-              {stories.map((story) => (
-                <Link key={story.id} href={`/dashboard/projects/${projectId}/stories/${story.id}`}>
-                  <div className="flex items-start space-x-3 p-4 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border border-border/50 hover:border-primary/20 bg-card">
-                    <Avatar className="h-10 w-10 flex-shrink-0">
-                      <AvatarImage src={story.storyteller_avatar} />
-                      <AvatarFallback>
-                        {story.storyteller_name?.charAt(0)?.toUpperCase() || 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="text-base font-medium text-foreground truncate">
-                          {story.title || story.ai_generated_title || 'Untitled'}
-                        </p>
-                        <span className="text-sm text-muted-foreground flex-shrink-0 ml-2">
-                          {story.latest_interaction_time
-                            ? new Date(story.latest_interaction_time).toLocaleDateString()
-                            : new Date(story.created_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                        {story.ai_summary || story.content || 'No summary available'}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                          <div className="flex items-center space-x-1">
-                            <MessageCircle className="w-4 h-4" />
-                            <span>{story.comments_count || 0}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <HelpCircle className="w-4 h-4" />
-                            <span>{story.follow_ups_count || 0}</span>
-                          </div>
-                          {story.duration && (
-                            <div className="text-sm text-muted-foreground">
-                              {Math.floor(story.duration / 60)}:{String(story.duration % 60).padStart(2, '0')}
-                            </div>
-                          )}
-                        </div>
-                        {story.latest_interaction_time && (
-                          <span className="text-sm text-muted-foreground">
-                            Last activity: {new Date(story.latest_interaction_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+            
+            <div className="flex items-center gap-3">
+              <EnhancedButton variant="outline" size="sm">
+                <Download className="w-4 h-4 mr-2" />
+                Export Stories
+              </EnhancedButton>
+              <EnhancedButton variant="outline" size="sm">
+                <Users className="w-4 h-4 mr-2" />
+                Manage Project
+              </EnhancedButton>
+              <ActionPermissionGate
+                action="canCreateStories"
+                userRole={project.user_role}
+                isProjectOwner={project.is_owner}
+              >
+                <Link href={`/dashboard/projects/${projectId}/record`}>
+                  <EnhancedButton>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Record New Story
+                  </EnhancedButton>
                 </Link>
-              ))}
+              </ActionPermissionGate>
             </div>
-          )}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Filters Sidebar */}
+            <div className="lg:col-span-1">
+              <EnhancedCard>
+                <div className="p-6">
+                  <h3 className="font-semibold text-gray-900 mb-4">Filter by:</h3>
+                  
+                  {/* Storyteller Filter */}
+                  <div className="mb-6">
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">All Storytellers</label>
+                    <select 
+                      value={selectedStorytellerFilter}
+                      onChange={(e) => setSelectedStorytellerFilter(e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sage-500"
+                    >
+                      <option value="all">All Storytellers</option>
+                      {storytellers.map(storyteller => (
+                        <option key={storyteller} value={storyteller}>{storyteller}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Theme Filter */}
+                  <div className="mb-6">
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">All Themes</label>
+                    <select 
+                      value={selectedThemeFilter}
+                      onChange={(e) => setSelectedThemeFilter(e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sage-500"
+                    >
+                      <option value="all">All Themes</option>
+                      <option value="childhood">Childhood</option>
+                      <option value="family">Family</option>
+                      <option value="immigration">Immigration</option>
+                    </select>
+                  </div>
+
+                  {/* Sort Options */}
+                  <div className="mb-6">
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">Sort by</label>
+                    <FilterTabs
+                      tabs={[
+                        { id: 'latest', label: 'Latest First' },
+                        { id: 'oldest', label: 'Oldest First' },
+                        { id: 'most-comments', label: 'Most Comments' }
+                      ]}
+                      activeTab={sortBy}
+                      onTabChange={(tab) => setSortBy(tab as any)}
+                    />
+                  </div>
+                </div>
+              </EnhancedCard>
+
+              {/* Quick Actions */}
+              <EnhancedCard className="mt-6">
+                <div className="p-6">
+                  <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                  <div className="space-y-3">
+                    <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
+                      <BarChart3 className="w-4 h-4 mr-2" />
+                      Export All Stories
+                    </EnhancedButton>
+                    <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Archive Selected
+                    </EnhancedButton>
+                    <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
+                      <Share className="w-4 h-4 mr-2" />
+                      Refresh Feed
+                    </EnhancedButton>
+                  </div>
+                </div>
+              </EnhancedCard>
+
+              {/* Story Statistics */}
+              <EnhancedCard className="mt-6">
+                <div className="p-6">
+                  <h3 className="font-semibold text-gray-900 mb-4">Story Statistics</h3>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Total Stories</span>
+                      <span className="font-medium">{stories.length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">This Month</span>
+                      <span className="font-medium">5</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Total Comments</span>
+                      <span className="font-medium">{stories.reduce((sum, s) => sum + (s.comments_count || 0), 0)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Follow-up Questions</span>
+                      <span className="font-medium">{stories.reduce((sum, s) => sum + (s.follow_ups_count || 0), 0)}</span>
+                    </div>
+                  </div>
+                </div>
+              </EnhancedCard>
+            </div>
+
+            {/* Main Content */}
+            <div className="lg:col-span-3">
+              {/* Search Bar */}
+              <div className="mb-6">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Input
+                    placeholder="Search stories..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+
+              {/* Chapter Summary */}
+              <EnhancedCard className="mb-6 bg-gradient-to-r from-sage-50 to-sage-100 border-sage-200">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                      <BookOpen className="w-5 h-5 text-sage-600" />
+                      Chapter: Early Years in Mexico
+                    </h3>
+                    <EnhancedButton variant="outline" size="sm">
+                      Owner Edit
+                    </EnhancedButton>
+                  </div>
+                  <p className="text-gray-700 mb-4">
+                    AI has organized 5 stories from this period, highlighting Rosa's childhood memories, family traditions, and the cultural richness of her hometown before the journey to America.
+                  </p>
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <span>5 Stories</span>
+                    <span>•</span>
+                    <span>Dec 2023 - Jan 2024</span>
+                  </div>
+                </div>
+              </EnhancedCard>
+
+              {/* Stories List */}
+              {filteredStories.length === 0 ? (
+                <EnhancedCard className="p-12 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+                  <div className="max-w-md mx-auto space-y-6">
+                    <div className="text-5xl mb-4">🎭</div>
+                    <div className="space-y-3">
+                      <h2 className="text-2xl font-semibold text-foreground">Start Your Story Journey</h2>
+                      <p className="text-muted-foreground">
+                        {project.user_role === 'storyteller'
+                          ? 'Share your precious memories and let family stories be passed down'
+                          : 'Invite family members to start recording and sharing their stories'
+                        }
+                      </p>
+                    </div>
+
+                    <ActionPermissionGate
+                      action="canCreateStories"
+                      userRole={project.user_role}
+                      isProjectOwner={project.is_owner}
+                    >
+                      <Link href={`/dashboard/projects/${projectId}/record`}>
+                        <EnhancedButton size="lg">
+                          <BookOpen className="h-5 w-5 mr-2" />
+                          Record Your First Story
+                        </EnhancedButton>
+                      </Link>
+                    </ActionPermissionGate>
+                  </div>
+                </EnhancedCard>
+              ) : (
+                <div className="space-y-4">
+                  {filteredStories.map((story) => (
+                    <StoryCard
+                      key={story.id}
+                      id={story.id}
+                      title={story.title || story.ai_generated_title || 'Untitled'}
+                      author={story.storyteller_name || 'Unknown'}
+                      date={new Date(story.created_at).toLocaleDateString()}
+                      duration={story.duration ? `${Math.floor(story.duration / 60)}:${String(story.duration % 60).padStart(2, '0')}` : undefined}
+                      summary={story.ai_summary || story.content || 'No summary available'}
+                      theme={story.category || 'General'}
+                      badge={story.category || 'Story'}
+                      role={roleInfo?.label || 'Member'}
+                      commentsCount={story.comments_count || 0}
+                      followUpsCount={story.follow_ups_count || 0}
+                      onPlay={() => window.location.href = `/dashboard/projects/${projectId}/stories/${story.id}`}
+                      onReadTranscript={() => window.location.href = `/dashboard/projects/${projectId}/stories/${story.id}`}
+                      onAskFollowUp={() => console.log('Ask follow-up for story:', story.id)}
+                    />
+                  ))}
+                  
+                  {/* Load More Button */}
+                  <div className="text-center pt-6">
+                    <EnhancedButton variant="outline">
+                      Load More Stories
+                    </EnhancedButton>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </PermissionProvider>
