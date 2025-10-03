@@ -26,6 +26,7 @@ import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { toast } from 'react-hot-toast'
+import { ErrorBoundary } from '@/components/error-boundary'
 
 interface StoryWithDetails extends Story {
   storyteller_name?: string
@@ -258,12 +259,13 @@ export default function ProjectDetailPage() {
 
   try {
     return (
-      <PermissionProvider 
-        userRole={project.user_role} 
-        isProjectOwner={project.is_owner}
-        projectId={projectId}
-      >
-      <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
+      <ErrorBoundary>
+        <PermissionProvider 
+          userRole={project.user_role} 
+          isProjectOwner={project.is_owner}
+          projectId={projectId}
+        >
+        <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
@@ -506,7 +508,8 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </div>
-    </PermissionProvider>
+      </PermissionProvider>
+      </ErrorBoundary>
     )
   } catch (renderError) {
     console.error('Render error:', renderError)

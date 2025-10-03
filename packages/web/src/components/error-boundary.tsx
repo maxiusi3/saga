@@ -2,123 +2,55 @@
 
 import React from 'react'
 
-interface ErrorBoundaryState {
-  hasError: boolean
-  error?: Error
-}
-
-interface ErrorBoundaryProps {
+interface Props {
   children: React.ReactNode
-  fallback?: React.ComponentType<{ error?: Error; resetError: () => void }>
+  fallback?: React.ReactNode
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+interface State {
+  hasError: boolean
+  error: Error | null
+  errorInfo: React.ErrorInfo | null
+}
+
+export class ErrorBoundary extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
-    this.state = { hasError: false }
+    this.state = { hasError: false, error: null, errorInfo: null }
   }
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, error }
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error, errorInfo: null }
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo)
-  }
-
-  resetError = () => {
-    this.setState({ hasError: false, error: undefined })
+    console.error('ErrorBoundary caught an error:', error)
+    console.error('Error info:', errorInfo)
+    console.error('Component stack:', errorInfo.componentStack)
+    this.setState({ error, errorInfo })
   }
 
   render() {
     if (this.state.hasError) {
-      const FallbackComponent = this.props.fallback || DefaultErrorFallback
-      return <FallbackComponent error={this.state.error} resetError={this.resetError} />
+      if (this.props.fallback) {
+        return this.props.fallback
+      }
+
+      return (
+        <div className="p-6 bg-red-50 border border-red-200 rounded-lg">
+          <h2 className="text-xl font-bold text-red-800 mb-2">Something went wrong</h2>
+          <details className="text-sm text-red-700">
+            <summary className="cursor-pointer font-medium mb-2">Error details</summary>
+            <pre className="mt-2 p-4 bg-white rounded border border-red-200 overflow-auto">
+              {this.state.error?.toString()}
+              {'\n\n'}
+              {this.state.errorInfo?.componentStack}
+            </pre>
+          </details>
+        </div>
+      )
     }
 
     return this.props.children
   }
-}
-
-function DefaultErrorFallback({ error, resetError }: { error?: Error; resetError: () => void }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="max-w-md w-full bg-card shadow-lg rounded-lg p-6">
-        <div className="flex items-center justify-center w-12 h-12 mx-auto bg-destructive/10 rounded-full mb-4">
-          <svg
-            className="w-6 h-6 text-destructive"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-            />
-          </svg>
-        </div>
-        
-        <div className="text-center">
-          <h1 className="text-lg font-semibold text-foreground mb-2">
-            Something went wrong
-          </h1>
-          
-          <p className="text-muted-foreground mb-4">
-            We're sorry, but something unexpected happened. Please try again.
-          </p>
-          
-          {process.env.NODE_ENV === 'development' && error && (
-            <details className="mb-4 text-left">
-              <summary className="cursor-pointer text-sm text-muted-foreground hover:text-muted-foreground/80">
-                Error details
-              </summary>
-              <pre className="mt-2 text-xs text-destructive bg-destructive/5 p-2 rounded overflow-auto">
-                {error.message}
-                {error.stack && '\n\n' + error.stack}
-              </pre>
-            </details>
-          )}
-          
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button
-              onClick={resetError}
-              className="btn-primary"
-            >
-              Try again
-            </button>
-            
-            <button
-              onClick={() => window.location.reload()}
-              className="btn-outline"
-            >
-              Reload page
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Hook version for functional components
-export function useErrorBoundary() {
-  const [error, setError] = React.useState<Error | null>(null)
-
-  const resetError = React.useCallback(() => {
-    setError(null)
-  }, [])
-
-  const captureError = React.useCallback((error: Error) => {
-    setError(error)
-  }, [])
-
-  React.useEffect(() => {
-    if (error) {
-      throw error
-    }
-  }, [error])
-
-  return { captureError, resetError }
 }
