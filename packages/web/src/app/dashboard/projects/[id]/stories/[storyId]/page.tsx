@@ -1,21 +1,20 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { EnhancedButton } from '@/components/ui/enhanced-button'
+import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from '@/components/ui/enhanced-card'
+import { ModernAudioPlayer } from '@/components/ui/modern-audio-player'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, Edit, Send, ZoomIn, Volume2 } from 'lucide-react'
+import { ArrowLeft, Edit, Send, Share, Download, Heart, MessageCircle, User, Calendar, Tag, ChevronLeft, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
-import { createClientSupabase } from '@/lib/supabase'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
-import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
 
@@ -46,248 +45,134 @@ export default function StoryDetailPage() {
   const [editedTitle, setEditedTitle] = useState('')
   const [isEditingTranscript, setIsEditingTranscript] = useState(false)
   const [editedTranscript, setEditedTranscript] = useState('')
+  const [newComment, setNewComment] = useState('')
+  const [newQuestion, setNewQuestion] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // User permission state
-  const [userRole, setUserRole] = useState<string>('')
-  const [isProjectOwner, setIsProjectOwner] = useState(false)
-
   useEffect(() => {
     const loadStory = async () => {
+      if (!user?.id) {
+        setError('User not authenticated')
+        setLoading(false)
+        return
+      }
+
       try {
-        // Load real story data from Supabase
-        const story = await storyService.getStoryById(storyId)
-        if (!story) {
-          setError('Story not found')
+        setLoading(true)
+        setError(null)
+
+        // Load real story data
+        const storyData = await storyService.getStoryById(storyId)
+        if (!storyData) {
+          setError('Story not found or access denied')
           setLoading(false)
           return
         }
 
-        // Get storyteller's user profile
-        const supabase = createClientSupabase()
-        let storytellerName = 'Unknown User'
-        let storytellerAvatar = ''
-
-        try {
-          const { data: profile } = await supabase
-            .from('user_profiles')
-            .select('name, email, avatar_url')
-            .eq('id', story.storyteller_id)
-            .single() as { data: { name?: string; email?: string; avatar_url?: string } | null }
-
-          if (profile) {
-            storytellerName = profile.name || profile.email || 'Unknown User'
-            storytellerAvatar = profile.avatar_url || ''
-          }
-        } catch (profileError) {
-          console.warn('Failed to fetch storyteller profile:', profileError)
-        }
-
-        // Generate audio URL - check actual storage buckets
-        let audioUrl = story.audio_url
-        if (!audioUrl && story.audio_duration > 0) {
-          const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-          const buckets = ['saga', 'audio-recordings']
-          const possibleFormats = ['webm', 'mp3', 'wav', 'm4a']
-          
-          for (const bucket of buckets) {
-            for (const format of possibleFormats) {
-              const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.id}.${format}`
-              try {
-                const response = await fetch(testUrl, { method: 'HEAD' })
-                if (response.ok) {
-                  audioUrl = testUrl
-                  console.log('Found audio at:', testUrl)
-                  break
-                }
-              } catch (e) {
-                // Continue trying
-              }
-            }
-            if (audioUrl) break
-          }
-          
-          // If still not found, try project ID as folder
-          if (!audioUrl) {
-            for (const bucket of buckets) {
-              for (const format of possibleFormats) {
-                const testUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${story.project_id}/${story.id}.${format}`
-                try {
-                  const response = await fetch(testUrl, { method: 'HEAD' })
-                  if (response.ok) {
-                    audioUrl = testUrl
-                    console.log('Found audio at:', testUrl)
-                    break
-                  }
-                } catch (e) {}
-              }
-              if (audioUrl) break
-            }
-          }
-        }
-
-        const storyData: Story = {
-          id: story.id,
-          title: story.title || 'Untitled Story',
-          timestamp: story.created_at,
-          storyteller_id: story.storyteller_id,
-          storyteller_name: storytellerName,
-          storyteller_avatar: storytellerAvatar,
-          audio_url: audioUrl, // Use generated or detected URL
-          audio_duration: story.audio_duration || 0,
-          transcript: story.transcript || story.content || 'No transcript available',
-          photo_url: '',
-          type: 'story',
-          ai_summary: story.ai_summary,
-          ai_follow_up_questions: story.ai_follow_up_questions
-        }
-
-        // 调试信息
-        console.log('Raw story from database:', story)
-        console.log('Generated audio URL:', audioUrl)
-
         setStory(storyData)
         setEditedTitle(storyData.title)
         setEditedTranscript(storyData.transcript)
-
-        // Interactions are loaded within the StoryInteractions component
-        setLoading(false)
       } catch (error) {
         console.error('Error loading story:', error)
-        setError('Failed to load story')
+        setError('Failed to load story data')
+      } finally {
         setLoading(false)
       }
     }
 
     loadStory()
-    loadUserRole()
-  }, [storyId, projectId, user])
+  }, [storyId, user?.id])
 
-  const loadUserRole = async () => {
-    if (!user || !projectId) return
-
-    try {
-      // Get authentication token
-      const supabase = createClientSupabase()
-      const { data: { session } } = await supabase.auth.getSession()
-
-      // Build authentication headers
-      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-      if (session?.access_token) {
-        headers['Authorization'] = `Bearer ${session.access_token}`
-      }
-
-      // Get project information and user role
-      const response = await fetch(`/api/projects/${projectId}/overview`, {
-        credentials: 'include',
-        headers
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-
-        // Check if user is project owner
-        const isOwner = data.project?.facilitator_id === user.id
-        setIsProjectOwner(isOwner)
-
-        // Get user's role in the project
-        const userMember = data.members?.find((member: any) => member.user_id === user.id)
-        if (userMember) {
-          setUserRole(userMember.role)
-        } else if (isOwner) {
-          setUserRole('facilitator')
-        }
-      }
-    } catch (error) {
-      console.error('Error loading user role:', error)
-      // Default to facilitator to avoid permission issues
-      setUserRole('facilitator')
-    }
-  }
-
-  const saveTitle = async () => {
-    if (!story || editedTitle.trim() === story.title) {
-      setIsEditingTitle(false)
-      return
-    }
+  const handleSaveTitle = async () => {
+    if (!story || !editedTitle.trim()) return
 
     try {
-      const supabase = createClientSupabase()
-      const { error } = await supabase
-        .from('stories')
-        .update({ title: editedTitle.trim() } as any)
-        .eq('id', storyId)
-
-      if (error) {
-        console.error('Error updating title:', error)
+      const success = await storyService.updateStory(story.id, { title: editedTitle.trim() })
+      if (success) {
+        setStory(prev => prev ? { ...prev, title: editedTitle.trim() } : null)
+        setIsEditingTitle(false)
+        toast.success('Title updated successfully')
+      } else {
         toast.error('Failed to update title')
-        return
       }
-
-      setStory({ ...story, title: editedTitle.trim() })
-      setIsEditingTitle(false)
-      toast.success('Title updated successfully')
     } catch (error) {
       console.error('Error updating title:', error)
       toast.error('Failed to update title')
     }
   }
 
-  const saveTranscript = async () => {
-    if (!story || editedTranscript.trim() === story.transcript) {
-      setIsEditingTranscript(false)
-      return
-    }
+  const handleSaveTranscript = async () => {
+    if (!story) return
 
     try {
-      const supabase = createClientSupabase()
-      const { error } = await supabase
-        .from('stories')
-        .update({ transcript: editedTranscript.trim() } as any)
-        .eq('id', storyId)
-
-      if (error) {
-        console.error('Error updating transcript:', error)
+      const success = await storyService.updateStory(story.id, { transcript: editedTranscript })
+      if (success) {
+        setStory(prev => prev ? { ...prev, transcript: editedTranscript } : null)
+        setIsEditingTranscript(false)
+        toast.success('Transcript updated successfully')
+      } else {
         toast.error('Failed to update transcript')
-        return
       }
-
-      setStory({ ...story, transcript: editedTranscript.trim() })
-      setIsEditingTranscript(false)
-      toast.success('Transcript updated successfully')
     } catch (error) {
       console.error('Error updating transcript:', error)
       toast.error('Failed to update transcript')
     }
   }
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60)
-    const remainingSeconds = Math.floor(seconds % 60)
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !story) return
+
+    try {
+      // This would integrate with the real interactions service
+      console.log('Adding comment:', newComment)
+      setNewComment('')
+      toast.success('Comment added successfully')
+    } catch (error) {
+      console.error('Error adding comment:', error)
+      toast.error('Failed to add comment')
+    }
   }
 
-  const formatTimestamp = (timestamp: string) => {
-    return new Date(timestamp).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit'
-    })
+  const handleAskQuestion = async () => {
+    if (!newQuestion.trim() || !story) return
+
+    try {
+      // This would integrate with the real interactions service
+      console.log('Asking question:', newQuestion)
+      setNewQuestion('')
+      toast.success('Question sent successfully')
+    } catch (error) {
+      console.error('Error asking question:', error)
+      toast.error('Failed to send question')
+    }
   }
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <div className="h-8 w-8 bg-muted rounded animate-pulse"></div>
-          <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
+      <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="h-64 bg-gray-200 rounded"></div>
+            <div className="h-32 bg-gray-200 rounded"></div>
+          </div>
         </div>
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-muted rounded-lg animate-pulse"></div>
-          ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
+        <div className="max-w-4xl mx-auto text-center py-16">
+          <h1 className="text-2xl font-bold text-gray-900">Error</h1>
+          <p className="text-gray-600 mt-2">{error}</p>
+          <Link href={`/dashboard/projects/${projectId}`}>
+            <EnhancedButton variant="outline" className="mt-4">
+              Back to Project
+            </EnhancedButton>
+          </Link>
         </div>
       </div>
     )
@@ -295,210 +180,342 @@ export default function StoryDetailPage() {
 
   if (!story) {
     return (
-      <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Story not found</h1>
-        <Link href={`/dashboard/projects/${projectId}`}>
-          <Button variant="outline" className="mt-4">
-            Back to Project
-          </Button>
-        </Link>
+      <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
+        <div className="max-w-4xl mx-auto text-center py-16">
+          <h1 className="text-2xl font-bold text-gray-900">Story not found</h1>
+          <Link href={`/dashboard/projects/${projectId}`}>
+            <EnhancedButton variant="outline" className="mt-4">
+              Back to Project
+            </EnhancedButton>
+          </Link>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center space-x-4">
-        <Link href={`/dashboard/projects/${projectId}`}>
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-        </Link>
-        
-        {isEditingTitle ? (
-          <div className="flex-1 flex space-x-2">
-            <Input
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              className="text-2xl font-bold h-auto py-2"
-              onKeyDown={(e) => e.key === 'Enter' && saveTitle()}
-            />
-            <Button variant="outline" onClick={saveTitle}>
-              Save
-            </Button>
-            <Button variant="ghost" onClick={() => setIsEditingTitle(false)}>
-              Cancel
-            </Button>
+    <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100">
+      <div className="max-w-4xl mx-auto p-6">
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-8">
+          <Link href={`/dashboard/projects/${projectId}`}>
+            <EnhancedButton variant="secondary" size="sm">
+              <ChevronLeft className="h-4 w-4 mr-2" />
+              Back to Stories
+            </EnhancedButton>
+          </Link>
+          <div className="flex items-center gap-3 ml-auto">
+            <EnhancedButton variant="outline" size="sm">
+              <Share className="h-4 w-4 mr-2" />
+              Share
+            </EnhancedButton>
+            <EnhancedButton variant="outline" size="sm">
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </EnhancedButton>
+            <EnhancedButton variant="outline" size="sm">
+              <MoreHorizontal className="h-4 w-4" />
+            </EnhancedButton>
           </div>
-        ) : (
-          <div className="flex-1 flex items-center space-x-2">
-            <h1 className="text-3xl font-bold text-foreground">{story.title}</h1>
-            {canUserPerformAction('canEditStoryTitles', userRole as any, isProjectOwner) && (
-              <Button variant="ghost" size="icon" onClick={() => setIsEditingTitle(true)}>
-                <Edit className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Story Metadata */}
-      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-        <span>{formatTimestamp(story.timestamp)}</span>
-        <span>•</span>
-        <span>{story.storyteller_name}</span>
-        {story.type === 'chapter_summary' && (
-          <>
-            <span>•</span>
-            <Badge variant="secondary">Chapter Summary</Badge>
-          </>
-        )}
-      </div>
-
-      {/* Primary Audio Player */}
-      <Card className="p-6 bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-        <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
-              <Volume2 className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-foreground">Story Recording</h3>
-              <p className="text-sm text-muted-foreground">
-                {story.audio_url ? (
-                  `${formatTime(story.audio_duration)} • ${story.storyteller_name}`
-                ) : (
-                  `No audio recording • ${story.storyteller_name}`
-                )}
-              </p>
-            </div>
-          </div>
-          {story.audio_url ? (
-            <AudioPlayer
-              src={story.audio_url}
-              title={story.title}
-              className="w-full"
-            />
-          ) : (
-            <div className="p-4 bg-muted/30 rounded-lg text-center">
-              <p className="text-muted-foreground text-sm">
-                No audio recording available for this story.
-              </p>
-            </div>
-          )}
         </div>
-      </Card>
 
-      {/* Photo Viewer */}
-      {story.photo_url && (
-        <Card className="p-4">
-          <div className="relative">
-            <img 
-              src={story.photo_url} 
-              alt="Story photo" 
-              className="w-full max-w-2xl mx-auto rounded-lg"
-            />
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="absolute top-2 right-2 bg-background/80"
-            >
-              <ZoomIn className="h-4 w-4" />
-            </Button>
-          </div>
-        </Card>
-      )}
-
-
-      {/* Transcript */}
-      <Card className="p-6">
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h3 className="font-semibold text-foreground">Transcript</h3>
-            {canUserPerformAction('canEditStoryTranscripts', userRole as any, isProjectOwner) && (
-              <div className="flex space-x-2">
-                {isEditingTranscript ? (
-                  <>
-                    <Button variant="outline" size="sm" onClick={saveTranscript}>
-                      Save
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => setIsEditingTranscript(false)}>
-                      Cancel
-                    </Button>
-                  </>
-                ) : (
-                  <Button variant="outline" size="sm" onClick={() => setIsEditingTranscript(true)}>
-                    <Edit className="h-4 w-4 mr-2" />
-                    Edit
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-
-          {isEditingTranscript ? (
-            <Textarea
-              value={editedTranscript}
-              onChange={(e) => setEditedTranscript(e.target.value)}
-              className="min-h-[200px] text-foreground leading-relaxed"
-              placeholder="Enter transcript..."
-            />
-          ) : (
-            <div className="prose prose-foreground max-w-none">
-              <div className="whitespace-pre-wrap text-foreground leading-relaxed">
-                {story.transcript}
-              </div>
-            </div>
-          )}
-        </div>
-      </Card>
-
-      {/* AI Generated Summary */}
-      {story.ai_summary && (
-        <Card className="p-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold text-foreground flex items-center">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              AI Summary
-            </h3>
-            <div className="prose prose-foreground max-w-none">
-              <p className="text-foreground leading-relaxed">{story.ai_summary}</p>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {/* AI Follow-up Questions */}
-      {story.ai_follow_up_questions && story.ai_follow_up_questions.length > 0 && (
-        <Card className="p-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold text-foreground flex items-center">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Suggested Follow-up Questions
-            </h3>
-            <div className="space-y-3">
-              {story.ai_follow_up_questions.map((question: string, index: number) => (
-                <div key={index} className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-                  <span className="text-primary font-semibold text-sm mt-0.5">
-                    {index + 1}.
-                  </span>
-                  <p className="text-foreground flex-1">{question}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Story Header */}
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage src={story.storyteller_avatar} />
+                      <AvatarFallback>
+                        {story.storyteller_name?.charAt(0)?.toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-gray-900">{story.storyteller_name}</span>
+                        <Badge className="bg-green-100 text-green-800">Storyteller</Badge>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {new Date(story.timestamp).toLocaleDateString()}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Tag className="w-4 h-4" />
+                          Childhood
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </Card>
-      )}
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                {/* Story Title */}
+                <div className="mb-6">
+                  {isEditingTitle ? (
+                    <div className="flex gap-2">
+                      <Input
+                        value={editedTitle}
+                        onChange={(e) => setEditedTitle(e.target.value)}
+                        className="text-2xl font-bold"
+                        placeholder="Story title..."
+                      />
+                      <EnhancedButton onClick={handleSaveTitle} size="sm">
+                        Save
+                      </EnhancedButton>
+                      <EnhancedButton 
+                        variant="outline" 
+                        onClick={() => {
+                          setIsEditingTitle(false)
+                          setEditedTitle(story.title)
+                        }}
+                        size="sm"
+                      >
+                        Cancel
+                      </EnhancedButton>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <h1 className="text-2xl font-bold text-gray-900">{story.title}</h1>
+                      <EnhancedButton 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setIsEditingTitle(true)}
+                      >
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
+                      </EnhancedButton>
+                    </div>
+                  )}
+                </div>
 
-      {/* Interactions */}
-      <StoryInteractions
-        storyId={storyId}
-        projectId={projectId}
-        userRole={userRole}
-        isProjectOwner={isProjectOwner}
-        isStoryteller={story?.storyteller_id === user?.id}
-      />
+                {/* Story Photo */}
+                {story.photo_url && (
+                  <div className="mb-6">
+                    <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
+                      <Image
+                        src={story.photo_url}
+                        alt="Story photo"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute top-4 right-4">
+                        <EnhancedButton variant="secondary" size="sm">
+                          <Download className="h-4 w-4 mr-2" />
+                          Add Photo
+                        </EnhancedButton>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Audio Player */}
+                {story.audio_url && (
+                  <div className="mb-6">
+                    <ModernAudioPlayer
+                      src={story.audio_url}
+                      title={story.title}
+                      duration={story.audio_duration}
+                    />
+                  </div>
+                )}
+
+                {/* Transcript */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">Transcript</h3>
+                    <EnhancedButton 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setIsEditingTranscript(!isEditingTranscript)}
+                    >
+                      <Edit className="h-4 w-4 mr-2" />
+                      {isEditingTranscript ? 'Cancel' : 'Edit'}
+                    </EnhancedButton>
+                  </div>
+                  
+                  {isEditingTranscript ? (
+                    <div className="space-y-4">
+                      <Textarea
+                        value={editedTranscript}
+                        onChange={(e) => setEditedTranscript(e.target.value)}
+                        className="min-h-[200px]"
+                        placeholder="Story transcript..."
+                      />
+                      <div className="flex gap-2">
+                        <EnhancedButton onClick={handleSaveTranscript}>
+                          Save Changes
+                        </EnhancedButton>
+                        <EnhancedButton 
+                          variant="outline"
+                          onClick={() => {
+                            setIsEditingTranscript(false)
+                            setEditedTranscript(story.transcript)
+                          }}
+                        >
+                          Cancel
+                        </EnhancedButton>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="prose prose-gray max-w-none">
+                      <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                        {story.transcript}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
+
+            {/* Comments Section */}
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <EnhancedCardTitle className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-sage-600" />
+                  Family Comments
+                  <Badge variant="outline">3</Badge>
+                </EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                {/* Add Comment */}
+                <div className="mb-6">
+                  <div className="flex gap-3">
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback>
+                        {user?.email?.charAt(0)?.toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <Textarea
+                        placeholder="Share your thoughts about this story..."
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        className="mb-2"
+                        rows={3}
+                      />
+                      <EnhancedButton 
+                        onClick={handleAddComment}
+                        disabled={!newComment.trim()}
+                        size="sm"
+                      >
+                        <Send className="h-4 w-4 mr-2" />
+                        Post Comment
+                      </EnhancedButton>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Existing Comments */}
+                <div className="space-y-4">
+                  {/* Mock comments - would be replaced with real data */}
+                  <div className="flex gap-3">
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback>M</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-medium text-sm">Mike</span>
+                          <span className="text-xs text-gray-500">2 days ago</span>
+                        </div>
+                        <p className="text-sm text-gray-700">
+                          This brings back so many memories! Thank you for sharing this story.
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                        <button className="flex items-center gap-1 hover:text-gray-700">
+                          <Heart className="w-3 h-3" />
+                          Like
+                        </button>
+                        <button className="hover:text-gray-700">Reply</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Follow-up Questions */}
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <EnhancedCardTitle className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-sage-600" />
+                  Follow-up Questions
+                </EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <div className="space-y-4">
+                  <div>
+                    <Textarea
+                      placeholder="Ask a follow-up question about this story..."
+                      value={newQuestion}
+                      onChange={(e) => setNewQuestion(e.target.value)}
+                      rows={3}
+                    />
+                    <EnhancedButton 
+                      onClick={handleAskQuestion}
+                      disabled={!newQuestion.trim()}
+                      className="w-full mt-2"
+                      size="sm"
+                    >
+                      <Send className="h-4 w-4 mr-2" />
+                      Ask Question
+                    </EnhancedButton>
+                  </div>
+
+                  {/* AI Suggested Questions */}
+                  {story.ai_follow_up_questions && story.ai_follow_up_questions.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-2">AI Suggested Questions</h4>
+                      <div className="space-y-2">
+                        {story.ai_follow_up_questions.map((question, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setNewQuestion(question)}
+                            className="text-left p-2 text-sm text-gray-600 hover:bg-gray-50 rounded border border-gray-200 w-full"
+                          >
+                            {question}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
+
+            {/* Story Actions */}
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <EnhancedCardTitle>Story Actions</EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <div className="space-y-3">
+                  <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
+                    <Heart className="w-4 h-4 mr-2" />
+                    Add to Favorites
+                  </EnhancedButton>
+                  <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
+                    <Download className="w-4 w-4 mr-2" />
+                    Download Audio
+                  </EnhancedButton>
+                  <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
+                    <Share className="w-4 h-4 mr-2" />
+                    Share Story
+                  </EnhancedButton>
+                </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

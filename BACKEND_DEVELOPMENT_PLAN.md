@@ -4,18 +4,34 @@
 This document outlines the backend development needed to support the 6 modernized UI pages that have been implemented.
 
 ## Current Status
-✅ **Completed Pages (Frontend Only)**:
-1. Dashboard (`/dashboard`) - Modern resource management UI
-2. Settings (`/dashboard/settings`) - Modern settings interface  
+✅ **Completed Pages with Backend Integration**:
+1. Settings (`/dashboard/settings`) - ✅ **FULLY INTEGRATED** with backend APIs
+   - User profile management
+   - Notification settings
+   - Quick Access (accessibility) integration
+   - Audio, privacy, and language settings
+   - Resource wallet display
+
+✅ **Completed Backend Infrastructure**:
+- Complete Express.js backend with TypeScript
+- PostgreSQL database with Knex.js
+- Authentication middleware with JWT
+- Comprehensive settings APIs
+- Database migrations and models
+- Input validation and error handling
+
+🔄 **Remaining Pages (Frontend Only)**:
+2. Dashboard (`/dashboard`) - Modern resource management UI
 3. Project Management (`/dashboard/projects/[id]/settings`) - Modern project management
 4. Purchase Page - Modern pricing interface
 5. Stories List - Modern story browsing
 6. Story Detail - Modern story viewing
 
 ❌ **Missing Backend Support**:
-- Real data integration for all pages
-- API endpoints for new features
-- Database schema updates
+- Dashboard overview APIs
+- Project management APIs
+- Stories management APIs
+- Purchase system APIs
 
 ## Phase 1: Core API Endpoints (Week 1-2)
 
@@ -60,8 +76,8 @@ CREATE TABLE resource_usage_history (
 );
 ```
 
-### 1.2 Settings APIs
-**Endpoints Needed:**
+### 1.2 Settings APIs ✅ **COMPLETED**
+**Endpoints Implemented:**
 ```typescript
 GET /api/settings/profile
 - User profile information
@@ -83,20 +99,78 @@ GET /api/settings/accessibility
 
 PUT /api/settings/accessibility
 - Update accessibility settings
+
+GET /api/settings/audio
+- Audio volume and quality settings
+
+PUT /api/settings/audio
+- Update audio settings
+
+GET /api/settings/privacy
+- Privacy and security preferences
+
+PUT /api/settings/privacy
+- Update privacy settings
+
+GET /api/settings/language
+- Language and timezone settings
+
+PUT /api/settings/language
+- Update language settings
+
+GET /api/settings/wallet
+- User resource wallet status
 ```
 
-**Database Changes:**
+**Database Changes:** ✅ **COMPLETED**
 ```sql
--- User settings
+-- User settings (IMPLEMENTED)
 CREATE TABLE user_settings (
     user_id UUID PRIMARY KEY REFERENCES users(id),
+    -- Notification settings
     notification_email BOOLEAN DEFAULT true,
     notification_push BOOLEAN DEFAULT true,
+    notification_story_updates BOOLEAN DEFAULT true,
+    notification_follow_up_questions BOOLEAN DEFAULT true,
     notification_weekly_digest BOOLEAN DEFAULT true,
-    accessibility_font_size VARCHAR(20) DEFAULT 'standard',
+    notification_marketing_emails BOOLEAN DEFAULT false,
+    -- Accessibility settings
+    accessibility_font_size ENUM('standard', 'large', 'extra-large') DEFAULT 'standard',
     accessibility_high_contrast BOOLEAN DEFAULT false,
     accessibility_reduced_motion BOOLEAN DEFAULT false,
+    accessibility_screen_reader BOOLEAN DEFAULT false,
+    -- Privacy settings
+    privacy_profile_visible BOOLEAN DEFAULT true,
+    privacy_story_sharing BOOLEAN DEFAULT true,
+    privacy_data_analytics BOOLEAN DEFAULT false,
+    privacy_two_factor_auth BOOLEAN DEFAULT false,
+    -- Audio settings
+    audio_volume INTEGER DEFAULT 75,
+    audio_quality ENUM('low', 'medium', 'high') DEFAULT 'high',
+    -- Language and region
+    language VARCHAR(10) DEFAULT 'en',
+    timezone VARCHAR(50) DEFAULT 'UTC',
     updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- User resource wallets (IMPLEMENTED)
+CREATE TABLE user_resource_wallets (
+    user_id UUID PRIMARY KEY REFERENCES users(id),
+    project_vouchers INTEGER DEFAULT 0,
+    facilitator_seats INTEGER DEFAULT 0,
+    storyteller_seats INTEGER DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Resource usage history (IMPLEMENTED)
+CREATE TABLE resource_usage_history (
+    id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(id),
+    resource_type VARCHAR(50),
+    amount INTEGER,
+    action VARCHAR(20), -- 'consume', 'purchase', 'refund'
+    project_id UUID REFERENCES projects(id),
+    created_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
@@ -259,10 +333,13 @@ GET /api/purchases/history
 ## Implementation Priority
 
 ### High Priority (Must Have)
-1. ✅ Dashboard resource wallet APIs
-2. ✅ Basic settings CRUD operations
-3. ✅ Project management member operations
-4. ✅ Stories list page creation
+1. ✅ **COMPLETED** - Settings APIs with full CRUD operations
+2. ✅ **COMPLETED** - Resource wallet system implementation
+3. ✅ **COMPLETED** - Database schema and migrations
+4. ✅ **COMPLETED** - Authentication and middleware
+5. 🔄 Dashboard resource wallet APIs
+6. 🔄 Project management member operations
+7. 🔄 Stories list page creation
 
 ### Medium Priority (Should Have)
 1. Advanced export functionality

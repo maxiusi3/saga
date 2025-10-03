@@ -5,7 +5,7 @@ import { ErrorTrackingProvider } from '@/components/error-tracking-provider'
 import { ClientOnly } from '@/components/client-only'
 import { AnalyticsProvider } from '@/components/analytics-provider'
 import { validateConfigOnStartup } from '@/lib/config'
-import { AccessibilityToolbar } from '@/components/accessibility/accessibility-toolbar'
+import { AccessibilityProvider } from '@/components/accessibility/accessibility-provider'
 
 import './globals.css'
 
@@ -59,9 +59,9 @@ export default function RootLayout({
           </AuthProvider>
         </ErrorTrackingProvider>
 
-        {/* Accessibility Toolbar */}
+        {/* Accessibility Provider */}
         <ClientOnly>
-          <AccessibilityToolbar />
+          <AccessibilityProvider />
         </ClientOnly>
 
         {/* Toast Notifications with Accessibility */}
