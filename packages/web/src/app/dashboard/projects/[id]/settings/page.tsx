@@ -17,8 +17,8 @@ import Link from 'next/link'
 // Mock data for the project management page
 const mockProject = {
   id: '1',
-  title: '奶奶的回忆录',
-  description: '记录奶奶一生的珍贵回忆和家族故事',
+  title: "Grandma's Memoir",
+  description: 'Recording grandma\'s precious memories and family stories',
   created_at: '2024-01-15T10:00:00Z',
   is_owner: true,
   members: [
@@ -27,24 +27,24 @@ const mockProject = {
       user_id: 'user1',
       role: 'facilitator' as const,
       status: 'active',
-      name: '张小明',
-      email: 'xiaoming@example.com'
+      name: 'John Smith',
+      email: 'john@example.com'
     },
     {
       id: '2', 
       user_id: 'user2',
       role: 'storyteller' as const,
       status: 'active',
-      name: '李阿姨',
-      email: 'liayi@example.com'
+      name: 'Aunt Mary',
+      email: 'mary@example.com'
     },
     {
       id: '3',
       user_id: 'user3', 
       role: 'co_facilitator' as const,
       status: 'pending',
-      name: '王叔叔',
-      email: 'wangshu@example.com'
+      name: 'Uncle Bob',
+      email: 'bob@example.com'
     }
   ]
 }
@@ -112,11 +112,11 @@ export default function ProjectSettingsPage() {
           <Link href={`/dashboard/projects/${projectId}`}>
             <EnhancedButton variant="secondary" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              返回项目
+              Back to Project
             </EnhancedButton>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">项目管理</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Project Management</h1>
             <p className="text-gray-600 mt-1">{mockProject.title}</p>
           </div>
         </div>
@@ -126,35 +126,35 @@ export default function ProjectSettingsPage() {
           <div className="lg:col-span-1">
             <EnhancedCard>
               <div className="p-6">
-                <h2 className="font-semibold text-gray-900 mb-4">快速操作</h2>
+                <h2 className="font-semibold text-gray-900 mb-4">Quick Actions</h2>
                 <div className="space-y-3">
                   <EnhancedButton variant="secondary" size="sm" className="w-full justify-start">
                     <Users className="w-4 h-4 mr-2" />
-                    邀请成员
+                    Invite Members
                   </EnhancedButton>
                   <EnhancedButton variant="secondary" size="sm" className="w-full justify-start">
                     <Download className="w-4 h-4 mr-2" />
-                    导出数据
+                    Export Data
                   </EnhancedButton>
                   <EnhancedButton variant="secondary" size="sm" className="w-full justify-start">
                     <Share className="w-4 h-4 mr-2" />
-                    分享项目
+                    Share Project
                   </EnhancedButton>
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h3 className="font-medium text-gray-900 mb-3">项目统计</h3>
+                  <h3 className="font-medium text-gray-900 mb-3">Project Stats</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">创建时间</span>
-                      <span className="text-gray-900">{new Date(mockProject.created_at).toLocaleDateString('zh-CN')}</span>
+                      <span className="text-gray-600">Created</span>
+                      <span className="text-gray-900">{new Date(mockProject.created_at).toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">故事数量</span>
+                      <span className="text-gray-600">Stories</span>
                       <span className="text-gray-900">12</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">成员数量</span>
+                      <span className="text-gray-600">Members</span>
                       <span className="text-gray-900">{mockProject.members.length + 1}</span>
                     </div>
                   </div>
@@ -169,31 +169,31 @@ export default function ProjectSettingsPage() {
             <EnhancedCard>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">项目概览</h2>
-                  <Badge className="bg-green-100 text-green-800">活跃</Badge>
+                  <h2 className="text-xl font-semibold text-gray-900">Project Overview</h2>
+                  <Badge className="bg-green-100 text-green-800">Active</Badge>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                   <div className="text-center p-4 bg-sage-50 rounded-lg">
                     <Calendar className="w-8 h-8 text-sage-600 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">{new Date(mockProject.created_at).toLocaleDateString('zh-CN')}</div>
-                    <div className="text-sm text-gray-600">创建时间</div>
+                    <div className="text-2xl font-bold text-gray-900">{new Date(mockProject.created_at).toLocaleDateString()}</div>
+                    <div className="text-sm text-gray-600">Created</div>
                   </div>
                   <div className="text-center p-4 bg-sage-50 rounded-lg">
                     <FileText className="w-8 h-8 text-sage-600 mx-auto mb-2" />
                     <div className="text-2xl font-bold text-gray-900">12</div>
-                    <div className="text-sm text-gray-600">故事数量</div>
+                    <div className="text-sm text-gray-600">Stories</div>
                   </div>
                   <div className="text-center p-4 bg-sage-50 rounded-lg">
                     <Users className="w-8 h-8 text-sage-600 mx-auto mb-2" />
                     <div className="text-2xl font-bold text-gray-900">{mockProject.members.length + 1}</div>
-                    <div className="text-sm text-gray-600">成员数量</div>
+                    <div className="text-sm text-gray-600">Members</div>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="project-title" className="text-sm font-medium text-gray-700">项目名称</Label>
+                    <Label htmlFor="project-title" className="text-sm font-medium text-gray-700">Project Name</Label>
                     <div className="flex gap-2 mt-1">
                       <Input
                         id="project-title"
@@ -206,18 +206,18 @@ export default function ProjectSettingsPage() {
                         disabled={saving || (projectTitle.trim() === mockProject.title && projectDescription.trim() === mockProject.description)}
                         size="sm"
                       >
-                        {saving ? '保存中...' : '保存'}
+                        {saving ? 'Saving...' : 'Save'}
                       </EnhancedButton>
                     </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="description" className="text-sm font-medium text-gray-700">项目描述</Label>
+                    <Label htmlFor="description" className="text-sm font-medium text-gray-700">Project Description</Label>
                     <Textarea
                       id="description"
                       value={projectDescription}
                       onChange={(e) => setProjectDescription(e.target.value)}
-                      placeholder="为您的项目添加描述..."
+                      placeholder="Add a description for your project..."
                       className="mt-1"
                       rows={3}
                     />
@@ -230,20 +230,20 @@ export default function ProjectSettingsPage() {
             <EnhancedCard>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">成员管理</h2>
+                  <h2 className="text-xl font-semibold text-gray-900">Member Management</h2>
                   <EnhancedButton size="sm">
                     <UserPlus className="w-4 h-4 mr-2" />
-                    邀请成员
+                    Invite Member
                   </EnhancedButton>
                 </div>
 
                 {/* Invite Form */}
                 <div className="bg-sage-50 rounded-lg p-4 mb-6">
-                  <h3 className="font-medium text-gray-900 mb-3">邀请新成员</h3>
+                  <h3 className="font-medium text-gray-900 mb-3">Invite New Member</h3>
                   <div className="flex gap-2">
                     <Input
                       type="email"
-                      placeholder="输入邮箱地址"
+                      placeholder="Enter email address"
                       value={inviteEmail}
                       onChange={(e) => setInviteEmail(e.target.value)}
                       className="flex-1"
@@ -253,16 +253,16 @@ export default function ProjectSettingsPage() {
                       onChange={(e) => setInviteRole(e.target.value as any)}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sage-500"
                     >
-                      <option value="storyteller">讲述者</option>
-                      <option value="co_facilitator">协助者</option>
-                      <option value="facilitator">管理者</option>
+                      <option value="storyteller">Storyteller</option>
+                      <option value="co_facilitator">Co-Facilitator</option>
+                      <option value="facilitator">Facilitator</option>
                     </select>
                     <EnhancedButton
                       onClick={handleInviteMember}
                       disabled={inviting || !inviteEmail.trim()}
                       size="sm"
                     >
-                      {inviting ? '邀请中...' : '发送邀请'}
+                      {inviting ? 'Inviting...' : 'Send Invite'}
                     </EnhancedButton>
                   </div>
                 </div>
@@ -274,20 +274,20 @@ export default function ProjectSettingsPage() {
                     <div className="flex items-center gap-4">
                       <Avatar className="w-12 h-12">
                         <AvatarFallback className="bg-amber-100 text-amber-700">
-                          您
+                          You
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <div className="font-medium text-gray-900 flex items-center gap-2">
-                          您 (所有者)
+                          You (Owner)
                           <Crown className="w-4 h-4 text-amber-500" />
                         </div>
                         <div className="text-sm text-gray-600">{mockUser.email}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <Badge className="bg-amber-100 text-amber-800">所有者</Badge>
-                      <Badge className="bg-green-100 text-green-800">活跃</Badge>
+                      <Badge className="bg-amber-100 text-amber-800">Owner</Badge>
+                      <Badge className="bg-green-100 text-green-800">Active</Badge>
                     </div>
                   </div>
 
@@ -306,10 +306,10 @@ export default function ProjectSettingsPage() {
                             {member.role === 'facilitator' && <Shield className="w-4 h-4 text-blue-500" />}
                             {member.role === 'storyteller' && <Users className="w-4 h-4 text-green-500" />}
                           </div>
-                          <div className="text-sm text-gray-600">角色: {
-                            member.role === 'facilitator' ? '管理者' :
-                            member.role === 'co_facilitator' ? '协助者' :
-                            member.role === 'storyteller' ? '讲述者' : member.role
+                          <div className="text-sm text-gray-600">Role: {
+                            member.role === 'facilitator' ? 'Facilitator' :
+                            member.role === 'co_facilitator' ? 'Co-Facilitator' :
+                            member.role === 'storyteller' ? 'Storyteller' : member.role
                           }</div>
                         </div>
                       </div>
@@ -320,17 +320,17 @@ export default function ProjectSettingsPage() {
                           member.role === 'co_facilitator' ? 'bg-purple-100 text-purple-800' :
                           'bg-green-100 text-green-800'
                         }>
-                          {member.role === 'facilitator' ? '管理者' :
-                           member.role === 'co_facilitator' ? '协助者' :
-                           '讲述者'}
+                          {member.role === 'facilitator' ? 'Facilitator' :
+                           member.role === 'co_facilitator' ? 'Co-Facilitator' :
+                           'Storyteller'}
                         </Badge>
                         <Badge className={
                           member.status === 'active' ? 'bg-green-100 text-green-800' :
                           member.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                           'bg-red-100 text-red-800'
                         }>
-                          {member.status === 'active' ? '活跃' :
-                           member.status === 'pending' ? '待接受' :
+                          {member.status === 'active' ? 'Active' :
+                           member.status === 'pending' ? 'Pending' :
                            member.status}
                         </Badge>
 
@@ -342,9 +342,9 @@ export default function ProjectSettingsPage() {
                               onChange={(e) => handleUpdateRole(member.id, e.target.value)}
                               className="text-xs px-2 py-1 border border-gray-300 rounded"
                             >
-                              <option value="storyteller">讲述者</option>
-                              <option value="co_facilitator">协助者</option>
-                              <option value="facilitator">管理者</option>
+                              <option value="storyteller">Storyteller</option>
+                              <option value="co_facilitator">Co-Facilitator</option>
+                              <option value="facilitator">Facilitator</option>
                             </select>
                           )}
                           <AlertDialog>
@@ -355,18 +355,18 @@ export default function ProjectSettingsPage() {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>移除成员</AlertDialogTitle>
+                                <AlertDialogTitle>Remove Member</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  确定要从项目中移除此成员吗？此操作无法撤销。
+                                  Are you sure you want to remove this member from the project? This action cannot be undone.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>取消</AlertDialogCancel>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => handleRemoveMember(member.id)}
                                   className="bg-red-600 text-white hover:bg-red-700"
                                 >
-                                  移除
+                                  Remove
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -382,37 +382,37 @@ export default function ProjectSettingsPage() {
             {/* Project Settings */}
             <EnhancedCard>
               <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">项目设置</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">Project Settings</h2>
                 
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-gray-900">项目可见性</p>
-                      <p className="text-sm text-gray-600">控制谁可以查看此项目</p>
+                      <p className="font-medium text-gray-900">Project Visibility</p>
+                      <p className="text-sm text-gray-600">Control who can view this project</p>
                     </div>
                     <ModernSwitch defaultChecked />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-gray-900">允许评论</p>
-                      <p className="text-sm text-gray-600">成员可以对故事进行评论</p>
+                      <p className="font-medium text-gray-900">Allow Comments</p>
+                      <p className="text-sm text-gray-600">Members can comment on stories</p>
                     </div>
                     <ModernSwitch defaultChecked />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-gray-900">自动转录</p>
-                      <p className="text-sm text-gray-600">自动将音频转换为文字</p>
+                      <p className="font-medium text-gray-900">Auto Transcription</p>
+                      <p className="text-sm text-gray-600">Automatically convert audio to text</p>
                     </div>
                     <ModernSwitch defaultChecked />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-gray-900">邮件通知</p>
-                      <p className="text-sm text-gray-600">新故事时发送邮件通知</p>
+                      <p className="font-medium text-gray-900">Email Notifications</p>
+                      <p className="text-sm text-gray-600">Send email notifications for new stories</p>
                     </div>
                     <ModernSwitch />
                   </div>
@@ -423,13 +423,13 @@ export default function ProjectSettingsPage() {
             {/* Data Management */}
             <EnhancedCard>
               <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">数据管理</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">Data Management</h2>
                 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 bg-sage-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-gray-900">导出完整档案</p>
-                      <p className="text-sm text-gray-600">下载所有故事、转录和媒体文件</p>
+                      <p className="font-medium text-gray-900">Export Complete Archive</p>
+                      <p className="text-sm text-gray-600">Download all stories, transcripts and media files</p>
                     </div>
                     <EnhancedButton
                       variant="secondary"
@@ -439,12 +439,12 @@ export default function ProjectSettingsPage() {
                       {saving ? (
                         <>
                           <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                          导出中...
+                          Exporting...
                         </>
                       ) : (
                         <>
                           <Download className="h-4 w-4 mr-2" />
-                          导出
+                          Export
                         </>
                       )}
                     </EnhancedButton>
@@ -452,12 +452,12 @@ export default function ProjectSettingsPage() {
 
                   <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-gray-900">分享项目</p>
-                      <p className="text-sm text-gray-600">生成分享链接给家庭成员</p>
+                      <p className="font-medium text-gray-900">Share Project</p>
+                      <p className="text-sm text-gray-600">Generate sharing link for family members</p>
                     </div>
                     <EnhancedButton variant="secondary">
                       <Share className="h-4 w-4 mr-2" />
-                      分享
+                      Share
                     </EnhancedButton>
                   </div>
                 </div>
@@ -469,18 +469,18 @@ export default function ProjectSettingsPage() {
               <div className="p-6">
                 <h2 className="text-xl font-semibold text-red-600 mb-6 flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5" />
-                  危险操作
+                  Danger Zone
                 </h2>
                 
                 <div className="space-y-4">
                   <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-red-900">转移项目所有权</p>
-                        <p className="text-sm text-red-700">将项目所有权转移给其他成员</p>
+                        <p className="font-medium text-red-900">Transfer Project Ownership</p>
+                        <p className="text-sm text-red-700">Transfer project ownership to another member</p>
                       </div>
                       <EnhancedButton variant="destructive" size="sm">
-                        转移所有权
+                        Transfer Ownership
                       </EnhancedButton>
                     </div>
                   </div>
@@ -488,27 +488,27 @@ export default function ProjectSettingsPage() {
                   <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-red-900">删除项目</p>
-                        <p className="text-sm text-red-700">永久删除此项目及所有相关数据</p>
+                        <p className="font-medium text-red-900">Delete Project</p>
+                        <p className="text-sm text-red-700">Permanently delete this project and all related data</p>
                       </div>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <EnhancedButton variant="destructive" size="sm">
                             <Trash2 className="w-4 h-4 mr-2" />
-                            删除项目
+                            Delete Project
                           </EnhancedButton>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>删除项目</AlertDialogTitle>
+                            <AlertDialogTitle>Delete Project</AlertDialogTitle>
                             <AlertDialogDescription>
-                              此操作将永久删除项目及所有相关数据，包括故事、评论和媒体文件。此操作无法撤销。
+                              This action will permanently delete the project and all related data, including stories, comments and media files. This action cannot be undone.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>取消</AlertDialogCancel>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction className="bg-red-600 text-white hover:bg-red-700">
-                              确认删除
+                              Confirm Delete
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
