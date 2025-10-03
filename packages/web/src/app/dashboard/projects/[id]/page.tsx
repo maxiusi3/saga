@@ -178,7 +178,8 @@ export default function ProjectDetailPage() {
   }
 
   // Filter and sort stories
-  const filteredStories = (stories || []).filter(story => {
+  const safeStories = Array.isArray(stories) ? stories : []
+  const filteredStories = safeStories.filter(story => {
     if (searchQuery && !story.title?.toLowerCase().includes(searchQuery.toLowerCase()) && 
         !story.ai_summary?.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false
@@ -200,8 +201,8 @@ export default function ProjectDetailPage() {
     }
   })
 
-  // Get unique storytellers for filter
-  const storytellers = Array.from(new Set((stories || []).map(s => s.storyteller_name).filter(Boolean)))
+  // Get unique storytellers for filter  
+  const storytellers = Array.from(new Set(safeStories.map(s => s?.storyteller_name).filter(Boolean)))
 
   if (loading) {
     return (
