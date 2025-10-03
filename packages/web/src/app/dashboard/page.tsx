@@ -20,14 +20,9 @@ export default function DashboardPage() {
   useEffect(() => {
     const loadDashboardData = async () => {
       if (!user?.id) {
-        console.log('Dashboard: No user ID, using fallback data')
+        console.log('Dashboard: No user ID, cannot load data')
         setProjects([])
-        setResourceWallet({
-          user_id: 'fallback-user',
-          project_vouchers: 2,
-          facilitator_seats: 1,
-          storyteller_seats: 3
-        })
+        setResourceWallet(null)
         setLoading(false)
         return
       }
@@ -48,13 +43,8 @@ export default function DashboardPage() {
           setResourceWallet(wallet)
         } catch (walletError) {
           console.error('Dashboard: Wallet fetch failed:', walletError)
-          // Use fallback wallet
-          setResourceWallet({
-            user_id: user.id,
-            project_vouchers: 2,
-            facilitator_seats: 1,
-            storyteller_seats: 3
-          })
+          // Set to null to show error state instead of fake data
+          setResourceWallet(null)
         }
 
         // Try to load projects with timeout
@@ -73,14 +63,9 @@ export default function DashboardPage() {
         }
       } catch (error) {
         console.error('Dashboard: Error loading data:', error)
-        // Use fallback data
+        // Don't use fallback data - let it fail properly
         setProjects([])
-        setResourceWallet({
-          user_id: user.id,
-          project_vouchers: 2,
-          facilitator_seats: 1,
-          storyteller_seats: 3
-        })
+        setResourceWallet(null)
       } finally {
         console.log('Dashboard: Setting loading to false')
         setLoading(false)
@@ -400,19 +385,10 @@ export default function DashboardPage() {
                 </EnhancedCardTitle>
               </EnhancedCardHeader>
               <EnhancedCardContent className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted-foreground">This month</span>
-                    <span className="font-medium">6 seats</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted-foreground">Last month</span>
-                    <span className="font-medium">4 seats</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted-foreground">Average</span>
-                    <span className="font-medium">5 seats</span>
-                  </div>
+                <div className="text-center py-4">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Usage history will be available soon
+                  </p>
                 </div>
                 
                 <EnhancedButton 
