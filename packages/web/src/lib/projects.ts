@@ -160,12 +160,6 @@ export class ProjectService {
         console.error('ProjectService: No Supabase URL configured')
         return [];
       }
-
-      // For now, return empty array until backend is ready
-      console.log('ProjectService: Backend not ready, returning empty array')
-      return [];
-
-      /* TODO: Enable when backend is ready
       // 1) 查询用户作为所有者（facilitator_id）的项目
       const ownedPromise = (async () => {
         const headers: Record<string, string> = { 'Content-Type': 'application/json' }
@@ -293,7 +287,6 @@ export class ProjectService {
       )
 
       return projectsWithCounts
-      */
     } catch (error) {
       console.error('Error fetching user projects:', error)
       return []
