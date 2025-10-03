@@ -61,6 +61,7 @@ export default function DashboardPage() {
           storyteller_seats: 3
         })
       } finally {
+        console.log('Dashboard: Setting loading to false')
         setLoading(false)
       }
     }
@@ -79,6 +80,14 @@ export default function DashboardPage() {
     ownedCount: ownedProjects.length,
     participatingCount: participatingProjects.length
   })
+
+  // Emergency fallback - if data loaded but still showing loading, force it off
+  useEffect(() => {
+    if (resourceWallet && projects.length >= 0 && loading) {
+      console.log('Dashboard: Force setting loading to false')
+      setLoading(false)
+    }
+  }, [resourceWallet, projects, loading])
 
   if (loading) {
     return (
