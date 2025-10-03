@@ -107,6 +107,7 @@ export default function ProjectDetailPage() {
           return
         }
 
+        console.log('Project set:', project)
         setProject(project)
 
         // Load real stories from database
@@ -240,6 +241,11 @@ export default function ProjectDetailPage() {
   }
 
   const roleInfo = project.user_role ? getRoleDisplayInfo(project.user_role) : null
+
+  // Add safety check for project data
+  if (!project.user_role) {
+    console.warn('Project missing user_role:', project)
+  }
 
   return (
     <PermissionProvider 
