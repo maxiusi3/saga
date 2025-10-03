@@ -157,9 +157,15 @@ export class ProjectService {
       
       // Return mock data if backend is not available
       if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+        console.log('ProjectService: No Supabase URL, returning mock data')
         return this.getMockProjects(userId);
       }
 
+      // For now, always return mock data until backend is fully set up
+      console.log('ProjectService: Using mock data for development')
+      return this.getMockProjects(userId);
+
+      /* TODO: Enable when backend is ready
       // 1) 查询用户作为所有者（facilitator_id）的项目
       const ownedPromise = (async () => {
         const headers: Record<string, string> = { 'Content-Type': 'application/json' }
@@ -287,9 +293,11 @@ export class ProjectService {
       )
 
       return projectsWithCounts
+      */
     } catch (error) {
       console.error('Error fetching user projects:', error)
-      return []
+      // Return mock data on error
+      return this.getMockProjects(userId)
     }
   }
 

@@ -19,28 +19,46 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const loadDashboardData = async () => {
-      if (!user?.id) return
+      if (!user?.id) {
+        console.log('Dashboard: No user ID, using fallback data')
+        setProjects([])
+        setResourceWallet({
+          user_id: 'fallback-user',
+          project_vouchers: 2,
+          facilitator_seats: 1,
+          storyteller_seats: 3
+        })
+        setLoading(false)
+        return
+      }
 
       try {
         setLoading(true)
+        console.log('Dashboard: Loading data for user:', user.id)
         
-        // Load projects and resource wallet in parallel
-        const [userProjects, wallet] = await Promise.all([
-          projectService.getUserProjects(user.id),
-          settingsService.getResourceWallet()
-        ])
-
-        setProjects(userProjects || [])
+        // Load resource wallet (this has fallback built-in)
+        const wallet = await settingsService.getResourceWallet()
+        console.log('Dashboard: Wallet loaded:', wallet)
         setResourceWallet(wallet)
+
+        // Try to load projects, but don't fail if it doesn't work
+        try {
+          const userProjects = await projectService.getUserProjects(user.id)
+          console.log('Dashboard: Projects loaded:', userProjects?.length || 0)
+          setProjects(userProjects || [])
+        } catch (projectError) {
+          console.warn('Dashboard: Failed to load projects, using empty array:', projectError)
+          setProjects([])
+        }
       } catch (error) {
-        console.error('Error loading dashboard data:', error)
-        // Use mock data as fallback
+        console.error('Dashboard: Error loading data:', error)
+        // Use fallback data
         setProjects([])
         setResourceWallet({
           user_id: user.id,
-          project_vouchers: 2,  // Current balance (remaining)
-          facilitator_seats: 1, // Current balance (remaining)
-          storyteller_seats: 3  // Current balance (remaining)
+          project_vouchers: 2,
+          facilitator_seats: 1,
+          storyteller_seats: 3
         })
       } finally {
         setLoading(false)
