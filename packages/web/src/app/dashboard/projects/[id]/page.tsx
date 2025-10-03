@@ -246,13 +246,17 @@ export default function ProjectDetailPage() {
   if (!project.user_role) {
     console.warn('Project missing user_role:', project)
   }
+  
+  // Log complete project data for debugging
+  console.log('Complete project data:', JSON.stringify(project, null, 2))
 
-  return (
-    <PermissionProvider 
-      userRole={project.user_role} 
-      isProjectOwner={project.is_owner}
-      projectId={projectId}
-    >
+  try {
+    return (
+      <PermissionProvider 
+        userRole={project.user_role} 
+        isProjectOwner={project.is_owner}
+        projectId={projectId}
+      >
       <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -497,5 +501,19 @@ export default function ProjectDetailPage() {
         </div>
       </div>
     </PermissionProvider>
-  )
+    )
+  } catch (renderError) {
+    console.error('Render error:', renderError)
+    return (
+      <div className="text-center py-16">
+        <h1 className="text-2xl font-bold text-foreground">Render Error</h1>
+        <p className="text-muted-foreground mt-2">{String(renderError)}</p>
+        <Link href="/dashboard">
+          <EnhancedButton variant="outline">
+            Back to Dashboard
+          </EnhancedButton>
+        </Link>
+      </div>
+    )
+  }
 }
