@@ -36,18 +36,39 @@ export default function DashboardPage() {
         setLoading(true)
         console.log('Dashboard: Loading data for user:', user.id)
         
-        // Load resource wallet (this has fallback built-in)
-        const wallet = await settingsService.getResourceWallet()
-        console.log('Dashboard: Wallet loaded:', wallet)
-        setResourceWallet(wallet)
-
-        // Try to load projects, but don't fail if it doesn't work
+        // Load resource wallet with timeout
+        console.log('Dashboard: Fetching wallet...')
         try {
-          const userProjects = await projectService.getUserProjects(user.id)
+          const walletPromise = settingsService.getResourceWallet()
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Wallet fetch timeout')), 5000)
+          )
+          const wallet = await Promise.race([walletPromise, timeoutPromise]) as any
+          console.log('Dashboard: Wallet loaded:', wallet)
+          setResourceWallet(wallet)
+        } catch (walletError) {
+          console.error('Dashboard: Wallet fetch failed:', walletError)
+          // Use fallback wallet
+          setResourceWallet({
+            user_id: user.id,
+            project_vouchers: 2,
+            facilitator_seats: 1,
+            storyteller_seats: 3
+          })
+        }
+
+        // Try to load projects with timeout
+        console.log('Dashboard: Fetching projects...')
+        try {
+          const projectsPromise = projectService.getUserProjects(user.id)
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Projects fetch timeout')), 5000)
+          )
+          const userProjects = await Promise.race([projectsPromise, timeoutPromise]) as any
           console.log('Dashboard: Projects loaded:', userProjects?.length || 0)
           setProjects(userProjects || [])
         } catch (projectError) {
-          console.warn('Dashboard: Failed to load projects, using empty array:', projectError)
+          console.warn('Dashboard: Projects fetch failed:', projectError)
           setProjects([])
         }
       } catch (error) {
