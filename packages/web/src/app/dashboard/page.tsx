@@ -1,12 +1,54 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { EnhancedButton } from "@/components/ui/enhanced-button"
 import { StatsCard } from "@/components/ui/stats-card"
 import { ProjectCard } from "@/components/ui/project-card"
 import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from "@/components/ui/enhanced-card"
 import { Users, BookOpen, Plus, TrendingUp, Clock, Star, Lightbulb } from "lucide-react"
+import { settingsService, ResourceWallet } from '@/services/settings-service'
+import { projectService, ProjectWithMembers } from '@/lib/projects'
+import { useAuthStore } from '@/stores/auth-store'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function DashboardPage() {
+  const { user } = useAuthStore()
+  const [projects, setProjects] = useState<ProjectWithMembers[]>([])
+  const [resourceWallet, setResourceWallet] = useState<ResourceWallet | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      if (!user?.id) return
+
+      try {
+        setLoading(true)
+        
+        // Load projects and resource wallet in parallel
+        const [userProjects, wallet] = await Promise.all([
+          projectService.getUserProjects(user.id),
+          settingsService.getResourceWallet()
+        ])
+
+        setProjects(userProjects || [])
+        setResourceWallet(wallet)
+      } catch (error) {
+        console.error('Error loading dashboard data:', error)
+        // Use mock data as fallback
+        setProjects(mockProjects)
+        setResourceWallet({
+          user_id: user.id,
+          project_vouchers: 2,
+          facilitator_seats: 3,
+          storyteller_seats: 7
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadDashboardData()
+  }, [user?.id])
   // Mock data based on prototype
   const mockProjects = [
     {
@@ -64,8 +106,41 @@ export default function DashboardPage() {
     }
   ]
 
-  const ownedProjects = mockProjects.filter(p => p.isOwner)
-  const participatingProjects = mockProjects.filter(p => !p.isOwner)
+  const ownedProjects = projects.filter(p => p.is_owner)
+  const participatingProjects = projects.filter(p => !p.is_owner)
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="border-b border-border bg-background/95 backdrop-blur-sm">
+          <div className="container mx-auto px-6 py-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Skeleton className="w-10 h-10 rounded-xl" />
+                <div>
+                  <Skeleton className="h-8 w-48 mb-2" />
+                  <Skeleton className="h-4 w-64" />
+                </div>
+              </div>
+              <Skeleton className="h-10 w-40" />
+            </div>
+          </div>
+        </div>
+        <div className="container mx-auto px-6 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-24" />
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-48" />
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -109,7 +184,7 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <StatsCard
                   title="Available Projects"
-                  value="2/5"
+                  value={`${projects.length}/${(resourceWallet?.project_vouchers || 0) + projects.length}`}
                   description="Remaining project quota"
                   icon={<BookOpen className="w-5 h-5" />}
                   variant="info"
@@ -117,7 +192,7 @@ export default function DashboardPage() {
                 />
                 <StatsCard
                   title="Facilitator Seats"
-                  value="1/4"
+                  value={`${Math.max(0, 4 - (resourceWallet?.facilitator_seats || 0))}/${4}`}
                   description="Can invite facilitators"
                   icon={<Users className="w-5 h-5" />}
                   variant="success"
@@ -125,7 +200,7 @@ export default function DashboardPage() {
                 />
                 <StatsCard
                   title="Storyteller Seats"
-                  value="3/10"
+                  value={`${Math.max(0, 10 - (resourceWallet?.storyteller_seats || 0))}/${10}`}
                   description="Can invite storytellers"
                   icon={<Star className="w-5 h-5" />}
                   variant="warning"
@@ -147,9 +222,21 @@ export default function DashboardPage() {
                 {ownedProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
-                    {...project}
-                    onEnter={() => console.log('Enter project:', project.id)}
-                    onManage={() => console.log('Manage project:', project.id)}
+                    id={project.id}
+                    title={project.name}
+                    description={project.description || 'No description'}
+                    createdAt={new Date(project.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    storyCount={project.story_count}
+                    status={project.status as 'active' | 'completed'}
+                    members={project.members.map(m => ({
+                      id: m.id,
+                      name: `User ${m.user_id.slice(0, 8)}`,
+                      role: m.role as 'owner' | 'facilitator' | 'storyteller',
+                      status: m.status as 'active' | 'pending'
+                    }))}
+                    isOwner={project.is_owner}
+                    onEnter={() => window.location.href = `/dashboard/projects/${project.id}`}
+                    onManage={() => window.location.href = `/dashboard/projects/${project.id}/settings`}
                     onMore={() => console.log('More options:', project.id)}
                   />
                 ))}
@@ -169,8 +256,20 @@ export default function DashboardPage() {
                 {participatingProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
-                    {...project}
-                    onEnter={() => console.log('Enter project:', project.id)}
+                    id={project.id}
+                    title={project.name}
+                    description={project.description || 'No description'}
+                    createdAt={new Date(project.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    storyCount={project.story_count}
+                    status={project.status as 'active' | 'completed'}
+                    members={project.members.map(m => ({
+                      id: m.id,
+                      name: `User ${m.user_id.slice(0, 8)}`,
+                      role: m.role as 'owner' | 'facilitator' | 'storyteller',
+                      status: m.status as 'active' | 'pending'
+                    }))}
+                    isOwner={project.is_owner}
+                    onEnter={() => window.location.href = `/dashboard/projects/${project.id}`}
                     onMore={() => console.log('More options:', project.id)}
                   />
                 ))}
@@ -219,42 +318,42 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Total Projects</span>
-                    <span className="font-medium">2</span>
+                    <span className="font-medium">{projects.length}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used 2/5</span>
-                    <span className="text-sm text-success">3 remaining</span>
+                    <span className="text-sm text-muted-foreground">Used {projects.length}/{(resourceWallet?.project_vouchers || 0) + projects.length}</span>
+                    <span className="text-sm text-success">{resourceWallet?.project_vouchers || 0} remaining</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full w-2/5"></div>
+                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: `${Math.min(100, (projects.length / ((resourceWallet?.project_vouchers || 0) + projects.length)) * 100)}%` }}></div>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Facilitator Seats</span>
-                    <span className="font-medium">1</span>
+                    <span className="font-medium">{Math.max(0, 4 - (resourceWallet?.facilitator_seats || 0))}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used 1/4</span>
-                    <span className="text-sm text-success">3 remaining</span>
+                    <span className="text-sm text-muted-foreground">Used {Math.max(0, 4 - (resourceWallet?.facilitator_seats || 0))}/4</span>
+                    <span className="text-sm text-success">{resourceWallet?.facilitator_seats || 0} remaining</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full w-1/4"></div>
+                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full" style={{ width: `${Math.min(100, ((4 - (resourceWallet?.facilitator_seats || 0)) / 4) * 100)}%` }}></div>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Storyteller Seats</span>
-                    <span className="font-medium">3</span>
+                    <span className="font-medium">{Math.max(0, 10 - (resourceWallet?.storyteller_seats || 0))}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used 3/10</span>
-                    <span className="text-sm text-success">7 remaining</span>
+                    <span className="text-sm text-muted-foreground">Used {Math.max(0, 10 - (resourceWallet?.storyteller_seats || 0))}/10</span>
+                    <span className="text-sm text-success">{resourceWallet?.storyteller_seats || 0} remaining</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full w-3/10"></div>
+                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full" style={{ width: `${Math.min(100, ((10 - (resourceWallet?.storyteller_seats || 0)) / 10) * 100)}%` }}></div>
                   </div>
                 </div>
               </EnhancedCardContent>

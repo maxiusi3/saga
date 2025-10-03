@@ -154,6 +154,11 @@ export class ProjectService {
   async getUserProjects(userId: string): Promise<ProjectWithMembers[]> {
     try {
       console.log('ProjectService: Fetching projects for user:', userId)
+      
+      // Return mock data if backend is not available
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+        return this.getMockProjects(userId);
+      }
 
       // 1) 查询用户作为所有者（facilitator_id）的项目
       const ownedPromise = (async () => {
@@ -505,6 +510,64 @@ export class ProjectService {
       console.error('Error updating member role:', error)
       return false
     }
+  }
+
+  /**
+   * Get mock projects for development when backend is not available
+   */
+  private getMockProjects(userId: string): ProjectWithMembers[] {
+    return [
+      {
+        id: '1',
+        name: "Grandma's Memoir",
+        description: 'Recording grandma\'s life stories and family traditions',
+        facilitator_id: userId,
+        status: 'active',
+        created_at: '2023-12-01T00:00:00Z',
+        updated_at: '2023-12-01T00:00:00Z',
+        members: [
+          {
+            id: '1',
+            project_id: '1',
+            user_id: userId,
+            role: 'facilitator' as UserRole,
+            invited_at: '2023-12-01T00:00:00Z',
+            status: 'active' as const,
+            created_at: '2023-12-01T00:00:00Z',
+            updated_at: '2023-12-01T00:00:00Z'
+          }
+        ],
+        member_count: 3,
+        story_count: 37,
+        user_role: 'facilitator' as UserRole,
+        is_owner: true
+      },
+      {
+        id: '2',
+        name: 'Family Legend Stories',
+        description: 'Collecting and organizing family stories and legends',
+        facilitator_id: 'other-user',
+        status: 'active',
+        created_at: '2023-11-01T00:00:00Z',
+        updated_at: '2023-11-01T00:00:00Z',
+        members: [
+          {
+            id: '2',
+            project_id: '2',
+            user_id: userId,
+            role: 'storyteller' as UserRole,
+            invited_at: '2023-11-01T00:00:00Z',
+            status: 'active' as const,
+            created_at: '2023-11-01T00:00:00Z',
+            updated_at: '2023-11-01T00:00:00Z'
+          }
+        ],
+        member_count: 2,
+        story_count: 17,
+        user_role: 'storyteller' as UserRole,
+        is_owner: false
+      }
+    ];
   }
 }
 

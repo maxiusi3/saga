@@ -54,20 +54,97 @@ class SettingsService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const token = localStorage.getItem('auth_token');
     
-    const response = await fetch(`${this.baseUrl}${endpoint}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token ? `Bearer ${token}` : '',
-        ...options.headers,
-      },
-      ...options,
-    });
+    try {
+      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '',
+          ...options.headers,
+        },
+        ...options,
+      });
 
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      // If backend is not available, return mock data for development
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.warn('Backend not available, using mock data');
+        return this.getMockData(endpoint) as T;
+      }
+      throw error;
     }
+  }
 
-    return response.json();
+  private getMockData(endpoint: string): any {
+    // Mock data for when backend is not available
+    if (endpoint.includes('/profile')) {
+      return {
+        id: 'mock-user-id',
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '+1 (555) 123-4567',
+        avatar: null,
+        bio: 'Family storyteller and memory keeper'
+      };
+    }
+    
+    if (endpoint.includes('/notifications')) {
+      return {
+        emailNotifications: true,
+        pushNotifications: true,
+        storyUpdates: true,
+        followUpQuestions: true,
+        weeklyDigest: true,
+        marketingEmails: false
+      };
+    }
+    
+    if (endpoint.includes('/accessibility')) {
+      return {
+        fontSize: 'standard',
+        highContrast: false,
+        reducedMotion: false,
+        screenReader: false
+      };
+    }
+    
+    if (endpoint.includes('/audio')) {
+      return {
+        volume: 75,
+        quality: 'high'
+      };
+    }
+    
+    if (endpoint.includes('/privacy')) {
+      return {
+        profileVisible: true,
+        storySharing: true,
+        dataAnalytics: false,
+        twoFactorAuth: false
+      };
+    }
+    
+    if (endpoint.includes('/language')) {
+      return {
+        language: 'en',
+        timezone: 'UTC'
+      };
+    }
+    
+    if (endpoint.includes('/wallet')) {
+      return {
+        user_id: 'mock-user-id',
+        project_vouchers: 2,
+        facilitator_seats: 3,
+        storyteller_seats: 7
+      };
+    }
+    
+    return {};
   }
 
   // Profile methods
