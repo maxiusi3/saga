@@ -16,7 +16,6 @@ export default function DashboardPage() {
   const [projects, setProjects] = useState<ProjectWithMembers[]>([])
   const [resourceWallet, setResourceWallet] = useState<ResourceWallet | null>(null)
   const [loading, setLoading] = useState(true)
-  const [isCreatingProject, setIsCreatingProject] = useState(false)
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -35,30 +34,14 @@ export default function DashboardPage() {
         setResourceWallet(wallet)
       } catch (error) {
         console.error('Error loading dashboard data:', error)
-        // Try to get projects even if wallet fails
-        try {
-          const userProjects = await projectService.getUserProjects(user.id)
-          setProjects(userProjects || [])
-          
-          // Calculate realistic wallet based on actual projects
-          const projectCount = userProjects?.length || 0
-          setResourceWallet({
-            user_id: user.id,
-            project_vouchers: Math.max(0, 5 - projectCount),  // Remaining vouchers
-            facilitator_seats: Math.max(0, 4 - Math.floor(projectCount * 1.5)), // Estimate used seats
-            storyteller_seats: Math.max(0, 10 - Math.floor(projectCount * 3.5))  // Estimate used seats
-          })
-        } catch (projectError) {
-          console.error('Error loading projects:', projectError)
-          // Complete fallback - no real data available
-          setProjects([])
-          setResourceWallet({
-            user_id: user.id,
-            project_vouchers: 0,  // Show as if all resources are used when we can't get real data
-            facilitator_seats: 0,
-            storyteller_seats: 0
-          })
-        }
+        // Use mock data as fallback
+        setProjects([])
+        setResourceWallet({
+          user_id: user.id,
+          project_vouchers: 2,  // Current balance (remaining)
+          facilitator_seats: 1, // Current balance (remaining)
+          storyteller_seats: 3  // Current balance (remaining)
+        })
       } finally {
         setLoading(false)
       }
@@ -66,32 +49,6 @@ export default function DashboardPage() {
 
     loadDashboardData()
   }, [user?.id])
-
-  const handleCreateProject = async () => {
-    if (!user?.id || !resourceWallet?.project_vouchers || resourceWallet.project_vouchers <= 0) {
-      alert('You need project vouchers to create a new project. Please purchase more resources.')
-      return
-    }
-
-    setIsCreatingProject(true)
-    try {
-      // For now, redirect to a create project page or show a modal
-      // In a real implementation, you would create the project here
-      const projectName = prompt('Enter project name:')
-      if (projectName) {
-        // This would call the actual project creation API
-        console.log('Creating project:', projectName)
-        alert('Project creation functionality will be implemented soon!')
-        // Reload dashboard data after creation
-        // await loadDashboardData()
-      }
-    } catch (error) {
-      console.error('Error creating project:', error)
-      alert('Failed to create project. Please try again.')
-    } finally {
-      setIsCreatingProject(false)
-    }
-  }
 
   const ownedProjects = projects.filter(p => p.is_owner)
   const participatingProjects = projects.filter(p => !p.is_owner)
@@ -148,10 +105,9 @@ export default function DashboardPage() {
               size="lg"
               rightIcon={<Plus className="h-5 w-5" />}
               className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
-              onClick={handleCreateProject}
-              disabled={isCreatingProject || !resourceWallet?.project_vouchers || resourceWallet.project_vouchers <= 0}
+              onClick={() => window.location.href = '/dashboard/projects/create'}
             >
-              {isCreatingProject ? 'Creating...' : 'Create New Saga'}
+              Create New Saga
             </EnhancedButton>
           </div>
         </div>
@@ -176,9 +132,9 @@ export default function DashboardPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <StatsCard
-                  title="Available Projects"
+                  title="Project Vouchers"
                   value={`${resourceWallet?.project_vouchers || 0}/5`}
-                  description="Remaining project quota"
+                  description="Available project vouchers"
                   icon={<BookOpen className="w-5 h-5" />}
                   variant="info"
                   className="bg-gradient-to-br from-info/5 to-info/10"
@@ -186,7 +142,7 @@ export default function DashboardPage() {
                 <StatsCard
                   title="Facilitator Seats"
                   value={`${resourceWallet?.facilitator_seats || 0}/4`}
-                  description="Can invite facilitators"
+                  description="Available facilitator seats"
                   icon={<Users className="w-5 h-5" />}
                   variant="success"
                   className="bg-gradient-to-br from-success/5 to-success/10"
@@ -194,7 +150,7 @@ export default function DashboardPage() {
                 <StatsCard
                   title="Storyteller Seats"
                   value={`${resourceWallet?.storyteller_seats || 0}/10`}
-                  description="Can invite storytellers"
+                  description="Available storyteller seats"
                   icon={<Star className="w-5 h-5" />}
                   variant="warning"
                   className="bg-gradient-to-br from-warning/5 to-warning/10"
@@ -218,11 +174,10 @@ export default function DashboardPage() {
                     <h3 className="text-lg font-semibold text-foreground">No Projects Yet</h3>
                     <p className="text-muted-foreground">Create your first project to start collecting family stories.</p>
                     <EnhancedButton 
-                      onClick={handleCreateProject}
-                      disabled={isCreatingProject || !resourceWallet?.project_vouchers || resourceWallet.project_vouchers <= 0}
+                      onClick={() => window.location.href = '/dashboard/projects/create'}
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      {isCreatingProject ? 'Creating...' : 'Create New Saga'}
+                      Create New Saga
                     </EnhancedButton>
                   </div>
                 </EnhancedCard>
@@ -337,15 +292,15 @@ export default function DashboardPage() {
               <EnhancedCardContent className="space-y-4">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Total Projects</span>
-                    <span className="font-medium">{projects.length}</span>
+                    <span className="text-sm text-muted-foreground">Project Vouchers</span>
+                    <span className="font-medium">{resourceWallet?.project_vouchers || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used {5 - (resourceWallet?.project_vouchers || 0)}/5</span>
+                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.project_vouchers || 0}/5</span>
                     <span className="text-sm text-success">{resourceWallet?.project_vouchers || 0} remaining</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: `${Math.min(100, ((5 - (resourceWallet?.project_vouchers || 0)) / 5) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.project_vouchers || 0) / 5) * 100)}%` }}></div>
                   </div>
                 </div>
 
@@ -355,11 +310,11 @@ export default function DashboardPage() {
                     <span className="font-medium">{resourceWallet?.facilitator_seats || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used {4 - (resourceWallet?.facilitator_seats || 0)}/4</span>
+                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.facilitator_seats || 0}/4</span>
                     <span className="text-sm text-success">{resourceWallet?.facilitator_seats || 0} available</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full" style={{ width: `${Math.min(100, ((4 - (resourceWallet?.facilitator_seats || 0)) / 4) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.facilitator_seats || 0) / 4) * 100)}%` }}></div>
                   </div>
                 </div>
 
@@ -369,11 +324,11 @@ export default function DashboardPage() {
                     <span className="font-medium">{resourceWallet?.storyteller_seats || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used {10 - (resourceWallet?.storyteller_seats || 0)}/10</span>
+                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.storyteller_seats || 0}/10</span>
                     <span className="text-sm text-success">{resourceWallet?.storyteller_seats || 0} available</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full" style={{ width: `${Math.min(100, ((10 - (resourceWallet?.storyteller_seats || 0)) / 10) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.storyteller_seats || 0) / 10) * 100)}%` }}></div>
                   </div>
                 </div>
               </EnhancedCardContent>
