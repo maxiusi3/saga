@@ -155,15 +155,11 @@ export class ProjectService {
     try {
       console.log('ProjectService: Fetching projects for user:', userId)
       
-      // Return mock data if backend is not available
+      // Check if Supabase is configured
       if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-        console.log('ProjectService: No Supabase URL, returning mock data')
-        return this.getMockProjects(userId);
+        console.error('ProjectService: No Supabase URL configured')
+        return [];
       }
-
-      // For now, always return mock data until backend is fully set up
-      console.log('ProjectService: Using mock data for development')
-      return this.getMockProjects(userId);
 
       /* TODO: Enable when backend is ready
       // 1) 查询用户作为所有者（facilitator_id）的项目
@@ -296,8 +292,7 @@ export class ProjectService {
       */
     } catch (error) {
       console.error('Error fetching user projects:', error)
-      // Return mock data on error
-      return this.getMockProjects(userId)
+      return []
     }
   }
 
