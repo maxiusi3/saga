@@ -240,21 +240,27 @@ export default function ProjectDetailPage() {
     )
   }
 
-  const roleInfo = project.user_role ? getRoleDisplayInfo(project.user_role) : null
+  // Ensure members is always an array before rendering
+  const safeProject = {
+    ...project,
+    members: Array.isArray(project.members) ? project.members : []
+  }
+
+  const roleInfo = safeProject.user_role ? getRoleDisplayInfo(safeProject.user_role) : null
 
   // Add safety check for project data
-  if (!project.user_role) {
-    console.warn('Project missing user_role:', project)
+  if (!safeProject.user_role) {
+    console.warn('Project missing user_role:', safeProject)
   }
   
   // Log complete project data for debugging
-  console.log('Complete project data:', JSON.stringify(project, null, 2))
+  console.log('Complete project data:', JSON.stringify(safeProject, null, 2))
 
   try {
     return (
       <PermissionProvider 
-        userRole={project.user_role} 
-        isProjectOwner={project.is_owner}
+        userRole={safeProject.user_role} 
+        isProjectOwner={safeProject.is_owner}
         projectId={projectId}
       >
       <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
@@ -269,7 +275,7 @@ export default function ProjectDetailPage() {
                   <Badge variant={roleInfo.color as any}>
                     <span className="mr-1">{roleInfo.icon}</span>
                     {roleInfo.label}
-                    {project.is_owner && ' (Owner)'}
+                    {safeProject.is_owner && ' (Owner)'}
                   </Badge>
                 )}
               </div>
@@ -286,8 +292,8 @@ export default function ProjectDetailPage() {
               </EnhancedButton>
               <ActionPermissionGate
                 action="canCreateStories"
-                userRole={project.user_role}
-                isProjectOwner={project.is_owner}
+                userRole={safeProject.user_role}
+                isProjectOwner={safeProject.is_owner}
               >
                 <Link href={`/dashboard/projects/${projectId}/record`}>
                   <EnhancedButton>
