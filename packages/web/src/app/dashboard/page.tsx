@@ -38,9 +38,9 @@ export default function DashboardPage() {
         setProjects([])
         setResourceWallet({
           user_id: user.id,
-          project_vouchers: 2,
-          facilitator_seats: 3,
-          storyteller_seats: 7
+          project_vouchers: 2,  // 2 remaining out of 5
+          facilitator_seats: 1, // 1 remaining out of 4
+          storyteller_seats: 3  // 3 remaining out of 10
         })
       } finally {
         setLoading(false)
@@ -128,7 +128,7 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <StatsCard
                   title="Available Projects"
-                  value={`${resourceWallet?.project_vouchers || 0}/${(resourceWallet?.project_vouchers || 0) + projects.length}`}
+                  value={`${resourceWallet?.project_vouchers || 0}/5`}
                   description="Remaining project quota"
                   icon={<BookOpen className="w-5 h-5" />}
                   variant="info"
@@ -289,11 +289,11 @@ export default function DashboardPage() {
                     <span className="font-medium">{projects.length}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Used {projects.length}/{(resourceWallet?.project_vouchers || 0) + projects.length}</span>
+                    <span className="text-sm text-muted-foreground">Used {5 - (resourceWallet?.project_vouchers || 0)}/5</span>
                     <span className="text-sm text-success">{resourceWallet?.project_vouchers || 0} remaining</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: `${Math.min(100, (projects.length / Math.max(1, (resourceWallet?.project_vouchers || 0) + projects.length)) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: `${Math.min(100, ((5 - (resourceWallet?.project_vouchers || 0)) / 5) * 100)}%` }}></div>
                   </div>
                 </div>
 
@@ -303,11 +303,11 @@ export default function DashboardPage() {
                     <span className="font-medium">{resourceWallet?.facilitator_seats || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.facilitator_seats || 0}/4</span>
+                    <span className="text-sm text-muted-foreground">Used {4 - (resourceWallet?.facilitator_seats || 0)}/4</span>
                     <span className="text-sm text-success">{resourceWallet?.facilitator_seats || 0} available</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.facilitator_seats || 0) / 4) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full" style={{ width: `${Math.min(100, ((4 - (resourceWallet?.facilitator_seats || 0)) / 4) * 100)}%` }}></div>
                   </div>
                 </div>
 
@@ -317,11 +317,11 @@ export default function DashboardPage() {
                     <span className="font-medium">{resourceWallet?.storyteller_seats || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.storyteller_seats || 0}/10</span>
+                    <span className="text-sm text-muted-foreground">Used {10 - (resourceWallet?.storyteller_seats || 0)}/10</span>
                     <span className="text-sm text-success">{resourceWallet?.storyteller_seats || 0} available</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.storyteller_seats || 0) / 10) * 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full" style={{ width: `${Math.min(100, ((10 - (resourceWallet?.storyteller_seats || 0)) / 10) * 100)}%` }}></div>
                   </div>
                 </div>
               </EnhancedCardContent>

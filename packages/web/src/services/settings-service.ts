@@ -138,9 +138,9 @@ class SettingsService {
     if (endpoint.includes('/wallet')) {
       return {
         user_id: 'mock-user-id',
-        project_vouchers: 2,
-        facilitator_seats: 3,
-        storyteller_seats: 7
+        project_vouchers: 2,  // 2 remaining out of 5 (used 3)
+        facilitator_seats: 1, // 1 remaining out of 4 (used 3) 
+        storyteller_seats: 3  // 3 remaining out of 10 (used 7)
       };
     }
     
