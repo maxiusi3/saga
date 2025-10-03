@@ -350,8 +350,8 @@
 .motion-safe {
   @apply motion-reduce:transition-none motion-reduce:animate-none;
 }
-/
-* Dynamic Accessibility Settings */
+
+/* Dynamic Accessibility Settings */
 :root {
   --font-size-multiplier: 1;
 }
