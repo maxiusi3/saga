@@ -161,6 +161,10 @@ export class ProjectService {
         return [];
       }
 
+      // For now, return empty array until backend is ready
+      console.log('ProjectService: Backend not ready, returning empty array')
+      return [];
+
       /* TODO: Enable when backend is ready
       // 1) 查询用户作为所有者（facilitator_id）的项目
       const ownedPromise = (async () => {

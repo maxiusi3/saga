@@ -39,9 +39,10 @@ export default function ProjectsPage() {
         console.log('Loading projects for user:', user.id)
         const userProjects = await projectService.getUserProjects(user.id)
         console.log('Loaded projects:', userProjects)
-        setProjects(userProjects)
+        setProjects(userProjects || [])
       } catch (error) {
         console.error('Error loading projects:', error)
+        setProjects([])
       } finally {
         setLoading(false)
       }
