@@ -2,342 +2,345 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { EnhancedButton } from '@/components/uitton'
-import { EnhancedCard, EnhancedCardContent,ed-card'
-import { PricingCard } from '@/components/ui/-card'
+import { EnhancedButton } from '@/components/ui/enhanced-button'
+import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from '@/components/ui/enhanced-card'
+import { PricingCard } from '@/components/ui/pricing-card'
 import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/'
-import { Label } from '@/com/ui/label'
-or'
-import { Check, Star, Shield, Clock, Usereact'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
+import { Check, Star, Shield, Clock, Users, BookOpen, Sparkles, CreditCard, ArrowRight, Lock } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/imag'
+import Image from 'next/image'
 
 export default function PurchasePage() {
-  const [isLoading, selse)
-
-  const r
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const handlePurchase = async () => {
-ue)
+    setIsLoading(true)
 
     try {
       // Simulate purchase processing
-      await new Promi0))
+      await new Promise(resolve => setTimeout(resolve, 2000))
 
       // Simulate success
-     )')
-   
-or) {
-      console.error(
+      router.push('/dashboard?purchase=success')
+    } catch (error) {
+      console.error('Purchase failed:', error)
       setIsLoading(false)
     }
   }
 
   return (
-    <div className="min-h-s00">
-      <div className="max-w">
-   }
->
-          
+    <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-sage-100 text-sage-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
-            Limited 
+            Limited Time Offer
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 m>
-            Preserve Your ever
-          </h
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Preserve Your Family Stories Forever
+          </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Create lasting digital biographies that capture precious memories and wim.
+            Create lasting digital biographies that capture precious memories and wisdom.
           </p>
         </div>
 
         {/* Hero Video/Image */}
         <div className="mb-16">
-          <div className="rela">
-            <div className="text-centr">
-              <div className="w-20 h-20 b">
-                <BookOpen className="w-10 h-10 text-sage-600" />
-              </div
-              <p cla>
+          <div className="relative bg-gradient-to-r from-sage-100 to-sage-200 rounded-2xl p-12">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-sage-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-10 h-10 text-white" />
+              </div>
+              <p className="text-lg text-sage-700">
+                Start capturing your family's unique story today
+              </p>
             </div>
           </div>
         </div>
 
         {/* Features Grid */}
-        <div className16">
-          <div clater">
-b-4">
-              <Users clas />
-/div>
-            <h3 c</h3>
-            <p className="text-gray-600">Invite family members to>
-          </div>
-          <div clas">
-            <div className="w-16 h-16 bg-">
-              <Sparkles className="w-8 h-8 text-sage-600" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Users className="w-8 h-8 text-sage-600" />
             </div>
-            <h3 className="text-xl font-semibold tex
-            <p classNa</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Family Collaboration</h3>
+            <p className="text-gray-600">Invite family members to contribute stories and memories together.</p>
           </div>
           <div className="text-center">
-            <div className="w-16 h-16 bg-sage-100 romb-4">
-              <Shield >
+            <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="w-8 h-8 text-sage-600" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Secure >
-            <p className="text-gray-600">Your family</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">AI-Powered Prompts</h3>
+            <p className="text-gray-600">Intelligent questions that help unlock meaningful memories.</p>
+          </div>
+          <div className="text-center">
+            <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Shield className="w-8 h-8 text-sage-600" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Secure & Private</h3>
+            <p className="text-gray-600">Your family stories are encrypted and stored securely.</p>
           </div>
         </div>
 
-
-        <div className="m">
-
-            <h2 c</h2>
-            <p className="text-gray-600">Everything you need to c>
+        {/* Pricing Section */}
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Package</h2>
+            <p className="text-gray-600">Everything you need to create beautiful family biographies.</p>
           </div>
 
-          <div className="max-w-4xl mx-au
+          <div className="max-w-4xl mx-auto">
             <PricingCard
               title="Family Saga Package"
-              price="$209"
-              period="one-time"
-              descriptio"
-              featu[
-                "Creects",
-                "I
-                mpts",
-               ion",
-
-                "Secure cloud
-                "Mobile and web acc,
-                "1 year of interice",
-                "Permanent archival modss"
+              subtitle="Complete family biography solution with AI-powered storytelling"
+              price={{
+                amount: 209,
+                currency: "$",
+                period: "one-time"
+              }}
+              features={[
+                { text: "Create unlimited projects", included: true },
+                { text: "Invite unlimited family members", included: true },
+                { text: "AI-powered story prompts", included: true },
+                { text: "Professional transcription", included: true },
+                { text: "Photo and audio integration", included: true },
+                { text: "Secure cloud storage", included: true },
+                { text: "Mobile and web access", included: true },
+                { text: "1 year of interactive service", included: true, highlight: true },
+                { text: "Permanent archival mode access", included: true }
               ]}
-              isPopular={true}
-              onSel}
-'}
+              popular={true}
+              ctaText="Get Started"
+              onCTAClick={handlePurchase}
             />
           </div>
         </div>
 
-        {/* Checkout F
+        {/* Checkout Form */}
         <div className="max-w-2xl mx-auto">
           <EnhancedCard>
             <EnhancedCardHeader>
-              <Enhance">
+              <EnhancedCardTitle className="flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-sage-600" />
                 Complete Your Purchase
               </EnhancedCardTitle>
-            </Enhancedr>
-            <Enhance
-">
-                {/* O*/}
-                <div clas-lg p-4">
-                  <div className="flex justifmb-2">
-                    <span className="fon
-                    <span className=>
+            </EnhancedCardHeader>
+            <EnhancedCardContent className="space-y-6">
+              {/* Order Summary */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium">Family Saga Package</span>
+                  <span>$209</span>
                 </div>
-                  <div className="flex justify-between items-c>
-                    <sp
-/span>
-                  </div>
-                  <Separator className="my-3" />
-                  <div className="flex justify-bet-bold">
-                    <s</span>
-                    <span>$209</span>
-                  </div>
+                <div className="flex justify-between items-center text-sm text-gray-600">
+                  <span>One-time payment</span>
+                  <span>No recurring fees</span>
                 </div>
+                <Separator className="my-3" />
+                <div className="flex justify-between items-center font-bold">
+                  <span>Total</span>
+                  <span>$209</span>
+                </div>
+              </div>
 
-                {/* }
-                <dy-4">
-                 ">
-v>
-                      <Label htmlForl>
-                      <Input id=
-                    </div>
-                    <div>
-                 >
-                      <Input id="lastName" placeholder="Doe" />
-                    </div>
-                </div>
-                  
+              {/* Payment Form */}
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" type="email" placeholdom" />
-                  </
-
-                  <div>
-                    <Label htmlFor="cardNumber">Card Number<
-                    
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input id="firstName" placeholder="John" />
                   </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    
-                  e</Label>
-                 />
->
-                    <div>
-                      <Label htmlFor="cvc">CVC</Label>
-                      <Input id="cvc" placeholder="123" />
-                    </div>
+                  <div>
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input id="lastName" placeholder="Doe" />
                   </div>
                 </div>
+                
+                <div>
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input id="email" type="email" placeholder="john@example.com" />
+                </div>
 
-            
-0">
+                <div>
+                  <Label htmlFor="cardNumber">Card Number</Label>
+                  <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="expiry">Expiry Date</Label>
+                    <Input id="expiry" placeholder="MM/YY" />
+                  </div>
+                  <div>
+                    <Label htmlFor="cvc">CVC</Label>
+                    <Input id="cvc" placeholder="123" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Security Badges */}
+              <div className="flex items-center justify-center gap-6 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-green-600" />
+                  SSL Encrypted
+                </div>
+                <div className="flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-green-600" />
+                  Secure Payment
+                </div>
+                <div className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-green-600" />
+                  30-Day Guarantee
+                </div>
+              </div>
+
+              {/* Purchase Button */}
+              <EnhancedButton
+                onClick={handlePurchase}
+                disabled={isLoading}
+                size="lg"
+                className="w-full"
+              >
+                {isLoading ? (
+                  'Processing...'
+                ) : (
                   <>
-                    <Shield className="w-4 h-4 text-green-600" />
-                    SSL Encrypted
-                  </div>
-               
-                    <L />
-                    Secure Payment
-                  </div>
-               
-                    <C
-                    30-Day Guarantee
-                  </div>
-               >
+                    Complete Purchase - $209
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </>
+                )}
+              </EnhancedButton>
 
-           */}
-   
- se}
+              <p className="text-xs text-gray-500 text-center">
+                By completing your purchase, you agree to our Terms of Service and Privacy Policy.
+                You can cancel anytime within 30 days for a full refund.
+              </p>
+            </EnhancedCardContent>
+          </EnhancedCard>
+        </div>
+
+        {/* Customer Reviews */}
+        <div className="mt-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">What Families Are Saying</h2>
+            <div className="flex items-center justify-center gap-1 mb-4">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+              ))}
+              <span className="ml-2 text-gray-600">4.9/5 from 1,200+ families</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <EnhancedCard>
+              <EnhancedCardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                  <div>
+                    <p className="font-medium text-gray-900">Sarah Johnson</p>
+                    <p className="text-sm text-gray-600">Family Historian</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-4">
+                  "Saga helped us capture my grandmother's stories before it was too late. The AI prompts
+                  brought out memories we never knew existed."
+                </p>
+              </EnhancedCardContent>
+            </EnhancedCard>
+
+            <EnhancedCard>
+              <EnhancedCardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                  <div>
+                    <p className="font-medium text-gray-900">Michael Chen</p>
+                    <p className="text-sm text-gray-600">Project Facilitator</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-4">
+                  "The transcription quality is amazing, and the family collaboration features made it
+                  easy for everyone to contribute."
+                </p>
+              </EnhancedCardContent>
+            </EnhancedCard>
+
+            <EnhancedCard>
+              <EnhancedCardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+                  <div>
+                    <p className="font-medium text-gray-900">Emma Rodriguez</p>
+                    <p className="text-sm text-gray-600">Family Member</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-4">
+                  "Worth every penny. We now have a beautiful digital archive of our family history
+                  that will last forever."
+                </p>
+              </EnhancedCardContent>
+            </EnhancedCard>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="mt-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+          </div>
+          <div className="max-w-3xl mx-auto space-y-6">
+            <EnhancedCard>
+              <EnhancedCardContent className="p-6">
+                <h3 className="font-semibold text-gray-900 mb-2">What happens after the first year?</h3>
+                <p className="text-gray-600">
+                  After your first year of interactive service, you can reactivate interactive features
+                  anytime, or you can still access, view, and export all your stories in archival mode.
+                </p>
+              </EnhancedCardContent>
+            </EnhancedCard>
+
+            <EnhancedCard>
+              <EnhancedCardContent className="p-6">
+                <h3 className="font-semibold text-gray-900 mb-2">How many family members can participate?</h3>
+                <p className="text-gray-600">
+                  You can invite unlimited family members to view and comment on stories. The package
+                  includes seats for multiple facilitators and storytellers to actively contribute content.
+                </p>
+              </EnhancedCardContent>
+            </EnhancedCard>
+
+            <EnhancedCard>
+              <EnhancedCardContent className="p-6">
+                <h3 className="font-semibold text-gray-900 mb-2">Is my family data secure?</h3>
+                <p className="text-gray-600">
+                  Yes, absolutely. We use enterprise-grade encryption and secure storage. Your personal
+                  family stories are never shared with third parties and are stored securely.
+                </p>
+              </EnhancedCardContent>
+            </EnhancedCard>
+          </div>
+        </div>
+      </div>
+    </div>
   )
-}/div>
-
-    <</div>  iv>
-    </d  
-      >      </divd>
-    ancedCar</Enh            Content>
-ardancedC   </Enh    p>
-             </          rties.
-th third pawintent  cosonal family perhare your never sand                 y 
- curitde seprise-gra use enterurely. We sec and storedcryptede enstories armily ll your fas, a    Ye   
-           >"y-600="text-grasName     <p clas        h3>
-   ure?</ data secy family">Is mb-20 my-90old text-grafont-semibme="assNah3 cl           <     
-">p-6className="CardContent Enhanced     <>
-         cedCardEnhan       <   
-
-  edCard> </Enhanc      
-     rdContent>Ca/Enhanced           <
-    </p>         
-      content.ute ibly contrrs to activefacilitatolers and ytel stor  multiple                r 
-es seats foincludThe package n stories. ment o and comewbers to vi memmited familyite unliinv    You can        
-       0">-gray-60e="textsNam<p clas              </h3>
-  rticipate?ers can pamembmany family 2">How ay-900 mb-bold text-gr="font-semiassName    <h3 cl            e="p-6">
-NamassrdContent clCahanced       <En>
-       nhancedCard        <E
-
-    cedCard></Enhan           ontent>
- edCardC  </Enhanc   >
-            </p           me.
-  s anytiatureeractive fetivate intacan reYou cries. our stoll y a exportiew, and        v   , 
-        accesscan stillyou re val mode whearchiters r project ene, youtive servicr of interacst yeater your firAf                  -600">
-gray="text-className  <p        >
-       /h3irst year?< the fter aft happens-2">Wha00 mby-9old text-grant-semibe="foclassNam       <h3 >
-         me="p-6"tent classNardConncedCa   <Enha
-           ncedCard> <Enha
-           >"e-y-6o spac3xl mx-autame="max-w- <div classN
-         v>
-      </di>
-    ions</h2ed Quest AskFrequently mb-4">-900t-grayont-bold textext-3xl fassName="   <h2 cl
-         b-12">center mxt-sName="te clas <div         16">
-sName="mt-   <div clas*/}
-      Section * FAQ{/        >
-
-/div <
-        </div>      
-   d>arcedCan     </Enh      
- rdContent>hancedCa/En <         v>
-    </di               iv>
-         </d        mber</p>
-  amily Megray-600">F text-smame="text-lassN   <p c            
-     iguez</p>">Emma Rodrext-gray-900ium tmed"font-lassName=        <p c       iv>
-         <d       
-       </div>ed-full">ay-200 roundh-10 bg-gr"w-10 Name= class      <div       -3">
-     ter gapentems-ce="flex iiv classNam        <d              </p>
-         
- ver."forel last  that wilily history our famhive ofgital arcdil  beautifu have a. We nowvery penny eorth      "W        ">
-    0 mb-4y-70t-gratexName="  <p class        >
-           </div            ))}
-           />
-      low-400" 00 text-yellow-4fill-yel4 h-4 ame="w-classN}  key={star    <Star              (
-  star) => ((, 4, 5].map 3, 2, {[1             b-4">
-    ap-1 ms-center gflex itemassName=" cl     <div   
-        ="p-6">amesNntent clasancedCardCo<Enh             rd>
- EnhancedCa        <
-
-    d>cedCaran    </Enh        nt>
-cedCardConte  </Enhan           div>
-         </    /div>
-               <     p>
-  ilitator</ject FacPro0">y-60m text-graxt-sName="te<p class                  >
-  hen</pel C900">Michaext-gray-edium t"font-mame=<p classN                 <div>
-                  >
-   ></divll"ounded-fu-gray-200 r-10 h-10 bgassName="w <div cl           >
-      " gap-3tems-centerlex i="f classNameiv          <d      </p>
-          "
-      ntribute.ryone to coasy for eveade it en features mlaboratio family colhe, and t is amazingn qualitycriptioans    "The tr          
-    0 mb-4">-gray-70ame="textlassN     <p c            </div>
-           }
-      ))           " />
-     low-400xt-yelow-400 teellfill-y"w-4 h-4 ame=star} classN <Star key={          (
-         ar) => (stmap(, 5].3, 4 2, {[1,                ">
-  1 mb-4gap-s-center flex itemssName=" <div cla           6">
-    "p-e=am classNdContentCaranced       <Enh      dCard>
- ce      <Enhan     
-
- >ard </EnhancedC   >
-        dCardContentcehan      </Env>
-            </di           iv>
-          </d         n</p>
-iaily History-600">Famm text-grae="text-samssNp cla      <           /p>
-   ah Johnson<900">Sarext-gray- tiumt-medame="fonssN <p cla                    <div>
-        >
-         ll"></divnded-fu00 rou-210 bg-grayme="w-10 h- classNa  <div          ">
-      ap-3s-center g="flex itemmeiv classNa    <d       
-         </p>         
-   isted."ex knew everwe nries  memout brought o promptse. The AI was too latefore ities ber's stordmoth granapture myhelped us cga     "Sa           4">
-   gray-700 mb-xt-ame="tessN    <p cla         div>
-        </          
-   ))}          
-      400" />ow-text-yell-400 ill-yellow4 fh--4 Name="wassstar} cley={   <Star k              
-   star) => (((3, 4, 5].map 2, [1,         {      >
-   4" mb-er gap-1-centems="flex itsNamelas      <div c         
- e="p-6">assNam clCardContentced<Enhan   
-           >nhancedCard     <E      p-8">
- s-3 ga md:grid-colid-cols-1me="grid grNaiv class       <d   </div>
-
-
-             </div>
-         lies</span>200+ fami/5 from 1,0">4.9-gray-60xt"ml-2 tessName=la    <span c       ))}
-                00" />
- ellow-4w-400 text-y5 fill-yellome="w-5 h-ssNacla} star={eyar k      <St        (
-   ap((star) =>, 4, 5].m2, 3 {[1,     
-         4">er gap-1 mb-ent justify-cs-center="flex itemsNameiv clas  <d       
-   g</h2>es Are SayinFamilihat ">Wb-4900 m text-gray--boldnt3xl fo"text-sName=2 clas  <h           mb-12">
-ext-centersName="tlas<div c          mt-16">
-ame=" <div classN      }
- s */mer Reviewusto    {/* Cdiv>
-
-       </    
- Card>edEnhanc        </  dContent>
-Carced</Enhan         </div>
-        >
-             </p            ll refund.
-a fu for hin 30 dayswittime cel anycan can You             licy.
-     cy Poivaice and Prs of Servr Termagree to ouyou rchase, g your puBy completin               ">
-   xt-centery-500 te-xs text-graName="text<p class             
-   >
-ButtonncedEnha   </            }
-   )                      </>
-               ml-2" />
-4 h-4me="w-sNaclasowRight <Arr                     se - $209
- rchaomplete Pu       C       <>
-                            : (
-  )              ..'
-   sing.Proces    '              ng ? (
-  Loadi  {is           >
-                  ull"
-   w-fclassName="               g"
-   "l  size=              oading}
-  led={isLab        dis          
+}
