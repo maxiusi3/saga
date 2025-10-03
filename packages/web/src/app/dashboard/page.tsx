@@ -71,6 +71,15 @@ export default function DashboardPage() {
   const ownedProjects = projects.filter(p => p.is_owner)
   const participatingProjects = projects.filter(p => !p.is_owner)
 
+  console.log('Dashboard: Render state:', {
+    loading,
+    hasUser: !!user,
+    hasWallet: !!resourceWallet,
+    projectsCount: projects.length,
+    ownedCount: ownedProjects.length,
+    participatingCount: participatingProjects.length
+  })
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -105,7 +114,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" style={{ minHeight: '100vh', backgroundColor: 'var(--background, #ffffff)' }}>
       {/* Header */}
       <div className="border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-6">
