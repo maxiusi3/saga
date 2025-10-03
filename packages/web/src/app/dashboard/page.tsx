@@ -16,6 +16,7 @@ export default function DashboardPage() {
   const [projects, setProjects] = useState<ProjectWithMembers[]>([])
   const [resourceWallet, setResourceWallet] = useState<ResourceWallet | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isCreatingProject, setIsCreatingProject] = useState(false)
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -34,14 +35,30 @@ export default function DashboardPage() {
         setResourceWallet(wallet)
       } catch (error) {
         console.error('Error loading dashboard data:', error)
-        // Use fallback data when backend is not available
-        setProjects([])
-        setResourceWallet({
-          user_id: user.id,
-          project_vouchers: 2,  // 2 remaining out of 5
-          facilitator_seats: 1, // 1 remaining out of 4
-          storyteller_seats: 3  // 3 remaining out of 10
-        })
+        // Try to get projects even if wallet fails
+        try {
+          const userProjects = await projectService.getUserProjects(user.id)
+          setProjects(userProjects || [])
+          
+          // Calculate realistic wallet based on actual projects
+          const projectCount = userProjects?.length || 0
+          setResourceWallet({
+            user_id: user.id,
+            project_vouchers: Math.max(0, 5 - projectCount),  // Remaining vouchers
+            facilitator_seats: Math.max(0, 4 - Math.floor(projectCount * 1.5)), // Estimate used seats
+            storyteller_seats: Math.max(0, 10 - Math.floor(projectCount * 3.5))  // Estimate used seats
+          })
+        } catch (projectError) {
+          console.error('Error loading projects:', projectError)
+          // Complete fallback - no real data available
+          setProjects([])
+          setResourceWallet({
+            user_id: user.id,
+            project_vouchers: 0,  // Show as if all resources are used when we can't get real data
+            facilitator_seats: 0,
+            storyteller_seats: 0
+          })
+        }
       } finally {
         setLoading(false)
       }
@@ -49,6 +66,32 @@ export default function DashboardPage() {
 
     loadDashboardData()
   }, [user?.id])
+
+  const handleCreateProject = async () => {
+    if (!user?.id || !resourceWallet?.project_vouchers || resourceWallet.project_vouchers <= 0) {
+      alert('You need project vouchers to create a new project. Please purchase more resources.')
+      return
+    }
+
+    setIsCreatingProject(true)
+    try {
+      // For now, redirect to a create project page or show a modal
+      // In a real implementation, you would create the project here
+      const projectName = prompt('Enter project name:')
+      if (projectName) {
+        // This would call the actual project creation API
+        console.log('Creating project:', projectName)
+        alert('Project creation functionality will be implemented soon!')
+        // Reload dashboard data after creation
+        // await loadDashboardData()
+      }
+    } catch (error) {
+      console.error('Error creating project:', error)
+      alert('Failed to create project. Please try again.')
+    } finally {
+      setIsCreatingProject(false)
+    }
+  }
 
   const ownedProjects = projects.filter(p => p.is_owner)
   const participatingProjects = projects.filter(p => !p.is_owner)
@@ -97,7 +140,7 @@ export default function DashboardPage() {
                 <BookOpen className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">Welcome back, John</h1>
+                <h1 className="text-2xl font-bold text-foreground">Welcome back, {user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}</h1>
                 <p className="text-muted-foreground">{projects.length} projects • {resourceWallet?.facilitator_seats || 0} facilitator seats • {resourceWallet?.storyteller_seats || 0} storyteller seats available</p>
               </div>
             </div>
@@ -105,8 +148,10 @@ export default function DashboardPage() {
               size="lg"
               rightIcon={<Plus className="h-5 w-5" />}
               className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+              onClick={handleCreateProject}
+              disabled={isCreatingProject || !resourceWallet?.project_vouchers || resourceWallet.project_vouchers <= 0}
             >
-              Create New Saga
+              {isCreatingProject ? 'Creating...' : 'Create New Saga'}
             </EnhancedButton>
           </div>
         </div>
@@ -120,7 +165,11 @@ export default function DashboardPage() {
             <section>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-foreground">Your Resources</h2>
-                <EnhancedButton variant="outline" size="sm">
+                <EnhancedButton 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => window.location.href = '/dashboard/purchase'}
+                >
                   Purchase More
                 </EnhancedButton>
               </div>
@@ -168,9 +217,12 @@ export default function DashboardPage() {
                     <div className="text-4xl mb-4">📚</div>
                     <h3 className="text-lg font-semibold text-foreground">No Projects Yet</h3>
                     <p className="text-muted-foreground">Create your first project to start collecting family stories.</p>
-                    <EnhancedButton>
+                    <EnhancedButton 
+                      onClick={handleCreateProject}
+                      disabled={isCreatingProject || !resourceWallet?.project_vouchers || resourceWallet.project_vouchers <= 0}
+                    >
                       <Plus className="h-4 w-4 mr-2" />
-                      Create New Saga
+                      {isCreatingProject ? 'Creating...' : 'Create New Saga'}
                     </EnhancedButton>
                   </div>
                 </EnhancedCard>
@@ -351,7 +403,12 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 
-                <EnhancedButton variant="outline" size="sm" className="w-full">
+                <EnhancedButton 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => window.location.href = '/dashboard/purchase'}
+                >
                   Purchase Resources
                 </EnhancedButton>
               </EnhancedCardContent>
