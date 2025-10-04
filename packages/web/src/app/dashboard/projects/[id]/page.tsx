@@ -357,13 +357,13 @@ export default function ProjectDetailPage() {
                   <div className="mb-6">
                     <label className="text-sm font-medium text-gray-700 mb-2 block">Sort by</label>
                     <FilterTabs
-                      tabs={[
-                        { id: 'latest', label: 'Latest First' },
-                        { id: 'oldest', label: 'Oldest First' },
-                        { id: 'most-comments', label: 'Most Comments' }
+                      options={[
+                        { value: 'latest', label: 'Latest First' },
+                        { value: 'oldest', label: 'Oldest First' },
+                        { value: 'most-comments', label: 'Most Comments' }
                       ]}
-                      activeTab={sortBy}
-                      onTabChange={(tab) => setSortBy(tab as any)}
+                      value={sortBy}
+                      onValueChange={(value: string) => setSortBy(value as any)}
                     />
                   </div>
                 </div>
@@ -418,18 +418,40 @@ export default function ProjectDetailPage() {
 
             {/* Main Content */}
             <div className="lg:col-span-3">
-              {/* Search Bar */}
-              <div className="mb-6">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <Input
-                    placeholder="Search stories..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
+              {/* Project Validity Period Progress */}
+              <EnhancedCard className="mb-6">
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-sage-600" />
+                      <h3 className="font-semibold text-gray-900">Project Validity Period</h3>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      <span className="font-medium text-sage-600">287 days</span> remaining
+                    </div>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="space-y-2">
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div 
+                        className="bg-gradient-to-r from-sage-500 to-sage-600 h-3 rounded-full transition-all duration-500"
+                        style={{ width: '78%' }}
+                      ></div>
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>Started: Jan 15, 2024</span>
+                      <span>Expires: Jan 15, 2025</span>
+                    </div>
+                  </div>
+                  
+                  {/* Status Info */}
+                  <div className="mt-3 flex items-center gap-2 text-sm">
+                    <Badge className="bg-green-100 text-green-800">Active</Badge>
+                    <span className="text-gray-600">Interactive service available</span>
+                  </div>
                 </div>
-              </div>
+              </EnhancedCard>
 
               {/* Chapter Summary */}
               <EnhancedCard className="mb-6 bg-gradient-to-r from-sage-50 to-sage-100 border-sage-200">

@@ -5,7 +5,7 @@ import { EnhancedButton } from "@/components/ui/enhanced-button"
 import { StatsCard } from "@/components/ui/stats-card"
 import { ProjectCard } from "@/components/ui/project-card"
 import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from "@/components/ui/enhanced-card"
-import { Users, BookOpen, Plus, TrendingUp, Clock, Star, Lightbulb } from "lucide-react"
+import { Users, BookOpen, Plus, Star, Lightbulb } from "lucide-react"
 import { settingsService, ResourceWallet } from '@/services/settings-service'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { useAuthStore } from '@/stores/auth-store'
@@ -156,9 +156,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-3 space-y-8">
+        <div className="space-y-8">
             {/* Resource Overview */}
             <section>
               <div className="flex items-center justify-between mb-6">
@@ -175,7 +173,7 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <StatsCard
                   title="Project Vouchers"
-                  value={`${resourceWallet?.project_vouchers || 0}/5`}
+                  value={`${resourceWallet?.project_vouchers || 0}/1`}
                   description="Available project vouchers"
                   icon={<BookOpen className="w-5 h-5" />}
                   variant="info"
@@ -183,7 +181,7 @@ export default function DashboardPage() {
                 />
                 <StatsCard
                   title="Facilitator Seats"
-                  value={`${resourceWallet?.facilitator_seats || 0}/4`}
+                  value={`${resourceWallet?.facilitator_seats || 0}/2`}
                   description="Available facilitator seats"
                   icon={<Users className="w-5 h-5" />}
                   variant="success"
@@ -191,7 +189,7 @@ export default function DashboardPage() {
                 />
                 <StatsCard
                   title="Storyteller Seats"
-                  value={`${resourceWallet?.storyteller_seats || 0}/10`}
+                  value={`${resourceWallet?.storyteller_seats || 0}/2`}
                   description="Available storyteller seats"
                   icon={<Star className="w-5 h-5" />}
                   variant="warning"
@@ -319,89 +317,6 @@ export default function DashboardPage() {
                 </EnhancedCardContent>
               </EnhancedCard>
             </section>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Resource Management */}
-            <EnhancedCard>
-              <EnhancedCardHeader>
-                <EnhancedCardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                  Resource Details
-                </EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Project Vouchers</span>
-                    <span className="font-medium">{resourceWallet?.project_vouchers || 0}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.project_vouchers || 0}/5</span>
-                    <span className="text-sm text-success">{resourceWallet?.project_vouchers || 0} remaining</span>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.project_vouchers || 0) / 5) * 100)}%` }}></div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Facilitator Seats</span>
-                    <span className="font-medium">{resourceWallet?.facilitator_seats || 0}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.facilitator_seats || 0}/4</span>
-                    <span className="text-sm text-success">{resourceWallet?.facilitator_seats || 0} available</span>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.facilitator_seats || 0) / 4) * 100)}%` }}></div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Storyteller Seats</span>
-                    <span className="font-medium">{resourceWallet?.storyteller_seats || 0}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Available {resourceWallet?.storyteller_seats || 0}/10</span>
-                    <span className="text-sm text-success">{resourceWallet?.storyteller_seats || 0} available</span>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-warning to-success h-2 rounded-full" style={{ width: `${Math.min(100, ((resourceWallet?.storyteller_seats || 0) / 10) * 100)}%` }}></div>
-                  </div>
-                </div>
-              </EnhancedCardContent>
-            </EnhancedCard>
-
-            {/* Usage History */}
-            <EnhancedCard>
-              <EnhancedCardHeader>
-                <EnhancedCardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-secondary" />
-                  Usage History
-                </EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent className="space-y-3">
-                <div className="text-center py-4">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Usage history will be available soon
-                  </p>
-                </div>
-                
-                <EnhancedButton 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full"
-                  onClick={() => window.location.href = '/dashboard/purchase'}
-                >
-                  Purchase Resources
-                </EnhancedButton>
-              </EnhancedCardContent>
-            </EnhancedCard>
-          </div>
         </div>
       </div>
     </div>

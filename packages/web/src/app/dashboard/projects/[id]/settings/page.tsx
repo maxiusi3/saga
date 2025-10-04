@@ -193,8 +193,52 @@ export default function ProjectSettingsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
+            {/* Quick Actions */}
+            <EnhancedCard>
+              <div className="p-6">
+                <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                <div className="space-y-2">
+                  <EnhancedButton 
+                    variant="secondary" 
+                    className="w-full justify-start"
+                    onClick={() => {
+                      const inviteSection = document.getElementById('invite-section');
+                      inviteSection?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    Invite Members
+                  </EnhancedButton>
+                  <EnhancedButton 
+                    variant="secondary" 
+                    className="w-full justify-start"
+                    onClick={() => toast.success('Export feature coming soon!')}
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export Data
+                  </EnhancedButton>
+                  <EnhancedButton 
+                    variant="secondary" 
+                    className="w-full justify-start"
+                    onClick={() => toast.success('Share feature coming soon!')}
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                    Share Project
+                  </EnhancedButton>
+                </div>
+              </div>
+            </EnhancedCard>
+
+            {/* Project Stats */}
             <EnhancedCard>
               <div className="p-6">
                 <h3 className="font-semibold text-gray-900 mb-4">Project Stats</h3>
@@ -216,7 +260,9 @@ export default function ProjectSettingsPage() {
             </EnhancedCard>
           </div>
 
+          {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
+
             <EnhancedCard>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -224,6 +270,31 @@ export default function ProjectSettingsPage() {
                   <Badge className="bg-green-100 text-green-800">
                     {project.status === 'active' ? 'Active' : 'Archived'}
                   </Badge>
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-3 gap-6 mb-6">
+                  <div className="text-center">
+                    <svg className="w-8 h-8 mx-auto mb-2 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <div className="text-2xl font-bold text-gray-900">{new Date(project.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric' })}</div>
+                    <div className="text-sm text-gray-600">Created</div>
+                  </div>
+                  <div className="text-center">
+                    <svg className="w-8 h-8 mx-auto mb-2 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <div className="text-2xl font-bold text-gray-900">{project.story_count || 0}</div>
+                    <div className="text-sm text-gray-600">Stories</div>
+                  </div>
+                  <div className="text-center">
+                    <svg className="w-8 h-8 mx-auto mb-2 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <div className="text-2xl font-bold text-gray-900">{project.member_count || 0}</div>
+                    <div className="text-sm text-gray-600">Members</div>
+                  </div>
                 </div>
 
                 <div className="space-y-4">
@@ -259,9 +330,23 @@ export default function ProjectSettingsPage() {
 
             <EnhancedCard>
               <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">Member Management</h2>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900">Member Management</h2>
+                  <EnhancedButton 
+                    size="sm"
+                    onClick={() => {
+                      const inviteSection = document.getElementById('invite-section');
+                      inviteSection?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    Invite Member
+                  </EnhancedButton>
+                </div>
 
-                <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <div id="invite-section" className="mb-6 p-4 bg-sage-50 rounded-lg border border-sage-200">
                   <h3 className="font-medium text-gray-900 mb-3">Invite New Member</h3>
                   <div className="flex gap-2">
                     <Input
@@ -288,62 +373,100 @@ export default function ProjectSettingsPage() {
 
                 <div className="space-y-3">
                   {project.members && project.members.length > 0 ? (
-                    project.members.map((member) => (
-                      <div
-                        key={member.id}
-                        className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg"
-                      >
-                        <div className="flex items-center gap-3">
-                          <Avatar>
-                            <AvatarFallback>
-                              {member.user_id?.charAt(0)?.toUpperCase() || 'U'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-gray-900">
-                                {member.user_id === user.id ? 'You (Owner)' : `User ${member.user_id.substring(0, 8)}`}
-                              </span>
-                              {member.user_id === project.facilitator_id && (
-                                <Crown className="h-4 w-4 text-yellow-500" />
-                              )}
+                    project.members.map((member) => {
+                      const isOwner = member.user_id === user.id;
+                      const memberName = isOwner ? 'You (Owner)' : `User ${member.user_id.substring(0, 8)}`;
+                      const memberEmail = isOwner ? 'current@example.com' : `user${member.user_id.substring(0, 4)}@example.com`;
+                      
+                      return (
+                        <div
+                          key={member.id}
+                          className={`flex items-center justify-between p-4 rounded-lg border ${
+                            isOwner ? 'bg-amber-50 border-amber-200' : 'bg-white border-gray-200'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <Avatar className="w-10 h-10">
+                              <AvatarFallback className={isOwner ? 'bg-amber-200 text-amber-800' : 'bg-sage-200 text-sage-800'}>
+                                {memberName.charAt(0).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium text-gray-900">{memberName}</span>
+                                {isOwner && <Crown className="h-4 w-4 text-amber-500" />}
+                                {member.status === 'pending' && (
+                                  <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                  </svg>
+                                )}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                {memberEmail}
+                              </div>
+                              <div className="text-xs text-gray-500 mt-1">
+                                Role: {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
+                              </div>
                             </div>
-                            <div className="text-sm text-gray-600">Role: {member.role}</div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge className={
+                              member.status === 'active' 
+                                ? 'bg-green-100 text-green-800' 
+                                : member.status === 'pending'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }>
+                              {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
+                            </Badge>
+                            {!isOwner && (
+                              <>
+                                <Select defaultValue={member.role}>
+                                  <SelectTrigger className="w-32 h-8 text-xs">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="facilitator">Facilitator</SelectItem>
+                                    <SelectItem value="storyteller">Storyteller</SelectItem>
+                                    <SelectItem value="co-facilitator">Co-Facilitator</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                {project.is_owner && (
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <EnhancedButton variant="destructive" size="sm" className="h-8 w-8 p-0">
+                                        <Trash2 className="h-4 w-4" />
+                                      </EnhancedButton>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>Remove Member</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          Are you sure you want to remove this member from the project? This action cannot be undone.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={() => handleRemoveMember(member.id)}>
+                                          Remove
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                )}
+                              </>
+                            )}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Badge className={member.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
-                            {member.status}
-                          </Badge>
-                          {member.user_id !== user.id && project.is_owner && (
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <EnhancedButton variant="outline" size="sm">
-                                  <Trash2 className="h-4 w-4" />
-                                </EnhancedButton>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Remove Member</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Are you sure you want to remove this member from the project?
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction onClick={() => handleRemoveMember(member.id)}>
-                                    Remove
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          )}
-                        </div>
-                      </div>
-                    ))
+                      );
+                    })
                   ) : (
-                    <div className="text-center py-8 text-gray-500">
-                      No members yet. Invite someone to get started!
+                    <div className="text-center py-12 text-gray-500">
+                      <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      <p className="font-medium">No members yet</p>
+                      <p className="text-sm mt-1">Invite someone to get started!</p>
                     </div>
                   )}
                 </div>
