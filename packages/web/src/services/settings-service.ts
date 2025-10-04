@@ -1,3 +1,5 @@
+import { createClient } from '@supabase/supabase-js'
+
 // Settings service for frontend API integration
 export interface UserProfile {
   id: string;
@@ -52,16 +54,29 @@ class SettingsService {
   private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const token = localStorage.getItem('auth_token');
+    // Get token from Supabase session
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...options.headers as Record<string, string>,
+    };
+    
+    try {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
+      }
+    } catch (error) {
+      console.error('Failed to get auth session:', error);
+    }
     
     try {
       const response = await fetch(`${this.baseUrl}${endpoint}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token ? `Bearer ${token}` : '',
-          ...options.headers,
-        },
         ...options,
+        headers,
       });
 
       if (!response.ok) {

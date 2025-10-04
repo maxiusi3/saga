@@ -1,0 +1,119 @@
+
+> @saga/web@1.0.0 dev
+> next dev
+
+   ▲ Next.js 15.2.4
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.27:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 3.1s
+ ○ Compiling / ...
+ ✓ Compiled / in 12.4s (1021 modules)
+❌ Configuration validation failed:
+  - Missing required environment variable: NEXT_PUBLIC_SUPABASE_URL
+  - Missing required environment variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+  - Missing required server environment variable: OPENROUTER_API_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) {
+❌ Configuration validation failed:
+  - Missing required environment variable: NEXT_PUBLIC_SUPABASE_URL
+  - Missing required environment variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+  - Missing required server environment variable: OPENROUTER_API_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) {
+ ⨯ Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) { {
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 7.8s (1335 modules)
+ GET / 500 in 20972ms
+ ✓ Compiled in 2.7s (680 modules)
+ ✓ Compiled in 1697ms (680 modules)
+ ✓ Compiled in 1164ms (680 modules)
+ ✓ Compiled in 1661ms (680 modules)
+ ✓ Compiled in 1635ms (680 modules)
+ ✓ Compiled in 1457ms (680 modules)
+ ✓ Compiled in 1314ms (680 modules)
+ ✓ Compiled in 1376ms (680 modules)
+ ✓ Compiled in 1123ms (680 modules)
+ ✓ Compiled in 1430ms (680 modules)
+ ✓ Compiled in 1963ms (680 modules)
+ ✓ Compiled in 1571ms (680 modules)
+ ✓ Compiled in 2s (680 modules)
+ ✓ Compiled in 3.7s (680 modules)
+ ✓ Compiled in 2s (680 modules)
+ ✓ Compiled in 1099ms (680 modules)
+ ✓ Compiled in 1175ms (680 modules)
+ ✓ Compiled in 1375ms (680 modules)
+ ✓ Compiled in 3s (680 modules)
+ ✓ Compiled in 1651ms (680 modules)
+ ✓ Compiled in 914ms (680 modules)
+ ✓ Compiled in 762ms (680 modules)
+ ✓ Compiled in 1372ms (680 modules)
+ ✓ Compiled in 1466ms (680 modules)
+ ✓ Compiled in 1345ms (680 modules)
+ ✓ Compiled in 1558ms (680 modules)
+ ✓ Compiled in 1342ms (680 modules)
+ ✓ Compiled in 1548ms (680 modules)
+ ✓ Compiled in 3.9s (680 modules)
+ ✓ Compiled in 1515ms (680 modules)
+ ✓ Compiled in 1272ms (680 modules)
+ ✓ Compiled in 662ms (680 modules)
+ ✓ Compiled in 2.7s (680 modules)
+ ✓ Compiled in 1844ms (680 modules)
+ ✓ Compiled in 2.2s (680 modules)
+ ✓ Compiled in 1225ms (680 modules)
+ ✓ Compiled in 1075ms (680 modules)
+ ✓ Compiled in 970ms (680 modules)
+ ✓ Compiled in 3.7s (680 modules)
+ ✓ Compiled in 1336ms (680 modules)
+ ✓ Compiled in 899ms (680 modules)
+ ✓ Compiled in 974ms (680 modules)
+ ✓ Compiled in 662ms (680 modules)
+ ✓ Compiled in 1173ms (680 modules)
+ ✓ Compiled in 2.6s (680 modules)
+ ✓ Compiled in 1380ms (680 modules)
+ ✓ Compiled in 4s (680 modules)
+ ✓ Compiled in 1350ms (680 modules)
+ ✓ Compiled in 1901ms (680 modules)
+ ✓ Compiled in 1154ms (680 modules)
+ ✓ Compiled in 1285ms (680 modules)
+ ✓ Compiled in 2.5s (680 modules)
+ ✓ Compiled in 5.4s (777 modules)
+ ✓ Compiled in 2.5s (680 modules)
+ ✓ Compiled in 1681ms (680 modules)

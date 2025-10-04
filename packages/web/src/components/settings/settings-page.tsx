@@ -77,25 +77,37 @@ export function SettingsPage({
     setIsInitialLoading(true)
     try {
       const [profile, notifications, accessibility] = await Promise.all([
-        settingsService.getUserProfile().catch(() => ({
-          id: '',
-          name: '',
-          email: '',
-          phone: '',
-          avatar: '',
-          bio: ''
-        })),
-        settingsService.getNotificationSettings().catch(() => ({
-          emailNotifications: true,
-          pushNotifications: true,
-          weeklyDigest: false
-        })),
-        settingsService.getAccessibilitySettings().catch(() => ({
-          fontSize: 'standard' as const,
-          highContrast: false,
-          reducedMotion: false,
-          screenReader: false
-        }))
+        settingsService.getUserProfile().catch((err) => {
+          console.error('Failed to load profile:', err)
+          return {
+            id: '',
+            name: '',
+            email: '',
+            phone: '',
+            avatar: '',
+            bio: ''
+          }
+        }),
+        settingsService.getNotificationSettings().catch((err) => {
+          console.error('Failed to load notifications:', err)
+          return {
+            emailNotifications: true,
+            pushNotifications: true,
+            storyUpdates: true,
+            followUpQuestions: true,
+            weeklyDigest: false,
+            marketingEmails: false
+          }
+        }),
+        settingsService.getAccessibilitySettings().catch((err) => {
+          console.error('Failed to load accessibility:', err)
+          return {
+            fontSize: 'standard' as const,
+            highContrast: false,
+            reducedMotion: false,
+            screenReader: false
+          }
+        })
       ])
       
       setProfileForm(profile)
@@ -106,7 +118,14 @@ export function SettingsPage({
       toast.error('Failed to load settings. Using default values.')
       // Set default values
       setProfileForm({ id: '', name: '', email: '', phone: '', avatar: '', bio: '' })
-      setNotificationForm({ emailNotifications: true, pushNotifications: true, weeklyDigest: false })
+      setNotificationForm({ 
+        emailNotifications: true, 
+        pushNotifications: true, 
+        storyUpdates: true,
+        followUpQuestions: true,
+        weeklyDigest: false,
+        marketingEmails: false
+      })
       setAccessibilityForm({ fontSize: 'standard', highContrast: false, reducedMotion: false, screenReader: false })
     } finally {
       setIsInitialLoading(false)
