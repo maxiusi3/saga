@@ -77,9 +77,25 @@ export function SettingsPage({
     setIsInitialLoading(true)
     try {
       const [profile, notifications, accessibility] = await Promise.all([
-        settingsService.getUserProfile(),
-        settingsService.getNotificationSettings(),
-        settingsService.getAccessibilitySettings()
+        settingsService.getUserProfile().catch(() => ({
+          id: '',
+          name: '',
+          email: '',
+          phone: '',
+          avatar: '',
+          bio: ''
+        })),
+        settingsService.getNotificationSettings().catch(() => ({
+          emailNotifications: true,
+          pushNotifications: true,
+          weeklyDigest: false
+        })),
+        settingsService.getAccessibilitySettings().catch(() => ({
+          fontSize: 'standard' as const,
+          highContrast: false,
+          reducedMotion: false,
+          screenReader: false
+        }))
       ])
       
       setProfileForm(profile)
@@ -87,7 +103,11 @@ export function SettingsPage({
       setAccessibilityForm(accessibility)
     } catch (error) {
       console.error('Failed to load settings:', error)
-      toast.error('Failed to load settings. Please refresh the page.')
+      toast.error('Failed to load settings. Using default values.')
+      // Set default values
+      setProfileForm({ id: '', name: '', email: '', phone: '', avatar: '', bio: '' })
+      setNotificationForm({ emailNotifications: true, pushNotifications: true, weeklyDigest: false })
+      setAccessibilityForm({ fontSize: 'standard', highContrast: false, reducedMotion: false, screenReader: false })
     } finally {
       setIsInitialLoading(false)
     }
