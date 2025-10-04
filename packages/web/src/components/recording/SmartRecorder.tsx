@@ -321,7 +321,7 @@ export function SmartRecorder({
     }
 
     if (!result.transcript && !result.audioBlob) {
-      toast.error('录音内容为空，请重新录音')
+      toast.error('Recording is empty, please try again')
       return
     }
 
@@ -368,15 +368,7 @@ export function SmartRecorder({
     }
   }
 
-  const getMethodBadge = () => {
-    const useRealtime = shouldUseRealtime()
-    return (
-      <Badge variant={useRealtime ? "default" : "secondary"} className="flex items-center gap-1">
-        {useRealtime ? <Zap className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
-        {useRealtime ? '实时转录' : '传统录音'}
-      </Badge>
-    )
-  }
+  // Removed method badge since we only use traditional recording now
 
   return (
     <Card className={`p-6 ${className}`}>
@@ -384,14 +376,13 @@ export function SmartRecorder({
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg font-semibold text-foreground">智能录音</h3>
-            {getMethodBadge()}
+            <h3 className="text-lg font-semibold text-foreground">Record Your Story</h3>
           </div>
           <div className="flex items-center gap-2">
             {getNetworkIcon()}
             <span className="text-sm text-muted-foreground">
-              {networkQuality === 'good' ? '网络良好' : 
-               networkQuality === 'poor' ? '网络较慢' : '离线模式'}
+              {networkQuality === 'good' ? 'Good Connection' : 
+               networkQuality === 'poor' ? 'Slow Connection' : 'Offline Mode'}
             </span>
           </div>
         </div>
@@ -399,7 +390,7 @@ export function SmartRecorder({
         {/* Prompt Display */}
         {promptText && (
           <div className="p-4 bg-muted/50 rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">录音提示：</p>
+            <p className="text-sm text-muted-foreground mb-1">Prompt:</p>
             <p className="text-foreground">{promptText}</p>
           </div>
         )}
@@ -523,7 +514,7 @@ export function SmartRecorder({
                 size="lg"
                 className="bg-primary hover:bg-primary/90"
               >
-                完成录音
+                Complete Recording
               </Button>
               <Button
                 onClick={resetRecording}
@@ -531,7 +522,7 @@ export function SmartRecorder({
                 size="lg"
               >
                 <RotateCcw className="h-5 w-5 mr-2" />
-                重新录音
+                Re-record
               </Button>
             </>
           )}
@@ -540,9 +531,9 @@ export function SmartRecorder({
         {/* Tips */}
         <div className="text-center text-sm text-muted-foreground">
           {shouldUseRealtime() ? (
-            <p>💡 正在使用实时语音识别，边说边转录文字</p>
+            <p>💡 Using real-time speech recognition</p>
           ) : (
-            <p>💡 正在使用传统录音模式，录音完成后将进行转录</p>
+            <p>💡 Recording in progress, transcription will be processed after completion</p>
           )}
         </div>
       </div>

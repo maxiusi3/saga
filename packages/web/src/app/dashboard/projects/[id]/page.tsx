@@ -295,10 +295,12 @@ export default function ProjectDetailPage() {
                 <Download className="w-4 h-4 mr-2" />
                 Export Stories
               </EnhancedButton>
-              <EnhancedButton variant="outline" size="sm">
-                <Users className="w-4 h-4 mr-2" />
-                Manage Project
-              </EnhancedButton>
+              <Link href={`/dashboard/projects/${projectId}/settings`}>
+                <EnhancedButton variant="outline" size="sm">
+                  <Users className="w-4 h-4 mr-2" />
+                  Manage Project
+                </EnhancedButton>
+              </Link>
               <ActionPermissionGate
                 action="canCreateStories"
                 userRole={project.user_role}
