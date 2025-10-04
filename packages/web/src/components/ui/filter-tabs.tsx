@@ -26,7 +26,8 @@ export function FilterTabs({
   variant = 'tabs'
 }: FilterTabsProps) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const selectedOption = options.find(option => option.value === value)
+  const safeOptions = Array.isArray(options) ? options : []
+  const selectedOption = safeOptions.find(option => option.value === value)
 
   if (variant === 'dropdown') {
     return (
@@ -48,7 +49,7 @@ export function FilterTabs({
             />
             <div className="absolute top-full left-0 mt-1 w-full min-w-[200px] bg-background border border-border rounded-lg shadow-lg z-20">
               <div className="p-1">
-                {options.map((option) => (
+                {safeOptions.map((option) => (
                   <button
                     key={option.value}
                     onClick={() => {
@@ -87,7 +88,7 @@ export function FilterTabs({
   if (variant === 'pills') {
     return (
       <div className={cn("flex flex-wrap gap-2", className)}>
-        {options.map((option) => (
+        {safeOptions.map((option) => (
           <EnhancedButton
             key={option.value}
             variant={value === option.value ? "default" : "outline"}
@@ -119,7 +120,7 @@ export function FilterTabs({
   // Default tabs variant
   return (
     <div className={cn("flex items-center gap-1 p-1 bg-muted rounded-lg", className)}>
-      {options.map((option) => (
+      {safeOptions.map((option) => (
         <button
           key={option.value}
           onClick={() => onValueChange(option.value)}
