@@ -277,9 +277,9 @@ export default function ProjectDetailPage() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Family Stories</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">{project.name}</h1>
               <div className="flex items-center gap-4">
-                <Badge className="bg-yellow-100 text-yellow-800">{stories.length} Stories</Badge>
+                <Badge className="bg-yellow-100 text-yellow-800">{safeStories.length} Stories</Badge>
                 {roleInfo && (
                   <Badge variant={roleInfo.color as any}>
                     <span className="mr-1">{roleInfo.icon}</span>
@@ -485,25 +485,49 @@ export default function ProjectDetailPage() {
                 </EnhancedCard>
               ) : (
                 <div className="space-y-4">
-                  {filteredStories.map((story) => (
-                    <StoryCard
-                      key={story.id}
-                      id={story.id}
-                      title={story.title || story.ai_generated_title || 'Untitled'}
-                      author={story.storyteller_name || 'Unknown'}
-                      date={new Date(story.created_at).toLocaleDateString()}
-                      duration={story.duration ? `${Math.floor(story.duration / 60)}:${String(story.duration % 60).padStart(2, '0')}` : undefined}
-                      summary={story.ai_summary || story.content || 'No summary available'}
-                      theme={story.category || 'General'}
-                      badge={story.category || 'Story'}
-                      role={roleInfo?.label || 'Member'}
-                      commentsCount={story.comments_count || 0}
-                      followUpsCount={story.follow_ups_count || 0}
-                      onPlay={() => window.location.href = `/dashboard/projects/${projectId}/stories/${story.id}`}
-                      onReadTranscript={() => window.location.href = `/dashboard/projects/${projectId}/stories/${story.id}`}
-                      onAskFollowUp={() => console.log('Ask follow-up for story:', story.id)}
-                    />
-                  ))}
+                  {filteredStories.map((story) => {
+                    // Get story text preview (first 50 characters)
+                    const textPreview = story.transcript 
+                      ? story.transcript.substring(0, 50) + (story.transcript.length > 50 ? '...' : '')
+                      : story.ai_summary?.substring(0, 50) + (story.ai_summary && story.ai_summary.length > 50 ? '...' : '') || 'No content available'
+                    
+                    return (
+                      <StoryCard
+                        key={story.id}
+                        id={story.id}
+                        title={story.title || story.ai_generated_title || 'Untitled Story'}
+                        author={{
+                          name: story.storyteller_name || 'Unknown',
+                          avatar: story.storyteller_avatar,
+                          role: roleInfo?.label
+                        }}
+                        duration={story.duration ? `${Math.floor(story.duration / 60)}:${String(story.duration % 60).padStart(2, '0')}` : '0:00'}
+                        createdAt={new Date(story.created_at).toLocaleDateString('en-US', { 
+                          year: 'numeric', 
+                          month: 'short', 
+                          day: 'numeric' 
+                        })}
+                        description={textPreview}
+                        tags={story.category ? [{ label: story.category, color: 'primary' as const }] : []}
+                        stats={{
+                          comments: story.comments_count || 0,
+                          followUps: story.follow_ups_count || 0
+                        }}
+                        lastInteractionTime={story.latest_interaction_time 
+                          ? new Date(story.latest_interaction_time).toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })
+                          : undefined
+                        }
+                        onPlay={() => window.location.href = `/dashboard/projects/${projectId}/stories/${story.id}`}
+                        onComment={() => window.location.href = `/dashboard/projects/${projectId}/stories/${story.id}#comments`}
+                        className="cursor-pointer hover:shadow-lg transition-shadow"
+                      />
+                    )
+                  })}
                   
                   {/* Load More Button */}
                   <div className="text-center pt-6">

@@ -25,7 +25,9 @@ interface StoryCardProps {
     comments?: number
     likes?: number
     plays?: number
+    followUps?: number
   }
+  lastInteractionTime?: string
   onPlay?: () => void
   onComment?: () => void
   onLike?: () => void
@@ -53,6 +55,7 @@ export function StoryCard({
   thumbnail,
   tags = [],
   stats = {},
+  lastInteractionTime,
   onPlay,
   onComment,
   onLike,
@@ -179,23 +182,40 @@ export function StoryCard({
       </EnhancedCardHeader>
 
       <EnhancedCardContent className={cn(isCompact ? "px-4 pb-4" : "px-6 pb-6")}>
-        <div className="flex items-center justify-between">
+        <div className="space-y-3">
           {/* Time and Duration */}
           <div className="flex items-center space-x-4 text-xs text-muted-foreground">
             <div className="flex items-center space-x-1">
               <Clock className="h-3 w-3" />
-              <span>{createdAt}</span>
+              <span>Created: {createdAt}</span>
             </div>
-            {thumbnail && isCompact && (
+            {lastInteractionTime && (
               <div className="flex items-center space-x-1">
-                <span>{duration}</span>
+                <span>•</span>
+                <span>Last interaction: {lastInteractionTime}</span>
               </div>
             )}
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center space-x-2">
-            {(thumbnail || isCompact) && (
+          {/* Stats and Action Buttons */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+              {stats.comments !== undefined && (
+                <div className="flex items-center space-x-1">
+                  <MessageCircle className="h-4 w-4" />
+                  <span>{stats.comments} {stats.comments === 1 ? 'comment' : 'comments'}</span>
+                </div>
+              )}
+              {stats.followUps !== undefined && (
+                <div className="flex items-center space-x-1">
+                  <span>•</span>
+                  <span>{stats.followUps} {stats.followUps === 1 ? 'follow-up' : 'follow-ups'}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-2">
               <EnhancedButton
                 variant="ghost"
                 size="sm"
@@ -203,33 +223,9 @@ export function StoryCard({
                 className="h-8 px-3"
               >
                 <Play className="h-3 w-3 mr-1" />
-                Play
+                View Story
               </EnhancedButton>
-            )}
-            
-            {stats.comments !== undefined && (
-              <EnhancedButton
-                variant="ghost"
-                size="sm"
-                onClick={onComment}
-                className="h-8 px-3"
-              >
-                <MessageCircle className="h-3 w-3 mr-1" />
-                {stats.comments}
-              </EnhancedButton>
-            )}
-            
-            {stats.likes !== undefined && (
-              <EnhancedButton
-                variant="ghost"
-                size="sm"
-                onClick={onLike}
-                className="h-8 px-3"
-              >
-                <Heart className="h-3 w-3 mr-1" />
-                {stats.likes}
-              </EnhancedButton>
-            )}
+            </div>
           </div>
         </div>
       </EnhancedCardContent>
