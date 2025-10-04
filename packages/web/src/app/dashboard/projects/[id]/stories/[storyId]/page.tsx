@@ -151,7 +151,7 @@ export default function StoryDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="animate-pulse space-y-6">
             <div className="h-8 bg-gray-200 rounded w-1/4"></div>
             <div className="h-64 bg-gray-200 rounded"></div>
@@ -165,7 +165,7 @@ export default function StoryDetailPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
-        <div className="max-w-4xl mx-auto text-center py-16">
+        <div className="max-w-7xl mx-auto text-center py-16">
           <h1 className="text-2xl font-bold text-gray-900">Error</h1>
           <p className="text-gray-600 mt-2">{error}</p>
           <Link href={`/dashboard/projects/${projectId}`}>
@@ -181,7 +181,7 @@ export default function StoryDetailPage() {
   if (!story) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
-        <div className="max-w-4xl mx-auto text-center py-16">
+        <div className="max-w-7xl mx-auto text-center py-16">
           <h1 className="text-2xl font-bold text-gray-900">Story not found</h1>
           <Link href={`/dashboard/projects/${projectId}`}>
             <EnhancedButton variant="outline" className="mt-4">
@@ -195,7 +195,7 @@ export default function StoryDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100">
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link href={`/dashboard/projects/${projectId}`}>
@@ -224,33 +224,8 @@ export default function StoryDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Story Header */}
             <EnhancedCard>
-              <EnhancedCardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-4">
-                    <Avatar className="w-12 h-12">
-                      <AvatarImage src={story.storyteller_avatar} />
-                      <AvatarFallback>
-                        {story.storyteller_name?.charAt(0)?.toUpperCase() || 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-gray-900">{story.storyteller_name}</span>
-                        <Badge className="bg-green-100 text-green-800">Storyteller</Badge>
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {new Date(story.timestamp).toLocaleDateString()}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Tag className="w-4 h-4" />
-                          Childhood
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <EnhancedCardHeader className="pb-3">
+                {/* Header content removed for cleaner layout */}
               </EnhancedCardHeader>
               <EnhancedCardContent>
                 {/* Story Title */}
