@@ -7,32 +7,14 @@ import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitl
 import { ModernAudioPlayer } from '@/components/ui/modern-audio-player'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Edit, Send, Share, Download, Heart, MessageCircle, User, Calendar, Tag, ChevronLeft, MoreHorizontal } from 'lucide-react'
+import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { storyService } from '@/lib/stories'
+import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
-
-interface Story {
-  id: string
-  title: string
-  timestamp: string
-  storyteller_id: string
-  storyteller_name: string
-  storyteller_avatar?: string
-  audio_url: string | undefined
-  audio_duration: number
-  transcript: string
-  photo_url?: string
-  type: 'story' | 'chapter_summary'
-  ai_summary?: string
-  ai_follow_up_questions?: string[]
-}
 
 export default function StoryDetailPage() {
   const params = useParams()
@@ -45,8 +27,6 @@ export default function StoryDetailPage() {
   const [editedTitle, setEditedTitle] = useState('')
   const [isEditingTranscript, setIsEditingTranscript] = useState(false)
   const [editedTranscript, setEditedTranscript] = useState('')
-  const [newComment, setNewComment] = useState('')
-  const [newQuestion, setNewQuestion] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -71,8 +51,8 @@ export default function StoryDetailPage() {
         }
 
         setStory(storyData)
-        setEditedTitle(storyData.title)
-        setEditedTranscript(storyData.transcript)
+        setEditedTitle(storyData.title || '')
+        setEditedTranscript(storyData.transcript || '')
       } catch (error) {
         console.error('Error loading story:', error)
         setError('Failed to load story data')
@@ -120,33 +100,7 @@ export default function StoryDetailPage() {
     }
   }
 
-  const handleAddComment = async () => {
-    if (!newComment.trim() || !story) return
 
-    try {
-      // This would integrate with the real interactions service
-      console.log('Adding comment:', newComment)
-      setNewComment('')
-      toast.success('Comment added successfully')
-    } catch (error) {
-      console.error('Error adding comment:', error)
-      toast.error('Failed to add comment')
-    }
-  }
-
-  const handleAskQuestion = async () => {
-    if (!newQuestion.trim() || !story) return
-
-    try {
-      // This would integrate with the real interactions service
-      console.log('Asking question:', newQuestion)
-      setNewQuestion('')
-      toast.success('Question sent successfully')
-    } catch (error) {
-      console.error('Error asking question:', error)
-      toast.error('Failed to send question')
-    }
-  }
 
   if (loading) {
     return (
@@ -267,33 +221,14 @@ export default function StoryDetailPage() {
                   )}
                 </div>
 
-                {/* Story Photo */}
-                {story.photo_url && (
-                  <div className="mb-6">
-                    <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
-                      <Image
-                        src={story.photo_url}
-                        alt="Story photo"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute top-4 right-4">
-                        <EnhancedButton variant="secondary" size="sm">
-                          <Download className="h-4 w-4 mr-2" />
-                          Add Photo
-                        </EnhancedButton>
-                      </div>
-                    </div>
-                  </div>
-                )}
+
 
                 {/* Audio Player */}
                 {story.audio_url && (
                   <div className="mb-6">
                     <ModernAudioPlayer
                       src={story.audio_url}
-                      title={story.title}
-                      duration={story.audio_duration}
+                      showDownload={true}
                     />
                   </div>
                 )}
@@ -338,7 +273,7 @@ export default function StoryDetailPage() {
                   ) : (
                     <div className="prose prose-gray max-w-none">
                       <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                        {story.transcript}
+                        {story.transcript || 'No transcript available'}
                       </p>
                     </div>
                   )}
@@ -346,125 +281,41 @@ export default function StoryDetailPage() {
               </EnhancedCardContent>
             </EnhancedCard>
 
-            {/* Comments Section */}
-            <EnhancedCard>
-              <EnhancedCardHeader>
-                <EnhancedCardTitle className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-sage-600" />
-                  Family Comments
-                  <Badge variant="outline">3</Badge>
-                </EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent>
-                {/* Add Comment */}
-                <div className="mb-6">
-                  <div className="flex gap-3">
-                    <Avatar className="w-8 h-8">
-                      <AvatarFallback>
-                        {user?.email?.charAt(0)?.toUpperCase() || 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <Textarea
-                        placeholder="Share your thoughts about this story..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        className="mb-2"
-                        rows={3}
-                      />
-                      <EnhancedButton 
-                        onClick={handleAddComment}
-                        disabled={!newComment.trim()}
-                        size="sm"
-                      >
-                        <Send className="h-4 w-4 mr-2" />
-                        Post Comment
-                      </EnhancedButton>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Existing Comments */}
-                <div className="space-y-4">
-                  {/* Mock comments - would be replaced with real data */}
-                  <div className="flex gap-3">
-                    <Avatar className="w-8 h-8">
-                      <AvatarFallback>M</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-sm">Mike</span>
-                          <span className="text-xs text-gray-500">2 days ago</span>
-                        </div>
-                        <p className="text-sm text-gray-700">
-                          This brings back so many memories! Thank you for sharing this story.
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
-                        <button className="flex items-center gap-1 hover:text-gray-700">
-                          <Heart className="w-3 h-3" />
-                          Like
-                        </button>
-                        <button className="hover:text-gray-700">Reply</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </EnhancedCardContent>
-            </EnhancedCard>
+            {/* Comments and Follow-up Questions */}
+            <StoryInteractions
+              storyId={storyId}
+              projectId={projectId}
+              userRole={user?.role || 'viewer'}
+              isProjectOwner={story.storyteller_id === user?.id}
+              isStoryteller={story.storyteller_id === user?.id}
+            />
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Follow-up Questions */}
-            <EnhancedCard>
-              <EnhancedCardHeader>
-                <EnhancedCardTitle className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-sage-600" />
-                  Follow-up Questions
-                </EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent>
-                <div className="space-y-4">
-                  <div>
-                    <Textarea
-                      placeholder="Ask a follow-up question about this story..."
-                      value={newQuestion}
-                      onChange={(e) => setNewQuestion(e.target.value)}
-                      rows={3}
-                    />
-                    <EnhancedButton 
-                      onClick={handleAskQuestion}
-                      disabled={!newQuestion.trim()}
-                      className="w-full mt-2"
-                      size="sm"
-                    >
-                      <Send className="h-4 w-4 mr-2" />
-                      Ask Question
-                    </EnhancedButton>
+            {/* AI Suggested Questions */}
+            {story.ai_follow_up_questions && story.ai_follow_up_questions.length > 0 && (
+              <EnhancedCard>
+                <EnhancedCardHeader>
+                  <EnhancedCardTitle className="flex items-center gap-2">
+                    <MessageCircle className="w-5 h-5 text-sage-600" />
+                    AI Suggested Questions
+                  </EnhancedCardTitle>
+                </EnhancedCardHeader>
+                <EnhancedCardContent>
+                  <div className="space-y-2">
+                    {story.ai_follow_up_questions.map((question, index) => (
+                      <button
+                        key={index}
+                        className="text-left p-3 text-sm text-gray-700 hover:bg-sage-50 rounded-lg border border-gray-200 w-full transition-colors"
+                      >
+                        {question}
+                      </button>
+                    ))}
                   </div>
-
-                  {/* AI Suggested Questions */}
-                  {story.ai_follow_up_questions && story.ai_follow_up_questions.length > 0 && (
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2">AI Suggested Questions</h4>
-                      <div className="space-y-2">
-                        {story.ai_follow_up_questions.map((question, index) => (
-                          <button
-                            key={index}
-                            onClick={() => setNewQuestion(question)}
-                            className="text-left p-2 text-sm text-gray-600 hover:bg-gray-50 rounded border border-gray-200 w-full"
-                          >
-                            {question}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </EnhancedCardContent>
-            </EnhancedCard>
+                </EnhancedCardContent>
+              </EnhancedCard>
+            )}
 
             {/* Story Actions */}
             <EnhancedCard>
