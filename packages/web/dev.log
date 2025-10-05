@@ -146,3 +146,54 @@ Configuration validation failed: Error: Invalid configuration. Please check your
  ✓ Compiled in 1215ms (680 modules)
  ✓ Compiled in 1937ms (680 modules)
  ✓ Compiled in 3.4s (680 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 1495ms (671 modules)
+❌ Configuration validation failed:
+  - Missing required environment variable: NEXT_PUBLIC_SUPABASE_URL
+  - Missing required environment variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+  - Missing required server environment variable: OPENROUTER_API_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) {
+❌ Configuration validation failed:
+  - Missing required environment variable: NEXT_PUBLIC_SUPABASE_URL
+  - Missing required environment variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+  - Missing required server environment variable: OPENROUTER_API_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) {
+ ⨯ Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) { {
+  page: '/'
+}
+ GET / 500 in 2975ms
