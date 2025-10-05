@@ -72,7 +72,7 @@ export function SmartRecorder({
       const start = Date.now()
       await fetch('/api/health', { method: 'HEAD', cache: 'no-cache' })
       const latency = Date.now() - start
-      
+
       setNetworkQuality(latency < 500 ? 'good' : 'poor')
     } catch {
       setNetworkQuality('poor')
@@ -169,7 +169,7 @@ export function SmartRecorder({
   const startTimer = useCallback(() => {
     startTimeRef.current = Date.now()
     pausedTimeRef.current = 0
-    
+
     timerRef.current = setInterval(() => {
       const elapsed = Date.now() - startTimeRef.current - pausedTimeRef.current
       const seconds = Math.floor(elapsed / 1000)
@@ -196,7 +196,7 @@ export function SmartRecorder({
       streamRef.current = stream
 
       const useRealtime = shouldUseRealtime()
-      
+
       // Always start MediaRecorder for audio recording
       // 
       const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm'
@@ -381,8 +381,8 @@ export function SmartRecorder({
           <div className="flex items-center gap-2">
             {getNetworkIcon()}
             <span className="text-sm text-muted-foreground">
-              {networkQuality === 'good' ? 'Good Connection' : 
-               networkQuality === 'poor' ? 'Slow Connection' : 'Offline Mode'}
+              {networkQuality === 'good' ? 'Good Connection' :
+                networkQuality === 'poor' ? 'Slow Connection' : 'Offline Mode'}
             </span>
           </div>
         </div>
@@ -421,8 +421,8 @@ export function SmartRecorder({
           </div>
 
           {/* Progress Bar */}
-          <Progress 
-            value={(duration / maxDuration) * 100} 
+          <Progress
+            value={(duration / maxDuration) * 100}
             className="w-full max-w-md mx-auto"
           />
         </div>
