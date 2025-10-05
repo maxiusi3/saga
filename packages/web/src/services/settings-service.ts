@@ -138,11 +138,11 @@ class SettingsService {
 
     const { data, error } = await this.supabase
       .from('user_settings')
-      .select('notification_preferences')
+      .select('notification_email, notification_push, notification_story_updates, notification_follow_up_questions, notification_weekly_digest, notification_marketing_emails')
       .eq('user_id', user.id)
       .single();
 
-    if (error || !data?.notification_preferences) {
+    if (error || !data) {
       return {
         emailNotifications: true,
         pushNotifications: true,
@@ -153,14 +153,13 @@ class SettingsService {
       };
     }
 
-    const prefs = data.notification_preferences as any;
     return {
-      emailNotifications: prefs.email_notifications ?? true,
-      pushNotifications: prefs.push_notifications ?? true,
-      storyUpdates: prefs.story_updates ?? true,
-      followUpQuestions: prefs.follow_up_questions ?? true,
-      weeklyDigest: prefs.weekly_digest ?? true,
-      marketingEmails: prefs.marketing_emails ?? false,
+      emailNotifications: data.notification_email ?? true,
+      pushNotifications: data.notification_push ?? true,
+      storyUpdates: data.notification_story_updates ?? true,
+      followUpQuestions: data.notification_follow_up_questions ?? true,
+      weeklyDigest: data.notification_weekly_digest ?? true,
+      marketingEmails: data.notification_marketing_emails ?? false,
     };
   }
 
@@ -168,20 +167,16 @@ class SettingsService {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const prefs = {
-      email_notifications: settings.emailNotifications,
-      push_notifications: settings.pushNotifications,
-      story_updates: settings.storyUpdates,
-      follow_up_questions: settings.followUpQuestions,
-      weekly_digest: settings.weeklyDigest,
-      marketing_emails: settings.marketingEmails,
-    };
-
     const { error } = await this.supabase
       .from('user_settings')
       .upsert({
         user_id: user.id,
-        notification_preferences: prefs,
+        notification_email: settings.emailNotifications,
+        notification_push: settings.pushNotifications,
+        notification_story_updates: settings.storyUpdates,
+        notification_follow_up_questions: settings.followUpQuestions,
+        notification_weekly_digest: settings.weeklyDigest,
+        notification_marketing_emails: settings.marketingEmails,
         updated_at: new Date().toISOString(),
       });
 
@@ -197,11 +192,12 @@ class SettingsService {
 
     const { data, error } = await this.supabase
       .from('user_settings')
-      .select('accessibility_preferences')
+      .select('accessibility_font_size, accessibility_high_contrast, accessibility_reduced_motion, accessibility_screen_reader')
       .eq('user_id', user.id)
       .single();
 
-    if (error || !data?.accessibility_preferences) {
+    if (error || !data) {
+      // Return defaults if no settings exist
       return {
         fontSize: 'standard',
         highContrast: false,
@@ -210,12 +206,11 @@ class SettingsService {
       };
     }
 
-    const prefs = data.accessibility_preferences as any;
     return {
-      fontSize: prefs.font_size || 'standard',
-      highContrast: prefs.high_contrast || false,
-      reducedMotion: prefs.reduced_motion || false,
-      screenReader: prefs.screen_reader || false,
+      fontSize: (data.accessibility_font_size as any) || 'standard',
+      highContrast: data.accessibility_high_contrast || false,
+      reducedMotion: data.accessibility_reduced_motion || false,
+      screenReader: data.accessibility_screen_reader || false,
     };
   }
 
@@ -223,18 +218,14 @@ class SettingsService {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const prefs = {
-      font_size: settings.fontSize,
-      high_contrast: settings.highContrast,
-      reduced_motion: settings.reducedMotion,
-      screen_reader: settings.screenReader,
-    };
-
     const { error } = await this.supabase
       .from('user_settings')
       .upsert({
         user_id: user.id,
-        accessibility_preferences: prefs,
+        accessibility_font_size: settings.fontSize,
+        accessibility_high_contrast: settings.highContrast,
+        accessibility_reduced_motion: settings.reducedMotion,
+        accessibility_screen_reader: settings.screenReader,
         updated_at: new Date().toISOString(),
       });
 
@@ -252,21 +243,20 @@ class SettingsService {
 
     const { data, error } = await this.supabase
       .from('user_settings')
-      .select('audio_preferences')
+      .select('audio_volume, audio_quality')
       .eq('user_id', user.id)
       .single();
 
-    if (error || !data?.audio_preferences) {
+    if (error || !data) {
       return {
         volume: 75,
         quality: 'high',
       };
     }
 
-    const prefs = data.audio_preferences as any;
     return {
-      volume: prefs.volume || 75,
-      quality: prefs.quality || 'high',
+      volume: data.audio_volume || 75,
+      quality: (data.audio_quality as any) || 'high',
     };
   }
 
@@ -274,16 +264,12 @@ class SettingsService {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const prefs = {
-      volume: settings.volume,
-      quality: settings.quality,
-    };
-
     const { error } = await this.supabase
       .from('user_settings')
       .upsert({
         user_id: user.id,
-        audio_preferences: prefs,
+        audio_volume: settings.volume,
+        audio_quality: settings.quality,
         updated_at: new Date().toISOString(),
       });
 
@@ -298,11 +284,11 @@ class SettingsService {
 
     const { data, error } = await this.supabase
       .from('user_settings')
-      .select('privacy_preferences')
+      .select('privacy_profile_visible, privacy_story_sharing, privacy_data_analytics, privacy_two_factor_auth')
       .eq('user_id', user.id)
       .single();
 
-    if (error || !data?.privacy_preferences) {
+    if (error || !data) {
       return {
         profileVisible: true,
         storySharing: true,
@@ -311,12 +297,11 @@ class SettingsService {
       };
     }
 
-    const prefs = data.privacy_preferences as any;
     return {
-      profileVisible: prefs.profile_visible ?? true,
-      storySharing: prefs.story_sharing ?? true,
-      dataAnalytics: prefs.data_analytics ?? true,
-      twoFactorAuth: prefs.two_factor_auth ?? false,
+      profileVisible: data.privacy_profile_visible ?? true,
+      storySharing: data.privacy_story_sharing ?? true,
+      dataAnalytics: data.privacy_data_analytics ?? true,
+      twoFactorAuth: data.privacy_two_factor_auth ?? false,
     };
   }
 
@@ -324,18 +309,14 @@ class SettingsService {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const prefs = {
-      profile_visible: settings.profileVisible,
-      story_sharing: settings.storySharing,
-      data_analytics: settings.dataAnalytics,
-      two_factor_auth: settings.twoFactorAuth,
-    };
-
     const { error } = await this.supabase
       .from('user_settings')
       .upsert({
         user_id: user.id,
-        privacy_preferences: prefs,
+        privacy_profile_visible: settings.profileVisible,
+        privacy_story_sharing: settings.storySharing,
+        privacy_data_analytics: settings.dataAnalytics,
+        privacy_two_factor_auth: settings.twoFactorAuth,
         updated_at: new Date().toISOString(),
       });
 

@@ -399,3 +399,6 @@ Configuration validation failed: Error: Invalid configuration. Please check your
   page: '/'
 }
  GET / 500 in 2450ms
+ ✓ Compiled in 9.4s (735 modules)
+ ✓ Compiled in 2.7s (680 modules)
+ ✓ Compiled in 1064ms (680 modules)
