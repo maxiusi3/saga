@@ -26,11 +26,8 @@ export default function ProjectSettingsPage() {
   const [project, setProject] = useState<ProjectWithMembers | null>(null)
   const [projectName, setProjectName] = useState('')
   const [projectDescription, setProjectDescription] = useState('')
-  const [inviteEmail, setInviteEmail] = useState('')
-  const [inviteRole, setInviteRole] = useState<'storyteller' | 'facilitator'>('storyteller')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [inviting, setInviting] = useState(false)
 
   useEffect(() => {
     const loadProject = async () => {
@@ -88,43 +85,6 @@ export default function ProjectSettingsPage() {
       toast.error('Failed to update project')
     } finally {
       setSaving(false)
-    }
-  }
-
-  const handleInviteMember = async () => {
-    if (!inviteEmail.trim()) {
-      toast.error('Email is required')
-      return
-    }
-
-    if (!user?.id) {
-      toast.error('User not authenticated')
-      return
-    }
-    
-    setInviting(true)
-    try {
-      const member = await projectService.inviteMember({
-        project_id: projectId,
-        user_email: inviteEmail.trim(),
-        role: inviteRole,
-        invited_by: user.id
-      })
-
-      if (member) {
-        toast.success(`Invitation sent to ${inviteEmail}`)
-        setInviteEmail('')
-        const projects = await projectService.getUserProjects(user.id)
-        const updated = projects.find(p => p.id === projectId)
-        if (updated) setProject(updated)
-      } else {
-        toast.error('Failed to send invitation')
-      }
-    } catch (error) {
-      console.error('Error inviting member:', error)
-      toast.error('Failed to send invitation')
-    } finally {
-      setInviting(false)
     }
   }
 
@@ -201,19 +161,17 @@ export default function ProjectSettingsPage() {
               <div className="p-6">
                 <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
                 <div className="space-y-2">
-                  <EnhancedButton 
-                    variant="secondary" 
-                    className="w-full justify-start"
-                    onClick={() => {
-                      const inviteSection = document.getElementById('invite-section');
-                      inviteSection?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                    </svg>
-                    Invite Members
-                  </EnhancedButton>
+                  <Link href={`/invite?project=${projectId}`}>
+                    <EnhancedButton 
+                      variant="secondary" 
+                      className="w-full justify-start"
+                    >
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      </svg>
+                      Invite Members
+                    </EnhancedButton>
+                  </Link>
                   <EnhancedButton 
                     variant="secondary" 
                     className="w-full justify-start"
@@ -332,43 +290,14 @@ export default function ProjectSettingsPage() {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-semibold text-gray-900">Member Management</h2>
-                  <EnhancedButton 
-                    size="sm"
-                    onClick={() => {
-                      const inviteSection = document.getElementById('invite-section');
-                      inviteSection?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                    </svg>
-                    Invite Member
-                  </EnhancedButton>
-                </div>
-
-                <div id="invite-section" className="mb-6 p-4 bg-sage-50 rounded-lg border border-sage-200">
-                  <h3 className="font-medium text-gray-900 mb-3">Invite New Member</h3>
-                  <div className="flex gap-2">
-                    <Input
-                      type="email"
-                      placeholder="Enter email address"
-                      value={inviteEmail}
-                      onChange={(e) => setInviteEmail(e.target.value)}
-                      className="flex-1"
-                    />
-                    <Select value={inviteRole} onValueChange={(value: any) => setInviteRole(value)}>
-                      <SelectTrigger className="w-40">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="storyteller">Storyteller</SelectItem>
-                        <SelectItem value="facilitator">Facilitator</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <EnhancedButton onClick={handleInviteMember} disabled={inviting}>
-                      {inviting ? 'Sending...' : 'Send Invite'}
+                  <Link href={`/invite?project=${projectId}`}>
+                    <EnhancedButton size="sm">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      </svg>
+                      Invite Member
                     </EnhancedButton>
-                  </div>
+                  </Link>
                 </div>
 
                 <div className="space-y-3">
@@ -428,7 +357,6 @@ export default function ProjectSettingsPage() {
                                   <SelectContent>
                                     <SelectItem value="facilitator">Facilitator</SelectItem>
                                     <SelectItem value="storyteller">Storyteller</SelectItem>
-                                    <SelectItem value="co-facilitator">Co-Facilitator</SelectItem>
                                   </SelectContent>
                                 </Select>
                                 {project.is_owner && (

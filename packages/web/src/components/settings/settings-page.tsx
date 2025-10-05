@@ -518,6 +518,13 @@ export function SettingsPage({
                   />
                 </div>
               </div>
+              
+              <div className="mt-6">
+                <EnhancedButton onClick={handleSaveNotifications} disabled={isLoading} className="w-full sm:w-auto">
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Notification Settings
+                </EnhancedButton>
+              </div>
             </div>
           </EnhancedCard>
 

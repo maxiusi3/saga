@@ -64,7 +64,7 @@ export interface ResourceWallet {
 }
 
 class SettingsService {
-  private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+  private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     // Get token from Supabase session using singleton client
@@ -104,11 +104,11 @@ class SettingsService {
 
   // Profile methods
   async getUserProfile(): Promise<UserProfile> {
-    return this.request<UserProfile>('/settings/profile');
+    return this.request<UserProfile>('/api/settings/profile');
   }
 
   async updateUserProfile(updates: Partial<UserProfile>): Promise<UserProfile> {
-    return this.request<UserProfile>('/settings/profile', {
+    return this.request<UserProfile>('/api/settings/profile', {
       method: 'PUT',
       body: JSON.stringify(updates),
     });
@@ -116,11 +116,11 @@ class SettingsService {
 
   // Notification methods
   async getNotificationSettings(): Promise<NotificationSettings> {
-    return this.request<NotificationSettings>('/settings/notifications');
+    return this.request<NotificationSettings>('/api/settings/notifications');
   }
 
   async updateNotificationSettings(settings: Partial<NotificationSettings>): Promise<NotificationSettings> {
-    return this.request<NotificationSettings>('/settings/notifications', {
+    return this.request<NotificationSettings>('/api/settings/notifications', {
       method: 'PUT',
       body: JSON.stringify(settings),
     });
@@ -128,11 +128,11 @@ class SettingsService {
 
   // Accessibility methods
   async getAccessibilitySettings(): Promise<AccessibilitySettings> {
-    return this.request<AccessibilitySettings>('/settings/accessibility');
+    return this.request<AccessibilitySettings>('/api/settings/accessibility');
   }
 
   async updateAccessibilitySettings(settings: Partial<AccessibilitySettings>): Promise<AccessibilitySettings> {
-    const result = await this.request<AccessibilitySettings>('/settings/accessibility', {
+    const result = await this.request<AccessibilitySettings>('/api/settings/accessibility', {
       method: 'PUT',
       body: JSON.stringify(settings),
     });
@@ -145,11 +145,11 @@ class SettingsService {
 
   // Audio methods
   async getAudioSettings(): Promise<AudioSettings> {
-    return this.request<AudioSettings>('/settings/audio');
+    return this.request<AudioSettings>('/api/settings/audio');
   }
 
   async updateAudioSettings(settings: Partial<AudioSettings>): Promise<AudioSettings> {
-    return this.request<AudioSettings>('/settings/audio', {
+    return this.request<AudioSettings>('/api/settings/audio', {
       method: 'PUT',
       body: JSON.stringify(settings),
     });
@@ -157,11 +157,11 @@ class SettingsService {
 
   // Privacy methods
   async getPrivacySettings(): Promise<PrivacySettings> {
-    return this.request<PrivacySettings>('/settings/privacy');
+    return this.request<PrivacySettings>('/api/settings/privacy');
   }
 
   async updatePrivacySettings(settings: Partial<PrivacySettings>): Promise<PrivacySettings> {
-    return this.request<PrivacySettings>('/settings/privacy', {
+    return this.request<PrivacySettings>('/api/settings/privacy', {
       method: 'PUT',
       body: JSON.stringify(settings),
     });
@@ -169,11 +169,11 @@ class SettingsService {
 
   // Language methods
   async getLanguageSettings(): Promise<LanguageSettings> {
-    return this.request<LanguageSettings>('/settings/language');
+    return this.request<LanguageSettings>('/api/settings/language');
   }
 
   async updateLanguageSettings(settings: Partial<LanguageSettings>): Promise<LanguageSettings> {
-    return this.request<LanguageSettings>('/settings/language', {
+    return this.request<LanguageSettings>('/api/settings/language', {
       method: 'PUT',
       body: JSON.stringify(settings),
     });
@@ -181,7 +181,7 @@ class SettingsService {
 
   // Resource wallet methods
   async getResourceWallet(): Promise<ResourceWallet> {
-    return this.request<ResourceWallet>('/settings/wallet');
+    return this.request<ResourceWallet>('/api/settings/wallet');
   }
 
   // Apply accessibility settings to DOM (similar to accessibility toolbar)
