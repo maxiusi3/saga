@@ -36,87 +36,15 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
   })
 
   const connect = () => {
-    if (socketRef.current?.connected || state.isConnecting || !isAuthenticated) {
-      return
-    }
-
-    setState(prev => ({ ...prev, isConnecting: true, error: null }))
-
-    const token = localStorage.getItem('accessToken')
-    if (!token) {
-      setState(prev => ({
-        ...prev,
-        isConnecting: false,
-        error: 'No authentication token available',
-      }))
-      return
-    }
-
-    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:3001'
-    
-    socketRef.current = io(wsUrl, {
-      auth: { token },
-      transports: ['websocket'],
-      upgrade: false,
-    })
-
-    const socket = socketRef.current
-
-    socket.on('connect', () => {
-      console.log('WebSocket connected')
-      setState(prev => ({
-        ...prev,
-        isConnected: true,
-        isConnecting: false,
-        error: null,
-        reconnectCount: 0,
-      }))
-    })
-
-    socket.on('disconnect', (reason) => {
-      console.log('WebSocket disconnected:', reason)
-      setState(prev => ({
-        ...prev,
-        isConnected: false,
-        isConnecting: false,
-      }))
-
-      // Auto-reconnect unless manually disconnected
-      if (reason !== 'io client disconnect' && state.reconnectCount < reconnectAttempts) {
-        scheduleReconnect()
-      }
-    })
-
-    socket.on('connect_error', (error) => {
-      console.log('WebSocket connection error (demo mode):', error.message)
-      setState(prev => ({
-        ...prev,
-        isConnected: false,
-        isConnecting: false,
-        error: error.message,
-      }))
-
-      // In demo mode, don't show error toasts or attempt reconnection
-      // if (state.reconnectCount < reconnectAttempts) {
-      //   scheduleReconnect()
-      // } else {
-      //   toast.error('Failed to connect to real-time updates')
-      // }
-    })
-
-    socket.on('error', (error) => {
-      console.error('WebSocket error:', error)
-      if (error.code === 'PROJECT_ACCESS_DENIED') {
-        toast.error('Access denied to project')
-      } else if (error.code === 'RATE_LIMIT_EXCEEDED') {
-        toast.error('Too many requests. Please slow down.')
-      }
-    })
-
-    socket.on(WEBSOCKET_EVENTS.SERVER_SHUTDOWN, (data) => {
-      toast('Server is restarting. Reconnecting...', { icon: '🔄' })
-      scheduleReconnect()
-    })
+    // WebSocket is disabled in serverless architecture
+    // Real-time updates are handled by Supabase Realtime instead
+    console.log('WebSocket connect called - using Supabase Realtime instead')
+    setState(prev => ({
+      ...prev,
+      isConnected: false,
+      isConnecting: false,
+      error: 'WebSocket not available in serverless mode. Use Supabase Realtime.',
+    }))
   }
 
   const scheduleReconnect = () => {

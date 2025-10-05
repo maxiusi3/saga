@@ -64,124 +64,345 @@ export interface ResourceWallet {
 }
 
 class SettingsService {
-  private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
-  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    // Get token from Supabase session using singleton client
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      ...options.headers as Record<string, string>,
-    };
-    
-    try {
-      const supabase = getSupabaseClient();
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.access_token) {
-        headers['Authorization'] = `Bearer ${session.access_token}`;
-      }
-    } catch (error) {
-      console.error('Failed to get auth session:', error);
-    }
-    
-    try {
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
-        ...options,
-        headers,
-      });
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-
-      return response.json();
-    } catch (error) {
-      console.error(`API request failed for ${endpoint}:`, error);
-      throw error;
-    }
-  }
-
-
+  private supabase = getSupabaseClient();
 
   // Profile methods
   async getUserProfile(): Promise<UserProfile> {
-    return this.request<UserProfile>('/api/settings/profile');
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await this.supabase
+      .from('user_settings')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error) {
+      // If no settings exist, create default ones
+      if (error.code === 'PGRST116') {
+        const defaultProfile: UserProfile = {
+          id: user.id,
+          name: user.user_metadata?.name || user.email?.split('@')[0] || '',
+          email: user.email || '',
+          phone: user.user_metadata?.phone || undefined,
+          avatar: user.user_metadata?.avatar_url || undefined,
+          bio: undefined,
+        };
+        return defaultProfile;
+      }
+      throw error;
+    }
+
+    return {
+      id: data.user_id,
+      name: data.full_name || user.email?.split('@')[0] || '',
+      email: data.email || user.email || '',
+      phone: data.phone_number || undefined,
+      avatar: undefined,
+      bio: undefined,
+    };
   }
 
   async updateUserProfile(updates: Partial<UserProfile>): Promise<UserProfile> {
-    return this.request<UserProfile>('/api/settings/profile', {
-      method: 'PUT',
-      body: JSON.stringify(updates),
-    });
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await this.supabase
+      .from('user_settings')
+      .upsert({
+        user_id: user.id,
+        full_name: updates.name,
+        email: updates.email,
+        phone_number: updates.phone,
+        updated_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return {
+      id: data.user_id,
+      name: data.full_name || '',
+      email: data.email || '',
+      phone: data.phone_number || undefined,
+      avatar: undefined,
+      bio: undefined,
+    };
   }
 
   // Notification methods
   async getNotificationSettings(): Promise<NotificationSettings> {
-    return this.request<NotificationSettings>('/api/settings/notifications');
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await this.supabase
+      .from('user_settings')
+      .select('notification_preferences')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error || !data?.notification_preferences) {
+      return {
+        emailNotifications: true,
+        pushNotifications: true,
+        storyUpdates: true,
+        followUpQuestions: true,
+        weeklyDigest: true,
+        marketingEmails: false,
+      };
+    }
+
+    const prefs = data.notification_preferences as any;
+    return {
+      emailNotifications: prefs.email_notifications ?? true,
+      pushNotifications: prefs.push_notifications ?? true,
+      storyUpdates: prefs.story_updates ?? true,
+      followUpQuestions: prefs.follow_up_questions ?? true,
+      weeklyDigest: prefs.weekly_digest ?? true,
+      marketingEmails: prefs.marketing_emails ?? false,
+    };
   }
 
   async updateNotificationSettings(settings: Partial<NotificationSettings>): Promise<NotificationSettings> {
-    return this.request<NotificationSettings>('/api/settings/notifications', {
-      method: 'PUT',
-      body: JSON.stringify(settings),
-    });
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const prefs = {
+      email_notifications: settings.emailNotifications,
+      push_notifications: settings.pushNotifications,
+      story_updates: settings.storyUpdates,
+      follow_up_questions: settings.followUpQuestions,
+      weekly_digest: settings.weeklyDigest,
+      marketing_emails: settings.marketingEmails,
+    };
+
+    const { error } = await this.supabase
+      .from('user_settings')
+      .upsert({
+        user_id: user.id,
+        notification_preferences: prefs,
+        updated_at: new Date().toISOString(),
+      });
+
+    if (error) throw error;
+
+    return settings as NotificationSettings;
   }
 
   // Accessibility methods
   async getAccessibilitySettings(): Promise<AccessibilitySettings> {
-    return this.request<AccessibilitySettings>('/api/settings/accessibility');
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await this.supabase
+      .from('user_settings')
+      .select('accessibility_preferences')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error || !data?.accessibility_preferences) {
+      return {
+        fontSize: 'standard',
+        highContrast: false,
+        reducedMotion: false,
+        screenReader: false,
+      };
+    }
+
+    const prefs = data.accessibility_preferences as any;
+    return {
+      fontSize: prefs.font_size || 'standard',
+      highContrast: prefs.high_contrast || false,
+      reducedMotion: prefs.reduced_motion || false,
+      screenReader: prefs.screen_reader || false,
+    };
   }
 
   async updateAccessibilitySettings(settings: Partial<AccessibilitySettings>): Promise<AccessibilitySettings> {
-    const result = await this.request<AccessibilitySettings>('/api/settings/accessibility', {
-      method: 'PUT',
-      body: JSON.stringify(settings),
-    });
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
 
-    // Apply settings to DOM immediately
+    const prefs = {
+      font_size: settings.fontSize,
+      high_contrast: settings.highContrast,
+      reduced_motion: settings.reducedMotion,
+      screen_reader: settings.screenReader,
+    };
+
+    const { error } = await this.supabase
+      .from('user_settings')
+      .upsert({
+        user_id: user.id,
+        accessibility_preferences: prefs,
+        updated_at: new Date().toISOString(),
+      });
+
+    if (error) throw error;
+
+    const result = settings as AccessibilitySettings;
     this.applyAccessibilitySettings(result);
-    
     return result;
   }
 
   // Audio methods
   async getAudioSettings(): Promise<AudioSettings> {
-    return this.request<AudioSettings>('/api/settings/audio');
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await this.supabase
+      .from('user_settings')
+      .select('audio_preferences')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error || !data?.audio_preferences) {
+      return {
+        volume: 75,
+        quality: 'high',
+      };
+    }
+
+    const prefs = data.audio_preferences as any;
+    return {
+      volume: prefs.volume || 75,
+      quality: prefs.quality || 'high',
+    };
   }
 
   async updateAudioSettings(settings: Partial<AudioSettings>): Promise<AudioSettings> {
-    return this.request<AudioSettings>('/api/settings/audio', {
-      method: 'PUT',
-      body: JSON.stringify(settings),
-    });
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const prefs = {
+      volume: settings.volume,
+      quality: settings.quality,
+    };
+
+    const { error } = await this.supabase
+      .from('user_settings')
+      .upsert({
+        user_id: user.id,
+        audio_preferences: prefs,
+        updated_at: new Date().toISOString(),
+      });
+
+    if (error) throw error;
+    return settings as AudioSettings;
   }
 
   // Privacy methods
   async getPrivacySettings(): Promise<PrivacySettings> {
-    return this.request<PrivacySettings>('/api/settings/privacy');
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await this.supabase
+      .from('user_settings')
+      .select('privacy_preferences')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error || !data?.privacy_preferences) {
+      return {
+        profileVisible: true,
+        storySharing: true,
+        dataAnalytics: true,
+        twoFactorAuth: false,
+      };
+    }
+
+    const prefs = data.privacy_preferences as any;
+    return {
+      profileVisible: prefs.profile_visible ?? true,
+      storySharing: prefs.story_sharing ?? true,
+      dataAnalytics: prefs.data_analytics ?? true,
+      twoFactorAuth: prefs.two_factor_auth ?? false,
+    };
   }
 
   async updatePrivacySettings(settings: Partial<PrivacySettings>): Promise<PrivacySettings> {
-    return this.request<PrivacySettings>('/api/settings/privacy', {
-      method: 'PUT',
-      body: JSON.stringify(settings),
-    });
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const prefs = {
+      profile_visible: settings.profileVisible,
+      story_sharing: settings.storySharing,
+      data_analytics: settings.dataAnalytics,
+      two_factor_auth: settings.twoFactorAuth,
+    };
+
+    const { error } = await this.supabase
+      .from('user_settings')
+      .upsert({
+        user_id: user.id,
+        privacy_preferences: prefs,
+        updated_at: new Date().toISOString(),
+      });
+
+    if (error) throw error;
+    return settings as PrivacySettings;
   }
 
   // Language methods
   async getLanguageSettings(): Promise<LanguageSettings> {
-    return this.request<LanguageSettings>('/api/settings/language');
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await this.supabase
+      .from('user_settings')
+      .select('language, timezone')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error || !data) {
+      return {
+        language: 'en',
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      };
+    }
+
+    return {
+      language: data.language || 'en',
+      timezone: data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
   }
 
   async updateLanguageSettings(settings: Partial<LanguageSettings>): Promise<LanguageSettings> {
-    return this.request<LanguageSettings>('/api/settings/language', {
-      method: 'PUT',
-      body: JSON.stringify(settings),
-    });
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { error } = await this.supabase
+      .from('user_settings')
+      .upsert({
+        user_id: user.id,
+        language: settings.language,
+        timezone: settings.timezone,
+        updated_at: new Date().toISOString(),
+      });
+
+    if (error) throw error;
+    return settings as LanguageSettings;
   }
 
   // Resource wallet methods
   async getResourceWallet(): Promise<ResourceWallet> {
-    return this.request<ResourceWallet>('/api/settings/wallet');
+    const { data: { user } } = await this.supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await this.supabase
+      .from('user_resource_wallets')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error) throw error;
+
+    return {
+      user_id: data.user_id,
+      project_vouchers: data.project_vouchers,
+      facilitator_seats: data.facilitator_seats,
+      storyteller_seats: data.storyteller_seats,
+    };
   }
 
   // Apply accessibility settings to DOM (similar to accessibility toolbar)
