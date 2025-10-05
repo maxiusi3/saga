@@ -414,3 +414,64 @@ Configuration validation failed: Error: Invalid configuration. Please check your
  ✓ Compiled in 2s (680 modules)
  ✓ Compiled in 1197ms (680 modules)
  ✓ Compiled in 1328ms (680 modules)
+ ✓ Compiled in 6.9s (719 modules)
+ ✓ Compiled in 1100ms (680 modules)
+ ✓ Compiled in 1175ms (719 modules)
+ ✓ Compiled in 1205ms (680 modules)
+ ✓ Compiled in 2.1s (680 modules)
+ ✓ Compiled in 1740ms (680 modules)
+ ✓ Compiled in 2.3s (680 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 3.4s (629 modules)
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+  - Missing required server environment variable: OPENROUTER_API_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) {
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+  - Missing required server environment variable: OPENROUTER_API_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) {
+ ⨯ Error: Invalid configuration. Please check your environment variables.
+    at validateConfigOnStartup (src/lib/config.ts:145:10)
+    at eval (src/app/layout.tsx:15:27)
+    at <unknown> (rsc)/./src/app/layout.tsx (/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/app/page.js:117:1)
+    at Function.__webpack_require__ (.next/server/webpack-runtime.js:33:43)
+  143 |     console.error('❌ Configuration validation failed:')
+  144 |     result.errors.forEach(error => console.error(`  - ${error}`))
+> 145 |     throw new Error('Invalid configuration. Please check your environment variables.')
+      |          ^
+  146 |   }
+  147 |
+  148 |   if (result.warnings.length > 0) { {
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 5.6s (1336 modules)
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/pages/_document.js'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/eat/Documents/eatpotato/saga传奇/packages/web/.next/server/pages/_document.js'
+}
