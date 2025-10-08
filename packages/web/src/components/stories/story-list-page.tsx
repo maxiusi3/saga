@@ -278,97 +278,88 @@ export function StoryListPage({
           {/* Story Cards */}
           <div className="space-y-4">
             {filteredStories.map((story) => (
-              <Card key={story.id} variant="content" className="hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    {/* Story Thumbnail */}
-                    <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
-                      {story.thumbnail ? (
-                        <img 
-                          src={story.thumbnail} 
-                          alt={story.title}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <Play className="w-6 h-6 text-muted-foreground" />
-                      )}
-                    </div>
+              <Link key={story.id} href={`/dashboard/projects/${projectId}/stories/${story.id}`}>
+                <Card variant="content" className="hover:shadow-md transition-shadow cursor-pointer">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      {/* Story Thumbnail */}
+                      <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+                        {story.thumbnail ? (
+                          <img 
+                            src={story.thumbnail} 
+                            alt={story.title}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        ) : (
+                          <Play className="w-6 h-6 text-muted-foreground" />
+                        )}
+                      </div>
 
-                    {/* Story Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex-1 min-w-0">
-                          <Link href={`/dashboard/projects/${projectId}/stories/${story.id}`}>
+                      {/* Story Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex-1 min-w-0">
                             <h3 className="font-semibold text-foreground hover:text-primary transition-colors line-clamp-1">
                               {story.title}
                             </h3>
-                          </Link>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Avatar size="xs">
-                              <AvatarImage src={story.storyteller.avatar} />
-                              <AvatarFallback>
-                                {story.storyteller.name.charAt(0)}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span className="text-sm text-muted-foreground">
-                              {story.storyteller.name}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              • {formatDate(story.createdAt)}
-                            </span>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-xs text-muted-foreground">
+                                {formatDate(story.createdAt)}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <StatusBadge status={story.status} size="sm" />
+                            {story.chapter && (
+                              <Badge 
+                                variant="outline" 
+                                size="sm"
+                                style={{ 
+                                  borderColor: story.chapter.color || '#2D5A3D',
+                                  color: story.chapter.color || '#2D5A3D'
+                                }}
+                              >
+                                {story.chapter.name}
+                              </Badge>
+                            )}
                           </div>
                         </div>
-                        
-                        <div className="flex items-center gap-2 flex-shrink-0">
-                          <StatusBadge status={story.status} size="sm" />
-                          {story.chapter && (
-                            <Badge 
-                              variant="outline" 
-                              size="sm"
-                              style={{ 
-                                borderColor: story.chapter.color || '#2D5A3D',
-                                color: story.chapter.color || '#2D5A3D'
-                              }}
-                            >
-                              {story.chapter.name}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
 
-                      {/* Story Metadata */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            <span>{formatDuration(story.duration)}</span>
+                        {/* Story Metadata */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              <span>{formatDuration(story.duration)}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <MessageCircle className="w-3 h-3" />
+                              <span>{story.commentsCount}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <BookOpen className="w-3 h-3" />
+                              <span>{story.followUpCount} follow-ups</span>
+                            </div>
+                            {story.theme && (
+                              <Badge variant="outline" size="sm">
+                                {story.theme}
+                              </Badge>
+                            )}
                           </div>
-                          <div className="flex items-center gap-1">
-                            <MessageCircle className="w-3 h-3" />
-                            <span>{story.commentsCount}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <BookOpen className="w-3 h-3" />
-                            <span>{story.followUpCount} follow-ups</span>
-                          </div>
-                          {story.theme && (
-                            <Badge variant="outline" size="sm">
-                              {story.theme}
-                            </Badge>
+                          
+                          {story.engagementScore && (
+                            <div className="flex items-center gap-1 text-sm text-success">
+                              <TrendingUp className="w-3 h-3" />
+                              <span>{Math.round(story.engagementScore)}% engagement</span>
+                            </div>
                           )}
                         </div>
-                        
-                        {story.engagementScore && (
-                          <div className="flex items-center gap-1 text-sm text-success">
-                            <TrendingUp className="w-3 h-3" />
-                            <span>{Math.round(story.engagementScore)}% engagement</span>
-                          </div>
-                        )}
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
 
             {filteredStories.length === 0 && (

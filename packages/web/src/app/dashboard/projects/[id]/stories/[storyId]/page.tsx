@@ -29,6 +29,7 @@ export default function StoryDetailPage() {
   const [editedTranscript, setEditedTranscript] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [userRole, setUserRole] = useState<'facilitator' | 'storyteller' | null>(null)
 
   useEffect(() => {
     const loadStory = async () => {
@@ -53,6 +54,10 @@ export default function StoryDetailPage() {
         setStory(storyData)
         setEditedTitle(storyData.title || '')
         setEditedTranscript(storyData.transcript || '')
+        
+        // Determine user role - check if user is the storyteller
+        const isStoryteller = storyData.storyteller_id === user.id
+        setUserRole(isStoryteller ? 'storyteller' : 'facilitator')
       } catch (error) {
         console.error('Error loading story:', error)
         setError('Failed to load story data')
@@ -81,6 +86,8 @@ export default function StoryDetailPage() {
       toast.error('Failed to update title')
     }
   }
+
+  const canEditStory = userRole === 'storyteller' && story?.storyteller_id === user?.id
 
   const handleSaveTranscript = async () => {
     if (!story) return
@@ -184,7 +191,7 @@ export default function StoryDetailPage() {
               <EnhancedCardContent>
                 {/* Story Title */}
                 <div className="mb-6">
-                  {isEditingTitle ? (
+                  {isEditingTitle && canEditStory ? (
                     <div className="flex gap-2">
                       <Input
                         value={editedTitle}
@@ -209,14 +216,16 @@ export default function StoryDetailPage() {
                   ) : (
                     <div className="flex items-center justify-between">
                       <h1 className="text-2xl font-bold text-gray-900">{story.title}</h1>
-                      <EnhancedButton 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => setIsEditingTitle(true)}
-                      >
-                        <Edit className="h-4 w-4 mr-2" />
-                        Edit
-                      </EnhancedButton>
+                      {canEditStory && (
+                        <EnhancedButton 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => setIsEditingTitle(true)}
+                        >
+                          <Edit className="h-4 w-4 mr-2" />
+                          Edit
+                        </EnhancedButton>
+                      )}
                     </div>
                   )}
                 </div>
@@ -237,17 +246,19 @@ export default function StoryDetailPage() {
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-900">Transcript</h3>
-                    <EnhancedButton 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => setIsEditingTranscript(!isEditingTranscript)}
-                    >
-                      <Edit className="h-4 w-4 mr-2" />
-                      {isEditingTranscript ? 'Cancel' : 'Edit'}
-                    </EnhancedButton>
+                    {canEditStory && (
+                      <EnhancedButton 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setIsEditingTranscript(!isEditingTranscript)}
+                      >
+                        <Edit className="h-4 w-4 mr-2" />
+                        {isEditingTranscript ? 'Cancel' : 'Edit'}
+                      </EnhancedButton>
+                    )}
                   </div>
                   
-                  {isEditingTranscript ? (
+                  {isEditingTranscript && canEditStory ? (
                     <div className="space-y-4">
                       <Textarea
                         value={editedTranscript}
@@ -263,7 +274,7 @@ export default function StoryDetailPage() {
                           variant="outline"
                           onClick={() => {
                             setIsEditingTranscript(false)
-                            setEditedTranscript(story.transcript)
+                            setEditedTranscript(story.transcript || '')
                           }}
                         >
                           Cancel
@@ -285,8 +296,8 @@ export default function StoryDetailPage() {
             <StoryInteractions
               storyId={storyId}
               projectId={projectId}
-              userRole={user?.role || 'viewer'}
-              isProjectOwner={story.storyteller_id === user?.id}
+              userRole={userRole || 'facilitator'}
+              isProjectOwner={false}
               isStoryteller={story.storyteller_id === user?.id}
             />
           </div>
