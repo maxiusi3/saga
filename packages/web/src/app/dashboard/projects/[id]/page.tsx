@@ -295,12 +295,14 @@ export default function ProjectDetailPage() {
                 <Download className="w-4 h-4 mr-2" />
                 Export Stories
               </EnhancedButton>
-              <Link href={`/dashboard/projects/${projectId}/settings`}>
-                <EnhancedButton variant="outline" size="sm">
-                  <Users className="w-4 h-4 mr-2" />
-                  Manage Project
-                </EnhancedButton>
-              </Link>
+              {project.is_owner && (
+                <Link href={`/dashboard/projects/${projectId}/settings`}>
+                  <EnhancedButton variant="outline" size="sm">
+                    <Users className="w-4 h-4 mr-2" />
+                    Manage Project
+                  </EnhancedButton>
+                </Link>
+              )}
               <ActionPermissionGate
                 action="canCreateStories"
                 userRole={project.user_role}
@@ -449,29 +451,6 @@ export default function ProjectDetailPage() {
                   <div className="mt-3 flex items-center gap-2 text-sm">
                     <Badge className="bg-green-100 text-green-800">Active</Badge>
                     <span className="text-gray-600">Interactive service available</span>
-                  </div>
-                </div>
-              </EnhancedCard>
-
-              {/* Chapter Summary */}
-              <EnhancedCard className="mb-6 bg-gradient-to-r from-sage-50 to-sage-100 border-sage-200">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                      <BookOpen className="w-5 h-5 text-sage-600" />
-                      Chapter: Early Years in Mexico
-                    </h3>
-                    <EnhancedButton variant="outline" size="sm">
-                      Owner Edit
-                    </EnhancedButton>
-                  </div>
-                  <p className="text-gray-700 mb-4">
-                    AI has organized 5 stories from this period, highlighting Rosa's childhood memories, family traditions, and the cultural richness of her hometown before the journey to America.
-                  </p>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <span>5 Stories</span>
-                    <span>•</span>
-                    <span>Dec 2023 - Jan 2024</span>
                   </div>
                 </div>
               </EnhancedCard>
