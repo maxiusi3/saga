@@ -70,10 +70,11 @@ export function StoryCard({
     <EnhancedCard 
       variant={isFeatured ? "elevated" : "interactive"}
       className={cn(
-        "group overflow-hidden",
+        "group overflow-hidden cursor-pointer",
         isFeatured && "border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5",
         className
       )}
+      onClick={onPlay}
     >
       {/* Thumbnail Section */}
       {thumbnail && !isCompact && (
@@ -104,32 +105,6 @@ export function StoryCard({
       <EnhancedCardHeader className={cn(isCompact ? "p-4" : "p-6")}>
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
-            {/* Author Info */}
-            <div className="flex items-center space-x-2 mb-2">
-              {author.avatar ? (
-                <Image
-                  src={author.avatar}
-                  alt={author.name}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-              ) : (
-                <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
-                  <User className="h-3 w-3 text-primary" />
-                </div>
-              )}
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <span className="font-medium">{author.name}</span>
-                {author.role && (
-                  <>
-                    <span>•</span>
-                    <span className="text-xs">{author.role}</span>
-                  </>
-                )}
-              </div>
-            </div>
-
             {/* Title */}
             <h3 className={cn(
               "font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors",
@@ -168,16 +143,6 @@ export function StoryCard({
               </div>
             )}
           </div>
-
-          {/* More Actions */}
-          <EnhancedButton
-            variant="ghost"
-            size="icon"
-            onClick={onMore}
-            className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </EnhancedButton>
         </div>
       </EnhancedCardHeader>
 
@@ -197,35 +162,20 @@ export function StoryCard({
             )}
           </div>
 
-          {/* Stats and Action Buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 text-sm text-muted-foreground">
-              {stats.comments !== undefined && (
-                <div className="flex items-center space-x-1">
-                  <MessageCircle className="h-4 w-4" />
-                  <span>{stats.comments} {stats.comments === 1 ? 'comment' : 'comments'}</span>
-                </div>
-              )}
-              {stats.followUps !== undefined && (
-                <div className="flex items-center space-x-1">
-                  <span>•</span>
-                  <span>{stats.followUps} {stats.followUps === 1 ? 'follow-up' : 'follow-ups'}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-2">
-              <EnhancedButton
-                variant="ghost"
-                size="sm"
-                onClick={onPlay}
-                className="h-8 px-3"
-              >
-                <Play className="h-3 w-3 mr-1" />
-                View Story
-              </EnhancedButton>
-            </div>
+          {/* Stats */}
+          <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+            {stats.comments !== undefined && (
+              <div className="flex items-center space-x-1">
+                <MessageCircle className="h-4 w-4" />
+                <span>{stats.comments} {stats.comments === 1 ? 'comment' : 'comments'}</span>
+              </div>
+            )}
+            {stats.followUps !== undefined && (
+              <div className="flex items-center space-x-1">
+                <span>•</span>
+                <span>{stats.followUps} {stats.followUps === 1 ? 'follow-up' : 'follow-ups'}</span>
+              </div>
+            )}
           </div>
         </div>
       </EnhancedCardContent>

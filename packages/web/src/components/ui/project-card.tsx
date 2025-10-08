@@ -110,14 +110,7 @@ export function ProjectCard({
             </div>
           </div>
           
-          <EnhancedButton
-            variant="ghost"
-            size="icon"
-            onClick={onMore}
-            className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </EnhancedButton>
+
         </div>
       </EnhancedCardHeader>
 
