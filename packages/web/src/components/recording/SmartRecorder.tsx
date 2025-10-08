@@ -430,7 +430,7 @@ export function SmartRecorder({
         {/* Real-time Transcript */}
         {shouldUseRealtime() && (transcript || interimTranscript) && (
           <div className="p-4 bg-muted/30 rounded-lg min-h-[100px]">
-            <p className="text-sm text-muted-foreground mb-2">实时转录：</p>
+            <p className="text-sm text-muted-foreground mb-2">Real-time Transcription:</p>
             <div className="text-foreground">
               {transcript}
               <span className="text-muted-foreground italic">{interimTranscript}</span>
@@ -447,7 +447,7 @@ export function SmartRecorder({
               className="bg-red-500 hover:bg-red-600 text-white"
             >
               <Mic className="h-5 w-5 mr-2" />
-              开始录音
+              Start Recording
             </Button>
           )}
 
@@ -459,7 +459,7 @@ export function SmartRecorder({
                 size="lg"
               >
                 <Pause className="h-5 w-5 mr-2" />
-                暂停
+                Pause
               </Button>
               <Button
                 onClick={stopRecording}

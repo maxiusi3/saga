@@ -98,15 +98,14 @@
 ### 3. Recording Page Chinese Text
 **Issue**: Recording page buttons showed Chinese text ("暂停", "开始录音").
 
-**Status**: Could not find Chinese text in the codebase. The recording interface component already uses English text:
-- "Pause" / "Resume"
-- "Stop"
-- "Start Recording"
+**Fix**: Updated the SmartRecorder component (`packages/web/src/components/recording/SmartRecorder.tsx`):
 
-**Note**: If Chinese text is still visible, it may be:
-1. Coming from a different component not yet identified
-2. Cached in the browser
-3. Part of an image or external resource
+Changed button text from Chinese to English:
+- "开始录音" → "Start Recording"
+- "暂停" → "Pause"
+- "实时转录：" → "Real-time Transcription:"
+
+**Result**: All recording buttons now display English text.
 
 ---
 
@@ -143,3 +142,8 @@
    - Removed "View Story" button
    - Made entire card clickable
    - Simplified stats display (removed action buttons section)
+
+3. `packages/web/src/components/recording/SmartRecorder.tsx`
+   - Changed "开始录音" to "Start Recording"
+   - Changed "暂停" to "Pause"
+   - Changed "实时转录：" to "Real-time Transcription:"

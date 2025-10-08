@@ -53,7 +53,12 @@ export function InvitationManager({ projectId, className }: InvitationManagerPro
   const fetchInvitations = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/projects/${projectId}/invitations`)
+      const response = await fetch(`/api/projects/${projectId}/invitations`, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
       if (!response.ok) {
         throw new Error('Failed to fetch invitations')
       }
@@ -77,6 +82,7 @@ export function InvitationManager({ projectId, className }: InvitationManagerPro
       setSending(true)
       const response = await fetch(`/api/projects/${projectId}/invitations`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
