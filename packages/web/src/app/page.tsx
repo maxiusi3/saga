@@ -677,6 +677,94 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-muted/30 border-t border-border/50 py-12">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            {/* Brand */}
+            <div className="col-span-1 md:col-span-2">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                  <BookOpen className="h-5 w-5 text-white" />
+                </div>
+                <div className="font-bold text-primary text-2xl">Saga</div>
+              </div>
+              <p className="text-muted-foreground mb-4 max-w-md">
+                Preserve your family's precious memories through guided conversations and AI-powered storytelling.
+              </p>
+              {/* Turbo0 Badge */}
+              <div className="mt-4">
+                <a href="https://turbo0.com/item/saga" target="_blank" rel="noopener noreferrer">
+                  <img 
+                    src="https://img.turbo0.com/badge-listed-light.svg" 
+                    alt="Listed on Turbo0" 
+                    style={{ height: '54px', width: 'auto' }} 
+                  />
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="font-semibold text-foreground mb-4">Product</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="#features" className="text-muted-foreground hover:text-primary transition-colors">
+                    Features
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#how-it-works" className="text-muted-foreground hover:text-primary transition-colors">
+                    How It Works
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/design-showcase" className="text-muted-foreground hover:text-primary transition-colors">
+                    Demo
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h3 className="font-semibold text-foreground mb-4">Legal</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-border/50">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <p className="text-sm text-muted-foreground">
+                © {new Date().getFullYear()} Saga. All rights reserved.
+              </p>
+              <div className="flex items-center space-x-6">
+                <a 
+                  href="https://turbo0.com/item/saga" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Listed on Turbo0
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

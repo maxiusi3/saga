@@ -32,12 +32,30 @@ interface Invitation {
   updated_at: string
 }
 
+interface ProjectMember {
+  id: string
+  user_id: string
+  role: 'facilitator' | 'storyteller'
+  status: 'active' | 'pending' | 'inactive' | 'declined' | 'removed'
+}
+
 interface InvitationManagerProps {
   projectId: string
+  currentMembers?: ProjectMember[]
+  currentUserId?: string
+  isProjectOwner?: boolean
+  onRemoveMember?: (memberId: string) => void
   className?: string
 }
 
-export function InvitationManager({ projectId, className }: InvitationManagerProps) {
+export function InvitationManager({ 
+  projectId, 
+  currentMembers = [],
+  currentUserId,
+  isProjectOwner = false,
+  onRemoveMember,
+  className 
+}: InvitationManagerProps) {
   const [invitations, setInvitations] = useState<Invitation[]>([])
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
@@ -290,8 +308,79 @@ export function InvitationManager({ projectId, className }: InvitationManagerPro
           </p>
         </div>
 
+        {/* Current Members */}
+        {currentMembers.length > 0 && (
+          <div className="space-y-3 mb-6">
+            <h4 className="font-medium text-foreground">Current Members</h4>
+            {currentMembers.map((member) => {
+              const isCurrentUser = member.user_id === currentUserId
+              const memberName = isCurrentUser ? 'You (Owner)' : `User ${member.user_id.substring(0, 8)}`
+              const memberEmail = isCurrentUser ? 'current@example.com' : `user${member.user_id.substring(0, 4)}@example.com`
+              
+              return (
+                <div
+                  key={member.id}
+                  className={`p-4 border rounded-lg ${
+                    isCurrentUser ? 'bg-amber-50 border-amber-200' : 'bg-background border-border'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className={isCurrentUser ? 'bg-amber-200 text-amber-800' : 'bg-primary/10 text-primary'}>
+                          {memberName.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-foreground">{memberName}</span>
+                          {isCurrentUser && <span className="text-amber-500">👑</span>}
+                          <Badge variant="outline" className="flex items-center gap-1">
+                            {getRoleIcon(member.role)}
+                            {member.role}
+                          </Badge>
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {memberEmail}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Badge className={
+                        member.status === 'active' 
+                          ? 'bg-green-100 text-green-800' 
+                          : member.status === 'pending'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }>
+                        {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
+                      </Badge>
+                      {!isCurrentUser && isProjectOwner && onRemoveMember && (
+                        <FurbridgeButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            if (confirm('Are you sure you want to remove this member?')) {
+                              onRemoveMember(member.id)
+                            }
+                          }}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <XCircle className="h-4 w-4" />
+                        </FurbridgeButton>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+
         {/* Existing Invitations */}
         <div className="space-y-3">
+          <h4 className="font-medium text-foreground">Pending Invitations</h4>
           {invitations.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Mail className="h-12 w-12 mx-auto mb-2 opacity-50" />

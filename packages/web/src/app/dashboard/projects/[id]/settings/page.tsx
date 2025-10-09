@@ -303,113 +303,14 @@ export default function ProjectSettingsPage() {
                   <h2 className="text-xl font-semibold text-gray-900">Member Management</h2>
                 </div>
 
-                {/* Invitation Manager */}
-                <div className="mb-6">
-                  <InvitationManager projectId={projectId} />
-                </div>
-
-                <div className="border-t pt-6 mb-4">
-                  <h3 className="font-medium text-gray-900 mb-4">Current Members</h3>
-                </div>
-
-                <div className="space-y-3">
-                  {project.members && project.members.length > 0 ? (
-                    project.members.map((member) => {
-                      const isOwner = member.user_id === user.id;
-                      const memberName = isOwner ? 'You (Owner)' : `User ${member.user_id.substring(0, 8)}`;
-                      const memberEmail = isOwner ? 'current@example.com' : `user${member.user_id.substring(0, 4)}@example.com`;
-                      
-                      return (
-                        <div
-                          key={member.id}
-                          className={`flex items-center justify-between p-4 rounded-lg border ${
-                            isOwner ? 'bg-amber-50 border-amber-200' : 'bg-white border-gray-200'
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <Avatar className="w-10 h-10">
-                              <AvatarFallback className={isOwner ? 'bg-amber-200 text-amber-800' : 'bg-sage-200 text-sage-800'}>
-                                {memberName.charAt(0).toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className="font-medium text-gray-900">{memberName}</span>
-                                {isOwner && <Crown className="h-4 w-4 text-amber-500" />}
-                                {member.status === 'pending' && (
-                                  <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                  </svg>
-                                )}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                {memberEmail}
-                              </div>
-                              <div className="text-xs text-gray-500 mt-1">
-                                Role: {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge className={
-                              member.status === 'active' 
-                                ? 'bg-green-100 text-green-800' 
-                                : member.status === 'pending'
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-gray-100 text-gray-800'
-                            }>
-                              {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
-                            </Badge>
-                            {!isOwner && (
-                              <>
-                                <Select defaultValue={member.role}>
-                                  <SelectTrigger className="w-32 h-8 text-xs">
-                                    <SelectValue />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="facilitator">Facilitator</SelectItem>
-                                    <SelectItem value="storyteller">Storyteller</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                                {project.is_owner && (
-                                  <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                      <EnhancedButton variant="destructive" size="sm" className="h-8 w-8 p-0">
-                                        <Trash2 className="h-4 w-4" />
-                                      </EnhancedButton>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                      <AlertDialogHeader>
-                                        <AlertDialogTitle>Remove Member</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                          Are you sure you want to remove this member from the project? This action cannot be undone.
-                                        </AlertDialogDescription>
-                                      </AlertDialogHeader>
-                                      <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction onClick={() => handleRemoveMember(member.id)}>
-                                          Remove
-                                        </AlertDialogAction>
-                                      </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                  </AlertDialog>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="text-center py-12 text-gray-500">
-                      <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                      <p className="font-medium">No members yet</p>
-                      <p className="text-sm mt-1">Invite someone to get started!</p>
-                    </div>
-                  )}
-                </div>
+                {/* Invitation Manager with Current Members */}
+                <InvitationManager 
+                  projectId={projectId} 
+                  currentMembers={project.members}
+                  currentUserId={user.id}
+                  isProjectOwner={project.is_owner}
+                  onRemoveMember={handleRemoveMember}
+                />
               </div>
             </EnhancedCard>
           </div>
