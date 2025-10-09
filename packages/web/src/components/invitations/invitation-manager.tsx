@@ -53,11 +53,27 @@ export function InvitationManager({ projectId, className }: InvitationManagerPro
   const fetchInvitations = async () => {
     try {
       setLoading(true)
+      
+      // Get the session token to include in the request
+      const { createClient } = await import('@supabase/supabase-js')
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      )
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      }
+      
+      // Add Authorization header if we have a session
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`
+      }
+      
       const response = await fetch(`/api/projects/${projectId}/invitations`, {
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+        headers
       })
       if (!response.ok) {
         throw new Error('Failed to fetch invitations')
@@ -80,12 +96,28 @@ export function InvitationManager({ projectId, className }: InvitationManagerPro
 
     try {
       setSending(true)
+      
+      // Get the session token to include in the request
+      const { createClient } = await import('@supabase/supabase-js')
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      )
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      }
+      
+      // Add Authorization header if we have a session
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`
+      }
+      
       const response = await fetch(`/api/projects/${projectId}/invitations`, {
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           email: newInviteEmail.trim(),
           role: newInviteRole
