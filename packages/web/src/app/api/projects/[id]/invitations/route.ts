@@ -10,59 +10,74 @@ export async function GET(
   try {
     // 检查环境变量
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.error('Missing Supabase environment variables')
       return NextResponse.json(
         { error: 'Server configuration error' },
         { status: 500 }
       )
     }
 
+    const { id: projectId } = params
+    
     // 尝试从 Authorization header 获取 token
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '')
 
-    let supabase = createRouteHandlerClient({ cookies })
-    const { id: projectId } = params
+    // Create Supabase client
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
 
-    // Verify user identity - use same logic as POST
+    // Verify user identity
     let user: any = null
     let authError: any = null
 
+    console.log('GET invitations - Auth attempt:', { hasAuthHeader: !!authHeader, hasToken: !!token })
+
     // First try to get user from cookies
-    const cookieAuth = await supabase.auth.getUser()
-    if (cookieAuth.data.user && !cookieAuth.error) {
-      user = cookieAuth.data.user
+    const { data: { user: cookieUser }, error: cookieError } = await supabase.auth.getUser()
+    
+    console.log('GET invitations - Cookie auth result:', { 
+      hasUser: !!cookieUser, 
+      userId: cookieUser?.id,
+      error: cookieError?.message 
+    })
+
+    if (cookieUser && !cookieError) {
+      user = cookieUser
     } else if (token) {
       // If cookies fail, try using token for verification
+      console.log('GET invitations - Trying token auth')
       try {
         const { createClient } = await import('@supabase/supabase-js')
         const adminSupabase = createClient(
           process.env.NEXT_PUBLIC_SUPABASE_URL!,
           process.env.SUPABASE_SERVICE_ROLE_KEY!
         )
-        const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
-        if (tokenUser.user && !tokenError) {
-          user = tokenUser.user
-          // Create client with user context for subsequent queries
-          supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-          )
+        const { data: tokenData, error: tokenError } = await adminSupabase.auth.getUser(token)
+        if (tokenData.user && !tokenError) {
+          user = tokenData.user
+          console.log('GET invitations - Token auth successful:', user.id)
         } else {
           authError = tokenError
+          console.log('GET invitations - Token auth failed:', tokenError)
         }
       } catch (error) {
         authError = error
+        console.error('GET invitations - Token auth error:', error)
       }
     } else {
-      authError = cookieAuth.error
+      authError = cookieError
     }
 
     if (authError || !user) {
+      console.error('GET invitations - Authentication failed:', { authError, hasUser: !!user })
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized', details: authError?.message },
         { status: 401 }
       )
     }
+
+    console.log('GET invitations - Auth successful:', user.id)
 
     // Verify if user is project owner - use admin client
     const { createClient } = await import('@supabase/supabase-js')
@@ -140,61 +155,75 @@ export async function POST(
   try {
     // 检查环境变量
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.error('Missing Supabase environment variables')
       return NextResponse.json(
         { error: 'Server configuration error' },
         { status: 500 }
       )
     }
 
+    const { id: projectId } = params
+    
     // 尝试从 Authorization header 获取 token
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '')
 
-    let supabase = createRouteHandlerClient({ cookies })
-    const { id: projectId } = params
+    // Create Supabase client
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
 
     // Verify user identity
     let user: any = null
     let authError: any = null
 
+    console.log('POST invitation - Auth attempt:', { hasAuthHeader: !!authHeader, hasToken: !!token })
+
     // First try to get user from cookies
-    const cookieAuth = await supabase.auth.getUser()
-    if (cookieAuth.data.user && !cookieAuth.error) {
-      user = cookieAuth.data.user
+    const { data: { user: cookieUser }, error: cookieError } = await supabase.auth.getUser()
+    
+    console.log('POST invitation - Cookie auth result:', { 
+      hasUser: !!cookieUser, 
+      userId: cookieUser?.id,
+      error: cookieError?.message 
+    })
+
+    if (cookieUser && !cookieError) {
+      user = cookieUser
     } else if (token) {
       // If cookies fail, try using token for verification
+      console.log('POST invitation - Trying token auth')
       try {
         const { createClient } = await import('@supabase/supabase-js')
         const adminSupabase = createClient(
           process.env.NEXT_PUBLIC_SUPABASE_URL!,
           process.env.SUPABASE_SERVICE_ROLE_KEY!
         )
-        const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
-        if (tokenUser.user && !tokenError) {
-          user = tokenUser.user
-          // Create client with user context for subsequent queries
-          supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-          )
+        const { data: tokenData, error: tokenError } = await adminSupabase.auth.getUser(token)
+        if (tokenData.user && !tokenError) {
+          user = tokenData.user
+          console.log('POST invitation - Token auth successful:', user.id)
         } else {
           authError = tokenError
+          console.log('POST invitation - Token auth failed:', tokenError)
         }
       } catch (error) {
         authError = error
+        console.error('POST invitation - Token auth error:', error)
       }
     } else {
-      authError = cookieAuth.error
+      authError = cookieError
     }
 
-    console.log('Auth check:', { user: user?.id, authError, hasToken: !!token })
+    console.log('POST invitation - Final auth check:', { user: user?.id, authError, hasToken: !!token })
     if (authError || !user) {
-      console.log('Auth failed:', authError)
+      console.error('POST invitation - Authentication failed:', authError)
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized', details: authError?.message },
         { status: 401 }
       )
     }
+
+    console.log('POST invitation - Auth successful:', user.id)
 
     // Verify if user is project owner - use service role to bypass RLS for debugging
     const { createClient } = await import('@supabase/supabase-js')
@@ -416,16 +445,21 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
     const { id: projectId } = params
     const { searchParams } = new URL(request.url)
     const invitationId = searchParams.get('invitation_id')
 
     // Verify user identity
     const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    console.log('DELETE invitation - Auth result:', { hasUser: !!user, error: authError?.message })
+    
     if (authError || !user) {
+      console.error('DELETE invitation - Authentication failed:', authError)
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized', details: authError?.message },
         { status: 401 }
       )
     }
