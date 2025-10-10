@@ -120,104 +120,74 @@ export default function HomePage() {
     }
   }, [router])
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-6 bg-background/95 backdrop-blur-sm border-b border-border/50">
-        <div className="flex items-center space-x-8">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-              <BookOpen className="h-5 w-5 text-white" />
-            </div>
-            <div className="font-bold text-primary text-2xl">Saga</div>
+      <nav className="flex items-center justify-between px-6 md:px-12 lg:px-16 py-4 bg-white border-b border-gray-200">
+        <div className="flex items-center space-x-12">
+          <div className="font-bold text-gray-900 text-2xl">Saga</div>
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#features" className="text-gray-700 hover:text-gray-900 transition-colors">Features</a>
+            <a href="#pricing" className="text-gray-700 hover:text-gray-900 transition-colors">Pricing</a>
+            <a href="#testimonials" className="text-gray-700 hover:text-gray-900 transition-colors">Testimonials</a>
+            <a href="#faq" className="text-gray-700 hover:text-gray-900 transition-colors">FAQ</a>
           </div>
         </div>
         <div className="flex items-center space-x-3">
           <Link href="/auth/signin">
-            <EnhancedButton variant="ghost" size="default">Sign In</EnhancedButton>
+            <Button variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-50">
+              Login
+            </Button>
           </Link>
           <Link href="/auth/signin">
-            <EnhancedButton variant="default" size="default" rightIcon={<Star className="h-4 w-4" />}>
-              Get Started
-            </EnhancedButton>
+            <Button className="bg-[#2D5A3D] hover:bg-[#234a31] text-white">
+              Sign Up
+            </Button>
           </Link>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(45,90,61,0.1),transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(74,124,89,0.1),transparent_50%)]"></div>
+      <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50">
+        {/* Background Image Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{
+            backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h100v100H0z\" fill=\"%232D5A3D\" fill-opacity=\".05\"/%3E%3C/svg%3E')",
+          }}
+        ></div>
         
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-primary/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-32 h-32 bg-secondary/10 rounded-full blur-xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-primary/5 rounded-full blur-lg animate-bounce delay-500"></div>
-        
-        <div className="relative z-10 container mx-auto px-4 text-center">
-          <div className="max-w-4xl mx-auto space-y-6">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
-              <Star className="h-4 w-4 mr-2" />
-              Trusted by 1000+ families worldwide
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold text-foreground animate-fade-in leading-tight">
-              <span className="font-bold">
-                Your family's story,{' '}
-                <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-                  a conversation away
-                </span>
-              </span>
+        <div className="relative z-10 container mx-auto px-6 md:px-12 text-center">
+          <div className="max-w-4xl mx-auto space-y-8">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+              Preserve Your Family's Voice.
+              <br />
+              <span className="text-gray-700">One Story at a Time.</span>
             </h1>
-            <p className="text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground animate-fade-in-delay leading-relaxed">
-              Capture precious memories through guided conversations with your loved ones. Preserve your family's legacy with AI-powered storytelling tools that make every story unforgettable.
+            <p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-600 leading-relaxed">
+              Saga's AI-guided prompts help parents record memories while children learn
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 animate-fade-in-delay-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link href="/auth/signin">
-                <EnhancedButton 
-                  size="xl" 
-                  className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-xl hover:shadow-2xl"
-                  rightIcon={<BookOpen className="w-5 h-5" />}
+                <Button 
+                  size="lg"
+                  className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-6 text-lg font-semibold"
                 >
-                  Start Your Saga
-                </EnhancedButton>
+                  Start Your Free Trial
+                </Button>
               </Link>
               <Link href="/design-showcase">
-                <EnhancedButton 
-                  variant="outline" 
-                  size="xl"
-                  className="border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-6 text-lg font-semibold"
                 >
-                  View Demo
-                </EnhancedButton>
+                  Watch Demo
+                </Button>
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-12 max-w-4xl mx-auto">
-              <StatsCard
-                title="Happy Families"
-                value="1000+"
-                description="Trust us with their memories"
-                icon={<Users className="w-6 h-6" />}
-                variant="success"
-                className="bg-white/50 backdrop-blur-sm border-primary/20"
-              />
-              <StatsCard
-                title="Stories Preserved"
-                value="5000+"
-                description="Precious memories captured"
-                icon={<MessageCircle className="w-6 h-6" />}
-                variant="info"
-                className="bg-white/50 backdrop-blur-sm border-secondary/20"
-              />
-              <StatsCard
-                title="Satisfaction Rate"
-                value="99%"
-                description="Users love our platform"
-                icon={<Heart className="w-6 h-6" />}
-                variant="success"
-                className="bg-white/50 backdrop-blur-sm border-primary/20"
-              />
-            </div>
+            <p className="text-sm text-gray-500 pt-4">
+              Trusted by <span className="font-semibold text-gray-700">10,000+</span> families
+            </p>
           </div>
         </div>
       </section>
