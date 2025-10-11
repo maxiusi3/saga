@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { 
-  BookOpen, 
-  Mic, 
-  Sparkles, 
-  Lock, 
-  Users, 
-  Archive, 
+import {
+  BookOpen,
+  Mic,
+  Sparkles,
+  Lock,
+  Users,
+  Archive,
   Star,
   ArrowRight,
   Mail,
@@ -111,7 +111,6 @@ export default function HomePage() {
             </div>
             <div className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">Features</a>
-              <a href="#stories" className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">Stories</a>
               <a href="#how-it-works" className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">How It Works</a>
               <a href="#testimonials" className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">Testimonials</a>
               <a href="#pricing" className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">Pricing</a>
@@ -150,13 +149,13 @@ export default function HomePage() {
             <Link href="/auth/signin">
               <Button
                 size="lg"
-                className="bg-white text-[#2D5A3D] hover:bg-white/90 text-lg px-10 py-6 rounded-xl shadow-2xl hover:shadow-[0_25px_70px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-1 font-semibold group"
+                className="bg-[#F59E0B] text-white hover:bg-[#D97706] text-lg px-10 py-6 rounded-xl shadow-2xl hover:shadow-[0_25px_70px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-1 font-semibold group"
               >
                 Begin Your Story
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link href="/design-showcase">
+            <a href="#how-it-works">
               <Button
                 variant="outline"
                 size="lg"
@@ -164,7 +163,7 @@ export default function HomePage() {
               >
                 See How It Works
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -409,7 +408,7 @@ export default function HomePage() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2070')",
+            backgroundImage: "url('/cta-background.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#2D5A3D]/95 via-[#3D6B4D]/90 to-[#2D5A3D]/95"></div>
@@ -434,7 +433,7 @@ export default function HomePage() {
               placeholder="Enter your email"
             />
             <Link href="/auth/signin">
-              <Button className="w-full sm:w-auto bg-white text-[#2D5A3D] hover:bg-white/90 text-base px-10 py-6 rounded-xl shadow-2xl hover:shadow-[0_25px_70px_rgba(0,0,0,0.4)] transition-all duration-300 font-semibold whitespace-nowrap">
+              <Button className="w-full sm:w-auto bg-[#F59E0B] text-white hover:bg-[#D97706] text-base px-10 py-6 rounded-xl shadow-2xl hover:shadow-[0_25px_70px_rgba(0,0,0,0.4)] transition-all duration-300 font-semibold whitespace-nowrap">
                 Start Free Trial
               </Button>
             </Link>
