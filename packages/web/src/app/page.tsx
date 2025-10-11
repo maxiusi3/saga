@@ -1,13 +1,14 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
 import { EnhancedCard, EnhancedCardContent, EnhancedCardDescription, EnhancedCardHeader, EnhancedCardTitle } from '@/components/ui/enhanced-card'
 import { StatsCard } from '@/components/ui/stats-card'
-import { Users, MessageCircle, Heart, BookOpen, Star, CheckCircle, Shield, Zap } from 'lucide-react'
+import { Users, MessageCircle, Heart, BookOpen, CheckCircle, Shield, Zap, ChevronDown, Play, Mic, Globe, Lock, Download, Smartphone, Monitor, Archive, UserPlus, Calendar, Camera } from 'lucide-react'
 
 export default function HomePage() {
   const router = useRouter()
@@ -22,8 +23,8 @@ export default function HomePage() {
     const tokenType = urlParams.get('token_type') || hashParams.get('token_type')
     const type = urlParams.get('type') || hashParams.get('type')
     const token = urlParams.get('token') || hashParams.get('token') ||
-                  urlParams.get('confirmation_token') || hashParams.get('confirmation_token') ||
-                  urlParams.get('invite_token') || hashParams.get('invite_token')
+      urlParams.get('confirmation_token') || hashParams.get('confirmation_token') ||
+      urlParams.get('invite_token') || hashParams.get('invite_token')
 
     console.log('Home page: Checking URL params', {
       accessToken: !!accessToken,
@@ -119,6 +120,12 @@ export default function HomePage() {
       }
     }
   }, [router])
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  const toggleFaq = (index: number) => {
+    setOpenFaq(openFaq === index ? null : index)
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -146,592 +153,532 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50">
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20"
+      {/* Hero Section with Family Photo Background */}
+      <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h100v100H0z\" fill=\"%232D5A3D\" fill-opacity=\".05\"/%3E%3C/svg%3E')",
+            backgroundImage: "url('https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2070')",
           }}
-        ></div>
-        
-        <div className="relative z-10 container mx-auto px-6 md:px-12 text-center">
+        >
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-[#2D5A3D]/70"></div>
+        </div>
+
+        <div className="relative z-10 container mx-auto px-6 md:px-12 text-center py-20">
           <div className="max-w-4xl mx-auto space-y-8">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
               Preserve Your Family's Voice.
               <br />
-              <span className="text-gray-700">One Story at a Time.</span>
+              One Story at a Time.
             </h1>
-            <p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-600 leading-relaxed">
+            <p className="text-lg md:text-xl max-w-2xl mx-auto text-white/90 leading-relaxed">
               Saga's AI-guided prompts help parents record memories while children learn
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link href="/auth/signin">
-                <Button 
+                <Button
                   size="lg"
-                  className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-6 text-lg font-semibold"
+                  className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-6 text-lg font-semibold shadow-lg"
                 >
                   Start Your Free Trial
                 </Button>
               </Link>
               <Link href="/design-showcase">
-                <Button 
+                <Button
                   variant="outline"
                   size="lg"
-                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-6 text-lg font-semibold"
+                  className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg font-semibold"
                 >
                   Watch Demo
                 </Button>
               </Link>
             </div>
-            <p className="text-sm text-gray-500 pt-4">
-              Trusted by <span className="font-semibold text-gray-700">10,000+</span> families
+            <p className="text-sm text-white/80 pt-4">
+              Trusted by <span className="font-semibold text-white">10,000+</span> families
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-20 bg-white">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Features
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="text-center p-8 bg-gray-50 rounded-2xl">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <MessageCircle className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Guided Prompts</h3>
+              <p className="text-gray-600 leading-relaxed">
+                AI-powered conversation starters and personalized questions from expert family historians
+              </p>
+            </div>
+
+            <div className="text-center p-8 bg-gray-50 rounded-2xl">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Mic className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Easy Recording</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Simple interface for parents, works with any device
+              </p>
+            </div>
+
+            <div className="text-center p-8 bg-gray-50 rounded-2xl">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Interactive Follow-Up</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Facilitate two-way dialogue, questions and personalized learning
+              </p>
+            </div>
+          </div>
+
+          {/* Device Mockup */}
+          <div className="max-w-4xl mx-auto">
+            <div className="relative">
+              <Image
+                src="https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=2074"
+                alt="Saga app on mobile and desktop"
+                width={800}
+                height={500}
+                className="w-full rounded-2xl shadow-2xl"
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Product Showcase Section */}
-      <section className="py-20 bg-gradient-to-br from-muted/30 to-background">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Beautiful, Intuitive Design
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Product Showcase
             </h2>
-            <p className="text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">
-              Our platform is designed with families in mind - simple enough for grandparents, powerful enough for preserving generations of stories.
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            {/* Mock Product Interface */}
-            <div className="relative">
-              <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-                {/* Mock Browser Header */}
-                <div className="bg-gray-100 px-4 py-3 flex items-center space-x-2 border-b">
-                  <div className="flex space-x-2">
-                    <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                    <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                    <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                  </div>
-                  <div className="flex-1 text-center">
-                    <div className="bg-white rounded-md px-4 py-1 text-sm text-gray-600 inline-block">
-                      saga.family/dashboard
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Mock Interface Content */}
-                <div className="p-8 bg-gradient-to-br from-white to-primary/5">
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Left Panel - Story List */}
-                    <div className="lg:col-span-2 space-y-4">
-                      <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-2xl font-bold text-foreground">Recent Stories</h3>
-                        <div className="flex items-center space-x-2">
-                          <div className="w-8 h-8 bg-primary/20 rounded-full animate-pulse"></div>
-                          <div className="w-8 h-8 bg-secondary/20 rounded-full animate-pulse delay-200"></div>
-                        </div>
-                      </div>
-                      
-                      {/* Mock Story Cards */}
-                      {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-                          <div className="flex items-start space-x-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center">
-                              <div className="w-6 h-6 bg-primary/40 rounded-full animate-pulse"></div>
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-2">
-                                <div className="h-4 bg-gray-300 rounded w-32 animate-pulse"></div>
-                                <div className="h-3 bg-gray-200 rounded w-16 animate-pulse"></div>
-                              </div>
-                              <div className="space-y-2">
-                                <div className="h-3 bg-gray-200 rounded w-full animate-pulse"></div>
-                                <div className="h-3 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    {/* Right Panel - Stats */}
-                    <div className="space-y-6">
-                      <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg p-6">
-                        <h4 className="font-semibold text-foreground mb-4">Project Progress</h4>
-                        <div className="space-y-3">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Stories Recorded</span>
-                            <span className="font-medium">12</span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full w-3/4"></div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white rounded-lg border border-gray-200 p-6">
-                        <h4 className="font-semibold text-foreground mb-4">Family Members</h4>
-                        <div className="space-y-3">
-                          {[1, 2, 3].map((i) => (
-                            <div key={i} className="flex items-center space-x-3">
-                              <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full"></div>
-                              <div className="flex-1">
-                                <div className="h-3 bg-gray-200 rounded w-20 animate-pulse"></div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 w-8 h-8 bg-primary/20 rounded-full animate-bounce"></div>
-              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-secondary/20 rounded-full animate-bounce delay-500"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it Works Section */}
-      <section id="how-it-works" className="py-20">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-brown mb-6">
-              How Saga Works
-            </h2>
-            <p className="text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">
-              Simple, meaningful conversations that preserve your family's legacy through our guided storytelling process.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <EnhancedCard variant="interactive" className="group bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40">
-              <EnhancedCardHeader className="text-center">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center animate-float group-hover:animate-glow">
-                  <BookOpen className="w-8 h-8 text-primary" />
-                </div>
-                <EnhancedCardTitle className="text-xl text-foreground group-hover:text-primary transition-colors">
-                  Create Your Project
-                </EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent>
-                <EnhancedCardDescription className="text-center text-base">
-                  Set up a family story project and invite your storyteller. Our platform makes it easy to get started with guided setup.
-                </EnhancedCardDescription>
-              </EnhancedCardContent>
-            </EnhancedCard>
-
-            <EnhancedCard variant="interactive" className="group bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40">
-              <EnhancedCardHeader className="text-center">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center animate-float delay-200 group-hover:animate-glow">
-                  <MessageCircle className="w-8 h-8 text-secondary" />
-                </div>
-                <EnhancedCardTitle className="text-xl text-foreground group-hover:text-secondary transition-colors">
-                  Guided Conversations
-                </EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent>
-                <EnhancedCardDescription className="text-center text-base">
-                  AI-powered prompts help facilitate meaningful discussions and capture the essence of your family's unique story.
-                </EnhancedCardDescription>
-              </EnhancedCardContent>
-            </EnhancedCard>
-
-            <EnhancedCard variant="interactive" className="group bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40">
-              <EnhancedCardHeader className="text-center">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center animate-float delay-500 group-hover:animate-glow">
-                  <Shield className="w-8 h-8 text-primary" />
-                </div>
-                <EnhancedCardTitle className="text-xl text-foreground group-hover:text-primary transition-colors">
-                  Preserve Forever
-                </EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent>
-                <EnhancedCardDescription className="text-center text-base">
-                  Stories are transcribed, organized, and beautifully formatted, ready to share with future generations.
-                </EnhancedCardDescription>
-              </EnhancedCardContent>
-            </EnhancedCard>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us Section */}
-      <section id="features" className="py-20 bg-muted/50">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-brown mb-6">
-              Why Choose Saga?
-            </h2>
-            <p className="text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">
-              Our platform is designed specifically for families who want to preserve their stories for generations to come.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatsCard
-              title="Happy Families"
-              value="1000+"
-              description="Trust us with their precious memories"
-              icon={<Users className="w-6 h-6" />}
-              trend={{ value: 15, label: "vs last month", direction: "up" }}
-              variant="success"
-              className="bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40"
-            />
-            <StatsCard
-              title="Stories Preserved"
-              value="5000+"
-              description="Unique family stories captured"
-              icon={<MessageCircle className="w-6 h-6" />}
-              trend={{ value: 23, label: "vs last month", direction: "up" }}
-              variant="info"
-              className="bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40"
-            />
-            <StatsCard
-              title="Satisfaction Rate"
-              value="99%"
-              description="Users love our experience"
-              icon={<Heart className="w-6 h-6" />}
-              trend={{ value: 2, label: "vs last month", direction: "up" }}
-              variant="success"
-              className="bg-gradient-to-br from-white to-primary/5 border-primary/20 hover:border-primary/40"
-            />
-            <StatsCard
-              title="24/7 Support"
-              value="100%"
-              description="Always here to help"
-              icon={<Shield className="w-6 h-6" />}
-              variant="info"
-              className="bg-gradient-to-br from-white to-secondary/5 border-secondary/20 hover:border-secondary/40"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Detailed Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
-              Everything You Need to Capture Family Stories
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our platform is designed to make storytelling natural, meaningful, and accessible for everyone.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
-                    <Zap className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-3">
-                    AI-Powered Prompts
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Thoughtfully crafted questions that help guide meaningful conversations and unlock precious memories.
-                  </p>
-                </div>
+            <div className="text-center p-8 bg-white rounded-2xl shadow-sm">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <MessageCircle className="w-8 h-8 text-white" />
               </div>
-            </EnhancedCard>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">AI-Guided Conversations</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Smart prompts that adapt to your family's unique stories and interests
+              </p>
+            </div>
 
-            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-xl flex items-center justify-center">
-                    <MessageCircle className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-3">
-                    Automatic Transcription
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Every story is automatically transcribed with high accuracy, making them searchable and easy to share.
-                  </p>
-                </div>
+            <div className="text-center p-8 bg-white rounded-2xl shadow-sm">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Globe className="w-8 h-8 text-white" />
               </div>
-            </EnhancedCard>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Cross-Platform Access</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Seamlessly record and share on web, mobile, and any connected device
+              </p>
+            </div>
 
-            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
-                    <Users className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-3">
-                    Family Collaboration
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Invite multiple family members to participate, ask follow-up questions, and add their own memories.
-                  </p>
-                </div>
+            <div className="text-center p-8 bg-white rounded-2xl shadow-sm">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Archive className="w-8 h-8 text-white" />
               </div>
-            </EnhancedCard>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Secure Family Archive</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Enterprise-grade encrypted storage keeps your memories safe forever
+              </p>
+            </div>
 
-            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-xl flex items-center justify-center">
-                    <Shield className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-3">
-                    Secure & Private
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Your family stories are kept private and secure, accessible only to invited family members.
-                  </p>
-                </div>
+            <div className="text-center p-8 bg-white rounded-2xl shadow-sm">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <BookOpen className="w-8 h-8 text-white" />
               </div>
-            </EnhancedCard>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Real-time Transcription</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Automatic voice-to-text conversion with high accuracy and editing tools
+              </p>
+            </div>
 
-            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
-                    <BookOpen className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-3">
-                    Multiple Export Options
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Export your complete family archive in various formats for safekeeping and sharing.
-                  </p>
-                </div>
+            <div className="text-center p-8 bg-white rounded-2xl shadow-sm">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Users className="w-8 h-8 text-white" />
               </div>
-            </EnhancedCard>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Multi-Generation Collaboration</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Easy family sharing that connects grandparents with grandchildren
+              </p>
+            </div>
 
-            <EnhancedCard variant="default" className="p-6 hover:shadow-lg transition-all duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-xl flex items-center justify-center">
-                    <CheckCircle className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-3">
-                    Mobile Friendly
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Easy-to-use interface designed for storytellers of all ages and technical comfort levels.
-                  </p>
-                </div>
+            <div className="text-center p-8 bg-white rounded-2xl shadow-sm">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Download className="w-8 h-8 text-white" />
               </div>
-            </EnhancedCard>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Lifetime Data Ownership</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Your stories belong to you with permanent access and export options
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+      {/* What Families Say Section */}
+      <section id="testimonials" className="py-20 bg-white">
+        <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
-              How Saga Works
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
+              What Families Say
             </h2>
-            <p className="text-xl text-muted-foreground">
-              Three simple steps to start preserving your family's stories
-            </p>
+            <div className="flex justify-center space-x-16 mb-12">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-gray-900">50,000+</div>
+                <div className="text-gray-600">Stories Preserved</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-gray-900">99%</div>
+                <div className="text-gray-600">Parent Satisfaction</div>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-12">
-            <div className="flex items-start space-x-6">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold">
-                  1
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-gray-50 p-8 rounded-2xl">
+              <div className="flex items-center mb-4">
+                <Image
+                  src="https://images.unsplash.com/photo-1494790108755-2616b612b786?q=80&w=150"
+                  alt="Sarah Johnson"
+                  width={50}
+                  height={50}
+                  className="rounded-full mr-4"
+                />
+                <div>
+                  <div className="font-semibold text-gray-900">Sarah Johnson</div>
                 </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
-                  Create Your Project
-                </h3>
-                <p className="text-muted-foreground">
-                  Set up a family story project and invite your storyteller. Our platform guides you through
-                  the setup process and helps you get started with meaningful prompts.
-                </p>
-              </div>
+              <p className="text-gray-600 leading-relaxed">
+                "Saga helped us capture my mother's stories before it was too late. The prompts made conversations so natural."
+              </p>
             </div>
 
-            <div className="flex items-start space-x-6">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold">
-                  2
+            <div className="bg-gray-50 p-8 rounded-2xl">
+              <div className="flex items-center mb-4">
+                <Image
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150"
+                  alt="Michael Chen"
+                  width={50}
+                  height={50}
+                  className="rounded-full mr-4"
+                />
+                <div>
+                  <div className="font-semibold text-gray-900">Michael Chen</div>
                 </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
-                  Record Stories
-                </h3>
-                <p className="text-muted-foreground">
-                  Your storyteller uses our simple recording interface to share their memories.
-                  AI-powered prompts help guide the conversation and unlock precious stories.
-                </p>
-              </div>
+              <p className="text-gray-600 leading-relaxed">
+                "My kids are now excited to call grandpa every week. Saga turned family time into something magical."
+              </p>
             </div>
 
-            <div className="flex items-start space-x-6">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold">
-                  3
+            <div className="bg-gray-50 p-8 rounded-2xl">
+              <div className="flex items-center mb-4">
+                <Image
+                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150"
+                  alt="Dorothy Wilson"
+                  width={50}
+                  height={50}
+                  className="rounded-full mr-4"
+                />
+                <div>
+                  <div className="font-semibold text-gray-900">Dorothy Wilson</div>
                 </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
-                  Preserve & Share
-                </h3>
-                <p className="text-muted-foreground">
-                  Stories are automatically transcribed and organized. Family members can listen,
-                  comment, ask follow-up questions, and export the complete archive.
-                </p>
-              </div>
+              <p className="text-gray-600 leading-relaxed">
+                "I never thought I'd enjoy technology, but Saga makes sharing my stories so simple. My grandchildren love listening."
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary via-primary to-secondary text-primary-foreground relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.1),transparent_50%)]"></div>
-        
-        {/* Floating Elements */}
-        <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-10 right-10 w-32 h-32 bg-white/5 rounded-full blur-xl animate-pulse delay-1000"></div>
-        
-        <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
-              Start Capturing Your Family's Story Today
+      {/* Perfect for Every Family Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Perfect for Every Family
             </h2>
-            <p className="text-lg md:text-xl mb-8 opacity-90 animate-fade-in-delay">
-              Join thousands of families preserving their precious memories with Saga's intelligent storytelling platform.
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white p-8 rounded-2xl shadow-sm">
+              <Image
+                src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=400"
+                alt="Multi-generational family"
+                width={400}
+                height={250}
+                className="w-full h-48 object-cover rounded-xl mb-6"
+              />
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Multi-generational Families</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Connecting grandparents with grandchildren through guided conversations and shared memories
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-sm">
+              <Image
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400"
+                alt="Busy adult children"
+                width={400}
+                height={250}
+                className="w-full h-48 object-cover rounded-xl mb-6"
+              />
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Busy Adult Children</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Staying connected despite distance and schedules with meaningful conversations
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-sm">
+              <Image
+                src="https://images.unsplash.com/photo-1609220136736-443140cffec6?q=80&w=400"
+                alt="Family history preservation"
+                width={400}
+                height={250}
+                className="w-full h-48 object-cover rounded-xl mb-6"
+              />
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Family History Preservation</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Creating lasting legacy archives with stories that matter most
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-sm">
+              <Image
+                src="https://images.unsplash.com/photo-1574267432553-4b4628081c31?q=80&w=400"
+                alt="Special occasions"
+                width={400}
+                height={250}
+                className="w-full h-48 object-cover rounded-xl mb-6"
+              />
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Special Occasions</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Holiday traditions and milestone celebrations captured forever
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Your Family's Privacy is Our Priority
+            </h2>
+            <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600">
+              Your precious family memories deserve the highest level of security and privacy protection
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-delay-2">
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="text-center p-8 bg-gray-50 rounded-2xl">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Lock className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Enterprise Encryption</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Bank-level 256-bit encryption protects your family stories at rest and in transit
+              </p>
+            </div>
+
+            <div className="text-center p-8 bg-gray-50 rounded-2xl">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Complete Ownership</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Your stories belong to you. We never share, sell, or use your family's data
+              </p>
+            </div>
+
+            <div className="text-center p-8 bg-gray-50 rounded-2xl">
+              <div className="w-16 h-16 bg-[#F59E0B] rounded-full mx-auto mb-6 flex items-center justify-center">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Private Storage</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Secure cloud storage with multiple backups ensures your memories are safe forever
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <div className="flex justify-center space-x-8 text-sm text-gray-500">
+              <span>GDPR Compliant</span>
+              <span>SOC 2 Certified</span>
+              <span>ISO 27001</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-20 bg-[#2D5A3D] text-white">
+        <div className="container mx-auto px-6 md:px-12 text-center">
+          <div className="max-w-4xl mx-auto space-y-8">
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+              Don't Let Another Day Pass Without
+              <br />
+              Preserving Your Family's Stories
+            </h2>
+            <p className="text-lg md:text-xl max-w-3xl mx-auto text-white/90 leading-relaxed">
+              Every conversation is irreplaceable. Every memory matters. Start capturing the voices
+              and wisdom that make your family unique before time passes by.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link href="/auth/signin">
-                <EnhancedButton 
-                  variant="secondary" 
-                  size="xl" 
-                  className="bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl border-2 border-white/20"
-                  rightIcon={<BookOpen className="w-5 h-5" />}
+                <Button
+                  size="lg"
+                  className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-6 text-lg font-semibold shadow-lg"
                 >
-                  Begin Your Journey
-                </EnhancedButton>
+                  Start Your Family's Saga - $99
+                </Button>
               </Link>
               <Link href="/design-showcase">
-                <EnhancedButton 
-                  variant="outline" 
-                  size="xl"
-                  className="border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50"
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg font-semibold"
                 >
-                  View Demo
-                </EnhancedButton>
+                  Schedule a Demo
+                </Button>
               </Link>
             </div>
+            <div className="flex justify-center space-x-8 text-sm text-white/80 pt-4">
+              <span>30-day guarantee</span>
+              <span>Setup in 5 minutes</span>
+              <span>Lifetime access</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Frequently Asked Questions
+            </h2>
+          </div>
+
+          <div className="max-w-3xl mx-auto space-y-4">
+            {[
+              {
+                question: "How does the AI guidance work?",
+                answer: "Our AI system provides thoughtfully crafted prompts and questions that adapt to your family's unique stories and interests, helping facilitate natural conversations."
+              },
+              {
+                question: "Is my family's data secure and private?",
+                answer: "Yes, absolutely. We use enterprise-grade encryption and never share, sell, or use your family's data. Your stories belong to you with complete ownership and privacy."
+              },
+              {
+                question: "What devices are supported?",
+                answer: "Saga works seamlessly across all devices - web browsers, iOS and Android mobile apps, tablets, and any device with internet access."
+              },
+              {
+                question: "How do I invite family members?",
+                answer: "Simply send invitation links through the platform. Family members can join with any device and start participating in conversations immediately."
+              },
+              {
+                question: "What happens to stories after subscription ends?",
+                answer: "You maintain lifetime access to all your stories. After your subscription, the archive enters read-only mode with full export capabilities."
+              },
+              {
+                question: "Can I export our family archive?",
+                answer: "Yes, you can export your complete family archive in multiple formats including PDF, audio files, and structured data formats for permanent safekeeping."
+              }
+            ].map((faq, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-sm">
+                <button
+                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                  onClick={() => toggleFaq(index)}
+                >
+                  <span className="font-semibold text-gray-900">{faq.question}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-gray-500 transition-transform ${openFaq === index ? 'rotate-180' : ''
+                      }`}
+                  />
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-4">
+                    <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-muted/30 border-t border-border/50 py-12">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Brand */}
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                  <BookOpen className="h-5 w-5 text-white" />
-                </div>
-                <div className="font-bold text-primary text-2xl">Saga</div>
-              </div>
-              <p className="text-muted-foreground mb-4 max-w-md">
-                Preserve your family's precious memories through guided conversations and AI-powered storytelling.
+      <footer className="bg-[#2D5A3D] text-white py-16">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="font-bold text-2xl mb-4">Saga</div>
+              <p className="text-white/80 leading-relaxed">
+                Connecting families through stories
               </p>
-              {/* Turbo0 Badge */}
-              <div className="mt-4">
-                <a href="https://turbo0.com/item/saga" target="_blank" rel="noopener noreferrer">
-                  <img 
-                    src="https://img.turbo0.com/badge-listed-light.svg" 
-                    alt="Listed on Turbo0" 
-                    style={{ height: '54px', width: 'auto' }} 
-                  />
-                </a>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Navigation</h4>
+              <div className="space-y-2">
+                <a href="#" className="block text-white/80 hover:text-white transition-colors">About Us</a>
+                <a href="#" className="block text-white/80 hover:text-white transition-colors">How It Works</a>
+                <a href="#pricing" className="block text-white/80 hover:text-white transition-colors">Pricing</a>
+                <a href="#" className="block text-white/80 hover:text-white transition-colors">Contact</a>
               </div>
             </div>
 
-            {/* Quick Links */}
             <div>
-              <h3 className="font-semibold text-foreground mb-4">Product</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="#features" className="text-muted-foreground hover:text-primary transition-colors">
-                    Features
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#how-it-works" className="text-muted-foreground hover:text-primary transition-colors">
-                    How It Works
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/design-showcase" className="text-muted-foreground hover:text-primary transition-colors">
-                    Demo
-                  </Link>
-                </li>
-              </ul>
+              <h4 className="font-semibold text-lg mb-4">Company</h4>
+              <div className="space-y-2">
+                <Link href="/privacy" className="block text-white/80 hover:text-white transition-colors">Privacy Policy</Link>
+                <Link href="/terms" className="block text-white/80 hover:text-white transition-colors">Terms of Service</Link>
+                <a href="#" className="block text-white/80 hover:text-white transition-colors">Security</a>
+              </div>
             </div>
 
-            {/* Legal */}
             <div>
-              <h3 className="font-semibold text-foreground mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">
-                    Terms of Service
-                  </Link>
-                </li>
-              </ul>
+              <h4 className="font-semibold text-lg mb-4">Stay Updated</h4>
+              <div className="space-y-4">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+                />
+                <Button className="w-full bg-[#F59E0B] hover:bg-[#D97706] text-white">
+                  Subscribe
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="pt-8 border-t border-border/50">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <p className="text-sm text-muted-foreground">
-                © {new Date().getFullYear()} Saga. All rights reserved.
-              </p>
-              <div className="flex items-center space-x-6">
-                <a 
-                  href="https://turbo0.com/item/saga" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Listed on Turbo0
-                </a>
-              </div>
-            </div>
+          <div className="border-t border-white/20 mt-12 pt-8 text-center">
+            <p className="text-white/60">
+              © 2024 Saga. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
