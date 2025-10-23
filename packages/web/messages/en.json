@@ -1,0 +1,62 @@
+{
+  "greeting": "Hello, World!",
+  "HomePage": {
+    "navigation": {
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "testimonials": "Testimonials",
+      "pricing": "Pricing",
+      "startFree": "Start Free"
+    },
+    "hero": {
+      "tagline": "TIME BECOMES MEMORY",
+      "title": "Before the Stories<br />Are Lost Forever",
+      "subtitle": "Every day without action is another memory fading. Preserve your family's voice—one story at a time—before it's too late.",
+      "cta": {
+        "primary": "Begin Your Story",
+        "secondary": "See How It Works"
+      }
+    },
+    "fragileTruth": {
+      "tagline": "THE FRAGILE TRUTH",
+      "title": "Your Parents' Stories<br />Are Disappearing",
+      "subtitle": "Distance, busy lives, and time are erasing the irreplaceable. The stories that define your family won't preserve themselves."
+    },
+    "features": {
+      "title": "Built for Memory, Designed for Life",
+      "subtitle": "Every feature exists for one purpose: making it effortless to preserve what matters most."
+    },
+    "howItWorks": {
+      "tagline": "SIMPLE BY DESIGN",
+      "title": "From Setup to Story<br />In Minutes, Not Hours"
+    },
+    "testimonials": {
+      "title": "What Families Discover",
+      "subtitle": "Real stories from people preserving their most precious memories."
+    },
+    "finalCta": {
+      "tagline": "DON'T LET TIME WIN",
+      "title": "Start Preserving Today,<br /><span>Before Tomorrow's Too Late</span>",
+      "subtitle": "Every conversation you delay is a memory you risk losing forever. Begin your family's Saga now."
+    },
+    "footer": {
+      "description": "Preserving family stories, one conversation at a time. Because every voice deserves to echo through generations.",
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "pricing": "Pricing",
+        "howItWorks": "How It Works",
+        "security": "Security",
+        "api": "API"
+      },
+      "company": {
+        "title": "Company",
+        "aboutUs": "About Us",
+        "blog": "Blog",
+        "careers": "Careers",
+        "pressKit": "Press Kit",
+        "contact": "Contact"
+      }
+    }
+  }
+}

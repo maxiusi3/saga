@@ -1,0 +1,62 @@
+{
+  "greeting": "你好，世界！",
+  "HomePage": {
+    "navigation": {
+      "features": "功能",
+      "howItWorks": "如何运作",
+      "testimonials": "推荐",
+      "pricing": "价格",
+      "startFree": "免费开始"
+    },
+    "hero": {
+      "tagline": "时间凝固成记忆",
+      "title": "在故事<br />永远消失之前",
+      "subtitle": "日复一日，记忆会慢慢褪色。趁还来得及，一次一个故事，把你家人的声音留存下来。",
+      "cta": {
+        "primary": "开始你的故事",
+        "secondary": "了解运作方式"
+      }
+    },
+    "fragileTruth": {
+      "tagline": "脆弱的真相",
+      "title": "你父母的故事<br />正在消失",
+      "subtitle": "距离、忙碌的生活和时间正在抹去不可替代的东西。定义你家庭的故事不会自己保存下来。"
+    },
+    "features": {
+      "title": "为记忆而建，为生活而设计",
+      "subtitle": "每一个功能的存在都只为一个目的：让你毫不费力地保存最重要的东西。"
+    },
+    "howItWorks": {
+      "tagline": "设计简单",
+      "title": "从设置到故事<br />只需几分钟，而非数小时"
+    },
+    "testimonials": {
+      "title": "家人们发现了什么",
+      "subtitle": "来自那些正在保存他们最珍贵记忆的人们的真实故事。"
+    },
+    "finalCta": {
+      "tagline": "别让时间赢了",
+      "title": "今天就开始保存，<br /><span>在明天为时已晚之前</span>",
+      "subtitle": "你延迟的每一次对话，都是你可能永远失去的一次记忆。现在就开始你家庭的传奇吧。"
+    },
+    "footer": {
+      "description": "一次一次对话，保存家庭故事。因为每一个声音都值得代代相传。",
+      "product": {
+        "title": "产品",
+        "features": "功能",
+        "pricing": "价格",
+        "howItWorks": "如何运作",
+        "security": "安全",
+        "api": "API"
+      },
+      "company": {
+        "title": "公司",
+        "aboutUs": "关于我们",
+        "blog": "博客",
+        "careers": "招聘",
+        "pressKit": "媒体资料",
+        "contact": "联系我们"
+      }
+    }
+  }
+}

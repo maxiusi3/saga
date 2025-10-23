@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast'
 import { NotificationBell } from '@/components/notifications/NotificationBell'
 import { WalletBalanceDropdown } from '@/components/wallet/wallet-balance-dropdown'
 import { Button } from '@/components/ui/button'
+import { LanguageSwitcher } from '@/components/language-switcher/language-switcher'
 
 export function Navigation() {
   const router = useRouter()
@@ -153,6 +154,9 @@ export function Navigation() {
 
             {/* Wallet Balance */}
             <WalletBalanceDropdown />
+
+            {/* Language Switcher */}
+            <LanguageSwitcher />
 
             {/* Profile dropdown */}
             <div className="relative" ref={profileMenuRef}>
