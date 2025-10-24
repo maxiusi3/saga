@@ -15,9 +15,12 @@ import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
+import { locales } from '@/i18n'
+import { useTranslations } from 'next-intl'
 
 export default function StoryDetailPage() {
   const params = useParams()
+  const t = useTranslations('StoryDetailPage')
   const { user } = useAuthStore()
   const projectId = params.id as string
   const storyId = params.storyId as string
@@ -30,6 +33,7 @@ export default function StoryDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [userRole, setUserRole] = useState<'facilitator' | 'storyteller' | null>(null)
+  const [targetLanguage, setTargetLanguage] = useState<string>(params.locale as string)
 
   useEffect(() => {
     const loadStory = async () => {
@@ -67,7 +71,35 @@ export default function StoryDetailPage() {
     }
 
     loadStory()
-  }, [storyId, user?.id])
+  }, [storyId, user?.id, params.locale])
+
+  const handleGenerateTitle = async () => {
+    if (!story?.transcript) {
+      toast.error('Cannot generate title without a transcript.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/ai/generate-title', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: story.transcript, language: params.locale }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate title');
+      }
+
+      const { title } = await response.json();
+      setEditedTitle(title);
+      toast.success('AI-generated title is ready.');
+    } catch (error) {
+      console.error('Error generating title:', error);
+      toast.error('Failed to generate title.');
+    }
+  };
 
   const handleSaveTitle = async () => {
     if (!story || !editedTitle.trim()) return
@@ -87,7 +119,63 @@ export default function StoryDetailPage() {
     }
   }
 
+  const handleGenerateSummary = async () => {
+    if (!story?.transcript) {
+      toast.error('Cannot generate summary without a transcript.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/ai/generate-summary', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: story.transcript, language: params.locale }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate summary');
+      }
+
+      const { summary } = await response.json();
+      setStory(prev => prev ? { ...prev, ai_summary: summary } : null);
+      toast.success('AI-generated summary is ready.');
+    } catch (error) {
+      console.error('Error generating summary:', error);
+      toast.error('Failed to generate summary.');
+    }
+  };
+
   const canEditStory = userRole === 'storyteller' && story?.storyteller_id === user?.id
+
+  const handleGenerateQuestions = async () => {
+    if (!story?.transcript) {
+      toast.error('Cannot generate questions without a transcript.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/ai/generate-questions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: story.transcript, language: params.locale }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate questions');
+      }
+
+      const { questions } = await response.json();
+      setStory(prev => prev ? { ...prev, ai_follow_up_questions: questions } : null);
+      toast.success('AI-generated questions are ready.');
+    } catch (error) {
+      console.error('Error generating questions:', error);
+      toast.error('Failed to generate questions.');
+    }
+  };
 
   const handleSaveTranscript = async () => {
     if (!story) return
@@ -106,6 +194,34 @@ export default function StoryDetailPage() {
       toast.error('Failed to update transcript')
     }
   }
+
+  const handleTranslate = async () => {
+    if (!editedTranscript) {
+      toast.error('Cannot translate an empty transcript.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/ai/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: editedTranscript, targetLanguage }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to translate text');
+      }
+
+      const { translatedText } = await response.json();
+      setEditedTranscript(translatedText);
+      toast.success(`Transcript translated to ${targetLanguage.toUpperCase()}.`);
+    } catch (error) {
+      console.error('Error translating text:', error);
+      toast.error('Failed to translate text.');
+    }
+  };
 
 
 
@@ -162,17 +278,17 @@ export default function StoryDetailPage() {
           <Link href={`/dashboard/projects/${projectId}`}>
             <EnhancedButton variant="secondary" size="sm">
               <ChevronLeft className="h-4 w-4 mr-2" />
-              Back to Stories
+              {t('header.backToStories')}
             </EnhancedButton>
           </Link>
           <div className="flex items-center gap-3 ml-auto">
             <EnhancedButton variant="outline" size="sm">
               <Share className="h-4 w-4 mr-2" />
-              Share
+              {t('header.share')}
             </EnhancedButton>
             <EnhancedButton variant="outline" size="sm">
               <Download className="h-4 w-4 mr-2" />
-              Export
+              {t('header.export')}
             </EnhancedButton>
             <EnhancedButton variant="outline" size="sm">
               <MoreHorizontal className="h-4 w-4" />
@@ -197,10 +313,13 @@ export default function StoryDetailPage() {
                         value={editedTitle}
                         onChange={(e) => setEditedTitle(e.target.value)}
                         className="text-2xl font-bold"
-                        placeholder="Story title..."
+                        placeholder={t('title.placeholder')}
                       />
+                      <EnhancedButton onClick={handleGenerateTitle} size="sm">
+                        {t('title.generateWithAi')}
+                      </EnhancedButton>
                       <EnhancedButton onClick={handleSaveTitle} size="sm">
-                        Save
+                        {t('title.save')}
                       </EnhancedButton>
                       <EnhancedButton 
                         variant="outline" 
@@ -210,7 +329,7 @@ export default function StoryDetailPage() {
                         }}
                         size="sm"
                       >
-                        Cancel
+                        {t('title.cancel')}
                       </EnhancedButton>
                     </div>
                   ) : (
@@ -223,13 +342,23 @@ export default function StoryDetailPage() {
                           onClick={() => setIsEditingTitle(true)}
                         >
                           <Edit className="h-4 w-4 mr-2" />
-                          Edit
+                          {t('title.edit')}
                         </EnhancedButton>
                       )}
                     </div>
                   )}
                 </div>
 
+                {/* AI Summary */}
+                {story.ai_summary && (
+                  <div className="mt-4 p-4 bg-sage-100 rounded-lg">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('summary.title')}</h3>
+                    <p className="text-gray-700">{story.ai_summary}</p>
+                    <EnhancedButton onClick={handleGenerateSummary} size="sm" className="mt-2">
+                      {t('summary.regenerate')}
+                    </EnhancedButton>
+                  </div>
+                )}
 
 
                 {/* Audio Player */}
@@ -245,7 +374,7 @@ export default function StoryDetailPage() {
                 {/* Transcript */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Transcript</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">{t('transcript.title')}</h3>
                     {canEditStory && (
                       <EnhancedButton 
                         variant="outline" 
@@ -253,7 +382,7 @@ export default function StoryDetailPage() {
                         onClick={() => setIsEditingTranscript(!isEditingTranscript)}
                       >
                         <Edit className="h-4 w-4 mr-2" />
-                        {isEditingTranscript ? 'Cancel' : 'Edit'}
+                        {isEditingTranscript ? t('transcript.cancel') : t('transcript.edit')}
                       </EnhancedButton>
                     )}
                   </div>
@@ -264,11 +393,11 @@ export default function StoryDetailPage() {
                         value={editedTranscript}
                         onChange={(e) => setEditedTranscript(e.target.value)}
                         className="min-h-[200px]"
-                        placeholder="Story transcript..."
+                        placeholder={t('transcript.placeholder')}
                       />
                       <div className="flex gap-2">
                         <EnhancedButton onClick={handleSaveTranscript}>
-                          Save Changes
+                          {t('transcript.saveChanges')}
                         </EnhancedButton>
                         <EnhancedButton 
                           variant="outline"
@@ -277,14 +406,30 @@ export default function StoryDetailPage() {
                             setEditedTranscript(story.transcript || '')
                           }}
                         >
-                          Cancel
+                          {t('transcript.cancel')}
+                        </EnhancedButton>
+                      </div>
+                      <div className="flex gap-2 items-center pt-4">
+                        <select
+                          value={targetLanguage}
+                          onChange={(e) => setTargetLanguage(e.target.value)}
+                          className="bg-white border border-gray-300 rounded-md p-2"
+                        >
+                          {locales.map((locale) => (
+                            <option key={locale} value={locale}>
+                              {locale.toUpperCase()}
+                            </option>
+                          ))}
+                        </select>
+                        <EnhancedButton onClick={handleTranslate}>
+                          {t('transcript.translate')}
                         </EnhancedButton>
                       </div>
                     </div>
                   ) : (
                     <div className="prose prose-gray max-w-none">
                       <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                        {story.transcript || 'No transcript available'}
+                        {story.transcript || t('transcript.noTranscript')}
                       </p>
                     </div>
                   )}
@@ -305,47 +450,54 @@ export default function StoryDetailPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* AI Suggested Questions */}
-            {story.ai_follow_up_questions && story.ai_follow_up_questions.length > 0 && (
-              <EnhancedCard>
-                <EnhancedCardHeader>
-                  <EnhancedCardTitle className="flex items-center gap-2">
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <EnhancedCardTitle className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
                     <MessageCircle className="w-5 h-5 text-sage-600" />
-                    AI Suggested Questions
-                  </EnhancedCardTitle>
-                </EnhancedCardHeader>
-                <EnhancedCardContent>
-                  <div className="space-y-2">
-                    {story.ai_follow_up_questions.map((question, index) => (
+                    {t('aiQuestions.title')}
+                  </div>
+                  <EnhancedButton onClick={handleGenerateQuestions} size="sm">
+                    {t('aiQuestions.regenerate')}
+                  </EnhancedButton>
+                </EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <div className="space-y-2">
+                  {story.ai_follow_up_questions && story.ai_follow_up_questions.length > 0 ? (
+                    story.ai_follow_up_questions.map((question, index) => (
                       <button
                         key={index}
                         className="text-left p-3 text-sm text-gray-700 hover:bg-sage-50 rounded-lg border border-gray-200 w-full transition-colors"
                       >
                         {question}
                       </button>
-                    ))}
-                  </div>
-                </EnhancedCardContent>
-              </EnhancedCard>
-            )}
+                    ))
+                  ) : (
+                    <p className="text-gray-500">{t('aiQuestions.noQuestions')}</p>
+                  )}
+                </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
 
             {/* Story Actions */}
             <EnhancedCard>
               <EnhancedCardHeader>
-                <EnhancedCardTitle>Story Actions</EnhancedCardTitle>
+                <EnhancedCardTitle>{t('storyActions.title')}</EnhancedCardTitle>
               </EnhancedCardHeader>
               <EnhancedCardContent>
                 <div className="space-y-3">
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Heart className="w-4 h-4 mr-2" />
-                    Add to Favorites
+                    {t('storyActions.addToFavorites')}
                   </EnhancedButton>
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Download className="w-4 w-4 mr-2" />
-                    Download Audio
+                    {t('storyActions.downloadAudio')}
                   </EnhancedButton>
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Share className="w-4 h-4 mr-2" />
-                    Share Story
+                    {t('storyActions.shareStory')}
                   </EnhancedButton>
                 </div>
               </EnhancedCardContent>

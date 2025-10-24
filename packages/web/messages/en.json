@@ -58,5 +58,43 @@
         "contact": "Contact"
       }
     }
+  },
+  "StoryDetailPage": {
+    "header": {
+      "backToStories": "Back to Stories",
+      "share": "Share",
+      "export": "Export"
+    },
+    "title": {
+      "placeholder": "Story title...",
+      "generateWithAi": "Generate with AI",
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit"
+    },
+    "summary": {
+      "title": "AI Summary",
+      "regenerate": "Regenerate"
+    },
+    "transcript": {
+      "title": "Transcript",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "placeholder": "Story transcript...",
+      "saveChanges": "Save Changes",
+      "translate": "Translate",
+      "noTranscript": "No transcript available"
+    },
+    "aiQuestions": {
+      "title": "AI Suggested Questions",
+      "regenerate": "Regenerate",
+      "noQuestions": "No suggested questions available. Click \"Regenerate\" to create some."
+    },
+    "storyActions": {
+      "title": "Story Actions",
+      "addToFavorites": "Add to Favorites",
+      "downloadAudio": "Download Audio",
+      "shareStory": "Share Story"
+    }
   }
 }

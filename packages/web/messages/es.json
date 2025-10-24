@@ -58,5 +58,43 @@
         "contact": "Contacto"
       }
     }
+  },
+  "StoryDetailPage": {
+    "header": {
+      "backToStories": "Volver a las Historias",
+      "share": "Compartir",
+      "export": "Exportar"
+    },
+    "title": {
+      "placeholder": "Título de la historia...",
+      "generateWithAi": "Generar con IA",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "edit": "Editar"
+    },
+    "summary": {
+      "title": "Resumen de IA",
+      "regenerate": "Regenerar"
+    },
+    "transcript": {
+      "title": "Transcripción",
+      "edit": "Editar",
+      "cancel": "Cancelar",
+      "placeholder": "Transcripción de la historia...",
+      "saveChanges": "Guardar Cambios",
+      "translate": "Traducir",
+      "noTranscript": "No hay transcripción disponible"
+    },
+    "aiQuestions": {
+      "title": "Preguntas Sugeridas por IA",
+      "regenerate": "Regenerar",
+      "noQuestions": "No hay preguntas sugeridas disponibles. Haga clic en \"Regenerar\" para crear algunas."
+    },
+    "storyActions": {
+      "title": "Acciones de la Historia",
+      "addToFavorites": "Añadir a Favoritos",
+      "downloadAudio": "Descargar Audio",
+      "shareStory": "Compartir Historia"
+    }
   }
 }

@@ -11,7 +11,7 @@
     "hero": {
       "tagline": "時間は記憶になる",
       "title": "物語が<br />永遠に失われる前に",
-      "subtitle": "何もしない毎日は、また一つ記憶が薄れていくだけです。手遅れになる前に、一度に一つの物語を、あなたの家族の声を保存してください。",
+      "subtitle": "何もしない毎日は、また一つ記憶が薄れていくくだけです。手遅れになる前に、一度に一つの物語を、あなたの家族の声を保存してください。",
       "cta": {
         "primary": "あなたの物語を始める",
         "secondary": "仕組みを見る"
@@ -28,7 +28,7 @@
     },
     "howItWorks": {
       "tagline": "シンプルなデザイン",
-      "title": "セットアップから物語まで<br />数時間ではなく数分で",
+      "title": "セットアップから物語まで<br />数時間ではなく数分で"
     },
     "testimonials": {
       "title": "家族が発見したもの",
@@ -57,6 +57,44 @@
         "pressKit": "プレスキット",
         "contact": "お問い合わせ"
       }
+    }
+  },
+  "StoryDetailPage": {
+    "header": {
+      "backToStories": "ストーリーに戻る",
+      "share": "共有",
+      "export": "エクスポート"
+    },
+    "title": {
+      "placeholder": "ストーリーのタイトル...",
+      "generateWithAi": "AIで生成",
+      "save": "保存",
+      "cancel": "キャンセル",
+      "edit": "編集"
+    },
+    "summary": {
+      "title": "AIの概要",
+      "regenerate": "再生成"
+    },
+    "transcript": {
+      "title": "トランスクリプト",
+      "edit": "編集",
+      "cancel": "キャンセル",
+      "placeholder": "ストーリーのトランスクリプト...",
+      "saveChanges": "変更を保存",
+      "translate": "翻訳",
+      "noTranscript": "トランスクリプトはありません"
+    },
+    "aiQuestions": {
+      "title": "AIが提案する質問",
+      "regenerate": "再生成",
+      "noQuestions": "提案された質問はありません。「再生成」をクリックして作成してください。"
+    },
+    "storyActions": {
+      "title": "ストーリーのアクション",
+      "addToFavorites": "お気に入りに追加",
+      "downloadAudio": "音声をダウンロード",
+      "shareStory": "ストーリーを共有"
     }
   }
 }

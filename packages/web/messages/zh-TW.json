@@ -58,5 +58,43 @@
         "contact": "聯繫我們"
       }
     }
+  },
+  "StoryDetailPage": {
+    "header": {
+      "backToStories": "返回故事列表",
+      "share": "分享",
+      "export": "導出"
+    },
+    "title": {
+      "placeholder": "故事標題...",
+      "generateWithAi": "AI 生成",
+      "save": "保存",
+      "cancel": "取消",
+      "edit": "編輯"
+    },
+    "summary": {
+      "title": "AI 摘要",
+      "regenerate": "重新生成"
+    },
+    "transcript": {
+      "title": "文本",
+      "edit": "編輯",
+      "cancel": "取消",
+      "placeholder": "故事文本...",
+      "saveChanges": "保存更改",
+      "translate": "翻譯",
+      "noTranscript": "無可用文本"
+    },
+    "aiQuestions": {
+      "title": "AI 建議問題",
+      "regenerate": "重新生成",
+      "noQuestions": "無建議問題。點擊“重新生成”來創建。"
+    },
+    "storyActions": {
+      "title": "故事操作",
+      "addToFavorites": "添加到收藏",
+      "downloadAudio": "下載音頻",
+      "shareStory": "分享故事"
+    }
   }
 }

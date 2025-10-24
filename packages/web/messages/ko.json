@@ -28,7 +28,7 @@
     },
     "howItWorks": {
       "tagline": "단순한 디자인",
-      "title": "설정에서 이야기까지<br />몇 시간이 아닌 몇 분 만에",
+      "title": "설정에서 이야기까지<br />몇 시간이 아닌 몇 분 만에"
     },
     "testimonials": {
       "title": "가족들이 발견하는 것",
@@ -57,6 +57,44 @@
         "pressKit": "프레스 키트",
         "contact": "문의하기"
       }
+    }
+  },
+  "StoryDetailPage": {
+    "header": {
+      "backToStories": "이야기로 돌아가기",
+      "share": "공유",
+      "export": "내보내기"
+    },
+    "title": {
+      "placeholder": "이야기 제목...",
+      "generateWithAi": "AI로 생성",
+      "save": "저장",
+      "cancel": "취소",
+      "edit": "편집"
+    },
+    "summary": {
+      "title": "AI 요약",
+      "regenerate": "재생성"
+    },
+    "transcript": {
+      "title": "대본",
+      "edit": "편집",
+      "cancel": "취소",
+      "placeholder": "이야기 대본...",
+      "saveChanges": "변경 사항 저장",
+      "translate": "번역",
+      "noTranscript": "대본 없음"
+    },
+    "aiQuestions": {
+      "title": "AI 추천 질문",
+      "regenerate": "재생성",
+      "noQuestions": "추천 질문이 없습니다. \"재생성\"을 클릭하여 만드세요."
+    },
+    "storyActions": {
+      "title": "이야기 작업",
+      "addToFavorites": "즐겨찾기에 추가",
+      "downloadAudio": "오디오 다운로드",
+      "shareStory": "이야기 공유"
     }
   }
 }
