@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import createIntlMiddleware from 'next-intl/middleware';
-import { locales, defaultLocale } from './i18n';
+import { locales, defaultLocale } from './src/i18n';
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
