@@ -72,11 +72,14 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.4",
     "@types/node": "^20.10.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
     "eslint-config-next": "15.2.4",
-    "tailwindcss": "^3.4.4",
+    "postcss": "^8.5",
+    "tailwindcss": "^3.4.0",
     "typescript": "^5.3.2"
   }
 }
