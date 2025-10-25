@@ -1,0 +1,100 @@
+{
+  "greeting": "Bonjour, le Monde !",
+  "HomePage": {
+    "navigation": {
+      "features": "Fonctionnalités",
+      "howItWorks": "Comment ça marche",
+      "testimonials": "Témoignages",
+      "pricing": "Tarifs",
+      "startFree": "Commencer gratuitement"
+    },
+    "hero": {
+      "tagline": "LE TEMPS DEVient SOUVENIR",
+      "title": "Avant que les Histoires<br />Ne Soient Perdues à Jamais",
+      "subtitle": "Chaque jour sans action est un autre souvenir qui s'estompe. Préservez la voix de votre famille - une histoire à la fois - avant qu'il ne soit trop tard.",
+      "cta": {
+        "primary": "Commencez Votre Histoire",
+        "secondary": "Voir Comment ça Marche"
+      }
+    },
+    "fragileTruth": {
+      "tagline": "LA VÉRITÉ FRAGILE",
+      "title": "Les Histoires de Vos Parents<br />Sont en train de Disparaître",
+      "subtitle": "La distance, les vies bien remplies et le temps effacent l'irremplaçable. Les histoires qui définissent votre famille ne se préserveront pas d'elles-mêmes."
+    },
+    "features": {
+      "title": "Conçu pour la Mémoire, Conçu pour la Vie",
+      "subtitle": "Chaque fonctionnalité existe dans un seul but : préserver sans effort ce qui compte le plus."
+    },
+    "howItWorks": {
+      "tagline": "SIMPLE PAR CONCEPTION",
+      "title": "De l'Installation à l'Histoire<br />En Quelques Minutes, Pas en Heures"
+    },
+    "testimonials": {
+      "title": "Ce que les Familles Découvrent",
+      "subtitle": "De vraies histoires de personnes qui préservent leurs souvenirs les plus précieux."
+    },
+    "finalCta": {
+      "tagline": "NE LAISSEZ PAS LE TEMPS GAGNER",
+      "title": "Commencez à Préserver Aujourd'hui,<br /><span>Avant qu'il ne soit Trop Tard Demain</span>",
+      "subtitle": "Chaque conversation que vous retardez est un souvenir que vous risquez de perdre à jamais. Commencez la Saga de votre famille maintenant."
+    },
+    "footer": {
+      "description": "Préserver les histoires de famille, une conversation à la fois. Parce que chaque voix mérite de résonner à travers les générations.",
+      "product": {
+        "title": "Produit",
+        "features": "Fonctionnalités",
+        "pricing": "Tarifs",
+        "howItWorks": "Comment ça marche",
+        "security": "Sécurité",
+        "api": "API"
+      },
+      "company": {
+        "title": "Entreprise",
+        "aboutUs": "À propos de nous",
+        "blog": "Blog",
+        "careers": "Carrières",
+        "pressKit": "Dossier de presse",
+        "contact": "Contact"
+      }
+    }
+  },
+  "StoryDetailPage": {
+    "header": {
+      "backToStories": "Retour aux Histoires",
+      "share": "Partager",
+      "export": "Exporter"
+    },
+    "title": {
+      "placeholder": "Titre de l'histoire...",
+      "generateWithAi": "Générer avec l'IA",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "edit": "Modifier"
+    },
+    "summary": {
+      "title": "Résumé de l'IA",
+      "regenerate": "Régénérer"
+    },
+    "transcript": {
+      "title": "Transcription",
+      "edit": "Modifier",
+      "cancel": "Annuler",
+      "placeholder": "Transcription de l'histoire...",
+      "saveChanges": "Enregistrer les Modifications",
+      "translate": "Traduire",
+      "noTranscript": "Aucune transcription disponible"
+    },
+    "aiQuestions": {
+      "title": "Questions Suggérées par l'IA",
+      "regenerate": "Régénérer",
+      "noQuestions": "Aucune question suggérée disponible. Cliquez sur \"Régénérer\" pour en créer."
+    },
+    "storyActions": {
+      "title": "Actions sur l'Histoire",
+      "addToFavorites": "Ajouter aux Favoris",
+      "downloadAudio": "Télécharger l'Audio",
+      "shareStory": "Partager l'Histoire"
+    }
+  }
+}

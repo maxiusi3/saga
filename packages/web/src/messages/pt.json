@@ -1,0 +1,100 @@
+{
+  "greeting": "Olá, Mundo!",
+  "HomePage": {
+    "navigation": {
+      "features": "Funcionalidades",
+      "howItWorks": "Como Funciona",
+      "testimonials": "Depoimentos",
+      "pricing": "Preços",
+      "startFree": "Comece Grátis"
+    },
+    "hero": {
+      "tagline": "O TEMPO SE TORNA MEMÓRIA",
+      "title": "Antes que as Histórias<br />Se Percepção Para Sempre",
+      "subtitle": "Cada dia sem ação é outra memória a desvanecer-se. Preserve a voz da sua família - uma história de cada vez - antes que seja tarde demais.",
+      "cta": {
+        "primary": "Comece a Sua História",
+        "secondary": "Veja Como Funciona"
+      }
+    },
+    "fragileTruth": {
+      "tagline": "A VERDADE FRÁGIL",
+      "title": "As Histórias dos Seus Pais<br />Estão a Desaparecer",
+      "subtitle": "A distância, as vidas ocupadas e o tempo estão a apagar o insubstituível. As histórias que definem a sua família não se preservarão sozinhas."
+    },
+    "features": {
+      "title": "Construído para a Memória, Desenhado para a Vida",
+      "subtitle": "Cada funcionalidade existe com um único propósito: tornar fácil a preservação do que mais importa."
+    },
+    "howItWorks": {
+      "tagline": "SIMPLES POR DESIGN",
+      "title": "Da Configuração à História<br />Em Minutos, Não Horas"
+    },
+    "testimonials": {
+      "title": "O Que as Famílias Descobrem",
+      "subtitle": "Histórias reais de pessoas que preservam as suas memórias mais preciosas."
+    },
+    "finalCta": {
+      "tagline": "NÃO DEIXE O TEMPO VENCER",
+      "title": "Comece a Preservar Hoje,<br /><span>Antes que Amanhã Seja Tarde Demais</span>",
+      "subtitle": "Cada conversa que adia é uma memória que arrisca perder para sempre. Comece a Saga da sua família agora."
+    },
+    "footer": {
+      "description": "Preservar histórias de família, uma conversa de cada vez. Porque cada voz merece ecoar por gerações.",
+      "product": {
+        "title": "Produto",
+        "features": "Funcionalidades",
+        "pricing": "Preços",
+        "howItWorks": "Como Funciona",
+        "security": "Segurança",
+        "api": "API"
+      },
+      "company": {
+        "title": "Empresa",
+        "aboutUs": "Sobre Nós",
+        "blog": "Blog",
+        "careers": "Carreiras",
+        "pressKit": "Kit de Imprensa",
+        "contact": "Contato"
+      }
+    }
+  },
+  "StoryDetailPage": {
+    "header": {
+      "backToStories": "Voltar para as Histórias",
+      "share": "Partilhar",
+      "export": "Exportar"
+    },
+    "title": {
+      "placeholder": "Título da história...",
+      "generateWithAi": "Gerar com IA",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "edit": "Editar"
+    },
+    "summary": {
+      "title": "Resumo da IA",
+      "regenerate": "Regenerar"
+    },
+    "transcript": {
+      "title": "Transcrição",
+      "edit": "Editar",
+      "cancel": "Cancelar",
+      "placeholder": "Transcrição da história...",
+      "saveChanges": "Guardar Alterações",
+      "translate": "Traduzir",
+      "noTranscript": "Nenhuma transcrição disponível"
+    },
+    "aiQuestions": {
+      "title": "Perguntas Sugeridas pela IA",
+      "regenerate": "Regenerar",
+      "noQuestions": "Nenhuma pergunta sugerida disponível. Clique em \"Regenerar\" para criar algumas."
+    },
+    "storyActions": {
+      "title": "Ações da História",
+      "addToFavorites": "Adicionar aos Favoritos",
+      "downloadAudio": "Descarregar Áudio",
+      "shareStory": "Partilhar História"
+    }
+  }
+}

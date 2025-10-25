@@ -1,0 +1,100 @@
+{
+  "greeting": "안녕하세요, 세계!",
+  "HomePage": {
+    "navigation": {
+      "features": "특징",
+      "howItWorks": "작동 방식",
+      "testimonials": "추천사",
+      "pricing": "가격",
+      "startFree": "무료로 시작하기"
+    },
+    "hero": {
+      "tagline": "시간은 기억이 된다",
+      "title": "이야기가<br />영원히 사라지기 전에",
+      "subtitle": "행동 없는 매일은 또 다른 기억이 희미해지는 것입니다. 너무 늦기 전에 한 번에 하나의 이야기로 가족의 목소리를 보존하십시오.",
+      "cta": {
+        "primary": "이야기 시작하기",
+        "secondary": "작동 방식 보기"
+      }
+    },
+    "fragileTruth": {
+      "tagline": "깨지기 쉬운 진실",
+      "title": "부모님의 이야기가<br />사라지고 있습니다",
+      "subtitle": "거리, 바쁜 삶, 그리고 시간은 대체할 수 없는 것을 지우고 있습니다. 가족을 정의하는 이야기는 스스로 보존되지 않습니다."
+    },
+    "features": {
+      "title": "기억을 위해 만들어지고, 삶을 위해 설계되다",
+      "subtitle": "모든 기능은 가장 중요한 것을 손쉽게 보존하는 한 가지 목적을 위해 존재합니다."
+    },
+    "howItWorks": {
+      "tagline": "단순한 디자인",
+      "title": "설정에서 이야기까지<br />몇 시간이 아닌 몇 분 만에"
+    },
+    "testimonials": {
+      "title": "가족들이 발견하는 것",
+      "subtitle": "가장 소중한 추억을 보존하는 사람들의 실제 이야기."
+    },
+    "finalCta": {
+      "tagline": "시간에 지지 마세요",
+      "title": "오늘 보존을 시작하세요,<br /><span>내일이면 너무 늦기 전에</span>",
+      "subtitle": "당신이 미루는 모든 대화는 영원히 잃을 위험이 있는 기억입니다. 지금 바로 가족의 사가를 시작하세요."
+    },
+    "footer": {
+      "description": "한 번에 한 번의 대화로 가족 이야기를 보존합니다. 모든 목소리는 여러 세대에 걸쳐 울려 퍼질 가치가 있기 때문입니다.",
+      "product": {
+        "title": "제품",
+        "features": "특징",
+        "pricing": "가격",
+        "howItWorks": "작동 방식",
+        "security": "보안",
+        "api": "API"
+      },
+      "company": {
+        "title": "회사",
+        "aboutUs": "회사 소개",
+        "blog": "블로그",
+        "careers": "채용",
+        "pressKit": "프레스 키트",
+        "contact": "문의하기"
+      }
+    }
+  },
+  "StoryDetailPage": {
+    "header": {
+      "backToStories": "이야기로 돌아가기",
+      "share": "공유",
+      "export": "내보내기"
+    },
+    "title": {
+      "placeholder": "이야기 제목...",
+      "generateWithAi": "AI로 생성",
+      "save": "저장",
+      "cancel": "취소",
+      "edit": "편집"
+    },
+    "summary": {
+      "title": "AI 요약",
+      "regenerate": "재생성"
+    },
+    "transcript": {
+      "title": "대본",
+      "edit": "편집",
+      "cancel": "취소",
+      "placeholder": "이야기 대본...",
+      "saveChanges": "변경 사항 저장",
+      "translate": "번역",
+      "noTranscript": "대본 없음"
+    },
+    "aiQuestions": {
+      "title": "AI 추천 질문",
+      "regenerate": "재생성",
+      "noQuestions": "추천 질문이 없습니다. \"재생성\"을 클릭하여 만드세요."
+    },
+    "storyActions": {
+      "title": "이야기 작업",
+      "addToFavorites": "즐겨찾기에 추가",
+      "downloadAudio": "오디오 다운로드",
+      "shareStory": "이야기 공유"
+    }
+  }
+}
