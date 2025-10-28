@@ -1,0 +1,113 @@
+{
+  "interface": {
+    "title": "Enregistrez votre histoire",
+    "subtitle": "Partagez vos souvenirs avec des conseils alimentés par l'IA",
+    "recordYourStory": "Enregistrez votre histoire",
+    "maxDuration": "Durée maximale : {{duration}}",
+    "duration": "/ {{duration}}"
+  },
+  "states": {
+    "readyToRecord": "Prêt à enregistrer",
+    "recording": "Enregistrement en cours...",
+    "paused": "En pause",
+    "reviewRecording": "Réviser l'enregistrement",
+    "uploading": "Téléchargement en cours...",
+    "uploadComplete": "Téléchargement terminé !",
+    "error": "Erreur",
+    "recordingError": "Erreur d'enregistrement"
+  },
+  "buttons": {
+    "startRecording": "Commencer l'enregistrement",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "stop": "Arrêter",
+    "delete": "Supprimer",
+    "reRecord": "Réenregistrer",
+    "sendToFamily": "Envoyer à la famille",
+    "recordAnotherStory": "Enregistrer une autre histoire",
+    "tryAgain": "Réessayer",
+    "startOver": "Recommencer",
+    "saveStory": "Sauvegarder l'histoire",
+    "saving": "Sauvegarde en cours...",
+    "choosePhoto": "Choisir une photo"
+  },
+  "recording": {
+    "pressAndHold": "Appuyez et maintenez pour enregistrer votre histoire. Durée maximale : {{duration}}",
+    "recordingComplete": "Enregistrement terminé !",
+    "reviewInstructions": "Révisez votre enregistrement et ajoutez une photo si vous le souhaitez.",
+    "yourRecording": "Votre enregistrement",
+    "addPhoto": "Ajouter une photo (Optionnel)",
+    "uploadingYourStory": "Téléchargement de votre histoire...",
+    "percentComplete": "{{percent}}% terminé",
+    "storyUploadedSuccessfully": "Histoire téléchargée avec succès !",
+    "familyWillBeNotified": "Votre famille sera informée de votre nouvelle histoire."
+  },
+  "webSpeech": {
+    "notSupported": "Votre navigateur ne prend pas en charge la reconnaissance vocale. Veuillez utiliser Chrome, Edge ou Safari.",
+    "browserNotSupported": "Le navigateur ne prend pas en charge la reconnaissance vocale",
+    "useSupportedBrowser": "Veuillez utiliser Chrome, Edge ou Safari pour une meilleure expérience",
+    "speechRecognition": "Reconnaissance vocale",
+    "readyToRecord": "Prêt à enregistrer",
+    "recording": "Enregistrement",
+    "paused": "En pause",
+    "startRecording": "Commencer l'enregistrement",
+    "continueRecording": "Continuer",
+    "realtimeTranscription": "Transcription en temps réel :",
+    "error": "Erreur"
+  },
+  "errors": {
+    "microphoneAccess": "Échec de l'accès au microphone. Veuillez vérifier vos autorisations.",
+    "uploadFailed": "Échec du téléchargement de l'enregistrement. Veuillez réessayer.",
+    "noSpeechDetected": "Aucune parole détectée, veuillez réessayer",
+    "audioCapture": "Impossible d'accéder au microphone, veuillez vérifier les paramètres d'autorisation",
+    "permissionDenied": "Autorisation du microphone refusée, veuillez autoriser l'accès au microphone",
+    "networkError": "Erreur de connexion réseau, veuillez vérifier la connexion réseau",
+    "serviceNotAllowed": "Service de reconnaissance vocale indisponible",
+    "speechRecognitionError": "Erreur de reconnaissance vocale : {{error}}",
+    "startRecordingFailed": "Échec du démarrage de l'enregistrement",
+    "microphonePermissionDenied": "Autorisation du microphone refusée, veuillez autoriser l'accès au microphone",
+    "microphoneNotFound": "Périphérique microphone introuvable, veuillez connecter un microphone",
+    "resumeFailed": "Échec de la reprise de l'enregistrement",
+    "maxDurationReached": "L'enregistrement a atteint la durée maximale de {{minutes}} minutes, arrêté automatiquement",
+    "noValidSpeech": "Aucune parole valide détectée",
+    "restartFailed": "Échec du redémarrage de la reconnaissance vocale"
+  },
+  "success": {
+    "recordingStarted": "Enregistrement de reconnaissance vocale démarré",
+    "recordingPaused": "Enregistrement en pause",
+    "recordingResumed": "Enregistrement repris",
+    "recordingComplete": "Enregistrement terminé",
+    "answerRecorded": "Réponse enregistrée avec succès !",
+    "storySaved": "Histoire sauvegardée avec succès !",
+    "aiProcessingComplete": "Traitement IA terminé !",
+    "audioProcessed": "Audio traité avec succès"
+  },
+  "tips": {
+    "ensureMicrophone": "Veuillez vous assurer que l'autorisation du microphone est activée",
+    "quietEnvironment": "Enregistrez dans un environnement calme pour de meilleurs résultats de reconnaissance",
+    "supportedLanguages": "Prend en charge plusieurs langues dont le chinois et l'anglais"
+  },
+  "ai": {
+    "processingYourStory": "L'IA traite votre histoire...",
+    "processingProgress": "Progression du traitement",
+    "aiIsWorking": "Notre IA travaille sur votre histoire :",
+    "transcribingAudio": "Transcription de votre audio",
+    "generatingTitle": "Génération d'un titre significatif",
+    "creatingSummary": "Création d'un résumé",
+    "preparingFollowup": "Préparation des questions de suivi",
+    "generatedContent": "Contenu généré par l'IA",
+    "confidence": "{{percent}}% de confiance",
+    "demoMode": "Mode démo",
+    "generatedTitle": "Titre généré :",
+    "storySummary": "Résumé de l'histoire :",
+    "transcriptPreview": "Aperçu de la transcription :",
+    "suggestedFollowup": "Questions de suivi suggérées :",
+    "moreQuestionsAvailable": "+{{count}} autres questions disponibles",
+    "processingFailed": "Échec du traitement IA, veuillez réessayer",
+    "processingFailedCanSave": "Échec du traitement IA. Vous pouvez toujours sauvegarder votre histoire manuellement."
+  },
+  "prompt": {
+    "chapter": "Chapitre",
+    "estimatedTime": "Temps estimé : {{minutes}} minutes"
+  }
+}

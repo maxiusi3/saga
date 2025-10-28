@@ -1,0 +1,126 @@
+{
+  "home": {
+    "navigation": {
+      "brandName": "传奇",
+      "features": "功能特色",
+      "howItWorks": "如何使用",
+      "testimonials": "用户评价",
+      "pricing": "价格方案",
+      "startFree": "免费开始"
+    },
+    "hero": {
+      "tagline": "时光化为记忆",
+      "title": "在故事永远\n消失之前",
+      "subtitle": "每一天的等待都意味着又一份记忆的消逝。趁还来得及，一个故事一个故事地保存您家族的声音。",
+      "ctaPrimary": "开始您的故事",
+      "ctaSecondary": "了解如何使用"
+    },
+    "fragiletruth": {
+      "tagline": "脆弱的真相",
+      "title": "您父母的故事\n正在消失",
+      "subtitle": "距离、忙碌的生活和时间正在抹去无法替代的记忆。定义您家族的故事不会自己保存下来。",
+      "stat1Value": "73%",
+      "stat1Label": "的家族故事在两代人内消失",
+      "stat2Value": "89%",
+      "stat2Label": "的人后悔没有更早地询问更多问题",
+      "stat3Value": "永远",
+      "stat3Label": "这些记忆消失后将持续的时间"
+    },
+    "features": {
+      "title": "为记忆而生，为生活而设计",
+      "subtitle": "每一个功能都只为一个目的而存在：让保存最重要的东西变得轻松自如。",
+      "feature1": {
+        "title": "AI 引导对话",
+        "description": "永远不会问题用尽。我们的 AI 策展人会引导有意义的对话，帮助您发现从未知晓的故事。从童年回忆到人生教训，每次对话都会揭示一些深刻的东西。"
+      },
+      "feature2": {
+        "title": "自动转录与整理",
+        "description": "每一个字，完美捕捉。我们的 AI 按主题、人物和时代转录和整理故事——即时可搜索，永久可访问。"
+      },
+      "feature3": {
+        "title": "军事级安全保护",
+        "description": "银行级加密保护您最珍贵的记忆。您的故事永远保持私密。"
+      },
+      "feature4": {
+        "title": "多代共享",
+        "description": "连接您家族树的每一个分支。从祖父母到孙辈，每个人都可以贡献。"
+      },
+      "feature5": {
+        "title": "终身存档",
+        "description": "比我们所有人都长寿的故事。可下载、打印或在设备间流式传输，直到永恒。"
+      },
+      "feature6": {
+        "title": "数字传承之书",
+        "description": "将录制的对话转化为设计精美的数字或印刷纪念品。"
+      }
+    },
+    "howItWorks": {
+      "tagline": "简约设计",
+      "title": "从设置到故事\n几分钟，而非几小时",
+      "step1": {
+        "title": "您购买并邀请",
+        "description": "选择家庭套餐。通过短信或电子邮件向您的父母发送一个简单的链接。无需下载应用，无需记住密码。"
+      },
+      "step2": {
+        "title": "他们轻松录制",
+        "description": "点击一次接受。温暖的 AI 语音提出问题。他们按下录制，分享他们的故事，如果愿意还可以附上照片，然后发送。"
+      },
+      "step3": {
+        "title": "您倾听并连接",
+        "description": "收到通知。聆听他们的声音。阅读文字记录。留下评论。提出后续问题，激发下一段记忆。"
+      },
+      "step4": {
+        "title": "故事永远累积",
+        "description": "数周数月后，您的家族档案不断增长。兄弟姐妹加入。主题浮现。一生的智慧变得可导航、可搜索且永恒。"
+      }
+    },
+    "testimonials": {
+      "title": "家庭的发现",
+      "subtitle": "来自保存他们最珍贵记忆的人们的真实故事。",
+      "testimonial1": {
+        "name": "Sarah Johnson",
+        "role": "保存三代人",
+        "quote": "使用传奇两周，我对祖母的了解比过去 30 年还要多。我从未知道的故事，现在永远保存了下来。"
+      },
+      "testimonial2": {
+        "name": "Michael Chen",
+        "role": "家族史学家",
+        "quote": "我的孩子们将会知道他们曾祖父的声音、他的笑声、他的智慧。这是无价之宝。传奇让这一切变得轻松。"
+      },
+      "testimonial3": {
+        "name": "Emily Rodriguez",
+        "role": "记忆守护者",
+        "quote": "AI 提出的问题非常完美——它们帮助我父亲敞开心扉，谈论他从未谈过的事情。纯粹的魔法。"
+      }
+    },
+    "finalCta": {
+      "tagline": "别让时间赢",
+      "title": "今天开始保存，\n趁明天还未太迟",
+      "subtitle": "您延迟的每一次对话都是您可能永远失去的记忆。现在就开始您家族的传奇。",
+      "emailPlaceholder": "输入您的邮箱",
+      "ctaButton": "开始免费试用",
+      "trial": "免费 14 天试用 • 无需信用卡 • 随时取消"
+    },
+    "footer": {
+      "brandName": "传奇",
+      "tagline": "一次一个对话地保存家族故事。因为每一个声音都值得在世代间回响。",
+      "product": {
+        "title": "产品",
+        "features": "功能特色",
+        "pricing": "价格方案",
+        "howItWorks": "如何使用",
+        "security": "安全保障",
+        "api": "API"
+      },
+      "company": {
+        "title": "公司",
+        "aboutUs": "关于我们",
+        "blog": "博客",
+        "careers": "招聘",
+        "pressKit": "媒体资料",
+        "contact": "联系我们"
+      },
+      "copyright": "© 2025 传奇。每个故事都重要。每个声音都珍贵。"
+    }
+  }
+}

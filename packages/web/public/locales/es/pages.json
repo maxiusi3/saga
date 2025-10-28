@@ -1,0 +1,126 @@
+{
+  "home": {
+    "navigation": {
+      "brandName": "Saga",
+      "features": "Características",
+      "howItWorks": "Cómo Funciona",
+      "testimonials": "Testimonios",
+      "pricing": "Precios",
+      "startFree": "Comenzar Gratis"
+    },
+    "hero": {
+      "tagline": "EL TIEMPO SE CONVIERTE EN MEMORIA",
+      "title": "Antes de que las Historias\nSe Pierdan para Siempre",
+      "subtitle": "Cada día sin acción es otro recuerdo que se desvanece. Preserva la voz de tu familia—una historia a la vez—antes de que sea demasiado tarde.",
+      "ctaPrimary": "Comienza Tu Historia",
+      "ctaSecondary": "Ver Cómo Funciona"
+    },
+    "fragiletruth": {
+      "tagline": "LA FRÁGIL VERDAD",
+      "title": "Las Historias de tus Padres\nEstán Desapareciendo",
+      "subtitle": "La distancia, las vidas ocupadas y el tiempo están borrando lo irremplazable. Las historias que definen a tu familia no se preservarán solas.",
+      "stat1Value": "73%",
+      "stat1Label": "de las historias familiares se pierden en dos generaciones",
+      "stat2Value": "89%",
+      "stat2Label": "lamentan no haber preguntado más pronto",
+      "stat3Value": "Para Siempre",
+      "stat3Label": "es cuánto tiempo estos recuerdos se habrán ido"
+    },
+    "features": {
+      "title": "Creado para la Memoria, Diseñado para la Vida",
+      "subtitle": "Cada característica existe con un propósito: hacer que preservar lo más importante sea fácil.",
+      "feature1": {
+        "title": "Conversaciones Guiadas por IA",
+        "description": "Nunca te quedes sin preguntas. Nuestro curador de IA sugiere conversaciones significativas, ayudándote a descubrir historias que nunca supiste que existían. Desde recuerdos de la infancia hasta lecciones de vida, cada sesión revela algo profundo."
+      },
+      "feature2": {
+        "title": "Transcripción y Organización Automática",
+        "description": "Cada palabra, perfectamente capturada. Nuestra IA transcribe y organiza historias por tema, persona y época—instantáneamente buscables, accesibles para siempre."
+      },
+      "feature3": {
+        "title": "Seguridad de Grado Militar",
+        "description": "Encriptación de nivel bancario protege tus recuerdos más preciados. Tus historias permanecen privadas, para siempre."
+      },
+      "feature4": {
+        "title": "Compartir Multi-Generacional",
+        "description": "Conecta cada rama de tu árbol familiar. Desde abuelos hasta nietos, todos contribuyen."
+      },
+      "feature5": {
+        "title": "Archivo Vitalicio",
+        "description": "Historias que nos sobreviven a todos. Descarga, imprime o transmite en todos los dispositivos por la eternidad."
+      },
+      "feature6": {
+        "title": "Libro Digital del Legado",
+        "description": "Transforma conversaciones grabadas en un recuerdo digital o impreso bellamente diseñado."
+      }
+    },
+    "howItWorks": {
+      "tagline": "SIMPLE POR DISEÑO",
+      "title": "De la Configuración a la Historia\nen Minutos, No Horas",
+      "step1": {
+        "title": "Tú Compras e Invitas",
+        "description": "Elige un paquete familiar. Envía un simple enlace a tus padres por mensaje de texto o correo electrónico. Sin aplicaciones para descargar, sin contraseñas para recordar."
+      },
+      "step2": {
+        "title": "Ellos Graban Sin Esfuerzo",
+        "description": "Un toque para aceptar. Una voz cálida de IA hace una pregunta. Presionan grabar, comparten su historia, adjuntan una foto si quieren, y envían."
+      },
+      "step3": {
+        "title": "Tú Escuchas y Conectas",
+        "description": "Recibe notificaciones. Escucha su voz. Lee la transcripción. Deja un comentario. Haz una pregunta de seguimiento que despierte el próximo recuerdo."
+      },
+      "step4": {
+        "title": "Las Historias se Acumulan para Siempre",
+        "description": "A lo largo de semanas y meses, tu archivo familiar crece. Los hermanos se unen. Surgen temas. Una vida de sabiduría se vuelve navegable, buscable y eterna."
+      }
+    },
+    "testimonials": {
+      "title": "Lo que las Familias Descubren",
+      "subtitle": "Historias reales de personas preservando sus recuerdos más preciados.",
+      "testimonial1": {
+        "name": "Sarah Johnson",
+        "role": "Preservando 3 Generaciones",
+        "quote": "Aprendí más sobre mi abuela en dos semanas con Saga que en 30 años. Historias que nunca supe que existían, ahora preservadas para siempre."
+      },
+      "testimonial2": {
+        "name": "Michael Chen",
+        "role": "Historiador Familiar",
+        "quote": "Mis hijos conocerán la voz de su bisabuelo, su risa, su sabiduría. Eso no tiene precio. Saga lo hizo fácil."
+      },
+      "testimonial3": {
+        "name": "Emily Rodríguez",
+        "role": "Guardiana de Memorias",
+        "quote": "Las preguntas de la IA fueron perfectas—ayudaron a mi papá a abrirse sobre cosas de las que nunca había hablado. Pura magia."
+      }
+    },
+    "finalCta": {
+      "tagline": "NO DEJES QUE EL TIEMPO GANE",
+      "title": "Comienza a Preservar Hoy,\nAntes de que Mañana Sea Demasiado Tarde",
+      "subtitle": "Cada conversación que retrases es un recuerdo que arriesgas perder para siempre. Comienza la Saga de tu familia ahora.",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "ctaButton": "Comenzar Prueba Gratis",
+      "trial": "Prueba gratuita de 14 días • Sin tarjeta de crédito requerida • Cancela en cualquier momento"
+    },
+    "footer": {
+      "brandName": "Saga",
+      "tagline": "Preservando historias familiares, una conversación a la vez. Porque cada voz merece resonar a través de generaciones.",
+      "product": {
+        "title": "Producto",
+        "features": "Características",
+        "pricing": "Precios",
+        "howItWorks": "Cómo Funciona",
+        "security": "Seguridad",
+        "api": "API"
+      },
+      "company": {
+        "title": "Compañía",
+        "aboutUs": "Sobre Nosotros",
+        "blog": "Blog",
+        "careers": "Carreras",
+        "pressKit": "Kit de Prensa",
+        "contact": "Contacto"
+      },
+      "copyright": "© 2025 Saga. Cada historia importa. Cada voz cuenta."
+    }
+  }
+}

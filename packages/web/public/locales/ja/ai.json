@@ -1,0 +1,96 @@
+{
+  "systemPrompt": "You are an expert storyteller and family historian. Your task is to analyze personal stories and create meaningful titles, summaries, and follow-up questions that help preserve family memories.\n\nGuidelines:\n- Create titles that are specific, emotional, and memorable\n- Write summaries that capture the essence and emotional significance\n- Generate follow-up questions that encourage deeper storytelling\n- Be respectful and sensitive to personal experiences\n- Focus on the human elements and emotional connections\n- Keep language warm and conversational\n\nResponse format should be valid JSON with these fields:\n- title: A compelling, specific title (max 60 characters)\n- summary: A warm, engaging summary (2-3 sentences)\n- followUpQuestions: Array of 3-4 thoughtful questions\n- confidence: Number between 0.7 and 1.0 indicating analysis confidence",
+  "userPromptTemplate": "Please analyze this personal story and generate appropriate content:\n\n{{context}}Story transcript:\n\"{{transcript}}\"\n\nGenerate a title, summary, and follow-up questions that would help this person share more meaningful memories.",
+  "contextPrefix": "Story context/prompt: {{prompt}}\n\n",
+  "progress": {
+    "preparingAudio": "文字起こしのための音声を準備中...",
+    "sendingToService": "文字起こしサービスに送信中...",
+    "processingTranscription": "文字起こしを処理中...",
+    "transcriptionComplete": "文字起こし完了！",
+    "analyzingStory": "ストーリーの内容を分析中...",
+    "generatingTitle": "タイトルと要約を生成中...",
+    "creatingQuestions": "フォローアップ質問を作成中...",
+    "startingTranscription": "音声の文字起こしを開始中...",
+    "generatingContent": "AIコンテンツを生成中...",
+    "processingComplete": "処理完了！",
+    "analyzingThemes": "ストーリーのテーマを分析中...",
+    "generatingTitleSuggestions": "タイトルの提案を生成中...",
+    "creatingSummary": "要約を作成中...",
+    "preparingQuestions": "フォローアップ質問を準備中...",
+    "analyzingAudio": "音声コンテンツを分析中...",
+    "generatingTranscript": "文字起こしを生成中..."
+  },
+  "errors": {
+    "noApiKey": "OpenRouter APIキーが設定されていません",
+    "noTranscript": "文字起こしが提供されていません",
+    "noAudioFile": "音声ファイルが提供されていません",
+    "serverConfigError": "サーバー設定エラー：SiliconFlow APIキーがありません。",
+    "unauthorized": "未認証：無効なSiliconFlow APIキー。",
+    "rateLimitExceeded": "レート制限を超えました。後でもう一度お試しください。",
+    "transcriptionFailed": "文字起こしに失敗しました。もう一度お試しください。",
+    "aiGenerationFailed": "AIコンテンツ生成に失敗しました。もう一度お試しください。",
+    "invalidRequest": "AIサービスへの無効なリクエスト",
+    "insufficientQuota": "OpenAIクォータを超えました。請求を確認してください。",
+    "failedToTranscribe": "音声の文字起こしに失敗しました。もう一度お試しください。",
+    "failedToGenerate": "AIコンテンツの生成に失敗しました。もう一度お試しください。"
+  },
+  "defaults": {
+    "title": "無題のストーリー",
+    "summary": "意味のある個人的なストーリー。",
+    "noSummary": "要約がありません",
+    "fallbackQuestions": [
+      "その経験があなたにどのような影響を与えたか、もっと教えていただけますか？",
+      "その時期について最も鮮明に覚えていることは何ですか？",
+      "その瞬間が今のあなたをどのように形作りましたか？"
+    ]
+  },
+  "mockData": {
+    "transcripts": [
+      "私がまだ7歳だった頃、メープルストリートの小さな家に住んでいたことを覚えています。当時の近所は今とは全く違っていました—子供たちは街灯がつくまで外で遊び、みんながお互いを知っていました。母は玄関のポーチからベルを鳴らして私たちを夕食に呼び、私たちは近所のどこにいても走って帰ってきました。",
+      "初出勤の日は、興奮と恐怖の両方でした。何が起こるかわからずにオフィスのドアを通りましたが、みんなとても歓迎してくれました。上司が案内してチームに紹介してくれたことを覚えています。人生の重要な何かの始まりのように感じました。",
+      "1965年の夏は忘れられません。毎日湖で過ごし、友達と一緒に泳いだり釣りをしたりしました。父はサンドイッチを詰めて、日の出から日没まで滞在しました。時間がゆっくり流れ、すべての瞬間が貴重に感じられた日々でした。"
+    ],
+    "themes": {
+      "childhood": {
+        "title": "よりシンプルな時代に育つ",
+        "summary": "幼少期の記憶への懐かしい回想、異なる時代に育った純真さと驚きを捉えています。",
+        "followUpQuestions": [
+          "当時、友達とどんなゲームをして遊びましたか？",
+          "当時の近所はどのような感じだったか説明していただけますか？",
+          "その時代の子供として最も好きだったことは何ですか？"
+        ]
+      },
+      "work": {
+        "title": "キャリアの旅を始める",
+        "summary": "職業生活の初期についての振り返り、興奮、緊張、新しい始まりに満ちています。",
+        "followUpQuestions": [
+          "最初の仕事で最も驚いたことは何でしたか？",
+          "同僚はどのようにあなたを歓迎しましたか？",
+          "今日キャリアを始める人にどんなアドバイスをしますか？"
+        ]
+      },
+      "family": {
+        "title": "大切な家族の思い出",
+        "summary": "家族の絆と私たちを結びつける瞬間についての心温まるストーリー。",
+        "followUpQuestions": [
+          "どの家族の伝統があなたにとって最も重要でしたか？",
+          "あなたの家族はどのように愛とサポートを示しましたか？",
+          "あなたの家族はどんな価値観を教えてくれましたか？"
+        ]
+      },
+      "default": {
+        "title": "意味のある思い出",
+        "summary": "人生の重要な瞬間についての心のこもったストーリー。",
+        "followUpQuestions": [
+          "その経験があなたにどのような影響を与えたか、もっと教えていただけますか？",
+          "その時期について最も鮮明に覚えていることは何ですか？",
+          "その瞬間が今のあなたをどのように形作りましたか？"
+        ]
+      }
+    }
+  },
+  "retryMessages": {
+    "retryingTranscription": "文字起こしを再試行中...（残り{{attempts}}回）",
+    "retryingGeneration": "AIコンテンツ生成を再試行中...（残り{{attempts}}回）"
+  }
+}

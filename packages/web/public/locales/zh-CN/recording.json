@@ -1,0 +1,113 @@
+{
+  "interface": {
+    "title": "录制您的故事",
+    "subtitle": "通过AI引导分享您的记忆",
+    "recordYourStory": "录制您的故事",
+    "maxDuration": "最长时长：{{duration}}",
+    "duration": "/ {{duration}}"
+  },
+  "states": {
+    "readyToRecord": "准备录音",
+    "recording": "正在录音...",
+    "paused": "已暂停",
+    "reviewRecording": "查看录音",
+    "uploading": "上传中...",
+    "uploadComplete": "上传完成！",
+    "error": "错误",
+    "recordingError": "录音错误"
+  },
+  "buttons": {
+    "startRecording": "开始录音",
+    "pause": "暂停",
+    "resume": "继续",
+    "stop": "停止",
+    "delete": "删除",
+    "reRecord": "重新录制",
+    "sendToFamily": "发送给家人",
+    "recordAnotherStory": "录制另一个故事",
+    "tryAgain": "重试",
+    "startOver": "重新开始",
+    "saveStory": "保存故事",
+    "saving": "保存中...",
+    "choosePhoto": "选择照片"
+  },
+  "recording": {
+    "pressAndHold": "按住录制您的故事。最长时长：{{duration}}",
+    "recordingComplete": "录制完成！",
+    "reviewInstructions": "查看您的录音，如需要可添加照片。",
+    "yourRecording": "您的录音",
+    "addPhoto": "添加照片（可选）",
+    "uploadingYourStory": "正在上传您的故事...",
+    "percentComplete": "{{percent}}% 完成",
+    "storyUploadedSuccessfully": "故事上传成功！",
+    "familyWillBeNotified": "您的家人将收到新故事的通知。"
+  },
+  "webSpeech": {
+    "notSupported": "您的浏览器不支持语音识别功能。请使用 Chrome、Edge 或 Safari 浏览器。",
+    "browserNotSupported": "浏览器不支持语音识别",
+    "useSupportedBrowser": "请使用 Chrome、Edge 或 Safari 浏览器以获得最佳体验",
+    "speechRecognition": "语音识别",
+    "readyToRecord": "准备录音",
+    "recording": "正在录音",
+    "paused": "已暂停",
+    "startRecording": "开始录音",
+    "continueRecording": "继续",
+    "realtimeTranscription": "实时转录：",
+    "error": "错误"
+  },
+  "errors": {
+    "microphoneAccess": "无法访问麦克风。请检查您的权限。",
+    "uploadFailed": "上传录音失败。请重试。",
+    "noSpeechDetected": "未检测到语音，请重试",
+    "audioCapture": "无法访问麦克风，请检查权限设置",
+    "permissionDenied": "麦克风权限被拒绝，请允许访问麦克风",
+    "networkError": "网络连接错误，请检查网络连接",
+    "serviceNotAllowed": "语音识别服务不可用",
+    "speechRecognitionError": "语音识别错误：{{error}}",
+    "startRecordingFailed": "启动录音失败",
+    "microphonePermissionDenied": "麦克风权限被拒绝，请允许访问麦克风",
+    "microphoneNotFound": "未找到麦克风设备，请连接麦克风",
+    "resumeFailed": "恢复录音失败",
+    "maxDurationReached": "录音已达到最长时长 {{minutes}} 分钟，自动停止",
+    "noValidSpeech": "未检测到有效语音内容",
+    "restartFailed": "重启语音识别失败"
+  },
+  "success": {
+    "recordingStarted": "开始语音识别录音",
+    "recordingPaused": "录音已暂停",
+    "recordingResumed": "录音已恢复",
+    "recordingComplete": "录音完成",
+    "answerRecorded": "回答录制成功！",
+    "storySaved": "故事保存成功！",
+    "aiProcessingComplete": "AI处理完成！",
+    "audioProcessed": "音频处理成功"
+  },
+  "tips": {
+    "ensureMicrophone": "请确保麦克风权限已开启",
+    "quietEnvironment": "建议在安静环境中录音以获得最佳识别效果",
+    "supportedLanguages": "支持中文、英文等多种语言识别"
+  },
+  "ai": {
+    "processingYourStory": "AI正在处理您的故事...",
+    "processingProgress": "处理进度",
+    "aiIsWorking": "我们的AI正在处理您的故事：",
+    "transcribingAudio": "转录您的音频",
+    "generatingTitle": "生成有意义的标题",
+    "creatingSummary": "创建摘要",
+    "preparingFollowup": "准备后续问题",
+    "generatedContent": "AI生成内容",
+    "confidence": "{{percent}}% 置信度",
+    "demoMode": "演示模式",
+    "generatedTitle": "生成的标题：",
+    "storySummary": "故事摘要：",
+    "transcriptPreview": "转录预览：",
+    "suggestedFollowup": "建议的后续问题：",
+    "moreQuestionsAvailable": "还有 {{count}} 个问题可用",
+    "processingFailed": "AI处理失败，请重试",
+    "processingFailedCanSave": "AI处理失败。您仍然可以手动保存故事。"
+  },
+  "prompt": {
+    "chapter": "章节",
+    "estimatedTime": "预计时间：{{minutes}} 分钟"
+  }
+}

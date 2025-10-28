@@ -1,0 +1,328 @@
+{
+  "list": {
+    "title": "My Projects",
+    "subtitle": "Manage your family story projects",
+    "createNew": "Create New Project",
+    "createFirst": "Create Your First Project",
+    "empty": {
+      "title": "No projects yet",
+      "subtitle": "Create your first family story project to get started",
+      "emoji": "📖"
+    },
+    "createCard": {
+      "title": "Create New Project",
+      "subtitle": "Start a new family story project"
+    },
+    "filters": {
+      "all": "All Projects",
+      "active": "Active",
+      "archived": "Archived"
+    }
+  },
+  "detail": {
+    "stats": {
+      "stories": "stories",
+      "members": "members"
+    },
+    "actions": {
+      "exportStories": "Export Stories",
+      "manageProject": "Manage Project",
+      "recordNewStory": "Record New Story"
+    },
+    "filters": {
+      "title": "Filter by:",
+      "allStorytellers": "All Storytellers",
+      "allThemes": "All Themes",
+      "sortBy": "Sort by",
+      "sortOptions": {
+        "latest": "Latest First",
+        "oldest": "Oldest First",
+        "mostComments": "Most Comments"
+      },
+      "themes": {
+        "childhood": "Childhood",
+        "family": "Family",
+        "immigration": "Immigration"
+      }
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "exportAll": "Export All Stories",
+      "archiveSelected": "Archive Selected",
+      "refreshFeed": "Refresh Feed"
+    },
+    "statistics": {
+      "title": "Story Statistics",
+      "totalStories": "Total Stories",
+      "thisMonth": "This Month",
+      "totalComments": "Total Comments",
+      "followUpQuestions": "Follow-up Questions"
+    },
+    "validityPeriod": {
+      "title": "Project Validity Period",
+      "remaining": "remaining",
+      "days": "days",
+      "started": "Started:",
+      "expires": "Expires:",
+      "status": {
+        "active": "Active",
+        "expired": "Expired",
+        "archived": "Archived"
+      },
+      "serviceAvailable": "Interactive service available"
+    },
+    "empty": {
+      "title": "Start Your Story Journey",
+      "storytellerMessage": "Share your precious memories and let family stories be passed down",
+      "facilitatorMessage": "Invite family members to start recording and sharing their stories",
+      "emoji": "🎭",
+      "action": "Record Your First Story"
+    },
+    "loadMore": "Load More Stories"
+  },
+  "status": {
+    "new": "New",
+    "gettingStarted": "Getting Started",
+    "active": "Active",
+    "archived": "Archived",
+    "expired": "Expired"
+  },
+  "roles": {
+    "owner": "Owner",
+    "facilitator": "Facilitator",
+    "coFacilitator": "Co-Facilitator",
+    "storyteller": "Storyteller",
+    "member": "Member"
+  },
+  "export": {
+    "title": "Export Project Data",
+    "subtitle": "Export your complete project archive, including all stories, photos, and interaction records",
+    "unavailable": {
+      "title": "Export Unavailable",
+      "subtitle": "Your current subscription plan does not support data export functionality",
+      "message": "Data export requires an active subscription. Please upgrade your plan or renew to access this feature.",
+      "actions": {
+        "close": "Close",
+        "viewPlans": "View Subscription Plans"
+      }
+    },
+    "configure": {
+      "title": "Select export content",
+      "options": {
+        "audioFiles": {
+          "label": "Audio files",
+          "description": "(Original recordings)"
+        },
+        "transcripts": {
+          "label": "Transcripts",
+          "description": "(AI-generated text records)"
+        },
+        "photos": {
+          "label": "Photos",
+          "description": "(Images in stories)"
+        },
+        "interactions": {
+          "label": "Interaction records",
+          "description": "(Comments and follow-up questions)"
+        }
+      },
+      "preview": {
+        "title": "Export Preview",
+        "estimatedSize": "Estimated file size:",
+        "processingTime": "Estimated processing time:"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "continue": "Continue"
+      }
+    },
+    "confirm": {
+      "title": "Confirm Export",
+      "message": "We will create a complete archive file for \"{projectName}\" project. After processing is complete, the download link will be sent to your email.",
+      "warning": {
+        "title": "Important Reminder",
+        "items": [
+          "Export process may take several minutes",
+          "Download link will expire after 7 days",
+          "Export file contains sensitive family information, please keep it safe"
+        ]
+      },
+      "actions": {
+        "back": "Back",
+        "start": "Start Export",
+        "processing": "Processing..."
+      }
+    },
+    "processing": {
+      "title": "Processing Export",
+      "message": "We are preparing your export file, please wait...",
+      "progress": "Progress",
+      "tip": "💡 After processing is complete, the download link will be sent to your email. You can also keep this window open to wait for completion.",
+      "action": "Continue in Background"
+    },
+    "complete": {
+      "title": "Export Complete!",
+      "message": "Your project archive is ready. Click the button below to download, or check your email for the download link.",
+      "success": {
+        "title": "Export Successful",
+        "fileSize": "File size:"
+      },
+      "actions": {
+        "close": "Close",
+        "download": "Download File"
+      }
+    }
+  },
+  "subscription": {
+    "status": {
+      "active": "Active",
+      "activeInteractive": "Active",
+      "activeArchival": "Archival Mode",
+      "archived": "Archived",
+      "expired": "Expired",
+      "cancelled": "Cancelled",
+      "expiringSoon": "Expiring Soon",
+      "unknown": "Unknown Status"
+    },
+    "features": {
+      "archival": {
+        "title": "Archival Mode Features",
+        "items": [
+          "View all collected stories",
+          "Export complete project data",
+          "Browse story timeline",
+          "Search story content",
+          "Share read-only links"
+        ]
+      },
+      "interactive": {
+        "title": "Interactive Mode Features",
+        "items": [
+          "Create new stories",
+          "Invite family members",
+          "Receive AI-guided prompts",
+          "Real-time interaction and comments",
+          "Automatic transcription service",
+          "All archival mode features"
+        ]
+      },
+      "disabled": "🔒 Disabled Features:",
+      "available": "✅ Available Features:"
+    },
+    "banner": {
+      "expiringSoon": {
+        "title": "Subscription Expiring Soon",
+        "message": "Your subscription for \"{projectName}\" expires in {days} days.",
+        "urgentWarning": "⚠️ Less than a week remaining! Renew now to avoid service interruption.",
+        "action": "Renew Now"
+      },
+      "expired": {
+        "title": "Subscription Expired",
+        "message": "Your subscription for \"{projectName}\" has expired. The project is now in archival mode.",
+        "info": "Don't worry - your stories are safe. Renew to restore recording and interaction features.",
+        "action": "Renew Subscription"
+      },
+      "archived": {
+        "title": "Project in Archival Mode",
+        "message": "\"{projectName}\" is in read-only mode. You can view and export stories, but interactive features are disabled.",
+        "info": "All your stories and data remain accessible. Reactivate to enable recording and interactions.",
+        "action": "Reactivate Project"
+      },
+      "timeRemaining": "Time remaining",
+      "days": "days"
+    },
+    "archival": {
+      "title": "\"{projectName}\" is in Archival Mode",
+      "cardTitle": "Project in Archival Mode",
+      "modalTitle": "Project Archived",
+      "expiredOn": "Your subscription expired on {date}.",
+      "daysInArchival": "It's been {days} days since expiry.",
+      "enteredOn": "\"{projectName}\" entered archival mode on {date}. Your stories and data are safe, but some features are temporarily disabled.",
+      "whatItMeans": {
+        "title": "What does this mean?",
+        "description": "Your stories and data are completely safe and accessible. However, some interactive features have been temporarily disabled to maintain the integrity of your family's storytelling experience."
+      },
+      "actions": {
+        "reactivate": "Reactivate Project",
+        "export": "Export Data",
+        "exportAll": "Export All Data"
+      },
+      "tip": "💡 Good news: Reactivating your project will immediately restore all features and your family can continue sharing stories right where they left off."
+    },
+    "card": {
+      "statusTitle": {
+        "active": "Subscription Active",
+        "expiringSoon": "Subscription Expiring Soon",
+        "expired": "Subscription Expired",
+        "cancelled": "Subscription Cancelled",
+        "default": "Subscription Status"
+      },
+      "description": {
+        "active": "Your project is fully active with all features available.",
+        "expiringoon": "Your subscription will expire soon. Renew to keep all features active.",
+        "expired": "Your project is now in archival mode. Renew to reactivate all features.",
+        "cancelled": "Your subscription has been cancelled and will not auto-renew.",
+        "default": "Unable to determine subscription status."
+      },
+      "expiresOn": "Expires on",
+      "daysRemaining": "Days remaining",
+      "timeRemaining": "Time remaining",
+      "archivalNotice": {
+        "title": "Archival Mode Active",
+        "message": "Your project is in read-only mode. You can view and export your stories, but recording and interactions are disabled."
+      },
+      "actions": {
+        "renew": "Renew Subscription",
+        "extend": "Extend Subscription",
+        "viewDetails": "View Details"
+      },
+      "tips": {
+        "expiringSoon": "💡 Tip: Renew now to avoid any interruption in service. Your stories will remain safe, but interactive features will be disabled after expiry.",
+        "expired": "🔒 Limited Access: You can still view and export your stories, but recording and commenting are disabled. Renew to restore full functionality."
+      }
+    },
+    "renewal": {
+      "title": "Renew Subscription",
+      "subtitle": "Extend your subscription for \"{projectName}\"",
+      "currentSubscription": {
+        "title": "Current Subscription",
+        "expiresOn": "Your subscription expires on {date}.",
+        "expired": "(Expired)"
+      },
+      "choosePackage": "Choose Your Package",
+      "paymentMethod": "Payment Method",
+      "noPaymentMethods": "No payment methods available",
+      "addPaymentMethod": "Add Payment Method",
+      "summary": {
+        "title": "Renewal Summary",
+        "package": "Package:",
+        "duration": "Duration:",
+        "currentExpiry": "Current expiry:",
+        "newExpiry": "New expiry:",
+        "total": "Total:",
+        "months": "months"
+      },
+      "package": {
+        "recommended": "Recommended",
+        "save": "Save {percent}%",
+        "features": {
+          "projectVouchers": "Project Vouchers",
+          "facilitatorSeats": "Facilitator Seats",
+          "storytellerSeats": "Storyteller Seats",
+          "interactiveService": "Interactive Service"
+        }
+      },
+      "paymentMethodCard": {
+        "default": "Default",
+        "expires": "Expires {month}/{year}"
+      },
+      "security": "Your payment information is secure and encrypted. We use industry-standard security measures to protect your data.",
+      "actions": {
+        "cancel": "Cancel",
+        "renew": "Renew Subscription",
+        "processing": "Processing..."
+      },
+      "terms": "By renewing your subscription, you agree to our Terms of Service and Privacy Policy. Your subscription will automatically renew unless cancelled."
+    }
+  }
+}

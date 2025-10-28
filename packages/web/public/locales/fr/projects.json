@@ -1,0 +1,328 @@
+{
+  "list": {
+    "title": "Mes projets",
+    "subtitle": "Gérez vos projets d'histoires familiales",
+    "createNew": "Créer un nouveau projet",
+    "createFirst": "Créez votre premier projet",
+    "empty": {
+      "title": "Aucun projet pour le moment",
+      "subtitle": "Créez votre premier projet d'histoire familiale pour commencer",
+      "emoji": "📖"
+    },
+    "createCard": {
+      "title": "Créer un nouveau projet",
+      "subtitle": "Démarrez un nouveau projet d'histoire familiale"
+    },
+    "filters": {
+      "all": "Tous les projets",
+      "active": "Actif",
+      "archived": "Archivé"
+    }
+  },
+  "detail": {
+    "stats": {
+      "stories": "histoires",
+      "members": "membres"
+    },
+    "actions": {
+      "exportStories": "Exporter les histoires",
+      "manageProject": "Gérer le projet",
+      "recordNewStory": "Enregistrer une nouvelle histoire"
+    },
+    "filters": {
+      "title": "Filtrer par :",
+      "allStorytellers": "Tous les conteurs",
+      "allThemes": "Tous les thèmes",
+      "sortBy": "Trier par",
+      "sortOptions": {
+        "latest": "Plus récent d'abord",
+        "oldest": "Plus ancien d'abord",
+        "mostComments": "Plus de commentaires"
+      },
+      "themes": {
+        "childhood": "Enfance",
+        "family": "Famille",
+        "immigration": "Immigration"
+      }
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "exportAll": "Exporter toutes les histoires",
+      "archiveSelected": "Archiver la sélection",
+      "refreshFeed": "Actualiser le fil"
+    },
+    "statistics": {
+      "title": "Statistiques des histoires",
+      "totalStories": "Total des histoires",
+      "thisMonth": "Ce mois-ci",
+      "totalComments": "Total des commentaires",
+      "followUpQuestions": "Questions de suivi"
+    },
+    "validityPeriod": {
+      "title": "Période de validité du projet",
+      "remaining": "restant",
+      "days": "jours",
+      "started": "Démarré :",
+      "expires": "Expire :",
+      "status": {
+        "active": "Actif",
+        "expired": "Expiré",
+        "archived": "Archivé"
+      },
+      "serviceAvailable": "Service interactif disponible"
+    },
+    "empty": {
+      "title": "Commencez votre voyage d'histoires",
+      "storytellerMessage": "Partagez vos précieux souvenirs et laissez les histoires familiales se transmettre",
+      "facilitatorMessage": "Invitez les membres de la famille à commencer à enregistrer et partager leurs histoires",
+      "emoji": "🎭",
+      "action": "Enregistrez votre première histoire"
+    },
+    "loadMore": "Charger plus d'histoires"
+  },
+  "status": {
+    "new": "Nouveau",
+    "gettingStarted": "Démarrage",
+    "active": "Actif",
+    "archived": "Archivé",
+    "expired": "Expiré"
+  },
+  "roles": {
+    "owner": "Propriétaire",
+    "facilitator": "Facilitateur",
+    "coFacilitator": "Co-facilitateur",
+    "storyteller": "Conteur",
+    "member": "Membre"
+  },
+  "export": {
+    "title": "Exporter les données du projet",
+    "subtitle": "Exportez votre archive de projet complète, y compris toutes les histoires, photos et enregistrements d'interaction",
+    "unavailable": {
+      "title": "Exportation indisponible",
+      "subtitle": "Votre plan d'abonnement actuel ne prend pas en charge la fonctionnalité d'exportation de données",
+      "message": "L'exportation de données nécessite un abonnement actif. Veuillez mettre à niveau votre plan ou renouveler pour accéder à cette fonctionnalité.",
+      "actions": {
+        "close": "Fermer",
+        "viewPlans": "Voir les plans d'abonnement"
+      }
+    },
+    "configure": {
+      "title": "Sélectionner le contenu à exporter",
+      "options": {
+        "audioFiles": {
+          "label": "Fichiers audio",
+          "description": "(Enregistrements originaux)"
+        },
+        "transcripts": {
+          "label": "Transcriptions",
+          "description": "(Enregistrements de texte générés par l'IA)"
+        },
+        "photos": {
+          "label": "Photos",
+          "description": "(Images dans les histoires)"
+        },
+        "interactions": {
+          "label": "Enregistrements d'interaction",
+          "description": "(Commentaires et questions de suivi)"
+        }
+      },
+      "preview": {
+        "title": "Aperçu de l'exportation",
+        "estimatedSize": "Taille de fichier estimée :",
+        "processingTime": "Temps de traitement estimé :"
+      },
+      "actions": {
+        "cancel": "Annuler",
+        "continue": "Continuer"
+      }
+    },
+    "confirm": {
+      "title": "Confirmer l'exportation",
+      "message": "Nous allons créer un fichier d'archive complet pour le projet \"{projectName}\". Une fois le traitement terminé, le lien de téléchargement sera envoyé à votre email.",
+      "warning": {
+        "title": "Rappel important",
+        "items": [
+          "Le processus d'exportation peut prendre plusieurs minutes",
+          "Le lien de téléchargement expirera après 7 jours",
+          "Le fichier d'exportation contient des informations familiales sensibles, veuillez le conserver en sécurité"
+        ]
+      },
+      "actions": {
+        "back": "Retour",
+        "start": "Démarrer l'exportation",
+        "processing": "Traitement en cours..."
+      }
+    },
+    "processing": {
+      "title": "Traitement de l'exportation",
+      "message": "Nous préparons votre fichier d'exportation, veuillez patienter...",
+      "progress": "Progression",
+      "tip": "💡 Une fois le traitement terminé, le lien de téléchargement sera envoyé à votre email. Vous pouvez également garder cette fenêtre ouverte pour attendre la fin.",
+      "action": "Continuer en arrière-plan"
+    },
+    "complete": {
+      "title": "Exportation terminée !",
+      "message": "Votre archive de projet est prête. Cliquez sur le bouton ci-dessous pour télécharger, ou consultez votre email pour le lien de téléchargement.",
+      "success": {
+        "title": "Exportation réussie",
+        "fileSize": "Taille du fichier :"
+      },
+      "actions": {
+        "close": "Fermer",
+        "download": "Télécharger le fichier"
+      }
+    }
+  },
+  "subscription": {
+    "status": {
+      "active": "Actif",
+      "activeInteractive": "Actif",
+      "activeArchival": "Mode archivage",
+      "archived": "Archivé",
+      "expired": "Expiré",
+      "cancelled": "Annulé",
+      "expiringSoon": "Expire bientôt",
+      "unknown": "Statut inconnu"
+    },
+    "features": {
+      "archival": {
+        "title": "Fonctionnalités du mode archivage",
+        "items": [
+          "Voir toutes les histoires collectées",
+          "Exporter les données complètes du projet",
+          "Parcourir la chronologie des histoires",
+          "Rechercher le contenu des histoires",
+          "Partager des liens en lecture seule"
+        ]
+      },
+      "interactive": {
+        "title": "Fonctionnalités du mode interactif",
+        "items": [
+          "Créer de nouvelles histoires",
+          "Inviter des membres de la famille",
+          "Recevoir des invites guidées par l'IA",
+          "Interaction et commentaires en temps réel",
+          "Service de transcription automatique",
+          "Toutes les fonctionnalités du mode archivage"
+        ]
+      },
+      "disabled": "🔒 Fonctionnalités désactivées :",
+      "available": "✅ Fonctionnalités disponibles :"
+    },
+    "banner": {
+      "expiringSoon": {
+        "title": "Abonnement expirant bientôt",
+        "message": "Votre abonnement pour \"{projectName}\" expire dans {days} jours.",
+        "urgentWarning": "⚠️ Moins d'une semaine restante ! Renouvelez maintenant pour éviter l'interruption du service.",
+        "action": "Renouveler maintenant"
+      },
+      "expired": {
+        "title": "Abonnement expiré",
+        "message": "Votre abonnement pour \"{projectName}\" a expiré. Le projet est maintenant en mode archivage.",
+        "info": "Ne vous inquiétez pas - vos histoires sont en sécurité. Renouvelez pour restaurer les fonctionnalités d'enregistrement et d'interaction.",
+        "action": "Renouveler l'abonnement"
+      },
+      "archived": {
+        "title": "Projet en mode archivage",
+        "message": "\"{projectName}\" est en mode lecture seule. Vous pouvez consulter et exporter les histoires, mais les fonctionnalités interactives sont désactivées.",
+        "info": "Toutes vos histoires et données restent accessibles. Réactivez pour activer l'enregistrement et les interactions.",
+        "action": "Réactiver le projet"
+      },
+      "timeRemaining": "Temps restant",
+      "days": "jours"
+    },
+    "archival": {
+      "title": "\"{projectName}\" est en mode archivage",
+      "cardTitle": "Projet en mode archivage",
+      "modalTitle": "Projet archivé",
+      "expiredOn": "Votre abonnement a expiré le {date}.",
+      "daysInArchival": "Cela fait {days} jours depuis l'expiration.",
+      "enteredOn": "\"{projectName}\" est entré en mode archivage le {date}. Vos histoires et données sont en sécurité, mais certaines fonctionnalités sont temporairement désactivées.",
+      "whatItMeans": {
+        "title": "Qu'est-ce que cela signifie ?",
+        "description": "Vos histoires et données sont complètement sûres et accessibles. Cependant, certaines fonctionnalités interactives ont été temporairement désactivées pour maintenir l'intégrité de l'expérience de narration de votre famille."
+      },
+      "actions": {
+        "reactivate": "Réactiver le projet",
+        "export": "Exporter les données",
+        "exportAll": "Exporter toutes les données"
+      },
+      "tip": "💡 Bonne nouvelle : Réactiver votre projet restaurera immédiatement toutes les fonctionnalités et votre famille pourra continuer à partager des histoires là où elle s'était arrêtée."
+    },
+    "card": {
+      "statusTitle": {
+        "active": "Abonnement actif",
+        "expiringSoon": "Abonnement expirant bientôt",
+        "expired": "Abonnement expiré",
+        "cancelled": "Abonnement annulé",
+        "default": "Statut de l'abonnement"
+      },
+      "description": {
+        "active": "Votre projet est entièrement actif avec toutes les fonctionnalités disponibles.",
+        "expiringoon": "Votre abonnement expirera bientôt. Renouvelez pour conserver toutes les fonctionnalités actives.",
+        "expired": "Votre projet est maintenant en mode archivage. Renouvelez pour réactiver toutes les fonctionnalités.",
+        "cancelled": "Votre abonnement a été annulé et ne se renouvellera pas automatiquement.",
+        "default": "Impossible de déterminer le statut de l'abonnement."
+      },
+      "expiresOn": "Expire le",
+      "daysRemaining": "Jours restants",
+      "timeRemaining": "Temps restant",
+      "archivalNotice": {
+        "title": "Mode archivage actif",
+        "message": "Votre projet est en mode lecture seule. Vous pouvez consulter et exporter vos histoires, mais l'enregistrement et les interactions sont désactivés."
+      },
+      "actions": {
+        "renew": "Renouveler l'abonnement",
+        "extend": "Prolonger l'abonnement",
+        "viewDetails": "Voir les détails"
+      },
+      "tips": {
+        "expiringSoon": "💡 Conseil : Renouvelez maintenant pour éviter toute interruption de service. Vos histoires resteront en sécurité, mais les fonctionnalités interactives seront désactivées après l'expiration.",
+        "expired": "🔒 Accès limité : Vous pouvez toujours consulter et exporter vos histoires, mais l'enregistrement et les commentaires sont désactivés. Renouvelez pour restaurer toutes les fonctionnalités."
+      }
+    },
+    "renewal": {
+      "title": "Renouveler l'abonnement",
+      "subtitle": "Prolongez votre abonnement pour \"{projectName}\"",
+      "currentSubscription": {
+        "title": "Abonnement actuel",
+        "expiresOn": "Votre abonnement expire le {date}.",
+        "expired": "(Expiré)"
+      },
+      "choosePackage": "Choisissez votre forfait",
+      "paymentMethod": "Méthode de paiement",
+      "noPaymentMethods": "Aucune méthode de paiement disponible",
+      "addPaymentMethod": "Ajouter une méthode de paiement",
+      "summary": {
+        "title": "Résumé du renouvellement",
+        "package": "Forfait :",
+        "duration": "Durée :",
+        "currentExpiry": "Expiration actuelle :",
+        "newExpiry": "Nouvelle expiration :",
+        "total": "Total :",
+        "months": "mois"
+      },
+      "package": {
+        "recommended": "Recommandé",
+        "save": "Économisez {percent}%",
+        "features": {
+          "projectVouchers": "Bons de projet",
+          "facilitatorSeats": "Places de facilitateur",
+          "storytellerSeats": "Places de conteur",
+          "interactiveService": "Service interactif"
+        }
+      },
+      "paymentMethodCard": {
+        "default": "Par défaut",
+        "expires": "Expire {month}/{year}"
+      },
+      "security": "Vos informations de paiement sont sécurisées et chiffrées. Nous utilisons des mesures de sécurité standard de l'industrie pour protéger vos données.",
+      "actions": {
+        "cancel": "Annuler",
+        "renew": "Renouveler l'abonnement",
+        "processing": "Traitement en cours..."
+      },
+      "terms": "En renouvelant votre abonnement, vous acceptez nos Conditions d'utilisation et notre Politique de confidentialité. Votre abonnement se renouvellera automatiquement sauf annulation."
+    }
+  }
+}

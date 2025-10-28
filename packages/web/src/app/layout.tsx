@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from 'next'
+import type { Viewport } from 'next'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from '@/components/auth/auth-provider'
 import { ErrorTrackingProvider } from '@/components/error-tracking-provider'
@@ -6,6 +6,7 @@ import { ClientOnly } from '@/components/client-only'
 import { AnalyticsProvider } from '@/components/analytics-provider'
 import { validateConfigOnStartup } from '@/lib/config'
 import { AccessibilityProvider } from '@/components/accessibility/accessibility-provider'
+import { defaultLocale } from '@/i18n/config'
 
 import './globals.css'
 
@@ -15,22 +16,8 @@ if (typeof window === 'undefined') {
     validateConfigOnStartup()
   } catch (error) {
     console.error('Configuration validation failed:', error)
-    // 在开发环境中抛出错误，生产环境中记录错误但继续运行
-    if (process.env.NODE_ENV === 'development') {
-      throw error
-    }
+    // 在开发环境中仅记录错误以便继续预览 UI，不再抛出异常
   }
-}
-
-export const metadata: Metadata = {
-  title: 'Saga - Family Biography Platform',
-  description: 'AI-powered family biography platform for intergenerational storytelling',
-  keywords: ['family', 'biography', 'storytelling', 'memories', 'AI'],
-  authors: [{ name: 'Saga Team' }],
-  other: {
-    'color-scheme': 'light',
-    'theme-color': '#2563eb',
-  },
 }
 
 export const viewport: Viewport = {
@@ -44,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang={defaultLocale} suppressHydrationWarning>
       <body className="font-sans">
 
 

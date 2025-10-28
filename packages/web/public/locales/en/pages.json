@@ -1,0 +1,126 @@
+{
+  "home": {
+    "navigation": {
+      "brandName": "Saga",
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "testimonials": "Testimonials",
+      "pricing": "Pricing",
+      "startFree": "Start Free"
+    },
+    "hero": {
+      "tagline": "TIME BECOMES MEMORY",
+      "title": "Before the Stories\nAre Lost Forever",
+      "subtitle": "Every day without action is another memory fading. Preserve your family's voice—one story at a time—before it's too late.",
+      "ctaPrimary": "Begin Your Story",
+      "ctaSecondary": "See How It Works"
+    },
+    "fragiletruth": {
+      "tagline": "THE FRAGILE TRUTH",
+      "title": "Your Parents' Stories\nAre Disappearing",
+      "subtitle": "Distance, busy lives, and time are erasing the irreplaceable. The stories that define your family won't preserve themselves.",
+      "stat1Value": "73%",
+      "stat1Label": "of family stories lost within two generations",
+      "stat2Value": "89%",
+      "stat2Label": "regret not asking more questions sooner",
+      "stat3Value": "Forever",
+      "stat3Label": "is how long these memories will be gone"
+    },
+    "features": {
+      "title": "Built for Memory, Designed for Life",
+      "subtitle": "Every feature exists for one purpose: making it effortless to preserve what matters most.",
+      "feature1": {
+        "title": "AI-Guided Conversations",
+        "description": "Never run out of questions. Our AI curator prompts meaningful conversations, helping you uncover stories you never knew existed. From childhood memories to life lessons, every session reveals something profound."
+      },
+      "feature2": {
+        "title": "Auto-Transcription & Organization",
+        "description": "Every word, perfectly captured. Our AI transcribes and organizes stories by theme, person, and era—instantly searchable, forever accessible."
+      },
+      "feature3": {
+        "title": "Military-Grade Security",
+        "description": "Bank-level encryption protects your most precious memories. Your stories remain private, forever."
+      },
+      "feature4": {
+        "title": "Multi-Generation Sharing",
+        "description": "Connect every branch of your family tree. From grandparents to grandchildren, everyone contributes."
+      },
+      "feature5": {
+        "title": "Lifetime Archive",
+        "description": "Stories that outlive us all. Download, print, or stream across devices for eternity."
+      },
+      "feature6": {
+        "title": "Digital Legacy Book",
+        "description": "Transform recorded conversations into a beautifully designed digital or printed keepsake."
+      }
+    },
+    "howItWorks": {
+      "tagline": "SIMPLE BY DESIGN",
+      "title": "From Setup to Story\nIn Minutes, Not Hours",
+      "step1": {
+        "title": "You Purchase & Invite",
+        "description": "Choose a family package. Send a simple link to your parent via text or email. No apps to download, no passwords to remember."
+      },
+      "step2": {
+        "title": "They Record Effortlessly",
+        "description": "One tap to accept. A warm AI voice asks a question. They press record, share their story, attach a photo if they want, and hit send."
+      },
+      "step3": {
+        "title": "You Listen & Connect",
+        "description": "Get notified. Listen to their voice. Read the transcript. Leave a comment. Ask a follow-up question that sparks the next memory."
+      },
+      "step4": {
+        "title": "Stories Compound Forever",
+        "description": "Over weeks and months, your family archive grows. Siblings join. Themes emerge. A lifetime of wisdom becomes navigable, searchable, and eternal."
+      }
+    },
+    "testimonials": {
+      "title": "What Families Discover",
+      "subtitle": "Real stories from people preserving their most precious memories.",
+      "testimonial1": {
+        "name": "Sarah Johnson",
+        "role": "Preserving 3 Generations",
+        "quote": "I learned more about my grandmother in two weeks with Saga than I had in 30 years. Stories I never knew existed, now preserved forever."
+      },
+      "testimonial2": {
+        "name": "Michael Chen",
+        "role": "Family Historian",
+        "quote": "My kids will know their great-grandfather's voice, his laugh, his wisdom. That's priceless. Saga made it effortless."
+      },
+      "testimonial3": {
+        "name": "Emily Rodriguez",
+        "role": "Memory Keeper",
+        "quote": "The AI questions were perfect—they helped my dad open up about things he'd never talked about. Pure magic."
+      }
+    },
+    "finalCta": {
+      "tagline": "DON'T LET TIME WIN",
+      "title": "Start Preserving Today,\nBefore Tomorrow's Too Late",
+      "subtitle": "Every conversation you delay is a memory you risk losing forever. Begin your family's Saga now.",
+      "emailPlaceholder": "Enter your email",
+      "ctaButton": "Start Free Trial",
+      "trial": "Free 14-day trial • No credit card required • Cancel anytime"
+    },
+    "footer": {
+      "brandName": "Saga",
+      "tagline": "Preserving family stories, one conversation at a time. Because every voice deserves to echo through generations.",
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "pricing": "Pricing",
+        "howItWorks": "How It Works",
+        "security": "Security",
+        "api": "API"
+      },
+      "company": {
+        "title": "Company",
+        "aboutUs": "About Us",
+        "blog": "Blog",
+        "careers": "Careers",
+        "pressKit": "Press Kit",
+        "contact": "Contact"
+      },
+      "copyright": "© 2025 Saga. Every story matters. Every voice counts."
+    }
+  }
+}

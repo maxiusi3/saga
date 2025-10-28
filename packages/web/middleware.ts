@@ -1,5 +1,14 @@
+import createMiddleware from 'next-intl/middleware'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { locales, defaultLocale } from './src/i18n/config'
+
+// Create next-intl middleware
+const intlMiddleware = createMiddleware({
+  locales,
+  defaultLocale,
+  localePrefix: 'always', // Always prefix locale in URL (works with app/[locale] route)
+})
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
@@ -32,18 +41,13 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next()
+  // Apply i18n middleware
+  return intlMiddleware(request)
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    // Recommended matcher from next-intl docs to avoid interfering with static assets
+    '/((?!api|_next|_vercel|.*\\..*).*)',
   ],
 }

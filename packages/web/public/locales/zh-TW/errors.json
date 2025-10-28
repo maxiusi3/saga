@@ -1,0 +1,117 @@
+{
+  "api": {
+    "common": {
+      "unauthorized": "未經授權",
+      "serverError": "內部伺服器錯誤",
+      "serverConfigurationError": "伺服器配置錯誤",
+      "accessDenied": "存取被拒絕",
+      "notFound": "找不到資源",
+      "forbidden": "禁止存取"
+    },
+    "admin": {
+      "cleanupFailed": "清理過期邀請失敗",
+      "checkExpiredFailed": "檢查過期邀請失敗"
+    },
+    "ai": {
+      "apiKeyNotConfigured": "OpenRouter API 金鑰未配置",
+      "noTranscriptProvided": "未提供文字記錄",
+      "invalidRequest": "AI 服務的請求無效",
+      "rateLimitExceeded": "速率限制已超過。請稍後再試。",
+      "quotaExceeded": "OpenAI 配額已超過。請檢查您的帳單。",
+      "contentGenerationFailed": "AI 內容生成失敗。請重試。",
+      "healthCheckFailed": "健康檢查失敗",
+      "noStoriesProvided": "未提供故事",
+      "noActionSpecified": "未指定動作",
+      "invalidAction": "指定的動作無效",
+      "processStoriesFailed": "處理故事失敗",
+      "noAudioFile": "未提供音訊檔案",
+      "missingApiKey": "伺服器配置錯誤：缺少 SiliconFlow API 金鑰。",
+      "transcriptionFailed": "轉錄失敗。請重試。",
+      "unauthorizedApiKey": "未經授權：SiliconFlow API 金鑰無效。",
+      "rateLimitApi": "速率限制已超過。請稍後再試。"
+    },
+    "invitations": {
+      "invalidOrExpired": "邀請無效或已過期",
+      "invitationNotFound": "找不到邀請",
+      "expired": "邀請已過期",
+      "thisExpired": "此邀請已過期",
+      "thisInvalidOrExpired": "此邀請無效或已過期",
+      "emailMismatch": "電子郵件地址與邀請不符",
+      "alreadyMember": "您已經是此專案的成員",
+      "alreadyHasRole": "您已在專案中擁有此角色",
+      "acceptFailed": "接受邀請失敗",
+      "tokenRequired": "需要令牌",
+      "tokenAndUserIdRequired": "需要令牌和用戶 ID",
+      "signInToAccept": "請登入以接受此邀請",
+      "emailAndRoleRequired": "需要電子郵件和角色",
+      "invalidRole": "角色無效。必須是引導者或說故事者。",
+      "activeInvitationExists": "此電子郵件和角色已存在有效邀請",
+      "projectHasStoryteller": "此專案已有說故事者。每個專案只允許一位說故事者。",
+      "pendingStorytellerExists": "此專案已有待處理的說故事者邀請。每個專案只允許一位說故事者。",
+      "unableToVerifySeats": "無法驗證可用席位",
+      "insufficientSeats": "{role} 席位不足。請購買更多席位以發送此邀請。",
+      "sendFailed": "發送邀請失敗",
+      "fetchFailed": "獲取邀請失敗",
+      "projectNotFound": "找不到專案。",
+      "onlyOwnerCanManage": "存取被拒絕。只有專案所有者可以管理邀請。",
+      "onlyOwnerCanSend": "存取被拒絕。只有專案所有者可以發送邀請。",
+      "invitationIdRequired": "需要邀請 ID",
+      "onlyOwnCanCancel": "存取被拒絕。您只能取消自己發送的邀請。",
+      "onlyPendingCanCancel": "只能取消待處理的邀請",
+      "cancelFailed": "取消邀請失敗"
+    },
+    "notifications": {
+      "fetchFailed": "獲取通知失敗",
+      "markAsReadFailed": "標記通知為已讀失敗",
+      "markAllAsReadFailed": "標記所有通知為已讀失敗",
+      "invalidAction": "動作無效",
+      "deleteFailed": "刪除通知失敗",
+      "idRequired": "需要通知 ID"
+    },
+    "privacy": {
+      "recordFailed": "記錄隱私協議失敗",
+      "fetchFailed": "獲取隱私協議失敗"
+    },
+    "projects": {
+      "notFoundOrAccessDenied": "找不到專案或存取被拒絕",
+      "fetchStoriesFailed": "獲取專案故事失敗",
+      "exportFailed": "匯出專案資料失敗",
+      "fetchInteractionsFailed": "獲取互動失敗",
+      "fetchChaptersFailed": "獲取章節失敗",
+      "initPromptStateFailed": "初始化提示狀態失敗",
+      "fetchPromptsFailed": "獲取提示失敗",
+      "promptIdRequired": "需要提示 ID",
+      "markPromptFailed": "標記提示為已送達失敗",
+      "updatePromptStateFailed": "更新提示狀態失敗",
+      "createStoryFailed": "建立故事失敗"
+    },
+    "stories": {
+      "notFound": "找不到故事",
+      "fetchInteractionsFailed": "獲取互動失敗",
+      "invalidRequestData": "請求資料無效",
+      "createInteractionFailed": "建立互動失敗"
+    },
+    "wallets": {
+      "fetchFailed": "獲取錢包失敗",
+      "initFailed": "初始化錢包失敗",
+      "refetchFailed": "初始化後獲取錢包失敗"
+    }
+  },
+  "validation": {
+    "required": "此欄位為必填",
+    "invalidEmail": "電子郵件地址無效",
+    "invalidFormat": "格式無效",
+    "emailRequired": "需要電子郵件",
+    "roleRequired": "需要角色",
+    "tokenRequired": "需要令牌",
+    "userIdRequired": "需要用戶 ID",
+    "actionRequired": "需要動作",
+    "contentRequired": "需要內容",
+    "typeRequired": "需要類型",
+    "promptIdRequired": "需要提示 ID"
+  },
+  "purchase": {
+    "insufficientSeats": "可用席位不足",
+    "purchaseRequired": "請購買更多席位以繼續"
+  }
+}

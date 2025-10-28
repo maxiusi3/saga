@@ -1,0 +1,328 @@
+{
+  "list": {
+    "title": "我的專案",
+    "subtitle": "管理您的家族故事專案",
+    "createNew": "建立新專案",
+    "createFirst": "建立您的第一個專案",
+    "empty": {
+      "title": "尚無專案",
+      "subtitle": "建立您的第一個家族故事專案以開始",
+      "emoji": "📖"
+    },
+    "createCard": {
+      "title": "建立新專案",
+      "subtitle": "開始新的家族故事專案"
+    },
+    "filters": {
+      "all": "所有專案",
+      "active": "活躍",
+      "archived": "已封存"
+    }
+  },
+  "detail": {
+    "stats": {
+      "stories": "個故事",
+      "members": "位成員"
+    },
+    "actions": {
+      "exportStories": "匯出故事",
+      "manageProject": "管理專案",
+      "recordNewStory": "錄製新故事"
+    },
+    "filters": {
+      "title": "篩選：",
+      "allStorytellers": "所有說故事者",
+      "allThemes": "所有主題",
+      "sortBy": "排序",
+      "sortOptions": {
+        "latest": "最新優先",
+        "oldest": "最舊優先",
+        "mostComments": "最多評論"
+      },
+      "themes": {
+        "childhood": "童年",
+        "family": "家庭",
+        "immigration": "移民"
+      }
+    },
+    "quickActions": {
+      "title": "快速動作",
+      "exportAll": "匯出所有故事",
+      "archiveSelected": "封存所選",
+      "refreshFeed": "重新整理動態"
+    },
+    "statistics": {
+      "title": "故事統計",
+      "totalStories": "總故事數",
+      "thisMonth": "本月",
+      "totalComments": "總評論數",
+      "followUpQuestions": "後續問題"
+    },
+    "validityPeriod": {
+      "title": "專案有效期",
+      "remaining": "剩餘",
+      "days": "天",
+      "started": "開始：",
+      "expires": "到期：",
+      "status": {
+        "active": "活躍",
+        "expired": "已過期",
+        "archived": "已封存"
+      },
+      "serviceAvailable": "互動服務可用"
+    },
+    "empty": {
+      "title": "開始您的故事之旅",
+      "storytellerMessage": "分享您珍貴的記憶，讓家族故事代代相傳",
+      "facilitatorMessage": "邀請家庭成員開始錄製和分享他們的故事",
+      "emoji": "🎭",
+      "action": "錄製您的第一個故事"
+    },
+    "loadMore": "載入更多故事"
+  },
+  "status": {
+    "new": "新建",
+    "gettingStarted": "開始使用",
+    "active": "活躍",
+    "archived": "已封存",
+    "expired": "已過期"
+  },
+  "roles": {
+    "owner": "所有者",
+    "facilitator": "引導者",
+    "coFacilitator": "共同引導者",
+    "storyteller": "說故事者",
+    "member": "成員"
+  },
+  "export": {
+    "title": "匯出專案資料",
+    "subtitle": "匯出您的完整專案檔案，包括所有故事、照片和互動記錄",
+    "unavailable": {
+      "title": "匯出不可用",
+      "subtitle": "您目前的訂閱方案不支援資料匯出功能",
+      "message": "資料匯出需要有效的訂閱。請升級您的方案或續訂以存取此功能。",
+      "actions": {
+        "close": "關閉",
+        "viewPlans": "查看訂閱方案"
+      }
+    },
+    "configure": {
+      "title": "選擇匯出內容",
+      "options": {
+        "audioFiles": {
+          "label": "音訊檔案",
+          "description": "（原始錄音）"
+        },
+        "transcripts": {
+          "label": "文字記錄",
+          "description": "（AI 生成的文字記錄）"
+        },
+        "photos": {
+          "label": "照片",
+          "description": "（故事中的圖片）"
+        },
+        "interactions": {
+          "label": "互動記錄",
+          "description": "（評論和後續問題）"
+        }
+      },
+      "preview": {
+        "title": "匯出預覽",
+        "estimatedSize": "預估檔案大小：",
+        "processingTime": "預估處理時間："
+      },
+      "actions": {
+        "cancel": "取消",
+        "continue": "繼續"
+      }
+    },
+    "confirm": {
+      "title": "確認匯出",
+      "message": "我們將為「{projectName}」專案建立完整的檔案文件。處理完成後，下載連結將發送至您的電子郵件。",
+      "warning": {
+        "title": "重要提醒",
+        "items": [
+          "匯出過程可能需要幾分鐘",
+          "下載連結將在 7 天後過期",
+          "匯出檔案包含敏感的家庭資訊，請妥善保管"
+        ]
+      },
+      "actions": {
+        "back": "返回",
+        "start": "開始匯出",
+        "processing": "處理中..."
+      }
+    },
+    "processing": {
+      "title": "處理匯出中",
+      "message": "我們正在準備您的匯出檔案，請稍候...",
+      "progress": "進度",
+      "tip": "💡 處理完成後，下載連結將發送至您的電子郵件。您也可以保持此視窗開啟以等待完成。",
+      "action": "在背景中繼續"
+    },
+    "complete": {
+      "title": "匯出完成！",
+      "message": "您的專案檔案已準備就緒。點擊下方按鈕下載，或查看您的電子郵件以取得下載連結。",
+      "success": {
+        "title": "匯出成功",
+        "fileSize": "檔案大小："
+      },
+      "actions": {
+        "close": "關閉",
+        "download": "下載檔案"
+      }
+    }
+  },
+  "subscription": {
+    "status": {
+      "active": "活躍",
+      "activeInteractive": "活躍",
+      "activeArchival": "封存模式",
+      "archived": "已封存",
+      "expired": "已過期",
+      "cancelled": "已取消",
+      "expiringSoon": "即將到期",
+      "unknown": "未知狀態"
+    },
+    "features": {
+      "archival": {
+        "title": "封存模式功能",
+        "items": [
+          "查看所有收集的故事",
+          "匯出完整專案資料",
+          "瀏覽故事時間軸",
+          "搜尋故事內容",
+          "分享唯讀連結"
+        ]
+      },
+      "interactive": {
+        "title": "互動模式功能",
+        "items": [
+          "建立新故事",
+          "邀請家庭成員",
+          "接收 AI 引導的提示",
+          "即時互動和評論",
+          "自動轉錄服務",
+          "所有封存模式功能"
+        ]
+      },
+      "disabled": "🔒 已停用功能：",
+      "available": "✅ 可用功能："
+    },
+    "banner": {
+      "expiringSoon": {
+        "title": "訂閱即將到期",
+        "message": "您的「{projectName}」訂閱將在 {days} 天後到期。",
+        "urgentWarning": "⚠️ 剩餘不到一週！立即續訂以避免服務中斷。",
+        "action": "立即續訂"
+      },
+      "expired": {
+        "title": "訂閱已過期",
+        "message": "您的「{projectName}」訂閱已過期。專案現在處於封存模式。",
+        "info": "別擔心——您的故事是安全的。續訂以恢復錄製和互動功能。",
+        "action": "續訂訂閱"
+      },
+      "archived": {
+        "title": "專案處於封存模式",
+        "message": "「{projectName}」處於唯讀模式。您可以查看和匯出故事，但互動功能已停用。",
+        "info": "您的所有故事和資料仍可存取。重新啟動以啟用錄製和互動。",
+        "action": "重新啟動專案"
+      },
+      "timeRemaining": "剩餘時間",
+      "days": "天"
+    },
+    "archival": {
+      "title": "「{projectName}」處於封存模式",
+      "cardTitle": "專案處於封存模式",
+      "modalTitle": "專案已封存",
+      "expiredOn": "您的訂閱已於 {date} 到期。",
+      "daysInArchival": "距離到期已過 {days} 天。",
+      "enteredOn": "「{projectName}」於 {date} 進入封存模式。您的故事和資料是安全的，但某些功能已暫時停用。",
+      "whatItMeans": {
+        "title": "這意味著什麼？",
+        "description": "您的故事和資料完全安全且可存取。但是，某些互動功能已暫時停用，以維護您家族講故事體驗的完整性。"
+      },
+      "actions": {
+        "reactivate": "重新啟動專案",
+        "export": "匯出資料",
+        "exportAll": "匯出所有資料"
+      },
+      "tip": "💡 好消息：重新啟動您的專案將立即恢復所有功能，您的家人可以在他們離開的地方繼續分享故事。"
+    },
+    "card": {
+      "statusTitle": {
+        "active": "訂閱活躍",
+        "expiringSoon": "訂閱即將到期",
+        "expired": "訂閱已過期",
+        "cancelled": "訂閱已取消",
+        "default": "訂閱狀態"
+      },
+      "description": {
+        "active": "您的專案完全活躍，所有功能可用。",
+        "expiringoon": "您的訂閱即將到期。續訂以保持所有功能活躍。",
+        "expired": "您的專案現在處於封存模式。續訂以重新啟動所有功能。",
+        "cancelled": "您的訂閱已取消，將不會自動續訂。",
+        "default": "無法確定訂閱狀態。"
+      },
+      "expiresOn": "到期日",
+      "daysRemaining": "剩餘天數",
+      "timeRemaining": "剩餘時間",
+      "archivalNotice": {
+        "title": "封存模式啟動",
+        "message": "您的專案處於唯讀模式。您可以查看和匯出故事，但錄製和互動已停用。"
+      },
+      "actions": {
+        "renew": "續訂訂閱",
+        "extend": "延長訂閱",
+        "viewDetails": "查看詳情"
+      },
+      "tips": {
+        "expiringSoon": "💡 提示：立即續訂以避免服務中斷。您的故事將保持安全，但到期後互動功能將被停用。",
+        "expired": "🔒 有限存取：您仍可以查看和匯出故事，但錄製和評論已停用。續訂以恢復完整功能。"
+      }
+    },
+    "renewal": {
+      "title": "續訂訂閱",
+      "subtitle": "延長您的「{projectName}」訂閱",
+      "currentSubscription": {
+        "title": "目前訂閱",
+        "expiresOn": "您的訂閱將於 {date} 到期。",
+        "expired": "（已過期）"
+      },
+      "choosePackage": "選擇您的方案",
+      "paymentMethod": "付款方式",
+      "noPaymentMethods": "無可用付款方式",
+      "addPaymentMethod": "新增付款方式",
+      "summary": {
+        "title": "續訂摘要",
+        "package": "方案：",
+        "duration": "期限：",
+        "currentExpiry": "目前到期日：",
+        "newExpiry": "新到期日：",
+        "total": "總計：",
+        "months": "個月"
+      },
+      "package": {
+        "recommended": "推薦",
+        "save": "省 {percent}%",
+        "features": {
+          "projectVouchers": "專案憑證",
+          "facilitatorSeats": "引導者席位",
+          "storytellerSeats": "說故事者席位",
+          "interactiveService": "互動服務"
+        }
+      },
+      "paymentMethodCard": {
+        "default": "預設",
+        "expires": "到期 {month}/{year}"
+      },
+      "security": "您的付款資訊是安全且加密的。我們使用業界標準的安全措施來保護您的資料。",
+      "actions": {
+        "cancel": "取消",
+        "renew": "續訂訂閱",
+        "processing": "處理中..."
+      },
+      "terms": "續訂訂閱即表示您同意我們的服務條款和隱私政策。除非取消，否則您的訂閱將自動續訂。"
+    }
+  }
+}

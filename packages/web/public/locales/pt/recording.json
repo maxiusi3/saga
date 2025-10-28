@@ -1,0 +1,113 @@
+{
+  "interface": {
+    "title": "Grave sua história",
+    "subtitle": "Compartilhe suas memórias com orientação alimentada por IA",
+    "recordYourStory": "Grave sua história",
+    "maxDuration": "Duração máxima: {{duration}}",
+    "duration": "/ {{duration}}"
+  },
+  "states": {
+    "readyToRecord": "Pronto para gravar",
+    "recording": "Gravando...",
+    "paused": "Pausado",
+    "reviewRecording": "Revisar gravação",
+    "uploading": "Enviando...",
+    "uploadComplete": "Envio concluído!",
+    "error": "Erro",
+    "recordingError": "Erro de gravação"
+  },
+  "buttons": {
+    "startRecording": "Iniciar gravação",
+    "pause": "Pausar",
+    "resume": "Retomar",
+    "stop": "Parar",
+    "delete": "Excluir",
+    "reRecord": "Regravar",
+    "sendToFamily": "Enviar para família",
+    "recordAnotherStory": "Gravar outra história",
+    "tryAgain": "Tentar novamente",
+    "startOver": "Recomeçar",
+    "saveStory": "Salvar história",
+    "saving": "Salvando...",
+    "choosePhoto": "Escolher foto"
+  },
+  "recording": {
+    "pressAndHold": "Pressione e segure para gravar sua história. Duração máxima: {{duration}}",
+    "recordingComplete": "Gravação concluída!",
+    "reviewInstructions": "Revise sua gravação e adicione uma foto se desejar.",
+    "yourRecording": "Sua gravação",
+    "addPhoto": "Adicionar foto (Opcional)",
+    "uploadingYourStory": "Enviando sua história...",
+    "percentComplete": "{{percent}}% concluído",
+    "storyUploadedSuccessfully": "História enviada com sucesso!",
+    "familyWillBeNotified": "Sua família será notificada sobre sua nova história."
+  },
+  "webSpeech": {
+    "notSupported": "Seu navegador não suporta reconhecimento de fala. Por favor, use Chrome, Edge ou Safari.",
+    "browserNotSupported": "Navegador não suporta reconhecimento de fala",
+    "useSupportedBrowser": "Por favor, use Chrome, Edge ou Safari para a melhor experiência",
+    "speechRecognition": "Reconhecimento de fala",
+    "readyToRecord": "Pronto para gravar",
+    "recording": "Gravando",
+    "paused": "Pausado",
+    "startRecording": "Iniciar gravação",
+    "continueRecording": "Continuar",
+    "realtimeTranscription": "Transcrição em tempo real:",
+    "error": "Erro"
+  },
+  "errors": {
+    "microphoneAccess": "Falha ao acessar microfone. Por favor, verifique suas permissões.",
+    "uploadFailed": "Falha ao enviar gravação. Por favor, tente novamente.",
+    "noSpeechDetected": "Nenhuma fala detectada, por favor, tente novamente",
+    "audioCapture": "Não foi possível acessar o microfone, por favor, verifique as configurações de permissão",
+    "permissionDenied": "Permissão de microfone negada, por favor, permita acesso ao microfone",
+    "networkError": "Erro de conexão de rede, por favor, verifique a conexão de rede",
+    "serviceNotAllowed": "Serviço de reconhecimento de fala indisponível",
+    "speechRecognitionError": "Erro de reconhecimento de fala: {{error}}",
+    "startRecordingFailed": "Falha ao iniciar gravação",
+    "microphonePermissionDenied": "Permissão de microfone negada, por favor, permita acesso ao microfone",
+    "microphoneNotFound": "Dispositivo de microfone não encontrado, por favor, conecte um microfone",
+    "resumeFailed": "Falha ao retomar gravação",
+    "maxDurationReached": "Gravação atingiu duração máxima de {{minutes}} minutos, parada automaticamente",
+    "noValidSpeech": "Nenhuma fala válida detectada",
+    "restartFailed": "Falha ao reiniciar reconhecimento de fala"
+  },
+  "success": {
+    "recordingStarted": "Gravação de reconhecimento de fala iniciada",
+    "recordingPaused": "Gravação pausada",
+    "recordingResumed": "Gravação retomada",
+    "recordingComplete": "Gravação concluída",
+    "answerRecorded": "Resposta gravada com sucesso!",
+    "storySaved": "História salva com sucesso!",
+    "aiProcessingComplete": "Processamento de IA concluído!",
+    "audioProcessed": "Áudio processado com sucesso"
+  },
+  "tips": {
+    "ensureMicrophone": "Por favor, certifique-se de que a permissão do microfone está habilitada",
+    "quietEnvironment": "Grave em um ambiente silencioso para melhores resultados de reconhecimento",
+    "supportedLanguages": "Suporta vários idiomas incluindo chinês e inglês"
+  },
+  "ai": {
+    "processingYourStory": "IA está processando sua história...",
+    "processingProgress": "Progresso do processamento",
+    "aiIsWorking": "Nossa IA está trabalhando em sua história:",
+    "transcribingAudio": "Transcrevendo seu áudio",
+    "generatingTitle": "Gerando um título significativo",
+    "creatingSummary": "Criando um resumo",
+    "preparingFollowup": "Preparando perguntas de acompanhamento",
+    "generatedContent": "Conteúdo gerado por IA",
+    "confidence": "{{percent}}% de confiança",
+    "demoMode": "Modo demo",
+    "generatedTitle": "Título gerado:",
+    "storySummary": "Resumo da história:",
+    "transcriptPreview": "Prévia da transcrição:",
+    "suggestedFollowup": "Perguntas de acompanhamento sugeridas:",
+    "moreQuestionsAvailable": "+{{count}} mais perguntas disponíveis",
+    "processingFailed": "Falha no processamento de IA, por favor, tente novamente",
+    "processingFailedCanSave": "Falha no processamento de IA. Você ainda pode salvar sua história manualmente."
+  },
+  "prompt": {
+    "chapter": "Capítulo",
+    "estimatedTime": "Tempo estimado: {{minutes}} minutos"
+  }
+}

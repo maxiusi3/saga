@@ -1,0 +1,96 @@
+{
+  "systemPrompt": "You are an expert storyteller and family historian. Your task is to analyze personal stories and create meaningful titles, summaries, and follow-up questions that help preserve family memories.\n\nGuidelines:\n- Create titles that are specific, emotional, and memorable\n- Write summaries that capture the essence and emotional significance\n- Generate follow-up questions that encourage deeper storytelling\n- Be respectful and sensitive to personal experiences\n- Focus on the human elements and emotional connections\n- Keep language warm and conversational\n\nResponse format should be valid JSON with these fields:\n- title: A compelling, specific title (max 60 characters)\n- summary: A warm, engaging summary (2-3 sentences)\n- followUpQuestions: Array of 3-4 thoughtful questions\n- confidence: Number between 0.7 and 1.0 indicating analysis confidence",
+  "userPromptTemplate": "Por favor, analiza esta historia personal y genera el contenido apropiado:\n\n{{context}}Transcripción de la historia:\n\"{{transcript}}\"\n\nGenera un título, resumen y preguntas de seguimiento que ayudarían a esta persona a compartir más recuerdos significativos.",
+  "contextPrefix": "Contexto/aviso de la historia: {{prompt}}\n\n",
+  "progress": {
+    "preparingAudio": "Preparando audio para transcripción...",
+    "sendingToService": "Enviando al servicio de transcripción...",
+    "processingTranscription": "Procesando transcripción...",
+    "transcriptionComplete": "¡Transcripción completa!",
+    "analyzingStory": "Analizando contenido de la historia...",
+    "generatingTitle": "Generando título y resumen...",
+    "creatingQuestions": "Creando preguntas de seguimiento...",
+    "startingTranscription": "Iniciando transcripción de audio...",
+    "generatingContent": "Generando contenido con IA...",
+    "processingComplete": "¡Procesamiento completo!",
+    "analyzingThemes": "Analizando temas de la historia...",
+    "generatingTitleSuggestions": "Generando sugerencias de título...",
+    "creatingSummary": "Creando resumen...",
+    "preparingQuestions": "Preparando preguntas de seguimiento...",
+    "analyzingAudio": "Analizando contenido de audio...",
+    "generatingTranscript": "Generando transcripción..."
+  },
+  "errors": {
+    "noApiKey": "Clave API de OpenRouter no configurada",
+    "noTranscript": "No se proporcionó transcripción",
+    "noAudioFile": "No se proporcionó archivo de audio",
+    "serverConfigError": "Error de configuración del servidor: Falta la clave API de SiliconFlow.",
+    "unauthorized": "No autorizado: Clave API de SiliconFlow inválida.",
+    "rateLimitExceeded": "Límite de velocidad excedido. Por favor, inténtalo más tarde.",
+    "transcriptionFailed": "Error en la transcripción. Por favor, inténtalo de nuevo.",
+    "aiGenerationFailed": "Error al generar contenido con IA. Por favor, inténtalo de nuevo.",
+    "invalidRequest": "Solicitud inválida al servicio de IA",
+    "insufficientQuota": "Cuota de OpenAI excedida. Por favor, verifica tu facturación.",
+    "failedToTranscribe": "Error al transcribir el audio. Por favor, inténtalo de nuevo.",
+    "failedToGenerate": "Error al generar contenido con IA. Por favor, inténtalo de nuevo."
+  },
+  "defaults": {
+    "title": "Historia sin Título",
+    "summary": "Una historia personal significativa.",
+    "noSummary": "No hay resumen disponible",
+    "fallbackQuestions": [
+      "¿Puedes contarme más sobre cómo esa experiencia te afectó?",
+      "¿Qué recuerdas más vívidamente de ese momento?",
+      "¿Cómo moldeó ese momento quien eres hoy?"
+    ]
+  },
+  "mockData": {
+    "transcripts": [
+      "Recuerdo cuando tenía solo siete años, viviendo en esa pequeña casa en la calle Maple. El vecindario era tan diferente en ese entonces - los niños jugaban afuera hasta que se encendían las farolas, y todos se conocían. Mi madre nos llamaba a cenar tocando una campana desde el porche delantero, y veníamos corriendo desde donde estuviéramos jugando en el vecindario.",
+      "Mi primer día de trabajo fue emocionante y aterrador a la vez. Entré por esas puertas de la oficina sin saber qué esperar, pero todos fueron muy acogedores. Recuerdo a mi supervisor mostrándome todo y presentándome al equipo. Se sintió como el comienzo de algo importante en mi vida.",
+      "El verano de 1965 fue inolvidable. Pasábamos todos los días en el lago, nadando y pescando con nuestros amigos. Papá empacaba sándwiches y nos quedábamos allí desde el amanecer hasta el atardecer. Esos eran los días cuando el tiempo parecía moverse más lento, y cada momento se sentía precioso."
+    ],
+    "themes": {
+      "childhood": {
+        "title": "Creciendo en Tiempos Más Simples",
+        "summary": "Un recuerdo nostálgico de la infancia, capturando la inocencia y el asombro de crecer en una era diferente.",
+        "followUpQuestions": [
+          "¿A qué juegos jugabas tú y tus amigos en ese entonces?",
+          "¿Puedes describir cómo era tu vecindario?",
+          "¿Qué era lo que más te gustaba de ser niño en esa época?"
+        ]
+      },
+      "work": {
+        "title": "Comenzando Mi Viaje Profesional",
+        "summary": "Una reflexión sobre los primeros días de la vida profesional, llenos de emoción, nerviosismo y nuevos comienzos.",
+        "followUpQuestions": [
+          "¿Qué fue lo más sorprendente de tu primer trabajo?",
+          "¿Cómo te dieron la bienvenida tus colegas?",
+          "¿Qué consejo le darías a alguien que está comenzando su carrera hoy?"
+        ]
+      },
+      "family": {
+        "title": "Recuerdos Familiares que Importan",
+        "summary": "Una historia conmovedora sobre los lazos familiares y los momentos que nos unen.",
+        "followUpQuestions": [
+          "¿Qué tradiciones familiares fueron más importantes para ti?",
+          "¿Cómo mostraba tu familia el amor y el apoyo?",
+          "¿Qué valores te enseñó tu familia?"
+        ]
+      },
+      "default": {
+        "title": "Un Recuerdo Significativo",
+        "summary": "Una historia sincera sobre un momento importante en la vida.",
+        "followUpQuestions": [
+          "¿Puedes contarme más sobre cómo esa experiencia te afectó?",
+          "¿Qué recuerdas más vívidamente de ese momento?",
+          "¿Cómo moldeó ese momento quien eres hoy?"
+        ]
+      }
+    }
+  },
+  "retryMessages": {
+    "retryingTranscription": "Reintentando transcripción... ({{attempts}} intentos restantes)",
+    "retryingGeneration": "Reintentando generación de contenido con IA... ({{attempts}} intentos restantes)"
+  }
+}

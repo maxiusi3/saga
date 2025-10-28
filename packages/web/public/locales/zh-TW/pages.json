@@ -1,0 +1,126 @@
+{
+  "home": {
+    "navigation": {
+      "brandName": "Saga",
+      "features": "功能特色",
+      "howItWorks": "使用方式",
+      "testimonials": "用戶見證",
+      "pricing": "價格方案",
+      "startFree": "免費開始"
+    },
+    "hero": {
+      "tagline": "時光化為記憶",
+      "title": "在故事永遠\n消失之前",
+      "subtitle": "每一天的延遲都是記憶的流失。保存您家人的聲音——一次一個故事——在為時已晚之前。",
+      "ctaPrimary": "開始你的故事",
+      "ctaSecondary": "了解運作方式"
+    },
+    "fragiletruth": {
+      "tagline": "脆弱的真相",
+      "title": "您父母的故事\n正在消失",
+      "subtitle": "距離、忙碌的生活和時間正在抹去無可取代的回憶。那些定義您家族的故事不會自己保存下來。",
+      "stat1Value": "73%",
+      "stat1Label": "的家族故事在兩代內流失",
+      "stat2Value": "89%",
+      "stat2Label": "後悔沒有更早問更多問題",
+      "stat3Value": "永遠",
+      "stat3Label": "是這些記憶消失的時長"
+    },
+    "features": {
+      "title": "為記憶而建，為生活而設計",
+      "subtitle": "每一個功能都只有一個目的：讓保存最重要的事物變得輕鬆。",
+      "feature1": {
+        "title": "AI 引導對話",
+        "description": "永不缺乏問題。我們的 AI 策展人提示有意義的對話，幫助您發掘從未知曉的故事。從童年記憶到人生課題，每次會談都揭示深刻內容。"
+      },
+      "feature2": {
+        "title": "自動轉錄與整理",
+        "description": "每個字都完美記錄。我們的 AI 依主題、人物和時代轉錄並整理故事——即時搜尋，永久存取。"
+      },
+      "feature3": {
+        "title": "軍事級安全性",
+        "description": "銀行級加密保護您最珍貴的記憶。您的故事永遠保持私密。"
+      },
+      "feature4": {
+        "title": "多世代分享",
+        "description": "連接家族樹的每一個分支。從祖父母到孫輩，每個人都能貢獻。"
+      },
+      "feature5": {
+        "title": "終身檔案",
+        "description": "超越我們所有人的故事。下載、列印或在各裝置間串流，永恆保存。"
+      },
+      "feature6": {
+        "title": "數位傳承之書",
+        "description": "將錄製的對話轉化為精美設計的數位或印刷紀念品。"
+      }
+    },
+    "howItWorks": {
+      "tagline": "設計簡約",
+      "title": "從設定到故事\n分鐘而非小時",
+      "step1": {
+        "title": "您購買並邀請",
+        "description": "選擇家庭方案。透過簡訊或電子郵件向您的父母發送簡單連結。無需下載應用程式，無需記住密碼。"
+      },
+      "step2": {
+        "title": "他們輕鬆錄製",
+        "description": "一鍵接受。溫暖的 AI 語音提出問題。他們按下錄製，分享故事，如有需要附上照片，然後發送。"
+      },
+      "step3": {
+        "title": "您聆聽與連結",
+        "description": "收到通知。聆聽他們的聲音。閱讀文字記錄。留下評論。提出後續問題，激發下一個記憶。"
+      },
+      "step4": {
+        "title": "故事永久累積",
+        "description": "隨著數週和數月，您的家族檔案不斷增長。兄弟姐妹加入。主題浮現。一生的智慧變得可導航、可搜尋且永恆。"
+      }
+    },
+    "testimonials": {
+      "title": "家庭的發現",
+      "subtitle": "來自保存最珍貴記憶的人們的真實故事。",
+      "testimonial1": {
+        "name": "Sarah Johnson",
+        "role": "保存 3 代人",
+        "quote": "我用 Saga 在兩週內了解祖母的程度，超過了我 30 年來的了解。那些我從未知道的故事，現在永遠保存下來了。"
+      },
+      "testimonial2": {
+        "name": "Michael Chen",
+        "role": "家族史學家",
+        "quote": "我的孩子們將會知道他們曾祖父的聲音、笑聲和智慧。這是無價的。Saga 讓這一切變得輕鬆。"
+      },
+      "testimonial3": {
+        "name": "Emily Rodriguez",
+        "role": "記憶守護者",
+        "quote": "AI 的問題非常完美——它們幫助我父親敞開心扉談論他從未談過的事情。純粹的魔法。"
+      }
+    },
+    "finalCta": {
+      "tagline": "別讓時間獲勝",
+      "title": "今天開始保存，\n在明天太遲之前",
+      "subtitle": "您延遲的每一次對話都是您可能永遠失去的記憶。現在就開始您家族的 Saga。",
+      "emailPlaceholder": "輸入您的電子郵件",
+      "ctaButton": "開始免費試用",
+      "trial": "免費 14 天試用 • 無需信用卡 • 隨時取消"
+    },
+    "footer": {
+      "brandName": "Saga",
+      "tagline": "保存家族故事，一次一段對話。因為每個聲音都值得迴響於世代之間。",
+      "product": {
+        "title": "產品",
+        "features": "功能特色",
+        "pricing": "價格方案",
+        "howItWorks": "使用方式",
+        "security": "安全性",
+        "api": "API"
+      },
+      "company": {
+        "title": "公司",
+        "aboutUs": "關於我們",
+        "blog": "部落格",
+        "careers": "職涯",
+        "pressKit": "媒體資料",
+        "contact": "聯絡我們"
+      },
+      "copyright": "© 2025 Saga. 每個故事都重要。每個聲音都算數。"
+    }
+  }
+}

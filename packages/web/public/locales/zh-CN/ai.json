@@ -1,0 +1,96 @@
+{
+  "systemPrompt": "You are an expert storyteller and family historian. Your task is to analyze personal stories and create meaningful titles, summaries, and follow-up questions that help preserve family memories.\n\nGuidelines:\n- Create titles that are specific, emotional, and memorable\n- Write summaries that capture the essence and emotional significance\n- Generate follow-up questions that encourage deeper storytelling\n- Be respectful and sensitive to personal experiences\n- Focus on the human elements and emotional connections\n- Keep language warm and conversational\n\nResponse format should be valid JSON with these fields:\n- title: A compelling, specific title (max 60 characters)\n- summary: A warm, engaging summary (2-3 sentences)\n- followUpQuestions: Array of 3-4 thoughtful questions\n- confidence: Number between 0.7 and 1.0 indicating analysis confidence",
+  "userPromptTemplate": "请分析这个个人故事并生成相应的内容：\n\n{{context}}故事转录：\n\"{{transcript}}\"\n\n生成标题、摘要和后续问题，帮助这个人分享更多有意义的回忆。",
+  "contextPrefix": "故事背景/提示：{{prompt}}\n\n",
+  "progress": {
+    "preparingAudio": "正在准备音频转录...",
+    "sendingToService": "正在发送到转录服务...",
+    "processingTranscription": "正在处理转录...",
+    "transcriptionComplete": "转录完成！",
+    "analyzingStory": "正在分析故事内容...",
+    "generatingTitle": "正在生成标题和摘要...",
+    "creatingQuestions": "正在创建后续问题...",
+    "startingTranscription": "开始音频转录...",
+    "generatingContent": "正在生成 AI 内容...",
+    "processingComplete": "处理完成！",
+    "analyzingThemes": "正在分析故事主题...",
+    "generatingTitleSuggestions": "正在生成标题建议...",
+    "creatingSummary": "正在创建摘要...",
+    "preparingQuestions": "正在准备后续问题...",
+    "analyzingAudio": "正在分析音频内容...",
+    "generatingTranscript": "正在生成转录文本..."
+  },
+  "errors": {
+    "noApiKey": "未配置 OpenRouter API 密钥",
+    "noTranscript": "未提供转录文本",
+    "noAudioFile": "未提供音频文件",
+    "serverConfigError": "服务器配置错误：缺少 SiliconFlow API 密钥。",
+    "unauthorized": "未授权：无效的 SiliconFlow API 密钥。",
+    "rateLimitExceeded": "已超出速率限制。请稍后再试。",
+    "transcriptionFailed": "转录失败。请重试。",
+    "aiGenerationFailed": "AI 内容生成失败。请重试。",
+    "invalidRequest": "向 AI 服务发送的请求无效",
+    "insufficientQuota": "OpenAI 配额已用尽。请检查您的账单。",
+    "failedToTranscribe": "音频转录失败。请重试。",
+    "failedToGenerate": "AI 内容生成失败。请重试。"
+  },
+  "defaults": {
+    "title": "未命名的故事",
+    "summary": "一个有意义的个人故事。",
+    "noSummary": "无可用摘要",
+    "fallbackQuestions": [
+      "您能详细讲讲那段经历对您的影响吗？",
+      "您对那段时光最深刻的记忆是什么？",
+      "那个时刻如何塑造了今天的您？"
+    ]
+  },
+  "mockData": {
+    "transcripts": [
+      "我记得我七岁的时候，住在枫树街的那个小房子里。那时的社区和现在完全不同——孩子们在外面玩到路灯亮起，每个人都互相认识。妈妈会在前廊摇铃叫我们回家吃饭，我们就会从社区里玩耍的地方跑回来。",
+      "我第一天上班既兴奋又紧张。我走进办公室的门，不知道会发生什么，但每个人都很热情。我记得我的主管带我参观并向团队介绍我。那感觉像是我生命中重要事情的开始。",
+      "1965年的夏天令人难忘。我们每天都在湖边度过，和朋友们一起游泳钓鱼。爸爸会打包三明治，我们从日出待到日落。那些日子时间似乎过得更慢，每一刻都显得珍贵。"
+    ],
+    "themes": {
+      "childhood": {
+        "title": "在更简单的时代长大",
+        "summary": "对童年记忆的怀念，捕捉了在不同时代成长的纯真和奇妙。",
+        "followUpQuestions": [
+          "那时候您和朋友们都玩些什么游戏？",
+          "您能描述一下您的社区是什么样的吗？",
+          "在那个时代做孩子，您最喜欢的是什么？"
+        ]
+      },
+      "work": {
+        "title": "开启我的职业之旅",
+        "summary": "对职业生涯早期的回忆，充满了兴奋、紧张和新的开始。",
+        "followUpQuestions": [
+          "您第一份工作中最令人惊讶的是什么？",
+          "您的同事是如何欢迎您的？",
+          "您会给今天开始职业生涯的人什么建议？"
+        ]
+      },
+      "family": {
+        "title": "重要的家庭记忆",
+        "summary": "一个关于家庭纽带和让我们团聚的时刻的感人故事。",
+        "followUpQuestions": [
+          "哪些家庭传统对您最重要？",
+          "您的家人是如何表达爱和支持的？",
+          "您的家人教会了您什么价值观？"
+        ]
+      },
+      "default": {
+        "title": "一段有意义的回忆",
+        "summary": "一个关于生命中重要时刻的真挚故事。",
+        "followUpQuestions": [
+          "您能详细讲讲那段经历对您的影响吗？",
+          "您对那段时光最深刻的记忆是什么？",
+          "那个时刻如何塑造了今天的您？"
+        ]
+      }
+    }
+  },
+  "retryMessages": {
+    "retryingTranscription": "正在重试转录...（剩余 {{attempts}} 次尝试）",
+    "retryingGeneration": "正在重试 AI 内容生成...（剩余 {{attempts}} 次尝试）"
+  }
+}

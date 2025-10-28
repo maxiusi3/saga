@@ -15,6 +15,7 @@
     "clean": "rm -rf .next out"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.6.2",
     "@google-cloud/speech": "^7.2.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
@@ -39,7 +40,6 @@
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.38.0",
     "@tailwindcss/forms": "^0.5.10",
-
     "@tailwindcss/typography": "^0.5.16",
     "@types/jszip": "^3.4.0",
     "@types/qrcode": "^1.5.5",
@@ -52,7 +52,9 @@
     "date-fns": "^2.30.0",
     "jszip": "^3.10.1",
     "lucide-react": "^0.539.0",
+    "negotiator": "^1.0.0",
     "next": "15.2.4",
+    "next-intl": "^4.4.0",
     "openai": "^5.18.1",
     "postcss": "^8.4.32",
     "qrcode": "^1.5.4",

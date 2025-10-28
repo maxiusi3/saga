@@ -1,0 +1,96 @@
+{
+  "systemPrompt": "You are an expert storyteller and family historian. Your task is to analyze personal stories and create meaningful titles, summaries, and follow-up questions that help preserve family memories.\n\nGuidelines:\n- Create titles that are specific, emotional, and memorable\n- Write summaries that capture the essence and emotional significance\n- Generate follow-up questions that encourage deeper storytelling\n- Be respectful and sensitive to personal experiences\n- Focus on the human elements and emotional connections\n- Keep language warm and conversational\n\nResponse format should be valid JSON with these fields:\n- title: A compelling, specific title (max 60 characters)\n- summary: A warm, engaging summary (2-3 sentences)\n- followUpQuestions: Array of 3-4 thoughtful questions\n- confidence: Number between 0.7 and 1.0 indicating analysis confidence",
+  "userPromptTemplate": "Please analyze this personal story and generate appropriate content:\n\n{{context}}Story transcript:\n\"{{transcript}}\"\n\nGenerate a title, summary, and follow-up questions that would help this person share more meaningful memories.",
+  "contextPrefix": "Story context/prompt: {{prompt}}\n\n",
+  "progress": {
+    "preparingAudio": "Preparing audio for transcription...",
+    "sendingToService": "Sending to transcription service...",
+    "processingTranscription": "Processing transcription...",
+    "transcriptionComplete": "Transcription complete!",
+    "analyzingStory": "Analyzing story content...",
+    "generatingTitle": "Generating title and summary...",
+    "creatingQuestions": "Creating follow-up questions...",
+    "startingTranscription": "Starting audio transcription...",
+    "generatingContent": "Generating AI content...",
+    "processingComplete": "Processing complete!",
+    "analyzingThemes": "Analyzing story themes...",
+    "generatingTitleSuggestions": "Generating title suggestions...",
+    "creatingSummary": "Creating summary...",
+    "preparingQuestions": "Preparing follow-up questions...",
+    "analyzingAudio": "Analyzing audio content...",
+    "generatingTranscript": "Generating transcript..."
+  },
+  "errors": {
+    "noApiKey": "OpenRouter API key not configured",
+    "noTranscript": "No transcript provided",
+    "noAudioFile": "No audio file provided",
+    "serverConfigError": "Server configuration error: Missing SiliconFlow API key.",
+    "unauthorized": "Unauthorized: Invalid SiliconFlow API key.",
+    "rateLimitExceeded": "Rate limit exceeded. Please try again later.",
+    "transcriptionFailed": "Transcription failed. Please try again.",
+    "aiGenerationFailed": "AI content generation failed. Please try again.",
+    "invalidRequest": "Invalid request to AI service",
+    "insufficientQuota": "OpenAI quota exceeded. Please check your billing.",
+    "failedToTranscribe": "Failed to transcribe audio. Please try again.",
+    "failedToGenerate": "Failed to generate AI content. Please try again."
+  },
+  "defaults": {
+    "title": "Untitled Story",
+    "summary": "A meaningful personal story.",
+    "noSummary": "No summary available",
+    "fallbackQuestions": [
+      "Can you tell me more about how that experience affected you?",
+      "What do you remember most vividly about that time?",
+      "How did that moment shape who you are today?"
+    ]
+  },
+  "mockData": {
+    "transcripts": [
+      "I remember when I was just seven years old, living in that small house on Maple Street. The neighborhood was so different back then - kids played outside until the streetlights came on, and everyone knew each other. My mother would call us in for dinner by ringing a bell from the front porch, and we'd come running from wherever we were playing in the neighborhood.",
+      "My first day at work was both exciting and terrifying. I walked through those office doors not knowing what to expect, but everyone was so welcoming. I remember my supervisor showing me around and introducing me to the team. It felt like the beginning of something important in my life.",
+      "The summer of 1965 was unforgettable. We spent every day at the lake, swimming and fishing with our friends. Dad would pack sandwiches and we'd stay there from sunrise to sunset. Those were the days when time seemed to move slower, and every moment felt precious."
+    ],
+    "themes": {
+      "childhood": {
+        "title": "Growing Up in Simpler Times",
+        "summary": "A nostalgic recollection of childhood memories, capturing the innocence and wonder of growing up in a different era.",
+        "followUpQuestions": [
+          "What games did you and your friends play back then?",
+          "Can you describe what your neighborhood was like?",
+          "What was your favorite thing about being a child in that time?"
+        ]
+      },
+      "work": {
+        "title": "Starting My Career Journey",
+        "summary": "A reflection on the early days of professional life, filled with excitement, nervousness, and new beginnings.",
+        "followUpQuestions": [
+          "What was the most surprising thing about your first job?",
+          "How did your colleagues welcome you?",
+          "What advice would you give to someone starting their career today?"
+        ]
+      },
+      "family": {
+        "title": "Family Memories That Matter",
+        "summary": "A touching story about family bonds and the moments that bring us together.",
+        "followUpQuestions": [
+          "What family traditions were most important to you?",
+          "How did your family show love and support?",
+          "What values did your family teach you?"
+        ]
+      },
+      "default": {
+        "title": "A Meaningful Memory",
+        "summary": "A heartfelt story about an important moment in life.",
+        "followUpQuestions": [
+          "Can you tell me more about how that experience affected you?",
+          "What do you remember most vividly about that time?",
+          "How did that moment shape who you are today?"
+        ]
+      }
+    }
+  },
+  "retryMessages": {
+    "retryingTranscription": "Retrying transcription... ({{attempts}} attempts left)",
+    "retryingGeneration": "Retrying AI content generation... ({{attempts}} attempts left)"
+  }
+}

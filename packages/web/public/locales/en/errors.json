@@ -1,0 +1,117 @@
+{
+  "api": {
+    "common": {
+      "unauthorized": "Unauthorized",
+      "serverError": "Internal server error",
+      "serverConfigurationError": "Server configuration error",
+      "accessDenied": "Access denied",
+      "notFound": "Resource not found",
+      "forbidden": "Forbidden"
+    },
+    "admin": {
+      "cleanupFailed": "Failed to cleanup expired invitations",
+      "checkExpiredFailed": "Failed to check expired invitations"
+    },
+    "ai": {
+      "apiKeyNotConfigured": "OpenRouter API key not configured",
+      "noTranscriptProvided": "No transcript provided",
+      "invalidRequest": "Invalid request to AI service",
+      "rateLimitExceeded": "Rate limit exceeded. Please try again later.",
+      "quotaExceeded": "OpenAI quota exceeded. Please check your billing.",
+      "contentGenerationFailed": "AI content generation failed. Please try again.",
+      "healthCheckFailed": "Health check failed",
+      "noStoriesProvided": "No stories provided",
+      "noActionSpecified": "No action specified",
+      "invalidAction": "Invalid action specified",
+      "processStoriesFailed": "Failed to process stories",
+      "noAudioFile": "No audio file provided",
+      "missingApiKey": "Server configuration error: Missing SiliconFlow API key.",
+      "transcriptionFailed": "Transcription failed. Please try again.",
+      "unauthorizedApiKey": "Unauthorized: Invalid SiliconFlow API key.",
+      "rateLimitApi": "Rate limit exceeded. Please try again later."
+    },
+    "invitations": {
+      "invalidOrExpired": "Invalid or expired invitation",
+      "invitationNotFound": "Invitation not found",
+      "expired": "Invitation has expired",
+      "thisExpired": "This invitation has expired",
+      "thisInvalidOrExpired": "This invitation is invalid or has expired",
+      "emailMismatch": "Email address does not match the invitation",
+      "alreadyMember": "You are already a member of this project",
+      "alreadyHasRole": "You already have this role in the project",
+      "acceptFailed": "Failed to accept invitation",
+      "tokenRequired": "Token is required",
+      "tokenAndUserIdRequired": "Token and user_id are required",
+      "signInToAccept": "Please sign in to accept this invitation",
+      "emailAndRoleRequired": "Email and role are required",
+      "invalidRole": "Invalid role. Must be facilitator or storyteller.",
+      "activeInvitationExists": "An active invitation already exists for this email and role",
+      "projectHasStoryteller": "This project already has a storyteller. Only one storyteller is allowed per project.",
+      "pendingStorytellerExists": "There is already a pending storyteller invitation for this project. Only one storyteller is allowed per project.",
+      "unableToVerifySeats": "Unable to verify available seats",
+      "insufficientSeats": "Insufficient {role} seats. Please purchase more seats to send this invitation.",
+      "sendFailed": "Failed to send invitation",
+      "fetchFailed": "Failed to fetch invitations",
+      "projectNotFound": "Project not found.",
+      "onlyOwnerCanManage": "Access denied. Only project owners can manage invitations.",
+      "onlyOwnerCanSend": "Access denied. Only project owners can send invitations.",
+      "invitationIdRequired": "Invitation ID is required",
+      "onlyOwnCanCancel": "Access denied. You can only cancel invitations you sent.",
+      "onlyPendingCanCancel": "Only pending invitations can be cancelled",
+      "cancelFailed": "Failed to cancel invitation"
+    },
+    "notifications": {
+      "fetchFailed": "Failed to fetch notifications",
+      "markAsReadFailed": "Failed to mark notifications as read",
+      "markAllAsReadFailed": "Failed to mark all notifications as read",
+      "invalidAction": "Invalid action",
+      "deleteFailed": "Failed to delete notification",
+      "idRequired": "Notification ID is required"
+    },
+    "privacy": {
+      "recordFailed": "Failed to record privacy agreement",
+      "fetchFailed": "Failed to fetch privacy agreements"
+    },
+    "projects": {
+      "notFoundOrAccessDenied": "Project not found or access denied",
+      "fetchStoriesFailed": "Failed to fetch project stories",
+      "exportFailed": "Failed to export project data",
+      "fetchInteractionsFailed": "Failed to fetch interactions",
+      "fetchChaptersFailed": "Failed to fetch chapters",
+      "initPromptStateFailed": "Failed to initialize prompt state",
+      "fetchPromptsFailed": "Failed to fetch prompts",
+      "promptIdRequired": "Prompt ID is required",
+      "markPromptFailed": "Failed to mark prompt as delivered",
+      "updatePromptStateFailed": "Failed to update prompt state",
+      "createStoryFailed": "Failed to create story"
+    },
+    "stories": {
+      "notFound": "Story not found",
+      "fetchInteractionsFailed": "Failed to fetch interactions",
+      "invalidRequestData": "Invalid request data",
+      "createInteractionFailed": "Failed to create interaction"
+    },
+    "wallets": {
+      "fetchFailed": "Failed to fetch wallet",
+      "initFailed": "Failed to initialize wallet",
+      "refetchFailed": "Failed to fetch wallet after init"
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address",
+    "invalidFormat": "Invalid format",
+    "emailRequired": "Email is required",
+    "roleRequired": "Role is required",
+    "tokenRequired": "Token is required",
+    "userIdRequired": "User ID is required",
+    "actionRequired": "Action is required",
+    "contentRequired": "Content is required",
+    "typeRequired": "Type is required",
+    "promptIdRequired": "Prompt ID is required"
+  },
+  "purchase": {
+    "insufficientSeats": "Insufficient seats available",
+    "purchaseRequired": "Please purchase more seats to continue"
+  }
+}

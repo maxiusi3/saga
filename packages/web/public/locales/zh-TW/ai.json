@@ -1,0 +1,96 @@
+{
+  "systemPrompt": "You are an expert storyteller and family historian. Your task is to analyze personal stories and create meaningful titles, summaries, and follow-up questions that help preserve family memories.\n\nGuidelines:\n- Create titles that are specific, emotional, and memorable\n- Write summaries that capture the essence and emotional significance\n- Generate follow-up questions that encourage deeper storytelling\n- Be respectful and sensitive to personal experiences\n- Focus on the human elements and emotional connections\n- Keep language warm and conversational\n\nResponse format should be valid JSON with these fields:\n- title: A compelling, specific title (max 60 characters)\n- summary: A warm, engaging summary (2-3 sentences)\n- followUpQuestions: Array of 3-4 thoughtful questions\n- confidence: Number between 0.7 and 1.0 indicating analysis confidence",
+  "userPromptTemplate": "Please analyze this personal story and generate appropriate content:\n\n{{context}}Story transcript:\n\"{{transcript}}\"\n\nGenerate a title, summary, and follow-up questions that would help this person share more meaningful memories.",
+  "contextPrefix": "Story context/prompt: {{prompt}}\n\n",
+  "progress": {
+    "preparingAudio": "正在準備音訊進行轉錄...",
+    "sendingToService": "正在發送至轉錄服務...",
+    "processingTranscription": "正在處理轉錄...",
+    "transcriptionComplete": "轉錄完成！",
+    "analyzingStory": "正在分析故事內容...",
+    "generatingTitle": "正在生成標題和摘要...",
+    "creatingQuestions": "正在建立後續問題...",
+    "startingTranscription": "正在開始音訊轉錄...",
+    "generatingContent": "正在生成 AI 內容...",
+    "processingComplete": "處理完成！",
+    "analyzingThemes": "正在分析故事主題...",
+    "generatingTitleSuggestions": "正在生成標題建議...",
+    "creatingSummary": "正在建立摘要...",
+    "preparingQuestions": "正在準備後續問題...",
+    "analyzingAudio": "正在分析音訊內容...",
+    "generatingTranscript": "正在生成文字記錄..."
+  },
+  "errors": {
+    "noApiKey": "OpenRouter API 金鑰未配置",
+    "noTranscript": "未提供文字記錄",
+    "noAudioFile": "未提供音訊檔案",
+    "serverConfigError": "伺服器配置錯誤：缺少 SiliconFlow API 金鑰。",
+    "unauthorized": "未經授權：SiliconFlow API 金鑰無效。",
+    "rateLimitExceeded": "速率限制已超過。請稍後再試。",
+    "transcriptionFailed": "轉錄失敗。請重試。",
+    "aiGenerationFailed": "AI 內容生成失敗。請重試。",
+    "invalidRequest": "AI 服務的請求無效",
+    "insufficientQuota": "OpenAI 配額已超過。請檢查您的帳單。",
+    "failedToTranscribe": "音訊轉錄失敗。請重試。",
+    "failedToGenerate": "AI 內容生成失敗。請重試。"
+  },
+  "defaults": {
+    "title": "未命名故事",
+    "summary": "一個有意義的個人故事。",
+    "noSummary": "無可用摘要",
+    "fallbackQuestions": [
+      "您能告訴我更多關於那次經歷如何影響您的嗎？",
+      "您對那段時光最生動的記憶是什麼？",
+      "那一刻如何塑造了今天的您？"
+    ]
+  },
+  "mockData": {
+    "transcripts": [
+      "我記得我才七歲的時候，住在楓樹街的那間小房子裡。那時的社區和現在大不相同——孩子們在外面玩到路燈亮起，每個人都認識彼此。我媽媽會從前廊搖鈴叫我們回家吃晚飯，我們會從社區的任何地方跑回來。",
+      "我第一天上班既興奮又害怕。我走進那些辦公室大門，不知道會發生什麼，但每個人都非常歡迎。我記得我的主管帶我四處參觀並向團隊介紹我。感覺就像是我生命中重要事情的開始。",
+      "1965 年的夏天令人難忘。我們每天都在湖邊度過，和朋友們一起游泳和釣魚。爸爸會打包三明治，我們會從日出待到日落。那些日子時間似乎過得更慢，每一刻都感覺珍貴。"
+    ],
+    "themes": {
+      "childhood": {
+        "title": "在更簡單的時代長大",
+        "summary": "對童年記憶的懷舊回憶，捕捉了在不同時代成長的純真和驚奇。",
+        "followUpQuestions": [
+          "你和朋友們那時玩什麼遊戲？",
+          "你能描述一下你的社區當時是什麼樣子嗎？",
+          "你最喜歡那個時代當孩子的什麼事情？"
+        ]
+      },
+      "work": {
+        "title": "開始我的職業之旅",
+        "summary": "對職業生涯早期的反思，充滿了興奮、緊張和新的開始。",
+        "followUpQuestions": [
+          "你第一份工作中最令人驚訝的是什麼？",
+          "你的同事如何歡迎你？",
+          "你會給今天開始職業生涯的人什麼建議？"
+        ]
+      },
+      "family": {
+        "title": "重要的家庭記憶",
+        "summary": "一個關於家庭紐帶和讓我們團聚的時刻的動人故事。",
+        "followUpQuestions": [
+          "什麼家庭傳統對你最重要？",
+          "你的家人如何表達愛和支持？",
+          "你的家人教會了你什麼價值觀？"
+        ]
+      },
+      "default": {
+        "title": "有意義的記憶",
+        "summary": "關於生命中重要時刻的真摯故事。",
+        "followUpQuestions": [
+          "您能告訴我更多關於那次經歷如何影響您的嗎？",
+          "您對那段時光最生動的記憶是什麼？",
+          "那一刻如何塑造了今天的您？"
+        ]
+      }
+    }
+  },
+  "retryMessages": {
+    "retryingTranscription": "正在重試轉錄...（剩餘 {{attempts}} 次嘗試）",
+    "retryingGeneration": "正在重試 AI 內容生成...（剩餘 {{attempts}} 次嘗試）"
+  }
+}

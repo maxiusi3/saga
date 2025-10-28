@@ -1,0 +1,96 @@
+{
+  "systemPrompt": "You are an expert storyteller and family historian. Your task is to analyze personal stories and create meaningful titles, summaries, and follow-up questions that help preserve family memories.\n\nGuidelines:\n- Create titles that are specific, emotional, and memorable\n- Write summaries that capture the essence and emotional significance\n- Generate follow-up questions that encourage deeper storytelling\n- Be respectful and sensitive to personal experiences\n- Focus on the human elements and emotional connections\n- Keep language warm and conversational\n\nResponse format should be valid JSON with these fields:\n- title: A compelling, specific title (max 60 characters)\n- summary: A warm, engaging summary (2-3 sentences)\n- followUpQuestions: Array of 3-4 thoughtful questions\n- confidence: Number between 0.7 and 1.0 indicating analysis confidence",
+  "userPromptTemplate": "다음 개인 이야기를 분석하고 적절한 콘텐츠를 생성해주세요:\n\n{{context}}이야기 전사본:\n\"{{transcript}}\"\n\n이 사람이 더 의미 있는 기억을 공유하는 데 도움이 될 제목, 요약 및 후속 질문을 생성하세요.",
+  "contextPrefix": "이야기 컨텍스트/프롬프트: {{prompt}}\n\n",
+  "progress": {
+    "preparingAudio": "전사를 위해 오디오 준비 중...",
+    "sendingToService": "전사 서비스로 전송 중...",
+    "processingTranscription": "전사 처리 중...",
+    "transcriptionComplete": "전사 완료!",
+    "analyzingStory": "이야기 내용 분석 중...",
+    "generatingTitle": "제목 및 요약 생성 중...",
+    "creatingQuestions": "후속 질문 생성 중...",
+    "startingTranscription": "오디오 전사 시작 중...",
+    "generatingContent": "AI 콘텐츠 생성 중...",
+    "processingComplete": "처리 완료!",
+    "analyzingThemes": "이야기 테마 분석 중...",
+    "generatingTitleSuggestions": "제목 제안 생성 중...",
+    "creatingSummary": "요약 생성 중...",
+    "preparingQuestions": "후속 질문 준비 중...",
+    "analyzingAudio": "오디오 콘텐츠 분석 중...",
+    "generatingTranscript": "전사본 생성 중..."
+  },
+  "errors": {
+    "noApiKey": "OpenRouter API 키가 구성되지 않았습니다",
+    "noTranscript": "전사본이 제공되지 않았습니다",
+    "noAudioFile": "오디오 파일이 제공되지 않았습니다",
+    "serverConfigError": "서버 구성 오류: SiliconFlow API 키가 없습니다.",
+    "unauthorized": "권한 없음: 잘못된 SiliconFlow API 키입니다.",
+    "rateLimitExceeded": "속도 제한을 초과했습니다. 나중에 다시 시도해주세요.",
+    "transcriptionFailed": "전사 실패. 다시 시도해주세요.",
+    "aiGenerationFailed": "AI 콘텐츠 생성 실패. 다시 시도해주세요.",
+    "invalidRequest": "AI 서비스에 대한 잘못된 요청",
+    "insufficientQuota": "OpenAI 할당량을 초과했습니다. 결제를 확인해주세요.",
+    "failedToTranscribe": "오디오 전사 실패. 다시 시도해주세요.",
+    "failedToGenerate": "AI 콘텐츠 생성 실패. 다시 시도해주세요."
+  },
+  "defaults": {
+    "title": "제목 없는 이야기",
+    "summary": "의미 있는 개인 이야기.",
+    "noSummary": "사용 가능한 요약이 없습니다",
+    "fallbackQuestions": [
+      "그 경험이 당신에게 어떤 영향을 미쳤는지 자세히 말씀해주시겠어요?",
+      "그 시절에 대해 가장 생생하게 기억하는 것은 무엇인가요?",
+      "그 순간이 오늘날의 당신을 어떻게 형성했나요?"
+    ]
+  },
+  "mockData": {
+    "transcripts": [
+      "I remember when I was just seven years old, living in that small house on Maple Street. The neighborhood was so different back then - kids played outside until the streetlights came on, and everyone knew each other. My mother would call us in for dinner by ringing a bell from the front porch, and we'd come running from wherever we were playing in the neighborhood.",
+      "My first day at work was both exciting and terrifying. I walked through those office doors not knowing what to expect, but everyone was so welcoming. I remember my supervisor showing me around and introducing me to the team. It felt like the beginning of something important in my life.",
+      "The summer of 1965 was unforgettable. We spent every day at the lake, swimming and fishing with our friends. Dad would pack sandwiches and we'd stay there from sunrise to sunset. Those were the days when time seemed to move slower, and every moment felt precious."
+    ],
+    "themes": {
+      "childhood": {
+        "title": "더 단순했던 시절의 성장",
+        "summary": "다른 시대에 자라나는 순수함과 경이로움을 담은 어린 시절 추억의 향수 어린 회상.",
+        "followUpQuestions": [
+          "그때 친구들과 어떤 게임을 했나요?",
+          "당신의 동네는 어땠는지 설명해주시겠어요?",
+          "그 시절 아이였을 때 가장 좋아했던 것은 무엇인가요?"
+        ]
+      },
+      "work": {
+        "title": "커리어 여정의 시작",
+        "summary": "흥분, 긴장, 그리고 새로운 시작으로 가득한 직업 생활 초기에 대한 회상.",
+        "followUpQuestions": [
+          "첫 직장에서 가장 놀라웠던 것은 무엇인가요?",
+          "동료들이 어떻게 환영해주었나요?",
+          "오늘날 커리어를 시작하는 누군가에게 어떤 조언을 해주시겠어요?"
+        ]
+      },
+      "family": {
+        "title": "중요한 가족 추억",
+        "summary": "가족의 유대와 우리를 하나로 모으는 순간에 대한 감동적인 이야기.",
+        "followUpQuestions": [
+          "어떤 가족 전통이 가장 중요했나요?",
+          "당신의 가족은 어떻게 사랑과 지원을 보여주었나요?",
+          "가족이 당신에게 어떤 가치를 가르쳐주었나요?"
+        ]
+      },
+      "default": {
+        "title": "의미 있는 기억",
+        "summary": "인생의 중요한 순간에 대한 진심 어린 이야기.",
+        "followUpQuestions": [
+          "그 경험이 당신에게 어떤 영향을 미쳤는지 자세히 말씀해주시겠어요?",
+          "그 시절에 대해 가장 생생하게 기억하는 것은 무엇인가요?",
+          "그 순간이 오늘날의 당신을 어떻게 형성했나요?"
+        ]
+      }
+    }
+  },
+  "retryMessages": {
+    "retryingTranscription": "전사 재시도 중... ({{attempts}}번 남음)",
+    "retryingGeneration": "AI 콘텐츠 생성 재시도 중... ({{attempts}}번 남음)"
+  }
+}

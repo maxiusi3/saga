@@ -1,0 +1,117 @@
+{
+  "api": {
+    "common": {
+      "unauthorized": "Não autorizado",
+      "serverError": "Erro interno do servidor",
+      "serverConfigurationError": "Erro de configuração do servidor",
+      "accessDenied": "Acesso negado",
+      "notFound": "Recurso não encontrado",
+      "forbidden": "Proibido"
+    },
+    "admin": {
+      "cleanupFailed": "Falha ao limpar convites expirados",
+      "checkExpiredFailed": "Falha ao verificar convites expirados"
+    },
+    "ai": {
+      "apiKeyNotConfigured": "Chave API OpenRouter não configurada",
+      "noTranscriptProvided": "Nenhuma transcrição fornecida",
+      "invalidRequest": "Solicitação inválida ao serviço de IA",
+      "rateLimitExceeded": "Limite de taxa excedido. Por favor, tente novamente mais tarde.",
+      "quotaExceeded": "Cota OpenAI excedida. Por favor, verifique seu faturamento.",
+      "contentGenerationFailed": "Falha na geração de conteúdo por IA. Por favor, tente novamente.",
+      "healthCheckFailed": "Falha na verificação de saúde",
+      "noStoriesProvided": "Nenhuma história fornecida",
+      "noActionSpecified": "Nenhuma ação especificada",
+      "invalidAction": "Ação inválida especificada",
+      "processStoriesFailed": "Falha ao processar histórias",
+      "noAudioFile": "Nenhum arquivo de áudio fornecido",
+      "missingApiKey": "Erro de configuração do servidor: Chave API SiliconFlow ausente.",
+      "transcriptionFailed": "Falha na transcrição. Por favor, tente novamente.",
+      "unauthorizedApiKey": "Não autorizado: Chave API SiliconFlow inválida.",
+      "rateLimitApi": "Limite de taxa excedido. Por favor, tente novamente mais tarde."
+    },
+    "invitations": {
+      "invalidOrExpired": "Convite inválido ou expirado",
+      "invitationNotFound": "Convite não encontrado",
+      "expired": "Convite expirado",
+      "thisExpired": "Este convite expirou",
+      "thisInvalidOrExpired": "Este convite é inválido ou expirou",
+      "emailMismatch": "Endereço de e-mail não corresponde ao convite",
+      "alreadyMember": "Você já é membro deste projeto",
+      "alreadyHasRole": "Você já tem esta função no projeto",
+      "acceptFailed": "Falha ao aceitar convite",
+      "tokenRequired": "Token é obrigatório",
+      "tokenAndUserIdRequired": "Token e ID de usuário são obrigatórios",
+      "signInToAccept": "Por favor, entre para aceitar este convite",
+      "emailAndRoleRequired": "E-mail e função são obrigatórios",
+      "invalidRole": "Função inválida. Deve ser facilitador ou contador de histórias.",
+      "activeInvitationExists": "Já existe um convite ativo para este e-mail e função",
+      "projectHasStoryteller": "Este projeto já tem um contador de histórias. Apenas um contador é permitido por projeto.",
+      "pendingStorytellerExists": "Já existe um convite de contador de histórias pendente para este projeto. Apenas um contador é permitido por projeto.",
+      "unableToVerifySeats": "Não foi possível verificar vagas disponíveis",
+      "insufficientSeats": "Vagas de {role} insuficientes. Por favor, compre mais vagas para enviar este convite.",
+      "sendFailed": "Falha ao enviar convite",
+      "fetchFailed": "Falha ao buscar convites",
+      "projectNotFound": "Projeto não encontrado.",
+      "onlyOwnerCanManage": "Acesso negado. Apenas proprietários do projeto podem gerenciar convites.",
+      "onlyOwnerCanSend": "Acesso negado. Apenas proprietários do projeto podem enviar convites.",
+      "invitationIdRequired": "ID do convite é obrigatório",
+      "onlyOwnCanCancel": "Acesso negado. Você só pode cancelar convites que você enviou.",
+      "onlyPendingCanCancel": "Apenas convites pendentes podem ser cancelados",
+      "cancelFailed": "Falha ao cancelar convite"
+    },
+    "notifications": {
+      "fetchFailed": "Falha ao buscar notificações",
+      "markAsReadFailed": "Falha ao marcar notificações como lidas",
+      "markAllAsReadFailed": "Falha ao marcar todas as notificações como lidas",
+      "invalidAction": "Ação inválida",
+      "deleteFailed": "Falha ao excluir notificação",
+      "idRequired": "ID da notificação é obrigatório"
+    },
+    "privacy": {
+      "recordFailed": "Falha ao registrar acordo de privacidade",
+      "fetchFailed": "Falha ao buscar acordos de privacidade"
+    },
+    "projects": {
+      "notFoundOrAccessDenied": "Projeto não encontrado ou acesso negado",
+      "fetchStoriesFailed": "Falha ao buscar histórias do projeto",
+      "exportFailed": "Falha ao exportar dados do projeto",
+      "fetchInteractionsFailed": "Falha ao buscar interações",
+      "fetchChaptersFailed": "Falha ao buscar capítulos",
+      "initPromptStateFailed": "Falha ao inicializar estado do prompt",
+      "fetchPromptsFailed": "Falha ao buscar prompts",
+      "promptIdRequired": "ID do prompt é obrigatório",
+      "markPromptFailed": "Falha ao marcar prompt como entregue",
+      "updatePromptStateFailed": "Falha ao atualizar estado do prompt",
+      "createStoryFailed": "Falha ao criar história"
+    },
+    "stories": {
+      "notFound": "História não encontrada",
+      "fetchInteractionsFailed": "Falha ao buscar interações",
+      "invalidRequestData": "Dados de solicitação inválidos",
+      "createInteractionFailed": "Falha ao criar interação"
+    },
+    "wallets": {
+      "fetchFailed": "Falha ao buscar carteira",
+      "initFailed": "Falha ao inicializar carteira",
+      "refetchFailed": "Falha ao buscar carteira após inicialização"
+    }
+  },
+  "validation": {
+    "required": "Este campo é obrigatório",
+    "invalidEmail": "Endereço de e-mail inválido",
+    "invalidFormat": "Formato inválido",
+    "emailRequired": "E-mail é obrigatório",
+    "roleRequired": "Função é obrigatória",
+    "tokenRequired": "Token é obrigatório",
+    "userIdRequired": "ID de usuário é obrigatório",
+    "actionRequired": "Ação é obrigatória",
+    "contentRequired": "Conteúdo é obrigatório",
+    "typeRequired": "Tipo é obrigatório",
+    "promptIdRequired": "ID do prompt é obrigatório"
+  },
+  "purchase": {
+    "insufficientSeats": "Vagas insuficientes disponíveis",
+    "purchaseRequired": "Por favor, compre mais vagas para continuar"
+  }
+}

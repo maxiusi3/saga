@@ -1,0 +1,117 @@
+{
+  "api": {
+    "common": {
+      "unauthorized": "Non autorisé",
+      "serverError": "Erreur interne du serveur",
+      "serverConfigurationError": "Erreur de configuration du serveur",
+      "accessDenied": "Accès refusé",
+      "notFound": "Ressource introuvable",
+      "forbidden": "Interdit"
+    },
+    "admin": {
+      "cleanupFailed": "Échec du nettoyage des invitations expirées",
+      "checkExpiredFailed": "Échec de la vérification des invitations expirées"
+    },
+    "ai": {
+      "apiKeyNotConfigured": "Clé API OpenRouter non configurée",
+      "noTranscriptProvided": "Aucune transcription fournie",
+      "invalidRequest": "Requête invalide au service IA",
+      "rateLimitExceeded": "Limite de taux dépassée. Veuillez réessayer plus tard.",
+      "quotaExceeded": "Quota OpenAI dépassé. Veuillez vérifier votre facturation.",
+      "contentGenerationFailed": "Échec de la génération de contenu par l'IA. Veuillez réessayer.",
+      "healthCheckFailed": "Échec de la vérification de santé",
+      "noStoriesProvided": "Aucune histoire fournie",
+      "noActionSpecified": "Aucune action spécifiée",
+      "invalidAction": "Action invalide spécifiée",
+      "processStoriesFailed": "Échec du traitement des histoires",
+      "noAudioFile": "Aucun fichier audio fourni",
+      "missingApiKey": "Erreur de configuration du serveur : Clé API SiliconFlow manquante.",
+      "transcriptionFailed": "Échec de la transcription. Veuillez réessayer.",
+      "unauthorizedApiKey": "Non autorisé : Clé API SiliconFlow invalide.",
+      "rateLimitApi": "Limite de taux dépassée. Veuillez réessayer plus tard."
+    },
+    "invitations": {
+      "invalidOrExpired": "Invitation invalide ou expirée",
+      "invitationNotFound": "Invitation introuvable",
+      "expired": "L'invitation a expiré",
+      "thisExpired": "Cette invitation a expiré",
+      "thisInvalidOrExpired": "Cette invitation est invalide ou a expiré",
+      "emailMismatch": "L'adresse email ne correspond pas à l'invitation",
+      "alreadyMember": "Vous êtes déjà membre de ce projet",
+      "alreadyHasRole": "Vous avez déjà ce rôle dans le projet",
+      "acceptFailed": "Échec de l'acceptation de l'invitation",
+      "tokenRequired": "Le jeton est requis",
+      "tokenAndUserIdRequired": "Le jeton et l'ID utilisateur sont requis",
+      "signInToAccept": "Veuillez vous connecter pour accepter cette invitation",
+      "emailAndRoleRequired": "L'email et le rôle sont requis",
+      "invalidRole": "Rôle invalide. Doit être facilitateur ou conteur.",
+      "activeInvitationExists": "Une invitation active existe déjà pour cet email et ce rôle",
+      "projectHasStoryteller": "Ce projet a déjà un conteur. Un seul conteur est autorisé par projet.",
+      "pendingStorytellerExists": "Il existe déjà une invitation de conteur en attente pour ce projet. Un seul conteur est autorisé par projet.",
+      "unableToVerifySeats": "Impossible de vérifier les places disponibles",
+      "insufficientSeats": "Places {role} insuffisantes. Veuillez acheter plus de places pour envoyer cette invitation.",
+      "sendFailed": "Échec de l'envoi de l'invitation",
+      "fetchFailed": "Échec de la récupération des invitations",
+      "projectNotFound": "Projet introuvable.",
+      "onlyOwnerCanManage": "Accès refusé. Seuls les propriétaires du projet peuvent gérer les invitations.",
+      "onlyOwnerCanSend": "Accès refusé. Seuls les propriétaires du projet peuvent envoyer des invitations.",
+      "invitationIdRequired": "L'ID d'invitation est requis",
+      "onlyOwnCanCancel": "Accès refusé. Vous ne pouvez annuler que les invitations que vous avez envoyées.",
+      "onlyPendingCanCancel": "Seules les invitations en attente peuvent être annulées",
+      "cancelFailed": "Échec de l'annulation de l'invitation"
+    },
+    "notifications": {
+      "fetchFailed": "Échec de la récupération des notifications",
+      "markAsReadFailed": "Échec du marquage des notifications comme lues",
+      "markAllAsReadFailed": "Échec du marquage de toutes les notifications comme lues",
+      "invalidAction": "Action invalide",
+      "deleteFailed": "Échec de la suppression de la notification",
+      "idRequired": "L'ID de notification est requis"
+    },
+    "privacy": {
+      "recordFailed": "Échec de l'enregistrement de l'accord de confidentialité",
+      "fetchFailed": "Échec de la récupération des accords de confidentialité"
+    },
+    "projects": {
+      "notFoundOrAccessDenied": "Projet introuvable ou accès refusé",
+      "fetchStoriesFailed": "Échec de la récupération des histoires du projet",
+      "exportFailed": "Échec de l'exportation des données du projet",
+      "fetchInteractionsFailed": "Échec de la récupération des interactions",
+      "fetchChaptersFailed": "Échec de la récupération des chapitres",
+      "initPromptStateFailed": "Échec de l'initialisation de l'état de l'invite",
+      "fetchPromptsFailed": "Échec de la récupération des invites",
+      "promptIdRequired": "L'ID de l'invite est requis",
+      "markPromptFailed": "Échec du marquage de l'invite comme livrée",
+      "updatePromptStateFailed": "Échec de la mise à jour de l'état de l'invite",
+      "createStoryFailed": "Échec de la création de l'histoire"
+    },
+    "stories": {
+      "notFound": "Histoire introuvable",
+      "fetchInteractionsFailed": "Échec de la récupération des interactions",
+      "invalidRequestData": "Données de requête invalides",
+      "createInteractionFailed": "Échec de la création de l'interaction"
+    },
+    "wallets": {
+      "fetchFailed": "Échec de la récupération du portefeuille",
+      "initFailed": "Échec de l'initialisation du portefeuille",
+      "refetchFailed": "Échec de la récupération du portefeuille après initialisation"
+    }
+  },
+  "validation": {
+    "required": "Ce champ est requis",
+    "invalidEmail": "Adresse email invalide",
+    "invalidFormat": "Format invalide",
+    "emailRequired": "L'email est requis",
+    "roleRequired": "Le rôle est requis",
+    "tokenRequired": "Le jeton est requis",
+    "userIdRequired": "L'ID utilisateur est requis",
+    "actionRequired": "L'action est requise",
+    "contentRequired": "Le contenu est requis",
+    "typeRequired": "Le type est requis",
+    "promptIdRequired": "L'ID de l'invite est requis"
+  },
+  "purchase": {
+    "insufficientSeats": "Places insuffisantes disponibles",
+    "purchaseRequired": "Veuillez acheter plus de places pour continuer"
+  }
+}

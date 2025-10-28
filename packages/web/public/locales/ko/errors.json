@@ -1,0 +1,117 @@
+{
+  "api": {
+    "common": {
+      "unauthorized": "권한이 없습니다",
+      "serverError": "내부 서버 오류",
+      "serverConfigurationError": "서버 구성 오류",
+      "accessDenied": "액세스 거부",
+      "notFound": "리소스를 찾을 수 없습니다",
+      "forbidden": "금지됨"
+    },
+    "admin": {
+      "cleanupFailed": "만료된 초대장 정리 실패",
+      "checkExpiredFailed": "만료된 초대장 확인 실패"
+    },
+    "ai": {
+      "apiKeyNotConfigured": "OpenRouter API 키가 구성되지 않았습니다",
+      "noTranscriptProvided": "전사본이 제공되지 않았습니다",
+      "invalidRequest": "AI 서비스에 대한 잘못된 요청",
+      "rateLimitExceeded": "속도 제한을 초과했습니다. 나중에 다시 시도해주세요.",
+      "quotaExceeded": "OpenAI 할당량을 초과했습니다. 결제를 확인해주세요.",
+      "contentGenerationFailed": "AI 콘텐츠 생성에 실패했습니다. 다시 시도해주세요.",
+      "healthCheckFailed": "상태 확인 실패",
+      "noStoriesProvided": "이야기가 제공되지 않았습니다",
+      "noActionSpecified": "작업이 지정되지 않았습니다",
+      "invalidAction": "잘못된 작업이 지정되었습니다",
+      "processStoriesFailed": "이야기 처리 실패",
+      "noAudioFile": "오디오 파일이 제공되지 않았습니다",
+      "missingApiKey": "서버 구성 오류: SiliconFlow API 키가 없습니다.",
+      "transcriptionFailed": "전사 실패. 다시 시도해주세요.",
+      "unauthorizedApiKey": "권한 없음: 잘못된 SiliconFlow API 키입니다.",
+      "rateLimitApi": "속도 제한을 초과했습니다. 나중에 다시 시도해주세요."
+    },
+    "invitations": {
+      "invalidOrExpired": "잘못되었거나 만료된 초대장",
+      "invitationNotFound": "초대장을 찾을 수 없습니다",
+      "expired": "초대장이 만료되었습니다",
+      "thisExpired": "이 초대장은 만료되었습니다",
+      "thisInvalidOrExpired": "이 초대장은 잘못되었거나 만료되었습니다",
+      "emailMismatch": "이메일 주소가 초대장과 일치하지 않습니다",
+      "alreadyMember": "이미 이 프로젝트의 멤버입니다",
+      "alreadyHasRole": "이미 이 프로젝트에서 이 역할을 가지고 있습니다",
+      "acceptFailed": "초대 수락 실패",
+      "tokenRequired": "토큰이 필요합니다",
+      "tokenAndUserIdRequired": "토큰과 사용자 ID가 필요합니다",
+      "signInToAccept": "이 초대를 수락하려면 로그인하세요",
+      "emailAndRoleRequired": "이메일과 역할이 필요합니다",
+      "invalidRole": "잘못된 역할입니다. 진행자 또는 이야기꾼이어야 합니다.",
+      "activeInvitationExists": "이 이메일과 역할에 대한 활성 초대가 이미 존재합니다",
+      "projectHasStoryteller": "이 프로젝트에는 이미 이야기꾼이 있습니다. 프로젝트당 한 명의 이야기꾼만 허용됩니다.",
+      "pendingStorytellerExists": "이 프로젝트에 이미 대기 중인 이야기꾼 초대가 있습니다. 프로젝트당 한 명의 이야기꾼만 허용됩니다.",
+      "unableToVerifySeats": "사용 가능한 좌석을 확인할 수 없습니다",
+      "insufficientSeats": "{role} 좌석이 부족합니다. 이 초대를 보내려면 더 많은 좌석을 구매하세요.",
+      "sendFailed": "초대 전송 실패",
+      "fetchFailed": "초대 가져오기 실패",
+      "projectNotFound": "프로젝트를 찾을 수 없습니다.",
+      "onlyOwnerCanManage": "액세스 거부. 프로젝트 소유자만 초대를 관리할 수 있습니다.",
+      "onlyOwnerCanSend": "액세스 거부. 프로젝트 소유자만 초대를 보낼 수 있습니다.",
+      "invitationIdRequired": "초대 ID가 필요합니다",
+      "onlyOwnCanCancel": "액세스 거부. 본인이 보낸 초대만 취소할 수 있습니다.",
+      "onlyPendingCanCancel": "대기 중인 초대만 취소할 수 있습니다",
+      "cancelFailed": "초대 취소 실패"
+    },
+    "notifications": {
+      "fetchFailed": "알림 가져오기 실패",
+      "markAsReadFailed": "알림을 읽음으로 표시 실패",
+      "markAllAsReadFailed": "모든 알림을 읽음으로 표시 실패",
+      "invalidAction": "잘못된 작업",
+      "deleteFailed": "알림 삭제 실패",
+      "idRequired": "알림 ID가 필요합니다"
+    },
+    "privacy": {
+      "recordFailed": "개인정보 동의 기록 실패",
+      "fetchFailed": "개인정보 동의 가져오기 실패"
+    },
+    "projects": {
+      "notFoundOrAccessDenied": "프로젝트를 찾을 수 없거나 액세스가 거부되었습니다",
+      "fetchStoriesFailed": "프로젝트 이야기 가져오기 실패",
+      "exportFailed": "프로젝트 데이터 내보내기 실패",
+      "fetchInteractionsFailed": "상호작용 가져오기 실패",
+      "fetchChaptersFailed": "챕터 가져오기 실패",
+      "initPromptStateFailed": "프롬프트 상태 초기화 실패",
+      "fetchPromptsFailed": "프롬프트 가져오기 실패",
+      "promptIdRequired": "프롬프트 ID가 필요합니다",
+      "markPromptFailed": "프롬프트를 전달됨으로 표시 실패",
+      "updatePromptStateFailed": "프롬프트 상태 업데이트 실패",
+      "createStoryFailed": "이야기 생성 실패"
+    },
+    "stories": {
+      "notFound": "이야기를 찾을 수 없습니다",
+      "fetchInteractionsFailed": "상호작용 가져오기 실패",
+      "invalidRequestData": "잘못된 요청 데이터",
+      "createInteractionFailed": "상호작용 생성 실패"
+    },
+    "wallets": {
+      "fetchFailed": "지갑 가져오기 실패",
+      "initFailed": "지갑 초기화 실패",
+      "refetchFailed": "초기화 후 지갑 가져오기 실패"
+    }
+  },
+  "validation": {
+    "required": "이 필드는 필수입니다",
+    "invalidEmail": "잘못된 이메일 주소",
+    "invalidFormat": "잘못된 형식",
+    "emailRequired": "이메일이 필요합니다",
+    "roleRequired": "역할이 필요합니다",
+    "tokenRequired": "토큰이 필요합니다",
+    "userIdRequired": "사용자 ID가 필요합니다",
+    "actionRequired": "작업이 필요합니다",
+    "contentRequired": "콘텐츠가 필요합니다",
+    "typeRequired": "유형이 필요합니다",
+    "promptIdRequired": "프롬프트 ID가 필요합니다"
+  },
+  "purchase": {
+    "insufficientSeats": "사용 가능한 좌석이 부족합니다",
+    "purchaseRequired": "계속하려면 더 많은 좌석을 구매하세요"
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "api": {
+    "common": {
+      "unauthorized": "未認証",
+      "serverError": "内部サーバーエラー",
+      "serverConfigurationError": "サーバー設定エラー",
+      "accessDenied": "アクセス拒否",
+      "notFound": "リソースが見つかりません",
+      "forbidden": "アクセス禁止"
+    },
+    "admin": {
+      "cleanupFailed": "期限切れ招待のクリーンアップに失敗しました",
+      "checkExpiredFailed": "期限切れ招待の確認に失敗しました"
+    },
+    "ai": {
+      "apiKeyNotConfigured": "OpenRouter APIキーが設定されていません",
+      "noTranscriptProvided": "文字起こしが提供されていません",
+      "invalidRequest": "AIサービスへの無効なリクエスト",
+      "rateLimitExceeded": "レート制限を超えました。後でもう一度お試しください。",
+      "quotaExceeded": "OpenAIクォータを超えました。請求を確認してください。",
+      "contentGenerationFailed": "AIコンテンツ生成に失敗しました。もう一度お試しください。",
+      "healthCheckFailed": "ヘルスチェックに失敗しました",
+      "noStoriesProvided": "ストーリーが提供されていません",
+      "noActionSpecified": "アクションが指定されていません",
+      "invalidAction": "無効なアクションが指定されました",
+      "processStoriesFailed": "ストーリーの処理に失敗しました",
+      "noAudioFile": "音声ファイルが提供されていません",
+      "missingApiKey": "サーバー設定エラー：SiliconFlow APIキーがありません。",
+      "transcriptionFailed": "文字起こしに失敗しました。もう一度お試しください。",
+      "unauthorizedApiKey": "未認証：無効なSiliconFlow APIキー。",
+      "rateLimitApi": "レート制限を超えました。後でもう一度お試しください。"
+    },
+    "invitations": {
+      "invalidOrExpired": "無効または期限切れの招待",
+      "invitationNotFound": "招待が見つかりません",
+      "expired": "招待の期限が切れています",
+      "thisExpired": "この招待は期限切れです",
+      "thisInvalidOrExpired": "この招待は無効または期限切れです",
+      "emailMismatch": "メールアドレスが招待と一致しません",
+      "alreadyMember": "すでにこのプロジェクトのメンバーです",
+      "alreadyHasRole": "すでにプロジェクトでこの役割を持っています",
+      "acceptFailed": "招待の承諾に失敗しました",
+      "tokenRequired": "トークンが必要です",
+      "tokenAndUserIdRequired": "トークンとユーザーIDが必要です",
+      "signInToAccept": "この招待を承諾するにはサインインしてください",
+      "emailAndRoleRequired": "メールと役割が必要です",
+      "invalidRole": "無効な役割です。ファシリテーターまたはストーリーテラーである必要があります。",
+      "activeInvitationExists": "このメールと役割の有効な招待がすでに存在します",
+      "projectHasStoryteller": "このプロジェクトにはすでにストーリーテラーがいます。プロジェクトごとに1人のストーリーテラーのみ許可されています。",
+      "pendingStorytellerExists": "このプロジェクトには保留中のストーリーテラー招待がすでにあります。プロジェクトごとに1人のストーリーテラーのみ許可されています。",
+      "unableToVerifySeats": "利用可能な席を確認できません",
+      "insufficientSeats": "{role}の席が不足しています。この招待を送信するには、より多くの席を購入してください。",
+      "sendFailed": "招待の送信に失敗しました",
+      "fetchFailed": "招待の取得に失敗しました",
+      "projectNotFound": "プロジェクトが見つかりません。",
+      "onlyOwnerCanManage": "アクセス拒否。プロジェクトオーナーのみが招待を管理できます。",
+      "onlyOwnerCanSend": "アクセス拒否。プロジェクトオーナーのみが招待を送信できます。",
+      "invitationIdRequired": "招待IDが必要です",
+      "onlyOwnCanCancel": "アクセス拒否。自分が送信した招待のみキャンセルできます。",
+      "onlyPendingCanCancel": "保留中の招待のみキャンセルできます",
+      "cancelFailed": "招待のキャンセルに失敗しました"
+    },
+    "notifications": {
+      "fetchFailed": "通知の取得に失敗しました",
+      "markAsReadFailed": "通知を既読にできませんでした",
+      "markAllAsReadFailed": "すべての通知を既読にできませんでした",
+      "invalidAction": "無効なアクション",
+      "deleteFailed": "通知の削除に失敗しました",
+      "idRequired": "通知IDが必要です"
+    },
+    "privacy": {
+      "recordFailed": "プライバシー同意の記録に失敗しました",
+      "fetchFailed": "プライバシー同意の取得に失敗しました"
+    },
+    "projects": {
+      "notFoundOrAccessDenied": "プロジェクトが見つからないか、アクセスが拒否されました",
+      "fetchStoriesFailed": "プロジェクトストーリーの取得に失敗しました",
+      "exportFailed": "プロジェクトデータのエクスポートに失敗しました",
+      "fetchInteractionsFailed": "インタラクションの取得に失敗しました",
+      "fetchChaptersFailed": "チャプターの取得に失敗しました",
+      "initPromptStateFailed": "プロンプト状態の初期化に失敗しました",
+      "fetchPromptsFailed": "プロンプトの取得に失敗しました",
+      "promptIdRequired": "プロンプトIDが必要です",
+      "markPromptFailed": "プロンプトを配信済みにできませんでした",
+      "updatePromptStateFailed": "プロンプト状態の更新に失敗しました",
+      "createStoryFailed": "ストーリーの作成に失敗しました"
+    },
+    "stories": {
+      "notFound": "ストーリーが見つかりません",
+      "fetchInteractionsFailed": "インタラクションの取得に失敗しました",
+      "invalidRequestData": "無効なリクエストデータ",
+      "createInteractionFailed": "インタラクションの作成に失敗しました"
+    },
+    "wallets": {
+      "fetchFailed": "ウォレットの取得に失敗しました",
+      "initFailed": "ウォレットの初期化に失敗しました",
+      "refetchFailed": "初期化後のウォレット取得に失敗しました"
+    }
+  },
+  "validation": {
+    "required": "このフィールドは必須です",
+    "invalidEmail": "無効なメールアドレス",
+    "invalidFormat": "無効な形式",
+    "emailRequired": "メールが必要です",
+    "roleRequired": "役割が必要です",
+    "tokenRequired": "トークンが必要です",
+    "userIdRequired": "ユーザーIDが必要です",
+    "actionRequired": "アクションが必要です",
+    "contentRequired": "コンテンツが必要です",
+    "typeRequired": "タイプが必要です",
+    "promptIdRequired": "プロンプトIDが必要です"
+  },
+  "purchase": {
+    "insufficientSeats": "利用可能な席が不足しています",
+    "purchaseRequired": "続行するにはより多くの席を購入してください"
+  }
+}
