@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Wallet, Plus, AlertCircle, Crown } from 'lucide-react'
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 interface ResourceWallet {
   projectVouchers: number
@@ -35,6 +35,7 @@ export function WelcomeHeader({
   onPurchaseClick
 }: WelcomeHeaderProps) {
   const locale = useLocale()
+  const t = useTranslations('dashboard.welcomeHeader')
   const withLocale = (path: string) => {
     if (!path.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -46,9 +47,9 @@ export function WelcomeHeader({
 
   const getTimeOfDayGreeting = () => {
     const hour = new Date().getHours()
-    if (hour < 12) return 'Good morning'
-    if (hour < 17) return 'Good afternoon'
-    return 'Good evening'
+    if (hour < 12) return t('greeting.morning')
+    if (hour < 17) return t('greeting.afternoon')
+    return t('greeting.evening')
   }
 
   return (
@@ -73,12 +74,12 @@ export function WelcomeHeader({
                   {isOwner && (
                     <Badge variant="facilitator" size="sm" className="bg-amber-100 text-amber-800">
                       <Crown className="w-3 h-3 mr-1" />
-                      Owner
+                      {t('ownerBadge')}
                     </Badge>
                   )}
                 </div>
                 <p className="text-muted-foreground">
-                  Welcome back to your family story dashboard
+                  {t('subtitle')}
                 </p>
               </div>
             </div>
@@ -92,13 +93,13 @@ export function WelcomeHeader({
                       <Wallet className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground mb-1">Resource Wallet</p>
+                      <p className="text-sm font-medium text-foreground mb-1">{t('resourceWallet')}</p>
                       <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span>{resourceWallet.projectVouchers} Projects</span>
+                        <span>{resourceWallet.projectVouchers} {t('metrics.projects')}</span>
                         <span>•</span>
-                        <span>{resourceWallet.facilitatorSeats} Facilitator Seats</span>
+                        <span>{resourceWallet.facilitatorSeats} {t('metrics.facilitatorSeats')}</span>
                         <span>•</span>
-                        <span>{resourceWallet.storytellerSeats} Storyteller Seats</span>
+                        <span>{resourceWallet.storytellerSeats} {t('metrics.storytellerSeats')}</span>
                       </div>
                     </div>
                   </div>
@@ -109,7 +110,7 @@ export function WelcomeHeader({
               {hasLowResources && (
                 <div className="flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-warning" />
-                  <span className="text-sm text-warning mr-2">Low resources</span>
+                  <span className="text-sm text-warning mr-2">{t('lowResources')}</span>
                   <Button 
                     variant="secondary" 
                     size="sm"
@@ -118,7 +119,7 @@ export function WelcomeHeader({
                 >
                   <Link href={withLocale('/dashboard/purchase')}>
                     <Plus className="w-4 h-4 mr-1" />
-                    Purchase More
+                    {t('purchaseMore')}
                   </Link>
                 </Button>
                 </div>
@@ -133,7 +134,7 @@ export function WelcomeHeader({
                 >
                   <Link href={withLocale('/dashboard/purchase')}>
                     <Plus className="w-4 h-4 mr-1" />
-                    Add Resources
+                    {t('addResources')}
                   </Link>
                 </Button>
               )}

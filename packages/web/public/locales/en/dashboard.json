@@ -1,0 +1,20 @@
+{
+  "welcomeHeader": {
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "ownerBadge": "Owner",
+    "subtitle": "Welcome back to your family story dashboard",
+    "resourceWallet": "Resource Wallet",
+    "metrics": {
+      "projects": "Projects",
+      "facilitatorSeats": "Facilitator Seats",
+      "storytellerSeats": "Storyteller Seats"
+    },
+    "lowResources": "Low resources",
+    "purchaseMore": "Purchase More",
+    "addResources": "Add Resources"
+  }
+}

@@ -9,7 +9,7 @@ import { toast } from 'react-hot-toast'
 import { NotificationBell } from '@/components/notifications/NotificationBell'
 import { WalletBalanceDropdown } from '@/components/wallet/wallet-balance-dropdown'
 import { Button } from '@/components/ui/button'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import LocaleSwitcher from '@/components/i18n/LocaleSwitcher'
 
 export function Navigation() {
@@ -21,6 +21,7 @@ export function Navigation() {
   const profileMenuRef = useRef<HTMLDivElement>(null)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const locale = useLocale()
+  const t = useTranslations('common.nav')
 
   const withLocale = (path: string) => {
     const normalized = path.startsWith('/') ? path : `/${path}`
@@ -107,9 +108,9 @@ export function Navigation() {
             </button>
 
             {/* Logo */}
-            <Link 
-              href={withLocale('/dashboard')} 
-              className="flex items-center ml-4 lg:ml-0 focus:outline-none focus:ring-2 focus:ring-primary rounded-md p-1"
+              <Link 
+                href={withLocale('/dashboard')} 
+                className="flex items-center ml-4 lg:ml-0 focus:outline-none focus:ring-2 focus:ring-primary rounded-md p-1"
               aria-label="Saga - Go to dashboard"
             >
               <div className="flex-shrink-0 flex items-center">
@@ -132,7 +133,7 @@ export function Navigation() {
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
               >
-                Dashboard
+                {t('dashboard')}
               </Link>
               <Link
                 href={withLocale('/dashboard/projects')}
@@ -142,7 +143,7 @@ export function Navigation() {
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
               >
-                Projects
+                {t('projects')}
               </Link>
               {/* Stories nav temporarily hidden (no route yet) */}
               {/* <Link

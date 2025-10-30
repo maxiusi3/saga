@@ -1,0 +1,20 @@
+{
+  "welcomeHeader": {
+    "greeting": {
+      "morning": "Bonjour",
+      "afternoon": "Bon après-midi",
+      "evening": "Bonsoir"
+    },
+    "ownerBadge": "Propriétaire",
+    "subtitle": "Bon retour sur votre tableau de bord d'histoires familiales",
+    "resourceWallet": "Portefeuille de ressources",
+    "metrics": {
+      "projects": "Projets",
+      "facilitatorSeats": "Places de facilitateur",
+      "storytellerSeats": "Places de conteur"
+    },
+    "lowResources": "Ressources faibles",
+    "purchaseMore": "Acheter davantage",
+    "addResources": "Ajouter des ressources"
+  }
+}
