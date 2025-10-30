@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { ShoppingCart, Users, UserPlus, BookOpen } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 interface ResourceSeat {
   type: 'project' | 'facilitator' | 'storyteller'
@@ -19,6 +20,12 @@ interface ResourceSeat {
 }
 
 export default function ResourcesPage() {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const [resources, setResources] = useState<ResourceSeat[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -116,7 +123,7 @@ export default function ResourcesPage() {
           </p>
         </div>
         
-        <Link href="/dashboard/purchase">
+        <Link href={withLocale('/dashboard/purchase')}>
           <Button>
             <ShoppingCart className="h-4 w-4 mr-2" />
             Buy More Seats
@@ -285,7 +292,7 @@ export default function ResourcesPage() {
             <p className="text-muted-foreground mb-4">
               Need multiple seats? Get better value with our complete package.
             </p>
-            <Link href="/dashboard/purchase">
+            <Link href={withLocale('/dashboard/purchase')}>
               <Button>
                 View Saga Package ($29)
               </Button>

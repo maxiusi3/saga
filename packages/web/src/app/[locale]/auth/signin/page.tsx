@@ -12,6 +12,8 @@ import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClientSupabase } from '@/lib/supabase'
+import { useLocale } from 'next-intl'
+import { locales } from '@/i18n/config'
 
 function SignInPageContent() {
   const [email, setEmail] = useState('')
@@ -20,6 +22,15 @@ function SignInPageContent() {
   const [isClient, setIsClient] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
+  const locale = useLocale()
+
+  const withLocale = (path: string) => {
+    let normalized = path || '/dashboard'
+    normalized = normalized.startsWith('/') ? normalized : `/${normalized}`
+    const seg = normalized.split('/')[1]
+    if (locales.includes(seg as (typeof locales)[number])) return normalized
+    return `/${locale}${normalized}`
+  }
 
   // 确保只在客户端执行
   useEffect(() => {
@@ -95,7 +106,7 @@ function SignInPageContent() {
             }
             // 清理暂存
             try { localStorage.removeItem('auth_next') } catch {}
-            router.push(next || '/dashboard')
+            router.push(withLocale(next || '/dashboard'))
           }
         })
       }
@@ -121,8 +132,8 @@ function SignInPageContent() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          // 使用运行时当前域名，避免硬编码 Vercel 预览/生产域名
-          redirectTo: `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
+          // 使用运行时当前域名与当前语言，避免丢失 locale
+          redirectTo: `${window.location.origin}/${locale}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
         }
       })
       if (error) throw error
@@ -149,7 +160,7 @@ function SignInPageContent() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
+          emailRedirectTo: `${window.location.origin}/${locale}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
         }
       })
 
@@ -253,11 +264,11 @@ function SignInPageContent() {
 
         {/* Footer Links */}
         <div className="text-center text-sm text-muted-foreground space-x-4">
-          <Link href="/terms" className="hover:text-foreground">
+          <Link href={`/${locale}/terms`} className="hover:text-foreground">
             Terms of Service
           </Link>
           <span>•</span>
-          <Link href="/privacy" className="hover:text-foreground">
+          <Link href={`/${locale}/privacy`} className="hover:text-foreground">
             Privacy Policy
           </Link>
         </div>

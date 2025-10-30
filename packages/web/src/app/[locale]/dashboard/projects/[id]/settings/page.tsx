@@ -23,6 +23,11 @@ export default function ProjectSettingsPage() {
   const router = useRouter()
   const { user } = useAuthStore()
   const projectId = params.id as string
+  const locale = (params?.locale as string) || 'en'
+  const withLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return `/${locale}${normalized}`
+  }
   
   const [project, setProject] = useState<ProjectWithMembers | null>(null)
   const [projectName, setProjectName] = useState('')
@@ -44,7 +49,7 @@ export default function ProjectSettingsPage() {
         
         if (!currentProject) {
           toast.error('Project not found or access denied')
-          router.push('/dashboard')
+          router.push(withLocale('/dashboard'))
           return
         }
 
@@ -128,7 +133,7 @@ export default function ProjectSettingsPage() {
           <h1 className="text-2xl font-bold text-gray-900">
             {!user ? 'Please sign in' : 'Project not found'}
           </h1>
-          <Link href="/dashboard">
+          <Link href={withLocale('/dashboard')}>
             <EnhancedButton variant="outline" className="mt-4">
               Back to Dashboard
             </EnhancedButton>
@@ -143,7 +148,7 @@ export default function ProjectSettingsPage() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <Link href={`/dashboard/projects/${projectId}`}>
+            <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
               <EnhancedButton variant="secondary" size="sm" className="mb-4">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Project

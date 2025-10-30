@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { BookOpen, Gem, User as UserIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useAuthStore } from '@/stores/auth-store'
+import { useLocale } from 'next-intl'
 
 export default function DashboardLayout({
   children,
@@ -16,6 +17,14 @@ export default function DashboardLayout({
   const { user, isAuthenticated, isLoading, initialize } = useAuthStore()
   const router = useRouter()
   const [initialized, setInitialized] = useState(false)
+  const locale = useLocale()
+
+  const withLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    const seg = normalized.split('/')[1]
+    if (seg === 'en' || seg === 'zh-CN' || seg === 'zh-TW') return normalized
+    return `/${locale}${normalized}`
+  }
 
   useEffect(() => {
     console.log('Dashboard Layout: Auth state check', { user: !!user, isLoading, isAuthenticated, initialized })
@@ -36,7 +45,7 @@ export default function DashboardLayout({
       console.log('Dashboard Layout: Setting redirect timer (2s)')
       const timer = setTimeout(() => {
         console.log('Dashboard Layout: Redirecting to signin')
-        router.push('/auth/signin')
+        router.push(withLocale('/auth/signin'))
       }, 2000) // Wait 2 seconds for auth state to sync
 
       return () => {
@@ -76,19 +85,19 @@ export default function DashboardLayout({
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg">
         <div className="flex justify-around">
           <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
-            <Link href="/dashboard">
+            <Link href={withLocale('/dashboard')}>
               <BookOpen className="w-5 h-5 mb-1" />
               <span className="font-medium">My Sagas</span>
             </Link>
           </Button>
           <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
-            <Link href="/dashboard/resources">
+            <Link href={withLocale('/dashboard/resources')}>
               <Gem className="w-5 h-5 mb-1" />
               <span>Resources</span>
             </Link>
           </Button>
           <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
-            <Link href="/dashboard/profile">
+            <Link href={withLocale('/dashboard/profile')}>
               <UserIcon className="w-5 h-5 mb-1" />
               <span>Profile</span>
             </Link>

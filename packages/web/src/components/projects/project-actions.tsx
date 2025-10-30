@@ -31,6 +31,7 @@ import {
   Trash2
 } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 interface ProjectActionsProps {
   projectId: string
@@ -65,6 +66,13 @@ export function ProjectActions({
   variant = 'inline',
   size = 'sm'
 }: ProjectActionsProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const [isArchiving, setIsArchiving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [showArchiveDialog, setShowArchiveDialog] = useState(false)
@@ -105,7 +113,7 @@ export function ProjectActions({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuItem onClick={onEnterProject} asChild>
-              <Link href={`/dashboard/projects/${projectId}`}>
+              <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
                 <ArrowRight className="w-4 h-4 mr-2" />
                 Enter Project
               </Link>
@@ -114,7 +122,7 @@ export function ProjectActions({
             {canManage && (
               <>
                 <DropdownMenuItem onClick={onManageProject} asChild>
-                  <Link href={`/dashboard/projects/${projectId}/settings`}>
+                  <Link href={withLocale(`/dashboard/projects/${projectId}/settings`)}>
                     <Settings className="w-4 h-4 mr-2" />
                     Manage Project
                   </Link>
@@ -223,7 +231,7 @@ export function ProjectActions({
         onClick={onEnterProject}
         asChild
       >
-        <Link href={`/dashboard/projects/${projectId}`}>
+        <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
           Enter Project
           <ArrowRight className="w-4 h-4 ml-1" />
         </Link>
@@ -238,7 +246,7 @@ export function ProjectActions({
             onClick={onManageProject}
             asChild
           >
-            <Link href={`/dashboard/projects/${projectId}/settings`}>
+            <Link href={withLocale(`/dashboard/projects/${projectId}/settings`)}>
               <Settings className="w-4 h-4" />
             </Link>
           </Button>

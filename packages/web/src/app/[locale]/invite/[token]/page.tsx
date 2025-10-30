@@ -26,6 +26,11 @@ export default function InvitationLandingPage() {
   const params = useParams()
   const router = useRouter()
   const token = params.token as string
+  const locale = (params.locale as string) || 'en'
+  const withLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return `/${locale}${normalized}`
+  }
 
   const [invitation, setInvitation] = useState<Invitation | null>(null)
   const [loading, setLoading] = useState(true)
@@ -64,9 +69,9 @@ export default function InvitationLandingPage() {
     try {
       // 未登录则先跳转登录页，登录后回到邀请页
       const session = await supabase.auth.getSession()
-      const nextPath = `/invite/${token}`
+      const nextPath = withLocale(`/invite/${token}`)
       if (!session.data.session) {
-        window.location.href = `/auth/signin?next=${encodeURIComponent(nextPath)}`
+        window.location.href = withLocale(`/auth/signin?next=${encodeURIComponent(nextPath)}`)
         return
       }
 
@@ -89,7 +94,7 @@ export default function InvitationLandingPage() {
       const result = await response.json()
 
       // Redirect to the project dashboard
-      router.push(`/dashboard/projects/${result.project_id}`)
+      router.push(withLocale(`/dashboard/projects/${result.project_id}`))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to accept invitation. Please try again.')
     } finally {
@@ -117,7 +122,7 @@ export default function InvitationLandingPage() {
             {error || 'This invitation link is invalid or has expired.'}
           </p>
           <Button
-            onClick={() => router.push('/')}
+            onClick={() => router.push(withLocale('/'))}
             className="w-full"
           >
             Go to Homepage

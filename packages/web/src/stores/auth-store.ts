@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { createClientSupabase } from '@/lib/supabase'
+import { locales, defaultLocale } from '@/i18n/config'
 import type { User } from '@supabase/supabase-js'
 
 interface AuthState {
@@ -201,8 +202,18 @@ export const useAuthStore = create<AuthStore>()(
             const { error } = await supabase.auth.signInWithOAuth({
               provider: 'google',
               options: {
-                // 动态使用当前域名，兼容预览和生产
-                redirectTo: `${window.location.origin}/auth/callback`
+                // 动态使用当前域名与当前语言，兼容预览和生产，并确保回调路由位于 /[locale]/auth/callback
+                // 从当前路径中解析 locale（若无，则使用默认语言）
+                redirectTo: (() => {
+                  try {
+                    const pathname = window.location.pathname || '/'
+                    const firstSeg = pathname.split('/')[1] || ''
+                    const localeFromPath = (locales as readonly string[]).includes(firstSeg as any) ? firstSeg : defaultLocale
+                    return `${window.location.origin}/${localeFromPath}/auth/callback`
+                  } catch {
+                    return `${window.location.origin}/${defaultLocale}/auth/callback`
+                  }
+                })()
               }
             })
 

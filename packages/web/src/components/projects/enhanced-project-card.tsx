@@ -19,6 +19,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 interface ProjectMember {
   id: string
@@ -66,6 +67,8 @@ export function EnhancedProjectCard({
   onManageProject,
   onArchiveProject
 }: EnhancedProjectCardProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => `/${locale}${path}`
   const displayMembers = members.slice(0, 4)
   const remainingMembers = Math.max(0, members.length - 4)
 
@@ -246,7 +249,7 @@ export function EnhancedProjectCard({
             onClick={onEnterProject}
             asChild
           >
-            <Link href={`/dashboard/projects/${id}`}>
+            <Link href={withLocale(`/dashboard/projects/${id}`)}>
               Enter Project
               <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
@@ -261,7 +264,7 @@ export function EnhancedProjectCard({
                 onClick={onManageProject}
                 asChild
               >
-                <Link href={`/dashboard/projects/${id}/settings`}>
+                <Link href={withLocale(`/dashboard/projects/${id}/settings`)}>
                   <Settings className="w-4 h-4" />
                 </Link>
               </Button>

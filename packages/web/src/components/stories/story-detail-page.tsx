@@ -29,6 +29,7 @@ import {
   MoreHorizontal
 } from 'lucide-react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 interface Story {
   id: string
@@ -106,6 +107,16 @@ export function StoryDetailPage({
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
   const [replyContent, setReplyContent] = useState('')
 
+  // locale-aware 链接助手
+  const params = useParams()
+  const locale = (params?.locale as string) || ''
+  const withLocale = (path: string) => {
+    const sanitized = path.startsWith('/') ? path : `/${path}`
+    const hasLocale = /^\/(en|zh|fr|es)(\/|$)/.test(sanitized)
+    if (!locale || hasLocale) return sanitized
+    return `/${locale}${sanitized}`
+  }
+
   const primaryPhoto = story.photos.find(p => p.isPrimary) || story.photos[0]
 
   const formatDuration = (seconds: number) => {
@@ -151,7 +162,7 @@ export function StoryDetailPage({
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
-          <Link href={`/dashboard/projects/${projectId}/stories`}>
+          <Link href={withLocale(`/dashboard/projects/${projectId}/stories`)}>
             <Button variant="tertiary" size="sm">
               <ChevronLeft className="w-4 h-4 mr-1" />
               Back to Stories

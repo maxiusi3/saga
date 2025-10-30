@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -24,6 +25,12 @@ interface InvitationDetails {
 function AcceptInvitationContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { user, supabase } = useAuthStore()
   
   const [loading, setLoading] = useState(true)
@@ -226,7 +233,7 @@ function AcceptInvitationContent() {
       if (response.ok) {
         const data = await response.json()
         toast.success('Invitation accepted successfully!')
-        router.push(`/dashboard/projects/${data.project_id}`)
+        router.push(withLocale(`/dashboard/projects/${data.project_id}`))
       } else {
         const errorData = await response.json()
         toast.error(errorData.error || 'Failed to accept invitation')

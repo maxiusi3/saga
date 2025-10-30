@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import { useRouter } from 'next/navigation'
 import { ProtectedRoute, withAuth, useRequireAuth } from '../protected-route'
 import { useAuthStore } from '@/stores/auth-store'
@@ -14,9 +15,13 @@ jest.mock('@/stores/auth-store', () => ({
 
 const mockPush = jest.fn()
 
+// Cast mocked functions safely to Jest.Mock to satisfy TypeScript
+const mockedUseRouter = useRouter as unknown as jest.Mock
+const mockedUseAuthStore = useAuthStore as unknown as jest.Mock
+
 describe('ProtectedRoute', () => {
   beforeEach(() => {
-    ;(useRouter as jest.Mock).mockReturnValue({
+    mockedUseRouter.mockReturnValue({
       push: mockPush,
     })
 
@@ -25,7 +30,7 @@ describe('ProtectedRoute', () => {
 
   describe('when requireAuth is true (default)', () => {
     it('renders children when authenticated', () => {
-      ;(useAuthStore as jest.Mock).mockReturnValue({
+      mockedUseAuthStore.mockReturnValue({
         isAuthenticated: true,
         isLoading: false,
         user: { id: '1', name: 'Test User' },
@@ -41,7 +46,7 @@ describe('ProtectedRoute', () => {
     })
 
     it('shows loading when checking authentication', () => {
-      ;(useAuthStore as jest.Mock).mockReturnValue({
+      mockedUseAuthStore.mockReturnValue({
         isAuthenticated: false,
         isLoading: true,
         user: null,
@@ -57,7 +62,7 @@ describe('ProtectedRoute', () => {
     })
 
     it('redirects to sign in when not authenticated', () => {
-      ;(useAuthStore as jest.Mock).mockReturnValue({
+      mockedUseAuthStore.mockReturnValue({
         isAuthenticated: false,
         isLoading: false,
         user: null,
@@ -69,12 +74,13 @@ describe('ProtectedRoute', () => {
         </ProtectedRoute>
       )
 
-      expect(mockPush).toHaveBeenCalledWith('/auth/signin')
+      // Default locale-aware redirect
+      expect(mockPush).toHaveBeenCalledWith('/en/auth/signin')
       expect(screen.getByText('Redirecting...')).toBeInTheDocument()
     })
 
     it('redirects to custom path when specified', () => {
-      ;(useAuthStore as jest.Mock).mockReturnValue({
+      mockedUseAuthStore.mockReturnValue({
         isAuthenticated: false,
         isLoading: false,
         user: null,
@@ -86,13 +92,14 @@ describe('ProtectedRoute', () => {
         </ProtectedRoute>
       )
 
-      expect(mockPush).toHaveBeenCalledWith('/custom-signin')
+      // Locale is prefixed based on pathname fallback ('en' in tests)
+      expect(mockPush).toHaveBeenCalledWith('/en/custom-signin')
     })
   })
 
   describe('when requireAuth is false', () => {
     it('renders children when not authenticated', () => {
-      ;(useAuthStore as jest.Mock).mockReturnValue({
+      mockedUseAuthStore.mockReturnValue({
         isAuthenticated: false,
         isLoading: false,
         user: null,
@@ -108,7 +115,7 @@ describe('ProtectedRoute', () => {
     })
 
     it('redirects to dashboard when authenticated', () => {
-      ;(useAuthStore as jest.Mock).mockReturnValue({
+      mockedUseAuthStore.mockReturnValue({
         isAuthenticated: true,
         isLoading: false,
         user: { id: '1', name: 'Test User' },
@@ -120,7 +127,7 @@ describe('ProtectedRoute', () => {
         </ProtectedRoute>
       )
 
-      expect(mockPush).toHaveBeenCalledWith('/dashboard')
+      expect(mockPush).toHaveBeenCalledWith('/en/dashboard')
       expect(screen.getByText('Redirecting...')).toBeInTheDocument()
     })
   })
@@ -130,7 +137,7 @@ describe('withAuth HOC', () => {
   const TestComponent = ({ message }: { message: string }) => <div>{message}</div>
 
   it('wraps component with ProtectedRoute', () => {
-    ;(useAuthStore as jest.Mock).mockReturnValue({
+    mockedUseAuthStore.mockReturnValue({
       isAuthenticated: true,
       isLoading: false,
       user: { id: '1', name: 'Test User' },
@@ -144,7 +151,7 @@ describe('withAuth HOC', () => {
   })
 
   it('passes options to ProtectedRoute', () => {
-    ;(useAuthStore as jest.Mock).mockReturnValue({
+    mockedUseAuthStore.mockReturnValue({
       isAuthenticated: false,
       isLoading: false,
       user: null,
@@ -162,7 +169,7 @@ describe('withAuth HOC', () => {
 
 describe('useRequireAuth hook', () => {
   it('redirects when not authenticated', () => {
-    ;(useAuthStore as jest.Mock).mockReturnValue({
+    mockedUseAuthStore.mockReturnValue({
       isAuthenticated: false,
       isLoading: false,
     })
@@ -174,11 +181,11 @@ describe('useRequireAuth hook', () => {
 
     render(<TestComponent />)
 
-    expect(mockPush).toHaveBeenCalledWith('/auth/signin')
+    expect(mockPush).toHaveBeenCalledWith('/en/auth/signin')
   })
 
   it('does not redirect when authenticated', () => {
-    ;(useAuthStore as jest.Mock).mockReturnValue({
+    mockedUseAuthStore.mockReturnValue({
       isAuthenticated: true,
       isLoading: false,
     })
@@ -195,7 +202,7 @@ describe('useRequireAuth hook', () => {
   })
 
   it('uses custom redirect path', () => {
-    ;(useAuthStore as jest.Mock).mockReturnValue({
+    mockedUseAuthStore.mockReturnValue({
       isAuthenticated: false,
       isLoading: false,
     })
@@ -207,6 +214,6 @@ describe('useRequireAuth hook', () => {
 
     render(<TestComponent />)
 
-    expect(mockPush).toHaveBeenCalledWith('/custom-login')
+    expect(mockPush).toHaveBeenCalledWith('/en/custom-login')
   })
 })

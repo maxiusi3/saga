@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -16,6 +16,12 @@ import { toast } from 'react-hot-toast'
 
 export default function CreateProjectPage() {
   const router = useRouter()
+  const params = useParams()
+  const locale = (params?.locale as string) || 'en'
+  const withLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return `/${locale}${normalized}`
+  }
   const { user } = useAuthStore()
   const { wallet, loading: walletLoading, hasResources } = useResourceWallet()
   const [loading, setLoading] = useState(false)
@@ -47,7 +53,7 @@ export default function CreateProjectPage() {
     if (!hasResources('project_vouchers', 1)) {
       // Redirect to purchase page when resources are insufficient
       toast.error('Insufficient project vouchers, please purchase more resources')
-      router.push('/dashboard/purchase')
+      router.push(withLocale('/dashboard/purchase'))
       return
     }
 
@@ -55,7 +61,7 @@ export default function CreateProjectPage() {
     const seatType = formData.role === 'facilitator' ? 'facilitator_seats' : 'storyteller_seats'
     if (!hasResources(seatType, 1)) {
       toast.error(`Insufficient ${formData.role === 'facilitator' ? 'Facilitator' : 'Storyteller'} seats, please purchase more resources`)
-      router.push('/dashboard/purchase')
+      router.push(withLocale('/dashboard/purchase'))
       return
     }
 
@@ -76,7 +82,7 @@ export default function CreateProjectPage() {
         console.log('Project created successfully:', project)
         toast.success('Project created successfully!')
         // 重定向到新创建的项目页面
-        router.push(`/dashboard/projects/${project.id}`)
+        router.push(withLocale(`/dashboard/projects/${project.id}`))
       } else {
         throw new Error('Failed to create project')
       }
@@ -133,7 +139,7 @@ export default function CreateProjectPage() {
     <div className="container max-w-2xl py-8">
       {/* Header */}
       <div className="flex items-center space-x-4 mb-8">
-        <Link href="/dashboard/projects">
+        <Link href={withLocale('/dashboard/projects')}>
           <Button variant="ghost" size="sm">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Projects
@@ -284,7 +290,7 @@ export default function CreateProjectPage() {
 
               {/* Submit Button */}
               <div className="flex justify-end space-x-3 pt-6">
-                <Link href="/dashboard/projects">
+                <Link href={withLocale('/dashboard/projects')}>
                   <Button variant="outline" type="button">
                     Cancel
                   </Button>

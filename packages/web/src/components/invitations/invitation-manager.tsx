@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
@@ -56,6 +57,15 @@ export function InvitationManager({
   onRemoveMember,
   className 
 }: InvitationManagerProps) {
+  // 获取当前 locale，并提供一个本地的 withLocale 助手，保证跳转和分享链接都带语言前缀
+  const params = useParams()
+  const locale = (params?.locale as string) || ''
+  const withLocale = (path: string) => {
+    const sanitized = path.startsWith('/') ? path : `/${path}`
+    const hasLocale = /^\/(en|zh|fr|es)(\/|$)/.test(sanitized)
+    if (!locale || hasLocale) return sanitized
+    return `/${locale}${sanitized}`
+  }
   const [invitations, setInvitations] = useState<Invitation[]>([])
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
@@ -150,7 +160,8 @@ export function InvitationManager({
           toast.error(errorData.error || 'Insufficient seats')
           // 显示购买提示
           if (confirm('You need more seats to send this invitation. Would you like to purchase more seats now?')) {
-            window.location.href = errorData.purchaseUrl || '/dashboard/purchase'
+            const target = errorData.purchaseUrl || '/dashboard/purchase'
+            window.location.href = withLocale(target)
           }
           return
         } else if (response.status === 409) {
@@ -176,7 +187,7 @@ export function InvitationManager({
 
   const generateQrCode = async (token: string) => {
     try {
-      const inviteUrl = `${window.location.origin}/invite/${token}`
+      const inviteUrl = `${window.location.origin}${withLocale(`/invite/${token}`)}`
       const qrCodeDataUrl = await QRCode.toDataURL(inviteUrl, {
         width: 256,
         margin: 2,
@@ -194,7 +205,7 @@ export function InvitationManager({
   }
 
   const copyInviteLink = async (token: string) => {
-    const inviteUrl = `${window.location.origin}/invite/${token}`
+    const inviteUrl = `${window.location.origin}${withLocale(`/invite/${token}`)}`
     try {
       await navigator.clipboard.writeText(inviteUrl)
       toast.success('Invitation link copied to clipboard!')

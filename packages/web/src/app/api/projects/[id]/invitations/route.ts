@@ -414,7 +414,10 @@ export async function POST(
 
     // 发送邀请邮件
     try {
-      const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/invite/${fullInvitation.token}`
+      // Ensure invite link includes a locale prefix so it works even without middleware
+      const { defaultLocale } = await import('@/i18n/config')
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+      const inviteUrl = `${baseUrl}/${defaultLocale}/invite/${fullInvitation.token}`
 
       await EmailService.sendInvitationEmail(fullInvitation.invitee_email, {
         inviterName: fullInvitation.inviter?.user_metadata?.full_name ||

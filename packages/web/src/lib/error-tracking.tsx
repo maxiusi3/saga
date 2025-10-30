@@ -213,6 +213,17 @@ class ErrorBoundary extends React.Component<
 
 // Default error fallback component
 function DefaultErrorFallback({ error, resetError }: { error: Error; resetError: () => void }) {
+  const withCurrentLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    try {
+      const pathname = window.location.pathname || '/'
+      const first = (pathname.split('/')[1] || '').trim()
+      const supported = ['en', 'zh', 'fr', 'es', 'zh-CN', 'zh-TW']
+      return supported.includes(first) ? `/${first}${normalized}` : normalized
+    } catch {
+      return normalized
+    }
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
@@ -249,7 +260,7 @@ function DefaultErrorFallback({ error, resetError }: { error: Error; resetError:
             Try again
           </button>
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => window.location.href = withCurrentLocale('/dashboard')}
             className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             Go home

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuthStore } from '@/stores/auth-store'
 import { Loading } from '@/components/ui/loading'
 
@@ -17,17 +17,30 @@ export function ProtectedRoute({
   redirectTo = '/auth/signin' 
 }: ProtectedRouteProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const { isAuthenticated, isLoading, user } = useAuthStore()
+
+  const getLocaleFromPath = () => {
+    const first = (pathname?.split('/')[1] || '').trim()
+    const supported = ['en', 'zh-CN', 'zh-TW']
+    return supported.includes(first) ? first : 'en'
+  }
+
+  const withLocale = (path: string) => {
+    const locale = getLocaleFromPath()
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return `/${locale}${normalized}`
+  }
 
   useEffect(() => {
     if (!isLoading) {
       if (requireAuth && !isAuthenticated) {
-        router.push(redirectTo)
+        router.push(withLocale(redirectTo))
       } else if (!requireAuth && isAuthenticated) {
-        router.push('/dashboard')
+        router.push(withLocale('/dashboard'))
       }
     }
-  }, [isAuthenticated, isLoading, requireAuth, router, redirectTo])
+  }, [isAuthenticated, isLoading, requireAuth, router, redirectTo, pathname])
 
   // Show loading while checking authentication
   if (isLoading) {
@@ -77,13 +90,26 @@ export function withAuth<P extends object>(
 // Hook for checking auth status in components
 export function useRequireAuth(redirectTo = '/auth/signin') {
   const router = useRouter()
+  const pathname = usePathname()
   const { isAuthenticated, isLoading } = useAuthStore()
+
+  const getLocaleFromPath = () => {
+    const first = (pathname?.split('/')[1] || '').trim()
+    const supported = ['en', 'zh-CN', 'zh-TW']
+    return supported.includes(first) ? first : 'en'
+  }
+
+  const withLocale = (path: string) => {
+    const locale = getLocaleFromPath()
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return `/${locale}${normalized}`
+  }
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push(redirectTo)
+      router.push(withLocale(redirectTo))
     }
-  }, [isAuthenticated, isLoading, router, redirectTo])
+  }, [isAuthenticated, isLoading, router, redirectTo, pathname])
 
   return { isAuthenticated, isLoading }
 }

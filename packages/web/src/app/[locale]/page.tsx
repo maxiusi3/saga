@@ -18,13 +18,21 @@ import {
   Facebook,
   Linkedin,
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import LocaleSwitcher from '@/components/i18n/LocaleSwitcher'
 
 export default function HomePage() {
   const t = useTranslations('pages.home')
   const router = useRouter()
   const [email, setEmail] = useState('')
+  const locale = useLocale()
+
+  const withLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    const seg = normalized.split('/')[1]
+    if (seg === 'en' || seg === 'zh-CN' || seg === 'zh-TW') return normalized
+    return `/${locale}${normalized}`
+  }
 
   // i18n helpers
   const renderWithBreaks = (text: string) => {
@@ -56,7 +64,7 @@ export default function HomePage() {
 
     if (accessToken && refreshToken && type === 'magiclink') {
       router.push(
-        `/dashboard?access_token=${accessToken}&refresh_token=${refreshToken}&token_type=${tokenType}&type=${type}`
+        `/${locale}/dashboard?access_token=${accessToken}&refresh_token=${refreshToken}&token_type=${tokenType}&type=${type}`
       )
     } else if (type === 'invite') {
       checkPendingInvitations()
@@ -91,7 +99,7 @@ export default function HomePage() {
             if (response.ok) {
               const data = await response.json()
               if (data.hasPendingInvitations) {
-                router.push('/accept-invitation')
+                router.push(`/${locale}/accept-invitation`)
                 return true
               }
               return false
@@ -143,7 +151,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-4">
             <LocaleSwitcher />
-            <Link href="/auth/signin">
+            <Link href={`/${locale}/auth/signin`}>
               <Button className="bg-[#F59E0B] text-white hover:bg-[#D97706]">
                 {t('navigation.startFree')}
               </Button>
@@ -175,7 +183,7 @@ export default function HomePage() {
             {t('hero.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-            <Link href="/auth/signin">
+            <Link href={`/${locale}/auth/signin`}>
               <Button
                 size="lg"
                 className="bg-[#F59E0B] text-white hover:bg-[#D97706] text-lg px-10 py-6 rounded-xl shadow-2xl hover:shadow-[0_25px_70px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-1 font-semibold group"
@@ -478,7 +486,7 @@ export default function HomePage() {
               className="w-full bg-white/10 border-2 border-white/30 text-white placeholder:text-white/60 h-14 px-6 rounded-xl backdrop-blur-md focus:bg-white/20 focus:border-white focus:outline-none focus:ring-2 focus:ring-white/50"
               placeholder={t('finalCta.emailPlaceholder')}
             />
-            <Link href="/auth/signin">
+            <Link href={`/${locale}/auth/signin`}>
               <Button className="w-full sm:w-auto bg-[#F59E0B] text-white hover:bg-[#D97706] text-base px-10 py-6 rounded-xl shadow-2xl hover:shadow-[0_25px_70px_rgba(0,0,0,0.4)] transition-all duration-300 font-semibold whitespace-nowrap">
                 {t('finalCta.ctaButton')}
               </Button>

@@ -12,6 +12,19 @@ function EmailVerificationContent() {
   const supabase = createClientSupabase()
   const { initialize } = useAuthStore()
 
+  const getLocaleFromPath = () => {
+    if (typeof window === 'undefined') return 'en'
+    const first = (window.location.pathname.split('/')[1] || '').trim()
+    const supported = ['en', 'zh-CN', 'zh-TW']
+    return supported.includes(first) ? first : 'en'
+  }
+
+  const withLocale = (path: string) => {
+    const locale = getLocaleFromPath()
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return `/${locale}${normalized}`
+  }
+
   useEffect(() => {
     const handleEmailVerification = async () => {
       // 确保在客户端环境中运行
@@ -72,8 +85,8 @@ function EmailVerificationContent() {
               // 重新初始化认证状态
               await initialize()
               
-              // 跳转到仪表板
-              router.push('/dashboard')
+              // 跳转到仪表板（带语言）
+              router.push(withLocale('/dashboard'))
               return
             }
           }
@@ -100,8 +113,8 @@ function EmailVerificationContent() {
             // 重新初始化认证状态
             await initialize()
             
-            // 跳转到仪表板
-            router.push('/dashboard')
+            // 跳转到仪表板（带语言）
+            router.push(withLocale('/dashboard'))
             return
           }
         }

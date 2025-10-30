@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
+import { useLocale } from 'next-intl'
+import { locales } from '@/i18n/config'
 
 export default function DebugAuthPage() {
   const [debugInfo, setDebugInfo] = useState<any>({})
+  const locale = useLocale()
+
+  const getCallbackUrl = () => `${window.location.origin}/${locale}/auth/callback`
 
   useEffect(() => {
     const supabase = createBrowserClient(
@@ -16,7 +21,7 @@ export default function DebugAuthPage() {
       currentOrigin: window.location.origin,
       currentHost: window.location.host,
       supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      redirectUrl: `${window.location.origin}/auth/callback`,
+      redirectUrl: getCallbackUrl(),
       userAgent: navigator.userAgent,
       timestamp: new Date().toISOString()
     }
@@ -34,7 +39,7 @@ export default function DebugAuthPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email: 'test@example.com',
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`
+          emailRedirectTo: getCallbackUrl()
         }
       })
       
@@ -76,8 +81,12 @@ export default function DebugAuthPage() {
             <li>Authentication → Settings</li>
             <li>Add these URLs to "Redirect URLs":</li>
             <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-              <li><code>https://saga-web-livid.vercel.app/auth/callback</code></li>
-              <li><code>http://localhost:3000/auth/callback</code> (for development)</li>
+              {locales.map(l => (
+                <li key={`prod-${l}`}><code>{`https://saga-web-livid.vercel.app/${l}/auth/callback`}</code></li>
+              ))}
+              {locales.map(l => (
+                <li key={`dev-${l}`}><code>{`http://localhost:3000/${l}/auth/callback`}</code> (for development)</li>
+              ))}
             </ul>
             <li>Set "Site URL" to: <code>https://saga-web-livid.vercel.app</code></li>
           </ol>

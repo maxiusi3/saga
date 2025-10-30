@@ -30,6 +30,7 @@ import {
   Activity
 } from 'lucide-react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 interface Story {
   id: string
@@ -87,6 +88,16 @@ export function StoryListPage({
   const [selectedStoryteller, setSelectedStoryteller] = useState<string>('all')
   const [sortBy, setSortBy] = useState<'date' | 'engagement' | 'duration'>('date')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+
+  // locale-aware 链接助手
+  const params = useParams()
+  const locale = (params?.locale as string) || ''
+  const withLocale = (path: string) => {
+    const sanitized = path.startsWith('/') ? path : `/${path}`
+    const hasLocale = /^\/(en|zh|fr|es)(\/|$)/.test(sanitized)
+    if (!locale || hasLocale) return sanitized
+    return `/${locale}${sanitized}`
+  }
 
   // Get unique storytellers
   const storytellers = Array.from(
@@ -157,7 +168,7 @@ export function StoryListPage({
         <div className="flex items-center gap-2">
           {userRole === 'storyteller' && (
             <Button variant="primary" onClick={onRecordStory} asChild>
-              <Link href={`/dashboard/projects/${projectId}/record`}>
+              <Link href={withLocale(`/dashboard/projects/${projectId}/record`)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Record New Story
               </Link>
@@ -171,7 +182,7 @@ export function StoryListPage({
           
           {(userRole === 'facilitator' || userRole === 'admin') && (
             <Button variant="tertiary" onClick={onManageProject} asChild>
-              <Link href={`/dashboard/projects/${projectId}/settings`}>
+              <Link href={withLocale(`/dashboard/projects/${projectId}/settings`)}>
                 <Settings className="w-4 h-4 mr-2" />
                 Manage Project
               </Link>
@@ -278,7 +289,7 @@ export function StoryListPage({
           {/* Story Cards */}
           <div className="space-y-4">
             {filteredStories.map((story) => (
-              <Link key={story.id} href={`/dashboard/projects/${projectId}/stories/${story.id}`}>
+              <Link key={story.id} href={withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`)}>
                 <Card variant="content" className="hover:shadow-md transition-shadow cursor-pointer">
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
@@ -373,7 +384,7 @@ export function StoryListPage({
                 </p>
                 {userRole === 'storyteller' && (
                   <Button variant="primary" onClick={onRecordStory} asChild>
-                    <Link href={`/dashboard/projects/${projectId}/record`}>
+                    <Link href={withLocale(`/dashboard/projects/${projectId}/record`)}>
                       <Plus className="w-4 h-4 mr-2" />
                       Record Your First Story
                     </Link>

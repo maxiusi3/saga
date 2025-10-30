@@ -22,12 +22,42 @@ export function getBaseUrl(): string {
 
 // 获取认证回调URL
 export function getAuthCallbackUrl(): string {
-  return `${getBaseUrl()}/auth/callback`
+  // Locale-aware callback: include the current locale segment when available
+  // Fallback to defaultLocale on server side
+  try {
+    // Lazy import to avoid circular deps at build
+    const { defaultLocale, locales } = require('../i18n/config')
+    const base = getBaseUrl()
+    let locale = defaultLocale as string
+
+    if (typeof window !== 'undefined') {
+      const first = (window.location.pathname.split('/')[1] || '').trim()
+      locale = (locales as readonly string[]).includes(first as any) ? first : (defaultLocale as string)
+    }
+
+    return `${base}/${locale}/auth/callback`
+  } catch (e) {
+    // If any error occurs, gracefully fall back to non-locale path
+    return `${getBaseUrl()}/auth/callback`
+  }
 }
 
 // 获取邮箱验证URL
 export function getEmailVerifyUrl(): string {
-  return `${getBaseUrl()}/auth/verify`
+  try {
+    const { defaultLocale, locales } = require('../i18n/config')
+    const base = getBaseUrl()
+    let locale = defaultLocale as string
+
+    if (typeof window !== 'undefined') {
+      const first = (window.location.pathname.split('/')[1] || '').trim()
+      locale = (locales as readonly string[]).includes(first as any) ? first : (defaultLocale as string)
+    }
+
+    return `${base}/${locale}/auth/verify`
+  } catch (e) {
+    return `${getBaseUrl()}/auth/verify`
+  }
 }
 
 // Supabase配置

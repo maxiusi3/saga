@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { useLocale } from 'next-intl'
 
 const navigation = [
   {
@@ -56,6 +57,13 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
 
   return (
     <div className="hidden lg:flex lg:flex-shrink-0">
@@ -64,13 +72,14 @@ export function Sidebar() {
           <div className="flex-grow flex flex-col">
             <nav className="flex-1 px-2 space-y-1">
               {navigation.map((item) => {
-                const isActive = pathname === item.href || 
-                  (item.href !== '/dashboard' && pathname.startsWith(item.href))
+                const localizedHref = withLocale(item.href)
+                const isActive = pathname === localizedHref || 
+                  (localizedHref !== `/${locale}/dashboard` && pathname.startsWith(localizedHref))
                 
                 return (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={localizedHref}
                     className={cn(
                       'group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors',
                       isActive

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import { StoryRecommendation } from '@saga/shared'
 import { useStoryRecommendations } from '@/hooks/use-story-discovery'
 import { formatRelativeTime } from '@/lib/utils'
@@ -17,6 +18,13 @@ export function StoryRecommendations({
   limit = 6,
   className = '' 
 }: StoryRecommendationsProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { recommendations, isLoading, error, refetch } = useStoryRecommendations(projectId, limit)
   const [expandedReasons, setExpandedReasons] = useState<Set<string>>(new Set())
 
@@ -206,7 +214,7 @@ export function StoryRecommendations({
 
               {/* Action button */}
               <Link
-                href={`/dashboard/stories/${recommendation.story.id}`}
+                href={withLocale(`/dashboard/stories/${recommendation.story.id}`)}
                 className="block w-full text-center bg-primary text-primary-foreground text-sm font-medium py-2 px-4 rounded hover:bg-primary/90 transition-colors"
               >
                 Listen & Interact

@@ -11,6 +11,7 @@ import { useNotificationSettings } from '@/hooks/useNotifications'
 import { getNotificationDisplayInfo, SagaNotificationType } from '@saga/shared'
 import { toast } from 'react-hot-toast'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 const notificationTypes: { type: SagaNotificationType; title: string; description: string }[] = [
   {
@@ -46,6 +47,12 @@ const notificationTypes: { type: SagaNotificationType; title: string; descriptio
 ]
 
 export default function NotificationSettingsPage() {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { settings, loading, error, updateSetting } = useNotificationSettings()
   const [localSettings, setLocalSettings] = useState<Record<string, { enabled: boolean; emailEnabled: boolean }>>({})
   const [saving, setSaving] = useState(false)
@@ -121,7 +128,7 @@ export default function NotificationSettingsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center space-x-4">
-        <Link href="/dashboard/notifications">
+        <Link href={withLocale('/dashboard/notifications')}>
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>

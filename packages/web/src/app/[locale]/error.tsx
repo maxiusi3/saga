@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 export default function Error({
   error,
@@ -13,6 +14,12 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   useEffect(() => {
     // Log the error to an error reporting service
     console.error('Application error:', error)
@@ -57,7 +64,7 @@ export default function Error({
           </Button>
           
           <Button variant="outline" asChild>
-            <Link href="/dashboard">
+            <Link href={withLocale('/dashboard')}>
               <Home className="h-4 w-4 mr-2" />
               Go to Dashboard
             </Link>
@@ -67,7 +74,7 @@ export default function Error({
         {/* Help Link */}
         <div className="text-sm text-gray-600">
           If this problem persists, please{' '}
-          <Link href="/dashboard/help" className="text-primary hover:underline">
+          <Link href={withLocale('/dashboard/help')} className="text-primary hover:underline">
             contact support
           </Link>
         </div>

@@ -115,13 +115,13 @@ export class ResourceValidationService {
     if (errors.length > 0) {
       actions.push({
         label: 'Purchase Package',
-        href: '/dashboard/billing/packages',
+        href: '/dashboard/purchase#packages',
         primary: true
       })
 
       actions.push({
         label: 'View Wallet',
-        href: '/dashboard/billing',
+        href: '/dashboard/purchase',
         primary: false
       })
     }

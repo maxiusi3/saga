@@ -11,8 +11,15 @@ import { useNotifications } from '@/hooks/useNotifications'
 import { NotificationItem } from '@/components/notifications/NotificationItem'
 import { getNotificationDisplayInfo, SagaNotificationType } from '@saga/shared'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 export default function NotificationsPage() {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path?.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { 
     notifications, 
     unreadCount, 
@@ -38,7 +45,8 @@ export default function NotificationsPage() {
 
   const handleNotificationClick = (actionUrl?: string) => {
     if (actionUrl) {
-      window.location.href = actionUrl
+      const target = actionUrl.startsWith('/') ? withLocale(actionUrl) : actionUrl
+      window.location.href = target
     }
   }
 
@@ -98,7 +106,7 @@ export default function NotificationsPage() {
             </Button>
           )}
           
-          <Link href="/dashboard/settings/notifications">
+          <Link href={withLocale('/dashboard/settings/notifications')}>
             <Button variant="ghost">
               <Settings className="h-4 w-4 mr-2" />
               Settings

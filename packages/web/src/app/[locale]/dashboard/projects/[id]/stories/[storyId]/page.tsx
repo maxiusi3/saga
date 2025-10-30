@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
@@ -19,6 +20,8 @@ import { toast } from 'sonner'
 export default function StoryDetailPage() {
   const params = useParams()
   const { user } = useAuthStore()
+  const locale = useLocale()
+  const withLocale = (path: string) => `/${locale}${path}`
   const projectId = params.id as string
   const storyId = params.storyId as string
 
@@ -129,7 +132,7 @@ export default function StoryDetailPage() {
         <div className="max-w-7xl mx-auto text-center py-16">
           <h1 className="text-2xl font-bold text-gray-900">Error</h1>
           <p className="text-gray-600 mt-2">{error}</p>
-          <Link href={`/dashboard/projects/${projectId}`}>
+          <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
             <EnhancedButton variant="outline" className="mt-4">
               Back to Project
             </EnhancedButton>
@@ -144,7 +147,7 @@ export default function StoryDetailPage() {
       <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
         <div className="max-w-7xl mx-auto text-center py-16">
           <h1 className="text-2xl font-bold text-gray-900">Story not found</h1>
-          <Link href={`/dashboard/projects/${projectId}`}>
+          <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
             <EnhancedButton variant="outline" className="mt-4">
               Back to Project
             </EnhancedButton>
@@ -159,7 +162,7 @@ export default function StoryDetailPage() {
       <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <Link href={`/dashboard/projects/${projectId}`}>
+          <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
             <EnhancedButton variant="secondary" size="sm">
               <ChevronLeft className="h-4 w-4 mr-2" />
               Back to Stories

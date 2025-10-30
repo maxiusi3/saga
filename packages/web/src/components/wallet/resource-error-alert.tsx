@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { ResourceValidationError, ResourceValidationService } from '@/lib/resource-validation'
 
 interface ResourceErrorAlertProps {
@@ -20,6 +21,11 @@ export function ResourceErrorAlert({
 
   const message = ResourceValidationService.formatErrorMessage(errors)
   const actions = showActions ? ResourceValidationService.getSuggestedActions(errors) : []
+
+  // Locale-aware helper for links
+  const params = useParams() as { locale?: string }
+  const locale = typeof params?.locale === 'string' ? params.locale : 'en'
+  const withLocale = (path: string) => `/${locale}${path.startsWith('/') ? path : `/${path}`}`
 
   return (
     <div className={`bg-amber-50 border border-amber-200 rounded-lg p-4 ${className}`}>
@@ -56,7 +62,7 @@ export function ResourceErrorAlert({
                 {actions.map((action, index) => (
                   <Link
                     key={index}
-                    href={action.href}
+                    href={withLocale(action.href)}
                     className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md ${
                       action.primary
                         ? 'text-amber-700 bg-amber-100 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500'

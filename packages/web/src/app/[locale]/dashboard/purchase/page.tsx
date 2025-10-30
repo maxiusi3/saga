@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
 import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from '@/components/ui/enhanced-card'
 import { PricingCard } from '@/components/ui/pricing-card'
@@ -16,6 +16,12 @@ import Image from 'next/image'
 export default function PurchasePage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const params = useParams()
+  const locale = (params?.locale as string) || 'en'
+  const withLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return `/${locale}${normalized}`
+  }
 
   const handlePurchase = async () => {
     setIsLoading(true)
@@ -25,7 +31,7 @@ export default function PurchasePage() {
       await new Promise(resolve => setTimeout(resolve, 2000))
 
       // Simulate success
-      router.push('/dashboard?purchase=success')
+      router.push(withLocale('/dashboard?purchase=success'))
     } catch (error) {
       console.error('Purchase failed:', error)
       setIsLoading(false)

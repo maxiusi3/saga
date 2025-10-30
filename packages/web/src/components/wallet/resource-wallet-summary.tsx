@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 
 interface ResourceWallet {
   projectVouchers: number;
@@ -21,6 +22,7 @@ export default function ResourceWalletSummary({
   showActions = true 
 }: ResourceWalletSummaryProps) {
   const router = useRouter();
+  const locale = useLocale();
   const [wallet, setWallet] = useState<ResourceWallet | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,11 +40,11 @@ export default function ResourceWalletSummary({
   }, []);
 
   const handleViewDetails = () => {
-    router.push('/dashboard/resources');
+    router.push(`/${locale}/dashboard/resources`);
   };
 
   const handlePurchaseMore = () => {
-    router.push('/dashboard/purchase');
+    router.push(`/${locale}/dashboard/purchase`);
   };
 
   if (loading) {

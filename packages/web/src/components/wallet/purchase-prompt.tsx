@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import { ResourceValidationError, ResourceValidationService } from '@/lib/resource-validation'
 import type { ResourceWallet } from '@saga/shared/types'
 
@@ -20,6 +21,12 @@ export function PurchasePrompt({
   onDismiss,
   showDismiss = true
 }: PurchasePromptProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const [dismissed, setDismissed] = useState(false)
 
   if (dismissed || !wallet) return null
@@ -86,7 +93,7 @@ export function PurchasePrompt({
           {/* Actions */}
           <div className="mt-4 flex space-x-3">
             <Link
-              href="/dashboard/billing/packages"
+              href={withLocale('/dashboard/purchase#packages')}
               className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
               <svg className="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +102,7 @@ export function PurchasePrompt({
               Purchase Package
             </Link>
             <Link
-              href="/dashboard/billing"
+              href={withLocale('/dashboard/purchase')}
               className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
               View Wallet

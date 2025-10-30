@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import api from '@/lib/api'
 import type { ResourceWallet } from '@saga/shared/types'
 
@@ -14,6 +15,15 @@ export function WalletStatus({ showDetails = false, className = '' }: WalletStat
   const [wallet, setWallet] = useState<ResourceWallet | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // 本地 withLocale，保证跳转链接包含当前语言
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any
+    const sanitized = path.startsWith('/') ? path : `/${path}`
+    if (sanitized === `/${locale}` || sanitized.startsWith(`/${locale}/`)) return sanitized
+    return `/${locale}${sanitized}`
+  }
 
   useEffect(() => {
     fetchWalletStatus()
@@ -96,7 +106,7 @@ export function WalletStatus({ showDetails = false, className = '' }: WalletStat
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium text-gray-900">Resource Wallet</h3>
         <Link
-          href="/dashboard/billing"
+          href={withLocale('/dashboard/purchase')}
           className="text-xs text-primary-600 hover:text-primary-700 font-medium"
         >
           Manage
@@ -165,7 +175,7 @@ export function WalletStatus({ showDetails = false, className = '' }: WalletStat
       {(!hasProjectVouchers || !hasFacilitatorSeats || !hasStorytellerSeats) && (
         <div className="mt-4 pt-3 border-t border-gray-200">
           <Link
-            href="/dashboard/billing/packages"
+            href={withLocale('/dashboard/purchase#packages')}
             className="inline-flex items-center text-xs text-primary-600 hover:text-primary-700 font-medium"
           >
             <svg className="h-3 w-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,13 +229,13 @@ export function InsufficientResourcesAlert({
           <div className="mt-4">
             <div className="flex space-x-3">
               <Link
-                href="/dashboard/billing/packages"
+                href={withLocale('/dashboard/purchase#packages')}
                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-amber-700 bg-amber-100 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
               >
                 Purchase Package
               </Link>
               <Link
-                href="/dashboard/billing"
+                href={withLocale('/dashboard/purchase')}
                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-amber-700 bg-transparent hover:bg-amber-50"
               >
                 View Wallet

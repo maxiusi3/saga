@@ -7,12 +7,20 @@ import { useNotifications } from '@/hooks/useNotifications'
 import { NotificationItem } from './NotificationItem'
 import Link from 'next/link'
 import { sagaDropdownPanel, sagaDropdownItem, sagaDropdownSeparator } from '@/components/shared/dropdown-styles'
+import { useLocale } from 'next-intl'
 
 interface NotificationDropdownProps {
   onClose: () => void
 }
 
 export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { 
     notifications, 
     unreadCount, 
@@ -27,7 +35,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
 
   const handleNotificationClick = (actionUrl?: string) => {
     if (actionUrl) {
-      window.location.href = actionUrl
+      window.location.href = withLocale(actionUrl)
     }
     onClose()
   }
@@ -60,7 +68,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
               </Button>
             )}
 
-            <Link href="/dashboard/settings/notifications">
+            <Link href={withLocale('/dashboard/settings/notifications')}>
               <Button
                 variant="ghost"
                 size="sm"
@@ -118,7 +126,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
       {/* Footer */}
       {notifications.length > 10 && (
         <div className="p-3 border-t border-border/50 bg-muted/30">
-          <Link href="/dashboard/notifications">
+          <Link href={withLocale('/dashboard/notifications')}>
             <Button
               variant="ghost"
               size="sm"

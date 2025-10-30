@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import { ChapterSummary } from '@saga/shared'
 import { formatRelativeTime } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -27,6 +28,8 @@ export function ChapterSummaryCard({
 }: ChapterSummaryCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showActions, setShowActions] = useState(false)
+  const locale = useLocale()
+  const withLocale = (path: string) => `/${locale}${path}`
 
   const getEmotionalToneColor = (tone: string) => {
     switch (tone) {
@@ -163,7 +166,7 @@ export function ChapterSummaryCard({
                     </button>
                   )}
                   <Link
-                    href={`/dashboard/projects/${projectId}/chapters/${chapter.id}`}
+                    href={withLocale(`/dashboard/projects/${projectId}/chapters/${chapter.id}`)}
                     className="block px-4 py-2 text-sm text-foreground hover:bg-muted"
                     onClick={() => setShowActions(false)}
                   >
@@ -212,7 +215,7 @@ export function ChapterSummaryCard({
             Chapter Summary • AI Generated
           </div>
           <Link
-            href={`/dashboard/projects/${projectId}/chapters/${chapter.id}`}
+            href={withLocale(`/dashboard/projects/${projectId}/chapters/${chapter.id}`)}
             className="inline-flex items-center px-3 py-1.5 border border-primary/30 text-sm font-medium rounded-md text-primary bg-background hover:bg-primary/5 transition-colors duration-200"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

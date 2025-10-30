@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import { useOnboarding } from '@/hooks/use-onboarding'
 
 interface OnboardingHintsProps {
@@ -11,6 +12,12 @@ interface OnboardingHintsProps {
 }
 
 export function OnboardingHints({ className = '' }: OnboardingHintsProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { shouldShowOnboardingHints, getNextAction, getProgress, isOnboardingComplete } = useOnboarding()
   const [isDismissed, setIsDismissed] = useState(false)
 
@@ -28,7 +35,7 @@ export function OnboardingHints({ className = '' }: OnboardingHintsProps) {
       case 'create-project':
         return (
           <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link href="/dashboard/projects/new">
+            <Link href={withLocale('/dashboard/projects/new')}>
               Create Project
             </Link>
           </Button>
@@ -36,7 +43,7 @@ export function OnboardingHints({ className = '' }: OnboardingHintsProps) {
       case 'invite-members':
         return (
           <Button asChild variant="outline">
-            <Link href="/dashboard/projects">
+            <Link href={withLocale('/dashboard/projects')}>
               View Projects
             </Link>
           </Button>
@@ -44,7 +51,7 @@ export function OnboardingHints({ className = '' }: OnboardingHintsProps) {
       case 'record-story':
         return (
           <Button asChild className="bg-success hover:bg-success/90 text-success-foreground">
-            <Link href="/dashboard">
+            <Link href={withLocale('/dashboard')}>
               Go to Dashboard
             </Link>
           </Button>
@@ -170,6 +177,12 @@ export function QuickActionCard({
   buttonText: string
   variant?: 'default' | 'primary' | 'success'
 }) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
@@ -194,7 +207,7 @@ export function QuickActionCard({
 
   return (
     <Card className={`${getVariantStyles()} border-2 transition-all duration-200 hover:shadow-md`}>
-      <Link href={href} className="block p-6 focus-visible">
+      <Link href={withLocale(href)} className="block p-6 focus-visible">
         <div className="flex items-start space-x-4">
           <div className="flex-shrink-0">
             {icon}
@@ -244,7 +257,7 @@ export function OnboardingEmptyState({
           
           <div className="space-y-4">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
-              <Link href="/dashboard/projects/new">
+              <Link href={withLocale('/dashboard/projects/new')}>
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>

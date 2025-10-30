@@ -9,6 +9,8 @@ import { toast } from 'react-hot-toast'
 import { NotificationBell } from '@/components/notifications/NotificationBell'
 import { WalletBalanceDropdown } from '@/components/wallet/wallet-balance-dropdown'
 import { Button } from '@/components/ui/button'
+import { useLocale } from 'next-intl'
+import LocaleSwitcher from '@/components/i18n/LocaleSwitcher'
 
 export function Navigation() {
   const router = useRouter()
@@ -18,6 +20,15 @@ export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const profileMenuRef = useRef<HTMLDivElement>(null)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
+  const locale = useLocale()
+
+  const withLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    // If pathname already includes a locale segment, keep it; otherwise prefix
+    const seg = normalized.split('/')[1]
+    if (seg === 'en' || seg === 'zh-CN' || seg === 'zh-TW') return normalized
+    return `/${locale}${normalized}`
+  }
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -56,14 +67,15 @@ export function Navigation() {
     try {
       await signout()
       toast.success('Signed out successfully')
-      router.push('/')
+      router.push(`/${locale}`)
     } catch (error) {
       toast.error('Failed to sign out')
     }
   }
 
   const isActivePath = (path: string) => {
-    return pathname === path || pathname.startsWith(path + '/')
+    const target = withLocale(path)
+    return pathname === target || pathname.startsWith(target + '/')
   }
 
   return (
@@ -96,7 +108,7 @@ export function Navigation() {
 
             {/* Logo */}
             <Link 
-              href="/dashboard" 
+              href={withLocale('/dashboard')} 
               className="flex items-center ml-4 lg:ml-0 focus:outline-none focus:ring-2 focus:ring-primary rounded-md p-1"
               aria-label="Saga - Go to dashboard"
             >
@@ -113,7 +125,7 @@ export function Navigation() {
             {/* Desktop navigation links */}
             <div className="hidden lg:flex lg:space-x-8 lg:ml-8">
               <Link
-                href="/dashboard"
+                href={withLocale('/dashboard')}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                   isActivePath('/dashboard') && !isActivePath('/dashboard/projects') && !isActivePath('/dashboard/stories')
                     ? 'text-primary bg-primary/10' 
@@ -123,7 +135,7 @@ export function Navigation() {
                 Dashboard
               </Link>
               <Link
-                href="/dashboard/projects"
+                href={withLocale('/dashboard/projects')}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                   isActivePath('/dashboard/projects')
                     ? 'text-primary bg-primary/10' 
@@ -148,6 +160,8 @@ export function Navigation() {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
+            {/* Language Switcher */}
+            <LocaleSwitcher />
             {/* Notifications */}
             <NotificationBell />
 
@@ -188,15 +202,15 @@ export function Navigation() {
                     </div>
                     
                     <Link
-                      href="/dashboard/profile"
+                      href={withLocale('/dashboard/profile')}
                       className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
                       Your Profile
                     </Link>
-                    
+
                     <Link
-                      href="/dashboard/settings"
+                      href={withLocale('/dashboard/settings')}
                       className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
@@ -225,14 +239,14 @@ export function Navigation() {
         <div className="lg:hidden">
           <div className="pt-2 pb-3 space-y-1 bg-background border-t border-border">
             <Link
-              href="/dashboard"
+              href={withLocale('/dashboard')}
               className="block pl-3 pr-4 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Dashboard
             </Link>
             <Link
-              href="/dashboard/projects"
+              href={withLocale('/dashboard/projects')}
               className="block pl-3 pr-4 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
               onClick={() => setIsMobileMenuOpen(false)}
             >

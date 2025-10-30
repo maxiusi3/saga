@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
 import { EnhancedCard } from '@/components/ui/enhanced-card'
 import { StoryCard } from '@/components/ui/story-card'
@@ -64,6 +65,12 @@ export default function ProjectDetailPage() {
   const params = useParams()
   const { user } = useAuthStore()
   const projectId = params.id as string
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
 
   const [project, setProject] = useState<ProjectWithMembers | null>(null)
   const [stories, setStories] = useState<StoryWithDetails[]>([])
@@ -226,7 +233,7 @@ export default function ProjectDetailPage() {
       <div className="text-center py-16">
         <h1 className="text-2xl font-bold text-foreground">Error</h1>
         <p className="text-muted-foreground mt-2">{error}</p>
-        <Link href="/dashboard">
+        <Link href={withLocale('/dashboard')}>
           <EnhancedButton variant="outline">
             Back to Dashboard
           </EnhancedButton>
@@ -239,7 +246,7 @@ export default function ProjectDetailPage() {
     return (
       <div className="text-center py-16">
         <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
-        <Link href="/dashboard">
+        <Link href={withLocale('/dashboard')}>
           <EnhancedButton variant="outline">
             Back to Dashboard
           </EnhancedButton>
@@ -295,8 +302,8 @@ export default function ProjectDetailPage() {
                 <Download className="w-4 h-4 mr-2" />
                 Export Stories
               </EnhancedButton>
-              {project.is_owner && (
-                <Link href={`/dashboard/projects/${projectId}/settings`}>
+                {project.is_owner && (
+                <Link href={withLocale(`/dashboard/projects/${projectId}/settings`)}>
                   <EnhancedButton variant="outline" size="sm">
                     <Users className="w-4 h-4 mr-2" />
                     Manage Project
@@ -308,7 +315,7 @@ export default function ProjectDetailPage() {
                 userRole={project.user_role}
                 isProjectOwner={project.is_owner}
               >
-                <Link href={`/dashboard/projects/${projectId}/record`}>
+                <Link href={withLocale(`/dashboard/projects/${projectId}/record`)}>
                   <EnhancedButton>
                     <Plus className="w-4 h-4 mr-2" />
                     Record New Story
@@ -475,7 +482,7 @@ export default function ProjectDetailPage() {
                       userRole={project.user_role}
                       isProjectOwner={project.is_owner}
                     >
-                      <Link href={`/dashboard/projects/${projectId}/record`}>
+                      <Link href={withLocale(`/dashboard/projects/${projectId}/record`)}>
                         <EnhancedButton size="lg">
                           <BookOpen className="h-5 w-5 mr-2" />
                           Record Your First Story
@@ -523,8 +530,8 @@ export default function ProjectDetailPage() {
                             })
                           : undefined
                         }
-                        onPlay={() => window.location.href = `/dashboard/projects/${projectId}/stories/${story.id}`}
-                        onComment={() => window.location.href = `/dashboard/projects/${projectId}/stories/${story.id}#comments`}
+                        onPlay={() => window.location.href = withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`)}
+                        onComment={() => window.location.href = withLocale(`/dashboard/projects/${projectId}/stories/${story.id}#comments`)}
                         className="cursor-pointer hover:shadow-lg transition-shadow"
                       />
                     )
@@ -551,7 +558,7 @@ export default function ProjectDetailPage() {
       <div className="text-center py-16">
         <h1 className="text-2xl font-bold text-foreground">Render Error</h1>
         <p className="text-muted-foreground mt-2">{String(renderError)}</p>
-        <Link href="/dashboard">
+        <Link href={withLocale('/dashboard')}>
           <EnhancedButton variant="outline">
             Back to Dashboard
           </EnhancedButton>

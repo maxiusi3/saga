@@ -15,6 +15,7 @@ import {
   User
 } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 interface ResourceWallet {
   projectVouchers: number
@@ -75,6 +76,12 @@ export function ResourceWalletWidget({
   onPurchaseClick,
   className = '' 
 }: ResourceWalletWidgetProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const isProjectVouchersLow = resourceWallet.projectVouchers < 1
   const isFacilitatorSeatsLow = resourceWallet.facilitatorSeats < 2
   const isStorytellerSeatsLow = resourceWallet.storytellerSeats < 2
@@ -160,7 +167,7 @@ export function ResourceWalletWidget({
                   onClick={onPurchaseClick}
                   asChild
                 >
-                  <Link href="/dashboard/purchase">
+                  <Link href={withLocale('/dashboard/purchase')}>
                     <Plus className="w-4 h-4 mr-2" />
                     Purchase Resources
                   </Link>
@@ -170,7 +177,7 @@ export function ResourceWalletWidget({
                   size="sm"
                   asChild
                 >
-                  <Link href="/dashboard/purchase#packages">
+                  <Link href={withLocale('/dashboard/purchase#packages')}>
                     View Packages
                   </Link>
                 </Button>
@@ -183,7 +190,7 @@ export function ResourceWalletWidget({
                   onClick={onPurchaseClick}
                   asChild
                 >
-                  <Link href="/dashboard/purchase">
+                  <Link href={withLocale('/dashboard/purchase')}>
                     <Plus className="w-4 h-4 mr-2" />
                     Add More Resources
                   </Link>
@@ -193,7 +200,7 @@ export function ResourceWalletWidget({
                   size="sm"
                   asChild
                 >
-                  <Link href="/dashboard/purchase#packages">
+                  <Link href={withLocale('/dashboard/purchase#packages')}>
                     View Packages
                   </Link>
                 </Button>

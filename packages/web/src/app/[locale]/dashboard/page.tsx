@@ -10,9 +10,16 @@ import { settingsService, ResourceWallet } from '@/services/settings-service'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { useAuthStore } from '@/stores/auth-store'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useLocale } from 'next-intl'
 
 export default function DashboardPage() {
   const { user } = useAuthStore()
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const [projects, setProjects] = useState<ProjectWithMembers[]>([])
   const [resourceWallet, setResourceWallet] = useState<ResourceWallet | null>(null)
   const [loading, setLoading] = useState(true)
@@ -147,7 +154,7 @@ export default function DashboardPage() {
               size="lg"
               rightIcon={<Plus className="h-5 w-5" />}
               className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
-              onClick={() => window.location.href = '/dashboard/projects/create'}
+              onClick={() => window.location.href = withLocale('/dashboard/projects/create')}
             >
               Create New Saga
             </EnhancedButton>
@@ -164,7 +171,7 @@ export default function DashboardPage() {
                 <EnhancedButton 
                   variant="outline" 
                   size="sm"
-                  onClick={() => window.location.href = '/dashboard/purchase'}
+                  onClick={() => window.location.href = withLocale('/dashboard/purchase')}
                 >
                   Purchase More
                 </EnhancedButton>
@@ -214,7 +221,7 @@ export default function DashboardPage() {
                     <h3 className="text-lg font-semibold text-foreground">No Projects Yet</h3>
                     <p className="text-muted-foreground">Create your first project to start collecting family stories.</p>
                     <EnhancedButton 
-                      onClick={() => window.location.href = '/dashboard/projects/create'}
+                      onClick={() => window.location.href = withLocale('/dashboard/projects/create')}
                     >
                       <Plus className="h-4 w-4 mr-2" />
                       Create New Saga
@@ -239,8 +246,8 @@ export default function DashboardPage() {
                         status: m.status as 'active' | 'pending'
                       }))}
                       isOwner={project.is_owner}
-                      onEnter={() => window.location.href = `/dashboard/projects/${project.id}`}
-                      onManage={() => window.location.href = `/dashboard/projects/${project.id}/settings`}
+                      onEnter={() => window.location.href = withLocale(`/dashboard/projects/${project.id}`)}
+                      onManage={() => window.location.href = withLocale(`/dashboard/projects/${project.id}/settings`)}
                       onMore={() => console.log('More options:', project.id)}
                     />
                   ))}
@@ -283,7 +290,7 @@ export default function DashboardPage() {
                         status: m.status as 'active' | 'pending'
                       }))}
                       isOwner={project.is_owner}
-                      onEnter={() => window.location.href = `/dashboard/projects/${project.id}`}
+                      onEnter={() => window.location.href = withLocale(`/dashboard/projects/${project.id}`)}
                       onMore={() => console.log('More options:', project.id)}
                     />
                   ))}

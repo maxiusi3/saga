@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import { ArrowLeft, Eye, Info } from 'lucide-react'
 import { FurbridgeButton } from '@/components/ui/furbridge-button'
 import { Card } from '@/components/ui/card'
@@ -9,12 +10,18 @@ import { Badge } from '@/components/ui/badge'
 import { AccessibilitySettingsComponent } from '@/components/accessibility/accessibility-settings'
 
 export default function AccessibilityPage() {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <Link href="/dashboard">
+          <Link href={withLocale('/dashboard')}>
             <FurbridgeButton variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard

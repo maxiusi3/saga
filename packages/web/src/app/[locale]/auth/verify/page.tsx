@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { createClientSupabase } from '@/lib/supabase'
 
 function VerifyPageContent() {
@@ -21,6 +22,7 @@ function VerifyPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams?.get('email') || ''
+  const locale = useLocale()
 
   // 确保只在客户端执行
   useEffect(() => {
@@ -83,7 +85,7 @@ function VerifyPageContent() {
 
       if (error) throw error
 
-      router.push('/dashboard')
+      router.push(`/${locale}/dashboard`)
     } catch (error) {
       setMessage('Invalid verification code. Please try again.')
       setOtp(['', '', '', '', '', ''])
@@ -104,7 +106,7 @@ function VerifyPageContent() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`
+          emailRedirectTo: `${window.location.origin}/${locale}/auth/callback`
         }
       })
 

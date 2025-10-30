@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Wallet, Plus, AlertCircle, Crown } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 interface ResourceWallet {
   projectVouchers: number
@@ -33,6 +34,12 @@ export function WelcomeHeader({
   isOwner = false,
   onPurchaseClick
 }: WelcomeHeaderProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const hasLowResources = resourceWallet.projectVouchers < 1 || 
                          resourceWallet.facilitatorSeats < 1 || 
                          resourceWallet.storytellerSeats < 1
@@ -106,14 +113,14 @@ export function WelcomeHeader({
                   <Button 
                     variant="secondary" 
                     size="sm"
-                    onClick={onPurchaseClick}
-                    asChild
-                  >
-                    <Link href="/dashboard/purchase">
-                      <Plus className="w-4 h-4 mr-1" />
-                      Purchase More
-                    </Link>
-                  </Button>
+                  onClick={onPurchaseClick}
+                  asChild
+                >
+                  <Link href={withLocale('/dashboard/purchase')}>
+                    <Plus className="w-4 h-4 mr-1" />
+                    Purchase More
+                  </Link>
+                </Button>
                 </div>
               )}
 
@@ -124,7 +131,7 @@ export function WelcomeHeader({
                   onClick={onPurchaseClick}
                   asChild
                 >
-                  <Link href="/dashboard/purchase">
+                  <Link href={withLocale('/dashboard/purchase')}>
                     <Plus className="w-4 h-4 mr-1" />
                     Add Resources
                   </Link>

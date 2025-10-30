@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -26,6 +27,12 @@ interface AIContent {
 export default function ProjectRecordPage() {
   const params = useParams()
   const router = useRouter()
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { user } = useAuthStore()
   const projectId = params.id as string
 
@@ -271,8 +278,8 @@ export default function ProjectRecordPage() {
         toast.success('Story saved successfully!')
       }
 
-      // Redirect to project page on success
-      router.push(`/dashboard/projects/${projectId}`)
+      // Redirect to project page on success (locale-aware)
+      router.push(withLocale(`/dashboard/projects/${projectId}`))
     } catch (error) {
       console.error('Story submission failed:', error)
       setSubmitError('Failed to save story. Please try again.')

@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -50,6 +52,15 @@ export function SubscriptionHelpCenter({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
+
+  // 本地 withLocale，保证「快速链接」跳转带语言前缀（支持所有配置的语言）
+  const locale = useLocale();
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any;
+    const sanitized = path.startsWith('/') ? path : `/${path}`;
+    if (sanitized === `/${locale}` || sanitized.startsWith(`/${locale}/`)) return sanitized;
+    return `/${locale}${sanitized}`;
+  };
 
   const faqItems: FAQItem[] = [
     {
@@ -319,8 +330,8 @@ export function SubscriptionHelpCenter({
       <Card className="p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <a
-            href="/dashboard/subscription/plans"
+          <Link
+            href={withLocale('/dashboard/subscription/plans')}
             className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <CreditCard className="h-5 w-5 text-blue-600 mr-3" />
@@ -328,10 +339,10 @@ export function SubscriptionHelpCenter({
               <div className="font-medium text-gray-900">View Plans & Pricing</div>
               <div className="text-sm text-gray-600">Compare subscription options</div>
             </div>
-          </a>
+          </Link>
           
-          <a
-            href="/dashboard/profile"
+          <Link
+            href={withLocale('/dashboard/profile')}
             className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <Users className="h-5 w-5 text-green-600 mr-3" />
@@ -339,10 +350,10 @@ export function SubscriptionHelpCenter({
               <div className="font-medium text-gray-900">Account Settings</div>
               <div className="text-sm text-gray-600">Manage your profile and preferences</div>
             </div>
-          </a>
+          </Link>
           
-          <a
-            href="/dashboard/exports"
+          <Link
+            href={withLocale('/dashboard/exports')}
             className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <Download className="h-5 w-5 text-purple-600 mr-3" />
@@ -350,7 +361,7 @@ export function SubscriptionHelpCenter({
               <div className="font-medium text-gray-900">Export Stories</div>
               <div className="text-sm text-gray-600">Download your family stories</div>
             </div>
-          </a>
+          </Link>
           
           <a
             href="https://docs.saga.family"

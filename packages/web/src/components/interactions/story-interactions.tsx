@@ -12,6 +12,7 @@ import { interactionService, Interaction } from '@/lib/interactions'
 import { useAuthStore } from '@/stores/auth-store'
 import { canUserPerformAction } from '@saga/shared'
 import { toast } from 'react-hot-toast'
+import { useLocale } from 'next-intl'
 
 interface StoryInteractionsProps {
   storyId: string
@@ -30,6 +31,13 @@ export function StoryInteractions({
   isStoryteller = false,
   className = ''
 }: StoryInteractionsProps) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { user } = useAuthStore()
   const [interactions, setInteractions] = useState<Interaction[]>([])
   const [loading, setLoading] = useState(true)
@@ -220,7 +228,7 @@ export function StoryInteractions({
                             followup: interaction.id,
                             content: interaction.content
                           })
-                          window.location.href = `/dashboard/projects/${projectId}/record?${params.toString()}`
+                          window.location.href = withLocale(`/dashboard/projects/${projectId}/record?${params.toString()}`)
                         }}
                         className="h-7 px-2"
                       >

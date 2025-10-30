@@ -6,6 +6,7 @@ import { Badge } from '../../ui/badge';
 import { Button } from '../../ui/button';
 import { useRecommendations } from '../../../hooks/use-recommendations';
 import { format, parseISO } from 'date-fns';
+import { useLocale } from 'next-intl';
 
 interface StoryRecommendationsProps {
   projectId?: string;
@@ -18,6 +19,13 @@ export function StoryRecommendations({
   limit = 6, 
   className = '' 
 }: StoryRecommendationsProps) {
+  const locale = useLocale();
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any;
+    if (!path.startsWith('/')) return path;
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path;
+    return `/${locale}${path}`;
+  };
   const [dismissedStories, setDismissedStories] = useState<Set<string>>(new Set());
   
   const {
@@ -35,7 +43,7 @@ export function StoryRecommendations({
   const handleStoryClick = async (storyId: string) => {
     await trackInteraction(storyId, 'click');
     // Navigate to story detail page
-    window.location.href = `/dashboard/stories/${storyId}`;
+    window.location.href = withLocale(`/dashboard/stories/${storyId}`);
   };
 
   const handleDismiss = async (storyId: string) => {

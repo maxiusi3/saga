@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -25,6 +25,12 @@ interface Project {
 export default function ProjectsPage() {
   const { user } = useAuthStore()
   const router = useRouter()
+  const params = useParams()
+  const locale = (params?.locale as string) || 'en'
+  const withLocale = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return `/${locale}${normalized}`
+  }
   const [projects, setProjects] = useState<ProjectWithMembers[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -85,7 +91,7 @@ export default function ProjectsPage() {
 
   const handleCreateProject = () => {
     // 统一跳转到创建页，资源消费在RPC中进行；不足时再引导购买
-    router.push('/dashboard/projects/create')
+    router.push(withLocale('/dashboard/projects/create'))
   }
 
   if (loading) {
@@ -143,7 +149,7 @@ export default function ProjectsPage() {
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((project) => (
-          <Link key={project.id} href={`/dashboard/projects/${project.id}`}>
+          <Link key={project.id} href={withLocale(`/dashboard/projects/${project.id}`)}>
             <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
               <CardHeader>
                 <div className="flex justify-between items-start">

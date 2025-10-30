@@ -4,8 +4,15 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { Home, ArrowLeft } from 'lucide-react'
+import { useLocale } from 'next-intl'
 
 export default function NotFound() {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full text-center space-y-8">
@@ -42,7 +49,7 @@ export default function NotFound() {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant="default" asChild>
-            <Link href="/dashboard">
+            <Link href={withLocale('/dashboard')}>
               <Home className="h-4 w-4 mr-2" />
               Go to Dashboard
             </Link>
@@ -56,7 +63,7 @@ export default function NotFound() {
 
         {/* Help Link */}
         <div className="text-sm text-gray-600">
-          Need help? <Link href="/dashboard/help" className="text-furbridge-orange hover:underline">Contact Support</Link>
+          Need help? <Link href={withLocale('/dashboard/help')} className="text-furbridge-orange hover:underline">Contact Support</Link>
         </div>
       </div>
     </div>

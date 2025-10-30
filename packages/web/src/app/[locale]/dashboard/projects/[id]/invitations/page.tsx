@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -28,6 +29,13 @@ interface Invitation {
 export default function InvitationsPage() {
   const params = useParams()
   const router = useRouter()
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path || typeof path !== 'string') return path as any
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
   const { user, getAccessToken } = useAuthStore()
   const projectId = params.id as string
 
@@ -111,7 +119,8 @@ export default function InvitationsPage() {
           toast.error(error.error || 'Insufficient seats')
           // Show purchase prompt
           if (confirm('You need more seats to send this invitation. Would you like to purchase more seats now?')) {
-            window.location.href = error.purchaseUrl || '/dashboard/purchase'
+            const target = error.purchaseUrl || '/dashboard/purchase'
+            window.location.href = withLocale(target)
           }
         } else if (response.status === 409) {
           // Handle conflict errors (like storyteller uniqueness)
@@ -193,7 +202,7 @@ export default function InvitationsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center space-x-4">
-        <Link href={`/dashboard/projects/${projectId}`}>
+        <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>

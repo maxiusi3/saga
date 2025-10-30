@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Button } from '../../ui/button';
 import { Card } from '../../ui/card';
+import { useLocale } from 'next-intl';
 
 interface StoryShareButtonProps {
   storyId: string;
@@ -17,8 +18,8 @@ export function StoryShareButton({
 }: StoryShareButtonProps) {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  const shareUrl = `${window.location.origin}/dashboard/stories/${storyId}`;
+  const locale = useLocale();
+  const shareUrl = `${window.location.origin}/${locale}/dashboard/stories/${storyId}`;
 
   const handleCopyLink = async () => {
     try {

@@ -4,6 +4,15 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
+  const pathname = requestUrl.pathname // e.g., /en/auth/callback
+  const locale = pathname.split('/')[1] || 'en'
+
+  const ensureLocalePath = (path: string) => {
+    const normalized = (path || '/dashboard').startsWith('/') ? (path || '/dashboard') : `/${path}`
+    const seg = normalized.split('/')[1]
+    if (['en', 'zh-CN', 'zh-TW'].includes(seg)) return normalized
+    return `/${locale}${normalized}`
+  }
 
   // 详细日志记录所有参数
   console.log('=== Auth Callback Debug ===')
@@ -21,7 +30,7 @@ export async function GET(request: NextRequest) {
   // Handle error cases
   if (error) {
     console.error('Auth callback error:', error, error_description)
-    return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent(error_description || error)}`)
+    return NextResponse.redirect(`${requestUrl.origin}/${locale}/auth/signin?error=${encodeURIComponent(error_description || error)}`)
   }
 
   const cookieStore = cookies()
@@ -50,7 +59,7 @@ export async function GET(request: NextRequest) {
 
       if (exchangeError) {
         console.error('OAuth token exchange error:', exchangeError)
-        return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent('Authentication failed')}`)
+        return NextResponse.redirect(`${requestUrl.origin}/${locale}/auth/signin?error=${encodeURIComponent('Authentication failed')}`)
       }
 
       console.log('OAuth authentication successful')
@@ -61,7 +70,7 @@ export async function GET(request: NextRequest) {
 
       // Force complete page refresh using JavaScript redirect
       const next = requestUrl.searchParams.get('next')
-      const targetUrl = next ? `${requestUrl.origin}${next}` : `${requestUrl.origin}/dashboard`
+      const targetUrl = `${requestUrl.origin}${ensureLocalePath(next || '/dashboard')}`
       return new Response(`
         <!DOCTYPE html>
         <html>
@@ -95,7 +104,7 @@ export async function GET(request: NextRequest) {
 
       if (verifyError) {
         console.error('Magic Link verification error:', verifyError)
-        return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent(`Magic link verification failed: ${verifyError.message}`)}`)
+        return NextResponse.redirect(`${requestUrl.origin}/${locale}/auth/signin?error=${encodeURIComponent(`Magic link verification failed: ${verifyError.message}`)}`)
       }
 
       console.log('Magic Link verification successful')
@@ -106,7 +115,7 @@ export async function GET(request: NextRequest) {
 
       // Force complete page refresh using JavaScript redirect
       const next2 = requestUrl.searchParams.get('next')
-      const targetUrl2 = next2 ? `${requestUrl.origin}${next2}` : `${requestUrl.origin}/dashboard`
+      const targetUrl2 = `${requestUrl.origin}${ensureLocalePath(next2 || '/dashboard')}`
       return new Response(`
         <!DOCTYPE html>
         <html>
@@ -131,10 +140,10 @@ export async function GET(request: NextRequest) {
 
     // No valid parameters - redirect to signin
     console.log('No valid auth parameters found, redirecting to signin')
-    return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent('Invalid authentication request')}`)
+    return NextResponse.redirect(`${requestUrl.origin}/${locale}/auth/signin?error=${encodeURIComponent('Invalid authentication request')}`)
 
   } catch (error) {
     console.error('Callback processing error:', error)
-    return NextResponse.redirect(`${requestUrl.origin}/auth/signin?error=${encodeURIComponent('Authentication failed')}`)
+    return NextResponse.redirect(`${requestUrl.origin}/${locale}/auth/signin?error=${encodeURIComponent('Authentication failed')}`)
   }
 }

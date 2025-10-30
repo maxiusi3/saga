@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { DiscoveryFilters } from '@saga/shared'
 import { useStoryTimeline } from '@/hooks/use-story-discovery'
 import { formatRelativeTime } from '@/lib/utils'
@@ -21,6 +22,17 @@ interface StoryTimelineProps {
 export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps) {
   const [filters, setFilters] = useState<DiscoveryFilters>({})
   const { timeline, isLoading, error, refetch } = useStoryTimeline(projectId, filters)
+
+  // locale-aware 链接助手
+  const params = useParams()
+  const locale = (params?.locale as string) || ''
+  const withLocale = (path: string) => {
+    const sanitized = path.startsWith('/') ? path : `/${path}`
+    // 支持更多细分中文区域码
+    const hasLocale = /^\/(en|zh|zh-CN|zh-TW|fr|es)(\/|$)/.test(sanitized)
+    if (!locale || hasLocale) return sanitized
+    return `/${locale}${sanitized}`
+  }
 
   const updateFilters = (newFilters: Partial<DiscoveryFilters>) => {
     setFilters(prev => ({ ...prev, ...newFilters }))
@@ -209,7 +221,8 @@ export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps)
                           />
                         </div>
                       )}
-                      <Link href={`/dashboard/stories/${story.id}`} passHref>
+                      {/* 跳转到项目内的故事详情页，确保路径中包含 projectId 且带语言前缀 */}
+                      <Link href={withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`)} passHref>
                         <Button asChild size="sm">
                           <a>Listen</a>
                         </Button>
