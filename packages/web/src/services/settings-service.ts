@@ -261,7 +261,8 @@ class SettingsService {
       .single();
 
     if (error) {
-      if (error.code === 'PGRST116') {
+      // Gracefully handle "no rows" and "relation does not exist" (42P01)
+      if (error.code === 'PGRST116' || error.code === '42P01') {
         return {
           fontSize: 'standard',
           highContrast: false,
@@ -491,7 +492,8 @@ class SettingsService {
       .single();
 
     if (error) {
-      if (error.code === 'PGRST116') {
+      // Handle "no rows" and missing relation gracefully
+      if (error.code === 'PGRST116' || error.code === '42P01') {
         return { user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 }
       }
       throw error;

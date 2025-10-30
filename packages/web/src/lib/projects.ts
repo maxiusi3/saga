@@ -164,12 +164,7 @@ export class ProjectService {
       const ownedPromise = (async () => {
         const headers: Record<string, string> = { 'Content-Type': 'application/json' }
         try {
-          const { createClient } = await import('@supabase/supabase-js')
-          const supa = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-          )
-          const { data: { session } } = await supa.auth.getSession()
+          const { data: { session } } = await this.supabase.auth.getSession()
           if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
         } catch {}
         const resp = await fetch('/api/projects/owned', { credentials: 'include', headers })
@@ -185,12 +180,7 @@ export class ProjectService {
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       // 尝试带上 Bearer（若在浏览器环境）
       try {
-        const { createClient } = await import('@supabase/supabase-js')
-        const supa = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        )
-        const { data: { session } } = await supa.auth.getSession()
+        const { data: { session } } = await this.supabase.auth.getSession()
         if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
       } catch {}
       const rolesResp = await fetch('/api/project-roles', { credentials: 'include', headers })
@@ -208,12 +198,7 @@ export class ProjectService {
       if (memberProjectIds.length > 0) {
         const headers2: Record<string, string> = { 'Content-Type': 'application/json' }
         try {
-          const { createClient } = await import('@supabase/supabase-js')
-          const supa = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-          )
-          const { data: { session } } = await supa.auth.getSession()
+          const { data: { session } } = await this.supabase.auth.getSession()
           if (session?.access_token) headers2['Authorization'] = `Bearer ${session.access_token}`
         } catch {}
         const resp2 = await fetch('/api/projects/by-ids', {
