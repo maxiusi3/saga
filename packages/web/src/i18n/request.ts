@@ -20,6 +20,16 @@ export default getRequestConfig(async ({ requestLocale }) => {
       ai: (await import(`../../public/locales/${locale}/ai.json`)).default,
       recording: (await import(`../../public/locales/${locale}/recording.json`)).default,
       projects: (await import(`../../public/locales/${locale}/projects.json`)).default,
+      // Optional: dashboard messages (not all locales have dashboard.json)
+      ...(await (async () => {
+        try {
+          const mod = await import(`../../public/locales/${locale}/dashboard.json`);
+          return { dashboard: mod.default } as Record<string, unknown>;
+        } catch {
+          // Silently ignore if dashboard.json does not exist for the locale
+          return {} as Record<string, unknown>;
+        }
+      })()),
     },
   };
 });

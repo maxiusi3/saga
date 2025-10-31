@@ -21,7 +21,8 @@ export function Navigation() {
   const profileMenuRef = useRef<HTMLDivElement>(null)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const locale = useLocale()
-  const t = useTranslations('common.nav')
+  // Use the top-level 'nav' namespace defined in common.json
+  const t = useTranslations('nav')
 
   const withLocale = (path: string) => {
     const normalized = path.startsWith('/') ? path : `/${path}`
@@ -244,14 +245,14 @@ export function Navigation() {
               className="block pl-3 pr-4 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Dashboard
+              {t('dashboard')}
             </Link>
             <Link
               href={withLocale('/dashboard/projects')}
               className="block pl-3 pr-4 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Projects
+              {t('projects')}
             </Link>
             {/* Stories nav temporarily hidden (no route yet) */}
             {/* <Link
