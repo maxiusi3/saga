@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Loader2, CheckCircle, XCircle } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { toast } from 'sonner'
-import { createClient } from '@supabase/supabase-js'
+import { createClientSupabase } from '@/lib/supabase'
 
 interface InvitationDetails {
   id: string
@@ -103,10 +103,7 @@ function AcceptInvitationContent() {
   const loadPendingInvitations = async () => {
     try {
       // 初始化 supabase 客户端
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      )
+      const supabase = createClientSupabase()
 
       // 获取认证信息
       const { data: { session } } = await supabase.auth.getSession()
@@ -206,10 +203,7 @@ function AcceptInvitationContent() {
     setAccepting(true)
     try {
       // 获取认证信息
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      )
+      const supabase = createClientSupabase()
       const { data: { session } } = await supabase.auth.getSession()
 
       const headers: Record<string, string> = {

@@ -1,4 +1,5 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { createClientSupabase } from '@/lib/supabase'
 
 // Singleton Supabase client to avoid multiple instances
 let supabaseClient: SupabaseClient | null = null
@@ -20,7 +21,10 @@ function getSupabaseClient(): SupabaseClient {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL
     const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    if (!url || !anonKey || !isValidUrl(url)) {
+    if (url && anonKey && isValidUrl(url)) {
+      // Use centralized singleton client when configuration is valid
+      supabaseClient = createClientSupabase() as SupabaseClient
+    } else {
       // Provide a minimal stub client when env vars are missing or invalid to avoid runtime errors during local preview
       const stubQuery: any = {
         select: () => stubQuery,
@@ -36,8 +40,6 @@ function getSupabaseClient(): SupabaseClient {
         },
         from: () => stubQuery
       } as unknown) as SupabaseClient
-    } else {
-      supabaseClient = createClient(url, anonKey)
     }
   }
   return supabaseClient

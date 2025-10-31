@@ -1,5 +1,4 @@
-import { createClientSupabase } from '@/lib/supabase'
-import { createClient } from '@supabase/supabase-js'
+import { createClientSupabase, getSupabaseAdmin } from '@/lib/supabase'
 import { UserRole } from '@saga/shared'
 
 export interface Project {
@@ -65,16 +64,7 @@ export class ProjectService {
   constructor() {
     // Only create admin client on server side to avoid client-side errors
     if (typeof window === 'undefined' && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      this.supabaseAdmin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        {
-          auth: {
-            autoRefreshToken: false,
-            persistSession: false
-          }
-        }
-      )
+      this.supabaseAdmin = getSupabaseAdmin()
     }
   }
 
@@ -238,11 +228,7 @@ export class ProjectService {
           // 统一通过 /api 概览接口，避免多次直连
           const headers3: Record<string, string> = { 'Content-Type': 'application/json' }
           try {
-            const { createClient } = await import('@supabase/supabase-js')
-            const supa = createClient(
-              process.env.NEXT_PUBLIC_SUPABASE_URL!,
-              process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-            )
+            const supa = createClientSupabase()
             const { data: { session } } = await supa.auth.getSession()
             if (session?.access_token) headers3['Authorization'] = `Bearer ${session.access_token}`
           } catch {}

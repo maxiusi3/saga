@@ -1,4 +1,4 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createClientSupabase } from '@/lib/supabase'
 
 export interface Interaction {
   id: string
@@ -21,10 +21,7 @@ export interface CreateInteractionData {
 }
 
 class InteractionService {
-  private supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  private supabase = createClientSupabase()
 
   /**
    * 获取故事的所有交互记录
@@ -34,11 +31,7 @@ class InteractionService {
       // 带上凭证，以便服务器路由读取 cookies；同时尽量在 headers 中附带 Bearer（在浏览器环境存在会话时）
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       try {
-        const { createClient } = await import('@supabase/supabase-js')
-        const supa = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        )
+        const supa = createClientSupabase()
         const { data: { session } } = await supa.auth.getSession()
         if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
       } catch {}
@@ -60,11 +53,7 @@ class InteractionService {
     try {
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       try {
-        const { createClient } = await import('@supabase/supabase-js')
-        const supa = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        )
+        const supa = createClientSupabase()
         const { data: { session } } = await supa.auth.getSession()
         if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
       } catch {}
