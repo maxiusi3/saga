@@ -100,7 +100,7 @@ class InteractionService {
         return { totalComments: 0, totalFollowups: 0, recentInteractions: [] }
       }
 
-      const storyIds = stories.map(s => s.id)
+      const storyIds: string[] = stories.map((s: { id: string }) => s.id)
 
       // 获取交互统计
       const { data: interactions, error } = await this.supabase
@@ -115,8 +115,8 @@ class InteractionService {
         return { totalComments: 0, totalFollowups: 0, recentInteractions: [] }
       }
 
-      const totalComments = interactions.filter(i => i.type === 'comment').length
-      const totalFollowups = interactions.filter(i => i.type === 'followup').length
+      const totalComments = interactions.filter((i: { type: 'comment' | 'followup' }) => i.type === 'comment').length
+      const totalFollowups = interactions.filter((i: { type: 'comment' | 'followup' }) => i.type === 'followup').length
 
       const recentInteractions = interactions.map((interaction: any) => ({
         id: interaction.id,

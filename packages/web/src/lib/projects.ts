@@ -182,7 +182,7 @@ export class ProjectService {
         console.warn('ProjectService: /api/project-roles failed with', rolesResp.status)
       }
 
-      const memberProjectIds = (memberRoles || []).map((r: any) => r.project_id)
+      const memberProjectIds: string[] = (memberRoles || []).map((r: { project_id: string }) => r.project_id)
 
       let memberProjects: any[] = []
       if (memberProjectIds.length > 0) {
@@ -212,8 +212,8 @@ export class ProjectService {
 
       // 合并并去重（owned 优先，成员项目后覆盖无影响）
       const map = new Map<string, any>()
-      ;(owned || []).forEach((p) => map.set(p.id, p))
-      ;(memberProjects || []).forEach((p) => map.set(p.id, p))
+      ;(owned || []).forEach((p: { id: string }) => map.set(p.id, p))
+      ;(memberProjects || []).forEach((p: { id: string }) => map.set(p.id, p))
       const projects = Array.from(map.values())
 
       console.log('ProjectService: Combined projects:', {
@@ -224,7 +224,7 @@ export class ProjectService {
 
       // 统计与成员信息
       const projectsWithCounts = await Promise.all(
-        (projects || []).map(async (project) => {
+        (projects || []).map(async (project: any) => {
           // 统一通过 /api 概览接口，避免多次直连
           const headers3: Record<string, string> = { 'Content-Type': 'application/json' }
           try {
@@ -243,7 +243,7 @@ export class ProjectService {
             console.warn('ProjectService: /api/projects/[id]/overview failed with', resp3.status)
           }
 
-          const userMember = members?.find((m) => m.user_id === userId)
+          const userMember = members?.find((m: any) => m.user_id === userId)
           const isOwner = project.facilitator_id === userId
 
           return {

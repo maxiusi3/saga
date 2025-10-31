@@ -20,6 +20,8 @@ interface InvitationDetails {
   message?: string
   expires_at: string
   token?: string
+  invitee_email?: string
+  project_id?: string
 }
 
 function AcceptInvitationContent() {
@@ -31,7 +33,7 @@ function AcceptInvitationContent() {
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
     return `/${locale}${path}`
   }
-  const { user, supabase } = useAuthStore()
+  const { user } = useAuthStore()
   
   const [loading, setLoading] = useState(true)
   const [accepting, setAccepting] = useState(false)
@@ -174,6 +176,7 @@ function AcceptInvitationContent() {
 
     setAccepting(true)
     try {
+      const supabase = createClientSupabase()
       const { error } = await supabase.auth.signUp({
         email: signupData.email,
         password: signupData.password,
