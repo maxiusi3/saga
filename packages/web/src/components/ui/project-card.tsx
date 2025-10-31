@@ -4,6 +4,7 @@ import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader } from "./enhance
 import { EnhancedButton } from "./enhanced-button"
 import { Users, Calendar, BookOpen, Settings, Play, MoreHorizontal } from "lucide-react"
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 
 interface ProjectMember {
   id: string
@@ -30,23 +31,20 @@ interface ProjectCardProps {
 
 const statusConfig = {
   active: {
-    label: "Active",
     className: "bg-success/10 text-success border-success/20"
   },
   completed: {
-    label: "Completed", 
     className: "bg-info/10 text-info border-info/20"
   },
   archived: {
-    label: "Archived",
     className: "bg-muted text-muted-foreground border-border"
   }
 }
 
 const roleConfig = {
-  owner: { label: "Owner", color: "text-primary" },
-  facilitator: { label: "Facilitator", color: "text-secondary" },
-  storyteller: { label: "Storyteller", color: "text-info" }
+  owner: { color: "text-primary" },
+  facilitator: { color: "text-secondary" },
+  storyteller: { color: "text-info" }
 }
 
 export function ProjectCard({
@@ -63,6 +61,8 @@ export function ProjectCard({
   onManage,
   onMore
 }: ProjectCardProps) {
+  const tProjects = useTranslations('projects')
+  const tCommon = useTranslations('common')
   const statusStyle = statusConfig[status]
   
   return (
@@ -84,7 +84,7 @@ export function ProjectCard({
                 "px-2 py-1 rounded-full text-xs font-medium border",
                 statusStyle.className
               )}>
-                {statusStyle.label}
+                {status === 'completed' ? tCommon('status.completed') : tProjects(`status.${status}`)}
               </span>
             </div>
             
@@ -101,11 +101,11 @@ export function ProjectCard({
               </div>
               <div className="flex items-center gap-1">
                 <BookOpen className="h-3 w-3" />
-                <span>{storyCount} stories</span>
+                <span>{storyCount} {tProjects('detail.stats.stories')}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Users className="h-3 w-3" />
-                <span>{members.length} members</span>
+                <span>{members.length} {tProjects('detail.stats.members')}</span>
               </div>
             </div>
           </div>
@@ -123,7 +123,7 @@ export function ProjectCard({
                 <div
                   key={member.id}
                   className="relative"
-                  title={`${member.name} (${roleConfig[member.role].label})`}
+                  title={`${member.name} (${tProjects(`roles.${member.role}`)})`}
                 >
                   {member.avatar ? (
                     <Image
@@ -171,7 +171,7 @@ export function ProjectCard({
             className="flex-1"
             leftIcon={<Play className="h-3 w-3" />}
           >
-            Enter Project
+            {tCommon('actions.enterProject')}
           </EnhancedButton>
           
           {isOwner && (
@@ -181,7 +181,7 @@ export function ProjectCard({
               onClick={onManage}
               leftIcon={<Settings className="h-3 w-3" />}
             >
-              Manage
+              {tCommon('actions.manage')}
             </EnhancedButton>
           )}
         </div>

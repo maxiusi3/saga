@@ -33,7 +33,10 @@
     "confirm": "确认",
     "download": "下载",
     "share": "分享",
-    "invite": "邀请"
+    "invite": "邀请",
+    "manage": "管理",
+    "enterProject": "进入项目",
+    "purchaseMore": "购买更多"
   },
   "status": {
     "loading": "加载中...",

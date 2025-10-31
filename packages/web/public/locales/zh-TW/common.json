@@ -33,7 +33,10 @@
     "confirm": "確認",
     "download": "下載",
     "share": "分享",
-    "invite": "邀請"
+    "invite": "邀請",
+    "manage": "管理",
+    "enterProject": "進入專案",
+    "purchaseMore": "購買更多"
   },
   "status": {
     "loading": "載入中...",

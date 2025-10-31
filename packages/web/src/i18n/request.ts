@@ -9,27 +9,45 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = defaultLocale;
   }
 
-  // Load all translation namespaces for the resolved locale
+  // Helper to safely load a JSON namespace for a given locale
+  const loadJson = async (loc: string, file: string) => {
+    try {
+      const mod = await import(`../../public/locales/${loc}/${file}`);
+      return mod.default as Record<string, unknown>;
+    } catch {
+      return {} as Record<string, unknown>;
+    }
+  };
+
+  // Merge English defaults first, then overlay target locale.
+  const merge = (base: Record<string, unknown>, overlay: Record<string, unknown>) => ({
+    ...base,
+    ...overlay,
+  });
+
   return {
     locale,
     messages: {
-      ...(await import(`../../public/locales/${locale}/common.json`)).default,
-      pages: (await import(`../../public/locales/${locale}/pages.json`)).default,
-      auth: (await import(`../../public/locales/${locale}/auth.json`)).default,
-      errors: (await import(`../../public/locales/${locale}/errors.json`)).default,
-      ai: (await import(`../../public/locales/${locale}/ai.json`)).default,
-      recording: (await import(`../../public/locales/${locale}/recording.json`)).default,
-      projects: (await import(`../../public/locales/${locale}/projects.json`)).default,
-      // Optional: dashboard messages (not all locales have dashboard.json)
-      ...(await (async () => {
-        try {
-          const mod = await import(`../../public/locales/${locale}/dashboard.json`);
-          return { dashboard: mod.default } as Record<string, unknown>;
-        } catch {
-          // Silently ignore if dashboard.json does not exist for the locale
-          return {} as Record<string, unknown>;
-        }
-      })()),
+      // Root-level namespaces from common.json
+      ...merge(await loadJson('en', 'common.json'), await loadJson(locale, 'common.json')),
+
+      // Dedicated namespaces
+      pages: merge(await loadJson('en', 'pages.json'), await loadJson(locale, 'pages.json')),
+      auth: merge(await loadJson('en', 'auth.json'), await loadJson(locale, 'auth.json')),
+      errors: merge(await loadJson('en', 'errors.json'), await loadJson(locale, 'errors.json')),
+      ai: merge(await loadJson('en', 'ai.json'), await loadJson(locale, 'ai.json')),
+      recording: merge(await loadJson('en', 'recording.json'), await loadJson(locale, 'recording.json')),
+      projects: merge(await loadJson('en', 'projects.json'), await loadJson(locale, 'projects.json')),
+
+      // Optional namespaces (loaded if present). Fallback to English when available.
+      dashboard: merge(await loadJson('en', 'dashboard.json'), await loadJson(locale, 'dashboard.json')),
+      resources: merge(await loadJson('en', 'resources.json'), await loadJson(locale, 'resources.json')),
+      wallet: merge(await loadJson('en', 'wallet.json'), await loadJson(locale, 'wallet.json')),
+      settings: merge(await loadJson('en', 'settings.json'), await loadJson(locale, 'settings.json')),
+      invitations: merge(await loadJson('en', 'invitations.json'), await loadJson(locale, 'invitations.json')),
+      subscription: merge(await loadJson('en', 'subscription.json'), await loadJson(locale, 'subscription.json')),
+      billing: merge(await loadJson('en', 'billing.json'), await loadJson(locale, 'billing.json')),
+      toasts: merge(await loadJson('en', 'toasts.json'), await loadJson(locale, 'toasts.json')),
     },
   };
 });

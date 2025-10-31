@@ -1,0 +1,66 @@
+{
+  "welcomeHeader": {
+    "greeting": {
+      "morning": "좋은 아침",
+      "afternoon": "좋은 오후",
+      "evening": "좋은 저녁"
+    },
+    "ownerBadge": "소유자",
+    "subtitle": "가족 이야기 대시보드에 다시 오신 것을 환영합니다",
+    "resourceWallet": "리소스 지갑",
+    "metrics": {
+      "projects": "프로젝트",
+      "projectVouchers": "프로젝트 바우처",
+      "facilitatorSeats": "퍼실리테이터 좌석",
+      "storytellerSeats": "스토리텔러 좌석"
+    },
+    "lowResources": "리소스 부족",
+    "purchaseMore": "추가 구매",
+    "addResources": "리소스 추가"
+  },
+  "sections": {
+    "yourResources": "내 리소스",
+    "myProjects": "내 프로젝트",
+    "projectsImIn": "내가 참여 중인 프로젝트"
+  },
+  "actions": {
+    "createNewSaga": "새 사가 만들기"
+  },
+  "resources": {
+    "availableProjectVouchers": "사용 가능한 프로젝트 바우처",
+    "availableFacilitatorSeats": "사용 가능한 퍼실리테이터 좌석",
+    "availableStorytellerSeats": "사용 가능한 스토리텔러 좌석"
+  },
+  "wallet": {
+    "availableSeats": "사용 가능한 좌석",
+    "viewDetails": "상세 보기",
+    "purchasePackage": "패키지 구매",
+    "viewWallet": "지갑 보기",
+    "insufficientResources": "리소스가 충분하지 않습니다",
+    "needResources": "이 작업을 완료하려면 {required}개의 {resource}가 필요하지만 현재 {available}개만 보유하고 있습니다.",
+    "needSeatsInfo": "프로젝트를 만들고 가족 구성원을 초대하려면 좌석이 필요합니다."
+  },
+  "page": {
+    "welcome": "{name}님, 다시 오신 것을 환영합니다",
+    "ownedCount": "{count} 프로젝트",
+    "participatingCount": "{count} 프로젝트",
+    "empty": {
+      "owned": {
+        "emoji": "📚",
+        "title": "아직 프로젝트가 없습니다",
+        "subtitle": "첫 프로젝트를 만들어 가족 이야기를 시작해 보세요."
+      },
+      "participating": {
+        "emoji": "👥",
+        "title": "참여 중인 프로젝트가 없습니다",
+        "subtitle": "아직 어떤 프로젝트에도 초대되지 않았습니다."
+      }
+    },
+    "quickActions": {
+      "title": "빠른 작업",
+      "subtitle": "역할에 따라 수행할 수 있는 작업입니다.",
+      "recordStory": "이야기 녹음",
+      "reviewPending": "보류 중인 이야기 검토"
+    }
+  }
+}

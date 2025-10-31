@@ -10,11 +10,57 @@
     "resourceWallet": "Portefeuille de ressources",
     "metrics": {
       "projects": "Projets",
+      "projectVouchers": "Bons de projet",
       "facilitatorSeats": "Places de facilitateur",
       "storytellerSeats": "Places de conteur"
     },
     "lowResources": "Ressources faibles",
     "purchaseMore": "Acheter davantage",
     "addResources": "Ajouter des ressources"
+  },
+  "sections": {
+    "yourResources": "Vos ressources",
+    "myProjects": "Mes projets",
+    "projectsImIn": "Projets auxquels je participe"
+  },
+  "actions": {
+    "createNewSaga": "Créer une nouvelle Saga"
+  },
+  "resources": {
+    "availableProjectVouchers": "Bons de projet disponibles",
+    "availableFacilitatorSeats": "Places de facilitateur disponibles",
+    "availableStorytellerSeats": "Places de conteur disponibles"
+  },
+  "wallet": {
+    "availableSeats": "Places disponibles",
+    "viewDetails": "Voir les détails",
+    "purchasePackage": "Acheter un forfait",
+    "viewWallet": "Voir le portefeuille",
+    "insufficientResources": "Ressources insuffisantes",
+    "needResources": "Vous avez besoin de {required} {resource} pour effectuer cette action, mais vous n'en avez que {available}.",
+    "needSeatsInfo": "Vous avez besoin de places pour créer des projets et inviter des membres de la famille."
+  },
+  "page": {
+    "welcome": "Bon retour, {name}",
+    "ownedCount": "{count} projets",
+    "participatingCount": "{count} projets",
+    "empty": {
+      "owned": {
+        "emoji": "📚",
+        "title": "Aucun projet pour l'instant",
+        "subtitle": "Créez votre premier projet pour commencer à collecter les histoires familiales."
+      },
+      "participating": {
+        "emoji": "👥",
+        "title": "Aucun projet en participation",
+        "subtitle": "Vous n'avez pas encore été invité à des projets."
+      }
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "subtitle": "Selon votre rôle, voici les actions que vous pouvez effectuer.",
+      "recordStory": "Enregistrer une histoire",
+      "reviewPending": "Examiner les histoires en attente"
+    }
   }
 }

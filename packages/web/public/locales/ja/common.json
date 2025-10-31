@@ -33,7 +33,10 @@
     "confirm": "確認",
     "download": "ダウンロード",
     "share": "共有",
-    "invite": "招待"
+    "invite": "招待",
+    "manage": "管理",
+    "enterProject": "プロジェクトに入る",
+    "purchaseMore": "追加購入"
   },
   "status": {
     "loading": "読み込み中...",

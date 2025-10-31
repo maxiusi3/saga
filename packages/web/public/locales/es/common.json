@@ -33,7 +33,10 @@
     "confirm": "Confirmar",
     "download": "Descargar",
     "share": "Compartir",
-    "invite": "Invitar"
+    "invite": "Invitar",
+    "manage": "Gestionar",
+    "enterProject": "Entrar al proyecto",
+    "purchaseMore": "Comprar más"
   },
   "status": {
     "loading": "Cargando...",

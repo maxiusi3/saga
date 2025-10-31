@@ -10,11 +10,57 @@
     "resourceWallet": "Resource Wallet",
     "metrics": {
       "projects": "Projects",
+      "projectVouchers": "Project Vouchers",
       "facilitatorSeats": "Facilitator Seats",
       "storytellerSeats": "Storyteller Seats"
     },
     "lowResources": "Low resources",
     "purchaseMore": "Purchase More",
     "addResources": "Add Resources"
+  },
+  "sections": {
+    "yourResources": "Your Resources",
+    "myProjects": "My Projects",
+    "projectsImIn": "Projects I'm In"
+  },
+  "actions": {
+    "createNewSaga": "Create New Saga"
+  },
+  "resources": {
+    "availableProjectVouchers": "Available project vouchers",
+    "availableFacilitatorSeats": "Available facilitator seats",
+    "availableStorytellerSeats": "Available storyteller seats"
+  },
+  "wallet": {
+    "availableSeats": "Available Seats",
+    "viewDetails": "View Details",
+    "purchasePackage": "Purchase Package",
+    "viewWallet": "View Wallet",
+    "insufficientResources": "Insufficient Resources",
+    "needResources": "You need {required} {resource} to complete this action, but you only have {available}.",
+    "needSeatsInfo": "You need seats to create projects and invite family members."
+  },
+  "page": {
+    "welcome": "Welcome back, {name}",
+    "ownedCount": "{count} projects",
+    "participatingCount": "{count} projects",
+    "empty": {
+      "owned": {
+        "emoji": "📚",
+        "title": "No Projects Yet",
+        "subtitle": "Create your first project to start collecting family stories."
+      },
+      "participating": {
+        "emoji": "👥",
+        "title": "No Participating Projects",
+        "subtitle": "You haven't been invited to any projects yet."
+      }
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "subtitle": "Based on your role, these are actions you can perform.",
+      "recordStory": "Record Story",
+      "reviewPending": "Review Pending Stories"
+    }
   }
 }

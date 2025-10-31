@@ -4,10 +4,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { ResourceValidationError, ResourceValidationService } from '@/lib/resource-validation'
-import type { ResourceWallet } from '@saga/shared/types'
+import type { UserResourceWallet } from '@saga/shared/types'
+type WalletView = Pick<UserResourceWallet, 'projectVouchers' | 'facilitatorSeats' | 'storytellerSeats'>
 
 interface PurchasePromptProps {
-  wallet: ResourceWallet | null
+  wallet: WalletView | null
   trigger?: 'low' | 'empty' | 'insufficient'
   className?: string
   onDismiss?: () => void
@@ -114,7 +115,7 @@ export function PurchasePrompt({
   )
 }
 
-function checkShouldShow(wallet: ResourceWallet, trigger: 'low' | 'empty' | 'insufficient'): boolean {
+function checkShouldShow(wallet: WalletView, trigger: 'low' | 'empty' | 'insufficient'): boolean {
   const totalResources = wallet.projectVouchers + wallet.facilitatorSeats + wallet.storytellerSeats
 
   switch (trigger) {
@@ -129,7 +130,7 @@ function checkShouldShow(wallet: ResourceWallet, trigger: 'low' | 'empty' | 'ins
   }
 }
 
-function getPromptContent(wallet: ResourceWallet, trigger: 'low' | 'empty' | 'insufficient') {
+function getPromptContent(wallet: WalletView, trigger: 'low' | 'empty' | 'insufficient') {
   switch (trigger) {
     case 'empty':
       return {
@@ -196,7 +197,7 @@ export function SmartPurchasePrompt({
   onDismiss,
   showDismiss = true 
 }: {
-  wallet: ResourceWallet | null
+  wallet: WalletView | null
   className?: string
   onDismiss?: () => void
   showDismiss?: boolean
@@ -229,7 +230,7 @@ export function SmartPurchasePrompt({
 }
 
 // Hook for managing purchase prompt state
-export function usePurchasePrompt(wallet: ResourceWallet | null) {
+export function usePurchasePrompt(wallet: WalletView | null) {
   const [dismissed, setDismissed] = useState<Record<string, boolean>>({})
 
   const shouldShowPrompt = (trigger: 'low' | 'empty' | 'insufficient') => {

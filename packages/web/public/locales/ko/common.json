@@ -33,7 +33,10 @@
     "confirm": "확인",
     "download": "다운로드",
     "share": "공유",
-    "invite": "초대"
+    "invite": "초대",
+    "manage": "관리",
+    "enterProject": "프로젝트 입장",
+    "purchaseMore": "추가 구매"
   },
   "status": {
     "loading": "로딩 중...",

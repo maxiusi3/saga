@@ -1,4 +1,5 @@
-import type { ResourceWallet } from '@saga/shared/types'
+import type { UserResourceWallet } from '@saga/shared/types'
+type ResourceWalletView = Pick<UserResourceWallet, 'projectVouchers' | 'facilitatorSeats' | 'storytellerSeats'>
 
 export interface ResourceRequirement {
   projectVouchers?: number
@@ -23,7 +24,7 @@ export class ResourceValidationService {
    * Validate if wallet has sufficient resources for an operation
    */
   static validateResources(
-    wallet: ResourceWallet | null,
+    wallet: ResourceWalletView | null,
     requirements: ResourceRequirement
   ): ResourceValidationResult {
     const errors: ResourceValidationError[] = []
@@ -146,15 +147,15 @@ export class ResourceValidationService {
   /**
    * Check if user can perform a specific action
    */
-  static canCreateProject(wallet: ResourceWallet | null): ResourceValidationResult {
+  static canCreateProject(wallet: ResourceWalletView | null): ResourceValidationResult {
     return this.validateResources(wallet, { projectVouchers: 1 })
   }
 
-  static canInviteFacilitator(wallet: ResourceWallet | null): ResourceValidationResult {
+  static canInviteFacilitator(wallet: ResourceWalletView | null): ResourceValidationResult {
     return this.validateResources(wallet, { facilitatorSeats: 1 })
   }
 
-  static canInviteStoryteller(wallet: ResourceWallet | null): ResourceValidationResult {
+  static canInviteStoryteller(wallet: ResourceWalletView | null): ResourceValidationResult {
     return this.validateResources(wallet, { storytellerSeats: 1 })
   }
 
@@ -183,7 +184,7 @@ export class ResourceValidationService {
 /**
  * React hook for resource validation
  */
-export function useResourceValidation(wallet: ResourceWallet | null) {
+export function useResourceValidation(wallet: ResourceWalletView | null) {
   const validateResources = (requirements: ResourceRequirement) => {
     return ResourceValidationService.validateResources(wallet, requirements)
   }
