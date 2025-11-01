@@ -1,0 +1,9 @@
+{
+  "wallet": {
+    "purchaseResources": "购买资源",
+    "viewPackages": "查看套餐",
+    "facilitatorSeatsDesc": "邀请兄弟姐妹共同管理项目",
+    "storytellerSeatsDesc": "邀请家人分享故事",
+    "projectVouchersDesc": "创建新的故事项目"
+  }
+}

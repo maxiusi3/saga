@@ -1,0 +1,14 @@
+{
+  "hints": {
+    "createProject": "Criar Projeto",
+    "viewProjects": "Ver Projetos"
+  },
+  "welcome": {
+    "createProjects": "Criar Projetos",
+    "createProjectsDesc": "Organize histórias em torno de temas como \"Infância da Mamãe\" ou \"Tradições Familiares\"",
+    "inviteFamily": "Convidar Família",
+    "inviteFamilyDesc": "Adicione membros da família para colaborar em projetos",
+    "recordStories": "Gravar Histórias",
+    "recordStoriesDesc": "Capture memórias com gravações de áudio"
+  }
+}

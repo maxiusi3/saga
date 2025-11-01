@@ -1,0 +1,9 @@
+{
+  "wallet": {
+    "purchaseResources": "Comprar Recursos",
+    "viewPackages": "Ver Pacotes",
+    "facilitatorSeatsDesc": "Convide irmãos para co-gerenciar projetos",
+    "storytellerSeatsDesc": "Convide membros da família para compartilhar histórias",
+    "projectVouchersDesc": "Crie novos projetos de histórias"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "actions": {
+    "cancelSubscription": "Cancelar Assinatura",
+    "cancelling": "Cancelando...",
+    "saveSettings": "Salvar Configurações",
+    "saving": "Salvando...",
+    "viewPlans": "Ver Planos",
+    "upgradePlan": "Melhorar Plano"
+  },
+  "billing": {
+    "title": "Informações de Cobrança",
+    "updateFailed": "Falha ao atualizar configurações"
+  },
+  "cancellation": {
+    "title": "Cancelar Assinatura",
+    "confirm": "Tem certeza de que deseja cancelar?",
+    "processing": "Processando cancelamento..."
+  },
+  "support": {
+    "howToUpgrade": "Como faço para melhorar meu plano?",
+    "howToUpgradeAnswer": "Visite a página de Planos e selecione o plano desejado. As melhorias entram em vigor imediatamente.",
+    "howToCancel": "Como faço para cancelar minha assinatura?",
+    "howToCancelAnswer": "Você pode cancelar a qualquer momento. Sua assinatura permanece ativa até o final do período de cobrança.",
+    "viewPlansAction": "Ver Planos",
+    "cancelAction": "Cancelar Assinatura"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "actions": {
+    "cancelSubscription": "サブスクリプションをキャンセル",
+    "cancelling": "キャンセル中...",
+    "saveSettings": "設定を保存",
+    "saving": "保存中...",
+    "viewPlans": "プランを表示",
+    "upgradePlan": "プランをアップグレード"
+  },
+  "billing": {
+    "title": "請求情報",
+    "updateFailed": "設定の更新に失敗しました"
+  },
+  "cancellation": {
+    "title": "サブスクリプションをキャンセル",
+    "confirm": "本当にキャンセルしますか？",
+    "processing": "キャンセル処理中..."
+  },
+  "support": {
+    "howToUpgrade": "プランをアップグレードするには？",
+    "howToUpgradeAnswer": "プランページにアクセスして、希望するプランを選択してください。アップグレードは即座に有効になります。",
+    "howToCancel": "サブスクリプションをキャンセルするには？",
+    "howToCancelAnswer": "いつでもキャンセルできます。サブスクリプションは請求期間の終了まで有効です。",
+    "viewPlansAction": "プランを表示",
+    "cancelAction": "サブスクリプションをキャンセル"
+  }
+}

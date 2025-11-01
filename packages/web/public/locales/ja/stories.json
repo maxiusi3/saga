@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "shareStory": "ストーリーを共有",
+    "sharing": "共有中...",
+    "editStory": "ストーリーを編集",
+    "deleteStory": "ストーリーを削除",
+    "viewStory": "ストーリーを表示",
+    "recordStory": "ストーリーを録音"
+  },
+  "share": {
+    "title": "ストーリーを共有",
+    "success": "ストーリーが正常に共有されました",
+    "failed": "ストーリーの共有に失敗しました"
+  },
+  "list": {
+    "manageProject": "プロジェクトを管理",
+    "noStories": "まだストーリーがありません",
+    "createFirst": "最初のストーリーを作成"
+  }
+}

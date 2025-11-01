@@ -1,0 +1,14 @@
+{
+  "hints": {
+    "createProject": "プロジェクトを作成",
+    "viewProjects": "プロジェクトを表示"
+  },
+  "welcome": {
+    "createProjects": "プロジェクトを作成",
+    "createProjectsDesc": "「母の子供時代」や「家族の伝統」などのテーマでストーリーを整理",
+    "inviteFamily": "家族を招待",
+    "inviteFamilyDesc": "プロジェクトで協力する家族メンバーを追加",
+    "recordStories": "ストーリーを録音",
+    "recordStoriesDesc": "音声録音で思い出をキャプチャ"
+  }
+}

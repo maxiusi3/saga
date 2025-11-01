@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "shareStory": "Compartilhar História",
+    "sharing": "Compartilhando...",
+    "editStory": "Editar História",
+    "deleteStory": "Excluir História",
+    "viewStory": "Ver História",
+    "recordStory": "Gravar História"
+  },
+  "share": {
+    "title": "Compartilhar História",
+    "success": "História compartilhada com sucesso",
+    "failed": "Falha ao compartilhar história"
+  },
+  "list": {
+    "manageProject": "Gerenciar Projeto",
+    "noStories": "Ainda não há histórias",
+    "createFirst": "Crie sua primeira história"
+  }
+}

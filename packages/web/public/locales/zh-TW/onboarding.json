@@ -1,0 +1,14 @@
+{
+  "hints": {
+    "createProject": "建立專案",
+    "viewProjects": "查看專案"
+  },
+  "welcome": {
+    "createProjects": "建立專案",
+    "createProjectsDesc": "圍繞「媽媽的童年」或「家庭傳統」等主題組織故事",
+    "inviteFamily": "邀請家人",
+    "inviteFamilyDesc": "新增家庭成員以協作專案",
+    "recordStories": "錄製故事",
+    "recordStoriesDesc": "透過音訊錄製捕捉回憶"
+  }
+}

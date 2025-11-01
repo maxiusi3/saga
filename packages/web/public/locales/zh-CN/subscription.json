@@ -1,0 +1,27 @@
+{
+  "actions": {
+    "cancelSubscription": "取消订阅",
+    "cancelling": "取消中...",
+    "saveSettings": "保存设置",
+    "saving": "保存中...",
+    "viewPlans": "查看方案",
+    "upgradePlan": "升级方案"
+  },
+  "billing": {
+    "title": "账单信息",
+    "updateFailed": "更新设置失败"
+  },
+  "cancellation": {
+    "title": "取消订阅",
+    "confirm": "确定要取消吗？",
+    "processing": "正在处理取消..."
+  },
+  "support": {
+    "howToUpgrade": "如何升级我的方案？",
+    "howToUpgradeAnswer": "访问方案页面并选择您想要的方案。升级立即生效。",
+    "howToCancel": "如何取消我的订阅？",
+    "howToCancelAnswer": "您可以随时取消。您的订阅在计费周期结束前保持活跃。",
+    "viewPlansAction": "查看方案",
+    "cancelAction": "取消订阅"
+  }
+}

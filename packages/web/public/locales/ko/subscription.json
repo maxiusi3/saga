@@ -1,0 +1,27 @@
+{
+  "actions": {
+    "cancelSubscription": "구독 취소",
+    "cancelling": "취소 중...",
+    "saveSettings": "설정 저장",
+    "saving": "저장 중...",
+    "viewPlans": "플랜 보기",
+    "upgradePlan": "플랜 업그레이드"
+  },
+  "billing": {
+    "title": "결제 정보",
+    "updateFailed": "설정 업데이트 실패"
+  },
+  "cancellation": {
+    "title": "구독 취소",
+    "confirm": "정말 취소하시겠습니까?",
+    "processing": "취소 처리 중..."
+  },
+  "support": {
+    "howToUpgrade": "플랜을 업그레이드하려면 어떻게 하나요?",
+    "howToUpgradeAnswer": "플랜 페이지를 방문하여 원하는 플랜을 선택하세요. 업그레이드는 즉시 적용됩니다.",
+    "howToCancel": "구독을 취소하려면 어떻게 하나요?",
+    "howToCancelAnswer": "언제든지 취소할 수 있습니다. 구독은 결제 기간이 끝날 때까지 활성 상태로 유지됩니다.",
+    "viewPlansAction": "플랜 보기",
+    "cancelAction": "구독 취소"
+  }
+}

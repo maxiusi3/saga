@@ -1,0 +1,14 @@
+{
+  "hints": {
+    "createProject": "创建项目",
+    "viewProjects": "查看项目"
+  },
+  "welcome": {
+    "createProjects": "创建项目",
+    "createProjectsDesc": "围绕"妈妈的童年"或"家庭传统"等主题组织故事",
+    "inviteFamily": "邀请家人",
+    "inviteFamilyDesc": "添加家庭成员以协作项目",
+    "recordStories": "录制故事",
+    "recordStoriesDesc": "通过音频录制捕捉回忆"
+  }
+}

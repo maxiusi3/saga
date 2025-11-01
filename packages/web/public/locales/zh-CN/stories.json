@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "shareStory": "分享故事",
+    "sharing": "分享中...",
+    "editStory": "编辑故事",
+    "deleteStory": "删除故事",
+    "viewStory": "查看故事",
+    "recordStory": "录制故事"
+  },
+  "share": {
+    "title": "分享故事",
+    "success": "故事分享成功",
+    "failed": "故事分享失败"
+  },
+  "list": {
+    "manageProject": "管理项目",
+    "noStories": "暂无故事",
+    "createFirst": "创建你的第一个故事"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "wallet": {
+    "purchaseResources": "リソースを購入",
+    "viewPackages": "パッケージを表示",
+    "facilitatorSeatsDesc": "兄弟姉妹を招待してプロジェクトを共同管理",
+    "storytellerSeatsDesc": "家族を招待してストーリーを共有",
+    "projectVouchersDesc": "新しいストーリープロジェクトを作成"
+  }
+}

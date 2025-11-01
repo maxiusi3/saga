@@ -1,0 +1,27 @@
+{
+  "actions": {
+    "cancelSubscription": "Annuler l'Abonnement",
+    "cancelling": "Annulation...",
+    "saveSettings": "Enregistrer les Paramètres",
+    "saving": "Enregistrement...",
+    "viewPlans": "Voir les Plans",
+    "upgradePlan": "Améliorer le Plan"
+  },
+  "billing": {
+    "title": "Informations de Facturation",
+    "updateFailed": "Échec de la mise à jour des paramètres"
+  },
+  "cancellation": {
+    "title": "Annuler l'Abonnement",
+    "confirm": "Êtes-vous sûr de vouloir annuler ?",
+    "processing": "Traitement de l'annulation..."
+  },
+  "support": {
+    "howToUpgrade": "Comment améliorer mon plan ?",
+    "howToUpgradeAnswer": "Visitez la page Plans et sélectionnez votre plan souhaité. Les améliorations prennent effet immédiatement.",
+    "howToCancel": "Comment annuler mon abonnement ?",
+    "howToCancelAnswer": "Vous pouvez annuler à tout moment. Votre abonnement reste actif jusqu'à la fin de la période de facturation.",
+    "viewPlansAction": "Voir les Plans",
+    "cancelAction": "Annuler l'Abonnement"
+  }
+}

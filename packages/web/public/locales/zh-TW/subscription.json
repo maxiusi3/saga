@@ -1,0 +1,27 @@
+{
+  "actions": {
+    "cancelSubscription": "取消訂閱",
+    "cancelling": "取消中...",
+    "saveSettings": "儲存設定",
+    "saving": "儲存中...",
+    "viewPlans": "查看方案",
+    "upgradePlan": "升級方案"
+  },
+  "billing": {
+    "title": "帳單資訊",
+    "updateFailed": "更新設定失敗"
+  },
+  "cancellation": {
+    "title": "取消訂閱",
+    "confirm": "確定要取消嗎？",
+    "processing": "正在處理取消..."
+  },
+  "support": {
+    "howToUpgrade": "如何升級我的方案？",
+    "howToUpgradeAnswer": "造訪方案頁面並選擇您想要的方案。升級立即生效。",
+    "howToCancel": "如何取消我的訂閱？",
+    "howToCancelAnswer": "您可以隨時取消。您的訂閱在計費週期結束前保持活躍。",
+    "viewPlansAction": "查看方案",
+    "cancelAction": "取消訂閱"
+  }
+}
