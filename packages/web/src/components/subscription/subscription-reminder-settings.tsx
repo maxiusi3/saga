@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
+import { useTranslations } from 'next-intl';
 import { 
   Bell, 
   Mail, 
@@ -84,6 +85,7 @@ export function SubscriptionReminderSettings({
   loading = false,
   className = ''
 }: SubscriptionReminderSettingsProps) {
+  const t = useTranslations('subscription.actions')
   const [localSettings, setLocalSettings] = useState<ReminderSettings>(settings);
   const [hasChanges, setHasChanges] = useState(false);
   const [testingEmail, setTestingEmail] = useState(false);
@@ -187,7 +189,7 @@ export function SubscriptionReminderSettings({
             disabled={!hasChanges || loading}
             className="bg-blue-600 hover:bg-blue-700"
           >
-            {loading ? 'Saving...' : 'Save Settings'}
+            {loading ? t('saving') : t('saveSettings')}
           </Button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import React from 'react';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { useTranslations } from 'next-intl';
 import { 
   Calendar, 
   CreditCard, 
@@ -69,6 +70,7 @@ export function SubscriptionOverview({
   onExport,
   className = ''
 }: SubscriptionOverviewProps) {
+  const t = useTranslations('subscription.actions')
   const getStatusConfig = () => {
     switch (subscription.status) {
       case 'active':
@@ -358,7 +360,7 @@ export function SubscriptionOverview({
             
             {subscription.status === 'active' && onCancel && (
               <Button onClick={onCancel} variant="outline" className="flex-1 text-red-600 hover:text-red-700">
-                Cancel Subscription
+                {t('cancelSubscription')}
               </Button>
             )}
           </div>
