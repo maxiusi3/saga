@@ -1,0 +1,23 @@
+{
+  "title": "通知",
+  "markAllRead": "全部标记为已读",
+  "noNotifications": "无通知",
+  "types": {
+    "newStory": "新故事",
+    "newComment": "新评论",
+    "newFollowUp": "后续问题",
+    "projectInvite": "项目邀请",
+    "mention": "提到了您"
+  },
+  "actions": {
+    "view": "查看",
+    "delete": "删除",
+    "markRead": "标记为已读"
+  },
+  "timeAgo": {
+    "justNow": "刚刚",
+    "minutesAgo": "{count}分钟前",
+    "hoursAgo": "{count}小时前",
+    "daysAgo": "{count}天前"
+  }
+}

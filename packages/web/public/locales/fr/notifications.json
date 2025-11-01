@@ -1,0 +1,23 @@
+{
+  "title": "Notifications",
+  "markAllRead": "Tout Marquer comme Lu",
+  "noNotifications": "Aucune notification",
+  "types": {
+    "newStory": "Nouvelle Histoire",
+    "newComment": "Nouveau Commentaire",
+    "newFollowUp": "Question de Suivi",
+    "projectInvite": "Invitation au Projet",
+    "mention": "Vous a Mentionné"
+  },
+  "actions": {
+    "view": "Voir",
+    "delete": "Supprimer",
+    "markRead": "Marquer comme Lu"
+  },
+  "timeAgo": {
+    "justNow": "À l'instant",
+    "minutesAgo": "Il y a {count}m",
+    "hoursAgo": "Il y a {count}h",
+    "daysAgo": "Il y a {count}j"
+  }
+}

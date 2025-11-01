@@ -1,0 +1,23 @@
+{
+  "title": "알림",
+  "markAllRead": "모두 읽음으로 표시",
+  "noNotifications": "알림 없음",
+  "types": {
+    "newStory": "새 이야기",
+    "newComment": "새 댓글",
+    "newFollowUp": "후속 질문",
+    "projectInvite": "프로젝트 초대",
+    "mention": "멘션"
+  },
+  "actions": {
+    "view": "보기",
+    "delete": "삭제",
+    "markRead": "읽음으로 표시"
+  },
+  "timeAgo": {
+    "justNow": "방금",
+    "minutesAgo": "{count}분 전",
+    "hoursAgo": "{count}시간 전",
+    "daysAgo": "{count}일 전"
+  }
+}

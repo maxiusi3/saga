@@ -1,0 +1,23 @@
+{
+  "title": "通知",
+  "markAllRead": "すべて既読にする",
+  "noNotifications": "通知はありません",
+  "types": {
+    "newStory": "新しい物語",
+    "newComment": "新しいコメント",
+    "newFollowUp": "フォローアップ質問",
+    "projectInvite": "プロジェクト招待",
+    "mention": "メンション"
+  },
+  "actions": {
+    "view": "表示",
+    "delete": "削除",
+    "markRead": "既読にする"
+  },
+  "timeAgo": {
+    "justNow": "たった今",
+    "minutesAgo": "{count}分前",
+    "hoursAgo": "{count}時間前",
+    "daysAgo": "{count}日前"
+  }
+}

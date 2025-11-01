@@ -1,0 +1,23 @@
+{
+  "title": "Notifications",
+  "markAllRead": "Mark All as Read",
+  "noNotifications": "No notifications",
+  "types": {
+    "newStory": "New Story",
+    "newComment": "New Comment",
+    "newFollowUp": "Follow-up Question",
+    "projectInvite": "Project Invitation",
+    "mention": "Mentioned You"
+  },
+  "actions": {
+    "view": "View",
+    "delete": "Delete",
+    "markRead": "Mark as Read"
+  },
+  "timeAgo": {
+    "justNow": "Just now",
+    "minutesAgo": "{count}m ago",
+    "hoursAgo": "{count}h ago",
+    "daysAgo": "{count}d ago"
+  }
+}
