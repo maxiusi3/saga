@@ -4,8 +4,10 @@ import { useState, useRef, useEffect } from 'react'
 import { Wallet, ChevronDown, Coins, Crown, Mic } from 'lucide-react'
 import { useResourceWallet } from '@/hooks/use-resource-wallet'
 import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 
 export function WalletBalanceDropdown() {
+  const t = useTranslations('common.wallet')
   const { wallet, loading } = useResourceWallet()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -63,10 +65,10 @@ export function WalletBalanceDropdown() {
         <div className="absolute right-0 top-full mt-2 w-64 z-50">
           <div className="bg-popover text-popover-foreground rounded-lg border shadow-md p-3">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-foreground">Resource Balance</h3>
+              <h3 className="text-sm font-semibold text-foreground">{t('title')}</h3>
               <div className="flex items-center gap-1">
                 <div className={`w-2 h-2 rounded-full ${isLoadingOrEmpty ? 'bg-gray-300' : 'bg-green-500'}`}></div>
-                <span className="text-xs text-muted-foreground">{isLoadingOrEmpty ? 'Loading' : 'Free Trial'}</span>
+                <span className="text-xs text-muted-foreground">{isLoadingOrEmpty ? t('loading') : t('freeTrial')}</span>
               </div>
             </div>
 
@@ -82,7 +84,7 @@ export function WalletBalanceDropdown() {
                 <div className="flex items-center justify-between py-1">
                   <div className="flex items-center space-x-2">
                     <Coins className="w-3.5 h-3.5 text-blue-500" />
-                    <span className="text-sm text-foreground">Projects</span>
+                    <span className="text-sm text-foreground">{t('projects')}</span>
                   </div>
                   <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
                     wallet!.project_vouchers === 0
@@ -97,7 +99,7 @@ export function WalletBalanceDropdown() {
                 <div className="flex items-center justify-between py-1">
                   <div className="flex items-center space-x-2">
                     <Crown className="w-3.5 h-3.5 text-purple-500" />
-                    <span className="text-sm text-foreground">Facilitators</span>
+                    <span className="text-sm text-foreground">{t('facilitators')}</span>
                   </div>
                   <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
                     wallet!.facilitator_seats === 0
@@ -112,7 +114,7 @@ export function WalletBalanceDropdown() {
                 <div className="flex items-center justify-between py-1">
                   <div className="flex items-center space-x-2">
                     <Mic className="w-3.5 h-3.5 text-green-500" />
-                    <span className="text-sm text-foreground">Storytellers</span>
+                    <span className="text-sm text-foreground">{t('storytellers')}</span>
                   </div>
                   <div className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
                     wallet!.storyteller_seats === 0
@@ -128,7 +130,7 @@ export function WalletBalanceDropdown() {
             {/* Bottom note - more concise */}
             <div className="mt-3 pt-2 border-t border-border">
               <p className="text-xs text-muted-foreground text-center">
-                💡 Free trial, no payment required
+                {t('freeTrialNote')}
               </p>
             </div>
           </div>

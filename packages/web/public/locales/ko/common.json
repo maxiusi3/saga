@@ -66,5 +66,29 @@
     "sort": "정렬",
     "or": "또는",
     "and": "그리고"
+  },
+  "wallet": {
+    "title": "리소스 잔액",
+    "freeTrial": "무료 체험",
+    "loading": "로딩 중",
+    "projects": "프로젝트",
+    "facilitators": "진행자",
+    "storytellers": "스토리텔러",
+    "freeTrialNote": "💡 무료 체험, 결제 불필요"
+  },
+  "project": {
+    "yourProject": "내 프로젝트",
+    "participating": "참여 중"
+  },
+  "notifications": {
+    "title": "알림",
+    "new": "새로운",
+    "markAllRead": "모두 읽음으로 표시",
+    "markAllAsRead": "모두 읽음으로 표시",
+    "notificationSettings": "알림 설정",
+    "failedToLoad": "알림을 불러오지 못했습니다",
+    "noNotifications": "아직 알림이 없습니다",
+    "noNotificationsDesc": "프로젝트에 활동이 있으면 여기에 알림이 표시됩니다",
+    "viewAll": "모든 알림 보기"
   }
 }

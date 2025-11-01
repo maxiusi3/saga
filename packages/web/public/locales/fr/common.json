@@ -66,5 +66,29 @@
     "sort": "Trier",
     "or": "ou",
     "and": "et"
+  },
+  "wallet": {
+    "title": "Solde des Ressources",
+    "freeTrial": "Essai Gratuit",
+    "loading": "Chargement",
+    "projects": "Projets",
+    "facilitators": "Facilitateurs",
+    "storytellers": "Conteurs",
+    "freeTrialNote": "💡 Essai gratuit, aucun paiement requis"
+  },
+  "project": {
+    "yourProject": "Votre projet",
+    "participating": "Participant"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "new": "nouveau",
+    "markAllRead": "Tout Marquer Comme Lu",
+    "markAllAsRead": "Tout marquer comme lu",
+    "notificationSettings": "Paramètres de Notification",
+    "failedToLoad": "Échec du chargement des notifications",
+    "noNotifications": "Aucune notification pour le moment",
+    "noNotificationsDesc": "Vous verrez les notifications ici lorsqu'il y aura de l'activité dans vos projets",
+    "viewAll": "Voir Toutes les Notifications"
   }
 }

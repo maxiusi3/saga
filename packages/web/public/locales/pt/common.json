@@ -66,5 +66,29 @@
     "sort": "Ordenar",
     "or": "ou",
     "and": "e"
+  },
+  "wallet": {
+    "title": "Saldo de Recursos",
+    "freeTrial": "Teste Gratuito",
+    "loading": "Carregando",
+    "projects": "Projetos",
+    "facilitators": "Facilitadores",
+    "storytellers": "Narradores",
+    "freeTrialNote": "💡 Teste gratuito, sem necessidade de pagamento"
+  },
+  "project": {
+    "yourProject": "Seu projeto",
+    "participating": "Participando"
+  },
+  "notifications": {
+    "title": "Notificações",
+    "new": "novo",
+    "markAllRead": "Marcar Tudo Como Lido",
+    "markAllAsRead": "Marcar tudo como lido",
+    "notificationSettings": "Configurações de Notificação",
+    "failedToLoad": "Falha ao carregar notificações",
+    "noNotifications": "Ainda não há notificações",
+    "noNotificationsDesc": "Você verá notificações aqui quando houver atividade em seus projetos",
+    "viewAll": "Ver Todas as Notificações"
   }
 }

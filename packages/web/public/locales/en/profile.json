@@ -4,46 +4,34 @@
   "saveChanges": "Save Changes",
   "saving": "Saving...",
   "cancel": "Cancel",
+  "notFound": "Profile not found",
+  "memberSince": "Member since",
   "form": {
     "fullName": "Full Name",
     "email": "Email",
-    "emailNote": "Email cannot be changed",
+    "emailCannotChange": "Email cannot be changed",
     "phone": "Phone Number",
     "phonePlaceholder": "(555) 123-4567",
+    "notProvided": "Not provided",
     "bio": "Bio",
     "bioPlaceholder": "Tell us a little about yourself...",
-    "notProvided": "Not provided",
     "noBio": "No bio provided"
   },
-  "memberSince": "Member since {date}",
-  "activitySummary": {
+  "stats": {
     "title": "Activity Summary",
     "activeProjects": "Active Projects",
     "storiesShared": "Stories Shared"
   },
-  "accountSettings": {
+  "account": {
     "title": "Account Settings",
-    "emailNotifications": {
-      "title": "Email Notifications",
-      "description": "Receive updates about your projects",
-      "enabled": "Enabled"
-    },
-    "privacySettings": {
-      "title": "Privacy Settings",
-      "description": "Control who can see your profile",
-      "manage": "Manage"
-    },
-    "dataExport": {
-      "title": "Data Export",
-      "description": "Download your account data",
-      "export": "Export"
-    }
-  },
-  "errors": {
-    "loadFailed": "Failed to load profile",
-    "updateFailed": "Failed to update profile"
-  },
-  "success": {
-    "updated": "Profile updated successfully"
+    "emailNotifications": "Email Notifications",
+    "emailNotificationsDesc": "Receive updates about your projects",
+    "enabled": "Enabled",
+    "privacySettings": "Privacy Settings",
+    "privacySettingsDesc": "Control who can see your profile",
+    "manage": "Manage",
+    "dataExport": "Data Export",
+    "dataExportDesc": "Download your account data",
+    "export": "Export"
   }
 }

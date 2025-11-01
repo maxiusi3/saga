@@ -1,0 +1,29 @@
+{
+  "title": "Notifications",
+  "unread": "unread",
+  "total": "total notifications",
+  "markAllRead": "Mark all read",
+  "settings": "Settings",
+  "search": "Search notifications...",
+  "filter": {
+    "all": "All",
+    "newStories": "New Stories",
+    "comments": "Comments",
+    "questions": "Questions",
+    "activity": "Activity",
+    "invitations": "Invitations",
+    "newMembers": "New Members"
+  },
+  "empty": {
+    "noMatching": "No matching notifications",
+    "noMatchingDesc": "Try adjusting your search or filter criteria",
+    "clearFilters": "Clear filters",
+    "noNotifications": "No notifications yet",
+    "noNotificationsDesc": "You'll see notifications here when there's activity in your projects"
+  },
+  "error": {
+    "failedToLoad": "Failed to load notifications",
+    "tryAgain": "Try Again"
+  },
+  "loadMore": "Load More"
+}

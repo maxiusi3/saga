@@ -66,5 +66,29 @@
     "sort": "排序",
     "or": "或",
     "and": "和"
+  },
+  "wallet": {
+    "title": "資源餘額",
+    "freeTrial": "免費試用",
+    "loading": "載入中",
+    "projects": "專案",
+    "facilitators": "主持人",
+    "storytellers": "講述者",
+    "freeTrialNote": "💡 免費試用，無需付費"
+  },
+  "project": {
+    "yourProject": "你的專案",
+    "participating": "參與中"
+  },
+  "notifications": {
+    "title": "通知",
+    "new": "新",
+    "markAllRead": "全部標記為已讀",
+    "markAllAsRead": "全部標記為已讀",
+    "notificationSettings": "通知設定",
+    "failedToLoad": "載入通知失敗",
+    "noNotifications": "暫無通知",
+    "noNotificationsDesc": "當你的專案有活動時，這裡會顯示通知",
+    "viewAll": "查看所有通知"
   }
 }

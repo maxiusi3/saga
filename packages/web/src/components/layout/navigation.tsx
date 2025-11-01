@@ -208,7 +208,7 @@ export function Navigation() {
                       className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
-                      Your Profile
+                      {t('profile')}
                     </Link>
 
                     <Link
@@ -216,7 +216,7 @@ export function Navigation() {
                       className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
-                      Settings
+                      {t('settings')}
                     </Link>
                     
                     <button
@@ -226,7 +226,7 @@ export function Navigation() {
                       }}
                       className="block w-full text-left px-4 py-2 text-sm text-muted-foreground hover:bg-muted"
                     >
-                      Sign out
+                      {t('signOut')}
                     </button>
                   </div>
                 </div>

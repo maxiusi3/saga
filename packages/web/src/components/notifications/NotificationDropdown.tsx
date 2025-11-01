@@ -7,7 +7,7 @@ import { useNotifications } from '@/hooks/useNotifications'
 import { NotificationItem } from './NotificationItem'
 import Link from 'next/link'
 import { sagaDropdownPanel, sagaDropdownItem, sagaDropdownSeparator } from '@/components/shared/dropdown-styles'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 interface NotificationDropdownProps {
   onClose: () => void
@@ -15,6 +15,7 @@ interface NotificationDropdownProps {
 
 export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
   const locale = useLocale()
+  const t = useTranslations('common.notifications')
   const withLocale = (path: string) => {
     if (!path || typeof path !== 'string') return path as any
     if (!path.startsWith('/')) return path
@@ -46,10 +47,10 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
       <div className="p-4 border-b border-border/50 bg-muted/30 rounded-t-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <h3 className="font-semibold text-foreground">Notifications</h3>
+            <h3 className="font-semibold text-foreground">{t('title')}</h3>
             {unreadCount > 0 && (
               <Badge className="bg-primary text-primary-foreground text-xs animate-pulse">
-                {unreadCount} new
+                {unreadCount} {t('new')}
               </Badge>
             )}
           </div>
@@ -61,10 +62,10 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                 size="sm"
                 onClick={handleMarkAllAsRead}
                 className="text-xs hover:bg-primary/10 hover:text-primary"
-                title="Mark all as read"
+                title={t('markAllAsRead')}
               >
                 <CheckCheck className="h-3 w-3 mr-1" />
-                Mark All Read
+                {t('markAllRead')}
               </Button>
             )}
 
@@ -74,7 +75,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                 size="sm"
                 onClick={onClose}
                 className="hover:bg-muted"
-                title="Notification Settings"
+                title={t('notificationSettings')}
               >
                 <Settings className="h-4 w-4" />
               </Button>
@@ -99,15 +100,15 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
           </div>
         ) : error ? (
           <div className="p-4 text-center text-destructive">
-            <p className="text-sm">Failed to load notifications</p>
+            <p className="text-sm">{t('failedToLoad')}</p>
             <p className="text-xs text-muted-foreground mt-1">{error}</p>
           </div>
         ) : notifications.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground">
             <div className="text-4xl mb-2">🔔</div>
-            <p className="text-sm font-medium">No notifications yet</p>
+            <p className="text-sm font-medium">{t('noNotifications')}</p>
             <p className="text-xs mt-1">
-              You'll see notifications here when there's activity in your projects
+              {t('noNotificationsDesc')}
             </p>
           </div>
         ) : (
@@ -134,7 +135,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
               onClick={onClose}
             >
               <ExternalLink className="h-3 w-3 mr-1" />
-              View All Notifications
+              {t('viewAll')}
             </Button>
           </Link>
         </div>

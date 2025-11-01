@@ -66,5 +66,29 @@
     "sort": "Sort",
     "or": "or",
     "and": "and"
+  },
+  "wallet": {
+    "title": "Resource Balance",
+    "freeTrial": "Free Trial",
+    "loading": "Loading",
+    "projects": "Projects",
+    "facilitators": "Facilitators",
+    "storytellers": "Storytellers",
+    "freeTrialNote": "💡 Free trial, no payment required"
+  },
+  "project": {
+    "yourProject": "Your project",
+    "participating": "Participating"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "new": "new",
+    "markAllRead": "Mark All Read",
+    "markAllAsRead": "Mark all as read",
+    "notificationSettings": "Notification Settings",
+    "failedToLoad": "Failed to load notifications",
+    "noNotifications": "No notifications yet",
+    "noNotificationsDesc": "You'll see notifications here when there's activity in your projects",
+    "viewAll": "View All Notifications"
   }
 }

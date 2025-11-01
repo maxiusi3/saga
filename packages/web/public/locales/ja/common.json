@@ -66,5 +66,29 @@
     "sort": "並べ替え",
     "or": "または",
     "and": "と"
+  },
+  "wallet": {
+    "title": "リソース残高",
+    "freeTrial": "無料トライアル",
+    "loading": "読み込み中",
+    "projects": "プロジェクト",
+    "facilitators": "ファシリテーター",
+    "storytellers": "ストーリーテラー",
+    "freeTrialNote": "💡 無料トライアル、支払い不要"
+  },
+  "project": {
+    "yourProject": "あなたのプロジェクト",
+    "participating": "参加中"
+  },
+  "notifications": {
+    "title": "通知",
+    "new": "新着",
+    "markAllRead": "すべて既読にする",
+    "markAllAsRead": "すべて既読にする",
+    "notificationSettings": "通知設定",
+    "failedToLoad": "通知の読み込みに失敗しました",
+    "noNotifications": "通知はまだありません",
+    "noNotificationsDesc": "プロジェクトでアクティビティがあると、ここに通知が表示されます",
+    "viewAll": "すべての通知を表示"
   }
 }

@@ -66,5 +66,29 @@
     "sort": "排序",
     "or": "或",
     "and": "和"
+  },
+  "wallet": {
+    "title": "资源余额",
+    "freeTrial": "免费试用",
+    "loading": "加载中",
+    "projects": "项目",
+    "facilitators": "主持人",
+    "storytellers": "讲述者",
+    "freeTrialNote": "💡 免费试用，无需付费"
+  },
+  "project": {
+    "yourProject": "你的项目",
+    "participating": "参与中"
+  },
+  "notifications": {
+    "title": "通知",
+    "new": "新",
+    "markAllRead": "全部标记为已读",
+    "markAllAsRead": "全部标记为已读",
+    "notificationSettings": "通知设置",
+    "failedToLoad": "加载通知失败",
+    "noNotifications": "暂无通知",
+    "noNotificationsDesc": "当你的项目有活动时，这里会显示通知",
+    "viewAll": "查看所有通知"
   }
 }

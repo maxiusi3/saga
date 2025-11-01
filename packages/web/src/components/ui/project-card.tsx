@@ -156,7 +156,7 @@ export function ProjectCard({
             
             {members.length > 0 && (
               <div className="ml-3 text-xs text-muted-foreground">
-                {isOwner ? "Your project" : "Participating"}
+                {isOwner ? tCommon('project.yourProject') : tCommon('project.participating')}
               </div>
             )}
           </div>
