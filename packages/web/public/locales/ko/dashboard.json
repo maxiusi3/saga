@@ -38,7 +38,25 @@
     "viewWallet": "지갑 보기",
     "insufficientResources": "리소스가 충분하지 않습니다",
     "needResources": "이 작업을 완료하려면 {required}개의 {resource}가 필요하지만 현재 {available}개만 보유하고 있습니다.",
-    "needSeatsInfo": "프로젝트를 만들고 가족 구성원을 초대하려면 좌석이 필요합니다."
+    "needSeatsInfo": "프로젝트를 만들고 가족 구성원을 초대하려면 좌석이 필요합니다.",
+    "purchasePrompt": {
+      "empty": {
+        "title": "사용 가능한 리소스가 없습니다",
+        "message": "남은 프로젝트 바우처나 좌석이 없습니다. 사가를 계속 사용하려면 패키지를 구매하세요."
+      },
+      "low": {
+        "title": "리소스가 부족합니다",
+        "message": "프로젝트 바우처와 좌석이 부족합니다. 서비스 중단을 피하려면 추가 구매를 고려하세요."
+      },
+      "insufficient": {
+        "title": "일부 리소스가 소진되었습니다",
+        "message": "일부 리소스가 소진되었습니다. 전체 기능을 복원하려면 패키지를 구매하세요."
+      },
+      "default": {
+        "title": "리소스 추가 구매를 고려하세요",
+        "message": "추가 리소스를 통해 가족 이야기 기록을 계속 이어가세요."
+      }
+    }
   },
   "page": {
     "welcome": "{name}님, 다시 오신 것을 환영합니다",

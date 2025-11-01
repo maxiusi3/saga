@@ -1,0 +1,84 @@
+{
+  "welcomeHeader": {
+    "greeting": {
+      "morning": "おはようございます",
+      "afternoon": "こんにちは",
+      "evening": "こんばんは"
+    },
+    "ownerBadge": "オーナー",
+    "subtitle": "家族の物語ダッシュボードへようこそ",
+    "resourceWallet": "リソースウォレット",
+    "metrics": {
+      "projects": "プロジェクト",
+      "projectVouchers": "プロジェクトバウチャー",
+      "facilitatorSeats": "ファシリテーター席",
+      "storytellerSeats": "ストーリーテラー席"
+    },
+    "lowResources": "リソース不足",
+    "purchaseMore": "追加購入",
+    "addResources": "リソースを追加"
+  },
+  "sections": {
+    "yourResources": "あなたのリソース",
+    "myProjects": "マイプロジェクト",
+    "projectsImIn": "参加中のプロジェクト"
+  },
+  "actions": {
+    "createNewSaga": "新しいサガを作成"
+  },
+  "resources": {
+    "availableProjectVouchers": "利用可能なプロジェクトバウチャー",
+    "availableFacilitatorSeats": "利用可能なファシリテーター席",
+    "availableStorytellerSeats": "利用可能なストーリーテラー席"
+  },
+  "wallet": {
+    "availableSeats": "利用可能な席",
+    "viewDetails": "詳細を表示",
+    "purchasePackage": "パッケージを購入",
+    "viewWallet": "ウォレットを表示",
+    "insufficientResources": "リソースが不足しています",
+    "needResources": "このアクションを完了するには{required}個の{resource}が必要ですが、現在{available}個しかありません。",
+    "needSeatsInfo": "プロジェクトを作成し、家族を招待するには席が必要です。",
+    "purchasePrompt": {
+      "empty": {
+        "title": "利用可能なリソースがありません",
+        "message": "プロジェクトバウチャーまたは席が残っていません。Sagaを引き続き使用するにはパッケージを購入してください。"
+      },
+      "low": {
+        "title": "リソースが不足しています",
+        "message": "プロジェクトバウチャーと席が不足しています。中断を避けるために追加購入を検討してください。"
+      },
+      "insufficient": {
+        "title": "一部のリソースが枯渇しました",
+        "message": "一部のリソースが枯渇しました。完全な機能を復元するにはパッケージを購入してください。"
+      },
+      "default": {
+        "title": "リソースの追加購入を検討してください",
+        "message": "追加のリソースで家族の物語を続けましょう。"
+      }
+    }
+  },
+  "page": {
+    "welcome": "おかえりなさい、{name}さん",
+    "ownedCount": "{count}個のプロジェクト",
+    "participatingCount": "{count}個のプロジェクト",
+    "empty": {
+      "owned": {
+        "emoji": "📚",
+        "title": "まだプロジェクトがありません",
+        "subtitle": "最初のプロジェクトを作成して、家族の物語を集め始めましょう。"
+      },
+      "participating": {
+        "emoji": "👥",
+        "title": "参加中のプロジェクトがありません",
+        "subtitle": "まだどのプロジェクトにも招待されていません。"
+      }
+    },
+    "quickActions": {
+      "title": "クイックアクション",
+      "subtitle": "あなたの役割に基づいて、実行できるアクションです。",
+      "recordStory": "物語を録音",
+      "reviewPending": "保留中の物語を確認"
+    }
+  }
+}

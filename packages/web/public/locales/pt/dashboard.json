@@ -1,0 +1,84 @@
+{
+  "welcomeHeader": {
+    "greeting": {
+      "morning": "Bom dia",
+      "afternoon": "Boa tarde",
+      "evening": "Boa noite"
+    },
+    "ownerBadge": "Proprietário",
+    "subtitle": "Bem-vindo de volta ao seu painel de histórias familiares",
+    "resourceWallet": "Carteira de Recursos",
+    "metrics": {
+      "projects": "Projetos",
+      "projectVouchers": "Vouchers de Projeto",
+      "facilitatorSeats": "Assentos de Facilitador",
+      "storytellerSeats": "Assentos de Contador"
+    },
+    "lowResources": "Recursos baixos",
+    "purchaseMore": "Comprar Mais",
+    "addResources": "Adicionar Recursos"
+  },
+  "sections": {
+    "yourResources": "Seus Recursos",
+    "myProjects": "Meus Projetos",
+    "projectsImIn": "Projetos em que Participo"
+  },
+  "actions": {
+    "createNewSaga": "Criar Nova Saga"
+  },
+  "resources": {
+    "availableProjectVouchers": "Vouchers de projeto disponíveis",
+    "availableFacilitatorSeats": "Assentos de facilitador disponíveis",
+    "availableStorytellerSeats": "Assentos de contador disponíveis"
+  },
+  "wallet": {
+    "availableSeats": "Assentos Disponíveis",
+    "viewDetails": "Ver Detalhes",
+    "purchasePackage": "Comprar Pacote",
+    "viewWallet": "Ver Carteira",
+    "insufficientResources": "Recursos Insuficientes",
+    "needResources": "Você precisa de {required} {resource} para completar esta ação, mas você tem apenas {available}.",
+    "needSeatsInfo": "Você precisa de assentos para criar projetos e convidar membros da família.",
+    "purchasePrompt": {
+      "empty": {
+        "title": "Nenhum Recurso Disponível",
+        "message": "Você não tem vouchers de projeto ou assentos restantes. Compre um pacote para continuar usando o Saga."
+      },
+      "low": {
+        "title": "Recursos Baixos",
+        "message": "Você está ficando sem vouchers de projeto e assentos. Considere comprar mais para evitar interrupções."
+      },
+      "insufficient": {
+        "title": "Alguns Recursos Esgotados",
+        "message": "Você ficou sem alguns recursos. Compre um pacote para restaurar a funcionalidade completa."
+      },
+      "default": {
+        "title": "Considere Comprar Mais Recursos",
+        "message": "Mantenha suas histórias familiares em andamento com recursos adicionais."
+      }
+    }
+  },
+  "page": {
+    "welcome": "Bem-vindo de volta, {name}",
+    "ownedCount": "{count} projetos",
+    "participatingCount": "{count} projetos",
+    "empty": {
+      "owned": {
+        "emoji": "📚",
+        "title": "Ainda Não Há Projetos",
+        "subtitle": "Crie seu primeiro projeto para começar a coletar histórias familiares."
+      },
+      "participating": {
+        "emoji": "👥",
+        "title": "Nenhum Projeto de Participação",
+        "subtitle": "Você ainda não foi convidado para nenhum projeto."
+      }
+    },
+    "quickActions": {
+      "title": "Ações Rápidas",
+      "subtitle": "Com base em seu papel, estas são as ações que você pode realizar.",
+      "recordStory": "Gravar História",
+      "reviewPending": "Revisar Histórias Pendentes"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "welcomeHeader": {
+    "greeting": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好"
+    },
+    "ownerBadge": "所有者",
+    "subtitle": "欢迎回到您的家族故事控制台",
+    "resourceWallet": "资源钱包",
+    "metrics": {
+      "projects": "项目",
+      "projectVouchers": "项目代金券",
+      "facilitatorSeats": "协调员席位",
+      "storytellerSeats": "讲述者席位"
+    },
+    "lowResources": "资源不足",
+    "purchaseMore": "购买更多",
+    "addResources": "添加资源"
+  },
+  "sections": {
+    "yourResources": "您的资源",
+    "myProjects": "我的项目",
+    "projectsImIn": "我参与的项目"
+  },
+  "actions": {
+    "createNewSaga": "创建新传奇"
+  },
+  "resources": {
+    "availableProjectVouchers": "可用项目代金券",
+    "availableFacilitatorSeats": "可用协调员席位",
+    "availableStorytellerSeats": "可用讲述者席位"
+  },
+  "wallet": {
+    "availableSeats": "可用席位",
+    "viewDetails": "查看详情",
+    "purchasePackage": "购买套餐",
+    "viewWallet": "查看钱包",
+    "insufficientResources": "资源不足",
+    "needResources": "您需要 {required} 个 {resource} 来完成此操作，但您只有 {available} 个。",
+    "needSeatsInfo": "您需要席位来创建项目并邀请家庭成员。",
+    "purchasePrompt": {
+      "empty": {
+        "title": "没有可用资源",
+        "message": "您没有剩余的项目代金券或席位。购买套餐以继续使用 Saga。"
+      },
+      "low": {
+        "title": "资源不足",
+        "message": "您的项目代金券和席位即将用完。考虑购买更多以避免中断。"
+      },
+      "insufficient": {
+        "title": "部分资源已耗尽",
+        "message": "您已用完某些资源。购买套餐以恢复完整功能。"
+      },
+      "default": {
+        "title": "考虑购买更多资源",
+        "message": "通过额外的资源让您的家族故事继续下去。"
+      }
+    }
+  },
+  "page": {
+    "welcome": "欢迎回来，{name}",
+    "ownedCount": "{count} 个项目",
+    "participatingCount": "{count} 个项目",
+    "empty": {
+      "owned": {
+        "emoji": "📚",
+        "title": "还没有项目",
+        "subtitle": "创建您的第一个项目以开始收集家族故事。"
+      },
+      "participating": {
+        "emoji": "👥",
+        "title": "没有参与的项目",
+        "subtitle": "您还没有被邀请到任何项目。"
+      }
+    },
+    "quickActions": {
+      "title": "快速操作",
+      "subtitle": "根据您的角色，这些是您可以执行的操作。",
+      "recordStory": "录制故事",
+      "reviewPending": "审核待处理的故事"
+    }
+  }
+}

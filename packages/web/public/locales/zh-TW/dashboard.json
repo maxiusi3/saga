@@ -1,0 +1,84 @@
+{
+  "welcomeHeader": {
+    "greeting": {
+      "morning": "早安",
+      "afternoon": "午安",
+      "evening": "晚安"
+    },
+    "ownerBadge": "擁有者",
+    "subtitle": "歡迎回到您的家族故事控制台",
+    "resourceWallet": "資源錢包",
+    "metrics": {
+      "projects": "專案",
+      "projectVouchers": "專案代金券",
+      "facilitatorSeats": "協調員席位",
+      "storytellerSeats": "講述者席位"
+    },
+    "lowResources": "資源不足",
+    "purchaseMore": "購買更多",
+    "addResources": "新增資源"
+  },
+  "sections": {
+    "yourResources": "您的資源",
+    "myProjects": "我的專案",
+    "projectsImIn": "我參與的專案"
+  },
+  "actions": {
+    "createNewSaga": "建立新傳奇"
+  },
+  "resources": {
+    "availableProjectVouchers": "可用專案代金券",
+    "availableFacilitatorSeats": "可用協調員席位",
+    "availableStorytellerSeats": "可用講述者席位"
+  },
+  "wallet": {
+    "availableSeats": "可用席位",
+    "viewDetails": "查看詳情",
+    "purchasePackage": "購買套餐",
+    "viewWallet": "查看錢包",
+    "insufficientResources": "資源不足",
+    "needResources": "您需要 {required} 個 {resource} 來完成此操作，但您只有 {available} 個。",
+    "needSeatsInfo": "您需要席位來建立專案並邀請家庭成員。",
+    "purchasePrompt": {
+      "empty": {
+        "title": "沒有可用資源",
+        "message": "您沒有剩餘的專案代金券或席位。購買套餐以繼續使用 Saga。"
+      },
+      "low": {
+        "title": "資源不足",
+        "message": "您的專案代金券和席位即將用完。考慮購買更多以避免中斷。"
+      },
+      "insufficient": {
+        "title": "部分資源已耗盡",
+        "message": "您已用完某些資源。購買套餐以恢復完整功能。"
+      },
+      "default": {
+        "title": "考慮購買更多資源",
+        "message": "透過額外的資源讓您的家族故事繼續下去。"
+      }
+    }
+  },
+  "page": {
+    "welcome": "歡迎回來，{name}",
+    "ownedCount": "{count} 個專案",
+    "participatingCount": "{count} 個專案",
+    "empty": {
+      "owned": {
+        "emoji": "📚",
+        "title": "還沒有專案",
+        "subtitle": "建立您的第一個專案以開始收集家族故事。"
+      },
+      "participating": {
+        "emoji": "👥",
+        "title": "沒有參與的專案",
+        "subtitle": "您還沒有被邀請到任何專案。"
+      }
+    },
+    "quickActions": {
+      "title": "快速操作",
+      "subtitle": "根據您的角色，這些是您可以執行的操作。",
+      "recordStory": "錄製故事",
+      "reviewPending": "審核待處理的故事"
+    }
+  }
+}

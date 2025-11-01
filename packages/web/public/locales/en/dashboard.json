@@ -38,7 +38,25 @@
     "viewWallet": "View Wallet",
     "insufficientResources": "Insufficient Resources",
     "needResources": "You need {required} {resource} to complete this action, but you only have {available}.",
-    "needSeatsInfo": "You need seats to create projects and invite family members."
+    "needSeatsInfo": "You need seats to create projects and invite family members.",
+    "purchasePrompt": {
+      "empty": {
+        "title": "No Resources Available",
+        "message": "You have no project vouchers or seats remaining. Purchase a package to continue using Saga."
+      },
+      "low": {
+        "title": "Running Low on Resources",
+        "message": "You're running low on project vouchers and seats. Consider purchasing more to avoid interruptions."
+      },
+      "insufficient": {
+        "title": "Some Resources Depleted",
+        "message": "You've run out of some resources. Purchase a package to restore full functionality."
+      },
+      "default": {
+        "title": "Consider Purchasing More Resources",
+        "message": "Keep your family storytelling going with additional resources."
+      }
+    }
   },
   "page": {
     "welcome": "Welcome back, {name}",
