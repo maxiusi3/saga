@@ -1,41 +1,115 @@
 {
   "list": {
     "title": "マイプロジェクト",
-    "subtitle": "家族のストーリープロジェクトを管理",
+    "subtitle": "家族の物語プロジェクトを管理",
     "createNew": "新しいプロジェクトを作成",
     "createFirst": "最初のプロジェクトを作成",
     "empty": {
       "title": "まだプロジェクトがありません",
-      "subtitle": "最初の家族ストーリープロジェクトを作成して始めましょう",
+      "subtitle": "最初の家族の物語プロジェクトを作成して始めましょう",
       "emoji": "📖"
     },
     "createCard": {
       "title": "新しいプロジェクトを作成",
-      "subtitle": "新しい家族ストーリープロジェクトを開始"
+      "subtitle": "新しい家族の物語プロジェクトを開始"
     },
     "filters": {
       "all": "すべてのプロジェクト",
       "active": "アクティブ",
       "archived": "アーカイブ済み"
+    },
+    "stats": {
+      "stories": "物語",
+      "members": "メンバー"
+    }
+  },
+  "create": {
+    "backToProjects": "プロジェクトに戻る",
+    "title": "新しい家族伝記を作成",
+    "subtitle": "家族の貴重な物語の記録を開始",
+    "projectDetails": "プロジェクトの詳細",
+    "projectName": "プロジェクト名",
+    "projectNamePlaceholder": "例：張家の物語、祖父の回想録",
+    "projectDescription": "プロジェクトの説明",
+    "projectDescriptionPlaceholder": "どのような物語を記録したいですか？誰が参加しますか？",
+    "projectTheme": "プロジェクトテーマ",
+    "yourRole": "このプロジェクトでのあなたの役割",
+    "resourceCost": "リソースコスト",
+    "currentBalance": "現在の残高",
+    "projectVouchers": "プロジェクトバウチャー",
+    "facilitatorSeats": "ファシリテーター席",
+    "storytellerSeats": "ストーリーテラー席",
+    "cancel": "キャンセル",
+    "createProject": "プロジェクトを作成",
+    "creating": "作成中...",
+    "whatHappensNext": "次に何が起こりますか？",
+    "nextSteps": {
+      "step1": "完全なアクセス権を持つプロジェクトファシリテーターになります",
+      "step2": "家族をストーリーテラーとして招待します",
+      "step3": "物語の記録と整理を開始します",
+      "step4": "AIを使用してプロンプトと要約を生成します"
+    },
+    "themes": {
+      "familyMemories": {
+        "name": "家族の思い出",
+        "description": "異なる世代の物語を捉える",
+        "emoji": "👨‍👩‍👧‍👦"
+      },
+      "lifeJourney": {
+        "name": "人生の旅",
+        "description": "個人的なマイルストーンと経験を記録",
+        "emoji": "🛤️"
+      },
+      "culturalHeritage": {
+        "name": "文化遺産",
+        "description": "伝統と文化の物語を保存",
+        "emoji": "🏛️"
+      },
+      "professionalLegacy": {
+        "name": "職業的遺産",
+        "description": "キャリアの経験と知恵を共有",
+        "emoji": "💼"
+      }
+    },
+    "roles": {
+      "storyteller": {
+        "name": "ストーリーテラー",
+        "description": "物語を記録して共有",
+        "cost": "ストーリーテラー席1つ"
+      },
+      "facilitator": {
+        "name": "ファシリテーター",
+        "description": "プロジェクトを管理し、他の人を招待",
+        "cost": "ファシリテーター席1つ"
+      }
+    },
+    "errors": {
+      "insufficientVouchers": "プロジェクトバウチャーが不足しています。リソースを追加購入してください",
+      "insufficientSeats": "{role}席が不足しています。リソースを追加購入してください",
+      "createFailed": "プロジェクトの作成に失敗しました。もう一度お試しください",
+      "unableToFetchBalance": "リソース残高情報を取得できません"
+    },
+    "success": {
+      "created": "プロジェクトが正常に作成されました！"
     }
   },
   "detail": {
     "stats": {
-      "stories": "個のストーリー",
-      "members": "人のメンバー"
+      "stories": "物語",
+      "members": "メンバー"
     },
     "actions": {
-      "exportStories": "ストーリーをエクスポート",
+      "exportStories": "物語をエクスポート",
       "manageProject": "プロジェクトを管理",
-      "recordNewStory": "新しいストーリーを録音"
+      "recordNewStory": "新しい物語を録音"
     },
     "filters": {
-      "title": "フィルター：",
+      "title": "フィルター:",
       "allStorytellers": "すべてのストーリーテラー",
       "allThemes": "すべてのテーマ",
       "sortBy": "並べ替え",
       "sortOptions": {
-        "latest": "新しい順",
+        "latest": "最新順",
         "oldest": "古い順",
         "mostComments": "コメント数順"
       },
@@ -47,13 +121,13 @@
     },
     "quickActions": {
       "title": "クイックアクション",
-      "exportAll": "すべてのストーリーをエクスポート",
-      "archiveSelected": "選択したものをアーカイブ",
+      "exportAll": "すべての物語をエクスポート",
+      "archiveSelected": "選択項目をアーカイブ",
       "refreshFeed": "フィードを更新"
     },
     "statistics": {
-      "title": "ストーリー統計",
-      "totalStories": "総ストーリー数",
+      "title": "物語の統計",
+      "totalStories": "総物語数",
       "thisMonth": "今月",
       "totalComments": "総コメント数",
       "followUpQuestions": "フォローアップ質問"
@@ -62,8 +136,8 @@
       "title": "プロジェクト有効期間",
       "remaining": "残り",
       "days": "日",
-      "started": "開始：",
-      "expires": "期限：",
+      "started": "開始:",
+      "expires": "期限:",
       "status": {
         "active": "アクティブ",
         "expired": "期限切れ",
@@ -72,13 +146,16 @@
       "serviceAvailable": "インタラクティブサービス利用可能"
     },
     "empty": {
-      "title": "ストーリーの旅を始めましょう",
+      "title": "物語の旅を始めましょう",
       "storytellerMessage": "貴重な思い出を共有し、家族の物語を受け継ぎましょう",
-      "facilitatorMessage": "家族を招待して、ストーリーの録音と共有を始めましょう",
+      "facilitatorMessage": "家族を招待して物語の記録と共有を始めましょう",
       "emoji": "🎭",
-      "action": "最初のストーリーを録音"
+      "action": "最初の物語を録音"
     },
-    "loadMore": "さらにストーリーを読み込む"
+    "loadMore": "さらに物語を読み込む",
+    "deleteConfirm": "この物語を削除してもよろしいですか？この操作は元に戻せません。",
+    "deleteSuccess": "物語が正常に削除されました",
+    "deleteFailed": "物語の削除に失敗しました"
   },
   "status": {
     "new": "新規",
@@ -94,235 +171,9 @@
     "storyteller": "ストーリーテラー",
     "member": "メンバー"
   },
-  "export": {
-    "title": "プロジェクトデータをエクスポート",
-    "subtitle": "すべてのストーリー、写真、インタラクション記録を含む完全なプロジェクトアーカイブをエクスポート",
-    "unavailable": {
-      "title": "エクスポート利用不可",
-      "subtitle": "現在のサブスクリプションプランではデータエクスポート機能がサポートされていません",
-      "message": "データエクスポートには有効なサブスクリプションが必要です。この機能にアクセスするには、プランをアップグレードするか更新してください。",
-      "actions": {
-        "close": "閉じる",
-        "viewPlans": "サブスクリプションプランを表示"
-      }
-    },
-    "configure": {
-      "title": "エクスポート内容を選択",
-      "options": {
-        "audioFiles": {
-          "label": "音声ファイル",
-          "description": "（元の録音）"
-        },
-        "transcripts": {
-          "label": "文字起こし",
-          "description": "（AI生成テキスト記録）"
-        },
-        "photos": {
-          "label": "写真",
-          "description": "（ストーリー内の画像）"
-        },
-        "interactions": {
-          "label": "インタラクション記録",
-          "description": "（コメントとフォローアップ質問）"
-        }
-      },
-      "preview": {
-        "title": "エクスポートプレビュー",
-        "estimatedSize": "推定ファイルサイズ：",
-        "processingTime": "推定処理時間："
-      },
-      "actions": {
-        "cancel": "キャンセル",
-        "continue": "続ける"
-      }
-    },
-    "confirm": {
-      "title": "エクスポートを確認",
-      "message": "「{projectName}」プロジェクトの完全なアーカイブファイルを作成します。処理が完了すると、ダウンロードリンクがメールで送信されます。",
-      "warning": {
-        "title": "重要なお知らせ",
-        "items": [
-          "エクスポート処理には数分かかる場合があります",
-          "ダウンロードリンクは7日後に期限切れになります",
-          "エクスポートファイルには機密の家族情報が含まれています。安全に保管してください"
-        ]
-      },
-      "actions": {
-        "back": "戻る",
-        "start": "エクスポート開始",
-        "processing": "処理中..."
-      }
-    },
-    "processing": {
-      "title": "エクスポート処理中",
-      "message": "エクスポートファイルを準備しています。お待ちください...",
-      "progress": "進行状況",
-      "tip": "💡 処理が完了すると、ダウンロードリンクがメールで送信されます。このウィンドウを開いたまま完了を待つこともできます。",
-      "action": "バックグラウンドで続ける"
-    },
-    "complete": {
-      "title": "エクスポート完了！",
-      "message": "プロジェクトアーカイブの準備ができました。下のボタンをクリックしてダウンロードするか、メールでダウンロードリンクを確認してください。",
-      "success": {
-        "title": "エクスポート成功",
-        "fileSize": "ファイルサイズ："
-      },
-      "actions": {
-        "close": "閉じる",
-        "download": "ファイルをダウンロード"
-      }
-    }
-  },
-  "subscription": {
-    "status": {
-      "active": "アクティブ",
-      "activeInteractive": "アクティブ",
-      "activeArchival": "アーカイブモード",
-      "archived": "アーカイブ済み",
-      "expired": "期限切れ",
-      "cancelled": "キャンセル済み",
-      "expiringSoon": "まもなく期限切れ",
-      "unknown": "不明なステータス"
-    },
-    "features": {
-      "archival": {
-        "title": "アーカイブモード機能",
-        "items": [
-          "収集したすべてのストーリーを表示",
-          "完全なプロジェクトデータをエクスポート",
-          "ストーリータイムラインを閲覧",
-          "ストーリーコンテンツを検索",
-          "読み取り専用リンクを共有"
-        ]
-      },
-      "interactive": {
-        "title": "インタラクティブモード機能",
-        "items": [
-          "新しいストーリーを作成",
-          "家族を招待",
-          "AIガイド付きプロンプトを受け取る",
-          "リアルタイムインタラクションとコメント",
-          "自動文字起こしサービス",
-          "すべてのアーカイブモード機能"
-        ]
-      },
-      "disabled": "🔒 無効な機能：",
-      "available": "✅ 利用可能な機能："
-    },
-    "banner": {
-      "expiringSoon": {
-        "title": "サブスクリプションまもなく期限切れ",
-        "message": "「{projectName}」のサブスクリプションは{days}日後に期限切れになります。",
-        "urgentWarning": "⚠️ 残り1週間未満！サービス中断を避けるために今すぐ更新してください。",
-        "action": "今すぐ更新"
-      },
-      "expired": {
-        "title": "サブスクリプション期限切れ",
-        "message": "「{projectName}」のサブスクリプションが期限切れになりました。プロジェクトは現在アーカイブモードです。",
-        "info": "ご安心ください - ストーリーは安全です。録音とインタラクション機能を復元するには更新してください。",
-        "action": "サブスクリプションを更新"
-      },
-      "archived": {
-        "title": "プロジェクトはアーカイブモード",
-        "message": "「{projectName}」は読み取り専用モードです。ストーリーの表示とエクスポートは可能ですが、インタラクティブ機能は無効です。",
-        "info": "すべてのストーリーとデータはアクセス可能なままです。録音とインタラクションを有効にするには再アクティブ化してください。",
-        "action": "プロジェクトを再アクティブ化"
-      },
-      "timeRemaining": "残り時間",
-      "days": "日"
-    },
-    "archival": {
-      "title": "「{projectName}」はアーカイブモードです",
-      "cardTitle": "プロジェクトはアーカイブモード",
-      "modalTitle": "プロジェクトアーカイブ済み",
-      "expiredOn": "サブスクリプションは{date}に期限切れになりました。",
-      "daysInArchival": "期限切れから{days}日が経過しました。",
-      "enteredOn": "「{projectName}」は{date}にアーカイブモードに入りました。ストーリーとデータは安全ですが、一部の機能が一時的に無効になっています。",
-      "whatItMeans": {
-        "title": "これはどういう意味ですか？",
-        "description": "ストーリーとデータは完全に安全でアクセス可能です。ただし、家族のストーリーテリング体験の整合性を維持するために、一部のインタラクティブ機能が一時的に無効になっています。"
-      },
-      "actions": {
-        "reactivate": "プロジェクトを再アクティブ化",
-        "export": "データをエクスポート",
-        "exportAll": "すべてのデータをエクスポート"
-      },
-      "tip": "💡 良いお知らせ：プロジェクトを再アクティブ化すると、すべての機能がすぐに復元され、家族は中断したところからストーリーの共有を続けることができます。"
-    },
-    "card": {
-      "statusTitle": {
-        "active": "サブスクリプションアクティブ",
-        "expiringSoon": "サブスクリプションまもなく期限切れ",
-        "expired": "サブスクリプション期限切れ",
-        "cancelled": "サブスクリプションキャンセル済み",
-        "default": "サブスクリプションステータス"
-      },
-      "description": {
-        "active": "プロジェクトは完全にアクティブで、すべての機能が利用可能です。",
-        "expiringoon": "サブスクリプションはまもなく期限切れになります。すべての機能をアクティブに保つには更新してください。",
-        "expired": "プロジェクトは現在アーカイブモードです。すべての機能を再アクティブ化するには更新してください。",
-        "cancelled": "サブスクリプションがキャンセルされており、自動更新されません。",
-        "default": "サブスクリプションステータスを判定できません。"
-      },
-      "expiresOn": "期限日",
-      "daysRemaining": "残り日数",
-      "timeRemaining": "残り時間",
-      "archivalNotice": {
-        "title": "アーカイブモードアクティブ",
-        "message": "プロジェクトは読み取り専用モードです。ストーリーの表示とエクスポートは可能ですが、録音とインタラクションは無効です。"
-      },
-      "actions": {
-        "renew": "サブスクリプションを更新",
-        "extend": "サブスクリプションを延長",
-        "viewDetails": "詳細を表示"
-      },
-      "tips": {
-        "expiringSoon": "💡 ヒント：サービス中断を避けるために今すぐ更新してください。ストーリーは安全なままですが、期限切れ後はインタラクティブ機能が無効になります。",
-        "expired": "🔒 制限付きアクセス：ストーリーの表示とエクスポートは可能ですが、録音とコメントは無効です。完全な機能を復元するには更新してください。"
-      }
-    },
-    "renewal": {
-      "title": "サブスクリプションを更新",
-      "subtitle": "「{projectName}」のサブスクリプションを延長",
-      "currentSubscription": {
-        "title": "現在のサブスクリプション",
-        "expiresOn": "サブスクリプションは{date}に期限切れになります。",
-        "expired": "（期限切れ）"
-      },
-      "choosePackage": "パッケージを選択",
-      "paymentMethod": "支払い方法",
-      "noPaymentMethods": "利用可能な支払い方法がありません",
-      "addPaymentMethod": "支払い方法を追加",
-      "summary": {
-        "title": "更新概要",
-        "package": "パッケージ：",
-        "duration": "期間：",
-        "currentExpiry": "現在の期限：",
-        "newExpiry": "新しい期限：",
-        "total": "合計：",
-        "months": "ヶ月"
-      },
-      "package": {
-        "recommended": "おすすめ",
-        "save": "{percent}%お得",
-        "features": {
-          "projectVouchers": "プロジェクトバウチャー",
-          "facilitatorSeats": "ファシリテーターシート",
-          "storytellerSeats": "ストーリーテラーシート",
-          "interactiveService": "インタラクティブサービス"
-        }
-      },
-      "paymentMethodCard": {
-        "default": "デフォルト",
-        "expires": "期限 {month}/{year}"
-      },
-      "security": "お支払い情報は安全に暗号化されています。業界標準のセキュリティ対策でデータを保護しています。",
-      "actions": {
-        "cancel": "キャンセル",
-        "renew": "サブスクリプションを更新",
-        "processing": "処理中..."
-      },
-      "terms": "サブスクリプションを更新することにより、利用規約とプライバシーポリシーに同意したものとみなされます。キャンセルしない限り、サブスクリプションは自動的に更新されます。"
-    }
+  "errors": {
+    "notFound": "プロジェクトが見つかりません",
+    "accessDenied": "プロジェクトが見つからないか、アクセスが拒否されました",
+    "loadFailed": "プロジェクトデータの読み込みに失敗しました"
   }
 }

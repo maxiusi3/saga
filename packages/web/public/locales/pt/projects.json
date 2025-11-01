@@ -1,22 +1,96 @@
 {
   "list": {
-    "title": "Meus projetos",
+    "title": "Meus Projetos",
     "subtitle": "Gerencie seus projetos de histórias familiares",
-    "createNew": "Criar novo projeto",
-    "createFirst": "Crie seu primeiro projeto",
+    "createNew": "Criar Novo Projeto",
+    "createFirst": "Criar Seu Primeiro Projeto",
     "empty": {
-      "title": "Nenhum projeto ainda",
+      "title": "Ainda não há projetos",
       "subtitle": "Crie seu primeiro projeto de história familiar para começar",
       "emoji": "📖"
     },
     "createCard": {
-      "title": "Criar novo projeto",
-      "subtitle": "Inicie um novo projeto de história familiar"
+      "title": "Criar Novo Projeto",
+      "subtitle": "Iniciar um novo projeto de história familiar"
     },
     "filters": {
-      "all": "Todos os projetos",
+      "all": "Todos os Projetos",
       "active": "Ativo",
       "archived": "Arquivado"
+    },
+    "stats": {
+      "stories": "histórias",
+      "members": "membros"
+    }
+  },
+  "create": {
+    "backToProjects": "Voltar aos Projetos",
+    "title": "Criar Nova Biografia Familiar",
+    "subtitle": "Comece a gravar as histórias preciosas da sua família",
+    "projectDetails": "Detalhes do Projeto",
+    "projectName": "Nome do Projeto",
+    "projectNamePlaceholder": "ex: Histórias da Família Silva, Memórias do Vovô",
+    "projectDescription": "Descrição do Projeto",
+    "projectDescriptionPlaceholder": "Que tipo de histórias você quer gravar? Quem vai participar?",
+    "projectTheme": "Tema do Projeto",
+    "yourRole": "Seu Papel Neste Projeto",
+    "resourceCost": "Custo de Recursos",
+    "currentBalance": "Saldo Atual",
+    "projectVouchers": "Vouchers de Projeto",
+    "facilitatorSeats": "Assentos de Facilitador",
+    "storytellerSeats": "Assentos de Contador",
+    "cancel": "Cancelar",
+    "createProject": "Criar Projeto",
+    "creating": "Criando...",
+    "whatHappensNext": "O que acontece a seguir?",
+    "nextSteps": {
+      "step1": "Você será o facilitador do projeto com acesso completo",
+      "step2": "Convide membros da família como contadores",
+      "step3": "Comece a gravar e organizar histórias",
+      "step4": "Use IA para gerar prompts e resumos"
+    },
+    "themes": {
+      "familyMemories": {
+        "name": "Memórias Familiares",
+        "description": "Capture histórias de diferentes gerações",
+        "emoji": "👨‍👩‍👧‍👦"
+      },
+      "lifeJourney": {
+        "name": "Jornada de Vida",
+        "description": "Documente marcos pessoais e experiências",
+        "emoji": "🛤️"
+      },
+      "culturalHeritage": {
+        "name": "Herança Cultural",
+        "description": "Preserve tradições e histórias culturais",
+        "emoji": "🏛️"
+      },
+      "professionalLegacy": {
+        "name": "Legado Profissional",
+        "description": "Compartilhe experiências de carreira e sabedoria",
+        "emoji": "💼"
+      }
+    },
+    "roles": {
+      "storyteller": {
+        "name": "Contador",
+        "description": "Grave e compartilhe suas histórias",
+        "cost": "1 assento de Contador"
+      },
+      "facilitator": {
+        "name": "Facilitador",
+        "description": "Gerencie o projeto e convide outros",
+        "cost": "1 assento de Facilitador"
+      }
+    },
+    "errors": {
+      "insufficientVouchers": "Vouchers de projeto insuficientes, por favor compre mais recursos",
+      "insufficientSeats": "Assentos de {role} insuficientes, por favor compre mais recursos",
+      "createFailed": "Falha ao criar projeto, por favor tente novamente",
+      "unableToFetchBalance": "Não foi possível obter informações de saldo de recursos"
+    },
+    "success": {
+      "created": "Projeto criado com sucesso!"
     }
   },
   "detail": {
@@ -25,19 +99,19 @@
       "members": "membros"
     },
     "actions": {
-      "exportStories": "Exportar histórias",
-      "manageProject": "Gerenciar projeto",
-      "recordNewStory": "Gravar nova história"
+      "exportStories": "Exportar Histórias",
+      "manageProject": "Gerenciar Projeto",
+      "recordNewStory": "Gravar Nova História"
     },
     "filters": {
       "title": "Filtrar por:",
-      "allStorytellers": "Todos os contadores",
-      "allThemes": "Todos os temas",
+      "allStorytellers": "Todos os Contadores",
+      "allThemes": "Todos os Temas",
       "sortBy": "Ordenar por",
       "sortOptions": {
-        "latest": "Mais recente primeiro",
-        "oldest": "Mais antigo primeiro",
-        "mostComments": "Mais comentários"
+        "latest": "Mais Recentes Primeiro",
+        "oldest": "Mais Antigas Primeiro",
+        "mostComments": "Mais Comentários"
       },
       "themes": {
         "childhood": "Infância",
@@ -46,20 +120,20 @@
       }
     },
     "quickActions": {
-      "title": "Ações rápidas",
-      "exportAll": "Exportar todas as histórias",
-      "archiveSelected": "Arquivar selecionados",
-      "refreshFeed": "Atualizar feed"
+      "title": "Ações Rápidas",
+      "exportAll": "Exportar Todas as Histórias",
+      "archiveSelected": "Arquivar Selecionadas",
+      "refreshFeed": "Atualizar Feed"
     },
     "statistics": {
-      "title": "Estatísticas de histórias",
-      "totalStories": "Total de histórias",
-      "thisMonth": "Este mês",
-      "totalComments": "Total de comentários",
-      "followUpQuestions": "Perguntas de acompanhamento"
+      "title": "Estatísticas de Histórias",
+      "totalStories": "Total de Histórias",
+      "thisMonth": "Este Mês",
+      "totalComments": "Total de Comentários",
+      "followUpQuestions": "Perguntas de Acompanhamento"
     },
     "validityPeriod": {
-      "title": "Período de validade do projeto",
+      "title": "Período de Validade do Projeto",
       "remaining": "restante",
       "days": "dias",
       "started": "Iniciado:",
@@ -72,13 +146,16 @@
       "serviceAvailable": "Serviço interativo disponível"
     },
     "empty": {
-      "title": "Comece sua jornada de histórias",
+      "title": "Comece Sua Jornada de Histórias",
       "storytellerMessage": "Compartilhe suas memórias preciosas e deixe as histórias familiares serem transmitidas",
       "facilitatorMessage": "Convide membros da família para começar a gravar e compartilhar suas histórias",
       "emoji": "🎭",
-      "action": "Grave sua primeira história"
+      "action": "Grave Sua Primeira História"
     },
-    "loadMore": "Carregar mais histórias"
+    "loadMore": "Carregar Mais Histórias",
+    "deleteConfirm": "Tem certeza de que deseja excluir esta história? Esta ação não pode ser desfeita.",
+    "deleteSuccess": "História excluída com sucesso",
+    "deleteFailed": "Falha ao excluir história"
   },
   "status": {
     "new": "Novo",
@@ -90,239 +167,13 @@
   "roles": {
     "owner": "Proprietário",
     "facilitator": "Facilitador",
-    "coFacilitator": "Co-facilitador",
-    "storyteller": "Contador de histórias",
+    "coFacilitator": "Co-Facilitador",
+    "storyteller": "Contador",
     "member": "Membro"
   },
-  "export": {
-    "title": "Exportar dados do projeto",
-    "subtitle": "Exporte seu arquivo de projeto completo, incluindo todas as histórias, fotos e registros de interação",
-    "unavailable": {
-      "title": "Exportação indisponível",
-      "subtitle": "Seu plano de assinatura atual não suporta funcionalidade de exportação de dados",
-      "message": "A exportação de dados requer uma assinatura ativa. Por favor, atualize seu plano ou renove para acessar este recurso.",
-      "actions": {
-        "close": "Fechar",
-        "viewPlans": "Ver planos de assinatura"
-      }
-    },
-    "configure": {
-      "title": "Selecionar conteúdo para exportar",
-      "options": {
-        "audioFiles": {
-          "label": "Arquivos de áudio",
-          "description": "(Gravações originais)"
-        },
-        "transcripts": {
-          "label": "Transcrições",
-          "description": "(Registros de texto gerados por IA)"
-        },
-        "photos": {
-          "label": "Fotos",
-          "description": "(Imagens nas histórias)"
-        },
-        "interactions": {
-          "label": "Registros de interação",
-          "description": "(Comentários e perguntas de acompanhamento)"
-        }
-      },
-      "preview": {
-        "title": "Prévia da exportação",
-        "estimatedSize": "Tamanho estimado do arquivo:",
-        "processingTime": "Tempo estimado de processamento:"
-      },
-      "actions": {
-        "cancel": "Cancelar",
-        "continue": "Continuar"
-      }
-    },
-    "confirm": {
-      "title": "Confirmar exportação",
-      "message": "Vamos criar um arquivo de arquivo completo para o projeto \"{projectName}\". Após a conclusão do processamento, o link de download será enviado para seu e-mail.",
-      "warning": {
-        "title": "Lembrete importante",
-        "items": [
-          "O processo de exportação pode levar vários minutos",
-          "O link de download expirará após 7 dias",
-          "O arquivo de exportação contém informações familiares sensíveis, por favor, mantenha-o seguro"
-        ]
-      },
-      "actions": {
-        "back": "Voltar",
-        "start": "Iniciar exportação",
-        "processing": "Processando..."
-      }
-    },
-    "processing": {
-      "title": "Processando exportação",
-      "message": "Estamos preparando seu arquivo de exportação, por favor, aguarde...",
-      "progress": "Progresso",
-      "tip": "💡 Após a conclusão do processamento, o link de download será enviado para seu e-mail. Você também pode manter esta janela aberta para aguardar a conclusão.",
-      "action": "Continuar em segundo plano"
-    },
-    "complete": {
-      "title": "Exportação concluída!",
-      "message": "Seu arquivo de projeto está pronto. Clique no botão abaixo para baixar, ou verifique seu e-mail para o link de download.",
-      "success": {
-        "title": "Exportação bem-sucedida",
-        "fileSize": "Tamanho do arquivo:"
-      },
-      "actions": {
-        "close": "Fechar",
-        "download": "Baixar arquivo"
-      }
-    }
-  },
-  "subscription": {
-    "status": {
-      "active": "Ativo",
-      "activeInteractive": "Ativo",
-      "activeArchival": "Modo arquivo",
-      "archived": "Arquivado",
-      "expired": "Expirado",
-      "cancelled": "Cancelado",
-      "expiringSoon": "Expirando em breve",
-      "unknown": "Status desconhecido"
-    },
-    "features": {
-      "archival": {
-        "title": "Recursos do modo arquivo",
-        "items": [
-          "Ver todas as histórias coletadas",
-          "Exportar dados completos do projeto",
-          "Navegar pela linha do tempo de histórias",
-          "Pesquisar conteúdo de histórias",
-          "Compartilhar links somente leitura"
-        ]
-      },
-      "interactive": {
-        "title": "Recursos do modo interativo",
-        "items": [
-          "Criar novas histórias",
-          "Convidar membros da família",
-          "Receber prompts guiados por IA",
-          "Interação e comentários em tempo real",
-          "Serviço de transcrição automática",
-          "Todos os recursos do modo arquivo"
-        ]
-      },
-      "disabled": "🔒 Recursos desabilitados:",
-      "available": "✅ Recursos disponíveis:"
-    },
-    "banner": {
-      "expiringSoon": {
-        "title": "Assinatura expirando em breve",
-        "message": "Sua assinatura para \"{projectName}\" expira em {days} dias.",
-        "urgentWarning": "⚠️ Menos de uma semana restante! Renove agora para evitar interrupção do serviço.",
-        "action": "Renovar agora"
-      },
-      "expired": {
-        "title": "Assinatura expirada",
-        "message": "Sua assinatura para \"{projectName}\" expirou. O projeto está agora em modo arquivo.",
-        "info": "Não se preocupe - suas histórias estão seguras. Renove para restaurar recursos de gravação e interação.",
-        "action": "Renovar assinatura"
-      },
-      "archived": {
-        "title": "Projeto em modo arquivo",
-        "message": "\"{projectName}\" está em modo somente leitura. Você pode visualizar e exportar histórias, mas recursos interativos estão desabilitados.",
-        "info": "Todas as suas histórias e dados permanecem acessíveis. Reative para habilitar gravação e interações.",
-        "action": "Reativar projeto"
-      },
-      "timeRemaining": "Tempo restante",
-      "days": "dias"
-    },
-    "archival": {
-      "title": "\"{projectName}\" está em modo arquivo",
-      "cardTitle": "Projeto em modo arquivo",
-      "modalTitle": "Projeto arquivado",
-      "expiredOn": "Sua assinatura expirou em {date}.",
-      "daysInArchival": "Já se passaram {days} dias desde a expiração.",
-      "enteredOn": "\"{projectName}\" entrou em modo arquivo em {date}. Suas histórias e dados estão seguros, mas alguns recursos estão temporariamente desabilitados.",
-      "whatItMeans": {
-        "title": "O que isso significa?",
-        "description": "Suas histórias e dados estão completamente seguros e acessíveis. No entanto, alguns recursos interativos foram temporariamente desabilitados para manter a integridade da experiência de narrativa da sua família."
-      },
-      "actions": {
-        "reactivate": "Reativar projeto",
-        "export": "Exportar dados",
-        "exportAll": "Exportar todos os dados"
-      },
-      "tip": "💡 Boa notícia: Reativar seu projeto restaurará imediatamente todos os recursos e sua família poderá continuar compartilhando histórias de onde parou."
-    },
-    "card": {
-      "statusTitle": {
-        "active": "Assinatura ativa",
-        "expiringSoon": "Assinatura expirando em breve",
-        "expired": "Assinatura expirada",
-        "cancelled": "Assinatura cancelada",
-        "default": "Status da assinatura"
-      },
-      "description": {
-        "active": "Seu projeto está totalmente ativo com todos os recursos disponíveis.",
-        "expiringoon": "Sua assinatura expirará em breve. Renove para manter todos os recursos ativos.",
-        "expired": "Seu projeto está agora em modo arquivo. Renove para reativar todos os recursos.",
-        "cancelled": "Sua assinatura foi cancelada e não será renovada automaticamente.",
-        "default": "Não foi possível determinar o status da assinatura."
-      },
-      "expiresOn": "Expira em",
-      "daysRemaining": "Dias restantes",
-      "timeRemaining": "Tempo restante",
-      "archivalNotice": {
-        "title": "Modo arquivo ativo",
-        "message": "Seu projeto está em modo somente leitura. Você pode visualizar e exportar suas histórias, mas gravação e interações estão desabilitadas."
-      },
-      "actions": {
-        "renew": "Renovar assinatura",
-        "extend": "Estender assinatura",
-        "viewDetails": "Ver detalhes"
-      },
-      "tips": {
-        "expiringSoon": "💡 Dica: Renove agora para evitar qualquer interrupção no serviço. Suas histórias permanecerão seguras, mas recursos interativos serão desabilitados após a expiração.",
-        "expired": "🔒 Acesso limitado: Você ainda pode visualizar e exportar suas histórias, mas gravação e comentários estão desabilitados. Renove para restaurar funcionalidade completa."
-      }
-    },
-    "renewal": {
-      "title": "Renovar assinatura",
-      "subtitle": "Estenda sua assinatura para \"{projectName}\"",
-      "currentSubscription": {
-        "title": "Assinatura atual",
-        "expiresOn": "Sua assinatura expira em {date}.",
-        "expired": "(Expirado)"
-      },
-      "choosePackage": "Escolha seu pacote",
-      "paymentMethod": "Método de pagamento",
-      "noPaymentMethods": "Nenhum método de pagamento disponível",
-      "addPaymentMethod": "Adicionar método de pagamento",
-      "summary": {
-        "title": "Resumo da renovação",
-        "package": "Pacote:",
-        "duration": "Duração:",
-        "currentExpiry": "Expiração atual:",
-        "newExpiry": "Nova expiração:",
-        "total": "Total:",
-        "months": "meses"
-      },
-      "package": {
-        "recommended": "Recomendado",
-        "save": "Economize {percent}%",
-        "features": {
-          "projectVouchers": "Vouchers de projeto",
-          "facilitatorSeats": "Vagas de facilitador",
-          "storytellerSeats": "Vagas de contador",
-          "interactiveService": "Serviço interativo"
-        }
-      },
-      "paymentMethodCard": {
-        "default": "Padrão",
-        "expires": "Expira {month}/{year}"
-      },
-      "security": "Suas informações de pagamento são seguras e criptografadas. Usamos medidas de segurança padrão da indústria para proteger seus dados.",
-      "actions": {
-        "cancel": "Cancelar",
-        "renew": "Renovar assinatura",
-        "processing": "Processando..."
-      },
-      "terms": "Ao renovar sua assinatura, você concorda com nossos Termos de Serviço e Política de Privacidade. Sua assinatura será renovada automaticamente a menos que cancelada."
-    }
+  "errors": {
+    "notFound": "Projeto não encontrado",
+    "accessDenied": "Projeto não encontrado ou acesso negado",
+    "loadFailed": "Falha ao carregar dados do projeto"
   }
 }
