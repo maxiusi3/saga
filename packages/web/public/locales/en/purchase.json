@@ -1,0 +1,78 @@
+{
+  "title": "Purchase Resources",
+  "subtitle": "Get more resources to continue your family storytelling journey",
+  "packages": {
+    "title": "Choose Your Package",
+    "starter": {
+      "name": "Starter",
+      "price": "$29",
+      "period": "/month",
+      "features": [
+        "1 Project Voucher",
+        "2 Facilitator Seats",
+        "5 Storyteller Seats",
+        "AI-powered prompts",
+        "Unlimited stories",
+        "Basic support"
+      ]
+    },
+    "family": {
+      "name": "Family",
+      "price": "$49",
+      "period": "/month",
+      "popular": "Most Popular",
+      "features": [
+        "3 Project Vouchers",
+        "5 Facilitator Seats",
+        "15 Storyteller Seats",
+        "AI-powered prompts",
+        "Unlimited stories",
+        "Priority support",
+        "Export features"
+      ]
+    },
+    "legacy": {
+      "name": "Legacy",
+      "price": "$99",
+      "period": "/month",
+      "features": [
+        "10 Project Vouchers",
+        "Unlimited Facilitator Seats",
+        "Unlimited Storyteller Seats",
+        "AI-powered prompts",
+        "Unlimited stories",
+        "Premium support",
+        "Advanced export",
+        "Custom branding"
+      ]
+    }
+  },
+  "currentBalance": {
+    "title": "Current Balance",
+    "projectVouchers": "Project Vouchers",
+    "facilitatorSeats": "Facilitator Seats",
+    "storytellerSeats": "Storyteller Seats"
+  },
+  "payment": {
+    "title": "Payment Method",
+    "addCard": "Add Payment Method",
+    "cardNumber": "Card Number",
+    "expiryDate": "Expiry Date",
+    "cvv": "CVV",
+    "billingAddress": "Billing Address"
+  },
+  "actions": {
+    "purchase": "Purchase Now",
+    "purchasing": "Processing...",
+    "cancel": "Cancel"
+  },
+  "success": {
+    "title": "Purchase Successful!",
+    "message": "Your resources have been added to your account.",
+    "viewDashboard": "View Dashboard"
+  },
+  "errors": {
+    "paymentFailed": "Payment failed. Please try again.",
+    "invalidCard": "Invalid card information"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "title": "Comprar Recursos",
+  "subtitle": "Obtén más recursos para continuar tu viaje de historias familiares",
+  "packages": {
+    "title": "Elige Tu Paquete",
+    "starter": {
+      "name": "Inicial",
+      "price": "$29",
+      "period": "/mes",
+      "features": [
+        "1 Vale de Proyecto",
+        "2 Asientos de Facilitador",
+        "5 Asientos de Narrador",
+        "Indicaciones con IA",
+        "Historias ilimitadas",
+        "Soporte básico"
+      ]
+    },
+    "family": {
+      "name": "Familiar",
+      "price": "$49",
+      "period": "/mes",
+      "popular": "Más Popular",
+      "features": [
+        "3 Vales de Proyecto",
+        "5 Asientos de Facilitador",
+        "15 Asientos de Narrador",
+        "Indicaciones con IA",
+        "Historias ilimitadas",
+        "Soporte prioritario",
+        "Funciones de exportación"
+      ]
+    },
+    "legacy": {
+      "name": "Legado",
+      "price": "$99",
+      "period": "/mes",
+      "features": [
+        "10 Vales de Proyecto",
+        "Asientos de Facilitador ilimitados",
+        "Asientos de Narrador ilimitados",
+        "Indicaciones con IA",
+        "Historias ilimitadas",
+        "Soporte premium",
+        "Exportación avanzada",
+        "Marca personalizada"
+      ]
+    }
+  },
+  "currentBalance": {
+    "title": "Saldo Actual",
+    "projectVouchers": "Vales de Proyecto",
+    "facilitatorSeats": "Asientos de Facilitador",
+    "storytellerSeats": "Asientos de Narrador"
+  },
+  "payment": {
+    "title": "Método de Pago",
+    "addCard": "Agregar Método de Pago",
+    "cardNumber": "Número de Tarjeta",
+    "expiryDate": "Fecha de Vencimiento",
+    "cvv": "CVV",
+    "billingAddress": "Dirección de Facturación"
+  },
+  "actions": {
+    "purchase": "Comprar Ahora",
+    "purchasing": "Procesando...",
+    "cancel": "Cancelar"
+  },
+  "success": {
+    "title": "¡Compra Exitosa!",
+    "message": "Los recursos se han agregado a tu cuenta.",
+    "viewDashboard": "Ver Panel"
+  },
+  "errors": {
+    "paymentFailed": "Pago fallido. Por favor intenta de nuevo.",
+    "invalidCard": "Información de tarjeta inválida"
+  }
+}

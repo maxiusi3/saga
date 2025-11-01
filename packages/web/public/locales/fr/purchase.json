@@ -1,0 +1,78 @@
+{
+  "title": "Acheter des Ressources",
+  "subtitle": "Obtenez plus de ressources pour continuer votre voyage de récits familiaux",
+  "packages": {
+    "title": "Choisissez Votre Forfait",
+    "starter": {
+      "name": "Débutant",
+      "price": "$29",
+      "period": "/mois",
+      "features": [
+        "1 Bon de Projet",
+        "2 Sièges de Facilitateur",
+        "5 Sièges de Conteur",
+        "Invites alimentées par IA",
+        "Histoires illimitées",
+        "Support de base"
+      ]
+    },
+    "family": {
+      "name": "Familial",
+      "price": "$49",
+      "period": "/mois",
+      "popular": "Le Plus Populaire",
+      "features": [
+        "3 Bons de Projet",
+        "5 Sièges de Facilitateur",
+        "15 Sièges de Conteur",
+        "Invites alimentées par IA",
+        "Histoires illimitées",
+        "Support prioritaire",
+        "Fonctions d'exportation"
+      ]
+    },
+    "legacy": {
+      "name": "Héritage",
+      "price": "$99",
+      "period": "/mois",
+      "features": [
+        "10 Bons de Projet",
+        "Sièges de Facilitateur illimités",
+        "Sièges de Conteur illimités",
+        "Invites alimentées par IA",
+        "Histoires illimitées",
+        "Support premium",
+        "Exportation avancée",
+        "Marque personnalisée"
+      ]
+    }
+  },
+  "currentBalance": {
+    "title": "Solde Actuel",
+    "projectVouchers": "Bons de Projet",
+    "facilitatorSeats": "Sièges de Facilitateur",
+    "storytellerSeats": "Sièges de Conteur"
+  },
+  "payment": {
+    "title": "Méthode de Paiement",
+    "addCard": "Ajouter une Méthode de Paiement",
+    "cardNumber": "Numéro de Carte",
+    "expiryDate": "Date d'Expiration",
+    "cvv": "CVV",
+    "billingAddress": "Adresse de Facturation"
+  },
+  "actions": {
+    "purchase": "Acheter Maintenant",
+    "purchasing": "Traitement...",
+    "cancel": "Annuler"
+  },
+  "success": {
+    "title": "Achat Réussi !",
+    "message": "Les ressources ont été ajoutées à votre compte.",
+    "viewDashboard": "Voir le Tableau de Bord"
+  },
+  "errors": {
+    "paymentFailed": "Paiement échoué. Veuillez réessayer.",
+    "invalidCard": "Informations de carte invalides"
+  }
+}

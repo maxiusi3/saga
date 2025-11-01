@@ -1,0 +1,78 @@
+{
+  "title": "리소스 구매",
+  "subtitle": "가족 이야기 여정을 계속하기 위해 더 많은 리소스를 얻으세요",
+  "packages": {
+    "title": "패키지 선택",
+    "starter": {
+      "name": "스타터",
+      "price": "$29",
+      "period": "/월",
+      "features": [
+        "프로젝트 바우처 1개",
+        "진행자 좌석 2개",
+        "이야기꾼 좌석 5개",
+        "AI 기반 프롬프트",
+        "무제한 이야기",
+        "기본 지원"
+      ]
+    },
+    "family": {
+      "name": "패밀리",
+      "price": "$49",
+      "period": "/월",
+      "popular": "가장 인기",
+      "features": [
+        "프로젝트 바우처 3개",
+        "진행자 좌석 5개",
+        "이야기꾼 좌석 15개",
+        "AI 기반 프롬프트",
+        "무제한 이야기",
+        "우선 지원",
+        "내보내기 기능"
+      ]
+    },
+    "legacy": {
+      "name": "레거시",
+      "price": "$99",
+      "period": "/월",
+      "features": [
+        "프로젝트 바우처 10개",
+        "무제한 진행자 좌석",
+        "무제한 이야기꾼 좌석",
+        "AI 기반 프롬프트",
+        "무제한 이야기",
+        "프리미엄 지원",
+        "고급 내보내기",
+        "맞춤 브랜딩"
+      ]
+    }
+  },
+  "currentBalance": {
+    "title": "현재 잔액",
+    "projectVouchers": "프로젝트 바우처",
+    "facilitatorSeats": "진행자 좌석",
+    "storytellerSeats": "이야기꾼 좌석"
+  },
+  "payment": {
+    "title": "결제 방법",
+    "addCard": "결제 방법 추가",
+    "cardNumber": "카드 번호",
+    "expiryDate": "만료일",
+    "cvv": "CVV",
+    "billingAddress": "청구 주소"
+  },
+  "actions": {
+    "purchase": "지금 구매",
+    "purchasing": "처리 중...",
+    "cancel": "취소"
+  },
+  "success": {
+    "title": "구매 성공!",
+    "message": "리소스가 계정에 추가되었습니다.",
+    "viewDashboard": "대시보드 보기"
+  },
+  "errors": {
+    "paymentFailed": "결제 실패. 다시 시도하세요.",
+    "invalidCard": "잘못된 카드 정보"
+  }
+}

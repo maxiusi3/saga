@@ -1,0 +1,78 @@
+{
+  "title": "购买资源",
+  "subtitle": "获取更多资源以继续您的家族故事之旅",
+  "packages": {
+    "title": "选择您的套餐",
+    "starter": {
+      "name": "入门版",
+      "price": "$29",
+      "period": "/月",
+      "features": [
+        "1个项目代金券",
+        "2个协调员席位",
+        "5个讲述者席位",
+        "AI驱动的提示",
+        "无限故事",
+        "基础支持"
+      ]
+    },
+    "family": {
+      "name": "家庭版",
+      "price": "$49",
+      "period": "/月",
+      "popular": "最受欢迎",
+      "features": [
+        "3个项目代金券",
+        "5个协调员席位",
+        "15个讲述者席位",
+        "AI驱动的提示",
+        "无限故事",
+        "优先支持",
+        "导出功能"
+      ]
+    },
+    "legacy": {
+      "name": "传承版",
+      "price": "$99",
+      "period": "/月",
+      "features": [
+        "10个项目代金券",
+        "无限协调员席位",
+        "无限讲述者席位",
+        "AI驱动的提示",
+        "无限故事",
+        "高级支持",
+        "高级导出",
+        "自定义品牌"
+      ]
+    }
+  },
+  "currentBalance": {
+    "title": "当前余额",
+    "projectVouchers": "项目代金券",
+    "facilitatorSeats": "协调员席位",
+    "storytellerSeats": "讲述者席位"
+  },
+  "payment": {
+    "title": "支付方式",
+    "addCard": "添加支付方式",
+    "cardNumber": "卡号",
+    "expiryDate": "到期日期",
+    "cvv": "CVV",
+    "billingAddress": "账单地址"
+  },
+  "actions": {
+    "purchase": "立即购买",
+    "purchasing": "处理中...",
+    "cancel": "取消"
+  },
+  "success": {
+    "title": "购买成功！",
+    "message": "资源已添加到您的账户。",
+    "viewDashboard": "查看控制台"
+  },
+  "errors": {
+    "paymentFailed": "支付失败。请重试。",
+    "invalidCard": "无效的卡信息"
+  }
+}

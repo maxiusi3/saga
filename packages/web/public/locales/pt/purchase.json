@@ -1,0 +1,78 @@
+{
+  "title": "Comprar Recursos",
+  "subtitle": "Obtenha mais recursos para continuar sua jornada de histórias familiares",
+  "packages": {
+    "title": "Escolha Seu Pacote",
+    "starter": {
+      "name": "Inicial",
+      "price": "$29",
+      "period": "/mês",
+      "features": [
+        "1 Voucher de Projeto",
+        "2 Assentos de Facilitador",
+        "5 Assentos de Contador",
+        "Prompts com IA",
+        "Histórias ilimitadas",
+        "Suporte básico"
+      ]
+    },
+    "family": {
+      "name": "Familiar",
+      "price": "$49",
+      "period": "/mês",
+      "popular": "Mais Popular",
+      "features": [
+        "3 Vouchers de Projeto",
+        "5 Assentos de Facilitador",
+        "15 Assentos de Contador",
+        "Prompts com IA",
+        "Histórias ilimitadas",
+        "Suporte prioritário",
+        "Recursos de exportação"
+      ]
+    },
+    "legacy": {
+      "name": "Legado",
+      "price": "$99",
+      "period": "/mês",
+      "features": [
+        "10 Vouchers de Projeto",
+        "Assentos de Facilitador ilimitados",
+        "Assentos de Contador ilimitados",
+        "Prompts com IA",
+        "Histórias ilimitadas",
+        "Suporte premium",
+        "Exportação avançada",
+        "Marca personalizada"
+      ]
+    }
+  },
+  "currentBalance": {
+    "title": "Saldo Atual",
+    "projectVouchers": "Vouchers de Projeto",
+    "facilitatorSeats": "Assentos de Facilitador",
+    "storytellerSeats": "Assentos de Contador"
+  },
+  "payment": {
+    "title": "Método de Pagamento",
+    "addCard": "Adicionar Método de Pagamento",
+    "cardNumber": "Número do Cartão",
+    "expiryDate": "Data de Validade",
+    "cvv": "CVV",
+    "billingAddress": "Endereço de Cobrança"
+  },
+  "actions": {
+    "purchase": "Comprar Agora",
+    "purchasing": "Processando...",
+    "cancel": "Cancelar"
+  },
+  "success": {
+    "title": "Compra Bem-sucedida!",
+    "message": "Os recursos foram adicionados à sua conta.",
+    "viewDashboard": "Ver Painel"
+  },
+  "errors": {
+    "paymentFailed": "Pagamento falhou. Por favor tente novamente.",
+    "invalidCard": "Informações de cartão inválidas"
+  }
+}
