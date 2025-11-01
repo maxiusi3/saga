@@ -1,113 +1,31 @@
 {
-  "interface": {
-    "title": "Record Your Story",
-    "subtitle": "Share your memories with AI-powered guidance",
-    "recordYourStory": "Record Your Story",
-    "maxDuration": "Maximum duration: {{duration}}",
-    "duration": "/ {{duration}}"
-  },
-  "states": {
-    "readyToRecord": "Ready to Record",
-    "recording": "Recording...",
-    "paused": "Paused",
-    "reviewRecording": "Review Recording",
-    "uploading": "Uploading...",
-    "uploadComplete": "Upload Complete!",
-    "error": "Error",
-    "recordingError": "Recording Error"
-  },
-  "buttons": {
-    "startRecording": "Start Recording",
-    "pause": "Pause",
-    "resume": "Resume",
-    "stop": "Stop",
-    "delete": "Delete",
-    "reRecord": "Re-record",
-    "sendToFamily": "Send to Family",
-    "recordAnotherStory": "Record Another Story",
-    "tryAgain": "Try Again",
-    "startOver": "Start Over",
-    "saveStory": "Save Story",
-    "saving": "Saving...",
-    "choosePhoto": "Choose Photo"
-  },
-  "recording": {
-    "pressAndHold": "Press and hold to record your story. Maximum duration: {{duration}}",
-    "recordingComplete": "Recording Complete!",
-    "reviewInstructions": "Review your recording and add a photo if you'd like.",
-    "yourRecording": "Your Recording",
-    "addPhoto": "Add a Photo (Optional)",
-    "uploadingYourStory": "Uploading Your Story...",
-    "percentComplete": "{{percent}}% complete",
-    "storyUploadedSuccessfully": "Story Uploaded Successfully!",
-    "familyWillBeNotified": "Your family will be notified about your new story."
-  },
-  "webSpeech": {
-    "notSupported": "Your browser does not support speech recognition. Please use Chrome, Edge, or Safari browser.",
-    "browserNotSupported": "Browser does not support speech recognition",
-    "useSupportedBrowser": "Please use Chrome, Edge or Safari browser for the best experience",
-    "speechRecognition": "Speech Recognition",
-    "readyToRecord": "Ready to Record",
-    "recording": "Recording",
-    "paused": "Paused",
-    "startRecording": "Start Recording",
-    "continueRecording": "Continue",
-    "realtimeTranscription": "Real-time Transcription:",
-    "error": "Error"
-  },
-  "errors": {
-    "microphoneAccess": "Failed to access microphone. Please check your permissions.",
-    "uploadFailed": "Failed to upload recording. Please try again.",
-    "noSpeechDetected": "No speech detected, please try again",
-    "audioCapture": "Unable to access microphone, please check permission settings",
-    "permissionDenied": "Microphone permission denied, please allow microphone access",
-    "networkError": "Network connection error, please check network connection",
-    "serviceNotAllowed": "Speech recognition service unavailable",
-    "speechRecognitionError": "Speech recognition error: {{error}}",
-    "startRecordingFailed": "Failed to start recording",
-    "microphonePermissionDenied": "Microphone permission denied, please allow microphone access",
-    "microphoneNotFound": "Microphone device not found, please connect a microphone",
-    "resumeFailed": "Failed to resume recording",
-    "maxDurationReached": "Recording has reached maximum duration of {{minutes}} minutes, automatically stopped",
-    "noValidSpeech": "No valid speech detected",
-    "restartFailed": "Failed to restart speech recognition"
-  },
-  "success": {
-    "recordingStarted": "Speech recognition recording started",
-    "recordingPaused": "Recording paused",
-    "recordingResumed": "Recording resumed",
-    "recordingComplete": "Recording complete",
-    "answerRecorded": "Answer recorded successfully!",
-    "storySaved": "Story saved successfully!",
-    "aiProcessingComplete": "AI processing completed!",
-    "audioProcessed": "Audio processed successfully"
+  "title": "Record Your Story",
+  "status": {
+    "recording": "RECORDING",
+    "recordingComplete": "Recording Complete",
+    "processing": "Processing...",
+    "uploading": "Uploading..."
   },
   "tips": {
-    "ensureMicrophone": "Please ensure microphone permission is enabled",
-    "quietEnvironment": "Record in a quiet environment for best recognition results",
-    "supportedLanguages": "Supports multiple languages including Chinese and English"
+    "title": "Recording Tips",
+    "quietEnvironment": "Find a quiet environment for the best audio quality",
+    "speakClearly": "Speak clearly and at a comfortable pace",
+    "stayClose": "Stay close to the microphone",
+    "testFirst": "Test your audio before starting"
   },
-  "ai": {
-    "processingYourStory": "AI is processing your story...",
-    "processingProgress": "Processing Progress",
-    "aiIsWorking": "Our AI is working on your story:",
-    "transcribingAudio": "Transcribing your audio",
-    "generatingTitle": "Generating a meaningful title",
-    "creatingSummary": "Creating a summary",
-    "preparingFollowup": "Preparing follow-up questions",
-    "generatedContent": "AI Generated Content",
-    "confidence": "{{percent}}% confidence",
-    "demoMode": "Demo Mode",
-    "generatedTitle": "Generated Title:",
-    "storySummary": "Story Summary:",
-    "transcriptPreview": "Transcript Preview:",
-    "suggestedFollowup": "Suggested Follow-up Questions:",
-    "moreQuestionsAvailable": "+{{count}} more questions available",
-    "processingFailed": "AI processing failed, please try again",
-    "processingFailedCanSave": "AI processing failed. You can still save your story manually."
+  "actions": {
+    "startRecording": "Start Recording",
+    "stopRecording": "Stop Recording",
+    "pauseRecording": "Pause Recording",
+    "resumeRecording": "Resume Recording",
+    "saveRecording": "Save Recording",
+    "discardRecording": "Discard Recording",
+    "playback": "Playback",
+    "reRecord": "Re-record"
   },
-  "prompt": {
-    "chapter": "Chapter",
-    "estimatedTime": "Estimated time: {{minutes}} minutes"
+  "optimization": {
+    "title": "Recording Optimization",
+    "enableOptimization": "Enable Optimization",
+    "disableOptimization": "Disable Optimization"
   }
 }

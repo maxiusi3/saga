@@ -1,113 +1,31 @@
 {
-  "interface": {
-    "title": "錄製您的故事",
-    "subtitle": "在 AI 引導下分享您的記憶",
-    "recordYourStory": "錄製您的故事",
-    "maxDuration": "最長時長：{{duration}}",
-    "duration": "/ {{duration}}"
-  },
-  "states": {
-    "readyToRecord": "準備錄製",
-    "recording": "錄製中...",
-    "paused": "已暫停",
-    "reviewRecording": "檢視錄音",
-    "uploading": "上傳中...",
-    "uploadComplete": "上傳完成！",
-    "error": "錯誤",
-    "recordingError": "錄製錯誤"
-  },
-  "buttons": {
-    "startRecording": "開始錄製",
-    "pause": "暫停",
-    "resume": "繼續",
-    "stop": "停止",
-    "delete": "刪除",
-    "reRecord": "重新錄製",
-    "sendToFamily": "發送給家人",
-    "recordAnotherStory": "錄製另一個故事",
-    "tryAgain": "重試",
-    "startOver": "重新開始",
-    "saveStory": "儲存故事",
-    "saving": "儲存中...",
-    "choosePhoto": "選擇照片"
-  },
-  "recording": {
-    "pressAndHold": "按住以錄製您的故事。最長時長：{{duration}}",
-    "recordingComplete": "錄製完成！",
-    "reviewInstructions": "檢視您的錄音，如需要可添加照片。",
-    "yourRecording": "您的錄音",
-    "addPhoto": "新增照片（選填）",
-    "uploadingYourStory": "正在上傳您的故事...",
-    "percentComplete": "{{percent}}% 完成",
-    "storyUploadedSuccessfully": "故事上傳成功！",
-    "familyWillBeNotified": "您的家人將收到您新故事的通知。"
-  },
-  "webSpeech": {
-    "notSupported": "您的瀏覽器不支援語音識別。請使用 Chrome、Edge 或 Safari 瀏覽器。",
-    "browserNotSupported": "瀏覽器不支援語音識別",
-    "useSupportedBrowser": "請使用 Chrome、Edge 或 Safari 瀏覽器以獲得最佳體驗",
-    "speechRecognition": "語音識別",
-    "readyToRecord": "準備錄製",
+  "title": "錄製你的故事",
+  "status": {
     "recording": "錄製中",
-    "paused": "已暫停",
-    "startRecording": "開始錄製",
-    "continueRecording": "繼續",
-    "realtimeTranscription": "即時轉錄：",
-    "error": "錯誤"
-  },
-  "errors": {
-    "microphoneAccess": "無法存取麥克風。請檢查您的權限。",
-    "uploadFailed": "錄音上傳失敗。請重試。",
-    "noSpeechDetected": "未檢測到語音，請重試",
-    "audioCapture": "無法存取麥克風，請檢查權限設定",
-    "permissionDenied": "麥克風權限被拒絕，請允許麥克風存取",
-    "networkError": "網路連線錯誤，請檢查網路連線",
-    "serviceNotAllowed": "語音識別服務不可用",
-    "speechRecognitionError": "語音識別錯誤：{{error}}",
-    "startRecordingFailed": "開始錄製失敗",
-    "microphonePermissionDenied": "麥克風權限被拒絕，請允許麥克風存取",
-    "microphoneNotFound": "未找到麥克風裝置，請連接麥克風",
-    "resumeFailed": "繼續錄製失敗",
-    "maxDurationReached": "錄製已達到最長時長 {{minutes}} 分鐘，自動停止",
-    "noValidSpeech": "未檢測到有效語音",
-    "restartFailed": "重新啟動語音識別失敗"
-  },
-  "success": {
-    "recordingStarted": "語音識別錄製已開始",
-    "recordingPaused": "錄製已暫停",
-    "recordingResumed": "錄製已繼續",
     "recordingComplete": "錄製完成",
-    "answerRecorded": "回答錄製成功！",
-    "storySaved": "故事儲存成功！",
-    "aiProcessingComplete": "AI 處理完成！",
-    "audioProcessed": "音訊處理成功"
+    "processing": "處理中...",
+    "uploading": "上傳中..."
   },
   "tips": {
-    "ensureMicrophone": "請確保已啟用麥克風權限",
-    "quietEnvironment": "在安靜的環境中錄製以獲得最佳識別效果",
-    "supportedLanguages": "支援包括中文和英文在內的多種語言"
+    "title": "錄製提示",
+    "quietEnvironment": "找一個安靜的環境以獲得最佳音質",
+    "speakClearly": "清晰地說話，保持舒適的語速",
+    "stayClose": "靠近麥克風",
+    "testFirst": "開始前先測試音訊"
   },
-  "ai": {
-    "processingYourStory": "AI 正在處理您的故事...",
-    "processingProgress": "處理進度",
-    "aiIsWorking": "我們的 AI 正在處理您的故事：",
-    "transcribingAudio": "轉錄您的音訊",
-    "generatingTitle": "生成有意義的標題",
-    "creatingSummary": "建立摘要",
-    "preparingFollowup": "準備後續問題",
-    "generatedContent": "AI 生成的內容",
-    "confidence": "{{percent}}% 信心度",
-    "demoMode": "演示模式",
-    "generatedTitle": "生成的標題：",
-    "storySummary": "故事摘要：",
-    "transcriptPreview": "文字記錄預覽：",
-    "suggestedFollowup": "建議的後續問題：",
-    "moreQuestionsAvailable": "+{{count}} 個更多問題可用",
-    "processingFailed": "AI 處理失敗，請重試",
-    "processingFailedCanSave": "AI 處理失敗。您仍可以手動儲存您的故事。"
+  "actions": {
+    "startRecording": "開始錄製",
+    "stopRecording": "停止錄製",
+    "pauseRecording": "暫停錄製",
+    "resumeRecording": "繼續錄製",
+    "saveRecording": "儲存錄製",
+    "discardRecording": "放棄錄製",
+    "playback": "播放",
+    "reRecord": "重新錄製"
   },
-  "prompt": {
-    "chapter": "章節",
-    "estimatedTime": "預估時間：{{minutes}} 分鐘"
+  "optimization": {
+    "title": "錄製優化",
+    "enableOptimization": "啟用優化",
+    "disableOptimization": "停用優化"
   }
 }

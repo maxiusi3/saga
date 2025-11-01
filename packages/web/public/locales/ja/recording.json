@@ -1,113 +1,31 @@
 {
-  "interface": {
-    "title": "あなたのストーリーを録音",
-    "subtitle": "AIガイダンスで思い出を共有",
-    "recordYourStory": "ストーリーを録音",
-    "maxDuration": "最大時間：{{duration}}",
-    "duration": "/ {{duration}}"
-  },
-  "states": {
-    "readyToRecord": "録音準備完了",
-    "recording": "録音中...",
-    "paused": "一時停止",
-    "reviewRecording": "録音を確認",
-    "uploading": "アップロード中...",
-    "uploadComplete": "アップロード完了！",
-    "error": "エラー",
-    "recordingError": "録音エラー"
-  },
-  "buttons": {
-    "startRecording": "録音開始",
-    "pause": "一時停止",
-    "resume": "再開",
-    "stop": "停止",
-    "delete": "削除",
-    "reRecord": "再録音",
-    "sendToFamily": "家族に送信",
-    "recordAnotherStory": "別のストーリーを録音",
-    "tryAgain": "再試行",
-    "startOver": "最初からやり直す",
-    "saveStory": "ストーリーを保存",
-    "saving": "保存中...",
-    "choosePhoto": "写真を選択"
-  },
-  "recording": {
-    "pressAndHold": "長押ししてストーリーを録音します。最大時間：{{duration}}",
-    "recordingComplete": "録音完了！",
-    "reviewInstructions": "録音を確認し、必要に応じて写真を追加してください。",
-    "yourRecording": "あなたの録音",
-    "addPhoto": "写真を追加（オプション）",
-    "uploadingYourStory": "ストーリーをアップロード中...",
-    "percentComplete": "{{percent}}% 完了",
-    "storyUploadedSuccessfully": "ストーリーのアップロードに成功しました！",
-    "familyWillBeNotified": "あなたの家族は新しいストーリーについて通知を受け取ります。"
-  },
-  "webSpeech": {
-    "notSupported": "お使いのブラウザは音声認識をサポートしていません。Chrome、Edge、またはSafariブラウザを使用してください。",
-    "browserNotSupported": "ブラウザは音声認識をサポートしていません",
-    "useSupportedBrowser": "最高の体験のためにChrome、Edge、またはSafariブラウザを使用してください",
-    "speechRecognition": "音声認識",
-    "readyToRecord": "録音準備完了",
+  "title": "ストーリーを録音",
+  "status": {
     "recording": "録音中",
-    "paused": "一時停止",
-    "startRecording": "録音開始",
-    "continueRecording": "続ける",
-    "realtimeTranscription": "リアルタイム文字起こし：",
-    "error": "エラー"
-  },
-  "errors": {
-    "microphoneAccess": "マイクにアクセスできませんでした。権限を確認してください。",
-    "uploadFailed": "録音のアップロードに失敗しました。もう一度お試しください。",
-    "noSpeechDetected": "音声が検出されませんでした。もう一度お試しください",
-    "audioCapture": "マイクにアクセスできません。権限設定を確認してください",
-    "permissionDenied": "マイクの権限が拒否されました。マイクへのアクセスを許可してください",
-    "networkError": "ネットワーク接続エラーです。ネットワーク接続を確認してください",
-    "serviceNotAllowed": "音声認識サービスが利用できません",
-    "speechRecognitionError": "音声認識エラー：{{error}}",
-    "startRecordingFailed": "録音の開始に失敗しました",
-    "microphonePermissionDenied": "マイクの権限が拒否されました。マイクへのアクセスを許可してください",
-    "microphoneNotFound": "マイクデバイスが見つかりません。マイクを接続してください",
-    "resumeFailed": "録音の再開に失敗しました",
-    "maxDurationReached": "録音が最大時間{{minutes}}分に達したため、自動的に停止しました",
-    "noValidSpeech": "有効な音声が検出されませんでした",
-    "restartFailed": "音声認識の再起動に失敗しました"
-  },
-  "success": {
-    "recordingStarted": "音声認識録音が開始されました",
-    "recordingPaused": "録音が一時停止されました",
-    "recordingResumed": "録音が再開されました",
     "recordingComplete": "録音完了",
-    "answerRecorded": "回答が正常に録音されました！",
-    "storySaved": "ストーリーが正常に保存されました！",
-    "aiProcessingComplete": "AI処理が完了しました！",
-    "audioProcessed": "音声が正常に処理されました"
+    "processing": "処理中...",
+    "uploading": "アップロード中..."
   },
   "tips": {
-    "ensureMicrophone": "マイクの権限が有効になっていることを確認してください",
-    "quietEnvironment": "最良の認識結果を得るために静かな環境で録音してください",
-    "supportedLanguages": "中国語と英語を含む複数の言語をサポートしています"
+    "title": "録音のヒント",
+    "quietEnvironment": "最高の音質のために静かな環境を見つけてください",
+    "speakClearly": "はっきりと快適なペースで話してください",
+    "stayClose": "マイクの近くにいてください",
+    "testFirst": "開始前にオーディオをテストしてください"
   },
-  "ai": {
-    "processingYourStory": "AIがあなたのストーリーを処理中...",
-    "processingProgress": "処理の進行状況",
-    "aiIsWorking": "私たちのAIがあなたのストーリーを処理中：",
-    "transcribingAudio": "音声を文字起こし中",
-    "generatingTitle": "意味のあるタイトルを生成中",
-    "creatingSummary": "要約を作成中",
-    "preparingFollowup": "フォローアップ質問を準備中",
-    "generatedContent": "AI生成コンテンツ",
-    "confidence": "{{percent}}% 信頼度",
-    "demoMode": "デモモード",
-    "generatedTitle": "生成されたタイトル：",
-    "storySummary": "ストーリーの要約：",
-    "transcriptPreview": "文字起こしプレビュー：",
-    "suggestedFollowup": "提案されたフォローアップ質問：",
-    "moreQuestionsAvailable": "+{{count}}個の追加質問が利用可能",
-    "processingFailed": "AI処理に失敗しました。もう一度お試しください",
-    "processingFailedCanSave": "AI処理に失敗しました。手動でストーリーを保存することはできます。"
+  "actions": {
+    "startRecording": "録音開始",
+    "stopRecording": "録音停止",
+    "pauseRecording": "録音一時停止",
+    "resumeRecording": "録音再開",
+    "saveRecording": "録音を保存",
+    "discardRecording": "録音を破棄",
+    "playback": "再生",
+    "reRecord": "再録音"
   },
-  "prompt": {
-    "chapter": "チャプター",
-    "estimatedTime": "推定時間：{{minutes}}分"
+  "optimization": {
+    "title": "録音最適化",
+    "enableOptimization": "最適化を有効にする",
+    "disableOptimization": "最適化を無効にする"
   }
 }

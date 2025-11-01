@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress'
 import { Mic, Square, Pause, Play, RotateCcw, Wifi, WifiOff, Zap } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
+import { useTranslations } from 'next-intl'
 
 interface SmartRecorderProps {
   onRecordingComplete: (result: RecordingResult) => void
@@ -34,6 +35,7 @@ export function SmartRecorder({
   className = '',
   promptText
 }: SmartRecorderProps) {
+  const t = useTranslations('recording')
   // States
   const [recordingState, setRecordingState] = useState<RecordingState>('idle')
   const [recordingMethod, setRecordingMethod] = useState<RecordingMethod>('auto')
@@ -376,7 +378,7 @@ export function SmartRecorder({
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg font-semibold text-foreground">Record Your Story</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('title')}</h3>
           </div>
           <div className="flex items-center gap-2">
             {getNetworkIcon()}
