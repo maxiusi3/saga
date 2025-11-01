@@ -16,5 +16,15 @@
     "manageProject": "프로젝트 관리",
     "noStories": "아직 스토리가 없습니다",
     "createFirst": "첫 번째 스토리 만들기"
+  },
+  "detail": {
+    "backToStories": "스토리로 돌아가기",
+    "aiSuggestedQuestions": "AI 제안 질문",
+    "addToFavorites": "즐겨찾기에 추가",
+    "downloadAudio": "오디오 다운로드",
+    "transcript": "대본",
+    "interactions": "상호작용",
+    "storyActions": "스토리 작업",
+    "recorded": "녹음일"
   }
 }

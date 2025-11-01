@@ -16,5 +16,15 @@
     "manageProject": "Manage Project",
     "noStories": "No stories yet",
     "createFirst": "Create your first story"
+  },
+  "detail": {
+    "backToStories": "Back to Stories",
+    "aiSuggestedQuestions": "AI Suggested Questions",
+    "addToFavorites": "Add to Favorites",
+    "downloadAudio": "Download Audio",
+    "transcript": "Transcript",
+    "interactions": "Interactions",
+    "storyActions": "Story Actions",
+    "recorded": "Recorded"
   }
 }

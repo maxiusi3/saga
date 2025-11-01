@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
@@ -21,6 +21,7 @@ export default function StoryDetailPage() {
   const params = useParams()
   const { user } = useAuthStore()
   const locale = useLocale()
+  const t = useTranslations('stories')
   const withLocale = (path: string) => `/${locale}${path}`
   const projectId = params.id as string
   const storyId = params.storyId as string
@@ -165,7 +166,7 @@ export default function StoryDetailPage() {
           <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
             <EnhancedButton variant="secondary" size="sm">
               <ChevronLeft className="h-4 w-4 mr-2" />
-              Back to Stories
+              {t('detail.backToStories')}
             </EnhancedButton>
           </Link>
           <div className="flex items-center gap-3 ml-auto">
@@ -313,7 +314,7 @@ export default function StoryDetailPage() {
                 <EnhancedCardHeader>
                   <EnhancedCardTitle className="flex items-center gap-2">
                     <MessageCircle className="w-5 h-5 text-sage-600" />
-                    AI Suggested Questions
+                    {t('detail.aiSuggestedQuestions')}
                   </EnhancedCardTitle>
                 </EnhancedCardHeader>
                 <EnhancedCardContent>
@@ -340,15 +341,15 @@ export default function StoryDetailPage() {
                 <div className="space-y-3">
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Heart className="w-4 h-4 mr-2" />
-                    Add to Favorites
+                    {t('detail.addToFavorites')}
                   </EnhancedButton>
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Download className="w-4 w-4 mr-2" />
-                    Download Audio
+                    {t('detail.downloadAudio')}
                   </EnhancedButton>
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Share className="w-4 h-4 mr-2" />
-                    Share Story
+                    {t('actions.shareStory')}
                   </EnhancedButton>
                 </div>
               </EnhancedCardContent>

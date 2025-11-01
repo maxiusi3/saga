@@ -16,5 +16,15 @@
     "manageProject": "管理專案",
     "noStories": "暫無故事",
     "createFirst": "建立你的第一個故事"
+  },
+  "detail": {
+    "backToStories": "返回故事",
+    "aiSuggestedQuestions": "AI建議的問題",
+    "addToFavorites": "加入收藏",
+    "downloadAudio": "下載音訊",
+    "transcript": "文字記錄",
+    "interactions": "互動",
+    "storyActions": "故事操作",
+    "recorded": "錄製於"
   }
 }

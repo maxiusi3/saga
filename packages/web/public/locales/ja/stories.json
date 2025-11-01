@@ -16,5 +16,15 @@
     "manageProject": "プロジェクトを管理",
     "noStories": "まだストーリーがありません",
     "createFirst": "最初のストーリーを作成"
+  },
+  "detail": {
+    "backToStories": "ストーリーに戻る",
+    "aiSuggestedQuestions": "AI提案の質問",
+    "addToFavorites": "お気に入りに追加",
+    "downloadAudio": "音声をダウンロード",
+    "transcript": "文字起こし",
+    "interactions": "インタラクション",
+    "storyActions": "ストーリーアクション",
+    "recorded": "録音日"
   }
 }

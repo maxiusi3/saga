@@ -16,5 +16,15 @@
     "manageProject": "Gérer le Projet",
     "noStories": "Aucune histoire pour le moment",
     "createFirst": "Créez votre première histoire"
+  },
+  "detail": {
+    "backToStories": "Retour aux Histoires",
+    "aiSuggestedQuestions": "Questions Suggérées par IA",
+    "addToFavorites": "Ajouter aux Favoris",
+    "downloadAudio": "Télécharger l'Audio",
+    "transcript": "Transcription",
+    "interactions": "Interactions",
+    "storyActions": "Actions d'Histoire",
+    "recorded": "Enregistré"
   }
 }
