@@ -15,7 +15,7 @@ import {
   User
 } from 'lucide-react'
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 interface ResourceWallet {
   projectVouchers: number
@@ -77,6 +77,7 @@ export function ResourceWalletWidget({
   className = '' 
 }: ResourceWalletWidgetProps) {
   const locale = useLocale()
+  const t = useTranslations('resources.wallet')
   const withLocale = (path: string) => {
     if (!path.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -128,7 +129,7 @@ export function ResourceWalletWidget({
             icon={<Crown className={`w-5 h-5 ${isFacilitatorSeatsLow ? 'text-warning' : 'text-primary'}`} />}
             label="Facilitator Seats"
             count={resourceWallet.facilitatorSeats}
-            description="Invite siblings to co-manage projects"
+            description={t('facilitatorSeatsDesc')}
             isLow={isFacilitatorSeatsLow}
           />
           
@@ -169,7 +170,7 @@ export function ResourceWalletWidget({
                 >
                   <Link href={withLocale('/dashboard/purchase')}>
                     <Plus className="w-4 h-4 mr-2" />
-                    Purchase Resources
+                    {t('purchaseResources')}
                   </Link>
                 </Button>
                 <Button 
@@ -178,7 +179,7 @@ export function ResourceWalletWidget({
                   asChild
                 >
                   <Link href={withLocale('/dashboard/purchase#packages')}>
-                    View Packages
+                    {t('viewPackages')}
                   </Link>
                 </Button>
               </>
@@ -192,7 +193,7 @@ export function ResourceWalletWidget({
                 >
                   <Link href={withLocale('/dashboard/purchase')}>
                     <Plus className="w-4 h-4 mr-2" />
-                    Add More Resources
+                    {t('purchaseResources')}
                   </Link>
                 </Button>
                 <Button 
@@ -201,7 +202,7 @@ export function ResourceWalletWidget({
                   asChild
                 >
                   <Link href={withLocale('/dashboard/purchase#packages')}>
-                    View Packages
+                    {t('viewPackages')}
                   </Link>
                 </Button>
               </>

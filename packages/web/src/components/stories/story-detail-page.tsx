@@ -7,6 +7,7 @@ import { Badge, StatusBadge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { useTranslations } from 'next-intl'
 import { 
   Play,
   Pause,
@@ -95,6 +96,7 @@ export function StoryDetailPage({
   onAddFollowUp,
   onUploadPhoto
 }: StoryDetailPageProps) {
+  const t = useTranslations('stories')
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [volume, setVolume] = useState(1)
@@ -211,7 +213,7 @@ export function StoryDetailPage({
           {canEdit && (
             <Button variant="secondary" size="sm">
               <Edit className="w-4 h-4 mr-1" />
-              Edit Story
+              {t('actions.editStory')}
             </Button>
           )}
         </div>

@@ -31,6 +31,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 interface Story {
   id: string
@@ -89,6 +90,8 @@ export function StoryListPage({
   const [sortBy, setSortBy] = useState<'date' | 'engagement' | 'duration'>('date')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
+  const t = useTranslations('stories')
+  
   // locale-aware 链接助手
   const params = useParams()
   const locale = (params?.locale as string) || ''
@@ -184,7 +187,7 @@ export function StoryListPage({
             <Button variant="tertiary" onClick={onManageProject} asChild>
               <Link href={withLocale(`/dashboard/projects/${projectId}/settings`)}>
                 <Settings className="w-4 h-4 mr-2" />
-                Manage Project
+                {t('list.manageProject')}
               </Link>
             </Button>
           )}
