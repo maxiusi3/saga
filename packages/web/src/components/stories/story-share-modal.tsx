@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Story } from '@saga/shared';
+import { useTranslations } from 'next-intl';
 
 interface StoryShareModalProps {
   story: Story;
@@ -16,6 +17,7 @@ export const StoryShareModal: React.FC<StoryShareModalProps> = ({
   onClose,
   projectMembers
 }) => {
+  const t = useTranslations('stories')
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [message, setMessage] = useState('');
   const [isSharing, setIsSharing] = useState(false);
@@ -60,7 +62,7 @@ export const StoryShareModal: React.FC<StoryShareModalProps> = ({
     <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
       <div className="bg-card rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Share Story</h3>
+          <h3 className="text-lg font-semibold">{t('share.title')}</h3>
           <button
             onClick={onClose}
             className="text-muted-foreground hover:text-foreground"
@@ -127,7 +129,7 @@ export const StoryShareModal: React.FC<StoryShareModalProps> = ({
             disabled={selectedMembers.length === 0 || isSharing}
             className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSharing ? 'Sharing...' : 'Share Story'}
+            {isSharing ? t('actions.sharing') : t('actions.shareStory')}
           </button>
         </div>
       </div>
