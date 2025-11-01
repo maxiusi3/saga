@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
 import { EnhancedCard } from '@/components/ui/enhanced-card'
 import { StoryCard } from '@/components/ui/story-card'
@@ -66,6 +66,8 @@ export default function ProjectDetailPage() {
   const { user } = useAuthStore()
   const projectId = params.id as string
   const locale = useLocale()
+  const tProjects = useTranslations('projects')
+  const tCommon = useTranslations('common')
   const withLocale = (path: string) => {
     if (!path.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -231,11 +233,11 @@ export default function ProjectDetailPage() {
   if (error) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Error</h1>
+        <h1 className="text-2xl font-bold text-foreground">{tCommon('status.error')}</h1>
         <p className="text-muted-foreground mt-2">{error}</p>
         <Link href={withLocale('/dashboard')}>
           <EnhancedButton variant="outline">
-            Back to Dashboard
+            {tCommon('actions.back')} to Dashboard
           </EnhancedButton>
         </Link>
       </div>
@@ -245,10 +247,10 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
+        <h1 className="text-2xl font-bold text-foreground">{tProjects('errors.notFound')}</h1>
         <Link href={withLocale('/dashboard')}>
           <EnhancedButton variant="outline">
-            Back to Dashboard
+            {tCommon('actions.back')} to Dashboard
           </EnhancedButton>
         </Link>
       </div>
@@ -286,12 +288,12 @@ export default function ProjectDetailPage() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{project.name}</h1>
               <div className="flex items-center gap-4">
-                <Badge className="bg-yellow-100 text-yellow-800">{safeStories.length} Stories</Badge>
+                <Badge className="bg-yellow-100 text-yellow-800">{safeStories.length} {tProjects('detail.stats.stories')}</Badge>
                 {roleInfo && (
                   <Badge variant={roleInfo.color as any}>
                     <span className="mr-1">{roleInfo.icon}</span>
                     {roleInfo.label}
-                    {project.is_owner && ' (Owner)'}
+                    {project.is_owner && ` (${tProjects('roles.owner')})`}
                   </Badge>
                 )}
               </div>
@@ -300,13 +302,13 @@ export default function ProjectDetailPage() {
             <div className="flex items-center gap-3">
               <EnhancedButton variant="outline" size="sm">
                 <Download className="w-4 h-4 mr-2" />
-                Export Stories
+                {tProjects('detail.actions.exportStories')}
               </EnhancedButton>
                 {project.is_owner && (
                 <Link href={withLocale(`/dashboard/projects/${projectId}/settings`)}>
                   <EnhancedButton variant="outline" size="sm">
                     <Users className="w-4 h-4 mr-2" />
-                    Manage Project
+                    {tProjects('detail.actions.manageProject')}
                   </EnhancedButton>
                 </Link>
               )}
@@ -318,7 +320,7 @@ export default function ProjectDetailPage() {
                 <Link href={withLocale(`/dashboard/projects/${projectId}/record`)}>
                   <EnhancedButton>
                     <Plus className="w-4 h-4 mr-2" />
-                    Record New Story
+                    {tProjects('detail.actions.recordNewStory')}
                   </EnhancedButton>
                 </Link>
               </ActionPermissionGate>
@@ -330,17 +332,17 @@ export default function ProjectDetailPage() {
             <div className="lg:col-span-1">
               <EnhancedCard>
                 <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-4">Filter by:</h3>
+                  <h3 className="font-semibold text-gray-900 mb-4">{tProjects('detail.filters.title')}</h3>
                   
                   {/* Storyteller Filter */}
                   <div className="mb-6">
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">All Storytellers</label>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">{tProjects('detail.filters.allStorytellers')}</label>
                     <select 
                       value={selectedStorytellerFilter}
                       onChange={(e) => setSelectedStorytellerFilter(e.target.value)}
                       className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sage-500"
                     >
-                      <option value="all">All Storytellers</option>
+                      <option value="all">{tProjects('detail.filters.allStorytellers')}</option>
                       {storytellers.map(storyteller => (
                         <option key={storyteller} value={storyteller}>{storyteller}</option>
                       ))}
@@ -349,27 +351,27 @@ export default function ProjectDetailPage() {
 
                   {/* Theme Filter */}
                   <div className="mb-6">
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">All Themes</label>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">{tProjects('detail.filters.allThemes')}</label>
                     <select 
                       value={selectedThemeFilter}
                       onChange={(e) => setSelectedThemeFilter(e.target.value)}
                       className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sage-500"
                     >
-                      <option value="all">All Themes</option>
-                      <option value="childhood">Childhood</option>
-                      <option value="family">Family</option>
-                      <option value="immigration">Immigration</option>
+                      <option value="all">{tProjects('detail.filters.allThemes')}</option>
+                      <option value="childhood">{tProjects('detail.filters.themes.childhood')}</option>
+                      <option value="family">{tProjects('detail.filters.themes.family')}</option>
+                      <option value="immigration">{tProjects('detail.filters.themes.immigration')}</option>
                     </select>
                   </div>
 
                   {/* Sort Options */}
                   <div className="mb-6">
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">Sort by</label>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">{tProjects('detail.filters.sortBy')}</label>
                     <FilterTabs
                       options={[
-                        { value: 'latest', label: 'Latest First' },
-                        { value: 'oldest', label: 'Oldest First' },
-                        { value: 'most-comments', label: 'Most Comments' }
+                        { value: 'latest', label: tProjects('detail.filters.sortOptions.latest') },
+                        { value: 'oldest', label: tProjects('detail.filters.sortOptions.oldest') },
+                        { value: 'most-comments', label: tProjects('detail.filters.sortOptions.mostComments') }
                       ]}
                       value={sortBy}
                       onValueChange={(value: string) => setSortBy(value as any)}
@@ -381,19 +383,19 @@ export default function ProjectDetailPage() {
               {/* Quick Actions */}
               <EnhancedCard className="mt-6">
                 <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                  <h3 className="font-semibold text-gray-900 mb-4">{tProjects('detail.quickActions.title')}</h3>
                   <div className="space-y-3">
                     <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                       <BarChart3 className="w-4 h-4 mr-2" />
-                      Export All Stories
+                      {tProjects('detail.quickActions.exportAll')}
                     </EnhancedButton>
                     <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                       <Filter className="w-4 h-4 mr-2" />
-                      Archive Selected
+                      {tProjects('detail.quickActions.archiveSelected')}
                     </EnhancedButton>
                     <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                       <Share className="w-4 h-4 mr-2" />
-                      Refresh Feed
+                      {tProjects('detail.quickActions.refreshFeed')}
                     </EnhancedButton>
                   </div>
                 </div>
@@ -402,22 +404,22 @@ export default function ProjectDetailPage() {
               {/* Story Statistics */}
               <EnhancedCard className="mt-6">
                 <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-4">Story Statistics</h3>
+                  <h3 className="font-semibold text-gray-900 mb-4">{tProjects('detail.statistics.title')}</h3>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Total Stories</span>
+                      <span className="text-gray-600">{tProjects('detail.statistics.totalStories')}</span>
                       <span className="font-medium">{stories.length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">This Month</span>
+                      <span className="text-gray-600">{tProjects('detail.statistics.thisMonth')}</span>
                       <span className="font-medium">5</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Total Comments</span>
+                      <span className="text-gray-600">{tProjects('detail.statistics.totalComments')}</span>
                       <span className="font-medium">{stories.reduce((sum, s) => sum + (s.comments_count || 0), 0)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Follow-up Questions</span>
+                      <span className="text-gray-600">{tProjects('detail.statistics.followUpQuestions')}</span>
                       <span className="font-medium">{stories.reduce((sum, s) => sum + (s.follow_ups_count || 0), 0)}</span>
                     </div>
                   </div>
@@ -433,10 +435,10 @@ export default function ProjectDetailPage() {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <Clock className="w-5 h-5 text-sage-600" />
-                      <h3 className="font-semibold text-gray-900">Project Validity Period</h3>
+                      <h3 className="font-semibold text-gray-900">{tProjects('detail.validityPeriod.title')}</h3>
                     </div>
                     <div className="text-sm text-gray-600">
-                      <span className="font-medium text-sage-600">287 days</span> remaining
+                      <span className="font-medium text-sage-600">287 {tProjects('detail.validityPeriod.days')}</span> {tProjects('detail.validityPeriod.remaining')}
                     </div>
                   </div>
                   
@@ -449,15 +451,15 @@ export default function ProjectDetailPage() {
                       ></div>
                     </div>
                     <div className="flex justify-between text-xs text-gray-500">
-                      <span>Started: Jan 15, 2024</span>
-                      <span>Expires: Jan 15, 2025</span>
+                      <span>{tProjects('detail.validityPeriod.started')} Jan 15, 2024</span>
+                      <span>{tProjects('detail.validityPeriod.expires')} Jan 15, 2025</span>
                     </div>
                   </div>
                   
                   {/* Status Info */}
                   <div className="mt-3 flex items-center gap-2 text-sm">
-                    <Badge className="bg-green-100 text-green-800">Active</Badge>
-                    <span className="text-gray-600">Interactive service available</span>
+                    <Badge className="bg-green-100 text-green-800">{tProjects('detail.validityPeriod.status.active')}</Badge>
+                    <span className="text-gray-600">{tProjects('detail.validityPeriod.serviceAvailable')}</span>
                   </div>
                 </div>
               </EnhancedCard>
@@ -466,13 +468,13 @@ export default function ProjectDetailPage() {
               {filteredStories.length === 0 ? (
                 <EnhancedCard className="p-12 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
                   <div className="max-w-md mx-auto space-y-6">
-                    <div className="text-5xl mb-4">🎭</div>
+                    <div className="text-5xl mb-4">{tProjects('detail.empty.emoji')}</div>
                     <div className="space-y-3">
-                      <h2 className="text-2xl font-semibold text-foreground">Start Your Story Journey</h2>
+                      <h2 className="text-2xl font-semibold text-foreground">{tProjects('detail.empty.title')}</h2>
                       <p className="text-muted-foreground">
                         {project.user_role === 'storyteller'
-                          ? 'Share your precious memories and let family stories be passed down'
-                          : 'Invite family members to start recording and sharing their stories'
+                          ? tProjects('detail.empty.storytellerMessage')
+                          : tProjects('detail.empty.facilitatorMessage')
                         }
                       </p>
                     </div>
@@ -485,7 +487,7 @@ export default function ProjectDetailPage() {
                       <Link href={withLocale(`/dashboard/projects/${projectId}/record`)}>
                         <EnhancedButton size="lg">
                           <BookOpen className="h-5 w-5 mr-2" />
-                          Record Your First Story
+                          {tProjects('detail.empty.action')}
                         </EnhancedButton>
                       </Link>
                     </ActionPermissionGate>
@@ -540,7 +542,7 @@ export default function ProjectDetailPage() {
                   {/* Load More Button */}
                   <div className="text-center pt-6">
                     <EnhancedButton variant="outline">
-                      Load More Stories
+                      {tProjects('detail.loadMore')}
                     </EnhancedButton>
                   </div>
                 </div>
