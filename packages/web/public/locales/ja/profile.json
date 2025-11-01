@@ -4,46 +4,34 @@
   "saveChanges": "変更を保存",
   "saving": "保存中...",
   "cancel": "キャンセル",
+  "notFound": "プロフィールが見つかりません",
+  "memberSince": "登録日",
   "form": {
-    "fullName": "フルネーム",
+    "fullName": "氏名",
     "email": "メールアドレス",
-    "emailNote": "メールアドレスは変更できません",
+    "emailCannotChange": "メールアドレスは変更できません",
     "phone": "電話番号",
     "phonePlaceholder": "(555) 123-4567",
+    "notProvided": "未設定",
     "bio": "自己紹介",
     "bioPlaceholder": "自己紹介を入力してください...",
-    "notProvided": "未提供",
-    "noBio": "自己紹介が未入力です"
+    "noBio": "自己紹介が設定されていません"
   },
-  "memberSince": "{date}からのメンバー",
-  "activitySummary": {
+  "stats": {
     "title": "アクティビティサマリー",
     "activeProjects": "アクティブなプロジェクト",
-    "storiesShared": "共有した物語"
+    "storiesShared": "共有したストーリー"
   },
-  "accountSettings": {
+  "account": {
     "title": "アカウント設定",
-    "emailNotifications": {
-      "title": "メール通知",
-      "description": "プロジェクトの更新を受け取る",
-      "enabled": "有効"
-    },
-    "privacySettings": {
-      "title": "プライバシー設定",
-      "description": "プロフィールを表示できるユーザーを制御",
-      "manage": "管理"
-    },
-    "dataExport": {
-      "title": "データエクスポート",
-      "description": "アカウントデータをダウンロード",
-      "export": "エクスポート"
-    }
-  },
-  "errors": {
-    "loadFailed": "プロフィールの読み込みに失敗しました",
-    "updateFailed": "プロフィールの更新に失敗しました"
-  },
-  "success": {
-    "updated": "プロフィールが正常に更新されました"
+    "emailNotifications": "メール通知",
+    "emailNotificationsDesc": "プロジェクトの更新を受け取る",
+    "enabled": "有効",
+    "privacySettings": "プライバシー設定",
+    "privacySettingsDesc": "プロフィールの公開範囲を制御",
+    "manage": "管理",
+    "dataExport": "データエクスポート",
+    "dataExportDesc": "アカウントデータをダウンロード",
+    "export": "エクスポート"
   }
 }

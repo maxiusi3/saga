@@ -4,46 +4,34 @@
   "saveChanges": "변경사항 저장",
   "saving": "저장 중...",
   "cancel": "취소",
+  "notFound": "프로필을 찾을 수 없습니다",
+  "memberSince": "가입일",
   "form": {
-    "fullName": "전체 이름",
+    "fullName": "이름",
     "email": "이메일",
-    "emailNote": "이메일은 변경할 수 없습니다",
+    "emailCannotChange": "이메일은 변경할 수 없습니다",
     "phone": "전화번호",
     "phonePlaceholder": "(555) 123-4567",
+    "notProvided": "제공되지 않음",
     "bio": "자기소개",
     "bioPlaceholder": "자신에 대해 간단히 소개해주세요...",
-    "notProvided": "제공되지 않음",
     "noBio": "자기소개가 없습니다"
   },
-  "memberSince": "{date}부터 회원",
-  "activitySummary": {
+  "stats": {
     "title": "활동 요약",
     "activeProjects": "활성 프로젝트",
-    "storiesShared": "공유한 이야기"
+    "storiesShared": "공유한 스토리"
   },
-  "accountSettings": {
+  "account": {
     "title": "계정 설정",
-    "emailNotifications": {
-      "title": "이메일 알림",
-      "description": "프로젝트에 대한 업데이트 받기",
-      "enabled": "활성화됨"
-    },
-    "privacySettings": {
-      "title": "개인정보 설정",
-      "description": "프로필을 볼 수 있는 사람 제어",
-      "manage": "관리"
-    },
-    "dataExport": {
-      "title": "데이터 내보내기",
-      "description": "계정 데이터 다운로드",
-      "export": "내보내기"
-    }
-  },
-  "errors": {
-    "loadFailed": "프로필 로드 실패",
-    "updateFailed": "프로필 업데이트 실패"
-  },
-  "success": {
-    "updated": "프로필이 성공적으로 업데이트되었습니다"
+    "emailNotifications": "이메일 알림",
+    "emailNotificationsDesc": "프로젝트 업데이트 받기",
+    "enabled": "활성화됨",
+    "privacySettings": "개인정보 설정",
+    "privacySettingsDesc": "프로필 공개 범위 제어",
+    "manage": "관리",
+    "dataExport": "데이터 내보내기",
+    "dataExportDesc": "계정 데이터 다운로드",
+    "export": "내보내기"
   }
 }

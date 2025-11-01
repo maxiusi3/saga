@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import { createBrowserClient } from '@supabase/ssr'
 import { User } from '@supabase/supabase-js'
 import { Camera, Save } from 'lucide-react'
+import { useTranslations, useLocale } from 'next-intl'
 
 interface UserProfile {
   full_name: string
@@ -24,6 +25,8 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
+  const t = useTranslations('profile')
+  const locale = useLocale()
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [isEditing, setIsEditing] = useState(false)
@@ -133,7 +136,7 @@ export default function ProfilePage() {
   if (!user || !profile) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-foreground">Profile not found</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t('notFound')}</h1>
       </div>
     )
   }
@@ -142,10 +145,10 @@ export default function ProfilePage() {
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
+        <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
         {!isEditing && (
           <Button variant="outline" onClick={() => setIsEditing(true)}>
-            Edit Profile
+            {t('editProfile')}
           </Button>
         )}
       </div>
@@ -179,7 +182,7 @@ export default function ProfilePage() {
               </h2>
               <p className="text-muted-foreground">{profile.email}</p>
               <p className="text-sm text-muted-foreground">
-                Member since {new Date(profile.joined_date).toLocaleDateString('en-US', {
+                {t('memberSince')} {new Date(profile.joined_date).toLocaleDateString(locale, {
                   month: 'long',
                   year: 'numeric'
                 })}
@@ -193,7 +196,7 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="full_name">Full Name</Label>
+                <Label htmlFor="full_name">{t('form.fullName')}</Label>
                 {isEditing ? (
                   <Input
                     id="full_name"
@@ -207,46 +210,46 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('form.email')}</Label>
                 <div className="mt-1 text-muted-foreground">{profile.email}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Email cannot be changed
+                  {t('form.emailCannotChange')}
                 </p>
               </div>
             </div>
 
             <div>
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone">{t('form.phone')}</Label>
               {isEditing ? (
                 <Input
                   id="phone"
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="(555) 123-4567"
+                  placeholder={t('form.phonePlaceholder')}
                   className="mt-1"
                 />
               ) : (
                 <div className="mt-1 text-foreground">
-                  {profile.phone || 'Not provided'}
+                  {profile.phone || t('form.notProvided')}
                 </div>
               )}
             </div>
 
             <div>
-              <Label htmlFor="bio">Bio</Label>
+              <Label htmlFor="bio">{t('form.bio')}</Label>
               {isEditing ? (
                 <textarea
                   id="bio"
                   value={formData.bio}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                  placeholder="Tell us a little about yourself..."
+                  placeholder={t('form.bioPlaceholder')}
                   rows={3}
                   className="mt-1 w-full px-3 py-2 border border-border rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
                 />
               ) : (
                 <div className="mt-1 text-foreground">
-                  {profile.bio || 'No bio provided'}
+                  {profile.bio || t('form.noBio')}
                 </div>
               )}
             </div>
@@ -261,14 +264,14 @@ export default function ProfilePage() {
                 disabled={saving}
               >
                 <Save className="h-4 w-4 mr-2" />
-                {saving ? 'Saving...' : 'Save Changes'}
+                {saving ? t('saving') : t('saveChanges')}
               </Button>
               <Button
                 variant="outline"
                 onClick={handleCancel}
                 disabled={saving}
               >
-                Cancel
+                {t('cancel')}
               </Button>
             </div>
           )}
@@ -278,7 +281,7 @@ export default function ProfilePage() {
       {/* Stats Card */}
       <Card className="p-6">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">Activity Summary</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('stats.title')}</h3>
           
           <div className="grid grid-cols-2 gap-6">
             <div className="text-center">
@@ -286,7 +289,7 @@ export default function ProfilePage() {
                 {profile.total_projects}
               </div>
               <div className="text-sm text-muted-foreground">
-                Active Projects
+                {t('stats.activeProjects')}
               </div>
             </div>
             
@@ -295,7 +298,7 @@ export default function ProfilePage() {
                 {profile.total_stories}
               </div>
               <div className="text-sm text-muted-foreground">
-                Stories Shared
+                {t('stats.storiesShared')}
               </div>
             </div>
           </div>
@@ -305,40 +308,40 @@ export default function ProfilePage() {
       {/* Account Settings */}
       <Card className="p-6">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">Account Settings</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('account.title')}</h3>
           
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-foreground">Email Notifications</div>
+                <div className="font-medium text-foreground">{t('account.emailNotifications')}</div>
                 <div className="text-sm text-muted-foreground">
-                  Receive updates about your projects
+                  {t('account.emailNotificationsDesc')}
                 </div>
               </div>
-              <Badge variant="secondary">Enabled</Badge>
+              <Badge variant="secondary">{t('account.enabled')}</Badge>
             </div>
             
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-foreground">Privacy Settings</div>
+                <div className="font-medium text-foreground">{t('account.privacySettings')}</div>
                 <div className="text-sm text-muted-foreground">
-                  Control who can see your profile
+                  {t('account.privacySettingsDesc')}
                 </div>
               </div>
               <Button variant="outline" size="sm">
-                Manage
+                {t('account.manage')}
               </Button>
             </div>
             
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-foreground">Data Export</div>
+                <div className="font-medium text-foreground">{t('account.dataExport')}</div>
                 <div className="text-sm text-muted-foreground">
-                  Download your account data
+                  {t('account.dataExportDesc')}
                 </div>
               </div>
               <Button variant="outline" size="sm">
-                Export
+                {t('account.export')}
               </Button>
             </div>
           </div>

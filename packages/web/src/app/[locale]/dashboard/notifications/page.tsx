@@ -11,10 +11,11 @@ import { useNotifications } from '@/hooks/useNotifications'
 import { NotificationItem } from '@/components/notifications/NotificationItem'
 import { getNotificationDisplayInfo, SagaNotificationType } from '@saga/shared'
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 export default function NotificationsPage() {
   const locale = useLocale()
+  const t = useTranslations('notifications-page')
   const withLocale = (path: string) => {
     if (!path?.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -51,13 +52,13 @@ export default function NotificationsPage() {
   }
 
   const notificationTypes: { value: 'all' | SagaNotificationType; label: string }[] = [
-    { value: 'all', label: 'All' },
-    { value: 'new_story', label: 'New Stories' },
-    { value: 'new_comment', label: 'Comments' },
-    { value: 'new_follow_up_question', label: 'Questions' },
-    { value: 'story_response', label: 'Activity' },
-    { value: 'project_invitation', label: 'Invitations' },
-    { value: 'member_joined', label: 'New Members' }
+    { value: 'all', label: t('filter.all') },
+    { value: 'new_story', label: t('filter.newStories') },
+    { value: 'new_comment', label: t('filter.comments') },
+    { value: 'new_follow_up_question', label: t('filter.questions') },
+    { value: 'story_response', label: t('filter.activity') },
+    { value: 'project_invitation', label: t('filter.invitations') },
+    { value: 'member_joined', label: t('filter.newMembers') }
   ]
 
   if (loading) {
@@ -82,15 +83,15 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Notifications</h1>
+          <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
           <div className="flex items-center space-x-2 mt-2">
             {unreadCount > 0 && (
               <Badge variant="primary">
-                {unreadCount} unread
+                {unreadCount} {t('unread')}
               </Badge>
             )}
             <span className="text-sm text-muted-foreground">
-              {notifications.length} total notifications
+              {notifications.length} {t('total')}
             </span>
           </div>
         </div>
@@ -102,14 +103,14 @@ export default function NotificationsPage() {
               onClick={markAllAsRead}
             >
               <CheckCheck className="h-4 w-4 mr-2" />
-              Mark all read
+              {t('markAllRead')}
             </Button>
           )}
           
           <Link href={withLocale('/dashboard/settings/notifications')}>
             <Button variant="ghost">
               <Settings className="h-4 w-4 mr-2" />
-              Settings
+              {t('settings')}
             </Button>
           </Link>
         </div>
@@ -120,7 +121,7 @@ export default function NotificationsPage() {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search notifications..."
+            placeholder={t('search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -149,11 +150,11 @@ export default function NotificationsPage() {
       {error ? (
         <Card className="p-8 text-center">
           <div className="text-destructive mb-4">
-            <p className="font-medium">Failed to load notifications</p>
+            <p className="font-medium">{t('error.failedToLoad')}</p>
             <p className="text-sm text-muted-foreground mt-1">{error}</p>
           </div>
           <Button onClick={refresh} variant="outline">
-            Try Again
+            {t('error.tryAgain')}
           </Button>
         </Card>
       ) : filteredNotifications.length === 0 ? (
@@ -161,9 +162,9 @@ export default function NotificationsPage() {
           {searchQuery || filterType !== 'all' ? (
             <>
               <div className="text-4xl mb-4">🔍</div>
-              <h3 className="text-lg font-medium text-foreground mb-2">No matching notifications</h3>
+              <h3 className="text-lg font-medium text-foreground mb-2">{t('empty.noMatching')}</h3>
               <p className="text-muted-foreground mb-4">
-                Try adjusting your search or filter criteria
+                {t('empty.noMatchingDesc')}
               </p>
               <Button 
                 variant="outline" 
@@ -172,15 +173,15 @@ export default function NotificationsPage() {
                   setFilterType('all')
                 }}
               >
-                Clear filters
+                {t('empty.clearFilters')}
               </Button>
             </>
           ) : (
             <>
               <div className="text-4xl mb-4">🔔</div>
-              <h3 className="text-lg font-medium text-foreground mb-2">No notifications yet</h3>
+              <h3 className="text-lg font-medium text-foreground mb-2">{t('empty.noNotifications')}</h3>
               <p className="text-muted-foreground">
-                You'll see notifications here when there's activity in your projects
+                {t('empty.noNotificationsDesc')}
               </p>
             </>
           )}
@@ -202,7 +203,7 @@ export default function NotificationsPage() {
       {notifications.length >= 50 && (
         <div className="text-center">
           <Button variant="outline" onClick={refresh}>
-            Load More
+            {t('loadMore')}
           </Button>
         </div>
       )}

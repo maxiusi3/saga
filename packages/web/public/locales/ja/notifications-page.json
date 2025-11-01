@@ -1,0 +1,29 @@
+{
+  "title": "通知",
+  "unread": "未読",
+  "total": "件の通知",
+  "markAllRead": "すべて既読にする",
+  "settings": "設定",
+  "search": "通知を検索...",
+  "filter": {
+    "all": "すべて",
+    "newStories": "新しいストーリー",
+    "comments": "コメント",
+    "questions": "質問",
+    "activity": "アクティビティ",
+    "invitations": "招待",
+    "newMembers": "新しいメンバー"
+  },
+  "empty": {
+    "noMatching": "一致する通知がありません",
+    "noMatchingDesc": "検索条件やフィルターを調整してください",
+    "clearFilters": "フィルターをクリア",
+    "noNotifications": "通知はまだありません",
+    "noNotificationsDesc": "プロジェクトでアクティビティがあると、ここに通知が表示されます"
+  },
+  "error": {
+    "failedToLoad": "通知の読み込みに失敗しました",
+    "tryAgain": "再試行"
+  },
+  "loadMore": "もっと見る"
+}

@@ -1,0 +1,29 @@
+{
+  "title": "알림",
+  "unread": "읽지 않음",
+  "total": "전체 알림",
+  "markAllRead": "모두 읽음으로 표시",
+  "settings": "설정",
+  "search": "알림 검색...",
+  "filter": {
+    "all": "전체",
+    "newStories": "새 스토리",
+    "comments": "댓글",
+    "questions": "질문",
+    "activity": "활동",
+    "invitations": "초대",
+    "newMembers": "새 멤버"
+  },
+  "empty": {
+    "noMatching": "일치하는 알림이 없습니다",
+    "noMatchingDesc": "검색 또는 필터 조건을 조정해보세요",
+    "clearFilters": "필터 지우기",
+    "noNotifications": "아직 알림이 없습니다",
+    "noNotificationsDesc": "프로젝트에 활동이 있으면 여기에 알림이 표시됩니다"
+  },
+  "error": {
+    "failedToLoad": "알림을 불러오지 못했습니다",
+    "tryAgain": "다시 시도"
+  },
+  "loadMore": "더 보기"
+}

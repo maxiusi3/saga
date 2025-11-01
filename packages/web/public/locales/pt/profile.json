@@ -4,46 +4,34 @@
   "saveChanges": "Salvar Alterações",
   "saving": "Salvando...",
   "cancel": "Cancelar",
+  "notFound": "Perfil não encontrado",
+  "memberSince": "Membro desde",
   "form": {
     "fullName": "Nome Completo",
     "email": "E-mail",
-    "emailNote": "O e-mail não pode ser alterado",
+    "emailCannotChange": "O e-mail não pode ser alterado",
     "phone": "Número de Telefone",
     "phonePlaceholder": "(555) 123-4567",
+    "notProvided": "Não fornecido",
     "bio": "Biografia",
     "bioPlaceholder": "Conte-nos um pouco sobre você...",
-    "notProvided": "Não fornecido",
     "noBio": "Nenhuma biografia fornecida"
   },
-  "memberSince": "Membro desde {date}",
-  "activitySummary": {
+  "stats": {
     "title": "Resumo de Atividade",
     "activeProjects": "Projetos Ativos",
     "storiesShared": "Histórias Compartilhadas"
   },
-  "accountSettings": {
+  "account": {
     "title": "Configurações da Conta",
-    "emailNotifications": {
-      "title": "Notificações por E-mail",
-      "description": "Receba atualizações sobre seus projetos",
-      "enabled": "Habilitado"
-    },
-    "privacySettings": {
-      "title": "Configurações de Privacidade",
-      "description": "Controle quem pode ver seu perfil",
-      "manage": "Gerenciar"
-    },
-    "dataExport": {
-      "title": "Exportação de Dados",
-      "description": "Baixe os dados da sua conta",
-      "export": "Exportar"
-    }
-  },
-  "errors": {
-    "loadFailed": "Falha ao carregar perfil",
-    "updateFailed": "Falha ao atualizar perfil"
-  },
-  "success": {
-    "updated": "Perfil atualizado com sucesso"
+    "emailNotifications": "Notificações por E-mail",
+    "emailNotificationsDesc": "Receber atualizações sobre seus projetos",
+    "enabled": "Ativado",
+    "privacySettings": "Configurações de Privacidade",
+    "privacySettingsDesc": "Controlar quem pode ver seu perfil",
+    "manage": "Gerenciar",
+    "dataExport": "Exportar Dados",
+    "dataExportDesc": "Baixar os dados da sua conta",
+    "export": "Exportar"
   }
 }

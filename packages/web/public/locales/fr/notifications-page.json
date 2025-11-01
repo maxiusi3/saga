@@ -1,0 +1,29 @@
+{
+  "title": "Notifications",
+  "unread": "non lues",
+  "total": "notifications au total",
+  "markAllRead": "Tout marquer comme lu",
+  "settings": "Paramètres",
+  "search": "Rechercher des notifications...",
+  "filter": {
+    "all": "Toutes",
+    "newStories": "Nouvelles Histoires",
+    "comments": "Commentaires",
+    "questions": "Questions",
+    "activity": "Activité",
+    "invitations": "Invitations",
+    "newMembers": "Nouveaux Membres"
+  },
+  "empty": {
+    "noMatching": "Aucune notification correspondante",
+    "noMatchingDesc": "Essayez d'ajuster vos critères de recherche ou de filtre",
+    "clearFilters": "Effacer les filtres",
+    "noNotifications": "Aucune notification pour le moment",
+    "noNotificationsDesc": "Vous verrez les notifications ici lorsqu'il y aura de l'activité dans vos projets"
+  },
+  "error": {
+    "failedToLoad": "Échec du chargement des notifications",
+    "tryAgain": "Réessayer"
+  },
+  "loadMore": "Charger Plus"
+}

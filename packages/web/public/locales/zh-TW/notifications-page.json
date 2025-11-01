@@ -1,0 +1,29 @@
+{
+  "title": "通知",
+  "unread": "未讀",
+  "total": "條通知",
+  "markAllRead": "全部標記為已讀",
+  "settings": "設定",
+  "search": "搜尋通知...",
+  "filter": {
+    "all": "全部",
+    "newStories": "新故事",
+    "comments": "評論",
+    "questions": "問題",
+    "activity": "活動",
+    "invitations": "邀請",
+    "newMembers": "新成員"
+  },
+  "empty": {
+    "noMatching": "沒有符合的通知",
+    "noMatchingDesc": "嘗試調整搜尋或篩選條件",
+    "clearFilters": "清除篩選",
+    "noNotifications": "暫無通知",
+    "noNotificationsDesc": "當你的專案有活動時，這裡會顯示通知"
+  },
+  "error": {
+    "failedToLoad": "載入通知失敗",
+    "tryAgain": "重試"
+  },
+  "loadMore": "載入更多"
+}

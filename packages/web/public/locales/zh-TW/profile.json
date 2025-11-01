@@ -1,49 +1,37 @@
 {
-  "title": "我的個人資料",
-  "editProfile": "編輯個人資料",
+  "title": "我的資料",
+  "editProfile": "編輯資料",
   "saveChanges": "儲存變更",
   "saving": "儲存中...",
   "cancel": "取消",
+  "notFound": "未找到資料",
+  "memberSince": "註冊時間",
   "form": {
-    "fullName": "全名",
+    "fullName": "姓名",
     "email": "電子郵件",
-    "emailNote": "電子郵件無法變更",
+    "emailCannotChange": "電子郵件無法更改",
     "phone": "電話號碼",
     "phonePlaceholder": "(555) 123-4567",
-    "bio": "個人簡介",
-    "bioPlaceholder": "簡單介紹一下您自己...",
     "notProvided": "未提供",
-    "noBio": "未提供個人簡介"
+    "bio": "個人簡介",
+    "bioPlaceholder": "介紹一下你自己...",
+    "noBio": "未填寫個人簡介"
   },
-  "memberSince": "自{date}起成為會員",
-  "activitySummary": {
+  "stats": {
     "title": "活動摘要",
     "activeProjects": "活躍專案",
     "storiesShared": "分享的故事"
   },
-  "accountSettings": {
+  "account": {
     "title": "帳戶設定",
-    "emailNotifications": {
-      "title": "電子郵件通知",
-      "description": "接收有關您專案的更新",
-      "enabled": "已啟用"
-    },
-    "privacySettings": {
-      "title": "隱私設定",
-      "description": "控制誰可以查看您的個人資料",
-      "manage": "管理"
-    },
-    "dataExport": {
-      "title": "資料匯出",
-      "description": "下載您的帳戶資料",
-      "export": "匯出"
-    }
-  },
-  "errors": {
-    "loadFailed": "載入個人資料失敗",
-    "updateFailed": "更新個人資料失敗"
-  },
-  "success": {
-    "updated": "個人資料更新成功"
+    "emailNotifications": "電子郵件通知",
+    "emailNotificationsDesc": "接收專案更新",
+    "enabled": "已啟用",
+    "privacySettings": "隱私設定",
+    "privacySettingsDesc": "控制誰可以查看你的資料",
+    "manage": "管理",
+    "dataExport": "資料匯出",
+    "dataExportDesc": "下載你的帳戶資料",
+    "export": "匯出"
   }
 }

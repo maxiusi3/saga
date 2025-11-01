@@ -1,0 +1,29 @@
+{
+  "title": "通知",
+  "unread": "未读",
+  "total": "条通知",
+  "markAllRead": "全部标记为已读",
+  "settings": "设置",
+  "search": "搜索通知...",
+  "filter": {
+    "all": "全部",
+    "newStories": "新故事",
+    "comments": "评论",
+    "questions": "问题",
+    "activity": "活动",
+    "invitations": "邀请",
+    "newMembers": "新成员"
+  },
+  "empty": {
+    "noMatching": "没有匹配的通知",
+    "noMatchingDesc": "尝试调整搜索或筛选条件",
+    "clearFilters": "清除筛选",
+    "noNotifications": "暂无通知",
+    "noNotificationsDesc": "当你的项目有活动时，这里会显示通知"
+  },
+  "error": {
+    "failedToLoad": "加载通知失败",
+    "tryAgain": "重试"
+  },
+  "loadMore": "加载更多"
+}
