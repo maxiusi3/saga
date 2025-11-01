@@ -1,0 +1,40 @@
+{
+  "title": "邀请",
+  "sendInvitation": "发送邀请",
+  "pendingInvitations": "待处理邀请",
+  "acceptedInvitations": "已接受",
+  "form": {
+    "email": "电子邮箱",
+    "emailPlaceholder": "输入电子邮箱",
+    "role": "角色",
+    "selectRole": "选择角色",
+    "message": "个人消息（可选）",
+    "messagePlaceholder": "添加个人消息...",
+    "send": "发送邀请",
+    "sending": "发送中..."
+  },
+  "roles": {
+    "facilitator": "协调员",
+    "storyteller": "讲述者",
+    "facilitatorDesc": "可以管理项目并邀请他人",
+    "storytellerDesc": "可以记录和分享故事"
+  },
+  "status": {
+    "pending": "待处理",
+    "accepted": "已接受",
+    "expired": "已过期",
+    "cancelled": "已取消"
+  },
+  "actions": {
+    "resend": "重新发送",
+    "cancel": "取消",
+    "view": "查看"
+  },
+  "messages": {
+    "sent": "邀请发送成功",
+    "resent": "邀请已重新发送",
+    "cancelled": "邀请已取消",
+    "sendFailed": "发送邀请失败",
+    "insufficientSeats": "席位不足。请购买更多。"
+  }
+}

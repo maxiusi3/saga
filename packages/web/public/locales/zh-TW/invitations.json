@@ -1,0 +1,40 @@
+{
+  "title": "邀請",
+  "sendInvitation": "傳送邀請",
+  "pendingInvitations": "待處理邀請",
+  "acceptedInvitations": "已接受",
+  "form": {
+    "email": "電子郵件",
+    "emailPlaceholder": "輸入電子郵件",
+    "role": "角色",
+    "selectRole": "選擇角色",
+    "message": "個人訊息（可選）",
+    "messagePlaceholder": "新增個人訊息...",
+    "send": "傳送邀請",
+    "sending": "傳送中..."
+  },
+  "roles": {
+    "facilitator": "協調員",
+    "storyteller": "講述者",
+    "facilitatorDesc": "可以管理專案並邀請他人",
+    "storytellerDesc": "可以記錄和分享故事"
+  },
+  "status": {
+    "pending": "待處理",
+    "accepted": "已接受",
+    "expired": "已過期",
+    "cancelled": "已取消"
+  },
+  "actions": {
+    "resend": "重新傳送",
+    "cancel": "取消",
+    "view": "查看"
+  },
+  "messages": {
+    "sent": "邀請傳送成功",
+    "resent": "邀請已重新傳送",
+    "cancelled": "邀請已取消",
+    "sendFailed": "傳送邀請失敗",
+    "insufficientSeats": "席位不足。請購買更多。"
+  }
+}

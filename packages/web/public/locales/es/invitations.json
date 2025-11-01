@@ -1,0 +1,40 @@
+{
+  "title": "Invitaciones",
+  "sendInvitation": "Enviar Invitación",
+  "pendingInvitations": "Invitaciones Pendientes",
+  "acceptedInvitations": "Aceptadas",
+  "form": {
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "Ingrese correo electrónico",
+    "role": "Rol",
+    "selectRole": "Seleccione un rol",
+    "message": "Mensaje Personal (Opcional)",
+    "messagePlaceholder": "Agregar mensaje personal...",
+    "send": "Enviar Invitación",
+    "sending": "Enviando..."
+  },
+  "roles": {
+    "facilitator": "Facilitador",
+    "storyteller": "Narrador",
+    "facilitatorDesc": "Puede gestionar el proyecto e invitar a otros",
+    "storytellerDesc": "Puede grabar y compartir historias"
+  },
+  "status": {
+    "pending": "Pendiente",
+    "accepted": "Aceptada",
+    "expired": "Expirada",
+    "cancelled": "Cancelada"
+  },
+  "actions": {
+    "resend": "Reenviar",
+    "cancel": "Cancelar",
+    "view": "Ver"
+  },
+  "messages": {
+    "sent": "Invitación enviada exitosamente",
+    "resent": "Invitación reenviada",
+    "cancelled": "Invitación cancelada",
+    "sendFailed": "Error al enviar invitación",
+    "insufficientSeats": "Asientos insuficientes. Por favor compre más."
+  }
+}

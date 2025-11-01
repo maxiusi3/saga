@@ -1,0 +1,40 @@
+{
+  "title": "초대",
+  "sendInvitation": "초대 보내기",
+  "pendingInvitations": "대기 중인 초대",
+  "acceptedInvitations": "수락됨",
+  "form": {
+    "email": "이메일 주소",
+    "emailPlaceholder": "이메일 주소 입력",
+    "role": "역할",
+    "selectRole": "역할 선택",
+    "message": "개인 메시지 (선택사항)",
+    "messagePlaceholder": "개인 메시지 추가...",
+    "send": "초대 보내기",
+    "sending": "전송 중..."
+  },
+  "roles": {
+    "facilitator": "진행자",
+    "storyteller": "이야기꾼",
+    "facilitatorDesc": "프로젝트를 관리하고 다른 사람을 초대할 수 있습니다",
+    "storytellerDesc": "이야기를 녹음하고 공유할 수 있습니다"
+  },
+  "status": {
+    "pending": "대기 중",
+    "accepted": "수락됨",
+    "expired": "만료됨",
+    "cancelled": "취소됨"
+  },
+  "actions": {
+    "resend": "재전송",
+    "cancel": "취소",
+    "view": "보기"
+  },
+  "messages": {
+    "sent": "초대가 성공적으로 전송되었습니다",
+    "resent": "초대를 재전송했습니다",
+    "cancelled": "초대를 취소했습니다",
+    "sendFailed": "초대 전송 실패",
+    "insufficientSeats": "좌석이 부족합니다. 더 구매하세요."
+  }
+}

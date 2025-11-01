@@ -1,0 +1,40 @@
+{
+  "title": "招待",
+  "sendInvitation": "招待を送信",
+  "pendingInvitations": "保留中の招待",
+  "acceptedInvitations": "承認済み",
+  "form": {
+    "email": "メールアドレス",
+    "emailPlaceholder": "メールアドレスを入力",
+    "role": "役割",
+    "selectRole": "役割を選択",
+    "message": "個人メッセージ（任意）",
+    "messagePlaceholder": "個人メッセージを追加...",
+    "send": "招待を送信",
+    "sending": "送信中..."
+  },
+  "roles": {
+    "facilitator": "ファシリテーター",
+    "storyteller": "ストーリーテラー",
+    "facilitatorDesc": "プロジェクトを管理し、他の人を招待できます",
+    "storytellerDesc": "物語を記録して共有できます"
+  },
+  "status": {
+    "pending": "保留中",
+    "accepted": "承認済み",
+    "expired": "期限切れ",
+    "cancelled": "キャンセル済み"
+  },
+  "actions": {
+    "resend": "再送信",
+    "cancel": "キャンセル",
+    "view": "表示"
+  },
+  "messages": {
+    "sent": "招待が正常に送信されました",
+    "resent": "招待を再送信しました",
+    "cancelled": "招待をキャンセルしました",
+    "sendFailed": "招待の送信に失敗しました",
+    "insufficientSeats": "席が不足しています。追加購入してください。"
+  }
+}

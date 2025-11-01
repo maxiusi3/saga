@@ -1,0 +1,40 @@
+{
+  "title": "Invitations",
+  "sendInvitation": "Send Invitation",
+  "pendingInvitations": "Pending Invitations",
+  "acceptedInvitations": "Accepted",
+  "form": {
+    "email": "Email Address",
+    "emailPlaceholder": "Enter email address",
+    "role": "Role",
+    "selectRole": "Select a role",
+    "message": "Personal Message (Optional)",
+    "messagePlaceholder": "Add a personal message...",
+    "send": "Send Invitation",
+    "sending": "Sending..."
+  },
+  "roles": {
+    "facilitator": "Facilitator",
+    "storyteller": "Storyteller",
+    "facilitatorDesc": "Can manage project and invite others",
+    "storytellerDesc": "Can record and share stories"
+  },
+  "status": {
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "expired": "Expired",
+    "cancelled": "Cancelled"
+  },
+  "actions": {
+    "resend": "Resend",
+    "cancel": "Cancel",
+    "view": "View"
+  },
+  "messages": {
+    "sent": "Invitation sent successfully",
+    "resent": "Invitation resent",
+    "cancelled": "Invitation cancelled",
+    "sendFailed": "Failed to send invitation",
+    "insufficientSeats": "Insufficient seats. Please purchase more."
+  }
+}

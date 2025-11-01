@@ -1,0 +1,40 @@
+{
+  "title": "Convites",
+  "sendInvitation": "Enviar Convite",
+  "pendingInvitations": "Convites Pendentes",
+  "acceptedInvitations": "Aceitos",
+  "form": {
+    "email": "Endereço de E-mail",
+    "emailPlaceholder": "Digite o endereço de e-mail",
+    "role": "Papel",
+    "selectRole": "Selecione um papel",
+    "message": "Mensagem Pessoal (Opcional)",
+    "messagePlaceholder": "Adicionar mensagem pessoal...",
+    "send": "Enviar Convite",
+    "sending": "Enviando..."
+  },
+  "roles": {
+    "facilitator": "Facilitador",
+    "storyteller": "Contador",
+    "facilitatorDesc": "Pode gerenciar o projeto e convidar outros",
+    "storytellerDesc": "Pode gravar e compartilhar histórias"
+  },
+  "status": {
+    "pending": "Pendente",
+    "accepted": "Aceito",
+    "expired": "Expirado",
+    "cancelled": "Cancelado"
+  },
+  "actions": {
+    "resend": "Reenviar",
+    "cancel": "Cancelar",
+    "view": "Ver"
+  },
+  "messages": {
+    "sent": "Convite enviado com sucesso",
+    "resent": "Convite reenviado",
+    "cancelled": "Convite cancelado",
+    "sendFailed": "Falha ao enviar convite",
+    "insufficientSeats": "Assentos insuficientes. Por favor compre mais."
+  }
+}
