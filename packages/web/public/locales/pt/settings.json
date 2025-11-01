@@ -1,0 +1,125 @@
+{
+  "title": "Configurações",
+  "tabs": {
+    "general": "Geral",
+    "notifications": "Notificações",
+    "privacy": "Privacidade",
+    "accessibility": "Acessibilidade",
+    "account": "Conta"
+  },
+  "general": {
+    "title": "Configurações Gerais",
+    "language": {
+      "title": "Idioma",
+      "description": "Selecione seu idioma preferido",
+      "label": "Idioma da Interface"
+    },
+    "timezone": {
+      "title": "Fuso Horário",
+      "description": "Defina seu fuso horário local",
+      "label": "Fuso Horário"
+    },
+    "dateFormat": {
+      "title": "Formato de Data",
+      "description": "Escolha como as datas são exibidas",
+      "label": "Formato de Data"
+    }
+  },
+  "notifications": {
+    "title": "Preferências de Notificação",
+    "email": {
+      "title": "Notificações por E-mail",
+      "newStory": "Nova história publicada",
+      "newComment": "Novo comentário na sua história",
+      "newFollowUp": "Nova pergunta de acompanhamento",
+      "projectInvite": "Convite para projeto",
+      "weeklyDigest": "Resumo semanal"
+    },
+    "push": {
+      "title": "Notificações Push",
+      "enabled": "Habilitar notificações push",
+      "description": "Receber notificações no seu dispositivo"
+    }
+  },
+  "privacy": {
+    "title": "Configurações de Privacidade",
+    "profileVisibility": {
+      "title": "Visibilidade do Perfil",
+      "description": "Controle quem pode ver seu perfil",
+      "options": {
+        "public": "Público",
+        "private": "Privado",
+        "familyOnly": "Apenas Família"
+      }
+    },
+    "storyVisibility": {
+      "title": "Visibilidade de Histórias",
+      "description": "Visibilidade padrão para novas histórias",
+      "options": {
+        "projectMembers": "Apenas Membros do Projeto",
+        "family": "Família",
+        "public": "Público"
+      }
+    },
+    "dataSharing": {
+      "title": "Compartilhamento de Dados",
+      "analytics": "Compartilhar dados de uso anônimos",
+      "improvements": "Ajudar a melhorar o Saga"
+    }
+  },
+  "accessibility": {
+    "title": "Configurações de Acessibilidade",
+    "fontSize": {
+      "title": "Tamanho da Fonte",
+      "small": "Pequeno",
+      "standard": "Padrão",
+      "large": "Grande",
+      "extraLarge": "Extra Grande"
+    },
+    "highContrast": {
+      "title": "Alto Contraste",
+      "description": "Aumentar contraste para melhor visibilidade"
+    },
+    "reducedMotion": {
+      "title": "Movimento Reduzido",
+      "description": "Minimizar animações e transições"
+    },
+    "screenReader": {
+      "title": "Suporte para Leitor de Tela",
+      "description": "Otimizar para leitores de tela"
+    }
+  },
+  "account": {
+    "title": "Gerenciamento de Conta",
+    "changePassword": {
+      "title": "Alterar Senha",
+      "description": "Atualizar a senha da sua conta",
+      "button": "Alterar Senha"
+    },
+    "deleteAccount": {
+      "title": "Excluir Conta",
+      "description": "Excluir permanentemente sua conta e todos os dados",
+      "button": "Excluir Conta",
+      "warning": "Esta ação não pode ser desfeita"
+    },
+    "exportData": {
+      "title": "Exportar Dados",
+      "description": "Baixar todos os dados da sua conta",
+      "button": "Exportar Dados"
+    }
+  },
+  "actions": {
+    "save": "Salvar Alterações",
+    "saving": "Salvando...",
+    "cancel": "Cancelar",
+    "reset": "Redefinir para Padrão"
+  },
+  "success": {
+    "saved": "Configurações salvas com sucesso",
+    "exported": "Exportação de dados iniciada. Você receberá um e-mail quando estiver pronta."
+  },
+  "errors": {
+    "saveFailed": "Falha ao salvar configurações",
+    "loadFailed": "Falha ao carregar configurações"
+  }
+}

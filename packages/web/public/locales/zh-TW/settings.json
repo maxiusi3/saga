@@ -1,0 +1,125 @@
+{
+  "title": "設定",
+  "tabs": {
+    "general": "一般",
+    "notifications": "通知",
+    "privacy": "隱私",
+    "accessibility": "無障礙",
+    "account": "帳戶"
+  },
+  "general": {
+    "title": "一般設定",
+    "language": {
+      "title": "語言",
+      "description": "選擇您的偏好語言",
+      "label": "介面語言"
+    },
+    "timezone": {
+      "title": "時區",
+      "description": "設定您的本地時區",
+      "label": "時區"
+    },
+    "dateFormat": {
+      "title": "日期格式",
+      "description": "選擇日期顯示方式",
+      "label": "日期格式"
+    }
+  },
+  "notifications": {
+    "title": "通知偏好",
+    "email": {
+      "title": "電子郵件通知",
+      "newStory": "發布新故事",
+      "newComment": "您的故事有新評論",
+      "newFollowUp": "新的後續問題",
+      "projectInvite": "專案邀請",
+      "weeklyDigest": "每週摘要"
+    },
+    "push": {
+      "title": "推送通知",
+      "enabled": "啟用推送通知",
+      "description": "在您的裝置上接收通知"
+    }
+  },
+  "privacy": {
+    "title": "隱私設定",
+    "profileVisibility": {
+      "title": "個人資料可見性",
+      "description": "控制誰可以查看您的個人資料",
+      "options": {
+        "public": "公開",
+        "private": "私密",
+        "familyOnly": "僅家人"
+      }
+    },
+    "storyVisibility": {
+      "title": "故事可見性",
+      "description": "新故事的預設可見性",
+      "options": {
+        "projectMembers": "僅專案成員",
+        "family": "家人",
+        "public": "公開"
+      }
+    },
+    "dataSharing": {
+      "title": "資料共享",
+      "analytics": "共享匿名使用資料",
+      "improvements": "協助改進Saga"
+    }
+  },
+  "accessibility": {
+    "title": "無障礙設定",
+    "fontSize": {
+      "title": "字型大小",
+      "small": "小",
+      "standard": "標準",
+      "large": "大",
+      "extraLarge": "特大"
+    },
+    "highContrast": {
+      "title": "高對比度",
+      "description": "提高對比度以獲得更好的可見性"
+    },
+    "reducedMotion": {
+      "title": "減少動畫",
+      "description": "最小化動畫和過渡效果"
+    },
+    "screenReader": {
+      "title": "螢幕閱讀器支援",
+      "description": "針對螢幕閱讀器最佳化"
+    }
+  },
+  "account": {
+    "title": "帳戶管理",
+    "changePassword": {
+      "title": "變更密碼",
+      "description": "更新您的帳戶密碼",
+      "button": "變更密碼"
+    },
+    "deleteAccount": {
+      "title": "刪除帳戶",
+      "description": "永久刪除您的帳戶和所有資料",
+      "button": "刪除帳戶",
+      "warning": "此操作無法復原"
+    },
+    "exportData": {
+      "title": "匯出資料",
+      "description": "下載您的所有帳戶資料",
+      "button": "匯出資料"
+    }
+  },
+  "actions": {
+    "save": "儲存變更",
+    "saving": "儲存中...",
+    "cancel": "取消",
+    "reset": "重設為預設"
+  },
+  "success": {
+    "saved": "設定儲存成功",
+    "exported": "資料匯出已開始。準備好後您將收到電子郵件。"
+  },
+  "errors": {
+    "saveFailed": "儲存設定失敗",
+    "loadFailed": "載入設定失敗"
+  }
+}

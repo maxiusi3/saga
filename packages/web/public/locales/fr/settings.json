@@ -1,0 +1,126 @@
+{
+  "title": "Paramètres",
+  "tabs": {
+    "general": "Général",
+    "notifications": "Notifications",
+    "privacy": "Confidentialité",
+    "accessibility": "Accessibilité",
+    "account": "Compte"
+  },
+  "general": {
+    "title": "Paramètres Généraux",
+    "language": {
+      "title": "Langue",
+      "description": "Sélectionnez votre langue préférée",
+      "label": "Langue de l'Interface"
+    },
+    "timezone": {
+      "title": "Fuseau Horaire",
+      "description": "Définissez votre fuseau horaire local",
+      "label": "Fuseau Horaire"
+    },
+    "dateFormat": {
+      "title": "Format de Date",
+      "description": "Choisissez comment les dates sont affichées",
+      "label": "Format de Date"
+    }
+  },
+  "notifications": {
+    "title": "Préférences de Notification",
+    "email": {
+      "title": "Notifications par E-mail",
+      "newStory": "Nouvelle histoire publiée",
+      "newComment": "Nouveau commentaire sur votre histoire",
+      "newFollowUp": "Nouvelle question de suivi",
+      "projectInvite": "Invitation au projet",
+      "weeklyDigest": "Résumé hebdomadaire"
+    },
+    "push": {
+      "title": "Notifications Push",
+      "enabled": "Activer les notifications push",
+      "description": "Recevoir des notifications sur votre appareil"
+    }
+  }
+}
+  "privacy": {
+    "title": "Paramètres de Confidentialité",
+    "profileVisibility": {
+      "title": "Visibilité du Profil",
+      "description": "Contrôlez qui peut voir votre profil",
+      "options": {
+        "public": "Public",
+        "private": "Privé",
+        "familyOnly": "Famille Seulement"
+      }
+    },
+    "storyVisibility": {
+      "title": "Visibilité des Histoires",
+      "description": "Visibilité par défaut pour les nouvelles histoires",
+      "options": {
+        "projectMembers": "Membres du Projet Seulement",
+        "family": "Famille",
+        "public": "Public"
+      }
+    },
+    "dataSharing": {
+      "title": "Partage de Données",
+      "analytics": "Partager des données d'utilisation anonymes",
+      "improvements": "Aider à améliorer Saga"
+    }
+  },
+  "accessibility": {
+    "title": "Paramètres d'Accessibilité",
+    "fontSize": {
+      "title": "Taille de Police",
+      "small": "Petit",
+      "standard": "Standard",
+      "large": "Grand",
+      "extraLarge": "Très Grand"
+    },
+    "highContrast": {
+      "title": "Contraste Élevé",
+      "description": "Augmenter le contraste pour une meilleure visibilité"
+    },
+    "reducedMotion": {
+      "title": "Mouvement Réduit",
+      "description": "Minimiser les animations et transitions"
+    },
+    "screenReader": {
+      "title": "Support Lecteur d'Écran",
+      "description": "Optimiser pour les lecteurs d'écran"
+    }
+  },
+  "account": {
+    "title": "Gestion du Compte",
+    "changePassword": {
+      "title": "Changer le Mot de Passe",
+      "description": "Mettre à jour le mot de passe de votre compte",
+      "button": "Changer le Mot de Passe"
+    },
+    "deleteAccount": {
+      "title": "Supprimer le Compte",
+      "description": "Supprimer définitivement votre compte et toutes les données",
+      "button": "Supprimer le Compte",
+      "warning": "Cette action ne peut pas être annulée"
+    },
+    "exportData": {
+      "title": "Exporter les Données",
+      "description": "Télécharger toutes les données de votre compte",
+      "button": "Exporter les Données"
+    }
+  },
+  "actions": {
+    "save": "Enregistrer les Modifications",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "reset": "Réinitialiser par Défaut"
+  },
+  "success": {
+    "saved": "Paramètres enregistrés avec succès",
+    "exported": "Exportation des données démarrée. Vous recevrez un e-mail lorsqu'elle sera prête."
+  },
+  "errors": {
+    "saveFailed": "Échec de l'enregistrement des paramètres",
+    "loadFailed": "Échec du chargement des paramètres"
+  }
+}

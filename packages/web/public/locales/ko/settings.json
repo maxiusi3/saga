@@ -1,0 +1,125 @@
+{
+  "title": "설정",
+  "tabs": {
+    "general": "일반",
+    "notifications": "알림",
+    "privacy": "개인정보",
+    "accessibility": "접근성",
+    "account": "계정"
+  },
+  "general": {
+    "title": "일반 설정",
+    "language": {
+      "title": "언어",
+      "description": "선호하는 언어 선택",
+      "label": "인터페이스 언어"
+    },
+    "timezone": {
+      "title": "시간대",
+      "description": "현지 시간대 설정",
+      "label": "시간대"
+    },
+    "dateFormat": {
+      "title": "날짜 형식",
+      "description": "날짜 표시 방식 선택",
+      "label": "날짜 형식"
+    }
+  },
+  "notifications": {
+    "title": "알림 설정",
+    "email": {
+      "title": "이메일 알림",
+      "newStory": "새 이야기 게시됨",
+      "newComment": "내 이야기에 새 댓글",
+      "newFollowUp": "새 후속 질문",
+      "projectInvite": "프로젝트 초대",
+      "weeklyDigest": "주간 요약"
+    },
+    "push": {
+      "title": "푸시 알림",
+      "enabled": "푸시 알림 활성화",
+      "description": "기기에서 알림 받기"
+    }
+  },
+  "privacy": {
+    "title": "개인정보 설정",
+    "profileVisibility": {
+      "title": "프로필 공개 범위",
+      "description": "프로필을 볼 수 있는 사람 제어",
+      "options": {
+        "public": "공개",
+        "private": "비공개",
+        "familyOnly": "가족만"
+      }
+    },
+    "storyVisibility": {
+      "title": "이야기 공개 범위",
+      "description": "새 이야기의 기본 공개 범위",
+      "options": {
+        "projectMembers": "프로젝트 멤버만",
+        "family": "가족",
+        "public": "공개"
+      }
+    },
+    "dataSharing": {
+      "title": "데이터 공유",
+      "analytics": "익명 사용 데이터 공유",
+      "improvements": "Saga 개선에 도움"
+    }
+  },
+  "accessibility": {
+    "title": "접근성 설정",
+    "fontSize": {
+      "title": "글꼴 크기",
+      "small": "작게",
+      "standard": "표준",
+      "large": "크게",
+      "extraLarge": "매우 크게"
+    },
+    "highContrast": {
+      "title": "고대비",
+      "description": "가시성 향상을 위해 대비 증가"
+    },
+    "reducedMotion": {
+      "title": "동작 감소",
+      "description": "애니메이션 및 전환 최소화"
+    },
+    "screenReader": {
+      "title": "스크린 리더 지원",
+      "description": "스크린 리더에 최적화"
+    }
+  },
+  "account": {
+    "title": "계정 관리",
+    "changePassword": {
+      "title": "비밀번호 변경",
+      "description": "계정 비밀번호 업데이트",
+      "button": "비밀번호 변경"
+    },
+    "deleteAccount": {
+      "title": "계정 삭제",
+      "description": "계정 및 모든 데이터 영구 삭제",
+      "button": "계정 삭제",
+      "warning": "이 작업은 취소할 수 없습니다"
+    },
+    "exportData": {
+      "title": "데이터 내보내기",
+      "description": "모든 계정 데이터 다운로드",
+      "button": "데이터 내보내기"
+    }
+  },
+  "actions": {
+    "save": "변경사항 저장",
+    "saving": "저장 중...",
+    "cancel": "취소",
+    "reset": "기본값으로 재설정"
+  },
+  "success": {
+    "saved": "설정이 성공적으로 저장되었습니다",
+    "exported": "데이터 내보내기가 시작되었습니다. 준비되면 이메일을 받게 됩니다."
+  },
+  "errors": {
+    "saveFailed": "설정 저장 실패",
+    "loadFailed": "설정 로드 실패"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "title": "設定",
+  "tabs": {
+    "general": "一般",
+    "notifications": "通知",
+    "privacy": "プライバシー",
+    "accessibility": "アクセシビリティ",
+    "account": "アカウント"
+  },
+  "general": {
+    "title": "一般設定",
+    "language": {
+      "title": "言語",
+      "description": "優先言語を選択",
+      "label": "インターフェース言語"
+    },
+    "timezone": {
+      "title": "タイムゾーン",
+      "description": "現地のタイムゾーンを設定",
+      "label": "タイムゾーン"
+    },
+    "dateFormat": {
+      "title": "日付形式",
+      "description": "日付の表示方法を選択",
+      "label": "日付形式"
+    }
+  },
+  "notifications": {
+    "title": "通知設定",
+    "email": {
+      "title": "メール通知",
+      "newStory": "新しい物語が投稿されました",
+      "newComment": "あなたの物語に新しいコメント",
+      "newFollowUp": "新しいフォローアップ質問",
+      "projectInvite": "プロジェクト招待",
+      "weeklyDigest": "週間ダイジェスト"
+    },
+    "push": {
+      "title": "プッシュ通知",
+      "enabled": "プッシュ通知を有効にする",
+      "description": "デバイスで通知を受け取る"
+    }
+  },
+  "privacy": {
+    "title": "プライバシー設定",
+    "profileVisibility": {
+      "title": "プロフィールの公開範囲",
+      "description": "プロフィールを表示できるユーザーを制御",
+      "options": {
+        "public": "公開",
+        "private": "非公開",
+        "familyOnly": "家族のみ"
+      }
+    },
+    "storyVisibility": {
+      "title": "物語の公開範囲",
+      "description": "新しい物語のデフォルト公開範囲",
+      "options": {
+        "projectMembers": "プロジェクトメンバーのみ",
+        "family": "家族",
+        "public": "公開"
+      }
+    },
+    "dataSharing": {
+      "title": "データ共有",
+      "analytics": "匿名の使用データを共有",
+      "improvements": "Sagaの改善に協力"
+    }
+  },
+  "accessibility": {
+    "title": "アクセシビリティ設定",
+    "fontSize": {
+      "title": "フォントサイズ",
+      "small": "小",
+      "standard": "標準",
+      "large": "大",
+      "extraLarge": "特大"
+    },
+    "highContrast": {
+      "title": "ハイコントラスト",
+      "description": "視認性向上のためコントラストを上げる"
+    },
+    "reducedMotion": {
+      "title": "モーション削減",
+      "description": "アニメーションと遷移を最小化"
+    },
+    "screenReader": {
+      "title": "スクリーンリーダーサポート",
+      "description": "スクリーンリーダー用に最適化"
+    }
+  },
+  "account": {
+    "title": "アカウント管理",
+    "changePassword": {
+      "title": "パスワード変更",
+      "description": "アカウントパスワードを更新",
+      "button": "パスワード変更"
+    },
+    "deleteAccount": {
+      "title": "アカウント削除",
+      "description": "アカウントとすべてのデータを完全に削除",
+      "button": "アカウント削除",
+      "warning": "この操作は元に戻せません"
+    },
+    "exportData": {
+      "title": "データエクスポート",
+      "description": "すべてのアカウントデータをダウンロード",
+      "button": "データエクスポート"
+    }
+  },
+  "actions": {
+    "save": "変更を保存",
+    "saving": "保存中...",
+    "cancel": "キャンセル",
+    "reset": "デフォルトにリセット"
+  },
+  "success": {
+    "saved": "設定が正常に保存されました",
+    "exported": "データエクスポートが開始されました。準備ができたらメールが届きます。"
+  },
+  "errors": {
+    "saveFailed": "設定の保存に失敗しました",
+    "loadFailed": "設定の読み込みに失敗しました"
+  }
+}

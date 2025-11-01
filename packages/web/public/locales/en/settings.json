@@ -1,0 +1,125 @@
+{
+  "title": "Settings",
+  "tabs": {
+    "general": "General",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "accessibility": "Accessibility",
+    "account": "Account"
+  },
+  "general": {
+    "title": "General Settings",
+    "language": {
+      "title": "Language",
+      "description": "Select your preferred language",
+      "label": "Interface Language"
+    },
+    "timezone": {
+      "title": "Timezone",
+      "description": "Set your local timezone",
+      "label": "Timezone"
+    },
+    "dateFormat": {
+      "title": "Date Format",
+      "description": "Choose how dates are displayed",
+      "label": "Date Format"
+    }
+  },
+  "notifications": {
+    "title": "Notification Preferences",
+    "email": {
+      "title": "Email Notifications",
+      "newStory": "New story posted",
+      "newComment": "New comment on your story",
+      "newFollowUp": "New follow-up question",
+      "projectInvite": "Project invitation",
+      "weeklyDigest": "Weekly digest"
+    },
+    "push": {
+      "title": "Push Notifications",
+      "enabled": "Enable push notifications",
+      "description": "Receive notifications on your device"
+    }
+  },
+  "privacy": {
+    "title": "Privacy Settings",
+    "profileVisibility": {
+      "title": "Profile Visibility",
+      "description": "Control who can see your profile",
+      "options": {
+        "public": "Public",
+        "private": "Private",
+        "familyOnly": "Family Only"
+      }
+    },
+    "storyVisibility": {
+      "title": "Story Visibility",
+      "description": "Default visibility for new stories",
+      "options": {
+        "projectMembers": "Project Members Only",
+        "family": "Family",
+        "public": "Public"
+      }
+    },
+    "dataSharing": {
+      "title": "Data Sharing",
+      "analytics": "Share anonymous usage data",
+      "improvements": "Help improve Saga"
+    }
+  },
+  "accessibility": {
+    "title": "Accessibility Settings",
+    "fontSize": {
+      "title": "Font Size",
+      "small": "Small",
+      "standard": "Standard",
+      "large": "Large",
+      "extraLarge": "Extra Large"
+    },
+    "highContrast": {
+      "title": "High Contrast",
+      "description": "Increase contrast for better visibility"
+    },
+    "reducedMotion": {
+      "title": "Reduced Motion",
+      "description": "Minimize animations and transitions"
+    },
+    "screenReader": {
+      "title": "Screen Reader Support",
+      "description": "Optimize for screen readers"
+    }
+  },
+  "account": {
+    "title": "Account Management",
+    "changePassword": {
+      "title": "Change Password",
+      "description": "Update your account password",
+      "button": "Change Password"
+    },
+    "deleteAccount": {
+      "title": "Delete Account",
+      "description": "Permanently delete your account and all data",
+      "button": "Delete Account",
+      "warning": "This action cannot be undone"
+    },
+    "exportData": {
+      "title": "Export Data",
+      "description": "Download all your account data",
+      "button": "Export Data"
+    }
+  },
+  "actions": {
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "reset": "Reset to Default"
+  },
+  "success": {
+    "saved": "Settings saved successfully",
+    "exported": "Data export started. You'll receive an email when ready."
+  },
+  "errors": {
+    "saveFailed": "Failed to save settings",
+    "loadFailed": "Failed to load settings"
+  }
+}
