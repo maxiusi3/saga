@@ -20,7 +20,7 @@ export function WalletStatus({ showDetails = false, className = '' }: WalletStat
   // 本地 withLocale，保证跳转链接包含当前语言
   const locale = useLocale()
   const tDashboard = useTranslations('dashboard')
-  const tCommon = useTranslations('common')
+  const tActions = useTranslations('common.actions')
   const withLocale = (path: string) => {
     if (!path || typeof path !== 'string') return path as any
     const sanitized = path.startsWith('/') ? path : `/${path}`
@@ -117,7 +117,7 @@ export function WalletStatus({ showDetails = false, className = '' }: WalletStat
           href={withLocale('/dashboard/purchase')}
           className="text-xs text-primary-600 hover:text-primary-700 font-medium"
         >
-          {tCommon('actions.manage')}
+          {tActions('manage')}
         </Link>
       </div>
 
@@ -189,7 +189,7 @@ export function WalletStatus({ showDetails = false, className = '' }: WalletStat
             <svg className="h-3 w-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
-            {tCommon('actions.purchaseMore')}
+            {tActions('purchaseMore')}
           </Link>
         </div>
       )}

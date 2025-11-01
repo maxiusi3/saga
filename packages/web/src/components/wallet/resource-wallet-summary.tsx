@@ -24,7 +24,7 @@ export default function ResourceWalletSummary({
   const router = useRouter();
   const locale = useLocale();
   const tDashboard = useTranslations('dashboard');
-  const tCommon = useTranslations('common');
+  const tActions = useTranslations('common.actions');
   const [wallet, setWallet] = useState<ResourceWallet | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -112,7 +112,7 @@ export default function ResourceWalletSummary({
                 size="sm"
                 className="mobile-full touch-target text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white"
               >
-                {tCommon('actions.purchaseMore')}
+                {tActions('purchaseMore')}
               </Button>
             )}
           </div>

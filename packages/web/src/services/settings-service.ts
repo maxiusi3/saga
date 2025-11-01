@@ -256,63 +256,30 @@ class SettingsService {
       }
     }
 
-    const { data, error } = await this.supabase
-      .from('accessibility_settings')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
-
-    if (error) {
-      // Gracefully handle "no rows" and "relation does not exist" (42P01)
-      if (error.code === 'PGRST116' || error.code === '42P01') {
-        return {
-          fontSize: 'standard',
-          highContrast: false,
-          reducedMotion: false,
-          screenReader: false,
-        }
-      }
-      throw error;
+    // Remote persistence for accessibility settings is temporarily disabled
+    // to avoid 404s when the table is not provisioned. We will rely on
+    // localStorage for now and return sensible defaults if not present.
+    const local = localStorage.getItem('accessibility_settings')
+    if (local) {
+      try {
+        return JSON.parse(local)
+      } catch {}
     }
-
     return {
-      fontSize: data.font_size ?? 'standard',
-      highContrast: !!data.high_contrast,
-      reducedMotion: !!data.reduced_motion,
-      screenReader: !!data.screen_reader,
+      fontSize: 'standard',
+      highContrast: false,
+      reducedMotion: false,
+      screenReader: false,
     }
 
   }
 
   async updateAccessibilitySettings(settings: Partial<AccessibilitySettings>): Promise<AccessibilitySettings> {
     const { data: { user } } = await this.supabase.auth.getUser();
-    if (!user) {
-      // Persist to localStorage in unauthenticated/dev mode
-      const merged = { ...settings, fontSize: settings.fontSize ?? 'standard', highContrast: !!settings.highContrast, reducedMotion: !!settings.reducedMotion, screenReader: !!settings.screenReader }
-      localStorage.setItem('accessibility_settings', JSON.stringify(merged))
-      return merged as AccessibilitySettings
-    }
-
-    const { data, error } = await this.supabase
-      .from('accessibility_settings')
-      .upsert({
-        user_id: user.id,
-        font_size: settings.fontSize,
-        high_contrast: settings.highContrast,
-        reduced_motion: settings.reducedMotion,
-        screen_reader: settings.screenReader,
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return {
-      fontSize: data.font_size ?? 'standard',
-      highContrast: !!data.high_contrast,
-      reducedMotion: !!data.reduced_motion,
-      screenReader: !!data.screen_reader,
-    }
+    // Persist to localStorage (temporarily the sole persistence layer).
+    const merged = { ...settings, fontSize: settings.fontSize ?? 'standard', highContrast: !!settings.highContrast, reducedMotion: !!settings.reducedMotion, screenReader: !!settings.screenReader }
+    localStorage.setItem('accessibility_settings', JSON.stringify(merged))
+    return merged as AccessibilitySettings
   }
 
   async getAudioSettings(): Promise<AudioSettings> {
@@ -488,7 +455,7 @@ class SettingsService {
     }
 
     const { data, error } = await this.supabase
-      .from('resource_wallets')
+      .from('user_resource_wallets')
       .select('*')
       .eq('user_id', user.id)
       .single();

@@ -16,7 +16,7 @@ export default function DashboardPage() {
   const { user } = useAuthStore()
   const locale = useLocale()
   const tDashboard = useTranslations('dashboard')
-  const tCommon = useTranslations('common')
+  const tCommon = useTranslations('common.actions')
   const withLocale = (path: string) => {
     if (!path.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -179,7 +179,7 @@ export default function DashboardPage() {
                   size="sm"
                   onClick={() => window.location.href = withLocale('/dashboard/purchase')}
                 >
-                  {tCommon('actions.purchaseMore')}
+                  {tCommon('purchaseMore')}
                 </EnhancedButton>
               </div>
               

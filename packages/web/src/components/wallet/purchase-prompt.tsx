@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { ResourceValidationError, ResourceValidationService } from '@/lib/resource-validation'
 import type { UserResourceWallet } from '@saga/shared/types'
 type WalletView = Pick<UserResourceWallet, 'projectVouchers' | 'facilitatorSeats' | 'storytellerSeats'>
@@ -23,6 +23,8 @@ export function PurchasePrompt({
   showDismiss = true
 }: PurchasePromptProps) {
   const locale = useLocale()
+  const tDashboard = useTranslations('dashboard')
+  const tWallet = useTranslations('dashboard.wallet')
   const withLocale = (path: string) => {
     if (!path.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -40,7 +42,7 @@ export function PurchasePrompt({
     onDismiss?.()
   }
 
-  const { title, message, urgency } = getPromptContent(wallet, trigger)
+  const { title, message, urgency } = getPromptContent(wallet, trigger, tWallet)
 
   return (
     <div className={`relative rounded-lg border p-4 ${getPromptStyles(urgency)} ${className}`}>
@@ -71,19 +73,19 @@ export function PurchasePrompt({
           <div className="mt-3 space-y-2">
             <div className="grid grid-cols-3 gap-4 text-xs">
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Projects</span>
+                <span className="text-gray-600">{tDashboard('welcomeHeader.metrics.projectVouchers')}</span>
                 <span className={`font-medium ${wallet.projectVouchers > 0 ? 'text-green-600' : 'text-red-600'}`}>
                   {wallet.projectVouchers}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Facilitators</span>
+                <span className="text-gray-600">{tDashboard('welcomeHeader.metrics.facilitatorSeats')}</span>
                 <span className={`font-medium ${wallet.facilitatorSeats > 0 ? 'text-green-600' : 'text-red-600'}`}>
                   {wallet.facilitatorSeats}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Storytellers</span>
+                <span className="text-gray-600">{tDashboard('welcomeHeader.metrics.storytellerSeats')}</span>
                 <span className={`font-medium ${wallet.storytellerSeats > 0 ? 'text-green-600' : 'text-red-600'}`}>
                   {wallet.storytellerSeats}
                 </span>
@@ -100,13 +102,13 @@ export function PurchasePrompt({
               <svg className="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
-              Purchase Package
+              {tWallet('purchasePackage')}
             </Link>
             <Link
               href={withLocale('/dashboard/purchase')}
               className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
-              View Wallet
+              {tWallet('viewWallet')}
             </Link>
           </div>
         </div>
@@ -130,30 +132,34 @@ function checkShouldShow(wallet: WalletView, trigger: 'low' | 'empty' | 'insuffi
   }
 }
 
-function getPromptContent(wallet: WalletView, trigger: 'low' | 'empty' | 'insufficient') {
+function getPromptContent(
+  wallet: WalletView,
+  trigger: 'low' | 'empty' | 'insufficient',
+  t: (key: string, values?: Record<string, any>) => string
+) {
   switch (trigger) {
     case 'empty':
       return {
-        title: 'No Resources Available',
-        message: 'You have no project vouchers or seats remaining. Purchase a package to continue using Saga.',
+        title: t('purchasePrompt.empty.title'),
+        message: t('purchasePrompt.empty.message'),
         urgency: 'high' as const
       }
     case 'low':
       return {
-        title: 'Running Low on Resources',
-        message: 'You\'re running low on project vouchers and seats. Consider purchasing more to avoid interruptions.',
+        title: t('purchasePrompt.low.title'),
+        message: t('purchasePrompt.low.message'),
         urgency: 'medium' as const
       }
     case 'insufficient':
       return {
-        title: 'Some Resources Depleted',
-        message: 'You\'ve run out of some resources. Purchase a package to restore full functionality.',
+        title: t('purchasePrompt.insufficient.title'),
+        message: t('purchasePrompt.insufficient.message'),
         urgency: 'medium' as const
       }
     default:
       return {
-        title: 'Consider Purchasing More Resources',
-        message: 'Keep your family storytelling going with additional resources.',
+        title: t('purchasePrompt.default.title'),
+        message: t('purchasePrompt.default.message'),
         urgency: 'low' as const
       }
   }

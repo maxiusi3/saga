@@ -31,6 +31,11 @@ export default getRequestConfig(async ({ requestLocale }) => {
       // Root-level namespaces from common.json
       ...merge(await loadJson('en', 'common.json'), await loadJson(locale, 'common.json')),
 
+      // Also expose common.json under the explicit "common" namespace so
+      // components using useTranslations('common') can resolve keys like
+      // common.actions.purchaseMore, common.actions.manage, etc.
+      common: merge(await loadJson('en', 'common.json'), await loadJson(locale, 'common.json')),
+
       // Dedicated namespaces
       pages: merge(await loadJson('en', 'pages.json'), await loadJson(locale, 'pages.json')),
       auth: merge(await loadJson('en', 'auth.json'), await loadJson(locale, 'auth.json')),

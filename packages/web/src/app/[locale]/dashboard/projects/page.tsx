@@ -9,6 +9,7 @@ import { Plus, BookOpen, Users, MessageCircle, Crown } from 'lucide-react'
 import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { projectService, ProjectWithMembers } from '@/lib/projects'
+import { useTranslations } from 'next-intl'
 
 // 模拟项目数据类型
 interface Project {
@@ -27,6 +28,8 @@ export default function ProjectsPage() {
   const router = useRouter()
   const params = useParams()
   const locale = (params?.locale as string) || 'en'
+  const tProjects = useTranslations('projects')
+  const tCommon = useTranslations('common')
   const withLocale = (path: string) => {
     const normalized = path.startsWith('/') ? path : `/${path}`
     return `/${locale}${normalized}`
@@ -59,11 +62,11 @@ export default function ProjectsPage() {
 
   const getStatusBadge = (storyCount: number) => {
     if (storyCount === 0) {
-      return <Badge variant="secondary">New</Badge>
+      return <Badge variant="secondary">{tProjects('status.new')}</Badge>
     } else if (storyCount < 5) {
-      return <Badge variant="outline">Getting Started</Badge>
+      return <Badge variant="outline">{tProjects('status.gettingStarted')}</Badge>
     } else {
-      return <Badge variant="default">Active</Badge>
+      return <Badge variant="default">{tProjects('status.active')}</Badge>
     }
   }
 
@@ -72,20 +75,20 @@ export default function ProjectsPage() {
       return (
         <Badge variant="default" className="bg-yellow-100 text-yellow-800">
           <Crown className="w-3 h-3 mr-1" />
-          Owner
+          {tProjects('roles.owner')}
         </Badge>
       )
     }
     
     switch (role) {
       case 'facilitator':
-        return <Badge variant="default">Facilitator</Badge>
+        return <Badge variant="default">{tProjects('roles.facilitator')}</Badge>
       case 'co_facilitator':
-        return <Badge variant="secondary">Co-Facilitator</Badge>
+        return <Badge variant="secondary">{tProjects('roles.coFacilitator')}</Badge>
       case 'storyteller':
-        return <Badge variant="outline">Storyteller</Badge>
+        return <Badge variant="outline">{tProjects('roles.storyteller')}</Badge>
       default:
-        return <Badge variant="outline">Member</Badge>
+        return <Badge variant="outline">{tProjects('roles.member')}</Badge>
     }
   }
 
@@ -99,9 +102,9 @@ export default function ProjectsPage() {
       <div className="container py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">My Projects</h1>
+            <h1 className="text-3xl font-bold text-foreground">{tProjects('list.title')}</h1>
             <p className="text-muted-foreground mt-2">
-              Manage your family story projects
+              {tProjects('list.subtitle')}
             </p>
           </div>
         </div>
@@ -129,9 +132,9 @@ export default function ProjectsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">My Projects</h1>
+          <h1 className="text-3xl font-bold text-foreground">{tProjects('list.title')}</h1>
           <p className="text-muted-foreground mt-2">
-            Manage your family story projects
+            {tProjects('list.subtitle')}
           </p>
         </div>
         
@@ -140,7 +143,7 @@ export default function ProjectsPage() {
           <div className="flex space-x-3">
             <Button onClick={handleCreateProject} variant="default">
               <Plus className="w-4 h-4 mr-2" />
-              Create New Project
+              {tProjects('list.createNew')}
             </Button>
           </div>
         )}
@@ -171,11 +174,11 @@ export default function ProjectsPage() {
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center">
                       <BookOpen className="w-4 h-4 mr-1" />
-                      <span>{project.story_count || 0} stories</span>
+                      <span>{project.story_count || 0} {tProjects('list.stats.stories')}</span>
                     </div>
                     <div className="flex items-center">
                       <Users className="w-4 h-4 mr-1" />
-                      <span>{project.member_count || 0} members</span>
+                      <span>{project.member_count || 0} {tProjects('list.stats.members')}</span>
                     </div>
                   </div>
                 </div>
@@ -195,9 +198,9 @@ export default function ProjectsPage() {
                 <Plus className="w-6 h-6 text-primary" />
               </div>
               <div className="text-center">
-                <h3 className="font-semibold text-foreground mb-2">Create New Project</h3>
+                <h3 className="font-semibold text-foreground mb-2">{tProjects('list.createCard.title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Start a new family story project
+                  {tProjects('list.createCard.subtitle')}
                 </p>
               </div>
             </CardContent>
@@ -208,14 +211,14 @@ export default function ProjectsPage() {
       {/* Empty State */}
       {projects.length === 0 && (
         <div className="text-center py-16">
-          <div className="text-6xl mb-4">📖</div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">No projects yet</h2>
+          <div className="text-6xl mb-4">{tProjects('list.empty.emoji')}</div>
+          <h2 className="text-2xl font-bold text-foreground mb-2">{tProjects('list.empty.title')}</h2>
           <p className="text-muted-foreground mb-6">
-            Create your first family story project to get started
+            {tProjects('list.empty.subtitle')}
           </p>
           <Button onClick={handleCreateProject} size="lg">
             <Plus className="w-5 h-5 mr-2" />
-            Create Your First Project
+            {tProjects('list.createFirst')}
           </Button>
         </div>
       )}

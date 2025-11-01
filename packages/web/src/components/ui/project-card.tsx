@@ -63,6 +63,8 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const tProjects = useTranslations('projects')
   const tCommon = useTranslations('common')
+  const tActions = useTranslations('common.actions')
+  const tProject = useTranslations('common.project')
   const statusStyle = statusConfig[status]
   
   return (
@@ -156,7 +158,7 @@ export function ProjectCard({
             
             {members.length > 0 && (
               <div className="ml-3 text-xs text-muted-foreground">
-                {isOwner ? tCommon('project.yourProject') : tCommon('project.participating')}
+                {isOwner ? tProject('yourProject') : tProject('participating')}
               </div>
             )}
           </div>
@@ -171,7 +173,7 @@ export function ProjectCard({
             className="flex-1"
             leftIcon={<Play className="h-3 w-3" />}
           >
-            {tCommon('actions.enterProject')}
+            {tActions('enterProject')}
           </EnhancedButton>
           
           {isOwner && (
@@ -181,7 +183,7 @@ export function ProjectCard({
               onClick={onManage}
               leftIcon={<Settings className="h-3 w-3" />}
             >
-              {tCommon('actions.manage')}
+              {tActions('manage')}
             </EnhancedButton>
           )}
         </div>
