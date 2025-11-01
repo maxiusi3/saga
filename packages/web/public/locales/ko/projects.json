@@ -17,6 +17,80 @@
       "all": "모든 프로젝트",
       "active": "활성",
       "archived": "보관됨"
+    },
+    "stats": {
+      "stories": "이야기",
+      "members": "멤버"
+    }
+  },
+  "create": {
+    "backToProjects": "프로젝트로 돌아가기",
+    "title": "새 가족 전기 만들기",
+    "subtitle": "가족의 소중한 이야기 녹음 시작",
+    "projectDetails": "프로젝트 세부정보",
+    "projectName": "프로젝트 이름",
+    "projectNamePlaceholder": "예: 장씨 가족 이야기, 할아버지의 회고록",
+    "projectDescription": "프로젝트 설명",
+    "projectDescriptionPlaceholder": "어떤 이야기를 녹음하고 싶으신가요? 누가 참여할 예정인가요?",
+    "projectTheme": "프로젝트 테마",
+    "yourRole": "이 프로젝트에서의 역할",
+    "resourceCost": "리소스 비용",
+    "currentBalance": "현재 잔액",
+    "projectVouchers": "프로젝트 바우처",
+    "facilitatorSeats": "진행자 좌석",
+    "storytellerSeats": "이야기꾼 좌석",
+    "cancel": "취소",
+    "createProject": "프로젝트 만들기",
+    "creating": "생성 중...",
+    "whatHappensNext": "다음 단계는?",
+    "nextSteps": {
+      "step1": "전체 액세스 권한을 가진 프로젝트 진행자가 됩니다",
+      "step2": "가족 구성원을 이야기꾼으로 초대합니다",
+      "step3": "이야기 녹음 및 정리를 시작합니다",
+      "step4": "AI를 사용하여 프롬프트 및 요약을 생성합니다"
+    },
+    "themes": {
+      "familyMemories": {
+        "name": "가족 추억",
+        "description": "여러 세대의 이야기 포착",
+        "emoji": "👨‍👩‍👧‍👦"
+      },
+      "lifeJourney": {
+        "name": "인생 여정",
+        "description": "개인적인 이정표와 경험 기록",
+        "emoji": "🛤️"
+      },
+      "culturalHeritage": {
+        "name": "문화 유산",
+        "description": "전통과 문화 이야기 보존",
+        "emoji": "🏛️"
+      },
+      "professionalLegacy": {
+        "name": "직업적 유산",
+        "description": "경력 경험과 지혜 공유",
+        "emoji": "💼"
+      }
+    },
+    "roles": {
+      "storyteller": {
+        "name": "이야기꾼",
+        "description": "이야기를 녹음하고 공유",
+        "cost": "이야기꾼 좌석 1개"
+      },
+      "facilitator": {
+        "name": "진행자",
+        "description": "프로젝트 관리 및 다른 사람 초대",
+        "cost": "진행자 좌석 1개"
+      }
+    },
+    "errors": {
+      "insufficientVouchers": "프로젝트 바우처가 부족합니다. 더 많은 리소스를 구매하세요",
+      "insufficientSeats": "{role} 좌석이 부족합니다. 더 많은 리소스를 구매하세요",
+      "createFailed": "프로젝트 생성 실패. 다시 시도하세요",
+      "unableToFetchBalance": "리소스 잔액 정보를 가져올 수 없습니다"
+    },
+    "success": {
+      "created": "프로젝트가 성공적으로 생성되었습니다!"
     }
   },
   "detail": {
@@ -93,6 +167,11 @@
     "coFacilitator": "공동 진행자",
     "storyteller": "이야기꾼",
     "member": "멤버"
+  },
+  "errors": {
+    "notFound": "프로젝트를 찾을 수 없습니다",
+    "accessDenied": "프로젝트를 찾을 수 없거나 액세스가 거부되었습니다",
+    "loadFailed": "프로젝트 데이터 로드 실패"
   },
   "export": {
     "title": "프로젝트 데이터 내보내기",
