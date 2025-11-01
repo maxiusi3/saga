@@ -1,0 +1,49 @@
+{
+  "title": "マイプロフィール",
+  "editProfile": "プロフィールを編集",
+  "saveChanges": "変更を保存",
+  "saving": "保存中...",
+  "cancel": "キャンセル",
+  "form": {
+    "fullName": "フルネーム",
+    "email": "メールアドレス",
+    "emailNote": "メールアドレスは変更できません",
+    "phone": "電話番号",
+    "phonePlaceholder": "(555) 123-4567",
+    "bio": "自己紹介",
+    "bioPlaceholder": "自己紹介を入力してください...",
+    "notProvided": "未提供",
+    "noBio": "自己紹介が未入力です"
+  },
+  "memberSince": "{date}からのメンバー",
+  "activitySummary": {
+    "title": "アクティビティサマリー",
+    "activeProjects": "アクティブなプロジェクト",
+    "storiesShared": "共有した物語"
+  },
+  "accountSettings": {
+    "title": "アカウント設定",
+    "emailNotifications": {
+      "title": "メール通知",
+      "description": "プロジェクトの更新を受け取る",
+      "enabled": "有効"
+    },
+    "privacySettings": {
+      "title": "プライバシー設定",
+      "description": "プロフィールを表示できるユーザーを制御",
+      "manage": "管理"
+    },
+    "dataExport": {
+      "title": "データエクスポート",
+      "description": "アカウントデータをダウンロード",
+      "export": "エクスポート"
+    }
+  },
+  "errors": {
+    "loadFailed": "プロフィールの読み込みに失敗しました",
+    "updateFailed": "プロフィールの更新に失敗しました"
+  },
+  "success": {
+    "updated": "プロフィールが正常に更新されました"
+  }
+}

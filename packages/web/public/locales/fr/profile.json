@@ -1,0 +1,49 @@
+{
+  "title": "Mon Profil",
+  "editProfile": "Modifier le Profil",
+  "saveChanges": "Enregistrer les Modifications",
+  "saving": "Enregistrement...",
+  "cancel": "Annuler",
+  "form": {
+    "fullName": "Nom Complet",
+    "email": "E-mail",
+    "emailNote": "L'e-mail ne peut pas être modifié",
+    "phone": "Numéro de Téléphone",
+    "phonePlaceholder": "(555) 123-4567",
+    "bio": "Biographie",
+    "bioPlaceholder": "Parlez-nous un peu de vous...",
+    "notProvided": "Non fourni",
+    "noBio": "Aucune biographie fournie"
+  },
+  "memberSince": "Membre depuis {date}",
+  "activitySummary": {
+    "title": "Résumé d'Activité",
+    "activeProjects": "Projets Actifs",
+    "storiesShared": "Histoires Partagées"
+  },
+  "accountSettings": {
+    "title": "Paramètres du Compte",
+    "emailNotifications": {
+      "title": "Notifications par E-mail",
+      "description": "Recevez des mises à jour sur vos projets",
+      "enabled": "Activé"
+    },
+    "privacySettings": {
+      "title": "Paramètres de Confidentialité",
+      "description": "Contrôlez qui peut voir votre profil",
+      "manage": "Gérer"
+    },
+    "dataExport": {
+      "title": "Exportation de Données",
+      "description": "Téléchargez les données de votre compte",
+      "export": "Exporter"
+    }
+  },
+  "errors": {
+    "loadFailed": "Échec du chargement du profil",
+    "updateFailed": "Échec de la mise à jour du profil"
+  },
+  "success": {
+    "updated": "Profil mis à jour avec succès"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "title": "My Profile",
+  "editProfile": "Edit Profile",
+  "saveChanges": "Save Changes",
+  "saving": "Saving...",
+  "cancel": "Cancel",
+  "form": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "emailNote": "Email cannot be changed",
+    "phone": "Phone Number",
+    "phonePlaceholder": "(555) 123-4567",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us a little about yourself...",
+    "notProvided": "Not provided",
+    "noBio": "No bio provided"
+  },
+  "memberSince": "Member since {date}",
+  "activitySummary": {
+    "title": "Activity Summary",
+    "activeProjects": "Active Projects",
+    "storiesShared": "Stories Shared"
+  },
+  "accountSettings": {
+    "title": "Account Settings",
+    "emailNotifications": {
+      "title": "Email Notifications",
+      "description": "Receive updates about your projects",
+      "enabled": "Enabled"
+    },
+    "privacySettings": {
+      "title": "Privacy Settings",
+      "description": "Control who can see your profile",
+      "manage": "Manage"
+    },
+    "dataExport": {
+      "title": "Data Export",
+      "description": "Download your account data",
+      "export": "Export"
+    }
+  },
+  "errors": {
+    "loadFailed": "Failed to load profile",
+    "updateFailed": "Failed to update profile"
+  },
+  "success": {
+    "updated": "Profile updated successfully"
+  }
+}

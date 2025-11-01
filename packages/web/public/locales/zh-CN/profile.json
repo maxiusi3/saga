@@ -1,0 +1,49 @@
+{
+  "title": "我的个人资料",
+  "editProfile": "编辑个人资料",
+  "saveChanges": "保存更改",
+  "saving": "保存中...",
+  "cancel": "取消",
+  "form": {
+    "fullName": "全名",
+    "email": "电子邮箱",
+    "emailNote": "电子邮箱无法更改",
+    "phone": "电话号码",
+    "phonePlaceholder": "(555) 123-4567",
+    "bio": "个人简介",
+    "bioPlaceholder": "简单介绍一下您自己...",
+    "notProvided": "未提供",
+    "noBio": "未提供个人简介"
+  },
+  "memberSince": "自{date}起成为会员",
+  "activitySummary": {
+    "title": "活动摘要",
+    "activeProjects": "活跃项目",
+    "storiesShared": "分享的故事"
+  },
+  "accountSettings": {
+    "title": "账户设置",
+    "emailNotifications": {
+      "title": "电子邮件通知",
+      "description": "接收有关您项目的更新",
+      "enabled": "已启用"
+    },
+    "privacySettings": {
+      "title": "隐私设置",
+      "description": "控制谁可以查看您的个人资料",
+      "manage": "管理"
+    },
+    "dataExport": {
+      "title": "数据导出",
+      "description": "下载您的账户数据",
+      "export": "导出"
+    }
+  },
+  "errors": {
+    "loadFailed": "加载个人资料失败",
+    "updateFailed": "更新个人资料失败"
+  },
+  "success": {
+    "updated": "个人资料更新成功"
+  }
+}

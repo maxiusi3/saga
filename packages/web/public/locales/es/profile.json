@@ -1,0 +1,49 @@
+{
+  "title": "Mi Perfil",
+  "editProfile": "Editar Perfil",
+  "saveChanges": "Guardar Cambios",
+  "saving": "Guardando...",
+  "cancel": "Cancelar",
+  "form": {
+    "fullName": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "emailNote": "El correo electrónico no se puede cambiar",
+    "phone": "Número de Teléfono",
+    "phonePlaceholder": "(555) 123-4567",
+    "bio": "Biografía",
+    "bioPlaceholder": "Cuéntanos un poco sobre ti...",
+    "notProvided": "No proporcionado",
+    "noBio": "No se proporcionó biografía"
+  },
+  "memberSince": "Miembro desde {date}",
+  "activitySummary": {
+    "title": "Resumen de Actividad",
+    "activeProjects": "Proyectos Activos",
+    "storiesShared": "Historias Compartidas"
+  },
+  "accountSettings": {
+    "title": "Configuración de Cuenta",
+    "emailNotifications": {
+      "title": "Notificaciones por Correo",
+      "description": "Recibe actualizaciones sobre tus proyectos",
+      "enabled": "Habilitado"
+    },
+    "privacySettings": {
+      "title": "Configuración de Privacidad",
+      "description": "Controla quién puede ver tu perfil",
+      "manage": "Gestionar"
+    },
+    "dataExport": {
+      "title": "Exportación de Datos",
+      "description": "Descarga los datos de tu cuenta",
+      "export": "Exportar"
+    }
+  },
+  "errors": {
+    "loadFailed": "Error al cargar el perfil",
+    "updateFailed": "Error al actualizar el perfil"
+  },
+  "success": {
+    "updated": "Perfil actualizado exitosamente"
+  }
+}
