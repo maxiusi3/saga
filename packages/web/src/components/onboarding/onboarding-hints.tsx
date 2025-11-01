@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useOnboarding } from '@/hooks/use-onboarding'
 
 interface OnboardingHintsProps {
@@ -13,6 +13,7 @@ interface OnboardingHintsProps {
 
 export function OnboardingHints({ className = '' }: OnboardingHintsProps) {
   const locale = useLocale()
+  const t = useTranslations('onboarding.hints')
   const withLocale = (path: string) => {
     if (!path.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -36,7 +37,7 @@ export function OnboardingHints({ className = '' }: OnboardingHintsProps) {
         return (
           <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
             <Link href={withLocale('/dashboard/projects/new')}>
-              Create Project
+              {t('createProject')}
             </Link>
           </Button>
         )
@@ -44,7 +45,7 @@ export function OnboardingHints({ className = '' }: OnboardingHintsProps) {
         return (
           <Button asChild variant="outline">
             <Link href={withLocale('/dashboard/projects')}>
-              View Projects
+              {t('viewProjects')}
             </Link>
           </Button>
         )

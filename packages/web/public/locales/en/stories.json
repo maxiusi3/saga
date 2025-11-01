@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "shareStory": "Share Story",
+    "sharing": "Sharing...",
+    "editStory": "Edit Story",
+    "deleteStory": "Delete Story",
+    "viewStory": "View Story",
+    "recordStory": "Record Story"
+  },
+  "share": {
+    "title": "Share Story",
+    "success": "Story shared successfully",
+    "failed": "Failed to share story"
+  },
+  "list": {
+    "manageProject": "Manage Project",
+    "noStories": "No stories yet",
+    "createFirst": "Create your first story"
+  }
+}

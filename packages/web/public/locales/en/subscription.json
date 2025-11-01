@@ -1,0 +1,27 @@
+{
+  "actions": {
+    "cancelSubscription": "Cancel Subscription",
+    "cancelling": "Cancelling...",
+    "saveSettings": "Save Settings",
+    "saving": "Saving...",
+    "viewPlans": "View Plans",
+    "upgradePlan": "Upgrade Plan"
+  },
+  "billing": {
+    "title": "Billing Information",
+    "updateFailed": "Failed to update settings"
+  },
+  "cancellation": {
+    "title": "Cancel Subscription",
+    "confirm": "Are you sure you want to cancel?",
+    "processing": "Processing cancellation..."
+  },
+  "support": {
+    "howToUpgrade": "How do I upgrade my plan?",
+    "howToUpgradeAnswer": "Visit the Plans page and select your desired plan. Upgrades take effect immediately.",
+    "howToCancel": "How do I cancel my subscription?",
+    "howToCancelAnswer": "You can cancel anytime. Your subscription remains active until the end of the billing period.",
+    "viewPlansAction": "View Plans",
+    "cancelAction": "Cancel Subscription"
+  }
+}
