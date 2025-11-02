@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,6 +28,7 @@ function AcceptInvitationContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const locale = useLocale()
+  const t = useTranslations('invitations.accept')
   const withLocale = (path: string) => {
     if (!path.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -67,7 +68,7 @@ function AcceptInvitationContent() {
       loadPendingInvitations()
     } else {
       console.log('Accept invitation: No token and no user, showing error')
-      setError('Invalid invitation link')
+      setError(t('invalidDescription'))
       setLoading(false)
     }
   }, [token, type, user, hasLoaded])
@@ -85,7 +86,7 @@ function AcceptInvitationContent() {
           setNeedsSignup(false)
         } else if (user && user.email !== data.invitee_email) {
           // 用户已登录但邮箱不匹配
-          setError('Please log out and use the correct email address to accept this invitation.')
+          setError(t('wrongEmail'))
         } else {
           // 用户未登录，需要注册或登录
           setNeedsSignup(true)
@@ -93,10 +94,10 @@ function AcceptInvitationContent() {
         }
       } else {
         const errorData = await response.json()
-        setError(errorData.error || 'Invalid or expired invitation')
+        setError(errorData.error || t('invalidDescription'))
       }
     } catch (error) {
-      setError('Failed to load invitation details')
+      setError(t('loadingFailed'))
     } finally {
       setLoading(false)
     }
@@ -147,17 +148,17 @@ function AcceptInvitationContent() {
           setNeedsSignup(false)
         } else {
           console.log('Accept invitation: No pending invitations')
-          setError('No pending invitations found')
+          setError(t('noPendingInvitations'))
         }
       } else {
         console.log('Accept invitation: API call failed', { status: response.status, statusText: response.statusText })
         const errorText = await response.text()
         console.log('Accept invitation: Error response', errorText)
-        setError('Failed to load pending invitations')
+        setError(t('loadingFailed'))
       }
     } catch (error) {
       console.error('Accept invitation: Exception caught', error)
-      setError('Failed to load pending invitations')
+      setError(t('loadingFailed'))
     } finally {
       setLoading(false)
     }
@@ -165,12 +166,12 @@ function AcceptInvitationContent() {
 
   const handleSignup = async () => {
     if (signupData.password !== signupData.confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error(t('passwordMismatch'))
       return
     }
 
     if (signupData.password.length < 6) {
-      toast.error('Password must be at least 6 characters')
+      toast.error(t('passwordTooShort'))
       return
     }
 
@@ -190,11 +191,11 @@ function AcceptInvitationContent() {
       if (error) {
         toast.error(error.message)
       } else {
-        toast.success('Account created! Please check your email to verify your account.')
+        toast.success(t('accountCreated'))
         // 注册成功后，用户需要验证邮箱，然后再回到这个页面接受邀请
       }
     } catch (error) {
-      toast.error('Failed to create account')
+      toast.error(t('accountCreationFailed'))
     } finally {
       setAccepting(false)
     }
@@ -229,14 +230,14 @@ function AcceptInvitationContent() {
 
       if (response.ok) {
         const data = await response.json()
-        toast.success('Invitation accepted successfully!')
+        toast.success(t('acceptSuccess'))
         router.push(withLocale(`/dashboard/projects/${data.project_id}`))
       } else {
         const errorData = await response.json()
-        toast.error(errorData.error || 'Failed to accept invitation')
+        toast.error(errorData.error || t('acceptFailed'))
       }
     } catch (error) {
-      toast.error('Failed to accept invitation')
+      toast.error(t('acceptFailed'))
     } finally {
       setAccepting(false)
     }
@@ -248,7 +249,7 @@ function AcceptInvitationContent() {
         <Card className="w-full max-w-md">
           <CardContent className="flex items-center justify-center p-8">
             <Loader2 className="h-8 w-8 animate-spin" />
-            <span className="ml-2">Loading invitation...</span>
+            <span className="ml-2">{t('loading')}</span>
           </CardContent>
         </Card>
       </div>
@@ -261,7 +262,7 @@ function AcceptInvitationContent() {
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <CardTitle>Invalid Invitation</CardTitle>
+            <CardTitle>{t('invalidTitle')}</CardTitle>
             <CardDescription>{error}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -269,7 +270,7 @@ function AcceptInvitationContent() {
               onClick={() => router.push('/')} 
               className="w-full"
             >
-              Go to Home
+              {t('goHome')}
             </Button>
           </CardContent>
         </Card>
@@ -286,17 +287,17 @@ function AcceptInvitationContent() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-          <CardTitle>Project Invitation</CardTitle>
+          <CardTitle>{t('projectInvitation')}</CardTitle>
           <CardDescription>
-            You've been invited to join a Saga project
+            {t('invitedToJoin')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <p><strong>Project:</strong> {invitation.project_name}</p>
-            <p><strong>Invited by:</strong> {invitation.inviter_name}</p>
-            <p><strong>Role:</strong> {invitation.role}</p>
-            <p><strong>Expires:</strong> {new Date(invitation.expires_at).toLocaleDateString()}</p>
+            <p><strong>{t('project')}:</strong> {invitation.project_name}</p>
+            <p><strong>{t('invitedBy')}:</strong> {invitation.inviter_name}</p>
+            <p><strong>{t('role')}:</strong> {invitation.role}</p>
+            <p><strong>{t('expires')}:</strong> {new Date(invitation.expires_at).toLocaleDateString()}</p>
             {invitation.message && (
               <div className="p-3 bg-gray-50 rounded-lg">
                 <p className="text-sm italic">"{invitation.message}"</p>
@@ -307,7 +308,7 @@ function AcceptInvitationContent() {
           {needsSignup ? (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('email')}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -316,32 +317,32 @@ function AcceptInvitationContent() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
+                <Label htmlFor="fullName">{t('fullName')}</Label>
                 <Input
                   id="fullName"
                   value={signupData.fullName}
                   onChange={(e) => setSignupData(prev => ({ ...prev, fullName: e.target.value }))}
-                  placeholder="Enter your full name"
+                  placeholder={t('fullNamePlaceholder')}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('password')}</Label>
                 <Input
                   id="password"
                   type="password"
                   value={signupData.password}
                   onChange={(e) => setSignupData(prev => ({ ...prev, password: e.target.value }))}
-                  placeholder="Create a password"
+                  placeholder={t('passwordPlaceholder')}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword">{t('confirmPassword')}</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   value={signupData.confirmPassword}
                   onChange={(e) => setSignupData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                  placeholder="Confirm your password"
+                  placeholder={t('confirmPasswordPlaceholder')}
                 />
               </div>
               <Button 
@@ -350,7 +351,7 @@ function AcceptInvitationContent() {
                 className="w-full"
               >
                 {accepting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Create Account & Accept Invitation
+                {t('createAccountButton')}
               </Button>
             </div>
           ) : (
@@ -360,7 +361,7 @@ function AcceptInvitationContent() {
               className="w-full"
             >
               {accepting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Accept Invitation
+              {t('acceptButton')}
             </Button>
           )}
         </CardContent>
@@ -369,18 +370,23 @@ function AcceptInvitationContent() {
   )
 }
 
+function LoadingFallback() {
+  const t = useTranslations('invitations.accept')
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <Card className="w-full max-w-md">
+        <CardContent className="flex items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">{t('loading')}</span>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 export default function AcceptInvitationPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardContent className="flex items-center justify-center p-8">
-            <Loader2 className="h-8 w-8 animate-spin" />
-            <span className="ml-2">Loading...</span>
-          </CardContent>
-        </Card>
-      </div>
-    }>
+    <Suspense fallback={<LoadingFallback />}>
       <AcceptInvitationContent />
     </Suspense>
   )

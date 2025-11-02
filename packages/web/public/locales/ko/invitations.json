@@ -1,40 +1,33 @@
 {
-  "title": "초대",
-  "sendInvitation": "초대 보내기",
-  "pendingInvitations": "대기 중인 초대",
-  "acceptedInvitations": "수락됨",
-  "form": {
-    "email": "이메일 주소",
-    "emailPlaceholder": "이메일 주소 입력",
+  "accept": {
+    "loading": "초대를 불러오는 중...",
+    "invalidTitle": "유효하지 않은 초대",
+    "invalidDescription": "이 초대 링크는 유효하지 않거나 만료되었습니다.",
+    "goHome": "홈으로 이동",
+    "projectInvitation": "프로젝트 초대",
+    "invitedToJoin": "Saga 프로젝트에 초대되었습니다",
+    "project": "프로젝트",
+    "invitedBy": "초대자",
     "role": "역할",
-    "selectRole": "역할 선택",
-    "message": "개인 메시지 (선택사항)",
-    "messagePlaceholder": "개인 메시지 추가...",
-    "send": "초대 보내기",
-    "sending": "전송 중..."
-  },
-  "roles": {
-    "facilitator": "진행자",
-    "storyteller": "이야기꾼",
-    "facilitatorDesc": "프로젝트를 관리하고 다른 사람을 초대할 수 있습니다",
-    "storytellerDesc": "이야기를 녹음하고 공유할 수 있습니다"
-  },
-  "status": {
-    "pending": "대기 중",
-    "accepted": "수락됨",
-    "expired": "만료됨",
-    "cancelled": "취소됨"
-  },
-  "actions": {
-    "resend": "재전송",
-    "cancel": "취소",
-    "view": "보기"
-  },
-  "messages": {
-    "sent": "초대가 성공적으로 전송되었습니다",
-    "resent": "초대를 재전송했습니다",
-    "cancelled": "초대를 취소했습니다",
-    "sendFailed": "초대 전송 실패",
-    "insufficientSeats": "좌석이 부족합니다. 더 구매하세요."
+    "expires": "만료",
+    "acceptButton": "초대 수락",
+    "accepting": "수락 중...",
+    "createAccountButton": "계정 생성 및 초대 수락",
+    "email": "이메일",
+    "fullName": "이름",
+    "fullNamePlaceholder": "이름을 입력하세요",
+    "password": "비밀번호",
+    "passwordPlaceholder": "비밀번호를 생성하세요",
+    "confirmPassword": "비밀번호 확인",
+    "confirmPasswordPlaceholder": "비밀번호를 확인하세요",
+    "passwordMismatch": "비밀번호가 일치하지 않습니다",
+    "passwordTooShort": "비밀번호는 최소 6자 이상이어야 합니다",
+    "accountCreated": "계정이 생성되었습니다! 이메일을 확인하여 계정을 인증하세요.",
+    "accountCreationFailed": "계정 생성에 실패했습니다",
+    "acceptSuccess": "초대가 성공적으로 수락되었습니다!",
+    "acceptFailed": "초대 수락에 실패했습니다",
+    "noPendingInvitations": "대기 중인 초대를 찾을 수 없습니다",
+    "wrongEmail": "로그아웃하고 올바른 이메일 주소로 이 초대를 수락하세요.",
+    "loadingFailed": "초대 세부 정보를 불러오는 데 실패했습니다"
   }
 }

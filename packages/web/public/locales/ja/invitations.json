@@ -1,40 +1,33 @@
 {
-  "title": "招待",
-  "sendInvitation": "招待を送信",
-  "pendingInvitations": "保留中の招待",
-  "acceptedInvitations": "承認済み",
-  "form": {
-    "email": "メールアドレス",
-    "emailPlaceholder": "メールアドレスを入力",
+  "accept": {
+    "loading": "招待を読み込んでいます...",
+    "invalidTitle": "無効な招待",
+    "invalidDescription": "この招待リンクは無効または期限切れです。",
+    "goHome": "ホームに戻る",
+    "projectInvitation": "プロジェクト招待",
+    "invitedToJoin": "Sagaプロジェクトに招待されました",
+    "project": "プロジェクト",
+    "invitedBy": "招待者",
     "role": "役割",
-    "selectRole": "役割を選択",
-    "message": "個人メッセージ（任意）",
-    "messagePlaceholder": "個人メッセージを追加...",
-    "send": "招待を送信",
-    "sending": "送信中..."
-  },
-  "roles": {
-    "facilitator": "ファシリテーター",
-    "storyteller": "ストーリーテラー",
-    "facilitatorDesc": "プロジェクトを管理し、他の人を招待できます",
-    "storytellerDesc": "物語を記録して共有できます"
-  },
-  "status": {
-    "pending": "保留中",
-    "accepted": "承認済み",
-    "expired": "期限切れ",
-    "cancelled": "キャンセル済み"
-  },
-  "actions": {
-    "resend": "再送信",
-    "cancel": "キャンセル",
-    "view": "表示"
-  },
-  "messages": {
-    "sent": "招待が正常に送信されました",
-    "resent": "招待を再送信しました",
-    "cancelled": "招待をキャンセルしました",
-    "sendFailed": "招待の送信に失敗しました",
-    "insufficientSeats": "席が不足しています。追加購入してください。"
+    "expires": "有効期限",
+    "acceptButton": "招待を承諾",
+    "accepting": "承諾中...",
+    "createAccountButton": "アカウントを作成して招待を承諾",
+    "email": "メール",
+    "fullName": "氏名",
+    "fullNamePlaceholder": "氏名を入力",
+    "password": "パスワード",
+    "passwordPlaceholder": "パスワードを作成",
+    "confirmPassword": "パスワード確認",
+    "confirmPasswordPlaceholder": "パスワードを確認",
+    "passwordMismatch": "パスワードが一致しません",
+    "passwordTooShort": "パスワードは6文字以上である必要があります",
+    "accountCreated": "アカウントが作成されました！メールを確認してアカウントを認証してください。",
+    "accountCreationFailed": "アカウントの作成に失敗しました",
+    "acceptSuccess": "招待が正常に承諾されました！",
+    "acceptFailed": "招待の承諾に失敗しました",
+    "noPendingInvitations": "保留中の招待が見つかりません",
+    "wrongEmail": "ログアウトして、正しいメールアドレスでこの招待を承諾してください。",
+    "loadingFailed": "招待の詳細の読み込みに失敗しました"
   }
 }

@@ -1,40 +1,33 @@
 {
-  "title": "Invitaciones",
-  "sendInvitation": "Enviar Invitación",
-  "pendingInvitations": "Invitaciones Pendientes",
-  "acceptedInvitations": "Aceptadas",
-  "form": {
-    "email": "Correo Electrónico",
-    "emailPlaceholder": "Ingrese correo electrónico",
+  "accept": {
+    "loading": "Cargando invitación...",
+    "invalidTitle": "Invitación Inválida",
+    "invalidDescription": "Este enlace de invitación es inválido o ha expirado.",
+    "goHome": "Ir al Inicio",
+    "projectInvitation": "Invitación al Proyecto",
+    "invitedToJoin": "Has sido invitado a unirte a un proyecto Saga",
+    "project": "Proyecto",
+    "invitedBy": "Invitado por",
     "role": "Rol",
-    "selectRole": "Seleccione un rol",
-    "message": "Mensaje Personal (Opcional)",
-    "messagePlaceholder": "Agregar mensaje personal...",
-    "send": "Enviar Invitación",
-    "sending": "Enviando..."
-  },
-  "roles": {
-    "facilitator": "Facilitador",
-    "storyteller": "Narrador",
-    "facilitatorDesc": "Puede gestionar el proyecto e invitar a otros",
-    "storytellerDesc": "Puede grabar y compartir historias"
-  },
-  "status": {
-    "pending": "Pendiente",
-    "accepted": "Aceptada",
-    "expired": "Expirada",
-    "cancelled": "Cancelada"
-  },
-  "actions": {
-    "resend": "Reenviar",
-    "cancel": "Cancelar",
-    "view": "Ver"
-  },
-  "messages": {
-    "sent": "Invitación enviada exitosamente",
-    "resent": "Invitación reenviada",
-    "cancelled": "Invitación cancelada",
-    "sendFailed": "Error al enviar invitación",
-    "insufficientSeats": "Asientos insuficientes. Por favor compre más."
+    "expires": "Expira",
+    "acceptButton": "Aceptar Invitación",
+    "accepting": "Aceptando...",
+    "createAccountButton": "Crear Cuenta y Aceptar Invitación",
+    "email": "Correo Electrónico",
+    "fullName": "Nombre Completo",
+    "fullNamePlaceholder": "Ingresa tu nombre completo",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Crea una contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu contraseña",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+    "accountCreated": "¡Cuenta creada! Por favor revisa tu correo para verificar tu cuenta.",
+    "accountCreationFailed": "Error al crear la cuenta",
+    "acceptSuccess": "¡Invitación aceptada exitosamente!",
+    "acceptFailed": "Error al aceptar la invitación",
+    "noPendingInvitations": "No se encontraron invitaciones pendientes",
+    "wrongEmail": "Por favor cierra sesión y usa la dirección de correo correcta para aceptar esta invitación.",
+    "loadingFailed": "Error al cargar los detalles de la invitación"
   }
 }

@@ -1,40 +1,33 @@
 {
-  "title": "Invitations",
-  "sendInvitation": "Send Invitation",
-  "pendingInvitations": "Pending Invitations",
-  "acceptedInvitations": "Accepted",
-  "form": {
-    "email": "Email Address",
-    "emailPlaceholder": "Enter email address",
+  "accept": {
+    "loading": "Loading invitation...",
+    "invalidTitle": "Invalid Invitation",
+    "invalidDescription": "This invitation link is invalid or has expired.",
+    "goHome": "Go to Home",
+    "projectInvitation": "Project Invitation",
+    "invitedToJoin": "You've been invited to join a Saga project",
+    "project": "Project",
+    "invitedBy": "Invited by",
     "role": "Role",
-    "selectRole": "Select a role",
-    "message": "Personal Message (Optional)",
-    "messagePlaceholder": "Add a personal message...",
-    "send": "Send Invitation",
-    "sending": "Sending..."
-  },
-  "roles": {
-    "facilitator": "Facilitator",
-    "storyteller": "Storyteller",
-    "facilitatorDesc": "Can manage project and invite others",
-    "storytellerDesc": "Can record and share stories"
-  },
-  "status": {
-    "pending": "Pending",
-    "accepted": "Accepted",
-    "expired": "Expired",
-    "cancelled": "Cancelled"
-  },
-  "actions": {
-    "resend": "Resend",
-    "cancel": "Cancel",
-    "view": "View"
-  },
-  "messages": {
-    "sent": "Invitation sent successfully",
-    "resent": "Invitation resent",
-    "cancelled": "Invitation cancelled",
-    "sendFailed": "Failed to send invitation",
-    "insufficientSeats": "Insufficient seats. Please purchase more."
+    "expires": "Expires",
+    "acceptButton": "Accept Invitation",
+    "accepting": "Accepting...",
+    "createAccountButton": "Create Account & Accept Invitation",
+    "email": "Email",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "password": "Password",
+    "passwordPlaceholder": "Create a password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "passwordMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "accountCreated": "Account created! Please check your email to verify your account.",
+    "accountCreationFailed": "Failed to create account",
+    "acceptSuccess": "Invitation accepted successfully!",
+    "acceptFailed": "Failed to accept invitation",
+    "noPendingInvitations": "No pending invitations found",
+    "wrongEmail": "Please log out and use the correct email address to accept this invitation.",
+    "loadingFailed": "Failed to load invitation details"
   }
 }

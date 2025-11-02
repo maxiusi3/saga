@@ -1,40 +1,33 @@
 {
-  "title": "Convites",
-  "sendInvitation": "Enviar Convite",
-  "pendingInvitations": "Convites Pendentes",
-  "acceptedInvitations": "Aceitos",
-  "form": {
-    "email": "Endereço de E-mail",
-    "emailPlaceholder": "Digite o endereço de e-mail",
-    "role": "Papel",
-    "selectRole": "Selecione um papel",
-    "message": "Mensagem Pessoal (Opcional)",
-    "messagePlaceholder": "Adicionar mensagem pessoal...",
-    "send": "Enviar Convite",
-    "sending": "Enviando..."
-  },
-  "roles": {
-    "facilitator": "Facilitador",
-    "storyteller": "Contador",
-    "facilitatorDesc": "Pode gerenciar o projeto e convidar outros",
-    "storytellerDesc": "Pode gravar e compartilhar histórias"
-  },
-  "status": {
-    "pending": "Pendente",
-    "accepted": "Aceito",
-    "expired": "Expirado",
-    "cancelled": "Cancelado"
-  },
-  "actions": {
-    "resend": "Reenviar",
-    "cancel": "Cancelar",
-    "view": "Ver"
-  },
-  "messages": {
-    "sent": "Convite enviado com sucesso",
-    "resent": "Convite reenviado",
-    "cancelled": "Convite cancelado",
-    "sendFailed": "Falha ao enviar convite",
-    "insufficientSeats": "Assentos insuficientes. Por favor compre mais."
+  "accept": {
+    "loading": "Carregando convite...",
+    "invalidTitle": "Convite Inválido",
+    "invalidDescription": "Este link de convite é inválido ou expirou.",
+    "goHome": "Ir para Início",
+    "projectInvitation": "Convite para Projeto",
+    "invitedToJoin": "Você foi convidado para participar de um projeto Saga",
+    "project": "Projeto",
+    "invitedBy": "Convidado por",
+    "role": "Função",
+    "expires": "Expira",
+    "acceptButton": "Aceitar Convite",
+    "accepting": "Aceitando...",
+    "createAccountButton": "Criar Conta e Aceitar Convite",
+    "email": "Email",
+    "fullName": "Nome Completo",
+    "fullNamePlaceholder": "Digite seu nome completo",
+    "password": "Senha",
+    "passwordPlaceholder": "Crie uma senha",
+    "confirmPassword": "Confirmar Senha",
+    "confirmPasswordPlaceholder": "Confirme sua senha",
+    "passwordMismatch": "As senhas não correspondem",
+    "passwordTooShort": "A senha deve ter pelo menos 6 caracteres",
+    "accountCreated": "Conta criada! Por favor, verifique seu email para verificar sua conta.",
+    "accountCreationFailed": "Falha ao criar conta",
+    "acceptSuccess": "Convite aceito com sucesso!",
+    "acceptFailed": "Falha ao aceitar convite",
+    "noPendingInvitations": "Nenhum convite pendente encontrado",
+    "wrongEmail": "Por favor, saia e use o endereço de email correto para aceitar este convite.",
+    "loadingFailed": "Falha ao carregar detalhes do convite"
   }
 }

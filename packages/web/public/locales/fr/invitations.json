@@ -1,40 +1,33 @@
 {
-  "title": "Invitations",
-  "sendInvitation": "Envoyer une Invitation",
-  "pendingInvitations": "Invitations en Attente",
-  "acceptedInvitations": "Acceptées",
-  "form": {
-    "email": "Adresse E-mail",
-    "emailPlaceholder": "Entrez l'adresse e-mail",
+  "accept": {
+    "loading": "Chargement de l'invitation...",
+    "invalidTitle": "Invitation Invalide",
+    "invalidDescription": "Ce lien d'invitation est invalide ou a expiré.",
+    "goHome": "Aller à l'Accueil",
+    "projectInvitation": "Invitation au Projet",
+    "invitedToJoin": "Vous avez été invité à rejoindre un projet Saga",
+    "project": "Projet",
+    "invitedBy": "Invité par",
     "role": "Rôle",
-    "selectRole": "Sélectionnez un rôle",
-    "message": "Message Personnel (Optionnel)",
-    "messagePlaceholder": "Ajouter un message personnel...",
-    "send": "Envoyer l'Invitation",
-    "sending": "Envoi..."
-  },
-  "roles": {
-    "facilitator": "Facilitateur",
-    "storyteller": "Conteur",
-    "facilitatorDesc": "Peut gérer le projet et inviter d'autres",
-    "storytellerDesc": "Peut enregistrer et partager des histoires"
-  },
-  "status": {
-    "pending": "En Attente",
-    "accepted": "Acceptée",
-    "expired": "Expirée",
-    "cancelled": "Annulée"
-  },
-  "actions": {
-    "resend": "Renvoyer",
-    "cancel": "Annuler",
-    "view": "Voir"
-  },
-  "messages": {
-    "sent": "Invitation envoyée avec succès",
-    "resent": "Invitation renvoyée",
-    "cancelled": "Invitation annulée",
-    "sendFailed": "Échec de l'envoi de l'invitation",
-    "insufficientSeats": "Sièges insuffisants. Veuillez en acheter plus."
+    "expires": "Expire",
+    "acceptButton": "Accepter l'Invitation",
+    "accepting": "Acceptation...",
+    "createAccountButton": "Créer un Compte et Accepter l'Invitation",
+    "email": "Email",
+    "fullName": "Nom Complet",
+    "fullNamePlaceholder": "Entrez votre nom complet",
+    "password": "Mot de Passe",
+    "passwordPlaceholder": "Créez un mot de passe",
+    "confirmPassword": "Confirmer le Mot de Passe",
+    "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+    "accountCreated": "Compte créé ! Veuillez vérifier votre email pour vérifier votre compte.",
+    "accountCreationFailed": "Échec de la création du compte",
+    "acceptSuccess": "Invitation acceptée avec succès !",
+    "acceptFailed": "Échec de l'acceptation de l'invitation",
+    "noPendingInvitations": "Aucune invitation en attente trouvée",
+    "wrongEmail": "Veuillez vous déconnecter et utiliser la bonne adresse email pour accepter cette invitation.",
+    "loadingFailed": "Échec du chargement des détails de l'invitation"
   }
 }

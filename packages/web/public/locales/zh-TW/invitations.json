@@ -1,40 +1,33 @@
 {
-  "title": "邀請",
-  "sendInvitation": "傳送邀請",
-  "pendingInvitations": "待處理邀請",
-  "acceptedInvitations": "已接受",
-  "form": {
-    "email": "電子郵件",
-    "emailPlaceholder": "輸入電子郵件",
+  "accept": {
+    "loading": "正在載入邀請...",
+    "invalidTitle": "無效邀請",
+    "invalidDescription": "此邀請連結無效或已過期。",
+    "goHome": "返回首頁",
+    "projectInvitation": "專案邀請",
+    "invitedToJoin": "您已被邀請加入 Saga 專案",
+    "project": "專案",
+    "invitedBy": "邀請者",
     "role": "角色",
-    "selectRole": "選擇角色",
-    "message": "個人訊息（可選）",
-    "messagePlaceholder": "新增個人訊息...",
-    "send": "傳送邀請",
-    "sending": "傳送中..."
-  },
-  "roles": {
-    "facilitator": "協調員",
-    "storyteller": "講述者",
-    "facilitatorDesc": "可以管理專案並邀請他人",
-    "storytellerDesc": "可以記錄和分享故事"
-  },
-  "status": {
-    "pending": "待處理",
-    "accepted": "已接受",
-    "expired": "已過期",
-    "cancelled": "已取消"
-  },
-  "actions": {
-    "resend": "重新傳送",
-    "cancel": "取消",
-    "view": "查看"
-  },
-  "messages": {
-    "sent": "邀請傳送成功",
-    "resent": "邀請已重新傳送",
-    "cancelled": "邀請已取消",
-    "sendFailed": "傳送邀請失敗",
-    "insufficientSeats": "席位不足。請購買更多。"
+    "expires": "過期時間",
+    "acceptButton": "接受邀請",
+    "accepting": "接受中...",
+    "createAccountButton": "建立帳戶並接受邀請",
+    "email": "電子郵件",
+    "fullName": "全名",
+    "fullNamePlaceholder": "輸入您的全名",
+    "password": "密碼",
+    "passwordPlaceholder": "建立密碼",
+    "confirmPassword": "確認密碼",
+    "confirmPasswordPlaceholder": "確認您的密碼",
+    "passwordMismatch": "密碼不符",
+    "passwordTooShort": "密碼必須至少6個字元",
+    "accountCreated": "帳戶已建立！請檢查您的電子郵件以驗證您的帳戶。",
+    "accountCreationFailed": "建立帳戶失敗",
+    "acceptSuccess": "邀請已成功接受！",
+    "acceptFailed": "接受邀請失敗",
+    "noPendingInvitations": "未找到待處理的邀請",
+    "wrongEmail": "請登出並使用正確的電子郵件地址接受此邀請。",
+    "loadingFailed": "載入邀請詳情失敗"
   }
 }
