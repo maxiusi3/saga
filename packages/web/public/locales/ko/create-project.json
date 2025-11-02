@@ -52,12 +52,12 @@
   },
   "info": {
     "title": "What happens next?",
-    "items": [
-      "You'll be the project facilitator with full access",
-      "Invite family members as storytellers",
-      "Start recording and organizing stories",
-      "Use AI to generate prompts and summaries"
-    ]
+    "items": {
+      "0": "You'll be the project facilitator with full access",
+      "1": "Invite family members as storytellers",
+      "2": "Start recording and organizing stories",
+      "3": "Use AI to generate prompts and summaries"
+    }
   },
   "errors": {
     "fetchBalance": "Unable to fetch resource balance information",

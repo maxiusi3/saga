@@ -328,9 +328,10 @@ export default function CreateProjectPage() {
               <div>
                 <h3 className="font-medium text-foreground mb-2">{t('info.title')}</h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  {t.raw('info.items').map((item: string, index: number) => (
-                    <li key={index}>• {item}</li>
-                  ))}
+                  <li>• {t('info.items.0')}</li>
+                  <li>• {t('info.items.1')}</li>
+                  <li>• {t('info.items.2')}</li>
+                  <li>• {t('info.items.3')}</li>
                 </ul>
               </div>
             </div>
