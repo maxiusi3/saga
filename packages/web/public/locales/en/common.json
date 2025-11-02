@@ -90,5 +90,9 @@
     "noNotifications": "No notifications yet",
     "noNotificationsDesc": "You'll see notifications here when there's activity in your projects",
     "viewAll": "View All Notifications"
+  },
+  "mobileNav": {
+    "mySagas": "My Sagas",
+    "resources": "Resources"
   }
 }

@@ -90,5 +90,9 @@
     "noNotifications": "通知はまだありません",
     "noNotificationsDesc": "プロジェクトでアクティビティがあると、ここに通知が表示されます",
     "viewAll": "すべての通知を表示"
+  },
+  "mobileNav": {
+    "mySagas": "マイサガ",
+    "resources": "リソース"
   }
 }

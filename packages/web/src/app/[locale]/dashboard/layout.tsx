@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { BookOpen, Gem, User as UserIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useAuthStore } from '@/stores/auth-store'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 export default function DashboardLayout({
   children,
@@ -18,6 +18,7 @@ export default function DashboardLayout({
   const router = useRouter()
   const [initialized, setInitialized] = useState(false)
   const locale = useLocale()
+  const t = useTranslations('common')
 
   const withLocale = (path: string) => {
     const normalized = path.startsWith('/') ? path : `/${path}`
@@ -87,19 +88,19 @@ export default function DashboardLayout({
           <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
             <Link href={withLocale('/dashboard')}>
               <BookOpen className="w-5 h-5 mb-1" />
-              <span className="font-medium">My Sagas</span>
+              <span className="font-medium">{t('mobileNav.mySagas')}</span>
             </Link>
           </Button>
           <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
             <Link href={withLocale('/dashboard/resources')}>
               <Gem className="w-5 h-5 mb-1" />
-              <span>Resources</span>
+              <span>{t('mobileNav.resources')}</span>
             </Link>
           </Button>
           <Button asChild variant="ghost" className="flex-1 flex-col h-auto py-2 text-xs rounded-none">
             <Link href={withLocale('/dashboard/profile')}>
               <UserIcon className="w-5 h-5 mb-1" />
-              <span>Profile</span>
+              <span>{t('nav.profile')}</span>
             </Link>
           </Button>
         </div>

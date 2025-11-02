@@ -90,5 +90,9 @@
     "noNotifications": "暂无通知",
     "noNotificationsDesc": "当你的项目有活动时，这里会显示通知",
     "viewAll": "查看所有通知"
+  },
+  "mobileNav": {
+    "mySagas": "我的传奇",
+    "resources": "资源"
   }
 }

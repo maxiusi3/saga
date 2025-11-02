@@ -90,5 +90,9 @@
     "noNotifications": "暫無通知",
     "noNotificationsDesc": "當你的專案有活動時，這裡會顯示通知",
     "viewAll": "查看所有通知"
+  },
+  "mobileNav": {
+    "mySagas": "我的傳奇",
+    "resources": "資源"
   }
 }

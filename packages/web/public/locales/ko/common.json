@@ -90,5 +90,9 @@
     "noNotifications": "아직 알림이 없습니다",
     "noNotificationsDesc": "프로젝트에 활동이 있으면 여기에 알림이 표시됩니다",
     "viewAll": "모든 알림 보기"
+  },
+  "mobileNav": {
+    "mySagas": "내 사가",
+    "resources": "리소스"
   }
 }
