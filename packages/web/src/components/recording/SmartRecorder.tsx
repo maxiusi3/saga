@@ -264,7 +264,7 @@ export function SmartRecorder({
     pausedTimeRef.current += Date.now() - startTimeRef.current
     stopTimer()
     setRecordingState('paused')
-    toast.success('Recording paused')
+    toast.success(t('success.paused'))
   }, [recordingState, stopTimer])
 
   const resumeRecording = useCallback(() => {
@@ -280,7 +280,7 @@ export function SmartRecorder({
     startTimeRef.current = Date.now()
     startTimer()
     setRecordingState('recording')
-    toast.success('Recording resumed')
+    toast.success(t('success.resumed'))
   }, [recordingState, startTimer])
 
   const stopRecording = useCallback(() => {
@@ -298,7 +298,7 @@ export function SmartRecorder({
 
     stopTimer()
     setRecordingState('completed')
-    toast.success('Recording completed')
+    toast.success(t('success.recorded'))
   }, [stopTimer])
 
   const resetRecording = useCallback(() => {
@@ -323,7 +323,7 @@ export function SmartRecorder({
     }
 
     if (!result.transcript && !result.audioBlob) {
-      toast.error('Recording is empty, please try again')
+      toast.error(t('errors.empty'))
       return
     }
 
@@ -383,8 +383,8 @@ export function SmartRecorder({
           <div className="flex items-center gap-2">
             {getNetworkIcon()}
             <span className="text-sm text-muted-foreground">
-              {networkQuality === 'good' ? 'Good Connection' :
-                networkQuality === 'poor' ? 'Slow Connection' : 'Offline Mode'}
+              {networkQuality === 'good' ? t('networkStatus.good') :
+                networkQuality === 'poor' ? t('networkStatus.poor') : t('networkStatus.offline')}
             </span>
           </div>
         </div>
@@ -392,7 +392,7 @@ export function SmartRecorder({
         {/* Prompt Display */}
         {promptText && (
           <div className="p-4 bg-muted/50 rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Prompt:</p>
+            <p className="text-sm text-muted-foreground mb-1">{t('prompt')}:</p>
             <p className="text-foreground">{promptText}</p>
           </div>
         )}
@@ -410,10 +410,10 @@ export function SmartRecorder({
               <div className="w-3 h-3 rounded-full bg-green-500" />
             )}
             <span className="text-lg font-semibold">
-              {recordingState === 'idle' && 'Ready to Record'}
-              {recordingState === 'recording' && 'Recording...'}
-              {recordingState === 'paused' && 'Recording Paused'}
-              {recordingState === 'completed' && 'Recording Completed'}
+              {recordingState === 'idle' && t('status.ready')}
+              {recordingState === 'recording' && t('status.recording')}
+              {recordingState === 'paused' && t('status.paused')}
+              {recordingState === 'completed' && t('status.completed')}
             </span>
           </div>
 
@@ -449,7 +449,7 @@ export function SmartRecorder({
               className="bg-red-500 hover:bg-red-600 text-white"
             >
               <Mic className="h-5 w-5 mr-2" />
-              Start Recording
+              {t('actions.start')}
             </Button>
           )}
 
@@ -461,7 +461,7 @@ export function SmartRecorder({
                 size="lg"
               >
                 <Pause className="h-5 w-5 mr-2" />
-                Pause
+                {t('actions.pause')}
               </Button>
               <Button
                 onClick={stopRecording}
@@ -469,7 +469,7 @@ export function SmartRecorder({
                 size="lg"
               >
                 <Square className="h-5 w-5 mr-2" />
-                Stop
+                {t('actions.stop')}
               </Button>
             </>
           )}
@@ -482,7 +482,7 @@ export function SmartRecorder({
                 className="bg-green-500 hover:bg-green-600 text-white"
               >
                 <Play className="h-5 w-5 mr-2" />
-                Continue
+                {t('actions.continue')}
               </Button>
               <Button
                 onClick={stopRecording}
@@ -490,7 +490,7 @@ export function SmartRecorder({
                 size="lg"
               >
                 <Square className="h-5 w-5 mr-2" />
-                Stop
+                {t('actions.stop')}
               </Button>
             </>
           )}
@@ -500,10 +500,10 @@ export function SmartRecorder({
               {/* Show AudioPlayer for both recording modes when audio is available */}
               {audioUrl && (
                 <div className="w-full mb-4">
-                  <h4 className="text-sm font-medium text-muted-foreground mb-2">Listen to recording:</h4>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">{t('audio.listenTo')}</h4>
                   <AudioPlayer
                     src={audioUrl}
-                    title="Your Story Recording"
+                    title={t('audio.yourRecording')}
                     className="w-full"
                   />
                 </div>
@@ -516,7 +516,7 @@ export function SmartRecorder({
                 size="lg"
                 className="bg-primary hover:bg-primary/90"
               >
-                Complete Recording
+                {t('actions.complete')}
               </Button>
               <Button
                 onClick={resetRecording}
@@ -524,7 +524,7 @@ export function SmartRecorder({
                 size="lg"
               >
                 <RotateCcw className="h-5 w-5 mr-2" />
-                Re-record
+                {t('actions.reRecord')}
               </Button>
             </>
           )}
@@ -533,9 +533,9 @@ export function SmartRecorder({
         {/* Tips */}
         <div className="text-center text-sm text-muted-foreground">
           {shouldUseRealtime() ? (
-            <p>💡 Using real-time speech recognition</p>
+            <p>{t('tips.realtime')}</p>
           ) : (
-            <p>💡 Recording in progress, transcription will be processed after completion</p>
+            <p>{t('tips.traditional')}</p>
           )}
         </div>
       </div>

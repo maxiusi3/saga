@@ -1,0 +1,44 @@
+{
+  "title": "Project Management",
+  "backToProject": "Back to Project",
+  "quickActions": {
+    "title": "Quick Actions",
+    "inviteMembers": "Invite Members",
+    "exportData": "Export Data",
+    "shareProject": "Share Project"
+  },
+  "projectStats": {
+    "title": "Project Stats",
+    "created": "Created",
+    "stories": "Stories",
+    "members": "Members"
+  },
+  "projectOverview": {
+    "title": "Project Overview",
+    "status": {
+      "active": "Active",
+      "archived": "Archived"
+    },
+    "projectName": "Project Name",
+    "projectDescription": "Project Description",
+    "save": "Save",
+    "saving": "Saving...",
+    "enterName": "Enter project name",
+    "enterDescription": "Enter project description"
+  },
+  "memberManagement": {
+    "title": "Member Management"
+  },
+  "messages": {
+    "nameRequired": "Project name is required",
+    "updateSuccess": "Project updated successfully",
+    "updateFailed": "Failed to update project",
+    "memberRemoved": "Member removed successfully",
+    "memberRemoveFailed": "Failed to remove member",
+    "exportSoon": "Export feature coming soon!",
+    "shareSoon": "Share feature coming soon!",
+    "notFound": "Project not found or access denied",
+    "signIn": "Please sign in",
+    "projectNotFound": "Project not found"
+  }
+}

@@ -1,27 +1,84 @@
 {
-  "title": "录制你的故事",
+  "title": "录制您的故事",
+  "subtitle": "在AI的指导下分享您的回忆",
+  "prompt": "提示",
+  "networkStatus": {
+    "good": "网络良好",
+    "poor": "网络较慢",
+    "offline": "离线模式"
+  },
   "status": {
-    "recording": "录制中",
+    "ready": "准备录制",
+    "recording": "录制中...",
+    "paused": "录制已暂停",
+    "completed": "录制完成",
     "recordingComplete": "录制完成",
     "processing": "处理中...",
     "uploading": "上传中..."
   },
-  "tips": {
-    "title": "录制提示",
-    "quietEnvironment": "找一个安静的环境以获得最佳音质",
-    "speakClearly": "清晰地说话，保持舒适的语速",
-    "stayClose": "靠近麦克风",
-    "testFirst": "开始前先测试音频"
-  },
   "actions": {
+    "start": "开始录制",
+    "pause": "暂停",
+    "stop": "停止",
+    "continue": "继续",
+    "complete": "完成录制",
+    "reRecord": "重新录制",
+    "save": "保存故事",
+    "startOver": "重新开始",
+    "saving": "保存中...",
     "startRecording": "开始录制",
     "stopRecording": "停止录制",
     "pauseRecording": "暂停录制",
     "resumeRecording": "继续录制",
     "saveRecording": "保存录制",
     "discardRecording": "放弃录制",
-    "playback": "播放",
-    "reRecord": "重新录制"
+    "playback": "播放"
+  },
+  "audio": {
+    "listenTo": "收听录音：",
+    "yourRecording": "您的故事录音"
+  },
+  "tips": {
+    "title": "录制提示",
+    "quietEnvironment": "找一个安静的环境以获得最佳音质",
+    "speakClearly": "清晰地说话，保持舒适的语速",
+    "stayClose": "靠近麦克风",
+    "testFirst": "开始前先测试音频",
+    "realtime": "💡 使用实时语音识别",
+    "traditional": "💡 录制进行中，转录将在完成后处理"
+  },
+  "ai": {
+    "processing": "AI正在处理您的故事...",
+    "progress": "处理进度",
+    "working": "我们的AI正在处理您的故事：",
+    "transcribing": "转录您的音频",
+    "generatingTitle": "生成有意义的标题",
+    "creatingSummary": "创建摘要",
+    "preparingQuestions": "准备后续问题",
+    "generatedContent": "AI生成的内容",
+    "confidence": "置信度",
+    "demoMode": "演示模式",
+    "generatedTitle": "生成的标题：",
+    "storySummary": "故事摘要：",
+    "transcriptPreview": "转录预览：",
+    "followUpQuestions": "建议的后续问题：",
+    "moreQuestions": "更多问题可用"
+  },
+  "errors": {
+    "missingData": "缺少提交故事所需的数据。",
+    "saveFailed": "保存故事失败。请重试。",
+    "empty": "录音为空，请重试"
+  },
+  "success": {
+    "recorded": "录制完成",
+    "paused": "录制已暂停",
+    "resumed": "录制已恢复",
+    "saved": "故事保存成功！",
+    "answerRecorded": "回答录制成功！"
+  },
+  "messages": {
+    "processingAudio": "处理音频文件...",
+    "audioProcessed": "音频处理成功"
   },
   "optimization": {
     "title": "录制优化",

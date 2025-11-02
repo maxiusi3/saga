@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -25,6 +25,7 @@ interface AIContent {
 }
 
 export default function ProjectRecordPage() {
+  const t = useTranslations('recording')
   const params = useParams()
   const router = useRouter()
   const locale = useLocale()
@@ -335,8 +336,8 @@ export default function ProjectRecordPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">Record Your Story</h1>
-          <p className="text-muted-foreground">Share your memories with AI-powered guidance</p>
+          <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('subtitle')}</p>
         </div>
 
 
@@ -481,7 +482,7 @@ export default function ProjectRecordPage() {
                   onClick={handleStartOver}
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  Start Over
+                  {t('actions.startOver')}
                 </Button>
                 <Button
                   onClick={handleSubmitStory}
@@ -491,12 +492,12 @@ export default function ProjectRecordPage() {
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                      Saving...
+                      {t('actions.saving')}
                     </>
                   ) : (
                     <>
                       <Send className="h-4 w-4 mr-2" />
-                      Save Story
+                      {t('actions.save')}
                     </>
                   )}
                 </Button>

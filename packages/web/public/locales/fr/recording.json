@@ -1,31 +1,88 @@
 {
-  "title": "Enregistrez Votre Histoire",
-  "status": {
-    "recording": "ENREGISTREMENT",
-    "recordingComplete": "Enregistrement Terminé",
-    "processing": "Traitement...",
-    "uploading": "Téléversement..."
+  "title": "Record Your Story",
+  "subtitle": "Share your memories with AI-powered guidance",
+  "prompt": "Prompt",
+  "networkStatus": {
+    "good": "Good Connection",
+    "poor": "Slow Connection",
+    "offline": "Offline Mode"
   },
-  "tips": {
-    "title": "Conseils d'Enregistrement",
-    "quietEnvironment": "Trouvez un environnement calme pour la meilleure qualité audio",
-    "speakClearly": "Parlez clairement et à un rythme confortable",
-    "stayClose": "Restez près du microphone",
-    "testFirst": "Testez votre audio avant de commencer"
+  "status": {
+    "ready": "Ready to Record",
+    "recording": "Recording...",
+    "paused": "Recording Paused",
+    "completed": "Recording Completed",
+    "recordingComplete": "Recording Complete",
+    "processing": "Processing...",
+    "uploading": "Uploading..."
   },
   "actions": {
-    "startRecording": "Démarrer l'Enregistrement",
-    "stopRecording": "Arrêter l'Enregistrement",
-    "pauseRecording": "Mettre en Pause",
-    "resumeRecording": "Reprendre",
-    "saveRecording": "Sauvegarder",
-    "discardRecording": "Abandonner",
-    "playback": "Lecture",
-    "reRecord": "Réenregistrer"
+    "start": "Start Recording",
+    "pause": "Pause",
+    "stop": "Stop",
+    "continue": "Continue",
+    "complete": "Complete Recording",
+    "reRecord": "Re-record",
+    "save": "Save Story",
+    "startOver": "Start Over",
+    "saving": "Saving...",
+    "startRecording": "Start Recording",
+    "stopRecording": "Stop Recording",
+    "pauseRecording": "Pause Recording",
+    "resumeRecording": "Resume Recording",
+    "saveRecording": "Save Recording",
+    "discardRecording": "Discard Recording",
+    "playback": "Playback"
+  },
+  "audio": {
+    "listenTo": "Listen to recording:",
+    "yourRecording": "Your Story Recording"
+  },
+  "tips": {
+    "title": "Recording Tips",
+    "quietEnvironment": "Find a quiet environment for the best audio quality",
+    "speakClearly": "Speak clearly and at a comfortable pace",
+    "stayClose": "Stay close to the microphone",
+    "testFirst": "Test your audio before starting",
+    "realtime": "💡 Using real-time speech recognition",
+    "traditional": "💡 Recording in progress, transcription will be processed after completion"
+  },
+  "ai": {
+    "processing": "AI is processing your story...",
+    "progress": "Processing Progress",
+    "working": "Our AI is working on your story:",
+    "transcribing": "Transcribing your audio",
+    "generatingTitle": "Generating a meaningful title",
+    "creatingSummary": "Creating a summary",
+    "preparingQuestions": "Preparing follow-up questions",
+    "generatedContent": "AI Generated Content",
+    "confidence": "confidence",
+    "demoMode": "Demo Mode",
+    "generatedTitle": "Generated Title:",
+    "storySummary": "Story Summary:",
+    "transcriptPreview": "Transcript Preview:",
+    "followUpQuestions": "Suggested Follow-up Questions:",
+    "moreQuestions": "more questions available"
+  },
+  "errors": {
+    "missingData": "Missing required data for story submission.",
+    "saveFailed": "Failed to save story. Please try again.",
+    "empty": "Recording is empty, please try again"
+  },
+  "success": {
+    "recorded": "Recording completed",
+    "paused": "Recording paused",
+    "resumed": "Recording resumed",
+    "saved": "Story saved successfully!",
+    "answerRecorded": "Answer recorded successfully!"
+  },
+  "messages": {
+    "processingAudio": "Processing audio file...",
+    "audioProcessed": "Audio processed successfully"
   },
   "optimization": {
-    "title": "Optimisation de l'Enregistrement",
-    "enableOptimization": "Activer l'Optimisation",
-    "disableOptimization": "Désactiver l'Optimisation"
+    "title": "Recording Optimization",
+    "enableOptimization": "Enable Optimization",
+    "disableOptimization": "Disable Optimization"
   }
 }

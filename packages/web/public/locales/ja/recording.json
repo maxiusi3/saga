@@ -1,31 +1,88 @@
 {
-  "title": "ストーリーを録音",
-  "status": {
-    "recording": "録音中",
-    "recordingComplete": "録音完了",
-    "processing": "処理中...",
-    "uploading": "アップロード中..."
+  "title": "Record Your Story",
+  "subtitle": "Share your memories with AI-powered guidance",
+  "prompt": "Prompt",
+  "networkStatus": {
+    "good": "Good Connection",
+    "poor": "Slow Connection",
+    "offline": "Offline Mode"
   },
-  "tips": {
-    "title": "録音のヒント",
-    "quietEnvironment": "最高の音質のために静かな環境を見つけてください",
-    "speakClearly": "はっきりと快適なペースで話してください",
-    "stayClose": "マイクの近くにいてください",
-    "testFirst": "開始前にオーディオをテストしてください"
+  "status": {
+    "ready": "Ready to Record",
+    "recording": "Recording...",
+    "paused": "Recording Paused",
+    "completed": "Recording Completed",
+    "recordingComplete": "Recording Complete",
+    "processing": "Processing...",
+    "uploading": "Uploading..."
   },
   "actions": {
-    "startRecording": "録音開始",
-    "stopRecording": "録音停止",
-    "pauseRecording": "録音一時停止",
-    "resumeRecording": "録音再開",
-    "saveRecording": "録音を保存",
-    "discardRecording": "録音を破棄",
-    "playback": "再生",
-    "reRecord": "再録音"
+    "start": "Start Recording",
+    "pause": "Pause",
+    "stop": "Stop",
+    "continue": "Continue",
+    "complete": "Complete Recording",
+    "reRecord": "Re-record",
+    "save": "Save Story",
+    "startOver": "Start Over",
+    "saving": "Saving...",
+    "startRecording": "Start Recording",
+    "stopRecording": "Stop Recording",
+    "pauseRecording": "Pause Recording",
+    "resumeRecording": "Resume Recording",
+    "saveRecording": "Save Recording",
+    "discardRecording": "Discard Recording",
+    "playback": "Playback"
+  },
+  "audio": {
+    "listenTo": "Listen to recording:",
+    "yourRecording": "Your Story Recording"
+  },
+  "tips": {
+    "title": "Recording Tips",
+    "quietEnvironment": "Find a quiet environment for the best audio quality",
+    "speakClearly": "Speak clearly and at a comfortable pace",
+    "stayClose": "Stay close to the microphone",
+    "testFirst": "Test your audio before starting",
+    "realtime": "💡 Using real-time speech recognition",
+    "traditional": "💡 Recording in progress, transcription will be processed after completion"
+  },
+  "ai": {
+    "processing": "AI is processing your story...",
+    "progress": "Processing Progress",
+    "working": "Our AI is working on your story:",
+    "transcribing": "Transcribing your audio",
+    "generatingTitle": "Generating a meaningful title",
+    "creatingSummary": "Creating a summary",
+    "preparingQuestions": "Preparing follow-up questions",
+    "generatedContent": "AI Generated Content",
+    "confidence": "confidence",
+    "demoMode": "Demo Mode",
+    "generatedTitle": "Generated Title:",
+    "storySummary": "Story Summary:",
+    "transcriptPreview": "Transcript Preview:",
+    "followUpQuestions": "Suggested Follow-up Questions:",
+    "moreQuestions": "more questions available"
+  },
+  "errors": {
+    "missingData": "Missing required data for story submission.",
+    "saveFailed": "Failed to save story. Please try again.",
+    "empty": "Recording is empty, please try again"
+  },
+  "success": {
+    "recorded": "Recording completed",
+    "paused": "Recording paused",
+    "resumed": "Recording resumed",
+    "saved": "Story saved successfully!",
+    "answerRecorded": "Answer recorded successfully!"
+  },
+  "messages": {
+    "processingAudio": "Processing audio file...",
+    "audioProcessed": "Audio processed successfully"
   },
   "optimization": {
-    "title": "録音最適化",
-    "enableOptimization": "最適化を有効にする",
-    "disableOptimization": "最適化を無効にする"
+    "title": "Recording Optimization",
+    "enableOptimization": "Enable Optimization",
+    "disableOptimization": "Disable Optimization"
   }
 }

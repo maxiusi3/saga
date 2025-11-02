@@ -1,0 +1,104 @@
+{
+  "hero": {
+    "limitedOffer": "限时优惠",
+    "title": "永久保存您的家族故事",
+    "subtitle": "创建持久的数字传记，捕捉珍贵的回忆和智慧。",
+    "startCapturing": "今天就开始记录您家族的独特故事"
+  },
+  "features": {
+    "collaboration": {
+      "title": "家庭协作",
+      "description": "邀请家庭成员一起贡献故事和回忆。"
+    },
+    "aiPrompts": {
+      "title": "AI智能提示",
+      "description": "智能问题帮助解锁有意义的回忆。"
+    },
+    "secure": {
+      "title": "安全私密",
+      "description": "您的家族故事经过加密并安全存储。"
+    }
+  },
+  "pricing": {
+    "title": "选择您的套餐",
+    "subtitle": "创建精美家族传记所需的一切。",
+    "package": {
+      "title": "家族传奇套餐",
+      "subtitle": "完整的家族传记解决方案，配备AI驱动的故事讲述",
+      "price": "$209",
+      "period": "一次性",
+      "features": {
+        "unlimitedProjects": "创建无限项目",
+        "unlimitedMembers": "邀请无限家庭成员",
+        "aiPrompts": "AI驱动的故事提示",
+        "transcription": "专业转录",
+        "photoAudio": "照片和音频集成",
+        "cloudStorage": "安全云存储",
+        "mobileWeb": "移动和网页访问",
+        "oneYear": "1年互动服务",
+        "archival": "永久存档模式访问"
+      },
+      "cta": "开始使用"
+    }
+  },
+  "checkout": {
+    "title": "完成购买",
+    "orderSummary": "订单摘要",
+    "packageName": "家族传奇套餐",
+    "oneTime": "一次性付款",
+    "noRecurring": "无重复费用",
+    "total": "总计",
+    "firstName": "名",
+    "lastName": "姓",
+    "email": "电子邮件地址",
+    "cardNumber": "卡号",
+    "expiry": "到期日期",
+    "cvc": "CVC",
+    "security": {
+      "ssl": "SSL加密",
+      "secure": "安全支付",
+      "guarantee": "30天保证"
+    },
+    "completePurchase": "完成购买 - $209",
+    "processing": "处理中...",
+    "terms": "完成购买即表示您同意我们的服务条款和隐私政策。您可以在30天内随时取消并获得全额退款。"
+  },
+  "reviews": {
+    "title": "家庭用户评价",
+    "rating": "来自1,200+个家庭",
+    "testimonials": {
+      "sarah": {
+        "name": "Sarah Johnson",
+        "role": "家族历史学家",
+        "quote": "Saga帮助我们在为时已晚之前记录了祖母的故事。AI提示唤起了我们从未知道的回忆。"
+      },
+      "michael": {
+        "name": "Michael Chen",
+        "role": "项目协调员",
+        "quote": "转录质量令人惊叹，家庭协作功能让每个人都能轻松贡献。"
+      },
+      "emma": {
+        "name": "Emma Rodriguez",
+        "role": "家庭成员",
+        "quote": "物有所值。我们现在拥有一个美丽的家族历史数字档案，将永远保存。"
+      }
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "questions": {
+      "afterYear": {
+        "question": "第一年之后会怎样？",
+        "answer": "在第一年的互动服务之后，您可以随时重新激活互动功能，或者您仍然可以在存档模式下访问、查看和导出所有故事。"
+      },
+      "members": {
+        "question": "可以有多少家庭成员参与？",
+        "answer": "您可以邀请无限数量的家庭成员查看和评论故事。该套餐包括多个协调员和讲述者席位，可以积极贡献内容。"
+      },
+      "security": {
+        "question": "我的家庭数据安全吗？",
+        "answer": "是的，绝对安全。我们使用企业级加密和安全存储。您的个人家族故事永远不会与第三方共享，并且安全存储。"
+      }
+    }
+  }
+}

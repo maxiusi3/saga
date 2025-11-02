@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
 import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from '@/components/ui/enhanced-card'
 import { PricingCard } from '@/components/ui/pricing-card'
@@ -14,6 +15,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export default function PurchasePage() {
+  const t = useTranslations('purchase-page')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const params = useParams()
@@ -45,13 +47,13 @@ export default function PurchasePage() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-sage-100 text-sage-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
-            Limited Time Offer
+            {t('hero.limitedOffer')}
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Preserve Your Family Stories Forever
+            {t('hero.title')}
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Create lasting digital biographies that capture precious memories and wisdom.
+            {t('hero.subtitle')}
           </p>
         </div>
 
@@ -63,7 +65,7 @@ export default function PurchasePage() {
                 <BookOpen className="w-10 h-10 text-white" />
               </div>
               <p className="text-lg text-sage-700">
-                Start capturing your family's unique story today
+                {t('hero.startCapturing')}
               </p>
             </div>
           </div>
@@ -75,54 +77,54 @@ export default function PurchasePage() {
             <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-sage-600" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Family Collaboration</h3>
-            <p className="text-gray-600">Invite family members to contribute stories and memories together.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('features.collaboration.title')}</h3>
+            <p className="text-gray-600">{t('features.collaboration.description')}</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Sparkles className="w-8 h-8 text-sage-600" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">AI-Powered Prompts</h3>
-            <p className="text-gray-600">Intelligent questions that help unlock meaningful memories.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('features.aiPrompts.title')}</h3>
+            <p className="text-gray-600">{t('features.aiPrompts.description')}</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="w-8 h-8 text-sage-600" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Secure & Private</h3>
-            <p className="text-gray-600">Your family stories are encrypted and stored securely.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('features.secure.title')}</h3>
+            <p className="text-gray-600">{t('features.secure.description')}</p>
           </div>
         </div>
 
         {/* Pricing Section */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Package</h2>
-            <p className="text-gray-600">Everything you need to create beautiful family biographies.</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('pricing.title')}</h2>
+            <p className="text-gray-600">{t('pricing.subtitle')}</p>
           </div>
 
           <div className="max-w-4xl mx-auto">
             <PricingCard
-              title="Family Saga Package"
-              subtitle="Complete family biography solution with AI-powered storytelling"
+              title={t('pricing.package.title')}
+              subtitle={t('pricing.package.subtitle')}
               price={{
                 amount: 209,
                 currency: "$",
-                period: "one-time"
+                period: t('pricing.package.period')
               }}
               features={[
-                { text: "Create unlimited projects", included: true },
-                { text: "Invite unlimited family members", included: true },
-                { text: "AI-powered story prompts", included: true },
-                { text: "Professional transcription", included: true },
-                { text: "Photo and audio integration", included: true },
-                { text: "Secure cloud storage", included: true },
-                { text: "Mobile and web access", included: true },
-                { text: "1 year of interactive service", included: true, highlight: true },
-                { text: "Permanent archival mode access", included: true }
+                { text: t('pricing.package.features.unlimitedProjects'), included: true },
+                { text: t('pricing.package.features.unlimitedMembers'), included: true },
+                { text: t('pricing.package.features.aiPrompts'), included: true },
+                { text: t('pricing.package.features.transcription'), included: true },
+                { text: t('pricing.package.features.photoAudio'), included: true },
+                { text: t('pricing.package.features.cloudStorage'), included: true },
+                { text: t('pricing.package.features.mobileWeb'), included: true },
+                { text: t('pricing.package.features.oneYear'), included: true, highlight: true },
+                { text: t('pricing.package.features.archival'), included: true }
               ]}
               popular={true}
-              ctaText="Get Started"
+              ctaText={t('pricing.package.cta')}
               onCTAClick={handlePurchase}
             />
           </div>
@@ -134,23 +136,23 @@ export default function PurchasePage() {
             <EnhancedCardHeader>
               <EnhancedCardTitle className="flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-sage-600" />
-                Complete Your Purchase
+                {t('checkout.title')}
               </EnhancedCardTitle>
             </EnhancedCardHeader>
             <EnhancedCardContent className="space-y-6">
               {/* Order Summary */}
               <div className="bg-gray-50 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium">Family Saga Package</span>
+                  <span className="font-medium">{t('checkout.packageName')}</span>
                   <span>$209</span>
                 </div>
                 <div className="flex justify-between items-center text-sm text-gray-600">
-                  <span>One-time payment</span>
-                  <span>No recurring fees</span>
+                  <span>{t('checkout.oneTime')}</span>
+                  <span>{t('checkout.noRecurring')}</span>
                 </div>
                 <Separator className="my-3" />
                 <div className="flex justify-between items-center font-bold">
-                  <span>Total</span>
+                  <span>{t('checkout.total')}</span>
                   <span>$209</span>
                 </div>
               </div>
@@ -159,32 +161,32 @@ export default function PurchasePage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="firstName">First Name</Label>
+                    <Label htmlFor="firstName">{t('checkout.firstName')}</Label>
                     <Input id="firstName" placeholder="John" />
                   </div>
                   <div>
-                    <Label htmlFor="lastName">Last Name</Label>
+                    <Label htmlFor="lastName">{t('checkout.lastName')}</Label>
                     <Input id="lastName" placeholder="Doe" />
                   </div>
                 </div>
                 
                 <div>
-                  <Label htmlFor="email">Email Address</Label>
+                  <Label htmlFor="email">{t('checkout.email')}</Label>
                   <Input id="email" type="email" placeholder="john@example.com" />
                 </div>
 
                 <div>
-                  <Label htmlFor="cardNumber">Card Number</Label>
+                  <Label htmlFor="cardNumber">{t('checkout.cardNumber')}</Label>
                   <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="expiry">Expiry Date</Label>
+                    <Label htmlFor="expiry">{t('checkout.expiry')}</Label>
                     <Input id="expiry" placeholder="MM/YY" />
                   </div>
                   <div>
-                    <Label htmlFor="cvc">CVC</Label>
+                    <Label htmlFor="cvc">{t('checkout.cvc')}</Label>
                     <Input id="cvc" placeholder="123" />
                   </div>
                 </div>
@@ -194,15 +196,15 @@ export default function PurchasePage() {
               <div className="flex items-center justify-center gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <Shield className="w-4 h-4 text-green-600" />
-                  SSL Encrypted
+                  {t('checkout.security.ssl')}
                 </div>
                 <div className="flex items-center gap-2">
                   <Lock className="w-4 h-4 text-green-600" />
-                  Secure Payment
+                  {t('checkout.security.secure')}
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-green-600" />
-                  30-Day Guarantee
+                  {t('checkout.security.guarantee')}
                 </div>
               </div>
 
@@ -214,18 +216,17 @@ export default function PurchasePage() {
                 className="w-full"
               >
                 {isLoading ? (
-                  'Processing...'
+                  t('checkout.processing')
                 ) : (
                   <>
-                    Complete Purchase - $209
+                    {t('checkout.completePurchase')}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </>
                 )}
               </EnhancedButton>
 
               <p className="text-xs text-gray-500 text-center">
-                By completing your purchase, you agree to our Terms of Service and Privacy Policy.
-                You can cancel anytime within 30 days for a full refund.
+                {t('checkout.terms')}
               </p>
             </EnhancedCardContent>
           </EnhancedCard>
@@ -234,12 +235,12 @@ export default function PurchasePage() {
         {/* Customer Reviews */}
         <div className="mt-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">What Families Are Saying</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('reviews.title')}</h2>
             <div className="flex items-center justify-center gap-1 mb-4">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
               ))}
-              <span className="ml-2 text-gray-600">4.9/5 from 1,200+ families</span>
+              <span className="ml-2 text-gray-600">4.9/5 {t('reviews.rating')}</span>
             </div>
           </div>
 
@@ -249,8 +250,8 @@ export default function PurchasePage() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
                   <div>
-                    <p className="font-medium text-gray-900">Sarah Johnson</p>
-                    <p className="text-sm text-gray-600">Family Historian</p>
+                    <p className="font-medium text-gray-900">{t('reviews.testimonials.sarah.name')}</p>
+                    <p className="text-sm text-gray-600">{t('reviews.testimonials.sarah.role')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 mb-4">
@@ -259,8 +260,7 @@ export default function PurchasePage() {
                   ))}
                 </div>
                 <p className="text-gray-700 mb-4">
-                  "Saga helped us capture my grandmother's stories before it was too late. The AI prompts
-                  brought out memories we never knew existed."
+                  "{t('reviews.testimonials.sarah.quote')}"
                 </p>
               </EnhancedCardContent>
             </EnhancedCard>
@@ -270,8 +270,8 @@ export default function PurchasePage() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
                   <div>
-                    <p className="font-medium text-gray-900">Michael Chen</p>
-                    <p className="text-sm text-gray-600">Project Facilitator</p>
+                    <p className="font-medium text-gray-900">{t('reviews.testimonials.michael.name')}</p>
+                    <p className="text-sm text-gray-600">{t('reviews.testimonials.michael.role')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 mb-4">
@@ -280,8 +280,7 @@ export default function PurchasePage() {
                   ))}
                 </div>
                 <p className="text-gray-700 mb-4">
-                  "The transcription quality is amazing, and the family collaboration features made it
-                  easy for everyone to contribute."
+                  "{t('reviews.testimonials.michael.quote')}"
                 </p>
               </EnhancedCardContent>
             </EnhancedCard>
@@ -291,8 +290,8 @@ export default function PurchasePage() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
                   <div>
-                    <p className="font-medium text-gray-900">Emma Rodriguez</p>
-                    <p className="text-sm text-gray-600">Family Member</p>
+                    <p className="font-medium text-gray-900">{t('reviews.testimonials.emma.name')}</p>
+                    <p className="text-sm text-gray-600">{t('reviews.testimonials.emma.role')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 mb-4">
@@ -301,8 +300,7 @@ export default function PurchasePage() {
                   ))}
                 </div>
                 <p className="text-gray-700 mb-4">
-                  "Worth every penny. We now have a beautiful digital archive of our family history
-                  that will last forever."
+                  "{t('reviews.testimonials.emma.quote')}"
                 </p>
               </EnhancedCardContent>
             </EnhancedCard>
@@ -312,35 +310,32 @@ export default function PurchasePage() {
         {/* FAQ Section */}
         <div className="mt-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('faq.title')}</h2>
           </div>
           <div className="max-w-3xl mx-auto space-y-6">
             <EnhancedCard>
               <EnhancedCardContent className="p-6">
-                <h3 className="font-semibold text-gray-900 mb-2">What happens after the first year?</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('faq.questions.afterYear.question')}</h3>
                 <p className="text-gray-600">
-                  After your first year of interactive service, you can reactivate interactive features
-                  anytime, or you can still access, view, and export all your stories in archival mode.
+                  {t('faq.questions.afterYear.answer')}
                 </p>
               </EnhancedCardContent>
             </EnhancedCard>
 
             <EnhancedCard>
               <EnhancedCardContent className="p-6">
-                <h3 className="font-semibold text-gray-900 mb-2">How many family members can participate?</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('faq.questions.members.question')}</h3>
                 <p className="text-gray-600">
-                  You can invite unlimited family members to view and comment on stories. The package
-                  includes seats for multiple facilitators and storytellers to actively contribute content.
+                  {t('faq.questions.members.answer')}
                 </p>
               </EnhancedCardContent>
             </EnhancedCard>
 
             <EnhancedCard>
               <EnhancedCardContent className="p-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Is my family data secure?</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('faq.questions.security.question')}</h3>
                 <p className="text-gray-600">
-                  Yes, absolutely. We use enterprise-grade encryption and secure storage. Your personal
-                  family stories are never shared with third parties and are stored securely.
+                  {t('faq.questions.security.answer')}
                 </p>
               </EnhancedCardContent>
             </EnhancedCard>

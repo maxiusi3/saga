@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
 import { EnhancedCard } from '@/components/ui/enhanced-card'
 import { Input } from '@/components/ui/input'
@@ -19,6 +20,7 @@ import { toast } from 'react-hot-toast'
 import { InvitationManager } from '@/components/invitations/invitation-manager'
 
 export default function ProjectSettingsPage() {
+  const t = useTranslations('project-settings')
   const params = useParams()
   const router = useRouter()
   const { user } = useAuthStore()
@@ -48,7 +50,7 @@ export default function ProjectSettingsPage() {
         const currentProject = projects.find(p => p.id === projectId)
         
         if (!currentProject) {
-          toast.error('Project not found or access denied')
+          toast.error(t('messages.notFound'))
           router.push(withLocale('/dashboard'))
           return
         }
@@ -58,7 +60,7 @@ export default function ProjectSettingsPage() {
         setProjectDescription(currentProject.description || '')
       } catch (error) {
         console.error('Error loading project:', error)
-        toast.error('Failed to load project')
+        toast.error(t('messages.updateFailed'))
       } finally {
         setLoading(false)
       }
@@ -69,7 +71,7 @@ export default function ProjectSettingsPage() {
 
   const handleSaveProjectDetails = async () => {
     if (!projectName.trim()) {
-      toast.error('Project name is required')
+      toast.error(t('messages.nameRequired'))
       return
     }
 
@@ -82,13 +84,13 @@ export default function ProjectSettingsPage() {
 
       if (updated) {
         setProject(prev => prev ? { ...prev, name: updated.name, description: updated.description } : null)
-        toast.success('Project updated successfully')
+        toast.success(t('messages.updateSuccess'))
       } else {
-        toast.error('Failed to update project')
+        toast.error(t('messages.updateFailed'))
       }
     } catch (error) {
       console.error('Error updating project:', error)
-      toast.error('Failed to update project')
+      toast.error(t('messages.updateFailed'))
     } finally {
       setSaving(false)
     }
@@ -98,18 +100,18 @@ export default function ProjectSettingsPage() {
     try {
       const success = await projectService.removeMember(memberId)
       if (success) {
-        toast.success('Member removed successfully')
+        toast.success(t('messages.memberRemoved'))
         if (user?.id) {
           const projects = await projectService.getUserProjects(user.id)
           const updated = projects.find(p => p.id === projectId)
           if (updated) setProject(updated)
         }
       } else {
-        toast.error('Failed to remove member')
+        toast.error(t('messages.memberRemoveFailed'))
       }
     } catch (error) {
       console.error('Error removing member:', error)
-      toast.error('Failed to remove member')
+      toast.error(t('messages.memberRemoveFailed'))
     }
   }
 
@@ -131,11 +133,11 @@ export default function ProjectSettingsPage() {
       <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
         <div className="max-w-7xl mx-auto text-center py-16">
           <h1 className="text-2xl font-bold text-gray-900">
-            {!user ? 'Please sign in' : 'Project not found'}
+            {!user ? t('messages.signIn') : t('messages.projectNotFound')}
           </h1>
           <Link href={withLocale('/dashboard')}>
             <EnhancedButton variant="outline" className="mt-4">
-              Back to Dashboard
+              {t('backToProject')}
             </EnhancedButton>
           </Link>
         </div>
@@ -151,10 +153,10 @@ export default function ProjectSettingsPage() {
             <Link href={withLocale(`/dashboard/projects/${projectId}`)}>
               <EnhancedButton variant="secondary" size="sm" className="mb-4">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Project
+                {t('backToProject')}
               </EnhancedButton>
             </Link>
-            <h1 className="text-3xl font-bold text-gray-900">Project Management</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
             <p className="text-gray-600 mt-1">{project.name}</p>
           </div>
         </div>
@@ -165,7 +167,7 @@ export default function ProjectSettingsPage() {
             {/* Quick Actions */}
             <EnhancedCard>
               <div className="p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                <h3 className="font-semibold text-gray-900 mb-4">{t('quickActions.title')}</h3>
                 <div className="space-y-2">
                   <EnhancedButton 
                     variant="secondary" 
@@ -186,27 +188,27 @@ export default function ProjectSettingsPage() {
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                     </svg>
-                    Invite Members
+                    {t('quickActions.inviteMembers')}
                   </EnhancedButton>
                   <EnhancedButton 
                     variant="secondary" 
                     className="w-full justify-start"
-                    onClick={() => toast.success('Export feature coming soon!')}
+                    onClick={() => toast.success(t('messages.exportSoon'))}
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    Export Data
+                    {t('quickActions.exportData')}
                   </EnhancedButton>
                   <EnhancedButton 
                     variant="secondary" 
                     className="w-full justify-start"
-                    onClick={() => toast.success('Share feature coming soon!')}
+                    onClick={() => toast.success(t('messages.shareSoon'))}
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                     </svg>
-                    Share Project
+                    {t('quickActions.shareProject')}
                   </EnhancedButton>
                 </div>
               </div>
@@ -215,18 +217,18 @@ export default function ProjectSettingsPage() {
             {/* Project Stats */}
             <EnhancedCard>
               <div className="p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Project Stats</h3>
+                <h3 className="font-semibold text-gray-900 mb-4">{t('projectStats.title')}</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Created</span>
+                    <span className="text-gray-600">{t('projectStats.created')}</span>
                     <span className="font-medium">{new Date(project.created_at).toLocaleDateString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Stories</span>
+                    <span className="text-gray-600">{t('projectStats.stories')}</span>
                     <span className="font-medium">{project.story_count || 0}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Members</span>
+                    <span className="text-gray-600">{t('projectStats.members')}</span>
                     <span className="font-medium">{project.member_count || 0}</span>
                   </div>
                 </div>
@@ -240,9 +242,9 @@ export default function ProjectSettingsPage() {
             <EnhancedCard>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">Project Overview</h2>
+                  <h2 className="text-xl font-semibold text-gray-900">{t('projectOverview.title')}</h2>
                   <Badge className="bg-green-100 text-green-800">
-                    {project.status === 'active' ? 'Active' : 'Archived'}
+                    {project.status === 'active' ? t('projectOverview.status.active') : t('projectOverview.status.archived')}
                   </Badge>
                 </div>
 
@@ -253,47 +255,47 @@ export default function ProjectSettingsPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     <div className="text-2xl font-bold text-gray-900">{new Date(project.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric' })}</div>
-                    <div className="text-sm text-gray-600">Created</div>
+                    <div className="text-sm text-gray-600">{t('projectStats.created')}</div>
                   </div>
                   <div className="text-center">
                     <svg className="w-8 h-8 mx-auto mb-2 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <div className="text-2xl font-bold text-gray-900">{project.story_count || 0}</div>
-                    <div className="text-sm text-gray-600">Stories</div>
+                    <div className="text-sm text-gray-600">{t('projectStats.stories')}</div>
                   </div>
                   <div className="text-center">
                     <svg className="w-8 h-8 mx-auto mb-2 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     <div className="text-2xl font-bold text-gray-900">{project.member_count || 0}</div>
-                    <div className="text-sm text-gray-600">Members</div>
+                    <div className="text-sm text-gray-600">{t('projectStats.members')}</div>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="projectName">Project Name</Label>
+                    <Label htmlFor="projectName">{t('projectOverview.projectName')}</Label>
                     <div className="flex gap-2 mt-1">
                       <Input
                         id="projectName"
                         value={projectName}
                         onChange={(e) => setProjectName(e.target.value)}
-                        placeholder="Enter project name"
+                        placeholder={t('projectOverview.enterName')}
                       />
                       <EnhancedButton onClick={handleSaveProjectDetails} disabled={saving}>
-                        {saving ? 'Saving...' : 'Save'}
+                        {saving ? t('projectOverview.saving') : t('projectOverview.save')}
                       </EnhancedButton>
                     </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="projectDescription">Project Description</Label>
+                    <Label htmlFor="projectDescription">{t('projectOverview.projectDescription')}</Label>
                     <Textarea
                       id="projectDescription"
                       value={projectDescription}
                       onChange={(e) => setProjectDescription(e.target.value)}
-                      placeholder="Enter project description"
+                      placeholder={t('projectOverview.enterDescription')}
                       rows={3}
                       className="mt-1"
                     />
@@ -305,7 +307,7 @@ export default function ProjectSettingsPage() {
             <EnhancedCard id="member-management">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">Member Management</h2>
+                  <h2 className="text-xl font-semibold text-gray-900">{t('memberManagement.title')}</h2>
                 </div>
 
                 {/* Invitation Manager with Current Members */}

@@ -1,0 +1,104 @@
+{
+  "hero": {
+    "limitedOffer": "Limited Time Offer",
+    "title": "Preserve Your Family Stories Forever",
+    "subtitle": "Create lasting digital biographies that capture precious memories and wisdom.",
+    "startCapturing": "Start capturing your family's unique story today"
+  },
+  "features": {
+    "collaboration": {
+      "title": "Family Collaboration",
+      "description": "Invite family members to contribute stories and memories together."
+    },
+    "aiPrompts": {
+      "title": "AI-Powered Prompts",
+      "description": "Intelligent questions that help unlock meaningful memories."
+    },
+    "secure": {
+      "title": "Secure & Private",
+      "description": "Your family stories are encrypted and stored securely."
+    }
+  },
+  "pricing": {
+    "title": "Choose Your Package",
+    "subtitle": "Everything you need to create beautiful family biographies.",
+    "package": {
+      "title": "Family Saga Package",
+      "subtitle": "Complete family biography solution with AI-powered storytelling",
+      "price": "$209",
+      "period": "one-time",
+      "features": {
+        "unlimitedProjects": "Create unlimited projects",
+        "unlimitedMembers": "Invite unlimited family members",
+        "aiPrompts": "AI-powered story prompts",
+        "transcription": "Professional transcription",
+        "photoAudio": "Photo and audio integration",
+        "cloudStorage": "Secure cloud storage",
+        "mobileWeb": "Mobile and web access",
+        "oneYear": "1 year of interactive service",
+        "archival": "Permanent archival mode access"
+      },
+      "cta": "Get Started"
+    }
+  },
+  "checkout": {
+    "title": "Complete Your Purchase",
+    "orderSummary": "Order Summary",
+    "packageName": "Family Saga Package",
+    "oneTime": "One-time payment",
+    "noRecurring": "No recurring fees",
+    "total": "Total",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "cardNumber": "Card Number",
+    "expiry": "Expiry Date",
+    "cvc": "CVC",
+    "security": {
+      "ssl": "SSL Encrypted",
+      "secure": "Secure Payment",
+      "guarantee": "30-Day Guarantee"
+    },
+    "completePurchase": "Complete Purchase - $209",
+    "processing": "Processing...",
+    "terms": "By completing your purchase, you agree to our Terms of Service and Privacy Policy. You can cancel anytime within 30 days for a full refund."
+  },
+  "reviews": {
+    "title": "What Families Are Saying",
+    "rating": "from 1,200+ families",
+    "testimonials": {
+      "sarah": {
+        "name": "Sarah Johnson",
+        "role": "Family Historian",
+        "quote": "Saga helped us capture my grandmother's stories before it was too late. The AI prompts brought out memories we never knew existed."
+      },
+      "michael": {
+        "name": "Michael Chen",
+        "role": "Project Facilitator",
+        "quote": "The transcription quality is amazing, and the family collaboration features made it easy for everyone to contribute."
+      },
+      "emma": {
+        "name": "Emma Rodriguez",
+        "role": "Family Member",
+        "quote": "Worth every penny. We now have a beautiful digital archive of our family history that will last forever."
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "questions": {
+      "afterYear": {
+        "question": "What happens after the first year?",
+        "answer": "After your first year of interactive service, you can reactivate interactive features anytime, or you can still access, view, and export all your stories in archival mode."
+      },
+      "members": {
+        "question": "How many family members can participate?",
+        "answer": "You can invite unlimited family members to view and comment on stories. The package includes seats for multiple facilitators and storytellers to actively contribute content."
+      },
+      "security": {
+        "question": "Is my family data secure?",
+        "answer": "Yes, absolutely. We use enterprise-grade encryption and secure storage. Your personal family stories are never shared with third parties and are stored securely."
+      }
+    }
+  }
+}

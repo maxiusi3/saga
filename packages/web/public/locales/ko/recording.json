@@ -1,31 +1,88 @@
 {
-  "title": "스토리 녹음",
-  "status": {
-    "recording": "녹음 중",
-    "recordingComplete": "녹음 완료",
-    "processing": "처리 중...",
-    "uploading": "업로드 중..."
+  "title": "Record Your Story",
+  "subtitle": "Share your memories with AI-powered guidance",
+  "prompt": "Prompt",
+  "networkStatus": {
+    "good": "Good Connection",
+    "poor": "Slow Connection",
+    "offline": "Offline Mode"
   },
-  "tips": {
-    "title": "녹음 팁",
-    "quietEnvironment": "최상의 음질을 위해 조용한 환경을 찾으세요",
-    "speakClearly": "명확하고 편안한 속도로 말하세요",
-    "stayClose": "마이크 가까이에 있으세요",
-    "testFirst": "시작하기 전에 오디오를 테스트하세요"
+  "status": {
+    "ready": "Ready to Record",
+    "recording": "Recording...",
+    "paused": "Recording Paused",
+    "completed": "Recording Completed",
+    "recordingComplete": "Recording Complete",
+    "processing": "Processing...",
+    "uploading": "Uploading..."
   },
   "actions": {
-    "startRecording": "녹음 시작",
-    "stopRecording": "녹음 중지",
-    "pauseRecording": "녹음 일시정지",
-    "resumeRecording": "녹음 재개",
-    "saveRecording": "녹음 저장",
-    "discardRecording": "녹음 취소",
-    "playback": "재생",
-    "reRecord": "다시 녹음"
+    "start": "Start Recording",
+    "pause": "Pause",
+    "stop": "Stop",
+    "continue": "Continue",
+    "complete": "Complete Recording",
+    "reRecord": "Re-record",
+    "save": "Save Story",
+    "startOver": "Start Over",
+    "saving": "Saving...",
+    "startRecording": "Start Recording",
+    "stopRecording": "Stop Recording",
+    "pauseRecording": "Pause Recording",
+    "resumeRecording": "Resume Recording",
+    "saveRecording": "Save Recording",
+    "discardRecording": "Discard Recording",
+    "playback": "Playback"
+  },
+  "audio": {
+    "listenTo": "Listen to recording:",
+    "yourRecording": "Your Story Recording"
+  },
+  "tips": {
+    "title": "Recording Tips",
+    "quietEnvironment": "Find a quiet environment for the best audio quality",
+    "speakClearly": "Speak clearly and at a comfortable pace",
+    "stayClose": "Stay close to the microphone",
+    "testFirst": "Test your audio before starting",
+    "realtime": "💡 Using real-time speech recognition",
+    "traditional": "💡 Recording in progress, transcription will be processed after completion"
+  },
+  "ai": {
+    "processing": "AI is processing your story...",
+    "progress": "Processing Progress",
+    "working": "Our AI is working on your story:",
+    "transcribing": "Transcribing your audio",
+    "generatingTitle": "Generating a meaningful title",
+    "creatingSummary": "Creating a summary",
+    "preparingQuestions": "Preparing follow-up questions",
+    "generatedContent": "AI Generated Content",
+    "confidence": "confidence",
+    "demoMode": "Demo Mode",
+    "generatedTitle": "Generated Title:",
+    "storySummary": "Story Summary:",
+    "transcriptPreview": "Transcript Preview:",
+    "followUpQuestions": "Suggested Follow-up Questions:",
+    "moreQuestions": "more questions available"
+  },
+  "errors": {
+    "missingData": "Missing required data for story submission.",
+    "saveFailed": "Failed to save story. Please try again.",
+    "empty": "Recording is empty, please try again"
+  },
+  "success": {
+    "recorded": "Recording completed",
+    "paused": "Recording paused",
+    "resumed": "Recording resumed",
+    "saved": "Story saved successfully!",
+    "answerRecorded": "Answer recorded successfully!"
+  },
+  "messages": {
+    "processingAudio": "Processing audio file...",
+    "audioProcessed": "Audio processed successfully"
   },
   "optimization": {
-    "title": "녹음 최적화",
-    "enableOptimization": "최적화 활성화",
-    "disableOptimization": "최적화 비활성화"
+    "title": "Recording Optimization",
+    "enableOptimization": "Enable Optimization",
+    "disableOptimization": "Disable Optimization"
   }
 }

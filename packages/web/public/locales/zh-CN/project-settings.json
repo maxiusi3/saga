@@ -1,0 +1,44 @@
+{
+  "title": "项目管理",
+  "backToProject": "返回项目",
+  "quickActions": {
+    "title": "快速操作",
+    "inviteMembers": "邀请成员",
+    "exportData": "导出数据",
+    "shareProject": "分享项目"
+  },
+  "projectStats": {
+    "title": "项目统计",
+    "created": "创建时间",
+    "stories": "故事",
+    "members": "成员"
+  },
+  "projectOverview": {
+    "title": "项目概览",
+    "status": {
+      "active": "活跃",
+      "archived": "已归档"
+    },
+    "projectName": "项目名称",
+    "projectDescription": "项目描述",
+    "save": "保存",
+    "saving": "保存中...",
+    "enterName": "输入项目名称",
+    "enterDescription": "输入项目描述"
+  },
+  "memberManagement": {
+    "title": "成员管理"
+  },
+  "messages": {
+    "nameRequired": "项目名称为必填项",
+    "updateSuccess": "项目更新成功",
+    "updateFailed": "项目更新失败",
+    "memberRemoved": "成员移除成功",
+    "memberRemoveFailed": "成员移除失败",
+    "exportSoon": "导出功能即将推出！",
+    "shareSoon": "分享功能即将推出！",
+    "notFound": "未找到项目或访问被拒绝",
+    "signIn": "请登录",
+    "projectNotFound": "未找到项目"
+  }
+}
