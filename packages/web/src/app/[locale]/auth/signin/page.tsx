@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClientSupabase } from '@/lib/supabase'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { locales } from '@/i18n/config'
 
 function SignInPageContent() {
@@ -23,6 +23,7 @@ function SignInPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const locale = useLocale()
+  const t = useTranslations('auth')
 
   const withLocale = (path: string) => {
     let normalized = path || '/dashboard'
@@ -179,9 +180,9 @@ function SignInPageContent() {
       <div className="max-w-md w-full space-y-8">
         {/* Logo and Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground">Welcome to Saga</h1>
+          <h1 className="text-3xl font-bold text-foreground">{t('signin.title')}</h1>
           <p className="mt-2 text-muted-foreground">
-            Your family's story, a conversation away
+            {t('signin.subtitle')}
           </p>
         </div>
 
@@ -213,7 +214,7 @@ function SignInPageContent() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Sign in with Google
+              {t('signin.googleButton')}
             </Button>
 
             <div className="relative">
@@ -222,7 +223,7 @@ function SignInPageContent() {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with
+                  {t('signin.divider')}
                 </span>
               </div>
             </div>
@@ -230,13 +231,13 @@ function SignInPageContent() {
             {/* Email Sign In */}
             <form onSubmit={handleEmailSignIn} className="space-y-4">
               <div>
-                <Label htmlFor="email">Email address</Label>
+                <Label htmlFor="email">{t('signin.emailLabel')}</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t('signin.emailPlaceholder')}
                   required
                   className="mt-1"
                 />
@@ -248,7 +249,7 @@ function SignInPageContent() {
                 className="w-full"
                 disabled={isLoading || !email}
               >
-                {isLoading ? 'Sending...' : 'Continue'}
+                {isLoading ? t('signin.submitButtonLoading') : t('signin.submitButton')}
               </Button>
             </form>
 
@@ -265,11 +266,11 @@ function SignInPageContent() {
         {/* Footer Links */}
         <div className="text-center text-sm text-muted-foreground space-x-4">
           <Link href={`/${locale}/terms`} className="hover:text-foreground">
-            Terms of Service
+            {t('signin.termsOfService')}
           </Link>
           <span>•</span>
           <Link href={`/${locale}/privacy`} className="hover:text-foreground">
-            Privacy Policy
+            {t('signin.privacyPolicy')}
           </Link>
         </div>
       </div>
