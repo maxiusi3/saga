@@ -53,6 +53,15 @@ export default getRequestConfig(async ({ requestLocale }) => {
       subscription: merge(await loadJson('en', 'subscription.json'), await loadJson(locale, 'subscription.json')),
       billing: merge(await loadJson('en', 'billing.json'), await loadJson(locale, 'billing.json')),
       toasts: merge(await loadJson('en', 'toasts.json'), await loadJson(locale, 'toasts.json')),
+      
+      // Page-specific namespaces
+      'purchase-page': merge(await loadJson('en', 'purchase-page.json'), await loadJson(locale, 'purchase-page.json')),
+      'project-settings': merge(await loadJson('en', 'project-settings.json'), await loadJson(locale, 'project-settings.json')),
+      'create-project': merge(await loadJson('en', 'create-project.json'), await loadJson(locale, 'create-project.json')),
+      stories: merge(await loadJson('en', 'stories.json'), await loadJson(locale, 'stories.json')),
+      onboarding: merge(await loadJson('en', 'onboarding.json'), await loadJson(locale, 'onboarding.json')),
+      profile: merge(await loadJson('en', 'profile.json'), await loadJson(locale, 'profile.json')),
+      'notifications-page': merge(await loadJson('en', 'notifications-page.json'), await loadJson(locale, 'notifications-page.json')),
     },
   };
 });
