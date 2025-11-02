@@ -1,4 +1,47 @@
 {
+  "title": "Mis Recursos",
+  "subtitle": "Gestiona tus asientos disponibles y compra recursos adicionales",
+  "buyMoreSeats": "Comprar Más Asientos",
+  "available": "Disponible",
+  "usage": "Uso",
+  "usageStats": "{used} de {total} usados",
+  "buyMore": "Comprar Más (${price} cada uno)",
+  "recentActivity": "Actividad Reciente",
+  "purchaseAdditional": "Comprar Asientos Adicionales",
+  "packagePromo": "¿Necesitas múltiples asientos? Obtén mejor valor con nuestro paquete completo.",
+  "viewPackage": "Ver Paquete Saga ($29)",
+  "types": {
+    "project": {
+      "title": "Vales de Proyecto",
+      "description": "Crear nuevos proyectos de historias familiares"
+    },
+    "facilitator": {
+      "title": "Asientos de Facilitador",
+      "description": "Invitar facilitadores para ayudar a gestionar proyectos"
+    },
+    "storyteller": {
+      "title": "Asientos de Narrador",
+      "description": "Invitar miembros de la familia para compartir sus historias"
+    }
+  },
+  "purchase": {
+    "project": {
+      "title": "Vale de Proyecto",
+      "description": "Crear un proyecto adicional de historia familiar"
+    },
+    "facilitator": {
+      "title": "Asiento de Facilitador",
+      "description": "Invitar un facilitador para ayudar a gestionar proyectos"
+    },
+    "storyteller": {
+      "title": "Asiento de Narrador",
+      "description": "Invitar un narrador adicional a tus proyectos"
+    },
+    "button": "Comprar"
+  },
+  "alerts": {
+    "purchaseComingSoon": "La funcionalidad de compra de asiento {type} estará disponible pronto"
+  },
   "wallet": {
     "purchaseResources": "Comprar Recursos",
     "viewPackages": "Ver Paquetes",
