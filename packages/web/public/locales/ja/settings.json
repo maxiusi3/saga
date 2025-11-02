@@ -1,125 +1,142 @@
 {
   "title": "設定",
-  "tabs": {
-    "general": "一般",
-    "notifications": "通知",
-    "privacy": "プライバシー",
-    "accessibility": "アクセシビリティ",
-    "account": "アカウント"
+  "subtitle": "アカウントの設定とプライバシー設定を管理",
+  "loading": "設定を読み込んでいます...",
+  "userInfo": {
+    "title": "ユーザー情報",
+    "changePhoto": "写真を変更",
+    "photoHint": "JPG、PNG、またはGIF。最大サイズ2MB。",
+    "fullName": "氏名",
+    "email": "メールアドレス",
+    "phone": "電話番号",
+    "phonePlaceholder": "(555) 123-4567",
+    "saveChanges": "変更を保存"
   },
-  "general": {
-    "title": "一般設定",
-    "language": {
-      "title": "言語",
-      "description": "優先言語を選択",
-      "label": "インターフェース言語"
+  "quickAccess": {
+    "title": "クイックアクセス",
+    "description": "アクセシビリティと表示設定を素早く調整して、使いやすさを向上させます。",
+    "highContrast": {
+      "title": "ハイコントラスト",
+      "description": "テキストの視認性を向上"
     },
-    "timezone": {
-      "title": "タイムゾーン",
-      "description": "現地のタイムゾーンを設定",
-      "label": "タイムゾーン"
+    "reducedMotion": {
+      "title": "モーション削減",
+      "description": "アニメーションを最小化"
     },
-    "dateFormat": {
-      "title": "日付形式",
-      "description": "日付の表示方法を選択",
-      "label": "日付形式"
-    }
-  },
-  "notifications": {
-    "title": "通知設定",
-    "email": {
-      "title": "メール通知",
-      "newStory": "新しい物語が投稿されました",
-      "newComment": "あなたの物語に新しいコメント",
-      "newFollowUp": "新しいフォローアップ質問",
-      "projectInvite": "プロジェクト招待",
-      "weeklyDigest": "週間ダイジェスト"
+    "screenReader": {
+      "title": "スクリーンリーダー",
+      "description": "スクリーンリーダーのサポート強化"
     },
-    "push": {
-      "title": "プッシュ通知",
-      "enabled": "プッシュ通知を有効にする",
-      "description": "デバイスで通知を受け取る"
-    }
-  },
-  "privacy": {
-    "title": "プライバシー設定",
-    "profileVisibility": {
-      "title": "プロフィールの公開範囲",
-      "description": "プロフィールを表示できるユーザーを制御",
-      "options": {
-        "public": "公開",
-        "private": "非公開",
-        "familyOnly": "家族のみ"
-      }
-    },
-    "storyVisibility": {
-      "title": "物語の公開範囲",
-      "description": "新しい物語のデフォルト公開範囲",
-      "options": {
-        "projectMembers": "プロジェクトメンバーのみ",
-        "family": "家族",
-        "public": "公開"
-      }
-    },
-    "dataSharing": {
-      "title": "データ共有",
-      "analytics": "匿名の使用データを共有",
-      "improvements": "Sagaの改善に協力"
-    }
-  },
-  "accessibility": {
-    "title": "アクセシビリティ設定",
     "fontSize": {
       "title": "フォントサイズ",
-      "small": "小",
+      "current": "現在: {size}",
       "standard": "標準",
       "large": "大",
       "extraLarge": "特大"
     },
-    "highContrast": {
-      "title": "ハイコントラスト",
-      "description": "視認性向上のためコントラストを上げる"
+    "save": "クイックアクセス設定を保存"
+  },
+  "audio": {
+    "title": "オーディオ設定",
+    "volume": "音量",
+    "quality": "オーディオ品質",
+    "qualityOptions": {
+      "low": "低（高速読み込み）",
+      "medium": "中（バランス）",
+      "high": "高（最高品質）"
+    }
+  },
+  "privacy": {
+    "title": "プライバシーとセキュリティ",
+    "profileVisibility": {
+      "title": "プロフィールの公開",
+      "description": "他の家族メンバーにプロフィールを表示"
     },
-    "reducedMotion": {
-      "title": "モーション削減",
-      "description": "アニメーションと遷移を最小化"
+    "storySharing": {
+      "title": "ストーリー共有",
+      "description": "他のユーザーがあなたのストーリーを共有できるようにする"
     },
-    "screenReader": {
-      "title": "スクリーンリーダーサポート",
-      "description": "スクリーンリーダー用に最適化"
+    "dataAnalytics": {
+      "title": "データ分析",
+      "description": "使用データでサービスの改善に協力"
+    },
+    "twoFactor": {
+      "title": "二要素認証",
+      "description": "セキュリティの追加レイヤーを追加"
+    }
+  },
+  "notifications": {
+    "title": "通知",
+    "email": {
+      "title": "メール通知",
+      "description": "メールで更新を受信"
+    },
+    "push": {
+      "title": "プッシュ通知",
+      "description": "デバイスで通知を受信"
+    },
+    "weeklyDigest": {
+      "title": "週間ダイジェスト",
+      "description": "家族の活動の週間サマリー"
+    },
+    "save": "通知設定を保存"
+  },
+  "language": {
+    "title": "言語と地域",
+    "language": "言語",
+    "timezone": "タイムゾーン",
+    "timezones": {
+      "pst": "太平洋標準時",
+      "mst": "山岳部標準時",
+      "cst": "中部標準時",
+      "est": "東部標準時"
+    }
+  },
+  "dataManagement": {
+    "title": "データ管理",
+    "export": {
+      "title": "データをエクスポート",
+      "description": "すべてのストーリーとデータをダウンロード",
+      "button": "エクスポート"
+    },
+    "privacy": {
+      "title": "データプライバシー",
+      "description": "データの使用方法を管理"
     }
   },
   "account": {
     "title": "アカウント管理",
     "changePassword": {
-      "title": "パスワード変更",
-      "description": "アカウントパスワードを更新",
-      "button": "パスワード変更"
+      "title": "パスワードを変更",
+      "description": "アカウントのパスワードを更新",
+      "button": "変更"
     },
-    "deleteAccount": {
-      "title": "アカウント削除",
-      "description": "アカウントとすべてのデータを完全に削除",
-      "button": "アカウント削除",
-      "warning": "この操作は元に戻せません"
+    "twoFactor": {
+      "title": "二要素認証",
+      "description": "アカウントに追加のセキュリティを追加",
+      "button": "設定"
     },
-    "exportData": {
-      "title": "データエクスポート",
-      "description": "すべてのアカウントデータをダウンロード",
-      "button": "データエクスポート"
+    "devices": {
+      "title": "接続されたデバイス",
+      "description": "ログイン中のデバイスを管理",
+      "button": "管理"
     }
   },
-  "actions": {
-    "save": "変更を保存",
-    "saving": "保存中...",
-    "cancel": "キャンセル",
-    "reset": "デフォルトにリセット"
+  "dangerZone": {
+    "title": "危険ゾーン",
+    "deleteAccount": {
+      "title": "アカウントを削除",
+      "description": "アカウントと関連するすべてのデータを完全に削除します。この操作は元に戻せません。",
+      "button": "アカウントを削除"
+    }
   },
-  "success": {
-    "saved": "設定が正常に保存されました",
-    "exported": "データエクスポートが開始されました。準備ができたらメールが届きます。"
-  },
-  "errors": {
-    "saveFailed": "設定の保存に失敗しました",
-    "loadFailed": "設定の読み込みに失敗しました"
+  "messages": {
+    "profileUpdated": "プロフィールが正常に更新されました",
+    "profileUpdateFailed": "プロフィールの更新に失敗しました",
+    "notificationsUpdated": "通知設定が正常に更新されました",
+    "notificationsUpdateFailed": "通知設定の更新に失敗しました",
+    "accessibilityUpdated": "アクセシビリティ設定が正常に更新されました",
+    "accessibilityUpdateFailed": "アクセシビリティ設定の更新に失敗しました",
+    "loadFailed": "設定の読み込みに失敗しました。デフォルト値を使用します。"
   }
 }
