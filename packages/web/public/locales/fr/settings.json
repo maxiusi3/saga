@@ -1,92 +1,107 @@
 {
   "title": "Paramètres",
-  "tabs": {
-    "general": "Général",
-    "notifications": "Notifications",
-    "privacy": "Confidentialité",
-    "accessibility": "Accessibilité",
-    "account": "Compte"
+  "subtitle": "Gérez vos préférences de compte et paramètres de confidentialité",
+  "loading": "Chargement de vos préférences...",
+  "userInfo": {
+    "title": "Informations Utilisateur",
+    "changePhoto": "Changer la Photo",
+    "photoHint": "JPG, PNG ou GIF. Taille max 2MB.",
+    "fullName": "Nom Complet",
+    "email": "Adresse Email",
+    "phone": "Numéro de Téléphone",
+    "phonePlaceholder": "(555) 123-4567",
+    "saveChanges": "Enregistrer les Modifications"
   },
-  "general": {
-    "title": "Paramètres Généraux",
-    "language": {
-      "title": "Langue",
-      "description": "Sélectionnez votre langue préférée",
-      "label": "Langue de l'Interface"
+  "quickAccess": {
+    "title": "Accès Rapide",
+    "description": "Ajustez rapidement les paramètres d'accessibilité et d'affichage pour une meilleure utilisabilité.",
+    "highContrast": {
+      "title": "Contraste Élevé",
+      "description": "Améliorer la visibilité du texte"
     },
-    "timezone": {
-      "title": "Fuseau Horaire",
-      "description": "Définissez votre fuseau horaire local",
-      "label": "Fuseau Horaire"
+    "reducedMotion": {
+      "title": "Mouvement Réduit",
+      "description": "Minimiser les animations"
     },
-    "dateFormat": {
-      "title": "Format de Date",
-      "description": "Choisissez comment les dates sont affichées",
-      "label": "Format de Date"
-    }
-  },
-  "notifications": {
-    "title": "Préférences de Notification",
-    "email": {
-      "title": "Notifications par E-mail",
-      "newStory": "Nouvelle histoire publiée",
-      "newComment": "Nouveau commentaire sur votre histoire",
-      "newFollowUp": "Nouvelle question de suivi",
-      "projectInvite": "Invitation au projet",
-      "weeklyDigest": "Résumé hebdomadaire"
+    "screenReader": {
+      "title": "Lecteur d'Écran",
+      "description": "Support amélioré pour les lecteurs d'écran"
     },
-    "push": {
-      "title": "Notifications Push",
-      "enabled": "Activer les notifications push",
-      "description": "Recevoir des notifications sur votre appareil"
-    }
-  },
-  "privacy": {
-    "title": "Paramètres de Confidentialité",
-    "profileVisibility": {
-      "title": "Visibilité du Profil",
-      "description": "Contrôlez qui peut voir votre profil",
-      "options": {
-        "public": "Public",
-        "private": "Privé",
-        "familyOnly": "Famille Seulement"
-      }
-    },
-    "storyVisibility": {
-      "title": "Visibilité des Histoires",
-      "description": "Visibilité par défaut pour les nouvelles histoires",
-      "options": {
-        "projectMembers": "Membres du Projet Seulement",
-        "family": "Famille",
-        "public": "Public"
-      }
-    },
-    "dataSharing": {
-      "title": "Partage de Données",
-      "analytics": "Partager des données d'utilisation anonymes",
-      "improvements": "Aider à améliorer Saga"
-    }
-  },
-  "accessibility": {
-    "title": "Paramètres d'Accessibilité",
     "fontSize": {
       "title": "Taille de Police",
-      "small": "Petit",
+      "current": "Actuel: {size}",
       "standard": "Standard",
       "large": "Grand",
       "extraLarge": "Très Grand"
     },
-    "highContrast": {
-      "title": "Contraste Élevé",
-      "description": "Augmenter le contraste pour une meilleure visibilité"
+    "save": "Enregistrer les Paramètres d'Accès Rapide"
+  },
+  "audio": {
+    "title": "Paramètres Audio",
+    "volume": "Volume",
+    "quality": "Qualité Audio",
+    "qualityOptions": {
+      "low": "Faible (Chargement plus rapide)",
+      "medium": "Moyen (Équilibré)",
+      "high": "Élevé (Meilleure qualité)"
+    }
+  },
+  "privacy": {
+    "title": "Confidentialité et Sécurité",
+    "profileVisibility": {
+      "title": "Visibilité du Profil",
+      "description": "Rendre votre profil visible aux autres membres de la famille"
     },
-    "reducedMotion": {
-      "title": "Mouvement Réduit",
-      "description": "Minimiser les animations et transitions"
+    "storySharing": {
+      "title": "Partage d'Histoires",
+      "description": "Permettre aux autres de partager vos histoires"
     },
-    "screenReader": {
-      "title": "Support Lecteur d'Écran",
-      "description": "Optimiser pour les lecteurs d'écran"
+    "dataAnalytics": {
+      "title": "Analyse de Données",
+      "description": "Aidez à améliorer notre service avec les données d'utilisation"
+    },
+    "twoFactor": {
+      "title": "Authentification à Deux Facteurs",
+      "description": "Ajouter une couche de sécurité supplémentaire"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "email": {
+      "title": "Notifications par Email",
+      "description": "Recevoir des mises à jour par email"
+    },
+    "push": {
+      "title": "Notifications Push",
+      "description": "Recevoir des notifications sur vos appareils"
+    },
+    "weeklyDigest": {
+      "title": "Résumé Hebdomadaire",
+      "description": "Résumé hebdomadaire de l'activité familiale"
+    },
+    "save": "Enregistrer les Paramètres de Notification"
+  },
+  "language": {
+    "title": "Langue et Région",
+    "language": "Langue",
+    "timezone": "Fuseau Horaire",
+    "timezones": {
+      "pst": "Heure Standard du Pacifique",
+      "mst": "Heure Standard des Montagnes",
+      "cst": "Heure Standard du Centre",
+      "est": "Heure Standard de l'Est"
+    }
+  },
+  "dataManagement": {
+    "title": "Gestion des Données",
+    "export": {
+      "title": "Exporter Mes Données",
+      "description": "Télécharger toutes vos histoires et données",
+      "button": "Exporter"
+    },
+    "privacy": {
+      "title": "Confidentialité des Données",
+      "description": "Contrôlez comment vos données sont utilisées"
     }
   },
   "account": {
@@ -94,32 +109,34 @@
     "changePassword": {
       "title": "Changer le Mot de Passe",
       "description": "Mettre à jour le mot de passe de votre compte",
-      "button": "Changer le Mot de Passe"
+      "button": "Changer"
     },
-    "deleteAccount": {
-      "title": "Supprimer le Compte",
-      "description": "Supprimer définitivement votre compte et toutes les données",
-      "button": "Supprimer le Compte",
-      "warning": "Cette action ne peut pas être annulée"
+    "twoFactor": {
+      "title": "Authentification à Deux Facteurs",
+      "description": "Ajouter une sécurité supplémentaire à votre compte",
+      "button": "Configurer"
     },
-    "exportData": {
-      "title": "Exporter les Données",
-      "description": "Télécharger toutes les données de votre compte",
-      "button": "Exporter les Données"
+    "devices": {
+      "title": "Appareils Connectés",
+      "description": "Gérer vos appareils connectés",
+      "button": "Gérer"
     }
   },
-  "actions": {
-    "save": "Enregistrer les Modifications",
-    "saving": "Enregistrement...",
-    "cancel": "Annuler",
-    "reset": "Réinitialiser par Défaut"
+  "dangerZone": {
+    "title": "Zone Dangereuse",
+    "deleteAccount": {
+      "title": "Supprimer le Compte",
+      "description": "Supprimer définitivement votre compte et toutes les données associées. Cette action ne peut pas être annulée.",
+      "button": "Supprimer le Compte"
+    }
   },
-  "success": {
-    "saved": "Paramètres enregistrés avec succès",
-    "exported": "Exportation des données démarrée. Vous recevrez un e-mail lorsqu'elle sera prête."
-  },
-  "errors": {
-    "saveFailed": "Échec de l'enregistrement des paramètres",
-    "loadFailed": "Échec du chargement des paramètres"
+  "messages": {
+    "profileUpdated": "Profil mis à jour avec succès",
+    "profileUpdateFailed": "Échec de la mise à jour du profil",
+    "notificationsUpdated": "Paramètres de notification mis à jour avec succès",
+    "notificationsUpdateFailed": "Échec de la mise à jour des paramètres de notification",
+    "accessibilityUpdated": "Paramètres d'accessibilité mis à jour avec succès",
+    "accessibilityUpdateFailed": "Échec de la mise à jour des paramètres d'accessibilité",
+    "loadFailed": "Échec du chargement des paramètres. Utilisation des valeurs par défaut."
   }
 }

@@ -1,92 +1,107 @@
 {
   "title": "Settings",
-  "tabs": {
-    "general": "General",
-    "notifications": "Notifications",
-    "privacy": "Privacy",
-    "accessibility": "Accessibility",
-    "account": "Account"
+  "subtitle": "Manage your account preferences and privacy settings",
+  "loading": "Loading your preferences...",
+  "userInfo": {
+    "title": "User Information",
+    "changePhoto": "Change Photo",
+    "photoHint": "JPG, PNG or GIF. Max size 2MB.",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "phonePlaceholder": "(555) 123-4567",
+    "saveChanges": "Save Changes"
   },
-  "general": {
-    "title": "General Settings",
-    "language": {
-      "title": "Language",
-      "description": "Select your preferred language",
-      "label": "Interface Language"
+  "quickAccess": {
+    "title": "Quick Access",
+    "description": "Quickly adjust accessibility and display settings for better usability.",
+    "highContrast": {
+      "title": "High Contrast",
+      "description": "Improve text visibility"
     },
-    "timezone": {
-      "title": "Timezone",
-      "description": "Set your local timezone",
-      "label": "Timezone"
+    "reducedMotion": {
+      "title": "Reduced Motion",
+      "description": "Minimize animations"
     },
-    "dateFormat": {
-      "title": "Date Format",
-      "description": "Choose how dates are displayed",
-      "label": "Date Format"
-    }
-  },
-  "notifications": {
-    "title": "Notification Preferences",
-    "email": {
-      "title": "Email Notifications",
-      "newStory": "New story posted",
-      "newComment": "New comment on your story",
-      "newFollowUp": "New follow-up question",
-      "projectInvite": "Project invitation",
-      "weeklyDigest": "Weekly digest"
+    "screenReader": {
+      "title": "Screen Reader",
+      "description": "Enhanced screen reader support"
     },
-    "push": {
-      "title": "Push Notifications",
-      "enabled": "Enable push notifications",
-      "description": "Receive notifications on your device"
-    }
-  },
-  "privacy": {
-    "title": "Privacy Settings",
-    "profileVisibility": {
-      "title": "Profile Visibility",
-      "description": "Control who can see your profile",
-      "options": {
-        "public": "Public",
-        "private": "Private",
-        "familyOnly": "Family Only"
-      }
-    },
-    "storyVisibility": {
-      "title": "Story Visibility",
-      "description": "Default visibility for new stories",
-      "options": {
-        "projectMembers": "Project Members Only",
-        "family": "Family",
-        "public": "Public"
-      }
-    },
-    "dataSharing": {
-      "title": "Data Sharing",
-      "analytics": "Share anonymous usage data",
-      "improvements": "Help improve Saga"
-    }
-  },
-  "accessibility": {
-    "title": "Accessibility Settings",
     "fontSize": {
       "title": "Font Size",
-      "small": "Small",
+      "current": "Current: {size}",
       "standard": "Standard",
       "large": "Large",
       "extraLarge": "Extra Large"
     },
-    "highContrast": {
-      "title": "High Contrast",
-      "description": "Increase contrast for better visibility"
+    "save": "Save Quick Access Settings"
+  },
+  "audio": {
+    "title": "Audio Settings",
+    "volume": "Volume",
+    "quality": "Audio Quality",
+    "qualityOptions": {
+      "low": "Low (Faster loading)",
+      "medium": "Medium (Balanced)",
+      "high": "High (Best quality)"
+    }
+  },
+  "privacy": {
+    "title": "Privacy & Security",
+    "profileVisibility": {
+      "title": "Profile Visibility",
+      "description": "Make your profile visible to other family members"
     },
-    "reducedMotion": {
-      "title": "Reduced Motion",
-      "description": "Minimize animations and transitions"
+    "storySharing": {
+      "title": "Story Sharing",
+      "description": "Allow others to share your stories"
     },
-    "screenReader": {
-      "title": "Screen Reader Support",
-      "description": "Optimize for screen readers"
+    "dataAnalytics": {
+      "title": "Data Analytics",
+      "description": "Help improve our service with usage data"
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "description": "Add an extra layer of security"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "email": {
+      "title": "Email Notifications",
+      "description": "Receive updates via email"
+    },
+    "push": {
+      "title": "Push Notifications",
+      "description": "Get notified on your devices"
+    },
+    "weeklyDigest": {
+      "title": "Weekly Digest",
+      "description": "Weekly summary of family activity"
+    },
+    "save": "Save Notification Settings"
+  },
+  "language": {
+    "title": "Language & Region",
+    "language": "Language",
+    "timezone": "Timezone",
+    "timezones": {
+      "pst": "Pacific Standard Time",
+      "mst": "Mountain Standard Time",
+      "cst": "Central Standard Time",
+      "est": "Eastern Standard Time"
+    }
+  },
+  "dataManagement": {
+    "title": "Data Management",
+    "export": {
+      "title": "Export My Data",
+      "description": "Download all your stories and data",
+      "button": "Export"
+    },
+    "privacy": {
+      "title": "Data Privacy",
+      "description": "Control how your data is used"
     }
   },
   "account": {
@@ -94,32 +109,34 @@
     "changePassword": {
       "title": "Change Password",
       "description": "Update your account password",
-      "button": "Change Password"
+      "button": "Change"
     },
-    "deleteAccount": {
-      "title": "Delete Account",
-      "description": "Permanently delete your account and all data",
-      "button": "Delete Account",
-      "warning": "This action cannot be undone"
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "description": "Add extra security to your account",
+      "button": "Setup"
     },
-    "exportData": {
-      "title": "Export Data",
-      "description": "Download all your account data",
-      "button": "Export Data"
+    "devices": {
+      "title": "Connected Devices",
+      "description": "Manage your logged-in devices",
+      "button": "Manage"
     }
   },
-  "actions": {
-    "save": "Save Changes",
-    "saving": "Saving...",
-    "cancel": "Cancel",
-    "reset": "Reset to Default"
+  "dangerZone": {
+    "title": "Danger Zone",
+    "deleteAccount": {
+      "title": "Delete Account",
+      "description": "Permanently delete your account and all associated data. This action cannot be undone.",
+      "button": "Delete Account"
+    }
   },
-  "success": {
-    "saved": "Settings saved successfully",
-    "exported": "Data export started. You'll receive an email when ready."
-  },
-  "errors": {
-    "saveFailed": "Failed to save settings",
-    "loadFailed": "Failed to load settings"
+  "messages": {
+    "profileUpdated": "Profile updated successfully",
+    "profileUpdateFailed": "Failed to update profile",
+    "notificationsUpdated": "Notification settings updated successfully",
+    "notificationsUpdateFailed": "Failed to update notification settings",
+    "accessibilityUpdated": "Accessibility settings updated successfully",
+    "accessibilityUpdateFailed": "Failed to update accessibility settings",
+    "loadFailed": "Failed to load settings. Using default values."
   }
 }

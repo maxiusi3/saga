@@ -8,7 +8,7 @@ import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { ShoppingCart, Users, UserPlus, BookOpen } from 'lucide-react'
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 interface ResourceSeat {
   type: 'project' | 'facilitator' | 'storyteller'
@@ -21,6 +21,7 @@ interface ResourceSeat {
 
 export default function ResourcesPage() {
   const locale = useLocale()
+  const t = useTranslations('resources')
   const withLocale = (path: string) => {
     if (!path.startsWith('/')) return path
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
@@ -41,7 +42,7 @@ export default function ResourcesPage() {
             used: 0,
             total: 0,
             price: 15,
-            description: 'Create new family story projects'
+            description: t('types.project.description')
           },
           {
             type: 'facilitator',
@@ -49,7 +50,7 @@ export default function ResourcesPage() {
             used: 0,
             total: 0,
             price: 10,
-            description: 'Invite facilitators to help manage projects'
+            description: t('types.facilitator.description')
           },
           {
             type: 'storyteller',
@@ -57,7 +58,7 @@ export default function ResourcesPage() {
             used: 0,
             total: 0,
             price: 5,
-            description: 'Invite family members to share their stories'
+            description: t('types.storyteller.description')
           }
         ]
 
@@ -86,17 +87,17 @@ export default function ResourcesPage() {
   const getResourceTitle = (type: ResourceSeat['type']) => {
     switch (type) {
       case 'project':
-        return 'Project Vouchers'
+        return t('types.project.title')
       case 'facilitator':
-        return 'Facilitator Seats'
+        return t('types.facilitator.title')
       case 'storyteller':
-        return 'Storyteller Seats'
+        return t('types.storyteller.title')
     }
   }
 
   const handlePurchase = (type: ResourceSeat['type']) => {
     // TODO: Implement individual seat purchase flow
-    alert(`Purchase ${type} seat functionality coming soon`)
+    alert(t('alerts.purchaseComingSoon', { type }))
   }
 
   if (loading) {
@@ -117,16 +118,16 @@ export default function ResourcesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">My Resources</h1>
+          <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Manage your available seats and purchase additional resources
+            {t('subtitle')}
           </p>
         </div>
         
         <Link href={withLocale('/dashboard/purchase')}>
           <Button>
             <ShoppingCart className="h-4 w-4 mr-2" />
-            Buy More Seats
+            {t('buyMoreSeats')}
           </Button>
         </Link>
       </div>
@@ -147,16 +148,16 @@ export default function ResourcesPage() {
                 <Badge 
                   variant={resource.available > 0 ? "default" : "secondary"}
                 >
-                  {resource.available} Available
+                  {resource.available} {t('available')}
                 </Badge>
               </div>
 
               {/* Usage Stats */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Usage</span>
+                  <span className="text-muted-foreground">{t('usage')}</span>
                   <span className="text-foreground">
-                    {resource.used} of {resource.total} used
+                    {t('usageStats', { used: resource.used, total: resource.total })}
                   </span>
                 </div>
                 <Progress 
@@ -176,7 +177,7 @@ export default function ResourcesPage() {
                 className="w-full"
                 onClick={() => handlePurchase(resource.type)}
               >
-                Buy More (${resource.price} each)
+                {t('buyMore', { price: resource.price })}
               </Button>
             </div>
           </Card>
@@ -186,7 +187,7 @@ export default function ResourcesPage() {
       {/* Usage History */}
       <Card className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-foreground">Recent Activity</h2>
+          <h2 className="text-xl font-semibold text-foreground">{t('recentActivity')}</h2>
           
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 border border-border rounded-lg">
@@ -234,21 +235,21 @@ export default function ResourcesPage() {
       {/* Purchase Options */}
       <Card className="p-6">
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-foreground">Purchase Additional Seats</h2>
+          <h2 className="text-xl font-semibold text-foreground">{t('purchaseAdditional')}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="border border-border rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <BookOpen className="h-5 w-5 text-primary" />
-                  <span className="font-medium text-foreground">Project Voucher</span>
+                  <span className="font-medium text-foreground">{t('purchase.project.title')}</span>
                 </div>
                 <div className="text-2xl font-bold text-primary">$15</div>
                 <p className="text-sm text-muted-foreground">
-                  Create one additional family story project
+                  {t('purchase.project.description')}
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
-                  Purchase
+                  {t('purchase.button')}
                 </Button>
               </div>
             </div>
@@ -257,14 +258,14 @@ export default function ResourcesPage() {
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <Users className="h-5 w-5 text-primary" />
-                  <span className="font-medium text-foreground">Facilitator Seat</span>
+                  <span className="font-medium text-foreground">{t('purchase.facilitator.title')}</span>
                 </div>
                 <div className="text-2xl font-bold text-primary">$10</div>
                 <p className="text-sm text-muted-foreground">
-                  Invite one facilitator to help manage projects
+                  {t('purchase.facilitator.description')}
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
-                  Purchase
+                  {t('purchase.button')}
                 </Button>
               </div>
             </div>
@@ -273,14 +274,14 @@ export default function ResourcesPage() {
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <UserPlus className="h-5 w-5 text-primary" />
-                  <span className="font-medium text-foreground">Storyteller Seat</span>
+                  <span className="font-medium text-foreground">{t('purchase.storyteller.title')}</span>
                 </div>
                 <div className="text-2xl font-bold text-primary">$5</div>
                 <p className="text-sm text-muted-foreground">
-                  Invite one additional storyteller to your projects
+                  {t('purchase.storyteller.description')}
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
-                  Purchase
+                  {t('purchase.button')}
                 </Button>
               </div>
             </div>
@@ -290,11 +291,11 @@ export default function ResourcesPage() {
 
           <div className="text-center">
             <p className="text-muted-foreground mb-4">
-              Need multiple seats? Get better value with our complete package.
+              {t('packagePromo')}
             </p>
             <Link href={withLocale('/dashboard/purchase')}>
               <Button>
-                View Saga Package ($29)
+                {t('viewPackage')}
               </Button>
             </Link>
           </div>
