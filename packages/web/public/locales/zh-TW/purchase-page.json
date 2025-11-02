@@ -1,103 +1,103 @@
 {
   "hero": {
-    "limitedOffer": "Limited Time Offer",
-    "title": "Preserve Your Family Stories Forever",
-    "subtitle": "Create lasting digital biographies that capture precious memories and wisdom.",
-    "startCapturing": "Start capturing your family's unique story today"
+    "limitedOffer": "限時優惠",
+    "title": "永久保存您的家族故事",
+    "subtitle": "創建持久的數字傳記，捕捉珍貴的回憶和智慧。",
+    "startCapturing": "今天就開始記錄您家族的獨特故事"
   },
   "features": {
     "collaboration": {
-      "title": "Family Collaboration",
-      "description": "Invite family members to contribute stories and memories together."
+      "title": "家庭協作",
+      "description": "邀請家庭成員一起貢獻故事和回憶。"
     },
     "aiPrompts": {
-      "title": "AI-Powered Prompts",
-      "description": "Intelligent questions that help unlock meaningful memories."
+      "title": "AI智能提示",
+      "description": "智能問題幫助解鎖有意義的回憶。"
     },
     "secure": {
-      "title": "Secure & Private",
-      "description": "Your family stories are encrypted and stored securely."
+      "title": "安全私密",
+      "description": "您的家族故事經過加密並安全存儲。"
     }
   },
   "pricing": {
-    "title": "Choose Your Package",
-    "subtitle": "Everything you need to create beautiful family biographies.",
+    "title": "選擇您的套餐",
+    "subtitle": "創建精美家族傳記所需的一切。",
     "package": {
-      "title": "Family Saga Package",
-      "subtitle": "Complete family biography solution with AI-powered storytelling",
+      "title": "家族傳奇套餐",
+      "subtitle": "完整的家族傳記解決方案，配備AI驅動的故事講述",
       "price": "$209",
-      "period": "one-time",
+      "period": "一次性",
       "features": {
-        "unlimitedProjects": "Create unlimited projects",
-        "unlimitedMembers": "Invite unlimited family members",
-        "aiPrompts": "AI-powered story prompts",
-        "transcription": "Professional transcription",
-        "photoAudio": "Photo and audio integration",
-        "cloudStorage": "Secure cloud storage",
-        "mobileWeb": "Mobile and web access",
-        "oneYear": "1 year of interactive service",
-        "archival": "Permanent archival mode access"
+        "unlimitedProjects": "創建無限項目",
+        "unlimitedMembers": "邀請無限家庭成員",
+        "aiPrompts": "AI驅動的故事提示",
+        "transcription": "專業轉錄",
+        "photoAudio": "照片和音頻集成",
+        "cloudStorage": "安全雲存儲",
+        "mobileWeb": "移動和網頁訪問",
+        "oneYear": "1年互動服務",
+        "archival": "永久存檔模式訪問"
       },
-      "cta": "Get Started"
+      "cta": "開始使用"
     }
   },
   "checkout": {
-    "title": "Complete Your Purchase",
-    "orderSummary": "Order Summary",
-    "packageName": "Family Saga Package",
-    "oneTime": "One-time payment",
-    "noRecurring": "No recurring fees",
-    "total": "Total",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "email": "Email Address",
-    "cardNumber": "Card Number",
-    "expiry": "Expiry Date",
+    "title": "完成購買",
+    "orderSummary": "訂單摘要",
+    "packageName": "家族傳奇套餐",
+    "oneTime": "一次性付款",
+    "noRecurring": "無重複費用",
+    "total": "總計",
+    "firstName": "名",
+    "lastName": "姓",
+    "email": "電子郵件地址",
+    "cardNumber": "卡號",
+    "expiry": "到期日期",
     "cvc": "CVC",
     "security": {
-      "ssl": "SSL Encrypted",
-      "secure": "Secure Payment",
-      "guarantee": "30-Day Guarantee"
+      "ssl": "SSL加密",
+      "secure": "安全支付",
+      "guarantee": "30天保證"
     },
-    "completePurchase": "Complete Purchase - $209",
-    "processing": "Processing...",
-    "terms": "By completing your purchase, you agree to our Terms of Service and Privacy Policy. You can cancel anytime within 30 days for a full refund."
+    "completePurchase": "完成購買 - $209",
+    "processing": "處理中...",
+    "terms": "完成購買即表示您同意我們的服務條款和隱私政策。您可以在30天內隨時取消並獲得全額退款。"
   },
   "reviews": {
-    "title": "What Families Are Saying",
-    "rating": "from 1,200+ families",
+    "title": "家庭用戶評價",
+    "rating": "來自1,200+個家庭",
     "testimonials": {
       "sarah": {
         "name": "Sarah Johnson",
-        "role": "Family Historian",
-        "quote": "Saga helped us capture my grandmother's stories before it was too late. The AI prompts brought out memories we never knew existed."
+        "role": "家族歷史學家",
+        "quote": "Saga幫助我們在為時已晚之前記錄了祖母的故事。AI提示喚起了我們從未知道的回憶。"
       },
       "michael": {
         "name": "Michael Chen",
-        "role": "Project Facilitator",
-        "quote": "The transcription quality is amazing, and the family collaboration features made it easy for everyone to contribute."
+        "role": "項目協調員",
+        "quote": "轉錄質量令人驚嘆，家庭協作功能讓每個人都能輕鬆貢獻。"
       },
       "emma": {
         "name": "Emma Rodriguez",
-        "role": "Family Member",
-        "quote": "Worth every penny. We now have a beautiful digital archive of our family history that will last forever."
+        "role": "家庭成員",
+        "quote": "物有所值。我們現在擁有一個美麗的家族歷史數字檔案，將永遠保存。"
       }
     }
   },
   "faq": {
-    "title": "Frequently Asked Questions",
+    "title": "常見問題",
     "questions": {
       "afterYear": {
-        "question": "What happens after the first year?",
-        "answer": "After your first year of interactive service, you can reactivate interactive features anytime, or you can still access, view, and export all your stories in archival mode."
+        "question": "第一年之後會怎樣？",
+        "answer": "在第一年的互動服務之後，您可以隨時重新激活互動功能，或者您仍然可以在存檔模式下訪問、查看和導出所有故事。"
       },
       "members": {
-        "question": "How many family members can participate?",
-        "answer": "You can invite unlimited family members to view and comment on stories. The package includes seats for multiple facilitators and storytellers to actively contribute content."
+        "question": "可以有多少家庭成員參與？",
+        "answer": "您可以邀請無限數量的家庭成員查看和評論故事。該套餐包括多個協調員和講述者席位，可以積極貢獻內容。"
       },
       "security": {
-        "question": "Is my family data secure?",
-        "answer": "Yes, absolutely. We use enterprise-grade encryption and secure storage. Your personal family stories are never shared with third parties and are stored securely."
+        "question": "我的家庭數據安全嗎？",
+        "answer": "是的，絕對安全。我們使用企業級加密和安全存儲。您的個人家族故事永遠不會與第三方共享，並且安全存儲。"
       }
     }
   }

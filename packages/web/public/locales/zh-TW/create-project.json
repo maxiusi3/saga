@@ -1,71 +1,71 @@
 {
   "header": {
-    "backToProjects": "Back to Projects",
-    "title": "Create New Family Biography",
-    "subtitle": "Start recording your family's precious stories"
+    "backToProjects": "返回項目",
+    "title": "創建新的家族傳記",
+    "subtitle": "開始記錄您家族的珍貴故事"
   },
   "form": {
-    "projectDetails": "Project Details",
-    "projectName": "Project Name",
-    "projectNamePlaceholder": "e.g., Zhang Family Stories, Grandpa's Memoirs",
-    "projectDescription": "Project Description",
-    "projectDescriptionPlaceholder": "What kind of stories do you want to record? Who will participate?",
-    "projectTheme": "Project Theme",
-    "yourRole": "Your Role in This Project",
-    "currentBalance": "Current Balance",
-    "projectVouchers": "Project Vouchers",
-    "facilitatorSeats": "Facilitator Seats",
-    "storytellerSeats": "Storyteller Seats",
-    "cancel": "Cancel",
-    "createProject": "Create Project",
-    "creating": "Creating..."
+    "projectDetails": "項目詳情",
+    "projectName": "項目名稱",
+    "projectNamePlaceholder": "例如：張家故事、爺爺的回憶錄",
+    "projectDescription": "項目描述",
+    "projectDescriptionPlaceholder": "您想記錄什麼樣的故事？誰會參與？",
+    "projectTheme": "項目主題",
+    "yourRole": "您在此項目中的角色",
+    "currentBalance": "當前餘額",
+    "projectVouchers": "項目代金券",
+    "facilitatorSeats": "協調員席位",
+    "storytellerSeats": "講述者席位",
+    "cancel": "取消",
+    "createProject": "創建項目",
+    "creating": "創建中..."
   },
   "themes": {
     "familyMemories": {
-      "name": "Family Memories",
-      "description": "Capture stories from different generations"
+      "name": "家庭回憶",
+      "description": "記錄不同世代的故事"
     },
     "lifeJourney": {
-      "name": "Life Journey",
-      "description": "Document personal milestones and experiences"
+      "name": "人生旅程",
+      "description": "記錄個人里程碑和經歷"
     },
     "culturalHeritage": {
-      "name": "Cultural Heritage",
-      "description": "Preserve traditions and cultural stories"
+      "name": "文化傳承",
+      "description": "保存傳統和文化故事"
     },
     "professionalLegacy": {
-      "name": "Professional Legacy",
-      "description": "Share career experiences and wisdom"
+      "name": "職業傳承",
+      "description": "分享職業經驗和智慧"
     }
   },
   "roles": {
     "storyteller": {
-      "name": "Storyteller",
-      "description": "Record and share your stories",
-      "resourceCost": "Resource Cost: 1 Storyteller seat"
+      "name": "講述者",
+      "description": "記錄和分享您的故事",
+      "resourceCost": "資源消耗：1個講述者席位"
     },
     "facilitator": {
-      "name": "Facilitator",
-      "description": "Manage project and invite others",
-      "resourceCost": "Resource Cost: 1 Facilitator seat"
+      "name": "協調員",
+      "description": "管理項目並邀請他人",
+      "resourceCost": "資源消耗：1個協調員席位"
     }
   },
   "info": {
-    "title": "What happens next?",
+    "title": "接下來會發生什麼？",
     "items": {
-      "0": "You'll be the project facilitator with full access",
-      "1": "Invite family members as storytellers",
-      "2": "Start recording and organizing stories",
-      "3": "Use AI to generate prompts and summaries"
+      "0": "您將成為擁有完全訪問權限的項目協調員",
+      "1": "邀請家庭成員作為講述者",
+      "2": "開始錄製和整理故事",
+      "3": "使用AI生成提示和摘要"
     }
   },
   "errors": {
-    "fetchBalance": "Unable to fetch resource balance information",
-    "insufficientVouchers": "Insufficient project vouchers, please purchase more resources",
-    "insufficientSeats": "Insufficient {role} seats, please purchase more resources",
-    "createFailed": "Failed to create project, please try again"
+    "fetchBalance": "無法獲取資源餘額信息",
+    "insufficientVouchers": "項目代金券不足，請購買更多資源",
+    "insufficientSeats": "{role}席位不足，請購買更多資源",
+    "createFailed": "創建項目失敗，請重試"
   },
   "success": {
-    "created": "Project created successfully!"
+    "created": "項目創建成功！"
   }
 }

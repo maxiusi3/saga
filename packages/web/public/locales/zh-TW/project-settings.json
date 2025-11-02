@@ -1,44 +1,44 @@
 {
-  "title": "Project Management",
-  "backToProject": "Back to Project",
+  "title": "項目管理",
+  "backToProject": "返回項目",
   "quickActions": {
-    "title": "Quick Actions",
-    "inviteMembers": "Invite Members",
-    "exportData": "Export Data",
-    "shareProject": "Share Project"
+    "title": "快速操作",
+    "inviteMembers": "邀請成員",
+    "exportData": "導出數據",
+    "shareProject": "分享項目"
   },
   "projectStats": {
-    "title": "Project Stats",
-    "created": "Created",
-    "stories": "Stories",
-    "members": "Members"
+    "title": "項目統計",
+    "created": "創建時間",
+    "stories": "故事",
+    "members": "成員"
   },
   "projectOverview": {
-    "title": "Project Overview",
+    "title": "項目概覽",
     "status": {
-      "active": "Active",
-      "archived": "Archived"
+      "active": "活躍",
+      "archived": "已歸檔"
     },
-    "projectName": "Project Name",
-    "projectDescription": "Project Description",
-    "save": "Save",
-    "saving": "Saving...",
-    "enterName": "Enter project name",
-    "enterDescription": "Enter project description"
+    "projectName": "項目名稱",
+    "projectDescription": "項目描述",
+    "save": "保存",
+    "saving": "保存中...",
+    "enterName": "輸入項目名稱",
+    "enterDescription": "輸入項目描述"
   },
   "memberManagement": {
-    "title": "Member Management"
+    "title": "成員管理"
   },
   "messages": {
-    "nameRequired": "Project name is required",
-    "updateSuccess": "Project updated successfully",
-    "updateFailed": "Failed to update project",
-    "memberRemoved": "Member removed successfully",
-    "memberRemoveFailed": "Failed to remove member",
-    "exportSoon": "Export feature coming soon!",
-    "shareSoon": "Share feature coming soon!",
-    "notFound": "Project not found or access denied",
-    "signIn": "Please sign in",
-    "projectNotFound": "Project not found"
+    "nameRequired": "項目名稱為必填項",
+    "updateSuccess": "項目更新成功",
+    "updateFailed": "項目更新失敗",
+    "memberRemoved": "成員移除成功",
+    "memberRemoveFailed": "成員移除失敗",
+    "exportSoon": "導出功能即將推出！",
+    "shareSoon": "分享功能即將推出！",
+    "notFound": "未找到項目或訪問被拒絕",
+    "signIn": "請登錄",
+    "projectNotFound": "未找到項目"
   }
 }
