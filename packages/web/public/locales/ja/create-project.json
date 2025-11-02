@@ -1,71 +1,71 @@
 {
   "header": {
-    "backToProjects": "Back to Projects",
-    "title": "Create New Family Biography",
-    "subtitle": "Start recording your family's precious stories"
+    "backToProjects": "プロジェクトに戻る",
+    "title": "新しい家族の伝記を作成",
+    "subtitle": "家族の大切な物語の記録を始めましょう"
   },
   "form": {
-    "projectDetails": "Project Details",
-    "projectName": "Project Name",
-    "projectNamePlaceholder": "e.g., Zhang Family Stories, Grandpa's Memoirs",
-    "projectDescription": "Project Description",
-    "projectDescriptionPlaceholder": "What kind of stories do you want to record? Who will participate?",
-    "projectTheme": "Project Theme",
-    "yourRole": "Your Role in This Project",
-    "currentBalance": "Current Balance",
-    "projectVouchers": "Project Vouchers",
-    "facilitatorSeats": "Facilitator Seats",
-    "storytellerSeats": "Storyteller Seats",
-    "cancel": "Cancel",
-    "createProject": "Create Project",
-    "creating": "Creating..."
+    "projectDetails": "プロジェクト詳細",
+    "projectName": "プロジェクト名",
+    "projectNamePlaceholder": "例：田中家の物語、おじいちゃんの回想録",
+    "projectDescription": "プロジェクトの説明",
+    "projectDescriptionPlaceholder": "どのような物語を記録したいですか？誰が参加しますか？",
+    "projectTheme": "プロジェクトテーマ",
+    "yourRole": "このプロジェクトでのあなたの役割",
+    "currentBalance": "現在の残高",
+    "projectVouchers": "プロジェクトバウチャー",
+    "facilitatorSeats": "ファシリテーター席",
+    "storytellerSeats": "ストーリーテラー席",
+    "cancel": "キャンセル",
+    "createProject": "プロジェクトを作成",
+    "creating": "作成中..."
   },
   "themes": {
     "familyMemories": {
-      "name": "Family Memories",
-      "description": "Capture stories from different generations"
+      "name": "家族の思い出",
+      "description": "異なる世代の物語を記録"
     },
     "lifeJourney": {
-      "name": "Life Journey",
-      "description": "Document personal milestones and experiences"
+      "name": "人生の旅",
+      "description": "個人的なマイルストーンと経験を記録"
     },
     "culturalHeritage": {
-      "name": "Cultural Heritage",
-      "description": "Preserve traditions and cultural stories"
+      "name": "文化遺産",
+      "description": "伝統と文化的な物語を保存"
     },
     "professionalLegacy": {
-      "name": "Professional Legacy",
-      "description": "Share career experiences and wisdom"
+      "name": "職業的遺産",
+      "description": "キャリア経験と知恵を共有"
     }
   },
   "roles": {
     "storyteller": {
-      "name": "Storyteller",
-      "description": "Record and share your stories",
-      "resourceCost": "Resource Cost: 1 Storyteller seat"
+      "name": "ストーリーテラー",
+      "description": "あなたの物語を記録して共有",
+      "resourceCost": "リソースコスト：ストーリーテラー席1つ"
     },
     "facilitator": {
-      "name": "Facilitator",
-      "description": "Manage project and invite others",
-      "resourceCost": "Resource Cost: 1 Facilitator seat"
+      "name": "ファシリテーター",
+      "description": "プロジェクトを管理し、他の人を招待",
+      "resourceCost": "リソースコスト：ファシリテーター席1つ"
     }
   },
   "info": {
-    "title": "What happens next?",
+    "title": "次に何が起こりますか？",
     "items": {
-      "0": "You'll be the project facilitator with full access",
-      "1": "Invite family members as storytellers",
-      "2": "Start recording and organizing stories",
-      "3": "Use AI to generate prompts and summaries"
+      "0": "完全なアクセス権を持つプロジェクトファシリテーターになります",
+      "1": "家族をストーリーテラーとして招待",
+      "2": "物語の記録と整理を開始",
+      "3": "AIを使用してプロンプトと要約を生成"
     }
   },
   "errors": {
-    "fetchBalance": "Unable to fetch resource balance information",
-    "insufficientVouchers": "Insufficient project vouchers, please purchase more resources",
-    "insufficientSeats": "Insufficient {role} seats, please purchase more resources",
-    "createFailed": "Failed to create project, please try again"
+    "fetchBalance": "リソース残高情報を取得できません",
+    "insufficientVouchers": "プロジェクトバウチャーが不足しています。もっとリソースを購入してください",
+    "insufficientSeats": "{role}席が不足しています。もっとリソースを購入してください",
+    "createFailed": "プロジェクトの作成に失敗しました。もう一度お試しください"
   },
   "success": {
-    "created": "Project created successfully!"
+    "created": "プロジェクトが正常に作成されました！"
   }
 }

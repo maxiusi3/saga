@@ -1,71 +1,71 @@
 {
   "header": {
-    "backToProjects": "Back to Projects",
-    "title": "Create New Family Biography",
-    "subtitle": "Start recording your family's precious stories"
+    "backToProjects": "프로젝트로 돌아가기",
+    "title": "새 가족 전기 만들기",
+    "subtitle": "가족의 소중한 이야기 기록을 시작하세요"
   },
   "form": {
-    "projectDetails": "Project Details",
-    "projectName": "Project Name",
-    "projectNamePlaceholder": "e.g., Zhang Family Stories, Grandpa's Memoirs",
-    "projectDescription": "Project Description",
-    "projectDescriptionPlaceholder": "What kind of stories do you want to record? Who will participate?",
-    "projectTheme": "Project Theme",
-    "yourRole": "Your Role in This Project",
-    "currentBalance": "Current Balance",
-    "projectVouchers": "Project Vouchers",
-    "facilitatorSeats": "Facilitator Seats",
-    "storytellerSeats": "Storyteller Seats",
-    "cancel": "Cancel",
-    "createProject": "Create Project",
-    "creating": "Creating..."
+    "projectDetails": "프로젝트 세부정보",
+    "projectName": "프로젝트 이름",
+    "projectNamePlaceholder": "예: 김가 이야기, 할아버지의 회고록",
+    "projectDescription": "프로젝트 설명",
+    "projectDescriptionPlaceholder": "어떤 이야기를 기록하고 싶으신가요? 누가 참여하나요?",
+    "projectTheme": "프로젝트 테마",
+    "yourRole": "이 프로젝트에서의 역할",
+    "currentBalance": "현재 잔액",
+    "projectVouchers": "프로젝트 바우처",
+    "facilitatorSeats": "진행자 좌석",
+    "storytellerSeats": "이야기꾼 좌석",
+    "cancel": "취소",
+    "createProject": "프로젝트 만들기",
+    "creating": "생성 중..."
   },
   "themes": {
     "familyMemories": {
-      "name": "Family Memories",
-      "description": "Capture stories from different generations"
+      "name": "가족 추억",
+      "description": "여러 세대의 이야기 기록"
     },
     "lifeJourney": {
-      "name": "Life Journey",
-      "description": "Document personal milestones and experiences"
+      "name": "인생 여정",
+      "description": "개인적인 이정표와 경험 기록"
     },
     "culturalHeritage": {
-      "name": "Cultural Heritage",
-      "description": "Preserve traditions and cultural stories"
+      "name": "문화 유산",
+      "description": "전통과 문화 이야기 보존"
     },
     "professionalLegacy": {
-      "name": "Professional Legacy",
-      "description": "Share career experiences and wisdom"
+      "name": "직업적 유산",
+      "description": "경력 경험과 지혜 공유"
     }
   },
   "roles": {
     "storyteller": {
-      "name": "Storyteller",
-      "description": "Record and share your stories",
-      "resourceCost": "Resource Cost: 1 Storyteller seat"
+      "name": "이야기꾼",
+      "description": "이야기를 기록하고 공유",
+      "resourceCost": "리소스 비용: 이야기꾼 좌석 1개"
     },
     "facilitator": {
-      "name": "Facilitator",
-      "description": "Manage project and invite others",
-      "resourceCost": "Resource Cost: 1 Facilitator seat"
+      "name": "진행자",
+      "description": "프로젝트 관리 및 다른 사람 초대",
+      "resourceCost": "리소스 비용: 진행자 좌석 1개"
     }
   },
   "info": {
-    "title": "What happens next?",
+    "title": "다음에 무슨 일이 일어나나요?",
     "items": {
-      "0": "You'll be the project facilitator with full access",
-      "1": "Invite family members as storytellers",
-      "2": "Start recording and organizing stories",
-      "3": "Use AI to generate prompts and summaries"
+      "0": "전체 액세스 권한이 있는 프로젝트 진행자가 됩니다",
+      "1": "가족 구성원을 이야기꾼으로 초대",
+      "2": "이야기 기록 및 정리 시작",
+      "3": "AI를 사용하여 프롬프트 및 요약 생성"
     }
   },
   "errors": {
-    "fetchBalance": "Unable to fetch resource balance information",
-    "insufficientVouchers": "Insufficient project vouchers, please purchase more resources",
-    "insufficientSeats": "Insufficient {role} seats, please purchase more resources",
-    "createFailed": "Failed to create project, please try again"
+    "fetchBalance": "리소스 잔액 정보를 가져올 수 없습니다",
+    "insufficientVouchers": "프로젝트 바우처가 부족합니다. 더 많은 리소스를 구매하세요",
+    "insufficientSeats": "{role} 좌석이 부족합니다. 더 많은 리소스를 구매하세요",
+    "createFailed": "프로젝트 생성에 실패했습니다. 다시 시도하세요"
   },
   "success": {
-    "created": "Project created successfully!"
+    "created": "프로젝트가 성공적으로 생성되었습니다!"
   }
 }

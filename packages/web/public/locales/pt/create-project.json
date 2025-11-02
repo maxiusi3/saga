@@ -1,71 +1,71 @@
 {
   "header": {
-    "backToProjects": "Back to Projects",
-    "title": "Create New Family Biography",
-    "subtitle": "Start recording your family's precious stories"
+    "backToProjects": "Voltar aos Projetos",
+    "title": "Criar Nova Biografia Familiar",
+    "subtitle": "Comece a gravar as histórias preciosas da sua família"
   },
   "form": {
-    "projectDetails": "Project Details",
-    "projectName": "Project Name",
-    "projectNamePlaceholder": "e.g., Zhang Family Stories, Grandpa's Memoirs",
-    "projectDescription": "Project Description",
-    "projectDescriptionPlaceholder": "What kind of stories do you want to record? Who will participate?",
-    "projectTheme": "Project Theme",
-    "yourRole": "Your Role in This Project",
-    "currentBalance": "Current Balance",
-    "projectVouchers": "Project Vouchers",
-    "facilitatorSeats": "Facilitator Seats",
-    "storytellerSeats": "Storyteller Seats",
-    "cancel": "Cancel",
-    "createProject": "Create Project",
-    "creating": "Creating..."
+    "projectDetails": "Detalhes do Projeto",
+    "projectName": "Nome do Projeto",
+    "projectNamePlaceholder": "ex., Histórias da Família Silva, Memórias do Vovô",
+    "projectDescription": "Descrição do Projeto",
+    "projectDescriptionPlaceholder": "Que tipo de histórias você quer gravar? Quem vai participar?",
+    "projectTheme": "Tema do Projeto",
+    "yourRole": "Seu Papel neste Projeto",
+    "currentBalance": "Saldo Atual",
+    "projectVouchers": "Vouchers de Projeto",
+    "facilitatorSeats": "Assentos de Facilitador",
+    "storytellerSeats": "Assentos de Contador de Histórias",
+    "cancel": "Cancelar",
+    "createProject": "Criar Projeto",
+    "creating": "Criando..."
   },
   "themes": {
     "familyMemories": {
-      "name": "Family Memories",
-      "description": "Capture stories from different generations"
+      "name": "Memórias Familiares",
+      "description": "Capture histórias de diferentes gerações"
     },
     "lifeJourney": {
-      "name": "Life Journey",
-      "description": "Document personal milestones and experiences"
+      "name": "Jornada de Vida",
+      "description": "Documente marcos pessoais e experiências"
     },
     "culturalHeritage": {
-      "name": "Cultural Heritage",
-      "description": "Preserve traditions and cultural stories"
+      "name": "Patrimônio Cultural",
+      "description": "Preserve tradições e histórias culturais"
     },
     "professionalLegacy": {
-      "name": "Professional Legacy",
-      "description": "Share career experiences and wisdom"
+      "name": "Legado Profissional",
+      "description": "Compartilhe experiências profissionais e sabedoria"
     }
   },
   "roles": {
     "storyteller": {
-      "name": "Storyteller",
-      "description": "Record and share your stories",
-      "resourceCost": "Resource Cost: 1 Storyteller seat"
+      "name": "Contador de Histórias",
+      "description": "Grave e compartilhe suas histórias",
+      "resourceCost": "Custo de Recursos: 1 assento de Contador de Histórias"
     },
     "facilitator": {
-      "name": "Facilitator",
-      "description": "Manage project and invite others",
-      "resourceCost": "Resource Cost: 1 Facilitator seat"
+      "name": "Facilitador",
+      "description": "Gerencie o projeto e convide outras pessoas",
+      "resourceCost": "Custo de Recursos: 1 assento de Facilitador"
     }
   },
   "info": {
-    "title": "What happens next?",
+    "title": "O que acontece a seguir?",
     "items": {
-      "0": "You'll be the project facilitator with full access",
-      "1": "Invite family members as storytellers",
-      "2": "Start recording and organizing stories",
-      "3": "Use AI to generate prompts and summaries"
+      "0": "Você será o facilitador do projeto com acesso completo",
+      "1": "Convide membros da família como contadores de histórias",
+      "2": "Comece a gravar e organizar histórias",
+      "3": "Use IA para gerar prompts e resumos"
     }
   },
   "errors": {
-    "fetchBalance": "Unable to fetch resource balance information",
-    "insufficientVouchers": "Insufficient project vouchers, please purchase more resources",
-    "insufficientSeats": "Insufficient {role} seats, please purchase more resources",
-    "createFailed": "Failed to create project, please try again"
+    "fetchBalance": "Não foi possível obter informações do saldo de recursos",
+    "insufficientVouchers": "Vouchers de projeto insuficientes, por favor compre mais recursos",
+    "insufficientSeats": "Assentos de {role} insuficientes, por favor compre mais recursos",
+    "createFailed": "Falha ao criar projeto, por favor tente novamente"
   },
   "success": {
-    "created": "Project created successfully!"
+    "created": "Projeto criado com sucesso!"
   }
 }
