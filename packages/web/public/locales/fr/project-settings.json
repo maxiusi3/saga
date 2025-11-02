@@ -1,44 +1,44 @@
 {
-  "title": "Project Management",
-  "backToProject": "Back to Project",
+  "title": "Gestion de Projet",
+  "backToProject": "Retour au Projet",
   "quickActions": {
-    "title": "Quick Actions",
-    "inviteMembers": "Invite Members",
-    "exportData": "Export Data",
-    "shareProject": "Share Project"
+    "title": "Actions Rapides",
+    "inviteMembers": "Inviter des Membres",
+    "exportData": "Exporter les Données",
+    "shareProject": "Partager le Projet"
   },
   "projectStats": {
-    "title": "Project Stats",
-    "created": "Created",
-    "stories": "Stories",
-    "members": "Members"
+    "title": "Statistiques du Projet",
+    "created": "Créé",
+    "stories": "Histoires",
+    "members": "Membres"
   },
   "projectOverview": {
-    "title": "Project Overview",
+    "title": "Aperçu du Projet",
     "status": {
-      "active": "Active",
-      "archived": "Archived"
+      "active": "Actif",
+      "archived": "Archivé"
     },
-    "projectName": "Project Name",
-    "projectDescription": "Project Description",
-    "save": "Save",
-    "saving": "Saving...",
-    "enterName": "Enter project name",
-    "enterDescription": "Enter project description"
+    "projectName": "Nom du Projet",
+    "projectDescription": "Description du Projet",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "enterName": "Entrez le nom du projet",
+    "enterDescription": "Entrez la description du projet"
   },
   "memberManagement": {
-    "title": "Member Management"
+    "title": "Gestion des Membres"
   },
   "messages": {
-    "nameRequired": "Project name is required",
-    "updateSuccess": "Project updated successfully",
-    "updateFailed": "Failed to update project",
-    "memberRemoved": "Member removed successfully",
-    "memberRemoveFailed": "Failed to remove member",
-    "exportSoon": "Export feature coming soon!",
-    "shareSoon": "Share feature coming soon!",
-    "notFound": "Project not found or access denied",
-    "signIn": "Please sign in",
-    "projectNotFound": "Project not found"
+    "nameRequired": "Le nom du projet est requis",
+    "updateSuccess": "Projet mis à jour avec succès",
+    "updateFailed": "Échec de la mise à jour du projet",
+    "memberRemoved": "Membre supprimé avec succès",
+    "memberRemoveFailed": "Échec de la suppression du membre",
+    "exportSoon": "Fonction d'exportation bientôt disponible !",
+    "shareSoon": "Fonction de partage bientôt disponible !",
+    "notFound": "Projet introuvable ou accès refusé",
+    "signIn": "Veuillez vous connecter",
+    "projectNotFound": "Projet introuvable"
   }
 }

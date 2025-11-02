@@ -1,44 +1,44 @@
 {
-  "title": "Project Management",
-  "backToProject": "Back to Project",
+  "title": "프로젝트 관리",
+  "backToProject": "프로젝트로 돌아가기",
   "quickActions": {
-    "title": "Quick Actions",
-    "inviteMembers": "Invite Members",
-    "exportData": "Export Data",
-    "shareProject": "Share Project"
+    "title": "빠른 작업",
+    "inviteMembers": "멤버 초대",
+    "exportData": "데이터 내보내기",
+    "shareProject": "프로젝트 공유"
   },
   "projectStats": {
-    "title": "Project Stats",
-    "created": "Created",
-    "stories": "Stories",
-    "members": "Members"
+    "title": "프로젝트 통계",
+    "created": "생성됨",
+    "stories": "스토리",
+    "members": "멤버"
   },
   "projectOverview": {
-    "title": "Project Overview",
+    "title": "프로젝트 개요",
     "status": {
-      "active": "Active",
-      "archived": "Archived"
+      "active": "활성",
+      "archived": "보관됨"
     },
-    "projectName": "Project Name",
-    "projectDescription": "Project Description",
-    "save": "Save",
-    "saving": "Saving...",
-    "enterName": "Enter project name",
-    "enterDescription": "Enter project description"
+    "projectName": "프로젝트 이름",
+    "projectDescription": "프로젝트 설명",
+    "save": "저장",
+    "saving": "저장 중...",
+    "enterName": "프로젝트 이름 입력",
+    "enterDescription": "프로젝트 설명 입력"
   },
   "memberManagement": {
-    "title": "Member Management"
+    "title": "멤버 관리"
   },
   "messages": {
-    "nameRequired": "Project name is required",
-    "updateSuccess": "Project updated successfully",
-    "updateFailed": "Failed to update project",
-    "memberRemoved": "Member removed successfully",
-    "memberRemoveFailed": "Failed to remove member",
-    "exportSoon": "Export feature coming soon!",
-    "shareSoon": "Share feature coming soon!",
-    "notFound": "Project not found or access denied",
-    "signIn": "Please sign in",
-    "projectNotFound": "Project not found"
+    "nameRequired": "프로젝트 이름은 필수입니다",
+    "updateSuccess": "프로젝트가 성공적으로 업데이트되었습니다",
+    "updateFailed": "프로젝트 업데이트 실패",
+    "memberRemoved": "멤버가 성공적으로 제거되었습니다",
+    "memberRemoveFailed": "멤버 제거 실패",
+    "exportSoon": "내보내기 기능 곧 출시!",
+    "shareSoon": "공유 기능 곧 출시!",
+    "notFound": "프로젝트를 찾을 수 없거나 액세스가 거부되었습니다",
+    "signIn": "로그인하세요",
+    "projectNotFound": "프로젝트를 찾을 수 없습니다"
   }
 }

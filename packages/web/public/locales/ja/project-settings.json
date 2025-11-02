@@ -1,44 +1,44 @@
 {
-  "title": "Project Management",
-  "backToProject": "Back to Project",
+  "title": "プロジェクト管理",
+  "backToProject": "プロジェクトに戻る",
   "quickActions": {
-    "title": "Quick Actions",
-    "inviteMembers": "Invite Members",
-    "exportData": "Export Data",
-    "shareProject": "Share Project"
+    "title": "クイックアクション",
+    "inviteMembers": "メンバーを招待",
+    "exportData": "データをエクスポート",
+    "shareProject": "プロジェクトを共有"
   },
   "projectStats": {
-    "title": "Project Stats",
-    "created": "Created",
-    "stories": "Stories",
-    "members": "Members"
+    "title": "プロジェクト統計",
+    "created": "作成日",
+    "stories": "ストーリー",
+    "members": "メンバー"
   },
   "projectOverview": {
-    "title": "Project Overview",
+    "title": "プロジェクト概要",
     "status": {
-      "active": "Active",
-      "archived": "Archived"
+      "active": "アクティブ",
+      "archived": "アーカイブ済み"
     },
-    "projectName": "Project Name",
-    "projectDescription": "Project Description",
-    "save": "Save",
-    "saving": "Saving...",
-    "enterName": "Enter project name",
-    "enterDescription": "Enter project description"
+    "projectName": "プロジェクト名",
+    "projectDescription": "プロジェクトの説明",
+    "save": "保存",
+    "saving": "保存中...",
+    "enterName": "プロジェクト名を入力",
+    "enterDescription": "プロジェクトの説明を入力"
   },
   "memberManagement": {
-    "title": "Member Management"
+    "title": "メンバー管理"
   },
   "messages": {
-    "nameRequired": "Project name is required",
-    "updateSuccess": "Project updated successfully",
-    "updateFailed": "Failed to update project",
-    "memberRemoved": "Member removed successfully",
-    "memberRemoveFailed": "Failed to remove member",
-    "exportSoon": "Export feature coming soon!",
-    "shareSoon": "Share feature coming soon!",
-    "notFound": "Project not found or access denied",
-    "signIn": "Please sign in",
-    "projectNotFound": "Project not found"
+    "nameRequired": "プロジェクト名は必須です",
+    "updateSuccess": "プロジェクトが正常に更新されました",
+    "updateFailed": "プロジェクトの更新に失敗しました",
+    "memberRemoved": "メンバーが正常に削除されました",
+    "memberRemoveFailed": "メンバーの削除に失敗しました",
+    "exportSoon": "エクスポート機能は近日公開！",
+    "shareSoon": "共有機能は近日公開！",
+    "notFound": "プロジェクトが見つからないか、アクセスが拒否されました",
+    "signIn": "サインインしてください",
+    "projectNotFound": "プロジェクトが見つかりません"
   }
 }

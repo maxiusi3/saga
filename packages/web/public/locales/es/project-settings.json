@@ -1,44 +1,44 @@
 {
-  "title": "Project Management",
-  "backToProject": "Back to Project",
+  "title": "Gestión de Proyectos",
+  "backToProject": "Volver al Proyecto",
   "quickActions": {
-    "title": "Quick Actions",
-    "inviteMembers": "Invite Members",
-    "exportData": "Export Data",
-    "shareProject": "Share Project"
+    "title": "Acciones Rápidas",
+    "inviteMembers": "Invitar Miembros",
+    "exportData": "Exportar Datos",
+    "shareProject": "Compartir Proyecto"
   },
   "projectStats": {
-    "title": "Project Stats",
-    "created": "Created",
-    "stories": "Stories",
-    "members": "Members"
+    "title": "Estadísticas del Proyecto",
+    "created": "Creado",
+    "stories": "Historias",
+    "members": "Miembros"
   },
   "projectOverview": {
-    "title": "Project Overview",
+    "title": "Resumen del Proyecto",
     "status": {
-      "active": "Active",
-      "archived": "Archived"
+      "active": "Activo",
+      "archived": "Archivado"
     },
-    "projectName": "Project Name",
-    "projectDescription": "Project Description",
-    "save": "Save",
-    "saving": "Saving...",
-    "enterName": "Enter project name",
-    "enterDescription": "Enter project description"
+    "projectName": "Nombre del Proyecto",
+    "projectDescription": "Descripción del Proyecto",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "enterName": "Ingresa el nombre del proyecto",
+    "enterDescription": "Ingresa la descripción del proyecto"
   },
   "memberManagement": {
-    "title": "Member Management"
+    "title": "Gestión de Miembros"
   },
   "messages": {
-    "nameRequired": "Project name is required",
-    "updateSuccess": "Project updated successfully",
-    "updateFailed": "Failed to update project",
-    "memberRemoved": "Member removed successfully",
-    "memberRemoveFailed": "Failed to remove member",
-    "exportSoon": "Export feature coming soon!",
-    "shareSoon": "Share feature coming soon!",
-    "notFound": "Project not found or access denied",
-    "signIn": "Please sign in",
-    "projectNotFound": "Project not found"
+    "nameRequired": "El nombre del proyecto es obligatorio",
+    "updateSuccess": "Proyecto actualizado exitosamente",
+    "updateFailed": "Error al actualizar el proyecto",
+    "memberRemoved": "Miembro eliminado exitosamente",
+    "memberRemoveFailed": "Error al eliminar miembro",
+    "exportSoon": "¡Función de exportación próximamente!",
+    "shareSoon": "¡Función de compartir próximamente!",
+    "notFound": "Proyecto no encontrado o acceso denegado",
+    "signIn": "Por favor inicia sesión",
+    "projectNotFound": "Proyecto no encontrado"
   }
 }

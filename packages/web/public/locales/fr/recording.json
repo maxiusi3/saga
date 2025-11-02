@@ -1,88 +1,88 @@
 {
-  "title": "Record Your Story",
-  "subtitle": "Share your memories with AI-powered guidance",
-  "prompt": "Prompt",
+  "title": "Enregistrez Votre Histoire",
+  "subtitle": "Partagez vos souvenirs avec des conseils alimentés par l'IA",
+  "prompt": "Invite",
   "networkStatus": {
-    "good": "Good Connection",
-    "poor": "Slow Connection",
-    "offline": "Offline Mode"
+    "good": "Bonne Connexion",
+    "poor": "Connexion Lente",
+    "offline": "Mode Hors Ligne"
   },
   "status": {
-    "ready": "Ready to Record",
-    "recording": "Recording...",
-    "paused": "Recording Paused",
-    "completed": "Recording Completed",
-    "recordingComplete": "Recording Complete",
-    "processing": "Processing...",
-    "uploading": "Uploading..."
+    "ready": "Prêt à Enregistrer",
+    "recording": "Enregistrement...",
+    "paused": "Enregistrement en Pause",
+    "completed": "Enregistrement Terminé",
+    "recordingComplete": "Enregistrement Complet",
+    "processing": "Traitement...",
+    "uploading": "Téléchargement..."
   },
   "actions": {
-    "start": "Start Recording",
+    "start": "Démarrer l'Enregistrement",
     "pause": "Pause",
-    "stop": "Stop",
-    "continue": "Continue",
-    "complete": "Complete Recording",
-    "reRecord": "Re-record",
-    "save": "Save Story",
-    "startOver": "Start Over",
-    "saving": "Saving...",
-    "startRecording": "Start Recording",
-    "stopRecording": "Stop Recording",
-    "pauseRecording": "Pause Recording",
-    "resumeRecording": "Resume Recording",
-    "saveRecording": "Save Recording",
-    "discardRecording": "Discard Recording",
-    "playback": "Playback"
+    "stop": "Arrêter",
+    "continue": "Continuer",
+    "complete": "Terminer l'Enregistrement",
+    "reRecord": "Réenregistrer",
+    "save": "Sauvegarder l'Histoire",
+    "startOver": "Recommencer",
+    "saving": "Sauvegarde...",
+    "startRecording": "Démarrer l'Enregistrement",
+    "stopRecording": "Arrêter l'Enregistrement",
+    "pauseRecording": "Mettre en Pause l'Enregistrement",
+    "resumeRecording": "Reprendre l'Enregistrement",
+    "saveRecording": "Sauvegarder l'Enregistrement",
+    "discardRecording": "Abandonner l'Enregistrement",
+    "playback": "Lecture"
   },
   "audio": {
-    "listenTo": "Listen to recording:",
-    "yourRecording": "Your Story Recording"
+    "listenTo": "Écouter l'enregistrement :",
+    "yourRecording": "Votre Enregistrement d'Histoire"
   },
   "tips": {
-    "title": "Recording Tips",
-    "quietEnvironment": "Find a quiet environment for the best audio quality",
-    "speakClearly": "Speak clearly and at a comfortable pace",
-    "stayClose": "Stay close to the microphone",
-    "testFirst": "Test your audio before starting",
-    "realtime": "💡 Using real-time speech recognition",
-    "traditional": "💡 Recording in progress, transcription will be processed after completion"
+    "title": "Conseils d'Enregistrement",
+    "quietEnvironment": "Trouvez un environnement calme pour la meilleure qualité audio",
+    "speakClearly": "Parlez clairement et à un rythme confortable",
+    "stayClose": "Restez près du microphone",
+    "testFirst": "Testez votre audio avant de commencer",
+    "realtime": "💡 Utilisation de la reconnaissance vocale en temps réel",
+    "traditional": "💡 Enregistrement en cours, la transcription sera traitée après l'achèvement"
   },
   "ai": {
-    "processing": "AI is processing your story...",
-    "progress": "Processing Progress",
-    "working": "Our AI is working on your story:",
-    "transcribing": "Transcribing your audio",
-    "generatingTitle": "Generating a meaningful title",
-    "creatingSummary": "Creating a summary",
-    "preparingQuestions": "Preparing follow-up questions",
-    "generatedContent": "AI Generated Content",
-    "confidence": "confidence",
-    "demoMode": "Demo Mode",
-    "generatedTitle": "Generated Title:",
-    "storySummary": "Story Summary:",
-    "transcriptPreview": "Transcript Preview:",
-    "followUpQuestions": "Suggested Follow-up Questions:",
-    "moreQuestions": "more questions available"
+    "processing": "L'IA traite votre histoire...",
+    "progress": "Progression du Traitement",
+    "working": "Notre IA travaille sur votre histoire :",
+    "transcribing": "Transcription de votre audio",
+    "generatingTitle": "Génération d'un titre significatif",
+    "creatingSummary": "Création d'un résumé",
+    "preparingQuestions": "Préparation de questions de suivi",
+    "generatedContent": "Contenu Généré par l'IA",
+    "confidence": "confiance",
+    "demoMode": "Mode Démo",
+    "generatedTitle": "Titre Généré :",
+    "storySummary": "Résumé de l'Histoire :",
+    "transcriptPreview": "Aperçu de la Transcription :",
+    "followUpQuestions": "Questions de Suivi Suggérées :",
+    "moreQuestions": "plus de questions disponibles"
   },
   "errors": {
-    "missingData": "Missing required data for story submission.",
-    "saveFailed": "Failed to save story. Please try again.",
-    "empty": "Recording is empty, please try again"
+    "missingData": "Données requises manquantes pour la soumission de l'histoire.",
+    "saveFailed": "Échec de la sauvegarde de l'histoire. Veuillez réessayer.",
+    "empty": "L'enregistrement est vide, veuillez réessayer"
   },
   "success": {
-    "recorded": "Recording completed",
-    "paused": "Recording paused",
-    "resumed": "Recording resumed",
-    "saved": "Story saved successfully!",
-    "answerRecorded": "Answer recorded successfully!"
+    "recorded": "Enregistrement terminé",
+    "paused": "Enregistrement en pause",
+    "resumed": "Enregistrement repris",
+    "saved": "Histoire sauvegardée avec succès !",
+    "answerRecorded": "Réponse enregistrée avec succès !"
   },
   "messages": {
-    "processingAudio": "Processing audio file...",
-    "audioProcessed": "Audio processed successfully"
+    "processingAudio": "Traitement du fichier audio...",
+    "audioProcessed": "Audio traité avec succès"
   },
   "optimization": {
-    "title": "Recording Optimization",
-    "enableOptimization": "Enable Optimization",
-    "disableOptimization": "Disable Optimization"
+    "title": "Optimisation de l'Enregistrement",
+    "enableOptimization": "Activer l'Optimisation",
+    "disableOptimization": "Désactiver l'Optimisation"
   }
 }

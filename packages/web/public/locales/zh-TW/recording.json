@@ -1,88 +1,88 @@
 {
-  "title": "Record Your Story",
-  "subtitle": "Share your memories with AI-powered guidance",
-  "prompt": "Prompt",
+  "title": "記錄您的故事",
+  "subtitle": "透過AI驅動的指導分享您的回憶",
+  "prompt": "提示",
   "networkStatus": {
-    "good": "Good Connection",
-    "poor": "Slow Connection",
-    "offline": "Offline Mode"
+    "good": "良好連接",
+    "poor": "緩慢連接",
+    "offline": "離線模式"
   },
   "status": {
-    "ready": "Ready to Record",
-    "recording": "Recording...",
-    "paused": "Recording Paused",
-    "completed": "Recording Completed",
-    "recordingComplete": "Recording Complete",
-    "processing": "Processing...",
-    "uploading": "Uploading..."
+    "ready": "準備錄製",
+    "recording": "錄製中...",
+    "paused": "錄製已暫停",
+    "completed": "錄製完成",
+    "recordingComplete": "錄製完成",
+    "processing": "處理中...",
+    "uploading": "上傳中..."
   },
   "actions": {
-    "start": "Start Recording",
-    "pause": "Pause",
-    "stop": "Stop",
-    "continue": "Continue",
-    "complete": "Complete Recording",
-    "reRecord": "Re-record",
-    "save": "Save Story",
-    "startOver": "Start Over",
-    "saving": "Saving...",
-    "startRecording": "Start Recording",
-    "stopRecording": "Stop Recording",
-    "pauseRecording": "Pause Recording",
-    "resumeRecording": "Resume Recording",
-    "saveRecording": "Save Recording",
-    "discardRecording": "Discard Recording",
-    "playback": "Playback"
+    "start": "開始錄製",
+    "pause": "暫停",
+    "stop": "停止",
+    "continue": "繼續",
+    "complete": "完成錄製",
+    "reRecord": "重新錄製",
+    "save": "保存故事",
+    "startOver": "重新開始",
+    "saving": "保存中...",
+    "startRecording": "開始錄製",
+    "stopRecording": "停止錄製",
+    "pauseRecording": "暫停錄製",
+    "resumeRecording": "恢復錄製",
+    "saveRecording": "保存錄製",
+    "discardRecording": "丟棄錄製",
+    "playback": "播放"
   },
   "audio": {
-    "listenTo": "Listen to recording:",
-    "yourRecording": "Your Story Recording"
+    "listenTo": "聆聽錄製：",
+    "yourRecording": "您的故事錄製"
   },
   "tips": {
-    "title": "Recording Tips",
-    "quietEnvironment": "Find a quiet environment for the best audio quality",
-    "speakClearly": "Speak clearly and at a comfortable pace",
-    "stayClose": "Stay close to the microphone",
-    "testFirst": "Test your audio before starting",
-    "realtime": "💡 Using real-time speech recognition",
-    "traditional": "💡 Recording in progress, transcription will be processed after completion"
+    "title": "錄製提示",
+    "quietEnvironment": "尋找安靜的環境以獲得最佳音質",
+    "speakClearly": "清晰地以舒適的速度說話",
+    "stayClose": "靠近麥克風",
+    "testFirst": "開始前測試您的音頻",
+    "realtime": "💡 使用實時語音識別",
+    "traditional": "💡 錄製進行中，轉錄將在完成後處理"
   },
   "ai": {
-    "processing": "AI is processing your story...",
-    "progress": "Processing Progress",
-    "working": "Our AI is working on your story:",
-    "transcribing": "Transcribing your audio",
-    "generatingTitle": "Generating a meaningful title",
-    "creatingSummary": "Creating a summary",
-    "preparingQuestions": "Preparing follow-up questions",
-    "generatedContent": "AI Generated Content",
-    "confidence": "confidence",
-    "demoMode": "Demo Mode",
-    "generatedTitle": "Generated Title:",
-    "storySummary": "Story Summary:",
-    "transcriptPreview": "Transcript Preview:",
-    "followUpQuestions": "Suggested Follow-up Questions:",
-    "moreQuestions": "more questions available"
+    "processing": "AI正在處理您的故事...",
+    "progress": "處理進度",
+    "working": "我們的AI正在處理您的故事：",
+    "transcribing": "轉錄您的音頻",
+    "generatingTitle": "生成有意義的標題",
+    "creatingSummary": "創建摘要",
+    "preparingQuestions": "準備後續問題",
+    "generatedContent": "AI生成的內容",
+    "confidence": "信心",
+    "demoMode": "演示模式",
+    "generatedTitle": "生成的標題：",
+    "storySummary": "故事摘要：",
+    "transcriptPreview": "轉錄預覽：",
+    "followUpQuestions": "建議的後續問題：",
+    "moreQuestions": "更多問題可用"
   },
   "errors": {
-    "missingData": "Missing required data for story submission.",
-    "saveFailed": "Failed to save story. Please try again.",
-    "empty": "Recording is empty, please try again"
+    "missingData": "故事提交缺少必需數據。",
+    "saveFailed": "保存故事失敗。請重試。",
+    "empty": "錄製為空，請重試"
   },
   "success": {
-    "recorded": "Recording completed",
-    "paused": "Recording paused",
-    "resumed": "Recording resumed",
-    "saved": "Story saved successfully!",
-    "answerRecorded": "Answer recorded successfully!"
+    "recorded": "錄製完成",
+    "paused": "錄製已暫停",
+    "resumed": "錄製已恢復",
+    "saved": "故事保存成功！",
+    "answerRecorded": "答案錄製成功！"
   },
   "messages": {
-    "processingAudio": "Processing audio file...",
-    "audioProcessed": "Audio processed successfully"
+    "processingAudio": "處理音頻文件...",
+    "audioProcessed": "音頻處理成功"
   },
   "optimization": {
-    "title": "Recording Optimization",
-    "enableOptimization": "Enable Optimization",
-    "disableOptimization": "Disable Optimization"
+    "title": "錄製優化",
+    "enableOptimization": "啟用優化",
+    "disableOptimization": "禁用優化"
   }
 }
