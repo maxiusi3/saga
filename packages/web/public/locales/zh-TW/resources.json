@@ -1,4 +1,47 @@
 {
+  "title": "我的資源",
+  "subtitle": "管理您的可用席位並購買額外資源",
+  "buyMoreSeats": "購買更多席位",
+  "available": "可用",
+  "usage": "使用情況",
+  "usageStats": "已使用 {used}/{total}",
+  "buyMore": "購買更多（每個 ${price}）",
+  "recentActivity": "最近活動",
+  "purchaseAdditional": "購買額外席位",
+  "packagePromo": "需要多個席位？通過我們的完整套餐獲得更好的價值。",
+  "viewPackage": "查看傳奇套餐（$29）",
+  "types": {
+    "project": {
+      "title": "項目代金券",
+      "description": "創建新的家庭故事項目"
+    },
+    "facilitator": {
+      "title": "協調員席位",
+      "description": "邀請協調員幫助管理項目"
+    },
+    "storyteller": {
+      "title": "講述者席位",
+      "description": "邀請家庭成員分享他們的故事"
+    }
+  },
+  "purchase": {
+    "project": {
+      "title": "項目代金券",
+      "description": "創建一個額外的家庭故事項目"
+    },
+    "facilitator": {
+      "title": "協調員席位",
+      "description": "邀請一位協調員幫助管理項目"
+    },
+    "storyteller": {
+      "title": "講述者席位",
+      "description": "為您的項目邀請一位額外的講述者"
+    },
+    "button": "購買"
+  },
+  "alerts": {
+    "purchaseComingSoon": "{type}席位購買功能即將推出"
+  },
   "wallet": {
     "purchaseResources": "購買資源",
     "viewPackages": "查看套餐",

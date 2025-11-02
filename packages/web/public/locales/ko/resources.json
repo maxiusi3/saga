@@ -1,4 +1,47 @@
 {
+  "title": "내 리소스",
+  "subtitle": "사용 가능한 좌석을 관리하고 추가 리소스를 구매하세요",
+  "buyMoreSeats": "더 많은 좌석 구매",
+  "available": "사용 가능",
+  "usage": "사용량",
+  "usageStats": "{total}개 중 {used}개 사용",
+  "buyMore": "더 구매 (각 ${price})",
+  "recentActivity": "최근 활동",
+  "purchaseAdditional": "추가 좌석 구매",
+  "packagePromo": "여러 좌석이 필요하신가요? 완전한 패키지로 더 나은 가치를 얻으세요.",
+  "viewPackage": "사가 패키지 보기 ($29)",
+  "types": {
+    "project": {
+      "title": "프로젝트 바우처",
+      "description": "새로운 가족 이야기 프로젝트 생성"
+    },
+    "facilitator": {
+      "title": "진행자 좌석",
+      "description": "프로젝트 관리를 도울 진행자 초대"
+    },
+    "storyteller": {
+      "title": "이야기꾼 좌석",
+      "description": "이야기를 공유할 가족 구성원 초대"
+    }
+  },
+  "purchase": {
+    "project": {
+      "title": "프로젝트 바우처",
+      "description": "추가 가족 이야기 프로젝트 하나 생성"
+    },
+    "facilitator": {
+      "title": "진행자 좌석",
+      "description": "프로젝트 관리를 도울 진행자 한 명 초대"
+    },
+    "storyteller": {
+      "title": "이야기꾼 좌석",
+      "description": "프로젝트에 추가 이야기꾼 한 명 초대"
+    },
+    "button": "구매"
+  },
+  "alerts": {
+    "purchaseComingSoon": "{type} 좌석 구매 기능이 곧 출시됩니다"
+  },
   "wallet": {
     "purchaseResources": "리소스 구매",
     "viewPackages": "패키지 보기",

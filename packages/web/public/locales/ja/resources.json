@@ -1,4 +1,47 @@
 {
+  "title": "マイリソース",
+  "subtitle": "利用可能な席を管理し、追加リソースを購入",
+  "buyMoreSeats": "席を追加購入",
+  "available": "利用可能",
+  "usage": "使用状況",
+  "usageStats": "{total}席中{used}席使用",
+  "buyMore": "追加購入（${price}各）",
+  "recentActivity": "最近のアクティビティ",
+  "purchaseAdditional": "追加席を購入",
+  "packagePromo": "複数の席が必要ですか？完全パッケージでより良い価値を得られます。",
+  "viewPackage": "Sagaパッケージを見る（$29）",
+  "types": {
+    "project": {
+      "title": "プロジェクトバウチャー",
+      "description": "新しい家族の物語プロジェクトを作成"
+    },
+    "facilitator": {
+      "title": "ファシリテーター席",
+      "description": "プロジェクト管理を手伝うファシリテーターを招待"
+    },
+    "storyteller": {
+      "title": "ストーリーテラー席",
+      "description": "物語を共有する家族メンバーを招待"
+    }
+  },
+  "purchase": {
+    "project": {
+      "title": "プロジェクトバウチャー",
+      "description": "追加の家族物語プロジェクトを1つ作成"
+    },
+    "facilitator": {
+      "title": "ファシリテーター席",
+      "description": "プロジェクト管理を手伝うファシリテーターを1人招待"
+    },
+    "storyteller": {
+      "title": "ストーリーテラー席",
+      "description": "プロジェクトに追加のストーリーテラーを1人招待"
+    },
+    "button": "購入"
+  },
+  "alerts": {
+    "purchaseComingSoon": "{type}席の購入機能は近日公開予定"
+  },
   "wallet": {
     "purchaseResources": "リソースを購入",
     "viewPackages": "パッケージを表示",

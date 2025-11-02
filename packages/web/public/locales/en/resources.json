@@ -1,4 +1,47 @@
 {
+  "title": "My Resources",
+  "subtitle": "Manage your available seats and purchase additional resources",
+  "buyMoreSeats": "Buy More Seats",
+  "available": "Available",
+  "usage": "Usage",
+  "usageStats": "{used} of {total} used",
+  "buyMore": "Buy More (${price} each)",
+  "recentActivity": "Recent Activity",
+  "purchaseAdditional": "Purchase Additional Seats",
+  "packagePromo": "Need multiple seats? Get better value with our complete package.",
+  "viewPackage": "View Saga Package ($29)",
+  "types": {
+    "project": {
+      "title": "Project Vouchers",
+      "description": "Create new family story projects"
+    },
+    "facilitator": {
+      "title": "Facilitator Seats",
+      "description": "Invite facilitators to help manage projects"
+    },
+    "storyteller": {
+      "title": "Storyteller Seats",
+      "description": "Invite family members to share their stories"
+    }
+  },
+  "purchase": {
+    "project": {
+      "title": "Project Voucher",
+      "description": "Create one additional family story project"
+    },
+    "facilitator": {
+      "title": "Facilitator Seat",
+      "description": "Invite one facilitator to help manage projects"
+    },
+    "storyteller": {
+      "title": "Storyteller Seat",
+      "description": "Invite one additional storyteller to your projects"
+    },
+    "button": "Purchase"
+  },
+  "alerts": {
+    "purchaseComingSoon": "Purchase {type} seat functionality coming soon"
+  },
   "wallet": {
     "purchaseResources": "Purchase Resources",
     "viewPackages": "View Packages",
