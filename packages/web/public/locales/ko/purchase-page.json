@@ -1,103 +1,103 @@
 {
   "hero": {
-    "limitedOffer": "Limited Time Offer",
-    "title": "Preserve Your Family Stories Forever",
-    "subtitle": "Create lasting digital biographies that capture precious memories and wisdom.",
-    "startCapturing": "Start capturing your family's unique story today"
+    "limitedOffer": "기간 한정 제안",
+    "title": "가족 이야기를 영원히 보존하세요",
+    "subtitle": "소중한 추억과 지혜를 담은 영구적인 디지털 전기를 만드세요.",
+    "startCapturing": "오늘 가족의 독특한 이야기 기록을 시작하세요"
   },
   "features": {
     "collaboration": {
-      "title": "Family Collaboration",
-      "description": "Invite family members to contribute stories and memories together."
+      "title": "가족 협업",
+      "description": "가족 구성원을 초대하여 함께 이야기와 추억을 공유하세요."
     },
     "aiPrompts": {
-      "title": "AI-Powered Prompts",
-      "description": "Intelligent questions that help unlock meaningful memories."
+      "title": "AI 기반 프롬프트",
+      "description": "의미 있는 추억을 끌어내는 데 도움이 되는 지능형 질문."
     },
     "secure": {
-      "title": "Secure & Private",
-      "description": "Your family stories are encrypted and stored securely."
+      "title": "안전하고 비공개",
+      "description": "가족 이야기는 암호화되어 안전하게 저장됩니다."
     }
   },
   "pricing": {
-    "title": "Choose Your Package",
-    "subtitle": "Everything you need to create beautiful family biographies.",
+    "title": "패키지 선택",
+    "subtitle": "아름다운 가족 전기를 만드는 데 필요한 모든 것.",
     "package": {
-      "title": "Family Saga Package",
-      "subtitle": "Complete family biography solution with AI-powered storytelling",
+      "title": "패밀리 사가 패키지",
+      "subtitle": "AI 기반 스토리텔링을 갖춘 완전한 가족 전기 솔루션",
       "price": "$209",
-      "period": "one-time",
+      "period": "일회성",
       "features": {
-        "unlimitedProjects": "Create unlimited projects",
-        "unlimitedMembers": "Invite unlimited family members",
-        "aiPrompts": "AI-powered story prompts",
-        "transcription": "Professional transcription",
-        "photoAudio": "Photo and audio integration",
-        "cloudStorage": "Secure cloud storage",
-        "mobileWeb": "Mobile and web access",
-        "oneYear": "1 year of interactive service",
-        "archival": "Permanent archival mode access"
+        "unlimitedProjects": "무제한 프로젝트 생성",
+        "unlimitedMembers": "무제한 가족 구성원 초대",
+        "aiPrompts": "AI 기반 스토리 프롬프트",
+        "transcription": "전문 전사",
+        "photoAudio": "사진 및 오디오 통합",
+        "cloudStorage": "안전한 클라우드 스토리지",
+        "mobileWeb": "모바일 및 웹 액세스",
+        "oneYear": "1년 인터랙티브 서비스",
+        "archival": "영구 아카이브 모드 액세스"
       },
-      "cta": "Get Started"
+      "cta": "시작하기"
     }
   },
   "checkout": {
-    "title": "Complete Your Purchase",
-    "orderSummary": "Order Summary",
-    "packageName": "Family Saga Package",
-    "oneTime": "One-time payment",
-    "noRecurring": "No recurring fees",
-    "total": "Total",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "email": "Email Address",
-    "cardNumber": "Card Number",
-    "expiry": "Expiry Date",
+    "title": "구매 완료",
+    "orderSummary": "주문 요약",
+    "packageName": "패밀리 사가 패키지",
+    "oneTime": "일회성 결제",
+    "noRecurring": "반복 요금 없음",
+    "total": "합계",
+    "firstName": "이름",
+    "lastName": "성",
+    "email": "이메일 주소",
+    "cardNumber": "카드 번호",
+    "expiry": "만료일",
     "cvc": "CVC",
     "security": {
-      "ssl": "SSL Encrypted",
-      "secure": "Secure Payment",
-      "guarantee": "30-Day Guarantee"
+      "ssl": "SSL 암호화",
+      "secure": "안전한 결제",
+      "guarantee": "30일 보증"
     },
-    "completePurchase": "Complete Purchase - $209",
-    "processing": "Processing...",
-    "terms": "By completing your purchase, you agree to our Terms of Service and Privacy Policy. You can cancel anytime within 30 days for a full refund."
+    "completePurchase": "구매 완료 - $209",
+    "processing": "처리 중...",
+    "terms": "구매를 완료하면 서비스 약관 및 개인정보 보호정책에 동의하는 것입니다. 30일 이내에 언제든지 취소하고 전액 환불받을 수 있습니다."
   },
   "reviews": {
-    "title": "What Families Are Saying",
-    "rating": "from 1,200+ families",
+    "title": "가족들의 평가",
+    "rating": "1,200개 이상의 가족으로부터",
     "testimonials": {
       "sarah": {
         "name": "Sarah Johnson",
-        "role": "Family Historian",
-        "quote": "Saga helped us capture my grandmother's stories before it was too late. The AI prompts brought out memories we never knew existed."
+        "role": "가족 역사가",
+        "quote": "Saga는 너무 늦기 전에 할머니의 이야기를 기록하는 데 도움을 주었습니다. AI 프롬프트는 우리가 존재하는지 몰랐던 추억을 끌어냈습니다."
       },
       "michael": {
         "name": "Michael Chen",
-        "role": "Project Facilitator",
-        "quote": "The transcription quality is amazing, and the family collaboration features made it easy for everyone to contribute."
+        "role": "프로젝트 진행자",
+        "quote": "전사 품질이 놀랍고 가족 협업 기능 덕분에 모두가 쉽게 기여할 수 있었습니다."
       },
       "emma": {
         "name": "Emma Rodriguez",
-        "role": "Family Member",
-        "quote": "Worth every penny. We now have a beautiful digital archive of our family history that will last forever."
+        "role": "가족 구성원",
+        "quote": "모든 돈의 가치가 있습니다. 이제 우리는 영원히 지속될 가족 역사의 아름다운 디지털 아카이브를 가지고 있습니다."
       }
     }
   },
   "faq": {
-    "title": "Frequently Asked Questions",
+    "title": "자주 묻는 질문",
     "questions": {
       "afterYear": {
-        "question": "What happens after the first year?",
-        "answer": "After your first year of interactive service, you can reactivate interactive features anytime, or you can still access, view, and export all your stories in archival mode."
+        "question": "첫 해 이후에는 어떻게 되나요?",
+        "answer": "첫 해의 인터랙티브 서비스 이후 언제든지 인터랙티브 기능을 다시 활성화하거나 아카이브 모드에서 모든 스토리에 액세스, 보기 및 내보내기를 계속할 수 있습니다."
       },
       "members": {
-        "question": "How many family members can participate?",
-        "answer": "You can invite unlimited family members to view and comment on stories. The package includes seats for multiple facilitators and storytellers to actively contribute content."
+        "question": "몇 명의 가족 구성원이 참여할 수 있나요?",
+        "answer": "무제한 가족 구성원을 초대하여 스토리를 보고 댓글을 달 수 있습니다. 패키지에는 여러 진행자와 이야기꾼이 콘텐츠에 적극적으로 기여할 수 있는 좌석이 포함되어 있습니다."
       },
       "security": {
-        "question": "Is my family data secure?",
-        "answer": "Yes, absolutely. We use enterprise-grade encryption and secure storage. Your personal family stories are never shared with third parties and are stored securely."
+        "question": "가족 데이터가 안전한가요?",
+        "answer": "예, 절대적으로 안전합니다. 엔터프라이즈급 암호화 및 안전한 스토리지를 사용합니다. 개인 가족 이야기는 제3자와 공유되지 않으며 안전하게 저장됩니다."
       }
     }
   }

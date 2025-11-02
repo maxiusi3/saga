@@ -1,103 +1,103 @@
 {
   "hero": {
-    "limitedOffer": "Limited Time Offer",
-    "title": "Preserve Your Family Stories Forever",
-    "subtitle": "Create lasting digital biographies that capture precious memories and wisdom.",
-    "startCapturing": "Start capturing your family's unique story today"
+    "limitedOffer": "期間限定オファー",
+    "title": "家族の物語を永遠に保存",
+    "subtitle": "貴重な思い出と知恵を捉える永続的なデジタル伝記を作成します。",
+    "startCapturing": "今日から家族のユニークな物語の記録を始めましょう"
   },
   "features": {
     "collaboration": {
-      "title": "Family Collaboration",
-      "description": "Invite family members to contribute stories and memories together."
+      "title": "家族での協力",
+      "description": "家族を招待して、一緒に物語や思い出を共有しましょう。"
     },
     "aiPrompts": {
-      "title": "AI-Powered Prompts",
-      "description": "Intelligent questions that help unlock meaningful memories."
+      "title": "AI搭載プロンプト",
+      "description": "意味のある思い出を引き出すのに役立つインテリジェントな質問。"
     },
     "secure": {
-      "title": "Secure & Private",
-      "description": "Your family stories are encrypted and stored securely."
+      "title": "安全でプライベート",
+      "description": "家族の物語は暗号化され、安全に保存されます。"
     }
   },
   "pricing": {
-    "title": "Choose Your Package",
-    "subtitle": "Everything you need to create beautiful family biographies.",
+    "title": "パッケージを選択",
+    "subtitle": "美しい家族の伝記を作成するために必要なすべて。",
     "package": {
-      "title": "Family Saga Package",
-      "subtitle": "Complete family biography solution with AI-powered storytelling",
+      "title": "ファミリーサガパッケージ",
+      "subtitle": "AI搭載ストーリーテリングを備えた完全な家族伝記ソリューション",
       "price": "$209",
-      "period": "one-time",
+      "period": "一回払い",
       "features": {
-        "unlimitedProjects": "Create unlimited projects",
-        "unlimitedMembers": "Invite unlimited family members",
-        "aiPrompts": "AI-powered story prompts",
-        "transcription": "Professional transcription",
-        "photoAudio": "Photo and audio integration",
-        "cloudStorage": "Secure cloud storage",
-        "mobileWeb": "Mobile and web access",
-        "oneYear": "1 year of interactive service",
-        "archival": "Permanent archival mode access"
+        "unlimitedProjects": "無制限のプロジェクトを作成",
+        "unlimitedMembers": "無制限の家族メンバーを招待",
+        "aiPrompts": "AI搭載ストーリープロンプト",
+        "transcription": "プロフェッショナルな文字起こし",
+        "photoAudio": "写真と音声の統合",
+        "cloudStorage": "安全なクラウドストレージ",
+        "mobileWeb": "モバイルとWebアクセス",
+        "oneYear": "1年間のインタラクティブサービス",
+        "archival": "永続的なアーカイブモードアクセス"
       },
-      "cta": "Get Started"
+      "cta": "始める"
     }
   },
   "checkout": {
-    "title": "Complete Your Purchase",
-    "orderSummary": "Order Summary",
-    "packageName": "Family Saga Package",
-    "oneTime": "One-time payment",
-    "noRecurring": "No recurring fees",
-    "total": "Total",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "email": "Email Address",
-    "cardNumber": "Card Number",
-    "expiry": "Expiry Date",
+    "title": "購入を完了",
+    "orderSummary": "注文概要",
+    "packageName": "ファミリーサガパッケージ",
+    "oneTime": "一回払い",
+    "noRecurring": "継続料金なし",
+    "total": "合計",
+    "firstName": "名",
+    "lastName": "姓",
+    "email": "メールアドレス",
+    "cardNumber": "カード番号",
+    "expiry": "有効期限",
     "cvc": "CVC",
     "security": {
-      "ssl": "SSL Encrypted",
-      "secure": "Secure Payment",
-      "guarantee": "30-Day Guarantee"
+      "ssl": "SSL暗号化",
+      "secure": "安全な支払い",
+      "guarantee": "30日間保証"
     },
-    "completePurchase": "Complete Purchase - $209",
-    "processing": "Processing...",
-    "terms": "By completing your purchase, you agree to our Terms of Service and Privacy Policy. You can cancel anytime within 30 days for a full refund."
+    "completePurchase": "購入を完了 - $209",
+    "processing": "処理中...",
+    "terms": "購入を完了することで、利用規約とプライバシーポリシーに同意したことになります。30日以内であればいつでもキャンセルして全額返金を受けることができます。"
   },
   "reviews": {
-    "title": "What Families Are Saying",
-    "rating": "from 1,200+ families",
+    "title": "家族の声",
+    "rating": "1,200以上の家族から",
     "testimonials": {
       "sarah": {
         "name": "Sarah Johnson",
-        "role": "Family Historian",
-        "quote": "Saga helped us capture my grandmother's stories before it was too late. The AI prompts brought out memories we never knew existed."
+        "role": "家族史家",
+        "quote": "Sagaは、手遅れになる前に祖母の物語を記録するのに役立ちました。AIプロンプトは、私たちが知らなかった思い出を引き出しました。"
       },
       "michael": {
         "name": "Michael Chen",
-        "role": "Project Facilitator",
-        "quote": "The transcription quality is amazing, and the family collaboration features made it easy for everyone to contribute."
+        "role": "プロジェクトファシリテーター",
+        "quote": "文字起こしの品質は素晴らしく、家族協力機能により、誰もが簡単に貢献できました。"
       },
       "emma": {
         "name": "Emma Rodriguez",
-        "role": "Family Member",
-        "quote": "Worth every penny. We now have a beautiful digital archive of our family history that will last forever."
+        "role": "家族メンバー",
+        "quote": "お金を払う価値があります。私たちは今、永遠に続く家族の歴史の美しいデジタルアーカイブを持っています。"
       }
     }
   },
   "faq": {
-    "title": "Frequently Asked Questions",
+    "title": "よくある質問",
     "questions": {
       "afterYear": {
-        "question": "What happens after the first year?",
-        "answer": "After your first year of interactive service, you can reactivate interactive features anytime, or you can still access, view, and export all your stories in archival mode."
+        "question": "最初の1年後はどうなりますか？",
+        "answer": "最初の1年間のインタラクティブサービスの後、いつでもインタラクティブ機能を再アクティブ化できます。または、アーカイブモードですべてのストーリーにアクセス、表示、エクスポートできます。"
       },
       "members": {
-        "question": "How many family members can participate?",
-        "answer": "You can invite unlimited family members to view and comment on stories. The package includes seats for multiple facilitators and storytellers to actively contribute content."
+        "question": "何人の家族メンバーが参加できますか？",
+        "answer": "無制限の家族メンバーを招待して、ストーリーを表示およびコメントできます。パッケージには、複数のファシリテーターとストーリーテラーがコンテンツに積極的に貢献するための席が含まれています。"
       },
       "security": {
-        "question": "Is my family data secure?",
-        "answer": "Yes, absolutely. We use enterprise-grade encryption and secure storage. Your personal family stories are never shared with third parties and are stored securely."
+        "question": "家族のデータは安全ですか？",
+        "answer": "はい、絶対に。エンタープライズグレードの暗号化と安全なストレージを使用しています。個人的な家族の物語は第三者と共有されることはなく、安全に保存されます。"
       }
     }
   }

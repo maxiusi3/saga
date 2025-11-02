@@ -1,103 +1,103 @@
 {
   "hero": {
-    "limitedOffer": "Limited Time Offer",
-    "title": "Preserve Your Family Stories Forever",
-    "subtitle": "Create lasting digital biographies that capture precious memories and wisdom.",
-    "startCapturing": "Start capturing your family's unique story today"
+    "limitedOffer": "Oferta por Tiempo Limitado",
+    "title": "Preserva las Historias de Tu Familia Para Siempre",
+    "subtitle": "Crea biografías digitales duraderas que capturen recuerdos y sabiduría preciosos.",
+    "startCapturing": "Comienza a capturar la historia única de tu familia hoy"
   },
   "features": {
     "collaboration": {
-      "title": "Family Collaboration",
-      "description": "Invite family members to contribute stories and memories together."
+      "title": "Colaboración Familiar",
+      "description": "Invita a miembros de la familia a contribuir historias y recuerdos juntos."
     },
     "aiPrompts": {
-      "title": "AI-Powered Prompts",
-      "description": "Intelligent questions that help unlock meaningful memories."
+      "title": "Indicaciones con IA",
+      "description": "Preguntas inteligentes que ayudan a desbloquear recuerdos significativos."
     },
     "secure": {
-      "title": "Secure & Private",
-      "description": "Your family stories are encrypted and stored securely."
+      "title": "Seguro y Privado",
+      "description": "Las historias de tu familia están encriptadas y almacenadas de forma segura."
     }
   },
   "pricing": {
-    "title": "Choose Your Package",
-    "subtitle": "Everything you need to create beautiful family biographies.",
+    "title": "Elige Tu Paquete",
+    "subtitle": "Todo lo que necesitas para crear hermosas biografías familiares.",
     "package": {
-      "title": "Family Saga Package",
-      "subtitle": "Complete family biography solution with AI-powered storytelling",
+      "title": "Paquete Saga Familiar",
+      "subtitle": "Solución completa de biografía familiar con narración impulsada por IA",
       "price": "$209",
-      "period": "one-time",
+      "period": "pago único",
       "features": {
-        "unlimitedProjects": "Create unlimited projects",
-        "unlimitedMembers": "Invite unlimited family members",
-        "aiPrompts": "AI-powered story prompts",
-        "transcription": "Professional transcription",
-        "photoAudio": "Photo and audio integration",
-        "cloudStorage": "Secure cloud storage",
-        "mobileWeb": "Mobile and web access",
-        "oneYear": "1 year of interactive service",
-        "archival": "Permanent archival mode access"
+        "unlimitedProjects": "Crea proyectos ilimitados",
+        "unlimitedMembers": "Invita a miembros familiares ilimitados",
+        "aiPrompts": "Indicaciones de historias con IA",
+        "transcription": "Transcripción profesional",
+        "photoAudio": "Integración de fotos y audio",
+        "cloudStorage": "Almacenamiento seguro en la nube",
+        "mobileWeb": "Acceso móvil y web",
+        "oneYear": "1 año de servicio interactivo",
+        "archival": "Acceso permanente al modo de archivo"
       },
-      "cta": "Get Started"
+      "cta": "Comenzar"
     }
   },
   "checkout": {
-    "title": "Complete Your Purchase",
-    "orderSummary": "Order Summary",
-    "packageName": "Family Saga Package",
-    "oneTime": "One-time payment",
-    "noRecurring": "No recurring fees",
+    "title": "Completa Tu Compra",
+    "orderSummary": "Resumen del Pedido",
+    "packageName": "Paquete Saga Familiar",
+    "oneTime": "Pago único",
+    "noRecurring": "Sin tarifas recurrentes",
     "total": "Total",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "email": "Email Address",
-    "cardNumber": "Card Number",
-    "expiry": "Expiry Date",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo Electrónico",
+    "cardNumber": "Número de Tarjeta",
+    "expiry": "Fecha de Vencimiento",
     "cvc": "CVC",
     "security": {
-      "ssl": "SSL Encrypted",
-      "secure": "Secure Payment",
-      "guarantee": "30-Day Guarantee"
+      "ssl": "Encriptado SSL",
+      "secure": "Pago Seguro",
+      "guarantee": "Garantía de 30 Días"
     },
-    "completePurchase": "Complete Purchase - $209",
-    "processing": "Processing...",
-    "terms": "By completing your purchase, you agree to our Terms of Service and Privacy Policy. You can cancel anytime within 30 days for a full refund."
+    "completePurchase": "Completar Compra - $209",
+    "processing": "Procesando...",
+    "terms": "Al completar tu compra, aceptas nuestros Términos de Servicio y Política de Privacidad. Puedes cancelar en cualquier momento dentro de los 30 días para obtener un reembolso completo."
   },
   "reviews": {
-    "title": "What Families Are Saying",
-    "rating": "from 1,200+ families",
+    "title": "Lo Que Dicen las Familias",
+    "rating": "de más de 1,200 familias",
     "testimonials": {
       "sarah": {
         "name": "Sarah Johnson",
-        "role": "Family Historian",
-        "quote": "Saga helped us capture my grandmother's stories before it was too late. The AI prompts brought out memories we never knew existed."
+        "role": "Historiadora Familiar",
+        "quote": "Saga nos ayudó a capturar las historias de mi abuela antes de que fuera demasiado tarde. Las indicaciones de IA sacaron recuerdos que nunca supimos que existían."
       },
       "michael": {
         "name": "Michael Chen",
-        "role": "Project Facilitator",
-        "quote": "The transcription quality is amazing, and the family collaboration features made it easy for everyone to contribute."
+        "role": "Facilitador de Proyecto",
+        "quote": "La calidad de la transcripción es increíble, y las funciones de colaboración familiar facilitaron que todos contribuyeran."
       },
       "emma": {
         "name": "Emma Rodriguez",
-        "role": "Family Member",
-        "quote": "Worth every penny. We now have a beautiful digital archive of our family history that will last forever."
+        "role": "Miembro de la Familia",
+        "quote": "Vale cada centavo. Ahora tenemos un hermoso archivo digital de nuestra historia familiar que durará para siempre."
       }
     }
   },
   "faq": {
-    "title": "Frequently Asked Questions",
+    "title": "Preguntas Frecuentes",
     "questions": {
       "afterYear": {
-        "question": "What happens after the first year?",
-        "answer": "After your first year of interactive service, you can reactivate interactive features anytime, or you can still access, view, and export all your stories in archival mode."
+        "question": "¿Qué sucede después del primer año?",
+        "answer": "Después de tu primer año de servicio interactivo, puedes reactivar las funciones interactivas en cualquier momento, o aún puedes acceder, ver y exportar todas tus historias en modo de archivo."
       },
       "members": {
-        "question": "How many family members can participate?",
-        "answer": "You can invite unlimited family members to view and comment on stories. The package includes seats for multiple facilitators and storytellers to actively contribute content."
+        "question": "¿Cuántos miembros de la familia pueden participar?",
+        "answer": "Puedes invitar a miembros familiares ilimitados para ver y comentar historias. El paquete incluye asientos para múltiples facilitadores y narradores para contribuir activamente con contenido."
       },
       "security": {
-        "question": "Is my family data secure?",
-        "answer": "Yes, absolutely. We use enterprise-grade encryption and secure storage. Your personal family stories are never shared with third parties and are stored securely."
+        "question": "¿Están seguros los datos de mi familia?",
+        "answer": "Sí, absolutamente. Utilizamos encriptación de nivel empresarial y almacenamiento seguro. Las historias personales de tu familia nunca se comparten con terceros y se almacenan de forma segura."
       }
     }
   }
