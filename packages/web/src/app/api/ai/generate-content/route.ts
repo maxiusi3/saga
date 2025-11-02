@@ -64,7 +64,7 @@ Generate a title, summary, and follow-up questions that would help this person s
     }
 
     const completion = await openai.chat.completions.create({
-      model: 'openai/gpt-oss-20b:free', // OpenAI OSS 20B model via OpenRouter
+      model: 'meta-llama/llama-3.2-3b-instruct:free', // Use Llama 3.2 3B free model
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
