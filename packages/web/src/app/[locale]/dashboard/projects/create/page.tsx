@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -15,6 +16,7 @@ import { useResourceWallet } from '@/hooks/use-resource-wallet'
 import { toast } from 'react-hot-toast'
 
 export default function CreateProjectPage() {
+  const t = useTranslations('create-project')
   const router = useRouter()
   const params = useParams()
   const locale = (params?.locale as string) || 'en'
@@ -45,14 +47,14 @@ export default function CreateProjectPage() {
 
     // 检查资源余额
     if (!wallet) {
-      toast.error('Unable to fetch resource balance information')
+      toast.error(t('errors.fetchBalance'))
       return
     }
 
     // 检查项目券
     if (!hasResources('project_vouchers', 1)) {
       // Redirect to purchase page when resources are insufficient
-      toast.error('Insufficient project vouchers, please purchase more resources')
+      toast.error(t('errors.insufficientVouchers'))
       router.push(withLocale('/dashboard/purchase'))
       return
     }
@@ -60,7 +62,8 @@ export default function CreateProjectPage() {
     // 检查角色席位
     const seatType = formData.role === 'facilitator' ? 'facilitator_seats' : 'storyteller_seats'
     if (!hasResources(seatType, 1)) {
-      toast.error(`Insufficient ${formData.role === 'facilitator' ? 'Facilitator' : 'Storyteller'} seats, please purchase more resources`)
+      const roleName = formData.role === 'facilitator' ? t('roles.facilitator.name') : t('roles.storyteller.name')
+      toast.error(t('errors.insufficientSeats', { role: roleName }))
       router.push(withLocale('/dashboard/purchase'))
       return
     }
@@ -80,7 +83,7 @@ export default function CreateProjectPage() {
 
       if (project) {
         console.log('Project created successfully:', project)
-        toast.success('Project created successfully!')
+        toast.success(t('success.created'))
         // 重定向到新创建的项目页面
         router.push(withLocale(`/dashboard/projects/${project.id}`))
       } else {
@@ -91,11 +94,11 @@ export default function CreateProjectPage() {
 
       // Handle specific error messages
       if (error.message?.includes('Insufficient project vouchers')) {
-        toast.error('Insufficient project vouchers, unable to create new project')
+        toast.error(t('errors.insufficientVouchers'))
       } else if (error.message?.includes('Insufficient')) {
-        toast.error('Insufficient seats, unable to create project')
+        toast.error(t('errors.insufficientSeats', { role: '' }))
       } else {
-        toast.error('Failed to create project, please try again')
+        toast.error(t('errors.createFailed'))
       }
       setLoading(false)
     }
@@ -111,26 +114,26 @@ export default function CreateProjectPage() {
   const themes = [
     {
       id: 'family-memories',
-      name: 'Family Memories',
-      description: 'Capture stories from different generations',
+      name: t('themes.familyMemories.name'),
+      description: t('themes.familyMemories.description'),
       icon: '👨‍👩‍👧‍👦'
     },
     {
       id: 'life-journey',
-      name: 'Life Journey',
-      description: 'Document personal milestones and experiences',
+      name: t('themes.lifeJourney.name'),
+      description: t('themes.lifeJourney.description'),
       icon: '🛤️'
     },
     {
       id: 'cultural-heritage',
-      name: 'Cultural Heritage',
-      description: 'Preserve traditions and cultural stories',
+      name: t('themes.culturalHeritage.name'),
+      description: t('themes.culturalHeritage.description'),
       icon: '🏛️'
     },
     {
       id: 'professional-legacy',
-      name: 'Professional Legacy',
-      description: 'Share career experiences and wisdom',
+      name: t('themes.professionalLegacy.name'),
+      description: t('themes.professionalLegacy.description'),
       icon: '💼'
     }
   ]
@@ -142,7 +145,7 @@ export default function CreateProjectPage() {
         <Link href={withLocale('/dashboard/projects')}>
           <Button variant="ghost" size="sm">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Projects
+            {t('header.backToProjects')}
           </Button>
         </Link>
       </div>
@@ -152,10 +155,10 @@ export default function CreateProjectPage() {
           <div className="text-6xl mb-4">🎭</div>
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-foreground">
-              Create New Family Biography
+              {t('header.title')}
             </h1>
             <p className="text-lg text-muted-foreground">
-              Start recording your family's precious stories
+              {t('header.subtitle')}
             </p>
           </div>
         </div>
@@ -164,17 +167,17 @@ export default function CreateProjectPage() {
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center text-xl">
               <BookOpen className="w-5 h-5 mr-2 text-primary" />
-              Project Details
+              {t('form.projectDetails')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6" aria-busy={loading}>
               {/* Project Name */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium">Project Name *</Label>
+                <Label htmlFor="name" className="text-sm font-medium">{t('form.projectName')} *</Label>
                 <Input
                   id="name"
-                  placeholder="e.g., Zhang Family Stories, Grandpa's Memoirs"
+                  placeholder={t('form.projectNamePlaceholder')}
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   required
@@ -184,10 +187,10 @@ export default function CreateProjectPage() {
 
               {/* Project Description */}
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium">Project Description</Label>
+                <Label htmlFor="description" className="text-sm font-medium">{t('form.projectDescription')}</Label>
                 <Textarea
                   id="description"
-                  placeholder="What kind of stories do you want to record? Who will participate?"
+                  placeholder={t('form.projectDescriptionPlaceholder')}
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
                   rows={3}
@@ -197,7 +200,7 @@ export default function CreateProjectPage() {
 
               {/* Theme Selection */}
               <div className="space-y-3">
-                <Label className="text-sm font-medium">Project Theme</Label>
+                <Label className="text-sm font-medium">{t('form.projectTheme')}</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {themes.map((theme) => (
                     <div
@@ -223,7 +226,7 @@ export default function CreateProjectPage() {
 
               {/* Role Selection */}
               <div className="space-y-3">
-                <Label>Your Role in This Project</Label>
+                <Label>{t('form.yourRole')}</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div
                     className={`p-4 border rounded-lg cursor-pointer transition-all ${
@@ -236,10 +239,10 @@ export default function CreateProjectPage() {
                     <div className="flex items-start space-x-3">
                       <Mic className="w-6 h-6 text-primary mt-1" />
                       <div>
-                        <h3 className="font-medium text-foreground">Storyteller</h3>
-                        <p className="text-sm text-muted-foreground">Record and share your stories</p>
+                        <h3 className="font-medium text-foreground">{t('roles.storyteller.name')}</h3>
+                        <p className="text-sm text-muted-foreground">{t('roles.storyteller.description')}</p>
                         <div className="mt-2 text-xs text-muted-foreground">
-                          Resource Cost: 1 Storyteller seat
+                          {t('roles.storyteller.resourceCost')}
                         </div>
                       </div>
                     </div>
@@ -256,10 +259,10 @@ export default function CreateProjectPage() {
                     <div className="flex items-start space-x-3">
                       <Crown className="w-6 h-6 text-primary mt-1" />
                       <div>
-                        <h3 className="font-medium text-foreground">Facilitator</h3>
-                        <p className="text-sm text-muted-foreground">Manage project and invite others</p>
+                        <h3 className="font-medium text-foreground">{t('roles.facilitator.name')}</h3>
+                        <p className="text-sm text-muted-foreground">{t('roles.facilitator.description')}</p>
                         <div className="mt-2 text-xs text-muted-foreground">
-                          Resource Cost: 1 Facilitator seat
+                          {t('roles.facilitator.resourceCost')}
                         </div>
                       </div>
                     </div>
@@ -270,19 +273,19 @@ export default function CreateProjectPage() {
               {/* Resource Status */}
               {wallet && (
                 <div className="bg-muted/30 rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-foreground mb-2">Current Balance</h4>
+                  <h4 className="text-sm font-medium text-foreground mb-2">{t('form.currentBalance')}</h4>
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div className="text-center">
                       <div className="font-medium text-foreground">{wallet.project_vouchers}</div>
-                      <div className="text-muted-foreground">Project Vouchers</div>
+                      <div className="text-muted-foreground">{t('form.projectVouchers')}</div>
                     </div>
                     <div className="text-center">
                       <div className="font-medium text-foreground">{wallet.facilitator_seats}</div>
-                      <div className="text-muted-foreground">Facilitator Seats</div>
+                      <div className="text-muted-foreground">{t('form.facilitatorSeats')}</div>
                     </div>
                     <div className="text-center">
                       <div className="font-medium text-foreground">{wallet.storyteller_seats}</div>
-                      <div className="text-muted-foreground">Storyteller Seats</div>
+                      <div className="text-muted-foreground">{t('form.storytellerSeats')}</div>
                     </div>
                   </div>
                 </div>
@@ -292,7 +295,7 @@ export default function CreateProjectPage() {
               <div className="flex justify-end space-x-3 pt-6">
                 <Link href={withLocale('/dashboard/projects')}>
                   <Button variant="outline" type="button">
-                    Cancel
+                    {t('form.cancel')}
                   </Button>
                 </Link>
                 <Button
@@ -303,12 +306,12 @@ export default function CreateProjectPage() {
                   {loading ? (
                     <div className="flex items-center">
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Creating...
+                      {t('form.creating')}
                     </div>
                   ) : (
                     <>
                       <Sparkles className="w-4 h-4 mr-2" />
-                      Create Project
+                      {t('form.createProject')}
                     </>
                   )}
                 </Button>
@@ -323,12 +326,11 @@ export default function CreateProjectPage() {
             <div className="flex items-start space-x-3">
               <Users className="w-5 h-5 text-primary mt-0.5" />
               <div>
-                <h3 className="font-medium text-foreground mb-2">What happens next?</h3>
+                <h3 className="font-medium text-foreground mb-2">{t('info.title')}</h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• You'll be the project facilitator with full access</li>
-                  <li>• Invite family members as storytellers</li>
-                  <li>• Start recording and organizing stories</li>
-                  <li>• Use AI to generate prompts and summaries</li>
+                  {t.raw('info.items').map((item: string, index: number) => (
+                    <li key={index}>• {item}</li>
+                  ))}
                 </ul>
               </div>
             </div>

@@ -1,0 +1,71 @@
+{
+  "header": {
+    "backToProjects": "Back to Projects",
+    "title": "Create New Family Biography",
+    "subtitle": "Start recording your family's precious stories"
+  },
+  "form": {
+    "projectDetails": "Project Details",
+    "projectName": "Project Name",
+    "projectNamePlaceholder": "e.g., Zhang Family Stories, Grandpa's Memoirs",
+    "projectDescription": "Project Description",
+    "projectDescriptionPlaceholder": "What kind of stories do you want to record? Who will participate?",
+    "projectTheme": "Project Theme",
+    "yourRole": "Your Role in This Project",
+    "currentBalance": "Current Balance",
+    "projectVouchers": "Project Vouchers",
+    "facilitatorSeats": "Facilitator Seats",
+    "storytellerSeats": "Storyteller Seats",
+    "cancel": "Cancel",
+    "createProject": "Create Project",
+    "creating": "Creating..."
+  },
+  "themes": {
+    "familyMemories": {
+      "name": "Family Memories",
+      "description": "Capture stories from different generations"
+    },
+    "lifeJourney": {
+      "name": "Life Journey",
+      "description": "Document personal milestones and experiences"
+    },
+    "culturalHeritage": {
+      "name": "Cultural Heritage",
+      "description": "Preserve traditions and cultural stories"
+    },
+    "professionalLegacy": {
+      "name": "Professional Legacy",
+      "description": "Share career experiences and wisdom"
+    }
+  },
+  "roles": {
+    "storyteller": {
+      "name": "Storyteller",
+      "description": "Record and share your stories",
+      "resourceCost": "Resource Cost: 1 Storyteller seat"
+    },
+    "facilitator": {
+      "name": "Facilitator",
+      "description": "Manage project and invite others",
+      "resourceCost": "Resource Cost: 1 Facilitator seat"
+    }
+  },
+  "info": {
+    "title": "What happens next?",
+    "items": [
+      "You'll be the project facilitator with full access",
+      "Invite family members as storytellers",
+      "Start recording and organizing stories",
+      "Use AI to generate prompts and summaries"
+    ]
+  },
+  "errors": {
+    "fetchBalance": "Unable to fetch resource balance information",
+    "insufficientVouchers": "Insufficient project vouchers, please purchase more resources",
+    "insufficientSeats": "Insufficient {role} seats, please purchase more resources",
+    "createFailed": "Failed to create project, please try again"
+  },
+  "success": {
+    "created": "Project created successfully!"
+  }
+}

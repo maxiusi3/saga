@@ -1,0 +1,71 @@
+{
+  "header": {
+    "backToProjects": "返回项目",
+    "title": "创建新的家族传记",
+    "subtitle": "开始记录您家族的珍贵故事"
+  },
+  "form": {
+    "projectDetails": "项目详情",
+    "projectName": "项目名称",
+    "projectNamePlaceholder": "例如：张家故事、爷爷的回忆录",
+    "projectDescription": "项目描述",
+    "projectDescriptionPlaceholder": "您想记录什么样的故事？谁会参与？",
+    "projectTheme": "项目主题",
+    "yourRole": "您在此项目中的角色",
+    "currentBalance": "当前余额",
+    "projectVouchers": "项目代金券",
+    "facilitatorSeats": "协调员席位",
+    "storytellerSeats": "讲述者席位",
+    "cancel": "取消",
+    "createProject": "创建项目",
+    "creating": "创建中..."
+  },
+  "themes": {
+    "familyMemories": {
+      "name": "家庭回忆",
+      "description": "记录不同世代的故事"
+    },
+    "lifeJourney": {
+      "name": "人生旅程",
+      "description": "记录个人里程碑和经历"
+    },
+    "culturalHeritage": {
+      "name": "文化传承",
+      "description": "保存传统和文化故事"
+    },
+    "professionalLegacy": {
+      "name": "职业传承",
+      "description": "分享职业经验和智慧"
+    }
+  },
+  "roles": {
+    "storyteller": {
+      "name": "讲述者",
+      "description": "记录和分享您的故事",
+      "resourceCost": "资源消耗：1个讲述者席位"
+    },
+    "facilitator": {
+      "name": "协调员",
+      "description": "管理项目并邀请他人",
+      "resourceCost": "资源消耗：1个协调员席位"
+    }
+  },
+  "info": {
+    "title": "接下来会发生什么？",
+    "items": [
+      "您将成为拥有完全访问权限的项目协调员",
+      "邀请家庭成员作为讲述者",
+      "开始录制和整理故事",
+      "使用AI生成提示和摘要"
+    ]
+  },
+  "errors": {
+    "fetchBalance": "无法获取资源余额信息",
+    "insufficientVouchers": "项目代金券不足，请购买更多资源",
+    "insufficientSeats": "{role}席位不足，请购买更多资源",
+    "createFailed": "创建项目失败，请重试"
+  },
+  "success": {
+    "created": "项目创建成功！"
+  }
+}
