@@ -24,7 +24,16 @@
     "downloadAudio": "Baixar Áudio",
     "transcript": "Transcrição",
     "interactions": "Interações",
-    "storyActions": "Ações de História",
-    "recorded": "Gravado"
+    "storyActions": "Ações da História",
+    "recorded": "Gravado",
+    "edit": "Editar",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "familyComments": "Comentários da Família",
+    "addComment": "Adicionar Comentário",
+    "commentPlaceholder": "Compartilhe seus pensamentos sobre esta história...",
+    "comment": "Comentário",
+    "followUp": "Acompanhamento",
+    "reply": "Responder"
   }
 }

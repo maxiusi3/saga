@@ -25,6 +25,15 @@
     "transcript": "대본",
     "interactions": "상호작용",
     "storyActions": "스토리 작업",
-    "recorded": "녹음일"
+    "recorded": "녹음됨",
+    "edit": "편집",
+    "save": "저장",
+    "cancel": "취소",
+    "familyComments": "가족 댓글",
+    "addComment": "댓글 추가",
+    "commentPlaceholder": "이 이야기에 대한 생각을 공유하세요...",
+    "comment": "댓글",
+    "followUp": "후속 조치",
+    "reply": "답글"
   }
 }

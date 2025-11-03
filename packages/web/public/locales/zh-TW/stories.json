@@ -20,11 +20,20 @@
   "detail": {
     "backToStories": "返回故事",
     "aiSuggestedQuestions": "AI建議的問題",
-    "addToFavorites": "加入收藏",
+    "addToFavorites": "添加到收藏",
     "downloadAudio": "下載音訊",
     "transcript": "文字記錄",
     "interactions": "互動",
     "storyActions": "故事操作",
-    "recorded": "錄製於"
+    "recorded": "已錄製",
+    "edit": "編輯",
+    "save": "儲存",
+    "cancel": "取消",
+    "familyComments": "家庭評論",
+    "addComment": "添加評論",
+    "commentPlaceholder": "分享您對這個故事的想法...",
+    "comment": "評論",
+    "followUp": "後續",
+    "reply": "回覆"
   }
 }

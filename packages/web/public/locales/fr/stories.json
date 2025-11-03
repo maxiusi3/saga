@@ -25,6 +25,15 @@
     "transcript": "Transcription",
     "interactions": "Interactions",
     "storyActions": "Actions d'Histoire",
-    "recorded": "Enregistré"
+    "recorded": "Enregistré",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "familyComments": "Commentaires Familiaux",
+    "addComment": "Ajouter un Commentaire",
+    "commentPlaceholder": "Partagez vos pensées sur cette histoire...",
+    "comment": "Commentaire",
+    "followUp": "Suivi",
+    "reply": "Répondre"
   }
 }

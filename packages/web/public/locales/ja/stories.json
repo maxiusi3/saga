@@ -25,6 +25,15 @@
     "transcript": "文字起こし",
     "interactions": "インタラクション",
     "storyActions": "ストーリーアクション",
-    "recorded": "録音日"
+    "recorded": "録音済み",
+    "edit": "編集",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "familyComments": "家族のコメント",
+    "addComment": "コメントを追加",
+    "commentPlaceholder": "この物語についてあなたの考えを共有してください...",
+    "comment": "コメント",
+    "followUp": "フォローアップ",
+    "reply": "返信"
   }
 }
