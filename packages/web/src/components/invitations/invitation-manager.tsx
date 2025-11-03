@@ -20,6 +20,7 @@ import {
 import { toast } from 'react-hot-toast'
 import QRCode from 'qrcode'
 import { createClientSupabase } from '@/lib/supabase'
+import { useTranslations } from 'next-intl'
 
 interface Invitation {
   id: string
@@ -58,6 +59,7 @@ export function InvitationManager({
   onRemoveMember,
   className 
 }: InvitationManagerProps) {
+  const t = useTranslations('invitations.manager')
   // 获取当前 locale，并提供一个本地的 withLocale 助手，保证跳转和分享链接都带语言前缀
   const params = useParams()
   const locale = (params?.locale as string) || ''
@@ -115,7 +117,7 @@ export function InvitationManager({
 
   const sendInvitation = async () => {
     if (!newInviteEmail.trim()) {
-      toast.error('Please enter an email address')
+      toast.error(t('invitationFailed'))
       return
     }
 
@@ -169,10 +171,10 @@ export function InvitationManager({
       const newInvitation = await response.json()
       setInvitations(prev => [newInvitation, ...prev])
       setNewInviteEmail('')
-      toast.success('Invitation sent successfully!')
+      toast.success(t('invitationSent'))
     } catch (error) {
       console.error('Error sending invitation:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to send invitation')
+      toast.error(error instanceof Error ? error.message : t('invitationFailed'))
     } finally {
       setSending(false)
     }
@@ -201,10 +203,10 @@ export function InvitationManager({
     const inviteUrl = `${window.location.origin}${withLocale(`/invite/${token}`)}`
     try {
       await navigator.clipboard.writeText(inviteUrl)
-      toast.success('Invitation link copied to clipboard!')
+      toast.success(t('linkCopied'))
     } catch (error) {
       console.error('Error copying to clipboard:', error)
-      toast.error('Failed to copy link')
+      toast.error(t('invitationFailed'))
     }
   }
 
@@ -270,7 +272,7 @@ export function InvitationManager({
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-foreground flex items-center gap-2">
             <Mail className="h-5 w-5" />
-            Project Invitations
+            {t('title')}
           </h3>
           <FurbridgeButton onClick={fetchInvitations} variant="ghost" size="sm">
             <RefreshCw className="h-4 w-4" />
@@ -279,11 +281,11 @@ export function InvitationManager({
 
         {/* Send New Invitation */}
         <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
-          <h4 className="font-medium text-foreground">Send New Invitation</h4>
+          <h4 className="font-medium text-foreground">{t('sendNew')}</h4>
           <div className="flex gap-2">
             <Input
               type="email"
-              placeholder="Enter email address"
+              placeholder={t('emailPlaceholder')}
               value={newInviteEmail}
               onChange={(e) => setNewInviteEmail(e.target.value)}
               className="flex-1"
@@ -293,8 +295,8 @@ export function InvitationManager({
               onChange={(e) => setNewInviteRole(e.target.value as 'facilitator' | 'storyteller')}
               className="px-3 py-2 border border-border rounded-md bg-background"
             >
-              <option value="storyteller">Storyteller</option>
-              <option value="facilitator">Co-Facilitator</option>
+              <option value="storyteller">{t('storyteller')}</option>
+              <option value="facilitator">{t('facilitator')}</option>
             </select>
             <FurbridgeButton 
               onClick={sendInvitation}
@@ -315,7 +317,7 @@ export function InvitationManager({
         {/* Current Members */}
         {currentMembers.length > 0 && (
           <div className="space-y-3 mb-6">
-            <h4 className="font-medium text-foreground">Current Members</h4>
+            <h4 className="font-medium text-foreground">{t('currentMembers')}</h4>
             {currentMembers.map((member) => {
               const isCurrentUser = member.user_id === currentUserId
               const memberName = isCurrentUser ? 'You (Owner)' : `User ${member.user_id.substring(0, 8)}`
@@ -384,7 +386,7 @@ export function InvitationManager({
 
         {/* Existing Invitations */}
         <div className="space-y-3">
-          <h4 className="font-medium text-foreground">Pending Invitations</h4>
+          <h4 className="font-medium text-foreground">{t('pendingInvitations')}</h4>
           {invitations.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Mail className="h-12 w-12 mx-auto mb-2 opacity-50" />
