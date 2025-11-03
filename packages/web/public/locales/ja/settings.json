@@ -120,5 +120,45 @@
   "description": "アカウントの環境設定とプライバシー設定を管理",
   "languageRegion": {
     "title": "言語と地域"
+  },
+  "general": {
+    "title": "一般設定",
+    "language": {
+      "title": "言語",
+      "description": "希望する言語を選択",
+      "label": "インターフェース言語"
+    },
+    "timezone": {
+      "title": "タイムゾーン",
+      "description": "ローカルタイムゾーンを設定",
+      "label": "タイムゾーン"
+    },
+    "dateFormat": {
+      "title": "日付形式",
+      "description": "日付の表示方法を選択",
+      "label": "日付形式"
+    }
+  },
+  "accessibility": {
+    "title": "アクセシビリティ設定",
+    "fontSize": {
+      "title": "フォントサイズ",
+      "small": "小",
+      "standard": "標準",
+      "large": "大",
+      "extraLarge": "特大"
+    },
+    "highContrast": {
+      "title": "高コントラスト",
+      "description": "視認性向上のためコントラストを増加"
+    },
+    "reducedMotion": {
+      "title": "モーション削減",
+      "description": "アニメーションと遷移を最小化"
+    },
+    "screenReader": {
+      "title": "スクリーンリーダーサポート",
+      "description": "スクリーンリーダーに最適化"
+    }
   }
 }

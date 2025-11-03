@@ -8,21 +8,21 @@
     "account": "Conta"
   },
   "general": {
-    "title": "Configurações Gerais",
+    "title": "Configurações gerais",
     "language": {
       "title": "Idioma",
-      "description": "Selecione seu idioma preferido",
-      "label": "Idioma da Interface"
+      "description": "Selecionar idioma preferido",
+      "label": "Idioma da interface"
     },
     "timezone": {
-      "title": "Fuso Horário",
-      "description": "Defina seu fuso horário local",
-      "label": "Fuso Horário"
+      "title": "Fuso horário",
+      "description": "Definir fuso horário local",
+      "label": "Fuso horário"
     },
     "dateFormat": {
-      "title": "Formato de Data",
-      "description": "Escolha como as datas são exibidas",
-      "label": "Formato de Data"
+      "title": "Formato de data",
+      "description": "Escolher modo de exibição de datas",
+      "label": "Formato de data"
     }
   },
   "notifications": {
@@ -61,25 +61,25 @@
     }
   },
   "accessibility": {
-    "title": "Configurações de Acessibilidade",
+    "title": "Configurações de acessibilidade",
     "fontSize": {
-      "title": "Tamanho da Fonte",
+      "title": "Tamanho da fonte",
       "small": "Pequeno",
       "standard": "Padrão",
       "large": "Grande",
-      "extraLarge": "Extra Grande"
+      "extraLarge": "Muito grande"
     },
     "highContrast": {
-      "title": "Alto Contraste",
-      "description": "Aumentar contraste para melhor visibilidade"
+      "title": "Alto contraste",
+      "description": "Aumentar contraste para melhorar visibilidade"
     },
     "reducedMotion": {
-      "title": "Movimento Reduzido",
+      "title": "Movimento reduzido",
       "description": "Minimizar animações e transições"
     },
     "screenReader": {
-      "title": "Suporte para Leitor de Tela",
-      "description": "Otimizar para leitores de tela"
+      "title": "Suporte leitor de tela",
+      "description": "Otimizado para leitores de tela"
     }
   },
   "account": {

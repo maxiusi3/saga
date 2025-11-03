@@ -11,12 +11,12 @@
     "title": "常规设置",
     "language": {
       "title": "语言",
-      "description": "选择您的首选语言",
+      "description": "选择首选语言",
       "label": "界面语言"
     },
     "timezone": {
       "title": "时区",
-      "description": "设置您的本地时区",
+      "description": "设置本地时区",
       "label": "时区"
     },
     "dateFormat": {
@@ -61,7 +61,7 @@
     }
   },
   "accessibility": {
-    "title": "无障碍设置",
+    "title": "辅助功能设置",
     "fontSize": {
       "title": "字体大小",
       "small": "小",
@@ -71,7 +71,7 @@
     },
     "highContrast": {
       "title": "高对比度",
-      "description": "提高对比度以获得更好的可见性"
+      "description": "增加对比度以提高可见性"
     },
     "reducedMotion": {
       "title": "减少动画",

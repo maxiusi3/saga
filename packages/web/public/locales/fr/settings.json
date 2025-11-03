@@ -120,5 +120,45 @@
   "description": "Gérez vos préférences de compte et paramètres de confidentialité",
   "languageRegion": {
     "title": "Langue et région"
+  },
+  "general": {
+    "title": "Paramètres généraux",
+    "language": {
+      "title": "Langue",
+      "description": "Sélectionner la langue préférée",
+      "label": "Langue de l'interface"
+    },
+    "timezone": {
+      "title": "Fuseau horaire",
+      "description": "Définir le fuseau horaire local",
+      "label": "Fuseau horaire"
+    },
+    "dateFormat": {
+      "title": "Format de date",
+      "description": "Choisir le mode d'affichage des dates",
+      "label": "Format de date"
+    }
+  },
+  "accessibility": {
+    "title": "Paramètres d'accessibilité",
+    "fontSize": {
+      "title": "Taille de police",
+      "small": "Petit",
+      "standard": "Standard",
+      "large": "Grand",
+      "extraLarge": "Très grand"
+    },
+    "highContrast": {
+      "title": "Contraste élevé",
+      "description": "Augmenter le contraste pour améliorer la visibilité"
+    },
+    "reducedMotion": {
+      "title": "Mouvement réduit",
+      "description": "Minimiser les animations et transitions"
+    },
+    "screenReader": {
+      "title": "Support lecteur d'écran",
+      "description": "Optimisé pour les lecteurs d'écran"
+    }
   }
 }
