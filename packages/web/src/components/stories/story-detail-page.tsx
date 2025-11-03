@@ -332,7 +332,7 @@ export function StoryDetailPage({
           <Card variant="content">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Transcript</CardTitle>
+                <CardTitle>{t('detail.transcript')}</CardTitle>
                 {canEdit && (
                   <Button
                     variant="tertiary"
@@ -356,7 +356,7 @@ export function StoryDetailPage({
                   <div className="flex gap-2">
                     <Button variant="primary" size="sm" onClick={handleSaveTranscript}>
                       <Save className="w-4 h-4 mr-1" />
-                      Save Changes
+                      {t('detail.save')}
                     </Button>
                     <Button 
                       variant="secondary" 
@@ -366,7 +366,7 @@ export function StoryDetailPage({
                         setIsEditingTranscript(false)
                       }}
                     >
-                      Cancel
+                      {t('detail.cancel')}
                     </Button>
                   </div>
                 </div>
@@ -385,21 +385,21 @@ export function StoryDetailPage({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MessageCircle className="w-5 h-5" />
-                Family Comments ({comments.length})
+                {t('detail.familyComments')} ({comments.length})
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Add Comment */}
               <div className="space-y-3">
                 <Textarea
-                  placeholder="Share your thoughts about this story..."
+                  placeholder={t('detail.commentPlaceholder')}
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   rows={3}
                 />
                 <Button variant="primary" size="sm" onClick={handleAddComment}>
                   <Send className="w-4 h-4 mr-1" />
-                  Add Comment
+                  {t('detail.addComment')}
                 </Button>
               </div>
 
