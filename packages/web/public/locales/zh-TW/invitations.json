@@ -29,5 +29,31 @@
     "noPendingInvitations": "未找到待處理的邀請",
     "wrongEmail": "請登出並使用正確的電子郵件地址接受此邀請。",
     "loadingFailed": "載入邀請詳情失敗"
+  },
+  "manager": {
+    "title": "專案邀請",
+    "sendNew": "發送新邀請",
+    "emailPlaceholder": "輸入電子郵件地址",
+    "selectRole": "選擇角色",
+    "storyteller": "講述者",
+    "facilitator": "協調員",
+    "sendButton": "發送",
+    "sending": "發送中...",
+    "currentMembers": "當前成員",
+    "pendingInvitations": "待處理的邀請",
+    "owner": "所有者",
+    "active": "活躍",
+    "pending": "待處理",
+    "remove": "移除",
+    "resend": "重新發送",
+    "cancel": "取消",
+    "copyLink": "複製連結",
+    "showQR": "顯示二維碼",
+    "invitationSent": "邀請已成功發送！",
+    "invitationFailed": "發送邀請失敗",
+    "linkCopied": "邀請連結已複製！",
+    "memberRemoved": "成員已成功移除",
+    "invitationCancelled": "邀請已取消",
+    "invitationResent": "邀請已成功重新發送"
   }
 }

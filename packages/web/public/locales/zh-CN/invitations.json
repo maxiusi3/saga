@@ -29,5 +29,31 @@
     "noPendingInvitations": "未找到待处理的邀请",
     "wrongEmail": "请退出登录并使用正确的电子邮件地址接受此邀请。",
     "loadingFailed": "加载邀请详情失败"
+  },
+  "manager": {
+    "title": "项目邀请",
+    "sendNew": "发送新邀请",
+    "emailPlaceholder": "输入电子邮件地址",
+    "selectRole": "选择角色",
+    "storyteller": "讲述者",
+    "facilitator": "协调员",
+    "sendButton": "发送",
+    "sending": "发送中...",
+    "currentMembers": "当前成员",
+    "pendingInvitations": "待处理的邀请",
+    "owner": "所有者",
+    "active": "活跃",
+    "pending": "待处理",
+    "remove": "移除",
+    "resend": "重新发送",
+    "cancel": "取消",
+    "copyLink": "复制链接",
+    "showQR": "显示二维码",
+    "invitationSent": "邀请已成功发送！",
+    "invitationFailed": "发送邀请失败",
+    "linkCopied": "邀请链接已复制！",
+    "memberRemoved": "成员已成功移除",
+    "invitationCancelled": "邀请已取消",
+    "invitationResent": "邀请已成功重新发送"
   }
 }

@@ -29,5 +29,31 @@
     "noPendingInvitations": "Nenhum convite pendente encontrado",
     "wrongEmail": "Por favor, saia e use o endereço de email correto para aceitar este convite.",
     "loadingFailed": "Falha ao carregar detalhes do convite"
+  },
+  "manager": {
+    "title": "Convites do Projeto",
+    "sendNew": "Enviar Novo Convite",
+    "emailPlaceholder": "Digite o endereço de email",
+    "selectRole": "Selecionar função",
+    "storyteller": "Contador de Histórias",
+    "facilitator": "Facilitador",
+    "sendButton": "Enviar",
+    "sending": "Enviando...",
+    "currentMembers": "Membros Atuais",
+    "pendingInvitations": "Convites Pendentes",
+    "owner": "Proprietário",
+    "active": "Ativo",
+    "pending": "Pendente",
+    "remove": "Remover",
+    "resend": "Reenviar",
+    "cancel": "Cancelar",
+    "copyLink": "Copiar Link",
+    "showQR": "Mostrar Código QR",
+    "invitationSent": "Convite enviado com sucesso!",
+    "invitationFailed": "Falha ao enviar convite",
+    "linkCopied": "Link de convite copiado!",
+    "memberRemoved": "Membro removido com sucesso",
+    "invitationCancelled": "Convite cancelado",
+    "invitationResent": "Convite reenviado com sucesso"
   }
 }

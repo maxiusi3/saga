@@ -29,5 +29,31 @@
     "noPendingInvitations": "No pending invitations found",
     "wrongEmail": "Please log out and use the correct email address to accept this invitation.",
     "loadingFailed": "Failed to load invitation details"
+  },
+  "manager": {
+    "title": "Project Invitations",
+    "sendNew": "Send New Invitation",
+    "emailPlaceholder": "Enter email address",
+    "selectRole": "Select role",
+    "storyteller": "Storyteller",
+    "facilitator": "Facilitator",
+    "sendButton": "Send",
+    "sending": "Sending...",
+    "currentMembers": "Current Members",
+    "pendingInvitations": "Pending Invitations",
+    "owner": "Owner",
+    "active": "Active",
+    "pending": "Pending",
+    "remove": "Remove",
+    "resend": "Resend",
+    "cancel": "Cancel",
+    "copyLink": "Copy Link",
+    "showQR": "Show QR Code",
+    "invitationSent": "Invitation sent successfully!",
+    "invitationFailed": "Failed to send invitation",
+    "linkCopied": "Invitation link copied!",
+    "memberRemoved": "Member removed successfully",
+    "invitationCancelled": "Invitation cancelled",
+    "invitationResent": "Invitation resent successfully"
   }
 }

@@ -29,5 +29,31 @@
     "noPendingInvitations": "Aucune invitation en attente trouvée",
     "wrongEmail": "Veuillez vous déconnecter et utiliser la bonne adresse email pour accepter cette invitation.",
     "loadingFailed": "Échec du chargement des détails de l'invitation"
+  },
+  "manager": {
+    "title": "Invitations au Projet",
+    "sendNew": "Envoyer une Nouvelle Invitation",
+    "emailPlaceholder": "Entrez l'adresse email",
+    "selectRole": "Sélectionner le rôle",
+    "storyteller": "Conteur",
+    "facilitator": "Facilitateur",
+    "sendButton": "Envoyer",
+    "sending": "Envoi...",
+    "currentMembers": "Membres Actuels",
+    "pendingInvitations": "Invitations en Attente",
+    "owner": "Propriétaire",
+    "active": "Actif",
+    "pending": "En attente",
+    "remove": "Supprimer",
+    "resend": "Renvoyer",
+    "cancel": "Annuler",
+    "copyLink": "Copier le Lien",
+    "showQR": "Afficher le Code QR",
+    "invitationSent": "Invitation envoyée avec succès !",
+    "invitationFailed": "Échec de l'envoi de l'invitation",
+    "linkCopied": "Lien d'invitation copié !",
+    "memberRemoved": "Membre supprimé avec succès",
+    "invitationCancelled": "Invitation annulée",
+    "invitationResent": "Invitation renvoyée avec succès"
   }
 }

@@ -29,5 +29,31 @@
     "noPendingInvitations": "保留中の招待が見つかりません",
     "wrongEmail": "ログアウトして、正しいメールアドレスでこの招待を承諾してください。",
     "loadingFailed": "招待の詳細の読み込みに失敗しました"
+  },
+  "manager": {
+    "title": "プロジェクト招待",
+    "sendNew": "新しい招待を送信",
+    "emailPlaceholder": "メールアドレスを入力",
+    "selectRole": "役割を選択",
+    "storyteller": "ストーリーテラー",
+    "facilitator": "ファシリテーター",
+    "sendButton": "送信",
+    "sending": "送信中...",
+    "currentMembers": "現在のメンバー",
+    "pendingInvitations": "保留中の招待",
+    "owner": "オーナー",
+    "active": "アクティブ",
+    "pending": "保留中",
+    "remove": "削除",
+    "resend": "再送信",
+    "cancel": "キャンセル",
+    "copyLink": "リンクをコピー",
+    "showQR": "QRコードを表示",
+    "invitationSent": "招待が正常に送信されました！",
+    "invitationFailed": "招待の送信に失敗しました",
+    "linkCopied": "招待リンクがコピーされました！",
+    "memberRemoved": "メンバーが正常に削除されました",
+    "invitationCancelled": "招待がキャンセルされました",
+    "invitationResent": "招待が正常に再送信されました"
   }
 }

@@ -29,5 +29,31 @@
     "noPendingInvitations": "No se encontraron invitaciones pendientes",
     "wrongEmail": "Por favor cierra sesión y usa la dirección de correo correcta para aceptar esta invitación.",
     "loadingFailed": "Error al cargar los detalles de la invitación"
+  },
+  "manager": {
+    "title": "Invitaciones al Proyecto",
+    "sendNew": "Enviar Nueva Invitación",
+    "emailPlaceholder": "Ingresa dirección de correo",
+    "selectRole": "Seleccionar rol",
+    "storyteller": "Narrador",
+    "facilitator": "Facilitador",
+    "sendButton": "Enviar",
+    "sending": "Enviando...",
+    "currentMembers": "Miembros Actuales",
+    "pendingInvitations": "Invitaciones Pendientes",
+    "owner": "Propietario",
+    "active": "Activo",
+    "pending": "Pendiente",
+    "remove": "Eliminar",
+    "resend": "Reenviar",
+    "cancel": "Cancelar",
+    "copyLink": "Copiar Enlace",
+    "showQR": "Mostrar Código QR",
+    "invitationSent": "¡Invitación enviada exitosamente!",
+    "invitationFailed": "Error al enviar invitación",
+    "linkCopied": "¡Enlace de invitación copiado!",
+    "memberRemoved": "Miembro eliminado exitosamente",
+    "invitationCancelled": "Invitación cancelada",
+    "invitationResent": "Invitación reenviada exitosamente"
   }
 }
