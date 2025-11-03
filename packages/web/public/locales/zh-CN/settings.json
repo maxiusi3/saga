@@ -26,45 +26,38 @@
     }
   },
   "notifications": {
-    "title": "通知偏好",
+    "title": "通知",
     "email": {
       "title": "电子邮件通知",
-      "newStory": "发布新故事",
-      "newComment": "您的故事有新评论",
-      "newFollowUp": "新的后续问题",
-      "projectInvite": "项目邀请",
-      "weeklyDigest": "每周摘要"
+      "description": "通过电子邮件接收更新"
     },
     "push": {
       "title": "推送通知",
-      "enabled": "启用推送通知",
       "description": "在您的设备上接收通知"
-    }
+    },
+    "weeklyDigest": {
+      "title": "每周摘要",
+      "description": "家庭活动的每周摘要"
+    },
+    "save": "保存通知设置"
   },
   "privacy": {
-    "title": "隐私设置",
+    "title": "隐私与安全",
     "profileVisibility": {
       "title": "个人资料可见性",
-      "description": "控制谁可以查看您的个人资料",
-      "options": {
-        "public": "公开",
-        "private": "私密",
-        "familyOnly": "仅家人"
-      }
+      "description": "让其他家庭成员看到您的个人资料"
     },
-    "storyVisibility": {
-      "title": "故事可见性",
-      "description": "新故事的默认可见性",
-      "options": {
-        "projectMembers": "仅项目成员",
-        "family": "家人",
-        "public": "公开"
-      }
+    "storySharing": {
+      "title": "故事分享",
+      "description": "允许他人分享您的故事"
     },
-    "dataSharing": {
-      "title": "数据共享",
-      "analytics": "共享匿名使用数据",
-      "improvements": "帮助改进Saga"
+    "dataAnalytics": {
+      "title": "数据分析",
+      "description": "通过使用数据帮助改进我们的服务"
+    },
+    "twoFactor": {
+      "title": "双因素认证",
+      "description": "添加额外的安全层"
     }
   },
   "accessibility": {
@@ -94,18 +87,28 @@
     "changePassword": {
       "title": "更改密码",
       "description": "更新您的账户密码",
-      "button": "更改密码"
+      "button": "更改"
+    },
+    "twoFactor": {
+      "title": "双因素认证",
+      "description": "为您的账户添加额外的安全性",
+      "button": "设置"
+    },
+    "devices": {
+      "title": "已连接设备",
+      "description": "管理您已登录的设备",
+      "button": "管理"
     },
     "deleteAccount": {
       "title": "删除账户",
-      "description": "永久删除您的账户和所有数据",
+      "description": "永久删除您的账户和所有相关数据。此操作无法撤销。",
       "button": "删除账户",
       "warning": "此操作无法撤销"
     },
     "exportData": {
-      "title": "导出数据",
-      "description": "下载您的所有账户数据",
-      "button": "导出数据"
+      "title": "导出我的数据",
+      "description": "下载所有故事和数据",
+      "button": "导出"
     }
   },
   "actions": {
@@ -121,5 +124,41 @@
   "errors": {
     "saveFailed": "保存设置失败",
     "loadFailed": "加载设置失败"
+  },
+  "description": "管理您的账户偏好设置和隐私设置",
+  "loading": "正在加载您的偏好设置...",
+  "userInfo": {
+    "title": "用户信息",
+    "changePhoto": "更改照片",
+    "photoHint": "JPG、PNG 或 GIF。最大 2MB。",
+    "fullName": "全名",
+    "email": "电子邮件地址",
+    "phone": "电话号码",
+    "saveChanges": "保存更改"
+  },
+  "quickAccess": {
+    "title": "快速访问",
+    "description": "快速调整辅助功能和显示设置以获得更好的可用性。",
+    "fontSizeCurrent": "当前",
+    "save": "保存快速访问设置"
+  },
+  "audio": {
+    "title": "音频设置",
+    "volume": "音量",
+    "quality": "音频质量",
+    "qualityLow": "低（加载更快）",
+    "qualityMedium": "中（平衡）",
+    "qualityHigh": "高（最佳质量）"
+  },
+  "languageRegion": {
+    "title": "语言和地区"
+  },
+  "dataManagement": {
+    "title": "数据管理",
+    "dataPrivacy": "数据隐私",
+    "dataPrivacyDesc": "控制数据的使用方式"
+  },
+  "dangerZone": {
+    "title": "危险区域"
   }
 }

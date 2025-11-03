@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/select'
 import { settingsService, UserProfile, NotificationSettings, AccessibilitySettings } from '@/services/settings-service'
 import { toast } from 'react-hot-toast'
+import { useTranslations } from 'next-intl'
 import { 
   User,
   Bell,
@@ -60,6 +61,7 @@ export function SettingsPage({
   notificationSettings: initialNotifications,
   accessibilitySettings: initialAccessibility
 }: SettingsPageProps) {
+  const t = useTranslations('settings')
   const [isLoading, setIsLoading] = useState(false)
   const [isInitialLoading, setIsInitialLoading] = useState(true)
   
@@ -186,8 +188,8 @@ export function SettingsPage({
       <div className="min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-            <p className="text-gray-600">Loading your preferences...</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>
+            <p className="text-gray-600">{t('loading')}</p>
           </div>
           <div className="space-y-6">
             {[1, 2, 3, 4].map((i) => (
@@ -214,8 +216,8 @@ export function SettingsPage({
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-          <p className="text-gray-600">Manage your account preferences and privacy settings</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>
+          <p className="text-gray-600">{t('description')}</p>
         </div>
 
         <div className="space-y-6">
@@ -224,7 +226,7 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
                 <User className="w-5 h-5 text-sage-600" />
-                User Information
+                {t('userInfo.title')}
               </h2>
               
               <div className="space-y-6">
@@ -239,10 +241,10 @@ export function SettingsPage({
                   <div>
                     <EnhancedButton variant="secondary" size="sm">
                       <Camera className="w-4 h-4 mr-2" />
-                      Change Photo
+                      {t('userInfo.changePhoto')}
                     </EnhancedButton>
                     <p className="text-sm text-gray-500 mt-1">
-                      JPG, PNG or GIF. Max size 2MB.
+                      {t('userInfo.photoHint')}
                     </p>
                   </div>
                 </div>
@@ -250,7 +252,7 @@ export function SettingsPage({
                 {/* Form Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="name" className="text-sm font-medium text-gray-700">Full Name</Label>
+                    <Label htmlFor="name" className="text-sm font-medium text-gray-700">{t('userInfo.fullName')}</Label>
                     <Input
                       id="name"
                       value={profileForm?.name || ''}
@@ -259,7 +261,7 @@ export function SettingsPage({
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</Label>
+                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">{t('userInfo.email')}</Label>
                     <Input
                       id="email"
                       type="email"
@@ -269,7 +271,7 @@ export function SettingsPage({
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number</Label>
+                    <Label htmlFor="phone" className="text-sm font-medium text-gray-700">{t('userInfo.phone')}</Label>
                     <Input
                       id="phone"
                       type="tel"
@@ -283,7 +285,7 @@ export function SettingsPage({
 
                 <EnhancedButton onClick={handleSaveProfile} disabled={isLoading} className="w-full sm:w-auto">
                   <Save className="w-4 h-4 mr-2" />
-                  Save Changes
+                  {t('userInfo.saveChanges')}
                 </EnhancedButton>
               </div>
             </div>
@@ -294,12 +296,12 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
                 <Accessibility className="w-5 h-5 text-sage-600" />
-                Quick Access
+                {t('quickAccess.title')}
               </h2>
               
               <div className="space-y-6">
                 <p className="text-sm text-gray-600 mb-4">
-                  Quickly adjust accessibility and display settings for better usability.
+                  {t('quickAccess.description')}
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -307,8 +309,8 @@ export function SettingsPage({
                     <div className="flex items-center gap-3">
                       <Palette className="w-5 h-5 text-sage-600" />
                       <div>
-                        <p className="font-medium text-gray-900">High Contrast</p>
-                        <p className="text-sm text-gray-600">Improve text visibility</p>
+                        <p className="font-medium text-gray-900">{t('accessibility.highContrast.title')}</p>
+                        <p className="text-sm text-gray-600">{t('accessibility.highContrast.description')}</p>
                       </div>
                     </div>
                     <ModernSwitch 
@@ -323,8 +325,8 @@ export function SettingsPage({
                     <div className="flex items-center gap-3">
                       <Eye className="w-5 h-5 text-sage-600" />
                       <div>
-                        <p className="font-medium text-gray-900">Reduced Motion</p>
-                        <p className="text-sm text-gray-600">Minimize animations</p>
+                        <p className="font-medium text-gray-900">{t('accessibility.reducedMotion.title')}</p>
+                        <p className="text-sm text-gray-600">{t('accessibility.reducedMotion.description')}</p>
                       </div>
                     </div>
                     <ModernSwitch 
@@ -339,8 +341,8 @@ export function SettingsPage({
                     <div className="flex items-center gap-3">
                       <Volume2 className="w-5 h-5 text-sage-600" />
                       <div>
-                        <p className="font-medium text-gray-900">Screen Reader</p>
-                        <p className="text-sm text-gray-600">Enhanced screen reader support</p>
+                        <p className="font-medium text-gray-900">{t('accessibility.screenReader.title')}</p>
+                        <p className="text-sm text-gray-600">{t('accessibility.screenReader.description')}</p>
                       </div>
                     </div>
                     <ModernSwitch 
@@ -355,8 +357,8 @@ export function SettingsPage({
                     <div className="flex items-center gap-3">
                       <Type className="w-5 h-5 text-sage-600" />
                       <div>
-                        <p className="font-medium text-gray-900">Font Size</p>
-                        <p className="text-sm text-gray-600">Current: {accessibilityForm?.fontSize || 'standard'}</p>
+                        <p className="font-medium text-gray-900">{t('accessibility.fontSize.title')}</p>
+                        <p className="text-sm text-gray-600">{t('quickAccess.fontSizeCurrent')}: {accessibilityForm?.fontSize || 'standard'}</p>
                       </div>
                     </div>
                     <Select 
@@ -369,9 +371,9 @@ export function SettingsPage({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="standard">Standard</SelectItem>
-                        <SelectItem value="large">Large</SelectItem>
-                        <SelectItem value="extra-large">Extra Large</SelectItem>
+                        <SelectItem value="standard">{t('accessibility.fontSize.standard')}</SelectItem>
+                        <SelectItem value="large">{t('accessibility.fontSize.large')}</SelectItem>
+                        <SelectItem value="extra-large">{t('accessibility.fontSize.extraLarge')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -379,7 +381,7 @@ export function SettingsPage({
 
                 <EnhancedButton onClick={handleSaveAccessibility} disabled={isLoading} className="w-full sm:w-auto">
                   <Save className="w-4 h-4 mr-2" />
-                  Save Quick Access Settings
+                  {t('quickAccess.save')}
                 </EnhancedButton>
               </div>
             </div>
@@ -390,12 +392,12 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
                 <Volume2 className="w-5 h-5 text-sage-600" />
-                Audio Settings
+                {t('audio.title')}
               </h2>
               
               <div className="space-y-6">
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-3 block">Volume</Label>
+                  <Label className="text-sm font-medium text-gray-700 mb-3 block">{t('audio.volume')}</Label>
                   <div className="flex items-center gap-4">
                     <Volume2 className="w-4 h-4 text-gray-400" />
                     <input 
@@ -410,15 +412,15 @@ export function SettingsPage({
                 </div>
 
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-3 block">Audio Quality</Label>
+                  <Label className="text-sm font-medium text-gray-700 mb-3 block">{t('audio.quality')}</Label>
                   <Select defaultValue="high">
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">Low (Faster loading)</SelectItem>
-                      <SelectItem value="medium">Medium (Balanced)</SelectItem>
-                      <SelectItem value="high">High (Best quality)</SelectItem>
+                      <SelectItem value="low">{t('audio.qualityLow')}</SelectItem>
+                      <SelectItem value="medium">{t('audio.qualityMedium')}</SelectItem>
+                      <SelectItem value="high">{t('audio.qualityHigh')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -431,38 +433,38 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
                 <Shield className="w-5 h-5 text-sage-600" />
-                Privacy & Security
+                {t('privacy.title')}
               </h2>
               
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Profile Visibility</p>
-                    <p className="text-sm text-gray-600">Make your profile visible to other family members</p>
+                    <p className="font-medium text-gray-900">{t('privacy.profileVisibility.title')}</p>
+                    <p className="text-sm text-gray-600">{t('privacy.profileVisibility.description')}</p>
                   </div>
                   <ModernSwitch defaultChecked />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Story Sharing</p>
-                    <p className="text-sm text-gray-600">Allow others to share your stories</p>
+                    <p className="font-medium text-gray-900">{t('privacy.storySharing.title')}</p>
+                    <p className="text-sm text-gray-600">{t('privacy.storySharing.description')}</p>
                   </div>
                   <ModernSwitch defaultChecked />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Data Analytics</p>
-                    <p className="text-sm text-gray-600">Help improve our service with usage data</p>
+                    <p className="font-medium text-gray-900">{t('privacy.dataAnalytics.title')}</p>
+                    <p className="text-sm text-gray-600">{t('privacy.dataAnalytics.description')}</p>
                   </div>
                   <ModernSwitch />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Two-Factor Authentication</p>
-                    <p className="text-sm text-gray-600">Add an extra layer of security</p>
+                    <p className="font-medium text-gray-900">{t('privacy.twoFactor.title')}</p>
+                    <p className="text-sm text-gray-600">{t('privacy.twoFactor.description')}</p>
                   </div>
                   <ModernSwitch />
                 </div>
@@ -475,14 +477,14 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
                 <Bell className="w-5 h-5 text-sage-600" />
-                Notifications
+                {t('notifications.title')}
               </h2>
               
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Email Notifications</p>
-                    <p className="text-sm text-gray-600">Receive updates via email</p>
+                    <p className="font-medium text-gray-900">{t('notifications.email.title')}</p>
+                    <p className="text-sm text-gray-600">{t('notifications.email.description')}</p>
                   </div>
                   <ModernSwitch 
                     checked={notificationForm?.emailNotifications || false}
@@ -494,8 +496,8 @@ export function SettingsPage({
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Push Notifications</p>
-                    <p className="text-sm text-gray-600">Get notified on your devices</p>
+                    <p className="font-medium text-gray-900">{t('notifications.push.title')}</p>
+                    <p className="text-sm text-gray-600">{t('notifications.push.description')}</p>
                   </div>
                   <ModernSwitch 
                     checked={notificationForm?.pushNotifications || false}
@@ -507,8 +509,8 @@ export function SettingsPage({
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Weekly Digest</p>
-                    <p className="text-sm text-gray-600">Weekly summary of family activity</p>
+                    <p className="font-medium text-gray-900">{t('notifications.weeklyDigest.title')}</p>
+                    <p className="text-sm text-gray-600">{t('notifications.weeklyDigest.description')}</p>
                   </div>
                   <ModernSwitch 
                     checked={notificationForm?.weeklyDigest || false}
@@ -522,7 +524,7 @@ export function SettingsPage({
               <div className="mt-6">
                 <EnhancedButton onClick={handleSaveNotifications} disabled={isLoading} className="w-full sm:w-auto">
                   <Save className="w-4 h-4 mr-2" />
-                  Save Notification Settings
+                  {t('notifications.save')}
                 </EnhancedButton>
               </div>
             </div>
@@ -533,12 +535,12 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
                 <Languages className="w-5 h-5 text-sage-600" />
-                Language & Region
+                {t('languageRegion.title')}
               </h2>
               
               <div className="space-y-6">
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-3 block">Language</Label>
+                  <Label className="text-sm font-medium text-gray-700 mb-3 block">{t('general.language.label')}</Label>
                   <Select defaultValue="en">
                     <SelectTrigger>
                       <SelectValue />
@@ -553,7 +555,7 @@ export function SettingsPage({
                 </div>
 
                 <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-3 block">Timezone</Label>
+                  <Label className="text-sm font-medium text-gray-700 mb-3 block">{t('general.timezone.label')}</Label>
                   <Select defaultValue="pst">
                     <SelectTrigger>
                       <SelectValue />
@@ -575,25 +577,25 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
                 <Database className="w-5 h-5 text-sage-600" />
-                Data Management
+                {t('dataManagement.title')}
               </h2>
               
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Export My Data</p>
-                    <p className="text-sm text-gray-600">Download all your stories and data</p>
+                    <p className="font-medium text-gray-900">{t('account.exportData.title')}</p>
+                    <p className="text-sm text-gray-600">{t('account.exportData.description')}</p>
                   </div>
                   <EnhancedButton variant="secondary">
                     <Download className="w-4 h-4 mr-2" />
-                    Export
+                    {t('account.exportData.button')}
                   </EnhancedButton>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Data Privacy</p>
-                    <p className="text-sm text-gray-600">Control how your data is used</p>
+                    <p className="font-medium text-gray-900">{t('dataManagement.dataPrivacy')}</p>
+                    <p className="text-sm text-gray-600">{t('dataManagement.dataPrivacyDesc')}</p>
                   </div>
                   <ModernSwitch defaultChecked />
                 </div>
@@ -606,40 +608,40 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
                 <Key className="w-5 h-5 text-sage-600" />
-                Account Management
+                {t('account.title')}
               </h2>
               
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Change Password</p>
-                    <p className="text-sm text-gray-600">Update your account password</p>
+                    <p className="font-medium text-gray-900">{t('account.changePassword.title')}</p>
+                    <p className="text-sm text-gray-600">{t('account.changePassword.description')}</p>
                   </div>
                   <EnhancedButton variant="secondary">
                     <Lock className="w-4 h-4 mr-2" />
-                    Change
+                    {t('account.changePassword.button')}
                   </EnhancedButton>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Two-Factor Authentication</p>
-                    <p className="text-sm text-gray-600">Add extra security to your account</p>
+                    <p className="font-medium text-gray-900">{t('account.twoFactor.title')}</p>
+                    <p className="text-sm text-gray-600">{t('account.twoFactor.description')}</p>
                   </div>
                   <EnhancedButton variant="secondary">
                     <Fingerprint className="w-4 h-4 mr-2" />
-                    Setup
+                    {t('account.twoFactor.button')}
                   </EnhancedButton>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Connected Devices</p>
-                    <p className="text-sm text-gray-600">Manage your logged-in devices</p>
+                    <p className="font-medium text-gray-900">{t('account.devices.title')}</p>
+                    <p className="text-sm text-gray-600">{t('account.devices.description')}</p>
                   </div>
                   <EnhancedButton variant="secondary">
                     <Monitor className="w-4 h-4 mr-2" />
-                    Manage
+                    {t('account.devices.button')}
                   </EnhancedButton>
                 </div>
               </div>
@@ -651,7 +653,7 @@ export function SettingsPage({
             <div className="p-6">
               <h2 className="text-xl font-semibold text-red-600 mb-6 flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5" />
-                Danger Zone
+                {t('dangerZone.title')}
               </h2>
               
               <div className="space-y-6">
@@ -659,13 +661,13 @@ export function SettingsPage({
                   <div className="flex items-start gap-3">
                     <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <h3 className="font-medium text-red-900 mb-1">Delete Account</h3>
+                      <h3 className="font-medium text-red-900 mb-1">{t('account.deleteAccount.title')}</h3>
                       <p className="text-sm text-red-700 mb-4">
-                        Permanently delete your account and all associated data. This action cannot be undone.
+                        {t('account.deleteAccount.description')}
                       </p>
                       <EnhancedButton variant="destructive" size="sm">
                         <Trash2 className="w-4 h-4 mr-2" />
-                        Delete Account
+                        {t('account.deleteAccount.button')}
                       </EnhancedButton>
                     </div>
                   </div>

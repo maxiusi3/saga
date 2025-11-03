@@ -3,83 +3,62 @@
   "subtitle": "Gérez vos préférences de compte et paramètres de confidentialité",
   "loading": "Chargement de vos préférences...",
   "userInfo": {
-    "title": "Informations Utilisateur",
-    "changePhoto": "Changer la Photo",
+    "title": "Informations utilisateur",
+    "changePhoto": "Changer la photo",
     "photoHint": "JPG, PNG ou GIF. Taille max 2MB.",
-    "fullName": "Nom Complet",
-    "email": "Adresse Email",
-    "phone": "Numéro de Téléphone",
-    "phonePlaceholder": "(555) 123-4567",
-    "saveChanges": "Enregistrer les Modifications"
+    "fullName": "Nom complet",
+    "email": "Adresse e-mail",
+    "phone": "Numéro de téléphone",
+    "saveChanges": "Enregistrer les modifications"
   },
   "quickAccess": {
-    "title": "Accès Rapide",
+    "title": "Accès rapide",
     "description": "Ajustez rapidement les paramètres d'accessibilité et d'affichage pour une meilleure utilisabilité.",
-    "highContrast": {
-      "title": "Contraste Élevé",
-      "description": "Améliorer la visibilité du texte"
-    },
-    "reducedMotion": {
-      "title": "Mouvement Réduit",
-      "description": "Minimiser les animations"
-    },
-    "screenReader": {
-      "title": "Lecteur d'Écran",
-      "description": "Support amélioré pour les lecteurs d'écran"
-    },
-    "fontSize": {
-      "title": "Taille de Police",
-      "current": "Actuel: {size}",
-      "standard": "Standard",
-      "large": "Grand",
-      "extraLarge": "Très Grand"
-    },
-    "save": "Enregistrer les Paramètres d'Accès Rapide"
+    "fontSizeCurrent": "Actuel",
+    "save": "Enregistrer les paramètres d'accès rapide"
   },
   "audio": {
-    "title": "Paramètres Audio",
+    "title": "Paramètres audio",
     "volume": "Volume",
-    "quality": "Qualité Audio",
-    "qualityOptions": {
-      "low": "Faible (Chargement plus rapide)",
-      "medium": "Moyen (Équilibré)",
-      "high": "Élevé (Meilleure qualité)"
-    }
+    "quality": "Qualité audio",
+    "qualityLow": "Faible (Chargement plus rapide)",
+    "qualityMedium": "Moyen (Équilibré)",
+    "qualityHigh": "Élevé (Meilleure qualité)"
   },
   "privacy": {
-    "title": "Confidentialité et Sécurité",
+    "title": "Confidentialité et sécurité",
     "profileVisibility": {
-      "title": "Visibilité du Profil",
+      "title": "Visibilité du profil",
       "description": "Rendre votre profil visible aux autres membres de la famille"
     },
     "storySharing": {
-      "title": "Partage d'Histoires",
+      "title": "Partage d'histoires",
       "description": "Permettre aux autres de partager vos histoires"
     },
     "dataAnalytics": {
-      "title": "Analyse de Données",
+      "title": "Analyse de données",
       "description": "Aidez à améliorer notre service avec les données d'utilisation"
     },
     "twoFactor": {
-      "title": "Authentification à Deux Facteurs",
+      "title": "Authentification à deux facteurs",
       "description": "Ajouter une couche de sécurité supplémentaire"
     }
   },
   "notifications": {
     "title": "Notifications",
     "email": {
-      "title": "Notifications par Email",
-      "description": "Recevoir des mises à jour par email"
+      "title": "Notifications par e-mail",
+      "description": "Recevoir des mises à jour par e-mail"
     },
     "push": {
-      "title": "Notifications Push",
+      "title": "Notifications push",
       "description": "Recevoir des notifications sur vos appareils"
     },
     "weeklyDigest": {
-      "title": "Résumé Hebdomadaire",
+      "title": "Résumé hebdomadaire",
       "description": "Résumé hebdomadaire de l'activité familiale"
     },
-    "save": "Enregistrer les Paramètres de Notification"
+    "save": "Enregistrer les paramètres de notification"
   },
   "language": {
     "title": "Langue et Région",
@@ -93,42 +72,41 @@
     }
   },
   "dataManagement": {
-    "title": "Gestion des Données",
-    "export": {
-      "title": "Exporter Mes Données",
-      "description": "Télécharger toutes vos histoires et données",
-      "button": "Exporter"
-    },
-    "privacy": {
-      "title": "Confidentialité des Données",
-      "description": "Contrôlez comment vos données sont utilisées"
-    }
+    "title": "Gestion des données",
+    "dataPrivacy": "Confidentialité des données",
+    "dataPrivacyDesc": "Contrôler l'utilisation de vos données"
   },
   "account": {
-    "title": "Gestion du Compte",
+    "title": "Gestion du compte",
     "changePassword": {
-      "title": "Changer le Mot de Passe",
+      "title": "Changer le mot de passe",
       "description": "Mettre à jour le mot de passe de votre compte",
       "button": "Changer"
     },
     "twoFactor": {
-      "title": "Authentification à Deux Facteurs",
+      "title": "Authentification à deux facteurs",
       "description": "Ajouter une sécurité supplémentaire à votre compte",
       "button": "Configurer"
     },
     "devices": {
-      "title": "Appareils Connectés",
+      "title": "Appareils connectés",
       "description": "Gérer vos appareils connectés",
       "button": "Gérer"
+    },
+    "deleteAccount": {
+      "title": "Supprimer le compte",
+      "description": "Supprimer définitivement votre compte et toutes les données associées. Cette action ne peut pas être annulée.",
+      "button": "Supprimer le compte",
+      "warning": "Cette action ne peut pas être annulée"
+    },
+    "exportData": {
+      "title": "Exporter mes données",
+      "description": "Télécharger toutes vos histoires et données",
+      "button": "Exporter"
     }
   },
   "dangerZone": {
-    "title": "Zone Dangereuse",
-    "deleteAccount": {
-      "title": "Supprimer le Compte",
-      "description": "Supprimer définitivement votre compte et toutes les données associées. Cette action ne peut pas être annulée.",
-      "button": "Supprimer le Compte"
-    }
+    "title": "Zone dangereuse"
   },
   "messages": {
     "profileUpdated": "Profil mis à jour avec succès",
@@ -138,5 +116,9 @@
     "accessibilityUpdated": "Paramètres d'accessibilité mis à jour avec succès",
     "accessibilityUpdateFailed": "Échec de la mise à jour des paramètres d'accessibilité",
     "loadFailed": "Échec du chargement des paramètres. Utilisation des valeurs par défaut."
+  },
+  "description": "Gérez vos préférences de compte et paramètres de confidentialité",
+  "languageRegion": {
+    "title": "Langue et région"
   }
 }

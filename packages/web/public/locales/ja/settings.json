@@ -1,79 +1,58 @@
 {
   "title": "設定",
   "subtitle": "アカウントの設定とプライバシー設定を管理",
-  "loading": "設定を読み込んでいます...",
+  "loading": "環境設定を読み込んでいます...",
   "userInfo": {
     "title": "ユーザー情報",
     "changePhoto": "写真を変更",
     "photoHint": "JPG、PNG、またはGIF。最大サイズ2MB。",
-    "fullName": "氏名",
+    "fullName": "フルネーム",
     "email": "メールアドレス",
     "phone": "電話番号",
-    "phonePlaceholder": "(555) 123-4567",
     "saveChanges": "変更を保存"
   },
   "quickAccess": {
     "title": "クイックアクセス",
-    "description": "アクセシビリティと表示設定を素早く調整して、使いやすさを向上させます。",
-    "highContrast": {
-      "title": "ハイコントラスト",
-      "description": "テキストの視認性を向上"
-    },
-    "reducedMotion": {
-      "title": "モーション削減",
-      "description": "アニメーションを最小化"
-    },
-    "screenReader": {
-      "title": "スクリーンリーダー",
-      "description": "スクリーンリーダーのサポート強化"
-    },
-    "fontSize": {
-      "title": "フォントサイズ",
-      "current": "現在: {size}",
-      "standard": "標準",
-      "large": "大",
-      "extraLarge": "特大"
-    },
+    "description": "より良い使いやすさのために、アクセシビリティと表示設定を素早く調整します。",
+    "fontSizeCurrent": "現在",
     "save": "クイックアクセス設定を保存"
   },
   "audio": {
     "title": "オーディオ設定",
     "volume": "音量",
     "quality": "オーディオ品質",
-    "qualityOptions": {
-      "low": "低（高速読み込み）",
-      "medium": "中（バランス）",
-      "high": "高（最高品質）"
-    }
+    "qualityLow": "低（高速読み込み）",
+    "qualityMedium": "中（バランス）",
+    "qualityHigh": "高（最高品質）"
   },
   "privacy": {
     "title": "プライバシーとセキュリティ",
     "profileVisibility": {
-      "title": "プロフィールの公開",
-      "description": "他の家族メンバーにプロフィールを表示"
+      "title": "プロフィールの公開範囲",
+      "description": "他の家族メンバーにプロフィールを公開"
     },
     "storySharing": {
       "title": "ストーリー共有",
-      "description": "他のユーザーがあなたのストーリーを共有できるようにする"
+      "description": "他の人があなたのストーリーを共有できるようにする"
     },
     "dataAnalytics": {
       "title": "データ分析",
-      "description": "使用データでサービスの改善に協力"
+      "description": "使用データでサービス改善に協力"
     },
     "twoFactor": {
-      "title": "二要素認証",
-      "description": "セキュリティの追加レイヤーを追加"
+      "title": "2段階認証",
+      "description": "追加のセキュリティレイヤーを追加"
     }
   },
   "notifications": {
     "title": "通知",
     "email": {
       "title": "メール通知",
-      "description": "メールで更新を受信"
+      "description": "メールで更新を受け取る"
     },
     "push": {
       "title": "プッシュ通知",
-      "description": "デバイスで通知を受信"
+      "description": "デバイスで通知を受け取る"
     },
     "weeklyDigest": {
       "title": "週間ダイジェスト",
@@ -94,41 +73,40 @@
   },
   "dataManagement": {
     "title": "データ管理",
-    "export": {
-      "title": "データをエクスポート",
-      "description": "すべてのストーリーとデータをダウンロード",
-      "button": "エクスポート"
-    },
-    "privacy": {
-      "title": "データプライバシー",
-      "description": "データの使用方法を管理"
-    }
+    "dataPrivacy": "データプライバシー",
+    "dataPrivacyDesc": "データの使用方法を制御"
   },
   "account": {
     "title": "アカウント管理",
     "changePassword": {
-      "title": "パスワードを変更",
-      "description": "アカウントのパスワードを更新",
+      "title": "パスワード変更",
+      "description": "アカウントパスワードを更新",
       "button": "変更"
     },
     "twoFactor": {
-      "title": "二要素認証",
+      "title": "2段階認証",
       "description": "アカウントに追加のセキュリティを追加",
       "button": "設定"
     },
     "devices": {
       "title": "接続されたデバイス",
-      "description": "ログイン中のデバイスを管理",
+      "description": "ログインしているデバイスを管理",
       "button": "管理"
+    },
+    "deleteAccount": {
+      "title": "アカウント削除",
+      "description": "アカウントとすべての関連データを完全に削除します。この操作は元に戻せません。",
+      "button": "アカウント削除",
+      "warning": "この操作は元に戻せません"
+    },
+    "exportData": {
+      "title": "データをエクスポート",
+      "description": "すべてのストーリーとデータをダウンロード",
+      "button": "エクスポート"
     }
   },
   "dangerZone": {
-    "title": "危険ゾーン",
-    "deleteAccount": {
-      "title": "アカウントを削除",
-      "description": "アカウントと関連するすべてのデータを完全に削除します。この操作は元に戻せません。",
-      "button": "アカウントを削除"
-    }
+    "title": "危険ゾーン"
   },
   "messages": {
     "profileUpdated": "プロフィールが正常に更新されました",
@@ -138,5 +116,9 @@
     "accessibilityUpdated": "アクセシビリティ設定が正常に更新されました",
     "accessibilityUpdateFailed": "アクセシビリティ設定の更新に失敗しました",
     "loadFailed": "設定の読み込みに失敗しました。デフォルト値を使用します。"
+  },
+  "description": "アカウントの環境設定とプライバシー設定を管理",
+  "languageRegion": {
+    "title": "言語と地域"
   }
 }

@@ -26,45 +26,38 @@
     }
   },
   "notifications": {
-    "title": "通知偏好",
+    "title": "通知",
     "email": {
       "title": "電子郵件通知",
-      "newStory": "發布新故事",
-      "newComment": "您的故事有新評論",
-      "newFollowUp": "新的後續問題",
-      "projectInvite": "專案邀請",
-      "weeklyDigest": "每週摘要"
+      "description": "透過電子郵件接收更新"
     },
     "push": {
-      "title": "推送通知",
-      "enabled": "啟用推送通知",
+      "title": "推播通知",
       "description": "在您的裝置上接收通知"
-    }
+    },
+    "weeklyDigest": {
+      "title": "每週摘要",
+      "description": "家庭活動的每週摘要"
+    },
+    "save": "儲存通知設定"
   },
   "privacy": {
-    "title": "隱私設定",
+    "title": "隱私與安全",
     "profileVisibility": {
       "title": "個人資料可見性",
-      "description": "控制誰可以查看您的個人資料",
-      "options": {
-        "public": "公開",
-        "private": "私密",
-        "familyOnly": "僅家人"
-      }
+      "description": "讓其他家庭成員看到您的個人資料"
     },
-    "storyVisibility": {
-      "title": "故事可見性",
-      "description": "新故事的預設可見性",
-      "options": {
-        "projectMembers": "僅專案成員",
-        "family": "家人",
-        "public": "公開"
-      }
+    "storySharing": {
+      "title": "故事分享",
+      "description": "允許他人分享您的故事"
     },
-    "dataSharing": {
-      "title": "資料共享",
-      "analytics": "共享匿名使用資料",
-      "improvements": "協助改進Saga"
+    "dataAnalytics": {
+      "title": "資料分析",
+      "description": "透過使用資料幫助改進我們的服務"
+    },
+    "twoFactor": {
+      "title": "雙因素驗證",
+      "description": "新增額外的安全層"
     }
   },
   "accessibility": {
@@ -94,18 +87,28 @@
     "changePassword": {
       "title": "變更密碼",
       "description": "更新您的帳戶密碼",
-      "button": "變更密碼"
+      "button": "變更"
+    },
+    "twoFactor": {
+      "title": "雙因素驗證",
+      "description": "為您的帳戶新增額外的安全性",
+      "button": "設定"
+    },
+    "devices": {
+      "title": "已連接裝置",
+      "description": "管理您已登入的裝置",
+      "button": "管理"
     },
     "deleteAccount": {
       "title": "刪除帳戶",
-      "description": "永久刪除您的帳戶和所有資料",
+      "description": "永久刪除您的帳戶和所有相關資料。此操作無法復原。",
       "button": "刪除帳戶",
       "warning": "此操作無法復原"
     },
     "exportData": {
-      "title": "匯出資料",
-      "description": "下載您的所有帳戶資料",
-      "button": "匯出資料"
+      "title": "匯出我的資料",
+      "description": "下載所有故事和資料",
+      "button": "匯出"
     }
   },
   "actions": {
@@ -121,5 +124,41 @@
   "errors": {
     "saveFailed": "儲存設定失敗",
     "loadFailed": "載入設定失敗"
+  },
+  "description": "管理您的帳戶偏好設定和隱私設定",
+  "loading": "正在載入您的偏好設定...",
+  "userInfo": {
+    "title": "使用者資訊",
+    "changePhoto": "更改照片",
+    "photoHint": "JPG、PNG 或 GIF。最大 2MB。",
+    "fullName": "全名",
+    "email": "電子郵件地址",
+    "phone": "電話號碼",
+    "saveChanges": "儲存變更"
+  },
+  "quickAccess": {
+    "title": "快速存取",
+    "description": "快速調整輔助功能和顯示設定以獲得更好的可用性。",
+    "fontSizeCurrent": "目前",
+    "save": "儲存快速存取設定"
+  },
+  "audio": {
+    "title": "音訊設定",
+    "volume": "音量",
+    "quality": "音訊品質",
+    "qualityLow": "低（載入更快）",
+    "qualityMedium": "中（平衡）",
+    "qualityHigh": "高（最佳品質）"
+  },
+  "languageRegion": {
+    "title": "語言和地區"
+  },
+  "dataManagement": {
+    "title": "資料管理",
+    "dataPrivacy": "資料隱私",
+    "dataPrivacyDesc": "控制資料的使用方式"
+  },
+  "dangerZone": {
+    "title": "危險區域"
   }
 }

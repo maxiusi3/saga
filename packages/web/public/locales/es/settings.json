@@ -3,83 +3,62 @@
   "subtitle": "Gestiona las preferencias de tu cuenta y la configuración de privacidad",
   "loading": "Cargando tus preferencias...",
   "userInfo": {
-    "title": "Información del Usuario",
-    "changePhoto": "Cambiar Foto",
+    "title": "Información del usuario",
+    "changePhoto": "Cambiar foto",
     "photoHint": "JPG, PNG o GIF. Tamaño máximo 2MB.",
-    "fullName": "Nombre Completo",
-    "email": "Correo Electrónico",
-    "phone": "Número de Teléfono",
-    "phonePlaceholder": "(555) 123-4567",
-    "saveChanges": "Guardar Cambios"
+    "fullName": "Nombre completo",
+    "email": "Dirección de correo electrónico",
+    "phone": "Número de teléfono",
+    "saveChanges": "Guardar cambios"
   },
   "quickAccess": {
-    "title": "Acceso Rápido",
-    "description": "Ajusta rápidamente la accesibilidad y la configuración de visualización para una mejor usabilidad.",
-    "highContrast": {
-      "title": "Alto Contraste",
-      "description": "Mejorar la visibilidad del texto"
-    },
-    "reducedMotion": {
-      "title": "Movimiento Reducido",
-      "description": "Minimizar animaciones"
-    },
-    "screenReader": {
-      "title": "Lector de Pantalla",
-      "description": "Soporte mejorado para lectores de pantalla"
-    },
-    "fontSize": {
-      "title": "Tamaño de Fuente",
-      "current": "Actual: {size}",
-      "standard": "Estándar",
-      "large": "Grande",
-      "extraLarge": "Extra Grande"
-    },
-    "save": "Guardar Configuración de Acceso Rápido"
+    "title": "Acceso rápido",
+    "description": "Ajusta rápidamente la configuración de accesibilidad y visualización para una mejor usabilidad.",
+    "fontSizeCurrent": "Actual",
+    "save": "Guardar configuración de acceso rápido"
   },
   "audio": {
-    "title": "Configuración de Audio",
+    "title": "Configuración de audio",
     "volume": "Volumen",
-    "quality": "Calidad de Audio",
-    "qualityOptions": {
-      "low": "Baja (Carga más rápida)",
-      "medium": "Media (Equilibrada)",
-      "high": "Alta (Mejor calidad)"
-    }
+    "quality": "Calidad de audio",
+    "qualityLow": "Baja (Carga más rápida)",
+    "qualityMedium": "Media (Equilibrada)",
+    "qualityHigh": "Alta (Mejor calidad)"
   },
   "privacy": {
-    "title": "Privacidad y Seguridad",
+    "title": "Privacidad y seguridad",
     "profileVisibility": {
-      "title": "Visibilidad del Perfil",
+      "title": "Visibilidad del perfil",
       "description": "Hacer tu perfil visible para otros miembros de la familia"
     },
     "storySharing": {
-      "title": "Compartir Historias",
+      "title": "Compartir historias",
       "description": "Permitir que otros compartan tus historias"
     },
     "dataAnalytics": {
-      "title": "Análisis de Datos",
+      "title": "Análisis de datos",
       "description": "Ayuda a mejorar nuestro servicio con datos de uso"
     },
     "twoFactor": {
-      "title": "Autenticación de Dos Factores",
-      "description": "Añade una capa extra de seguridad"
+      "title": "Autenticación de dos factores",
+      "description": "Agregar una capa adicional de seguridad"
     }
   },
   "notifications": {
     "title": "Notificaciones",
     "email": {
-      "title": "Notificaciones por Correo",
+      "title": "Notificaciones por correo electrónico",
       "description": "Recibir actualizaciones por correo electrónico"
     },
     "push": {
-      "title": "Notificaciones Push",
+      "title": "Notificaciones push",
       "description": "Recibir notificaciones en tus dispositivos"
     },
     "weeklyDigest": {
-      "title": "Resumen Semanal",
+      "title": "Resumen semanal",
       "description": "Resumen semanal de la actividad familiar"
     },
-    "save": "Guardar Configuración de Notificaciones"
+    "save": "Guardar configuración de notificaciones"
   },
   "language": {
     "title": "Idioma y Región",
@@ -93,42 +72,41 @@
     }
   },
   "dataManagement": {
-    "title": "Gestión de Datos",
-    "export": {
-      "title": "Exportar Mis Datos",
-      "description": "Descargar todas tus historias y datos",
-      "button": "Exportar"
-    },
-    "privacy": {
-      "title": "Privacidad de Datos",
-      "description": "Controla cómo se usan tus datos"
-    }
+    "title": "Gestión de datos",
+    "dataPrivacy": "Privacidad de datos",
+    "dataPrivacyDesc": "Controlar cómo se usan tus datos"
   },
   "account": {
-    "title": "Gestión de Cuenta",
+    "title": "Gestión de cuenta",
     "changePassword": {
-      "title": "Cambiar Contraseña",
-      "description": "Actualiza la contraseña de tu cuenta",
+      "title": "Cambiar contraseña",
+      "description": "Actualizar la contraseña de tu cuenta",
       "button": "Cambiar"
     },
     "twoFactor": {
-      "title": "Autenticación de Dos Factores",
-      "description": "Añade seguridad extra a tu cuenta",
+      "title": "Autenticación de dos factores",
+      "description": "Agregar seguridad adicional a tu cuenta",
       "button": "Configurar"
     },
     "devices": {
-      "title": "Dispositivos Conectados",
-      "description": "Gestiona tus dispositivos con sesión iniciada",
-      "button": "Gestionar"
+      "title": "Dispositivos conectados",
+      "description": "Administrar tus dispositivos conectados",
+      "button": "Administrar"
+    },
+    "deleteAccount": {
+      "title": "Eliminar cuenta",
+      "description": "Eliminar permanentemente tu cuenta y todos los datos asociados. Esta acción no se puede deshacer.",
+      "button": "Eliminar cuenta",
+      "warning": "Esta acción no se puede deshacer"
+    },
+    "exportData": {
+      "title": "Exportar mis datos",
+      "description": "Descargar todas tus historias y datos",
+      "button": "Exportar"
     }
   },
   "dangerZone": {
-    "title": "Zona de Peligro",
-    "deleteAccount": {
-      "title": "Eliminar Cuenta",
-      "description": "Elimina permanentemente tu cuenta y todos los datos asociados. Esta acción no se puede deshacer.",
-      "button": "Eliminar Cuenta"
-    }
+    "title": "Zona de peligro"
   },
   "messages": {
     "profileUpdated": "Perfil actualizado correctamente",
@@ -138,5 +116,9 @@
     "accessibilityUpdated": "Configuración de accesibilidad actualizada correctamente",
     "accessibilityUpdateFailed": "Error al actualizar la configuración de accesibilidad",
     "loadFailed": "Error al cargar la configuración. Usando valores predeterminados."
+  },
+  "description": "Administra tus preferencias de cuenta y configuración de privacidad",
+  "languageRegion": {
+    "title": "Idioma y región"
   }
 }

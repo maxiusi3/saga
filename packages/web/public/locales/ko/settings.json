@@ -1,11 +1,111 @@
 {
   "title": "설정",
+  "description": "계정 환경설정 및 개인정보 설정 관리",
+  "loading": "환경설정을 불러오는 중...",
   "tabs": {
     "general": "일반",
     "notifications": "알림",
     "privacy": "개인정보",
     "accessibility": "접근성",
     "account": "계정"
+  },
+  "userInfo": {
+    "title": "사용자 정보",
+    "changePhoto": "사진 변경",
+    "photoHint": "JPG, PNG 또는 GIF. 최대 크기 2MB.",
+    "fullName": "전체 이름",
+    "email": "이메일 주소",
+    "phone": "전화번호",
+    "saveChanges": "변경사항 저장"
+  },
+  "quickAccess": {
+    "title": "빠른 접근",
+    "description": "더 나은 사용성을 위해 접근성 및 디스플레이 설정을 빠르게 조정하세요.",
+    "fontSizeCurrent": "현재",
+    "save": "빠른 접근 설정 저장"
+  },
+  "audio": {
+    "title": "오디오 설정",
+    "volume": "볼륨",
+    "quality": "오디오 품질",
+    "qualityLow": "낮음 (빠른 로딩)",
+    "qualityMedium": "중간 (균형)",
+    "qualityHigh": "높음 (최고 품질)"
+  },
+  "privacy": {
+    "title": "개인정보 및 보안",
+    "profileVisibility": {
+      "title": "프로필 공개 범위",
+      "description": "다른 가족 구성원에게 프로필 공개"
+    },
+    "storySharing": {
+      "title": "이야기 공유",
+      "description": "다른 사람이 내 이야기를 공유할 수 있도록 허용"
+    },
+    "dataAnalytics": {
+      "title": "데이터 분석",
+      "description": "사용 데이터로 서비스 개선에 도움"
+    },
+    "twoFactor": {
+      "title": "2단계 인증",
+      "description": "추가 보안 계층 추가"
+    }
+  },
+  "notifications": {
+    "title": "알림",
+    "email": {
+      "title": "이메일 알림",
+      "description": "이메일로 업데이트 받기"
+    },
+    "push": {
+      "title": "푸시 알림",
+      "description": "기기에서 알림 받기"
+    },
+    "weeklyDigest": {
+      "title": "주간 요약",
+      "description": "가족 활동의 주간 요약"
+    },
+    "save": "알림 설정 저장"
+  },
+  "languageRegion": {
+    "title": "언어 및 지역"
+  },
+  "dataManagement": {
+    "title": "데이터 관리",
+    "dataPrivacy": "데이터 개인정보",
+    "dataPrivacyDesc": "데이터 사용 방식 제어"
+  },
+  "dangerZone": {
+    "title": "위험 구역"
+  },
+  "account": {
+    "title": "계정 관리",
+    "changePassword": {
+      "title": "비밀번호 변경",
+      "description": "계정 비밀번호 업데이트",
+      "button": "변경"
+    },
+    "twoFactor": {
+      "title": "2단계 인증",
+      "description": "계정에 추가 보안 추가",
+      "button": "설정"
+    },
+    "devices": {
+      "title": "연결된 기기",
+      "description": "로그인된 기기 관리",
+      "button": "관리"
+    },
+    "deleteAccount": {
+      "title": "계정 삭제",
+      "description": "계정 및 모든 관련 데이터를 영구적으로 삭제합니다. 이 작업은 취소할 수 없습니다.",
+      "button": "계정 삭제",
+      "warning": "이 작업은 취소할 수 없습니다"
+    },
+    "exportData": {
+      "title": "내 데이터 내보내기",
+      "description": "모든 이야기 및 데이터 다운로드",
+      "button": "내보내기"
+    }
   },
   "general": {
     "title": "일반 설정",

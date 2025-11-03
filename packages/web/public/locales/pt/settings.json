@@ -26,45 +26,38 @@
     }
   },
   "notifications": {
-    "title": "Preferências de Notificação",
+    "title": "Notificações",
     "email": {
-      "title": "Notificações por E-mail",
-      "newStory": "Nova história publicada",
-      "newComment": "Novo comentário na sua história",
-      "newFollowUp": "Nova pergunta de acompanhamento",
-      "projectInvite": "Convite para projeto",
-      "weeklyDigest": "Resumo semanal"
+      "title": "Notificações por e-mail",
+      "description": "Receber atualizações por e-mail"
     },
     "push": {
-      "title": "Notificações Push",
-      "enabled": "Habilitar notificações push",
-      "description": "Receber notificações no seu dispositivo"
-    }
+      "title": "Notificações push",
+      "description": "Receber notificações em seus dispositivos"
+    },
+    "weeklyDigest": {
+      "title": "Resumo semanal",
+      "description": "Resumo semanal da atividade familiar"
+    },
+    "save": "Salvar configurações de notificação"
   },
   "privacy": {
-    "title": "Configurações de Privacidade",
+    "title": "Privacidade e segurança",
     "profileVisibility": {
-      "title": "Visibilidade do Perfil",
-      "description": "Controle quem pode ver seu perfil",
-      "options": {
-        "public": "Público",
-        "private": "Privado",
-        "familyOnly": "Apenas Família"
-      }
+      "title": "Visibilidade do perfil",
+      "description": "Tornar seu perfil visível para outros membros da família"
     },
-    "storyVisibility": {
-      "title": "Visibilidade de Histórias",
-      "description": "Visibilidade padrão para novas histórias",
-      "options": {
-        "projectMembers": "Apenas Membros do Projeto",
-        "family": "Família",
-        "public": "Público"
-      }
+    "storySharing": {
+      "title": "Compartilhamento de histórias",
+      "description": "Permitir que outros compartilhem suas histórias"
     },
-    "dataSharing": {
-      "title": "Compartilhamento de Dados",
-      "analytics": "Compartilhar dados de uso anônimos",
-      "improvements": "Ajudar a melhorar o Saga"
+    "dataAnalytics": {
+      "title": "Análise de dados",
+      "description": "Ajude a melhorar nosso serviço com dados de uso"
+    },
+    "twoFactor": {
+      "title": "Autenticação de dois fatores",
+      "description": "Adicionar uma camada extra de segurança"
     }
   },
   "accessibility": {
@@ -90,22 +83,32 @@
     }
   },
   "account": {
-    "title": "Gerenciamento de Conta",
+    "title": "Gerenciamento de conta",
     "changePassword": {
-      "title": "Alterar Senha",
+      "title": "Alterar senha",
       "description": "Atualizar a senha da sua conta",
-      "button": "Alterar Senha"
+      "button": "Alterar"
+    },
+    "twoFactor": {
+      "title": "Autenticação de dois fatores",
+      "description": "Adicionar segurança extra à sua conta",
+      "button": "Configurar"
+    },
+    "devices": {
+      "title": "Dispositivos conectados",
+      "description": "Gerenciar seus dispositivos conectados",
+      "button": "Gerenciar"
     },
     "deleteAccount": {
-      "title": "Excluir Conta",
-      "description": "Excluir permanentemente sua conta e todos os dados",
-      "button": "Excluir Conta",
+      "title": "Excluir conta",
+      "description": "Excluir permanentemente sua conta e todos os dados associados. Esta ação não pode ser desfeita.",
+      "button": "Excluir conta",
       "warning": "Esta ação não pode ser desfeita"
     },
     "exportData": {
-      "title": "Exportar Dados",
-      "description": "Baixar todos os dados da sua conta",
-      "button": "Exportar Dados"
+      "title": "Exportar meus dados",
+      "description": "Baixar todas as suas histórias e dados",
+      "button": "Exportar"
     }
   },
   "actions": {
@@ -121,5 +124,41 @@
   "errors": {
     "saveFailed": "Falha ao salvar configurações",
     "loadFailed": "Falha ao carregar configurações"
+  },
+  "description": "Gerencie suas preferências de conta e configurações de privacidade",
+  "loading": "Carregando suas preferências...",
+  "userInfo": {
+    "title": "Informações do usuário",
+    "changePhoto": "Alterar foto",
+    "photoHint": "JPG, PNG ou GIF. Tamanho máximo 2MB.",
+    "fullName": "Nome completo",
+    "email": "Endereço de e-mail",
+    "phone": "Número de telefone",
+    "saveChanges": "Salvar alterações"
+  },
+  "quickAccess": {
+    "title": "Acesso rápido",
+    "description": "Ajuste rapidamente as configurações de acessibilidade e exibição para melhor usabilidade.",
+    "fontSizeCurrent": "Atual",
+    "save": "Salvar configurações de acesso rápido"
+  },
+  "audio": {
+    "title": "Configurações de áudio",
+    "volume": "Volume",
+    "quality": "Qualidade de áudio",
+    "qualityLow": "Baixa (Carregamento mais rápido)",
+    "qualityMedium": "Média (Equilibrada)",
+    "qualityHigh": "Alta (Melhor qualidade)"
+  },
+  "languageRegion": {
+    "title": "Idioma e região"
+  },
+  "dataManagement": {
+    "title": "Gerenciamento de dados",
+    "dataPrivacy": "Privacidade de dados",
+    "dataPrivacyDesc": "Controlar como seus dados são usados"
+  },
+  "dangerZone": {
+    "title": "Zona de perigo"
   }
 }
