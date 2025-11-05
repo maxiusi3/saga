@@ -194,8 +194,8 @@ export default function ResourcesPage() {
               <div className="flex items-center space-x-3">
                 <BookOpen className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="font-medium text-foreground">Created "Dad's Life Story"</div>
-                  <div className="text-sm text-muted-foreground">Used 1 Project Voucher</div>
+                  <div className="font-medium text-foreground">{t('activity.created', { name: "Dad's Life Story" })}</div>
+                  <div className="text-sm text-muted-foreground">{t('activity.usedProject')}</div>
                 </div>
               </div>
               <div className="text-sm text-muted-foreground">
@@ -207,8 +207,8 @@ export default function ResourcesPage() {
               <div className="flex items-center space-x-3">
                 <UserPlus className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="font-medium text-foreground">Invited John Doe as Storyteller</div>
-                  <div className="text-sm text-muted-foreground">Used 1 Storyteller Seat</div>
+                  <div className="font-medium text-foreground">{t('activity.invitedStoryteller', { name: "John Doe" })}</div>
+                  <div className="text-sm text-muted-foreground">{t('activity.usedStoryteller')}</div>
                 </div>
               </div>
               <div className="text-sm text-muted-foreground">
@@ -220,8 +220,8 @@ export default function ResourcesPage() {
               <div className="flex items-center space-x-3">
                 <Users className="h-5 w-5 text-primary" />
                 <div>
-                  <div className="font-medium text-foreground">Invited Beth Smith as Facilitator</div>
-                  <div className="text-sm text-muted-foreground">Used 1 Facilitator Seat</div>
+                  <div className="font-medium text-foreground">{t('activity.invitedFacilitator', { name: "Beth Smith" })}</div>
+                  <div className="text-sm text-muted-foreground">{t('activity.usedFacilitator')}</div>
                 </div>
               </div>
               <div className="text-sm text-muted-foreground">

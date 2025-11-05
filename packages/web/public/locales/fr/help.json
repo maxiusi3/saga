@@ -1,0 +1,69 @@
+{
+  "title": "Centre d'Aide",
+  "subtitle": "Trouvez des réponses aux questions courantes et obtenez de l'aide",
+  "searchPlaceholder": "Rechercher de l'aide...",
+  "quickActions": {
+    "videoTutorials": {
+      "title": "Tutoriels Vidéo",
+      "description": "Guides étape par étape pour commencer"
+    },
+    "liveChat": {
+      "title": "Chat en Direct",
+      "description": "Obtenez une aide instantanée de notre équipe de support"
+    },
+    "emailSupport": {
+      "title": "Support par Email",
+      "description": "Envoyez-nous un message et nous répondrons dans les 24 heures"
+    }
+  },
+  "categories": {
+    "all": "Tous les Sujets",
+    "gettingStarted": "Premiers Pas",
+    "recording": "Enregistrer des Histoires",
+    "sharing": "Partage et Collaboration",
+    "technical": "Technique",
+    "billing": "Facturation et Tarification"
+  },
+  "faqTitle": "Questions Fréquemment Posées",
+  "noResults": "Aucune question trouvée correspondant à votre recherche.",
+  "contact": {
+    "title": "Besoin d'aide supplémentaire?",
+    "description": "Notre équipe de support est là pour vous aider à préserver les précieuses histoires de votre famille.",
+    "startChat": "Démarrer le Chat en Direct",
+    "emailUs": "Support par Email"
+  },
+  "faqs": {
+    "createProject": {
+      "question": "Comment créer mon premier projet d'histoire familiale?",
+      "answer": "Pour créer votre premier projet, cliquez sur Créer une Nouvelle Saga depuis votre tableau de bord. Vous devrez d'abord acheter un Package Saga, qui comprend tout ce dont vous avez besoin pour commencer. Après l'achat, vous pouvez configurer votre projet et inviter un conteur."
+    },
+    "inviteMembers": {
+      "question": "Comment inviter des membres de la famille à participer?",
+      "answer": "Depuis les paramètres de votre projet, vous pouvez inviter des conteurs et des facilitateurs. Cliquez sur Inviter un Conteur ou Inviter un Facilitateur et entrez leur adresse email. Ils recevront un lien d'invitation pour rejoindre votre projet."
+    },
+    "recordStories": {
+      "question": "Quelle est la meilleure façon d'enregistrer des histoires?",
+      "answer": "Trouvez un espace calme avec un bruit de fond minimal. Utilisez les invites intégrées pour guider les conversations, et ne vous inquiétez pas des enregistrements parfaits - l'authenticité est plus importante que la perfection. Vous pouvez mettre en pause et reprendre les enregistrements à tout moment."
+    },
+    "transcription": {
+      "question": "Comment fonctionne la transcription?",
+      "answer": "Tous les enregistrements audio sont automatiquement transcrits à l'aide d'une technologie d'IA avancée. Les transcriptions sont généralement prêtes quelques minutes après le téléchargement. Vous pouvez modifier les transcriptions si nécessaire pour corriger les erreurs."
+    },
+    "exportStories": {
+      "question": "Puis-je exporter mes histoires familiales?",
+      "answer": "Oui! Vous pouvez exporter votre archive complète d'histoires depuis les paramètres du projet. Cela inclut tous les fichiers audio, transcriptions, photos et commentaires dans un format téléchargeable."
+    },
+    "moreSeats": {
+      "question": "Que se passe-t-il si j'ai besoin de plus de sièges?",
+      "answer": "Vous pouvez acheter des sièges supplémentaires à tout moment depuis votre page de gestion des ressources. Les bons de projet supplémentaires coûtent 15$, les sièges de facilitateur coûtent 10$ et les sièges de conteur coûtent 5$."
+    },
+    "helpElderly": {
+      "question": "Comment aider mon membre de famille âgé à utiliser l'application?",
+      "answer": "L'interface du conteur est conçue pour être simple et intuitive. Envisagez de faire une session de pratique ensemble, et rappelez-vous que les membres de la famille n'ont qu'à se concentrer sur l'enregistrement - vous gérez toute la gestion du projet en tant que facilitateur."
+    },
+    "privacy": {
+      "question": "Mes histoires familiales sont-elles privées et sécurisées?",
+      "answer": "Oui, toutes les histoires sont privées par défaut et accessibles uniquement aux membres de la famille invités. Nous utilisons une sécurité et un cryptage de niveau entreprise pour protéger vos précieux souvenirs."
+    }
+  }
+}

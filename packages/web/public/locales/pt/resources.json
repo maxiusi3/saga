@@ -48,5 +48,13 @@
     "facilitatorSeatsDesc": "Convide irmãos para co-gerenciar projetos",
     "storytellerSeatsDesc": "Convide membros da família para compartilhar histórias",
     "projectVouchersDesc": "Crie novos projetos de histórias"
+  },
+  "activity": {
+    "created": "Criado \"{name}\"",
+    "usedProject": "Usado 1 voucher de projeto",
+    "invitedStoryteller": "Convidado {name} como contador",
+    "usedStoryteller": "Usado 1 assento de contador",
+    "invitedFacilitator": "Convidado {name} como facilitador",
+    "usedFacilitator": "Usado 1 assento de facilitador"
   }
 }

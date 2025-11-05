@@ -48,5 +48,13 @@
     "facilitatorSeatsDesc": "Invite siblings to co-manage projects",
     "storytellerSeatsDesc": "Invite family members to share stories",
     "projectVouchersDesc": "Create new story projects"
+  },
+  "activity": {
+    "created": "Created \"{name}\"",
+    "usedProject": "Used 1 Project Voucher",
+    "invitedStoryteller": "Invited {name} as Storyteller",
+    "usedStoryteller": "Used 1 Storyteller Seat",
+    "invitedFacilitator": "Invited {name} as Facilitator",
+    "usedFacilitator": "Used 1 Facilitator Seat"
   }
 }

@@ -25,5 +25,10 @@
     "failedToLoad": "Falha ao carregar notificações",
     "tryAgain": "Tentar Novamente"
   },
-  "loadMore": "Carregar Mais"
+  "loadMore": "Carregar Mais",
+  "item": {
+    "in": "em",
+    "markAsRead": "Marcar como lido",
+    "delete": "Excluir notificação"
+  }
 }

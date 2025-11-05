@@ -9,6 +9,7 @@ import {
   formatNotificationTime
 } from '@saga/shared'
 import { useNotifications } from '@/hooks/useNotifications'
+import { useTranslations } from 'next-intl'
 
 interface NotificationItemProps {
   notification: SagaNotification
@@ -21,6 +22,7 @@ export function NotificationItem({
   onClick, 
   showActions = true 
 }: NotificationItemProps) {
+  const t = useTranslations('notifications-page.item')
   const { markAsRead, deleteNotification } = useNotifications()
   const displayInfo = getNotificationDisplayInfo(notification.notification_type)
 
@@ -89,7 +91,7 @@ export function NotificationItem({
                 
                 {notification.project_title && (
                   <span className="text-xs text-muted-foreground">
-                    in {notification.project_title}
+                    {t('in')} {notification.project_title}
                   </span>
                 )}
                 
@@ -108,7 +110,7 @@ export function NotificationItem({
                     size="sm"
                     onClick={handleMarkAsRead}
                     className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                    title="Mark as read"
+                    title={t('markAsRead')}
                   >
                     <Check className="h-3 w-3" />
                   </FurbridgeButton>
@@ -119,7 +121,7 @@ export function NotificationItem({
                   size="sm"
                   onClick={handleDelete}
                   className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity hover:text-destructive"
-                  title="Delete notification"
+                  title={t('delete')}
                 >
                   <Trash2 className="h-3 w-3" />
                 </FurbridgeButton>

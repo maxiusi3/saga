@@ -1,0 +1,71 @@
+{
+  "title": "Centro de Ajuda",
+  "subtitle": "Encontre respostas para perguntas comuns e obtenha suporte",
+  "searchPlaceholder": "Pesquisar ajuda...",
+  "quickActions": {
+    "videoTutorials": {
+      "title": "Tutoriais em Vídeo",
+      "description": "Guias passo a passo para começar"
+    },
+    "liveChat": {
+      "title": "Chat ao Vivo",
+      "description": "Obtenha ajuda instantânea da nossa equipe de suporte"
+    },
+    "emailSupport": {
+      "title": "Suporte por Email",
+      "description": "Envie-nos uma mensagem e responderemos em 24 horas"
+    }
+  },
+  "categories": {
+    "all": "Todos os Tópicos",
+    "gettingStarted": "Primeiros Passos",
+    "recording": "Gravar Histórias",
+    "sharing": "Compartilhar e Colaborar",
+    "technical": "Técnico",
+    "billing": "Faturamento e Preços"
+  },
+  "faqTitle": "Perguntas Frequentes",
+  "noResults": "Nenhuma pergunta encontrada correspondente à sua pesquisa.",
+  "contact": {
+    "title": "Ainda precisa de ajuda?",
+    "description": "Nossa equipe de suporte está aqui para ajudá-lo a preservar as histórias preciosas da sua família.",
+    "startChat": "Iniciar Chat ao Vivo",
+    "emailUs": "Suporte por Email"
+  },
+  "faqs": {
+    "createProject": {
+      "question": "Como criar meu primeiro projeto de história familiar?",
+      "answer": "Para criar seu primeiro projeto, clique em Criar uma Nova Saga no seu painel. Você precisará primeiro comprar um Pacote Saga, que inclui tudo o que você precisa para começar. Após a compra, você pode configurar seu projeto e convidar um narrador."
+    }
+  }
+}
+    "inviteMembers": {
+      "question": "Como convidar membros da família para participar?",
+      "answer": "Nas configurações do seu projeto, você pode convidar narradores e facilitadores. Clique em Convidar Narrador ou Convidar Facilitador e insira o endereço de email deles. Eles receberão um link de convite para participar do seu projeto."
+    },
+    "recordStories": {
+      "question": "Qual é a melhor maneira de gravar histórias?",
+      "answer": "Encontre um espaço tranquilo com ruído de fundo mínimo. Use as sugestões integradas para guiar as conversas, e não se preocupe com gravações perfeitas - a autenticidade é mais importante que a perfeição. Você pode pausar e retomar as gravações a qualquer momento."
+    },
+    "transcription": {
+      "question": "Como funciona a transcrição?",
+      "answer": "Todas as gravações de áudio são automaticamente transcritas usando tecnologia de IA avançada. As transcrições geralmente ficam prontas em alguns minutos após o upload. Você pode editar as transcrições se necessário para corrigir erros."
+    },
+    "exportStories": {
+      "question": "Posso exportar minhas histórias familiares?",
+      "answer": "Sim! Você pode exportar seu arquivo completo de histórias nas configurações do projeto. Isso inclui todos os arquivos de áudio, transcrições, fotos e comentários em um formato para download."
+    },
+    "moreSeats": {
+      "question": "O que acontece se eu precisar de mais assentos?",
+      "answer": "Você pode comprar assentos adicionais a qualquer momento na sua página de gerenciamento de recursos. Vouchers de projeto extras custam $15, assentos de facilitador custam $10 e assentos de narrador custam $5."
+    },
+    "helpElderly": {
+      "question": "Como ajudar meu familiar idoso a usar o aplicativo?",
+      "answer": "A interface do narrador é projetada para ser simples e intuitiva. Considere fazer uma sessão de prática juntos, e lembre-se de que os membros da família só precisam se concentrar em gravar - você cuida de todo o gerenciamento do projeto como facilitador."
+    },
+    "privacy": {
+      "question": "Minhas histórias familiares são privadas e seguras?",
+      "answer": "Sim, todas as histórias são privadas por padrão e acessíveis apenas aos membros da família convidados. Usamos segurança e criptografia de nível empresarial para proteger suas memórias preciosas."
+    }
+  }
+}

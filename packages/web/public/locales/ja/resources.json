@@ -48,5 +48,13 @@
     "facilitatorSeatsDesc": "兄弟姉妹を招待してプロジェクトを共同管理",
     "storytellerSeatsDesc": "家族を招待してストーリーを共有",
     "projectVouchersDesc": "新しいストーリープロジェクトを作成"
+  },
+  "activity": {
+    "created": "\"{name}\"を作成",
+    "usedProject": "プロジェクトバウチャー1個使用",
+    "invitedStoryteller": "{name}をストーリーテラーとして招待",
+    "usedStoryteller": "ストーリーテラー席1個使用",
+    "invitedFacilitator": "{name}をファシリテーターとして招待",
+    "usedFacilitator": "ファシリテーター席1個使用"
   }
 }

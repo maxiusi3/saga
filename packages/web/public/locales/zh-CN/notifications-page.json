@@ -25,5 +25,10 @@
     "failedToLoad": "加载通知失败",
     "tryAgain": "重试"
   },
-  "loadMore": "加载更多"
+  "loadMore": "加载更多",
+  "item": {
+    "in": "在",
+    "markAsRead": "标记为已读",
+    "delete": "删除通知"
+  }
 }

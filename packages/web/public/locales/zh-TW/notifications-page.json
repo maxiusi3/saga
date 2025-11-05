@@ -25,5 +25,10 @@
     "failedToLoad": "載入通知失敗",
     "tryAgain": "重試"
   },
-  "loadMore": "載入更多"
+  "loadMore": "載入更多",
+  "item": {
+    "in": "在",
+    "markAsRead": "標記為已讀",
+    "delete": "刪除通知"
+  }
 }

@@ -25,5 +25,10 @@
     "failedToLoad": "Échec du chargement des notifications",
     "tryAgain": "Réessayer"
   },
-  "loadMore": "Charger Plus"
+  "loadMore": "Charger Plus",
+  "item": {
+    "in": "dans",
+    "markAsRead": "Marquer comme lu",
+    "delete": "Supprimer la notification"
+  }
 }

@@ -25,5 +25,10 @@
     "failedToLoad": "Failed to load notifications",
     "tryAgain": "Try Again"
   },
-  "loadMore": "Load More"
+  "loadMore": "Load More",
+  "item": {
+    "in": "in",
+    "markAsRead": "Mark as read",
+    "delete": "Delete notification"
+  }
 }

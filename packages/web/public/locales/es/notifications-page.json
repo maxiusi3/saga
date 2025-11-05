@@ -25,5 +25,10 @@
     "failedToLoad": "Error al cargar notificaciones",
     "tryAgain": "Intentar de Nuevo"
   },
-  "loadMore": "Cargar Más"
+  "loadMore": "Cargar Más",
+  "item": {
+    "in": "en",
+    "markAsRead": "Marcar como leído",
+    "delete": "Eliminar notificación"
+  }
 }

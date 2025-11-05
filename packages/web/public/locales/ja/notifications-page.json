@@ -25,5 +25,10 @@
     "failedToLoad": "通知の読み込みに失敗しました",
     "tryAgain": "再試行"
   },
-  "loadMore": "もっと見る"
+  "loadMore": "もっと見る",
+  "item": {
+    "in": "で",
+    "markAsRead": "既読にする",
+    "delete": "通知を削除"
+  }
 }

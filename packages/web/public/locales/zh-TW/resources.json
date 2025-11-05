@@ -48,5 +48,13 @@
     "facilitatorSeatsDesc": "邀請兄弟姐妹共同管理專案",
     "storytellerSeatsDesc": "邀請家人分享故事",
     "projectVouchersDesc": "建立新的故事專案"
+  },
+  "activity": {
+    "created": "建立了\"{name}\"",
+    "usedProject": "使用了1個專案代金券",
+    "invitedStoryteller": "邀請{name}作為講述者",
+    "usedStoryteller": "使用了1個講述者席位",
+    "invitedFacilitator": "邀請{name}作為協調員",
+    "usedFacilitator": "使用了1個協調員席位"
   }
 }

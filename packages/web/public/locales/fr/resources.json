@@ -48,5 +48,13 @@
     "facilitatorSeatsDesc": "Invitez des frères et sœurs pour co-gérer des projets",
     "storytellerSeatsDesc": "Invitez des membres de la famille pour partager des histoires",
     "projectVouchersDesc": "Créez de nouveaux projets d'histoires"
+  },
+  "activity": {
+    "created": "Créé \"{name}\"",
+    "usedProject": "Utilisé 1 bon de projet",
+    "invitedStoryteller": "Invité {name} en tant que conteur",
+    "usedStoryteller": "Utilisé 1 place de conteur",
+    "invitedFacilitator": "Invité {name} en tant que facilitateur",
+    "usedFacilitator": "Utilisé 1 place de facilitateur"
   }
 }
