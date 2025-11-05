@@ -36,9 +36,7 @@
     "createProject": {
       "question": "Como criar meu primeiro projeto de história familiar?",
       "answer": "Para criar seu primeiro projeto, clique em Criar uma Nova Saga no seu painel. Você precisará primeiro comprar um Pacote Saga, que inclui tudo o que você precisa para começar. Após a compra, você pode configurar seu projeto e convidar um narrador."
-    }
-  }
-}
+    },
     "inviteMembers": {
       "question": "Como convidar membros da família para participar?",
       "answer": "Nas configurações do seu projeto, você pode convidar narradores e facilitadores. Clique em Convidar Narrador ou Convidar Facilitador e insira o endereço de email deles. Eles receberão um link de convite para participar do seu projeto."
