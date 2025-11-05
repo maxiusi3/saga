@@ -1,0 +1,69 @@
+{
+  "title": "Help Center",
+  "subtitle": "Find answers to common questions and get support",
+  "searchPlaceholder": "Search for help...",
+  "quickActions": {
+    "videoTutorials": {
+      "title": "Video Tutorials",
+      "description": "Step-by-step guides to get you started"
+    },
+    "liveChat": {
+      "title": "Live Chat",
+      "description": "Get instant help from our support team"
+    },
+    "emailSupport": {
+      "title": "Email Support",
+      "description": "Send us a message and we'll respond within 24 hours"
+    }
+  },
+  "categories": {
+    "all": "All Topics",
+    "gettingStarted": "Getting Started",
+    "recording": "Recording Stories",
+    "sharing": "Sharing & Collaboration",
+    "technical": "Technical",
+    "billing": "Billing & Pricing"
+  },
+  "faqTitle": "Frequently Asked Questions",
+  "noResults": "No questions found matching your search.",
+  "contact": {
+    "title": "Still need help?",
+    "description": "Our support team is here to help you preserve your family's precious stories.",
+    "startChat": "Start Live Chat",
+    "emailUs": "Email Support"
+  },
+  "faqs": {
+    "createProject": {
+      "question": "How do I create my first family story project?",
+      "answer": "To create your first project, click \"Create a New Saga\" from your dashboard. You'll need to purchase a Saga Package first, which includes everything you need to get started. After purchase, you can set up your project and invite a storyteller."
+    },
+    "inviteMembers": {
+      "question": "How do I invite family members to participate?",
+      "answer": "From your project settings, you can invite storytellers and facilitators. Click \"Invite Storyteller\" or \"Invite Facilitator\" and enter their email address. They'll receive an invitation link to join your project."
+    },
+    "recordStories": {
+      "question": "What's the best way to record stories?",
+      "answer": "Find a quiet space with minimal background noise. Use the built-in prompts to guide conversations, and don't worry about perfect recordings - authenticity is more important than perfection. You can pause and resume recordings anytime."
+    },
+    "transcription": {
+      "question": "How does the transcription work?",
+      "answer": "All audio recordings are automatically transcribed using advanced AI technology. Transcripts are usually ready within a few minutes of uploading. You can edit transcripts if needed to correct any errors."
+    },
+    "exportStories": {
+      "question": "Can I export my family stories?",
+      "answer": "Yes! You can export your complete story archive from the project settings. This includes all audio files, transcripts, photos, and comments in a downloadable format."
+    },
+    "moreSeats": {
+      "question": "What happens if I need more seats?",
+      "answer": "You can purchase additional seats anytime from your resource management page. Extra project vouchers cost $15, facilitator seats cost $10, and storyteller seats cost $5."
+    },
+    "helpElderly": {
+      "question": "How do I help my elderly family member use the app?",
+      "answer": "The storyteller interface is designed to be simple and intuitive. Consider doing a practice session together, and remember that family members only need to focus on recording - you handle all the project management as the facilitator."
+    },
+    "privacy": {
+      "question": "Are my family stories private and secure?",
+      "answer": "Yes, all stories are private by default and only accessible to invited family members. We use enterprise-grade security and encryption to protect your precious memories."
+    }
+  }
+}

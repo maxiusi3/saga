@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Search, MessageCircle, Book, Video, Mail } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 interface FAQItem {
   id: string
@@ -16,67 +17,68 @@ interface FAQItem {
 }
 
 export default function HelpPage() {
+  const t = useTranslations('help')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
 
   const faqItems: FAQItem[] = [
     {
       id: '1',
-      question: 'How do I create my first family story project?',
-      answer: 'To create your first project, click "Create a New Saga" from your dashboard. You\'ll need to purchase a Saga Package first, which includes everything you need to get started. After purchase, you can set up your project and invite a storyteller.',
+      question: t('faqs.createProject.question'),
+      answer: t('faqs.createProject.answer'),
       category: 'getting-started'
     },
     {
       id: '2',
-      question: 'How do I invite family members to participate?',
-      answer: 'From your project settings, you can invite storytellers and facilitators. Click "Invite Storyteller" or "Invite Facilitator" and enter their email address. They\'ll receive an invitation link to join your project.',
+      question: t('faqs.inviteMembers.question'),
+      answer: t('faqs.inviteMembers.answer'),
       category: 'sharing'
     },
     {
       id: '3',
-      question: 'What\'s the best way to record stories?',
-      answer: 'Find a quiet space with minimal background noise. Use the built-in prompts to guide conversations, and don\'t worry about perfect recordings - authenticity is more important than perfection. You can pause and resume recordings anytime.',
+      question: t('faqs.recordStories.question'),
+      answer: t('faqs.recordStories.answer'),
       category: 'recording'
     },
     {
       id: '4',
-      question: 'How does the transcription work?',
-      answer: 'All audio recordings are automatically transcribed using advanced AI technology. Transcripts are usually ready within a few minutes of uploading. You can edit transcripts if needed to correct any errors.',
+      question: t('faqs.transcription.question'),
+      answer: t('faqs.transcription.answer'),
       category: 'technical'
     },
     {
       id: '5',
-      question: 'Can I export my family stories?',
-      answer: 'Yes! You can export your complete story archive from the project settings. This includes all audio files, transcripts, photos, and comments in a downloadable format.',
+      question: t('faqs.exportStories.question'),
+      answer: t('faqs.exportStories.answer'),
       category: 'technical'
     },
     {
       id: '6',
-      question: 'What happens if I need more seats?',
-      answer: 'You can purchase additional seats anytime from your resource management page. Extra project vouchers cost $15, facilitator seats cost $10, and storyteller seats cost $5.',
+      question: t('faqs.moreSeats.question'),
+      answer: t('faqs.moreSeats.answer'),
       category: 'billing'
     },
     {
       id: '7',
-      question: 'How do I help my elderly family member use the app?',
-      answer: 'The storyteller interface is designed to be simple and intuitive. Consider doing a practice session together, and remember that family members only need to focus on recording - you handle all the project management as the facilitator.',
+      question: t('faqs.helpElderly.question'),
+      answer: t('faqs.helpElderly.answer'),
       category: 'getting-started'
     },
     {
       id: '8',
-      question: 'Are my family stories private and secure?',
-      answer: 'Yes, all stories are private by default and only accessible to invited family members. We use enterprise-grade security and encryption to protect your precious memories.',
+      question: t('faqs.privacy.question'),
+      answer: t('faqs.privacy.answer'),
       category: 'technical'
     }
   ]
 
   const categories = [
-    { id: 'all', label: 'All Topics', count: faqItems.length },
-    { id: 'getting-started', label: 'Getting Started', count: faqItems.filter(item => item.category === 'getting-started').length },
-    { id: 'recording', label: 'Recording Stories', count: faqItems.filter(item => item.category === 'recording').length },
-    { id: 'sharing', label: 'Sharing & Collaboration', count: faqItems.filter(item => item.category === 'sharing').length },
-    { id: 'technical', label: 'Technical', count: faqItems.filter(item => item.category === 'technical').length },
-    { id: 'billing', label: 'Billing & Pricing', count: faqItems.filter(item => item.category === 'billing').length }
+    { id: 'all', label: t('categories.all'), count: faqItems.length },
+    { id: 'getting-started', label: t('categories.gettingStarted'), count: faqItems.filter(item => item.category === 'getting-started').length },
+    { id: 'recording', label: t('categories.recording'), count: faqItems.filter(item => item.category === 'recording').length },
+    { id: 'sharing', label: t('categories.sharing'), count: faqItems.filter(item => item.category === 'sharing').length },
+    { id: 'technical', label: t('categories.technical'), count: faqItems.filter(item => item.category === 'technical').length },
+    { id: 'billing', label: t('categories.billing'), count: faqItems.filter(item => item.category === 'billing').length }
   ]
 
   const filteredFAQs = faqItems.filter(item => {
@@ -93,9 +95,9 @@ export default function HelpPage() {
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">Help Center</h1>
+        <h1 className="text-4xl font-bold text-foreground">{t('title')}</h1>
         <p className="text-xl text-muted-foreground">
-          Find answers to common questions and get support
+          {t('subtitle')}
         </p>
       </div>
 
@@ -103,7 +105,7 @@ export default function HelpPage() {
       <div className="relative max-w-2xl mx-auto">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <Input
-          placeholder="Search for help..."
+          placeholder={t('searchPlaceholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10 h-12 text-lg"
@@ -118,9 +120,9 @@ export default function HelpPage() {
               <Video className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">Video Tutorials</h3>
+              <h3 className="font-semibold text-foreground">{t('quickActions.videoTutorials.title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Step-by-step guides to get you started
+                {t('quickActions.videoTutorials.description')}
               </p>
             </div>
           </div>
@@ -132,9 +134,9 @@ export default function HelpPage() {
               <MessageCircle className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">Live Chat</h3>
+              <h3 className="font-semibold text-foreground">{t('quickActions.liveChat.title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Get instant help from our support team
+                {t('quickActions.liveChat.description')}
               </p>
             </div>
           </div>
@@ -146,9 +148,9 @@ export default function HelpPage() {
               <Mail className="h-6 w-6 text-secondary-foreground" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">Email Support</h3>
+              <h3 className="font-semibold text-foreground">{t('quickActions.emailSupport.title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Send us a message and we'll respond within 24 hours
+                {t('quickActions.emailSupport.description')}
               </p>
             </div>
           </div>
@@ -176,13 +178,13 @@ export default function HelpPage() {
       <Card className="p-6">
         <div className="space-y-6">
           <h2 className="text-2xl font-semibold text-foreground">
-            Frequently Asked Questions
+            {t('faqTitle')}
           </h2>
 
           {filteredFAQs.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-muted-foreground">
-                No questions found matching your search.
+                {t('noResults')}
               </p>
             </div>
           ) : (
@@ -213,19 +215,19 @@ export default function HelpPage() {
       <Card className="p-8 text-center">
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-foreground">
-            Still need help?
+            {t('contact.title')}
           </h3>
           <p className="text-muted-foreground">
-            Our support team is here to help you preserve your family's precious stories.
+            {t('contact.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button>
               <MessageCircle className="h-4 w-4 mr-2" />
-              Start Live Chat
+              {t('contact.startChat')}
             </Button>
             <Button variant="outline">
               <Mail className="h-4 w-4 mr-2" />
-              Email Support
+              {t('contact.emailUs')}
             </Button>
           </div>
         </div>
