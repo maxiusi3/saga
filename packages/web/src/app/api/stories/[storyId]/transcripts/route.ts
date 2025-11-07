@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabase } from '@/lib/supabase'
+import { createServerSupabase, getSupabaseAdmin } from '@/lib/supabase'
 
 // GET /api/stories/:storyId/transcripts - Get all transcripts for a story
 export async function GET(
@@ -44,9 +44,21 @@ export async function POST(
     const supabase = createServerSupabase()
     const { storyId } = params
 
-    // Check if story exists and user has permission
+    // Get current user first
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      console.error('[Transcripts API] No authenticated user')
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+    console.log('[Transcripts API] User authenticated:', user.id)
+
+    // Check if story exists using admin client to bypass RLS
     console.log('[Transcripts API] Checking story:', storyId)
-    const { data: story, error: storyError } = await supabase
+    const adminClient = getSupabaseAdmin()
+    const { data: story, error: storyError } = await adminClient
       .from('stories')
       .select('id, storyteller_id')
       .eq('id', storyId)
@@ -69,15 +81,6 @@ export async function POST(
     }
 
     console.log('[Transcripts API] Story found:', story.id, 'storyteller:', story.storyteller_id)
-
-    // Get current user
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
 
     // Check if user is the storyteller
     if (story.storyteller_id !== user.id) {
