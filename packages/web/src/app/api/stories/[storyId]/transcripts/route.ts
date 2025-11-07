@@ -165,11 +165,12 @@ export async function POST(
     // Upload audio file if provided
     let audioUrl: string | null = null
     if (audioFile) {
-      const fileName = `${storyId}/transcript-${nextSequence}-${Date.now()}.webm`
+      // Use the same bucket and folder structure as other story audio uploads
+      const fileName = `stories/${storyId}/transcript-${nextSequence}-${Date.now()}.webm`
       console.log('[Transcripts API] Uploading audio file:', fileName)
       
       const { error: uploadError } = await admin.storage
-        .from('story-audio')
+        .from('saga')
         .upload(fileName, audioFile, {
           contentType: audioFile.type,
           upsert: false
@@ -185,7 +186,7 @@ export async function POST(
 
       // Get public URL
       const { data: { publicUrl } } = admin.storage
-        .from('story-audio')
+        .from('saga')
         .getPublicUrl(fileName)
 
       audioUrl = publicUrl
