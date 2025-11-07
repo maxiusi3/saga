@@ -257,8 +257,23 @@ export default function ProjectRecordPage() {
         }
 
         console.log('[Record Page] Calling API:', `/api/stories/${followupStoryId}/transcripts`)
+        
+        // Get access token from Supabase
+        const { createClientSupabase } = await import('@/lib/supabase')
+        const supabase = createClientSupabase()
+        const { data: { session } } = await supabase.auth.getSession()
+        
+        const headers: HeadersInit = {}
+        if (session?.access_token) {
+          headers['Authorization'] = `Bearer ${session.access_token}`
+          console.log('[Record Page] Adding Authorization header with access token')
+        } else {
+          console.warn('[Record Page] No access token available')
+        }
+        
         const response = await fetch(`/api/stories/${followupStoryId}/transcripts`, {
           method: 'POST',
+          headers,
           body: formData
         })
 
