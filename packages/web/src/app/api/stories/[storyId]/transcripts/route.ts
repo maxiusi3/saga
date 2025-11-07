@@ -166,7 +166,9 @@ export async function POST(
     let audioUrl: string | null = null
     if (audioFile) {
       const fileName = `${storyId}/transcript-${nextSequence}-${Date.now()}.webm`
-      const { error: uploadError } = await db.storage
+      console.log('[Transcripts API] Uploading audio file:', fileName)
+      
+      const { error: uploadError } = await admin.storage
         .from('story-audio')
         .upload(fileName, audioFile, {
           contentType: audioFile.type,
@@ -174,23 +176,25 @@ export async function POST(
         })
 
       if (uploadError) {
-        console.error('Error uploading audio:', uploadError)
+        console.error('[Transcripts API] Error uploading audio:', uploadError)
         return NextResponse.json(
-          { error: 'Failed to upload audio file' },
+          { error: 'Failed to upload audio file', details: uploadError.message },
           { status: 500 }
         )
       }
 
       // Get public URL
-      const { data: { publicUrl } } = db.storage
+      const { data: { publicUrl } } = admin.storage
         .from('story-audio')
         .getPublicUrl(fileName)
 
       audioUrl = publicUrl
+      console.log('[Transcripts API] Audio uploaded successfully:', audioUrl)
     }
 
-    // Create transcript record
-    const { data: newTranscript, error: insertError } = await db
+    // Create transcript record using admin client to bypass RLS
+    console.log('[Transcripts API] Creating transcript record...')
+    const { data: newTranscript, error: insertError } = await admin
       .from('story_transcripts')
       .insert({
         story_id: storyId,
@@ -204,13 +208,14 @@ export async function POST(
       .single()
 
     if (insertError) {
-      console.error('Error creating transcript:', insertError)
+      console.error('[Transcripts API] Error creating transcript:', insertError)
       return NextResponse.json(
-        { error: 'Failed to create transcript' },
+        { error: 'Failed to create transcript', details: insertError.message },
         { status: 500 }
       )
     }
 
+    console.log('[Transcripts API] Transcript created successfully:', newTranscript.id)
     return NextResponse.json({ transcript: newTranscript }, { status: 201 })
   } catch (error) {
     console.error('Create transcript error:', error)
