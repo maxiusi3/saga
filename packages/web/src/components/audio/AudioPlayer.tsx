@@ -175,8 +175,9 @@ export function AudioPlayer({
       </div>
 
       {/* Controls */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
+      <div className="flex flex-col items-center space-y-3">
+        {/* Playback Controls - Centered */}
+        <div className="flex items-center justify-center space-x-2">
           {/* Skip Back */}
           <FurbridgeButton
             onClick={handleSkipBack}
@@ -224,8 +225,8 @@ export function AudioPlayer({
           </FurbridgeButton>
         </div>
 
-        {/* Volume Controls */}
-        <div className="flex items-center space-x-2">
+        {/* Volume Controls - Centered */}
+        <div className="flex items-center justify-center space-x-2">
           <FurbridgeButton
             onClick={toggleMute}
             size="sm"
@@ -237,7 +238,7 @@ export function AudioPlayer({
               <Volume2 className="h-4 w-4" />
             )}
           </FurbridgeButton>
-          <div className="w-20">
+          <div className="w-32">
             <Slider
               value={[isMuted ? 0 : volume]}
               max={1}
