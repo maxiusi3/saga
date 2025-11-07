@@ -273,15 +273,21 @@ export default function StoryDetailPage() {
 
 
                 {/* Audio Player */}
-                {story.audio_url && (
+                {(story.audio_url || transcripts.length > 0) && (
                   <div className="mb-6">
                     <h3 className="text-sm font-medium text-gray-700 mb-2">
                       {activeTranscriptIndex === 0 ? t('detail.originalRecording') : `${t('detail.segment')} ${activeTranscriptIndex}`}
                     </h3>
-                    <ModernAudioPlayer
-                      src={activeTranscriptIndex === 0 ? story.audio_url : transcripts[activeTranscriptIndex - 1]?.audio_url || story.audio_url}
-                      showDownload={true}
-                    />
+                    {(activeTranscriptIndex === 0 ? story.audio_url : transcripts[activeTranscriptIndex - 1]?.audio_url) ? (
+                      <ModernAudioPlayer
+                        src={activeTranscriptIndex === 0 ? story.audio_url : transcripts[activeTranscriptIndex - 1]?.audio_url || story.audio_url}
+                        showDownload={true}
+                      />
+                    ) : (
+                      <div className="p-4 bg-gray-50 rounded-lg text-center text-gray-500">
+                        No audio available for this segment
+                      </div>
+                    )}
                   </div>
                 )}
 

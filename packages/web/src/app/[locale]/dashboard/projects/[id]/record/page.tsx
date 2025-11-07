@@ -26,6 +26,7 @@ interface AIContent {
 
 export default function ProjectRecordPage() {
   const t = useTranslations('recording')
+  const tStories = useTranslations('stories')
   const params = useParams()
   const router = useRouter()
   const locale = useLocale()
@@ -373,10 +374,10 @@ export default function ProjectRecordPage() {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold text-foreground">
-            {followupStoryId ? t('detail.followupRecording') : t('title')}
+            {followupStoryId ? tStories('detail.followupRecording') : t('title')}
           </h1>
           <p className="text-muted-foreground">
-            {followupStoryId ? t('detail.addSegment') : t('subtitle')}
+            {followupStoryId ? tStories('detail.addSegment') : t('subtitle')}
           </p>
         </div>
 
