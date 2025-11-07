@@ -34,6 +34,14 @@
     "commentPlaceholder": "Share your thoughts about this story...",
     "comment": "Comment",
     "followUp": "Follow-up",
-    "reply": "Reply"
+    "reply": "Reply",
+    "followupRecording": "Follow-up Recording",
+    "recordingSegments": "Recording Segments",
+    "segment": "Segment",
+    "addSegment": "Add Recording Segment",
+    "originalRecording": "Original Recording",
+    "segmentNumber": "Segment {{number}}",
+    "deleteSegment": "Delete Segment",
+    "confirmDelete": "Are you sure you want to delete this recording segment?"
   }
 }

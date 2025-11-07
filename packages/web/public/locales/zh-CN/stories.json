@@ -34,6 +34,14 @@
     "commentPlaceholder": "分享您对这个故事的想法...",
     "comment": "评论",
     "followUp": "后续",
-    "reply": "回复"
+    "reply": "回复",
+    "followupRecording": "继续录制",
+    "recordingSegments": "录音片段",
+    "segment": "片段",
+    "addSegment": "添加录音片段",
+    "originalRecording": "原始录音",
+    "segmentNumber": "片段 {{number}}",
+    "deleteSegment": "删除片段",
+    "confirmDelete": "确定要删除这个录音片段吗？"
   }
 }

@@ -108,6 +108,11 @@ export function StoryDetailPage({
   const [newFollowUp, setNewFollowUp] = useState('')
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
   const [replyContent, setReplyContent] = useState('')
+  
+  // Follow-up recording states
+  const [transcripts, setTranscripts] = useState<any[]>([])
+  const [activeTranscriptIndex, setActiveTranscriptIndex] = useState(0)
+  const [loadingTranscripts, setLoadingTranscripts] = useState(false)
 
   // locale-aware 链接助手
   const params = useParams()
@@ -118,6 +123,26 @@ export function StoryDetailPage({
     if (!locale || hasLocale) return sanitized
     return `/${locale}${sanitized}`
   }
+
+  // Load transcripts on mount
+  useEffect(() => {
+    const loadTranscripts = async () => {
+      setLoadingTranscripts(true)
+      try {
+        const response = await fetch(`/api/stories/${story.id}/transcripts`)
+        if (response.ok) {
+          const data = await response.json()
+          setTranscripts(data.transcripts || [])
+        }
+      } catch (error) {
+        console.error('Error loading transcripts:', error)
+      } finally {
+        setLoadingTranscripts(false)
+      }
+    }
+
+    loadTranscripts()
+  }, [story.id])
 
   const primaryPhoto = story.photos.find(p => p.isPrimary) || story.photos[0]
 
@@ -202,6 +227,14 @@ export function StoryDetailPage({
         </div>
         
         <div className="flex items-center gap-2">
+          {canEdit && (
+            <Link href={withLocale(`/dashboard/projects/${projectId}/record?followup=${story.id}`)}>
+              <Button variant="primary" size="sm">
+                <Plus className="w-4 h-4 mr-1" />
+                {t('detail.followupRecording')}
+              </Button>
+            </Link>
+          )}
           <Button variant="tertiary" size="sm">
             <Share className="w-4 h-4 mr-1" />
             Share
@@ -286,10 +319,12 @@ export function StoryDetailPage({
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-foreground">Audio Recording</h3>
+                  <h3 className="font-semibold text-foreground">
+                    {activeTranscriptIndex === 0 ? t('detail.originalRecording') : `${t('detail.segment')} ${activeTranscriptIndex}`}
+                  </h3>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="w-3 h-3" />
-                    <span>{formatDuration(story.duration)}</span>
+                    <span>{formatDuration(activeTranscriptIndex === 0 ? story.duration : transcripts[activeTranscriptIndex - 1]?.audio_duration || 0)}</span>
                   </div>
                 </div>
                 
@@ -307,7 +342,7 @@ export function StoryDetailPage({
                   <div className="flex-1 bg-muted rounded-full h-2">
                     <div 
                       className="bg-primary h-full rounded-full transition-all duration-200"
-                      style={{ width: `${(currentTime / story.duration) * 100}%` }}
+                      style={{ width: `${(currentTime / (activeTranscriptIndex === 0 ? story.duration : transcripts[activeTranscriptIndex - 1]?.audio_duration || 1)) * 100}%` }}
                     />
                   </div>
                   
@@ -328,11 +363,73 @@ export function StoryDetailPage({
             </CardContent>
           </Card>
 
+          {/* Recording Segments Playlist */}
+          {transcripts.length > 0 && (
+            <Card variant="content">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>{t('detail.recordingSegments')} ({transcripts.length + 1})</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {/* Original Recording */}
+                  <button
+                    onClick={() => setActiveTranscriptIndex(0)}
+                    className={`w-full text-left p-3 rounded-lg transition-colors ${
+                      activeTranscriptIndex === 0
+                        ? 'bg-primary/10 border-2 border-primary'
+                        : 'bg-muted hover:bg-muted/80 border-2 border-transparent'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{t('detail.originalRecording')}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {formatDate(story.createdAt)}
+                      </span>
+                    </div>
+                    <div className="text-sm text-muted-foreground mt-1">
+                      {formatDuration(story.duration)}
+                    </div>
+                  </button>
+
+                  {/* Additional Transcripts */}
+                  {transcripts.map((transcript, index) => (
+                    <button
+                      key={transcript.id}
+                      onClick={() => setActiveTranscriptIndex(index + 1)}
+                      className={`w-full text-left p-3 rounded-lg transition-colors ${
+                        activeTranscriptIndex === index + 1
+                          ? 'bg-primary/10 border-2 border-primary'
+                          : 'bg-muted hover:bg-muted/80 border-2 border-transparent'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">
+                          {t('detail.segment')} {index + 1}
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          {formatDate(transcript.recorded_at)}
+                        </span>
+                      </div>
+                      <div className="text-sm text-muted-foreground mt-1">
+                        {formatDuration(transcript.audio_duration || 0)}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Transcript */}
           <Card variant="content">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>{t('detail.transcript')}</CardTitle>
+                <CardTitle>
+                  {t('detail.transcript')}
+                  {activeTranscriptIndex > 0 && ` (${t('detail.segment')} ${activeTranscriptIndex})`}
+                </CardTitle>
                 {canEdit && (
                   <Button
                     variant="tertiary"
@@ -362,7 +459,7 @@ export function StoryDetailPage({
                       variant="secondary" 
                       size="sm" 
                       onClick={() => {
-                        setEditedTranscript(story.transcript)
+                        setEditedTranscript(activeTranscriptIndex === 0 ? story.transcript : transcripts[activeTranscriptIndex - 1]?.transcript || '')
                         setIsEditingTranscript(false)
                       }}
                     >
@@ -373,7 +470,7 @@ export function StoryDetailPage({
               ) : (
                 <div className="prose prose-sm max-w-none">
                   <p className="text-foreground leading-relaxed whitespace-pre-wrap">
-                    {story.transcript}
+                    {activeTranscriptIndex === 0 ? story.transcript : transcripts[activeTranscriptIndex - 1]?.transcript || ''}
                   </p>
                 </div>
               )}

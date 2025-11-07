@@ -37,6 +37,16 @@ export default function ProjectRecordPage() {
   const { user } = useAuthStore()
   const projectId = params.id as string
 
+  // Check if this is a follow-up recording
+  const [followupStoryId, setFollowupStoryId] = useState<string | null>(null)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const followup = urlParams.get('followup')
+    if (followup) {
+      setFollowupStoryId(followup)
+    }
+  }, [])
+
   // Story states
   const [currentPrompt, setCurrentPrompt] = useState<StoryPrompt | null>(null)
   const [followupInteraction, setFollowupInteraction] = useState<any>(null)
@@ -231,57 +241,82 @@ export default function ProjectRecordPage() {
     setSubmitError(null)
 
     try {
-      let audioUrl = null
-      let audioDuration = recordingDuration
+      // Check if this is a follow-up recording
+      if (followupStoryId) {
+        // Create a new transcript for existing story
+        const formData = new FormData()
+        formData.append('transcript', aiContent.transcript || transcript)
+        formData.append('audio_duration', recordingDuration.toString())
+        if (audioBlob) {
+          formData.append('audio_file', audioBlob, 'recording.webm')
+        }
 
-      // Skip audio upload for demo - audio is optional
-      if (audioBlob) {
-        toast.loading('Processing audio file...')
-        // Simulate audio processing delay
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        audioUrl = null // Audio URL is optional
-        toast.dismiss()
-        toast.success('Audio processed successfully')
-      }
+        const response = await fetch(`/api/stories/${followupStoryId}/transcripts`, {
+          method: 'POST',
+          body: formData
+        })
 
-      // Create story in database
-      const storyData: any = {
-        project_id: projectId,
-        storyteller_id: user.id,
-        title: aiContent.title || 'Untitled Story',
-        content: aiContent.summary || '',
-        audio_url: audioUrl,
-        audio_duration: audioDuration,
-        transcript: aiContent.transcript || transcript,
-        ai_generated_title: aiContent.title,
-        ai_summary: aiContent.summary,
-        ai_follow_up_questions: aiContent.followUpQuestions,
-        ai_confidence_score: aiContent.confidence
-      }
+        if (!response.ok) {
+          throw new Error('Failed to create transcript')
+        }
 
-      // If this is responding to a follow-up, add follow-up ID
-      if (followupInteraction?.id) {
-        storyData.followup_interaction_id = followupInteraction.id
-        console.log('[Record Page] Adding followup_interaction_id to story:', followupInteraction.id)
+        toast.success('Follow-up recording added successfully!')
+        // Redirect to story detail page
+        router.push(withLocale(`/dashboard/projects/${projectId}/stories/${followupStoryId}`))
       } else {
-        console.log('[Record Page] No followup interaction found')
+        // Original logic: Create new story
+        let audioUrl = null
+        let audioDuration = recordingDuration
+
+        // Skip audio upload for demo - audio is optional
+        if (audioBlob) {
+          toast.loading('Processing audio file...')
+          // Simulate audio processing delay
+          await new Promise(resolve => setTimeout(resolve, 1000))
+          audioUrl = null // Audio URL is optional
+          toast.dismiss()
+          toast.success('Audio processed successfully')
+        }
+
+        // Create story in database
+        const storyData: any = {
+          project_id: projectId,
+          storyteller_id: user.id,
+          title: aiContent.title || 'Untitled Story',
+          content: aiContent.summary || '',
+          audio_url: audioUrl,
+          audio_duration: audioDuration,
+          transcript: aiContent.transcript || transcript,
+          ai_generated_title: aiContent.title,
+          ai_summary: aiContent.summary,
+          ai_follow_up_questions: aiContent.followUpQuestions,
+          ai_confidence_score: aiContent.confidence
+        }
+
+        // If this is responding to a follow-up, add follow-up ID
+        if (followupInteraction?.id) {
+          storyData.followup_interaction_id = followupInteraction.id
+          console.log('[Record Page] Adding followup_interaction_id to story:', followupInteraction.id)
+        } else {
+          console.log('[Record Page] No followup interaction found')
+        }
+
+        const story = await storyService.createStory(storyData)
+
+        if (!story) {
+          throw new Error('Failed to create story')
+        }
+
+        // Show success message
+        if (followupInteraction) {
+          toast.success('Answer recorded successfully!')
+        } else {
+          toast.success('Story saved successfully!')
+        }
+
+        // Redirect to project page on success (locale-aware)
+        router.push(withLocale(`/dashboard/projects/${projectId}`))
       }
-
-      const story = await storyService.createStory(storyData)
-
-      if (!story) {
-        throw new Error('Failed to create story')
-      }
-
-      // Show success message
-      if (followupInteraction) {
-        toast.success('Answer recorded successfully!')
-      } else {
-        toast.success('Story saved successfully!')
-      }
-
-      // Redirect to project page on success (locale-aware)
-      router.push(withLocale(`/dashboard/projects/${projectId}`))
     } catch (error) {
       console.error('Story submission failed:', error)
       setSubmitError('Failed to save story. Please try again.')
@@ -337,8 +372,12 @@ export default function ProjectRecordPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('subtitle')}</p>
+          <h1 className="text-3xl font-bold text-foreground">
+            {followupStoryId ? t('detail.followupRecording') : t('title')}
+          </h1>
+          <p className="text-muted-foreground">
+            {followupStoryId ? t('detail.addSegment') : t('subtitle')}
+          </p>
         </div>
 
 
