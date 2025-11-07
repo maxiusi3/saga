@@ -34,6 +34,14 @@
     "commentPlaceholder": "이 이야기에 대한 생각을 공유하세요...",
     "comment": "댓글",
     "followUp": "후속 조치",
-    "reply": "답글"
+    "reply": "답글",
+    "followupRecording": "후속 녹음",
+    "recordingSegments": "녹음 세그먼트",
+    "segment": "세그먼트",
+    "addSegment": "녹음 세그먼트 추가",
+    "originalRecording": "원본 녹음",
+    "segmentNumber": "세그먼트 {{number}}",
+    "deleteSegment": "세그먼트 삭제",
+    "confirmDelete": "이 녹음 세그먼트를 삭제하시겠습니까?"
   }
 }

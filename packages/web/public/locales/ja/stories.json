@@ -34,6 +34,14 @@
     "commentPlaceholder": "この物語についてあなたの考えを共有してください...",
     "comment": "コメント",
     "followUp": "フォローアップ",
-    "reply": "返信"
+    "reply": "返信",
+    "followupRecording": "フォローアップ録音",
+    "recordingSegments": "録音セグメント",
+    "segment": "セグメント",
+    "addSegment": "録音セグメントを追加",
+    "originalRecording": "オリジナル録音",
+    "segmentNumber": "セグメント {{number}}",
+    "deleteSegment": "セグメントを削除",
+    "confirmDelete": "この録音セグメントを削除してもよろしいですか？"
   }
 }

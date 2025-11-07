@@ -34,6 +34,14 @@
     "commentPlaceholder": "Compartilhe seus pensamentos sobre esta história...",
     "comment": "Comentário",
     "followUp": "Acompanhamento",
-    "reply": "Responder"
+    "reply": "Responder",
+    "followupRecording": "Gravação de Acompanhamento",
+    "recordingSegments": "Segmentos de Gravação",
+    "segment": "Segmento",
+    "addSegment": "Adicionar Segmento de Gravação",
+    "originalRecording": "Gravação Original",
+    "segmentNumber": "Segmento {{number}}",
+    "deleteSegment": "Excluir Segmento",
+    "confirmDelete": "Tem certeza de que deseja excluir este segmento de gravação?"
   }
 }

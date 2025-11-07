@@ -45,18 +45,30 @@ export async function POST(
     const { storyId } = params
 
     // Check if story exists and user has permission
+    console.log('[Transcripts API] Checking story:', storyId)
     const { data: story, error: storyError } = await supabase
       .from('stories')
       .select('id, storyteller_id')
       .eq('id', storyId)
       .single()
 
-    if (storyError || !story) {
+    if (storyError) {
+      console.error('[Transcripts API] Story query error:', storyError)
+      return NextResponse.json(
+        { error: 'Story not found', details: storyError.message },
+        { status: 404 }
+      )
+    }
+
+    if (!story) {
+      console.error('[Transcripts API] Story not found:', storyId)
       return NextResponse.json(
         { error: 'Story not found' },
         { status: 404 }
       )
     }
+
+    console.log('[Transcripts API] Story found:', story.id, 'storyteller:', story.storyteller_id)
 
     // Get current user
     const { data: { user } } = await supabase.auth.getUser()

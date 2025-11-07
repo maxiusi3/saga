@@ -34,6 +34,14 @@
     "commentPlaceholder": "Partagez vos pensées sur cette histoire...",
     "comment": "Commentaire",
     "followUp": "Suivi",
-    "reply": "Répondre"
+    "reply": "Répondre",
+    "followupRecording": "Enregistrement de Suivi",
+    "recordingSegments": "Segments d'Enregistrement",
+    "segment": "Segment",
+    "addSegment": "Ajouter un Segment d'Enregistrement",
+    "originalRecording": "Enregistrement Original",
+    "segmentNumber": "Segment {{number}}",
+    "deleteSegment": "Supprimer le Segment",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce segment d'enregistrement ?"
   }
 }
