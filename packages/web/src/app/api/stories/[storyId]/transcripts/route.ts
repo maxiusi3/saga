@@ -47,27 +47,48 @@ export async function POST(
   try {
     console.log('[Transcripts API] POST request received for story:', params.storyId)
     
-    const supabase = createRouteHandlerClient({ cookies })
     const { storyId } = params
+    const admin = getSupabaseAdmin()
 
-    // Cookies priority, Bearer fallback
+    // Extract access token from cookies manually
     let user: any = null
-    let db: any = supabase
+    let db: any = admin
 
-    console.log('[Transcripts API] Attempting cookie auth...')
-    const cookieAuth = await supabase.auth.getUser()
-    if (cookieAuth.data.user && !cookieAuth.error) {
-      user = cookieAuth.data.user
-      console.log('[Transcripts API] Cookie auth successful:', user.id)
-    } else {
+    console.log('[Transcripts API] Attempting to extract auth token from cookies...')
+    const cookieStore = cookies()
+    const allCookies = cookieStore.getAll()
+    console.log('[Transcripts API] Available cookies:', allCookies.map(c => c.name))
+    
+    // Try to find Supabase auth token in cookies
+    const authTokenCookie = allCookies.find(c => 
+      c.name.includes('supabase') && c.name.includes('auth-token')
+    )
+    
+    if (authTokenCookie) {
+      console.log('[Transcripts API] Found auth token cookie:', authTokenCookie.name)
+      try {
+        // Parse the cookie value (it might be JSON)
+        const tokenData = JSON.parse(authTokenCookie.value)
+        const accessToken = tokenData.access_token || tokenData
+        
+        const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(accessToken)
+        if (tokenUser?.user && !tokenErr) {
+          user = tokenUser.user
+          console.log('[Transcripts API] Cookie token auth successful:', user.id)
+        }
+      } catch (e) {
+        console.error('[Transcripts API] Error parsing auth token:', e)
+      }
+    }
+    
+    // Fallback: try Bearer token from Authorization header
+    if (!user) {
       console.log('[Transcripts API] Cookie auth failed, trying Bearer token...')
       const token = request.headers.get('authorization')?.replace('Bearer ', '')
       if (token) {
-        const admin = getSupabaseAdmin()
         const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
         if (tokenUser?.user && !tokenErr) {
           user = tokenUser.user
-          db = admin
           console.log('[Transcripts API] Bearer token auth successful:', user.id)
         }
       }
