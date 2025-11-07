@@ -8,7 +8,7 @@ import { ModernAudioPlayer } from '@/components/ui/modern-audio-player'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal } from 'lucide-react'
+import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 import { storyService, Story } from '@/lib/stories'
@@ -34,6 +34,11 @@ export default function StoryDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [userRole, setUserRole] = useState<'facilitator' | 'storyteller' | null>(null)
+  
+  // Follow-up recording states
+  const [transcripts, setTranscripts] = useState<any[]>([])
+  const [activeTranscriptIndex, setActiveTranscriptIndex] = useState(0)
+  const [loadingTranscripts, setLoadingTranscripts] = useState(false)
 
   useEffect(() => {
     const loadStory = async () => {
@@ -72,6 +77,28 @@ export default function StoryDetailPage() {
 
     loadStory()
   }, [storyId, user?.id])
+
+  // Load transcripts
+  useEffect(() => {
+    const loadTranscripts = async () => {
+      if (!story?.id) return
+      
+      setLoadingTranscripts(true)
+      try {
+        const response = await fetch(`/api/stories/${story.id}/transcripts`)
+        if (response.ok) {
+          const data = await response.json()
+          setTranscripts(data.transcripts || [])
+        }
+      } catch (error) {
+        console.error('Error loading transcripts:', error)
+      } finally {
+        setLoadingTranscripts(false)
+      }
+    }
+
+    loadTranscripts()
+  }, [story?.id])
 
   const handleSaveTitle = async () => {
     if (!story || !editedTitle.trim()) return
@@ -170,6 +197,15 @@ export default function StoryDetailPage() {
             </EnhancedButton>
           </Link>
           <div className="flex items-center gap-3 ml-auto">
+            {/* Follow-up Recording Button - Only for storyteller */}
+            {userRole === 'storyteller' && (
+              <Link href={withLocale(`/dashboard/projects/${projectId}/record?followup=${storyId}`)}>
+                <EnhancedButton variant="primary" size="sm">
+                  <Plus className="h-4 w-4 mr-2" />
+                  {t('detail.followupRecording')}
+                </EnhancedButton>
+              </Link>
+            )}
             <EnhancedButton variant="outline" size="sm">
               <Share className="h-4 w-4 mr-2" />
               Share
@@ -239,22 +275,89 @@ export default function StoryDetailPage() {
                 {/* Audio Player */}
                 {story.audio_url && (
                   <div className="mb-6">
+                    <h3 className="text-sm font-medium text-gray-700 mb-2">
+                      {activeTranscriptIndex === 0 ? t('detail.originalRecording') : `${t('detail.segment')} ${activeTranscriptIndex}`}
+                    </h3>
                     <ModernAudioPlayer
-                      src={story.audio_url}
+                      src={activeTranscriptIndex === 0 ? story.audio_url : transcripts[activeTranscriptIndex - 1]?.audio_url || story.audio_url}
                       showDownload={true}
                     />
+                  </div>
+                )}
+
+                {/* Recording Segments Playlist */}
+                {transcripts.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-sm font-medium text-gray-700 mb-3">
+                      {t('detail.recordingSegments')} ({transcripts.length + 1})
+                    </h3>
+                    <div className="space-y-2">
+                      {/* Original Recording */}
+                      <button
+                        onClick={() => setActiveTranscriptIndex(0)}
+                        className={`w-full text-left p-3 rounded-lg transition-colors ${
+                          activeTranscriptIndex === 0
+                            ? 'bg-sage-100 border-2 border-sage-600'
+                            : 'bg-gray-50 hover:bg-gray-100 border-2 border-transparent'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-gray-900">{t('detail.originalRecording')}</span>
+                          <span className="text-sm text-gray-500">
+                            {new Date(story.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-500 mt-1">
+                          {Math.floor((story.audio_duration || 0) / 60)}:{String((story.audio_duration || 0) % 60).padStart(2, '0')}
+                        </div>
+                      </button>
+
+                      {/* Additional Transcripts */}
+                      {transcripts.map((transcript, index) => (
+                        <button
+                          key={transcript.id}
+                          onClick={() => setActiveTranscriptIndex(index + 1)}
+                          className={`w-full text-left p-3 rounded-lg transition-colors ${
+                            activeTranscriptIndex === index + 1
+                              ? 'bg-sage-100 border-2 border-sage-600'
+                              : 'bg-gray-50 hover:bg-gray-100 border-2 border-transparent'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-medium text-gray-900">
+                              {t('detail.segment')} {index + 1}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                              {new Date(transcript.recorded_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <div className="text-sm text-gray-500 mt-1">
+                            {Math.floor((transcript.audio_duration || 0) / 60)}:{String((transcript.audio_duration || 0) % 60).padStart(2, '0')}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
 
                 {/* Transcript */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Transcript</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {t('detail.transcript')}
+                      {activeTranscriptIndex > 0 && ` (${t('detail.segment')} ${activeTranscriptIndex})`}
+                    </h3>
                     {canEditStory && (
                       <EnhancedButton 
                         variant="outline" 
                         size="sm"
-                        onClick={() => setIsEditingTranscript(!isEditingTranscript)}
+                        onClick={() => {
+                          if (!isEditingTranscript) {
+                            // Set the correct transcript when starting to edit
+                            setEditedTranscript(activeTranscriptIndex === 0 ? story.transcript : transcripts[activeTranscriptIndex - 1]?.transcript || '')
+                          }
+                          setIsEditingTranscript(!isEditingTranscript)
+                        }}
                       >
                         <Edit className="h-4 w-4 mr-2" />
                         {isEditingTranscript ? 'Cancel' : 'Edit'}
@@ -288,7 +391,10 @@ export default function StoryDetailPage() {
                   ) : (
                     <div className="prose prose-gray max-w-none">
                       <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                        {story.transcript || 'No transcript available'}
+                        {activeTranscriptIndex === 0 
+                          ? (story.transcript || 'No transcript available')
+                          : (transcripts[activeTranscriptIndex - 1]?.transcript || 'No transcript available')
+                        }
                       </p>
                     </div>
                   )}

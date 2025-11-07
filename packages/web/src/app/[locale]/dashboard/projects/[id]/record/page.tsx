@@ -314,8 +314,8 @@ export default function ProjectRecordPage() {
           toast.success('Story saved successfully!')
         }
 
-        // Redirect to project page on success (locale-aware)
-        router.push(withLocale(`/dashboard/projects/${projectId}`))
+        // Redirect to story detail page on success (locale-aware)
+        router.push(withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`))
       }
     } catch (error) {
       console.error('Story submission failed:', error)
