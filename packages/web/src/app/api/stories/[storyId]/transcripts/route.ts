@@ -45,15 +45,28 @@ export async function POST(
   { params }: { params: { storyId: string } }
 ) {
   try {
+    console.log('[Transcripts API] POST request received for story:', params.storyId)
+    
+    const cookieStore = cookies()
+    console.log('[Transcripts API] Cookies available:', cookieStore.getAll().length)
+    
     const supabase = createRouteHandlerClient({ cookies })
     const { storyId } = params
 
     // Get current user
+    console.log('[Transcripts API] Attempting to get user...')
     const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    console.log('[Transcripts API] Auth result:', { 
+      hasUser: !!user, 
+      userId: user?.id,
+      error: authError?.message 
+    })
+    
     if (authError || !user) {
       console.error('[Transcripts API] Auth error:', authError)
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized', details: authError?.message || 'No user found' },
         { status: 401 }
       )
     }
