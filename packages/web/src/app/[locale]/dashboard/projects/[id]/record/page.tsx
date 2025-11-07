@@ -43,6 +43,8 @@ export default function ProjectRecordPage() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const followup = urlParams.get('followup')
+    console.log('[Record Page] URL params:', window.location.search)
+    console.log('[Record Page] Follow-up story ID:', followup)
     if (followup) {
       setFollowupStoryId(followup)
     }
@@ -243,7 +245,9 @@ export default function ProjectRecordPage() {
 
     try {
       // Check if this is a follow-up recording
+      console.log('[Record Page] Submitting story, followupStoryId:', followupStoryId)
       if (followupStoryId) {
+        console.log('[Record Page] Creating transcript for story:', followupStoryId)
         // Create a new transcript for existing story
         const formData = new FormData()
         formData.append('transcript', aiContent.transcript || transcript)
@@ -252,12 +256,16 @@ export default function ProjectRecordPage() {
           formData.append('audio_file', audioBlob, 'recording.webm')
         }
 
+        console.log('[Record Page] Calling API:', `/api/stories/${followupStoryId}/transcripts`)
         const response = await fetch(`/api/stories/${followupStoryId}/transcripts`, {
           method: 'POST',
           body: formData
         })
 
+        console.log('[Record Page] API response status:', response.status)
         if (!response.ok) {
+          const errorData = await response.json()
+          console.error('[Record Page] API error:', errorData)
           throw new Error('Failed to create transcript')
         }
 
