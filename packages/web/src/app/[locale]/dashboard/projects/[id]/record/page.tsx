@@ -343,14 +343,16 @@ export default function ProjectRecordPage() {
 
 
 
-        {/* Smart Recording Interface */}
-        <SmartRecorder
-          onRecordingComplete={handleSmartRecordingComplete}
-          onError={(error) => toast.error(error)}
-          maxDuration={1200}
-          promptText={currentPrompt?.text}
-          className="w-full"
-        />
+        {/* Smart Recording Interface - Hide when AI processing or content is ready */}
+        {!aiProcessing && !aiContent && (
+          <SmartRecorder
+            onRecordingComplete={handleSmartRecordingComplete}
+            onError={(error) => toast.error(error)}
+            maxDuration={1200}
+            promptText={currentPrompt?.text}
+            className="w-full"
+          />
+        )}
 
 
 

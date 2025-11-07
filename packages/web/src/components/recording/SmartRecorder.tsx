@@ -397,37 +397,35 @@ export function SmartRecorder({
           </div>
         )}
 
-        {/* Recording Status */}
-        <div className="text-center space-y-3">
-          <div className="flex items-center justify-center gap-2">
-            {recordingState === 'recording' && (
-              <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-            )}
-            {recordingState === 'paused' && (
-              <div className="w-3 h-3 rounded-full bg-yellow-500" />
-            )}
-            {recordingState === 'completed' && (
-              <div className="w-3 h-3 rounded-full bg-green-500" />
-            )}
-            <span className="text-lg font-semibold">
-              {recordingState === 'idle' && t('status.ready')}
-              {recordingState === 'recording' && t('status.recording')}
-              {recordingState === 'paused' && t('status.paused')}
-              {recordingState === 'completed' && t('status.completed')}
-            </span>
-          </div>
+        {/* Recording Status - Hide when completed */}
+        {recordingState !== 'completed' && (
+          <div className="text-center space-y-3">
+            <div className="flex items-center justify-center gap-2">
+              {recordingState === 'recording' && (
+                <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
+              )}
+              {recordingState === 'paused' && (
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              )}
+              <span className="text-lg font-semibold">
+                {recordingState === 'idle' && t('status.ready')}
+                {recordingState === 'recording' && t('status.recording')}
+                {recordingState === 'paused' && t('status.paused')}
+              </span>
+            </div>
 
-          {/* Duration */}
-          <div className="text-2xl font-mono text-foreground">
-            {formatTime(duration)}
-          </div>
+            {/* Duration */}
+            <div className="text-2xl font-mono text-foreground">
+              {formatTime(duration)}
+            </div>
 
-          {/* Progress Bar */}
-          <Progress
-            value={(duration / maxDuration) * 100}
-            className="w-full max-w-md mx-auto"
-          />
-        </div>
+            {/* Progress Bar */}
+            <Progress
+              value={(duration / maxDuration) * 100}
+              className="w-full max-w-md mx-auto"
+            />
+          </div>
+        )}
 
         {/* Real-time Transcript */}
         {shouldUseRealtime() && (transcript || interimTranscript) && (
@@ -496,10 +494,10 @@ export function SmartRecorder({
           )}
 
           {recordingState === 'completed' && (
-            <>
-              {/* Show AudioPlayer for both recording modes when audio is available */}
+            <div className="w-full space-y-4">
+              {/* Audio Player Section - Top */}
               {audioUrl && (
-                <div className="w-full mb-4">
+                <div className="w-full">
                   <h4 className="text-sm font-medium text-muted-foreground mb-2">{t('audio.listenTo')}</h4>
                   <AudioPlayer
                     src={audioUrl}
@@ -509,24 +507,25 @@ export function SmartRecorder({
                 </div>
               )}
 
-
-
-              <Button
-                onClick={handleComplete}
-                size="lg"
-                className="bg-primary hover:bg-primary/90"
-              >
-                {t('actions.complete')}
-              </Button>
-              <Button
-                onClick={resetRecording}
-                variant="outline"
-                size="lg"
-              >
-                <RotateCcw className="h-5 w-5 mr-2" />
-                {t('actions.reRecord')}
-              </Button>
-            </>
+              {/* Action Buttons - Bottom */}
+              <div className="flex justify-center gap-3">
+                <Button
+                  onClick={handleComplete}
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  {t('actions.complete')}
+                </Button>
+                <Button
+                  onClick={resetRecording}
+                  variant="outline"
+                  size="lg"
+                >
+                  <RotateCcw className="h-5 w-5 mr-2" />
+                  {t('actions.reRecord')}
+                </Button>
+              </div>
+            </div>
           )}
         </div>
 
