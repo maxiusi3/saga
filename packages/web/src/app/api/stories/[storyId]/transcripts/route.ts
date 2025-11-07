@@ -11,27 +11,31 @@ export async function GET(
   { params }: { params: { storyId: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
     const { storyId } = params
+    console.log('[Transcripts API] GET request for story:', storyId)
 
+    // Use admin client to bypass RLS
+    const admin = getSupabaseAdmin()
+    
     // Get all transcripts for this story, ordered by sequence
-    const { data: transcripts, error } = await supabase
+    const { data: transcripts, error } = await admin
       .from('story_transcripts')
       .select('*')
       .eq('story_id', storyId)
       .order('sequence_number', { ascending: true })
 
     if (error) {
-      console.error('Error fetching transcripts:', error)
+      console.error('[Transcripts API] Error fetching transcripts:', error)
       return NextResponse.json(
-        { error: 'Failed to fetch transcripts' },
+        { error: 'Failed to fetch transcripts', details: error.message },
         { status: 500 }
       )
     }
 
+    console.log('[Transcripts API] Found transcripts:', transcripts?.length || 0)
     return NextResponse.json({ transcripts: transcripts || [] })
   } catch (error) {
-    console.error('Transcripts API error:', error)
+    console.error('[Transcripts API] Unexpected error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
