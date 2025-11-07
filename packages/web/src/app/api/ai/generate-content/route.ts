@@ -31,7 +31,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log(`Generating AI content for transcript (${transcript.length} chars)`)
+    console.log(`Generating AI content for transcript (${transcript.length} chars) in language: ${language}`)
+
+    // Language-specific instructions
+    const languageInstructions: Record<string, string> = {
+      'zh-CN': '请用中文回复。',
+      'zh-TW': '請用繁體中文回覆。',
+      'en': 'Please respond in English.',
+      'ja': '日本語で返信してください。',
+      'ko': '한국어로 응답해주세요.',
+      'es': 'Por favor responde en español.',
+      'fr': 'Veuillez répondre en français.',
+      'de': 'Bitte antworten Sie auf Deutsch.',
+      'pt': 'Por favor, responda em português.'
+    }
+
+    const languageInstruction = languageInstructions[language] || languageInstructions['en']
 
     // Create system prompt for story analysis
     const systemPrompt = `You are an expert storyteller and family historian. Your task is to analyze personal stories and create meaningful titles, summaries, and follow-up questions that help preserve family memories.
@@ -43,6 +58,7 @@ Guidelines:
 - Be respectful and sensitive to personal experiences
 - Focus on the human elements and emotional connections
 - Keep language warm and conversational
+- IMPORTANT: Respond in the SAME LANGUAGE as the transcript provided
 
 Response format should be valid JSON with these fields:
 - title: A compelling, specific title (max 60 characters)
@@ -51,17 +67,21 @@ Response format should be valid JSON with these fields:
 - confidence: Number between 0.7 and 1.0 indicating analysis confidence`
 
     // Create user prompt with the transcript
-    const userPrompt = `Please analyze this personal story and generate appropriate content:
+    const userPrompt = `${languageInstruction}
+
+Please analyze this personal story and generate appropriate content IN THE SAME LANGUAGE as the transcript:
 
 ${prompt ? `Story context/prompt: ${prompt}\n\n` : ''}Story transcript:
 "${transcript}"
 
-Generate a title, summary, and follow-up questions that would help this person share more meaningful memories.`
+Generate a title, summary, and follow-up questions that would help this person share more meaningful memories. Remember to use the SAME LANGUAGE as the transcript above.`
 
     // Call OpenRouter GPT API
     if (!openai) {
       throw new Error('OpenRouter client not initialized')
     }
+
+    console.log('Calling OpenRouter API with model: openai/gpt-oss-20b:free')
 
     const completion = await openai.chat.completions.create({
       model: 'openai/gpt-oss-20b:free', // Use GPT OSS 20B free model
@@ -76,6 +96,7 @@ Generate a title, summary, and follow-up questions that would help this person s
 
     const responseText = completion.choices[0]?.message?.content
     if (!responseText) {
+      console.error('No response content from OpenRouter API')
       throw new Error('No response from OpenAI')
     }
 
@@ -115,26 +136,41 @@ Generate a title, summary, and follow-up questions that would help this person s
 
   } catch (error: any) {
     console.error('AI content generation error:', error)
+    console.error('Error details:', {
+      message: error.message,
+      status: error.status,
+      code: error.code,
+      type: error.type,
+      errorObject: error.error
+    })
 
-    // Handle specific OpenAI errors
+    // Handle specific OpenRouter/OpenAI errors
     if (error?.error?.type === 'invalid_request_error') {
       return NextResponse.json(
-        { error: 'Invalid request to AI service' },
+        { error: 'Invalid request to AI service', details: error.message },
         { status: 400 }
       )
     }
 
-    if (error?.error?.code === 'rate_limit_exceeded') {
+    if (error?.error?.code === 'rate_limit_exceeded' || error?.status === 429) {
       return NextResponse.json(
         { error: 'Rate limit exceeded. Please try again later.' },
         { status: 429 }
       )
     }
 
-    if (error?.error?.code === 'insufficient_quota') {
+    if (error?.error?.code === 'insufficient_quota' || error?.status === 402) {
       return NextResponse.json(
-        { error: 'OpenAI quota exceeded. Please check your billing.' },
+        { error: 'OpenRouter quota exceeded. Please check your billing.' },
         { status: 402 }
+      )
+    }
+
+    // Handle timeout errors
+    if (error.message?.includes('timeout') || error.code === 'ETIMEDOUT') {
+      return NextResponse.json(
+        { error: 'Request timeout. Please try again.' },
+        { status: 504 }
       )
     }
 

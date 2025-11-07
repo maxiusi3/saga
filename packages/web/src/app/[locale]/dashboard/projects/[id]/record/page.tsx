@@ -148,7 +148,7 @@ export default function ProjectRecordPage() {
         body: JSON.stringify({
           transcript: transcriptText,
           prompt: currentPrompt?.text,
-          language: 'zh-CN'
+          language: locale // Use current user locale
         })
       })
 
@@ -188,6 +188,7 @@ export default function ProjectRecordPage() {
         audioBlob,
         currentPrompt?.text,
         {
+          language: locale, // Use current user locale
           onProgress: (step, progress) => {
             setAiProgress(progress)
             console.log(`AI Processing: ${step} (${progress}%)`)
