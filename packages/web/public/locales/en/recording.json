@@ -38,6 +38,10 @@
     "listenTo": "Listen to recording:",
     "yourRecording": "Your Story Recording"
   },
+  "photo": {
+    "addOptional": "Add a Photo (Optional)",
+    "choose": "Choose Photo"
+  },
   "tips": {
     "title": "Recording Tips",
     "quietEnvironment": "Find a quiet environment for the best audio quality",

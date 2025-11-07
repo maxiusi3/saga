@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { useTranslations } from 'next-intl'
 import { 
   Mic,
   Square,
@@ -35,6 +36,8 @@ export function RecordingInterface({
   maxDuration = 600,
   projectId
 }: RecordingInterfaceProps) {
+  const t = useTranslations('recording')
+  
   const [recordingState, setRecordingState] = useState<RecordingState>('idle')
   const [duration, setDuration] = useState(0)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
@@ -379,66 +382,19 @@ export function RecordingInterface({
           {/* Review Screen */}
           {recordingState === 'reviewing' && (
             <div className="space-y-6">
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto bg-success/10 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle className="w-8 h-8 text-success" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  Recording Complete!
-                </h3>
-                <p className="text-muted-foreground">
-                  Review your recording and add a photo if you'd like.
-                </p>
-              </div>
-
-              {/* Audio Playback */}
-              <Card variant="information">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={playRecording}
-                      >
-                        {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                      </Button>
-                      <div>
-                        <p className="font-medium text-foreground">Your Recording</p>
-                        <p className="text-sm text-muted-foreground">
-                          Duration: {formatDuration(duration)}
-                        </p>
-                      </div>
-                    </div>
-                    <Volume2 className="w-5 h-5 text-muted-foreground" />
-                  </div>
-                  
-                  {audioUrl && (
-                    <audio
-                      ref={audioRef}
-                      src={audioUrl}
-                      onEnded={() => setIsPlaying(false)}
-                      onPlay={() => setIsPlaying(true)}
-                      onPause={() => setIsPlaying(false)}
-                      className="hidden"
-                    />
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Photo Upload */}
+              {/* Photo Upload Section */}
               <Card variant="content">
                 <CardContent className="p-4">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h4 className="font-medium text-foreground">Add a Photo (Optional)</h4>
+                      <h4 className="font-medium text-foreground">{t('photo.addOptional')}</h4>
                       <Button
                         variant="secondary"
                         size="sm"
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <Camera className="w-4 h-4 mr-1" />
-                        Choose Photo
+                        {t('photo.choose')}
                       </Button>
                     </div>
                     
@@ -475,21 +431,146 @@ export function RecordingInterface({
                 </CardContent>
               </Card>
 
-              {/* Action Buttons */}
-              <div className="flex items-center justify-center gap-4">
-                <Button variant="destructive-outline" onClick={deleteRecording}>
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Delete
-                </Button>
-                <Button variant="secondary" onClick={reRecord}>
-                  <RotateCcw className="w-4 h-4 mr-1" />
-                  Re-record
-                </Button>
-                <Button variant="primary" onClick={sendRecording}>
-                  <Send className="w-4 h-4 mr-1" />
-                  Send to Family
-                </Button>
-              </div>
+              {/* Integrated Audio Player and Actions */}
+              <Card variant="information">
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    {/* Title */}
+                    <div className="flex items-center justify-between border-b border-border pb-3">
+                      <h4 className="font-medium text-foreground">{t('audio.listenTo')}</h4>
+                      <span className="text-sm text-muted-foreground">
+                        {formatDuration(duration)}
+                      </span>
+                    </div>
+
+                    {/* Audio Player Title */}
+                    <div className="text-sm text-foreground">
+                      {t('audio.yourRecording')}
+                    </div>
+
+                    {/* Playback Controls */}
+                    <div className="flex items-center gap-3">
+                      {/* Previous/Skip Back Button */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-10 w-10 p-0"
+                        onClick={() => {
+                          if (audioRef.current) {
+                            audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - 10)
+                          }
+                        }}
+                      >
+                        <RotateCcw className="w-4 h-4" />
+                      </Button>
+
+                      {/* Play/Pause Button */}
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        className="h-10 w-10 p-0 rounded-full"
+                        onClick={playRecording}
+                      >
+                        {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                      </Button>
+
+                      {/* Stop Button */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-10 w-10 p-0"
+                        onClick={() => {
+                          if (audioRef.current) {
+                            audioRef.current.pause()
+                            audioRef.current.currentTime = 0
+                            setIsPlaying(false)
+                          }
+                        }}
+                      >
+                        <Square className="w-4 h-4" />
+                      </Button>
+
+                      {/* Next/Skip Forward Button */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-10 w-10 p-0"
+                        onClick={() => {
+                          if (audioRef.current) {
+                            audioRef.current.currentTime = Math.min(audioRef.current.duration, audioRef.current.currentTime + 10)
+                          }
+                        }}
+                      >
+                        <RotateCcw className="w-4 h-4 scale-x-[-1]" />
+                      </Button>
+
+                      {/* Volume Icon */}
+                      <div className="flex-1 flex items-center justify-end">
+                        <Volume2 className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="w-full">
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        defaultValue="0"
+                        className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+                        onChange={(e) => {
+                          if (audioRef.current) {
+                            const time = (parseFloat(e.target.value) / 100) * audioRef.current.duration
+                            audioRef.current.currentTime = time
+                          }
+                        }}
+                      />
+                      <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                        <span>0:00</span>
+                        <span>{formatDuration(duration)}</span>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+                      <Button 
+                        variant="secondary" 
+                        size="sm"
+                        onClick={reRecord}
+                        className="flex-1"
+                      >
+                        <RotateCcw className="w-4 h-4 mr-1" />
+                        {t('actions.reRecord')}
+                      </Button>
+                      <Button 
+                        variant="primary" 
+                        size="sm"
+                        onClick={sendRecording}
+                        className="flex-1"
+                      >
+                        <Send className="w-4 h-4 mr-1" />
+                        {t('actions.complete')}
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {audioUrl && (
+                    <audio
+                      ref={audioRef}
+                      src={audioUrl}
+                      onEnded={() => setIsPlaying(false)}
+                      onPlay={() => setIsPlaying(true)}
+                      onPause={() => setIsPlaying(false)}
+                      className="hidden"
+                    />
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Hint Text */}
+              <p className="text-center text-sm text-muted-foreground">
+                {t('tips.traditional')}
+              </p>
             </div>
           )}
 
