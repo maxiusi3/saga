@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabase, getSupabaseAdmin } from '@/lib/supabase'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { getSupabaseAdmin } from '@/lib/supabase'
+
+export const dynamic = 'force-dynamic'
 
 // GET /api/stories/:storyId/transcripts - Get all transcripts for a story
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { storyId: string } }
 ) {
   try {
-    const supabase = createServerSupabase()
+    const supabase = createRouteHandlerClient({ cookies })
     const { storyId } = params
 
     // Get all transcripts for this story, ordered by sequence
@@ -41,13 +45,13 @@ export async function POST(
   { params }: { params: { storyId: string } }
 ) {
   try {
-    const supabase = createServerSupabase()
+    const supabase = createRouteHandlerClient({ cookies })
     const { storyId } = params
 
-    // Get current user first
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      console.error('[Transcripts API] No authenticated user')
+    // Get current user
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      console.error('[Transcripts API] Auth error:', authError)
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -118,7 +122,7 @@ export async function POST(
     let audioUrl: string | null = null
     if (audioFile) {
       const fileName = `${storyId}/transcript-${nextSequence}-${Date.now()}.webm`
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('story-audio')
         .upload(fileName, audioFile, {
           contentType: audioFile.type,

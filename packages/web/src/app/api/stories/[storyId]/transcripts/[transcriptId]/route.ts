@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabase } from '@/lib/supabase'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+
+export const dynamic = 'force-dynamic'
 
 // PATCH /api/stories/:storyId/transcripts/:transcriptId - Update a transcript
 export async function PATCH(
@@ -7,7 +10,7 @@ export async function PATCH(
   { params }: { params: { storyId: string; transcriptId: string } }
 ) {
   try {
-    const supabase = createServerSupabase()
+    const supabase = createRouteHandlerClient({ cookies })
     const { storyId, transcriptId } = params
 
     // Get current user
@@ -83,11 +86,11 @@ export async function PATCH(
 
 // DELETE /api/stories/:storyId/transcripts/:transcriptId - Delete a transcript
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { storyId: string; transcriptId: string } }
 ) {
   try {
-    const supabase = createServerSupabase()
+    const supabase = createRouteHandlerClient({ cookies })
     const { storyId, transcriptId } = params
 
     // Get current user
