@@ -47,26 +47,36 @@ export async function POST(
   try {
     console.log('[Transcripts API] POST request received for story:', params.storyId)
     
-    const cookieStore = cookies()
-    console.log('[Transcripts API] Cookies available:', cookieStore.getAll().length)
-    
     const supabase = createRouteHandlerClient({ cookies })
     const { storyId } = params
 
-    // Get current user
-    console.log('[Transcripts API] Attempting to get user...')
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    // Cookies priority, Bearer fallback
+    let user: any = null
+    let db: any = supabase
+
+    console.log('[Transcripts API] Attempting cookie auth...')
+    const cookieAuth = await supabase.auth.getUser()
+    if (cookieAuth.data.user && !cookieAuth.error) {
+      user = cookieAuth.data.user
+      console.log('[Transcripts API] Cookie auth successful:', user.id)
+    } else {
+      console.log('[Transcripts API] Cookie auth failed, trying Bearer token...')
+      const token = request.headers.get('authorization')?.replace('Bearer ', '')
+      if (token) {
+        const admin = getSupabaseAdmin()
+        const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
+        if (tokenUser?.user && !tokenErr) {
+          user = tokenUser.user
+          db = admin
+          console.log('[Transcripts API] Bearer token auth successful:', user.id)
+        }
+      }
+    }
     
-    console.log('[Transcripts API] Auth result:', { 
-      hasUser: !!user, 
-      userId: user?.id,
-      error: authError?.message 
-    })
-    
-    if (authError || !user) {
-      console.error('[Transcripts API] Auth error:', authError)
+    if (!user) {
+      console.error('[Transcripts API] No authentication method succeeded')
       return NextResponse.json(
-        { error: 'Unauthorized', details: authError?.message || 'No user found' },
+        { error: 'Unauthorized' },
         { status: 401 }
       )
     }
@@ -120,7 +130,7 @@ export async function POST(
     }
 
     // Get the next sequence number
-    const { data: existingTranscripts } = await supabase
+    const { data: existingTranscripts } = await db
       .from('story_transcripts')
       .select('sequence_number')
       .eq('story_id', storyId)
@@ -135,7 +145,7 @@ export async function POST(
     let audioUrl: string | null = null
     if (audioFile) {
       const fileName = `${storyId}/transcript-${nextSequence}-${Date.now()}.webm`
-      const { error: uploadError } = await supabase.storage
+      const { error: uploadError } = await db.storage
         .from('story-audio')
         .upload(fileName, audioFile, {
           contentType: audioFile.type,
@@ -151,7 +161,7 @@ export async function POST(
       }
 
       // Get public URL
-      const { data: { publicUrl } } = supabase.storage
+      const { data: { publicUrl } } = db.storage
         .from('story-audio')
         .getPublicUrl(fileName)
 
@@ -159,7 +169,7 @@ export async function POST(
     }
 
     // Create transcript record
-    const { data: newTranscript, error: insertError } = await supabase
+    const { data: newTranscript, error: insertError } = await db
       .from('story_transcripts')
       .insert({
         story_id: storyId,
