@@ -369,13 +369,30 @@ export function RecordingInterface({
           {/* Review Screen */}
           {recordingState === 'reviewing' && (
             <div className="space-y-6">
+              {/* Review Header */}
+              <div className="text-center">
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  {t('review.title')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('review.subtitle')}
+                </p>
+              </div>
+              
               {/* Image Upload Section */}
-              <ImageUploader
-                maxImages={6}
-                images={uploadedImages}
-                onImagesChange={setUploadedImages}
-                showPreview={true}
-              />
+              <Card variant="content">
+                <CardHeader>
+                  <CardTitle>{t('review.addImages')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ImageUploader
+                    maxImages={6}
+                    images={uploadedImages}
+                    onImagesChange={setUploadedImages}
+                    showPreview={true}
+                  />
+                </CardContent>
+              </Card>
 
               {/* Integrated Audio Player and Actions */}
               <Card variant="information">

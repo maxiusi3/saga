@@ -42,6 +42,11 @@
     "addOptional": "Add a Photo (Optional)",
     "choose": "Choose Photo"
   },
+  "review": {
+    "title": "Review Your Recording",
+    "subtitle": "Listen to your recording and add images (optional)",
+    "addImages": "Add Images"
+  },
   "tips": {
     "title": "Recording Tips",
     "quietEnvironment": "Find a quiet environment for the best audio quality",

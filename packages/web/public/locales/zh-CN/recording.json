@@ -42,6 +42,11 @@
     "addOptional": "添加照片（可选）",
     "choose": "选择照片"
   },
+  "review": {
+    "title": "审核您的录音",
+    "subtitle": "播放录音并添加图片（可选）",
+    "addImages": "添加图片"
+  },
   "tips": {
     "title": "录制提示",
     "quietEnvironment": "找一个安静的环境以获得最佳音质",
