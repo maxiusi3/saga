@@ -454,21 +454,35 @@ class SettingsService {
       return { user_id: 'local', project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 }
     }
 
-    const { data, error } = await this.supabase
-      .from('user_resource_wallets')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
+    try {
+      // Use API endpoint instead of direct Supabase query for better performance
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      const { data: { session } } = await this.supabase.auth.getSession()
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`
+      }
 
-    if (error) {
-      // Handle "no rows" and missing relation gracefully
-      if (error.code === 'PGRST116' || error.code === '42P01') {
+      const response = await fetch('/api/wallets/me', {
+        credentials: 'include',
+        headers
+      })
+
+      if (!response.ok) {
+        console.warn('SettingsService: /api/wallets/me failed with', response.status)
         return { user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 }
       }
-      throw error;
-    }
 
-    return { user_id: data.user_id, project_vouchers: data.project_vouchers ?? 0, facilitator_seats: data.facilitator_seats ?? 0, storyteller_seats: data.storyteller_seats ?? 0 }
+      const data = await response.json()
+      return {
+        user_id: data.user_id,
+        project_vouchers: data.project_vouchers ?? 0,
+        facilitator_seats: data.facilitator_seats ?? 0,
+        storyteller_seats: data.storyteller_seats ?? 0
+      }
+    } catch (error) {
+      console.error('SettingsService: Error fetching wallet:', error)
+      return { user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 }
+    }
   }
 
   private applyAccessibilitySettings(settings: AccessibilitySettings) {

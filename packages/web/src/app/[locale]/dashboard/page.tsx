@@ -40,34 +40,29 @@ export default function DashboardPage() {
         setLoading(true)
         console.log('Dashboard: Loading data for user:', user.id)
         
-        // Load resource wallet with timeout
-        console.log('Dashboard: Fetching wallet...')
-        try {
-          const walletPromise = settingsService.getResourceWallet()
-          const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Wallet fetch timeout')), 5000)
-          )
-          const wallet = await Promise.race([walletPromise, timeoutPromise]) as any
-          console.log('Dashboard: Wallet loaded:', wallet)
-          setResourceWallet(wallet)
-        } catch (walletError) {
-          console.error('Dashboard: Wallet fetch failed:', walletError)
-          // Set to null to show error state instead of fake data
+        // Load resource wallet and projects in parallel without timeout
+        console.log('Dashboard: Fetching wallet and projects...')
+        
+        const [walletResult, projectsResult] = await Promise.allSettled([
+          settingsService.getResourceWallet(),
+          projectService.getUserProjects(user.id)
+        ])
+
+        // Handle wallet result
+        if (walletResult.status === 'fulfilled') {
+          console.log('Dashboard: Wallet loaded:', walletResult.value)
+          setResourceWallet(walletResult.value)
+        } else {
+          console.error('Dashboard: Wallet fetch failed:', walletResult.reason)
           setResourceWallet(null)
         }
 
-        // Try to load projects with timeout
-        console.log('Dashboard: Fetching projects...')
-        try {
-          const projectsPromise = projectService.getUserProjects(user.id)
-          const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Projects fetch timeout')), 5000)
-          )
-          const userProjects = await Promise.race([projectsPromise, timeoutPromise]) as any
-          console.log('Dashboard: Projects loaded:', userProjects?.length || 0)
-          setProjects(userProjects || [])
-        } catch (projectError) {
-          console.warn('Dashboard: Projects fetch failed:', projectError)
+        // Handle projects result
+        if (projectsResult.status === 'fulfilled') {
+          console.log('Dashboard: Projects loaded:', projectsResult.value?.length || 0)
+          setProjects(projectsResult.value || [])
+        } else {
+          console.error('Dashboard: Projects fetch failed:', projectsResult.reason)
           setProjects([])
         }
       } catch (error) {
@@ -96,13 +91,7 @@ export default function DashboardPage() {
     participatingCount: participatingProjects.length
   })
 
-  // Emergency fallback - if data loaded but still showing loading, force it off
-  useEffect(() => {
-    if (resourceWallet && projects.length >= 0 && loading) {
-      console.log('Dashboard: Force setting loading to false')
-      setLoading(false)
-    }
-  }, [resourceWallet, projects, loading])
+
 
   if (loading) {
     return (
