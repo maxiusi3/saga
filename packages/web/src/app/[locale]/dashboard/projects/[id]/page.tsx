@@ -518,6 +518,7 @@ export default function ProjectDetailPage() {
                           day: 'numeric' 
                         })}
                         description={textPreview}
+                        thumbnail={(story as any).primary_image?.url}
                         tags={story.category ? [{ label: story.category, color: 'primary' as const }] : []}
                         stats={{
                           comments: story.comments_count || 0,

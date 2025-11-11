@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge, StatusBadge } from '@/components/ui/badge'
@@ -27,10 +27,17 @@ import {
   ChevronRight,
   Plus,
   Send,
-  MoreHorizontal
+  MoreHorizontal,
+  Image as ImageIcon
 } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import { ImageGallery } from '@/components/images/ImageGallery'
+import { ImageUploader } from '@/components/images/ImageUploader'
+import { CommentImageSelector } from '@/components/images/CommentImageSelector'
+import { TranscriptEditModal } from '@/components/stories/TranscriptEditModal'
+import { StoryImage, InteractionImage } from '@saga/shared/types/image'
+import { toast } from 'react-hot-toast'
 
 interface Story {
   id: string
@@ -97,6 +104,7 @@ export function StoryDetailPage({
   onUploadPhoto
 }: StoryDetailPageProps) {
   const t = useTranslations('stories')
+  const tImages = useTranslations('images')
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [volume, setVolume] = useState(1)
@@ -113,6 +121,14 @@ export function StoryDetailPage({
   const [transcripts, setTranscripts] = useState<any[]>([])
   const [activeTranscriptIndex, setActiveTranscriptIndex] = useState(0)
   const [loadingTranscripts, setLoadingTranscripts] = useState(false)
+  
+  // Image-related states
+  const [storyImages, setStoryImages] = useState<StoryImage[]>([])
+  const [interactionImages, setInteractionImages] = useState<InteractionImage[]>([])
+  const [commentImages, setCommentImages] = useState<Array<{ id: string; file: File; preview: string }>>([])
+  const [isLoadingImages, setIsLoadingImages] = useState(false)
+  const [editModalOpen, setEditModalOpen] = useState(false)
+  const [editingTranscriptData, setEditingTranscriptData] = useState<any | null>(null)
 
   // locale-aware 链接助手
   const params = useParams()
@@ -124,7 +140,7 @@ export function StoryDetailPage({
     return `/${locale}${sanitized}`
   }
 
-  // Load transcripts on mount
+  // Load transcripts and images on mount
   useEffect(() => {
     const loadTranscripts = async () => {
       setLoadingTranscripts(true)
@@ -142,7 +158,139 @@ export function StoryDetailPage({
     }
 
     loadTranscripts()
+    fetchStoryImages()
+    fetchInteractionImages()
   }, [story.id])
+  
+  // Fetch story images
+  const fetchStoryImages = useCallback(async () => {
+    setIsLoadingImages(true)
+    try {
+      const response = await fetch(`/api/stories/${story.id}/images`)
+      if (response.ok) {
+        const data = await response.json()
+        setStoryImages(data.images || [])
+      }
+    } catch (error) {
+      console.error('Error fetching story images:', error)
+    } finally {
+      setIsLoadingImages(false)
+    }
+  }, [story.id])
+  
+  // Fetch interaction images from comments
+  const fetchInteractionImages = useCallback(async () => {
+    try {
+      const allImages: InteractionImage[] = []
+      for (const comment of comments) {
+        const response = await fetch(`/api/interactions/${comment.id}/images`)
+        if (response.ok) {
+          const data = await response.json()
+          allImages.push(...(data.images || []))
+        }
+      }
+      setInteractionImages(allImages)
+    } catch (error) {
+      console.error('Error fetching interaction images:', error)
+    }
+  }, [comments])
+  
+  // Handle set primary image
+  const handleSetPrimaryImage = async (imageId: string) => {
+    const loadingToast = toast.loading(tImages('setting'))
+    try {
+      const response = await fetch(`/api/stories/${story.id}/images/${imageId}/set-primary`, {
+        method: 'PATCH',
+      })
+      if (response.ok) {
+        await fetchStoryImages()
+        toast.success(tImages('setPrimarySuccess'), { id: loadingToast })
+      } else {
+        const error = await response.json()
+        toast.error(error.message || tImages('errors.setPrimaryFailed'), { id: loadingToast })
+      }
+    } catch (error) {
+      console.error('Error setting primary image:', error)
+      toast.error(tImages('errors.networkError'), { id: loadingToast })
+    }
+  }
+  
+  // Handle delete image
+  const handleDeleteImage = async (imageId: string) => {
+    const loadingToast = toast.loading(tImages('deleting'))
+    try {
+      const response = await fetch(`/api/stories/${story.id}/images/${imageId}`, {
+        method: 'DELETE',
+      })
+      if (response.ok) {
+        await fetchStoryImages()
+        toast.success(tImages('deleteSuccess'), { id: loadingToast })
+      } else {
+        const error = await response.json()
+        toast.error(error.message || tImages('errors.deleteFailed'), { id: loadingToast })
+      }
+    } catch (error) {
+      console.error('Error deleting image:', error)
+      toast.error(tImages('errors.networkError'), { id: loadingToast })
+    }
+  }
+  
+  // Handle reorder images
+  const handleReorderImages = async (imageIds: string[]) => {
+    const loadingToast = toast.loading(tImages('reordering'))
+    try {
+      const response = await fetch(`/api/stories/${story.id}/images/reorder`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageIds }),
+      })
+      if (response.ok) {
+        await fetchStoryImages()
+        toast.success(tImages('reorderSuccess'), { id: loadingToast })
+      } else {
+        const error = await response.json()
+        toast.error(error.message || tImages('errors.reorderFailed'), { id: loadingToast })
+      }
+    } catch (error) {
+      console.error('Error reordering images:', error)
+      toast.error(tImages('errors.networkError'), { id: loadingToast })
+    }
+  }
+  
+  // Handle add images from comments
+  const handleAddImagesFromComments = async (imageIds: string[]) => {
+    const loadingToast = toast.loading(tImages('adding'))
+    try {
+      const response = await fetch(`/api/stories/${story.id}/images`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ commentImageIds: imageIds }),
+      })
+      if (response.ok) {
+        await fetchStoryImages()
+        toast.success(tImages('addSuccess'), { id: loadingToast })
+      } else {
+        const error = await response.json()
+        toast.error(error.message || tImages('errors.addFailed'), { id: loadingToast })
+      }
+    } catch (error) {
+      console.error('Error adding images from comments:', error)
+      toast.error(tImages('errors.networkError'), { id: loadingToast })
+    }
+  }
+  
+  // Handle edit transcript
+  const handleEditTranscript = (transcript: any) => {
+    setEditingTranscriptData(transcript)
+    setEditModalOpen(true)
+  }
+  
+  // Handle save transcript from modal
+  const handleSaveTranscriptFromModal = async () => {
+    await fetchStoryImages()
+    setEditModalOpen(false)
+    setEditingTranscriptData(null)
+  }
 
   const primaryPhoto = story.photos.find(p => p.isPrimary) || story.photos[0]
 
@@ -174,6 +322,38 @@ export function StoryDetailPage({
     if (newComment.trim() && onAddComment) {
       await onAddComment(newComment)
       setNewComment('')
+      
+      // Upload comment images if any
+      if (commentImages.length > 0) {
+        // Get the newly created comment ID (would need to be returned from onAddComment)
+        // For now, we'll fetch the latest comment
+        const latestComment = comments[comments.length - 1]
+        if (latestComment) {
+          const formData = new FormData()
+          commentImages.forEach((img) => {
+            formData.append('images', img.file)
+          })
+          
+          try {
+            await fetch(`/api/interactions/${latestComment.id}/images`, {
+              method: 'POST',
+              body: formData,
+            })
+            setCommentImages([])
+            await fetchInteractionImages()
+          } catch (error) {
+            console.error('Error uploading comment images:', error)
+          }
+        }
+      }
+    }
+  }
+  
+  const handleAddReply = async (commentId: string) => {
+    if (replyContent.trim() && onAddComment) {
+      await onAddComment(replyContent, commentId)
+      setReplyContent('')
+      setReplyingTo(null)
     }
   }
 
@@ -255,61 +435,25 @@ export function StoryDetailPage({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Photo Gallery */}
-          {story.photos.length > 0 && (
+          {/* Image Gallery */}
+          {storyImages.length > 0 && (
             <Card variant="content">
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {/* Main Photo */}
-                  <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
-                    <img 
-                      src={story.photos[selectedPhotoIndex]?.url || primaryPhoto?.url}
-                      alt={story.photos[selectedPhotoIndex]?.caption || story.title}
-                      className="w-full h-full object-cover"
-                    />
-                    {story.photos.length > 1 && (
-                      <>
-                        <button
-                          onClick={() => setSelectedPhotoIndex(Math.max(0, selectedPhotoIndex - 1))}
-                          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-                          disabled={selectedPhotoIndex === 0}
-                        >
-                          <ChevronLeft className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setSelectedPhotoIndex(Math.min(story.photos.length - 1, selectedPhotoIndex + 1))}
-                          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-                          disabled={selectedPhotoIndex === story.photos.length - 1}
-                        >
-                          <ChevronRight className="w-4 h-4" />
-                        </button>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Thumbnail Gallery */}
-                  {story.photos.length > 1 && (
-                    <div className="flex gap-2 overflow-x-auto pb-2">
-                      {story.photos.map((photo, index) => (
-                        <button
-                          key={photo.id}
-                          onClick={() => setSelectedPhotoIndex(index)}
-                          className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
-                            index === selectedPhotoIndex 
-                              ? 'border-primary' 
-                              : 'border-transparent hover:border-border'
-                          }`}
-                        >
-                          <img 
-                            src={photo.url} 
-                            alt={photo.caption || `Photo ${index + 1}`}
-                            className="w-full h-full object-cover"
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ImageIcon className="w-5 h-5" />
+                  {tImages('gallery.title')} ({storyImages.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ImageGallery
+                  storyId={story.id}
+                  images={storyImages}
+                  activeTranscriptId={activeTranscriptIndex === 0 ? story.id : transcripts[activeTranscriptIndex - 1]?.id}
+                  canEdit={canEdit}
+                  onSetPrimary={handleSetPrimaryImage}
+                  onDelete={handleDeleteImage}
+                  onReorder={handleReorderImages}
+                />
               </CardContent>
             </Card>
           )}
@@ -431,13 +575,23 @@ export function StoryDetailPage({
                   {activeTranscriptIndex > 0 && ` (${t('detail.segment')} ${activeTranscriptIndex})`}
                 </CardTitle>
                 {canEdit && (
-                  <Button
-                    variant="tertiary"
-                    size="sm"
-                    onClick={() => setIsEditingTranscript(!isEditingTranscript)}
-                  >
-                    {isEditingTranscript ? <X className="w-4 h-4" /> : <Edit className="w-4 h-4" />}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => handleEditTranscript(activeTranscriptIndex === 0 ? { id: story.id, transcript: story.transcript } : transcripts[activeTranscriptIndex - 1])}
+                    >
+                      <Edit className="w-4 h-4 mr-1" />
+                      {t('detail.editWithImages')}
+                    </Button>
+                    <Button
+                      variant="tertiary"
+                      size="sm"
+                      onClick={() => setIsEditingTranscript(!isEditingTranscript)}
+                    >
+                      {isEditingTranscript ? <X className="w-4 h-4" /> : <Edit className="w-4 h-4" />}
+                    </Button>
+                  </div>
                 )}
               </div>
             </CardHeader>
@@ -494,39 +648,78 @@ export function StoryDetailPage({
                   onChange={(e) => setNewComment(e.target.value)}
                   rows={3}
                 />
+                
+                {/* Image uploader for comments */}
+                <div className="border-t pt-3">
+                  <ImageUploader
+                    maxImages={6}
+                    images={commentImages}
+                    onImagesChange={setCommentImages}
+                    disabled={false}
+                  />
+                </div>
+                
                 <Button variant="primary" size="sm" onClick={handleAddComment}>
                   <Send className="w-4 h-4 mr-1" />
                   {t('detail.addComment')}
                 </Button>
               </div>
+              
+              {/* Comment Image Selector for storytellers */}
+              {userRole === 'storyteller' && interactionImages.length > 0 && (
+                <div className="border-t pt-6">
+                  <CommentImageSelector
+                    interactionImages={interactionImages}
+                    onSelect={handleAddImagesFromComments}
+                  />
+                </div>
+              )}
 
               {/* Comments List */}
               <div className="space-y-4">
-                {comments.map((comment) => (
-                  <div key={comment.id} className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <Avatar size="sm">
-                        <AvatarImage src={comment.author.avatar} />
-                        <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-foreground">{comment.author.name}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {formatDate(comment.createdAt)}
-                          </span>
+                {comments.map((comment) => {
+                  const commentImgs = interactionImages.filter(img => img.interaction_id === comment.id)
+                  return (
+                    <div key={comment.id} className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <Avatar size="sm">
+                          <AvatarImage src={comment.author.avatar} />
+                          <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-foreground">{comment.author.name}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {formatDate(comment.createdAt)}
+                            </span>
+                          </div>
+                          <p className="text-foreground">{comment.content}</p>
+                          
+                          {/* Comment Images */}
+                          {commentImgs.length > 0 && (
+                            <div className="mt-3 grid grid-cols-3 gap-2">
+                              {commentImgs.map((img) => (
+                                <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden bg-muted">
+                                  <img 
+                                    src={img.url} 
+                                    alt={img.file_name || 'Comment image'}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          
+                          <Button
+                            variant="tertiary"
+                            size="sm"
+                            onClick={() => setReplyingTo(comment.id)}
+                            className="mt-2"
+                          >
+                            Reply
+                          </Button>
                         </div>
-                        <p className="text-foreground">{comment.content}</p>
-                        <Button
-                          variant="tertiary"
-                          size="sm"
-                          onClick={() => setReplyingTo(comment.id)}
-                          className="mt-2"
-                        >
-                          Reply
-                        </Button>
                       </div>
-                    </div>
 
                     {/* Reply Form */}
                     {replyingTo === comment.id && (
@@ -579,7 +772,8 @@ export function StoryDetailPage({
                       </div>
                     )}
                   </div>
-                ))}
+                  )
+                })}
               </div>
             </CardContent>
           </Card>
@@ -642,6 +836,20 @@ export function StoryDetailPage({
           </Card>
         </div>
       </div>
+      
+      {/* Transcript Edit Modal */}
+      {editModalOpen && editingTranscriptData && (
+        <TranscriptEditModal
+          isOpen={editModalOpen}
+          onClose={() => {
+            setEditModalOpen(false)
+            setEditingTranscriptData(null)
+          }}
+          transcript={editingTranscriptData}
+          images={storyImages.filter(img => img.transcript_id === editingTranscriptData.id)}
+          onSave={handleSaveTranscriptFromModal}
+        />
+      )}
     </div>
   )
 }

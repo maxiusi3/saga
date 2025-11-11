@@ -68,7 +68,7 @@ export async function GET(
       return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 
-    // For each story, get the interaction summary
+    // For each story, get the interaction summary and primary image
     const storiesWithDetails = await Promise.all(
       stories.map(async (story: any) => {
         const { data: interactions, error: interactionsError } = await db
@@ -93,12 +93,23 @@ export async function GET(
                 return a_time > latest ? a_time : latest
               }, 0)
             : null
+        
+        // Get primary image or first image
+        const { data: primaryImage } = await db
+          .from('story_images')
+          .select('id, url, caption, is_primary')
+          .eq('story_id', story.id)
+          .order('is_primary', { ascending: false })
+          .order('order_index', { ascending: true })
+          .limit(1)
+          .maybeSingle()
 
         return {
           ...story,
           comments_count,
           follow_ups_count,
-          latest_interaction_time: latest_interaction_time ? new Date(latest_interaction_time).toISOString() : null
+          latest_interaction_time: latest_interaction_time ? new Date(latest_interaction_time).toISOString() : null,
+          primary_image: primaryImage || null
         }
       })
     )

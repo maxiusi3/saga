@@ -12,14 +12,12 @@ import {
   Pause,
   RotateCcw,
   Send,
-  Trash2,
-  Camera,
-  Upload,
   Loader2,
   CheckCircle,
   AlertCircle,
   Volume2
 } from 'lucide-react'
+import { ImageUploader } from '@/components/images/ImageUploader'
 
 interface RecordingInterfaceProps {
   onRecordingComplete?: (audioBlob: Blob, duration: number) => void
@@ -42,8 +40,7 @@ export function RecordingInterface({
   const [duration, setDuration] = useState(0)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
-  const [photoFile, setPhotoFile] = useState<File | null>(null)
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+  const [uploadedImages, setUploadedImages] = useState<Array<{ id: string; file: File; preview: string }>>([])
   const [uploadProgress, setUploadProgress] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -52,7 +49,6 @@ export function RecordingInterface({
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
@@ -166,11 +162,9 @@ export function RecordingInterface({
     setDuration(0)
     setRecordingState('idle')
     setIsPlaying(false)
-    if (photoPreview) {
-      URL.revokeObjectURL(photoPreview)
-      setPhotoPreview(null)
-      setPhotoFile(null)
-    }
+    // Clean up uploaded images
+    uploadedImages.forEach(img => URL.revokeObjectURL(img.preview))
+    setUploadedImages([])
   }
 
   const reRecord = () => {
@@ -178,14 +172,7 @@ export function RecordingInterface({
     startRecording()
   }
 
-  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file && file.type.startsWith('image/')) {
-      setPhotoFile(file)
-      const preview = URL.createObjectURL(file)
-      setPhotoPreview(preview)
-    }
-  }
+
 
   const sendRecording = async () => {
     if (!audioBlob) return
@@ -212,7 +199,7 @@ export function RecordingInterface({
       setRecordingState('complete')
       
       // Call completion handler
-      onUploadComplete?.('mock-audio-url', photoFile ? 'mock-photo-url' : undefined)
+      onUploadComplete?.('mock-audio-url')
 
     } catch (err) {
       setError('Failed to upload recording. Please try again.')
@@ -238,11 +225,10 @@ export function RecordingInterface({
       if (audioUrl) {
         URL.revokeObjectURL(audioUrl)
       }
-      if (photoPreview) {
-        URL.revokeObjectURL(photoPreview)
-      }
+      // Clean up image previews
+      uploadedImages.forEach(img => URL.revokeObjectURL(img.preview))
     }
-  }, [audioUrl, photoPreview])
+  }, [audioUrl, uploadedImages])
 
   const getStateColor = () => {
     switch (recordingState) {
@@ -382,54 +368,13 @@ export function RecordingInterface({
           {/* Review Screen */}
           {recordingState === 'reviewing' && (
             <div className="space-y-6">
-              {/* Photo Upload Section */}
-              <Card variant="content">
-                <CardContent className="p-4">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-medium text-foreground">{t('photo.addOptional')}</h4>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <Camera className="w-4 h-4 mr-1" />
-                        {t('photo.choose')}
-                      </Button>
-                    </div>
-                    
-                    {photoPreview && (
-                      <div className="relative">
-                        <img
-                          src={photoPreview}
-                          alt="Story photo"
-                          className="w-full h-48 object-cover rounded-lg"
-                        />
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => {
-                            if (photoPreview) URL.revokeObjectURL(photoPreview)
-                            setPhotoPreview(null)
-                            setPhotoFile(null)
-                          }}
-                          className="absolute top-2 right-2"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    )}
-                    
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handlePhotoUpload}
-                      className="hidden"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Image Upload Section */}
+              <ImageUploader
+                maxImages={6}
+                images={uploadedImages}
+                onImagesChange={setUploadedImages}
+                showPreview={true}
+              />
 
               {/* Integrated Audio Player and Actions */}
               <Card variant="information">

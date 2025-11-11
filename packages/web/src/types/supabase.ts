@@ -294,6 +294,141 @@ export interface Database {
           updated_at?: string
         }
       }
+      story_images: {
+        Row: {
+          id: string
+          story_id: string
+          transcript_id: string | null
+          storage_path: string
+          file_name: string
+          file_size: number
+          mime_type: string
+          width: number | null
+          height: number | null
+          order_index: number
+          is_primary: boolean
+          source_type: 'transcript' | 'comment'
+          source_interaction_id: string | null
+          uploaded_by: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          story_id: string
+          transcript_id?: string | null
+          storage_path: string
+          file_name: string
+          file_size: number
+          mime_type: string
+          width?: number | null
+          height?: number | null
+          order_index?: number
+          is_primary?: boolean
+          source_type: 'transcript' | 'comment'
+          source_interaction_id?: string | null
+          uploaded_by: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          story_id?: string
+          transcript_id?: string | null
+          storage_path?: string
+          file_name?: string
+          file_size?: number
+          mime_type?: string
+          width?: number | null
+          height?: number | null
+          order_index?: number
+          is_primary?: boolean
+          source_type?: 'transcript' | 'comment'
+          source_interaction_id?: string | null
+          uploaded_by?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      interaction_images: {
+        Row: {
+          id: string
+          interaction_id: string
+          storage_path: string
+          file_name: string
+          file_size: number
+          mime_type: string
+          width: number | null
+          height: number | null
+          order_index: number
+          uploaded_by: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          interaction_id: string
+          storage_path: string
+          file_name: string
+          file_size: number
+          mime_type: string
+          width?: number | null
+          height?: number | null
+          order_index?: number
+          uploaded_by: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          interaction_id?: string
+          storage_path?: string
+          file_name?: string
+          file_size?: number
+          mime_type?: string
+          width?: number | null
+          height?: number | null
+          order_index?: number
+          uploaded_by?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      story_transcripts: {
+        Row: {
+          id: string
+          story_id: string
+          audio_url: string | null
+          audio_duration: number | null
+          transcript: string
+          sequence_number: number
+          recorded_at: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          story_id: string
+          audio_url?: string | null
+          audio_duration?: number | null
+          transcript: string
+          sequence_number: number
+          recorded_at?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          story_id?: string
+          audio_url?: string | null
+          audio_duration?: number | null
+          transcript?: string
+          sequence_number?: number
+          recorded_at?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
