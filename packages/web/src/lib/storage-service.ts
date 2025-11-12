@@ -36,6 +36,14 @@ export function generateInteractionImagePath(interactionId: string, fileName: st
   return `interactions/${interactionId}/images/${uniqueName}`
 }
 
+export function generateThumbnailPath(originalPath: string): string {
+  const parts = originalPath.split('/')
+  const file = parts.pop() || ''
+  const base = file.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '')
+  const ext = (file.match(/\.(jpg|jpeg|png|gif|webp)$/i)?.[0] || '.jpg')
+  return `${parts.join('/')}/thumbnails/${base}-thumb${ext}`
+}
+
 /**
  * Upload image to Supabase Storage
  */
@@ -83,6 +91,27 @@ export async function deleteImage(storagePath: string): Promise<{ success: boole
     return { success: true }
   } catch (error) {
     console.error('Delete image error:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error : new Error('Unknown delete error'),
+    }
+  }
+}
+
+export async function deleteImageWithThumbnail(
+  storagePath: string,
+  thumbnailPath?: string | null
+): Promise<{ success: boolean; error?: Error }> {
+  try {
+    const supabase = createClientSupabase()
+    const paths = [storagePath]
+    if (thumbnailPath) paths.push(thumbnailPath)
+    const { error } = await supabase.storage.from(STORAGE_BUCKET).remove(paths)
+    if (error) {
+      return { success: false, error: new Error(error.message) }
+    }
+    return { success: true }
+  } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error : new Error('Unknown delete error'),

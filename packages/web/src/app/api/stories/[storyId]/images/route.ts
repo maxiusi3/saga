@@ -7,7 +7,9 @@ import {
   copyImage,
   generateCommentImagePath,
   getSignedImageUrl,
+  generateThumbnailPath,
 } from '@/lib/storage-service'
+import sharp from 'sharp'
 
 export const dynamic = 'force-dynamic'
 
@@ -71,12 +73,15 @@ export async function GET(
 
     // Generate signed URLs for all images
     const storagePaths = images?.map((img) => img.storage_path) || []
+    const thumbPaths = images?.map((img) => img.thumbnail_path).filter(Boolean) as string[]
     const urlMap = await getSignedImageUrls(storagePaths)
+    const thumbUrlMap = await getSignedImageUrls(thumbPaths)
 
     // Add URLs to images
     const imagesWithUrls = images?.map((img) => ({
       ...img,
       url: urlMap.get(img.storage_path) || null,
+      thumbnail_url: img.thumbnail_path ? thumbUrlMap.get(img.thumbnail_path) || null : null,
     }))
 
     console.log('[Story Images API] Found images:', imagesWithUrls?.length || 0)
@@ -170,7 +175,7 @@ export async function POST(
     for (const interactionImage of interactionImages) {
       // Generate new storage path
       const newStoragePath = generateCommentImagePath(storyId, interactionImage.file_name)
-
+      
       // Copy file in storage
       const { success, error: copyError } = await copyImage(
         interactionImage.storage_path,
@@ -182,6 +187,23 @@ export async function POST(
         continue // Skip this image but continue with others
       }
 
+      // Ensure thumbnail exists (copy or generate)
+      let newThumbnailPath: string | null = null
+      if (interactionImage.thumbnail_path) {
+        newThumbnailPath = generateThumbnailPath(newStoragePath)
+        await copyImage(interactionImage.thumbnail_path, newThumbnailPath)
+      } else {
+        const { data: downloaded } = await admin.storage
+          .from('saga')
+          .download(newStoragePath)
+        if (downloaded) {
+          const buf = Buffer.from(await downloaded.arrayBuffer())
+          const thumbBuf = await sharp(buf).resize(400, 400, { fit: 'cover' }).jpeg({ quality: 80 }).toBuffer()
+          newThumbnailPath = generateThumbnailPath(newStoragePath)
+          await admin.storage.from('saga').upload(newThumbnailPath, thumbBuf, { contentType: 'image/jpeg', upsert: false })
+        }
+      }
+
       // Create story_images record
       const { data: newImage, error: insertError } = await admin
         .from('story_images')
@@ -189,6 +211,7 @@ export async function POST(
           story_id: storyId,
           transcript_id: null, // Comment-sourced images don't belong to a specific transcript
           storage_path: newStoragePath,
+          thumbnail_path: newThumbnailPath,
           file_name: interactionImage.file_name,
           file_size: interactionImage.file_size,
           mime_type: interactionImage.mime_type,
@@ -199,6 +222,8 @@ export async function POST(
           source_type: 'comment',
           source_interaction_id: interactionImage.interaction_id,
           uploaded_by: user.id,
+          description_i18n: interactionImage.description_i18n || {},
+          copyright_verified: interactionImage.copyright_verified || false
         })
         .select()
         .single()
@@ -212,10 +237,12 @@ export async function POST(
 
       // Generate signed URL
       const { url } = await getSignedImageUrl(newStoragePath)
+      const { url: thumbUrl } = newThumbnailPath ? await getSignedImageUrl(newThumbnailPath) : { url: null }
 
       copiedImages.push({
         ...newImage,
         url,
+        thumbnail_url: thumbUrl,
       })
     }
 

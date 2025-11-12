@@ -158,7 +158,7 @@ export function ImageGallery({
                     </div>
                   )}
                   <Image
-                    src={image.url || ''}
+                    src={image.thumbnail_url || image.url || ''}
                     alt={image.file_name}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
