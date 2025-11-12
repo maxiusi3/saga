@@ -22,6 +22,10 @@ const nextConfig = {
       process.env.AWS_CLOUDFRONT_DOMAIN,
       process.env.AWS_S3_BUCKET + '.s3.amazonaws.com',
     ].filter(Boolean),
+    remotePatterns: [
+      { protocol: 'https', hostname: '**.supabase.co' },
+    ],
+    formats: ['image/avif', 'image/webp'],
   },
   env: {
     // Removed NEXT_PUBLIC_API_URL and NEXT_PUBLIC_WS_URL - using Supabase directly

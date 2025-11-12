@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getSupabaseAdmin } from '@/lib/supabase'
-import { uploadImage, generateTranscriptImagePath, getSignedImageUrl } from '@/lib/storage-service'
+import { generateTranscriptImagePath, getSignedImageUrl, generateThumbnailPath } from '@/lib/storage-service'
+import sharp from 'sharp'
 import { IMAGE_VALIDATION } from '@saga/shared/types/image'
 
 export const dynamic = 'force-dynamic'
@@ -115,13 +116,31 @@ export async function POST(
     // Generate storage path
     const storagePath = generateTranscriptImagePath(storyId, transcript.sequence_number, file.name)
 
-    // Upload to storage
-    const { error: uploadError } = await uploadImage(file, storagePath)
+    const adminStorage = getSupabaseAdmin().storage
+    const fileBuffer = Buffer.from(await file.arrayBuffer())
+    const { error: uploadError } = await adminStorage
+      .from('saga')
+      .upload(storagePath, fileBuffer, { contentType: file.type, upsert: false })
 
     if (uploadError) {
       console.error('[Transcript Images API] Upload error:', uploadError)
       return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 })
     }
+
+    // Generate thumbnail with watermark and get dimensions
+    const meta = await sharp(fileBuffer).metadata()
+    const width = meta.width || null
+    const height = meta.height || null
+    const thumbnailPath = generateThumbnailPath(storagePath)
+    const watermarkSvg = Buffer.from(
+      `<svg width="400" height="400"><rect width="400" height="400" fill="transparent"/><text x="10" y="390" font-size="20" fill="rgba(255,255,255,0.7)">© Saga</text></svg>`
+    )
+    const thumbnailBuffer = await sharp(fileBuffer)
+      .resize(400, 400, { fit: 'cover' })
+      .composite([{ input: watermarkSvg, gravity: 'southeast' }])
+      .jpeg({ quality: 80 })
+      .toBuffer()
+    await adminStorage.from('saga').upload(thumbnailPath, thumbnailBuffer, { contentType: 'image/jpeg', upsert: false })
 
     // Get next order index
     const { data: existingImages } = await admin
@@ -141,13 +160,18 @@ export async function POST(
         story_id: storyId,
         transcript_id: transcriptId,
         storage_path: storagePath,
+        thumbnail_path: thumbnailPath,
         file_name: file.name,
         file_size: file.size,
         mime_type: file.type,
+        width,
+        height,
         order_index: nextOrderIndex,
         is_primary: false,
         source_type: 'transcript',
         uploaded_by: user.id,
+        description_i18n: {},
+        copyright_verified: true
       })
       .select()
       .single()
@@ -161,6 +185,7 @@ export async function POST(
 
     // Generate signed URL
     const { url } = await getSignedImageUrl(storagePath)
+    const { url: thumbnailUrl } = await getSignedImageUrl(thumbnailPath)
 
     console.log('[Transcript Images API] Image uploaded successfully:', image.id)
     return NextResponse.json(
@@ -168,6 +193,7 @@ export async function POST(
         image: {
           ...image,
           url,
+          thumbnail_url: thumbnailUrl,
         },
       },
       { status: 201 }

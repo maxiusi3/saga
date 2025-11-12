@@ -264,7 +264,7 @@ export function StoryDetailPage({
       const response = await fetch(`/api/stories/${story.id}/images`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ commentImageIds: imageIds }),
+        body: JSON.stringify({ interaction_image_ids: imageIds }),
       })
       if (response.ok) {
         await fetchStoryImages()
@@ -701,7 +701,7 @@ export function StoryDetailPage({
                               {commentImgs.map((img) => (
                                 <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden bg-muted">
                                   <img 
-                                    src={img.url} 
+                                    src={img.thumbnail_url || img.url} 
                                     alt={img.file_name || 'Comment image'}
                                     className="w-full h-full object-cover"
                                   />

@@ -71,4 +71,24 @@ export interface StoryStats {
     by_chapter: Record<string, number>;
     by_month: Record<string, number>;
 }
+export interface StoryTranscript {
+    id: string;
+    story_id: string;
+    audio_url: string | null;
+    audio_duration: number | null;
+    transcript: string;
+    sequence_number: number;
+    recorded_at: Date;
+    created_at: Date;
+    updated_at: Date;
+}
+export interface CreateTranscriptRequest {
+    story_id: string;
+    transcript: string;
+    audio_duration?: number;
+    audio_file?: File;
+}
+export interface UpdateTranscriptRequest {
+    transcript?: string;
+}
 //# sourceMappingURL=story.d.ts.map

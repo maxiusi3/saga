@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getSupabaseAdmin } from '@/lib/supabase'
-import { deleteImage } from '@/lib/storage-service'
+import { deleteImageWithThumbnail } from '@/lib/storage-service'
 
 export const dynamic = 'force-dynamic'
 
@@ -63,7 +63,7 @@ export async function DELETE(
     const wasPrimary = image.is_primary
 
     // Delete from storage
-    const { error: storageError } = await deleteImage(image.storage_path)
+    const { error: storageError } = await deleteImageWithThumbnail(image.storage_path, image.thumbnail_path)
 
     if (storageError) {
       console.error('[Story Image API] Storage delete error:', storageError)
