@@ -242,7 +242,7 @@ export function StoryDetailPage({
       const response = await fetch(`/api/stories/${story.id}/images/reorder`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageIds }),
+        body: JSON.stringify({ image_ids: imageIds }),
       })
       if (response.ok) {
         await fetchStoryImages()
@@ -448,7 +448,7 @@ export function StoryDetailPage({
                 <ImageGallery
                   storyId={story.id}
                   images={storyImages}
-                  activeTranscriptId={activeTranscriptIndex === 0 ? story.id : transcripts[activeTranscriptIndex - 1]?.id}
+                  activeTranscriptId={activeTranscriptIndex === 0 ? null : transcripts[activeTranscriptIndex - 1]?.id}
                   canEdit={canEdit}
                   onSetPrimary={handleSetPrimaryImage}
                   onDelete={handleDeleteImage}
