@@ -234,14 +234,21 @@ export default function ProjectRecordPage() {
       let audioUrl = null
       let audioDuration = recordingDuration
 
-      // Skip audio upload for demo - audio is optional
+      // Upload audio to Supabase and use returned public URL for original recording playback
       if (audioBlob) {
-        toast.loading('Processing audio file...')
-        // Simulate audio processing delay
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        audioUrl = null // Audio URL is optional
-        toast.dismiss()
-        toast.success('Audio processed successfully')
+        try {
+          toast.loading('Uploading audio...')
+          const res = await uploadStoryAudio(audioBlob, projectId)
+          if (res.success && (res.url || res.path)) {
+            audioUrl = res.url || null
+            toast.success('Audio uploaded')
+          } else {
+            console.warn('Audio upload failed:', res.error)
+            toast.error('Audio upload failed, continuing without audio')
+          }
+        } finally {
+          toast.dismiss()
+        }
       }
 
       // Create story in database
