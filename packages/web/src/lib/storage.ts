@@ -120,7 +120,9 @@ export class StorageService {
       ? `projects/${projectId}/stories/${storyId}`
       : `projects/${projectId}/stories/temp`
 
+    // Use public audio bucket to ensure direct playback via public URL
     return this.uploadFile(audioFile, {
+      bucket: 'audio-recordings',
       folder,
       allowedTypes: [
         'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/m4a', 
