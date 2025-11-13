@@ -47,9 +47,16 @@ export class StorageService {
         }
       }
 
-      // Validate file type
-      const fileType = file instanceof File ? file.type : 'application/octet-stream'
-      if (allowedTypes.length > 0 && !allowedTypes.includes(fileType)) {
+      // Validate file type (support Blob, wildcard like 'audio/*', and strip codec suffixes)
+      const rawType = (file as any)?.type || ''
+      const fileType = rawType.split(';')[0] || rawType || 'application/octet-stream'
+      const typeAllowed =
+        allowedTypes.length === 0 ||
+        allowedTypes.some((t) => {
+          if (t.endsWith('/*')) return fileType.startsWith(t.slice(0, -2))
+          return t === fileType
+        })
+      if (!typeAllowed) {
         return {
           success: false,
           error: `File type ${fileType} is not allowed. Allowed types: ${allowedTypes.join(', ')}`
@@ -124,10 +131,7 @@ export class StorageService {
     return this.uploadFile(audioFile, {
       bucket: 'audio-recordings',
       folder,
-      allowedTypes: [
-        'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/m4a', 
-        'audio/aac', 'audio/ogg', 'audio/webm'
-      ],
+      allowedTypes: ['audio/*'],
       maxSize: 100 * 1024 * 1024 // 100MB for audio
     })
   }
