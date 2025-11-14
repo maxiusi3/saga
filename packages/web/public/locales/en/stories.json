@@ -34,6 +34,10 @@
     "commentPlaceholder": "Share your thoughts about this story...",
     "comment": "Comment",
     "followUp": "Follow-up",
-    "reply": "Reply"
+    "reply": "Reply",
+    "recordFollowUp": "Record Follow-up",
+    "commentImages": "Comment Images",
+    "playlist": "Playlist",
+    "addSelectedToStory": "Add selected to story"
   }
 }

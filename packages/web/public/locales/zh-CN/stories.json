@@ -34,6 +34,10 @@
     "commentPlaceholder": "分享您对这个故事的想法...",
     "comment": "评论",
     "followUp": "后续",
-    "reply": "回复"
+    "reply": "回复",
+    "recordFollowUp": "录制后续故事",
+    "commentImages": "评论补充图片",
+    "playlist": "播放列表",
+    "addSelectedToStory": "将选中图片加入故事"
   }
 }

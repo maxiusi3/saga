@@ -177,6 +177,8 @@ export async function POST(
         ai_summary: body.ai_summary,
         ai_follow_up_questions: body.ai_follow_up_questions,
         ai_confidence_score: body.ai_confidence_score,
+        parent_story_id: body.parent_story_id || null,
+        images: Array.isArray(body.images) ? body.images : null,
         status: 'ready'
       })
       .select()

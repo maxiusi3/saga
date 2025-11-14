@@ -34,6 +34,10 @@
     "commentPlaceholder": "이 이야기에 대한 생각을 공유하세요...",
     "comment": "댓글",
     "followUp": "후속 조치",
-    "reply": "답글"
+    "reply": "답글",
+    "recordFollowUp": "후속 녹음",
+    "commentImages": "댓글 이미지",
+    "playlist": "재생 목록",
+    "addSelectedToStory": "선택 이미지를 스토리에 추가"
   }
 }

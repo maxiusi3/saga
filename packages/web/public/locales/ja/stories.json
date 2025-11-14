@@ -34,6 +34,10 @@
     "commentPlaceholder": "この物語についてあなたの考えを共有してください...",
     "comment": "コメント",
     "followUp": "フォローアップ",
-    "reply": "返信"
+    "reply": "返信",
+    "recordFollowUp": "フォローアップを録音",
+    "commentImages": "コメント画像",
+    "playlist": "プレイリスト",
+    "addSelectedToStory": "選択した画像をストーリーに追加"
   }
 }

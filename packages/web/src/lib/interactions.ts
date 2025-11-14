@@ -18,6 +18,7 @@ export interface CreateInteractionData {
   story_id: string
   type: 'comment' | 'followup'
   content: string
+  attachments?: Array<{ url: string; thumbUrl: string }>
 }
 
 class InteractionService {
@@ -64,7 +65,8 @@ class InteractionService {
         headers,
         body: JSON.stringify({
           type: data.type,
-          content: data.content
+          content: data.content,
+          attachments: Array.isArray(data.attachments) ? data.attachments : undefined
         })
       })
 

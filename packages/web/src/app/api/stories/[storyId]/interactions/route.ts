@@ -81,6 +81,7 @@ export async function GET(
         answer_story_id: interaction.answer_story_id,
         facilitator_name: profile.name || profile.email || 'Unknown User',
         facilitator_avatar: profile.avatar_url || null,
+        attachments: interaction.attachments || null
       }
     })
 
@@ -135,7 +136,7 @@ export async function POST(
 
     // 解析请求体
     const body = await request.json()
-    const { type, content } = body
+    const { type, content, attachments } = body
 
     if (!type || !content || !['comment', 'followup'].includes(type)) {
       return NextResponse.json(
@@ -143,6 +144,13 @@ export async function POST(
         { status: 400 }
       )
     }
+
+    if (type === 'comment' && String(content).length > 3000) {
+      return NextResponse.json({ error: 'Comment too long' }, { status: 400 })
+    }
+
+    let attachList: any[] = Array.isArray(attachments) ? attachments.slice(0, 6) : []
+    attachList = attachList.filter((a) => a && a.url && a.thumbUrl)
 
     // 权限：仅允许项目 Facilitator 或项目拥有者评论/追问
     // 首先找到该故事所属项目及讲述者（按实际表结构：stories.storyteller_id 为讲述者）
@@ -215,7 +223,8 @@ export async function POST(
       story_id: storyId,
       facilitator_id: user.id,
       type: (typeof type === 'string' ? type.toLowerCase() : type),
-      content: content.trim()
+      content: content.trim(),
+      attachments: attachList.length > 0 ? attachList : null
     }
 
     console.log('[POST /interactions] insert try #1', basePayload)
@@ -289,6 +298,14 @@ export async function POST(
       )
     }
 
+    if (attachList.length > 0) {
+      const enriched = attachList.map((a) => ({ ...a, source: 'comment', source_id: interaction.id, caption: `/dashboard/projects/${storyRow.project_id}/stories/${storyId}#interaction-${interaction.id}` }))
+      await dbWrite
+        .from('interactions')
+        .update({ attachments: enriched })
+        .eq('id', interaction.id)
+    }
+
     // 如果是跟进问题，创建用户提示
     if (type === 'followup') {
       await createUserPromptFromFollowup(db, storyId, content, user.id)
@@ -320,7 +337,8 @@ export async function POST(
       answered_at: interaction.answered_at,
       created_at: interaction.created_at,
       facilitator_name,
-      facilitator_avatar
+      facilitator_avatar,
+      attachments: interaction.attachments || null
     }
 
     console.log('[POST /interactions] created', { interaction: formattedInteraction })

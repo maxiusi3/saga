@@ -14,6 +14,7 @@ import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { aiService, AIContent as AIContentType } from '@/lib/ai-service'
 import { uploadStoryAudio } from '@/lib/storage'
+import { StorageService } from '@/lib/storage'
 import { toast } from 'react-hot-toast'
 
 interface AIContent {
@@ -59,6 +60,9 @@ export default function ProjectRecordPage() {
   // Submission states
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [parentStoryId, setParentStoryId] = useState<string | null>(null)
+  const [storyImages, setStoryImages] = useState<File[]>([])
+  const [imageUploads, setImageUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
 
   // AI service status
   const [aiServiceStatus, setAiServiceStatus] = useState<{ available: boolean; mode: 'production' | 'mock' } | null>(null)
@@ -70,6 +74,9 @@ export default function ProjectRecordPage() {
       const urlParams = new URLSearchParams(window.location.search)
       const followupId = urlParams.get('followup')
       const followupContent = urlParams.get('content')
+      const parentId = urlParams.get('parent')
+
+      if (parentId) setParentStoryId(parentId)
 
       if (followupId && followupContent) {
         // Use follow-up information directly from URL parameters
@@ -274,6 +281,21 @@ export default function ProjectRecordPage() {
         console.log('[Record Page] No followup interaction found')
       }
 
+      if (parentStoryId) {
+        storyData.parent_story_id = parentStoryId
+      }
+
+      if (storyImages.length > 0) {
+        const storage = new StorageService()
+        const uploads: Array<{ url: string; thumbUrl: string }> = []
+        for (let i = 0; i < storyImages.length && i < 6; i++) {
+          const f = storyImages[i]
+          const res = await storage.uploadImageWithThumb(f, `images/stories/${parentStoryId || 'new'}`)
+          if (res.success && res.url && res.thumbUrl) uploads.push({ url: res.url, thumbUrl: res.thumbUrl })
+        }
+        storyData.images = uploads
+      }
+
       const story = await storyService.createStory(storyData)
 
       if (!story) {
@@ -287,8 +309,7 @@ export default function ProjectRecordPage() {
         toast.success('Story saved successfully!')
       }
 
-      // Redirect to project page on success (locale-aware)
-      router.push(withLocale(`/dashboard/projects/${projectId}`))
+      router.push(withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`))
     } catch (error) {
       console.error('Story submission failed:', error)
       setSubmitError('Failed to save story. Please try again.')
@@ -511,6 +532,28 @@ export default function ProjectRecordPage() {
                     </>
                   )}
                 </Button>
+              </div>
+
+              <div className="pt-4 space-y-2">
+                <h4 className="text-sm font-medium text-muted-foreground">{t('photo.addOptional')}</h4>
+                <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
+                  const files = Array.from(e.target.files || [])
+                  setStoryImages(files.slice(0, 6))
+                  const storage = new StorageService()
+                  const ups: Array<{ url: string; thumbUrl: string }> = []
+                  for (let i = 0; i < files.length && i < 6; i++) {
+                    const res = await storage.uploadImageWithThumb(files[i], `images/stories/${projectId}`)
+                    if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
+                  }
+                  setImageUploads(ups)
+                }} />
+                {imageUploads.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {imageUploads.map((img, idx) => (
+                      <img key={idx} src={img.thumbUrl} alt="thumb" className="w-16 h-16 object-cover rounded" />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Submission Error */}

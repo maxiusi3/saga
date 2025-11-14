@@ -34,6 +34,10 @@
     "commentPlaceholder": "Partagez vos pensées sur cette histoire...",
     "comment": "Commentaire",
     "followUp": "Suivi",
-    "reply": "Répondre"
+    "reply": "Répondre",
+    "recordFollowUp": "Enregistrer un suivi",
+    "commentImages": "Images des commentaires",
+    "playlist": "Liste de lecture",
+    "addSelectedToStory": "Ajouter la sélection à l'histoire"
   }
 }

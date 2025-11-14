@@ -146,10 +146,27 @@ export class StorageService {
     return this.uploadFile(imageFile, {
       folder,
       allowedTypes: [
-        'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'
+        'image/jpeg', 'image/jpg', 'image/png'
       ],
-      maxSize: 10 * 1024 * 1024 // 10MB for images
+      maxSize: 5 * 1024 * 1024
     })
+  }
+
+  async uploadImageWithThumb(imageFile: File, folder: string = 'images'): Promise<{ success: boolean; url?: string; thumbUrl?: string; path?: string; thumbPath?: string; error?: string }> {
+    try {
+      const form = new FormData()
+      form.append('file', imageFile)
+      form.append('folder', folder)
+      const { data: { session } } = await this.supabase.auth.getSession()
+      const headers: Record<string, string> = {}
+      if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+      const resp = await fetch('/api/media/upload-image', { method: 'POST', body: form, credentials: 'include', headers })
+      if (!resp.ok) return { success: false, error: 'Upload failed' }
+      const json = await resp.json()
+      return { success: true, url: json.url, thumbUrl: json.thumbUrl, path: json.path, thumbPath: json.thumbPath }
+    } catch (e: any) {
+      return { success: false, error: e?.message || 'Upload failed' }
+    }
   }
 
   /**

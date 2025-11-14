@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { MessageCircle, HelpCircle, Send, Clock, CheckCircle, Mic } from 'lucide-react'
 import { interactionService, Interaction } from '@/lib/interactions'
+import { StorageService } from '@/lib/storage'
 import { useAuthStore } from '@/stores/auth-store'
 import { canUserPerformAction } from '@saga/shared'
 import { toast } from 'react-hot-toast'
@@ -45,6 +46,8 @@ export function StoryInteractions({
   const [followupText, setFollowupText] = useState('')
   const [submittingComment, setSubmittingComment] = useState(false)
   const [submittingFollowup, setSubmittingFollowup] = useState(false)
+  const [commentImages, setCommentImages] = useState<File[]>([])
+  const [commentUploads, setCommentUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
 
   // 权限检查
   const canAddComments = canUserPerformAction('canAddComments', userRole as any, isProjectOwner)
@@ -80,18 +83,39 @@ export function StoryInteractions({
 
   const submitComment = async () => {
     if (!commentText.trim() || !user) return
+    if (commentText.length > 3000) {
+      toast.error('Comment exceeds 3000 characters')
+      return
+    }
+    if (commentImages.length > 6) {
+      toast.error('You can upload up to 6 images')
+      return
+    }
 
     setSubmittingComment(true)
     try {
+      const storage = new StorageService()
+      const uploads: Array<{ url: string; thumbUrl: string }> = []
+      for (let i = 0; i < commentImages.length; i++) {
+        const f = commentImages[i]
+        const res = await storage.uploadImageWithThumb(f, `images/interactions/${storyId}`)
+        if (res.success && res.url && res.thumbUrl) {
+          uploads.push({ url: res.url, thumbUrl: res.thumbUrl })
+        }
+      }
+      setCommentUploads(uploads)
       const newComment = await interactionService.createInteraction({
         story_id: storyId,
         type: 'comment',
-        content: commentText.trim()
+        content: commentText.trim(),
+        attachments: uploads
       })
 
       if (newComment) {
         setInteractions(prev => [...prev, newComment])
         setCommentText('')
+        setCommentImages([])
+        setCommentUploads([])
         toast.success('Comment added successfully')
       } else {
         toast.error('Failed to add comment')
@@ -260,35 +284,46 @@ export function StoryInteractions({
         {/* Add New Interactions */}
         <div className="space-y-4">
           {/* Comment Section - Available to both facilitators and storytellers */}
-          {canAddComments && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Leave a comment</label>
-              <div className="flex space-x-2">
-                <Textarea
-                  placeholder="Share your thoughts or encouragement..."
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  className="flex-1"
-                  rows={2}
-                />
-                <Button
-                  variant="outline"
-                  onClick={submitComment}
-                  disabled={!commentText.trim() || submittingComment}
-                  className="self-end"
-                >
-                  {submittingComment ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-                  ) : (
-                    <Send className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Comments are sent as warm, encouraging messages to the storyteller.
-              </p>
+        {canAddComments && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Leave a comment</label>
+            <div className="flex space-x-2">
+              <Textarea
+                placeholder="Share your thoughts or encouragement..."
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                className="flex-1"
+                rows={2}
+              />
+              <Button
+                variant="outline"
+                onClick={submitComment}
+                disabled={!commentText.trim() || submittingComment}
+                className="self-end"
+              >
+                {submittingComment ? (
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+              </Button>
             </div>
-          )}
+            <input type="file" accept="image/jpeg,image/png" multiple onChange={(e) => {
+              const files = Array.from(e.target.files || [])
+              setCommentImages(files.slice(0, 6))
+            }} />
+            {commentUploads.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {commentUploads.map((img, idx) => (
+                  <img key={idx} src={img.thumbUrl} alt="thumb" className="w-16 h-16 object-cover rounded" />
+                ))}
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Comments are sent as warm, encouraging messages to the storyteller.
+            </p>
+          </div>
+        )}
 
           {/* Follow-up Question Section - Only for facilitators */}
           {canAskFollowups && (

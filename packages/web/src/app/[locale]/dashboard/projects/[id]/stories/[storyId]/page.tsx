@@ -14,6 +14,8 @@ import { useLocale, useTranslations } from 'next-intl'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
+import { interactionService } from '@/lib/interactions'
+import { StorageService } from '@/lib/storage'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
 
@@ -34,6 +36,9 @@ export default function StoryDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [userRole, setUserRole] = useState<'facilitator' | 'storyteller' | null>(null)
+  const [childStories, setChildStories] = useState<Story[]>([])
+  const [commentImages, setCommentImages] = useState<Array<{ url: string; thumbUrl: string; interaction_id?: string }>>([])
+  const [selectedImages, setSelectedImages] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     const loadStory = async () => {
@@ -62,6 +67,22 @@ export default function StoryDetailPage() {
         // Determine user role - check if user is the storyteller
         const isStoryteller = storyData.storyteller_id === user.id
         setUserRole(isStoryteller ? 'storyteller' : 'facilitator')
+
+        const supaStories = await storyService.getStoriesByProject(projectId)
+        const children = (supaStories || []).filter((s: any) => s.parent_story_id === storyId)
+        children.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+        setChildStories(children)
+
+        const interactions = await interactionService.getStoryInteractions(storyId)
+        const imgs: Array<{ url: string; thumbUrl: string; interaction_id?: string }> = []
+        interactions.forEach((it: any) => {
+          if (Array.isArray(it.attachments)) {
+            it.attachments.forEach((a: any) => {
+              if (a.url && a.thumbUrl) imgs.push({ url: a.url, thumbUrl: a.thumbUrl, interaction_id: it.id })
+            })
+          }
+        })
+        setCommentImages(imgs)
       } catch (error) {
         console.error('Error loading story:', error)
         setError('Failed to load story data')
@@ -193,7 +214,7 @@ export default function StoryDetailPage() {
                 {/* Header content removed for cleaner layout */}
               </EnhancedCardHeader>
               <EnhancedCardContent>
-                {/* Story Title */}
+              {/* Story Title */}
                 <div className="mb-6">
                   {isEditingTitle && canEditStory ? (
                     <div className="flex gap-2">
@@ -243,6 +264,14 @@ export default function StoryDetailPage() {
                       src={story.audio_url}
                       showDownload={true}
                     />
+                  </div>
+                )}
+
+                {Array.isArray((story as any).images) && (story as any).images.length > 0 && (
+                  <div className="mb-6 grid grid-cols-3 gap-2">
+                    {(story as any).images.map((img: any, idx: number) => (
+                      <img key={idx} src={img.thumbUrl || img.url} alt="story" className="w-full h-24 object-cover rounded" />
+                    ))}
                   </div>
                 )}
 
@@ -304,6 +333,31 @@ export default function StoryDetailPage() {
               isProjectOwner={false}
               isStoryteller={story.storyteller_id === user?.id}
             />
+
+            {canEditStory && (
+              <EnhancedCard>
+                <EnhancedCardHeader>
+                  <EnhancedCardTitle>Comment Images</EnhancedCardTitle>
+                </EnhancedCardHeader>
+                <EnhancedCardContent>
+                  {commentImages.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">No comment images</p>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-3 gap-3">
+                        {commentImages.map((img, idx) => (
+                          <label key={idx} className="block">
+                            <input type="checkbox" className="mr-2" checked={!!selectedImages[String(idx)]} onChange={(e) => setSelectedImages(prev => ({ ...prev, [String(idx)]: e.target.checked }))} />
+                            <img src={img.thumbUrl} alt="comment" className="w-full h-24 object-cover rounded" />
+                          </label>
+                        ))}
+                      </div>
+                      <EnhancedButton onClick={handleSelectImagesToStory}>Add selected to story</EnhancedButton>
+                    </div>
+                  )}
+                </EnhancedCardContent>
+              </EnhancedCard>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -339,6 +393,13 @@ export default function StoryDetailPage() {
               </EnhancedCardHeader>
               <EnhancedCardContent>
                 <div className="space-y-3">
+                  <EnhancedButton variant="default" size="sm" className="w-full justify-start" onClick={() => {
+                    const params = new URLSearchParams({ parent: String(storyId) })
+                    window.location.href = withLocale(`/dashboard/projects/${projectId}/record?${params.toString()}`)
+                  }}>
+                    <Mic className="w-4 h-4 mr-2" />
+                    Record Follow-up
+                  </EnhancedButton>
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Heart className="w-4 h-4 mr-2" />
                     {t('detail.addToFavorites')}
@@ -354,9 +415,48 @@ export default function StoryDetailPage() {
                 </div>
               </EnhancedCardContent>
             </EnhancedCard>
+
+            {childStories.length > 0 && (
+              <EnhancedCard>
+                <EnhancedCardHeader>
+                  <EnhancedCardTitle>Playlist</EnhancedCardTitle>
+                </EnhancedCardHeader>
+                <EnhancedCardContent>
+                  <div className="space-y-2">
+                    {childStories.map((cs: any) => (
+                      <Link key={cs.id} href={withLocale(`/dashboard/projects/${projectId}/stories/${cs.id}`)} className="block p-3 rounded border hover:bg-sage-50">
+                        <div className="text-sm font-medium">{cs.title || cs.ai_generated_title || 'Untitled'}</div>
+                        <div className="text-xs text-muted-foreground">{new Date(cs.created_at).toLocaleString()}</div>
+                      </Link>
+                    ))}
+                  </div>
+                </EnhancedCardContent>
+              </EnhancedCard>
+            )}
           </div>
         </div>
       </div>
     </div>
   )
 }
+  const handleSelectImagesToStory = async () => {
+    const chosen = commentImages.filter((img, idx) => selectedImages[String(idx)])
+    if (chosen.length === 0 || !story) return
+    try {
+      const { data: { session } } = await storyService['supabase'].auth.getSession()
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+      const resp = await fetch(`/api/stories/${story.id}/images/select-from-interactions`, {
+        method: 'POST', credentials: 'include', headers, body: JSON.stringify({ images: chosen })
+      })
+      if (resp.ok) {
+        const json = await resp.json()
+        setStory(prev => prev ? { ...prev, images: json.images } as any : prev)
+        toast.success('Images added to story')
+      } else {
+        toast.error('Failed to add images')
+      }
+    } catch {
+      toast.error('Failed to add images')
+    }
+  }
