@@ -8,7 +8,8 @@ import { ModernAudioPlayer } from '@/components/ui/modern-audio-player'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal } from 'lucide-react'
+import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal, Mic } from 'lucide-react'
+import { createClientSupabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 import { storyService, Story } from '@/lib/stories'
@@ -337,7 +338,7 @@ export default function StoryDetailPage() {
             {canEditStory && (
               <EnhancedCard>
                 <EnhancedCardHeader>
-                  <EnhancedCardTitle>Comment Images</EnhancedCardTitle>
+                  <EnhancedCardTitle>{t('detail.commentImages')}</EnhancedCardTitle>
                 </EnhancedCardHeader>
                 <EnhancedCardContent>
                   {commentImages.length === 0 ? (
@@ -352,7 +353,7 @@ export default function StoryDetailPage() {
                           </label>
                         ))}
                       </div>
-                      <EnhancedButton onClick={handleSelectImagesToStory}>Add selected to story</EnhancedButton>
+                      <EnhancedButton onClick={handleSelectImagesToStory}>{t('detail.addSelectedToStory')}</EnhancedButton>
                     </div>
                   )}
                 </EnhancedCardContent>
@@ -398,7 +399,7 @@ export default function StoryDetailPage() {
                     window.location.href = withLocale(`/dashboard/projects/${projectId}/record?${params.toString()}`)
                   }}>
                     <Mic className="w-4 h-4 mr-2" />
-                    Record Follow-up
+                    {t('detail.recordFollowUp')}
                   </EnhancedButton>
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Heart className="w-4 h-4 mr-2" />
@@ -419,7 +420,7 @@ export default function StoryDetailPage() {
             {childStories.length > 0 && (
               <EnhancedCard>
                 <EnhancedCardHeader>
-                  <EnhancedCardTitle>Playlist</EnhancedCardTitle>
+                  <EnhancedCardTitle>{t('detail.playlist')}</EnhancedCardTitle>
                 </EnhancedCardHeader>
                 <EnhancedCardContent>
                   <div className="space-y-2">
@@ -443,7 +444,8 @@ export default function StoryDetailPage() {
     const chosen = commentImages.filter((img, idx) => selectedImages[String(idx)])
     if (chosen.length === 0 || !story) return
     try {
-      const { data: { session } } = await storyService['supabase'].auth.getSession()
+      const supa = createClientSupabase()
+      const { data: { session } } = await supa.auth.getSession()
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
       const resp = await fetch(`/api/stories/${story.id}/images/select-from-interactions`, {
