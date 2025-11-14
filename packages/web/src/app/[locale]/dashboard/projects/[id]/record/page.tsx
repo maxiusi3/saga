@@ -27,6 +27,7 @@ interface AIContent {
 
 export default function ProjectRecordPage() {
   const t = useTranslations('recording')
+  const ts = useTranslations('stories')
   const params = useParams()
   const router = useRouter()
   const locale = useLocale()
@@ -64,6 +65,7 @@ export default function ProjectRecordPage() {
   const [parentStoryTitle, setParentStoryTitle] = useState<string | null>(null)
   const [storyImages, setStoryImages] = useState<File[]>([])
   const [imageUploads, setImageUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
+  const [imagePreviews, setImagePreviews] = useState<string[]>([])
 
   // AI service status
   const [aiServiceStatus, setAiServiceStatus] = useState<{ available: boolean; mode: 'production' | 'mock' } | null>(null)
@@ -303,10 +305,24 @@ export default function ProjectRecordPage() {
         storyData.images = uploads
       }
 
-      const story = await storyService.createStory(storyData)
-
-      if (!story) {
-        throw new Error('Failed to create story')
+      let createdStoryId: string | null = null
+      if (parentStoryId) {
+        const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+        const { data: { session } } = await storyService['supabase'].auth.getSession()
+        if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+        const resp = await fetch(`/api/stories/${parentStoryId}/segments`, {
+          method: 'POST', credentials: 'include', headers, body: JSON.stringify({
+            audio_url: audioUrl,
+            audio_duration: audioDuration,
+            transcript: aiContent.transcript || transcript,
+            images: storyData.images || []
+          })
+        })
+        if (!resp.ok) throw new Error('Failed to append segment')
+      } else {
+        const story = await storyService.createStory(storyData)
+        if (!story) throw new Error('Failed to create story')
+        createdStoryId = story.id
       }
 
       // Show success message
@@ -318,8 +334,10 @@ export default function ProjectRecordPage() {
 
       if (parentStoryId) {
         router.push(withLocale(`/dashboard/projects/${projectId}/stories/${parentStoryId}`))
+      } else if (createdStoryId) {
+        router.push(withLocale(`/dashboard/projects/${projectId}/stories/${createdStoryId}`))
       } else {
-        router.push(withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`))
+        router.push(withLocale(`/dashboard/projects/${projectId}`))
       }
     } catch (error) {
       console.error('Story submission failed:', error)
@@ -376,7 +394,7 @@ export default function ProjectRecordPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">{parentStoryId ? t('stories.detail.recordFollowUp') : t('title')}</h1>
+          <h1 className="text-3xl font-bold text-foreground">{parentStoryId ? ts('detail.recordFollowUp') : t('title')}</h1>
           <p className="text-muted-foreground">{parentStoryId ? (parentStoryTitle || '') : t('subtitle')}</p>
         </div>
 
@@ -549,22 +567,24 @@ export default function ProjectRecordPage() {
                 <h4 className="text-sm font-medium text-muted-foreground">{t('photo.addOptional')}</h4>
                 <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
                   const files = Array.from(e.target.files || [])
-                  setStoryImages(files.slice(0, 6))
+                  const sliced = files.slice(0, 6)
+                  setStoryImages(sliced)
+                  // local previews
+                  const locals = sliced.map(f => URL.createObjectURL(f))
+                  setImagePreviews(locals)
                   const storage = new StorageService()
                   const ups: Array<{ url: string; thumbUrl: string }> = []
-                  for (let i = 0; i < files.length && i < 6; i++) {
-                    const res = await storage.uploadImageWithThumb(files[i], `images/stories/${projectId}`)
+                  for (let i = 0; i < sliced.length && i < 6; i++) {
+                    const res = await storage.uploadImageWithThumb(sliced[i], `images/stories/${projectId}`)
                     if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
                   }
                   setImageUploads(ups)
                 }} />
-                {imageUploads.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {imageUploads.map((img, idx) => (
-                      <img key={idx} src={img.thumbUrl} alt="thumb" className="w-16 h-16 object-cover rounded" />
-                    ))}
-                  </div>
-                )}
+                <div className="flex flex-wrap gap-2">
+                  {(imageUploads.length > 0 ? imageUploads.map(i => i.thumbUrl) : imagePreviews).map((src, idx) => (
+                    <img key={idx} src={src} alt="thumb" className="w-16 h-16 object-cover rounded" />
+                  ))}
+                </div>
               </div>
 
               {/* Submission Error */}

@@ -88,5 +88,10 @@
     "title": "录制优化",
     "enableOptimization": "启用优化",
     "disableOptimization": "禁用优化"
+  },
+  "stories": {
+    "detail": {
+      "recordFollowUp": "录制后续故事"
+    }
   }
 }

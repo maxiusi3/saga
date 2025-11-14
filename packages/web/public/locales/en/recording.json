@@ -88,5 +88,10 @@
     "title": "Recording Optimization",
     "enableOptimization": "Enable Optimization",
     "disableOptimization": "Disable Optimization"
+  },
+  "stories": {
+    "detail": {
+      "recordFollowUp": "Record Follow-up"
+    }
   }
 }

@@ -48,6 +48,7 @@ export function StoryInteractions({
   const [submittingFollowup, setSubmittingFollowup] = useState(false)
   const [commentImages, setCommentImages] = useState<File[]>([])
   const [commentUploads, setCommentUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
+  const [commentPreviewUrls, setCommentPreviewUrls] = useState<string[]>([])
 
   // 权限检查
   const canAddComments = canUserPerformAction('canAddComments', userRole as any, isProjectOwner)
@@ -116,6 +117,7 @@ export function StoryInteractions({
         setCommentText('')
         setCommentImages([])
         setCommentUploads([])
+        loadInteractions()
         toast.success('Comment added successfully')
       } else {
         toast.error('Failed to add comment')
@@ -312,6 +314,7 @@ export function StoryInteractions({
               const files = Array.from(e.target.files || [])
               const sliced = files.slice(0, 6)
               setCommentImages(sliced)
+              setCommentPreviewUrls(sliced.map(f => URL.createObjectURL(f)))
               const storage = new StorageService()
               const ups: Array<{ url: string; thumbUrl: string }> = []
               for (let i = 0; i < sliced.length; i++) {
@@ -320,13 +323,11 @@ export function StoryInteractions({
               }
               setCommentUploads(ups)
             }} />
-            {commentUploads.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {commentUploads.map((img, idx) => (
-                  <img key={idx} src={img.thumbUrl} alt="thumb" className="w-16 h-16 object-cover rounded" />
-                ))}
-              </div>
-            )}
+            <div className="flex flex-wrap gap-2">
+              {(commentUploads.length > 0 ? commentUploads.map(i => i.thumbUrl) : commentPreviewUrls).map((src, idx) => (
+                <img key={idx} src={src} alt="thumb" className="w-16 h-16 object-cover rounded" />
+              ))}
+            </div>
             <p className="text-xs text-muted-foreground">
               Comments are sent as warm, encouraging messages to the storyteller.
             </p>

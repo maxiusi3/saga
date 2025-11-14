@@ -67,13 +67,14 @@ export async function GET(
       }
     }
 
-    // 格式化响应数据，维持前端所需字段名称（facilitator_id 等）
+    // 格式化响应数据，兼容 user_id/facilitator_id
     const formattedInteractions = list.map((interaction: any) => {
-      const profile = profilesMap[interaction.facilitator_id] || {}
+      const fid = interaction.facilitator_id || interaction.user_id
+      const profile = profilesMap[fid] || {}
       return {
         id: interaction.id,
         story_id: interaction.story_id,
-        facilitator_id: interaction.facilitator_id,
+        facilitator_id: fid,
         type: interaction.type,
         content: interaction.content,
         created_at: interaction.created_at,
@@ -290,17 +291,32 @@ export async function POST(
       }
     }
 
-    // Fallback: if column attachments missing (42703), retry without attachments
+    // Fallback: if column missing (42703), first retry without attachments, then map facilitator_id -> user_id
     if (insertErr && (insertErr as any).code === '42703') {
-      const payloadNoAttachments: any = { ...basePayload }
-      delete payloadNoAttachments.attachments
-      const { data, error } = await dbWrite
-        .from('interactions')
-        .insert(payloadNoAttachments)
-        .select('*')
-        .single()
-      interaction = data
-      insertErr = error
+      {
+        const payloadNoAttachments: any = { ...basePayload }
+        delete payloadNoAttachments.attachments
+        const { data, error } = await dbWrite
+          .from('interactions')
+          .insert(payloadNoAttachments)
+          .select('*')
+          .single()
+        interaction = data
+        insertErr = error
+      }
+
+      if (insertErr && (insertErr as any).code === '42703') {
+        const payloadUserId: any = { ...basePayload, user_id: basePayload.facilitator_id }
+        delete payloadUserId.facilitator_id
+        delete payloadUserId.attachments
+        const { data, error } = await dbWrite
+          .from('interactions')
+          .insert(payloadUserId)
+          .select('*')
+          .single()
+        interaction = data
+        insertErr = error
+      }
     }
 
     if (insertErr || !interaction) {

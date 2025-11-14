@@ -84,5 +84,10 @@
     "title": "錄製優化",
     "enableOptimization": "啟用優化",
     "disableOptimization": "禁用優化"
+  },
+  "stories": {
+    "detail": {
+      "recordFollowUp": "錄製後續故事"
+    }
   }
 }

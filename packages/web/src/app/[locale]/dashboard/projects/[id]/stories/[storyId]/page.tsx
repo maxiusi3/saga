@@ -37,7 +37,7 @@ export default function StoryDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [userRole, setUserRole] = useState<'facilitator' | 'storyteller' | null>(null)
-  const [childStories, setChildStories] = useState<Story[]>([])
+  const [segments, setSegments] = useState<any[]>([])
   const [commentImages, setCommentImages] = useState<Array<{ url: string; thumbUrl: string; interaction_id?: string }>>([])
   const [selectedImages, setSelectedImages] = useState<Record<string, boolean>>({})
 
@@ -69,10 +69,9 @@ export default function StoryDetailPage() {
         const isStoryteller = storyData.storyteller_id === user.id
         setUserRole(isStoryteller ? 'storyteller' : 'facilitator')
 
-        const supaStories = await storyService.getStoriesByProject(projectId)
-        const children = (supaStories || []).filter((s: any) => s.parent_story_id === storyId)
-        children.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-        setChildStories(children)
+        const segs = Array.isArray((storyData as any).segments) ? (storyData as any).segments : []
+        segs.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+        setSegments(segs)
 
         const interactions = await interactionService.getStoryInteractions(storyId)
         const imgs: Array<{ url: string; thumbUrl: string; interaction_id?: string }> = []
@@ -417,30 +416,40 @@ export default function StoryDetailPage() {
               </EnhancedCardContent>
             </EnhancedCard>
 
-          {childStories.length > 0 && (
-            <EnhancedCard>
-              <EnhancedCardHeader>
-                <EnhancedCardTitle>{t('detail.playlist')}</EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent>
-                <div className="space-y-2">
-                  {childStories.map((cs: any) => (
-                    <div key={cs.id} className="p-3 rounded border">
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm font-medium">{cs.title || cs.ai_generated_title || 'Untitled'}</div>
-                        <div className="text-xs text-muted-foreground">{new Date(cs.created_at).toLocaleString()}</div>
-                      </div>
-                      {cs.audio_url && (
-                        <div className="mt-3">
-                          <ModernAudioPlayer src={cs.audio_url} showDownload={true} />
+            {segments.length > 0 && (
+              <EnhancedCard>
+                <EnhancedCardHeader>
+                  <EnhancedCardTitle>{t('detail.playlist')}</EnhancedCardTitle>
+                </EnhancedCardHeader>
+                <EnhancedCardContent>
+                  <div className="space-y-2">
+                    {segments.map((seg: any, idx: number) => (
+                      <div key={seg.id || idx} className="p-3 rounded border">
+                        <div className="flex items-center justify-between">
+                          <div className="text-sm font-medium">Segment {idx + 1}</div>
+                          <div className="text-xs text-muted-foreground">{new Date(seg.created_at).toLocaleString()}</div>
                         </div>
-                      )}
-                      <div className="mt-3">
-                        <Textarea
-                          defaultValue={cs.transcript || ''}
+                        {seg.audio_url && (
+                          <div className="mt-3">
+                            <ModernAudioPlayer src={seg.audio_url} showDownload={true} />
+                          </div>
+                        )}
+                        <div className="mt-3">
+                          <Textarea
+                          defaultValue={seg.transcript || ''}
                           onBlur={async (e) => {
                             const val = e.target.value
-                            await storyService.updateStory(cs.id, { transcript: val })
+                            const nextSegs = segments.slice()
+                            nextSegs[idx] = { ...seg, transcript: val }
+                            setSegments(nextSegs)
+                            const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+                            const supa = createClientSupabase()
+                            const { data: { session } } = await supa.auth.getSession()
+                            if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+                            await fetch(`/api/stories/${storyId}/segments`, {
+                              method: 'POST', credentials: 'include', headers,
+                              body: JSON.stringify({})
+                            })
                             toast.success('Segment updated')
                           }}
                           className="min-h-[120px]"
@@ -453,22 +462,23 @@ export default function StoryDetailPage() {
                           const storage = new StorageService()
                           const ups: Array<{ url: string; thumbUrl: string }> = []
                           for (let i = 0; i < files.length; i++) {
-                            const res = await storage.uploadImageWithThumb(files[i], `images/stories/${cs.id}`)
+                            const res = await storage.uploadImageWithThumb(files[i], `images/stories/${storyId}`)
                             if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
                           }
-                          const existing = Array.isArray(cs.images) ? cs.images : []
-                          const merged = [...existing, ...ups]
-                          const updated = await storyService.updateStory(cs.id, { images: merged as any })
-                          if (updated) {
-                            setChildStories(prev => prev.map(s => s.id === cs.id ? { ...s, images: merged } as any : s))
-                            toast.success('Images added to segment')
-                          } else {
-                            toast.error('Failed to add images')
-                          }
+                          const nextSegs = segments.slice()
+                          const existing = Array.isArray(seg.images) ? seg.images : []
+                          nextSegs[idx] = { ...seg, images: [...existing, ...ups] }
+                          setSegments(nextSegs)
+                          const supa = createClientSupabase()
+                          const { data: { session } } = await supa.auth.getSession()
+                          const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+                          if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+                          await fetch(`/api/stories/${storyId}/segments`, { method: 'POST', credentials: 'include', headers, body: JSON.stringify({}) })
+                          toast.success('Images added to segment')
                         }} />
-                        {Array.isArray(cs.images) && cs.images.length > 0 && (
+                        {Array.isArray(seg.images) && seg.images.length > 0 && (
                           <div className="mt-2 flex flex-wrap gap-2">
-                            {cs.images.map((img: any, idx: number) => (
+                            {seg.images.map((img: any, j: number) => (
                               <img key={idx} src={img.thumbUrl || img.url} alt="seg" className="w-16 h-16 object-cover rounded" />
                             ))}
                           </div>

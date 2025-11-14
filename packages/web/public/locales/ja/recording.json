@@ -84,5 +84,10 @@
     "title": "録音の最適化",
     "enableOptimization": "最適化を有効にする",
     "disableOptimization": "最適化を無効にする"
+  },
+  "stories": {
+    "detail": {
+      "recordFollowUp": "フォローアップを録音"
+    }
   }
 }

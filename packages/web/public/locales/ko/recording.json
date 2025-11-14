@@ -84,5 +84,10 @@
     "title": "녹음 최적화",
     "enableOptimization": "최적화 활성화",
     "disableOptimization": "최적화 비활성화"
+  },
+  "stories": {
+    "detail": {
+      "recordFollowUp": "후속 녹음"
+    }
   }
 }
