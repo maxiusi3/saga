@@ -61,6 +61,7 @@ export default function ProjectRecordPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [parentStoryId, setParentStoryId] = useState<string | null>(null)
+  const [parentStoryTitle, setParentStoryTitle] = useState<string | null>(null)
   const [storyImages, setStoryImages] = useState<File[]>([])
   const [imageUploads, setImageUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
 
@@ -77,6 +78,12 @@ export default function ProjectRecordPage() {
       const parentId = urlParams.get('parent')
 
       if (parentId) setParentStoryId(parentId)
+      if (parentId) {
+        try {
+          const parentStory = await storyService.getStoryById(parentId)
+          if (parentStory) setParentStoryTitle(parentStory.title || parentStory.ai_generated_title || 'Untitled')
+        } catch {}
+      }
 
       if (followupId && followupContent) {
         // Use follow-up information directly from URL parameters
@@ -365,8 +372,8 @@ export default function ProjectRecordPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('subtitle')}</p>
+          <h1 className="text-3xl font-bold text-foreground">{parentStoryId ? t('stories.detail.recordFollowUp') : t('title')}</h1>
+          <p className="text-muted-foreground">{parentStoryId ? (parentStoryTitle || '') : t('subtitle')}</p>
         </div>
 
 

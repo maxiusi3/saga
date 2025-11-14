@@ -163,26 +163,47 @@ export async function POST(
 
     const body = await request.json()
 
-    const { data: story, error } = await db
-      .from('stories')
-      .insert({
-        project_id: projectId,
-        storyteller_id: user.id,
-        title: body.title,
-        content: body.content,
-        audio_url: body.audio_url || null,
-        audio_duration: body.audio_duration,
-        transcript: body.transcript,
-        ai_generated_title: body.ai_generated_title,
-        ai_summary: body.ai_summary,
-        ai_follow_up_questions: body.ai_follow_up_questions,
-        ai_confidence_score: body.ai_confidence_score,
-        parent_story_id: body.parent_story_id || null,
-        images: Array.isArray(body.images) ? body.images : null,
-        status: 'ready'
-      })
-      .select()
-      .single()
+    const basePayload: any = {
+      project_id: projectId,
+      storyteller_id: user.id,
+      title: body.title,
+      content: body.content,
+      audio_url: body.audio_url || null,
+      audio_duration: body.audio_duration,
+      transcript: body.transcript,
+      ai_generated_title: body.ai_generated_title,
+      ai_summary: body.ai_summary,
+      ai_follow_up_questions: body.ai_follow_up_questions,
+      ai_confidence_score: body.ai_confidence_score,
+      status: 'ready'
+    }
+    const extendedPayload: any = {
+      ...basePayload,
+      parent_story_id: body.parent_story_id || null,
+      images: Array.isArray(body.images) ? body.images : null,
+    }
+
+    let story: any = null
+    let error: any = null
+    {
+      const { data, error: err } = await db
+        .from('stories')
+        .insert(extendedPayload)
+        .select()
+        .single()
+      story = data
+      error = err
+    }
+
+    if (error && (error.code === '42703' || /column/.test(error.message || ''))) {
+      const { data, error: err2 } = await db
+        .from('stories')
+        .insert(basePayload)
+        .select()
+        .single()
+      story = data
+      error = err2
+    }
 
     if (error) {
       console.error('POST /api/projects/[id]/stories error:', error)
