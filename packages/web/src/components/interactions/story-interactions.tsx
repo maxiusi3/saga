@@ -308,9 +308,17 @@ export function StoryInteractions({
                 )}
               </Button>
             </div>
-            <input type="file" accept="image/jpeg,image/png" multiple onChange={(e) => {
+            <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
               const files = Array.from(e.target.files || [])
-              setCommentImages(files.slice(0, 6))
+              const sliced = files.slice(0, 6)
+              setCommentImages(sliced)
+              const storage = new StorageService()
+              const ups: Array<{ url: string; thumbUrl: string }> = []
+              for (let i = 0; i < sliced.length; i++) {
+                const res = await storage.uploadImageWithThumb(sliced[i], `images/interactions/${storyId}`)
+                if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
+              }
+              setCommentUploads(ups)
             }} />
             {commentUploads.length > 0 && (
               <div className="flex flex-wrap gap-2">

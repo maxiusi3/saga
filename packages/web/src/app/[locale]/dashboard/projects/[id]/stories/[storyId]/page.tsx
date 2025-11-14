@@ -192,6 +192,13 @@ export default function StoryDetailPage() {
             </EnhancedButton>
           </Link>
           <div className="flex items-center gap-3 ml-auto">
+            <EnhancedButton variant="default" size="sm" onClick={() => {
+              const params = new URLSearchParams({ parent: String(storyId) })
+              window.location.href = withLocale(`/dashboard/projects/${projectId}/record?${params.toString()}`)
+            }}>
+              <Mic className="h-4 w-4 mr-2" />
+              {t('detail.recordFollowUp')}
+            </EnhancedButton>
             <EnhancedButton variant="outline" size="sm">
               <Share className="h-4 w-4 mr-2" />
               Share
@@ -394,13 +401,6 @@ export default function StoryDetailPage() {
               </EnhancedCardHeader>
               <EnhancedCardContent>
                 <div className="space-y-3">
-                  <EnhancedButton variant="default" size="sm" className="w-full justify-start" onClick={() => {
-                    const params = new URLSearchParams({ parent: String(storyId) })
-                    window.location.href = withLocale(`/dashboard/projects/${projectId}/record?${params.toString()}`)
-                  }}>
-                    <Mic className="w-4 h-4 mr-2" />
-                    {t('detail.recordFollowUp')}
-                  </EnhancedButton>
                   <EnhancedButton variant="outline" size="sm" className="w-full justify-start">
                     <Heart className="w-4 h-4 mr-2" />
                     {t('detail.addToFavorites')}
