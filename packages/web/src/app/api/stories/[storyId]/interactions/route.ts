@@ -290,6 +290,19 @@ export async function POST(
       }
     }
 
+    // Fallback: if column attachments missing (42703), retry without attachments
+    if (insertErr && (insertErr as any).code === '42703') {
+      const payloadNoAttachments: any = { ...basePayload }
+      delete payloadNoAttachments.attachments
+      const { data, error } = await dbWrite
+        .from('interactions')
+        .insert(payloadNoAttachments)
+        .select('*')
+        .single()
+      interaction = data
+      insertErr = error
+    }
+
     if (insertErr || !interaction) {
       console.error('Error creating interaction (after fallbacks):', insertErr)
       return NextResponse.json(
@@ -298,12 +311,14 @@ export async function POST(
       )
     }
 
-    if (attachList.length > 0) {
+    if (attachList.length > 0 && interaction) {
       const enriched = attachList.map((a) => ({ ...a, source: 'comment', source_id: interaction.id, caption: `/dashboard/projects/${storyRow.project_id}/stories/${storyId}#interaction-${interaction.id}` }))
-      await dbWrite
-        .from('interactions')
-        .update({ attachments: enriched })
-        .eq('id', interaction.id)
+      try {
+        await dbWrite
+          .from('interactions')
+          .update({ attachments: enriched })
+          .eq('id', interaction.id)
+      } catch {}
     }
 
     // 如果是跟进问题，创建用户提示

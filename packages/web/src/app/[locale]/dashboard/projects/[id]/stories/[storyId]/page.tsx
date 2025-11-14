@@ -417,23 +417,69 @@ export default function StoryDetailPage() {
               </EnhancedCardContent>
             </EnhancedCard>
 
-            {childStories.length > 0 && (
-              <EnhancedCard>
-                <EnhancedCardHeader>
-                  <EnhancedCardTitle>{t('detail.playlist')}</EnhancedCardTitle>
-                </EnhancedCardHeader>
-                <EnhancedCardContent>
-                  <div className="space-y-2">
-                    {childStories.map((cs: any) => (
-                      <Link key={cs.id} href={withLocale(`/dashboard/projects/${projectId}/stories/${cs.id}`)} className="block p-3 rounded border hover:bg-sage-50">
+          {childStories.length > 0 && (
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <EnhancedCardTitle>{t('detail.playlist')}</EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <div className="space-y-2">
+                  {childStories.map((cs: any) => (
+                    <div key={cs.id} className="p-3 rounded border">
+                      <div className="flex items-center justify-between">
                         <div className="text-sm font-medium">{cs.title || cs.ai_generated_title || 'Untitled'}</div>
                         <div className="text-xs text-muted-foreground">{new Date(cs.created_at).toLocaleString()}</div>
-                      </Link>
-                    ))}
-                  </div>
-                </EnhancedCardContent>
-              </EnhancedCard>
-            )}
+                      </div>
+                      {cs.audio_url && (
+                        <div className="mt-3">
+                          <ModernAudioPlayer src={cs.audio_url} showDownload={true} />
+                        </div>
+                      )}
+                      <div className="mt-3">
+                        <Textarea
+                          defaultValue={cs.transcript || ''}
+                          onBlur={async (e) => {
+                            const val = e.target.value
+                            await storyService.updateStory(cs.id, { transcript: val })
+                            toast.success('Segment updated')
+                          }}
+                          className="min-h-[120px]"
+                          placeholder="Edit segment transcript..."
+                        />
+                      </div>
+                      <div className="mt-3">
+                        <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
+                          const files = Array.from(e.target.files || []).slice(0, 6)
+                          const storage = new StorageService()
+                          const ups: Array<{ url: string; thumbUrl: string }> = []
+                          for (let i = 0; i < files.length; i++) {
+                            const res = await storage.uploadImageWithThumb(files[i], `images/stories/${cs.id}`)
+                            if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
+                          }
+                          const existing = Array.isArray(cs.images) ? cs.images : []
+                          const merged = [...existing, ...ups]
+                          const updated = await storyService.updateStory(cs.id, { images: merged as any })
+                          if (updated) {
+                            setChildStories(prev => prev.map(s => s.id === cs.id ? { ...s, images: merged } as any : s))
+                            toast.success('Images added to segment')
+                          } else {
+                            toast.error('Failed to add images')
+                          }
+                        }} />
+                        {Array.isArray(cs.images) && cs.images.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {cs.images.map((img: any, idx: number) => (
+                              <img key={idx} src={img.thumbUrl || img.url} alt="seg" className="w-16 h-16 object-cover rounded" />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
+          )}
           </div>
         </div>
       </div>

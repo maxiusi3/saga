@@ -39,6 +39,7 @@ export interface UpdateStoryData {
   ai_summary?: string
   ai_follow_up_questions?: string[]
   ai_confidence_score?: number
+  images?: any[]
 }
 
 export class StoryService {

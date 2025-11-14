@@ -316,7 +316,11 @@ export default function ProjectRecordPage() {
         toast.success('Story saved successfully!')
       }
 
-      router.push(withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`))
+      if (parentStoryId) {
+        router.push(withLocale(`/dashboard/projects/${projectId}/stories/${parentStoryId}`))
+      } else {
+        router.push(withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`))
+      }
     } catch (error) {
       console.error('Story submission failed:', error)
       setSubmitError('Failed to save story. Please try again.')
