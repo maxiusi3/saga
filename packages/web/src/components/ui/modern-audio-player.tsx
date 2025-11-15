@@ -23,6 +23,8 @@ export function ModernAudioPlayer({
   className,
   showDownload = false,
   onDownload,
+  onPrevSegment,
+  onNextSegment,
 }: ModernAudioPlayerProps) {
   const audioRef = React.useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = React.useState(false)

@@ -74,16 +74,8 @@ export function StoryInteractions({
     loadPersistedUploads()
   }, [storyId])
 
-  // 仅在标签页可见状态切换为 visible 时重新加载，避免普通点击触发 reload
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && !isUploadingImages) {
-        loadInteractions()
-      }
-    }
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
-  }, [isUploadingImages, storyId])
+  // 移除激进的自动重载；仅在显式操作后刷新，避免空白点击导致模块重载
+  // 保留 mount、提交成功等场景下的刷新即可
 
   const loadInteractions = async () => {
     try {
