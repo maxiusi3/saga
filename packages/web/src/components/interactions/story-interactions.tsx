@@ -74,12 +74,16 @@ export function StoryInteractions({
     loadPersistedUploads()
   }, [storyId])
 
-  // 当页面获得焦点时重新加载数据（用户从录音页面返回时）
+  // 仅在标签页可见状态切换为 visible 时重新加载，避免普通点击触发 reload
   useEffect(() => {
-    const handleFocus = () => { if (!isUploadingImages) loadInteractions() }
-    window.addEventListener('focus', handleFocus)
-    return () => window.removeEventListener('focus', handleFocus)
-  }, [isUploadingImages])
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && !isUploadingImages) {
+        loadInteractions()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [isUploadingImages, storyId])
 
   const loadInteractions = async () => {
     try {
