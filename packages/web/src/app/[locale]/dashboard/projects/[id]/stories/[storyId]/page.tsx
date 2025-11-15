@@ -277,6 +277,24 @@ export default function StoryDetailPage() {
                   <ModernAudioPlayer
                     src={(selectedIndex === 0 ? story.audio_url : (segments[selectedIndex - 1]?.audio_url)) || ''}
                     showDownload={true}
+                    onPrevSegment={() => {
+                      if (selectedIndex > 0) {
+                        const nextIndex = selectedIndex - 1
+                        setSelectedIndex(nextIndex)
+                        setIsEditingSeg(false)
+                        const text = nextIndex === 0 ? (story.transcript || '') : (segments[nextIndex - 1]?.transcript || '')
+                        setEditedSegContent(text)
+                      }
+                    }}
+                    onNextSegment={() => {
+                      if (selectedIndex < segments.length) {
+                        const nextIndex = selectedIndex + 1
+                        setSelectedIndex(nextIndex)
+                        setIsEditingSeg(false)
+                        const text = nextIndex === 0 ? (story.transcript || '') : (segments[nextIndex - 1]?.transcript || '')
+                        setEditedSegContent(text)
+                      }
+                    }}
                   />
                 </div>
 
@@ -462,6 +480,19 @@ export default function StoryDetailPage() {
                         <div className="text-xs text-muted-foreground mt-1">{new Date(item.created_at).toLocaleString()}</div>
                       </button>
                     ))}
+                  </div>
+                )}
+                {segmentsCollapsed && (
+                  <div>
+                    {(() => {
+                      const item = [{ id: 'original', created_at: story.created_at }, ...segments][selectedIndex]
+                      return (
+                        <div className="p-3 rounded border bg-sage-50">
+                          <h3 className="text-lg font-semibold">{selectedIndex === 0 ? 'Original' : `Segment ${selectedIndex}`}</h3>
+                          <div className="text-xs text-muted-foreground mt-1">{new Date(item.created_at).toLocaleString()}</div>
+                        </div>
+                      )
+                    })()}
                   </div>
                 )}
               </EnhancedCardContent>

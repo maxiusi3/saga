@@ -49,6 +49,20 @@ export function StoryInteractions({
   const [commentImages, setCommentImages] = useState<File[]>([])
   const [commentUploads, setCommentUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
   const [commentPreviewUrls, setCommentPreviewUrls] = useState<string[]>([])
+  const [isUploadingImages, setIsUploadingImages] = useState(false)
+
+  const persistUploads = (uploads: Array<{ url: string; thumbUrl: string }>) => {
+    try { localStorage.setItem(`commentUploads:${storyId}`, JSON.stringify(uploads)) } catch {}
+  }
+  const loadPersistedUploads = () => {
+    try {
+      const raw = localStorage.getItem(`commentUploads:${storyId}`)
+      if (raw) {
+        const arr = JSON.parse(raw)
+        if (Array.isArray(arr)) setCommentUploads(arr)
+      }
+    } catch {}
+  }
 
   // 权限检查
   const canAddComments = canUserPerformAction('canAddComments', userRole as any, isProjectOwner)
@@ -57,17 +71,15 @@ export function StoryInteractions({
   // 加载交互记录
   useEffect(() => {
     loadInteractions()
+    loadPersistedUploads()
   }, [storyId])
 
   // 当页面获得焦点时重新加载数据（用户从录音页面返回时）
   useEffect(() => {
-    const handleFocus = () => {
-      loadInteractions()
-    }
-
+    const handleFocus = () => { if (!isUploadingImages) loadInteractions() }
     window.addEventListener('focus', handleFocus)
     return () => window.removeEventListener('focus', handleFocus)
-  }, [])
+  }, [isUploadingImages])
 
   const loadInteractions = async () => {
     try {
@@ -320,11 +332,14 @@ export function StoryInteractions({
               setCommentPreviewUrls(sliced.map(f => URL.createObjectURL(f)))
               const storage = new StorageService()
               const ups: Array<{ url: string; thumbUrl: string }> = []
+              setIsUploadingImages(true)
               for (let i = 0; i < sliced.length; i++) {
                 const res = await storage.uploadImageWithThumb(sliced[i], `images/interactions/${storyId}`)
                 if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
               }
               setCommentUploads(ups)
+              persistUploads(ups)
+              setIsUploadingImages(false)
             }} />
             <div className="flex flex-wrap gap-2">
               {(commentUploads.length > 0 ? commentUploads.map(i => i.thumbUrl) : commentPreviewUrls).map((src, idx) => (

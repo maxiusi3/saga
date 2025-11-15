@@ -12,6 +12,8 @@ interface ModernAudioPlayerProps {
   className?: string
   showDownload?: boolean
   onDownload?: () => void
+  onPrevSegment?: () => void
+  onNextSegment?: () => void
 }
 
 export function ModernAudioPlayer({
@@ -74,12 +76,20 @@ export function ModernAudioPlayer({
   }
 
   const skipBackward = () => {
+    if (onPrevSegment) {
+      onPrevSegment()
+      return
+    }
     if (audioRef.current) {
       audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - 10)
     }
   }
 
   const skipForward = () => {
+    if (onNextSegment) {
+      onNextSegment()
+      return
+    }
     if (audioRef.current) {
       audioRef.current.currentTime = Math.min(duration, audioRef.current.currentTime + 10)
     }
