@@ -38,6 +38,11 @@ export default function StoryDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [userRole, setUserRole] = useState<'facilitator' | 'storyteller' | null>(null)
   const [segments, setSegments] = useState<any[]>([])
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
+  const [isEditingSeg, setIsEditingSeg] = useState<boolean>(false)
+  const [editedSegContent, setEditedSegContent] = useState<string>('')
+  const [viewerOpen, setViewerOpen] = useState<boolean>(false)
+  const [viewerIdx, setViewerIdx] = useState<number>(0)
   const [commentImages, setCommentImages] = useState<Array<{ url: string; thumbUrl: string; interaction_id?: string }>>([])
   const [selectedImages, setSelectedImages] = useState<Record<string, boolean>>({})
 
@@ -72,6 +77,7 @@ export default function StoryDetailPage() {
         const segs = Array.isArray((storyData as any).segments) ? (storyData as any).segments : []
         segs.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
         setSegments(segs)
+        setSelectedIndex(0)
 
         const interactions = await interactionService.getStoryInteractions(storyId)
         const imgs: Array<{ url: string; thumbUrl: string; interaction_id?: string }> = []
@@ -265,14 +271,12 @@ export default function StoryDetailPage() {
 
 
                 {/* Audio Player */}
-                {story.audio_url && (
-                  <div className="mb-6">
-                    <ModernAudioPlayer
-                      src={story.audio_url}
-                      showDownload={true}
-                    />
-                  </div>
-                )}
+                <div className="mb-6">
+                  <ModernAudioPlayer
+                    src={(selectedIndex === 0 ? story.audio_url : (segments[selectedIndex - 1]?.audio_url)) || ''}
+                    showDownload={true}
+                  />
+                </div>
 
                 {Array.isArray((story as any).images) && (story as any).images.length > 0 && (
                   <div className="mb-6 grid grid-cols-3 gap-2">
@@ -290,44 +294,105 @@ export default function StoryDetailPage() {
                       <EnhancedButton 
                         variant="outline" 
                         size="sm"
-                        onClick={() => setIsEditingTranscript(!isEditingTranscript)}
+                        onClick={() => {
+                          setIsEditingSeg(!isEditingSeg)
+                          const text = selectedIndex === 0 ? (story.transcript || '') : (segments[selectedIndex - 1]?.transcript || '')
+                          setEditedSegContent(text)
+                        }}
                       >
                         <Edit className="h-4 w-4 mr-2" />
-                        {isEditingTranscript ? 'Cancel' : 'Edit'}
+                        {isEditingSeg ? 'Cancel' : 'Edit'}
                       </EnhancedButton>
                     )}
                   </div>
                   
-                  {isEditingTranscript && canEditStory ? (
+                  {isEditingSeg ? (
                     <div className="space-y-4">
-                      <Textarea
-                        value={editedTranscript}
-                        onChange={(e) => setEditedTranscript(e.target.value)}
-                        className="min-h-[200px]"
-                        placeholder="Story transcript..."
+                      <div
+                        className="min-h-[200px] p-3 border rounded bg-white"
+                        contentEditable
+                        suppressContentEditableWarning
+                        onInput={(e) => setEditedSegContent((e.target as HTMLElement).innerHTML)}
+                        dangerouslySetInnerHTML={{ __html: editedSegContent }}
                       />
+                      {selectedIndex > 0 && (
+                        <div className="space-y-2">
+                          <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
+                            const files = Array.from(e.target.files || []).slice(0, 6)
+                            const storage = new StorageService()
+                            const ups: Array<{ url: string; thumbUrl: string }> = []
+                            for (let i = 0; i < files.length; i++) {
+                              const res = await storage.uploadImageWithThumb(files[i], `images/stories/${storyId}`)
+                              if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
+                            }
+                            const next = segments.slice()
+                            const ex = Array.isArray(next[selectedIndex - 1]?.images) ? next[selectedIndex - 1].images : []
+                            next[selectedIndex - 1] = { ...next[selectedIndex - 1], images: [...ex, ...ups] }
+                            setSegments(next)
+                          }} />
+                        </div>
+                      )}
                       <div className="flex gap-2">
-                        <EnhancedButton onClick={handleSaveTranscript}>
-                          Save Changes
+                        <EnhancedButton onClick={async () => {
+                          try {
+                            if (selectedIndex === 0) {
+                              const ok = await storyService.updateStory(story.id, { transcript: editedSegContent })
+                              if (ok) setStory(prev => prev ? { ...prev, transcript: editedSegContent } : prev)
+                            } else {
+                              const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+                              const supa = createClientSupabase()
+                              const { data: { session } } = await supa.auth.getSession()
+                              if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+                              const next = segments.slice()
+                              next[selectedIndex - 1] = { ...next[selectedIndex - 1], transcript: editedSegContent }
+                              const resp = await fetch(`/api/stories/${storyId}/segments`, { method: 'POST', credentials: 'include', headers, body: JSON.stringify({ segments: next }) })
+                              if (resp.ok) setSegments(next)
+                            }
+                            setIsEditingSeg(false)
+                            toast.success('Saved')
+                          } catch {
+                            toast.error('Save failed')
+                          }
+                        }}>
+                          Save
                         </EnhancedButton>
-                        <EnhancedButton 
-                          variant="outline"
-                          onClick={() => {
-                            setIsEditingTranscript(false)
-                            setEditedTranscript(story.transcript || '')
-                          }}
-                        >
+                        <EnhancedButton variant="outline" onClick={() => { setIsEditingSeg(false) }}>
                           Cancel
                         </EnhancedButton>
                       </div>
                     </div>
                   ) : (
                     <div className="prose prose-gray max-w-none">
-                      <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                        {story.transcript || 'No transcript available'}
-                      </p>
+                      <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: selectedIndex === 0 ? (story.transcript || '') : (segments[selectedIndex - 1]?.transcript || '') }} />
+                      {selectedIndex > 0 && Array.isArray(segments[selectedIndex - 1]?.images) && segments[selectedIndex - 1].images.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {segments[selectedIndex - 1].images.map((img: any, idx: number) => (
+                            <img key={idx} src={img.thumbUrl || img.url} alt="img" className="w-16 h-16 object-cover rounded cursor-zoom-in" onClick={() => { setViewerIdx(idx); setViewerOpen(true) }} />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
+                </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
+            <EnhancedCard>
+              <EnhancedCardHeader>
+                <EnhancedCardTitle>Segments</EnhancedCardTitle>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <div className="space-y-3">
+                  {[{ id: 'original', created_at: story.created_at, audio_url: story.audio_url, transcript: story.transcript }, ...segments].map((item: any, idx: number) => (
+                    <button key={item.id || idx} className={`w-full text-left p-3 rounded border transition ${selectedIndex === idx ? 'border-sage-500 bg-sage-50' : 'hover:bg-sage-50'}`} onClick={() => {
+                      setSelectedIndex(idx)
+                      setIsEditingSeg(false)
+                      const text = idx === 0 ? (story.transcript || '') : (segments[idx - 1]?.transcript || '')
+                      setEditedSegContent(text)
+                    }}>
+                      <h3 className="text-lg font-semibold">{idx === 0 ? 'Original' : `Segment ${idx}`}</h3>
+                      <div className="text-xs text-muted-foreground mt-1">{new Date(item.created_at).toLocaleString()}</div>
+                    </button>
+                  ))}
                 </div>
               </EnhancedCardContent>
             </EnhancedCard>
@@ -416,83 +481,26 @@ export default function StoryDetailPage() {
               </EnhancedCardContent>
             </EnhancedCard>
 
-            {segments.length > 0 && (
-              <EnhancedCard>
-                <EnhancedCardHeader>
-                  <EnhancedCardTitle>{t('detail.playlist')}</EnhancedCardTitle>
-                </EnhancedCardHeader>
-                <EnhancedCardContent>
-                  <div className="space-y-2">
-                    {segments.map((seg: any, idx: number) => (
-                      <div key={seg.id || idx} className="p-3 rounded border">
-                        <div className="flex items-center justify-between">
-                          <div className="text-sm font-medium">Segment {idx + 1}</div>
-                          <div className="text-xs text-muted-foreground">{new Date(seg.created_at).toLocaleString()}</div>
-                        </div>
-                        {seg.audio_url && (
-                          <div className="mt-3">
-                            <ModernAudioPlayer src={seg.audio_url} showDownload={true} />
-                          </div>
-                        )}
-                        <div className="mt-3">
-                          <Textarea
-                          defaultValue={seg.transcript || ''}
-                          onBlur={async (e) => {
-                            const val = e.target.value
-                            const nextSegs = segments.slice()
-                            nextSegs[idx] = { ...seg, transcript: val }
-                            setSegments(nextSegs)
-                            const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-                            const supa = createClientSupabase()
-                            const { data: { session } } = await supa.auth.getSession()
-                            if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
-                            await fetch(`/api/stories/${storyId}/segments`, {
-                              method: 'POST', credentials: 'include', headers,
-                              body: JSON.stringify({})
-                            })
-                            toast.success('Segment updated')
-                          }}
-                          className="min-h-[120px]"
-                          placeholder="Edit segment transcript..."
-                        />
-                      </div>
-                      <div className="mt-3">
-                        <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
-                          const files = Array.from(e.target.files || []).slice(0, 6)
-                          const storage = new StorageService()
-                          const ups: Array<{ url: string; thumbUrl: string }> = []
-                          for (let i = 0; i < files.length; i++) {
-                            const res = await storage.uploadImageWithThumb(files[i], `images/stories/${storyId}`)
-                            if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
-                          }
-                          const nextSegs = segments.slice()
-                          const existing = Array.isArray(seg.images) ? seg.images : []
-                          nextSegs[idx] = { ...seg, images: [...existing, ...ups] }
-                          setSegments(nextSegs)
-                          const supa = createClientSupabase()
-                          const { data: { session } } = await supa.auth.getSession()
-                          const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-                          if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
-                          await fetch(`/api/stories/${storyId}/segments`, { method: 'POST', credentials: 'include', headers, body: JSON.stringify({}) })
-                          toast.success('Images added to segment')
-                        }} />
-                        {Array.isArray(seg.images) && seg.images.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-2">
-                            {seg.images.map((img: any, j: number) => (
-                              <img key={idx} src={img.thumbUrl || img.url} alt="seg" className="w-16 h-16 object-cover rounded" />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </EnhancedCardContent>
-            </EnhancedCard>
-          )}
+            
           </div>
         </div>
       </div>
+      {viewerOpen && selectedIndex > 0 && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={() => setViewerOpen(false)}>
+          <div className="relative max-w-4xl w-full px-6" onClick={(e) => e.stopPropagation()}>
+            <img src={segments[selectedIndex - 1].images[viewerIdx]?.url} alt="full" className="max-h-[80vh] mx-auto" />
+            <div className="absolute left-4 top-1/2 -translate-y-1/2">
+              <EnhancedButton variant="secondary" onClick={() => setViewerIdx((viewerIdx - 1 + segments[selectedIndex - 1].images.length) % segments[selectedIndex - 1].images.length)}>◀</EnhancedButton>
+            </div>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              <EnhancedButton variant="secondary" onClick={() => setViewerIdx((viewerIdx + 1) % segments[selectedIndex - 1].images.length)}>▶</EnhancedButton>
+            </div>
+            <div className="absolute right-4 top-4">
+              <EnhancedButton variant="secondary" onClick={() => setViewerOpen(false)}>✕</EnhancedButton>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

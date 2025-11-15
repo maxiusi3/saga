@@ -30,7 +30,7 @@ export async function POST(request: NextRequest, { params }: { params: { storyId
 
     const admin = getSupabaseAdmin()
     const body = await request.json()
-    const { audio_url, audio_duration, transcript, images } = body
+    const { audio_url, audio_duration, transcript, images, segments } = body
 
     // permission: storyteller of the parent story
     const { data: story } = await admin
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest, { params }: { params: { storyId
       segmentsArr = Array.isArray(story.segments) ? story.segments : []
     } catch {}
 
-    const merged = [...segmentsArr, segment]
+    const merged = Array.isArray(segments) ? segments : [...segmentsArr, segment]
 
     // attempt update with segments jsonb; if column missing, return explicit error
     const { data: updated, error } = await admin
