@@ -8,7 +8,7 @@ import { ModernAudioPlayer } from '@/components/ui/modern-audio-player'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal, Mic, SkipBack, SkipForward } from 'lucide-react'
+import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal, Mic } from 'lucide-react'
 import { createClientSupabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
@@ -44,6 +44,7 @@ export default function StoryDetailPage() {
   const [viewerOpen, setViewerOpen] = useState<boolean>(false)
   const [viewerIdx, setViewerIdx] = useState<number>(0)
   const [editingImages, setEditingImages] = useState<Array<{ url: string; thumbUrl: string }>>([])
+  const [segmentsCollapsed, setSegmentsCollapsed] = useState<boolean>(false)
   const [commentImages, setCommentImages] = useState<Array<{ url: string; thumbUrl: string; interaction_id?: string }>>([])
   const [selectedImages, setSelectedImages] = useState<Record<string, boolean>>({})
 
@@ -273,40 +274,6 @@ export default function StoryDetailPage() {
 
                 {/* Audio Player */}
                 <div className="mb-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <EnhancedButton
-                      variant="secondary"
-                      size="sm"
-                      disabled={selectedIndex === 0}
-                      onClick={() => {
-                        if (selectedIndex > 0) {
-                          const nextIndex = selectedIndex - 1
-                          setSelectedIndex(nextIndex)
-                          setIsEditingSeg(false)
-                          const text = nextIndex === 0 ? (story.transcript || '') : (segments[nextIndex - 1]?.transcript || '')
-                          setEditedSegContent(text)
-                        }
-                      }}
-                    >
-                      <SkipBack className="h-4 w-4" />
-                    </EnhancedButton>
-                    <EnhancedButton
-                      variant="secondary"
-                      size="sm"
-                      disabled={selectedIndex === segments.length}
-                      onClick={() => {
-                        if (selectedIndex < segments.length) {
-                          const nextIndex = selectedIndex + 1
-                          setSelectedIndex(nextIndex)
-                          setIsEditingSeg(false)
-                          const text = nextIndex === 0 ? (story.transcript || '') : (segments[nextIndex - 1]?.transcript || '')
-                          setEditedSegContent(text)
-                        }
-                      }}
-                    >
-                      <SkipForward className="h-4 w-4" />
-                    </EnhancedButton>
-                  </div>
                   <ModernAudioPlayer
                     src={(selectedIndex === 0 ? story.audio_url : (segments[selectedIndex - 1]?.audio_url)) || ''}
                     showDownload={true}
@@ -431,26 +398,7 @@ export default function StoryDetailPage() {
                 </div>
               </EnhancedCardContent>
             </EnhancedCard>
-            <EnhancedCard>
-              <EnhancedCardHeader>
-                <EnhancedCardTitle>Segments</EnhancedCardTitle>
-              </EnhancedCardHeader>
-              <EnhancedCardContent>
-                <div className="space-y-3">
-                  {[{ id: 'original', created_at: story.created_at, audio_url: story.audio_url, transcript: story.transcript }, ...segments].map((item: any, idx: number) => (
-                    <button key={item.id || idx} className={`w-full text-left p-3 rounded border transition ${selectedIndex === idx ? 'border-blue-500 bg-blue-50' : 'hover:bg-sage-50'}`} onClick={() => {
-                      setSelectedIndex(idx)
-                      setIsEditingSeg(false)
-                      const text = idx === 0 ? (story.transcript || '') : (segments[idx - 1]?.transcript || '')
-                      setEditedSegContent(text)
-                    }}>
-                      <h3 className="text-lg font-semibold">{idx === 0 ? 'Original' : `Segment ${idx}`}</h3>
-                      <div className="text-xs text-muted-foreground mt-1">{new Date(item.created_at).toLocaleString()}</div>
-                    </button>
-                  ))}
-                </div>
-              </EnhancedCardContent>
-            </EnhancedCard>
+            {/* Segments moved to sidebar */}
 
             {/* Comments and Follow-up Questions */}
             <StoryInteractions
@@ -489,6 +437,35 @@ export default function StoryDetailPage() {
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Segments at top */}
+            <EnhancedCard>
+              <EnhancedCardHeader className="flex items-center justify-between">
+                <EnhancedCardTitle>Segments</EnhancedCardTitle>
+                <div className="text-xs text-muted-foreground">{[...segments].length + 1} segments</div>
+              </EnhancedCardHeader>
+              <EnhancedCardContent>
+                <div className="mb-2">
+                  <EnhancedButton variant="outline" size="sm" onClick={() => setSegmentsCollapsed(v => !v)}>
+                    {segmentsCollapsed ? 'Expand' : 'Collapse'}
+                  </EnhancedButton>
+                </div>
+                {!segmentsCollapsed && (
+                  <div className="space-y-3">
+                    {[{ id: 'original', created_at: story.created_at, audio_url: story.audio_url, transcript: story.transcript }, ...segments].map((item: any, idx: number) => (
+                      <button key={item.id || idx} className={`w-full text-left p-3 rounded border transition ${selectedIndex === idx ? 'border-blue-500 bg-blue-50' : 'hover:bg-sage-50'}`} onClick={() => {
+                        setSelectedIndex(idx)
+                        setIsEditingSeg(false)
+                        const text = idx === 0 ? (story.transcript || '') : (segments[idx - 1]?.transcript || '')
+                        setEditedSegContent(text)
+                      }}>
+                        <h3 className="text-lg font-semibold">{idx === 0 ? 'Original' : `Segment ${idx}`}</h3>
+                        <div className="text-xs text-muted-foreground mt-1">{new Date(item.created_at).toLocaleString()}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </EnhancedCardContent>
+            </EnhancedCard>
             {/* AI Suggested Questions */}
             {story.ai_follow_up_questions && story.ai_follow_up_questions.length > 0 && (
               <EnhancedCard>

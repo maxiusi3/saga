@@ -104,12 +104,14 @@ export function StoryInteractions({
           uploads.push({ url: res.url, thumbUrl: res.thumbUrl })
         }
       }
-      setCommentUploads(uploads)
+      const combined = commentUploads.length > 0 ? [...commentUploads, ...uploads] : uploads
+      setCommentUploads(combined)
+      persistUploads(combined)
       const newComment = await interactionService.createInteraction({
         story_id: storyId,
         type: 'comment',
         content: commentText.trim(),
-        attachments: uploads
+        attachments: combined
       })
 
       if (newComment) {
@@ -117,6 +119,7 @@ export function StoryInteractions({
         setCommentText('')
         setCommentImages([])
         setCommentUploads([])
+        persistUploads([])
         loadInteractions()
         toast.success('Comment added successfully')
       } else {
