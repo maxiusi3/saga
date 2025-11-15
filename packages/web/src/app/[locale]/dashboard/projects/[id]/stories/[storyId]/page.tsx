@@ -8,7 +8,7 @@ import { ModernAudioPlayer } from '@/components/ui/modern-audio-player'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal, Mic } from 'lucide-react'
+import { Edit, Share, Download, Heart, MessageCircle, ChevronLeft, MoreHorizontal, Mic, SkipBack, SkipForward } from 'lucide-react'
 import { createClientSupabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
@@ -43,6 +43,7 @@ export default function StoryDetailPage() {
   const [editedSegContent, setEditedSegContent] = useState<string>('')
   const [viewerOpen, setViewerOpen] = useState<boolean>(false)
   const [viewerIdx, setViewerIdx] = useState<number>(0)
+  const [editingImages, setEditingImages] = useState<Array<{ url: string; thumbUrl: string }>>([])
   const [commentImages, setCommentImages] = useState<Array<{ url: string; thumbUrl: string; interaction_id?: string }>>([])
   const [selectedImages, setSelectedImages] = useState<Record<string, boolean>>({})
 
@@ -272,6 +273,40 @@ export default function StoryDetailPage() {
 
                 {/* Audio Player */}
                 <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <EnhancedButton
+                      variant="secondary"
+                      size="sm"
+                      disabled={selectedIndex === 0}
+                      onClick={() => {
+                        if (selectedIndex > 0) {
+                          const nextIndex = selectedIndex - 1
+                          setSelectedIndex(nextIndex)
+                          setIsEditingSeg(false)
+                          const text = nextIndex === 0 ? (story.transcript || '') : (segments[nextIndex - 1]?.transcript || '')
+                          setEditedSegContent(text)
+                        }
+                      }}
+                    >
+                      <SkipBack className="h-4 w-4" />
+                    </EnhancedButton>
+                    <EnhancedButton
+                      variant="secondary"
+                      size="sm"
+                      disabled={selectedIndex === segments.length}
+                      onClick={() => {
+                        if (selectedIndex < segments.length) {
+                          const nextIndex = selectedIndex + 1
+                          setSelectedIndex(nextIndex)
+                          setIsEditingSeg(false)
+                          const text = nextIndex === 0 ? (story.transcript || '') : (segments[nextIndex - 1]?.transcript || '')
+                          setEditedSegContent(text)
+                        }
+                      }}
+                    >
+                      <SkipForward className="h-4 w-4" />
+                    </EnhancedButton>
+                  </div>
                   <ModernAudioPlayer
                     src={(selectedIndex === 0 ? story.audio_url : (segments[selectedIndex - 1]?.audio_url)) || ''}
                     showDownload={true}
@@ -298,6 +333,8 @@ export default function StoryDetailPage() {
                           setIsEditingSeg(!isEditingSeg)
                           const text = selectedIndex === 0 ? (story.transcript || '') : (segments[selectedIndex - 1]?.transcript || '')
                           setEditedSegContent(text)
+                          const imgs = selectedIndex === 0 ? (Array.isArray((story as any).images) ? (story as any).images : []) : (Array.isArray(segments[selectedIndex - 1]?.images) ? segments[selectedIndex - 1].images : [])
+                          setEditingImages(imgs.slice())
                         }}
                       >
                         <Edit className="h-4 w-4 mr-2" />
@@ -315,36 +352,47 @@ export default function StoryDetailPage() {
                         onInput={(e) => setEditedSegContent((e.target as HTMLElement).innerHTML)}
                         dangerouslySetInnerHTML={{ __html: editedSegContent }}
                       />
-                      {selectedIndex > 0 && (
-                        <div className="space-y-2">
-                          <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
-                            const files = Array.from(e.target.files || []).slice(0, 6)
-                            const storage = new StorageService()
-                            const ups: Array<{ url: string; thumbUrl: string }> = []
-                            for (let i = 0; i < files.length; i++) {
-                              const res = await storage.uploadImageWithThumb(files[i], `images/stories/${storyId}`)
-                              if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
-                            }
-                            const next = segments.slice()
-                            const ex = Array.isArray(next[selectedIndex - 1]?.images) ? next[selectedIndex - 1].images : []
-                            next[selectedIndex - 1] = { ...next[selectedIndex - 1], images: [...ex, ...ups] }
-                            setSegments(next)
-                          }} />
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap gap-2">
+                          {editingImages.map((img, idx) => (
+                            <div key={idx} className="relative">
+                              <img src={img.thumbUrl || img.url} alt="img" className="w-16 h-16 object-cover rounded" />
+                              <button
+                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6"
+                                onClick={() => {
+                                  setEditingImages(prev => prev.filter((_, i) => i !== idx))
+                                }}
+                                aria-label="Remove"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
                         </div>
-                      )}
+                        <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
+                          const files = Array.from(e.target.files || []).slice(0, 6)
+                          const storage = new StorageService()
+                          const ups: Array<{ url: string; thumbUrl: string }> = []
+                          for (let i = 0; i < files.length; i++) {
+                            const res = await storage.uploadImageWithThumb(files[i], `images/stories/${storyId}`)
+                            if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
+                          }
+                          setEditingImages(prev => [...prev, ...ups])
+                        }} />
+                      </div>
                       <div className="flex gap-2">
                         <EnhancedButton onClick={async () => {
                           try {
                             if (selectedIndex === 0) {
-                              const ok = await storyService.updateStory(story.id, { transcript: editedSegContent })
-                              if (ok) setStory(prev => prev ? { ...prev, transcript: editedSegContent } : prev)
+                              const ok = await storyService.updateStory(story.id, { transcript: editedSegContent, images: editingImages as any })
+                              if (ok) setStory(prev => prev ? { ...prev, transcript: editedSegContent, images: editingImages as any } : prev)
                             } else {
                               const headers: Record<string, string> = { 'Content-Type': 'application/json' }
                               const supa = createClientSupabase()
                               const { data: { session } } = await supa.auth.getSession()
                               if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
                               const next = segments.slice()
-                              next[selectedIndex - 1] = { ...next[selectedIndex - 1], transcript: editedSegContent }
+                              next[selectedIndex - 1] = { ...next[selectedIndex - 1], transcript: editedSegContent, images: editingImages }
                               const resp = await fetch(`/api/stories/${storyId}/segments`, { method: 'POST', credentials: 'include', headers, body: JSON.stringify({ segments: next }) })
                               if (resp.ok) setSegments(next)
                             }
@@ -371,6 +419,13 @@ export default function StoryDetailPage() {
                           ))}
                         </div>
                       )}
+                      {selectedIndex === 0 && Array.isArray((story as any).images) && (story as any).images.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {(story as any).images.map((img: any, idx: number) => (
+                            <img key={idx} src={img.thumbUrl || img.url} alt="img" className="w-16 h-16 object-cover rounded cursor-zoom-in" onClick={() => { setViewerIdx(idx); setViewerOpen(true) }} />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -383,7 +438,7 @@ export default function StoryDetailPage() {
               <EnhancedCardContent>
                 <div className="space-y-3">
                   {[{ id: 'original', created_at: story.created_at, audio_url: story.audio_url, transcript: story.transcript }, ...segments].map((item: any, idx: number) => (
-                    <button key={item.id || idx} className={`w-full text-left p-3 rounded border transition ${selectedIndex === idx ? 'border-sage-500 bg-sage-50' : 'hover:bg-sage-50'}`} onClick={() => {
+                    <button key={item.id || idx} className={`w-full text-left p-3 rounded border transition ${selectedIndex === idx ? 'border-blue-500 bg-blue-50' : 'hover:bg-sage-50'}`} onClick={() => {
                       setSelectedIndex(idx)
                       setIsEditingSeg(false)
                       const text = idx === 0 ? (story.transcript || '') : (segments[idx - 1]?.transcript || '')
