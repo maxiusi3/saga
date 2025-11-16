@@ -15,7 +15,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
-import { interactionService } from '@/lib/interactions'
+// removed unused interactions import
 import { StorageService } from '@/lib/storage'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
@@ -45,8 +45,7 @@ export default function StoryDetailPage() {
   const [viewerIdx, setViewerIdx] = useState<number>(0)
   const [editingImages, setEditingImages] = useState<Array<{ url: string; thumbUrl: string }>>([])
   const [segmentsCollapsed, setSegmentsCollapsed] = useState<boolean>(false)
-  const [commentImages, setCommentImages] = useState<Array<{ url: string; thumbUrl: string; interaction_id?: string }>>([])
-  const [selectedImages, setSelectedImages] = useState<Record<string, boolean>>({})
+  // removed legacy comment images selection state
 
   useEffect(() => {
     const loadStory = async () => {
@@ -81,16 +80,7 @@ export default function StoryDetailPage() {
         setSegments(segs)
         setSelectedIndex(0)
 
-        const interactions = await interactionService.getStoryInteractions(storyId)
-        const imgs: Array<{ url: string; thumbUrl: string; interaction_id?: string }> = []
-        interactions.forEach((it: any) => {
-          if (Array.isArray(it.attachments)) {
-            it.attachments.forEach((a: any) => {
-              if (a.url && a.thumbUrl) imgs.push({ url: a.url, thumbUrl: a.thumbUrl, interaction_id: it.id })
-            })
-          }
-        })
-        setCommentImages(imgs)
+        // removed legacy build of comment images list for selection
       } catch (error) {
         console.error('Error loading story:', error)
         setError('Failed to load story data')
@@ -427,30 +417,7 @@ export default function StoryDetailPage() {
               isStoryteller={story.storyteller_id === user?.id}
             />
 
-            {canEditStory && (
-              <EnhancedCard>
-                <EnhancedCardHeader>
-                  <EnhancedCardTitle>{t('detail.commentImages')}</EnhancedCardTitle>
-                </EnhancedCardHeader>
-                <EnhancedCardContent>
-                  {commentImages.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No comment images</p>
-                  ) : (
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-3 gap-3">
-                        {commentImages.map((img, idx) => (
-                          <label key={idx} className="block">
-                            <input type="checkbox" className="mr-2" checked={!!selectedImages[String(idx)]} onChange={(e) => setSelectedImages(prev => ({ ...prev, [String(idx)]: e.target.checked }))} />
-                            <img src={img.thumbUrl} alt="comment" className="w-full h-24 object-cover rounded" />
-                          </label>
-                        ))}
-                      </div>
-                      <EnhancedButton onClick={handleSelectImagesToStory}>{t('detail.addSelectedToStory')}</EnhancedButton>
-                    </div>
-                  )}
-                </EnhancedCardContent>
-              </EnhancedCard>
-            )}
+            {/* removed legacy comment images selection card */}
           </div>
 
           {/* Sidebar */}
@@ -567,25 +534,4 @@ export default function StoryDetailPage() {
     </div>
   )
 }
-  const handleSelectImagesToStory = async () => {
-    const chosen = commentImages.filter((img, idx) => selectedImages[String(idx)])
-    if (chosen.length === 0 || !story) return
-    try {
-      const supa = createClientSupabase()
-      const { data: { session } } = await supa.auth.getSession()
-      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-      if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
-      const resp = await fetch(`/api/stories/${story.id}/images/select-from-interactions`, {
-        method: 'POST', credentials: 'include', headers, body: JSON.stringify({ images: chosen })
-      })
-      if (resp.ok) {
-        const json = await resp.json()
-        setStory(prev => prev ? { ...prev, images: json.images } as any : prev)
-        toast.success('Images added to story')
-      } else {
-        toast.error('Failed to add images')
-      }
-    } catch {
-      toast.error('Failed to add images')
-    }
-  }
+// removed legacy handler for selecting comment images into story

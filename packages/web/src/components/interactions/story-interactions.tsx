@@ -119,19 +119,24 @@ export function StoryInteractions({
       const combined = commentUploads.length > 0 ? [...commentUploads, ...uploads] : uploads
       setCommentUploads(combined)
       persistUploads(combined)
+      const attachmentsToSend = combined.map(a => ({ url: a.url, thumbUrl: a.thumbUrl }))
       const newComment = await interactionService.createInteraction({
         story_id: storyId,
         type: 'comment',
         content: commentText.trim(),
-        attachments: combined
+        attachments: attachmentsToSend
       })
 
       if (newComment) {
+        // revoke previews before clearing
+        commentPreviewUrls.forEach((p) => { try { URL.revokeObjectURL(p) } catch {} })
         setInteractions(prev => [...prev, newComment])
         setCommentText('')
         setCommentImages([])
         setCommentUploads([])
+        setCommentPreviewUrls([])
         persistUploads([])
+        if (fileInputRef.current) fileInputRef.current.value = ''
         loadInteractions()
         toast.success('Comment added successfully')
       } else {
@@ -340,11 +345,11 @@ export function StoryInteractions({
               setCommentImages(prev => [...prev, ...sliced])
               setCommentPreviewUrls(prev => [...prev, ...sliced.map(f => URL.createObjectURL(f))])
               const storage = new StorageService()
-              const ups: Array<{ url: string; thumbUrl: string }> = []
+              const ups: Array<{ url: string; thumbUrl: string; path?: string; thumbPath?: string }> = []
               setIsUploadingImages(true)
               for (let i = 0; i < sliced.length; i++) {
                 const res = await storage.uploadImageWithThumb(sliced[i], `images/interactions/${storyId}`)
-                if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
+                if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl, path: res.path, thumbPath: res.thumbPath })
               }
               setCommentUploads(prev => [...prev, ...ups])
               persistUploads([...commentUploads, ...ups])
@@ -355,10 +360,20 @@ export function StoryInteractions({
                 commentUploads.map((img, idx) => (
                   <div key={idx} className="relative">
                     <img src={img.thumbUrl} alt="thumb" className="w-16 h-16 object-cover rounded" />
-                    <button className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6" aria-label="Remove" onClick={() => {
+                    <button className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6" aria-label="Remove" onClick={async () => {
+                      const removed = commentUploads[idx]
                       const next = commentUploads.filter((_, i) => i !== idx)
                       setCommentUploads(next)
                       persistUploads(next)
+                      // 删除服务器上的已上传资源
+                      const toDelete: string[] = []
+                      if (removed?.path) toDelete.push(removed.path)
+                      if (removed?.thumbPath) toDelete.push(removed.thumbPath)
+                      if (toDelete.length > 0) {
+                        try {
+                          await fetch('/api/media/delete-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paths: toDelete }) })
+                        } catch {}
+                      }
                     }}>×</button>
                   </div>
                 ))
@@ -369,6 +384,7 @@ export function StoryInteractions({
                     <button className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6" aria-label="Remove" onClick={() => {
                       const nextPreviews = commentPreviewUrls.filter((_, i) => i !== idx)
                       const nextFiles = commentImages.filter((_, i) => i !== idx)
+                      try { URL.revokeObjectURL(src) } catch {}
                       setCommentPreviewUrls(nextPreviews)
                       setCommentImages(nextFiles)
                     }}>×</button>
@@ -378,7 +394,15 @@ export function StoryInteractions({
             </div>
             {(commentUploads.length > 0 || commentPreviewUrls.length > 0) && (
               <div className="mt-2">
-                <Button variant="ghost" size="sm" onClick={() => {
+                <Button variant="ghost" size="sm" onClick={async () => {
+                  // 删除所有已上传的服务器资源
+                  const paths: string[] = []
+                  commentUploads.forEach(u => { if (u.path) paths.push(u.path); if (u.thumbPath) paths.push(u.thumbPath) })
+                  if (paths.length > 0) {
+                    try { await fetch('/api/media/delete-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paths }) }) } catch {}
+                  }
+                  // revoke previews
+                  commentPreviewUrls.forEach((p) => { try { URL.revokeObjectURL(p) } catch {} })
                   setCommentUploads([])
                   setCommentPreviewUrls([])
                   setCommentImages([])
@@ -439,41 +463,46 @@ export function StoryInteractions({
         </div>
 
         {viewerOpen && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={() => setViewerOpen(false)}>
-            <div className="relative max-w-4xl w-full px-6" onClick={(e) => e.stopPropagation()}>
-              <img src={viewerImages[viewerIndex]?.url} alt="full" className="max-h-[80vh] mx-auto" />
-              <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                <Button variant="secondary" onClick={() => setViewerIndex((viewerIndex - 1 + viewerImages.length) % viewerImages.length)}>◀</Button>
-              </div>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                <Button variant="secondary" onClick={() => setViewerIndex((viewerIndex + 1) % viewerImages.length)}>▶</Button>
-              </div>
-              <div className="absolute right-4 top-4">
-                <Button variant="secondary" onClick={() => setViewerOpen(false)}>✕</Button>
-              </div>
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
-                {viewerIndex + 1}/{viewerImages.length}
-              </div>
+          <div className="fixed inset-0 bg-black/80 z-50" onClick={() => setViewerOpen(false)}>
+            <div className="absolute inset-0 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+              <img src={viewerImages[viewerIndex]?.url} alt="full" className="max-h-[80vh] max-w-[90vw] object-contain" />
+            </div>
+            {/* Left/Right edge nav */}
+            <div className="absolute left-2 top-1/2 -translate-y-1/2">
+              <Button variant="secondary" className="rounded-full" onClick={(e) => { e.stopPropagation(); setViewerIndex((viewerIndex - 1 + viewerImages.length) % viewerImages.length) }}>◀</Button>
+            </div>
+            <div className="absolute right-2 top-1/2 -translate-y-1/2">
+              <Button variant="secondary" className="rounded-full" onClick={(e) => { e.stopPropagation(); setViewerIndex((viewerIndex + 1) % viewerImages.length) }}>▶</Button>
+            </div>
+            {/* Top-right controls */}
+            <div className="absolute right-4 top-4 flex items-center gap-2">
               {isStoryteller && (
-                <div className="absolute bottom-4 right-4">
-                  <Button onClick={async () => {
-                    try {
-                      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-                      const storage = new StorageService()
-                      const supaHeaders = headers
-                      const resp = await fetch(`/api/stories/${storyId}/images/select-from-interactions`, { method: 'POST', credentials: 'include', headers: supaHeaders, body: JSON.stringify({ images: [viewerImages[viewerIndex]] }) })
-                      if (resp.ok) {
-                        setViewerImages(prev => prev.map((i, idx) => idx === viewerIndex ? { ...i, added_to_story: true } : i))
-                        toast.success('Added to story')
-                      } else {
-                        toast.error('Failed to add')
-                      }
-                    } catch {
+                <Button variant="default" onClick={async (e) => {
+                  e.stopPropagation()
+                  try {
+                    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+                    const supa = (await import('@/lib/supabase')).createClientSupabase()
+                    const { data: { session } } = await supa.auth.getSession()
+                    if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+                    const resp = await fetch(`/api/stories/${storyId}/images/select-from-interactions`, { method: 'POST', credentials: 'include', headers, body: JSON.stringify({ images: [viewerImages[viewerIndex]] }) })
+                    if (resp.ok) {
+                      setViewerImages(prev => prev.map((i, idx) => idx === viewerIndex ? { ...i, added_to_story: true } : i))
+                      toast.success('Added to story')
+                    } else if (resp.status === 401) {
+                      toast.error('Unauthorized: please sign in again')
+                    } else {
                       toast.error('Failed to add')
                     }
-                  }}>Add to story</Button>
-                </div>
+                  } catch (err) {
+                    toast.error('Failed to add')
+                  }
+                }}>Add to story</Button>
               )}
+              <Button variant="secondary" className="rounded-full" onClick={(e) => { e.stopPropagation(); setViewerOpen(false) }}>×</Button>
+            </div>
+            {/* Pager */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
+              {viewerIndex + 1}/{viewerImages.length}
             </div>
           </div>
         )}
