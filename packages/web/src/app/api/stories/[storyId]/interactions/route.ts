@@ -39,7 +39,7 @@ export async function GET(
       .from('interactions')
       .select('*')
       .eq('story_id', storyId)
-      .order('created_at', { ascending: true })
+      .order('created_at', { ascending: false })
 
     if (error) {
       console.error('Error fetching interactions:', error)

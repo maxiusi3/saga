@@ -12,6 +12,7 @@ export interface Interaction {
   // 关联数据
   facilitator_name?: string
   facilitator_avatar?: string
+  attachments?: Array<{ url: string; thumbUrl?: string; added_to_story?: boolean }>
 }
 
 export interface CreateInteractionData {

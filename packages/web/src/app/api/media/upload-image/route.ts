@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const form = await request.formData()
     const file = form.get('file') as File | null
     const folder = (form.get('folder') as string) || 'images'
-    const allowedTypes = ['image/jpeg', 'image/png']
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
     const maxSize = 5 * 1024 * 1024
 
     if (!file) {
@@ -30,23 +30,27 @@ export async function POST(request: NextRequest) {
 
     const timestamp = Date.now()
     const originalName = file.name || 'image'
-    const ext = originalName.toLowerCase().endsWith('.png') ? 'png' : 'jpg'
+    const isPng = originalName.toLowerCase().endsWith('.png') || type === 'image/png'
+    const isGif = originalName.toLowerCase().endsWith('.gif') || type === 'image/gif'
+    const ext = isPng ? 'png' : (isGif ? 'gif' : 'jpg')
     const baseName = `${timestamp}-${Math.random().toString(36).slice(2)}`
     const filename = `${baseName}.${ext}`
-    const thumbFilename = `${baseName}-thumb.${ext}`
+    const thumbFilename = `${baseName}-thumb.${isGif ? 'png' : ext}`
 
     const admin = getSupabaseAdmin()
 
     let originalBuffer = buffer
     if (ext === 'jpg') {
       originalBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer()
-    } else {
+    } else if (ext === 'png') {
       originalBuffer = await sharp(buffer).png({ compressionLevel: 9 }).toBuffer()
+    } else {
+      originalBuffer = buffer
     }
 
     const thumbBuffer = await sharp(buffer)
-      .resize({ width: 320, withoutEnlargement: true })
-      .toFormat(ext === 'png' ? 'png' : 'jpeg', ext === 'png' ? { compressionLevel: 9 } : { quality: 75 })
+      .resize({ width: 320, height: 320, fit: 'cover' })
+      .toFormat(isGif ? 'png' : (isPng ? 'png' : 'jpeg'), isGif || isPng ? { compressionLevel: 9 } : { quality: 75 })
       .toBuffer()
 
     const { data: userRes } = await admin.auth.getUser()
@@ -62,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     const { data: uploadThumb, error: upErr2 } = await admin.storage
       .from('saga')
-      .upload(`${basePath}/${thumbFilename}`, thumbBuffer, { contentType: type, upsert: false, cacheControl: '3600' })
+      .upload(`${basePath}/${thumbFilename}`, thumbBuffer, { contentType: isGif ? 'image/png' : (isPng ? 'image/png' : 'image/jpeg'), upsert: false, cacheControl: '3600' })
     if (upErr2) {
       return NextResponse.json({ error: upErr2.message }, { status: 500 })
     }

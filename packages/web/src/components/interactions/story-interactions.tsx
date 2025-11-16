@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card } from '@/components/ui/card'
@@ -50,6 +50,10 @@ export function StoryInteractions({
   const [commentUploads, setCommentUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
   const [commentPreviewUrls, setCommentPreviewUrls] = useState<string[]>([])
   const [isUploadingImages, setIsUploadingImages] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [viewerOpen, setViewerOpen] = useState(false)
+  const [viewerImages, setViewerImages] = useState<Array<{ url: string; thumbUrl?: string; added_to_story?: boolean }>>([])
+  const [viewerIndex, setViewerIndex] = useState(0)
 
   const persistUploads = (uploads: Array<{ url: string; thumbUrl: string }>) => {
     try { localStorage.setItem(`commentUploads:${storyId}`, JSON.stringify(uploads)) } catch {}
@@ -277,9 +281,18 @@ export function StoryInteractions({
                       {formatTimestamp(interaction.created_at)}
                     </span>
                   </div>
-                  <p className="text-foreground text-sm bg-muted p-3 rounded-lg">
+                  <p className="text-foreground text-sm bg-muted p-3 rounded-lg whitespace-pre-wrap">
                     {interaction.content}
                   </p>
+                  {Array.isArray(interaction.attachments) && interaction.attachments.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {interaction.attachments.slice(0,9).map((a, idx) => (
+                        <div key={idx} className={`relative rounded overflow-hidden aspect-square border ${a.added_to_story ? 'border-green-500' : 'border-muted'}`}>
+                          <img src={a.thumbUrl || a.url} alt="img" className="w-full h-full object-cover" onClick={() => { setViewerImages(interaction.attachments || []); setViewerIndex(idx); setViewerOpen(true) }} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -311,7 +324,7 @@ export function StoryInteractions({
               <Button
                 variant="outline"
                 onClick={submitComment}
-                disabled={!commentText.trim() || submittingComment}
+                disabled={((!commentText.trim()) && commentUploads.length === 0 && commentImages.length === 0) || submittingComment}
                 className="self-end"
               >
                 {submittingComment ? (
@@ -321,11 +334,11 @@ export function StoryInteractions({
                 )}
               </Button>
             </div>
-            <input type="file" accept="image/jpeg,image/png" multiple onChange={async (e) => {
+            <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif" multiple onChange={async (e) => {
               const files = Array.from(e.target.files || [])
-              const sliced = files.slice(0, 6)
-              setCommentImages(sliced)
-              setCommentPreviewUrls(sliced.map(f => URL.createObjectURL(f)))
+              const sliced = files.slice(0, Math.max(0, 9 - (commentImages.length + commentUploads.length)))
+              setCommentImages(prev => [...prev, ...sliced])
+              setCommentPreviewUrls(prev => [...prev, ...sliced.map(f => URL.createObjectURL(f))])
               const storage = new StorageService()
               const ups: Array<{ url: string; thumbUrl: string }> = []
               setIsUploadingImages(true)
@@ -333,15 +346,47 @@ export function StoryInteractions({
                 const res = await storage.uploadImageWithThumb(sliced[i], `images/interactions/${storyId}`)
                 if (res.success && res.url && res.thumbUrl) ups.push({ url: res.url, thumbUrl: res.thumbUrl })
               }
-              setCommentUploads(ups)
-              persistUploads(ups)
+              setCommentUploads(prev => [...prev, ...ups])
+              persistUploads([...commentUploads, ...ups])
               setIsUploadingImages(false)
             }} />
             <div className="flex flex-wrap gap-2">
-              {(commentUploads.length > 0 ? commentUploads.map(i => i.thumbUrl) : commentPreviewUrls).map((src, idx) => (
-                <img key={idx} src={src} alt="thumb" className="w-16 h-16 object-cover rounded" />
-              ))}
+              {commentUploads.length > 0 ? (
+                commentUploads.map((img, idx) => (
+                  <div key={idx} className="relative">
+                    <img src={img.thumbUrl} alt="thumb" className="w-16 h-16 object-cover rounded" />
+                    <button className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6" aria-label="Remove" onClick={() => {
+                      const next = commentUploads.filter((_, i) => i !== idx)
+                      setCommentUploads(next)
+                      persistUploads(next)
+                    }}>×</button>
+                  </div>
+                ))
+              ) : (
+                commentPreviewUrls.map((src, idx) => (
+                  <div key={idx} className="relative">
+                    <img src={src} alt="thumb" className="w-16 h-16 object-cover rounded" />
+                    <button className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6" aria-label="Remove" onClick={() => {
+                      const nextPreviews = commentPreviewUrls.filter((_, i) => i !== idx)
+                      const nextFiles = commentImages.filter((_, i) => i !== idx)
+                      setCommentPreviewUrls(nextPreviews)
+                      setCommentImages(nextFiles)
+                    }}>×</button>
+                  </div>
+                ))
+              )}
             </div>
+            {(commentUploads.length > 0 || commentPreviewUrls.length > 0) && (
+              <div className="mt-2">
+                <Button variant="ghost" size="sm" onClick={() => {
+                  setCommentUploads([])
+                  setCommentPreviewUrls([])
+                  setCommentImages([])
+                  persistUploads([])
+                  if (fileInputRef.current) fileInputRef.current.value = ''
+                }}>Clear images</Button>
+              </div>
+            )}
             <p className="text-xs text-muted-foreground">
               Comments are sent as warm, encouraging messages to the storyteller.
             </p>
@@ -392,6 +437,46 @@ export function StoryInteractions({
             </div>
           )}
         </div>
+
+        {viewerOpen && (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={() => setViewerOpen(false)}>
+            <div className="relative max-w-4xl w-full px-6" onClick={(e) => e.stopPropagation()}>
+              <img src={viewerImages[viewerIndex]?.url} alt="full" className="max-h-[80vh] mx-auto" />
+              <div className="absolute left-4 top-1/2 -translate-y-1/2">
+                <Button variant="secondary" onClick={() => setViewerIndex((viewerIndex - 1 + viewerImages.length) % viewerImages.length)}>◀</Button>
+              </div>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                <Button variant="secondary" onClick={() => setViewerIndex((viewerIndex + 1) % viewerImages.length)}>▶</Button>
+              </div>
+              <div className="absolute right-4 top-4">
+                <Button variant="secondary" onClick={() => setViewerOpen(false)}>✕</Button>
+              </div>
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
+                {viewerIndex + 1}/{viewerImages.length}
+              </div>
+              {isStoryteller && (
+                <div className="absolute bottom-4 right-4">
+                  <Button onClick={async () => {
+                    try {
+                      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+                      const storage = new StorageService()
+                      const supaHeaders = headers
+                      const resp = await fetch(`/api/stories/${storyId}/images/select-from-interactions`, { method: 'POST', credentials: 'include', headers: supaHeaders, body: JSON.stringify({ images: [viewerImages[viewerIndex]] }) })
+                      if (resp.ok) {
+                        setViewerImages(prev => prev.map((i, idx) => idx === viewerIndex ? { ...i, added_to_story: true } : i))
+                        toast.success('Added to story')
+                      } else {
+                        toast.error('Failed to add')
+                      }
+                    } catch {
+                      toast.error('Failed to add')
+                    }
+                  }}>Add to story</Button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </Card>
   )
