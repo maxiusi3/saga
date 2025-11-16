@@ -327,8 +327,10 @@ export async function POST(
       )
     }
 
+    let finalAttachments: any[] | null = interaction.attachments || null
     if (attachList.length > 0 && interaction) {
       const enriched = attachList.map((a) => ({ ...a, source: 'comment', source_id: interaction.id, caption: `/dashboard/projects/${storyRow.project_id}/stories/${storyId}#interaction-${interaction.id}` }))
+      finalAttachments = enriched
       try {
         await dbWrite
           .from('interactions')
@@ -369,7 +371,7 @@ export async function POST(
       created_at: interaction.created_at,
       facilitator_name,
       facilitator_avatar,
-      attachments: interaction.attachments || null
+      attachments: finalAttachments || null
     }
 
     console.log('[POST /interactions] created', { interaction: formattedInteraction })
