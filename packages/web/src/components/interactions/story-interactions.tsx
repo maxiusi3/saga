@@ -463,7 +463,7 @@ export function StoryInteractions({
         </div>
 
         {viewerOpen && (
-          <div className="fixed inset-0 bg-black/80 z-50" onClick={() => setViewerOpen(false)}>
+          <div className="fixed inset-0 bg-black/80 z-[9999]" onClick={() => setViewerOpen(false)}>
             <div className="absolute inset-0 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
               <img src={viewerImages[viewerIndex]?.url} alt="full" className="max-h-[80vh] max-w-[90vw] object-contain" />
             </div>
@@ -496,7 +496,9 @@ export function StoryInteractions({
                   } catch (err) {
                     toast.error('Failed to add')
                   }
-                }}>Add to story</Button>
+                }} disabled={viewerImages[viewerIndex]?.added_to_story}>
+                  {viewerImages[viewerIndex]?.added_to_story ? 'Added' : 'Add to story'}
+                </Button>
               )}
               <Button variant="secondary" className="rounded-full" onClick={(e) => { e.stopPropagation(); setViewerOpen(false) }}>×</Button>
             </div>

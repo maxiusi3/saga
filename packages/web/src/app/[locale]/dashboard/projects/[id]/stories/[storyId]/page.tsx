@@ -45,6 +45,8 @@ export default function StoryDetailPage() {
   const [viewerIdx, setViewerIdx] = useState<number>(0)
   const [editingImages, setEditingImages] = useState<Array<{ url: string; thumbUrl: string }>>([])
   const [segmentsCollapsed, setSegmentsCollapsed] = useState<boolean>(false)
+  const [commentViewerOpen, setCommentViewerOpen] = useState<boolean>(false)
+  const [commentViewerIdx, setCommentViewerIdx] = useState<number>(0)
   // removed legacy comment images selection state
 
   useEffect(() => {
@@ -288,13 +290,7 @@ export default function StoryDetailPage() {
                   />
                 </div>
 
-                {Array.isArray((story as any).images) && (story as any).images.length > 0 && (
-                  <div className="mb-6 grid grid-cols-3 gap-2">
-                    {(story as any).images.map((img: any, idx: number) => (
-                      <img key={idx} src={img.thumbUrl || img.url} alt="story" className="w-full h-24 object-cover rounded" />
-                    ))}
-                  </div>
-                )}
+                {/* removed generic story images grid above transcript; replacing with comment images section below */}
 
                 {/* Transcript */}
                 <div>
@@ -394,11 +390,22 @@ export default function StoryDetailPage() {
                           ))}
                         </div>
                       )}
-                      {selectedIndex === 0 && Array.isArray((story as any).images) && (story as any).images.length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {(story as any).images.map((img: any, idx: number) => (
-                            <img key={idx} src={img.thumbUrl || img.url} alt="img" className="w-16 h-16 object-cover rounded cursor-zoom-in" onClick={() => { setViewerIdx(idx); setViewerOpen(true) }} />
-                          ))}
+                      {/* Comment Images from interactions (added to story) */}
+                      {selectedIndex === 0 && Array.isArray((story as any).images) && (story as any).images.filter((i: any) => i.source === 'comment').length > 0 && (
+                        <div className="mt-6">
+                          <h4 className="text-sm font-medium text-gray-700 mb-2">Comment Images</h4>
+                          <div className="grid grid-cols-3 gap-2">
+                            {((story as any).images as any[]).filter((i: any) => i.source === 'comment').map((img: any, idx: number) => (
+                              <div key={idx} className="aspect-square rounded overflow-hidden">
+                                <img
+                                  src={img.thumbUrl || img.url}
+                                  alt="comment"
+                                  className="w-full h-full object-cover cursor-zoom-in"
+                                  onClick={() => { setCommentViewerIdx(idx); setCommentViewerOpen(true) }}
+                                />
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -516,7 +523,7 @@ export default function StoryDetailPage() {
         </div>
       </div>
       {viewerOpen && selectedIndex > 0 && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={() => setViewerOpen(false)}>
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]" onClick={() => setViewerOpen(false)}>
           <div className="relative max-w-4xl w-full px-6" onClick={(e) => e.stopPropagation()}>
             <img src={segments[selectedIndex - 1].images[viewerIdx]?.url} alt="full" className="max-h-[80vh] mx-auto" />
             <div className="absolute left-4 top-1/2 -translate-y-1/2">
@@ -528,6 +535,26 @@ export default function StoryDetailPage() {
             <div className="absolute right-4 top-4">
               <EnhancedButton variant="secondary" onClick={() => setViewerOpen(false)}>✕</EnhancedButton>
             </div>
+          </div>
+        </div>
+      )}
+
+      {commentViewerOpen && Array.isArray((story as any).images) && ((story as any).images.filter((i: any) => i.source === 'comment').length > 0) && (
+        <div className="fixed inset-0 bg-black/80 z-[9999]" onClick={() => setCommentViewerOpen(false)}>
+          <div className="absolute inset-0 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <img src={((story as any).images as any[]).filter((i: any) => i.source === 'comment')[commentViewerIdx]?.url} alt="full" className="max-h-[80vh] max-w-[90vw] object-contain" />
+          </div>
+          <div className="absolute left-2 top-1/2 -translate-y-1/2">
+            <EnhancedButton variant="secondary" className="rounded-full" onClick={(e) => { e.stopPropagation(); const list = ((story as any).images as any[]).filter((i: any) => i.source === 'comment'); setCommentViewerIdx((commentViewerIdx - 1 + list.length) % list.length) }}>◀</EnhancedButton>
+          </div>
+          <div className="absolute right-2 top-1/2 -translate-y-1/2">
+            <EnhancedButton variant="secondary" className="rounded-full" onClick={(e) => { e.stopPropagation(); const list = ((story as any).images as any[]).filter((i: any) => i.source === 'comment'); setCommentViewerIdx((commentViewerIdx + 1) % list.length) }}>▶</EnhancedButton>
+          </div>
+          <div className="absolute right-4 top-4">
+            <EnhancedButton variant="secondary" className="rounded-full" onClick={(e) => { e.stopPropagation(); setCommentViewerOpen(false) }}>×</EnhancedButton>
+          </div>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
+            {commentViewerIdx + 1}/{((story as any).images as any[]).filter((i: any) => i.source === 'comment').length}
           </div>
         </div>
       )}
