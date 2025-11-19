@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { EnhancedButton } from '@/components/ui/enhanced-button'
+import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from '@/components/ui/enhanced-card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
@@ -143,10 +143,10 @@ export default function CreateProjectPage() {
       {/* Header */}
       <div className="flex items-center space-x-4 mb-8">
         <Link href={withLocale('/dashboard/projects')}>
-          <Button variant="ghost" size="sm">
+          <EnhancedButton variant="ghost" size="sm">
             <ArrowLeft className="w-4 h-4 mr-2" />
             {t('header.backToProjects')}
-          </Button>
+          </EnhancedButton>
         </Link>
       </div>
 
@@ -154,69 +154,68 @@ export default function CreateProjectPage() {
         <div className="text-center space-y-4">
           <div className="text-6xl mb-4">🎭</div>
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">
+            <h1 className="text-4xl font-bold text-foreground">
               {t('header.title')}
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-xl text-muted-foreground">
               {t('header.subtitle')}
             </p>
           </div>
         </div>
 
-        <Card className="border-border/50 shadow-sm">
-          <CardHeader className="pb-4">
-            <CardTitle className="flex items-center text-xl">
-              <BookOpen className="w-5 h-5 mr-2 text-primary" />
+        <EnhancedCard className="border-border/50 shadow-sm">
+          <EnhancedCardHeader className="pb-4">
+            <EnhancedCardTitle className="flex items-center text-2xl">
+              <BookOpen className="w-6 h-6 mr-2 text-primary" />
               {t('form.projectDetails')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </EnhancedCardTitle>
+          </EnhancedCardHeader>
+          <EnhancedCardContent>
             <form onSubmit={handleSubmit} className="space-y-6" aria-busy={loading}>
               {/* Project Name */}
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium">{t('form.projectName')} *</Label>
+              <div className="space-y-3">
+                <Label htmlFor="name" className="text-base font-medium">{t('form.projectName')} *</Label>
                 <Input
                   id="name"
                   placeholder={t('form.projectNamePlaceholder')}
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   required
-                  className="focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  className="h-12 text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 />
               </div>
 
               {/* Project Description */}
-              <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium">{t('form.projectDescription')}</Label>
+              <div className="space-y-3">
+                <Label htmlFor="description" className="text-base font-medium">{t('form.projectDescription')}</Label>
                 <Textarea
                   id="description"
                   placeholder={t('form.projectDescriptionPlaceholder')}
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
-                  rows={3}
-                  className="focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+                  rows={4}
+                  className="text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
                 />
               </div>
 
               {/* Theme Selection */}
-              <div className="space-y-3">
-                <Label className="text-sm font-medium">{t('form.projectTheme')}</Label>
+              <div className="space-y-4">
+                <Label className="text-base font-medium">{t('form.projectTheme')}</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {themes.map((theme) => (
                     <div
                       key={theme.id}
-                      className={`group p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
-                        formData.theme === theme.id
+                      className={`group p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${formData.theme === theme.id
                           ? 'border-primary bg-primary/5 shadow-sm'
                           : 'border-border hover:border-primary/50 hover:bg-muted/30'
-                      }`}
+                        }`}
                       onClick={() => handleInputChange('theme', theme.id)}
                     >
-                      <div className="flex items-start space-x-3">
-                        <div className="text-2xl group-hover:scale-110 transition-transform">{theme.icon}</div>
+                      <div className="flex items-start space-x-4">
+                        <div className="text-3xl group-hover:scale-110 transition-transform">{theme.icon}</div>
                         <div className="flex-1">
-                          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">{theme.name}</h3>
-                          <p className="text-sm text-muted-foreground mt-1">{theme.description}</p>
+                          <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">{theme.name}</h3>
+                          <p className="text-base text-muted-foreground mt-1">{theme.description}</p>
                         </div>
                       </div>
                     </div>
@@ -225,23 +224,22 @@ export default function CreateProjectPage() {
               </div>
 
               {/* Role Selection */}
-              <div className="space-y-3">
-                <Label>{t('form.yourRole')}</Label>
+              <div className="space-y-4">
+                <Label className="text-base font-medium">{t('form.yourRole')}</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div
-                    className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                      formData.role === 'storyteller'
+                    className={`p-4 border rounded-lg cursor-pointer transition-all ${formData.role === 'storyteller'
                         ? 'border-primary bg-primary/5'
                         : 'border-border hover:border-primary/50'
-                    }`}
+                      }`}
                     onClick={() => handleInputChange('role', 'storyteller')}
                   >
-                    <div className="flex items-start space-x-3">
-                      <Mic className="w-6 h-6 text-primary mt-1" />
+                    <div className="flex items-start space-x-4">
+                      <Mic className="w-8 h-8 text-primary mt-1" />
                       <div>
-                        <h3 className="font-medium text-foreground">{t('roles.storyteller.name')}</h3>
-                        <p className="text-sm text-muted-foreground">{t('roles.storyteller.description')}</p>
-                        <div className="mt-2 text-xs text-muted-foreground">
+                        <h3 className="font-semibold text-lg text-foreground">{t('roles.storyteller.name')}</h3>
+                        <p className="text-base text-muted-foreground">{t('roles.storyteller.description')}</p>
+                        <div className="mt-2 text-sm text-muted-foreground">
                           {t('roles.storyteller.resourceCost')}
                         </div>
                       </div>
@@ -249,19 +247,18 @@ export default function CreateProjectPage() {
                   </div>
 
                   <div
-                    className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                      formData.role === 'facilitator'
+                    className={`p-4 border rounded-lg cursor-pointer transition-all ${formData.role === 'facilitator'
                         ? 'border-primary bg-primary/5'
                         : 'border-border hover:border-primary/50'
-                    }`}
+                      }`}
                     onClick={() => handleInputChange('role', 'facilitator')}
                   >
-                    <div className="flex items-start space-x-3">
-                      <Crown className="w-6 h-6 text-primary mt-1" />
+                    <div className="flex items-start space-x-4">
+                      <Crown className="w-8 h-8 text-primary mt-1" />
                       <div>
-                        <h3 className="font-medium text-foreground">{t('roles.facilitator.name')}</h3>
-                        <p className="text-sm text-muted-foreground">{t('roles.facilitator.description')}</p>
-                        <div className="mt-2 text-xs text-muted-foreground">
+                        <h3 className="font-semibold text-lg text-foreground">{t('roles.facilitator.name')}</h3>
+                        <p className="text-base text-muted-foreground">{t('roles.facilitator.description')}</p>
+                        <div className="mt-2 text-sm text-muted-foreground">
                           {t('roles.facilitator.resourceCost')}
                         </div>
                       </div>
@@ -272,19 +269,19 @@ export default function CreateProjectPage() {
 
               {/* Resource Status */}
               {wallet && (
-                <div className="bg-muted/30 rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-foreground mb-2">{t('form.currentBalance')}</h4>
-                  <div className="grid grid-cols-3 gap-4 text-sm">
+                <div className="bg-muted/30 rounded-lg p-6">
+                  <h4 className="text-base font-medium text-foreground mb-3">{t('form.currentBalance')}</h4>
+                  <div className="grid grid-cols-3 gap-6 text-base">
                     <div className="text-center">
-                      <div className="font-medium text-foreground">{wallet.project_vouchers}</div>
+                      <div className="font-bold text-xl text-foreground">{wallet.project_vouchers}</div>
                       <div className="text-muted-foreground">{t('form.projectVouchers')}</div>
                     </div>
                     <div className="text-center">
-                      <div className="font-medium text-foreground">{wallet.facilitator_seats}</div>
+                      <div className="font-bold text-xl text-foreground">{wallet.facilitator_seats}</div>
                       <div className="text-muted-foreground">{t('form.facilitatorSeats')}</div>
                     </div>
                     <div className="text-center">
-                      <div className="font-medium text-foreground">{wallet.storyteller_seats}</div>
+                      <div className="font-bold text-xl text-foreground">{wallet.storyteller_seats}</div>
                       <div className="text-muted-foreground">{t('form.storytellerSeats')}</div>
                     </div>
                   </div>
@@ -292,16 +289,17 @@ export default function CreateProjectPage() {
               )}
 
               {/* Submit Button */}
-              <div className="flex justify-end space-x-3 pt-6">
+              <div className="flex justify-end space-x-4 pt-8">
                 <Link href={withLocale('/dashboard/projects')}>
-                  <Button variant="outline" type="button">
+                  <EnhancedButton variant="outline" type="button" size="lg">
                     {t('form.cancel')}
-                  </Button>
+                  </EnhancedButton>
                 </Link>
-                <Button
+                <EnhancedButton
                   type="submit"
                   disabled={submitDisabled}
-                  className="min-w-[120px]"
+                  className="min-w-[140px]"
+                  size="lg"
                 >
                   {loading ? (
                     <div className="flex items-center">
@@ -314,20 +312,20 @@ export default function CreateProjectPage() {
                       {t('form.createProject')}
                     </>
                   )}
-                </Button>
+                </EnhancedButton>
               </div>
             </form>
-          </CardContent>
-        </Card>
+          </EnhancedCardContent>
+        </EnhancedCard>
 
         {/* Info Card */}
-        <Card className="bg-muted/50">
-          <CardContent className="p-6">
-            <div className="flex items-start space-x-3">
-              <Users className="w-5 h-5 text-primary mt-0.5" />
+        <EnhancedCard className="bg-muted/50">
+          <EnhancedCardContent className="p-6">
+            <div className="flex items-start space-x-4">
+              <Users className="w-6 h-6 text-primary mt-0.5" />
               <div>
-                <h3 className="font-medium text-foreground mb-2">{t('info.title')}</h3>
-                <ul className="text-sm text-muted-foreground space-y-1">
+                <h3 className="font-semibold text-lg text-foreground mb-2">{t('info.title')}</h3>
+                <ul className="text-base text-muted-foreground space-y-2">
                   <li>• {t('info.items.0')}</li>
                   <li>• {t('info.items.1')}</li>
                   <li>• {t('info.items.2')}</li>
@@ -335,8 +333,8 @@ export default function CreateProjectPage() {
                 </ul>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </EnhancedCardContent>
+        </EnhancedCard>
       </div>
     </div>
   )

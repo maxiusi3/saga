@@ -52,7 +52,7 @@ export default function PurchasePage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             {t('hero.title')}
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-2xl text-gray-700 max-w-3xl mx-auto">
             {t('hero.subtitle')}
           </p>
         </div>
@@ -64,7 +64,7 @@ export default function PurchasePage() {
               <div className="w-20 h-20 bg-sage-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <BookOpen className="w-10 h-10 text-white" />
               </div>
-              <p className="text-lg text-sage-700">
+              <p className="text-xl text-sage-800 font-medium">
                 {t('hero.startCapturing')}
               </p>
             </div>
@@ -77,30 +77,30 @@ export default function PurchasePage() {
             <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-sage-600" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('features.collaboration.title')}</h3>
-            <p className="text-gray-600">{t('features.collaboration.description')}</p>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('features.collaboration.title')}</h3>
+            <p className="text-lg text-gray-700">{t('features.collaboration.description')}</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Sparkles className="w-8 h-8 text-sage-600" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('features.aiPrompts.title')}</h3>
-            <p className="text-gray-600">{t('features.aiPrompts.description')}</p>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('features.aiPrompts.title')}</h3>
+            <p className="text-lg text-gray-700">{t('features.aiPrompts.description')}</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="w-8 h-8 text-sage-600" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('features.secure.title')}</h3>
-            <p className="text-gray-600">{t('features.secure.description')}</p>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('features.secure.title')}</h3>
+            <p className="text-lg text-gray-700">{t('features.secure.description')}</p>
           </div>
         </div>
 
         {/* Pricing Section */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('pricing.title')}</h2>
-            <p className="text-gray-600">{t('pricing.subtitle')}</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">{t('pricing.title')}</h2>
+            <p className="text-xl text-gray-700">{t('pricing.subtitle')}</p>
           </div>
 
           <div className="max-w-4xl mx-auto">
@@ -146,12 +146,12 @@ export default function PurchasePage() {
                   <span className="font-medium">{t('checkout.packageName')}</span>
                   <span>$209</span>
                 </div>
-                <div className="flex justify-between items-center text-sm text-gray-600">
+                <div className="flex justify-between items-center text-base text-gray-700">
                   <span>{t('checkout.oneTime')}</span>
                   <span>{t('checkout.noRecurring')}</span>
                 </div>
                 <Separator className="my-3" />
-                <div className="flex justify-between items-center font-bold">
+                <div className="flex justify-between items-center font-bold text-lg">
                   <span>{t('checkout.total')}</span>
                   <span>$209</span>
                 </div>
@@ -161,33 +161,33 @@ export default function PurchasePage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="firstName">{t('checkout.firstName')}</Label>
-                    <Input id="firstName" placeholder="John" />
+                    <Label htmlFor="firstName" className="text-base">{t('checkout.firstName')}</Label>
+                    <Input id="firstName" placeholder="John" className="h-12 text-lg" />
                   </div>
                   <div>
-                    <Label htmlFor="lastName">{t('checkout.lastName')}</Label>
-                    <Input id="lastName" placeholder="Doe" />
+                    <Label htmlFor="lastName" className="text-base">{t('checkout.lastName')}</Label>
+                    <Input id="lastName" placeholder="Doe" className="h-12 text-lg" />
                   </div>
-                </div>
-                
-                <div>
-                  <Label htmlFor="email">{t('checkout.email')}</Label>
-                  <Input id="email" type="email" placeholder="john@example.com" />
                 </div>
 
                 <div>
-                  <Label htmlFor="cardNumber">{t('checkout.cardNumber')}</Label>
-                  <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
+                  <Label htmlFor="email" className="text-base">{t('checkout.email')}</Label>
+                  <Input id="email" type="email" placeholder="john@example.com" className="h-12 text-lg" />
+                </div>
+
+                <div>
+                  <Label htmlFor="cardNumber" className="text-base">{t('checkout.cardNumber')}</Label>
+                  <Input id="cardNumber" placeholder="1234 5678 9012 3456" className="h-12 text-lg" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="expiry">{t('checkout.expiry')}</Label>
-                    <Input id="expiry" placeholder="MM/YY" />
+                    <Label htmlFor="expiry" className="text-base">{t('checkout.expiry')}</Label>
+                    <Input id="expiry" placeholder="MM/YY" className="h-12 text-lg" />
                   </div>
                   <div>
-                    <Label htmlFor="cvc">{t('checkout.cvc')}</Label>
-                    <Input id="cvc" placeholder="123" />
+                    <Label htmlFor="cvc" className="text-base">{t('checkout.cvc')}</Label>
+                    <Input id="cvc" placeholder="123" className="h-12 text-lg" />
                   </div>
                 </div>
               </div>
@@ -212,8 +212,8 @@ export default function PurchasePage() {
               <EnhancedButton
                 onClick={handlePurchase}
                 disabled={isLoading}
-                size="lg"
-                className="w-full"
+                size="xl"
+                className="w-full text-xl font-bold py-8"
               >
                 {isLoading ? (
                   t('checkout.processing')
@@ -225,7 +225,7 @@ export default function PurchasePage() {
                 )}
               </EnhancedButton>
 
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-sm text-gray-600 text-center">
                 {t('checkout.terms')}
               </p>
             </EnhancedCardContent>
