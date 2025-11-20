@@ -9,6 +9,9 @@ import { Mic, Square, Pause, Play, RotateCcw, Wifi, WifiOff, Zap } from 'lucide-
 import { toast } from 'react-hot-toast'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { useTranslations } from 'next-intl'
+import { useSilenceDetection } from '@/hooks/use-silence-detection'
+import { aiService } from '@/lib/ai-service'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface SmartRecorderProps {
   onRecordingComplete: (result: RecordingResult) => void
@@ -46,6 +49,8 @@ export function SmartRecorder({
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [networkQuality, setNetworkQuality] = useState<'good' | 'poor' | 'offline'>('good')
   const [isPlaying, setIsPlaying] = useState(false)
+  const [aiPrompt, setAiPrompt] = useState<string>('')
+  const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
 
   // Refs
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -81,9 +86,9 @@ export function SmartRecorder({
     }
   }, [])
 
-  // 已禁用实时转录（Web Speech API），统一使用传统录音 + 事后转写
+  // Enable real-time transcription for AI prompts
   const shouldUseRealtime = useCallback(() => {
-    return false
+    return true
   }, [])
 
   const initializeRealTimeRecognition = useCallback(() => {
@@ -110,8 +115,12 @@ export function SmartRecorder({
 
       if (finalTranscript) {
         setTranscript(prev => prev + finalTranscript)
+        resetSilenceTimer() // Reset silence timer on final result
       }
       setInterimTranscript(interimTranscript)
+      if (interimTranscript) {
+        resetSilenceTimer() // Reset silence timer on interim result (user is speaking)
+      }
     }
 
     recognition.onerror = (event: any) => {
@@ -167,6 +176,35 @@ export function SmartRecorder({
 
     return recognition
   }, [recordingState])
+
+  // Silence Detection
+  const handleSilence = useCallback(async () => {
+    if (recordingState !== 'recording' || isGeneratingPrompt) return
+
+    // Only generate prompt if we have some context
+    const currentContext = transcript + interimTranscript
+    if (currentContext.length < 10) return
+
+    setIsGeneratingPrompt(true)
+    try {
+      const prompt = await aiService.generateRealtimePrompt(currentContext)
+      if (prompt) {
+        setAiPrompt(prompt)
+        // Auto-clear prompt after 8 seconds
+        setTimeout(() => setAiPrompt(''), 8000)
+      }
+    } catch (error) {
+      console.error('Failed to generate prompt:', error)
+    } finally {
+      setIsGeneratingPrompt(false)
+    }
+  }, [recordingState, transcript, interimTranscript, isGeneratingPrompt])
+
+  const { resetSilenceTimer } = useSilenceDetection({
+    onSilence: handleSilence,
+    threshold: 5000, // 5 seconds of silence triggers prompt
+    enabled: recordingState === 'recording'
+  })
 
   const startTimer = useCallback(() => {
     startTimeRef.current = Date.now()
@@ -427,14 +465,44 @@ export function SmartRecorder({
           </div>
         )}
 
-        {/* Real-time Transcript */}
-        {shouldUseRealtime() && (transcript || interimTranscript) && (
-          <div className="p-4 bg-muted/30 rounded-lg min-h-[100px]">
-            <p className="text-sm text-muted-foreground mb-2">Real-time Transcription:</p>
-            <div className="text-foreground">
-              {transcript}
-              <span className="text-muted-foreground italic">{interimTranscript}</span>
-            </div>
+        {/* Real-time Transcript & AI Prompts */}
+        {shouldUseRealtime() && (
+          <div className="space-y-4">
+            {/* AI Prompt Overlay */}
+            <AnimatePresence>
+              {aiPrompt && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="p-4 bg-indigo-50 border border-indigo-100 rounded-lg shadow-sm"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-indigo-100 rounded-full">
+                      <Zap className="w-4 h-4 text-indigo-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-indigo-900 mb-1">
+                        {t('aiHelper.suggestion')}
+                      </p>
+                      <p className="text-indigo-700 text-lg font-medium">
+                        "{aiPrompt}"
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {(transcript || interimTranscript) && (
+              <div className="p-4 bg-muted/30 rounded-lg min-h-[100px]">
+                <p className="text-sm text-muted-foreground mb-2">Real-time Transcription:</p>
+                <div className="text-foreground">
+                  {transcript}
+                  <span className="text-muted-foreground italic">{interimTranscript}</span>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
