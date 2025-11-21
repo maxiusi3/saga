@@ -64,7 +64,7 @@ export class AIService {
       onProgress?.('Processing transcription...', 80)
 
       const result = await response.json()
-      
+
       onProgress?.('Transcription complete!', 100)
 
       return {
@@ -74,13 +74,13 @@ export class AIService {
       }
     } catch (error) {
       console.error('Transcription error:', error)
-      
+
       if (maxRetries > 0) {
         console.log(`Retrying transcription... (${maxRetries} attempts left)`)
         await new Promise(resolve => setTimeout(resolve, 1000))
         return this.transcribeAudio(audioBlob, { ...options, maxRetries: maxRetries - 1 })
       }
-      
+
       throw new Error('Failed to transcribe audio. Please try again.')
     }
   }
@@ -140,13 +140,13 @@ export class AIService {
       }
     } catch (error) {
       console.error('AI content generation error:', error)
-      
+
       if (maxRetries > 0) {
         console.log(`Retrying AI content generation... (${maxRetries} attempts left)`)
         await new Promise(resolve => setTimeout(resolve, 1000))
         return this.generateAIContent(transcript, prompt, { ...options, maxRetries: maxRetries - 1 })
       }
-      
+
       throw new Error('Failed to generate AI content. Please try again.')
     }
   }
@@ -285,6 +285,37 @@ export class AIService {
       transcript,
       followUpQuestions,
       confidence: 0.88
+    }
+  }
+
+  /**
+   * Generate a real-time prompt based on the current transcript
+   */
+  static async generateRealtimePrompt(
+    transcript: string,
+    language: string = 'en'
+  ): Promise<string> {
+    try {
+      const response = await fetch(`${this.API_BASE_URL}/realtime-prompt`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          transcript,
+          language
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch prompt')
+      }
+
+      const result = await response.json()
+      return result.prompt
+    } catch (error) {
+      console.error('Error generating real-time prompt:', error)
+      return ''
     }
   }
 

@@ -11,7 +11,6 @@ import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { useTranslations } from 'next-intl'
 import { useSilenceDetection } from '@/hooks/use-silence-detection'
 import { aiService } from '@/lib/ai-service'
-import { AnimatePresence, motion } from 'framer-motion'
 
 interface SmartRecorderProps {
   onRecordingComplete: (result: RecordingResult) => void
@@ -181,9 +180,10 @@ export function SmartRecorder({
   const handleSilence = useCallback(async () => {
     if (recordingState !== 'recording' || isGeneratingPrompt) return
 
-    // Only generate prompt if we have some context
+    // Only generate prompt if we have some context, or if it's been a while and they haven't said anything
     const currentContext = transcript + interimTranscript
-    if (currentContext.length < 10) return
+    // Relaxed constraint: even short context is better than nothing, or if empty context but time passed
+    if (currentContext.length < 2 && duration < 10) return
 
     setIsGeneratingPrompt(true)
     try {
@@ -427,13 +427,33 @@ export function SmartRecorder({
           </div>
         </div>
 
-        {/* Prompt Display */}
-        {promptText && (
-          <div className="p-4 bg-muted/50 rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">{t('prompt')}:</p>
-            <p className="text-foreground">{promptText}</p>
-          </div>
-        )}
+        {/* Dynamic Prompt Display */}
+        <div className="relative min-h-[100px]">
+          {aiPrompt ? (
+            <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-lg shadow-sm transition-all duration-300 ease-in-out animate-in fade-in slide-in-from-bottom-2">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-indigo-100 rounded-full shrink-0">
+                  <Zap className="w-4 h-4 text-indigo-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-indigo-900 mb-1">
+                    {t('aiHelper.suggestion')}
+                  </p>
+                  <p className="text-indigo-700 text-lg font-medium">
+                    "{aiPrompt}"
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            promptText && (
+              <div className="p-4 bg-muted/50 rounded-lg transition-all duration-300 ease-in-out animate-in fade-in">
+                <p className="text-sm text-muted-foreground mb-1">{t('prompt')}:</p>
+                <p className="text-foreground">{promptText}</p>
+              </div>
+            )
+          )}
+        </div>
 
         {/* Recording Status - Hide when completed */}
         {recordingState !== 'completed' && (
@@ -468,31 +488,7 @@ export function SmartRecorder({
         {/* Real-time Transcript & AI Prompts */}
         {shouldUseRealtime() && (
           <div className="space-y-4">
-            {/* AI Prompt Overlay */}
-            <AnimatePresence>
-              {aiPrompt && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="p-4 bg-indigo-50 border border-indigo-100 rounded-lg shadow-sm"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-indigo-100 rounded-full">
-                      <Zap className="w-4 h-4 text-indigo-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-indigo-900 mb-1">
-                        {t('aiHelper.suggestion')}
-                      </p>
-                      <p className="text-indigo-700 text-lg font-medium">
-                        "{aiPrompt}"
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* AI Prompt Overlay removed from here as it is moved to top */}
 
             {(transcript || interimTranscript) && (
               <div className="p-4 bg-muted/30 rounded-lg min-h-[100px]">

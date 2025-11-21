@@ -4,12 +4,8 @@ export async function POST(request: Request) {
     try {
         const { transcript, language = 'en' } = await request.json()
 
-        if (!transcript) {
-            return NextResponse.json(
-                { error: 'Transcript is required' },
-                { status: 400 }
-            )
-        }
+        // If no transcript (e.g. silence at start or STT failed), provide generic openers
+        const effectiveTranscript = transcript || ""
 
         // Mock response for now to avoid external API dependency during initial implementation
         // In production, this would call OpenAI/Anthropic
