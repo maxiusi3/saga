@@ -174,7 +174,45 @@ export function SmartRecorder({
     }
 
     return recognition
+  }, []) // Remove dependency on recordingState to avoid recreation
+
+  // Track recording state in ref for event handlers
+  const isRecordingRef = useRef(false)
+  useEffect(() => {
+    isRecordingRef.current = recordingState === 'recording'
   }, [recordingState])
+
+  useEffect(() => {
+    if (recordingState === 'recording') {
+      const recognition = initializeRealTimeRecognition()
+      if (recognition) {
+        recognitionRef.current = recognition
+        // Add onend handler here where we have access to the ref
+        recognition.onend = () => {
+          if (isRecordingRef.current && recognitionRef.current) {
+            try {
+              console.log('Restarting speech recognition...')
+              recognitionRef.current.start()
+            } catch (error) {
+              console.warn('Failed to restart recognition:', error)
+            }
+          }
+        }
+
+        try {
+          recognition.start()
+        } catch (error) {
+          console.error('Failed to start recognition:', error)
+        }
+      }
+    } else {
+      if (recognitionRef.current) {
+        recognitionRef.current.onend = null // Prevent restart when stopping manually
+        recognitionRef.current.stop()
+        recognitionRef.current = null
+      }
+    }
+  }, [recordingState, initializeRealTimeRecognition])
 
   // Silence Detection
   const handleSilence = useCallback(async () => {

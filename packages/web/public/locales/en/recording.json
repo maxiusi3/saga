@@ -68,6 +68,9 @@
     "followUpQuestions": "Suggested Follow-up Questions:",
     "moreQuestions": "more questions available"
   },
+  "aiHelper": {
+    "suggestion": "AI Suggestion"
+  },
   "errors": {
     "missingData": "Missing required data for story submission.",
     "saveFailed": "Failed to save story. Please try again.",
