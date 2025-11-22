@@ -239,7 +239,7 @@ export function SmartRecorder({
 
     setIsGeneratingPrompt(true)
     try {
-      const prompt = await aiService.generateRealtimePrompt(currentContext)
+      const prompt = await aiService.generateRealtimePrompt(currentContext, locale)
       if (prompt) {
         setAiPrompt(prompt)
         // Auto-clear prompt after 8 seconds
@@ -250,7 +250,7 @@ export function SmartRecorder({
     } finally {
       setIsGeneratingPrompt(false)
     }
-  }, [recordingState, transcript, interimTranscript, isGeneratingPrompt])
+  }, [recordingState, transcript, interimTranscript, isGeneratingPrompt, locale])
 
   const { resetSilenceTimer } = useSilenceDetection({
     onSilence: handleSilence,
