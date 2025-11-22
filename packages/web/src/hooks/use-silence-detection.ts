@@ -16,6 +16,11 @@ export function useSilenceDetection({
     const timerRef = useRef<NodeJS.Timeout | null>(null)
     const silenceStartRef = useRef<number | null>(null)
 
+    const onSilenceRef = useRef(onSilence)
+    useEffect(() => {
+        onSilenceRef.current = onSilence
+    }, [onSilence])
+
     const resetSilenceTimer = useCallback(() => {
         if (!enabled) return
 
@@ -30,9 +35,9 @@ export function useSilenceDetection({
         timerRef.current = setTimeout(() => {
             setIsSilent(true)
             silenceStartRef.current = Date.now()
-            onSilence(threshold)
+            onSilenceRef.current(threshold)
         }, threshold)
-    }, [enabled, threshold, onSilence])
+    }, [enabled, threshold]) // Removed onSilence dependency
 
     // Cleanup on unmount or disable
     useEffect(() => {

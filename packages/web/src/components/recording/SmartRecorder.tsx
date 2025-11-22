@@ -128,11 +128,11 @@ export function SmartRecorder({
 
       if (finalTranscript) {
         setTranscript(prev => prev + finalTranscript)
-        resetSilenceTimer() // Reset silence timer on final result
+        resetSilenceTimerRef.current?.() // Reset silence timer on final result
       }
       setInterimTranscript(interimTranscript)
       if (interimTranscript) {
-        resetSilenceTimer() // Reset silence timer on interim result (user is speaking)
+        resetSilenceTimerRef.current?.() // Reset silence timer on interim result (user is speaking)
       }
     }
 
@@ -257,6 +257,12 @@ export function SmartRecorder({
     threshold: 5000, // 5 seconds of silence triggers prompt
     enabled: recordingState === 'recording'
   })
+
+  // Keep a ref to resetSilenceTimer to avoid stale closures in SpeechRecognition callbacks
+  const resetSilenceTimerRef = useRef(resetSilenceTimer)
+  useEffect(() => {
+    resetSilenceTimerRef.current = resetSilenceTimer
+  }, [resetSilenceTimer])
 
   const startTimer = useCallback(() => {
     startTimeRef.current = Date.now()
