@@ -84,7 +84,7 @@ export default function ProjectRecordPage() {
         try {
           const parentStory = await storyService.getStoryById(parentId)
           if (parentStory) setParentStoryTitle(parentStory.title || parentStory.ai_generated_title || 'Untitled')
-        } catch {}
+        } catch { }
       }
 
       if (followupId && followupContent) {
@@ -115,12 +115,12 @@ export default function ProjectRecordPage() {
     loadPromptAndFollowup()
 
     // Check AI service status
-    const status = aiService.getServiceStatus()
-    setAiServiceStatus(status)
-
-    if (status.mode === 'mock') {
-      console.log('AI service running in mock mode - no OpenAI API key configured')
-    }
+    aiService.getServiceStatus().then(status => {
+      setAiServiceStatus(status)
+      if (status.mode === 'mock') {
+        console.log('AI service running in mock mode - no OpenAI API key configured')
+      }
+    })
   }, [])
 
   // Handle smart recorder completion
@@ -408,6 +408,7 @@ export default function ProjectRecordPage() {
             maxDuration={1200}
             promptText={currentPrompt?.text}
             className="w-full"
+            locale={locale}
           />
         )}
 
@@ -471,7 +472,7 @@ export default function ProjectRecordPage() {
               <div className="flex items-center space-x-2">
                 <Sparkles className="h-5 w-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground">AI Generated Content</h3>
-                <Badge variant="primary" className="text-xs">
+                <Badge variant="default" className="text-xs">
                   {Math.round((aiContent.confidence || 0) * 100)}% confidence
                 </Badge>
                 {aiServiceStatus?.mode === 'mock' && (

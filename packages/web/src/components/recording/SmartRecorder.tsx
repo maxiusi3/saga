@@ -18,6 +18,7 @@ interface SmartRecorderProps {
   maxDuration?: number // in seconds, default 1200 (20 minutes)
   className?: string
   promptText?: string
+  locale?: string
 }
 
 interface RecordingResult {
@@ -35,7 +36,8 @@ export function SmartRecorder({
   onError,
   maxDuration = 1200, // 20 minutes
   className = '',
-  promptText
+  promptText,
+  locale = 'en'
 }: SmartRecorderProps) {
   const t = useTranslations('recording')
   // States
@@ -97,7 +99,19 @@ export function SmartRecorder({
     const recognition = new SpeechRecognition()
     recognition.continuous = true
     recognition.interimResults = true
-    recognition.lang = 'zh-CN'
+    recognition.continuous = true
+    recognition.interimResults = true
+    // Map locale to SpeechRecognition language code
+    const langMap: Record<string, string> = {
+      'en': 'en-US',
+      'zh': 'zh-CN',
+      'zh-CN': 'zh-CN',
+      'ja': 'ja-JP',
+      'ko': 'ko-KR',
+      'es': 'es-ES',
+      'fr': 'fr-FR'
+    }
+    recognition.lang = langMap[locale] || locale || 'en-US'
 
     recognition.onresult = (event: any) => {
       let interimTranscript = ''
