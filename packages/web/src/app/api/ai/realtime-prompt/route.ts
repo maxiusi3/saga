@@ -13,7 +13,7 @@ const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
 
 export async function POST(request: Request) {
     try {
-        const { transcript, language = 'en' } = await request.json()
+        const { transcript, language = 'en', previousPrompts = [] } = await request.json()
 
         // If no transcript (e.g. silence at start or STT failed), provide generic openers
         const effectiveTranscript = transcript || ""
@@ -41,6 +41,7 @@ export async function POST(request: Request) {
                             content: `You are an empathetic listener helping someone tell their life story. 
                             Your goal is to ask ONE short, encouraging follow-up question based on what they just said.
                             Keep it under 15 words. Be natural and curious.
+                            Do NOT ask any of these questions: ${JSON.stringify(previousPrompts)}.
                             ${langInstruction}`
                         },
                         { role: 'user', content: effectiveTranscript }
@@ -102,7 +103,12 @@ export async function POST(request: Request) {
             }
         }
 
-        const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)]
+        // Filter out previous prompts
+        const availablePrompts = prompts.filter(p => !previousPrompts.includes(p))
+        // If all filtered out (rare), fallback to full list
+        const candidatePrompts = availablePrompts.length > 0 ? availablePrompts : prompts
+
+        const randomPrompt = candidatePrompts[Math.floor(Math.random() * candidatePrompts.length)]
 
         // Simulate network delay for realism if mocking
         if (!openai) await new Promise(resolve => setTimeout(resolve, 500))

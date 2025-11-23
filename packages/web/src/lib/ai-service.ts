@@ -291,20 +291,18 @@ export class AIService {
   /**
    * Generate a real-time prompt based on the current transcript
    */
-  static async generateRealtimePrompt(
-    transcript: string,
-    language: string = 'en'
-  ): Promise<string> {
+  static async generateRealtimePrompt(transcript: string, language: string = 'en', previousPrompts: string[] = []): Promise<string | null> {
     try {
-      const response = await fetch(`${this.API_BASE_URL}/realtime-prompt`, {
+      const response = await fetch('/api/ai/realtime-prompt', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           transcript,
-          language
-        }),
+          language,
+          previousPrompts
+        })
       })
 
       if (!response.ok) {

@@ -51,6 +51,8 @@ export function SmartRecorder({
   const [networkQuality, setNetworkQuality] = useState<'good' | 'poor' | 'offline'>('good')
   const [isPlaying, setIsPlaying] = useState(false)
   const [aiPrompt, setAiPrompt] = useState<string>('')
+  const [previousPrompts, setPreviousPrompts] = useState<string[]>([])
+  const [lastProcessedLength, setLastProcessedLength] = useState(0)
   const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
 
   // Refs
@@ -237,22 +239,27 @@ export function SmartRecorder({
     }
 
     // Only generate prompt if we have some context, or if it's been a while and they haven't said anything
-    const currentContext = transcript + interimTranscript
-    console.log('[SmartRecorder] Current context length:', currentContext.length, 'Duration:', duration)
+    const fullTranscript = transcript + interimTranscript
+    const newContent = fullTranscript.slice(lastProcessedLength)
+
+    console.log('[SmartRecorder] Full length:', fullTranscript.length, 'Last processed:', lastProcessedLength, 'New content length:', newContent.length)
 
     // Relaxed constraint: even short context is better than nothing, or if empty context but time passed
-    if (currentContext.length < 2 && duration < 10) {
-      console.log('[SmartRecorder] Skipping: Context too short and duration too short')
+    // BUT for new prompts, we want at least SOME new content (e.g. > 10 chars) to avoid repeating on same text
+    if (newContent.length < 10 && duration < 10) {
+      console.log('[SmartRecorder] Skipping: New content too short (< 10 chars)')
       return
     }
 
     setIsGeneratingPrompt(true)
     try {
-      console.log('[SmartRecorder] Generating real-time prompt for context:', currentContext.substring(0, 50) + '...')
-      const prompt = await aiService.generateRealtimePrompt(currentContext, locale)
+      console.log('[SmartRecorder] Generating real-time prompt for NEW context:', newContent.substring(0, 50) + '...')
+      const prompt = await aiService.generateRealtimePrompt(newContent, locale, previousPrompts)
       console.log('[SmartRecorder] Generated prompt:', prompt)
       if (prompt) {
         setAiPrompt(prompt)
+        setPreviousPrompts(prev => [...prev.slice(-4), prompt]) // Keep last 5 prompts
+        setLastProcessedLength(fullTranscript.length) // Mark up to here as processed
         // Auto-clear prompt after 8 seconds
         setTimeout(() => setAiPrompt(''), 8000)
       }
@@ -261,7 +268,7 @@ export function SmartRecorder({
     } finally {
       setIsGeneratingPrompt(false)
     }
-  }, [recordingState, transcript, interimTranscript, isGeneratingPrompt, locale])
+  }, [recordingState, transcript, interimTranscript, isGeneratingPrompt, locale, previousPrompts, lastProcessedLength])
 
   const { resetSilenceTimer } = useSilenceDetection({
     onSilence: handleSilence,
