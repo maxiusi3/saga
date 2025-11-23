@@ -230,23 +230,34 @@ export function SmartRecorder({
 
   // Silence Detection
   const handleSilence = useCallback(async () => {
-    if (recordingState !== 'recording' || isGeneratingPrompt) return
+    console.log('[SmartRecorder] Silence detected! Checking conditions...')
+    if (recordingState !== 'recording' || isGeneratingPrompt) {
+      console.log('[SmartRecorder] Skipping: Not recording or already generating')
+      return
+    }
 
     // Only generate prompt if we have some context, or if it's been a while and they haven't said anything
     const currentContext = transcript + interimTranscript
+    console.log('[SmartRecorder] Current context length:', currentContext.length, 'Duration:', duration)
+
     // Relaxed constraint: even short context is better than nothing, or if empty context but time passed
-    if (currentContext.length < 2 && duration < 10) return
+    if (currentContext.length < 2 && duration < 10) {
+      console.log('[SmartRecorder] Skipping: Context too short and duration too short')
+      return
+    }
 
     setIsGeneratingPrompt(true)
     try {
+      console.log('[SmartRecorder] Generating real-time prompt for context:', currentContext.substring(0, 50) + '...')
       const prompt = await aiService.generateRealtimePrompt(currentContext, locale)
+      console.log('[SmartRecorder] Generated prompt:', prompt)
       if (prompt) {
         setAiPrompt(prompt)
         // Auto-clear prompt after 8 seconds
         setTimeout(() => setAiPrompt(''), 8000)
       }
     } catch (error) {
-      console.error('Failed to generate prompt:', error)
+      console.error('[SmartRecorder] Failed to generate prompt:', error)
     } finally {
       setIsGeneratingPrompt(false)
     }
