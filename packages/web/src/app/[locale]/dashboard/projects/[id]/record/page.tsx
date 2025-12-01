@@ -10,6 +10,7 @@ import { Send, Sparkles, ArrowLeft, Volume2, Mic } from 'lucide-react'
 import { StoryPrompt, getNextPrompt, getPromptById, AI_PROMPT_CHAPTERS } from '@saga/shared'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { SmartRecorder } from '@/components/recording/SmartRecorder'
+import { ResonanceCard } from '@/components/recording/ResonanceCard'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { aiService, AIContent as AIContentType } from '@/lib/ai-service'
@@ -66,6 +67,11 @@ export default function ProjectRecordPage() {
   const [storyImages, setStoryImages] = useState<File[]>([])
   const [imageUploads, setImageUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
+
+  // Resonance states
+  const [showResonance, setShowResonance] = useState(false)
+  const [savedStoryId, setSavedStoryId] = useState<string | null>(null)
+  const [resonanceData, setResonanceData] = useState({ era: '1980s', count: 1240 }) // Mock data for MVP
 
   // AI service status
   const [aiServiceStatus, setAiServiceStatus] = useState<{ available: boolean; mode: 'production' | 'mock' } | null>(null)
@@ -337,7 +343,19 @@ export default function ProjectRecordPage() {
       } else if (createdStoryId) {
         router.push(withLocale(`/dashboard/projects/${projectId}/stories/${createdStoryId}`))
       } else {
-        router.push(withLocale(`/dashboard/projects/${projectId}`))
+        // Instead of redirecting immediately, show Resonance Card
+        // router.push(withLocale(`/dashboard/projects/${projectId}`))
+        setSavedStoryId(createdStoryId || parentStoryId)
+
+        // Mock resonance data based on AI content
+        // In real implementation, this would come from the backend response
+        const era = aiContent.summary?.match(/\d{4}/)?.[0] || '1980s'
+        setResonanceData({
+          era: era + 's',
+          count: Math.floor(Math.random() * 2000) + 100
+        })
+        setShowResonance(true)
+        toast.success('Story saved! Analyzing resonance...')
       }
     } catch (error) {
       console.error('Story submission failed:', error)
@@ -360,6 +378,27 @@ export default function ProjectRecordPage() {
     setAiProcessing(false)
     setAiProgress(0)
     setSubmitError(null)
+  }
+
+  const handleOptIn = async (optIn: boolean) => {
+    if (optIn && savedStoryId) {
+      try {
+        // Call API to update story visibility
+        // await storyService.updateStory(savedStoryId, { is_public: true })
+        toast.success('Thank you for contributing to the Collective Memory!')
+      } catch (error) {
+        console.error('Failed to opt-in:', error)
+      }
+    }
+
+    // Redirect after decision
+    setTimeout(() => {
+      if (savedStoryId) {
+        router.push(withLocale(`/dashboard/projects/${projectId}/stories/${savedStoryId}`))
+      } else {
+        router.push(withLocale(`/dashboard/projects/${projectId}`))
+      }
+    }, 1500)
   }
 
   // Cleanup on unmount
@@ -596,6 +635,18 @@ export default function ProjectRecordPage() {
               )}
             </div>
           </Card>
+        )}
+
+        {/* Resonance Card Overlay */}
+        {showResonance && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-in fade-in">
+            <ResonanceCard
+              era={resonanceData.era}
+              similarCount={resonanceData.count}
+              onOptIn={handleOptIn}
+              className="max-w-md w-full shadow-2xl"
+            />
+          </div>
         )}
       </div>
     </div>

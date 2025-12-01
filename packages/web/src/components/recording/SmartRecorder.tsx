@@ -11,6 +11,9 @@ import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { useTranslations } from 'next-intl'
 import { useSilenceDetection } from '@/hooks/use-silence-detection'
 import { aiService } from '@/lib/ai-service'
+import { v4 as uuidv4 } from 'uuid'
+import { recorderDB } from '@/lib/recorder-db'
+import { storageService } from '@/lib/storage'
 
 interface SmartRecorderProps {
   onRecordingComplete: (result: RecordingResult) => void
@@ -64,6 +67,73 @@ export function SmartRecorder({
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const startTimeRef = useRef<number>(0)
   const pausedTimeRef = useRef<number>(0)
+  const sessionIdRef = useRef<string>('')
+  const chunkIndexRef = useRef<number>(0)
+
+  const handleChunk = useCallback(async (blob: Blob, index: number) => {
+    const sessionId = sessionIdRef.current
+    if (!sessionId) return
+
+    try {
+      if (navigator.onLine) {
+        // Try to upload to Supabase Storage
+        // We'll use a temporary folder for chunks: temp/{sessionId}/{index}
+        const fileName = `${index}.webm`
+        const result = await storageService.uploadFile(blob, {
+          bucket: 'audio-recordings',
+          folder: `temp/${sessionId}`,
+          fileName,
+          allowedTypes: ['audio/webm', 'audio/webm;codecs=opus']
+        })
+
+        if (!result.success) {
+          console.warn('Chunk upload failed, saving to IndexedDB:', result.error)
+          await recorderDB.saveChunk(sessionId, index, blob)
+        } else {
+          console.log('Chunk uploaded successfully:', index)
+        }
+      } else {
+        console.log('Offline, saving chunk to IndexedDB:', index)
+        await recorderDB.saveChunk(sessionId, index, blob)
+      }
+    } catch (error) {
+      console.error('Error handling chunk:', error)
+      await recorderDB.saveChunk(sessionId, index, blob)
+    }
+  }, [])
+
+  // Sync offline chunks when online
+  useEffect(() => {
+    const syncChunks = async () => {
+      if (navigator.onLine && sessionIdRef.current) {
+        const chunks = await recorderDB.getChunksBySession(sessionIdRef.current)
+        for (const chunk of chunks) {
+          try {
+            const fileName = `${chunk.index}.webm`
+            const result = await storageService.uploadFile(chunk.blob, {
+              bucket: 'audio-recordings',
+              folder: `temp/${chunk.sessionId}`,
+              fileName,
+              allowedTypes: ['audio/webm', 'audio/webm;codecs=opus']
+            })
+            if (result.success) {
+              await recorderDB.deleteChunk(chunk.id)
+              console.log('Synced offline chunk:', chunk.index)
+            }
+          } catch (e) {
+            console.error('Failed to sync chunk:', e)
+          }
+        }
+      }
+    }
+
+    window.addEventListener('online', syncChunks)
+    const interval = setInterval(syncChunks, 30000) // Try syncing every 30s
+    return () => {
+      window.removeEventListener('online', syncChunks)
+      clearInterval(interval)
+    }
+  }, [])
 
   // Check network quality and browser support
   useEffect(() => {
@@ -260,8 +330,8 @@ export function SmartRecorder({
         setAiPrompt(prompt)
         setPreviousPrompts(prev => [...prev.slice(-4), prompt]) // Keep last 5 prompts
         setLastProcessedLength(fullTranscript.length) // Mark up to here as processed
-        // Auto-clear prompt after 8 seconds
-        setTimeout(() => setAiPrompt(''), 8000)
+        // Auto-clear prompt after 10 seconds
+        setTimeout(() => setAiPrompt(''), 10000)
       }
     } catch (error) {
       console.error('[SmartRecorder] Failed to generate prompt:', error)
@@ -272,7 +342,7 @@ export function SmartRecorder({
 
   const { resetSilenceTimer } = useSilenceDetection({
     onSilence: handleSilence,
-    threshold: 5000, // 5 seconds of silence triggers prompt
+    threshold: 20000, // 20 seconds of silence triggers prompt
     enabled: recordingState === 'recording'
   })
 
@@ -305,8 +375,62 @@ export function SmartRecorder({
     }
   }, [])
 
+  // Wake Lock Implementation
+  const wakeLockRef = useRef<any>(null)
+
+  const requestWakeLock = useCallback(async () => {
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLockRef.current = await (navigator as any).wakeLock.request('screen')
+        console.log('Wake Lock is active')
+
+        wakeLockRef.current.addEventListener('release', () => {
+          console.log('Wake Lock was released')
+        })
+      }
+    } catch (err: any) {
+      console.error(`${err.name}, ${err.message}`)
+    }
+  }, [])
+
+  const releaseWakeLock = useCallback(async () => {
+    if (wakeLockRef.current) {
+      try {
+        await wakeLockRef.current.release()
+        wakeLockRef.current = null
+        console.log('Wake Lock released manually')
+      } catch (err: any) {
+        console.error(`${err.name}, ${err.message}`)
+      }
+    }
+  }, [])
+
+  // Handle visibility change to re-acquire lock
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible' && recordingState === 'recording') {
+        await requestWakeLock()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [recordingState, requestWakeLock])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      releaseWakeLock()
+    }
+  }, [releaseWakeLock])
+
   const startRecording = useCallback(async () => {
     try {
+      // Request Wake Lock
+      await requestWakeLock()
+
       // Request microphone permission
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       streamRef.current = stream
@@ -314,7 +438,7 @@ export function SmartRecorder({
       const useRealtime = shouldUseRealtime()
 
       // Always start MediaRecorder for audio recording
-      // 
+      //                        
       const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm'
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType,
@@ -323,9 +447,16 @@ export function SmartRecorder({
       mediaRecorderRef.current = mediaRecorder
       audioChunksRef.current = []
 
+      // Initialize session
+      sessionIdRef.current = uuidv4()
+      chunkIndexRef.current = 0
+
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data)
+          // Handle chunk upload
+          const index = chunkIndexRef.current++
+          handleChunk(event.data, index)
         }
       }
 
@@ -333,9 +464,11 @@ export function SmartRecorder({
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType })
         setAudioBlob(audioBlob)
         setAudioUrl(URL.createObjectURL(audioBlob))
+        releaseWakeLock() // Release lock when recording stops
       }
 
-      mediaRecorder.start()
+      // Start with 60s timeslice
+      mediaRecorder.start(60000)
 
       if (useRealtime) {
         // Also start real-time speech recognition
@@ -362,8 +495,9 @@ export function SmartRecorder({
       const errorMessage = error instanceof Error ? error.message : 'Failed to start recording'
       onError?.(errorMessage)
       toast.error(errorMessage)
+      releaseWakeLock() // Ensure lock is released on error
     }
-  }, [shouldUseRealtime, initializeRealTimeRecognition, startTimer, onError])
+  }, [shouldUseRealtime, initializeRealTimeRecognition, startTimer, onError, requestWakeLock, releaseWakeLock])
 
   const pauseRecording = useCallback(() => {
     if (recordingState !== 'recording') return
@@ -379,10 +513,13 @@ export function SmartRecorder({
     stopTimer()
     setRecordingState('paused')
     toast.success(t('success.paused'))
-  }, [recordingState, stopTimer])
+    releaseWakeLock() // Release lock when paused
+  }, [recordingState, stopTimer, releaseWakeLock])
 
-  const resumeRecording = useCallback(() => {
+  const resumeRecording = useCallback(async () => {
     if (recordingState !== 'paused') return
+
+    await requestWakeLock() // Re-acquire lock when resuming
 
     if (recognitionRef.current) {
       recognitionRef.current.start()
@@ -395,7 +532,7 @@ export function SmartRecorder({
     startTimer()
     setRecordingState('recording')
     toast.success(t('success.resumed'))
-  }, [recordingState, startTimer])
+  }, [recordingState, startTimer, requestWakeLock])
 
   const stopRecording = useCallback(() => {
     if (recognitionRef.current) {
@@ -413,6 +550,7 @@ export function SmartRecorder({
     stopTimer()
     setRecordingState('completed')
     toast.success(t('success.recorded'))
+    // releaseWakeLock is called in mediaRecorder.onstop
   }, [stopTimer])
 
   const resetRecording = useCallback(() => {
@@ -426,7 +564,8 @@ export function SmartRecorder({
       URL.revokeObjectURL(audioUrl)
       setAudioUrl(null)
     }
-  }, [stopRecording, audioUrl])
+    releaseWakeLock() // Ensure lock is released
+  }, [stopRecording, audioUrl, releaseWakeLock])
 
   const handleComplete = useCallback(() => {
     const result: RecordingResult = {
