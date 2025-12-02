@@ -68,7 +68,13 @@ export function ReviewStage({
                             </div>
                         )}
                     </div>
-                    <AudioPlayer src={audioUrl} className="w-full" />
+                    {duration > 0 ? (
+                        <AudioPlayer src={audioUrl} className="w-full" />
+                    ) : (
+                        <div className="p-4 text-center text-sm text-red-500 bg-red-50 rounded-lg border border-red-100">
+                            Audio duration invalid. Please try recording again.
+                        </div>
+                    )}
                 </div>
 
                 {/* Date Picker (Timeline Anchor) */}

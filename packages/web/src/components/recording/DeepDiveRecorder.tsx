@@ -53,7 +53,17 @@ export function DeepDiveRecorder({ onRecordingComplete, promptText, locale = 'en
                     }
                 }
 
+                recognition.onerror = (event: any) => {
+                    console.warn('Speech recognition error:', event.error)
+                    // Don't show toast for 'no-speech' as it's common
+                    if (event.error !== 'no-speech') {
+                        // toast.error('Transcription paused: ' + event.error)
+                    }
+                }
+
                 recognitionRef.current = recognition
+            } else {
+                console.warn('Speech Recognition API not supported in this browser.')
             }
         }
 

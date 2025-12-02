@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
+import { toast } from 'react-hot-toast'
 import { Mic, Square, Play, Trash2, Send, Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -178,9 +179,17 @@ export function ChatRecorder({ onRecordingComplete }: ChatRecorderProps) {
 
             // Decode all blobs
             for (const bubble of bubbles) {
-                const arrayBuffer = await bubble.blob.arrayBuffer()
-                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
-                audioBuffers.push(audioBuffer)
+                try {
+                    const arrayBuffer = await bubble.blob.arrayBuffer()
+                    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
+                    audioBuffers.push(audioBuffer)
+                } catch (e) {
+                    console.error('Failed to decode bubble:', bubble.id, e)
+                }
+            }
+
+            if (audioBuffers.length === 0) {
+                throw new Error('No valid audio to merge')
             }
 
             // Calculate total length
@@ -202,7 +211,11 @@ export function ChatRecorder({ onRecordingComplete }: ChatRecorderProps) {
 
             // Encode to WAV
             const mergedBlob = audioBufferToWav(outputBuffer)
-            const totalDuration = bubbles.reduce((acc, b) => acc + b.duration, 0)
+
+            // Calculate EXACT duration from the merged buffer
+            const totalDuration = outputBuffer.duration
+
+            console.log('Merged Audio Duration:', totalDuration)
 
             onRecordingComplete({
                 audioBlob: mergedBlob,
@@ -210,6 +223,7 @@ export function ChatRecorder({ onRecordingComplete }: ChatRecorderProps) {
             })
         } catch (error) {
             console.error('Error merging audio:', error)
+            toast.error('Failed to process audio. Please try again.')
         } finally {
             setIsProcessing(false)
         }
