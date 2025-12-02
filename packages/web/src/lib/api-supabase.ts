@@ -414,6 +414,14 @@ class SupabaseApiClient {
       content?: string
       audio_url?: string
       audio_duration?: number
+      transcript?: string
+      ai_generated_title?: string
+      ai_summary?: string
+      ai_follow_up_questions?: string
+      ai_confidence_score?: number
+      happened_at?: string
+      recording_mode?: string
+      is_public?: boolean
     }) => {
       const user = await this.auth.getCurrentUser()
       if (!user) throw new Error('Not authenticated')
@@ -430,12 +438,15 @@ class SupabaseApiClient {
           title: storyData.title,
           content: storyData.content,
           audio_url: storyData.audio_url,
-          audio_duration: storyData.audio_duration,
+          audio_duration: storyData.audio_duration ? Math.round(storyData.audio_duration) : 0,
           transcript: storyData.transcript,
           ai_generated_title: storyData.ai_generated_title,
           ai_summary: storyData.ai_summary,
           ai_follow_up_questions: storyData.ai_follow_up_questions,
           ai_confidence_score: storyData.ai_confidence_score,
+          happened_at: storyData.happened_at,
+          recording_mode: storyData.recording_mode,
+          is_public: storyData.is_public
         })
       })
       if (!resp.ok) throw new Error('Failed to create story')
