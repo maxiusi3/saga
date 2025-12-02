@@ -12,6 +12,8 @@ export interface Story {
   ai_summary?: string
   ai_follow_up_questions?: string[]
   ai_confidence_score?: number
+  happened_at?: string
+  recording_mode?: 'deep_dive' | 'chat'
   created_at: string
   updated_at: string
 }
@@ -29,6 +31,8 @@ export interface CreateStoryData {
   ai_follow_up_questions?: string[]
   ai_confidence_score?: number
   followup_interaction_id?: string
+  happened_at?: Date
+  recording_mode?: 'deep_dive' | 'chat'
 }
 
 export interface UpdateStoryData {
@@ -40,6 +44,7 @@ export interface UpdateStoryData {
   ai_follow_up_questions?: string[]
   ai_confidence_score?: number
   images?: any[]
+  is_public?: boolean
 }
 
 export class StoryService {
@@ -101,6 +106,8 @@ export class StoryService {
           ai_follow_up_questions: storyData.ai_follow_up_questions,
           ai_confidence_score: storyData.ai_confidence_score,
           followup_interaction_id: storyData.followup_interaction_id,
+          happened_at: storyData.happened_at,
+          recording_mode: storyData.recording_mode
         })
       })
       if (!resp.ok) return null
@@ -188,7 +195,7 @@ export class StoryService {
     try {
       // First get the story to find the audio file
       const story = await this.getStoryById(storyId)
-      
+
       // Delete audio file if it exists
       if (story?.audio_url && typeof story.audio_url === 'string') {
         const fileName = story.audio_url.split('/').pop()

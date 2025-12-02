@@ -12,6 +12,15 @@ export interface Story {
   audio_url: string;
   audio_duration?: number; // in seconds
   status: 'draft' | 'published';
+  content?: string;
+  ai_generated_title?: string;
+  ai_summary?: string;
+  ai_follow_up_questions?: string[];
+  ai_confidence_score?: number;
+  happened_at?: Date | string;
+  recording_mode?: 'deep_dive' | 'chat';
+  photo_url?: string;
+  is_core?: boolean;
   created_at: Date;
   updated_at: Date;
 }

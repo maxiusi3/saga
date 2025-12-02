@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useTranslations } from 'next-intl'
-import { 
+import {
   Play,
   Pause,
   Volume2,
@@ -185,10 +185,10 @@ export function StoryDetailPage({
                 <span>{formatDate(story.createdAt)}</span>
               </div>
               {story.chapter && (
-                <Badge 
-                  variant="outline" 
+                <Badge
+                  variant="outline"
                   size="sm"
-                  style={{ 
+                  style={{
                     borderColor: story.chapter.color || '#2D5A3D',
                     color: story.chapter.color || '#2D5A3D'
                   }}
@@ -200,7 +200,7 @@ export function StoryDetailPage({
             </div>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <Button variant="tertiary" size="sm">
             <Share className="w-4 h-4 mr-1" />
@@ -229,7 +229,7 @@ export function StoryDetailPage({
                 <div className="space-y-4">
                   {/* Main Photo */}
                   <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
-                    <img 
+                    <img
                       src={story.photos[selectedPhotoIndex]?.url || primaryPhoto?.url}
                       alt={story.photos[selectedPhotoIndex]?.caption || story.title}
                       className="w-full h-full object-cover"
@@ -261,14 +261,13 @@ export function StoryDetailPage({
                         <button
                           key={photo.id}
                           onClick={() => setSelectedPhotoIndex(index)}
-                          className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
-                            index === selectedPhotoIndex 
-                              ? 'border-primary' 
+                          className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${index === selectedPhotoIndex
+                              ? 'border-primary'
                               : 'border-transparent hover:border-border'
-                          }`}
+                            }`}
                         >
-                          <img 
-                            src={photo.url} 
+                          <img
+                            src={photo.url}
                             alt={photo.caption || `Photo ${index + 1}`}
                             className="w-full h-full object-cover"
                           />
@@ -292,7 +291,7 @@ export function StoryDetailPage({
                     <span>{formatDuration(story.duration)}</span>
                   </div>
                 </div>
-                
+
                 {/* Audio Controls */}
                 <div className="flex items-center gap-4">
                   <Button
@@ -302,15 +301,15 @@ export function StoryDetailPage({
                   >
                     {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                   </Button>
-                  
+
                   {/* Progress Bar */}
                   <div className="flex-1 bg-muted rounded-full h-2">
-                    <div 
+                    <div
                       className="bg-primary h-full rounded-full transition-all duration-200"
                       style={{ width: `${(currentTime / story.duration) * 100}%` }}
                     />
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <Volume2 className="w-4 h-4 text-muted-foreground" />
                     <input
@@ -358,9 +357,9 @@ export function StoryDetailPage({
                       <Save className="w-4 h-4 mr-1" />
                       {t('detail.save')}
                     </Button>
-                    <Button 
-                      variant="secondary" 
-                      size="sm" 
+                    <Button
+                      variant="secondary"
+                      size="sm"
                       onClick={() => {
                         setEditedTranscript(story.transcript)
                         setIsEditingTranscript(false)
@@ -441,16 +440,16 @@ export function StoryDetailPage({
                           rows={2}
                         />
                         <div className="flex gap-2">
-                          <Button 
-                            variant="primary" 
-                            size="sm" 
+                          <Button
+                            variant="primary"
+                            size="sm"
                             onClick={() => handleAddReply(comment.id)}
                           >
                             Reply
                           </Button>
-                          <Button 
-                            variant="secondary" 
-                            size="sm" 
+                          <Button
+                            variant="secondary"
+                            size="sm"
                             onClick={() => setReplyingTo(null)}
                           >
                             Cancel

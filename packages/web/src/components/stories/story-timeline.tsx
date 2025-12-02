@@ -8,11 +8,13 @@ import { useStoryTimeline } from '@/hooks/use-story-discovery'
 import { formatRelativeTime } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Timeline, TimelineItem, TimelineConnector, TimelineHeader, TimelineTitle, TimelineContent } from '@/components/ui/timeline'
-import { Story } from '@/lib/types'
+import { Story } from '@/lib/stories'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Mic, MessageCircle, Calendar } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface StoryTimelineProps {
   projectId: string
@@ -22,13 +24,11 @@ interface StoryTimelineProps {
 export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps) {
   const [filters, setFilters] = useState<DiscoveryFilters>({})
   const { timeline, isLoading, error, refetch } = useStoryTimeline(projectId, filters)
-
-  // locale-aware 链接助手
   const params = useParams()
   const locale = (params?.locale as string) || ''
+
   const withLocale = (path: string) => {
     const sanitized = path.startsWith('/') ? path : `/${path}`
-    // 支持更多细分中文区域码
     const hasLocale = /^\/(en|zh|zh-CN|zh-TW|fr|es)(\/|$)/.test(sanitized)
     if (!locale || hasLocale) return sanitized
     return `/${locale}${sanitized}`
@@ -42,223 +42,115 @@ export function StoryTimeline({ projectId, className = '' }: StoryTimelineProps)
     setFilters({})
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  }
-
   if (isLoading) {
-    return (
-      <div className={`space-y-6 ${className}`}>
-        <Skeleton className="h-8 w-1/3" />
-        <div className="space-y-6">
-          {[...Array(3)].map((_, i) => (
-            <div key={i}>
-              <Skeleton className="h-6 w-1/4 mb-4" />
-              <div className="space-y-3">
-                {[...Array(2)].map((_, j) => (
-                  <Card key={j} className="p-4">
-                    <Skeleton className="h-4 w-1/2 mb-2" />
-                    <Skeleton className="h-3 w-3/4" />
-                  </Card>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    )
+    return <div className="p-8 text-center">Loading timeline...</div>
   }
 
   if (error) {
-    return (
-      <div className="rounded-md bg-destructive/10 p-4 text-sm text-destructive">
-        <p>Error loading stories. Please try again later.</p>
-      </div>
-    )
+    return <div className="p-4 text-red-500">Error loading timeline</div>
   }
 
   if (!timeline || timeline.stories.length === 0) {
     return (
-      <div className={`${className}`}>
-        <h3 className="text-lg font-medium text-foreground mb-4">Story Timeline</h3>
-        <div className="text-center py-8">
-          <p className="mt-1 text-sm text-muted-foreground">
-            No stories found. Stories will appear here as they are recorded.
-          </p>
-        </div>
+      <div className="text-center py-12">
+        <p className="text-stone-500">No stories yet. Start recording to build your timeline.</p>
       </div>
     )
   }
 
-  const filteredStories = timeline.stories;
+  // Group stories by Decade based on happened_at
+  const groupedStories = timeline.stories.reduce((acc, story) => {
+    const date = story.happened_at ? new Date(story.happened_at) : new Date(story.created_at)
+    const year = date.getFullYear()
+    const decade = Math.floor(year / 10) * 10
+    const key = `${decade}s`
+
+    if (!acc[key]) acc[key] = []
+    acc[key].push(story)
+    return acc
+  }, {} as Record<string, Story[]>)
+
+  // Sort decades descending
+  const sortedDecades = Object.keys(groupedStories).sort((a, b) => parseInt(b) - parseInt(a))
 
   return (
-    <div className={`${className}`}>
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-medium text-foreground">Story Timeline</h3>
-        <div className="flex items-center space-x-2">
-          {(filters.chapterId || filters.storytellerId || filters.dateFrom || filters.dateTo) && (
-            <Button variant="ghost" size="sm" onClick={clearFilters}>
-              Clear filters
-            </Button>
-          )}
-          <Button variant="ghost" size="sm" onClick={() => refetch()}>
-            Refresh
-          </Button>
-        </div>
+    <div className={`space-y-8 ${className}`}>
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-serif font-medium text-stone-800 dark:text-stone-100">
+          Your Timeline
+        </h3>
+        <Button variant="ghost" size="sm" onClick={() => refetch()}>
+          Refresh
+        </Button>
       </div>
 
-      <Card className="p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-1">
-              Date From
-            </label>
-            <Input
-              type="date"
-              value={filters.dateFrom ? filters.dateFrom.toISOString().split('T')[0] : ''}
-              onChange={(e) => updateFilters({
-                dateFrom: e.target.value ? new Date(e.target.value) : undefined
-              })}
-              className="text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-1">
-              Date To
-            </label>
-            <Input
-              type="date"
-              value={filters.dateTo ? filters.dateTo.toISOString().split('T')[0] : ''}
-              onChange={(e) => updateFilters({
-                dateTo: e.target.value ? new Date(e.target.value) : undefined
-              })}
-              className="text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-1">
-              Chapter
-            </label>
-            <Select
-              value={filters.chapterId || ''}
-              onValueChange={(value) => updateFilters({ chapterId: value || undefined })}
-            >
-              <SelectTrigger className="text-sm">
-                <SelectValue placeholder="All Chapters" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Chapters</SelectItem>
-                
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-1">
-              Storyteller
-            </label>
-            <Select
-              value={filters.storytellerId || ''}
-              onValueChange={(value) => updateFilters({ storytellerId: value || undefined })}
-            >
-              <SelectTrigger className="text-sm">
-                <SelectValue placeholder="All Storytellers" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Storytellers</SelectItem>
-                
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </Card>
+      <div className="relative border-l-2 border-stone-200 dark:border-stone-800 ml-4 space-y-12">
+        {sortedDecades.map(decade => (
+          <div key={decade} className="relative pl-8">
+            {/* Decade Marker */}
+            <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-stone-900 dark:bg-stone-100 border-4 border-white dark:border-stone-950" />
 
-      <Timeline>
-        {timeline.timeline.map((timelineEntry) => (
-          <TimelineItem key={timelineEntry.date}>
-            <TimelineConnector />
-            <TimelineHeader>
-              <TimelineTitle>{formatDate(timelineEntry.date)}</TimelineTitle>
-              <p className="text-xs text-muted-foreground ml-2">
-                {timelineEntry.stories.length} {timelineEntry.stories.length === 1 ? 'story' : 'stories'}
-              </p>
-            </TimelineHeader>
-            <TimelineContent className="space-y-4">
-              {timelineEntry.stories.map((story: Story) => (
-                <Card key={story.id} className="p-4 hover:shadow-md transition-shadow duration-200">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h5 className="font-medium text-foreground mb-2">
-                        {story.title || 'Untitled Story'}
-                      </h5>
-                      {story.transcript && (
-                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                          {story.transcript}
-                        </p>
-                      )}
-                      <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                        {story.audio_duration && (
-                          <div className="flex items-center">
-                            {Math.round(story.audio_duration / 60)} min
-                          </div>
-                        )}
-                        <span>{formatRelativeTime(story.created_at)}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2 ml-4">
-                      {story.photo_url && (
-                        <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted">
-                          <img
-                            src={story.photo_url}
-                            alt="Story photo"
-                            className="w-full h-full object-cover"
-                          />
+            <h4 className="text-2xl font-serif font-bold text-stone-300 dark:text-stone-700 mb-6 -mt-2">
+              {decade}
+            </h4>
+
+            <div className="space-y-6">
+              {groupedStories[decade].map(story => (
+                <Card key={story.id} className="p-4 hover:shadow-lg transition-all duration-300 border-stone-200 dark:border-stone-800">
+                  <div className="flex gap-4">
+                    <div className="shrink-0 mt-1">
+                      {story.recording_mode === 'chat' ? (
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-full">
+                          <MessageCircle className="w-4 h-4" />
+                        </div>
+                      ) : (
+                        <div className="p-2 bg-amber-100 dark:bg-amber-900/30 text-amber-600 rounded-full">
+                          <Mic className="w-4 h-4" />
                         </div>
                       )}
-                      {/* 跳转到项目内的故事详情页，确保路径中包含 projectId 且带语言前缀 */}
-                      <Link href={withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`)} passHref>
-                        <Button asChild size="sm">
-                          <a>Listen</a>
-                        </Button>
-                      </Link>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h5 className="font-medium text-stone-900 dark:text-stone-100 truncate pr-4">
+                          {story.title || 'Untitled Memory'}
+                        </h5>
+                        <span className="text-xs text-stone-400 whitespace-nowrap flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {story.happened_at ? new Date(story.happened_at).getFullYear() : new Date(story.created_at).getFullYear()}
+                        </span>
+                      </div>
+
+                      <p className="text-sm text-stone-500 dark:text-stone-400 line-clamp-2 mb-3">
+                        {story.content || story.transcript || 'No description available.'}
+                      </p>
+
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-stone-400">
+                          {story.audio_duration ? `${Math.floor(story.audio_duration / 60)}:${(story.audio_duration % 60).toString().padStart(2, '0')}` : '0:00'}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-stone-100 dark:bg-stone-800">
+                            <div className={cn("w-1.5 h-1.5 rounded-full", story.is_public ? "bg-green-500" : "bg-stone-400")} />
+                            <span className="text-[10px] uppercase tracking-wider font-medium text-stone-500">
+                              {story.is_public ? 'Public' : 'Private'}
+                            </span>
+                          </div>
+                          <Link href={withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`)}>
+                            <Button size="sm" variant="outline" className="h-8 text-xs">
+                              Listen
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </Card>
               ))}
-            </TimelineContent>
-          </TimelineItem>
-        ))}
-      </Timeline>
-
-      {filteredStories.length > 0 && (
-        <Card className="mt-8 p-4">
-          <h3 className="mb-2 text-lg font-semibold text-card-foreground">Summary</h3>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="text-muted-foreground">Total Stories</p>
-              <p className="font-bold text-card-foreground">{filteredStories.length}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Core Stories</p>
-              <p className="font-bold text-card-foreground">{filteredStories.filter(s => s.is_core).length}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">User Stories</p>
-              <p className="font-bold text-card-foreground">{filteredStories.filter(s => !s.is_core).length}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Latest Story</p>
-              <p className="font-bold text-card-foreground">{new Date(filteredStories[0].created_at).toLocaleDateString()}</p>
             </div>
           </div>
-        </Card>
-      )}
+        ))}
+      </div>
     </div>
   )
 }

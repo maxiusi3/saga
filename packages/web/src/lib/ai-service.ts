@@ -152,6 +152,17 @@ export class AIService {
   }
 
   /**
+   * Wrapper for generateAIContent to match expected API in page.tsx
+   */
+  static async generateContentFromTranscript(
+    transcript: string,
+    prompt?: string,
+    language: string = 'en'
+  ): Promise<AIContent> {
+    return this.generateAIContent(transcript, prompt, { language })
+  }
+
+  /**
    * Process audio file and generate complete AI content
    */
   static async processAudioWithAI(
