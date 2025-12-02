@@ -88,11 +88,11 @@ export async function GET(
         const follow_ups_count = interactions.filter((i: any) => i.type === 'followup').length
 
         const latest_interaction_time = interactions.length > 0
-            ? interactions.reduce((latest: number, a: any) => {
-                const a_time = new Date(a.created_at).getTime()
-                return a_time > latest ? a_time : latest
-              }, 0)
-            : null
+          ? interactions.reduce((latest: number, a: any) => {
+            const a_time = new Date(a.created_at).getTime()
+            return a_time > latest ? a_time : latest
+          }, 0)
+          : null
 
         return {
           ...story,
@@ -175,6 +175,9 @@ export async function POST(
       ai_summary: body.ai_summary,
       ai_follow_up_questions: body.ai_follow_up_questions,
       ai_confidence_score: body.ai_confidence_score,
+      happened_at: body.happened_at,
+      recording_mode: body.recording_mode,
+      is_public: body.is_public,
       status: 'ready'
     }
     const extendedPayload: any = {

@@ -69,7 +69,7 @@ export function ReviewStage({
                         )}
                     </div>
                     {duration > 0 ? (
-                        <AudioPlayer src={audioUrl} className="w-full" />
+                        <AudioPlayer src={audioUrl} duration={duration} className="w-full" />
                     ) : (
                         <div className="p-4 text-center text-sm text-red-500 bg-red-50 rounded-lg border border-red-100">
                             Audio duration invalid. Please try recording again.
@@ -124,7 +124,7 @@ export function ReviewStage({
                     <div className="space-y-0.5">
                         <Label className="text-base font-medium">Visibility</Label>
                         <p className="text-sm text-stone-500 dark:text-stone-400">
-                            {isPublic ? 'Public - Visible to everyone' : 'Private - Only visible to you'}
+                            {isPublic ? 'Public - Visible to everyone' : 'Private - Visible to project members'}
                         </p>
                     </div>
                     <div className="flex items-center gap-2">

@@ -10,6 +10,7 @@ interface AudioPlayerProps {
   className?: string
   compact?: boolean
   autoPlay?: boolean
+  duration?: number // Allow passing explicit duration
   onPlay?: () => void
   onPause?: () => void
   onEnded?: () => void
@@ -21,6 +22,7 @@ export function AudioPlayer({
   className = '',
   compact = false,
   autoPlay = false,
+  duration: providedDuration, // Destructure provided duration
   onPlay,
   onPause,
   onEnded
@@ -28,7 +30,7 @@ export function AudioPlayer({
   const {
     isPlaying,
     isLoading,
-    duration,
+    duration: playerDuration,
     currentTime,
     volume,
     isMuted,
@@ -42,6 +44,9 @@ export function AudioPlayer({
     toggleMute,
     load,
   } = useAudioPlayer()
+
+  // Use provided duration if available and valid, otherwise fallback to player duration
+  const displayDuration = (providedDuration && providedDuration > 0) ? providedDuration : playerDuration
 
   // Load audio source when component mounts or src changes
   useEffect(() => {
@@ -68,10 +73,10 @@ export function AudioPlayer({
 
   // Handle ended callback
   useEffect(() => {
-    if (currentTime > 0 && currentTime >= duration && duration > 0) {
+    if (currentTime > 0 && currentTime >= displayDuration && displayDuration > 0) {
       onEnded?.()
     }
-  }, [currentTime, duration, onEnded])
+  }, [currentTime, displayDuration, onEnded])
 
   const handlePlayPause = () => {
     if (isPlaying) {
@@ -94,7 +99,7 @@ export function AudioPlayer({
   }
 
   const handleSkipForward = () => {
-    seek(Math.min(duration, currentTime + 10))
+    seek(Math.min(displayDuration, currentTime + 10))
   }
 
   if (error) {
@@ -132,7 +137,7 @@ export function AudioPlayer({
             <div className="flex-1">
               <Slider
                 value={[currentTime]}
-                max={duration || 100}
+                max={displayDuration || 100}
                 step={0.1}
                 onValueChange={handleSeek}
                 disabled={!canPlay}
@@ -140,7 +145,7 @@ export function AudioPlayer({
               />
             </div>
             <span className="text-xs text-muted-foreground font-mono">
-              {formatTime(duration)}
+              {formatTime(displayDuration)}
             </span>
           </div>
           {title && (
@@ -162,7 +167,7 @@ export function AudioPlayer({
       <div className="space-y-2">
         <Slider
           value={[currentTime]}
-          max={duration || 100}
+          max={displayDuration || 100}
           step={0.1}
           onValueChange={handleSeek}
           disabled={!canPlay}
@@ -170,7 +175,7 @@ export function AudioPlayer({
         />
         <div className="flex justify-between text-sm text-muted-foreground font-mono">
           <span>{formatTime(currentTime)}</span>
-          <span>{formatTime(duration)}</span>
+          <span>{formatTime(displayDuration)}</span>
         </div>
       </div>
 
