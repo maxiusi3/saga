@@ -86,12 +86,25 @@ export function DeepDiveRecorder({ onRecordingComplete, promptText, locale = 'en
                 if (e.data.size > 0) chunksRef.current.push(e.data)
             }
 
-            mediaRecorder.onstop = () => {
+            mediaRecorder.onstop = async () => {
                 const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
+
+                // Calculate exact duration
+                let exactDuration = duration
+                try {
+                    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+                    const arrayBuffer = await blob.arrayBuffer()
+                    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
+                    exactDuration = audioBuffer.duration
+                    console.log('Deep Dive Exact Duration:', exactDuration)
+                } catch (e) {
+                    console.error('Failed to calculate exact duration:', e)
+                }
+
                 onRecordingComplete({
                     audioBlob: blob,
                     transcript: transcript,
-                    duration: duration
+                    duration: exactDuration
                 })
                 stream.getTracks().forEach(track => track.stop())
             }
