@@ -10,24 +10,16 @@ import { useTranslations } from 'next-intl'
 interface ResonanceCardProps {
     era: string
     similarCount: number
-    onOptIn: (optIn: boolean) => void
+    onClose: () => void
     className?: string
 }
 
 export function ResonanceCard({
     era,
     similarCount,
-    onOptIn,
+    onClose,
     className = ''
 }: ResonanceCardProps) {
-    // const t = useTranslations('resonance') // Assuming translations exist, using hardcoded for MVP
-    const [isPublic, setIsPublic] = useState(false)
-
-    const handleToggle = (checked: boolean) => {
-        setIsPublic(checked)
-        onOptIn(checked)
-    }
-
     return (
         <Card className={`p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-100 ${className}`}>
             <div className="space-y-6">
@@ -60,40 +52,15 @@ export function ResonanceCard({
                     <span className="ml-4 text-xs text-indigo-400 font-medium">Resonance Wave</span>
                 </div>
 
-                {/* Opt-In Section */}
-                <div className="bg-white p-4 rounded-xl border border-indigo-100 shadow-sm">
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                            {isPublic ? (
-                                <Globe className="w-4 h-4 text-indigo-600" />
-                            ) : (
-                                <Lock className="w-4 h-4 text-slate-500" />
-                            )}
-                            <span className="font-semibold text-slate-900">
-                                {isPublic ? 'Contribute to History' : 'Keep Private'}
-                            </span>
-                        </div>
-                        <Switch
-                            checked={isPublic}
-                            onCheckedChange={handleToggle}
-                        />
-                    </div>
-
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                        {isPublic
-                            ? "Your story will be anonymized and added to the Collective Memory Bank, helping future generations understand this era."
-                            : "Your story is currently private. Turn this on to anonymously share your experience with the world."
-                        }
-                    </p>
+                {/* Footer Action */}
+                <div className="flex justify-end">
+                    <Button
+                        onClick={onClose}
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                    >
+                        Continue to Timeline
+                    </Button>
                 </div>
-
-                {/* Footer */}
-                {isPublic && (
-                    <div className="flex items-center gap-2 text-xs text-indigo-600 bg-indigo-50 p-2 rounded justify-center">
-                        <Heart className="w-3 h-3 fill-current" />
-                        <span>Thank you for preserving history.</span>
-                    </div>
-                )}
             </div>
         </Card>
     )

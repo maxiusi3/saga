@@ -234,7 +234,7 @@ export default function ProjectRecordPage() {
             <ResonanceCard
               era={resonanceData.era}
               similarCount={resonanceData.count}
-              onOptIn={handleOptIn}
+              onClose={() => router.push(withLocale(`/dashboard/projects/${projectId}`))}
               className="max-w-md w-full shadow-2xl border-stone-800"
             />
           </div>
