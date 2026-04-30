@@ -2,8 +2,8 @@
 
 ## Protected References
 
-- `main`: local branch was ahead of `origin/main` by docs commits on 2026-04-30.
-- `codex/preserve-main-ahead-2026-04-30`: safety copy of local `main` before stabilization.
+- `main`: local branch was ahead of `origin/main` by three docs commits on 2026-04-30.
+- `codex/preserve-main-ahead-2026-04-30`: safety copy of local `main` before stabilization, protecting `0bec8be07`, `b1e00274f`, and `aa3386cb7`.
 - `/tmp/saga-main-ahead-2026-04-30.bundle`: offline recovery bundle for commits ahead of `origin/main`.
 
 ## Local Branches Observed
@@ -24,7 +24,7 @@
 ## Deletion Decisions
 
 - Keep `main` until stabilization PR merges.
-- Keep `codex/preserve-main-ahead-2026-04-30` until the two docs commits are pushed or intentionally abandoned.
+- Keep `codex/preserve-main-ahead-2026-04-30` until the three ahead-of-origin docs commits (`0bec8be07`, `b1e00274f`, `aa3386cb7`) are pushed or intentionally abandoned.
 - Keep `codex/saga-stabilization-and-branch-cleanup` as the active remediation branch.
 - Delete `feature/story-image-upload`, `hotfix/active-transcript-highlight`, or `fix-deployment-clean` only when the matching `git merge-base --is-ancestor BRANCH origin/main` command exits 0.
 - Delete a remote feature or hotfix branch only after confirming there is no open PR and its content has landed or is intentionally abandoned.
