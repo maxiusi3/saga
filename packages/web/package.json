@@ -9,6 +9,8 @@
     "build:shared": "cd ../shared && npm run build",
     "build:vercel": "npm run build:shared && next build",
     "start": "next start",
+    "test": "jest --passWithNoTests",
+    "test:ci": "jest --ci --coverage --passWithNoTests",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
