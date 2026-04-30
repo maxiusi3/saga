@@ -41,3 +41,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated local databases
+*.sqlite
+*.sqlite3
+
+# archived backend dependency folders stay local only
+_archive_backend/node_modules
+_archive_backend/**/node_modules
+
+# local audit outputs
+tsc_output.txt
