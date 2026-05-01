@@ -19,10 +19,24 @@ interface Bucket {
 export function createFixedWindowLimiter(options: FixedWindowLimiterOptions) {
   const buckets = new Map<string, Bucket>()
   const now = options.now ?? (() => Date.now())
+  let nextCleanupAt = 0
+
+  function pruneExpiredBuckets(current: number) {
+    buckets.forEach((bucket, key) => {
+      if (bucket.resetAt <= current) {
+        buckets.delete(key)
+      }
+    })
+  }
 
   return {
     check(key: string): RateLimitResult {
       const current = now()
+      if (current >= nextCleanupAt) {
+        pruneExpiredBuckets(current)
+        nextCleanupAt = current + options.windowMs
+      }
+
       const existing = buckets.get(key)
       const bucket =
         existing && existing.resetAt > current
@@ -40,6 +54,9 @@ export function createFixedWindowLimiter(options: FixedWindowLimiterOptions) {
         resetAt: bucket.resetAt,
         limit: options.max,
       }
+    },
+    size() {
+      return buckets.size
     },
   }
 }

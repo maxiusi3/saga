@@ -19,4 +19,18 @@ describe('createFixedWindowLimiter', () => {
     now = 12_000
     expect(limiter.check('user-1')).toMatchObject({ allowed: true, remaining: 0 })
   })
+
+  it('prunes expired buckets during periodic checks', () => {
+    let now = 1_000
+    const limiter = createFixedWindowLimiter({ max: 1, windowMs: 10_000, now: () => now })
+
+    limiter.check('user-1')
+    limiter.check('user-2')
+    expect(limiter.size()).toBe(2)
+
+    now = 12_000
+    limiter.check('user-3')
+
+    expect(limiter.size()).toBe(1)
+  })
 })

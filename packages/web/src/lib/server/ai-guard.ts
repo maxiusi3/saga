@@ -22,7 +22,11 @@ export async function requireAiRequest(request: NextRequest, action: AiAction): 
 
   const limiter = action === 'realtime-prompt' ? realtimeLimiter : aiLimiter
   const result = limiter.check(`${action}:${auth.user.id}`)
-  const headers = rateLimitHeaders(result)
+  const headers = auth.headers
+
+  for (const [key, value] of Object.entries(rateLimitHeaders(result))) {
+    headers.set(key, value)
+  }
 
   if (!result.allowed) {
     return {
