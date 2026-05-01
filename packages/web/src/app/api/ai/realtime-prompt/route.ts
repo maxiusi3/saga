@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
 
 // Initialize OpenRouter client
 const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
@@ -11,7 +12,10 @@ const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
     }
 }) : null
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+    const guard = await requireAiRequest(request, 'realtime-prompt')
+    if (!guard.ok) return guard.response
+
     try {
         const { transcript, language = 'en', previousPrompts = [] } = await request.json()
 
@@ -52,10 +56,10 @@ export async function POST(request: Request) {
 
                 const aiPrompt = completion.choices[0]?.message?.content?.trim()
                 if (aiPrompt) {
-                    return NextResponse.json({
+                    return jsonWithRateLimit({
                         prompt: aiPrompt.replace(/^["']|["']$/g, ''), // Remove quotes if present
                         confidence: 0.9
-                    })
+                    }, guard.headers)
                 }
             } catch (error) {
                 console.warn('OpenAI call failed, falling back to smart mock:', error)
@@ -113,16 +117,31 @@ export async function POST(request: Request) {
         // Simulate network delay for realism if mocking
         if (!openai) await new Promise(resolve => setTimeout(resolve, 500))
 
-        return NextResponse.json({
+        return jsonWithRateLimit({
             prompt: randomPrompt,
             confidence: 0.8
-        })
+        }, guard.headers)
 
     } catch (error) {
         console.error('Real-time prompt generation error:', error)
-        return NextResponse.json(
+        return jsonWithRateLimit(
             { error: 'Failed to generate prompt' },
-            { status: 500 }
+            guard.headers,
+            500
         )
     }
+}
+
+// Handle OPTIONS request for CORS
+export async function OPTIONS() {
+    const origin = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000'
+
+    return new NextResponse(null, {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': origin,
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
+    })
 }
