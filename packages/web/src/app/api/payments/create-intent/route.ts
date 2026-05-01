@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid payment request' }, { status: 400, headers: auth.headers })
   }
 
-  if (!body || typeof body !== 'object') {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return NextResponse.json({ error: 'Invalid payment request' }, { status: 400, headers: auth.headers })
   }
 
