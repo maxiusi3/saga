@@ -44,6 +44,31 @@ describe('StorySearch', () => {
     expect(screen.getByLabelText('Search stories')).toBeInTheDocument()
   })
 
+  it('should expose suggestions through a combobox wrapper', async () => {
+    const mockSuggestions = ['test']
+
+    mockedUseSearch.mockReturnValue({
+      ...mockSearchHook,
+      suggestions: mockSuggestions,
+      query: 'test'
+    })
+
+    const user = userEvent.setup()
+    render(<StorySearch {...defaultProps} />)
+
+    const searchInput = screen.getByLabelText('Search stories')
+    await user.click(searchInput)
+
+    const combobox = screen.getByRole('combobox')
+    expect(combobox).toHaveAttribute('aria-expanded', 'true')
+    expect(combobox).toHaveAttribute('aria-haspopup', 'listbox')
+    expect(combobox).toHaveAttribute('aria-owns', 'story-search-suggestions')
+    expect(searchInput).not.toHaveAttribute('aria-expanded')
+    expect(searchInput).toHaveAttribute('aria-autocomplete', 'list')
+    expect(searchInput).toHaveAttribute('aria-controls', 'story-search-suggestions')
+    expect(screen.getByRole('listbox')).toHaveAttribute('id', 'story-search-suggestions')
+  })
+
   it('should handle search input changes', async () => {
     const user = userEvent.setup()
     render(<StorySearch {...defaultProps} />)
