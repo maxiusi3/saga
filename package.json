@@ -16,6 +16,8 @@
     "lint": "npm run lint --workspaces",
     "lint:fix": "npm run lint:fix --workspaces",
     "type-check": "npm run type-check --workspaces",
+    "verify": "npm run type-check && npm run lint && npm test --workspace=packages/web -- --runInBand && npm run build:vercel",
+    "audit:moderate": "npm audit --workspaces --audit-level=moderate",
     "start": "npm run dev"
   },
   "devDependencies": {
