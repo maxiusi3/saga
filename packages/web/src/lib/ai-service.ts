@@ -1,4 +1,5 @@
 import { toast } from 'react-hot-toast'
+import { useAuthStore } from '@/stores/auth-store'
 
 export interface AIContent {
   title: string
@@ -22,6 +23,11 @@ export interface AIProcessingOptions {
 
 export class AIService {
   private static readonly API_BASE_URL = '/api/ai'
+
+  private static async authHeaders(): Promise<Record<string, string>> {
+    const token = await useAuthStore.getState().getAccessToken()
+    return token ? { Authorization: `Bearer ${token}` } : {}
+  }
 
   /**
    * Transcribe audio using OpenAI Whisper API
@@ -54,6 +60,7 @@ export class AIService {
 
       const response = await fetch(`${this.API_BASE_URL}/transcribe`, {
         method: 'POST',
+        headers: await this.authHeaders(),
         body: formData,
       })
 
@@ -112,6 +119,7 @@ export class AIService {
       const response = await fetch(`${this.API_BASE_URL}/generate-content`, {
         method: 'POST',
         headers: {
+          ...(await this.authHeaders()),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -307,6 +315,7 @@ export class AIService {
       const response = await fetch('/api/ai/realtime-prompt', {
         method: 'POST',
         headers: {
+          ...(await this.authHeaders()),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

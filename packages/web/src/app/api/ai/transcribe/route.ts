@@ -46,6 +46,15 @@ export async function POST(request: NextRequest) {
   if (!guard.ok) return guard.response;
 
   try {
+    const contentLength = Number(request.headers.get('content-length') || 0);
+    if (contentLength > MAX_TRANSCRIBE_BYTES) {
+      return jsonWithRateLimit(
+        { error: 'Audio file too large. Maximum size is 25MB.' },
+        guard.headers,
+        413,
+      );
+    }
+
     const formData = await request.formData();
     const audioFile = formData.get('audio') as File | null;
     const language = (formData.get('language') as string) || 'zh-CN';
