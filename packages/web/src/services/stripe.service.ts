@@ -2,6 +2,7 @@
 // Current keys are for development/testing only
 
 import { loadStripe, Stripe } from '@stripe/stripe-js'
+import { useAuthStore } from '@/stores/auth-store'
 
 // PLACEHOLDER: Replace with actual publishable key in production
 const STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_placeholder_key'
@@ -25,8 +26,6 @@ export interface PaymentIntent {
 
 export interface CreatePaymentIntentRequest {
   packageId: string
-  amount: number
-  currency: string
   metadata?: Record<string, string>
 }
 
@@ -37,6 +36,11 @@ export interface ConfirmPaymentRequest {
 
 class StripeService {
   private stripe: Stripe | null = null
+
+  private async authHeaders(): Promise<Record<string, string>> {
+    const token = await useAuthStore.getState().getAccessToken()
+    return token ? { Authorization: `Bearer ${token}` } : {}
+  }
 
   async initialize(): Promise<void> {
     this.stripe = await getStripe()
@@ -55,6 +59,7 @@ class StripeService {
       const response = await fetch('/api/payments/create-intent', {
         method: 'POST',
         headers: {
+          ...(await this.authHeaders()),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(request),
@@ -256,6 +261,3 @@ class StripeService {
 }
 
 export const stripeService = new StripeService()
-
-// Export types for use in components
-export type { PaymentIntent, CreatePaymentIntentRequest, ConfirmPaymentRequest }
