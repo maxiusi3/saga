@@ -104,6 +104,19 @@ describe('/api/payments/create-intent', () => {
     expect(createPaymentIntent).not.toHaveBeenCalled()
   })
 
+  it('returns 400 for non-object JSON bodies', async () => {
+    const request = new NextRequest('http://localhost/api/payments/create-intent', {
+      method: 'POST',
+      body: 'null',
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(400)
+    await expect(response.json()).resolves.toEqual({ error: 'Invalid payment request' })
+    expect(createPaymentIntent).not.toHaveBeenCalled()
+  })
+
   it('returns 503 when Stripe is not configured', async () => {
     delete process.env.STRIPE_SECRET_KEY
     const request = new NextRequest('http://localhost/api/payments/create-intent', {

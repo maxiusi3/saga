@@ -23,6 +23,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid payment request' }, { status: 400, headers: auth.headers })
   }
 
+  if (!body || typeof body !== 'object') {
+    return NextResponse.json({ error: 'Invalid payment request' }, { status: 400, headers: auth.headers })
+  }
+
   const { packageId } = body
   if (typeof packageId !== 'string') {
     return NextResponse.json({ error: 'Invalid package' }, { status: 400, headers: auth.headers })
