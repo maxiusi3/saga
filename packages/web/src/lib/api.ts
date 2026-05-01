@@ -1,10 +1,27 @@
 // 统一的Supabase API客户端 - 完全替换混合模式
 import { supabaseApi } from './api-supabase'
+import { httpApi, type ApiRequestOptions, type ApiResponse } from './api-http'
 
 // 为了向后兼容，保持原有的API接口结构
 // 所有调用都委托给统一的Supabase API客户端
 
 class ApiClient {
+  get<T = unknown>(path: string, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.get<T>(path, options)
+  }
+
+  post<T = unknown>(path: string, body?: unknown, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.post<T>(path, body, options)
+  }
+
+  put<T = unknown>(path: string, body?: unknown, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.put<T>(path, body, options)
+  }
+
+  delete<T = unknown>(path: string, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.delete<T>(path, options)
+  }
+
   // 认证相关 - 完全使用Supabase Auth
   auth = {
     signin: async (email: string, password: string) => {
