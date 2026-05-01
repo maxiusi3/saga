@@ -45,7 +45,7 @@ describe('/api/payments/create-intent', () => {
     jest.clearAllMocks()
   })
 
-  it('creates Stripe intents from server-owned package amount and currency', async () => {
+  it('creates Stripe intents from server-owned package amount, currency, and metadata', async () => {
     const request = new NextRequest('http://localhost/api/payments/create-intent', {
       method: 'POST',
       body: JSON.stringify({
@@ -72,10 +72,10 @@ describe('/api/payments/create-intent', () => {
           packageId: 'starter',
           packageName: 'Family Starter',
           userId: 'user-1',
-          note: 'safe metadata',
         }),
       }),
     )
+    expect(createPaymentIntent.mock.calls[0][0].metadata).not.toHaveProperty('note')
   })
 
   it('rejects unknown package IDs before creating a Stripe intent', async () => {
@@ -89,5 +89,51 @@ describe('/api/payments/create-intent', () => {
     expect(response.status).toBe(400)
     await expect(response.json()).resolves.toEqual({ error: 'Invalid package' })
     expect(createPaymentIntent).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 for malformed JSON bodies', async () => {
+    const request = new NextRequest('http://localhost/api/payments/create-intent', {
+      method: 'POST',
+      body: '{not-json',
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(400)
+    await expect(response.json()).resolves.toEqual({ error: 'Invalid payment request' })
+    expect(createPaymentIntent).not.toHaveBeenCalled()
+  })
+
+  it('returns 503 when Stripe is not configured', async () => {
+    delete process.env.STRIPE_SECRET_KEY
+    const request = new NextRequest('http://localhost/api/payments/create-intent', {
+      method: 'POST',
+      body: JSON.stringify({ packageId: 'starter' }),
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(503)
+    await expect(response.json()).resolves.toEqual({ error: 'Payment service is not configured' })
+    expect(createPaymentIntent).not.toHaveBeenCalled()
+  })
+
+  it('returns 502 with a sanitized error when Stripe rejects creation', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined)
+    createPaymentIntent.mockRejectedValueOnce(new Error('card processor secret details'))
+    const request = new NextRequest('http://localhost/api/payments/create-intent', {
+      method: 'POST',
+      body: JSON.stringify({ packageId: 'starter' }),
+    })
+
+    try {
+      const response = await POST(request)
+
+      expect(response.status).toBe(502)
+      await expect(response.json()).resolves.toEqual({ error: 'Unable to create payment intent' })
+      expect(errorSpy).toHaveBeenCalledWith('Failed to create Stripe payment intent')
+    } finally {
+      errorSpy.mockRestore()
+    }
   })
 })
