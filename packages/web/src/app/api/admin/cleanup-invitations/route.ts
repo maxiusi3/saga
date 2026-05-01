@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin } from '@/lib/supabase'
+import { requireCronSecret } from '@/lib/server/cron'
 
 /**
  * Manual cleanup endpoint for expired invitations
  * This can be called by cron jobs or administrators
  */
 export async function POST(request: NextRequest) {
+  const cron = requireCronSecret(request)
+  if (!cron.ok) return cron.response
+
   try {
     const adminSupabase = getSupabaseAdmin()
     
@@ -43,6 +47,9 @@ export async function POST(request: NextRequest) {
  * This can be used for health checks or monitoring
  */
 export async function GET(request: NextRequest) {
+  const cron = requireCronSecret(request)
+  if (!cron.ok) return cron.response
+
   try {
     const adminSupabase = getSupabaseAdmin()
     
