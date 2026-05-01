@@ -12,6 +12,9 @@ const customJestConfig = {
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^../app/dashboard/page$': '<rootDir>/src/app/[locale]/dashboard/page',
+    '^../app/dashboard/projects/new/page$': '<rootDir>/src/app/[locale]/dashboard/projects/create/page',
+    '^../app/dashboard/projects/\\[id\\]/page$': '<rootDir>/src/app/[locale]/dashboard/projects/[id]/page',
   },
 }
 
