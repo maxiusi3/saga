@@ -9,6 +9,7 @@ jest.mock('next/navigation', () => ({
   }),
   usePathname: () => '/en/dashboard',
   useSearchParams: () => new URLSearchParams(),
+  useParams: () => ({ id: 'test-project-id', locale: 'en' }),
 }))
 
 jest.mock('next-intl', () => ({
@@ -20,23 +21,28 @@ jest.mock('next-intl', () => ({
 
 jest.mock('next-intl/plugin', () => () => (config) => config)
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
-})
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  })
+}
 
-Object.defineProperty(navigator, 'mediaDevices', {
-  configurable: true,
-  value: {
-    getUserMedia: jest.fn(),
-  },
-})
+if (typeof navigator !== 'undefined') {
+  Object.defineProperty(navigator, 'mediaDevices', {
+    configurable: true,
+    writable: true,
+    value: {
+      getUserMedia: jest.fn(),
+    },
+  })
+}

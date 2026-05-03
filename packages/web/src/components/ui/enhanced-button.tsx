@@ -45,14 +45,8 @@ export interface ButtonProps
 const EnhancedButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, loading, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
-    
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        disabled={disabled || loading}
-        {...props}
-      >
+    const content = asChild ? children : (
+      <>
         {loading && (
           <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -62,6 +56,17 @@ const EnhancedButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {!loading && leftIcon && <span className="mr-2">{leftIcon}</span>}
         {children}
         {!loading && rightIcon && <span className="ml-2">{rightIcon}</span>}
+      </>
+    )
+
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        disabled={disabled || loading}
+        {...props}
+      >
+        {content}
       </Comp>
     )
   }

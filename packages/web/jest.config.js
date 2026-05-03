@@ -15,6 +15,10 @@ const customJestConfig = {
     '^../app/dashboard/page$': '<rootDir>/src/app/[locale]/dashboard/page',
     '^../app/dashboard/projects/new/page$': '<rootDir>/src/app/[locale]/dashboard/projects/create/page',
     '^../app/dashboard/projects/\\[id\\]/page$': '<rootDir>/src/app/[locale]/dashboard/projects/[id]/page',
+    '^../../app/dashboard/page$': '<rootDir>/src/app/[locale]/dashboard/page',
+    '^../../app/dashboard/projects/new/page$': '<rootDir>/src/app/[locale]/dashboard/projects/create/page',
+    '^../../app/dashboard/projects/\\[id\\]/page$': '<rootDir>/src/app/[locale]/dashboard/projects/[id]/page',
+    '^../../app/purchase/page$': '<rootDir>/src/app/[locale]/dashboard/purchase/page',
   },
 }
 

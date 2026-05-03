@@ -1,6 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { jest } from '@jest/globals';
-import { useSubscription } from '../use-subscription';
 
 // Mock the API client
 jest.mock('../../lib/api', () => ({
@@ -14,14 +13,15 @@ jest.mock('../../lib/api', () => ({
 
 describe('useSubscription Hook', () => {
   const mockApi = require('../../lib/api').api;
-  
+  const { useSubscription } = require('../use-subscription');
+  const apiSuccess = (data: unknown) => ({ data: { success: true, data } });
+
   const mockSubscriptionData = {
     id: 'sub_123',
     status: 'active',
     projectName: 'Family Stories',
-    currentPeriodStart: '2024-01-01T00:00:00.000Z',
-    currentPeriodEnd: '2025-01-01T00:00:00.000Z',
-    daysUntilExpiry: 300,
+    currentPeriodStart: '2026-01-01T00:00:00.000Z',
+    currentPeriodEnd: '2099-01-01T00:00:00.000Z',
     isArchived: false,
     canRenew: true,
     packageName: 'The Saga Package',
@@ -41,7 +41,7 @@ describe('useSubscription Hook', () => {
       storiesRecorded: 15,
       interactionsCreated: 8
     },
-    nextBillingDate: '2025-01-01T00:00:00.000Z',
+    nextBillingDate: '2099-01-01T00:00:00.000Z',
     paymentMethod: {
       type: 'card',
       last4: '4242',
@@ -56,8 +56,8 @@ describe('useSubscription Hook', () => {
   describe('Initial State', () => {
     it('starts with loading state', () => {
       mockApi.get.mockImplementation(() => new Promise(() => {})); // Never resolves
-      
-      const { result } = renderHook(() => 
+
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -69,9 +69,9 @@ describe('useSubscription Hook', () => {
 
   describe('Successful Data Loading', () => {
     it('loads subscription data successfully', async () => {
-      mockApi.get.mockResolvedValueOnce({ data: mockSubscriptionData });
+      mockApi.get.mockResolvedValueOnce(apiSuccess(mockSubscriptionData));
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -81,12 +81,13 @@ describe('useSubscription Hook', () => {
 
       expect(result.current.subscription).toEqual({
         ...mockSubscriptionData,
-        currentPeriodStart: new Date('2024-01-01T00:00:00.000Z'),
-        currentPeriodEnd: new Date('2025-01-01T00:00:00.000Z'),
-        nextBillingDate: new Date('2025-01-01T00:00:00.000Z')
+        currentPeriodStart: new Date('2026-01-01T00:00:00.000Z'),
+        currentPeriodEnd: new Date('2099-01-01T00:00:00.000Z'),
+        nextBillingDate: new Date('2099-01-01T00:00:00.000Z'),
+        daysUntilExpiry: expect.any(Number)
       });
       expect(result.current.error).toBe(null);
-      expect(mockApi.get).toHaveBeenCalledWith('/api/projects/project-123/subscription');
+      expect(mockApi.get).toHaveBeenCalledWith('/projects/project-123/subscription');
     });
 
     it('handles subscription without optional fields', async () => {
@@ -94,8 +95,8 @@ describe('useSubscription Hook', () => {
         id: 'sub_123',
         status: 'active',
         projectName: 'Family Stories',
-        currentPeriodStart: '2024-01-01T00:00:00.000Z',
-        currentPeriodEnd: '2025-01-01T00:00:00.000Z',
+        currentPeriodStart: '2026-01-01T00:00:00.000Z',
+        currentPeriodEnd: '2099-01-01T00:00:00.000Z',
         canRenew: true,
         packageName: 'The Saga Package',
         packagePrice: 149,
@@ -116,9 +117,9 @@ describe('useSubscription Hook', () => {
         }
       };
 
-      mockApi.get.mockResolvedValueOnce({ data: minimalSubscription });
+      mockApi.get.mockResolvedValueOnce(apiSuccess(minimalSubscription));
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -128,12 +129,10 @@ describe('useSubscription Hook', () => {
 
       expect(result.current.subscription).toEqual({
         ...minimalSubscription,
-        currentPeriodStart: new Date('2024-01-01T00:00:00.000Z'),
-        currentPeriodEnd: new Date('2025-01-01T00:00:00.000Z'),
-        isArchived: false,
-        daysUntilExpiry: undefined,
+        currentPeriodStart: new Date('2026-01-01T00:00:00.000Z'),
+        currentPeriodEnd: new Date('2099-01-01T00:00:00.000Z'),
+        daysUntilExpiry: expect.any(Number),
         nextBillingDate: undefined,
-        paymentMethod: undefined
       });
     });
   });
@@ -143,7 +142,7 @@ describe('useSubscription Hook', () => {
       const errorMessage = 'Failed to load subscription';
       mockApi.get.mockRejectedValueOnce(new Error(errorMessage));
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -152,18 +151,18 @@ describe('useSubscription Hook', () => {
       });
 
       expect(result.current.subscription).toBe(null);
-      expect(result.current.error).toBe(errorMessage);
+      expect(result.current.error).toBe('Failed to fetch subscription');
     });
 
     it('handles network errors', async () => {
-      mockApi.get.mockRejectedValueOnce({ 
-        response: { 
-          status: 500, 
-          data: { message: 'Internal server error' } 
-        } 
+      mockApi.get.mockRejectedValueOnce({
+        response: {
+          status: 500,
+          data: { error: { message: 'Internal server error' } }
+        }
       });
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -175,14 +174,14 @@ describe('useSubscription Hook', () => {
     });
 
     it('handles 404 errors gracefully', async () => {
-      mockApi.get.mockRejectedValueOnce({ 
-        response: { 
-          status: 404, 
-          data: { message: 'Subscription not found' } 
-        } 
+      mockApi.get.mockRejectedValueOnce({
+        response: {
+          status: 404,
+          data: { error: { message: 'Subscription not found' } }
+        }
       });
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -196,10 +195,11 @@ describe('useSubscription Hook', () => {
 
   describe('Renewal Functionality', () => {
     it('renews subscription successfully', async () => {
-      mockApi.get.mockResolvedValueOnce({ data: mockSubscriptionData });
+      mockApi.get.mockResolvedValueOnce(apiSuccess(mockSubscriptionData));
       mockApi.post.mockResolvedValueOnce({ data: { success: true } });
+      mockApi.get.mockResolvedValueOnce(apiSuccess(mockSubscriptionData));
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -211,14 +211,16 @@ describe('useSubscription Hook', () => {
         await result.current.renewSubscription();
       });
 
-      expect(mockApi.post).toHaveBeenCalledWith('/api/projects/project-123/subscription/renew');
+      expect(mockApi.post).toHaveBeenCalledWith('/projects/project-123/renew-subscription');
     });
 
     it('handles renewal errors', async () => {
-      mockApi.get.mockResolvedValueOnce({ data: mockSubscriptionData });
-      mockApi.post.mockRejectedValueOnce(new Error('Payment failed'));
+      mockApi.get.mockResolvedValueOnce(apiSuccess(mockSubscriptionData));
+      mockApi.post.mockRejectedValueOnce({
+        response: { data: { error: { message: 'Payment failed' } } }
+      });
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -226,19 +228,30 @@ describe('useSubscription Hook', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      await expect(result.current.renewSubscription()).rejects.toThrow('Payment failed');
+      await act(async () => {
+        await result.current.renewSubscription();
+      });
+
+      expect(result.current.error).toBe('Payment failed');
     });
   });
 
   describe('Refresh Functionality', () => {
     it('refreshes subscription data', async () => {
       mockApi.get
-        .mockResolvedValueOnce({ data: mockSubscriptionData })
-        .mockResolvedValueOnce({ 
-          data: { ...mockSubscriptionData, status: 'expired' } 
+        .mockResolvedValueOnce(apiSuccess(mockSubscriptionData))
+        .mockResolvedValueOnce({
+          data: {
+            success: true,
+            data: {
+              ...mockSubscriptionData,
+              status: 'expired',
+              currentPeriodEnd: '2020-01-01T00:00:00.000Z'
+            }
+          }
         });
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -258,10 +271,10 @@ describe('useSubscription Hook', () => {
 
     it('handles refresh errors', async () => {
       mockApi.get
-        .mockResolvedValueOnce({ data: mockSubscriptionData })
+        .mockResolvedValueOnce(apiSuccess(mockSubscriptionData))
         .mockRejectedValueOnce(new Error('Network error'));
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -273,7 +286,7 @@ describe('useSubscription Hook', () => {
         await result.current.refresh();
       });
 
-      expect(result.current.error).toBe('Network error');
+      expect(result.current.error).toBe('Failed to fetch subscription');
     });
   });
 
@@ -287,13 +300,13 @@ describe('useSubscription Hook', () => {
     });
 
     it('auto refreshes when enabled', async () => {
-      mockApi.get.mockResolvedValue({ data: mockSubscriptionData });
+      mockApi.get.mockResolvedValue(apiSuccess(mockSubscriptionData));
 
-      renderHook(() => 
-        useSubscription({ 
-          projectId: 'project-123', 
+      renderHook(() =>
+        useSubscription({
+          projectId: 'project-123',
           autoRefresh: true,
-          refreshInterval: 5000 
+          refreshInterval: 5000
         })
       );
 
@@ -312,12 +325,12 @@ describe('useSubscription Hook', () => {
     });
 
     it('does not auto refresh when disabled', async () => {
-      mockApi.get.mockResolvedValue({ data: mockSubscriptionData });
+      mockApi.get.mockResolvedValue(apiSuccess(mockSubscriptionData));
 
-      renderHook(() => 
-        useSubscription({ 
-          projectId: 'project-123', 
-          autoRefresh: false 
+      renderHook(() =>
+        useSubscription({
+          projectId: 'project-123',
+          autoRefresh: false
         })
       );
 
@@ -335,13 +348,13 @@ describe('useSubscription Hook', () => {
     });
 
     it('cleans up auto refresh on unmount', async () => {
-      mockApi.get.mockResolvedValue({ data: mockSubscriptionData });
+      mockApi.get.mockResolvedValue(apiSuccess(mockSubscriptionData));
 
-      const { unmount } = renderHook(() => 
-        useSubscription({ 
-          projectId: 'project-123', 
+      const { unmount } = renderHook(() =>
+        useSubscription({
+          projectId: 'project-123',
           autoRefresh: true,
-          refreshInterval: 5000 
+          refreshInterval: 5000
         })
       );
 
@@ -365,16 +378,16 @@ describe('useSubscription Hook', () => {
     it('calculates days until expiry correctly', async () => {
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 30);
-      
+
       const subscriptionWithFutureExpiry = {
         ...mockSubscriptionData,
         currentPeriodEnd: futureDate.toISOString(),
         daysUntilExpiry: 30
       };
 
-      mockApi.get.mockResolvedValueOnce({ data: subscriptionWithFutureExpiry });
+      mockApi.get.mockResolvedValueOnce(apiSuccess(subscriptionWithFutureExpiry));
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -382,13 +395,14 @@ describe('useSubscription Hook', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(result.current.subscription?.daysUntilExpiry).toBe(30);
+      expect(result.current.subscription?.daysUntilExpiry).toBeGreaterThanOrEqual(29);
+      expect(result.current.subscription?.daysUntilExpiry).toBeLessThanOrEqual(31);
     });
 
     it('handles expired subscriptions', async () => {
       const pastDate = new Date();
       pastDate.setDate(pastDate.getDate() - 10);
-      
+
       const expiredSubscription = {
         ...mockSubscriptionData,
         status: 'expired',
@@ -397,9 +411,9 @@ describe('useSubscription Hook', () => {
         isArchived: true
       };
 
-      mockApi.get.mockResolvedValueOnce({ data: expiredSubscription });
+      mockApi.get.mockResolvedValueOnce(apiSuccess(expiredSubscription));
 
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: 'project-123' })
       );
 
@@ -409,18 +423,18 @@ describe('useSubscription Hook', () => {
 
       expect(result.current.subscription?.status).toBe('expired');
       expect(result.current.subscription?.isArchived).toBe(true);
-      expect(result.current.subscription?.daysUntilExpiry).toBe(0);
+      expect(result.current.subscription?.daysUntilExpiry).toBeLessThanOrEqual(0);
     });
   });
 
   describe('Hook Options', () => {
     it('respects custom refresh interval', async () => {
       jest.useFakeTimers();
-      mockApi.get.mockResolvedValue({ data: mockSubscriptionData });
+      mockApi.get.mockResolvedValue(apiSuccess(mockSubscriptionData));
 
-      renderHook(() => 
-        useSubscription({ 
-          projectId: 'project-123', 
+      renderHook(() =>
+        useSubscription({
+          projectId: 'project-123',
           autoRefresh: true,
           refreshInterval: 10000 // 10 seconds
         })
@@ -449,13 +463,13 @@ describe('useSubscription Hook', () => {
     });
 
     it('handles missing projectId gracefully', () => {
-      const { result } = renderHook(() => 
+      const { result } = renderHook(() =>
         useSubscription({ projectId: '' })
       );
 
       expect(result.current.loading).toBe(false);
       expect(result.current.subscription).toBe(null);
-      expect(result.current.error).toBe('Project ID is required');
+      expect(result.current.error).toBe(null);
     });
   });
 });

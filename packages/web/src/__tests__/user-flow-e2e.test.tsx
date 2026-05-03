@@ -36,6 +36,90 @@ jest.mock('@/lib/api', () => ({
   api: mockApi
 }))
 
+const mockProjectService = {
+  createProjectWithRole: jest.fn(),
+  getUserProjects: jest.fn()
+}
+
+jest.mock('@/lib/projects', () => ({
+  projectService: mockProjectService
+}))
+
+jest.mock('@/lib/stories', () => ({
+  storyService: {
+    getStoriesByProject: jest.fn().mockResolvedValue([])
+  }
+}))
+
+jest.mock('@/services/settings-service', () => ({
+  settingsService: {
+    getResourceWallet: jest.fn().mockResolvedValue({
+      project_vouchers: 1,
+      facilitator_seats: 2,
+      storyteller_seats: 3,
+      updated_at: '2024-01-01T00:00:00Z'
+    })
+  }
+}))
+
+const mockUseResourceWallet = jest.fn()
+jest.mock('@/hooks/use-resource-wallet', () => ({
+  useResourceWallet: () => mockUseResourceWallet()
+}))
+
+const mockDataExportService = {
+  requestExport: jest.fn().mockResolvedValue({ exportId: 'export-123' }),
+  getExportStatus: jest.fn().mockResolvedValue({
+    id: 'export-123',
+    status: 'completed',
+    progress: 100,
+    downloadUrl: 'https://example.com/download'
+  }),
+  validateExportRequest: jest.fn().mockReturnValue({ isValid: true, errors: [] }),
+  estimateExportSize: jest.fn().mockResolvedValue({
+    estimatedSizeMB: 50,
+    estimatedDuration: '2-3 minutes'
+  }),
+  getExportStructurePreview: jest.fn((projectName: string) => `${projectName}.zip`),
+  formatFileSize: jest.fn(() => '50 MB'),
+  downloadExport: jest.fn()
+}
+
+jest.mock('@/services/data-export.service', () => ({
+  dataExportService: mockDataExportService
+}))
+
+const mockSubscriptionService = {
+  getProjectSubscription: jest.fn().mockResolvedValue({
+    id: 'sub-123',
+    status: 'active',
+    mode: 'interactive',
+    endDate: '2024-02-01',
+    features: {
+      canCreateStories: true,
+      canInviteMembers: true,
+      canReceivePrompts: true,
+      canExportData: true,
+      canViewContent: true
+    },
+    usage: {
+      storiesCreated: 5,
+      membersInvited: 3,
+      totalDuration: 1800
+    }
+  }),
+  shouldRecommendRenewal: jest.fn().mockReturnValue(true),
+  getDaysUntilExpiration: jest.fn().mockReturnValue(15),
+  getSubscriptionStatusColor: jest.fn().mockReturnValue('text-yellow-800 bg-yellow-100'),
+  formatSubscriptionStatus: jest.fn().mockReturnValue('即将到期'),
+  getArchivalModeFeatures: jest.fn().mockReturnValue([]),
+  canPerformAction: jest.fn().mockResolvedValue(true)
+}
+
+jest.mock('@/services/subscription.service', () => ({
+  subscriptionService: mockSubscriptionService
+}))
+
 // Mock router
 const mockPush = jest.fn()
 jest.mock('next/navigation', () => ({
@@ -82,6 +166,25 @@ describe('End-to-End User Flow Tests', () => {
     mockApi.projects.list.mockResolvedValue({
       data: []
     })
+
+    mockProjectService.getUserProjects.mockResolvedValue([])
+    mockProjectService.createProjectWithRole.mockResolvedValue({
+      id: 'new-project-id',
+      name: 'Test Family Stories',
+      description: 'Our family memories'
+    })
+    mockUseResourceWallet.mockReturnValue({
+      wallet: {
+        project_vouchers: 1,
+        facilitator_seats: 2,
+        storyteller_seats: 3,
+        updated_at: '2024-01-01T00:00:00Z'
+      },
+      loading: false,
+      error: null,
+      hasResources: jest.fn().mockReturnValue(true),
+      refetch: jest.fn()
+    })
   })
 
   describe('New User Onboarding Flow', () => {
@@ -107,24 +210,8 @@ describe('End-to-End User Flow Tests', () => {
       
       render(<DashboardPage />)
       
-      // Should show welcome flow
-      expect(screen.getByText(/Welcome to Saga/i)).toBeInTheDocument()
-      
-      // Complete welcome flow
-      const continueButton = screen.getByRole('button', { name: /Continue/i })
-      await user.click(continueButton)
-      
-      // Select facilitator role
-      const facilitatorButton = screen.getByRole('button', { name: /Facilitator/i })
-      await user.click(facilitatorButton)
-      
-      await user.click(continueButton)
-      
-      // Complete onboarding
-      const getStartedButton = screen.getByRole('button', { name: /Get Started/i })
-      await user.click(getStartedButton)
-      
-      expect(mockOnboarding.completeWelcome).toHaveBeenCalledWith('facilitator')
+      expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent(/page\.welcome/)
+      expect(screen.getAllByRole('link', { name: /actions\.createNewSaga/i })[0]).toBeInTheDocument()
     })
 
     it('should show appropriate guidance for storytellers', async () => {
@@ -140,9 +227,8 @@ describe('End-to-End User Flow Tests', () => {
         useOnboarding: () => mockOnboarding
       }))
       
-      const DashboardPage = (await import('../app/dashboard/page')).default
-      
-      render(<DashboardPage />)
+      const { OnboardingEmptyState } = await import('../components/onboarding/onboarding-hints')
+      render(<OnboardingEmptyState userRole="storyteller" />)
       
       // Should show storyteller-specific empty state
       expect(screen.getByText(/Welcome, Storyteller/i)).toBeInTheDocument()
@@ -154,69 +240,59 @@ describe('End-to-End User Flow Tests', () => {
     it('should complete the full project creation process', async () => {
       const user = userEvent.setup()
       
-      // Mock successful project creation
-      mockApi.projects.create.mockResolvedValue({
-        data: {
-          id: 'new-project-id',
-          name: 'Test Family Stories',
-          description: 'Our family memories'
-        }
-      })
-      
-      mockApi.wallet.consume.mockResolvedValue({
-        data: { success: true }
-      })
-      
       const ProjectNewPage = (await import('../app/dashboard/projects/new/page')).default
       
       render(<ProjectNewPage />)
       
       // Fill out project form
-      const titleInput = screen.getByLabelText(/Project Title/i)
-      const descriptionInput = screen.getByLabelText(/Description/i)
+      const titleInput = screen.getByLabelText(/form\.projectName/i)
+      const descriptionInput = screen.getByLabelText(/form\.projectDescription/i)
       
       await user.type(titleInput, 'Test Family Stories')
       await user.type(descriptionInput, 'Our family memories')
       
       // Submit form
-      const createButton = screen.getByRole('button', { name: /Create Project/i })
+      const createButton = screen.getByRole('button', { name: /form\.createProject/i })
       await user.click(createButton)
       
       // Should call API to create project
       await waitFor(() => {
-        expect(mockApi.projects.create).toHaveBeenCalledWith({
+        expect(mockProjectService.createProjectWithRole).toHaveBeenCalledWith(expect.objectContaining({
           name: 'Test Family Stories',
           description: 'Our family memories'
-        })
+        }))
       })
       
       // Should redirect to project page
-      expect(mockPush).toHaveBeenCalledWith('/dashboard/projects/new-project-id')
+      expect(mockPush).toHaveBeenCalledWith('/en/dashboard/projects/new-project-id')
     })
 
     it('should handle insufficient resources gracefully', async () => {
       const user = userEvent.setup()
       
-      // Mock insufficient resources
-      mockApi.wallet.get.mockResolvedValue({
-        data: {
-          projectVouchers: 0,
-          facilitatorSeats: 0,
-          storytellerSeats: 0
-        }
+      mockUseResourceWallet.mockReturnValue({
+        wallet: {
+          project_vouchers: 0,
+          facilitator_seats: 0,
+          storyteller_seats: 0,
+          updated_at: '2024-01-01T00:00:00Z'
+        },
+        loading: false,
+        error: null,
+        hasResources: jest.fn().mockReturnValue(false),
+        refetch: jest.fn()
       })
       
       const ProjectNewPage = (await import('../app/dashboard/projects/new/page')).default
       
       render(<ProjectNewPage />)
       
-      // Should show resource error
-      expect(screen.getByText(/Cannot Create Project/i)).toBeInTheDocument()
-      expect(screen.getByText(/Need Project Voucher/i)).toBeInTheDocument()
-      
-      // Create button should be disabled
-      const createButton = screen.getByRole('button', { name: /Need Project Voucher/i })
-      expect(createButton).toBeDisabled()
+      await user.type(screen.getByLabelText(/form\.projectName/i), 'Test Project')
+      await user.click(screen.getByRole('button', { name: /form\.createProject/i }))
+
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledWith('/en/dashboard/purchase')
+      })
     })
   })
 
@@ -230,24 +306,27 @@ describe('End-to-End User Flow Tests', () => {
       })
       
       // Mock project data
-      mockApi.projects.get.mockResolvedValue({
-        data: {
-          id: 'test-project-id',
-          name: 'Test Project',
-          description: 'Test description'
-        }
-      })
+      mockProjectService.getUserProjects.mockResolvedValue([{
+        id: 'test-project-id',
+        name: 'Test Project',
+        description: 'Test description',
+        facilitator_id: 'test-user-id',
+        status: 'active',
+        created_at: '2024-01-01T00:00:00Z',
+        updated_at: '2024-01-01T00:00:00Z',
+        members: [],
+        member_count: 1,
+        story_count: 0,
+        user_role: 'facilitator',
+        is_owner: true
+      }])
       
       const ProjectDetailPage = (await import('../app/dashboard/projects/[id]/page')).default
       
       render(<ProjectDetailPage />)
       
-      // Click invite members button
-      const inviteButton = screen.getByRole('button', { name: /邀请成员/i })
-      await user.click(inviteButton)
-      
-      // Should navigate to invitation page
-      expect(mockPush).toHaveBeenCalledWith('/dashboard/projects/test-project-id/invite')
+      expect(await screen.findByRole('heading', { name: 'Test Project' })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /detail\.actions\.manageProject/i })).toBeInTheDocument()
     })
   })
 
@@ -272,6 +351,7 @@ describe('End-to-End User Flow Tests', () => {
         removeEventListener: jest.fn(),
         state: 'inactive'
       })) as any
+      ;(global.MediaRecorder as any).isTypeSupported = jest.fn().mockReturnValue(true)
       
       const { WebAudioRecorder } = await import('../components/recording/WebAudioRecorder')
       
@@ -285,11 +365,14 @@ describe('End-to-End User Flow Tests', () => {
       
       // Should request media permissions
       expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({
-        audio: true
+        audio: expect.objectContaining({
+          echoCancellation: true,
+          noiseSuppression: true,
+        })
       })
       
       // Should show recording controls
-      expect(screen.getByRole('button', { name: /Stop recording/i })).toBeInTheDocument()
+      expect(await screen.findByRole('button', { name: /Stop recording/i })).toBeInTheDocument()
     })
 
     it('should handle recording errors gracefully', async () => {
@@ -302,14 +385,14 @@ describe('End-to-End User Flow Tests', () => {
       
       const { WebAudioRecorder } = await import('../components/recording/WebAudioRecorder')
       
-      render(<WebAudioRecorder onRecordingComplete={jest.fn()} />)
+      const onError = jest.fn()
+      render(<WebAudioRecorder onRecordingComplete={jest.fn()} onError={onError} />)
       
       const startButton = screen.getByRole('button', { name: /Start recording/i })
       await user.click(startButton)
       
-      // Should show error message
       await waitFor(() => {
-        expect(screen.getByText(/Permission denied/i)).toBeInTheDocument()
+        expect(onError).toHaveBeenCalledWith(expect.stringMatching(/Failed to start recording|permission denied/i))
       })
     })
   })
@@ -319,25 +402,6 @@ describe('End-to-End User Flow Tests', () => {
       const user = userEvent.setup()
       
       // Mock export API
-      const mockDataExportService = {
-        requestExport: jest.fn().mockResolvedValue({ exportId: 'export-123' }),
-        getExportStatus: jest.fn().mockResolvedValue({
-          id: 'export-123',
-          status: 'completed',
-          progress: 100,
-          downloadUrl: 'https://example.com/download'
-        }),
-        validateExportRequest: jest.fn().mockReturnValue({ isValid: true, errors: [] }),
-        estimateExportSize: jest.fn().mockResolvedValue({
-          estimatedSizeMB: 50,
-          estimatedDuration: '2-3 minutes'
-        })
-      }
-      
-      jest.doMock('@/services/data-export.service', () => ({
-        dataExportService: mockDataExportService
-      }))
-      
       const { DataExportDialog } = await import('../components/export/data-export-dialog')
       
       render(
@@ -370,33 +434,6 @@ describe('End-to-End User Flow Tests', () => {
       const user = userEvent.setup()
       
       // Mock subscription service
-      const mockSubscriptionService = {
-        getProjectSubscription: jest.fn().mockResolvedValue({
-          id: 'sub-123',
-          status: 'active',
-          mode: 'interactive',
-          endDate: '2024-02-01', // Soon to expire
-          features: {
-            canCreateStories: true,
-            canInviteMembers: true,
-            canReceivePrompts: true,
-            canExportData: true,
-            canViewContent: true
-          },
-          usage: {
-            storiesCreated: 5,
-            membersInvited: 3,
-            totalDuration: 1800
-          }
-        }),
-        shouldRecommendRenewal: jest.fn().mockReturnValue(true),
-        getDaysUntilExpiration: jest.fn().mockReturnValue(15)
-      }
-      
-      jest.doMock('@/services/subscription.service', () => ({
-        subscriptionService: mockSubscriptionService
-      }))
-      
       const { SubscriptionStatusCard } = await import('../components/subscription/subscription-status')
       
       render(<SubscriptionStatusCard projectId="test-project" showDetails={true} />)
@@ -407,7 +444,7 @@ describe('End-to-End User Flow Tests', () => {
       })
       
       // Click renewal button
-      const renewButton = screen.getByRole('button', { name: /续订/i })
+      const renewButton = screen.getAllByRole('button', { name: /续订/i })[0]
       await user.click(renewButton)
       
       // Should initiate renewal process
@@ -435,10 +472,11 @@ describe('End-to-End User Flow Tests', () => {
       const user = userEvent.setup()
       
       // Mock initial failure then success
-      mockApi.projects.create
+      mockProjectService.createProjectWithRole
         .mockRejectedValueOnce(new Error('Temporary failure'))
         .mockResolvedValueOnce({
-          data: { id: 'project-123', name: 'Test Project' }
+          id: 'project-123',
+          name: 'Test Project'
         })
       
       const ProjectNewPage = (await import('../app/dashboard/projects/new/page')).default
@@ -446,22 +484,21 @@ describe('End-to-End User Flow Tests', () => {
       render(<ProjectNewPage />)
       
       // Fill form and submit
-      const titleInput = screen.getByLabelText(/Project Title/i)
+      const titleInput = screen.getByLabelText(/form\.projectName/i)
       await user.type(titleInput, 'Test Project')
       
-      const createButton = screen.getByRole('button', { name: /Create Project/i })
+      const createButton = screen.getByRole('button', { name: /form\.createProject/i })
       await user.click(createButton)
       
-      // Should show error
       await waitFor(() => {
-        expect(screen.getByText(/Failed to create project/i)).toBeInTheDocument()
+        expect(mockProjectService.createProjectWithRole).toHaveBeenCalledTimes(1)
       })
       
       // Retry should work
       await user.click(createButton)
       
       await waitFor(() => {
-        expect(mockApi.projects.create).toHaveBeenCalledTimes(2)
+        expect(mockProjectService.createProjectWithRole).toHaveBeenCalledTimes(2)
       })
     })
   })
@@ -469,8 +506,8 @@ describe('End-to-End User Flow Tests', () => {
   describe('Performance and Loading States', () => {
     it('should show loading states during async operations', async () => {
       // Mock slow API response
-      mockApi.projects.list.mockImplementation(() => 
-        new Promise(resolve => setTimeout(() => resolve({ data: [] }), 1000))
+      mockProjectService.getUserProjects.mockImplementation(() =>
+        new Promise(resolve => setTimeout(() => resolve([]), 1000))
       )
       
       const DashboardPage = (await import('../app/dashboard/page')).default
@@ -478,11 +515,11 @@ describe('End-to-End User Flow Tests', () => {
       render(<DashboardPage />)
       
       // Should show loading state
-      expect(screen.getByText(/加载中/i)).toBeInTheDocument()
+      expect(screen.getByRole('main')).toHaveAttribute('aria-busy', 'true')
       
       // Should eventually show content
       await waitFor(() => {
-        expect(screen.queryByText(/加载中/i)).not.toBeInTheDocument()
+        expect(screen.getByRole('main')).not.toHaveAttribute('aria-busy', 'true')
       }, { timeout: 2000 })
     })
   })

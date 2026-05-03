@@ -236,7 +236,10 @@ describe('useSearch', () => {
     })
 
     await waitFor(() => {
-      expect(mockedApi.get).toHaveBeenCalledTimes(1)
+      const searchCalls = mockedApi.get.mock.calls.filter(([url]) =>
+        typeof url === 'string' && url.includes(`/projects/${projectId}/search?`)
+      )
+      expect(searchCalls).toHaveLength(1)
     })
 
     jest.useRealTimers()

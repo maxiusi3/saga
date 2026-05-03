@@ -70,12 +70,11 @@ describe('StorySearch', () => {
   })
 
   it('should handle search input changes', async () => {
-    const user = userEvent.setup()
     render(<StorySearch {...defaultProps} />)
     
     const searchInput = screen.getByPlaceholderText('Search stories by title or content...')
     
-    await user.type(searchInput, 'test query')
+    fireEvent.change(searchInput, { target: { value: 'test query' } })
     
     expect(mockSearchHook.setQuery).toHaveBeenCalledWith('test query')
   })
@@ -109,7 +108,7 @@ describe('StorySearch', () => {
 
     render(<StorySearch {...defaultProps} />)
     
-    expect(screen.getByText('Test Story')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Test Story' })).toBeInTheDocument()
     expect(screen.getByText('1 result for "test"')).toBeInTheDocument()
     expect(screen.getByText('150ms')).toBeInTheDocument()
   })
@@ -140,7 +139,7 @@ describe('StorySearch', () => {
     const user = userEvent.setup()
     render(<StorySearch {...defaultProps} />)
     
-    const resultItem = screen.getByText('Test Story').closest('div')
+    const resultItem = screen.getByRole('heading', { name: 'Test Story' }).closest('div')
     await user.click(resultItem!)
     
     expect(defaultProps.onResultClick).toHaveBeenCalledWith(mockResults[0])
@@ -222,11 +221,11 @@ describe('StorySearch', () => {
     
     // Navigate down
     await user.keyboard('{ArrowDown}')
-    expect(screen.getByRole('option', { name: /test/ })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('option', { name: /^test$/ })).toHaveAttribute('aria-selected', 'true')
     
     // Navigate down again
     await user.keyboard('{ArrowDown}')
-    expect(screen.getByRole('option', { name: /testing/ })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('option', { name: /^testing$/ })).toHaveAttribute('aria-selected', 'true')
     
     // Select with Enter
     await user.keyboard('{Enter}')
@@ -330,6 +329,6 @@ describe('StorySearch', () => {
     render(<StorySearch {...defaultProps} />)
     
     // The highlighting is done via a function that wraps matching text in <mark> tags
-    expect(screen.getByText('Test Story with keyword')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Test Story with keyword' })).toBeInTheDocument()
   })
 })

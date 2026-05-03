@@ -169,6 +169,8 @@ describe('ExportStore', () => {
         data: mockBlob,
       })
 
+      const { result } = renderHook(() => useExportStore())
+
       // Mock document.createElement and appendChild
       const mockLink = {
         href: '',
@@ -178,8 +180,6 @@ describe('ExportStore', () => {
       const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValue(mockLink as any)
       const appendChildSpy = jest.spyOn(document.body, 'appendChild').mockImplementation()
       const removeChildSpy = jest.spyOn(document.body, 'removeChild').mockImplementation()
-
-      const { result } = renderHook(() => useExportStore())
 
       await act(async () => {
         await result.current.downloadExport('export1', 'test-export.zip')

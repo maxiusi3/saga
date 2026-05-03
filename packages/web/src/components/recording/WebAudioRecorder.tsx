@@ -8,7 +8,7 @@ import { saveDraft, clearDraft } from './RecordingDraftRecovery'
 
 interface WebAudioRecorderProps {
   onRecordingComplete: (audioBlob: Blob, duration: number) => void
-  onError: (error: string) => void
+  onError?: (error: string) => void
   maxDuration?: number // in seconds, default 600 (10 minutes)
   className?: string
   projectId?: string
@@ -19,9 +19,9 @@ interface WebAudioRecorderProps {
 
 type RecordingState = 'idle' | 'requesting-permission' | 'recording' | 'paused' | 'completed'
 
-export function WebAudioRecorder({ 
-  onRecordingComplete, 
-  onError, 
+export function WebAudioRecorder({
+  onRecordingComplete,
+  onError = () => {},
   maxDuration = 600,
   className = '',
   projectId,
@@ -59,12 +59,12 @@ export function WebAudioRecorder({
       clearInterval(timerRef.current)
       timerRef.current = null
     }
-    
+
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop())
       streamRef.current = null
     }
-    
+
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl)
     }
@@ -73,17 +73,17 @@ export function WebAudioRecorder({
   const startRecording = async () => {
     try {
       setRecordingState('requesting-permission')
-      
+
       // Request microphone permission
-      const stream = await navigator.mediaDevices.getUserMedia({ 
+      const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
           sampleRate: 44100
-        } 
+        }
       })
-      
+
       streamRef.current = stream
       audioChunksRef.current = []
 
@@ -91,7 +91,7 @@ export function WebAudioRecorder({
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4'
       })
-      
+
       mediaRecorderRef.current = mediaRecorder
 
       mediaRecorder.ondataavailable = (event) => {
@@ -101,14 +101,14 @@ export function WebAudioRecorder({
       }
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(audioChunksRef.current, { 
-          type: mediaRecorder.mimeType 
+        const blob = new Blob(audioChunksRef.current, {
+          type: mediaRecorder.mimeType
         })
         setAudioBlob(blob)
-        
+
         const url = URL.createObjectURL(blob)
         setAudioUrl(url)
-        
+
         setRecordingState('completed')
         onRecordingComplete(blob, duration)
       }
@@ -137,7 +137,7 @@ export function WebAudioRecorder({
 
     } catch (error: any) {
       console.error('Failed to start recording:', error)
-      
+
       if (error.name === 'NotAllowedError') {
         onError('Microphone permission denied. Please allow microphone access and try again.')
       } else if (error.name === 'NotFoundError') {
@@ -145,7 +145,7 @@ export function WebAudioRecorder({
       } else {
         onError('Failed to start recording. Please check your microphone and try again.')
       }
-      
+
       setRecordingState('idle')
     }
   }
@@ -153,12 +153,12 @@ export function WebAudioRecorder({
   const stopRecording = () => {
     if (mediaRecorderRef.current && recordingState === 'recording') {
       mediaRecorderRef.current.stop()
-      
+
       if (timerRef.current) {
         clearInterval(timerRef.current)
         timerRef.current = null
       }
-      
+
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop())
         streamRef.current = null
@@ -170,7 +170,7 @@ export function WebAudioRecorder({
     if (mediaRecorderRef.current && recordingState === 'recording') {
       mediaRecorderRef.current.pause()
       setRecordingState('paused')
-      
+
       if (timerRef.current) {
         clearInterval(timerRef.current)
         timerRef.current = null
@@ -182,7 +182,7 @@ export function WebAudioRecorder({
     if (mediaRecorderRef.current && recordingState === 'paused') {
       mediaRecorderRef.current.resume()
       setRecordingState('recording')
-      
+
       // Resume timer
       timerRef.current = setInterval(() => {
         setDuration(prev => {
@@ -200,18 +200,18 @@ export function WebAudioRecorder({
     if (audioUrl && !isPlaying) {
       const audio = new Audio(audioUrl)
       audioRef.current = audio
-      
+
       audio.onended = () => {
         setIsPlaying(false)
         audioRef.current = null
       }
-      
+
       audio.onerror = () => {
         setIsPlaying(false)
         audioRef.current = null
         onError('Failed to play recording')
       }
-      
+
       audio.play()
         .then(() => setIsPlaying(true))
         .catch(() => {
@@ -237,7 +237,7 @@ export function WebAudioRecorder({
     setAudioBlob(null)
     setAudioUrl(null)
     setIsPlaying(false)
-    
+
     // Clear any saved draft
     if (enableDraftSaving && projectId && promptId) {
       clearDraft(projectId, promptId)
@@ -301,6 +301,9 @@ export function WebAudioRecorder({
         {/* Status Display */}
         <div>
           <h3 id="recorder-heading" className="text-xl font-semibold mb-2">{getRecordingStateText()}</h3>
+          <div role="status" aria-live="polite" className="sr-only">
+            {getRecordingStateText()}
+          </div>
           <div
             className="text-2xl font-mono font-bold text-primary"
             aria-live="polite"
@@ -431,7 +434,7 @@ export function WebAudioRecorder({
         {/* Recording Quality Indicator */}
         {recordingState === 'recording' && (
           <div className="space-y-4">
-            <RecordingQualityIndicator 
+            <RecordingQualityIndicator
               stream={streamRef.current}
               isRecording={recordingState === 'recording'}
             />

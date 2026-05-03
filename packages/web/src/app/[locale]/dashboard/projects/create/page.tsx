@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
-import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader, EnhancedCardTitle } from '@/components/ui/enhanced-card'
+import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader } from '@/components/ui/enhanced-card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
@@ -139,7 +139,7 @@ export default function CreateProjectPage() {
   ]
 
   return (
-    <div className="container max-w-2xl py-8">
+    <div className="container-narrow responsive-padding container max-w-2xl py-8">
       {/* Header */}
       <div className="flex items-center space-x-4 mb-8">
         <Link href={withLocale('/dashboard/projects')}>
@@ -165,13 +165,13 @@ export default function CreateProjectPage() {
 
         <EnhancedCard className="border-border/50 shadow-sm">
           <EnhancedCardHeader className="pb-4">
-            <EnhancedCardTitle className="flex items-center text-2xl">
+            <h2 className="flex items-center text-2xl font-semibold leading-none tracking-tight">
               <BookOpen className="w-6 h-6 mr-2 text-primary" />
               {t('form.projectDetails')}
-            </EnhancedCardTitle>
+            </h2>
           </EnhancedCardHeader>
           <EnhancedCardContent>
-            <form onSubmit={handleSubmit} className="space-y-6" aria-busy={loading}>
+            <form onSubmit={handleSubmit} className="space-y-6" aria-busy={loading} aria-label={t('form.projectDetails')}>
               {/* Project Name */}
               <div className="space-y-3">
                 <Label htmlFor="name" className="text-base font-medium">{t('form.projectName')} *</Label>
