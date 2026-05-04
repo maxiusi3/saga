@@ -95,14 +95,10 @@ export class StorageService {
         }
       }
 
-      // Get public URL
-      const { data: urlData } = this.supabase.storage
-        .from(bucket)
-        .getPublicUrl(data.path)
-
+      // `url` is kept for legacy callers but now contains a private storage path.
       return {
         success: true,
-        url: urlData.publicUrl,
+        url: data.path,
         path: data.path
       }
 
@@ -127,7 +123,7 @@ export class StorageService {
       ? `projects/${projectId}/stories/${storyId}`
       : `projects/${projectId}/stories/temp`
 
-    // Use public audio bucket to ensure direct playback via public URL
+    // Store private audio paths; playback should request signed URLs on demand.
     return this.uploadFile(audioFile, {
       bucket: 'audio-recordings',
       folder,

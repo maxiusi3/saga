@@ -71,13 +71,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: upErr2.message }, { status: 500 })
     }
 
-    const { data: urlOriginal } = admin.storage.from('saga').getPublicUrl(uploadOriginal.path)
-    const { data: urlThumb } = admin.storage.from('saga').getPublicUrl(uploadThumb.path)
+    const { data: signedOriginal, error: signedOriginalError } = await admin.storage
+      .from('saga')
+      .createSignedUrl(uploadOriginal.path, 3600)
+    const { data: signedThumb, error: signedThumbError } = await admin.storage
+      .from('saga')
+      .createSignedUrl(uploadThumb.path, 3600)
+
+    if (signedOriginalError || signedThumbError || !signedOriginal || !signedThumb) {
+      return NextResponse.json({ error: 'Failed to create signed image URL' }, { status: 500 })
+    }
 
     return NextResponse.json({
       success: true,
-      url: urlOriginal.publicUrl,
-      thumbUrl: urlThumb.publicUrl,
+      url: signedOriginal.signedUrl,
+      thumbUrl: signedThumb.signedUrl,
       path: uploadOriginal.path,
       thumbPath: uploadThumb.path
     })

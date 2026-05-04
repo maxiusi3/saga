@@ -70,12 +70,7 @@ export class StoryService {
         return null
       }
 
-      // Get public URL
-      const { data: urlData } = this.supabase.storage
-        .from('audio-recordings')
-        .getPublicUrl(data.path)
-
-      return urlData.publicUrl
+      return data.path
     } catch (error) {
       console.error('Error uploading audio:', error)
       return null
