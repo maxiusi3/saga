@@ -47,7 +47,7 @@ export function StoryInteractions({
   const [submittingComment, setSubmittingComment] = useState(false)
   const [submittingFollowup, setSubmittingFollowup] = useState(false)
   const [commentImages, setCommentImages] = useState<File[]>([])
-  const [commentUploads, setCommentUploads] = useState<Array<{ url: string; thumbUrl: string }>>([])
+  const [commentUploads, setCommentUploads] = useState<Array<{ url: string; thumbUrl: string; path?: string; thumbPath?: string }>>([])
   const [commentPreviewUrls, setCommentPreviewUrls] = useState<string[]>([])
   const [isUploadingImages, setIsUploadingImages] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -55,7 +55,7 @@ export function StoryInteractions({
   const [viewerImages, setViewerImages] = useState<Array<{ url: string; thumbUrl?: string; added_to_story?: boolean }>>([])
   const [viewerIndex, setViewerIndex] = useState(0)
 
-  const persistUploads = (uploads: Array<{ url: string; thumbUrl: string }>) => {
+  const persistUploads = (uploads: Array<{ url: string; thumbUrl: string; path?: string; thumbPath?: string }>) => {
     try { localStorage.setItem(`commentUploads:${storyId}`, JSON.stringify(uploads)) } catch {}
   }
   const loadPersistedUploads = () => {

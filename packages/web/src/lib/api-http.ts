@@ -3,14 +3,16 @@ export interface ApiRequestOptions extends RequestInit {
   params?: Record<string, string | number | boolean | null | undefined> | URLSearchParams
 }
 
-export interface ApiResponse<T = unknown> {
+export interface ApiResponse<T = any> {
   data: T
+  success: boolean
+  error?: string
   status: number
   headers: Headers
   statusText: string
 }
 
-export class ApiError<T = unknown> extends Error {
+export class ApiError<T = any> extends Error {
   response: ApiResponse<T>
   status: number
   data: T
@@ -106,7 +108,7 @@ function errorMessage(data: unknown, fallback: string) {
   return fallback
 }
 
-async function request<T>(
+async function request<T = any>(
   method: string,
   path: string,
   body?: unknown,
@@ -129,27 +131,31 @@ async function request<T>(
   })
 
   const data = await readResponseData<T>(response, responseType)
-  const apiResponse = {
+  const apiResponse: ApiResponse<T> = {
     data,
+    success: response.ok,
+    error: response.ok ? undefined : errorMessage(data, `API request failed with ${response.status}`),
     status: response.status,
     headers: response.headers,
     statusText: response.statusText,
   }
 
   if (!response.ok) {
-    throw new ApiError(errorMessage(data, `API request failed with ${response.status}`), apiResponse)
+    throw new ApiError(apiResponse.error ?? `API request failed with ${response.status}`, apiResponse)
   }
 
   return apiResponse
 }
 
 export const httpApi = {
-  get: <T = unknown>(path: string, options?: ApiRequestOptions) =>
+  get: <T = any>(path: string, options?: ApiRequestOptions) =>
     request<T>('GET', path, undefined, options),
-  post: <T = unknown>(path: string, body?: unknown, options?: ApiRequestOptions) =>
+  post: <T = any>(path: string, body?: unknown, options?: ApiRequestOptions) =>
     request<T>('POST', path, body, options),
-  put: <T = unknown>(path: string, body?: unknown, options?: ApiRequestOptions) =>
+  put: <T = any>(path: string, body?: unknown, options?: ApiRequestOptions) =>
     request<T>('PUT', path, body, options),
-  delete: <T = unknown>(path: string, options?: ApiRequestOptions) =>
+  patch: <T = any>(path: string, body?: unknown, options?: ApiRequestOptions) =>
+    request<T>('PATCH', path, body, options),
+  delete: <T = any>(path: string, options?: ApiRequestOptions) =>
     request<T>('DELETE', path, undefined, options),
 }

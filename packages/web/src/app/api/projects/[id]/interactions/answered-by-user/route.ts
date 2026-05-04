@@ -9,11 +9,11 @@ import { getSupabaseAdmin } from '@/lib/supabase'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabaseCookie = createRouteHandlerClient({ cookies })
-    const projectId = params.id
+    const projectId = (await params).id
 
     // Use the same auth pattern as working endpoints
     let user: any = null

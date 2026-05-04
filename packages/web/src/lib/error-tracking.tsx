@@ -137,12 +137,13 @@ class ErrorTrackingService {
     if (!this.initialized) return undefined;
     
     console.log(`🚀 Transaction started: ${name} (${op})`);
+    const startTime = Date.now();
     return {
       name,
       op,
-      startTime: Date.now(),
+      startTime,
       finish: () => {
-        console.log(`✅ Transaction finished: ${name} (${Date.now() - this.startTime}ms)`);
+        console.log(`✅ Transaction finished: ${name} (${Date.now() - startTime}ms)`);
       }
     };
   }
@@ -300,16 +301,17 @@ export function withErrorTracking<P extends object>(
   WrappedComponent: React.ComponentType<P>,
   componentName?: string
 ) {
+  const EnhancedComponent = errorTracking.withErrorBoundary(WrappedComponent, {
+    beforeCapture: (error, errorInfo) => {
+      console.log(`Error in component: ${componentName || WrappedComponent.name}`, {
+        error,
+        errorInfo,
+      });
+    },
+  });
+
   const WithErrorTrackingComponent = (props: P) => {
-    return errorTracking.withErrorBoundary(WrappedComponent, {
-      beforeCapture: (error, errorInfo) => {
-        console.log(`Error in component: ${componentName || WrappedComponent.name}`, {
-          error,
-          errorInfo,
-          props,
-        });
-      },
-    })(props);
+    return <EnhancedComponent {...props} />;
   };
 
   WithErrorTrackingComponent.displayName = `withErrorTracking(${componentName || WrappedComponent.name})`;

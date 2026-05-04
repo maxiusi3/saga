@@ -95,15 +95,15 @@ function SignInPageContent() {
         supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken
-        }).then(({ data, error }) => {
+        }).then(({ data, error }: any) => {
           if (error) {
             console.error('SignIn page: Error setting session:', error)
             setMessage(`Error setting session: ${error.message}`)
           } else {
             console.log(`SignIn page: ${authType} session set successfully, redirecting`)
-            let next = searchParams?.get('next')
+            let next: string | null = searchParams?.get('next') ?? null
             if (!next && typeof window !== 'undefined') {
-              try { next = localStorage.getItem('auth_next') || undefined } catch {}
+              try { next = localStorage.getItem('auth_next') || null } catch {}
             }
             // 清理暂存
             try { localStorage.removeItem('auth_next') } catch {}

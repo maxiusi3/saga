@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     const admin = getSupabaseAdmin()
 
-    let originalBuffer = buffer
+    let originalBuffer: Buffer<ArrayBufferLike> = buffer
     if (ext === 'jpg') {
       originalBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer()
     } else if (ext === 'png') {
@@ -85,4 +85,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: e?.message || 'Upload failed' }, { status: 500 })
   }
 }
-

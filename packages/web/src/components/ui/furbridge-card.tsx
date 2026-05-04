@@ -1,8 +1,10 @@
 import React from 'react';
 
+export type FurbridgeCardProps = React.HTMLAttributes<HTMLDivElement>
+
 const FurbridgeCard = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  FurbridgeCardProps
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}

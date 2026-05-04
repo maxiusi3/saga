@@ -309,7 +309,7 @@ export function RecordingRetryAnalysis({ projectId, className }: RecordingRetryA
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="percentage"
-                    label={({ reason, percentage }) => `${reason}: ${percentage.toFixed(1)}%`}
+                    label={(props: any) => `${props.reason}: ${props.percentage.toFixed(1)}%`}
                   >
                     {data.retryReasons.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

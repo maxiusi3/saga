@@ -12,6 +12,8 @@ const badgeVariants = cva(
         // Status badges with color-coded variants
         default:
           "bg-primary text-primary-foreground",
+        primary:
+          "bg-primary text-primary-foreground",
         secondary:
           "bg-secondary text-secondary-foreground",
         success:

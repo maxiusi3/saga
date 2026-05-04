@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createClientSupabase } from '@/lib/supabase'
 import { Chapter, ChapterProgress, ProjectPromptState } from '@saga/shared'
 

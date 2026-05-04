@@ -151,7 +151,7 @@ export default function ProjectsPage() {
 
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project) => (
+        {projects.filter((project) => project.id).map((project) => (
           <Link key={project.id} href={withLocale(`/dashboard/projects/${project.id}`)}>
             <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
               <CardHeader>
@@ -161,7 +161,7 @@ export default function ProjectsPage() {
                   </CardTitle>
                   <div className="flex flex-col items-end space-y-2">
                     {getStatusBadge(project.story_count || 0)}
-                    {getRoleBadge(project.user_role, project.is_owner)}
+                    {getRoleBadge(project.user_role ?? 'storyteller', project.is_owner ?? false)}
                   </div>
                 </div>
               </CardHeader>

@@ -152,6 +152,14 @@ export function StoryDetailPage({
     }
   }
 
+  const handleAddReply = async (parentId: string) => {
+    if (replyContent.trim() && onAddComment) {
+      await onAddComment(replyContent, parentId)
+      setReplyContent('')
+      setReplyingTo(null)
+    }
+  }
+
   const handleAddFollowUp = async () => {
     if (newFollowUp.trim() && onAddFollowUp) {
       await onAddFollowUp(newFollowUp)

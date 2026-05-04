@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { token: string } }
+  { params }: { params: Promise<{ token: string }> }
 ) {
   try {
     const url = new URL(request.url)
@@ -34,7 +34,7 @@ export async function GET(
     }
     const serviceRole = decodeJwtRole(serviceKey)
 
-    let token = params.token
+    let token = (await params).token
     try { token = decodeURIComponent(token) } catch {}
     try { token = decodeURIComponent(token) } catch {}
     token = token.trim()

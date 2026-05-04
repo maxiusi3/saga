@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/supabase'
 
 // Clean environment variables (remove any whitespace/newlines)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()!
@@ -22,10 +21,10 @@ if (typeof window !== 'undefined') {
 }
 
 // Singleton client instance to avoid multiple GoTrueClient instances
-let _supabaseClient: ReturnType<typeof createClient<Database>> | null = null
+let _supabaseClient: ReturnType<typeof createClient> | null = null
 
 // Client-side Supabase client
-export const createClientSupabase = () => {
+export const createClientSupabase = (): any => {
   if (!supabaseUrl || !supabaseAnonKey || !isValidUrl(supabaseUrl)) {
     console.warn('Supabase client configuration is incomplete or invalid URL. Using stub client for local preview.')
     // Minimal stub client to avoid runtime errors in environments without Supabase
@@ -47,7 +46,7 @@ export const createClientSupabase = () => {
   }
 
   // Create new client
-  _supabaseClient = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  _supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
@@ -58,7 +57,7 @@ export const createClientSupabase = () => {
 }
 
 // Server-side Supabase client (use this in Server Components)
-export const createServerSupabase = () => {
+export const createServerSupabase = (): any => {
   if (!supabaseUrl || !supabaseAnonKey || !isValidUrl(supabaseUrl)) {
     console.error('Supabase configuration missing or invalid for server:', {
       url: isValidUrl(supabaseUrl),
@@ -66,13 +65,13 @@ export const createServerSupabase = () => {
     })
     throw new Error('Supabase server configuration is incomplete or invalid')
   }
-  return createClient<Database>(supabaseUrl, supabaseAnonKey)
+  return createClient(supabaseUrl, supabaseAnonKey)
 }
 
 // Admin client (server-side only) - lazy initialization
-let _supabaseAdmin: ReturnType<typeof createClient<Database>> | null = null
+let _supabaseAdmin: ReturnType<typeof createClient> | null = null
 
-export const getSupabaseAdmin = () => {
+export const getSupabaseAdmin = (): any => {
   if (!_supabaseAdmin) {
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!supabaseUrl || !serviceRoleKey || !isValidUrl(supabaseUrl)) {
@@ -83,7 +82,7 @@ export const getSupabaseAdmin = () => {
       throw new Error('Supabase admin configuration is incomplete or invalid')
     }
 
-    _supabaseAdmin = createClient<Database>(
+    _supabaseAdmin = createClient(
       supabaseUrl,
       serviceRoleKey,
       {

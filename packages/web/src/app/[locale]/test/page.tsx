@@ -80,7 +80,7 @@ export default function TestPage() {
 
     } catch (error) {
       console.error('处理失败:', error)
-      setMessage(`处理失败: ${error.message}`)
+      setMessage(`处理失败: ${error instanceof Error ? error.message : String(error)}`)
     } finally {
       setLoading(false)
     }

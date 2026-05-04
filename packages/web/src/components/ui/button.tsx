@@ -36,6 +36,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-11 px-6 py-3 text-sm",
+        md: "h-11 px-6 py-3 text-sm",
         sm: "h-9 px-4 py-2 text-sm",
         lg: "h-12 px-8 py-3 text-base",
         xl: "h-14 px-10 py-4 text-lg",
@@ -73,4 +74,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
-export type { ButtonProps }

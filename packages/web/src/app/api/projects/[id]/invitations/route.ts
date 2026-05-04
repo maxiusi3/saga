@@ -5,7 +5,7 @@ import { EmailService } from '@/lib/email-service'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // 检查环境变量
@@ -17,7 +17,7 @@ export async function GET(
       )
     }
 
-    const { id: projectId } = params
+    const { id: projectId } = await params
     
     // 尝试从 Authorization header 获取 token
     const authHeader = request.headers.get('authorization')
@@ -150,7 +150,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // 检查环境变量
@@ -162,7 +162,7 @@ export async function POST(
       )
     }
 
-    const { id: projectId } = params
+    const { id: projectId } = await params
     
     // 尝试从 Authorization header 获取 token
     const authHeader = request.headers.get('authorization')
@@ -445,12 +445,12 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const cookieStore = cookies()
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
-    const { id: projectId } = params
+    const { id: projectId } = await params
     const { searchParams } = new URL(request.url)
     const invitationId = searchParams.get('invitation_id')
 

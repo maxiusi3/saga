@@ -3,10 +3,10 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
-export async function POST(request: NextRequest, { params }: { params: { storyId: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ storyId: string }> }) {
   try {
     const supabaseCookie = createRouteHandlerClient({ cookies })
-    const { storyId } = params
+    const { storyId } = await params
 
     let user: any = null
     let db: any = supabaseCookie
@@ -78,4 +78,3 @@ export async function POST(request: NextRequest, { params }: { params: { storyId
     return NextResponse.json({ error: e?.message || 'Internal Server Error' }, { status: 500 })
   }
 }
-

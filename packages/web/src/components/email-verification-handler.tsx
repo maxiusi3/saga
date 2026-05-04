@@ -36,10 +36,10 @@ function EmailVerificationContent() {
       let hasVerificationParams = false
 
       try {
-        hasVerificationParams = searchParams.has('token') ||
+        hasVerificationParams = Boolean(searchParams.has('token') ||
                                searchParams.has('access_token') ||
                                searchParams.has('refresh_token') ||
-                               (window.location.hash && window.location.hash.includes('access_token'))
+                               (window.location.hash && window.location.hash.includes('access_token')))
       } catch (error) {
         console.error('Error checking verification params:', error)
         return
