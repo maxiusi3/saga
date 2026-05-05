@@ -2,9 +2,13 @@
 
 ## Protected References
 
-- `main`: local branch was ahead of `origin/main` by three docs commits on 2026-04-30.
+- `main`: local branch was reset to `origin/main` on 2026-05-05 after preserving its three ahead-of-origin docs commits.
 - `codex/preserve-main-ahead-2026-04-30`: safety copy of local `main` before stabilization, protecting `0bec8be07`, `b1e00274f`, and `aa3386cb7`.
 - `/tmp/saga-main-ahead-2026-04-30.bundle`: offline recovery bundle for commits ahead of `origin/main`.
+- `/tmp/saga-legacy-branches-2026-05-04.bundle`: offline recovery bundle for removed local legacy branches.
+- `/tmp/saga-main-before-reset-2026-05-04.status`: status snapshot of dirty original `main` before reset.
+- `/tmp/saga-main-before-reset-2026-05-04.patch`: non-`node_modules` patch snapshot of dirty original `main` before reset.
+- `/tmp/saga-main-untracked-before-reset-2026-05-04.tgz`: archive of untracked original `main` files before reset.
 
 ## Local Branches Observed
 
@@ -61,17 +65,20 @@
 
 ## Final Branch Cleanup
 
-- Deleted local branches: none.
+- Deleted local branches:
+  - `feature/story-image-upload`: deleted after bundling to `/tmp/saga-legacy-branches-2026-05-04.bundle`.
+  - `hotfix/active-transcript-highlight`: deleted after bundling to `/tmp/saga-legacy-branches-2026-05-04.bundle`.
+  - `fix-deployment-clean`: deleted after bundling to `/tmp/saga-legacy-branches-2026-05-04.bundle`.
 - Kept local branches:
-  - `feature/story-image-upload`: `git merge-base --is-ancestor feature/story-image-upload origin/main` exits non-zero.
-  - `hotfix/active-transcript-highlight`: `git merge-base --is-ancestor hotfix/active-transcript-highlight origin/main` exits non-zero.
-  - `fix-deployment-clean`: `git merge-base --is-ancestor fix-deployment-clean origin/main` exits non-zero.
-  - `codex/preserve-main-ahead-2026-04-30`: kept until docs commits are pushed or abandoned.
+  - `codex/preserve-main-ahead-2026-04-30`: kept as the recovery branch for the original `main` ahead commits.
   - `codex/saga-stabilization-and-branch-cleanup`: kept as the active stabilization branch until merge.
-- Remote branches requiring owner confirmation before deletion:
+- Deleted remote branches after owner authorization:
   - `origin/feat-add-internationalization-support`
   - `origin/feature/story-image-upload`
   - `origin/hotfix/active-transcript-highlight`
-- Not performed without explicit human confirmation:
-  - remote branch deletion
-  - resetting local `main` to `origin/main`
+- Remaining remote branches after `git fetch --prune origin`:
+  - `origin/main`
+  - `origin/codex/saga-stabilization-and-branch-cleanup`
+- Reset local `main` after owner authorization:
+  - `/Users/eat/Documents/eatpotato/saga传奇` now reports `## main...origin/main`.
+  - Recovery remains available through `codex/preserve-main-ahead-2026-04-30`, `/tmp/saga-main-ahead-2026-04-30.bundle`, `/tmp/saga-main-before-reset-2026-05-04.patch`, and `/tmp/saga-main-untracked-before-reset-2026-05-04.tgz`.
