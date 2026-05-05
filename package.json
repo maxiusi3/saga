@@ -17,6 +17,7 @@
     "lint:fix": "npm run lint:fix --workspaces",
     "type-check": "npm run type-check --workspaces",
     "verify": "npm run type-check && npm run lint && npm test --workspace=packages/web -- --runInBand && npm run build:vercel",
+    "audit:high": "npm audit --workspaces --audit-level=high",
     "audit:moderate": "npm audit --workspaces --audit-level=moderate",
     "start": "npm run dev"
   },
@@ -37,8 +38,11 @@
     "prettier": "^3.1.0",
     "typescript": "^5.3.2"
   },
+  "overrides": {
+    "next": "16.2.4"
+  },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "node": ">=20.9.0",
+    "npm": ">=10.0.0"
   }
 }

@@ -11,7 +11,6 @@ import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { useTranslations } from 'next-intl'
 import { useSilenceDetection } from '@/hooks/use-silence-detection'
 import { aiService } from '@/lib/ai-service'
-import { v4 as uuidv4 } from 'uuid'
 import { recorderDB } from '@/lib/recorder-db'
 import { storageService } from '@/lib/storage'
 
@@ -448,7 +447,7 @@ export function SmartRecorder({
       audioChunksRef.current = []
 
       // Initialize session
-      sessionIdRef.current = uuidv4()
+      sessionIdRef.current = crypto.randomUUID()
       chunkIndexRef.current = 0
 
       mediaRecorder.ondataavailable = (event) => {

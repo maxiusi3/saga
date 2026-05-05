@@ -35,10 +35,10 @@
 
 ## Dependency Follow-up
 
-- `npm audit --workspaces --audit-level=moderate` on 2026-05-04 reports 0 critical and 0 high vulnerabilities after upgrading direct dependencies and applying safe audit fixes.
-- Remaining audit items are 2 low and 9 moderate advisories: `@google-cloud/speech` via `uuid`, `@sentry/nextjs` / `@vercel/analytics` / `@vercel/speed-insights` / `next-intl` via `next` and `postcss`, `@supabase/ssr` via `cookie`, and `brace-expansion`.
-- Do not run `npm audit fix --force` blindly: npm currently suggests breaking or incorrect remediation paths, including downgrading `next` to `9.3.3`, downgrading `next-intl` to `0.0.1`, downgrading `@google-cloud/speech` to `4.4.0`, and major-upgrading `@supabase/ssr` to `0.10.2`.
-- Safe follow-up is to upgrade the affected direct packages deliberately in separate compatibility tasks, with focused smoke tests for Supabase auth/session behavior, Sentry/Next instrumentation, analytics loading, speech transcription, and UUID call sites.
+- `npm audit --workspaces --audit-level=high` on 2026-05-05 passes with 0 critical and 0 high vulnerabilities.
+- Safe dependency cleanup removed the unused `@google-cloud/speech` package, replaced the direct `uuid` browser usage with `crypto.randomUUID()`, upgraded `@supabase/ssr` to `0.10.2`, and upgraded `@headlessui/react` to a React 19-compatible release so `npm ci` can resolve peers without `--legacy-peer-deps`.
+- Remaining audit items are 6 moderate advisories from stable `next@16.2.4` bundling `postcss@8.4.31`; npm's suggested `npm audit fix --force` path still downgrades framework/integration packages and is not safe.
+- CI now blocks high/critical advisories with `npm run audit:high`; keep `npm run audit:moderate` as a visibility report until a stable Next release ships the `postcss >=8.5.10` fix without canary/peer invalidity.
 
 ## TypeScript and Build Follow-up
 
@@ -56,12 +56,17 @@
 ## Verification
 
 - `git diff --check`: PASS
+- `npm ci`: PASS
+- `npm run lint`: PASS
+- `npm run type-check`: PASS
 - `npm run type-check --workspace=packages/shared`: PASS
 - `npm run type-check --workspace=packages/web -- --pretty false`: PASS
 - `npm run lint --workspace=packages/web`: PASS
 - `npm test --workspace=packages/web -- --runInBand --silent`: PASS
+- `npm run build:vercel`: PASS
 - `npm run build --workspace=packages/web`: PASS
-- `npm audit --workspaces --audit-level=moderate`: documented exceptions remain at 2 low and 9 moderate; 0 high and 0 critical.
+- `npm audit --workspaces --audit-level=high`: PASS
+- `npm audit --workspaces --audit-level=moderate`: documented exceptions remain at 6 moderate; 0 low, 0 high, and 0 critical.
 
 ## Final Branch Cleanup
 
