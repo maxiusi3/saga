@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
 
 // Initialize OpenRouter client (compatible with OpenAI SDK)
 const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
@@ -12,12 +13,16 @@ const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
 }) : null
 
 export async function POST(request: NextRequest) {
+  const guard = await requireAiRequest(request, 'generate-content')
+  if (!guard.ok) return guard.response
+
   try {
     // Check if OpenRouter API key is configured
     if (!process.env.OPENROUTER_API_KEY) {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'OpenRouter API key not configured' },
-        { status: 500 }
+        guard.headers,
+        500
       )
     }
 
@@ -25,9 +30,10 @@ export async function POST(request: NextRequest) {
     const { transcript, prompt, language = 'en' } = body
 
     if (!transcript || transcript.trim().length === 0) {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'No transcript provided' },
-        { status: 400 }
+        guard.headers,
+        400
       )
     }
 
@@ -132,7 +138,7 @@ Generate a title, summary, and follow-up questions that would help this person s
       result.title = result.title.substring(0, 57) + '...'
     }
 
-    return NextResponse.json(result)
+    return jsonWithRateLimit(result, guard.headers)
 
   } catch (error: any) {
     console.error('AI content generation error:', error)
@@ -146,53 +152,60 @@ Generate a title, summary, and follow-up questions that would help this person s
 
     // Handle specific OpenRouter/OpenAI errors
     if (error?.error?.type === 'invalid_request_error') {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'Invalid request to AI service', details: error.message },
-        { status: 400 }
+        guard.headers,
+        400
       )
     }
 
     if (error?.error?.code === 'rate_limit_exceeded' || error?.status === 429) {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'Rate limit exceeded. Please try again later.' },
-        { status: 429 }
+        guard.headers,
+        429
       )
     }
 
     if (error?.error?.code === 'insufficient_quota' || error?.status === 402) {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'OpenRouter quota exceeded. Please check your billing.' },
-        { status: 402 }
+        guard.headers,
+        402
       )
     }
 
     // Handle timeout errors
     if (error.message?.includes('timeout') || error.code === 'ETIMEDOUT') {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'Request timeout. Please try again.' },
-        { status: 504 }
+        guard.headers,
+        504
       )
     }
 
     // Generic error response
-    return NextResponse.json(
+    return jsonWithRateLimit(
       { 
         error: 'AI content generation failed. Please try again.',
         details: process.env.NODE_ENV === 'development' ? error.message : undefined
       },
-      { status: 500 }
+      guard.headers,
+      500
     )
   }
 }
 
 // Handle OPTIONS request for CORS
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS() {
+  const origin = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000'
+
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': origin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   })
 }

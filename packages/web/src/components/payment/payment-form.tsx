@@ -47,17 +47,12 @@ function PaymentFormContent({ packageId, packageName, amount, currency = 'usd', 
   // Create payment intent on component mount
   useEffect(() => {
     createPaymentIntent()
-  }, [packageId, amount])
+  }, [packageId])
 
   const createPaymentIntent = async () => {
     try {
       const intent = await stripeService.createPaymentIntent({
         packageId,
-        amount,
-        currency,
-        metadata: {
-          packageName
-        }
       })
       setPaymentIntent(intent)
     } catch (error) {

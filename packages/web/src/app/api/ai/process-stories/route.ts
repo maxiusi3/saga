@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
 
 // Initialize OpenRouter client with DeepSeek
 const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
@@ -12,12 +13,16 @@ const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
 }) : null
 
 export async function POST(request: NextRequest) {
+  const guard = await requireAiRequest(request, 'process-stories')
+  if (!guard.ok) return guard.response
+
   try {
     // Check if OpenRouter API key is configured
     if (!process.env.OPENROUTER_API_KEY) {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'OpenRouter API key not configured' },
-        { status: 500 }
+        guard.headers,
+        500
       )
     }
 
@@ -31,16 +36,18 @@ export async function POST(request: NextRequest) {
     } = body
 
     if (!stories || !Array.isArray(stories) || stories.length === 0) {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'No stories provided' },
-        { status: 400 }
+        guard.headers,
+        400
       )
     }
 
     if (!action) {
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'No action specified' },
-        { status: 400 }
+        guard.headers,
+        400
       )
     }
 
@@ -141,9 +148,10 @@ ${storiesForQuestions}
         break
 
       default:
-        return NextResponse.json(
+        return jsonWithRateLimit(
           { error: 'Invalid action specified' },
-          { status: 400 }
+          guard.headers,
+          400
         )
     }
 
@@ -187,17 +195,18 @@ ${storiesForQuestions}
     result.storiesCount = stories.length
     result.model = 'openai/gpt-3.5-turbo'
 
-    return NextResponse.json(result)
+    return jsonWithRateLimit(result, guard.headers)
 
   } catch (error) {
     console.error('Story processing error:', error)
     
-    return NextResponse.json(
+    return jsonWithRateLimit(
       { 
         error: 'Failed to process stories',
         details: error instanceof Error ? error.message : 'Unknown error'
       },
-      { status: 500 }
+      guard.headers,
+      500
     )
   }
 }
@@ -212,5 +221,19 @@ export async function GET() {
       'suggest_questions'
     ],
     model: 'openai/gpt-oss-20b:free'
+  })
+}
+
+// Handle OPTIONS request for CORS
+export async function OPTIONS() {
+  const origin = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000'
+
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
   })
 }

@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { token: string } }
+  { params }: { params: Promise<{ token: string }> }
 ) {
   try {
     const supabaseCookieClient = createRouteHandlerClient({ cookies })
@@ -20,7 +20,7 @@ export async function POST(
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
     }
 
-    let token = params.token
+    let token = (await params).token
     try { token = decodeURIComponent(token) } catch {}
     try { token = decodeURIComponent(token) } catch {}
     token = token.trim()

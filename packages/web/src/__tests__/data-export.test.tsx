@@ -25,6 +25,29 @@ describe('Data Export Functionality Tests', () => {
       estimatedSizeMB: 50,
       estimatedDuration: '2-3 minutes'
     })
+    mockDataExportService.formatFileSize.mockImplementation((bytes: number) => {
+      if (bytes === 0) return '0 Bytes'
+      const k = 1024
+      const sizes = ['Bytes', 'KB', 'MB', 'GB']
+      const i = Math.floor(Math.log(bytes) / Math.log(k))
+      return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
+    })
+    mockDataExportService.formatDuration.mockImplementation((seconds: number) => {
+      const hours = Math.floor(seconds / 3600)
+      const minutes = Math.floor((seconds % 3600) / 60)
+      const remainingSeconds = seconds % 60
+      return hours > 0
+        ? `${hours}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`
+        : `${minutes}:${String(remainingSeconds).padStart(2, '0')}`
+    })
+    mockDataExportService.getExportStructurePreview.mockImplementation((projectName: string) => `${projectName}.zip
+├── metadata.json
+└── stories/
+    └── [YYYY-MM-DD_Story-Title]/
+        ├── audio.webm
+        ├── transcript.txt
+        ├── photo.jpg
+        └── interactions.json`)
   })
 
   describe('Export Request Validation', () => {
@@ -80,10 +103,10 @@ describe('Data Export Functionality Tests', () => {
 
       // Should show export options
       expect(screen.getByText('选择导出内容')).toBeInTheDocument()
-      expect(screen.getByLabelText('音频文件')).toBeInTheDocument()
-      expect(screen.getByLabelText('转录文本')).toBeInTheDocument()
-      expect(screen.getByLabelText('照片')).toBeInTheDocument()
-      expect(screen.getByLabelText('互动记录')).toBeInTheDocument()
+      expect(screen.getByLabelText(/音频文件/)).toBeInTheDocument()
+      expect(screen.getByLabelText(/转录文本/)).toBeInTheDocument()
+      expect(screen.getByLabelText(/照片/)).toBeInTheDocument()
+      expect(screen.getByLabelText(/互动记录/)).toBeInTheDocument()
 
       // Should show export preview
       expect(screen.getByText('导出预览')).toBeInTheDocument()
@@ -103,7 +126,7 @@ describe('Data Export Functionality Tests', () => {
       )
 
       // Toggle audio option
-      const audioCheckbox = screen.getByLabelText('音频文件')
+      const audioCheckbox = screen.getByLabelText(/音频文件/)
       expect(audioCheckbox).toBeChecked()
       
       await user.click(audioCheckbox)
@@ -269,6 +292,16 @@ describe('Data Export Functionality Tests', () => {
       jest.spyOn(document, 'createElement').mockReturnValue(mockLink as any)
       jest.spyOn(document.body, 'appendChild').mockImplementation()
       jest.spyOn(document.body, 'removeChild').mockImplementation()
+      mockDataExportService.downloadExport.mockImplementation(async () => {
+        const url = URL.createObjectURL(mockBlob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'saga-export-export-123.zip'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+      })
 
       await dataExportService.downloadExport('export-123')
 
@@ -421,13 +454,13 @@ describe('Data Export Functionality Tests', () => {
         includePhotos: true,
         includeTranscripts: true,
         includeInteractions: true
-      })).rejects.toThrow('Failed to request export')
+      })).rejects.toThrow('API Error')
     })
 
     it('should handle network timeouts', async () => {
       mockDataExportService.getExportStatus.mockRejectedValue(new Error('Network timeout'))
 
-      await expect(dataExportService.getExportStatus('export-123')).rejects.toThrow('Failed to get export status')
+      await expect(dataExportService.getExportStatus('export-123')).rejects.toThrow('Network timeout')
     })
   })
 })

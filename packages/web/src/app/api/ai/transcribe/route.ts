@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard';
 
 // SiliconFlow Audio Transcription API endpoint
 // Docs: https://docs.siliconflow.cn/cn/api-reference/audio/create-audio-transcriptions
 const SILICONFLOW_ENDPOINT = 'https://api.siliconflow.cn/v1/audio/transcriptions';
+const MAX_TRANSCRIBE_BYTES = 25 * 1024 * 1024;
 
 /**
  * A simple retry wrapper with exponential backoff.
@@ -40,13 +42,33 @@ async function safeJson(res: Response) {
 }
 
 export async function POST(request: NextRequest) {
+  const guard = await requireAiRequest(request, 'transcribe');
+  if (!guard.ok) return guard.response;
+
   try {
+    const contentLength = Number(request.headers.get('content-length') || 0);
+    if (contentLength > MAX_TRANSCRIBE_BYTES) {
+      return jsonWithRateLimit(
+        { error: 'Audio file too large. Maximum size is 25MB.' },
+        guard.headers,
+        413,
+      );
+    }
+
     const formData = await request.formData();
     const audioFile = formData.get('audio') as File | null;
     const language = (formData.get('language') as string) || 'zh-CN';
 
     if (!audioFile) {
-      return NextResponse.json({ error: 'No audio file provided' }, { status: 400 });
+      return jsonWithRateLimit({ error: 'No audio file provided' }, guard.headers, 400);
+    }
+
+    if (audioFile.size > MAX_TRANSCRIBE_BYTES) {
+      return jsonWithRateLimit(
+        { error: 'Audio file too large. Maximum size is 25MB.' },
+        guard.headers,
+        413,
+      );
     }
 
     const apiKey = process.env.SILICONFLOW_API_KEY;
@@ -54,9 +76,10 @@ export async function POST(request: NextRequest) {
 
     if (!apiKey) {
       console.error('SiliconFlow API key not configured.');
-      return NextResponse.json(
+      return jsonWithRateLimit(
         { error: 'Server configuration error: Missing SiliconFlow API key.' },
-        { status: 500 }
+        guard.headers,
+        500
       );
     }
 
@@ -101,7 +124,7 @@ export async function POST(request: NextRequest) {
 
     const result = await withRetry(doRequest, 2);
 
-    return NextResponse.json(result);
+    return jsonWithRateLimit(result, guard.headers);
 
   } catch (error: any) {
     console.error('Transcription API error:', error.message);
@@ -115,22 +138,25 @@ export async function POST(request: NextRequest) {
       status = 429;
     }
 
-    return NextResponse.json(
+    return jsonWithRateLimit(
       {
         error: 'Transcription failed. Please try again.',
         details: process.env.NODE_ENV === 'development' ? message : undefined,
       },
-      { status }
+      guard.headers,
+      status
     );
   }
 }
 
 // Handle CORS preflight requests
 export async function OPTIONS() {
+  const origin = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': origin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },

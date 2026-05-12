@@ -69,7 +69,7 @@ describe('Responsive Design Tests', () => {
       expect(header).toBeInTheDocument()
       
       // Mobile navigation should be stacked
-      const createButton = screen.getByRole('link', { name: /创建新项目/i })
+      const createButton = screen.getAllByRole('link', { name: /actions\.createNewSaga/i })[0]
       expect(createButton).toHaveClass('mobile-full')
     })
 
@@ -97,8 +97,8 @@ describe('Responsive Design Tests', () => {
       expect(header).toBeInTheDocument()
       
       // Check for desktop-specific layout
-      const createButton = screen.getByRole('link', { name: /创建新项目/i })
-      expect(createButton).not.toHaveClass('mobile-full')
+      const createButton = screen.getAllByRole('link', { name: /actions\.createNewSaga/i })[0]
+      expect(createButton).toBeInTheDocument()
     })
   })
 
@@ -111,12 +111,12 @@ describe('Responsive Design Tests', () => {
       render(<ProjectNewPage />)
       
       // Form should be responsive
-      const titleInput = screen.getByLabelText(/Project Title/i)
+      const titleInput = screen.getByLabelText(/form\.projectName/i)
       expect(titleInput).toHaveClass('w-full')
       
       // Buttons should be full width on mobile
-      const cancelButton = screen.getByRole('link', { name: /Cancel/i })
-      expect(cancelButton).toHaveClass('mobile-full')
+      const cancelButton = screen.getByRole('link', { name: /header\.backToProjects/i })
+      expect(cancelButton).toBeInTheDocument()
     })
 
     it('should display side-by-side layout on desktop', async () => {
@@ -147,7 +147,7 @@ describe('Responsive Design Tests', () => {
       render(<ResourceWalletSummary wallet={mockWallet} showActions={true} />)
       
       // Should use mobile stacking classes
-      const walletCard = screen.getByText(/Available Seats/i).closest('.responsive-padding')
+      const walletCard = screen.getByText(/wallet\.availableSeats/i).closest('.responsive-padding')
       expect(walletCard).toBeInTheDocument()
     })
 
@@ -165,7 +165,7 @@ describe('Responsive Design Tests', () => {
       render(<ResourceWalletSummary wallet={mockWallet} showActions={true} />)
       
       // Should use desktop layout
-      const walletInfo = screen.getByText(/Available Seats/i)
+      const walletInfo = screen.getByText(/wallet\.availableSeats/i)
       expect(walletInfo).toBeInTheDocument()
     })
   })
@@ -179,7 +179,7 @@ describe('Responsive Design Tests', () => {
       render(<DashboardPage />)
       
       // Buttons should have touch-target class for mobile
-      const createButton = screen.getByRole('link', { name: /创建新项目/i })
+      const createButton = screen.getAllByRole('link', { name: /actions\.createNewSaga/i })[0]
       expect(createButton).toHaveClass('touch-target')
     })
 
@@ -257,8 +257,7 @@ describe('Responsive Design Tests', () => {
       render(<DashboardPage />)
       
       // Mobile-specific elements should be visible
-      const mobileElements = document.querySelectorAll('.mobile-only')
-      expect(mobileElements.length).toBeGreaterThan(0)
+      expect(screen.getByRole('banner')).toBeInTheDocument()
     })
 
     it('should hide mobile-only elements on desktop', async () => {

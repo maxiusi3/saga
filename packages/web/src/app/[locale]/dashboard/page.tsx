@@ -11,6 +11,7 @@ import { projectService, ProjectWithMembers } from '@/lib/projects'
 import { useAuthStore } from '@/stores/auth-store'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useLocale, useTranslations } from 'next-intl'
+import Link from 'next/link'
 
 export default function DashboardPage() {
   const { user } = useAuthStore()
@@ -107,7 +108,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="border-b border-border bg-background/95 backdrop-blur-sm">
+        <header className="border-b border-border bg-background/95 backdrop-blur-sm">
           <div className="container mx-auto px-6 py-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -120,8 +121,8 @@ export default function DashboardPage() {
               <Skeleton className="h-10 w-40" />
             </div>
           </div>
-        </div>
-        <div className="container mx-auto px-6 py-8">
+        </header>
+        <main id="main-content" className="container-responsive container mx-auto px-6 py-8" aria-busy="true">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {[1, 2, 3].map((i) => (
               <Skeleton key={i} className="h-24" />
@@ -132,7 +133,7 @@ export default function DashboardPage() {
               <Skeleton key={i} className="h-48" />
             ))}
           </div>
-        </div>
+        </main>
       </div>
     )
   }
@@ -140,7 +141,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background" style={{ minHeight: '100vh', backgroundColor: 'var(--background, #ffffff)' }}>
       {/* Header */}
-      <div className="border-b border-border bg-background/95 backdrop-blur-sm">
+      <header className="border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -148,7 +149,7 @@ export default function DashboardPage() {
                 <BookOpen className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">
+                <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
                   {tDashboard('page.welcome', { name: user?.user_metadata?.name || user?.email?.split('@')[0] || 'User' })}
                 </h1>
                 <p className="text-muted-foreground">
@@ -156,19 +157,24 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
-            <EnhancedButton 
+            <EnhancedButton
+              asChild
               size="lg"
-              rightIcon={<Plus className="h-5 w-5" />}
-              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
-              onClick={() => window.location.href = withLocale('/dashboard/projects/create')}
+              className="touch-target mobile-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
             >
-              {tDashboard('actions.createNewSaga')}
+              <Link
+                href={withLocale('/dashboard/projects/create')}
+                aria-label={tDashboard('actions.createNewSaga')}
+              >
+                {tDashboard('actions.createNewSaga')}
+                <Plus className="h-5 w-5 ml-2" />
+              </Link>
             </EnhancedButton>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="container mx-auto px-6 py-8">
+      <main id="main-content" className="container-responsive container mx-auto px-6 py-8">
         <div className="space-y-8">
             {/* Resource Overview */}
             <section>
@@ -183,7 +189,7 @@ export default function DashboardPage() {
                 </EnhancedButton>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid-responsive grid grid-cols-1 md:grid-cols-3 gap-4">
                 <StatsCard
                   title={tDashboard('welcomeHeader.metrics.projectVouchers')}
                   value={`${resourceWallet?.project_vouchers || 0}/1`}
@@ -221,41 +227,45 @@ export default function DashboardPage() {
               </div>
               
               {ownedProjects.length === 0 ? (
-                <EnhancedCard className="p-8 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-                  <div className="space-y-4">
+                <EnhancedCard className="p-8 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20" role="list" aria-label={tDashboard('sections.myProjects')}>
+                  <div className="space-y-4" role="listitem">
                     <div className="text-4xl mb-4">{tDashboard('page.empty.owned.emoji')}</div>
                     <h3 className="text-lg font-semibold text-foreground">{tDashboard('page.empty.owned.title')}</h3>
                     <p className="text-muted-foreground">{tDashboard('page.empty.owned.subtitle')}</p>
-                    <EnhancedButton 
-                      onClick={() => window.location.href = withLocale('/dashboard/projects/create')}
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      {tDashboard('actions.createNewSaga')}
+                    <EnhancedButton asChild className="touch-target-large mobile-full">
+                      <Link
+                        href={withLocale('/dashboard/projects/create')}
+                        aria-label={tDashboard('actions.createNewSaga')}
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        {tDashboard('actions.createNewSaga')}
+                      </Link>
                     </EnhancedButton>
                   </div>
                 </EnhancedCard>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid-responsive grid grid-cols-1 md:grid-cols-2 gap-6" role="list" aria-label={tDashboard('sections.myProjects')}>
                   {ownedProjects.map((project) => (
-                    <ProjectCard
-                      key={project.id}
-                      id={project.id}
-                      title={project.name}
-                      description={project.description || ''}
-                      createdAt={new Date(project.created_at).toLocaleDateString(locale, { month: 'long', year: 'numeric' })}
-                      storyCount={project.story_count}
-                      status={project.status as 'active' | 'archived'}
-                      members={project.members.map(m => ({
-                        id: m.id,
-                        name: `User ${m.user_id.slice(0, 8)}`,
-                        role: m.role as 'owner' | 'facilitator' | 'storyteller',
-                        status: m.status as 'active' | 'pending'
-                      }))}
-                      isOwner={project.is_owner}
-                      onEnter={() => window.location.href = withLocale(`/dashboard/projects/${project.id}`)}
-                      onManage={() => window.location.href = withLocale(`/dashboard/projects/${project.id}/settings`)}
-                      onMore={() => console.log('More options:', project.id)}
-                    />
+                    <div key={project.id} role="listitem">
+                      <ProjectCard
+                        id={project.id}
+                        title={project.name}
+                        description={project.description || ''}
+                        createdAt={new Date(project.created_at).toLocaleDateString(locale, { month: 'long', year: 'numeric' })}
+                        storyCount={project.story_count}
+                        status={project.status as 'active' | 'archived'}
+                        members={project.members.map(m => ({
+                          id: m.id,
+                          name: `User ${m.user_id.slice(0, 8)}`,
+                          role: m.role as 'owner' | 'facilitator' | 'storyteller',
+                          status: m.status as 'active' | 'pending'
+                        }))}
+                        isOwner={project.is_owner}
+                        onEnter={() => window.location.href = withLocale(`/dashboard/projects/${project.id}`)}
+                        onManage={() => window.location.href = withLocale(`/dashboard/projects/${project.id}/settings`)}
+                        onMore={() => console.log('More options:', project.id)}
+                      />
+                    </div>
                   ))}
                 </div>
               )}
@@ -271,34 +281,35 @@ export default function DashboardPage() {
               </div>
               
               {participatingProjects.length === 0 ? (
-                <EnhancedCard className="p-8 text-center">
-                  <div className="space-y-4">
+                <EnhancedCard className="p-8 text-center" role="list" aria-label={tDashboard('sections.projectsImIn')}>
+                  <div className="space-y-4" role="listitem">
                     <div className="text-4xl mb-4">{tDashboard('page.empty.participating.emoji')}</div>
                     <h3 className="text-lg font-semibold text-foreground">{tDashboard('page.empty.participating.title')}</h3>
                     <p className="text-muted-foreground">{tDashboard('page.empty.participating.subtitle')}</p>
                   </div>
                 </EnhancedCard>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid-responsive grid grid-cols-1 md:grid-cols-2 gap-6" role="list" aria-label={tDashboard('sections.projectsImIn')}>
                   {participatingProjects.map((project) => (
-                    <ProjectCard
-                      key={project.id}
-                      id={project.id}
-                      title={project.name}
-                      description={project.description || ''}
-                      createdAt={new Date(project.created_at).toLocaleDateString(locale, { month: 'long', year: 'numeric' })}
-                      storyCount={project.story_count}
-                      status={project.status as 'active' | 'archived'}
-                      members={project.members.map(m => ({
-                        id: m.id,
-                        name: `User ${m.user_id.slice(0, 8)}`,
-                        role: m.role as 'owner' | 'facilitator' | 'storyteller',
-                        status: m.status as 'active' | 'pending'
-                      }))}
-                      isOwner={project.is_owner}
-                      onEnter={() => window.location.href = withLocale(`/dashboard/projects/${project.id}`)}
-                      onMore={() => console.log('More options:', project.id)}
-                    />
+                    <div key={project.id} role="listitem">
+                      <ProjectCard
+                        id={project.id}
+                        title={project.name}
+                        description={project.description || ''}
+                        createdAt={new Date(project.created_at).toLocaleDateString(locale, { month: 'long', year: 'numeric' })}
+                        storyCount={project.story_count}
+                        status={project.status as 'active' | 'archived'}
+                        members={project.members.map(m => ({
+                          id: m.id,
+                          name: `User ${m.user_id.slice(0, 8)}`,
+                          role: m.role as 'owner' | 'facilitator' | 'storyteller',
+                          status: m.status as 'active' | 'pending'
+                        }))}
+                        isOwner={project.is_owner}
+                        onEnter={() => window.location.href = withLocale(`/dashboard/projects/${project.id}`)}
+                        onMore={() => console.log('More options:', project.id)}
+                      />
+                    </div>
                   ))}
                 </div>
               )}
@@ -331,7 +342,7 @@ export default function DashboardPage() {
               </EnhancedCard>
             </section>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

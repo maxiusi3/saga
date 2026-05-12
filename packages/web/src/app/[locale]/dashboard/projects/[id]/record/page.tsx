@@ -6,8 +6,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'react-hot-toast'
 import { StoryPrompt, getNextPrompt } from '@saga/shared'
 import { RecorderHub } from '@/components/recording/RecorderHub'
-import { DeepDiveRecorder } from '@/components/recording/DeepDiveRecorder'
-import { ChatRecorder } from '@/components/recording/ChatRecorder'
+import { SmartRecorder } from '@/components/recording/SmartRecorder'
 import { ReviewStage } from '@/components/recording/ReviewStage'
 import { ResonanceCard } from '@/components/recording/ResonanceCard'
 import { storyService } from '@/lib/stories'
@@ -189,30 +188,19 @@ export default function ProjectRecordPage() {
         {/* Stage: RECORDING */}
         {stage === 'recording' && (
           <div className="animate-in fade-in slide-in-from-bottom-4">
-            {mode === 'deep_dive' ? (
-              <DeepDiveRecorder
-                onRecordingComplete={(res) => handleRecordingComplete({
-                  audioBlob: res.audioBlob,
-                  transcript: res.transcript,
-                  duration: res.duration
-                })}
-                promptText={currentPrompt.text}
-                locale={locale}
-              />
-            ) : (
-              <div className="max-w-md mx-auto space-y-8">
-                <div className="text-center">
-                  <h2 className="text-xl font-medium text-stone-800 dark:text-stone-100">Chat Mode</h2>
-                  <p className="text-stone-500">Share a quick thought.</p>
-                </div>
-                <ChatRecorder
-                  onRecordingComplete={(res) => handleRecordingComplete({
-                    audioBlob: res.audioBlob,
-                    duration: res.duration
-                  })}
-                />
-              </div>
-            )}
+            <SmartRecorder
+              promptText={currentPrompt.text}
+              locale={locale}
+              maxDuration={30 * 60}
+              onRecordingComplete={(res) => handleRecordingComplete({
+                audioBlob: res.audioBlob,
+                transcript: res.transcript,
+                duration: res.duration
+              })}
+              onError={(message) => {
+                console.error('[record/page] recorder error:', message)
+              }}
+            />
           </div>
         )}
 

@@ -16,16 +16,19 @@
     "lint": "npm run lint --workspaces",
     "lint:fix": "npm run lint:fix --workspaces",
     "type-check": "npm run type-check --workspaces",
+    "verify": "npm run type-check && npm run lint && npm test --workspace=packages/web -- --runInBand && npm run build:vercel",
+    "audit:high": "npm audit --workspaces --audit-level=high",
+    "audit:moderate": "npm audit --workspaces --audit-level=moderate",
     "start": "npm run dev"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@typescript-eslint/parser": "^6.12.0",
+    "@playwright/test": "^1.59.1",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "concurrently": "^8.2.2",
-    "eslint": "^8.54.0",
+    "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
@@ -35,8 +38,11 @@
     "prettier": "^3.1.0",
     "typescript": "^5.3.2"
   },
+  "overrides": {
+    "next": "16.2.4"
+  },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "node": ">=20.9.0",
+    "npm": ">=10.0.0"
   }
 }

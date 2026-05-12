@@ -1,12 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { ProtectedRoute, withAuth, useRequireAuth } from '../protected-route'
 import { useAuthStore } from '@/stores/auth-store'
 
 // Mock dependencies
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
+  usePathname: jest.fn(),
+  useSearchParams: jest.fn(() => new URLSearchParams()),
 }))
 
 jest.mock('@/stores/auth-store', () => ({
@@ -17,17 +19,19 @@ const mockPush = jest.fn()
 
 // Cast mocked functions safely to Jest.Mock to satisfy TypeScript
 const mockedUseRouter = useRouter as unknown as jest.Mock
+const mockedUsePathname = usePathname as unknown as jest.Mock
 const mockedUseAuthStore = useAuthStore as unknown as jest.Mock
 
-describe('ProtectedRoute', () => {
-  beforeEach(() => {
-    mockedUseRouter.mockReturnValue({
-      push: mockPush,
-    })
-
-    jest.clearAllMocks()
+beforeEach(() => {
+  mockedUseRouter.mockReturnValue({
+    push: mockPush,
   })
+  mockedUsePathname.mockReturnValue('/en/dashboard')
 
+  jest.clearAllMocks()
+})
+
+describe('ProtectedRoute', () => {
   describe('when requireAuth is true (default)', () => {
     it('renders children when authenticated', () => {
       mockedUseAuthStore.mockReturnValue({

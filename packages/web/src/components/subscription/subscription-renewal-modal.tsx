@@ -82,6 +82,7 @@ export function SubscriptionRenewalModal({
 
   const selectedPkg = availablePackages.find(p => p.id === selectedPackage);
   const selectedPM = paymentMethods.find(pm => pm.id === selectedPaymentMethod);
+  const isBusy = loading || isProcessing;
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -107,7 +108,7 @@ export function SubscriptionRenewalModal({
   };
 
   const handleRenew = async () => {
-    if (!selectedPackage || !selectedPaymentMethod) return;
+    if (!selectedPackage || !selectedPaymentMethod || isBusy) return;
 
     setIsProcessing(true);
     try {
@@ -136,7 +137,7 @@ export function SubscriptionRenewalModal({
             variant="ghost"
             size="sm"
             className="text-gray-400 hover:text-gray-600"
-            disabled={isProcessing}
+            disabled={isBusy}
           >
             <X className="h-5 w-5" />
           </Button>
@@ -285,7 +286,7 @@ export function SubscriptionRenewalModal({
                 onClick={onAddPaymentMethod}
                 variant="outline"
                 className="w-full"
-                disabled={isProcessing}
+                disabled={isBusy}
               >
                 <CreditCard className="h-4 w-4 mr-2" />
                 Add Payment Method
@@ -341,16 +342,16 @@ export function SubscriptionRenewalModal({
               onClick={onClose}
               variant="outline"
               className="flex-1"
-              disabled={isProcessing}
+              disabled={isBusy}
             >
               Cancel
             </Button>
             <Button
               onClick={handleRenew}
               className="flex-1"
-              disabled={!selectedPackage || !selectedPaymentMethod || isProcessing}
+              disabled={!selectedPackage || !selectedPaymentMethod || isBusy}
             >
-              {isProcessing ? (
+              {isBusy ? (
                 <>
                   <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                   Processing...

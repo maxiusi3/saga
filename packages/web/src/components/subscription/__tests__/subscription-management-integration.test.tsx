@@ -144,7 +144,7 @@ describe('Subscription Management Integration Tests', () => {
       );
 
       expect(screen.getByText('1 / 1')).toBeInTheDocument(); // Projects created
-      expect(screen.getByText('1 / 2')).toBeInTheDocument(); // Facilitators invited
+      expect(screen.getAllByText('1 / 2')).toHaveLength(2); // Facilitators and storytellers invited
       expect(screen.getByText('15')).toBeInTheDocument(); // Stories recorded
     });
 
@@ -173,7 +173,7 @@ describe('Subscription Management Integration Tests', () => {
         />
       );
 
-      expect(screen.getByText('Expired')).toBeInTheDocument();
+      expect(screen.getAllByText('Expired')).toHaveLength(2);
     });
 
     it('displays payment method information', () => {
@@ -208,12 +208,13 @@ describe('Subscription Management Integration Tests', () => {
       render(
         <SubscriptionStatusBanner
           subscription={mockBannerData}
+          onRenew={jest.fn()}
         />
       );
 
       expect(screen.getByText('Subscription Expiring Soon')).toBeInTheDocument();
       expect(screen.getByText(/expires in 7 days/)).toBeInTheDocument();
-      expect(screen.getByText('Renew Now')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /renew now/i })).toBeInTheDocument();
     });
 
     it('shows progress indicator for expiring subscription', () => {
@@ -265,11 +266,12 @@ describe('Subscription Management Integration Tests', () => {
       render(
         <SubscriptionStatusBanner
           subscription={expiredBanner}
+          onRenew={jest.fn()}
         />
       );
 
       expect(screen.getByText('Subscription Expired')).toBeInTheDocument();
-      expect(screen.getByText('Renew Subscription')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /renew subscription/i })).toBeInTheDocument();
     });
   });
 
@@ -289,7 +291,7 @@ describe('Subscription Management Integration Tests', () => {
         />
       );
 
-      expect(screen.getByText('Renew Subscription')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /renew subscription/i })).toBeInTheDocument();
       expect(screen.getByText('Extend your subscription for "Family Stories"')).toBeInTheDocument();
     });
 
@@ -326,8 +328,8 @@ describe('Subscription Management Integration Tests', () => {
         />
       );
 
-      expect(screen.getByText('Annual Package')).toBeInTheDocument();
-      expect(screen.getByText('$149.00')).toBeInTheDocument();
+      expect(screen.getAllByText('Annual Package')).toHaveLength(2);
+      expect(screen.getAllByText('$149.00')).toHaveLength(2);
       expect(screen.getByText('Recommended')).toBeInTheDocument();
     });
 
@@ -365,7 +367,7 @@ describe('Subscription Management Integration Tests', () => {
         />
       );
 
-      const packageCard = screen.getByText('Annual Package').closest('.card');
+      const packageCard = screen.getAllByText('Annual Package')[0].closest('[data-slot="card"]');
       expect(packageCard).toBeInTheDocument();
       
       if (packageCard) {
@@ -390,7 +392,7 @@ describe('Subscription Management Integration Tests', () => {
         />
       );
 
-      const renewButton = screen.getByText('Renew Subscription');
+      const renewButton = screen.getByRole('button', { name: /renew subscription/i });
       fireEvent.click(renewButton);
 
       await waitFor(() => {
@@ -414,8 +416,8 @@ describe('Subscription Management Integration Tests', () => {
       );
 
       expect(screen.getByText('Renewal Summary')).toBeInTheDocument();
-      expect(screen.getByText('Annual Package')).toBeInTheDocument();
-      expect(screen.getByText('12 months')).toBeInTheDocument();
+      expect(screen.getAllByText('Annual Package')).toHaveLength(2);
+      expect(screen.getAllByText('12 months')).toHaveLength(2);
     });
 
     it('handles add payment method', () => {
@@ -455,7 +457,7 @@ describe('Subscription Management Integration Tests', () => {
         />
       );
 
-      const renewButton = screen.getByText('Renew Subscription');
+      const renewButton = screen.getByRole('button', { name: /processing/i });
       expect(renewButton).toBeDisabled();
     });
   });
@@ -488,7 +490,7 @@ describe('Subscription Management Integration Tests', () => {
       );
 
       // Complete the renewal
-      const renewButton = screen.getByText('Renew Subscription');
+      const renewButton = screen.getByRole('button', { name: /renew subscription/i });
       fireEvent.click(renewButton);
 
       await waitFor(() => {
@@ -568,7 +570,7 @@ describe('Subscription Management Integration Tests', () => {
       );
 
       // Modal should be focusable
-      const modal = screen.getByText('Renew Subscription').closest('div');
+      const modal = screen.getByRole('heading', { name: /renew subscription/i }).closest('div');
       expect(modal).toBeInTheDocument();
     });
 

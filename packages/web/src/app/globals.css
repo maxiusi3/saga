@@ -1,9 +1,9 @@
+@import "../styles/design-tokens.css";
+@import "../styles/accessibility.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "../styles/design-tokens.css";
-@import "../styles/accessibility.css";
 
 /* Saga Design System Integration - moved to :root */
 

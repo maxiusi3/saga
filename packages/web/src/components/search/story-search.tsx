@@ -43,7 +43,7 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
   const [selectedSuggestion, setSelectedSuggestion] = useState(-1)
 
   const searchInputRef = useRef<HTMLInputElement>(null)
-  const suggestionsRef = useRef<HTMLDivElement>(null)
+  const suggestionsRef = useRef<HTMLUListElement>(null)
 
   // Handle keyboard navigation for suggestions
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -144,7 +144,13 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
     <div className={`w-full max-w-4xl mx-auto ${className}`}>
       {/* Search Input */}
       <div className="relative">
-        <div className="relative">
+        <div
+          className="relative"
+          role="combobox"
+          aria-expanded={showSuggestions}
+          aria-haspopup="listbox"
+          aria-owns="story-search-suggestions"
+        >
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
           <input
             ref={searchInputRef}
@@ -160,8 +166,8 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
             placeholder="Search stories by title or content..."
             className="w-full pl-10 pr-20 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
             aria-label="Search stories"
-            aria-expanded={showSuggestions}
-            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            aria-controls="story-search-suggestions"
           />
           <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
             <button
@@ -185,26 +191,28 @@ export function StorySearch({ projectId, onResultClick, className = '' }: StoryS
 
         {/* Suggestions Dropdown */}
         {showSuggestions && suggestions.length > 0 && (
-          <div
+          <ul
+            id="story-search-suggestions"
             ref={suggestionsRef}
             className="absolute z-10 w-full mt-1 bg-background border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto"
             role="listbox"
           >
             {suggestions.map((suggestion, index) => (
-              <button
-                key={suggestion}
-                onClick={() => handleSuggestionClick(suggestion)}
-                className={`w-full px-4 py-2 text-left hover:bg-muted transition-colors ${
-                  index === selectedSuggestion ? 'bg-primary/10 text-primary' : 'text-foreground'
-                }`}
-                role="option"
-                aria-selected={index === selectedSuggestion}
-              >
-                <Search className="inline w-4 h-4 mr-2 text-muted-foreground" />
-                {suggestion}
-              </button>
+              <li key={suggestion} role="presentation">
+                <button
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className={`w-full px-4 py-2 text-left hover:bg-muted transition-colors ${
+                    index === selectedSuggestion ? 'bg-primary/10 text-primary' : 'text-foreground'
+                  }`}
+                  role="option"
+                  aria-selected={index === selectedSuggestion}
+                >
+                  <Search className="inline w-4 h-4 mr-2 text-muted-foreground" />
+                  {suggestion}
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </div>
 

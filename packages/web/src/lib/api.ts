@@ -1,10 +1,31 @@
 // 统一的Supabase API客户端 - 完全替换混合模式
 import { supabaseApi } from './api-supabase'
+import { httpApi, type ApiRequestOptions, type ApiResponse } from './api-http'
 
 // 为了向后兼容，保持原有的API接口结构
 // 所有调用都委托给统一的Supabase API客户端
 
 class ApiClient {
+  get<T = any>(path: string, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.get<T>(path, options)
+  }
+
+  post<T = any>(path: string, body?: unknown, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.post<T>(path, body, options)
+  }
+
+  put<T = any>(path: string, body?: unknown, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.put<T>(path, body, options)
+  }
+
+  patch<T = any>(path: string, body?: unknown, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.patch<T>(path, body, options)
+  }
+
+  delete<T = any>(path: string, options?: ApiRequestOptions): Promise<ApiResponse<T>> {
+    return httpApi.delete<T>(path, options)
+  }
+
   // 认证相关 - 完全使用Supabase Auth
   auth = {
     signin: async (email: string, password: string) => {
@@ -51,6 +72,30 @@ class ApiClient {
     update: async (projectId: string, updates: { name?: string; description?: string }) => {
       const project = await supabaseApi.projects.update(projectId, updates)
       return { data: project }
+    },
+
+    delete: async (projectId: string) => {
+      return httpApi.delete(`/projects/${projectId}`)
+    },
+
+    stats: async (projectId: string) => {
+      return httpApi.get(`/projects/${projectId}/stats`)
+    },
+
+    generateInvitation: async (
+      projectId: string,
+      data: { email: string; role: 'facilitator' | 'storyteller'; message?: string },
+    ) => {
+      return httpApi.post(`/projects/${projectId}/invitations`, data)
+    },
+
+    getMembers: async (projectId: string) => {
+      const response = await httpApi.get(`/projects/${projectId}/members`)
+      return response.data?.data ?? response.data
+    },
+
+    removeMember: async (projectId: string, userId: string) => {
+      return httpApi.delete(`/projects/${projectId}/members/${userId}`)
     }
   }
 
@@ -87,19 +132,27 @@ class ApiClient {
 
   // 故事管理 - 使用Supabase
   stories = {
-    list: async (projectId: string) => {
+    list: async (projectId: string, params?: { page?: number; limit?: number }) => {
       const stories = await supabaseApi.stories.list(projectId)
       return { data: stories }
     },
 
-    create: async (storyData: {
+    get: async (storyId: string) => {
+      return httpApi.get(`/stories/${storyId}`)
+    },
+
+    create: async (projectOrStoryData: string | {
       project_id: string
       title: string
       content?: string
       audio_url?: string
       audio_duration?: number
-    }) => {
-      const story = await supabaseApi.stories.create(storyData)
+    }, formData?: FormData) => {
+      if (typeof projectOrStoryData === 'string') {
+        return httpApi.post(`/projects/${projectOrStoryData}/stories`, formData)
+      }
+
+      const story = await supabaseApi.stories.create(projectOrStoryData)
       return { data: story }
     },
 
@@ -111,6 +164,16 @@ class ApiClient {
     }) => {
       const story = await supabaseApi.stories.update(storyId, updates)
       return { data: story }
+    },
+
+    delete: async (storyId: string) => {
+      return httpApi.delete(`/stories/${storyId}`)
+    },
+
+    search: async (projectId: string, query: string) => {
+      return httpApi.get(`/projects/${projectId}/stories/search`, {
+        params: { q: query },
+      })
     }
   }
 
@@ -137,6 +200,22 @@ class ApiClient {
     status: async (exportId: string) => {
       const status = await supabaseApi.exports.getStatus(exportId)
       return { data: status }
+    },
+
+    list: async () => {
+      return httpApi.get('/exports')
+    },
+
+    create: async (projectId: string, format = 'zip') => {
+      return httpApi.post('/exports', { projectId, format })
+    },
+
+    download: async (exportId: string) => {
+      return httpApi.get(`/exports/${exportId}/download`, { responseType: 'blob' })
+    },
+
+    get: async (exportId: string) => {
+      return httpApi.get(`/exports/${exportId}`)
     }
   }
 

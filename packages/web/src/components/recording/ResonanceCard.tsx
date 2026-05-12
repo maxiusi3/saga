@@ -10,7 +10,8 @@ import { useTranslations } from 'next-intl'
 interface ResonanceCardProps {
     era: string
     similarCount: number
-    onClose: () => void
+    onClose?: () => void
+    onOptIn?: () => void
     className?: string
 }
 
@@ -18,8 +19,14 @@ export function ResonanceCard({
     era,
     similarCount,
     onClose,
+    onOptIn,
     className = ''
 }: ResonanceCardProps) {
+    const handleContinue = () => {
+        onOptIn?.()
+        onClose?.()
+    }
+
     return (
         <Card className={`p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-100 ${className}`}>
             <div className="space-y-6">
@@ -55,7 +62,7 @@ export function ResonanceCard({
                 {/* Footer Action */}
                 <div className="flex justify-end">
                     <Button
-                        onClick={onClose}
+                        onClick={handleContinue}
                         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
                     >
                         Continue to Timeline

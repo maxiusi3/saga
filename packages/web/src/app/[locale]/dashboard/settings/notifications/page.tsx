@@ -86,7 +86,7 @@ export default function NotificationSettingsPage() {
     setSaving(true)
     try {
       const promises = Object.entries(localSettings).map(([type, setting]) =>
-        updateSetting(null, type as NotificationType, setting.enabled, setting.emailEnabled)
+        updateSetting(null, type as SagaNotificationType, setting.enabled, setting.emailEnabled)
       )
       
       await Promise.all(promises)

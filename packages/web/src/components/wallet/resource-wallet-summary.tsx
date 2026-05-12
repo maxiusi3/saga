@@ -15,22 +15,26 @@ interface ResourceWallet {
 interface ResourceWalletSummaryProps {
   className?: string;
   showActions?: boolean;
+  wallet?: ResourceWallet;
 }
 
-export default function ResourceWalletSummary({ 
-  className = '', 
-  showActions = true 
+export function ResourceWalletSummary({
+  className = '',
+  showActions = true,
+  wallet: initialWallet
 }: ResourceWalletSummaryProps) {
   const router = useRouter();
   const locale = useLocale();
   const tDashboard = useTranslations('dashboard');
   const tActions = useTranslations('common.actions');
-  const [wallet, setWallet] = useState<ResourceWallet | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [wallet, setWallet] = useState<ResourceWallet | null>(initialWallet || null);
+  const [loading, setLoading] = useState(!initialWallet);
 
   useEffect(() => {
     // TODO: Fetch actual wallet data from API
     // For now, using mock data
+    if (initialWallet) return;
+
     setTimeout(() => {
       setWallet({
         projectVouchers: 0,
@@ -39,7 +43,7 @@ export default function ResourceWalletSummary({
       });
       setLoading(false);
     }, 500);
-  }, []);
+  }, [initialWallet]);
 
   const handleViewDetails = () => {
     router.push(`/${locale}/dashboard/resources`);
@@ -58,8 +62,8 @@ export default function ResourceWalletSummary({
     );
   }
 
-  const hasLowResources = (wallet?.projectVouchers || 0) === 0 && 
-                          (wallet?.facilitatorSeats || 0) === 0 && 
+  const hasLowResources = (wallet?.projectVouchers || 0) === 0 &&
+                          (wallet?.facilitatorSeats || 0) === 0 &&
                           (wallet?.storytellerSeats || 0) === 0;
 
   return (
@@ -140,3 +144,5 @@ export default function ResourceWalletSummary({
     </Card>
   );
 }
+
+export default ResourceWalletSummary;

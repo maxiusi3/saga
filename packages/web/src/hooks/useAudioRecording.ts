@@ -40,7 +40,7 @@ export function useAudioRecording(): AudioRecordingState & AudioRecordingControl
   useEffect(() => {
     const checkSupport = () => {
       const isMediaRecorderSupported = typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported
-      const isGetUserMediaSupported = navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+      const isGetUserMediaSupported = Boolean(navigator.mediaDevices?.getUserMedia)
       setIsSupported(isMediaRecorderSupported && isGetUserMediaSupported)
     }
 

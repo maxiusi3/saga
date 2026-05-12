@@ -1,4 +1,4 @@
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals'
+import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals'
 
 function sendToAnalytics(metric: any) {
   // 发送到Vercel Analytics
@@ -20,9 +20,9 @@ export function reportWebVitals() {
   // Only run on client side
   if (typeof window === 'undefined') return
 
-  getCLS(sendToAnalytics)
-  getFID(sendToAnalytics)
-  getFCP(sendToAnalytics)
-  getLCP(sendToAnalytics)
-  getTTFB(sendToAnalytics)
+  onCLS(sendToAnalytics)
+  onINP(sendToAnalytics)
+  onFCP(sendToAnalytics)
+  onLCP(sendToAnalytics)
+  onTTFB(sendToAnalytics)
 }

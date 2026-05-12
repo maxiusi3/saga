@@ -19,7 +19,7 @@ interface StoryCardProps {
   thumbnail?: string
   tags?: Array<{
     label: string
-    color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error'
+    color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info'
   }>
   stats?: {
     comments?: number
@@ -43,6 +43,7 @@ const tagColors = {
   success: "bg-success/10 text-success",
   warning: "bg-warning/10 text-warning",
   error: "bg-error/10 text-error",
+  info: "bg-blue-100 text-blue-800",
 }
 
 export function StoryCard({

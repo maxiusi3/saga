@@ -74,7 +74,7 @@ export const useAuthStore = create<AuthStore>()(
 
             // Listen for auth changes
             console.log('Auth Store: Setting up auth state listener')
-            supabase.auth.onAuthStateChange((event, session) => {
+            supabase.auth.onAuthStateChange((event: string, session: any) => {
               console.log('Auth Store: Auth state changed:', event, session ? 'session exists' : 'no session')
               if (session?.user) {
                 console.log('Auth Store: Auth change - setting authenticated')

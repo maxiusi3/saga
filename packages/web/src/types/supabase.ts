@@ -6,9 +6,17 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+type AnySupabaseTable = {
+  Row: any
+  Insert: any
+  Update: any
+  Relationships?: any[]
+}
+
 export interface Database {
   public: {
     Tables: {
+      [key: string]: AnySupabaseTable
       user_profiles: {
         Row: {
           id: string

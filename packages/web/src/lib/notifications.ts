@@ -291,7 +291,7 @@ export class NotificationService {
         )
 
       // 订阅并监听状态，失败则降级轮询
-      channel.subscribe((status) => {
+      channel.subscribe((status: string) => {
         if (status === 'SUBSCRIBED') {
           // 成功，若之前有轮询则停掉
           stopPolling()

@@ -92,7 +92,7 @@ export function useStoryTimeline(projectId: string, filters: DiscoveryFilters = 
       setError(null)
       
       const response = await apiClient.get(`/api/projects/${projectId}/timeline`, {
-        params: filters
+        params: filters as Record<string, string | number | boolean | null | undefined>
       })
       
       setTimeline(response.data.data)

@@ -139,9 +139,9 @@ export const performanceUtils = {
       // Time to First Byte
       ttfb: navigation.responseStart - navigation.requestStart,
       // DOM Content Loaded
-      dcl: navigation.domContentLoadedEventEnd - navigation.navigationStart,
+      dcl: navigation.domContentLoadedEventEnd - navigation.startTime,
       // Load Complete
-      load: navigation.loadEventEnd - navigation.navigationStart,
+      load: navigation.loadEventEnd - navigation.startTime,
       // First Paint
       fp: performance.getEntriesByName('first-paint')[0]?.startTime || 0,
       // First Contentful Paint

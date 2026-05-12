@@ -241,7 +241,7 @@ export function WebSpeechRecorder({
       recognitionRef.current.stop()
       setIsPaused(true)
       pausedTimeRef.current += Date.now() - startTimeRef.current
-      toast.info('录音已暂停')
+      toast('录音已暂停')
     }
   }, [isRecording, isPaused])
 
@@ -279,7 +279,7 @@ export function WebSpeechRecorder({
       onRecordingComplete?.(finalText)
       toast.success('录音完成')
     } else {
-      toast.warning('未检测到有效语音内容')
+      toast('未检测到有效语音内容')
     }
   }, [onRecordingComplete])
 

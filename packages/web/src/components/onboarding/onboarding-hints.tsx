@@ -239,6 +239,13 @@ export function OnboardingEmptyState({
 }: { 
   userRole: 'facilitator' | 'storyteller' 
 }) {
+  const locale = useLocale()
+  const withLocale = (path: string) => {
+    if (!path.startsWith('/')) return path
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+    return `/${locale}${path}`
+  }
+
   if (userRole === 'facilitator') {
     return (
       <div className="text-center py-12">
@@ -257,7 +264,7 @@ export function OnboardingEmptyState({
           </p>
           
           <div className="space-y-4">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
+            <Button asChild size="lg" className="touch-target-large bg-primary hover:bg-primary/90 text-primary-foreground w-full">
               <Link href={withLocale('/dashboard/projects/new')}>
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
