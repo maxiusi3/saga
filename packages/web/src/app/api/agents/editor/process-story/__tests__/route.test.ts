@@ -315,6 +315,37 @@ describe('/api/agents/editor/process-story', () => {
     expect(failAgentRun).toHaveBeenCalledWith('run-1', 'artifact insert failed')
   })
 
+  it('marks the agent run failed when story processing fails after run creation', async () => {
+    processStoryForBiography.mockImplementationOnce(() => {
+      throw new Error('processor failed')
+    })
+
+    const response = await POST(new NextRequest('http://localhost/api/agents/editor/process-story', {
+      method: 'POST',
+      body: JSON.stringify({ storyId: 'story-1' }),
+    }))
+
+    expect(response.status).toBe(500)
+    await expect(response.json()).resolves.toEqual({ error: 'Unable to process story with editor agent' })
+    expect(createAgentRun).toHaveBeenCalledWith({
+      agentType: 'editor_librarian',
+      projectId: 'project-1',
+      storyId: 'story-1',
+      interviewSessionId: null,
+      createdBy: 'host-1',
+      input: {
+        storyId: 'story-1',
+        title: 'A Market Morning',
+        transcriptLength: 58,
+      },
+      model: 'deterministic-editor-agent',
+    })
+    expect(failAgentRun).toHaveBeenCalledWith('run-1', 'processor failed')
+    expect(createAgentArtifact).not.toHaveBeenCalled()
+    expect(createStoryElements).not.toHaveBeenCalled()
+    expect(completeAgentRun).not.toHaveBeenCalled()
+  })
+
   it('still returns 500 when failing the agent run also fails', async () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined)
     createStoryElements.mockRejectedValueOnce(new Error('element insert failed'))

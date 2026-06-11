@@ -43,14 +43,6 @@ export async function POST(request: NextRequest) {
   if (!access.ok) return withAuthHeaders(access.response, auth.headers)
 
   const transcript = story.transcript || ''
-  const output = processStoryForBiography({
-    storyId: story.id,
-    projectId: story.project_id,
-    title: story.title,
-    transcript,
-    createdAt: story.created_at,
-  })
-
   let agentRunId: string | null = null
   try {
     const agentRun = await createAgentRun({
@@ -68,6 +60,14 @@ export async function POST(request: NextRequest) {
     })
     const runId = String(agentRun.id)
     agentRunId = runId
+
+    const output = processStoryForBiography({
+      storyId: story.id,
+      projectId: story.project_id,
+      title: story.title,
+      transcript,
+      createdAt: story.created_at,
+    })
 
     await createAgentArtifact({
       agentRunId: runId,
