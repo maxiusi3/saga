@@ -26,7 +26,10 @@ export interface InterviewInterventionResult {
   promptText: string
 }
 
+const MAX_PROMPT_LENGTH = 220
+const EMOTIONAL_SUPPORT_SILENCE_MS = 3000
 const NEGATIVE_EMOTION_PATTERN = /(painful|guilty|sad|grief|lonely|afraid|scared|ashamed|难过|内疚|伤心|害怕|孤独|痛苦)/i
+const EXPLICIT_DISTRESS_PATTERN = /(need (?:a )?(?:break|pause)|can't (?:continue|talk)|cannot (?:continue|talk)|overwhelmed|崩溃|受不了|说不下去)/i
 
 export function generateInterviewIntervention(input: InterviewInterventionInput): InterviewInterventionResult {
   if (input.interventionLevel === 'off') {
@@ -40,7 +43,7 @@ export function generateInterviewIntervention(input: InterviewInterventionInput)
 
   const name = input.storytellerName?.trim() || 'there'
 
-  if (NEGATIVE_EMOTION_PATTERN.test(input.recentTranscript)) {
+  if (shouldOfferEmotionalSupport(input.recentTranscript, input.silenceMs)) {
     return {
       shouldIntervene: true,
       eventKind: 'emotional_support',
@@ -54,7 +57,9 @@ export function generateInterviewIntervention(input: InterviewInterventionInput)
       shouldIntervene: true,
       eventKind: 'opening',
       triggerReason: 'session_started',
-      promptText: `Hi ${name}. I am here to listen and gently help if you get stuck. You can take your time. ${input.currentPrompt || 'Start wherever the memory begins for you.'}`,
+      promptText: capPrompt(
+        `Hi ${name}. I am here to listen and gently help if you get stuck. You can take your time. ${input.currentPrompt || 'Start wherever the memory begins for you.'}`,
+      ),
     }
   }
 
@@ -72,7 +77,9 @@ export function generateInterviewIntervention(input: InterviewInterventionInput)
       shouldIntervene: true,
       eventKind: 'prior_story_recap',
       triggerReason: 'previous_story_available',
-      promptText: `${input.previousStorySummary} We can continue from there, or you can start with the moment that feels most important today.`,
+      promptText: capPrompt(
+        `${input.previousStorySummary} We can continue from there, or you can start with the moment that feels most important today.`,
+      ),
     }
   }
 
@@ -88,6 +95,15 @@ export function generateInterviewIntervention(input: InterviewInterventionInput)
         ],
         input.previousPrompts,
       )
+      if (!promptText) {
+        return {
+          shouldIntervene: false,
+          eventKind: null,
+          triggerReason: 'gentle_probe_exhausted',
+          promptText: '',
+        }
+      }
+
       return {
         shouldIntervene: true,
         eventKind: 'gentle_probe',
@@ -123,6 +139,28 @@ export function generateInterviewIntervention(input: InterviewInterventionInput)
   }
 }
 
+function shouldOfferEmotionalSupport(recentTranscript: string, silenceMs: number) {
+  return (
+    EXPLICIT_DISTRESS_PATTERN.test(recentTranscript) ||
+    (silenceMs >= EMOTIONAL_SUPPORT_SILENCE_MS && NEGATIVE_EMOTION_PATTERN.test(recentTranscript))
+  )
+}
+
+function capPrompt(promptText: string) {
+  const normalizedPrompt = promptText.trim().replace(/\s+/g, ' ')
+  if (normalizedPrompt.length <= MAX_PROMPT_LENGTH) {
+    return normalizedPrompt
+  }
+
+  return `${normalizedPrompt.slice(0, MAX_PROMPT_LENGTH - 3).trimEnd()}...`
+}
+
 function pickNonRepeatedPrompt(prompts: string[], previousPrompts: string[]) {
-  return prompts.find(prompt => !previousPrompts.includes(prompt)) || prompts[0]
+  const usedPrompts = new Set(previousPrompts.map(normalizePromptForComparison))
+
+  return prompts.find(prompt => !usedPrompts.has(normalizePromptForComparison(prompt))) || null
+}
+
+function normalizePromptForComparison(prompt: string) {
+  return prompt.trim().replace(/\s+/g, ' ').toLowerCase()
 }
