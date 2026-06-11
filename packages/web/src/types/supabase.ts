@@ -267,6 +267,226 @@ export interface Database {
           updated_at?: string
         }
       }
+      agent_runs: {
+        Row: {
+          id: string
+          agent_type: string
+          status: string
+          project_id: string | null
+          story_id: string | null
+          interview_session_id: string | null
+          input: Json
+          output: Json | null
+          model: string | null
+          error: string | null
+          started_at: string
+          completed_at: string | null
+          created_by: string
+        }
+        Insert: {
+          id?: string
+          agent_type: string
+          status?: string
+          project_id?: string | null
+          story_id?: string | null
+          interview_session_id?: string | null
+          input?: Json
+          output?: Json | null
+          model?: string | null
+          error?: string | null
+          started_at?: string
+          completed_at?: string | null
+          created_by: string
+        }
+        Update: {
+          id?: string
+          agent_type?: string
+          status?: string
+          project_id?: string | null
+          story_id?: string | null
+          interview_session_id?: string | null
+          input?: Json
+          output?: Json | null
+          model?: string | null
+          error?: string | null
+          started_at?: string
+          completed_at?: string | null
+          created_by?: string
+        }
+      }
+      interview_sessions: {
+        Row: {
+          id: string
+          project_id: string
+          storyteller_id: string
+          prompt_text: string | null
+          recording_mode: string
+          intervention_level: string
+          status: string
+          started_at: string
+          completed_at: string | null
+        }
+        Insert: {
+          id?: string
+          project_id: string
+          storyteller_id: string
+          prompt_text?: string | null
+          recording_mode: string
+          intervention_level: string
+          status?: string
+          started_at?: string
+          completed_at?: string | null
+        }
+        Update: {
+          id?: string
+          project_id?: string
+          storyteller_id?: string
+          prompt_text?: string | null
+          recording_mode?: string
+          intervention_level?: string
+          status?: string
+          started_at?: string
+          completed_at?: string | null
+        }
+      }
+      interview_events: {
+        Row: {
+          id: string
+          interview_session_id: string
+          project_id: string
+          storyteller_id: string
+          event_kind: string
+          intervention_level: string
+          trigger_reason: string
+          prompt_text: string
+          transcript_window: string | null
+          transcript_start_offset: number | null
+          transcript_end_offset: number | null
+          accepted: boolean | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          interview_session_id: string
+          project_id: string
+          storyteller_id: string
+          event_kind: string
+          intervention_level: string
+          trigger_reason: string
+          prompt_text: string
+          transcript_window?: string | null
+          transcript_start_offset?: number | null
+          transcript_end_offset?: number | null
+          accepted?: boolean | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          interview_session_id?: string
+          project_id?: string
+          storyteller_id?: string
+          event_kind?: string
+          intervention_level?: string
+          trigger_reason?: string
+          prompt_text?: string
+          transcript_window?: string | null
+          transcript_start_offset?: number | null
+          transcript_end_offset?: number | null
+          accepted?: boolean | null
+          created_at?: string
+        }
+      }
+      agent_artifacts: {
+        Row: {
+          id: string
+          agent_run_id: string
+          project_id: string
+          story_id: string | null
+          artifact_type: string
+          payload: Json
+          source_refs: Json
+          review_status: string
+          confidence: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          agent_run_id: string
+          project_id: string
+          story_id?: string | null
+          artifact_type: string
+          payload?: Json
+          source_refs?: Json
+          review_status?: string
+          confidence?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          agent_run_id?: string
+          project_id?: string
+          story_id?: string | null
+          artifact_type?: string
+          payload?: Json
+          source_refs?: Json
+          review_status?: string
+          confidence?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      story_elements: {
+        Row: {
+          id: string
+          project_id: string
+          story_id: string
+          agent_run_id: string
+          element_type: string
+          value: string
+          normalized_value: string | null
+          source_quote: string
+          source_start_offset: number | null
+          source_end_offset: number | null
+          confidence: number
+          review_status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          project_id: string
+          story_id: string
+          agent_run_id: string
+          element_type: string
+          value: string
+          normalized_value?: string | null
+          source_quote: string
+          source_start_offset?: number | null
+          source_end_offset?: number | null
+          confidence?: number
+          review_status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          project_id?: string
+          story_id?: string
+          agent_run_id?: string
+          element_type?: string
+          value?: string
+          normalized_value?: string | null
+          source_quote?: string
+          source_start_offset?: number | null
+          source_end_offset?: number | null
+          confidence?: number
+          review_status?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
       subscriptions: {
         Row: {
           id: string
