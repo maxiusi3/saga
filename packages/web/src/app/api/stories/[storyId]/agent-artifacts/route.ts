@@ -13,16 +13,16 @@ interface StoryRow {
 }
 
 interface RouteContext {
-  params: {
+  params: Promise<{
     storyId: string
-  }
+  }>
 }
 
 export async function GET(request: NextRequest, context: RouteContext) {
   const auth = await getAuthenticatedUser(request)
   if (!auth.ok) return auth.response
 
-  const storyId = context.params.storyId
+  const { storyId } = await context.params
   const storyResult = await loadStory(storyId, auth.headers)
   if (!storyResult.ok) return storyResult.response
 

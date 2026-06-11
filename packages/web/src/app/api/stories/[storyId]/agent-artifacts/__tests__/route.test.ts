@@ -93,7 +93,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
   it('returns standalone story, elements, and raw artifacts for an authorized project member', async () => {
     const response = await GET(
       new NextRequest('http://localhost/api/stories/story-1/agent-artifacts'),
-      { params: { storyId: 'story-1' } },
+      { params: Promise.resolve({ storyId: 'story-1' }) },
     )
 
     expect(response.status).toBe(200)
@@ -154,7 +154,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
 
     const response = await GET(
       new NextRequest('http://localhost/api/stories/story-1/agent-artifacts'),
-      { params: { storyId: 'story-1' } },
+      { params: Promise.resolve({ storyId: 'story-1' }) },
     )
 
     expect(response.status).toBe(401)
@@ -168,7 +168,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
 
     const response = await GET(
       new NextRequest('http://localhost/api/stories/story-1/agent-artifacts'),
-      { params: { storyId: 'story-1' } },
+      { params: Promise.resolve({ storyId: 'story-1' }) },
     )
 
     expect(response.status).toBe(404)
@@ -185,7 +185,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
 
     const response = await GET(
       new NextRequest('http://localhost/api/stories/story-1/agent-artifacts'),
-      { params: { storyId: 'story-1' } },
+      { params: Promise.resolve({ storyId: 'story-1' }) },
     )
 
     expect(response.status).toBe(403)
