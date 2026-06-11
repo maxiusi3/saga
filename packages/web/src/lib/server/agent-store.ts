@@ -239,3 +239,45 @@ export async function getStoryElementsForStory(storyId: string) {
   raise(error)
   return data || []
 }
+
+export async function getCompletedEditorRunForStory(storyId: string, contentHash: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('agent_runs')
+    .select('*')
+    .eq('story_id', storyId)
+    .eq('agent_type', 'editor_librarian')
+    .eq('status', 'completed')
+    .eq('input->>contentHash', contentHash)
+    .order('completed_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  raise(error)
+  return data || null
+}
+
+export async function getCompletedEditorArtifactsForStory(storyId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('agent_artifacts')
+    .select('*, agent_runs!inner(agent_type, status)')
+    .eq('story_id', storyId)
+    .eq('agent_runs.agent_type', 'editor_librarian')
+    .eq('agent_runs.status', 'completed')
+    .order('created_at', { ascending: false })
+
+  raise(error)
+  return data || []
+}
+
+export async function getCompletedEditorStoryElementsForStory(storyId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('story_elements')
+    .select('*, agent_runs!inner(agent_type, status)')
+    .eq('story_id', storyId)
+    .eq('agent_runs.agent_type', 'editor_librarian')
+    .eq('agent_runs.status', 'completed')
+    .order('created_at', { ascending: true })
+
+  raise(error)
+  return data || []
+}

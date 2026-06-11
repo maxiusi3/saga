@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
 import {
-  getAgentArtifactsForStory,
-  getStoryElementsForStory,
+  getCompletedEditorArtifactsForStory,
+  getCompletedEditorStoryElementsForStory,
 } from '@/lib/server/agent-store'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
@@ -31,8 +31,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
   try {
     const [artifacts, elements] = await Promise.all([
-      getAgentArtifactsForStory(storyId),
-      getStoryElementsForStory(storyId),
+      getCompletedEditorArtifactsForStory(storyId),
+      getCompletedEditorStoryElementsForStory(storyId),
     ])
     const standaloneStory = getStandaloneStoryPayload(artifacts)
 

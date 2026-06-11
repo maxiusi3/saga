@@ -18,6 +18,7 @@ const createAgentArtifact = jest.fn()
 const createStoryElements = jest.fn()
 const completeAgentRun = jest.fn()
 const failAgentRun = jest.fn()
+const getCompletedEditorRunForStory = jest.fn()
 
 jest.mock('@/lib/server/auth', () => ({
   getAuthenticatedUser: (...args: unknown[]) => getAuthenticatedUser(...args),
@@ -41,6 +42,7 @@ jest.mock('@/lib/server/agent-store', () => ({
   createStoryElements: (...args: unknown[]) => createStoryElements(...args),
   completeAgentRun: (...args: unknown[]) => completeAgentRun(...args),
   failAgentRun: (...args: unknown[]) => failAgentRun(...args),
+  getCompletedEditorRunForStory: (...args: unknown[]) => getCompletedEditorRunForStory(...args),
 }))
 
 describe('/api/agents/editor/process-story', () => {
@@ -96,6 +98,7 @@ describe('/api/agents/editor/process-story', () => {
     createAgentArtifact.mockResolvedValue({ id: 'artifact-1' })
     createStoryElements.mockResolvedValue([{ id: 'element-1' }, { id: 'element-2' }])
     completeAgentRun.mockResolvedValue({ id: 'run-1', status: 'completed' })
+    getCompletedEditorRunForStory.mockResolvedValue(null)
   })
 
   afterEach(() => {
@@ -138,9 +141,11 @@ describe('/api/agents/editor/process-story', () => {
         storyId: 'story-1',
         title: 'A Market Morning',
         transcriptLength: 58,
+        contentHash: expect.any(String),
       },
       model: 'deterministic-editor-agent',
     })
+    expect(getCompletedEditorRunForStory).toHaveBeenCalledWith('story-1', expect.any(String))
     expect(createAgentArtifact).toHaveBeenNthCalledWith(1, {
       agentRunId: 'run-1',
       projectId: 'project-1',
@@ -237,6 +242,35 @@ describe('/api/agents/editor/process-story', () => {
       standaloneStoryTitle: 'A Market Morning',
       elementsCount: 2,
     })
+    expect(failAgentRun).not.toHaveBeenCalled()
+  })
+
+  it('returns an existing completed editor run for the same story content without duplicating artifacts', async () => {
+    getCompletedEditorRunForStory.mockResolvedValueOnce({
+      id: 'run-existing',
+      output: {
+        processed: true,
+        elementsCount: 2,
+      },
+    })
+
+    const response = await POST(new NextRequest('http://localhost/api/agents/editor/process-story', {
+      method: 'POST',
+      body: JSON.stringify({ storyId: 'story-1' }),
+    }))
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toEqual({
+      processed: true,
+      agentRunId: 'run-existing',
+      elementsCount: 2,
+    })
+    expect(getCompletedEditorRunForStory).toHaveBeenCalledWith('story-1', expect.any(String))
+    expect(createAgentRun).not.toHaveBeenCalled()
+    expect(processStoryForBiography).not.toHaveBeenCalled()
+    expect(createAgentArtifact).not.toHaveBeenCalled()
+    expect(createStoryElements).not.toHaveBeenCalled()
+    expect(completeAgentRun).not.toHaveBeenCalled()
     expect(failAgentRun).not.toHaveBeenCalled()
   })
 
@@ -337,6 +371,7 @@ describe('/api/agents/editor/process-story', () => {
         storyId: 'story-1',
         title: 'A Market Morning',
         transcriptLength: 58,
+        contentHash: expect.any(String),
       },
       model: 'deterministic-editor-agent',
     })

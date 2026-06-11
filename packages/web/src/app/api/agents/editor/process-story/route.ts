@@ -1,3 +1,4 @@
+import { createHash } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { processStoryForBiography } from '@/lib/agents/editor-agent'
 import { getAuthenticatedUser } from '@/lib/server/auth'
@@ -8,6 +9,7 @@ import {
   createAgentRun,
   createStoryElements,
   failAgentRun,
+  getCompletedEditorRunForStory,
 } from '@/lib/server/agent-store'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
@@ -43,6 +45,24 @@ export async function POST(request: NextRequest) {
   if (!access.ok) return withAuthHeaders(access.response, auth.headers)
 
   const transcript = story.transcript || ''
+  const contentHash = createStoryContentHash({
+    storyId: story.id,
+    title: story.title,
+    transcript,
+    createdAt: story.created_at,
+  })
+  const existingRun = await getCompletedEditorRunForStory(story.id, contentHash)
+  if (existingRun) {
+    return NextResponse.json(
+      {
+        processed: true,
+        agentRunId: String(existingRun.id),
+        elementsCount: getRunElementsCount(existingRun),
+      },
+      { headers: auth.headers },
+    )
+  }
+
   let agentRunId: string | null = null
   try {
     const agentRun = await createAgentRun({
@@ -55,6 +75,7 @@ export async function POST(request: NextRequest) {
         storyId: story.id,
         title: story.title,
         transcriptLength: transcript.length,
+        contentHash,
       },
       model: 'deterministic-editor-agent',
     })
@@ -214,4 +235,29 @@ function averageConfidence(confidences: number[]) {
 function withAuthHeaders(response: NextResponse, headers: Headers) {
   headers.forEach((value, key) => response.headers.set(key, value))
   return response
+}
+
+function createStoryContentHash(input: {
+  storyId: string
+  title: string | null
+  transcript: string
+  createdAt: string
+}) {
+  return createHash('sha256')
+    .update(JSON.stringify({
+      storyId: input.storyId,
+      title: input.title,
+      transcript: input.transcript,
+      createdAt: input.createdAt,
+    }))
+    .digest('hex')
+}
+
+function getRunElementsCount(run: { output?: unknown }) {
+  if (!run.output || typeof run.output !== 'object' || Array.isArray(run.output)) {
+    return 0
+  }
+
+  const output = run.output as Record<string, unknown>
+  return typeof output.elementsCount === 'number' ? output.elementsCount : 0
 }

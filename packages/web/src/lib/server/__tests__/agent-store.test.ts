@@ -9,6 +9,9 @@ import {
   createStoryElements,
   getAgentArtifactsForStory,
   getStoryElementsForStory,
+  getCompletedEditorRunForStory,
+  getCompletedEditorArtifactsForStory,
+  getCompletedEditorStoryElementsForStory,
 } from '../agent-store'
 
 const insertSingle = jest.fn()
@@ -23,9 +26,15 @@ const updateSelect = jest.fn(() => ({ single: updateSingle }))
 const updateEq = jest.fn(() => ({ select: updateSelect }))
 const update = jest.fn(() => ({ eq: updateEq }))
 
-const order = jest.fn()
-const queryEq = jest.fn(() => ({ order }))
-const querySelect = jest.fn(() => ({ eq: queryEq }))
+const queryMaybeSingle = jest.fn()
+const queryLimit = jest.fn(() => ({ maybeSingle: queryMaybeSingle }))
+const order = jest.fn(() => ({ limit: queryLimit }))
+const queryBuilder = {
+  eq: (...args: unknown[]) => queryEq(...args),
+  order: (...args: unknown[]) => order(...args),
+}
+const queryEq = jest.fn(() => queryBuilder)
+const querySelect = jest.fn(() => queryBuilder)
 
 const from = jest.fn((table: string) => ({
   insert: table === 'story_elements' ? insertRows : insertSingleRows,
@@ -43,7 +52,8 @@ describe('agent-store', () => {
     insertSingle.mockResolvedValue({ data: { id: 'row-1' }, error: null })
     insertRowsSelect.mockResolvedValue({ data: [{ id: 'element-1' }], error: null })
     updateSingle.mockResolvedValue({ data: { id: 'run-1', status: 'completed' }, error: null })
-    order.mockResolvedValue({ data: [{ id: 'result-1' }], error: null })
+    order.mockImplementation(() => ({ limit: queryLimit }))
+    queryMaybeSingle.mockResolvedValue({ data: { id: 'run-1' }, error: null })
   })
 
   it('creates agent runs and returns inserted row', async () => {
@@ -256,6 +266,62 @@ describe('agent-store', () => {
     expect(from).toHaveBeenCalledWith('story_elements')
     expect(querySelect).toHaveBeenCalledWith('*')
     expect(queryEq).toHaveBeenCalledWith('story_id', 'story-1')
+    expect(order).toHaveBeenCalledWith('created_at', { ascending: true })
+  })
+
+  it('gets a completed editor run for a story and content hash newest first', async () => {
+    queryMaybeSingle.mockResolvedValueOnce({
+      data: { id: 'run-1', output: { elementsCount: 2 } },
+      error: null,
+    })
+
+    const result = await getCompletedEditorRunForStory('story-1', 'hash-1')
+
+    expect(result).toEqual({ id: 'run-1', output: { elementsCount: 2 } })
+    expect(from).toHaveBeenCalledWith('agent_runs')
+    expect(querySelect).toHaveBeenCalledWith('*')
+    expect(queryEq).toHaveBeenCalledWith('story_id', 'story-1')
+    expect(queryEq).toHaveBeenCalledWith('agent_type', 'editor_librarian')
+    expect(queryEq).toHaveBeenCalledWith('status', 'completed')
+    expect(queryEq).toHaveBeenCalledWith('input->>contentHash', 'hash-1')
+    expect(order).toHaveBeenCalledWith('completed_at', { ascending: false })
+    expect(queryLimit).toHaveBeenCalledWith(1)
+    expect(queryMaybeSingle).toHaveBeenCalledWith()
+  })
+
+  it('returns null when no completed editor run exists for a story and content hash', async () => {
+    queryMaybeSingle.mockResolvedValueOnce({ data: null, error: null })
+
+    const result = await getCompletedEditorRunForStory('story-1', 'hash-1')
+
+    expect(result).toBeNull()
+  })
+
+  it('gets completed editor artifacts for a story newest first', async () => {
+    order.mockResolvedValueOnce({ data: [{ id: 'artifact-1' }], error: null })
+
+    const result = await getCompletedEditorArtifactsForStory('story-1')
+
+    expect(result).toEqual([{ id: 'artifact-1' }])
+    expect(from).toHaveBeenCalledWith('agent_artifacts')
+    expect(querySelect).toHaveBeenCalledWith('*, agent_runs!inner(agent_type, status)')
+    expect(queryEq).toHaveBeenCalledWith('story_id', 'story-1')
+    expect(queryEq).toHaveBeenCalledWith('agent_runs.agent_type', 'editor_librarian')
+    expect(queryEq).toHaveBeenCalledWith('agent_runs.status', 'completed')
+    expect(order).toHaveBeenCalledWith('created_at', { ascending: false })
+  })
+
+  it('gets completed editor story elements for a story oldest first', async () => {
+    order.mockResolvedValueOnce({ data: [{ id: 'element-1' }], error: null })
+
+    const result = await getCompletedEditorStoryElementsForStory('story-1')
+
+    expect(result).toEqual([{ id: 'element-1' }])
+    expect(from).toHaveBeenCalledWith('story_elements')
+    expect(querySelect).toHaveBeenCalledWith('*, agent_runs!inner(agent_type, status)')
+    expect(queryEq).toHaveBeenCalledWith('story_id', 'story-1')
+    expect(queryEq).toHaveBeenCalledWith('agent_runs.agent_type', 'editor_librarian')
+    expect(queryEq).toHaveBeenCalledWith('agent_runs.status', 'completed')
     expect(order).toHaveBeenCalledWith('created_at', { ascending: true })
   })
 

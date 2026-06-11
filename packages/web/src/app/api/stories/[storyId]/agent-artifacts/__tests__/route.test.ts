@@ -12,8 +12,8 @@ const from = jest.fn()
 const select = jest.fn()
 const eq = jest.fn()
 const maybeSingle = jest.fn()
-const getAgentArtifactsForStory = jest.fn()
-const getStoryElementsForStory = jest.fn()
+const getCompletedEditorArtifactsForStory = jest.fn()
+const getCompletedEditorStoryElementsForStory = jest.fn()
 
 jest.mock('@/lib/server/auth', () => ({
   getAuthenticatedUser: (...args: unknown[]) => getAuthenticatedUser(...args),
@@ -28,8 +28,8 @@ jest.mock('@/lib/supabase', () => ({
 }))
 
 jest.mock('@/lib/server/agent-store', () => ({
-  getAgentArtifactsForStory: (...args: unknown[]) => getAgentArtifactsForStory(...args),
-  getStoryElementsForStory: (...args: unknown[]) => getStoryElementsForStory(...args),
+  getCompletedEditorArtifactsForStory: (...args: unknown[]) => getCompletedEditorArtifactsForStory(...args),
+  getCompletedEditorStoryElementsForStory: (...args: unknown[]) => getCompletedEditorStoryElementsForStory(...args),
 }))
 
 describe('/api/stories/[storyId]/agent-artifacts', () => {
@@ -51,7 +51,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
     select.mockReturnValue({ eq })
     from.mockReturnValue({ select })
     getSupabaseAdmin.mockReturnValue({ from })
-    getAgentArtifactsForStory.mockResolvedValue([
+    getCompletedEditorArtifactsForStory.mockResolvedValue([
       {
         id: 'artifact-standalone',
         artifact_type: 'standalone_story',
@@ -71,7 +71,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
         source_refs: [],
       },
     ])
-    getStoryElementsForStory.mockResolvedValue([
+    getCompletedEditorStoryElementsForStory.mockResolvedValue([
       {
         id: 'element-1',
         element_type: 'time',
@@ -142,8 +142,8 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
     expect(select).toHaveBeenCalledWith('id, project_id')
     expect(eq).toHaveBeenCalledWith('id', 'story-1')
     expect(requireProjectAccess).toHaveBeenCalledWith('project-1', { id: 'host-1' })
-    expect(getAgentArtifactsForStory).toHaveBeenCalledWith('story-1')
-    expect(getStoryElementsForStory).toHaveBeenCalledWith('story-1')
+    expect(getCompletedEditorArtifactsForStory).toHaveBeenCalledWith('story-1')
+    expect(getCompletedEditorStoryElementsForStory).toHaveBeenCalledWith('story-1')
   })
 
   it('returns auth denial before loading the story', async () => {
@@ -174,7 +174,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
     expect(response.status).toBe(404)
     await expect(response.json()).resolves.toEqual({ error: 'Story not found' })
     expect(requireProjectAccess).not.toHaveBeenCalled()
-    expect(getAgentArtifactsForStory).not.toHaveBeenCalled()
+    expect(getCompletedEditorArtifactsForStory).not.toHaveBeenCalled()
   })
 
   it('returns access denial before reading artifacts', async () => {
@@ -190,7 +190,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
 
     expect(response.status).toBe(403)
     await expect(response.json()).resolves.toEqual({ error: 'Access denied' })
-    expect(getAgentArtifactsForStory).not.toHaveBeenCalled()
-    expect(getStoryElementsForStory).not.toHaveBeenCalled()
+    expect(getCompletedEditorArtifactsForStory).not.toHaveBeenCalled()
+    expect(getCompletedEditorStoryElementsForStory).not.toHaveBeenCalled()
   })
 })
