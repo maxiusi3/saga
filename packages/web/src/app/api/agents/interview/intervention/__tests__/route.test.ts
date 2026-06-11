@@ -100,6 +100,34 @@ describe('/api/agents/interview/intervention', () => {
     expect(completeAgentRun).not.toHaveBeenCalled()
   })
 
+  it('rejects invalid intervention levels before creating an agent run or event', async () => {
+    const request = new NextRequest('http://localhost/api/agents/interview/intervention', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId: 'project-1',
+        interviewSessionId: 'session-1',
+        storytellerId: 'storyteller-1',
+        interventionLevel: 'very_high',
+        phase: 'opening',
+        recentTranscript: '',
+        previousStorySummary: null,
+        previousPrompts: [],
+        silenceMs: 0,
+      }),
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(400)
+    await expect(response.json()).resolves.toEqual({ error: 'Invalid interview intervention request' })
+    expect(requireProjectAccess).not.toHaveBeenCalled()
+    expect(generateInterviewIntervention).not.toHaveBeenCalled()
+    expect(createAgentRun).not.toHaveBeenCalled()
+    expect(createInterviewEvent).not.toHaveBeenCalled()
+    expect(completeAgentRun).not.toHaveBeenCalled()
+    expect(failAgentRun).not.toHaveBeenCalled()
+  })
+
   it('creates an agent run and opening event when intervention should happen', async () => {
     generateInterviewIntervention.mockReturnValueOnce({
       shouldIntervene: true,

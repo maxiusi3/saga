@@ -74,6 +74,11 @@ export async function requestInterviewIntervention(
   return response.json()
 }
 
+export const agentService = {
+  createInterviewSession,
+  requestInterviewIntervention,
+}
+
 async function authHeaders(): Promise<Record<string, string>> {
   const token = await useAuthStore.getState().getAccessToken()
   return token ? { Authorization: `Bearer ${token}` } : {}
