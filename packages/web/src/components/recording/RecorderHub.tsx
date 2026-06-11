@@ -12,10 +12,12 @@ interface RecorderHubProps {
 
 export function RecorderHub({
     onModeSelect,
-    interventionLevel = 'low',
-    onInterventionLevelChange = () => {},
+    interventionLevel,
+    onInterventionLevelChange,
     projectTitle = 'New Story',
 }: RecorderHubProps) {
+    const showInterventionSelector = interventionLevel && onInterventionLevelChange
+
     return (
         <div className="flex flex-col items-center justify-center min-h-[60vh] p-6 space-y-8 animate-in fade-in duration-500">
             <div className="text-center space-y-2">
@@ -27,10 +29,12 @@ export function RecorderHub({
                 </p>
             </div>
 
-            <InterventionLevelSelector
-                value={interventionLevel}
-                onChange={onInterventionLevelChange}
-            />
+            {showInterventionSelector && (
+                <InterventionLevelSelector
+                    value={interventionLevel}
+                    onChange={onInterventionLevelChange}
+                />
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
                 {/* Deep Dive Mode Card */}

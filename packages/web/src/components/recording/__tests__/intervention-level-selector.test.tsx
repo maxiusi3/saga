@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
 import type { InterventionLevel } from '@saga/shared/types/agents'
 import { InterventionLevelSelector } from '../InterventionLevelSelector'
+import { RecorderHub } from '../RecorderHub'
 
 describe('InterventionLevelSelector', () => {
   it('lets the user choose off, low, and high intervention levels', () => {
@@ -33,5 +34,25 @@ describe('InterventionLevelSelector', () => {
 
     fireEvent.click(screen.getByRole('radio', { name: 'High' }))
     expect(onChange).toHaveBeenLastCalledWith('high')
+  })
+})
+
+describe('RecorderHub intervention level selector', () => {
+  it('only renders the selector when intervention props are provided', () => {
+    const onModeSelect = jest.fn()
+    const onInterventionLevelChange = jest.fn()
+    const { rerender } = render(<RecorderHub onModeSelect={onModeSelect} />)
+
+    expect(screen.queryByRole('radio', { name: 'Low' })).not.toBeInTheDocument()
+
+    rerender(
+      <RecorderHub
+        onModeSelect={onModeSelect}
+        interventionLevel="low"
+        onInterventionLevelChange={onInterventionLevelChange}
+      />,
+    )
+
+    expect(screen.getByRole('radio', { name: 'Low' })).toBeInTheDocument()
   })
 })

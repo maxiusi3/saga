@@ -328,6 +328,10 @@ export function SmartRecorder({
 
   useEffect(() => {
     if (recordingState === 'recording') {
+      if (recognitionRef.current) {
+        return
+      }
+
       const recognition = initializeRealTimeRecognition()
       if (recognition) {
         recognitionRef.current = recognition
@@ -636,7 +640,7 @@ export function SmartRecorder({
     releaseWakeLock() // Ensure lock is released
   }, [stopRecording, audioUrl, releaseWakeLock])
 
-  const handleComplete = useCallback(async () => {
+  const handleComplete = useCallback(() => {
     const result: RecordingResult = {
       audioBlob: audioBlob || undefined,
       transcript: transcript.trim(),
@@ -649,19 +653,17 @@ export function SmartRecorder({
       return
     }
 
-    try {
-      await requestInterviewPrompt({
-        phase: 'closing',
-        recentTranscript: result.transcript,
-        silenceMs: 0,
-        transcriptStartOffset: 0,
-        transcriptEndOffset: result.transcript.length,
-      })
-    } catch (error) {
-      console.warn('[SmartRecorder] Failed to request closing intervention:', error)
-    }
-
     onRecordingComplete(result)
+
+    void requestInterviewPrompt({
+      phase: 'closing',
+      recentTranscript: result.transcript,
+      silenceMs: 0,
+      transcriptStartOffset: 0,
+      transcriptEndOffset: result.transcript.length,
+    }).catch((error) => {
+      console.warn('[SmartRecorder] Failed to request closing intervention:', error)
+    })
   }, [audioBlob, transcript, duration, shouldUseRealtime, onRecordingComplete, requestInterviewPrompt])
 
   const playAudio = useCallback(() => {
