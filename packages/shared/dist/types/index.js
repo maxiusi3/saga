@@ -35,4 +35,5 @@ __exportStar(require("./api"), exports);
 // Discovery and navigation types
 __exportStar(require("./story-discovery"), exports);
 __exportStar(require("./story-sharing"), exports);
+__exportStar(require("./agents"), exports);
 //# sourceMappingURL=index.js.map

@@ -17,6 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AI_PROMPT_CHAPTERS = exports.getChapterProgress = exports.getPromptById = exports.getNextPrompt = exports.getPromptsByChapter = exports.getAllPrompts = void 0;
 __exportStar(require("./types"), exports);
 __exportStar(require("./utils"), exports);
+__exportStar(require("./types/agents"), exports);
 __exportStar(require("./lib/ai-services"), exports);
 __exportStar(require("./lib/permissions"), exports);
 __exportStar(require("./lib/notifications"), exports);
