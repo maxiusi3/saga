@@ -44,6 +44,13 @@ export async function POST(request: NextRequest) {
     return invalidRequest(auth.headers)
   }
 
+  if (storytellerId !== auth.user.id) {
+    return NextResponse.json(
+      { error: 'Storyteller must match authenticated user' },
+      { status: 403, headers: auth.headers },
+    )
+  }
+
   const access = await requireProjectAccess(projectId, auth.user)
   if (!access.ok) return withAuthHeaders(access.response, auth.headers)
 

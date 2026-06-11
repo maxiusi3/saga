@@ -9,6 +9,7 @@ import {
 } from '@/lib/agents/interview-agent'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
+import { getSupabaseAdmin } from '@/lib/supabase'
 import {
   completeAgentRun,
   createAgentRun,
@@ -41,6 +42,12 @@ interface InterviewInterventionRequest {
   transcriptEndOffset?: unknown
 }
 
+interface InterviewSessionRow {
+  id: string
+  project_id: string
+  storyteller_id: string
+}
+
 export async function POST(request: NextRequest) {
   const auth = await getAuthenticatedUser(request)
   if (!auth.ok) return auth.response
@@ -51,8 +58,28 @@ export async function POST(request: NextRequest) {
   }
 
   const input = parsed.input
+  if (input.storytellerId !== auth.user.id) {
+    return NextResponse.json(
+      { error: 'Storyteller must match authenticated user' },
+      { status: 403, headers: auth.headers },
+    )
+  }
+
   const access = await requireProjectAccess(input.projectId, auth.user)
   if (!access.ok) return withAuthHeaders(access.response, auth.headers)
+
+  const sessionResult = await loadInterviewSession(input.interviewSessionId, auth.headers)
+  if (!sessionResult.ok) return sessionResult.response
+
+  if (
+    sessionResult.session.project_id !== input.projectId ||
+    sessionResult.session.storyteller_id !== auth.user.id
+  ) {
+    return NextResponse.json(
+      { error: 'Interview session does not match request' },
+      { status: 403, headers: auth.headers },
+    )
+  }
 
   let intervention
   try {
@@ -123,11 +150,50 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ intervention, event }, { headers: auth.headers })
   } catch (error) {
     if (agentRunId) {
-      await failAgentRun(agentRunId, error instanceof Error ? error.message : 'Interview intervention failed')
+      try {
+        await failAgentRun(agentRunId, error instanceof Error ? error.message : 'Interview intervention failed')
+      } catch {
+        console.error('Failed to mark interview agent run as failed')
+      }
     }
     console.error('Failed to store interview intervention')
     return NextResponse.json({ error: 'Unable to store interview intervention' }, { status: 500, headers: auth.headers })
   }
+}
+
+async function loadInterviewSession(interviewSessionId: string, headers: Headers) {
+  let db: ReturnType<typeof getSupabaseAdmin>
+  try {
+    db = getSupabaseAdmin()
+  } catch {
+    return {
+      ok: false as const,
+      response: NextResponse.json({ error: 'Database service not configured' }, { status: 503, headers }),
+    }
+  }
+
+  const { data, error } = await db
+    .from('interview_sessions')
+    .select('id, project_id, storyteller_id')
+    .eq('id', interviewSessionId)
+    .maybeSingle()
+
+  if (error) {
+    console.error('Failed to load interview session for intervention')
+    return {
+      ok: false as const,
+      response: NextResponse.json({ error: 'Unable to verify interview session' }, { status: 500, headers }),
+    }
+  }
+
+  if (!data) {
+    return {
+      ok: false as const,
+      response: NextResponse.json({ error: 'Interview session does not match request' }, { status: 403, headers }),
+    }
+  }
+
+  return { ok: true as const, session: data as InterviewSessionRow }
 }
 
 async function parseRequest(request: NextRequest) {

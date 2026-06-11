@@ -32,7 +32,7 @@ describe('/api/agents/interview/session', () => {
     createInterviewSession.mockResolvedValue({
       id: 'session-1',
       project_id: 'project-1',
-      storyteller_id: 'storyteller-1',
+      storyteller_id: 'host-1',
       prompt_text: 'Tell me about the old shop.',
       recording_mode: 'deep_dive',
       intervention_level: 'low',
@@ -49,7 +49,7 @@ describe('/api/agents/interview/session', () => {
       method: 'POST',
       body: JSON.stringify({
         projectId: 'project-1',
-        storytellerId: 'storyteller-1',
+        storytellerId: 'host-1',
         promptText: 'Tell me about the old shop.',
         recordingMode: 'deep_dive',
         interventionLevel: 'low',
@@ -64,7 +64,7 @@ describe('/api/agents/interview/session', () => {
       session: {
         id: 'session-1',
         project_id: 'project-1',
-        storyteller_id: 'storyteller-1',
+        storyteller_id: 'host-1',
         prompt_text: 'Tell me about the old shop.',
         recording_mode: 'deep_dive',
         intervention_level: 'low',
@@ -74,7 +74,7 @@ describe('/api/agents/interview/session', () => {
     expect(requireProjectAccess).toHaveBeenCalledWith('project-1', { id: 'host-1' })
     expect(createInterviewSession).toHaveBeenCalledWith({
       projectId: 'project-1',
-      storytellerId: 'storyteller-1',
+      storytellerId: 'host-1',
       promptText: 'Tell me about the old shop.',
       recordingMode: 'deep_dive',
       interventionLevel: 'low',
@@ -86,7 +86,7 @@ describe('/api/agents/interview/session', () => {
       method: 'POST',
       body: JSON.stringify({
         projectId: 'project-1',
-        storytellerId: 'storyteller-1',
+        storytellerId: 'host-1',
         recordingMode: 'chat',
         interventionLevel: 'medium',
       }),
@@ -109,7 +109,7 @@ describe('/api/agents/interview/session', () => {
       method: 'POST',
       body: JSON.stringify({
         projectId: 'project-1',
-        storytellerId: 'storyteller-1',
+        storytellerId: 'host-1',
         recordingMode: 'chat',
         interventionLevel: 'off',
       }),
@@ -121,5 +121,65 @@ describe('/api/agents/interview/session', () => {
     await expect(response.json()).resolves.toEqual({ error: 'Unauthorized' })
     expect(requireProjectAccess).not.toHaveBeenCalled()
     expect(createInterviewSession).not.toHaveBeenCalled()
+  })
+
+  it('returns access denial without creating an interview session', async () => {
+    requireProjectAccess.mockResolvedValueOnce({
+      ok: false,
+      response: NextResponse.json({ error: 'Access denied' }, { status: 403 }),
+    })
+    const request = new NextRequest('http://localhost/api/agents/interview/session', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId: 'project-1',
+        storytellerId: 'host-1',
+        recordingMode: 'chat',
+        interventionLevel: 'off',
+      }),
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({ error: 'Access denied' })
+    expect(createInterviewSession).not.toHaveBeenCalled()
+  })
+
+  it('returns 403 when storyteller does not match the authenticated user', async () => {
+    const request = new NextRequest('http://localhost/api/agents/interview/session', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId: 'project-1',
+        storytellerId: 'storyteller-2',
+        recordingMode: 'chat',
+        interventionLevel: 'off',
+      }),
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({ error: 'Storyteller must match authenticated user' })
+    expect(requireProjectAccess).not.toHaveBeenCalled()
+    expect(createInterviewSession).not.toHaveBeenCalled()
+  })
+
+  it('returns 500 when interview session storage fails', async () => {
+    createInterviewSession.mockRejectedValueOnce(new Error('database write failed'))
+    const request = new NextRequest('http://localhost/api/agents/interview/session', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId: 'project-1',
+        storytellerId: 'host-1',
+        recordingMode: 'chat',
+        interventionLevel: 'off',
+      }),
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(500)
+    await expect(response.json()).resolves.toEqual({ error: 'Unable to create interview session' })
+    expect(createInterviewSession).toHaveBeenCalled()
   })
 })
