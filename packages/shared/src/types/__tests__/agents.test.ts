@@ -7,6 +7,10 @@ import {
   type InterventionLevel,
   type StoryElementType,
 } from '../agents'
+import * as PackageRoot from '../../index'
+import * as TypesBarrel from '../index'
+import type { AgentType as PackageRootAgentType } from '../../index'
+import type { AgentType as TypesBarrelAgentType } from '../index'
 
 describe('agent shared types', () => {
   it('defines Phase 1 agent types only', () => {
@@ -44,5 +48,15 @@ describe('agent shared types', () => {
       'consequence',
       'reflection',
     ])
+  })
+
+  it('exports agent types through the public type barrels', () => {
+    const typeBarrelValue: TypesBarrelAgentType = TypesBarrel.AGENT_TYPES[0]
+    const packageRootValue: PackageRootAgentType = PackageRoot.AGENT_TYPES[0]
+
+    expect(typeBarrelValue).toBe('interview')
+    expect(packageRootValue).toBe('interview')
+    expect(TypesBarrel.AGENT_TYPES).toBe(AGENT_TYPES)
+    expect(PackageRoot.AGENT_TYPES).toBe(AGENT_TYPES)
   })
 })
