@@ -8,6 +8,7 @@ create table if not exists public.agent_runs (
   project_id uuid null references public.projects(id) on delete cascade,
   story_id uuid null references public.stories(id) on delete cascade,
   interview_session_id uuid null,
+  content_hash text null,
   input jsonb not null default '{}'::jsonb,
   output jsonb null,
   model text null,
@@ -44,6 +45,9 @@ begin
       on delete set null;
   end if;
 end $$;
+
+alter table public.agent_runs
+  add column if not exists content_hash text null;
 
 create table if not exists public.interview_events (
   id uuid primary key default gen_random_uuid(),
@@ -92,9 +96,75 @@ create table if not exists public.story_elements (
   updated_at timestamptz not null default now()
 );
 
+alter table public.agent_runs enable row level security;
+alter table public.interview_sessions enable row level security;
+alter table public.interview_events enable row level security;
+alter table public.agent_artifacts enable row level security;
+alter table public.story_elements enable row level security;
+
+revoke all on table
+  public.agent_runs,
+  public.interview_sessions,
+  public.interview_events,
+  public.agent_artifacts,
+  public.story_elements
+from anon, authenticated;
+
+create or replace function public.set_agent_phase1_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_trigger
+    where tgname = 'set_agent_artifacts_updated_at'
+      and tgrelid = 'public.agent_artifacts'::regclass
+  ) then
+    create trigger set_agent_artifacts_updated_at
+      before update on public.agent_artifacts
+      for each row
+      execute function public.set_agent_phase1_updated_at();
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_trigger
+    where tgname = 'set_story_elements_updated_at'
+      and tgrelid = 'public.story_elements'::regclass
+  ) then
+    create trigger set_story_elements_updated_at
+      before update on public.story_elements
+      for each row
+      execute function public.set_agent_phase1_updated_at();
+  end if;
+end $$;
+
 create index if not exists idx_agent_runs_project_id on public.agent_runs(project_id);
 create index if not exists idx_agent_runs_story_id on public.agent_runs(story_id);
 create index if not exists idx_agent_runs_agent_type on public.agent_runs(agent_type);
+create unique index if not exists idx_agent_runs_completed_editor_story_content_hash_unique
+  on public.agent_runs(story_id, content_hash)
+  where agent_type = 'editor_librarian'
+    and status = 'completed'
+    and story_id is not null
+    and content_hash is not null;
+create index if not exists idx_agent_runs_completed_editor_story_hash_completed_at
+  on public.agent_runs(story_id, content_hash, completed_at desc)
+  where agent_type = 'editor_librarian'
+    and status = 'completed'
+    and story_id is not null
+    and content_hash is not null;
 create index if not exists idx_interview_sessions_project_id on public.interview_sessions(project_id);
 create index if not exists idx_interview_events_session_id on public.interview_events(interview_session_id);
 create index if not exists idx_agent_artifacts_story_id on public.agent_artifacts(story_id);

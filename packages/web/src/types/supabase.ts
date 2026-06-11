@@ -275,6 +275,7 @@ export interface Database {
           project_id: string | null
           story_id: string | null
           interview_session_id: string | null
+          content_hash: string | null
           input: Json
           output: Json | null
           model: string | null
@@ -290,6 +291,7 @@ export interface Database {
           project_id?: string | null
           story_id?: string | null
           interview_session_id?: string | null
+          content_hash?: string | null
           input?: Json
           output?: Json | null
           model?: string | null
@@ -305,6 +307,7 @@ export interface Database {
           project_id?: string | null
           story_id?: string | null
           interview_session_id?: string | null
+          content_hash?: string | null
           input?: Json
           output?: Json | null
           model?: string | null

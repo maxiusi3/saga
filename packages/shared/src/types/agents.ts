@@ -38,15 +38,16 @@ export interface AgentRun {
   id: string
   agent_type: AgentType
   status: AgentRunStatus
-  project_id?: string
-  story_id?: string
-  interview_session_id?: string
+  project_id: string | null
+  story_id: string | null
+  interview_session_id: string | null
+  content_hash: string | null
   input: Record<string, unknown>
-  output?: Record<string, unknown>
-  model?: string
-  error?: string
+  output: Record<string, unknown> | null
+  model: string | null
+  error: string | null
   started_at: string
-  completed_at?: string
+  completed_at: string | null
   created_by: string
 }
 
@@ -54,7 +55,7 @@ export interface AgentArtifact {
   id: string
   agent_run_id: string
   project_id: string
-  story_id?: string
+  story_id: string | null
   artifact_type:
     | 'host_intervention'
     | 'standalone_story'
@@ -81,12 +82,12 @@ export interface InterviewSession {
   id: string
   project_id: string
   storyteller_id: string
-  prompt_text?: string
+  prompt_text: string | null
   recording_mode: 'deep_dive' | 'chat'
   intervention_level: InterventionLevel
   status: 'active' | 'completed' | 'abandoned'
   started_at: string
-  completed_at?: string
+  completed_at: string | null
 }
 
 export interface InterviewEvent {
@@ -98,10 +99,10 @@ export interface InterviewEvent {
   intervention_level: InterventionLevel
   trigger_reason: string
   prompt_text: string
-  transcript_window?: string
-  transcript_start_offset?: number
-  transcript_end_offset?: number
-  accepted?: boolean
+  transcript_window: string | null
+  transcript_start_offset: number | null
+  transcript_end_offset: number | null
+  accepted: boolean | null
   created_at: string
 }
 
@@ -112,10 +113,10 @@ export interface StoryElement {
   agent_run_id: string
   element_type: StoryElementType
   value: string
-  normalized_value?: string
+  normalized_value: string | null
   source_quote: string
-  source_start_offset?: number
-  source_end_offset?: number
+  source_start_offset: number | null
+  source_end_offset: number | null
   confidence: number
   review_status: AgentReviewStatus
   created_at: string
