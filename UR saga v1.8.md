@@ -4,6 +4,7 @@
 
 | Version | Date | Author | Revision Details |
 | :--- | :--- | :--- | :--- |
+| **V1.8.2** | 2026-06-11 | Codex Audit | **Phase 1 Scope Correction.** <br>1. Clarified that Phase 1 delivers only the private biography loop: Interview Agent + Editor & Librarian Agent.<br>2. Deferred Wiki Editor Agent, public archive clustering, Media Agent, photo restoration, and video generation to later phases.<br>3. Required Phase 1 implementation plans to cover host intervention controls, durable interview events, standalone story artifacts, structured story elements, and private biography review surfaces. |
 | **V1.8.1** | 2026-06-11 | Codex Audit | **Multi-Agent Collaboration Update.** <br>1. Added a host-style Interview Agent responsible for opening, warmup, prior-story recap, transitions, gentle probing, emotional support, and closing.<br>2. Added user-configurable Interview Agent intervention levels: Off, Low, and High.<br>3. Defined follow-on agent responsibilities for private biography editing, public collective archive curation, and media enhancement services. |
 | **V1.8** | 2025-12-01 | AIO-PM | **Strategic Pivot: "The Audiobook & Resonance Edition".** <br>1. **Rebranding:** Renamed to "UR Saga" to avoid trademark conflicts and emphasize "Your Origin".<br>2. **Audio First:** Shifted deliverable focus from "Text Book" to "NPR-Style Audiobook".<br>3. **Dual-Mode Recording:** Introduced "Deep Dive" (Long) & "Chat" (Short) modes with specialized Web audio handling.<br>4. **The "Resonance" Engine:** Defined the "Private-to-Public" bridge via emotional solidarity hooks.<br>5. **Taxonomy:** Adopted a "Timeline-First, Tag-Later" structure based on MECE principles. |
 | V1.6 | 2025-11-XX | AIO-PM | Pivot to **Web-First Platform** (PWA) to eliminate app store friction. |
@@ -117,6 +118,27 @@ To accommodate different storytelling styles and network conditions.
 
 UR Saga should evolve from isolated AI features into a coordinated agent system. Each agent must produce durable, reviewable artifacts rather than ephemeral responses.
 
+#### **6.1 Phase 1 Delivery Boundary: Private Biography Loop**
+
+Phase 1 must deliver only the first two agents:
+
+1. **Interview Agent:** the live host for storytelling sessions.
+2. **Editor & Librarian Agent:** the post-story organizer that creates standalone stories and structured biography elements.
+
+Phase 1 must not implement the Wiki Editor Agent, public archive event clustering, Media Agent, photo restoration, or story video generation. Those capabilities remain documented product direction for later phases.
+
+Phase 1 is complete only when:
+
+1. The storyteller can choose Off, Low, or High Interview Agent intervention before recording.
+2. The Interview Agent can create opening, warmup, prior-story recap, gentle probe, transition, emotional support, and closing interventions according to the selected level.
+3. Agent interventions are stored separately from storyteller transcript text.
+4. A saved story triggers the Editor & Librarian Agent.
+5. The Editor & Librarian Agent creates a standalone story artifact without overwriting the original transcript.
+6. The Editor & Librarian Agent extracts structured elements for time, place, people, event, theme, emotion, decision, consequence, and reflection.
+7. Extracted elements can be reviewed and used to build the private biography timeline.
+
+#### **6.2 Full Agent Vision**
+
 *   **Agent 1: Interview Agent**
     *   Owns the live storyteller session.
     *   Handles opening, warmup, prior-story recap, listening, gentle probing, transitions, emotional support, and closing.
@@ -154,6 +176,7 @@ UR Saga should evolve from isolated AI features into a coordinated agent system.
 3.  **Upload Resilience:** System must demonstrate recovery from a "Flight Mode on/off" test during upload without data loss.
 4.  **Intervention Respect:** In user testing, storytellers should report that the Interview Agent did not interrupt their train of thought in >85% of sessions.
 5.  **Artifact Traceability:** 100% of agent-generated story edits, extracted elements, and public archive contributions must link back to source transcript spans or source media assets.
+6.  **Phase 1 Scope Discipline:** Phase 1 verification must prove Interview Agent and Editor & Librarian Agent are complete before any Wiki Editor Agent or Media Agent implementation begins.
 
 ---
 
@@ -239,6 +262,7 @@ sequenceDiagram
 3.  **Legal/Privacy (Collective Archive):** The "Opt-in" consent must be granular. "Can we use your voice? Or just the text?" Needs clear legal UX.
 4.  **Interview Agent Intrusion:** Even a helpful host can disrupt memory flow. The Off/Low/High intervention control must be prominent before recording and easy to change.
 5.  **Agent Provenance:** The product must store host interventions, storyteller speech, editor rewrites, extracted facts, and public anonymized contributions as separate artifacts.
+6.  **Phase Creep:** Building Wiki or Media capabilities before the Interview and Editor agents are complete would delay the private biography loop and add privacy risk too early.
 
 ---
 

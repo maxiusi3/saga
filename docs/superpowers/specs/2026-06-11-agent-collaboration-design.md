@@ -48,7 +48,7 @@ Build an agent artifact layer and an asynchronous task layer before implementing
 
 The artifact layer records what each agent produced, why it produced it, which source transcript span or media asset it used, and whether the result has been reviewed. The task layer lets long-running work continue after story submission, retry safely, and show progress in the UI.
 
-Phase 1 should focus on the private biography loop:
+Phase 1 is the private biography loop. It ships only the Interview Agent and the Editor and Librarian Agent, plus the minimum shared infrastructure those two agents need. It must not implement the Wiki Editor Agent, public event clustering, Media Agent jobs, photo restoration, or story video generation.
 
 1. Interview Agent.
 2. Editor and Librarian Agent.
@@ -158,16 +158,19 @@ Responsibilities:
 
 The implementation should add focused tables rather than overloading `stories.metadata`.
 
-Recommended tables:
+Phase 1 tables:
 
 1. `agent_runs`: one row per agent execution with agent type, input references, status, model, token or cost metadata, started time, completed time, and error details.
 2. `agent_artifacts`: outputs from agent runs, including artifact type, JSON payload, source references, review status, and confidence.
 3. `interview_sessions`: one row per recording session with project, storyteller, selected intervention level, prompt, mode, and status.
 4. `interview_events`: durable record of host openings, prompts, transitions, emotional support moments, and closings.
 5. `story_elements`: extracted private biography elements with type, value, date precision, source span, confidence, and review state.
-6. `public_contributions`: opt-in anonymized story payloads with consent scope and review state.
-7. `event_clusters`: public archive event clusters with canonical event labels, timeframe, place, and confidence.
-8. `media_jobs`: asynchronous media enhancement and video generation jobs with source assets, generated assets, provider metadata, and user approval state.
+
+Future-phase tables:
+
+1. `public_contributions`: opt-in anonymized story payloads with consent scope and review state.
+2. `event_clusters`: public archive event clusters with canonical event labels, timeframe, place, and confidence.
+3. `media_jobs`: asynchronous media enhancement and video generation jobs with source assets, generated assets, provider metadata, and user approval state.
 
 ## Data Flow
 
@@ -189,6 +192,8 @@ Private biography flow:
 
 Public archive flow:
 
+This flow is explicitly outside Phase 1.
+
 1. The user opts in to share a specific story.
 2. The user selects consent scope for text, structured elements, voice, photos, and derived media.
 3. The Wiki Editor Agent anonymizes the shared material.
@@ -196,6 +201,8 @@ Public archive flow:
 5. Public event pages show multiple perspectives with uncertainty and provenance.
 
 Media flow:
+
+This flow is explicitly outside Phase 1.
 
 1. The user uploads or selects a photo or story.
 2. The Media Agent creates a job with a specific requested service.
@@ -218,10 +225,11 @@ Media flow:
 2. Unit test Interview Agent state transitions.
 3. Integration test that storyteller transcript text and agent intervention text are stored separately.
 4. Integration test that story save triggers Editor and Librarian Agent jobs.
-5. Privacy test that public archive jobs cannot run without explicit consent.
-6. Privacy test that voice and photo sharing require separate consent from text sharing.
-7. Media job test for preview, approval, failure, and retry states.
-8. Regression test existing AI authentication and rate limits.
+5. Integration test that the Editor and Librarian Agent creates standalone story artifacts and story elements.
+6. Regression test existing AI authentication and rate limits.
+7. Future phase privacy test that public archive jobs cannot run without explicit consent.
+8. Future phase privacy test that voice and photo sharing require separate consent from text sharing.
+9. Future phase media job test for preview, approval, failure, and retry states.
 
 ## Migration Strategy
 
@@ -235,12 +243,12 @@ Media flow:
 
 1. The Interview Agent is text-only for the first implementation. TTS can be added later without changing the agent artifact model.
 2. Project facilitators can set the default intervention level and a maximum allowed intervention level. Storytellers can lower the level before recording, but cannot raise it above the project maximum.
-3. Public archive contributions require human review before event clustering.
-4. Media provider selection is outside the first implementation. The first implementation should create provider-agnostic `media_jobs` records and adapter boundaries.
+3. Public archive contributions require human review before event clustering, but public archive tables and routes are not part of Phase 1.
+4. Media provider selection is outside the first implementation. Phase 1 should not create `media_jobs`; it should leave a clean future boundary for provider-agnostic media jobs.
 
 ## Recommendation
 
-Implement the private biography loop first. The minimum valuable release is:
+Implement the private biography loop first. The minimum valuable release is limited to:
 
 1. Interview Agent with off, low, and high intervention levels.
 2. Persistent interview sessions and interview events.
