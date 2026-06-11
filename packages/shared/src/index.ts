@@ -1,5 +1,6 @@
 export * from './types'
 export * from './utils'
+export * from './types/agents'
 export * from './lib/ai-services'
 export * from './lib/permissions'
 export * from './lib/notifications'

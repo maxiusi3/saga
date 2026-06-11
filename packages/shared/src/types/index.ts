@@ -22,6 +22,7 @@ export * from './api';
 // Discovery and navigation types
 export * from './story-discovery';
 export * from './story-sharing';
+export * from './agents';
 
 // API response types
 export interface ApiResponse<T> {
