@@ -38,7 +38,7 @@ export async function createAgentRun(input: {
     .select()
     .single()
 
-  if (error) throw new Error(error.message)
+  raise(error)
   return data
 }
 
@@ -55,7 +55,7 @@ export async function completeAgentRun(agentRunId: string, output: JsonObject) {
     .select()
     .single()
 
-  if (error) throw new Error(error.message)
+  raise(error)
   return data
 }
 
@@ -87,7 +87,7 @@ export async function createInterviewSession(input: {
     .insert({
       project_id: input.projectId,
       storyteller_id: input.storytellerId,
-      prompt_text: input.promptText || null,
+      prompt_text: input.promptText ?? null,
       recording_mode: input.recordingMode,
       intervention_level: input.interventionLevel,
       status: 'active',
@@ -137,7 +137,7 @@ export async function createInterviewEvent(input: {
       intervention_level: input.interventionLevel,
       trigger_reason: input.triggerReason,
       prompt_text: input.promptText,
-      transcript_window: input.transcriptWindow || null,
+      transcript_window: input.transcriptWindow ?? null,
       transcript_start_offset: input.transcriptStartOffset ?? null,
       transcript_end_offset: input.transcriptEndOffset ?? null,
       accepted: input.accepted ?? null,
@@ -164,7 +164,7 @@ export async function createAgentArtifact(input: {
     .insert({
       agent_run_id: input.agentRunId,
       project_id: input.projectId,
-      story_id: input.storyId || null,
+      story_id: input.storyId ?? null,
       artifact_type: input.artifactType,
       payload: input.payload,
       source_refs: input.sourceRefs,
@@ -204,7 +204,7 @@ export async function createStoryElements(
         agent_run_id: element.agentRunId,
         element_type: element.elementType,
         value: element.value,
-        normalized_value: element.normalizedValue || null,
+        normalized_value: element.normalizedValue ?? null,
         source_quote: element.sourceQuote,
         source_start_offset: element.sourceStartOffset ?? null,
         source_end_offset: element.sourceEndOffset ?? null,
