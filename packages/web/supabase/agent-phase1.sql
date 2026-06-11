@@ -29,11 +29,21 @@ create table if not exists public.interview_sessions (
   completed_at timestamptz null
 );
 
-alter table public.agent_runs
-  add constraint agent_runs_interview_session_fk
-  foreign key (interview_session_id)
-  references public.interview_sessions(id)
-  on delete set null;
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'agent_runs_interview_session_fk'
+      and conrelid = 'public.agent_runs'::regclass
+  ) then
+    alter table public.agent_runs
+      add constraint agent_runs_interview_session_fk
+      foreign key (interview_session_id)
+      references public.interview_sessions(id)
+      on delete set null;
+  end if;
+end $$;
 
 create table if not exists public.interview_events (
   id uuid primary key default gen_random_uuid(),
