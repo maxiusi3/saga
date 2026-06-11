@@ -52,29 +52,47 @@ function extractElements(transcript: string): EditorStoryElement[] {
 
   addRegexElements(elements, transcript, 'time', /\b(19\d{2}|20\d{2})\b/g, 0.9)
   addRegexElements(elements, transcript, 'place', /\b(Guangzhou|Shanghai|Beijing|Taipei|Hong Kong|New York|London)\b/g, 0.75)
+  addRegexElements(elements, transcript, 'place', /(广州|上海|北京|台北|香港|纽约|伦敦)/g, 0.75)
   addRegexElements(
     elements,
     transcript,
     'person',
-    /\b(my brother|my sister|my mother|my father|我的哥哥|我的姐姐|我的妈妈|我的爸爸)\b/gi,
+    /\b(my brother|my sister|my mother|my father)\b/gi,
+    0.75,
+  )
+  addRegexElements(
+    elements,
+    transcript,
+    'person',
+    /(我的哥哥|我的姐姐|我的妈妈|我的爸爸)/g,
     0.75,
   )
   addRegexElements(
     elements,
     transcript,
     'emotion',
-    /\b(afraid|sad|happy|proud|guilty|scared|难过|开心|骄傲|内疚|害怕)\b/gi,
+    /\b(afraid|sad|happy|proud|guilty|scared)\b/gi,
     0.75,
   )
-  addRegexElements(elements, transcript, 'decision', /\b(I decided to [^.。]+|I chose to [^.。]+|我决定[^。]+)\b/gi, 0.78)
+  addRegexElements(
+    elements,
+    transcript,
+    'emotion',
+    /(难过|开心|骄傲|内疚|害怕)/g,
+    0.75,
+  )
+  addRegexElements(elements, transcript, 'decision', /\b(I decided to [^.。]+|I chose to [^.。]+)/gi, 0.78)
+  addRegexElements(elements, transcript, 'decision', /(我决定[^.!?。！？]+)/g, 0.78)
   addRegexElements(
     elements,
     transcript,
     'consequence',
-    /\b(changed my life|taught me [^.。]+|让我[^。]+|改变了我的人生)\b/gi,
+    /\b(changed my life|taught me [^.。]+)/gi,
     0.78,
   )
-  addRegexElements(elements, transcript, 'reflection', /\b(I learned [^.。]+|I realized [^.。]+|我明白了[^。]+)\b/gi, 0.8)
+  addRegexElements(elements, transcript, 'consequence', /(让我[^.!?。！？]+|改变了我的人生)/g, 0.78)
+  addRegexElements(elements, transcript, 'reflection', /\b(I learned [^.。]+|I realized [^.。]+)/gi, 0.8)
+  addRegexElements(elements, transcript, 'reflection', /(我明白了[^.!?。！？]+)/g, 0.8)
 
   if (transcript.length > 0) {
     elements.push({
@@ -130,8 +148,12 @@ function findSentence(transcript: string, pattern: RegExp) {
   let offset = 0
 
   for (const sentence of sentences) {
+    pattern.lastIndex = 0
     if (pattern.test(sentence)) {
-      return { text: sentence.trim(), start: offset, end: offset + sentence.length }
+      const startTrimOffset = sentence.search(/\S/)
+      const text = sentence.trim()
+      const start = offset + startTrimOffset
+      return { text, start, end: start + text.length }
     }
     offset += sentence.length
   }
