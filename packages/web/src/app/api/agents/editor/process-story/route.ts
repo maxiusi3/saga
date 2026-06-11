@@ -1,8 +1,8 @@
-import { createHash } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { processStoryForBiography } from '@/lib/agents/editor-agent'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
+import { createStoryContentHash } from '@/lib/server/story-content-hash'
 import {
   completeAgentRun,
   createAgentArtifact,
@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
         transcriptLength: transcript.length,
         contentHash,
       },
+      contentHash,
       model: 'deterministic-editor-agent',
     })
     const runId = String(agentRun.id)
@@ -140,11 +141,30 @@ export async function POST(request: NextRequest) {
       confidence: element.confidence,
     })))
 
-    await completeAgentRun(runId, {
-      processed: true,
-      standaloneStoryTitle: output.standaloneStory.title,
-      elementsCount: output.elements.length,
-    })
+    try {
+      await completeAgentRun(runId, {
+        processed: true,
+        standaloneStoryTitle: output.standaloneStory.title,
+        elementsCount: output.elements.length,
+      })
+    } catch (error) {
+      if (isUniqueViolationError(error)) {
+        const completedRun = await getCompletedEditorRunForStory(story.id, contentHash)
+        if (completedRun) {
+          await markDuplicateRunFailed(runId)
+          return NextResponse.json(
+            {
+              processed: true,
+              agentRunId: String(completedRun.id),
+              elementsCount: getRunElementsCount(completedRun),
+            },
+            { headers: auth.headers },
+          )
+        }
+      }
+
+      throw error
+    }
 
     return NextResponse.json(
       {
@@ -237,22 +257,6 @@ function withAuthHeaders(response: NextResponse, headers: Headers) {
   return response
 }
 
-function createStoryContentHash(input: {
-  storyId: string
-  title: string | null
-  transcript: string
-  createdAt: string
-}) {
-  return createHash('sha256')
-    .update(JSON.stringify({
-      storyId: input.storyId,
-      title: input.title,
-      transcript: input.transcript,
-      createdAt: input.createdAt,
-    }))
-    .digest('hex')
-}
-
 function getRunElementsCount(run: { output?: unknown }) {
   if (!run.output || typeof run.output !== 'object' || Array.isArray(run.output)) {
     return 0
@@ -260,4 +264,20 @@ function getRunElementsCount(run: { output?: unknown }) {
 
   const output = run.output as Record<string, unknown>
   return typeof output.elementsCount === 'number' ? output.elementsCount : 0
+}
+
+function isUniqueViolationError(error: unknown) {
+  if (error && typeof error === 'object' && 'code' in error) {
+    if ((error as { code?: unknown }).code === '23505') return true
+  }
+
+  return error instanceof Error && /23505|duplicate key value|unique constraint/i.test(error.message)
+}
+
+async function markDuplicateRunFailed(agentRunId: string) {
+  try {
+    await failAgentRun(agentRunId, 'Duplicate completed editor run for story content')
+  } catch {
+    console.error('Failed to mark duplicate editor agent run as failed')
+  }
 }

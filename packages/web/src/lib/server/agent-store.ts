@@ -10,8 +10,14 @@ import { getSupabaseAdmin } from '@/lib/supabase'
 type JsonObject = Record<string, unknown>
 type SourceRefInput = Record<string, unknown>
 
-function raise(error: { message?: string } | null) {
-  if (error) throw new Error(error.message || 'Supabase agent store operation failed')
+function raise(error: { message?: string; code?: string } | null) {
+  if (!error) return
+
+  const storeError = new Error(error.message || 'Supabase agent store operation failed') as Error & {
+    code?: string
+  }
+  storeError.code = error.code
+  throw storeError
 }
 
 export async function createAgentRun(input: {
@@ -21,6 +27,7 @@ export async function createAgentRun(input: {
   interviewSessionId: string | null
   createdBy: string
   input: JsonObject
+  contentHash?: string | null
   model: string
 }) {
   const { data, error } = await getSupabaseAdmin()
@@ -33,6 +40,7 @@ export async function createAgentRun(input: {
       interview_session_id: input.interviewSessionId,
       created_by: input.createdBy,
       input: input.input,
+      content_hash: input.contentHash ?? null,
       model: input.model,
     })
     .select()
@@ -240,6 +248,28 @@ export async function getStoryElementsForStory(storyId: string) {
   return data || []
 }
 
+export async function getAgentArtifactsForRun(agentRunId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('agent_artifacts')
+    .select('*')
+    .eq('agent_run_id', agentRunId)
+    .order('created_at', { ascending: false })
+
+  raise(error)
+  return (data || []).map(removeAgentRunJoinMetadata)
+}
+
+export async function getStoryElementsForRun(agentRunId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('story_elements')
+    .select('*')
+    .eq('agent_run_id', agentRunId)
+    .order('created_at', { ascending: true })
+
+  raise(error)
+  return (data || []).map(removeAgentRunJoinMetadata)
+}
+
 export async function getCompletedEditorRunForStory(storyId: string, contentHash: string) {
   const { data, error } = await getSupabaseAdmin()
     .from('agent_runs')
@@ -247,7 +277,7 @@ export async function getCompletedEditorRunForStory(storyId: string, contentHash
     .eq('story_id', storyId)
     .eq('agent_type', 'editor_librarian')
     .eq('status', 'completed')
-    .eq('input->>contentHash', contentHash)
+    .eq('content_hash', contentHash)
     .order('completed_at', { ascending: false })
     .limit(1)
     .maybeSingle()
@@ -266,7 +296,7 @@ export async function getCompletedEditorArtifactsForStory(storyId: string) {
     .order('created_at', { ascending: false })
 
   raise(error)
-  return data || []
+  return (data || []).map(removeAgentRunJoinMetadata)
 }
 
 export async function getCompletedEditorStoryElementsForStory(storyId: string) {
@@ -279,5 +309,10 @@ export async function getCompletedEditorStoryElementsForStory(storyId: string) {
     .order('created_at', { ascending: true })
 
   raise(error)
-  return data || []
+  return (data || []).map(removeAgentRunJoinMetadata)
+}
+
+function removeAgentRunJoinMetadata<T>(row: T) {
+  const { agent_runs: _agentRuns, ...rest } = row as T & { agent_runs?: unknown }
+  return rest
 }

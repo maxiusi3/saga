@@ -143,6 +143,7 @@ describe('/api/agents/editor/process-story', () => {
         transcriptLength: 58,
         contentHash: expect.any(String),
       },
+      contentHash: expect.any(String),
       model: 'deterministic-editor-agent',
     })
     expect(getCompletedEditorRunForStory).toHaveBeenCalledWith('story-1', expect.any(String))
@@ -274,6 +275,44 @@ describe('/api/agents/editor/process-story', () => {
     expect(failAgentRun).not.toHaveBeenCalled()
   })
 
+  it('returns the existing completed editor run when completing a duplicate content run conflicts', async () => {
+    const duplicateError = Object.assign(
+      new Error('duplicate key value violates unique constraint "idx_agent_runs_completed_editor_story_content_hash_unique"'),
+      { code: '23505' },
+    )
+    getCompletedEditorRunForStory
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({
+        id: 'run-existing',
+        output: {
+          processed: true,
+          elementsCount: 2,
+        },
+      })
+    completeAgentRun.mockRejectedValueOnce(duplicateError)
+
+    const response = await POST(new NextRequest('http://localhost/api/agents/editor/process-story', {
+      method: 'POST',
+      body: JSON.stringify({ storyId: 'story-1' }),
+    }))
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toEqual({
+      processed: true,
+      agentRunId: 'run-existing',
+      elementsCount: 2,
+    })
+    expect(getCompletedEditorRunForStory).toHaveBeenNthCalledWith(1, 'story-1', expect.any(String))
+    expect(getCompletedEditorRunForStory).toHaveBeenNthCalledWith(2, 'story-1', expect.any(String))
+    expect(createAgentArtifact).toHaveBeenCalledTimes(2)
+    expect(createStoryElements).toHaveBeenCalled()
+    expect(completeAgentRun).toHaveBeenCalledWith('run-1', {
+      processed: true,
+      standaloneStoryTitle: 'A Market Morning',
+      elementsCount: 2,
+    })
+  })
+
   it('returns auth denial before loading the story', async () => {
     getAuthenticatedUser.mockResolvedValueOnce({
       ok: false,
@@ -373,6 +412,7 @@ describe('/api/agents/editor/process-story', () => {
         transcriptLength: 58,
         contentHash: expect.any(String),
       },
+      contentHash: expect.any(String),
       model: 'deterministic-editor-agent',
     })
     expect(failAgentRun).toHaveBeenCalledWith('run-1', 'processor failed')

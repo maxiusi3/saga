@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
+import { createStoryContentHash } from '@/lib/server/story-content-hash'
 import {
-  getCompletedEditorArtifactsForStory,
-  getCompletedEditorStoryElementsForStory,
+  getAgentArtifactsForRun,
+  getCompletedEditorRunForStory,
+  getStoryElementsForRun,
 } from '@/lib/server/agent-store'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
 interface StoryRow {
   id: string
   project_id: string
+  title: string | null
+  transcript: string | null
+  created_at: string
 }
 
 interface RouteContext {
@@ -30,17 +35,39 @@ export async function GET(request: NextRequest, context: RouteContext) {
   if (!access.ok) return withAuthHeaders(access.response, auth.headers)
 
   try {
+    const story = storyResult.story
+    const transcript = story.transcript || ''
+    const contentHash = createStoryContentHash({
+      storyId: story.id,
+      title: story.title,
+      transcript,
+      createdAt: story.created_at,
+    })
+    const currentRun = await getCompletedEditorRunForStory(story.id, contentHash)
+    if (!currentRun) {
+      return NextResponse.json(
+        {
+          standaloneStory: null,
+          elements: [],
+          artifacts: [],
+        },
+        { headers: auth.headers },
+      )
+    }
+
     const [artifacts, elements] = await Promise.all([
-      getCompletedEditorArtifactsForStory(storyId),
-      getCompletedEditorStoryElementsForStory(storyId),
+      getAgentArtifactsForRun(String(currentRun.id)),
+      getStoryElementsForRun(String(currentRun.id)),
     ])
-    const standaloneStory = getStandaloneStoryPayload(artifacts)
+    const visibleArtifacts = artifacts.map(removeAgentRunJoinMetadata)
+    const visibleElements = elements.map(removeAgentRunJoinMetadata)
+    const standaloneStory = getStandaloneStoryPayload(visibleArtifacts)
 
     return NextResponse.json(
       {
         standaloneStory,
-        elements,
-        artifacts,
+        elements: visibleElements,
+        artifacts: visibleArtifacts,
       },
       { headers: auth.headers },
     )
@@ -66,7 +93,7 @@ async function loadStory(storyId: string, headers: Headers) {
 
   const { data, error } = await db
     .from('stories')
-    .select('id, project_id')
+    .select('id, project_id, title, transcript, created_at')
     .eq('id', storyId)
     .maybeSingle()
 
@@ -108,6 +135,11 @@ function getStandaloneStoryPayload(artifacts: Array<{ artifact_type?: string; pa
     body: payload.body,
     summary: payload.summary,
   }
+}
+
+function removeAgentRunJoinMetadata<T>(row: T) {
+  const { agent_runs: _agentRuns, ...rest } = row as T & { agent_runs?: unknown }
+  return rest
 }
 
 function withAuthHeaders(response: NextResponse, headers: Headers) {

@@ -22,6 +22,14 @@ import { StorageService } from '@/lib/storage'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
 
+function emptyAgentArtifacts(): StoryAgentArtifactsResponse {
+  return {
+    standaloneStory: null,
+    elements: [],
+    artifacts: [],
+  }
+}
+
 export default function StoryDetailPage() {
   const params = useParams()
   const { user } = useAuthStore()
@@ -105,6 +113,20 @@ export default function StoryDetailPage() {
     loadStory()
   }, [storyId, user?.id])
 
+  const refreshEditorArtifactsAfterStoryEdit = (targetStoryId: string) => {
+    setAgentArtifacts(emptyAgentArtifacts())
+
+    void agentService.processStoryWithEditorAgent({ storyId: targetStoryId })
+      .then(() => agentService.getStoryAgentArtifacts(targetStoryId))
+      .then(artifacts => {
+        setAgentArtifacts(artifacts)
+      })
+      .catch(error => {
+        console.warn('[story/page] failed to refresh editor agent artifacts after story edit:', error)
+        setAgentArtifacts(emptyAgentArtifacts())
+      })
+  }
+
   const handleSaveTitle = async () => {
     if (!story || !editedTitle.trim()) return
 
@@ -113,6 +135,7 @@ export default function StoryDetailPage() {
       if (success) {
         setStory(prev => prev ? { ...prev, title: editedTitle.trim() } : null)
         setIsEditingTitle(false)
+        refreshEditorArtifactsAfterStoryEdit(story.id)
         toast.success('Title updated successfully')
       } else {
         toast.error('Failed to update title')
@@ -133,6 +156,7 @@ export default function StoryDetailPage() {
       if (success) {
         setStory(prev => prev ? { ...prev, transcript: editedTranscript } : null)
         setIsEditingTranscript(false)
+        refreshEditorArtifactsAfterStoryEdit(story.id)
         toast.success('Transcript updated successfully')
       } else {
         toast.error('Failed to update transcript')
@@ -367,7 +391,10 @@ export default function StoryDetailPage() {
                           try {
                             if (selectedIndex === 0) {
                               const ok = await storyService.updateStory(story.id, { transcript: editedSegContent, images: editingImages as any })
-                              if (ok) setStory(prev => prev ? { ...prev, transcript: editedSegContent, images: editingImages as any } : prev)
+                              if (ok) {
+                                setStory(prev => prev ? { ...prev, transcript: editedSegContent, images: editingImages as any } : prev)
+                                refreshEditorArtifactsAfterStoryEdit(story.id)
+                              }
                             } else {
                               const headers: Record<string, string> = { 'Content-Type': 'application/json' }
                               const supa = createClientSupabase()

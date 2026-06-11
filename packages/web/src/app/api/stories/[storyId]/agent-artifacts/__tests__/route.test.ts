@@ -12,8 +12,9 @@ const from = jest.fn()
 const select = jest.fn()
 const eq = jest.fn()
 const maybeSingle = jest.fn()
-const getCompletedEditorArtifactsForStory = jest.fn()
-const getCompletedEditorStoryElementsForStory = jest.fn()
+const getCompletedEditorRunForStory = jest.fn()
+const getAgentArtifactsForRun = jest.fn()
+const getStoryElementsForRun = jest.fn()
 
 jest.mock('@/lib/server/auth', () => ({
   getAuthenticatedUser: (...args: unknown[]) => getAuthenticatedUser(...args),
@@ -28,8 +29,9 @@ jest.mock('@/lib/supabase', () => ({
 }))
 
 jest.mock('@/lib/server/agent-store', () => ({
-  getCompletedEditorArtifactsForStory: (...args: unknown[]) => getCompletedEditorArtifactsForStory(...args),
-  getCompletedEditorStoryElementsForStory: (...args: unknown[]) => getCompletedEditorStoryElementsForStory(...args),
+  getCompletedEditorRunForStory: (...args: unknown[]) => getCompletedEditorRunForStory(...args),
+  getAgentArtifactsForRun: (...args: unknown[]) => getAgentArtifactsForRun(...args),
+  getStoryElementsForRun: (...args: unknown[]) => getStoryElementsForRun(...args),
 }))
 
 describe('/api/stories/[storyId]/agent-artifacts', () => {
@@ -44,6 +46,9 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
       data: {
         id: 'story-1',
         project_id: 'project-1',
+        title: 'A Market Morning',
+        transcript: 'In 1976 my mother took me to Guangzhou. I learned courage.',
+        created_at: '2026-01-02T03:04:05.000Z',
       },
       error: null,
     })
@@ -51,9 +56,17 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
     select.mockReturnValue({ eq })
     from.mockReturnValue({ select })
     getSupabaseAdmin.mockReturnValue({ from })
-    getCompletedEditorArtifactsForStory.mockResolvedValue([
+    getCompletedEditorRunForStory.mockResolvedValue({
+      id: 'run-current',
+      output: {
+        processed: true,
+        elementsCount: 1,
+      },
+    })
+    getAgentArtifactsForRun.mockResolvedValue([
       {
         id: 'artifact-standalone',
+        agent_run_id: 'run-current',
         artifact_type: 'standalone_story',
         payload: {
           title: 'A Market Morning',
@@ -62,18 +75,22 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
         },
         confidence: 0.8,
         source_refs: [],
+        agent_runs: { agent_type: 'editor_librarian', status: 'completed' },
       },
       {
         id: 'artifact-elements',
+        agent_run_id: 'run-current',
         artifact_type: 'story_elements',
         payload: { elements: [] },
         confidence: 0.75,
         source_refs: [],
+        agent_runs: { agent_type: 'editor_librarian', status: 'completed' },
       },
     ])
-    getCompletedEditorStoryElementsForStory.mockResolvedValue([
+    getStoryElementsForRun.mockResolvedValue([
       {
         id: 'element-1',
+        agent_run_id: 'run-current',
         element_type: 'time',
         value: '1976',
         normalized_value: '1976',
@@ -82,6 +99,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
         source_end_offset: 7,
         confidence: 0.9,
         review_status: 'unreviewed',
+        agent_runs: { agent_type: 'editor_librarian', status: 'completed' },
       },
     ])
   })
@@ -107,6 +125,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
       elements: [
         {
           id: 'element-1',
+          agent_run_id: 'run-current',
           element_type: 'time',
           value: '1976',
           normalized_value: '1976',
@@ -120,6 +139,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
       artifacts: [
         {
           id: 'artifact-standalone',
+          agent_run_id: 'run-current',
           artifact_type: 'standalone_story',
           payload: {
             title: 'A Market Morning',
@@ -131,6 +151,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
         },
         {
           id: 'artifact-elements',
+          agent_run_id: 'run-current',
           artifact_type: 'story_elements',
           payload: { elements: [] },
           confidence: 0.75,
@@ -139,11 +160,31 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
       ],
     })
     expect(from).toHaveBeenCalledWith('stories')
-    expect(select).toHaveBeenCalledWith('id, project_id')
+    expect(select).toHaveBeenCalledWith('id, project_id, title, transcript, created_at')
     expect(eq).toHaveBeenCalledWith('id', 'story-1')
     expect(requireProjectAccess).toHaveBeenCalledWith('project-1', { id: 'host-1' })
-    expect(getCompletedEditorArtifactsForStory).toHaveBeenCalledWith('story-1')
-    expect(getCompletedEditorStoryElementsForStory).toHaveBeenCalledWith('story-1')
+    expect(getCompletedEditorRunForStory).toHaveBeenCalledWith('story-1', expect.any(String))
+    expect(getAgentArtifactsForRun).toHaveBeenCalledWith('run-current')
+    expect(getStoryElementsForRun).toHaveBeenCalledWith('run-current')
+  })
+
+  it('returns an empty artifact panel when current story content has no completed editor run', async () => {
+    getCompletedEditorRunForStory.mockResolvedValueOnce(null)
+
+    const response = await GET(
+      new NextRequest('http://localhost/api/stories/story-1/agent-artifacts'),
+      { params: Promise.resolve({ storyId: 'story-1' }) },
+    )
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toEqual({
+      standaloneStory: null,
+      elements: [],
+      artifacts: [],
+    })
+    expect(getCompletedEditorRunForStory).toHaveBeenCalledWith('story-1', expect.any(String))
+    expect(getAgentArtifactsForRun).not.toHaveBeenCalled()
+    expect(getStoryElementsForRun).not.toHaveBeenCalled()
   })
 
   it('returns auth denial before loading the story', async () => {
@@ -174,7 +215,7 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
     expect(response.status).toBe(404)
     await expect(response.json()).resolves.toEqual({ error: 'Story not found' })
     expect(requireProjectAccess).not.toHaveBeenCalled()
-    expect(getCompletedEditorArtifactsForStory).not.toHaveBeenCalled()
+    expect(getCompletedEditorRunForStory).not.toHaveBeenCalled()
   })
 
   it('returns access denial before reading artifacts', async () => {
@@ -190,7 +231,8 @@ describe('/api/stories/[storyId]/agent-artifacts', () => {
 
     expect(response.status).toBe(403)
     await expect(response.json()).resolves.toEqual({ error: 'Access denied' })
-    expect(getCompletedEditorArtifactsForStory).not.toHaveBeenCalled()
-    expect(getCompletedEditorStoryElementsForStory).not.toHaveBeenCalled()
+    expect(getCompletedEditorRunForStory).not.toHaveBeenCalled()
+    expect(getAgentArtifactsForRun).not.toHaveBeenCalled()
+    expect(getStoryElementsForRun).not.toHaveBeenCalled()
   })
 })

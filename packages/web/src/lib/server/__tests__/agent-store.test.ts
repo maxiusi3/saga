@@ -9,6 +9,8 @@ import {
   createStoryElements,
   getAgentArtifactsForStory,
   getStoryElementsForStory,
+  getAgentArtifactsForRun,
+  getStoryElementsForRun,
   getCompletedEditorRunForStory,
   getCompletedEditorArtifactsForStory,
   getCompletedEditorStoryElementsForStory,
@@ -77,7 +79,34 @@ describe('agent-store', () => {
       interview_session_id: null,
       created_by: 'user-1',
       input: { phase: 'opening' },
+      content_hash: null,
       model: 'deterministic-v1',
+    })
+  })
+
+  it('creates agent runs with a first-class content hash when provided', async () => {
+    const result = await createAgentRun({
+      agentType: 'editor_librarian',
+      projectId: 'project-1',
+      storyId: 'story-1',
+      interviewSessionId: null,
+      createdBy: 'user-1',
+      input: { contentHash: 'hash-1' },
+      contentHash: 'hash-1',
+      model: 'deterministic-editor-agent',
+    })
+
+    expect(result).toEqual({ id: 'row-1' })
+    expect(insertSingleRows).toHaveBeenCalledWith({
+      agent_type: 'editor_librarian',
+      status: 'running',
+      project_id: 'project-1',
+      story_id: 'story-1',
+      interview_session_id: null,
+      created_by: 'user-1',
+      input: { contentHash: 'hash-1' },
+      content_hash: 'hash-1',
+      model: 'deterministic-editor-agent',
     })
   })
 
@@ -283,7 +312,7 @@ describe('agent-store', () => {
     expect(queryEq).toHaveBeenCalledWith('story_id', 'story-1')
     expect(queryEq).toHaveBeenCalledWith('agent_type', 'editor_librarian')
     expect(queryEq).toHaveBeenCalledWith('status', 'completed')
-    expect(queryEq).toHaveBeenCalledWith('input->>contentHash', 'hash-1')
+    expect(queryEq).toHaveBeenCalledWith('content_hash', 'hash-1')
     expect(order).toHaveBeenCalledWith('completed_at', { ascending: false })
     expect(queryLimit).toHaveBeenCalledWith(1)
     expect(queryMaybeSingle).toHaveBeenCalledWith()
@@ -295,6 +324,58 @@ describe('agent-store', () => {
     const result = await getCompletedEditorRunForStory('story-1', 'hash-1')
 
     expect(result).toBeNull()
+  })
+
+  it('gets artifacts for one agent run newest first', async () => {
+    order.mockResolvedValueOnce({
+      data: [
+        {
+          id: 'artifact-1',
+          agent_run_id: 'run-1',
+          agent_runs: { agent_type: 'editor_librarian', status: 'completed' },
+        },
+      ],
+      error: null,
+    })
+
+    const result = await getAgentArtifactsForRun('run-1')
+
+    expect(result).toEqual([
+      {
+        id: 'artifact-1',
+        agent_run_id: 'run-1',
+      },
+    ])
+    expect(from).toHaveBeenCalledWith('agent_artifacts')
+    expect(querySelect).toHaveBeenCalledWith('*')
+    expect(queryEq).toHaveBeenCalledWith('agent_run_id', 'run-1')
+    expect(order).toHaveBeenCalledWith('created_at', { ascending: false })
+  })
+
+  it('gets story elements for one agent run oldest first', async () => {
+    order.mockResolvedValueOnce({
+      data: [
+        {
+          id: 'element-1',
+          agent_run_id: 'run-1',
+          agent_runs: { agent_type: 'editor_librarian', status: 'completed' },
+        },
+      ],
+      error: null,
+    })
+
+    const result = await getStoryElementsForRun('run-1')
+
+    expect(result).toEqual([
+      {
+        id: 'element-1',
+        agent_run_id: 'run-1',
+      },
+    ])
+    expect(from).toHaveBeenCalledWith('story_elements')
+    expect(querySelect).toHaveBeenCalledWith('*')
+    expect(queryEq).toHaveBeenCalledWith('agent_run_id', 'run-1')
+    expect(order).toHaveBeenCalledWith('created_at', { ascending: true })
   })
 
   it('gets completed editor artifacts for a story newest first', async () => {

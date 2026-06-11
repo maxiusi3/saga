@@ -31,20 +31,22 @@ describe('processStoryForBiography', () => {
     expect(result.elements.every(element => element.sourceQuote.length > 0)).toBe(true)
   })
 
-  it('keeps source quotes aligned with source offsets for every extracted element', () => {
+  it('keeps source quotes aligned with original transcript offsets when display text is trimmed', () => {
+    const transcript =
+      '\n\n  In 1976, I left Guangzhou. My brother stayed with me, and that family promise changed my life.  \n'
     const result = processStoryForBiography({
       storyId: 'story-1',
       projectId: 'project-1',
       title: 'Leaving Home',
-      transcript:
-        'In 1976, I left Guangzhou. My brother stayed with me, and that family promise changed my life.',
+      transcript,
       createdAt: '2026-06-11T00:00:00.000Z',
     })
 
+    expect(result.standaloneStory.body).toBe(transcript.trim())
     expect(result.elements.length).toBeGreaterThan(0)
     for (const element of result.elements) {
       expect(element.sourceQuote).toBe(
-        result.standaloneStory.body.slice(element.sourceStartOffset, element.sourceEndOffset),
+        transcript.slice(element.sourceStartOffset, element.sourceEndOffset),
       )
     }
   })
