@@ -499,8 +499,6 @@ export function SmartRecorder({
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       streamRef.current = stream
 
-      const useRealtime = shouldUseRealtime()
-
       // Always start MediaRecorder for audio recording
       //                        
       const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm'
@@ -533,20 +531,7 @@ export function SmartRecorder({
 
       // Start with 60s timeslice
       mediaRecorder.start(60000)
-
-      if (useRealtime) {
-        // Also start real-time speech recognition
-        const recognition = initializeRealTimeRecognition()
-        if (recognition) {
-          recognitionRef.current = recognition
-          recognition.start()
-          toast.success('Started real-time speech recognition recording (with audio recording)')
-        } else {
-          throw new Error('Speech recognition unavailable')
-        }
-      } else {
-        toast.success('Started traditional recording')
-      }
+      toast.success('Started recording')
 
       setRecordingState('recording')
       setTranscript('')
@@ -570,7 +555,7 @@ export function SmartRecorder({
       toast.error(errorMessage)
       releaseWakeLock() // Ensure lock is released on error
     }
-  }, [shouldUseRealtime, initializeRealTimeRecognition, startTimer, onError, requestWakeLock, releaseWakeLock, requestInterviewPrompt])
+  }, [startTimer, onError, requestWakeLock, releaseWakeLock, requestInterviewPrompt])
 
   const pauseRecording = useCallback(() => {
     if (recordingState !== 'recording') return
