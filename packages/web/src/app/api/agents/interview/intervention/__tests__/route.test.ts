@@ -54,6 +54,7 @@ describe('/api/agents/interview/intervention', () => {
         id: 'session-1',
         project_id: 'project-1',
         storyteller_id: 'host-1',
+        intervention_level: 'high',
       },
       error: null,
     })
@@ -76,14 +77,38 @@ describe('/api/agents/interview/intervention', () => {
     jest.clearAllMocks()
   })
 
-  it('does not create an agent run or event when intervention level is off', async () => {
+  it('does not create an agent run or event when the persisted intervention level is off', async () => {
+    maybeSingle.mockResolvedValueOnce({
+      data: {
+        id: 'session-1',
+        project_id: 'project-1',
+        storyteller_id: 'host-1',
+        intervention_level: 'off',
+      },
+      error: null,
+    })
+    generateInterviewIntervention.mockImplementationOnce((input: { interventionLevel: string }) => (
+      input.interventionLevel === 'off'
+        ? {
+            shouldIntervene: false,
+            eventKind: null,
+            triggerReason: 'intervention_level_off',
+            promptText: '',
+          }
+        : {
+            shouldIntervene: true,
+            eventKind: 'silence_nudge',
+            triggerReason: 'long_silence',
+            promptText: 'What happened next?',
+          }
+    ))
     const request = new NextRequest('http://localhost/api/agents/interview/intervention', {
       method: 'POST',
       body: JSON.stringify({
         projectId: 'project-1',
         interviewSessionId: 'session-1',
         storytellerId: 'host-1',
-        interventionLevel: 'off',
+        interventionLevel: 'high',
         phase: 'story_listening',
         recentTranscript: 'I remember walking through the market.',
         previousStorySummary: null,
@@ -107,6 +132,7 @@ describe('/api/agents/interview/intervention', () => {
     })
     expect(requireProjectAccess).toHaveBeenCalledWith('project-1', { id: 'host-1' })
     expect(from).toHaveBeenCalledWith('interview_sessions')
+    expect(select).toHaveBeenCalledWith('id, project_id, storyteller_id, intervention_level')
     expect(eq).toHaveBeenCalledWith('id', 'session-1')
     expect(generateInterviewIntervention).toHaveBeenCalledWith({
       interventionLevel: 'off',
@@ -121,6 +147,88 @@ describe('/api/agents/interview/intervention', () => {
     expect(createAgentRun).not.toHaveBeenCalled()
     expect(createInterviewEvent).not.toHaveBeenCalled()
     expect(completeAgentRun).not.toHaveBeenCalled()
+  })
+
+  it('stores intervention events with the persisted session level when the request level differs', async () => {
+    maybeSingle.mockResolvedValueOnce({
+      data: {
+        id: 'session-1',
+        project_id: 'project-1',
+        storyteller_id: 'host-1',
+        intervention_level: 'low',
+      },
+      error: null,
+    })
+    generateInterviewIntervention.mockReturnValueOnce({
+      shouldIntervene: true,
+      eventKind: 'opening',
+      triggerReason: 'session_started',
+      promptText: 'Hi Ada. Start wherever the memory begins for you.',
+    })
+    createInterviewEvent.mockResolvedValueOnce({
+      id: 'event-1',
+      interview_session_id: 'session-1',
+      project_id: 'project-1',
+      storyteller_id: 'host-1',
+      event_kind: 'opening',
+      intervention_level: 'low',
+      trigger_reason: 'session_started',
+      prompt_text: 'Hi Ada. Start wherever the memory begins for you.',
+    })
+    const request = new NextRequest('http://localhost/api/agents/interview/intervention', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId: 'project-1',
+        interviewSessionId: 'session-1',
+        storytellerId: 'host-1',
+        interventionLevel: 'high',
+        phase: 'opening',
+        storytellerName: 'Ada',
+        currentPrompt: 'Tell us about the first day.',
+        recentTranscript: '',
+        previousStorySummary: null,
+        previousPrompts: [],
+        silenceMs: 0,
+        transcriptStartOffset: 0,
+        transcriptEndOffset: 0,
+      }),
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(200)
+    expect(generateInterviewIntervention).toHaveBeenCalledWith(expect.objectContaining({
+      interventionLevel: 'low',
+      phase: 'opening',
+    }))
+    expect(createAgentRun).toHaveBeenCalledWith(expect.objectContaining({
+      input: expect.objectContaining({
+        phase: 'opening',
+        interventionLevel: 'low',
+      }),
+    }))
+    expect(createInterviewEvent).toHaveBeenCalledWith(expect.objectContaining({
+      interventionLevel: 'low',
+      eventKind: 'opening',
+    }))
+    await expect(response.json()).resolves.toEqual({
+      intervention: {
+        shouldIntervene: true,
+        eventKind: 'opening',
+        triggerReason: 'session_started',
+        promptText: 'Hi Ada. Start wherever the memory begins for you.',
+      },
+      event: {
+        id: 'event-1',
+        interview_session_id: 'session-1',
+        project_id: 'project-1',
+        storyteller_id: 'host-1',
+        event_kind: 'opening',
+        intervention_level: 'low',
+        trigger_reason: 'session_started',
+        prompt_text: 'Hi Ada. Start wherever the memory begins for you.',
+      },
+    })
   })
 
   it('returns auth denial before generation or storage', async () => {

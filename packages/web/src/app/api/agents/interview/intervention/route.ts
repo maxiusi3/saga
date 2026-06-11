@@ -46,6 +46,7 @@ interface InterviewSessionRow {
   id: string
   project_id: string
   storyteller_id: string
+  intervention_level: InterventionLevel
 }
 
 export async function POST(request: NextRequest) {
@@ -80,11 +81,12 @@ export async function POST(request: NextRequest) {
       { status: 403, headers: auth.headers },
     )
   }
+  const sessionInterventionLevel = sessionResult.session.intervention_level
 
   let intervention
   try {
     intervention = generateInterviewIntervention({
-      interventionLevel: input.interventionLevel,
+      interventionLevel: sessionInterventionLevel,
       phase: input.phase,
       storytellerName: input.storytellerName,
       currentPrompt: input.currentPrompt,
@@ -115,7 +117,7 @@ export async function POST(request: NextRequest) {
       interviewSessionId: input.interviewSessionId,
       createdBy: auth.user.id,
       input: {
-        interventionLevel: input.interventionLevel,
+        interventionLevel: sessionInterventionLevel,
         phase: input.phase,
         storytellerName: input.storytellerName,
         currentPrompt: input.currentPrompt,
@@ -133,7 +135,7 @@ export async function POST(request: NextRequest) {
       projectId: input.projectId,
       storytellerId: input.storytellerId,
       eventKind: intervention.eventKind,
-      interventionLevel: input.interventionLevel,
+      interventionLevel: sessionInterventionLevel,
       triggerReason: intervention.triggerReason,
       promptText: intervention.promptText,
       transcriptWindow: input.recentTranscript,
@@ -174,7 +176,7 @@ async function loadInterviewSession(interviewSessionId: string, headers: Headers
 
   const { data, error } = await db
     .from('interview_sessions')
-    .select('id, project_id, storyteller_id')
+    .select('id, project_id, storyteller_id, intervention_level')
     .eq('id', interviewSessionId)
     .maybeSingle()
 

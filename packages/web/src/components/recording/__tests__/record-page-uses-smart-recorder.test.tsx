@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { InterventionLevel } from '@saga/shared/types/agents'
 
 const mockCreateInterviewSession = jest.fn()
@@ -19,6 +19,9 @@ jest.mock('@/components/recording/RecorderHub', () => ({
       </button>
       <button type="button" onClick={() => onModeSelect('deep_dive')}>
         Start recording
+      </button>
+      <button type="button" onClick={() => onModeSelect('chat')}>
+        Start chat recording
       </button>
     </>
   ),
@@ -70,6 +73,71 @@ describe('record page V1.8 recorder selection', () => {
     fireEvent.click(screen.getByRole('button', { name: /start recording/i }))
 
     expect(await screen.findByTestId('smart-recorder')).toBeInTheDocument()
+  })
+
+  it('renders SmartRecorder immediately while interview session creation continues in the background', async () => {
+    let resolveSession!: (session: { id: string }) => void
+    mockCreateInterviewSession.mockImplementation(() => new Promise<{ id: string }>(resolve => {
+      resolveSession = resolve
+    }))
+    const Page = (await import('@/app/[locale]/dashboard/projects/[id]/record/page')).default
+
+    render(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /start recording/i }))
+
+    expect(screen.getByTestId('smart-recorder')).toBeInTheDocument()
+    expect(mockSmartRecorder).toHaveBeenLastCalledWith(expect.objectContaining({
+      interviewSessionId: null,
+      interventionLevel: 'low',
+    }))
+
+    await act(async () => {
+      resolveSession({ id: 'interview-session-background' })
+      await Promise.resolve()
+    })
+
+    await waitFor(() => {
+      expect(mockSmartRecorder).toHaveBeenLastCalledWith(expect.objectContaining({
+        interviewSessionId: 'interview-session-background',
+      }))
+    })
+  })
+
+  it('does not apply a stale interview session after the selected mode changes', async () => {
+    const sessionResolvers: Array<(session: { id: string }) => void> = []
+    mockCreateInterviewSession.mockImplementation(() => new Promise<{ id: string }>(resolve => {
+      sessionResolvers.push(resolve)
+    }))
+    const Page = (await import('@/app/[locale]/dashboard/projects/[id]/record/page')).default
+
+    render(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /start recording/i }))
+    expect(screen.getByTestId('smart-recorder')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /back to mode selection/i }))
+    fireEvent.click(screen.getByRole('button', { name: /start chat recording/i }))
+    expect(screen.getByTestId('smart-recorder')).toBeInTheDocument()
+    expect(mockCreateInterviewSession).toHaveBeenCalledTimes(2)
+
+    await act(async () => {
+      sessionResolvers[0]({ id: 'stale-session' })
+      await Promise.resolve()
+    })
+
+    expect(mockSmartRecorder).not.toHaveBeenLastCalledWith(expect.objectContaining({
+      interviewSessionId: 'stale-session',
+    }))
+
+    await act(async () => {
+      sessionResolvers[1]({ id: 'current-session' })
+      await Promise.resolve()
+    })
+
+    await waitFor(() => {
+      expect(mockSmartRecorder).toHaveBeenLastCalledWith(expect.objectContaining({
+        interviewSessionId: 'current-session',
+      }))
+    })
   })
 
   it('passes the selected intervention level and created session to SmartRecorder', async () => {

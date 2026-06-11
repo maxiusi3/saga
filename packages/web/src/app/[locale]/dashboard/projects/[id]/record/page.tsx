@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'react-hot-toast'
@@ -33,6 +33,7 @@ export default function ProjectRecordPage() {
   const [mode, setMode] = useState<RecordingMode>('deep_dive')
   const [interventionLevel, setInterventionLevel] = useState<InterventionLevel>('low')
   const [interviewSessionId, setInterviewSessionId] = useState<string | null>(null)
+  const interviewSessionRequestVersionRef = useRef(0)
 
   // Data State
   const [currentPrompt, setCurrentPrompt] = useState<StoryPrompt | null>(null)
@@ -63,28 +64,44 @@ export default function ProjectRecordPage() {
     setCurrentPrompt(prompt)
   }, [])
 
-  const handleModeSelect = async (selectedMode: RecordingMode) => {
+  useEffect(() => () => {
+    interviewSessionRequestVersionRef.current += 1
+  }, [])
+
+  const handleReturnToHub = () => {
+    interviewSessionRequestVersionRef.current += 1
+    setInterviewSessionId(null)
+    setStage('hub')
+  }
+
+  const handleModeSelect = (selectedMode: RecordingMode) => {
+    const requestVersion = interviewSessionRequestVersionRef.current + 1
+    interviewSessionRequestVersionRef.current = requestVersion
+
     setMode(selectedMode)
     setInterviewSessionId(null)
+    setStage('recording')
 
     if (user?.id) {
-      try {
-        const session = await agentService.createInterviewSession({
-          projectId,
-          storytellerId: user.id,
-          promptText: currentPrompt?.text,
-          recordingMode: selectedMode,
-          interventionLevel,
+      void agentService.createInterviewSession({
+        projectId,
+        storytellerId: user.id,
+        promptText: currentPrompt?.text,
+        recordingMode: selectedMode,
+        interventionLevel,
+      })
+        .then(session => {
+          if (interviewSessionRequestVersionRef.current === requestVersion) {
+            setInterviewSessionId(session.id)
+          }
         })
-        setInterviewSessionId(session.id)
-      } catch (error) {
-        console.warn('[record/page] failed to create interview session:', error)
-      }
+        .catch(error => {
+          if (interviewSessionRequestVersionRef.current !== requestVersion) return
+          console.warn('[record/page] failed to create interview session:', error)
+        })
     } else {
       console.warn('[record/page] cannot create interview session without storyteller id')
     }
-
-    setStage('recording')
   }
 
   const handleRecordingComplete = async (result: { audioBlob?: Blob, transcript?: string, duration: number }) => {
@@ -196,7 +213,7 @@ export default function ProjectRecordPage() {
         {/* Header (Back button, etc) */}
         {stage !== 'hub' && !showResonance && (
           <button
-            onClick={() => setStage('hub')}
+            onClick={handleReturnToHub}
             className="mb-6 text-sm text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2"
           >
             ← Back to Mode Selection
@@ -243,7 +260,7 @@ export default function ProjectRecordPage() {
             duration={recordingDuration}
             transcript={transcript}
             onSave={handleSaveStory}
-            onDiscard={() => setStage('hub')}
+            onDiscard={handleReturnToHub}
             isProcessing={isSubmitting}
           />
         )}
