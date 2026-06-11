@@ -15,6 +15,8 @@ import { useLocale, useTranslations } from 'next-intl'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
+import { AgentArtifactsPanel } from '@/components/stories/AgentArtifactsPanel'
+import { agentService, type StoryAgentArtifactsResponse } from '@/lib/agent-service'
 // removed unused interactions import
 import { StorageService } from '@/lib/storage'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
@@ -47,6 +49,7 @@ export default function StoryDetailPage() {
   const [segmentsCollapsed, setSegmentsCollapsed] = useState<boolean>(false)
   const [commentViewerOpen, setCommentViewerOpen] = useState<boolean>(false)
   const [commentViewerIdx, setCommentViewerIdx] = useState<number>(0)
+  const [agentArtifacts, setAgentArtifacts] = useState<StoryAgentArtifactsResponse | null>(null)
   // removed legacy comment images selection state
 
   useEffect(() => {
@@ -81,6 +84,14 @@ export default function StoryDetailPage() {
         segs.sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
         setSegments(segs)
         setSelectedIndex(0)
+
+        try {
+          const artifacts = await agentService.getStoryAgentArtifacts(storyId)
+          setAgentArtifacts(artifacts)
+        } catch (error) {
+          console.warn('[story/page] failed to load editor agent artifacts:', error)
+          setAgentArtifacts(null)
+        }
 
         // removed legacy build of comment images list for selection
       } catch (error) {
@@ -414,6 +425,12 @@ export default function StoryDetailPage() {
               </EnhancedCardContent>
             </EnhancedCard>
             {/* Segments moved to sidebar */}
+
+            <AgentArtifactsPanel
+              standaloneStory={agentArtifacts?.standaloneStory ?? null}
+              elements={agentArtifacts?.elements ?? []}
+              artifacts={agentArtifacts?.artifacts ?? []}
+            />
 
             {/* Comments and Follow-up Questions */}
             <StoryInteractions

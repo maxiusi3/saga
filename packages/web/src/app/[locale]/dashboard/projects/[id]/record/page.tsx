@@ -152,6 +152,9 @@ export default function ProjectRecordPage() {
       if (!story) throw new Error('Failed to create story')
 
       setSavedStoryId(story.id)
+      void agentService.processStoryWithEditorAgent({ storyId: story.id }).catch(error => {
+        console.warn('[record/page] editor agent processing failed:', error)
+      })
 
       // 3. Show Resonance
       const era = data.happenedAt.getFullYear().toString().slice(0, 3) + '0s'

@@ -1,7 +1,9 @@
 import type {
+  AgentArtifact,
   InterviewEvent,
   InterviewSession,
   InterventionLevel,
+  StoryElement,
 } from '@saga/shared/types/agents'
 import type { InterviewPhase, InterviewInterventionResult } from '@/lib/agents/interview-agent'
 import { useAuthStore } from '@/stores/auth-store'
@@ -33,6 +35,28 @@ export interface RequestInterviewInterventionRequest {
 export interface InterviewInterventionResponse {
   intervention: InterviewInterventionResult
   event: InterviewEvent | null
+}
+
+export interface ProcessStoryWithEditorAgentRequest {
+  storyId: string
+}
+
+export interface ProcessStoryWithEditorAgentResponse {
+  processed: true
+  agentRunId: string
+  elementsCount: number
+}
+
+export interface StandaloneStoryArtifact {
+  title: string
+  body: string
+  summary: string
+}
+
+export interface StoryAgentArtifactsResponse {
+  standaloneStory: StandaloneStoryArtifact | null
+  elements: StoryElement[]
+  artifacts: AgentArtifact[]
 }
 
 export async function createInterviewSession(
@@ -74,9 +98,42 @@ export async function requestInterviewIntervention(
   return response.json()
 }
 
+export async function processStoryWithEditorAgent(
+  request: ProcessStoryWithEditorAgentRequest,
+): Promise<ProcessStoryWithEditorAgentResponse> {
+  const response = await fetch('/api/agents/editor/process-story', {
+    method: 'POST',
+    headers: {
+      ...(await authHeaders()),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to process story with editor agent')
+  }
+
+  return response.json()
+}
+
+export async function getStoryAgentArtifacts(storyId: string): Promise<StoryAgentArtifactsResponse> {
+  const response = await fetch(`/api/stories/${encodeURIComponent(storyId)}/agent-artifacts`, {
+    headers: await authHeaders(),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to load story agent artifacts')
+  }
+
+  return response.json()
+}
+
 export const agentService = {
   createInterviewSession,
   requestInterviewIntervention,
+  processStoryWithEditorAgent,
+  getStoryAgentArtifacts,
 }
 
 async function authHeaders(): Promise<Record<string, string>> {
