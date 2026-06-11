@@ -4,6 +4,7 @@
 
 | Version | Date | Author | Revision Details |
 | :--- | :--- | :--- | :--- |
+| **V1.8.1** | 2026-06-11 | Codex Audit | **Multi-Agent Collaboration Update.** <br>1. Added a host-style Interview Agent responsible for opening, warmup, prior-story recap, transitions, gentle probing, emotional support, and closing.<br>2. Added user-configurable Interview Agent intervention levels: Off, Low, and High.<br>3. Defined follow-on agent responsibilities for private biography editing, public collective archive curation, and media enhancement services. |
 | **V1.8** | 2025-12-01 | AIO-PM | **Strategic Pivot: "The Audiobook & Resonance Edition".** <br>1. **Rebranding:** Renamed to "UR Saga" to avoid trademark conflicts and emphasize "Your Origin".<br>2. **Audio First:** Shifted deliverable focus from "Text Book" to "NPR-Style Audiobook".<br>3. **Dual-Mode Recording:** Introduced "Deep Dive" (Long) & "Chat" (Short) modes with specialized Web audio handling.<br>4. **The "Resonance" Engine:** Defined the "Private-to-Public" bridge via emotional solidarity hooks.<br>5. **Taxonomy:** Adopted a "Timeline-First, Tag-Later" structure based on MECE principles. |
 | V1.6 | 2025-11-XX | AIO-PM | Pivot to **Web-First Platform** (PWA) to eliminate app store friction. |
 | V1.1 | 2025-10-XX | AI PM | Initial Mobile App MVP definition. |
@@ -69,6 +70,20 @@ To accommodate different storytelling styles and network conditions.
 *   **Feature:** Before sending, the user sees a "Review" screen.
 *   **Auto-Leveling (Client-side preview):** The preview playback should have basic volume normalization applied immediately so they can hear themselves clearly.
 
+#### **1.4 The AI Interview Host**
+*   **User Story:** "As a Storyteller, I want the system to feel like a patient host, not a machine waiting for input."
+*   **Role:** The Interview Agent acts like an experienced talk show host. It can open the session, greet the storyteller, briefly introduce itself, explain that pauses are allowed, and help the storyteller ease into the story.
+*   **Opening & Warmup:** At the start of a session, the agent may use light small talk, a short confidence-building note, or a simple warmup question before the main story prompt.
+*   **Prior-Story Recap:** If previous stories exist, the agent may summarize the last relevant story in 1-2 sentences and create a natural bridge into the current topic.
+*   **Listening Rule:** The agent must not interrupt fluent storytelling. Its default behavior is silence unless the selected intervention level allows a clear reason to speak.
+*   **Transitions:** Between story beats, the agent may briefly summarize what was just said and bridge to the next memory, for example: "You just described leaving home. We can stay with that moment and talk about your first day in the new place."
+*   **Emotional Support:** When the storyteller shows sadness, guilt, grief, anxiety, or overwhelm, the agent should acknowledge the feeling, offer permission to pause, and avoid clinical diagnosis or therapy claims.
+*   **Closing:** At the end of a session, the agent should thank the storyteller, summarize what was covered, and suggest optional follow-up items such as names, dates, places, or photos.
+*   **Intervention Controls:** The facilitator can set a default intervention level for the project, and the storyteller can adjust it before recording.
+    *   **Off:** No AI-generated opening, recap, live prompt, transition, or closing. The storyteller sees only the selected recording prompt and manual controls.
+    *   **Low:** The agent gives a short opening and closing, may recap prior stories, and only intervenes after long silence, clear confusion, or emotional distress.
+    *   **High:** The agent behaves like an active host with opening, warmup, recap, occasional transitions, and more proactive detail prompts while still avoiding interruption during fluent speech.
+
 ### **Module 2: The "NPR" AI Audio Pipeline (Backend)**
 
 *   **Input:** Raw, potentially noisy, chunked audio files.
@@ -98,6 +113,32 @@ To accommodate different storytelling styles and network conditions.
 *   **The Audiobook:** A generated playlist of "Mastered" audio files, organized by Timeline, with AI-generated intro/outro text (read by a synthetic voice).
 *   **The E-Book (PDF):** High-quality typeset PDF containing photos + edited transcripts. Ready for home printing.
 
+### **Module 6: Multi-Agent Collaboration Layer**
+
+UR Saga should evolve from isolated AI features into a coordinated agent system. Each agent must produce durable, reviewable artifacts rather than ephemeral responses.
+
+*   **Agent 1: Interview Agent**
+    *   Owns the live storyteller session.
+    *   Handles opening, warmup, prior-story recap, listening, gentle probing, transitions, emotional support, and closing.
+    *   Records each intervention separately from storyteller transcript text so later processing can distinguish host prompts from user memories.
+
+*   **Agent 2: Editor & Librarian Agent**
+    *   Runs after a story is saved.
+    *   Produces a polished standalone story while preserving the original transcript.
+    *   Extracts reusable biography elements: time, place, people, events, relationships, themes, emotions, decisions, consequences, and reflections.
+    *   Builds the private biography scaffold over time without discarding individual stories.
+
+*   **Agent 3: Wiki Editor Agent**
+    *   Runs only on explicitly shared stories.
+    *   Receives anonymized story text and structured elements.
+    *   Clusters public contributions around events, eras, places, and historical experiences.
+    *   Preserves different users' micro-perspectives on the same event instead of flattening them into a single narrative.
+
+*   **Agent 4: Media Agent**
+    *   Provides value-added services for uploaded photos and story-linked media.
+    *   Supports old photo repair, color correction, clarity enhancement, photo-to-video generation, and story-to-video generation.
+    *   Operates through asynchronous jobs with preview, approval, retry, and failure states.
+
 ---
 
 ## **5. Technical Implementation & Verification**
@@ -111,6 +152,8 @@ To accommodate different storytelling styles and network conditions.
 1.  **Wake Lock Success Rate:** >95% of recording sessions successfully prevent screen sleep.
 2.  **Chunk Reassembly Accuracy:** 100%. No audible "gaps" or "clicks" at the 60s stitch points.
 3.  **Upload Resilience:** System must demonstrate recovery from a "Flight Mode on/off" test during upload without data loss.
+4.  **Intervention Respect:** In user testing, storytellers should report that the Interview Agent did not interrupt their train of thought in >85% of sessions.
+5.  **Artifact Traceability:** 100% of agent-generated story edits, extracted elements, and public archive contributions must link back to source transcript spans or source media assets.
 
 ---
 
@@ -194,6 +237,8 @@ sequenceDiagram
 1.  **Storage Costs:** Storing dual versions (Raw + Mastered) of high-quality audio is expensive. need a lifecycle policy (e.g., delete Raw after 30 days?).
 2.  **Browser Compatibility:** Safari on iOS has specific quirks with `MediaRecorder` and `Wake Lock`. Strict cross-browser testing is required.
 3.  **Legal/Privacy (Collective Archive):** The "Opt-in" consent must be granular. "Can we use your voice? Or just the text?" Needs clear legal UX.
+4.  **Interview Agent Intrusion:** Even a helpful host can disrupt memory flow. The Off/Low/High intervention control must be prominent before recording and easy to change.
+5.  **Agent Provenance:** The product must store host interventions, storyteller speech, editor rewrites, extracted facts, and public anonymized contributions as separate artifacts.
 
 ---
 
