@@ -1,12 +1,21 @@
 import React from 'react';
 import { Mic, MessageCircle } from 'lucide-react';
+import type { InterventionLevel } from '@saga/shared/types/agents';
+import { InterventionLevelSelector } from './InterventionLevelSelector';
 
 interface RecorderHubProps {
     onModeSelect: (mode: 'deep_dive' | 'chat') => void;
+    interventionLevel?: InterventionLevel;
+    onInterventionLevelChange?: (level: InterventionLevel) => void;
     projectTitle?: string;
 }
 
-export function RecorderHub({ onModeSelect, projectTitle = 'New Story' }: RecorderHubProps) {
+export function RecorderHub({
+    onModeSelect,
+    interventionLevel = 'low',
+    onInterventionLevelChange = () => {},
+    projectTitle = 'New Story',
+}: RecorderHubProps) {
     return (
         <div className="flex flex-col items-center justify-center min-h-[60vh] p-6 space-y-8 animate-in fade-in duration-500">
             <div className="text-center space-y-2">
@@ -17,6 +26,11 @@ export function RecorderHub({ onModeSelect, projectTitle = 'New Story' }: Record
                     Choose the format that fits your memory.
                 </p>
             </div>
+
+            <InterventionLevelSelector
+                value={interventionLevel}
+                onChange={onInterventionLevelChange}
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
                 {/* Deep Dive Mode Card */}

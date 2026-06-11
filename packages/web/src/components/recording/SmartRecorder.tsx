@@ -10,13 +10,19 @@ import { toast } from 'react-hot-toast'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { useTranslations } from 'next-intl'
 import { useSilenceDetection } from '@/hooks/use-silence-detection'
-import { aiService } from '@/lib/ai-service'
+import { agentService } from '@/lib/agent-service'
 import { recorderDB } from '@/lib/recorder-db'
 import { storageService } from '@/lib/storage'
+import type { InterventionLevel } from '@saga/shared/types/agents'
+import type { InterviewPhase } from '@/lib/agents/interview-agent'
 
 interface SmartRecorderProps {
   onRecordingComplete: (result: RecordingResult) => void
   onError?: (error: string) => void
+  projectId?: string
+  storytellerId?: string
+  interviewSessionId?: string | null
+  interventionLevel?: InterventionLevel
   maxDuration?: number // in seconds, default 1200 (20 minutes)
   className?: string
   promptText?: string
@@ -36,6 +42,10 @@ type RecordingMethod = 'realtime' | 'traditional' | 'auto'
 export function SmartRecorder({
   onRecordingComplete,
   onError,
+  projectId,
+  storytellerId,
+  interviewSessionId = null,
+  interventionLevel = 'low',
   maxDuration = 1200, // 20 minutes
   className = '',
   promptText,
@@ -162,6 +172,55 @@ export function SmartRecorder({
   const shouldUseRealtime = useCallback(() => {
     return true
   }, [])
+
+  const shouldRequestInterventions = useCallback(() => {
+    return Boolean(projectId && storytellerId && interviewSessionId && interventionLevel !== 'off')
+  }, [projectId, storytellerId, interviewSessionId, interventionLevel])
+
+  const requestInterviewPrompt = useCallback(async ({
+    phase,
+    recentTranscript,
+    silenceMs,
+    transcriptStartOffset = null,
+    transcriptEndOffset = null,
+  }: {
+    phase: InterviewPhase
+    recentTranscript: string
+    silenceMs: number
+    transcriptStartOffset?: number | null
+    transcriptEndOffset?: number | null
+  }) => {
+    if (!projectId || !storytellerId || !interviewSessionId || interventionLevel === 'off') {
+      return null
+    }
+
+    const response = await agentService.requestInterviewIntervention({
+      projectId,
+      storytellerId,
+      interviewSessionId,
+      interventionLevel,
+      phase,
+      currentPrompt: promptText,
+      recentTranscript,
+      previousStorySummary: null,
+      previousPrompts,
+      silenceMs,
+      transcriptStartOffset,
+      transcriptEndOffset,
+    })
+
+    const prompt = response.intervention.shouldIntervene
+      ? response.intervention.promptText
+      : ''
+
+    if (prompt) {
+      setAiPrompt(prompt)
+      setPreviousPrompts(prev => [...prev.slice(-4), prompt])
+      setTimeout(() => setAiPrompt(''), 10000)
+    }
+
+    return response
+  }, [projectId, storytellerId, interviewSessionId, interventionLevel, promptText, previousPrompts])
 
   const initializeRealTimeRecognition = useCallback(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
@@ -302,7 +361,7 @@ export function SmartRecorder({
   // Silence Detection
   const handleSilence = useCallback(async () => {
     console.log('[SmartRecorder] Silence detected! Checking conditions...')
-    if (recordingState !== 'recording' || isGeneratingPrompt) {
+    if (recordingState !== 'recording' || isGeneratingPrompt || !shouldRequestInterventions()) {
       console.log('[SmartRecorder] Skipping: Not recording or already generating')
       return
     }
@@ -322,27 +381,29 @@ export function SmartRecorder({
 
     setIsGeneratingPrompt(true)
     try {
-      console.log('[SmartRecorder] Generating real-time prompt for NEW context:', newContent.substring(0, 50) + '...')
-      const prompt = await aiService.generateRealtimePrompt(newContent, locale, previousPrompts)
-      console.log('[SmartRecorder] Generated prompt:', prompt)
-      if (prompt) {
-        setAiPrompt(prompt)
-        setPreviousPrompts(prev => [...prev.slice(-4), prompt]) // Keep last 5 prompts
+      console.log('[SmartRecorder] Requesting interview intervention for NEW context:', newContent.substring(0, 50) + '...')
+      const response = await requestInterviewPrompt({
+        phase: 'story_listening',
+        recentTranscript: newContent,
+        silenceMs: 20000,
+        transcriptStartOffset: lastProcessedLength,
+        transcriptEndOffset: fullTranscript.length,
+      })
+      console.log('[SmartRecorder] Interview intervention response:', response?.intervention)
+      if (response) {
         setLastProcessedLength(fullTranscript.length) // Mark up to here as processed
-        // Auto-clear prompt after 10 seconds
-        setTimeout(() => setAiPrompt(''), 10000)
       }
     } catch (error) {
-      console.error('[SmartRecorder] Failed to generate prompt:', error)
+      console.error('[SmartRecorder] Failed to request interview intervention:', error)
     } finally {
       setIsGeneratingPrompt(false)
     }
-  }, [recordingState, transcript, interimTranscript, isGeneratingPrompt, locale, previousPrompts, lastProcessedLength])
+  }, [recordingState, transcript, interimTranscript, isGeneratingPrompt, lastProcessedLength, requestInterviewPrompt, shouldRequestInterventions])
 
   const { resetSilenceTimer } = useSilenceDetection({
     onSilence: handleSilence,
     threshold: 20000, // 20 seconds of silence triggers prompt
-    enabled: recordingState === 'recording'
+    enabled: recordingState === 'recording' && shouldRequestInterventions()
   })
 
   // Keep a ref to resetSilenceTimer to avoid stale closures in SpeechRecognition callbacks
@@ -488,6 +549,15 @@ export function SmartRecorder({
       setInterimTranscript('')
       setDuration(0)
       startTimer()
+      void requestInterviewPrompt({
+        phase: 'opening',
+        recentTranscript: '',
+        silenceMs: 0,
+        transcriptStartOffset: 0,
+        transcriptEndOffset: 0,
+      }).catch((error) => {
+        console.warn('[SmartRecorder] Failed to request opening intervention:', error)
+      })
 
     } catch (error) {
       console.error('Failed to start recording:', error)
@@ -496,7 +566,7 @@ export function SmartRecorder({
       toast.error(errorMessage)
       releaseWakeLock() // Ensure lock is released on error
     }
-  }, [shouldUseRealtime, initializeRealTimeRecognition, startTimer, onError, requestWakeLock, releaseWakeLock])
+  }, [shouldUseRealtime, initializeRealTimeRecognition, startTimer, onError, requestWakeLock, releaseWakeLock, requestInterviewPrompt])
 
   const pauseRecording = useCallback(() => {
     if (recordingState !== 'recording') return
@@ -566,7 +636,7 @@ export function SmartRecorder({
     releaseWakeLock() // Ensure lock is released
   }, [stopRecording, audioUrl, releaseWakeLock])
 
-  const handleComplete = useCallback(() => {
+  const handleComplete = useCallback(async () => {
     const result: RecordingResult = {
       audioBlob: audioBlob || undefined,
       transcript: transcript.trim(),
@@ -579,8 +649,20 @@ export function SmartRecorder({
       return
     }
 
+    try {
+      await requestInterviewPrompt({
+        phase: 'closing',
+        recentTranscript: result.transcript,
+        silenceMs: 0,
+        transcriptStartOffset: 0,
+        transcriptEndOffset: result.transcript.length,
+      })
+    } catch (error) {
+      console.warn('[SmartRecorder] Failed to request closing intervention:', error)
+    }
+
     onRecordingComplete(result)
-  }, [audioBlob, transcript, duration, shouldUseRealtime, onRecordingComplete])
+  }, [audioBlob, transcript, duration, shouldUseRealtime, onRecordingComplete, requestInterviewPrompt])
 
   const playAudio = useCallback(() => {
     if (!audioUrl) return

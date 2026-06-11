@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'react-hot-toast'
 import { StoryPrompt, getNextPrompt } from '@saga/shared'
+import type { InterventionLevel } from '@saga/shared/types/agents'
 import { RecorderHub } from '@/components/recording/RecorderHub'
 import { SmartRecorder } from '@/components/recording/SmartRecorder'
 import { ReviewStage } from '@/components/recording/ReviewStage'
@@ -12,6 +13,7 @@ import { ResonanceCard } from '@/components/recording/ResonanceCard'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { aiService, AIContent as AIContentType } from '@/lib/ai-service'
+import { agentService } from '@/lib/agent-service'
 import { uploadStoryAudio, StorageService } from '@/lib/storage'
 
 type RecordingMode = 'deep_dive' | 'chat'
@@ -29,6 +31,8 @@ export default function ProjectRecordPage() {
   // Flow State
   const [stage, setStage] = useState<Stage>('hub')
   const [mode, setMode] = useState<RecordingMode>('deep_dive')
+  const [interventionLevel, setInterventionLevel] = useState<InterventionLevel>('low')
+  const [interviewSessionId, setInterviewSessionId] = useState<string | null>(null)
 
   // Data State
   const [currentPrompt, setCurrentPrompt] = useState<StoryPrompt | null>(null)
@@ -59,8 +63,27 @@ export default function ProjectRecordPage() {
     setCurrentPrompt(prompt)
   }, [])
 
-  const handleModeSelect = (selectedMode: RecordingMode) => {
+  const handleModeSelect = async (selectedMode: RecordingMode) => {
     setMode(selectedMode)
+    setInterviewSessionId(null)
+
+    if (user?.id) {
+      try {
+        const session = await agentService.createInterviewSession({
+          projectId,
+          storytellerId: user.id,
+          promptText: currentPrompt?.text,
+          recordingMode: selectedMode,
+          interventionLevel,
+        })
+        setInterviewSessionId(session.id)
+      } catch (error) {
+        console.warn('[record/page] failed to create interview session:', error)
+      }
+    } else {
+      console.warn('[record/page] cannot create interview session without storyteller id')
+    }
+
     setStage('recording')
   }
 
@@ -181,6 +204,8 @@ export default function ProjectRecordPage() {
         {stage === 'hub' && (
           <RecorderHub
             onModeSelect={handleModeSelect}
+            interventionLevel={interventionLevel}
+            onInterventionLevelChange={setInterventionLevel}
             projectTitle={currentPrompt.text}
           />
         )}
@@ -189,6 +214,10 @@ export default function ProjectRecordPage() {
         {stage === 'recording' && (
           <div className="animate-in fade-in slide-in-from-bottom-4">
             <SmartRecorder
+              projectId={projectId}
+              storytellerId={user?.id || ''}
+              interviewSessionId={interviewSessionId}
+              interventionLevel={interventionLevel}
               promptText={currentPrompt.text}
               locale={locale}
               maxDuration={30 * 60}
