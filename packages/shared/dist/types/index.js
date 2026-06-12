@@ -36,4 +36,5 @@ __exportStar(require("./api"), exports);
 __exportStar(require("./story-discovery"), exports);
 __exportStar(require("./story-sharing"), exports);
 __exportStar(require("./agents"), exports);
+__exportStar(require("./public-archive"), exports);
 //# sourceMappingURL=index.js.map

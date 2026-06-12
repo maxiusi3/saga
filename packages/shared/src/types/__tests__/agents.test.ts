@@ -18,9 +18,9 @@ import type { AgentType as PackageRootAgentType } from '../../index'
 import type { AgentType as TypesBarrelAgentType } from '../index'
 
 describe('agent shared types', () => {
-  it('defines Phase 1 agent types only', () => {
+  it('defines Phase 2 agent types', () => {
     const values: AgentType[] = [...AGENT_TYPES]
-    expect(values).toEqual(['interview', 'editor_librarian'])
+    expect(values).toEqual(['interview', 'editor_librarian', 'wiki_editor'])
   })
 
   it('defines the supported Interview Agent intervention levels', () => {

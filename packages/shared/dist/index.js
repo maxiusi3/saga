@@ -18,6 +18,7 @@ exports.AI_PROMPT_CHAPTERS = exports.getChapterProgress = exports.getPromptById 
 __exportStar(require("./types"), exports);
 __exportStar(require("./utils"), exports);
 __exportStar(require("./types/agents"), exports);
+__exportStar(require("./types/public-archive"), exports);
 __exportStar(require("./lib/ai-services"), exports);
 __exportStar(require("./lib/permissions"), exports);
 __exportStar(require("./lib/notifications"), exports);

@@ -16,6 +16,7 @@ export * from './api';
 export * from './story-discovery';
 export * from './story-sharing';
 export * from './agents';
+export * from './public-archive';
 export interface ApiResponse<T> {
     success: boolean;
     data?: T;

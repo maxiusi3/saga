@@ -1,4 +1,4 @@
-export const AGENT_TYPES = ['interview', 'editor_librarian'] as const
+export const AGENT_TYPES = ['interview', 'editor_librarian', 'wiki_editor'] as const
 export type AgentType = (typeof AGENT_TYPES)[number]
 
 export const AGENT_RUN_STATUSES = ['pending', 'running', 'completed', 'failed'] as const
@@ -62,6 +62,9 @@ export interface AgentArtifact {
     | 'story_summary'
     | 'follow_up_questions'
     | 'story_elements'
+    | 'anonymized_contribution_preview'
+    | 'wiki_event_candidate'
+    | 'wiki_event_draft'
   payload: Record<string, unknown>
   source_refs: AgentSourceRef[]
   review_status: AgentReviewStatus
