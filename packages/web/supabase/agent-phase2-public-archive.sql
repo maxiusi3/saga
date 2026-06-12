@@ -68,6 +68,29 @@ create table if not exists public.public_contributions (
   withdrawn_at timestamptz null
 );
 
+alter table public.public_contributions
+  drop constraint if exists public_contributions_source_project_id_fkey;
+alter table public.public_contributions
+  drop constraint if exists public_contributions_source_story_id_fkey;
+alter table public.public_contributions
+  drop constraint if exists public_contributions_source_user_id_fkey;
+alter table public.public_contributions
+  drop constraint if exists public_contributions_source_project_fk;
+alter table public.public_contributions
+  drop constraint if exists public_contributions_source_story_fk;
+alter table public.public_contributions
+  drop constraint if exists public_contributions_source_user_fk;
+
+alter table public.public_contributions
+  add constraint public_contributions_source_project_fk
+  foreign key (source_project_id) references public.projects(id) on delete restrict;
+alter table public.public_contributions
+  add constraint public_contributions_source_story_fk
+  foreign key (source_story_id) references public.stories(id) on delete restrict;
+alter table public.public_contributions
+  add constraint public_contributions_source_user_fk
+  foreign key (source_user_id) references auth.users(id) on delete restrict;
+
 create table if not exists public.public_contribution_elements (
   id uuid primary key default gen_random_uuid(),
   public_contribution_id uuid not null references public.public_contributions(id) on delete cascade,
@@ -179,6 +202,8 @@ begin
   end if;
 end $$;
 
+-- These partial unique indexes intentionally fail if duplicate active rows exist;
+-- dedupe production drift before applying if needed.
 create unique index if not exists idx_platform_roles_active_reviewer_unique
   on public.platform_roles(user_id)
   where role = 'public_archive_reviewer' and revoked_at is null;
