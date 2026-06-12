@@ -1,6 +1,11 @@
 -- Phase 2 public archive and Wiki Editor Agent tables.
 -- Run after agent-phase1.sql.
 
+-- Migration preflight:
+-- This migration replaces Phase 1 check constraints and assumes production does not
+-- contain agent_runs.agent_type or agent_artifacts.artifact_type values outside the
+-- allowlists below. If production may have drifted, query distinct values before
+-- applying this migration.
 do $$
 begin
   alter table public.agent_runs drop constraint if exists agent_runs_agent_type_check;
@@ -47,9 +52,9 @@ create table if not exists public.public_contribution_invitations (
 create table if not exists public.public_contributions (
   id uuid primary key default gen_random_uuid(),
   public_ref text not null unique default ('pc_' || replace(gen_random_uuid()::text, '-', '')),
-  source_project_id uuid not null references public.projects(id) on delete cascade,
-  source_story_id uuid not null references public.stories(id) on delete cascade,
-  source_user_id uuid not null references auth.users(id) on delete cascade,
+  source_project_id uuid not null references public.projects(id) on delete restrict,
+  source_story_id uuid not null references public.stories(id) on delete restrict,
+  source_user_id uuid not null references auth.users(id) on delete restrict,
   source_story_hash text not null,
   source_content_hash text not null,
   consent_scope jsonb not null default '["text","structured_elements"]'::jsonb,
@@ -134,7 +139,47 @@ revoke all on table
   public.public_archive_audit_events
 from anon, authenticated;
 
-create index if not exists idx_platform_roles_active_reviewer
+create or replace function public.set_public_archive_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_trigger
+    where tgname = 'set_public_contribution_elements_updated_at'
+      and tgrelid = 'public.public_contribution_elements'::regclass
+  ) then
+    create trigger set_public_contribution_elements_updated_at
+      before update on public.public_contribution_elements
+      for each row
+      execute function public.set_public_archive_updated_at();
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_trigger
+    where tgname = 'set_public_event_clusters_updated_at'
+      and tgrelid = 'public.public_event_clusters'::regclass
+  ) then
+    create trigger set_public_event_clusters_updated_at
+      before update on public.public_event_clusters
+      for each row
+      execute function public.set_public_archive_updated_at();
+  end if;
+end $$;
+
+create unique index if not exists idx_platform_roles_active_reviewer_unique
   on public.platform_roles(user_id)
   where role = 'public_archive_reviewer' and revoked_at is null;
 create index if not exists idx_public_contributions_story_user on public.public_contributions(source_story_id, source_user_id);
@@ -142,4 +187,7 @@ create index if not exists idx_public_contributions_active_wiki on public.public
 create index if not exists idx_public_contribution_elements_contribution on public.public_contribution_elements(public_contribution_id);
 create index if not exists idx_public_event_contributions_cluster on public.public_event_contributions(public_event_cluster_id);
 create index if not exists idx_public_event_contributions_contribution on public.public_event_contributions(public_contribution_id);
+create unique index if not exists idx_public_event_contributions_active_unique
+  on public.public_event_contributions(public_event_cluster_id, public_contribution_id)
+  where removed_at is null;
 create index if not exists idx_public_archive_audit_contribution on public.public_archive_audit_events(public_contribution_id);
