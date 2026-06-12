@@ -1,4 +1,4 @@
-import type { StoryElementType } from './agents'
+import type { AgentReviewStatus, StoryElementType } from './agents'
 
 export const PUBLIC_ARCHIVE_CONSENT_SCOPE = ['text', 'structured_elements'] as const
 export type PublicArchiveConsentScope = (typeof PUBLIC_ARCHIVE_CONSENT_SCOPE)[number]
@@ -68,7 +68,7 @@ export interface PublicArchiveContributionElement {
   normalized_value: string | null
   source_quote: string | null
   confidence: number
-  review_status: 'unreviewed' | 'approved' | 'rejected' | 'edited'
+  review_status: AgentReviewStatus
   created_at: string
   updated_at: string
 }

@@ -62,6 +62,7 @@ export interface AgentArtifact {
     | 'story_summary'
     | 'follow_up_questions'
     | 'story_elements'
+    // Phase 2 public archive artifact types require the Phase 2 DB migration before persistence.
     | 'anonymized_contribution_preview'
     | 'wiki_event_candidate'
     | 'wiki_event_draft'

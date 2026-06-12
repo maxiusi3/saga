@@ -3,7 +3,9 @@ import {
   PUBLIC_CONTRIBUTION_STATUSES,
   PUBLIC_WIKI_STATUSES,
   PUBLIC_EVENT_STATUSES,
+  PUBLIC_CONTRIBUTION_INVITATION_STATUSES,
   PLATFORM_ROLES,
+  PUBLIC_ARCHIVE_CONSENT_COPY_VERSION,
   type PublicArchiveContribution,
   type PublicArchiveContributionPreview,
   type PublicArchiveApprovedEventSummary,
@@ -11,6 +13,8 @@ import {
 } from '../public-archive'
 import * as PackageRoot from '../../index'
 import * as TypesBarrel from '../index'
+import type { PublicArchiveApprovedEventSummary as PackageRootApprovedEventSummary } from '../../index'
+import type { PlatformRole as TypesBarrelPlatformRole } from '../index'
 
 describe('public archive shared types', () => {
   it('defines Phase 2 consent scope and statuses', () => {
@@ -18,7 +22,9 @@ describe('public archive shared types', () => {
     expect(PUBLIC_CONTRIBUTION_STATUSES).toEqual(['active', 'withdrawn'])
     expect(PUBLIC_WIKI_STATUSES).toEqual(['pending', 'processed', 'failed'])
     expect(PUBLIC_EVENT_STATUSES).toEqual(['candidate', 'draft', 'approved', 'rejected', 'needs_reprocessing'])
+    expect(PUBLIC_CONTRIBUTION_INVITATION_STATUSES).toEqual(['pending', 'accepted', 'dismissed', 'expired'])
     expect(PLATFORM_ROLES).toEqual(['public_archive_reviewer'])
+    expect(PUBLIC_ARCHIVE_CONSENT_COPY_VERSION).toBe('public-archive-consent-v1')
   })
 
   it('accepts public archive contribution and preview shapes', () => {
@@ -82,6 +88,12 @@ describe('public archive shared types', () => {
 
     expect(role).toBe('public_archive_reviewer')
     expect(summary.activeContributionCount).toBe(2)
+
+    const packageRootSummary: PackageRootApprovedEventSummary = summary
+    const typesBarrelRole: TypesBarrelPlatformRole = role
+
+    expect(packageRootSummary.id).toBe('event-1')
+    expect(typesBarrelRole).toBe('public_archive_reviewer')
     expect(TypesBarrel.PUBLIC_ARCHIVE_CONSENT_SCOPE).toBe(PUBLIC_ARCHIVE_CONSENT_SCOPE)
     expect(PackageRoot.PUBLIC_ARCHIVE_CONSENT_SCOPE).toBe(PUBLIC_ARCHIVE_CONSENT_SCOPE)
   })
