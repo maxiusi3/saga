@@ -96,8 +96,32 @@ describe('agent-phase2-public-archive.sql', () => {
     )
     expect(normalizedSql).toContain('add constraint public_contributions_consent_scope_allowed')
     expect(normalizedSql).toContain("jsonb_typeof(consent_scope) = 'array'")
-    expect(normalizedSql).toContain("jsonb_array_length(consent_scope) > 0")
+    expect(normalizedSql).toContain('jsonb_array_length(consent_scope) = 2')
+    expect(normalizedSql).toContain('consent_scope @> \'["text","structured_elements"]\'::jsonb')
     expect(normalizedSql).toContain('consent_scope <@ \'["text","structured_elements"]\'::jsonb')
+  })
+
+  it('enforces story project and owner consistency through triggers', () => {
+    expect(normalizedSql).toContain(
+      'create or replace function public.enforce_public_archive_story_consistency()',
+    )
+    expect(normalizedSql).toContain('security definer')
+    expect(normalizedSql).toContain('set search_path = public, pg_temp')
+    expect(normalizedSql).toContain("coalesce(story_row->>'storyteller_id', story_row->>'user_id')")
+    expect(normalizedSql).toContain("target_project_id := (new_row->>'source_project_id')::uuid")
+    expect(normalizedSql).toContain("target_owner_id := (new_row->>'source_user_id')::uuid")
+    expect(normalizedSql).toContain("target_project_id := (new_row->>'project_id')::uuid")
+    expect(normalizedSql).toContain("target_owner_id := (new_row->>'invited_storyteller_id')::uuid")
+    expect(normalizedSql).toContain('drop trigger if exists enforce_public_contributions_story_consistency')
+    expect(normalizedSql).toContain('create trigger enforce_public_contributions_story_consistency')
+    expect(normalizedSql).toContain('before insert or update of source_story_id, source_project_id, source_user_id')
+    expect(normalizedSql).toContain('on public.public_contributions')
+    expect(normalizedSql).toContain('drop trigger if exists enforce_public_contribution_invitations_story_consistency')
+    expect(normalizedSql).toContain('create trigger enforce_public_contribution_invitations_story_consistency')
+    expect(normalizedSql).toContain(
+      'before insert or update of story_id, project_id, invited_storyteller_id',
+    )
+    expect(normalizedSql).toContain('on public.public_contribution_invitations')
   })
 
   it('creates required indexes for reviewer and event contribution lookups', () => {

@@ -62,7 +62,8 @@ create table if not exists public.public_contributions (
     check (
       case
         when jsonb_typeof(consent_scope) = 'array' then
-          jsonb_array_length(consent_scope) > 0
+          jsonb_array_length(consent_scope) = 2
+          and consent_scope @> '["text","structured_elements"]'::jsonb
           and consent_scope <@ '["text","structured_elements"]'::jsonb
         else false
       end
@@ -107,7 +108,8 @@ alter table public.public_contributions
   check (
     case
       when jsonb_typeof(consent_scope) = 'array' then
-        jsonb_array_length(consent_scope) > 0
+        jsonb_array_length(consent_scope) = 2
+        and consent_scope @> '["text","structured_elements"]'::jsonb
         and consent_scope <@ '["text","structured_elements"]'::jsonb
       else false
     end
@@ -165,6 +167,79 @@ create table if not exists public.public_archive_audit_events (
   metadata jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now()
 );
+
+-- Bridge the story owner column name across schema generations:
+-- older specs used storyteller_id while the current generated types expose user_id.
+create or replace function public.enforce_public_archive_story_consistency()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  new_row jsonb := to_jsonb(new);
+  story_row jsonb;
+  target_story_id uuid;
+  target_project_id uuid;
+  target_owner_id uuid;
+  story_project_id uuid;
+  story_owner_id uuid;
+begin
+  if tg_table_name = 'public_contributions' then
+    target_story_id := (new_row->>'source_story_id')::uuid;
+    target_project_id := (new_row->>'source_project_id')::uuid;
+    target_owner_id := (new_row->>'source_user_id')::uuid;
+  elsif tg_table_name = 'public_contribution_invitations' then
+    target_story_id := (new_row->>'story_id')::uuid;
+    target_project_id := (new_row->>'project_id')::uuid;
+    target_owner_id := (new_row->>'invited_storyteller_id')::uuid;
+  else
+    raise exception 'unsupported public archive consistency table: %', tg_table_name
+      using errcode = '23514';
+  end if;
+
+  select to_jsonb(s.*)
+  into story_row
+  from public.stories s
+  where s.id = target_story_id;
+
+  if story_row is null then
+    raise exception 'public archive story % does not exist', target_story_id
+      using errcode = '23503';
+  end if;
+
+  story_project_id := (story_row->>'project_id')::uuid;
+  story_owner_id := (coalesce(story_row->>'storyteller_id', story_row->>'user_id'))::uuid;
+
+  if story_project_id is distinct from target_project_id then
+    raise exception 'public archive story % project mismatch', target_story_id
+      using errcode = '23514';
+  end if;
+
+  if story_owner_id is distinct from target_owner_id then
+    raise exception 'public archive story % owner mismatch', target_story_id
+      using errcode = '23514';
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists enforce_public_contributions_story_consistency
+  on public.public_contributions;
+create trigger enforce_public_contributions_story_consistency
+  before insert or update of source_story_id, source_project_id, source_user_id
+  on public.public_contributions
+  for each row
+  execute function public.enforce_public_archive_story_consistency();
+
+drop trigger if exists enforce_public_contribution_invitations_story_consistency
+  on public.public_contribution_invitations;
+create trigger enforce_public_contribution_invitations_story_consistency
+  before insert or update of story_id, project_id, invited_storyteller_id
+  on public.public_contribution_invitations
+  for each row
+  execute function public.enforce_public_archive_story_consistency();
 
 alter table public.platform_roles enable row level security;
 alter table public.public_contribution_invitations enable row level security;
