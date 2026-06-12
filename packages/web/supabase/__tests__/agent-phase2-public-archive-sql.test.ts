@@ -90,12 +90,25 @@ describe('agent-phase2-public-archive.sql', () => {
     )
   })
 
+  it('constrains public contribution consent scope to public archive values', () => {
+    expect(normalizedSql).toContain(
+      'alter table public.public_contributions drop constraint if exists public_contributions_consent_scope_allowed',
+    )
+    expect(normalizedSql).toContain('add constraint public_contributions_consent_scope_allowed')
+    expect(normalizedSql).toContain("jsonb_typeof(consent_scope) = 'array'")
+    expect(normalizedSql).toContain("jsonb_array_length(consent_scope) > 0")
+    expect(normalizedSql).toContain('consent_scope <@ \'["text","structured_elements"]\'::jsonb')
+  })
+
   it('creates required indexes for reviewer and event contribution lookups', () => {
     expect(normalizedSql).toContain(
       'create unique index if not exists idx_platform_roles_active_reviewer_unique on public.platform_roles(user_id) where role = \'public_archive_reviewer\' and revoked_at is null',
     )
     expect(normalizedSql).toContain(
       'create index if not exists idx_public_contributions_story_user on public.public_contributions(source_story_id, source_user_id)',
+    )
+    expect(normalizedSql).toContain(
+      'create unique index if not exists idx_public_contributions_active_story_user_unique on public.public_contributions(source_story_id, source_user_id) where status = \'active\'',
     )
     expect(normalizedSql).toContain(
       'create index if not exists idx_public_contributions_active_wiki on public.public_contributions(status, wiki_status)',

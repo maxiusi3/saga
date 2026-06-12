@@ -57,7 +57,16 @@ create table if not exists public.public_contributions (
   source_user_id uuid not null references auth.users(id) on delete restrict,
   source_story_hash text not null,
   source_content_hash text not null,
-  consent_scope jsonb not null default '["text","structured_elements"]'::jsonb,
+  consent_scope jsonb not null default '["text","structured_elements"]'::jsonb
+    constraint public_contributions_consent_scope_allowed
+    check (
+      case
+        when jsonb_typeof(consent_scope) = 'array' then
+          jsonb_array_length(consent_scope) > 0
+          and consent_scope <@ '["text","structured_elements"]'::jsonb
+        else false
+      end
+    ),
   consent_copy_version text not null,
   anonymized_title text not null,
   anonymized_text text not null,
@@ -90,6 +99,19 @@ alter table public.public_contributions
 alter table public.public_contributions
   add constraint public_contributions_source_user_fk
   foreign key (source_user_id) references auth.users(id) on delete restrict;
+
+alter table public.public_contributions
+  drop constraint if exists public_contributions_consent_scope_allowed;
+alter table public.public_contributions
+  add constraint public_contributions_consent_scope_allowed
+  check (
+    case
+      when jsonb_typeof(consent_scope) = 'array' then
+        jsonb_array_length(consent_scope) > 0
+        and consent_scope <@ '["text","structured_elements"]'::jsonb
+      else false
+    end
+  );
 
 create table if not exists public.public_contribution_elements (
   id uuid primary key default gen_random_uuid(),
@@ -202,12 +224,15 @@ begin
   end if;
 end $$;
 
--- These partial unique indexes intentionally fail if duplicate active rows exist;
--- dedupe production drift before applying if needed.
+-- These constraints/indexes intentionally fail if invalid consent scopes or duplicate
+-- active rows exist; clean production drift before applying if needed.
 create unique index if not exists idx_platform_roles_active_reviewer_unique
   on public.platform_roles(user_id)
   where role = 'public_archive_reviewer' and revoked_at is null;
 create index if not exists idx_public_contributions_story_user on public.public_contributions(source_story_id, source_user_id);
+create unique index if not exists idx_public_contributions_active_story_user_unique
+  on public.public_contributions(source_story_id, source_user_id)
+  where status = 'active';
 create index if not exists idx_public_contributions_active_wiki on public.public_contributions(status, wiki_status);
 create index if not exists idx_public_contribution_elements_contribution on public.public_contribution_elements(public_contribution_id);
 create index if not exists idx_public_event_contributions_cluster on public.public_event_contributions(public_event_cluster_id);
