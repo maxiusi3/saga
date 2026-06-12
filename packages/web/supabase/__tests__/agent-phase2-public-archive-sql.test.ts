@@ -112,6 +112,13 @@ describe('agent-phase2-public-archive.sql', () => {
     expect(normalizedSql).toContain("target_owner_id := (new_row->>'source_user_id')::uuid")
     expect(normalizedSql).toContain("target_project_id := (new_row->>'project_id')::uuid")
     expect(normalizedSql).toContain("target_owner_id := (new_row->>'invited_storyteller_id')::uuid")
+    expect(normalizedSql).toContain('if story_project_id is distinct from target_project_id then')
+    expect(normalizedSql).toContain("raise exception 'public archive story % project mismatch'")
+    expect(normalizedSql).toContain('if story_owner_id is distinct from target_owner_id then')
+    expect(normalizedSql).toContain("raise exception 'public archive story % owner mismatch'")
+    expect(
+      normalizedSql.match(/using errcode = '23514'/g)?.length,
+    ).toBeGreaterThanOrEqual(3)
     expect(normalizedSql).toContain('drop trigger if exists enforce_public_contributions_story_consistency')
     expect(normalizedSql).toContain('create trigger enforce_public_contributions_story_consistency')
     expect(normalizedSql).toContain('before insert or update of source_story_id, source_project_id, source_user_id')
