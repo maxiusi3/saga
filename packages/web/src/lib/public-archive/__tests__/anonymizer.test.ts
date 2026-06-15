@@ -16,6 +16,16 @@ describe('public archive anonymizer', () => {
     expect(result).toContain('earthquake')
   })
 
+  it('generalizes media references without removing surrounding context', () => {
+    const result = sanitizePublicArchiveText(
+      'In 1976 we kept a photo of Mei at the station, a voice memo from Uncle Kai, an audio recording of the parade, and a media file from the reunion.',
+    )
+
+    expect(result).toBe(
+      'In 1976 we kept a [photo], a [voice], an [audio], and a [media].',
+    )
+  })
+
   it('builds a preview with text and structured elements only', () => {
     const preview = buildContributionPreview({
       previewId: 'artifact-1',
@@ -72,6 +82,37 @@ describe('public archive anonymizer', () => {
         },
       ],
       excludedDataTypes: ['voice', 'audio', 'photos', 'media_derivatives', 'exact_identity'],
+    })
+  })
+
+  it('generalizes person source quotes even when they include names not in the element value', () => {
+    const preview = buildContributionPreview({
+      previewId: 'artifact-2',
+      story: {
+        id: 'story-2',
+        title: 'Family gathering',
+        transcript: 'Auntie Lin remembered the winter market.',
+        created_at: '2026-01-02T03:04:05.000Z',
+      },
+      sourceContentHash: 'hash-2',
+      elements: [
+        {
+          id: 'element-1',
+          element_type: 'person',
+          value: 'Auntie',
+          normalized_value: 'Auntie',
+          source_quote: 'Auntie Lin Mei',
+          confidence: 0.9,
+        },
+      ],
+    })
+
+    expect(preview.elements[0]).toEqual({
+      elementType: 'person',
+      value: '[person]',
+      normalizedValue: '[person]',
+      sourceQuote: '[person]',
+      confidence: 0.9,
     })
   })
 })

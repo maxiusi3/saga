@@ -21,8 +21,30 @@ interface ElementInput {
   confidence: number
 }
 
+const MEDIA_REFERENCE_PATTERNS: Array<[RegExp, string]> = [
+  [
+    /\b(?:photo|photos|picture|pictures|image|images|snapshot|snapshots)(?:\s+(?:of|from|with|showing)\s+[^,.;!?]+)?/gi,
+    '[photo]',
+  ],
+  [
+    /\b(?:voice\s+(?:memo|memos|note|notes|message|messages|recording|recordings)|voicemail|voicemails)(?:\s+(?:of|from|with)\s+[^,.;!?]+)?/gi,
+    '[voice]',
+  ],
+  [
+    /\b(?:audio\s+(?:recording|recordings|file|files|clip|clips|message|messages)|sound\s+(?:recording|recordings|file|files|clip|clips))(?:\s+(?:of|from|with)\s+[^,.;!?]+)?/gi,
+    '[audio]',
+  ],
+  [
+    /\b(?:media\s+(?:file|files|attachment|attachments|upload|uploads|derivative|derivatives|preview|previews)|uploaded\s+media|media upload|media uploads)(?:\s+(?:of|from|with)\s+[^,.;!?]+)?/gi,
+    '[media]',
+  ],
+]
+
 export function sanitizePublicArchiveText(text: string, privateNames: string[] = []) {
   let output = text
+  for (const [pattern, replacement] of MEDIA_REFERENCE_PATTERNS) {
+    output = output.replace(pattern, replacement)
+  }
   for (const name of privateNames.filter(Boolean)) {
     output = output.replace(new RegExp(escapeRegExp(name), 'gi'), '[person]')
   }
@@ -75,7 +97,12 @@ function anonymizeElement(element: ElementInput, privateNames: string[]): Public
         : element.normalized_value
           ? sanitizePublicArchiveText(element.normalized_value, privateNames)
           : null,
-    sourceQuote: element.source_quote ? sanitizePublicArchiveText(element.source_quote, privateNames) : null,
+    sourceQuote:
+      element.element_type === 'person'
+        ? '[person]'
+        : element.source_quote
+          ? sanitizePublicArchiveText(element.source_quote, privateNames)
+          : null,
     confidence: element.confidence,
   }
 }
