@@ -60,7 +60,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
       projectId: story.project_id,
       storyId: story.id,
       artifactType: 'anonymized_contribution_preview',
-      payload: temporaryPreview,
+      payload: temporaryPreview as unknown as Record<string, unknown>,
       sourceRefs: [{ source_type: 'story', source_id: story.id }],
       confidence: 0.8,
     })

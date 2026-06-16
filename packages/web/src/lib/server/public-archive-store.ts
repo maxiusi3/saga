@@ -121,6 +121,28 @@ export async function withdrawPublicContribution(contributionId: string) {
   return data
 }
 
+export async function markContributionEventsForReprocessing(publicContributionId: string) {
+  const db = getSupabaseAdmin()
+  const { data: links, error: linkError } = await db
+    .from('public_event_contributions')
+    .select('public_event_cluster_id')
+    .eq('public_contribution_id', publicContributionId)
+    .is('removed_at', null)
+
+  raise(linkError)
+  const ids = [...new Set((links || []).map((link: { public_event_cluster_id: string }) => link.public_event_cluster_id))]
+  if (ids.length === 0) return []
+
+  const { data, error } = await db
+    .from('public_event_clusters')
+    .update({ status: 'needs_reprocessing', updated_at: new Date().toISOString() })
+    .in('id', ids)
+    .select()
+
+  raise(error)
+  return data || []
+}
+
 export async function createPublicArchiveAuditEvent(input: {
   eventType: 'preview_generated' | 'opted_in' | 'wiki_processed' | 'review_approved' | 'review_rejected' | 'withdrawn'
   actorUserId: string | null
