@@ -16,7 +16,10 @@ import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
 import { AgentArtifactsPanel } from '@/components/stories/AgentArtifactsPanel'
+import { PublicArchivePanel } from '@/components/stories/PublicArchivePanel'
 import { agentService, type StoryAgentArtifactsResponse } from '@/lib/agent-service'
+import { publicArchiveService, type PublicArchiveContributionStatus } from '@/lib/public-archive-service'
+import type { PublicArchiveApprovedEventSummary } from '@saga/shared/types/public-archive'
 // removed unused interactions import
 import { StorageService } from '@/lib/storage'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
@@ -58,6 +61,8 @@ export default function StoryDetailPage() {
   const [commentViewerOpen, setCommentViewerOpen] = useState<boolean>(false)
   const [commentViewerIdx, setCommentViewerIdx] = useState<number>(0)
   const [agentArtifacts, setAgentArtifacts] = useState<StoryAgentArtifactsResponse | null>(null)
+  const [publicContribution, setPublicContribution] = useState<PublicArchiveContributionStatus | null>(null)
+  const [approvedPublicEvents, setApprovedPublicEvents] = useState<PublicArchiveApprovedEventSummary[]>([])
   // removed legacy comment images selection state
 
   useEffect(() => {
@@ -99,6 +104,19 @@ export default function StoryDetailPage() {
         } catch (error) {
           console.warn('[story/page] failed to load editor agent artifacts:', error)
           setAgentArtifacts(null)
+        }
+
+        try {
+          const [contribution, events] = await Promise.all([
+            publicArchiveService.getContributionStatus(storyId),
+            publicArchiveService.getApprovedEvents(),
+          ])
+          setPublicContribution(contribution)
+          setApprovedPublicEvents(events)
+        } catch (error) {
+          console.warn('[story/page] failed to load public archive status:', error)
+          setPublicContribution(null)
+          setApprovedPublicEvents([])
         }
 
         // removed legacy build of comment images list for selection
@@ -457,6 +475,26 @@ export default function StoryDetailPage() {
               standaloneStory={agentArtifacts?.standaloneStory ?? null}
               elements={agentArtifacts?.elements ?? []}
               artifacts={agentArtifacts?.artifacts ?? []}
+            />
+
+            <PublicArchivePanel
+              storyId={storyId}
+              userRole={userRole}
+              isStoryteller={story.storyteller_id === user?.id}
+              contribution={publicContribution}
+              approvedEvents={approvedPublicEvents}
+              onGeneratePreview={() => publicArchiveService.generatePreview(storyId)}
+              onCommit={async (previewId) => {
+                await publicArchiveService.commitContribution(storyId, previewId)
+                setPublicContribution(await publicArchiveService.getContributionStatus(storyId))
+                setApprovedPublicEvents(await publicArchiveService.getApprovedEvents())
+              }}
+              onInvite={() => publicArchiveService.inviteStoryteller(storyId)}
+              onWithdraw={async (contributionId) => {
+                await publicArchiveService.withdrawContribution(contributionId)
+                setPublicContribution(await publicArchiveService.getContributionStatus(storyId))
+                setApprovedPublicEvents(await publicArchiveService.getApprovedEvents())
+              }}
             />
 
             {/* Comments and Follow-up Questions */}
