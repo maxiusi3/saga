@@ -5,6 +5,7 @@ import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireStoryContributionOwner } from '@/lib/server/public-archive-access'
 import { createStoryContentHash } from '@/lib/server/story-content-hash'
 import { getAgentArtifactByIdForStory } from '@/lib/server/agent-store'
+import { processPublicContributionWithWikiAgent } from '@/lib/server/public-archive-wiki-runner'
 import {
   createPublicArchiveAuditEvent,
   createPublicContribution,
@@ -102,6 +103,13 @@ export async function POST(request: NextRequest, context: RouteContext) {
     publicEventClusterId: null,
     consentCopyVersion: payload.consentCopyVersion || 'public-archive-consent-v1',
     metadata: { storyId: story.id },
+  })
+
+  void processPublicContributionWithWikiAgent({
+    contributionId: String(contribution.id),
+    actorUserId: auth.user.id,
+  }).catch(error => {
+    console.error('Failed to process public contribution with Wiki Editor Agent', error)
   })
 
   return NextResponse.json({ contribution, elementsCount: elements.length }, { headers: auth.headers })

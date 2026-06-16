@@ -13,11 +13,15 @@ const createPublicContribution = jest.fn()
 const createPublicContributionElements = jest.fn()
 const createPublicArchiveAuditEvent = jest.fn()
 const getOwnContributionForStory = jest.fn()
+const processPublicContributionWithWikiAgent = jest.fn()
 
 jest.mock('@/lib/server/auth', () => ({ getAuthenticatedUser: (...args: unknown[]) => getAuthenticatedUser(...args) }))
 jest.mock('@/lib/server/public-archive-access', () => ({ requireStoryContributionOwner: (...args: unknown[]) => requireStoryContributionOwner(...args) }))
 jest.mock('@/lib/server/story-content-hash', () => ({ createStoryContentHash: (...args: unknown[]) => createStoryContentHash(...args) }))
 jest.mock('@/lib/server/agent-store', () => ({ getAgentArtifactByIdForStory: (...args: unknown[]) => getAgentArtifactByIdForStory(...args) }))
+jest.mock('@/lib/server/public-archive-wiki-runner', () => ({
+  processPublicContributionWithWikiAgent: (...args: unknown[]) => processPublicContributionWithWikiAgent(...args),
+}))
 jest.mock('@/lib/server/public-archive-store', () => ({
   createPublicContribution: (...args: unknown[]) => createPublicContribution(...args),
   createPublicContributionElements: (...args: unknown[]) => createPublicContributionElements(...args),
@@ -51,6 +55,7 @@ describe('/api/stories/[storyId]/public-archive', () => {
     createPublicContributionElements.mockResolvedValue([{ id: 'element-1' }])
     createPublicArchiveAuditEvent.mockResolvedValue({ id: 'audit-1' })
     getOwnContributionForStory.mockResolvedValue({ id: 'contribution-1', status: 'active' })
+    processPublicContributionWithWikiAgent.mockResolvedValue({ eventClusterId: 'event-1', status: 'candidate' })
   })
 
   it('returns the storyteller contribution status for a story', async () => {
@@ -86,6 +91,10 @@ describe('/api/stories/[storyId]/public-archive', () => {
     }))
     expect(createPublicContributionElements).toHaveBeenCalledWith('contribution-1', expect.any(Array))
     expect(createPublicArchiveAuditEvent).toHaveBeenCalledWith(expect.objectContaining({ eventType: 'opted_in' }))
+    expect(processPublicContributionWithWikiAgent).toHaveBeenCalledWith({
+      contributionId: 'contribution-1',
+      actorUserId: 'user-1',
+    })
   })
 
   it('rejects stale preview commits', async () => {

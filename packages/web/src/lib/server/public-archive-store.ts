@@ -1,5 +1,8 @@
 import type { StoryElementType } from '@saga/shared/types/agents'
-import type { PublicArchiveConsentScope } from '@saga/shared/types/public-archive'
+import type {
+  PublicArchiveApprovedEventSummary,
+  PublicArchiveConsentScope,
+} from '@saga/shared/types/public-archive'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
 function raise(error: { message?: string; code?: string } | null) {
@@ -166,4 +169,203 @@ export async function createPublicArchiveAuditEvent(input: {
 
   raise(error)
   return data
+}
+
+interface WikiEventClusterOutput {
+  status: 'candidate' | 'draft' | 'approved' | 'rejected' | 'needs_reprocessing'
+  eventLabel: string
+  timeframe: string
+  placeScope: string
+  historicalContextSummary: string
+  perspectiveSummary: string
+  representativeExcerpts: string[]
+  uncertaintyNotes: string
+  confidence: number
+}
+
+export async function getActiveContributionWithElementsForWiki(contributionId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_contributions')
+    .select('*, elements:public_contribution_elements(*)')
+    .eq('id', contributionId)
+    .eq('status', 'active')
+    .maybeSingle()
+
+  raise(error)
+  return data || null
+}
+
+export async function createOrUpdatePublicEventCluster(output: WikiEventClusterOutput) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_event_clusters')
+    .insert({
+      status: output.status,
+      event_label: output.eventLabel,
+      timeframe: output.timeframe,
+      place_scope: output.placeScope,
+      historical_context_summary: output.historicalContextSummary,
+      perspective_summary: output.perspectiveSummary,
+      representative_excerpts: output.representativeExcerpts,
+      uncertainty_notes: output.uncertaintyNotes,
+      confidence: output.confidence,
+    })
+    .select()
+    .single()
+
+  raise(error)
+  return data
+}
+
+export async function linkPublicEventContributions(
+  publicEventClusterId: string,
+  contributionIds: string[],
+) {
+  if (contributionIds.length === 0) return []
+
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_event_contributions')
+    .insert(
+      contributionIds.map(contributionId => ({
+        public_event_cluster_id: publicEventClusterId,
+        public_contribution_id: contributionId,
+        perspective_summary: '',
+      })),
+    )
+    .select()
+
+  raise(error)
+  return data || []
+}
+
+export async function updateContributionWikiStatus(
+  contributionId: string,
+  wikiStatus: 'pending' | 'processed' | 'failed',
+) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_contributions')
+    .update({ wiki_status: wikiStatus })
+    .eq('id', contributionId)
+    .select()
+    .single()
+
+  raise(error)
+  return data
+}
+
+export async function listReviewerEventDrafts() {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_event_clusters')
+    .select('*')
+    .eq('status', 'draft')
+
+  raise(error)
+  return data || []
+}
+
+export async function approvePublicEventDraft(eventId: string, reviewerId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_event_clusters')
+    .update({
+      status: 'approved',
+      review_status: 'approved',
+      reviewed_by: reviewerId,
+      reviewed_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', eventId)
+    .select()
+    .single()
+
+  raise(error)
+  return data
+}
+
+export async function rejectPublicEventDraft(eventId: string, reviewerId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_event_clusters')
+    .update({
+      status: 'rejected',
+      review_status: 'rejected',
+      reviewed_by: reviewerId,
+      reviewed_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', eventId)
+    .select()
+    .single()
+
+  raise(error)
+  return data
+}
+
+export async function markPublicEventNeedsReprocessing(eventId: string, reviewerId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_event_clusters')
+    .update({
+      status: 'needs_reprocessing',
+      reviewed_by: reviewerId,
+      reviewed_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', eventId)
+    .select()
+    .single()
+
+  raise(error)
+  return data
+}
+
+export async function getApprovedEventSummariesForContributor(
+  userId: string,
+): Promise<PublicArchiveApprovedEventSummary[]> {
+  const db = getSupabaseAdmin()
+
+  const { data: contributions, error: contributionsError } = await db
+    .from('public_contributions')
+    .select('id')
+    .eq('source_user_id', userId)
+    .eq('status', 'active')
+
+  raise(contributionsError)
+  const contributionIds = (contributions || []).map((row: { id: string }) => row.id)
+  if (contributionIds.length === 0) return []
+
+  const { data: links, error: linksError } = await db
+    .from('public_event_contributions')
+    .select('public_event_cluster_id, public_contribution_id')
+    .in('public_contribution_id', contributionIds)
+    .is('removed_at', null)
+
+  raise(linksError)
+  const clusterIds = [
+    ...new Set((links || []).map((row: { public_event_cluster_id: string }) => row.public_event_cluster_id)),
+  ]
+  if (clusterIds.length === 0) return []
+
+  const { data: clusters, error: clustersError } = await db
+    .from('public_event_clusters')
+    .select('*')
+    .in('id', clusterIds)
+    .eq('status', 'approved')
+
+  raise(clustersError)
+
+  return (clusters || []).map((cluster: Record<string, any>) => ({
+    id: String(cluster.id),
+    eventLabel: cluster.event_label,
+    activeContributionCount: countClusterContributions(links || [], String(cluster.id)),
+    timeframe: cluster.timeframe,
+    placeScope: cluster.place_scope,
+    historicalContextSummary: cluster.historical_context_summary,
+    perspectiveSummary: cluster.perspective_summary,
+    representativeExcerpts: Array.isArray(cluster.representative_excerpts) ? cluster.representative_excerpts : [],
+    uncertaintyNotes: cluster.uncertainty_notes,
+  }))
+}
+
+function countClusterContributions(
+  links: Array<{ public_event_cluster_id: string }>,
+  clusterId: string,
+) {
+  return links.filter(link => link.public_event_cluster_id === clusterId).length
 }

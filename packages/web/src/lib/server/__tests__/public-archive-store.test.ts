@@ -1,9 +1,15 @@
 import {
+  approvePublicEventDraft,
+  createOrUpdatePublicEventCluster,
   createPublicArchiveAuditEvent,
   createPublicContribution,
   createPublicContributionElements,
   createPublicContributionInvitation,
+  getActiveContributionWithElementsForWiki,
+  getApprovedEventSummariesForContributor,
   getOwnContributionForStory,
+  linkPublicEventContributions,
+  listReviewerEventDrafts,
   withdrawPublicContribution,
 } from '../public-archive-store'
 
@@ -103,5 +109,38 @@ describe('public-archive-store', () => {
 
     expect(result).toEqual({ id: 'row-1' })
     expect(from).toHaveBeenCalledWith('public_archive_audit_events')
+  })
+
+  it('loads active contribution with public elements for wiki processing', async () => {
+    const result = await getActiveContributionWithElementsForWiki('contribution-1')
+    expect(from).toHaveBeenCalledWith('public_contributions')
+    expect(result).toEqual({ id: 'contribution-1' })
+  })
+
+  it('creates or updates public event clusters from wiki output', async () => {
+    const result = await createOrUpdatePublicEventCluster({
+      status: 'draft',
+      eventLabel: '1976 Guangzhou market visit memories',
+      timeframe: '1976',
+      placeScope: 'Guangzhou',
+      historicalContextSummary: 'Contributors described market visits.',
+      perspectiveSummary: 'Two perspectives.',
+      representativeExcerpts: ['A child remembered a market.'],
+      uncertaintyNotes: 'Evidence-limited.',
+      confidence: 0.8,
+    })
+    expect(result).toEqual({ id: 'row-1' })
+    expect(from).toHaveBeenCalledWith('public_event_clusters')
+  })
+
+  it('lists reviewer drafts and approves drafts', async () => {
+    await listReviewerEventDrafts()
+    await approvePublicEventDraft('event-1', 'reviewer-1')
+    expect(from).toHaveBeenCalledWith('public_event_clusters')
+  })
+
+  it('exposes contributor summary and event linking helpers', () => {
+    expect(typeof getApprovedEventSummariesForContributor).toBe('function')
+    expect(typeof linkPublicEventContributions).toBe('function')
   })
 })
