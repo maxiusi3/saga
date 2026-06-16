@@ -14,6 +14,7 @@ import {
   getCompletedEditorRunForStory,
   getCompletedEditorArtifactsForStory,
   getCompletedEditorStoryElementsForStory,
+  getAgentArtifactByIdForStory,
 } from '../agent-store'
 
 const insertSingle = jest.fn()
@@ -34,6 +35,7 @@ const order = jest.fn(() => ({ limit: queryLimit }))
 const queryBuilder = {
   eq: (...args: unknown[]) => queryEq(...args),
   order: (...args: unknown[]) => order(...args),
+  maybeSingle: (...args: unknown[]) => queryMaybeSingle(...args),
 }
 const queryEq = jest.fn(() => queryBuilder)
 const querySelect = jest.fn(() => queryBuilder)
@@ -324,6 +326,20 @@ describe('agent-store', () => {
     const result = await getCompletedEditorRunForStory('story-1', 'hash-1')
 
     expect(result).toBeNull()
+  })
+
+  it('loads a story-scoped agent artifact by id', async () => {
+    queryMaybeSingle.mockResolvedValueOnce({
+      data: { id: 'artifact-1', story_id: 'story-1', artifact_type: 'anonymized_contribution_preview' },
+      error: null,
+    })
+
+    const result = await getAgentArtifactByIdForStory('artifact-1', 'story-1')
+
+    expect(result).toEqual({ id: 'artifact-1', story_id: 'story-1', artifact_type: 'anonymized_contribution_preview' })
+    expect(from).toHaveBeenCalledWith('agent_artifacts')
+    expect(queryEq).toHaveBeenCalledWith('id', 'artifact-1')
+    expect(queryEq).toHaveBeenCalledWith('story_id', 'story-1')
   })
 
   it('gets artifacts for one agent run newest first', async () => {

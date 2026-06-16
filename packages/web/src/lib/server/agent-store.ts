@@ -161,7 +161,15 @@ export async function createAgentArtifact(input: {
   agentRunId: string
   projectId: string
   storyId?: string | null
-  artifactType: 'host_intervention' | 'standalone_story' | 'story_summary' | 'follow_up_questions' | 'story_elements'
+  artifactType:
+    | 'host_intervention'
+    | 'standalone_story'
+    | 'story_summary'
+    | 'follow_up_questions'
+    | 'story_elements'
+    | 'anonymized_contribution_preview'
+    | 'wiki_event_candidate'
+    | 'wiki_event_draft'
   payload: JsonObject
   sourceRefs: SourceRefInput[]
   confidence: number
@@ -268,6 +276,18 @@ export async function getStoryElementsForRun(agentRunId: string) {
 
   raise(error)
   return (data || []).map(removeAgentRunJoinMetadata)
+}
+
+export async function getAgentArtifactByIdForStory(agentArtifactId: string, storyId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('agent_artifacts')
+    .select('*')
+    .eq('id', agentArtifactId)
+    .eq('story_id', storyId)
+    .maybeSingle()
+
+  raise(error)
+  return data || null
 }
 
 export async function getCompletedEditorRunForStory(storyId: string, contentHash: string) {
