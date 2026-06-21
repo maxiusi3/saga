@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { buildContributionPreview } from '@/lib/public-archive/anonymizer'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireStoryContributionOwner } from '@/lib/server/public-archive-access'
+import { withAuthHeaders } from '@/lib/server/http'
 import { createStoryContentHash } from '@/lib/server/story-content-hash'
 import {
   completeAgentRun,
@@ -47,7 +48,19 @@ export async function POST(request: NextRequest, context: RouteContext) {
     runId = String(run.id)
 
     const editorRun = await getCompletedEditorRunForStory(story.id, sourceContentHash)
-    const elements = editorRun ? await getStoryElementsForRun(String(editorRun.id)) : []
+    if (!editorRun) {
+      // Without a completed biography analysis there are no structured person elements,
+      // so names cannot be reliably removed. Refuse rather than publish un-anonymized text.
+      await failAgentRun(runId, 'No completed biography analysis is available to anonymize this story')
+      return NextResponse.json(
+        {
+          error:
+            'Generate the biography for this story before contributing it to the public archive, so names and identifying details can be removed.',
+        },
+        { status: 409, headers: auth.headers },
+      )
+    }
+    const elements = await getStoryElementsForRun(String(editorRun.id))
     const temporaryPreview = buildContributionPreview({
       previewId: 'pending',
       story,
@@ -75,9 +88,4 @@ export async function POST(request: NextRequest, context: RouteContext) {
     }
     return NextResponse.json({ error: 'Unable to generate public archive preview' }, { status: 500, headers: auth.headers })
   }
-}
-
-function withAuthHeaders(response: NextResponse, headers: Headers) {
-  headers.forEach((value, key) => response.headers.set(key, value))
-  return response
 }

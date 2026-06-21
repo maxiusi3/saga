@@ -18,14 +18,23 @@ interface ExistingCluster {
   event_label: string
   timeframe: string
   place_scope: string
+  status?: string
 }
 
 export function processWikiEventDraft(input: {
   existingClusters: ExistingCluster[]
   contributions: PublicContributionForWiki[]
+  primaryContributionId?: string
 }) {
   const groups = groupBySignature(input.contributions)
-  const selected = groups[0] || []
+  // When processing a specific contribution, build the cluster around ITS signature
+  // group; otherwise fall back to the largest group.
+  const selected =
+    (input.primaryContributionId
+      ? groups.find(group => group.some(item => item.id === input.primaryContributionId))
+      : undefined) ||
+    groups[0] ||
+    []
   const first = selected[0]
   const timeframe = getElementValue(first, 'time') || 'Unknown timeframe'
   const placeScope = getElementValue(first, 'place') || 'Unknown place'
@@ -43,7 +52,20 @@ export function processWikiEventDraft(input: {
     uncertaintyNotes: `This summary is derived from ${selected.length} active contributions and does not use external historical sources.`,
     confidence: selected.length >= 2 ? 0.8 : 0.65,
     activeContributionIds: selected.map(item => item.id),
+    // Reuse an existing open cluster with the same timeframe/place so reprocessing
+    // updates one cluster instead of accumulating duplicates.
+    existingClusterId: findMatchingClusterId(input.existingClusters, timeframe, placeScope),
   }
+}
+
+function findMatchingClusterId(clusters: ExistingCluster[], timeframe: string, placeScope: string) {
+  // Never merge on a fully-unknown signature, or every signature-less contribution
+  // would collapse into one cluster.
+  if (timeframe === 'Unknown timeframe' && placeScope === 'Unknown place') return null
+  const match = clusters.find(
+    cluster => cluster.timeframe === timeframe && cluster.place_scope === placeScope,
+  )
+  return match ? match.id : null
 }
 
 function groupBySignature(contributions: PublicContributionForWiki[]) {
@@ -59,7 +81,8 @@ function groupBySignature(contributions: PublicContributionForWiki[]) {
   return [...map.values()].sort((a, b) => b.length - a.length)
 }
 
-function getElementValue(contribution: PublicContributionForWiki, type: StoryElementType) {
+function getElementValue(contribution: PublicContributionForWiki | undefined, type: StoryElementType) {
+  if (!contribution) return null
   const element = contribution.elements.find(item => item.element_type === type && item.confidence >= 0.6)
   return element?.normalized_value || element?.value || null
 }

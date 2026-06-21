@@ -86,16 +86,18 @@ describe('/api/stories/[storyId]/public-archive/preview', () => {
     expect(completeAgentRun).toHaveBeenCalledWith('wiki-run-1', expect.objectContaining({ previewCreated: true }))
   })
 
-  it('uses an empty element list when no completed editor run exists', async () => {
+  it('refuses to build a preview when no completed editor run exists', async () => {
     getCompletedEditorRunForStory.mockResolvedValueOnce(null)
 
-    await POST(
+    const response = await POST(
       new NextRequest('http://localhost/api/stories/story-1/public-archive/preview', { method: 'POST' }),
       { params: Promise.resolve({ storyId: 'story-1' }) },
     )
 
+    expect(response.status).toBe(409)
     expect(getStoryElementsForRun).not.toHaveBeenCalled()
-    expect(buildContributionPreview).toHaveBeenCalledWith(expect.objectContaining({ elements: [] }))
+    expect(buildContributionPreview).not.toHaveBeenCalled()
+    expect(failAgentRun).toHaveBeenCalled()
   })
 
   it('rejects non-storyteller users before creating an agent run', async () => {

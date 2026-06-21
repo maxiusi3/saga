@@ -16,6 +16,18 @@ describe('public archive anonymizer', () => {
     expect(result).toContain('earthquake')
   })
 
+  it('redacts Chinese mobile numbers and resident IDs while keeping the year', () => {
+    const result = sanitizePublicArchiveText(
+      'In 1976 my phone was 13812345678 and my ID was 11010119760307123X.',
+    )
+
+    expect(result).not.toContain('13812345678')
+    expect(result).not.toContain('11010119760307123X')
+    expect(result).toContain('[phone]')
+    expect(result).toContain('[id]')
+    expect(result).toContain('1976')
+  })
+
   it('generalizes media references without removing surrounding context', () => {
     const result = sanitizePublicArchiveText(
       'In 1976 we kept a photo of Mei at the station, a voice memo from Uncle Kai, an audio recording of the parade, and a media file from the reunion.',

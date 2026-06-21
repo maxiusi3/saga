@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requirePublicArchiveReviewer } from '@/lib/server/public-archive-access'
+import { withAuthHeaders } from '@/lib/server/http'
 import { listReviewerEventDrafts } from '@/lib/server/public-archive-store'
 
 export async function GET(request: NextRequest) {
@@ -12,9 +13,4 @@ export async function GET(request: NextRequest) {
 
   const drafts = await listReviewerEventDrafts()
   return NextResponse.json({ drafts }, { headers: auth.headers })
-}
-
-function withAuthHeaders(response: NextResponse, headers: Headers) {
-  headers.forEach((value, key) => response.headers.set(key, value))
-  return response
 }

@@ -133,6 +133,23 @@ describe('public-archive-store', () => {
     expect(from).toHaveBeenCalledWith('public_event_clusters')
   })
 
+  it('updates an existing cluster when wiki output references one', async () => {
+    await createOrUpdatePublicEventCluster({
+      existingClusterId: 'event-1',
+      status: 'draft',
+      eventLabel: '1976 Guangzhou market visit memories',
+      timeframe: '1976',
+      placeScope: 'Guangzhou',
+      historicalContextSummary: 'Contributors described market visits.',
+      perspectiveSummary: 'Two perspectives.',
+      representativeExcerpts: ['A child remembered a market.'],
+      uncertaintyNotes: 'Evidence-limited.',
+      confidence: 0.8,
+    })
+    expect(update).toHaveBeenCalled()
+    expect(updateEq).toHaveBeenCalledWith('id', 'event-1')
+  })
+
   it('lists reviewer drafts and approves drafts', async () => {
     await listReviewerEventDrafts()
     await approvePublicEventDraft('event-1', 'reviewer-1')

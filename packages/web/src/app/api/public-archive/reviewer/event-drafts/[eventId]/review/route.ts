@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requirePublicArchiveReviewer } from '@/lib/server/public-archive-access'
+import { runAfterResponse, withAuthHeaders } from '@/lib/server/http'
+import { reprocessPublicEventCluster } from '@/lib/server/public-archive-wiki-runner'
 import {
   approvePublicEventDraft,
   createPublicArchiveAuditEvent,
@@ -51,13 +53,10 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
   if (action === 'needs_reprocessing') {
     const event = await markPublicEventNeedsReprocessing(eventId, auth.user.id)
+    // Recompute the cluster from its current active contributions after responding.
+    runAfterResponse(() => reprocessPublicEventCluster(eventId, auth.user.id))
     return NextResponse.json({ event }, { headers: auth.headers })
   }
 
   return NextResponse.json({ error: 'Unsupported review action' }, { status: 400, headers: auth.headers })
-}
-
-function withAuthHeaders(response: NextResponse, headers: Headers) {
-  headers.forEach((value, key) => response.headers.set(key, value))
-  return response
 }

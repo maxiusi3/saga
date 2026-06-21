@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import type { PublicArchiveElementPreview } from '@saga/shared/types/public-archive'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireStoryContributionOwner } from '@/lib/server/public-archive-access'
+import { runAfterResponse, withAuthHeaders } from '@/lib/server/http'
 import { createStoryContentHash } from '@/lib/server/story-content-hash'
 import { getAgentArtifactByIdForStory } from '@/lib/server/agent-store'
 import { processPublicContributionWithWikiAgent } from '@/lib/server/public-archive-wiki-runner'
@@ -72,54 +73,63 @@ export async function POST(request: NextRequest, context: RouteContext) {
     )
   }
 
-  const contribution = await createPublicContribution({
-    sourceProjectId: story.project_id,
-    sourceStoryId: story.id,
-    sourceUserId: auth.user.id,
-    sourceStoryHash: hashStoryReference(story.id),
-    sourceContentHash,
-    consentCopyVersion: payload.consentCopyVersion || 'public-archive-consent-v1',
-    anonymizedTitle: payload.anonymizedTitle || '',
-    anonymizedText: payload.anonymizedText || '',
-    anonymizedSummary: payload.anonymizedSummary || '',
-  })
+  try {
+    const contribution = await createPublicContribution({
+      sourceProjectId: story.project_id,
+      sourceStoryId: story.id,
+      sourceUserId: auth.user.id,
+      sourceStoryHash: hashStoryReference(story.id),
+      sourceContentHash,
+      consentCopyVersion: payload.consentCopyVersion || 'public-archive-consent-v1',
+      anonymizedTitle: payload.anonymizedTitle || '',
+      anonymizedText: payload.anonymizedText || '',
+      anonymizedSummary: payload.anonymizedSummary || '',
+    })
 
-  const elements = payload.elements || []
-  await createPublicContributionElements(
-    String(contribution.id),
-    elements.map(element => ({
-      elementType: element.elementType,
-      value: element.value,
-      normalizedValue: element.normalizedValue,
-      sourceQuote: element.sourceQuote,
-      confidence: element.confidence,
-    })),
-  )
+    const elements = payload.elements || []
+    await createPublicContributionElements(
+      String(contribution.id),
+      elements.map(element => ({
+        elementType: element.elementType,
+        value: element.value,
+        normalizedValue: element.normalizedValue,
+        sourceQuote: element.sourceQuote,
+        confidence: element.confidence,
+      })),
+    )
 
-  await createPublicArchiveAuditEvent({
-    eventType: 'opted_in',
-    actorUserId: auth.user.id,
-    publicContributionId: String(contribution.id),
-    publicEventClusterId: null,
-    consentCopyVersion: payload.consentCopyVersion || 'public-archive-consent-v1',
-    metadata: { storyId: story.id },
-  })
+    await createPublicArchiveAuditEvent({
+      eventType: 'opted_in',
+      actorUserId: auth.user.id,
+      publicContributionId: String(contribution.id),
+      publicEventClusterId: null,
+      consentCopyVersion: payload.consentCopyVersion || 'public-archive-consent-v1',
+      metadata: { storyId: story.id },
+    })
 
-  void processPublicContributionWithWikiAgent({
-    contributionId: String(contribution.id),
-    actorUserId: auth.user.id,
-  }).catch(error => {
-    console.error('Failed to process public contribution with Wiki Editor Agent', error)
-  })
+    // Run wiki processing after the response is sent (see scheduleWikiProcessing).
+    scheduleWikiProcessing(String(contribution.id), auth.user.id)
 
-  return NextResponse.json({ contribution, elementsCount: elements.length }, { headers: auth.headers })
+    return NextResponse.json({ contribution, elementsCount: elements.length }, { headers: auth.headers })
+  } catch (error) {
+    // Unique index idx_public_contributions_active_story_user_unique: one active contribution per (story, user).
+    if ((error as { code?: string })?.code === '23505') {
+      return NextResponse.json(
+        { error: 'This story has already been contributed to the public archive.' },
+        { status: 409, headers: auth.headers },
+      )
+    }
+    console.error('Failed to commit public archive contribution', error)
+    return NextResponse.json({ error: 'Unable to commit public archive contribution' }, { status: 500, headers: auth.headers })
+  }
 }
 
 function hashStoryReference(storyId: string) {
   return createHash('sha256').update(`public-archive-story:${storyId}`).digest('hex')
 }
 
-function withAuthHeaders(response: NextResponse, headers: Headers) {
-  headers.forEach((value, key) => response.headers.set(key, value))
-  return response
+// Trigger Wiki processing after the response is sent (runAfterResponse uses after()
+// on serverless and a floating-promise fallback elsewhere).
+function scheduleWikiProcessing(contributionId: string, actorUserId: string) {
+  runAfterResponse(() => processPublicContributionWithWikiAgent({ contributionId, actorUserId }))
 }

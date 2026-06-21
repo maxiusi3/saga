@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { User } from '@supabase/supabase-js'
 import { getSupabaseAdmin } from '@/lib/supabase'
+import { requireProjectAccess } from '@/lib/server/project-access'
 
 export type AccessResult<T = Record<string, never>> =
   | ({ ok: true } & T)
@@ -31,14 +32,10 @@ export async function requireStoryFacilitatorForInvitation(storyId: string, user
   if (storyError) return denied(500, 'Unable to verify story access')
   if (!story) return denied(404, 'Story not found')
 
-  const { data: project, error: projectError } = await db
-    .from('projects')
-    .select('facilitator_id')
-    .eq('id', story.project_id)
-    .maybeSingle()
-
-  if (projectError) return denied(500, 'Unable to verify project facilitator')
-  if (project?.facilitator_id !== user.id) return denied(403, 'Only the project facilitator can invite contribution')
+  // Authorize through the shared project-access helper so facilitators AND active
+  // project members (project_roles) are honored consistently with the rest of the app.
+  const access = await requireProjectAccess(story.project_id, user)
+  if (!access.ok) return { ok: false as const, response: access.response }
   return { ok: true as const, story }
 }
 

@@ -115,7 +115,7 @@ export async function getOwnContributionForStory(storyId: string, userId: string
 export async function withdrawPublicContribution(contributionId: string) {
   const { data, error } = await getSupabaseAdmin()
     .from('public_contributions')
-    .update({ status: 'withdrawn', wiki_status: 'processed', withdrawn_at: new Date().toISOString() })
+    .update({ status: 'withdrawn', withdrawn_at: new Date().toISOString() })
     .eq('id', contributionId)
     .select()
     .single()
@@ -181,6 +181,8 @@ interface WikiEventClusterOutput {
   representativeExcerpts: string[]
   uncertaintyNotes: string
   confidence: number
+  // When set, an existing open cluster to update instead of inserting a new one.
+  existingClusterId?: string | null
 }
 
 export async function getActiveContributionWithElementsForWiki(contributionId: string) {
@@ -195,20 +197,104 @@ export async function getActiveContributionWithElementsForWiki(contributionId: s
   return data || null
 }
 
-export async function createOrUpdatePublicEventCluster(output: WikiEventClusterOutput) {
+const CLUSTER_MEMBER_LIMIT = 500
+
+// Active contributions (with their public elements) currently linked to a cluster.
+// Bounded by cluster membership - not the whole archive - so clustering/reprocessing
+// scales with a single event's size; the cap is logged so truncation is never silent.
+export async function getActiveContributionsWithElementsForCluster(
+  clusterId: string,
+  limit: number = CLUSTER_MEMBER_LIMIT,
+) {
+  const db = getSupabaseAdmin()
+  const { data: links, error: linksError } = await db
+    .from('public_event_contributions')
+    .select('public_contribution_id')
+    .eq('public_event_cluster_id', clusterId)
+    .is('removed_at', null)
+
+  raise(linksError)
+  const ids = [...new Set((links || []).map((link: { public_contribution_id: string }) => link.public_contribution_id))]
+  if (ids.length === 0) return []
+
+  const { data, error } = await db
+    .from('public_contributions')
+    .select('*, elements:public_contribution_elements(*)')
+    .in('id', ids)
+    .eq('status', 'active')
+    .limit(limit)
+
+  raise(error)
+  const rows = data || []
+  if (rows.length === limit) {
+    console.warn(`[public-archive] cluster ${clusterId} reprocessing considered only the first ${limit} contributions`)
+  }
+  return rows
+}
+
+// Open clusters eligible to be reused/updated by the Wiki Editor. Approved and
+// rejected clusters are intentionally excluded so reviewed state stays immutable.
+export async function listClusterableEventClusters() {
   const { data, error } = await getSupabaseAdmin()
     .from('public_event_clusters')
-    .insert({
-      status: output.status,
-      event_label: output.eventLabel,
-      timeframe: output.timeframe,
-      place_scope: output.placeScope,
-      historical_context_summary: output.historicalContextSummary,
-      perspective_summary: output.perspectiveSummary,
-      representative_excerpts: output.representativeExcerpts,
-      uncertainty_notes: output.uncertaintyNotes,
-      confidence: output.confidence,
+    .select('*')
+    .in('status', ['candidate', 'draft', 'needs_reprocessing'])
+
+  raise(error)
+  return data || []
+}
+
+export async function createOrUpdatePublicEventCluster(output: WikiEventClusterOutput) {
+  const db = getSupabaseAdmin()
+  const row = {
+    status: output.status,
+    event_label: output.eventLabel,
+    timeframe: output.timeframe,
+    place_scope: output.placeScope,
+    historical_context_summary: output.historicalContextSummary,
+    perspective_summary: output.perspectiveSummary,
+    representative_excerpts: output.representativeExcerpts,
+    uncertainty_notes: output.uncertaintyNotes,
+    confidence: output.confidence,
+  }
+
+  if (output.existingClusterId) {
+    const { data, error } = await db
+      .from('public_event_clusters')
+      .update({ ...row, updated_at: new Date().toISOString() })
+      .eq('id', output.existingClusterId)
+      .select()
+      .single()
+
+    raise(error)
+    return data
+  }
+
+  const { data, error } = await db
+    .from('public_event_clusters')
+    .insert(row)
+    .select()
+    .single()
+
+  raise(error)
+  return data
+}
+
+// When a cluster has no remaining active contributions (e.g. all were withdrawn), clear
+// its derived text and mark it rejected so no withdrawn content lingers and it leaves the
+// reviewer queue.
+export async function emptyPublicEventCluster(clusterId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_event_clusters')
+    .update({
+      status: 'rejected',
+      perspective_summary: '',
+      historical_context_summary: '',
+      representative_excerpts: [],
+      uncertainty_notes: 'All contributions were withdrawn; no active perspectives remain.',
+      updated_at: new Date().toISOString(),
     })
+    .eq('id', clusterId)
     .select()
     .single()
 
@@ -222,15 +308,43 @@ export async function linkPublicEventContributions(
 ) {
   if (contributionIds.length === 0) return []
 
-  const { data, error } = await getSupabaseAdmin()
+  const db = getSupabaseAdmin()
+  // Idempotent: only insert links that do not already exist for this cluster, so
+  // reprocessing the same group does not violate the active-link unique index.
+  const { data: existing, error: existingError } = await db
+    .from('public_event_contributions')
+    .select('public_contribution_id')
+    .eq('public_event_cluster_id', publicEventClusterId)
+    .is('removed_at', null)
+
+  raise(existingError)
+  const linked = new Set((existing || []).map((row: { public_contribution_id: string }) => row.public_contribution_id))
+  const missing = contributionIds.filter(id => !linked.has(id))
+  if (missing.length === 0) return []
+
+  const { data, error } = await db
     .from('public_event_contributions')
     .insert(
-      contributionIds.map(contributionId => ({
+      missing.map(contributionId => ({
         public_event_cluster_id: publicEventClusterId,
         public_contribution_id: contributionId,
         perspective_summary: '',
       })),
     )
+    .select()
+
+  raise(error)
+  return data || []
+}
+
+// Soft-delete a contribution's active event links so a withdrawn contribution stops
+// counting toward clusters and stops influencing future Wiki processing.
+export async function removeContributionEventLinks(publicContributionId: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from('public_event_contributions')
+    .update({ removed_at: new Date().toISOString() })
+    .eq('public_contribution_id', publicContributionId)
+    .is('removed_at', null)
     .select()
 
   raise(error)

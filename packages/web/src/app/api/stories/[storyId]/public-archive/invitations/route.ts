@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireStoryFacilitatorForInvitation } from '@/lib/server/public-archive-access'
+import { withAuthHeaders } from '@/lib/server/http'
 import { createPublicContributionInvitation } from '@/lib/server/public-archive-store'
 
 interface RouteContext {
@@ -25,9 +26,4 @@ export async function POST(request: NextRequest, context: RouteContext) {
   })
 
   return NextResponse.json({ invitation }, { headers: auth.headers })
-}
-
-function withAuthHeaders(response: NextResponse, headers: Headers) {
-  headers.forEach((value, key) => response.headers.set(key, value))
-  return response
 }

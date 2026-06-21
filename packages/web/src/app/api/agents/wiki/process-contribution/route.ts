@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/server/auth'
+import { requireContributionOwner } from '@/lib/server/public-archive-access'
+import { withAuthHeaders } from '@/lib/server/http'
 import { processPublicContributionWithWikiAgent } from '@/lib/server/public-archive-wiki-runner'
 
 export async function POST(request: NextRequest) {
@@ -11,6 +13,10 @@ export async function POST(request: NextRequest) {
   if (!contributionId) {
     return NextResponse.json({ error: 'A contributionId is required' }, { status: 400, headers: auth.headers })
   }
+
+  // Only the contribution owner may trigger (re)processing of their own contribution.
+  const access = await requireContributionOwner(contributionId, auth.user)
+  if (!access.ok) return withAuthHeaders(access.response, auth.headers)
 
   try {
     const result = await processPublicContributionWithWikiAgent({ contributionId, actorUserId: auth.user.id })
