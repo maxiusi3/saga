@@ -490,6 +490,41 @@ export interface Database {
           updated_at?: string
         }
       }
+      platform_roles: {
+        Row: { id: string; user_id: string; role: string; granted_by: string | null; granted_at: string; revoked_at: string | null }
+        Insert: { id?: string; user_id: string; role: string; granted_by?: string | null; granted_at?: string; revoked_at?: string | null }
+        Update: { id?: string; user_id?: string; role?: string; granted_by?: string | null; granted_at?: string; revoked_at?: string | null }
+      }
+      public_contribution_invitations: {
+        Row: { id: string; story_id: string; project_id: string; invited_storyteller_id: string; invited_by: string; status: string; message: string | null; created_at: string; responded_at: string | null }
+        Insert: { id?: string; story_id: string; project_id: string; invited_storyteller_id: string; invited_by: string; status?: string; message?: string | null; created_at?: string; responded_at?: string | null }
+        Update: { id?: string; story_id?: string; project_id?: string; invited_storyteller_id?: string; invited_by?: string; status?: string; message?: string | null; created_at?: string; responded_at?: string | null }
+      }
+      public_contributions: {
+        Row: { id: string; public_ref: string; source_project_id: string; source_story_id: string; source_user_id: string; source_story_hash: string; source_content_hash: string; consent_scope: Json; consent_copy_version: string; anonymized_title: string; anonymized_text: string; anonymized_summary: string; status: string; wiki_status: string; submitted_at: string; withdrawn_at: string | null }
+        Insert: { id?: string; public_ref?: string; source_project_id: string; source_story_id: string; source_user_id: string; source_story_hash: string; source_content_hash: string; consent_scope?: Json; consent_copy_version: string; anonymized_title: string; anonymized_text: string; anonymized_summary: string; status?: string; wiki_status?: string; submitted_at?: string; withdrawn_at?: string | null }
+        Update: { id?: string; public_ref?: string; source_project_id?: string; source_story_id?: string; source_user_id?: string; source_story_hash?: string; source_content_hash?: string; consent_scope?: Json; consent_copy_version?: string; anonymized_title?: string; anonymized_text?: string; anonymized_summary?: string; status?: string; wiki_status?: string; submitted_at?: string; withdrawn_at?: string | null }
+      }
+      public_contribution_elements: {
+        Row: { id: string; public_contribution_id: string; element_type: string; value: string; normalized_value: string | null; source_quote: string | null; confidence: number; review_status: string; created_at: string; updated_at: string }
+        Insert: { id?: string; public_contribution_id: string; element_type: string; value: string; normalized_value?: string | null; source_quote?: string | null; confidence?: number; review_status?: string; created_at?: string; updated_at?: string }
+        Update: { id?: string; public_contribution_id?: string; element_type?: string; value?: string; normalized_value?: string | null; source_quote?: string | null; confidence?: number; review_status?: string; created_at?: string; updated_at?: string }
+      }
+      public_event_clusters: {
+        Row: { id: string; status: string; event_label: string; timeframe: string; place_scope: string; historical_context_summary: string; perspective_summary: string; representative_excerpts: Json; uncertainty_notes: string; confidence: number; review_status: string; reviewed_by: string | null; reviewed_at: string | null; created_at: string; updated_at: string }
+        Insert: { id?: string; status?: string; event_label: string; timeframe: string; place_scope: string; historical_context_summary: string; perspective_summary: string; representative_excerpts?: Json; uncertainty_notes: string; confidence?: number; review_status?: string; reviewed_by?: string | null; reviewed_at?: string | null; created_at?: string; updated_at?: string }
+        Update: { id?: string; status?: string; event_label?: string; timeframe?: string; place_scope?: string; historical_context_summary?: string; perspective_summary?: string; representative_excerpts?: Json; uncertainty_notes?: string; confidence?: number; review_status?: string; reviewed_by?: string | null; reviewed_at?: string | null; created_at?: string; updated_at?: string }
+      }
+      public_event_contributions: {
+        Row: { id: string; public_event_cluster_id: string; public_contribution_id: string; match_confidence: number; perspective_summary: string; excerpt_allowed: boolean; created_at: string; removed_at: string | null }
+        Insert: { id?: string; public_event_cluster_id: string; public_contribution_id: string; match_confidence?: number; perspective_summary: string; excerpt_allowed?: boolean; created_at?: string; removed_at?: string | null }
+        Update: { id?: string; public_event_cluster_id?: string; public_contribution_id?: string; match_confidence?: number; perspective_summary?: string; excerpt_allowed?: boolean; created_at?: string; removed_at?: string | null }
+      }
+      public_archive_audit_events: {
+        Row: { id: string; event_type: string; actor_user_id: string | null; public_contribution_id: string | null; public_event_cluster_id: string | null; consent_copy_version: string | null; metadata: Json; created_at: string }
+        Insert: { id?: string; event_type: string; actor_user_id?: string | null; public_contribution_id?: string | null; public_event_cluster_id?: string | null; consent_copy_version?: string | null; metadata?: Json; created_at?: string }
+        Update: { id?: string; event_type?: string; actor_user_id?: string | null; public_contribution_id?: string | null; public_event_cluster_id?: string | null; consent_copy_version?: string | null; metadata?: Json; created_at?: string }
+      }
       subscriptions: {
         Row: {
           id: string

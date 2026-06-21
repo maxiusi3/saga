@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.STORY_ELEMENT_TYPES = exports.INTERVIEW_EVENT_KINDS = exports.INTERVENTION_LEVELS = exports.AGENT_REVIEW_STATUSES = exports.AGENT_RUN_STATUSES = exports.AGENT_TYPES = void 0;
-exports.AGENT_TYPES = ['interview', 'editor_librarian'];
+exports.AGENT_TYPES = ['interview', 'editor_librarian', 'wiki_editor'];
 exports.AGENT_RUN_STATUSES = ['pending', 'running', 'completed', 'failed'];
 exports.AGENT_REVIEW_STATUSES = ['unreviewed', 'approved', 'rejected', 'edited'];
 exports.INTERVENTION_LEVELS = ['off', 'low', 'high'];

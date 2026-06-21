@@ -1,4 +1,4 @@
-export declare const AGENT_TYPES: readonly ["interview", "editor_librarian"];
+export declare const AGENT_TYPES: readonly ["interview", "editor_librarian", "wiki_editor"];
 export type AgentType = (typeof AGENT_TYPES)[number];
 export declare const AGENT_RUN_STATUSES: readonly ["pending", "running", "completed", "failed"];
 export type AgentRunStatus = (typeof AGENT_RUN_STATUSES)[number];
@@ -31,7 +31,7 @@ export interface AgentArtifact {
     agent_run_id: string;
     project_id: string;
     story_id: string | null;
-    artifact_type: 'host_intervention' | 'standalone_story' | 'story_summary' | 'follow_up_questions' | 'story_elements';
+    artifact_type: 'host_intervention' | 'standalone_story' | 'story_summary' | 'follow_up_questions' | 'story_elements' | 'anonymized_contribution_preview' | 'wiki_event_candidate' | 'wiki_event_draft';
     payload: Record<string, unknown>;
     source_refs: AgentSourceRef[];
     review_status: AgentReviewStatus;

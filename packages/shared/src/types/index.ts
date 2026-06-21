@@ -23,6 +23,7 @@ export * from './api';
 export * from './story-discovery';
 export * from './story-sharing';
 export * from './agents';
+export * from './public-archive';
 
 // API response types
 export interface ApiResponse<T> {
