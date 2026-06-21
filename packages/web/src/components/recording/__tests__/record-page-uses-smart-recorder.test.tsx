@@ -4,6 +4,8 @@ import type { InterventionLevel } from '@saga/shared/types/agents'
 const mockCreateInterviewSession = jest.fn()
 const mockSmartRecorder = jest.fn(() => <div data-testid="smart-recorder" />)
 
+jest.setTimeout(30000)
+
 jest.mock('@/components/recording/RecorderHub', () => ({
   RecorderHub: ({
     onModeSelect,

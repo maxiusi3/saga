@@ -1,0 +1,183 @@
+const fs = require('node:fs')
+const path = require('node:path')
+const test = require('node:test')
+const assert = require('node:assert/strict')
+const yaml = require('js-yaml')
+
+const rootDir = path.resolve(__dirname, '../..')
+
+function read(relativePath) {
+  return fs.readFileSync(path.join(rootDir, relativePath), 'utf8')
+}
+
+function readJson(relativePath) {
+  return JSON.parse(read(relativePath))
+}
+
+function workflow() {
+  return yaml.load(read('.github/workflows/deploy.yml'))
+}
+
+function job(id) {
+  const jobs = workflow().jobs || {}
+  assert.ok(jobs[id], `expected GitHub Actions job "${id}" to exist`)
+  return jobs[id]
+}
+
+function stepRuns(jobConfig, commandFragment) {
+  return (jobConfig.steps || []).some((step) =>
+    typeof step.run === 'string' && step.run.includes(commandFragment),
+  )
+}
+
+function stepUses(jobConfig, actionName) {
+  return (jobConfig.steps || []).some((step) =>
+    typeof step.uses === 'string' && step.uses.startsWith(actionName),
+  )
+}
+
+test('GitHub Actions separates CI, Vercel preview, Supabase production, and Vercel production jobs', () => {
+  const permissions = workflow().permissions || {}
+  assert.equal(permissions.contents, 'read')
+  assert.equal(permissions['pull-requests'], 'write')
+  assert.equal(permissions.issues, 'write')
+  assert.equal(permissions.deployments, 'write')
+
+  const ci = job('ci')
+  assert.equal(ci['runs-on'], 'ubuntu-latest')
+  assert.ok(stepUses(ci, 'actions/checkout@v4'))
+  assert.ok(stepUses(ci, 'actions/setup-node@v4'))
+  assert.ok(stepRuns(ci, 'npm ci'))
+  assert.ok(stepRuns(ci, 'npm run test:infra'))
+  assert.ok(stepRuns(ci, 'npm run type-check'))
+  assert.ok(stepRuns(ci, 'npm run lint'))
+  assert.ok(stepRuns(ci, 'npm test --workspace=packages/web -- --runInBand'))
+
+  const preview = job('vercel-preview')
+  assert.equal(preview.needs, 'ci')
+  assert.match(String(preview.if), /pull_request/)
+  assert.ok(stepRuns(preview, 'vercel pull --yes --environment=preview'))
+  assert.ok(stepRuns(preview, 'vercel build'))
+  assert.ok(stepRuns(preview, 'vercel deploy --prebuilt'))
+
+  const database = job('supabase-production')
+  assert.equal(database.needs, 'ci')
+  assert.match(String(database.if), /refs\/heads\/main/)
+  assert.ok(stepUses(database, 'supabase/setup-cli@v1'))
+  assert.ok(stepRuns(database, 'supabase db push --linked'))
+
+  const production = job('vercel-production')
+  assert.deepEqual(production.needs, ['ci', 'supabase-production'])
+  assert.match(String(production.if), /refs\/heads\/main/)
+  assert.ok(stepRuns(production, 'vercel pull --yes --environment=production'))
+  assert.ok(stepRuns(production, 'vercel build --prod'))
+  assert.ok(stepRuns(production, 'vercel deploy --prebuilt --prod'))
+})
+
+test('Vercel project config builds the web workspace from the monorepo root and defines cron jobs', () => {
+  const config = readJson('packages/web/vercel.json')
+
+  assert.equal(config.framework, 'nextjs')
+  assert.equal(config.installCommand, 'cd ../.. && npm ci')
+  assert.equal(config.buildCommand, 'cd ../.. && npm run build:vercel')
+  assert.equal(config.outputDirectory, '.next')
+  assert.ok(Array.isArray(config.crons), 'expected crons array')
+  assert.deepEqual(config.crons, [
+    {
+      path: '/api/admin/cleanup-invitations',
+      schedule: '0 9 * * *',
+    },
+  ])
+})
+
+test('Supabase CLI migrations contain the shipped database scripts in dependency order', () => {
+  const migrationsDir = path.join(rootDir, 'supabase/migrations')
+  const migrations = fs.readdirSync(migrationsDir).filter((file) => file.endsWith('.sql')).sort()
+
+  assert.deepEqual(migrations, [
+    '20260611000000_agent_phase1.sql',
+    '20260612000000_agent_phase2_public_archive.sql',
+    '20260621000000_storage_policies.sql',
+  ])
+
+  assert.equal(
+    read('supabase/migrations/20260611000000_agent_phase1.sql'),
+    read('packages/web/supabase/agent-phase1.sql'),
+  )
+  assert.equal(
+    read('supabase/migrations/20260612000000_agent_phase2_public_archive.sql'),
+    read('packages/web/supabase/agent-phase2-public-archive.sql'),
+  )
+  assert.equal(
+    read('supabase/migrations/20260621000000_storage_policies.sql'),
+    read('packages/web/supabase/storage-policies.sql'),
+  )
+})
+
+test('storage policy migration can run after policies already exist', () => {
+  const storageSql = read('supabase/migrations/20260621000000_storage_policies.sql')
+
+  for (const policyName of [
+    'Users can upload files to their own folders',
+    'Users can view their own files',
+    'Users can update their own files',
+    'Users can delete their own files',
+    'Project members can view project files',
+    'Project facilitators can upload project files',
+    'Storytellers can upload story files',
+  ]) {
+    assert.match(
+      storageSql,
+      new RegExp(`DROP POLICY IF EXISTS "${policyName}" ON storage\\.objects;`),
+      `${policyName} should be dropped before create for repeatable deploys`,
+    )
+  }
+})
+
+test('environment example files document required deployment variables without real secrets', () => {
+  const examples = ['.env.production.example', 'packages/web/.env.example']
+  const forbiddenPatterns = [
+    /eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/,
+    /sk-or-v1-[A-Za-z0-9]+/,
+    /encdblxyxztvfxotfuyh/,
+  ]
+
+  for (const file of examples) {
+    const content = read(file)
+    for (const pattern of forbiddenPatterns) {
+      assert.doesNotMatch(content, pattern, `${file} contains a real-looking secret or project id`)
+    }
+  }
+
+  const productionExample = read('.env.production.example')
+  for (const key of [
+    'NEXT_PUBLIC_SUPABASE_URL',
+    'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+    'SUPABASE_SERVICE_ROLE_KEY',
+    'OPENROUTER_API_KEY',
+    'SILICONFLOW_API_KEY',
+    'STRIPE_SECRET_KEY',
+    'ADMIN_CRON_SECRET',
+    'NEXT_PUBLIC_WEB_URL',
+  ]) {
+    assert.match(productionExample, new RegExp(`^${key}=`, 'm'), `${key} missing from production env example`)
+  }
+})
+
+test('deployment runbook lists GitHub secrets, Vercel variables, and Supabase migration flow', () => {
+  const runbook = read('docs/deployment/github-vercel-supabase.md')
+
+  for (const text of [
+    'VERCEL_TOKEN',
+    'VERCEL_ORG_ID',
+    'VERCEL_PROJECT_ID',
+    'SUPABASE_ACCESS_TOKEN',
+    'SUPABASE_DB_PASSWORD',
+    'supabase db push --linked',
+    'vercel pull --yes --environment=production',
+    'NEXT_PUBLIC_SUPABASE_URL',
+    'SUPABASE_SERVICE_ROLE_KEY',
+  ]) {
+    assert.match(runbook, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+  }
+})

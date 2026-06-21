@@ -16,6 +16,7 @@
     "lint": "npm run lint --workspaces",
     "lint:fix": "npm run lint:fix --workspaces",
     "type-check": "npm run type-check --workspaces",
+    "test:infra": "node --test scripts/__tests__/*.test.js",
     "verify": "npm run type-check && npm run lint && npm test --workspace=packages/web -- --runInBand && npm run build:vercel",
     "audit:high": "npm audit --workspaces --audit-level=high",
     "audit:moderate": "npm audit --workspaces --audit-level=moderate",
@@ -35,6 +36,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "js-yaml": "^4.2.0",
     "prettier": "^3.1.0",
     "typescript": "^5.3.2"
   },

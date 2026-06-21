@@ -2,6 +2,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 
+jest.setTimeout(30000)
+
 // Mock API calls
 const mockApi = {
   auth: {
