@@ -139,49 +139,11 @@ WITH CHECK (
   )
 );
 
--- Enable RLS on storage.objects
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
-
--- Create helper function to get file path structure
-CREATE OR REPLACE FUNCTION storage.get_file_path_parts(file_path text)
-RETURNS text[]
-LANGUAGE sql
-STABLE
-AS $$
-  SELECT string_to_array(file_path, '/');
-$$;
-
--- Create helper function to check if user can access project
-CREATE OR REPLACE FUNCTION storage.user_can_access_project(project_id uuid)
-RETURNS boolean
-LANGUAGE sql
-STABLE
-SECURITY DEFINER
-AS $$
-  SELECT EXISTS (
-    SELECT 1 FROM project_roles
-    WHERE user_id = auth.uid()
-    AND project_id = $1
-  );
-$$;
-
--- Grant necessary permissions
-GRANT USAGE ON SCHEMA storage TO authenticated;
-GRANT ALL ON storage.objects TO authenticated;
-GRANT ALL ON storage.buckets TO authenticated;
-
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_storage_objects_bucket_user 
-ON storage.objects (bucket_id, (storage.foldername(name))[1]);
-
-CREATE INDEX IF NOT EXISTS idx_storage_objects_bucket_project 
-ON storage.objects (bucket_id, (storage.foldername(name))[2], (storage.foldername(name))[3]);
+-- Skipping storage.objects RLS enablement on managed Supabase projects.
+-- Supabase owns storage.objects and has RLS enabled by default; hosted project
+-- postgres users cannot ALTER this table's ownership-level settings.
 
 -- Example file path structure:
 -- User files: {user_id}/profile/avatar.jpg
 -- Project files: {user_id}/projects/{project_id}/stories/{story_id}/audio.mp3
 -- Project exports: {user_id}/projects/{project_id}/exports/export.pdf
-
-COMMENT ON TABLE storage.objects IS 'File storage with user and project-based access control';
-COMMENT ON POLICY "Users can upload files to their own folders" ON storage.objects IS 'Allow users to upload files to folders starting with their user ID';
-COMMENT ON POLICY "Project members can view project files" ON storage.objects IS 'Allow project members to view files in their project folders';

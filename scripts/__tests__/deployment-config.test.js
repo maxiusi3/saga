@@ -132,6 +132,29 @@ test('storage policy migration can run after policies already exist', () => {
       `${policyName} should be dropped before create for repeatable deploys`,
     )
   }
+
+  assert.doesNotMatch(
+    storageSql,
+    /^ALTER TABLE storage\.objects ENABLE ROW LEVEL SECURITY;$/m,
+    'managed Supabase projects do not allow postgres to alter storage.objects ownership-level settings',
+  )
+  assert.match(
+    storageSql,
+    /Skipping storage\.objects RLS enablement/,
+    'storage migration should document why storage.objects RLS enablement is skipped',
+  )
+  for (const managedStorageStatement of [
+    'CREATE OR REPLACE FUNCTION storage.get_file_path_parts',
+    'CREATE OR REPLACE FUNCTION storage.user_can_access_project',
+    'CREATE INDEX IF NOT EXISTS idx_storage_objects_bucket_user',
+    'COMMENT ON TABLE storage.objects',
+  ]) {
+    assert.doesNotMatch(
+      storageSql,
+      new RegExp(managedStorageStatement.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'),
+      'storage migration should not modify Supabase-owned storage schema objects',
+    )
+  }
 })
 
 test('environment example files document required deployment variables without real secrets', () => {
@@ -179,5 +202,57 @@ test('deployment runbook lists GitHub secrets, Vercel variables, and Supabase mi
     'SUPABASE_SERVICE_ROLE_KEY',
   ]) {
     assert.match(runbook, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+  }
+})
+
+test('Supabase restore tooling bootstraps the current app schema before migrations', () => {
+  const bootstrapSql = read('supabase/bootstrap/20260624000000_app_base_schema.sql')
+  const restoreScript = read('scripts/supabase/restore-new-project.sh')
+  const runbook = read('docs/deployment/supabase-new-project-restore.md')
+
+  for (const tableName of [
+    'profiles',
+    'projects',
+    'project_roles',
+    'stories',
+    'interactions',
+    'user_resource_wallets',
+    'seat_transactions',
+    'invitations',
+    'chapters',
+    'prompts',
+    'project_prompt_state',
+    'privacy_agreements',
+  ]) {
+    assert.match(
+      bootstrapSql,
+      new RegExp(`create table if not exists public\\.${tableName}\\b`, 'i'),
+      `base schema should create public.${tableName}`,
+    )
+  }
+
+  for (const text of [
+    'alter table public.projects add column if not exists name text',
+    'alter table public.stories add column if not exists user_id uuid',
+    'create or replace function public.create_project_with_role',
+    'create policy "projects_select_members"',
+  ]) {
+    assert.match(bootstrapSql, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'))
+  }
+
+  assert.match(restoreScript, /psql "\$DATABASE_URL" -v ON_ERROR_STOP=0 -f "\$BACKUP_FILE"/)
+  assert.match(restoreScript, /supabase\/bootstrap\/20260624000000_app_base_schema\.sql/)
+  assert.match(restoreScript, /supabase\/migrations\/20260611000000_agent_phase1\.sql/)
+  assert.match(restoreScript, /supabase\/migrations\/20260612000000_agent_phase2_public_archive\.sql/)
+  assert.match(restoreScript, /supabase\/migrations\/20260621000000_storage_policies\.sql/)
+
+  for (const text of [
+    'db_cluster-08-08-2025@05-34-47.backup',
+    'DATABASE_URL',
+    'restore-new-project.sh',
+    'Supabase Dashboard > Project Settings > Database',
+    'rotate',
+  ]) {
+    assert.match(runbook, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'))
   }
 })
