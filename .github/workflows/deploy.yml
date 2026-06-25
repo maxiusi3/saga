@@ -78,7 +78,6 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Pull Vercel preview environment
-        working-directory: packages/web
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -86,7 +85,6 @@ jobs:
 
       - name: Deploy Vercel preview
         id: deploy
-        working-directory: packages/web
         run: |
           url=$(vercel deploy --yes --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> "$GITHUB_OUTPUT"
@@ -160,7 +158,6 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Pull Vercel production environment
-        working-directory: packages/web
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -168,7 +165,6 @@ jobs:
 
       - name: Deploy Vercel production
         id: deploy
-        working-directory: packages/web
         run: |
           url=$(vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> "$GITHUB_OUTPUT"

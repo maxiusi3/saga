@@ -36,6 +36,12 @@ function stepUses(jobConfig, actionName) {
   )
 }
 
+function stepsMatching(jobConfig, commandFragment) {
+  return (jobConfig.steps || []).filter((step) =>
+    typeof step.run === 'string' && step.run.includes(commandFragment),
+  )
+}
+
 test('GitHub Actions separates CI, Vercel preview, Supabase production, and Vercel production jobs', () => {
   const permissions = workflow().permissions || {}
   assert.equal(permissions.contents, 'read')
@@ -58,6 +64,12 @@ test('GitHub Actions separates CI, Vercel preview, Supabase production, and Verc
   assert.match(String(preview.if), /pull_request/)
   assert.ok(stepRuns(preview, 'vercel pull --yes --environment=preview'))
   assert.ok(stepRuns(preview, 'vercel deploy --yes'))
+  for (const step of [
+    ...stepsMatching(preview, 'vercel pull --yes --environment=preview'),
+    ...stepsMatching(preview, 'vercel deploy --yes'),
+  ]) {
+    assert.notEqual(step['working-directory'], 'packages/web')
+  }
 
   const database = job('supabase-production')
   assert.equal(database.needs, 'ci')
@@ -70,6 +82,12 @@ test('GitHub Actions separates CI, Vercel preview, Supabase production, and Verc
   assert.match(String(production.if), /refs\/heads\/main/)
   assert.ok(stepRuns(production, 'vercel pull --yes --environment=production'))
   assert.ok(stepRuns(production, 'vercel deploy --prod --yes'))
+  for (const step of [
+    ...stepsMatching(production, 'vercel pull --yes --environment=production'),
+    ...stepsMatching(production, 'vercel deploy --prod --yes'),
+  ]) {
+    assert.notEqual(step['working-directory'], 'packages/web')
+  }
 })
 
 test('Vercel project config builds the web workspace from the monorepo root and defines cron jobs', () => {
