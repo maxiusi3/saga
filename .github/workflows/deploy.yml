@@ -84,6 +84,9 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
+      - name: Sanitize Vercel preview environment
+        run: node scripts/vercel/sanitize-env-file.js packages/web/.vercel/.env.preview.local
+
       - name: Build Vercel preview
         working-directory: packages/web
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
@@ -172,6 +175,9 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Sanitize Vercel production environment
+        run: node scripts/vercel/sanitize-env-file.js packages/web/.vercel/.env.production.local
 
       - name: Build Vercel production
         working-directory: packages/web
