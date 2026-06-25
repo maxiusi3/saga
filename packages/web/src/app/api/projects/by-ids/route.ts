@@ -1,37 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import { getSupabaseAdmin } from '@/lib/supabase'
+import { getAuthenticatedClient } from '@/lib/server/authenticated-client'
 
 // 通过 id 列表批量获取项目（校验为成员或所有者）
 export async function POST(request: NextRequest) {
   try {
-    const supabaseCookie = createRouteHandlerClient({ cookies })
     const body = await request.json().catch(() => ({})) as { ids?: string[] }
     const ids = Array.isArray(body.ids) ? body.ids : []
 
-    // Cookies 优先，Bearer 回退
-    let user: any = null
-    let db: any = supabaseCookie
-
-    const cookieAuth = await supabaseCookie.auth.getUser()
-    if (cookieAuth.data.user && !cookieAuth.error) {
-      user = cookieAuth.data.user
-    } else {
-      const token = request.headers.get('authorization')?.replace('Bearer ', '')
-      if (token) {
-        const admin = getSupabaseAdmin()
-        const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
-        if (tokenUser?.user && !tokenErr) {
-          user = tokenUser.user
-          db = admin
-        }
-      }
+    const auth = await getAuthenticatedClient(request)
+    if (!auth.ok) {
+      return auth.response
     }
-
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const { user } = auth
+    const db: any = auth.client
 
     if (!ids.length) {
       return NextResponse.json({ projects: [] })
@@ -71,4 +52,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
-

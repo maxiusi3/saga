@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import { getSupabaseAdmin } from '@/lib/supabase'
+import { getAuthenticatedClient } from '@/lib/server/authenticated-client'
 
 /**
  * 钱包查询（服务端）
@@ -11,31 +9,12 @@ import { getSupabaseAdmin } from '@/lib/supabase'
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabaseCookie = createRouteHandlerClient({ cookies })
-
-    // 鉴权：Cookies 优先，Bearer 回退
-    let user: any = null
-    let db: any = supabaseCookie
-
-    const cookieAuth = await supabaseCookie.auth.getUser()
-    if (cookieAuth.data.user && !cookieAuth.error) {
-      user = cookieAuth.data.user
-    } else {
-      const authHeader = request.headers.get('authorization')
-      const token = authHeader?.replace('Bearer ', '')
-      if (token) {
-        const admin = getSupabaseAdmin()
-        const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
-        if (tokenUser?.user && !tokenErr) {
-          user = tokenUser.user
-          db = admin
-        }
-      }
+    const auth = await getAuthenticatedClient(request)
+    if (!auth.ok) {
+      return auth.response
     }
-
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const { user } = auth
+    const db: any = auth.client
 
     // 读取钱包（无记录时 maybeSingle 返回 null）
     const { data: wallet, error: fetchError } = await db
@@ -62,7 +41,12 @@ export async function GET(request: NextRequest) {
 
       if (insertError) {
         console.error('GET /api/wallets/me: insert error', insertError)
-        return NextResponse.json({ error: 'Failed to initialize wallet' }, { status: 500 })
+        return NextResponse.json({
+          user_id: user.id,
+          project_vouchers: 0,
+          facilitator_seats: 0,
+          storyteller_seats: 0,
+        })
       }
 
       // 再次查询，读取触发器可能发放后的数据
@@ -74,7 +58,12 @@ export async function GET(request: NextRequest) {
 
       if (refetchError) {
         console.error('GET /api/wallets/me: refetch error', refetchError)
-        return NextResponse.json({ error: 'Failed to fetch wallet after init' }, { status: 500 })
+        return NextResponse.json({
+          user_id: user.id,
+          project_vouchers: 0,
+          facilitator_seats: 0,
+          storyteller_seats: 0,
+        })
       }
 
       // 兜底：若仍为 0，则进行一次性初始化（幂等）并写交易记录
@@ -129,4 +118,3 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
-

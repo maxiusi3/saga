@@ -1,57 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import { getSupabaseAdmin } from '@/lib/supabase'
-import { createClient } from '@supabase/supabase-js'
+import { getAuthenticatedClient } from '@/lib/server/authenticated-client'
 
 export async function GET(request: NextRequest) {
   try {
-    const supabaseCookie = createRouteHandlerClient({ cookies })
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '50')
 
-    // 尝试多种认证方式
-    let user: any = null
-    let authError: any = null
-    let authedViaBearer = false
-
-    // 方法1: 尝试从 cookies 获取
-    const cookieAuth = await supabaseCookie.auth.getUser()
-
-    if (cookieAuth.data.user && !cookieAuth.error) {
-      user = cookieAuth.data.user
-    } else {
-      // 方法2: 尝试从 Authorization header 获取
-      const authHeader = request.headers.get('authorization')
-      const token = authHeader?.replace('Bearer ', '')
-
-      if (token) {
-        try {
-          const adminSupabase = getSupabaseAdmin()
-          const { data: tokenUser, error: tokenError } = await adminSupabase.auth.getUser(token)
-          if (tokenUser.user && !tokenError) {
-            user = tokenUser.user
-            authedViaBearer = true
-          } else {
-            authError = tokenError
-          }
-        } catch (error) {
-          authError = error
-        }
-      } else {
-        authError = cookieAuth.error
-      }
+    const auth = await getAuthenticatedClient(request)
+    if (!auth.ok) {
+      return auth.response
     }
-
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
-    // 获取用户的通知（并补充 sender/profile 与 story/project 标题信息）
-    const db = authedViaBearer ? getSupabaseAdmin() : supabaseCookie
+    const { user } = auth
+    const db: any = auth.client
 
     const { data: notifications, error } = await db
       .from('notifications')
@@ -131,61 +91,30 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(formattedNotifications)
   } catch (error) {
     console.error('Error in GET /api/notifications:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json([])
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const supabaseCookie = createRouteHandlerClient({ cookies })
-
-    // 鉴权：Cookies 优先，Bearer 回退
-    let user: any = null
-    let db: any = supabaseCookie
-    let authedViaBearer = false
-
-    const cookieAuth = await supabaseCookie.auth.getUser()
-    if (cookieAuth.data.user && !cookieAuth.error) {
-      user = cookieAuth.data.user
-    } else {
-      const authHeader = request.headers.get('authorization')
-      const token = authHeader?.replace('Bearer ', '')
-      if (token) {
-        const admin = getSupabaseAdmin()
-        const { data: tokenUser } = await admin.auth.getUser(token)
-        if (tokenUser?.user) {
-          user = tokenUser.user
-          db = admin
-          authedViaBearer = true
-        }
-      }
+    const auth = await getAuthenticatedClient(request)
+    if (!auth.ok) {
+      return auth.response
     }
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
-    // Bearer 路径使用 admin 执行后续数据库操作；有 cookie 时继续使用 cookie 客户端
-    if (authedViaBearer) {
-      db = getSupabaseAdmin()
-    }
+    const { user } = auth
+    const db: any = auth.client
 
     const body = await request.json()
     const { action, notification_ids } = body
 
     if (action === 'mark_as_read') {
       if (notification_ids && Array.isArray(notification_ids)) {
-        // 标记指定通知为已读
-        const { data, error } = await db.rpc('mark_notifications_as_read', {
-          user_id: user.id,
-          notification_ids
-        })
+        const { data, error } = await db
+          .from('notifications')
+          .update({ is_read: true, read_at: new Date().toISOString() })
+          .eq('recipient_id', user.id)
+          .in('id', notification_ids)
+          .select('id')
 
         if (error) {
           console.error('Error marking notifications as read:', error)
@@ -195,12 +124,14 @@ export async function POST(request: NextRequest) {
           )
         }
 
-        return NextResponse.json({ success: true, updated_count: data })
+        return NextResponse.json({ success: true, updated_count: data?.length || 0 })
       } else {
-        // 标记所有通知为已读
-        const { data, error } = await db.rpc('mark_notifications_as_read', {
-          user_id: user.id
-        })
+        const { data, error } = await db
+          .from('notifications')
+          .update({ is_read: true, read_at: new Date().toISOString() })
+          .eq('recipient_id', user.id)
+          .eq('is_read', false)
+          .select('id')
 
         if (error) {
           console.error('Error marking all notifications as read:', error)
@@ -210,7 +141,7 @@ export async function POST(request: NextRequest) {
           )
         }
 
-        return NextResponse.json({ success: true, updated_count: data })
+        return NextResponse.json({ success: true, updated_count: data?.length || 0 })
       }
     }
 
@@ -229,18 +160,15 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const supabaseCookie = createRouteHandlerClient({ cookies })
     const { searchParams } = new URL(request.url)
     const notificationId = searchParams.get('id')
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabaseCookie.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+    const auth = await getAuthenticatedClient(request)
+    if (!auth.ok) {
+      return auth.response
     }
+    const { user } = auth
+    const db: any = auth.client
 
     if (!notificationId) {
       return NextResponse.json(
@@ -250,7 +178,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // 删除通知（只能删除自己的通知）
-    const { error } = await supabaseCookie
+    const { error } = await db
       .from('notifications')
       .delete()
       .eq('id', notificationId)
