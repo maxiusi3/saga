@@ -57,9 +57,7 @@ test('GitHub Actions separates CI, Vercel preview, Supabase production, and Verc
   assert.equal(preview.needs, 'ci')
   assert.match(String(preview.if), /pull_request/)
   assert.ok(stepRuns(preview, 'vercel pull --yes --environment=preview'))
-  assert.ok(stepRuns(preview, 'scripts/vercel/sanitize-env-file.js'))
-  assert.ok(stepRuns(preview, 'vercel build'))
-  assert.ok(stepRuns(preview, 'vercel deploy --prebuilt'))
+  assert.ok(stepRuns(preview, 'vercel deploy --yes'))
 
   const database = job('supabase-production')
   assert.equal(database.needs, 'ci')
@@ -71,9 +69,7 @@ test('GitHub Actions separates CI, Vercel preview, Supabase production, and Verc
   assert.deepEqual(production.needs, ['ci', 'supabase-production'])
   assert.match(String(production.if), /refs\/heads\/main/)
   assert.ok(stepRuns(production, 'vercel pull --yes --environment=production'))
-  assert.ok(stepRuns(production, 'scripts/vercel/sanitize-env-file.js'))
-  assert.ok(stepRuns(production, 'vercel build --prod'))
-  assert.ok(stepRuns(production, 'vercel deploy --prebuilt --prod'))
+  assert.ok(stepRuns(production, 'vercel deploy --prod --yes'))
 })
 
 test('Vercel project config builds the web workspace from the monorepo root and defines cron jobs', () => {
