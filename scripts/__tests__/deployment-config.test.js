@@ -95,9 +95,14 @@ test('Supabase CLI migrations contain the shipped database scripts in dependency
   const migrations = fs.readdirSync(migrationsDir).filter((file) => file.endsWith('.sql')).sort()
 
   assert.deepEqual(migrations, [
+    '20250731012532_remote_history_placeholder.sql',
+    '20250731015259_remote_history_placeholder.sql',
+    '20250802015525_remote_history_placeholder.sql',
+    '20250802015612_remote_history_placeholder.sql',
     '20260611000000_agent_phase1.sql',
     '20260612000000_agent_phase2_public_archive.sql',
     '20260621000000_storage_policies.sql',
+    '20260625081000_dashboard_support_tables.sql',
   ])
 
   assert.equal(
@@ -112,6 +117,10 @@ test('Supabase CLI migrations contain the shipped database scripts in dependency
     read('supabase/migrations/20260621000000_storage_policies.sql'),
     read('packages/web/supabase/storage-policies.sql'),
   )
+
+  const dashboardSql = read('supabase/migrations/20260625081000_dashboard_support_tables.sql')
+  assert.match(dashboardSql, /create table if not exists public\.notifications/)
+  assert.match(dashboardSql, /create policy "wallet_insert_self"/)
 })
 
 test('storage policy migration can run after policies already exist', () => {
