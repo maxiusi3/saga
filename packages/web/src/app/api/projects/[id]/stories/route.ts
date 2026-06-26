@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getSupabaseAdmin } from '@/lib/supabase'
+import { getAuthenticatedClient } from '@/lib/server/authenticated-client'
 
 // Return stories list for a project (permission: project members or owners)
 export async function GET(
@@ -118,30 +119,11 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabaseCookie = createRouteHandlerClient({ cookies })
     const projectId = (await params).id
 
-    let user: any = null
-    let db: any = supabaseCookie
-
-    const cookieAuth = await supabaseCookie.auth.getUser()
-    if (cookieAuth.data.user && !cookieAuth.error) {
-      user = cookieAuth.data.user
-    } else {
-      const token = request.headers.get('authorization')?.replace('Bearer ', '')
-      if (token) {
-        const admin = getSupabaseAdmin()
-        const { data: tokenUser, error: tokenErr } = await admin.auth.getUser(token)
-        if (tokenUser?.user && !tokenErr) {
-          user = tokenUser.user
-          db = admin
-        }
-      }
-    }
-
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const auth = await getAuthenticatedClient(request)
+    if (!auth.ok) return auth.response
+    const { user, client: db } = auth
 
     // Permission: project owner or active members
     const { data: role } = await db
@@ -166,6 +148,7 @@ export async function POST(
 
     const basePayload: any = {
       project_id: projectId,
+      user_id: user.id,
       storyteller_id: user.id,
       title: body.title,
       content: body.content,
@@ -216,6 +199,7 @@ export async function POST(
       console.warn('Base payload failed, trying legacy payload...')
       const legacyPayload = {
         project_id: projectId,
+        user_id: user.id,
         storyteller_id: user.id,
         title: body.title,
         content: body.content,
