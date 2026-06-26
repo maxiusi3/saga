@@ -10,14 +10,19 @@ import { RecorderHub } from '@/components/recording/RecorderHub'
 import { SmartRecorder } from '@/components/recording/SmartRecorder'
 import { ReviewStage } from '@/components/recording/ReviewStage'
 import { ResonanceCard } from '@/components/recording/ResonanceCard'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { aiService, AIContent as AIContentType } from '@/lib/ai-service'
 import { agentService } from '@/lib/agent-service'
-import { uploadStoryAudio, StorageService } from '@/lib/storage'
+import { uploadStoryAudio } from '@/lib/storage'
 
 type RecordingMode = 'deep_dive' | 'chat'
-type Stage = 'hub' | 'recording' | 'review' | 'submission'
+type Stage = 'hub' | 'recording' | 'review' | 'textFallback' | 'submission'
 
 export default function ProjectRecordPage() {
   const t = useTranslations('recording')
@@ -41,6 +46,9 @@ export default function ProjectRecordPage() {
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [recordingDuration, setRecordingDuration] = useState(0)
   const [transcript, setTranscript] = useState('')
+  const [textStoryTitle, setTextStoryTitle] = useState('')
+  const [textStoryContent, setTextStoryContent] = useState('')
+  const [recorderError, setRecorderError] = useState<string | null>(null)
 
   // AI State
   const [aiContent, setAiContent] = useState<AIContentType | null>(null)
@@ -71,6 +79,7 @@ export default function ProjectRecordPage() {
   const handleReturnToHub = () => {
     interviewSessionRequestVersionRef.current += 1
     setInterviewSessionId(null)
+    setRecorderError(null)
     setStage('hub')
   }
 
@@ -102,6 +111,14 @@ export default function ProjectRecordPage() {
     } else {
       console.warn('[record/page] cannot create interview session without storyteller id')
     }
+  }
+
+  const shouldOfferTextFallback = (message: string) => {
+    const normalized = message.toLowerCase()
+    return normalized.includes('permission') ||
+      normalized.includes('denied') ||
+      normalized.includes('notallowed') ||
+      normalized.includes('not allowed')
   }
 
   const handleRecordingComplete = async (result: { audioBlob?: Blob, transcript?: string, duration: number }) => {
@@ -190,6 +207,41 @@ export default function ProjectRecordPage() {
     }
   }
 
+  const handleSaveTextStory = async () => {
+    const content = textStoryContent.trim()
+    if (!content || !user?.id) return
+
+    setIsSubmitting(true)
+    try {
+      const title = textStoryTitle.trim() || `Story from ${new Date().toLocaleDateString(locale)}`
+      const story = await storyService.createStory({
+        project_id: projectId,
+        storyteller_id: user.id,
+        title,
+        content,
+        transcript: content,
+        audio_duration: 0,
+        happened_at: new Date(),
+        recording_mode: 'chat',
+        is_public: false
+      })
+
+      if (!story) throw new Error('Failed to create story')
+
+      setSavedStoryId(story.id)
+      void agentService.processStoryWithEditorAgent({ storyId: story.id }).catch(error => {
+        console.warn('[record/page] editor agent processing failed:', error)
+      })
+      toast.success('Story saved to timeline!')
+      router.push(withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`))
+    } catch (error) {
+      console.error('Text story save failed:', error)
+      toast.error('Failed to save story')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const handleOptIn = async (optIn: boolean) => {
     if (optIn && savedStoryId) {
       try {
@@ -247,10 +299,69 @@ export default function ProjectRecordPage() {
                 duration: res.duration
               })}
               onError={(message) => {
+                setRecorderError(message)
+                if (shouldOfferTextFallback(message)) {
+                  setStage('textFallback')
+                  return
+                }
                 console.error('[record/page] recorder error:', message)
               }}
             />
           </div>
+        )}
+
+        {stage === 'textFallback' && (
+          <Card className="max-w-2xl mx-auto p-6 space-y-6 bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-serif font-medium text-stone-800 dark:text-stone-100">
+                Write this story instead
+              </h2>
+              <p className="text-sm text-stone-500 dark:text-stone-400">
+                {recorderError ? `Recording could not start: ${recorderError}` : 'Recording could not start in this browser.'}
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="text-story-title">Title</Label>
+              <Input
+                id="text-story-title"
+                value={textStoryTitle}
+                onChange={(event) => setTextStoryTitle(event.target.value)}
+                placeholder="e.g., Smoke test typed story"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="text-story-content">Story text</Label>
+              <Textarea
+                id="text-story-content"
+                value={textStoryContent}
+                onChange={(event) => setTextStoryContent(event.target.value)}
+                placeholder="Type the story here."
+                className="min-h-40"
+              />
+            </div>
+
+            <div className="flex gap-4 pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1"
+                onClick={handleReturnToHub}
+                disabled={isSubmitting}
+              >
+                Back
+              </Button>
+              <Button
+                type="button"
+                className="flex-1"
+                onClick={handleSaveTextStory}
+                disabled={isSubmitting || textStoryContent.trim().length === 0}
+              >
+                {isSubmitting ? 'Saving...' : 'Save text story'}
+              </Button>
+            </div>
+          </Card>
         )}
 
         {/* Stage: REVIEW */}

@@ -55,6 +55,7 @@
     "invitedStoryteller": "{name}을(를) 이야기꾼으로 초대함",
     "usedStoryteller": "이야기꾼 좌석 1개 사용",
     "invitedFacilitator": "{name}을(를) 진행자로 초대함",
-    "usedFacilitator": "진행자 좌석 1개 사용"
+    "usedFacilitator": "진행자 좌석 1개 사용",
+    "empty": "아직 리소스 활동이 없습니다."
   }
 }

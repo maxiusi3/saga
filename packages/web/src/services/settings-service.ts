@@ -454,19 +454,16 @@ class SettingsService {
       return { user_id: 'local', project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 }
     }
 
-    const { data, error } = await this.supabase
-      .from('user_resource_wallets')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
+    const { data: { session } } = await this.supabase.auth.getSession()
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    if (session?.access_token) headers.Authorization = `Bearer ${session.access_token}`
 
-    if (error) {
-      // Handle "no rows" and missing relation gracefully
-      if (error.code === 'PGRST116' || error.code === '42P01') {
-        return { user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 }
-      }
-      throw error;
+    const response = await fetch('/api/wallets/me', { credentials: 'include', headers })
+    if (!response.ok) {
+      throw new Error('Failed to fetch resource wallet')
     }
+
+    const data = await response.json()
 
     return { user_id: data.user_id, project_vouchers: data.project_vouchers ?? 0, facilitator_seats: data.facilitator_seats ?? 0, storyteller_seats: data.storyteller_seats ?? 0 }
   }

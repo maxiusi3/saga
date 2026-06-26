@@ -55,6 +55,7 @@
     "invitedStoryteller": "Invité {name} en tant que conteur",
     "usedStoryteller": "Utilisé 1 place de conteur",
     "invitedFacilitator": "Invité {name} en tant que facilitateur",
-    "usedFacilitator": "Utilisé 1 place de facilitateur"
+    "usedFacilitator": "Utilisé 1 place de facilitateur",
+    "empty": "Aucune activité de ressources pour le moment."
   }
 }

@@ -55,6 +55,7 @@
     "invitedStoryteller": "{name}をストーリーテラーとして招待",
     "usedStoryteller": "ストーリーテラー席1個使用",
     "invitedFacilitator": "{name}をファシリテーターとして招待",
-    "usedFacilitator": "ファシリテーター席1個使用"
+    "usedFacilitator": "ファシリテーター席1個使用",
+    "empty": "リソースのアクティビティはまだありません。"
   }
 }

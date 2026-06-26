@@ -55,6 +55,7 @@
     "invitedStoryteller": "Invited {name} as Storyteller",
     "usedStoryteller": "Used 1 Storyteller Seat",
     "invitedFacilitator": "Invited {name} as Facilitator",
-    "usedFacilitator": "Used 1 Facilitator Seat"
+    "usedFacilitator": "Used 1 Facilitator Seat",
+    "empty": "No resource activity yet."
   }
 }

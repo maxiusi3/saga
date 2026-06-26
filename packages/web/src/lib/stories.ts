@@ -33,6 +33,7 @@ export interface CreateStoryData {
   followup_interaction_id?: string
   happened_at?: Date
   recording_mode?: 'deep_dive' | 'chat'
+  is_public?: boolean
 }
 
 export interface UpdateStoryData {
@@ -102,7 +103,8 @@ export class StoryService {
           ai_confidence_score: storyData.ai_confidence_score,
           followup_interaction_id: storyData.followup_interaction_id,
           happened_at: storyData.happened_at,
-          recording_mode: storyData.recording_mode
+          recording_mode: storyData.recording_mode,
+          is_public: storyData.is_public
         })
       })
       if (!resp.ok) return null

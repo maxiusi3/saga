@@ -3,6 +3,9 @@ import type { InterventionLevel } from '@saga/shared/types/agents'
 
 const mockCreateInterviewSession = jest.fn()
 const mockSmartRecorder = jest.fn(() => <div data-testid="smart-recorder" />)
+const mockCreateStory = jest.fn()
+const mockUpdateStory = jest.fn()
+const mockProcessStoryWithEditorAgent = jest.fn()
 
 jest.setTimeout(30000)
 
@@ -36,6 +39,7 @@ jest.mock('@/components/recording/SmartRecorder', () => ({
 jest.mock('@/lib/agent-service', () => ({
   agentService: {
     createInterviewSession: (...args: unknown[]) => mockCreateInterviewSession(...args),
+    processStoryWithEditorAgent: (...args: unknown[]) => mockProcessStoryWithEditorAgent(...args),
   },
 }))
 
@@ -52,8 +56,8 @@ jest.mock('@/lib/storage', () => ({
 
 jest.mock('@/lib/stories', () => ({
   storyService: {
-    createStory: jest.fn(),
-    updateStory: jest.fn(),
+    createStory: (...args: unknown[]) => mockCreateStory(...args),
+    updateStory: (...args: unknown[]) => mockUpdateStory(...args),
   },
 }))
 
@@ -65,6 +69,9 @@ describe('record page V1.8 recorder selection', () => {
   beforeEach(() => {
     mockCreateInterviewSession.mockReset()
     mockSmartRecorder.mockClear()
+    mockCreateStory.mockReset()
+    mockUpdateStory.mockReset()
+    mockProcessStoryWithEditorAgent.mockReset()
   })
 
   it('uses SmartRecorder on the main recording path', async () => {
@@ -167,5 +174,44 @@ describe('record page V1.8 recorder selection', () => {
       interviewSessionId: 'interview-session-123',
       interventionLevel: 'high',
     }))
+  })
+
+  it('offers a text story fallback when browser recording permission is denied', async () => {
+    mockCreateInterviewSession.mockResolvedValue({ id: 'interview-session-1' })
+    mockCreateStory.mockResolvedValue({ id: 'story-1' })
+    mockProcessStoryWithEditorAgent.mockResolvedValue({})
+    const Page = (await import('@/app/[locale]/dashboard/projects/[id]/record/page')).default
+
+    render(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /start recording/i }))
+
+    await screen.findByTestId('smart-recorder')
+    const recorderProps = mockSmartRecorder.mock.lastCall?.[0] as { onError: (message: string) => void }
+
+    act(() => {
+      recorderProps.onError('Permission denied')
+    })
+
+    expect(await screen.findByRole('heading', { name: /write this story instead/i })).toBeInTheDocument()
+
+    fireEvent.change(screen.getByLabelText(/title/i), {
+      target: { value: 'Smoke test typed story' },
+    })
+    fireEvent.change(screen.getByLabelText(/story text/i), {
+      target: { value: 'This story was typed because browser microphone permission was denied.' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /save text story/i }))
+
+    await waitFor(() => {
+      expect(mockCreateStory).toHaveBeenCalledWith(expect.objectContaining({
+        project_id: 'test-project-id',
+        storyteller_id: 'user-1',
+        title: 'Smoke test typed story',
+        content: 'This story was typed because browser microphone permission was denied.',
+        transcript: 'This story was typed because browser microphone permission was denied.',
+        audio_duration: 0,
+        recording_mode: 'chat',
+      }))
+    })
   })
 })

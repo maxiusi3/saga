@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { ShoppingCart, Users, UserPlus, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
+import { settingsService } from '@/services/settings-service'
 
 interface ResourceSeat {
   type: 'project' | 'facilitator' | 'storyteller'
@@ -19,6 +20,12 @@ interface ResourceSeat {
   description: string
 }
 
+interface ResourceWalletState {
+  project_vouchers: number
+  facilitator_seats: number
+  storyteller_seats: number
+}
+
 export default function ResourcesPage() {
   const locale = useLocale()
   const t = useTranslations('resources')
@@ -27,45 +34,57 @@ export default function ResourcesPage() {
     if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
     return `/${locale}${path}`
   }
-  const [resources, setResources] = useState<ResourceSeat[]>([])
+  const [wallet, setWallet] = useState<ResourceWalletState | null>(null)
   const [loading, setLoading] = useState(true)
+
+  const resources = useMemo<ResourceSeat[]>(() => {
+    const currentWallet = wallet || {
+      project_vouchers: 0,
+      facilitator_seats: 0,
+      storyteller_seats: 0
+    }
+
+    return [
+      {
+        type: 'project',
+        available: currentWallet.project_vouchers,
+        used: 0,
+        total: currentWallet.project_vouchers,
+        price: 15,
+        description: t('types.project.description')
+      },
+      {
+        type: 'facilitator',
+        available: currentWallet.facilitator_seats,
+        used: 0,
+        total: currentWallet.facilitator_seats,
+        price: 10,
+        description: t('types.facilitator.description')
+      },
+      {
+        type: 'storyteller',
+        available: currentWallet.storyteller_seats,
+        used: 0,
+        total: currentWallet.storyteller_seats,
+        price: 5,
+        description: t('types.storyteller.description')
+      }
+    ]
+  }, [wallet, t])
 
   useEffect(() => {
     const loadResources = async () => {
       try {
-        // TODO: Load real resource data from Supabase
-        // For now, show empty resources since user needs to purchase
-        const realResources: ResourceSeat[] = [
-          {
-            type: 'project',
-            available: 0,
-            used: 0,
-            total: 0,
-            price: 15,
-            description: t('types.project.description')
-          },
-          {
-            type: 'facilitator',
-            available: 0,
-            used: 0,
-            total: 0,
-            price: 10,
-            description: t('types.facilitator.description')
-          },
-          {
-            type: 'storyteller',
-            available: 0,
-            used: 0,
-            total: 0,
-            price: 5,
-            description: t('types.storyteller.description')
-          }
-        ]
-
-        setResources(realResources)
+        const nextWallet = await settingsService.getResourceWallet()
+        setWallet(nextWallet)
         setLoading(false)
       } catch (error) {
         console.error('Error loading resources:', error)
+        setWallet({
+          project_vouchers: 0,
+          facilitator_seats: 0,
+          storyteller_seats: 0
+        })
         setLoading(false)
       }
     }
@@ -161,7 +180,7 @@ export default function ResourcesPage() {
                   </span>
                 </div>
                 <Progress 
-                  value={(resource.used / resource.total) * 100} 
+                  value={resource.total > 0 ? (resource.used / resource.total) * 100 : 0}
                   className="h-2"
                 />
               </div>
@@ -189,45 +208,8 @@ export default function ResourcesPage() {
         <div className="space-y-6">
           <h2 className="text-xl font-semibold text-foreground">{t('recentActivity')}</h2>
           
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
-              <div className="flex items-center space-x-3">
-                <BookOpen className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="font-medium text-foreground">{t('activity.created', { name: "Dad's Life Story" })}</div>
-                  <div className="text-sm text-muted-foreground">{t('activity.usedProject')}</div>
-                </div>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Jan 15, 2024
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
-              <div className="flex items-center space-x-3">
-                <UserPlus className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="font-medium text-foreground">{t('activity.invitedStoryteller', { name: "John Doe" })}</div>
-                  <div className="text-sm text-muted-foreground">{t('activity.usedStoryteller')}</div>
-                </div>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Jan 16, 2024
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between p-4 border border-border rounded-lg">
-              <div className="flex items-center space-x-3">
-                <Users className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="font-medium text-foreground">{t('activity.invitedFacilitator', { name: "Beth Smith" })}</div>
-                  <div className="text-sm text-muted-foreground">{t('activity.usedFacilitator')}</div>
-                </div>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Jan 18, 2024
-              </div>
-            </div>
+          <div className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+            {t('activity.empty')}
           </div>
         </div>
       </Card>

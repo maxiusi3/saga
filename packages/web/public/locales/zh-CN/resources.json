@@ -55,6 +55,7 @@
     "invitedStoryteller": "邀请{name}作为讲述者",
     "usedStoryteller": "使用了1个讲述者席位",
     "invitedFacilitator": "邀请{name}作为协调员",
-    "usedFacilitator": "使用了1个协调员席位"
+    "usedFacilitator": "使用了1个协调员席位",
+    "empty": "暂无资源活动。"
   }
 }
