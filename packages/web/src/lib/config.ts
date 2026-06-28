@@ -96,7 +96,6 @@ export function validateConfig(): ConfigValidationResult {
   // 服务端必需的环境变量
   const serverRequiredEnvVars = [
     'SUPABASE_SERVICE_ROLE_KEY',
-    'OPENROUTER_API_KEY',
   ]
 
   // 可选但推荐的环境变量
@@ -125,6 +124,10 @@ export function validateConfig(): ConfigValidationResult {
         errors.push(`Server environment variable ${envVar} contains placeholder value`)
       }
     })
+
+    if (!process.env.TEXT_API_KEY && !process.env.OPENROUTER_API_KEY) {
+      errors.push('Missing required server environment variable: TEXT_API_KEY or OPENROUTER_API_KEY')
+    }
   }
 
   // 检查可选环境变量

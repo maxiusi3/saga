@@ -1,26 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
+import { getTextAiConfig } from '@/lib/server/text-ai-config'
 
-// Initialize OpenRouter client with DeepSeek
-const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
-  apiKey: process.env.OPENROUTER_API_KEY,
-  baseURL: 'https://openrouter.ai/api/v1',
-  defaultHeaders: {
-    'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
-    'X-Title': 'Saga Family Biography Platform'
+function createTextAiClient() {
+  const config = getTextAiConfig()
+  if (!config) return null
+
+  return {
+    client: new OpenAI({
+      apiKey: config.apiKey,
+      baseURL: config.baseURL,
+      defaultHeaders: {
+        'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
+        'X-Title': 'Saga Family Biography Platform'
+      }
+    }),
+    model: config.model,
   }
-}) : null
+}
 
 export async function POST(request: NextRequest) {
   const guard = await requireAiRequest(request, 'process-stories')
   if (!guard.ok) return guard.response
 
   try {
-    // Check if OpenRouter API key is configured
-    if (!process.env.OPENROUTER_API_KEY) {
+    const textAi = createTextAiClient()
+    if (!textAi) {
       return jsonWithRateLimit(
-        { error: 'OpenRouter API key not configured' },
+        { error: 'Text AI API key not configured' },
         guard.headers,
         500
       )
@@ -155,15 +163,10 @@ ${storiesForQuestions}
         )
     }
 
-    // Call DeepSeek via OpenRouter
-    if (!openai) {
-      throw new Error('OpenRouter client not initialized')
-    }
-
     console.log(`Processing ${action} for ${stories.length} stories`)
 
-    const completion = await openai.chat.completions.create({
-      model: 'openai/gpt-oss-20b:free',
+    const completion = await textAi.client.chat.completions.create({
+      model: textAi.model,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
@@ -175,10 +178,10 @@ ${storiesForQuestions}
 
     const responseText = completion.choices[0]?.message?.content
     if (!responseText) {
-      throw new Error('No response from DeepSeek')
+      throw new Error('No response from text AI service')
     }
 
-    console.log('DeepSeek response received')
+    console.log('Text AI response received')
 
     // Parse and validate the response
     let result
@@ -193,7 +196,7 @@ ${storiesForQuestions}
     result.processedAt = new Date().toISOString()
     result.action = action
     result.storiesCount = stories.length
-    result.model = 'openai/gpt-3.5-turbo'
+    result.model = textAi.model
 
     return jsonWithRateLimit(result, guard.headers)
 
@@ -220,7 +223,7 @@ export async function GET() {
       'generate_summary', 
       'suggest_questions'
     ],
-    model: 'openai/gpt-oss-20b:free'
+    model: process.env.TEXT_MODEL || 'openai/gpt-oss-20b:free'
   })
 }
 

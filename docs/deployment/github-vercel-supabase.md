@@ -69,7 +69,10 @@ Configure these for Production. Add Preview equivalents when preview deploys nee
 | `NEXT_PUBLIC_SUPABASE_URL` | Browser | Supabase project URL. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Browser | Supabase anon key. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server only | Supabase service role key. Never expose client-side. |
-| `OPENROUTER_API_KEY` | Server only | AI content generation key. |
+| `TEXT_API_KEY` | Server only | Text model API key. Use this for GLM/NVIDIA or another OpenAI-compatible text provider. |
+| `TEXT_API_BASE_URL` | Server only | Text model OpenAI-compatible base URL. `/chat/completions` endpoints are accepted and normalized by the app. |
+| `TEXT_MODEL` | Server only | Text model id, for example `glm-5.1`. |
+| `OPENROUTER_API_KEY` | Server only | Legacy fallback for older deployments that have not moved to `TEXT_*`. |
 | `SILICONFLOW_API_KEY` | Server only | Audio transcription key. |
 | `SILICONFLOW_MODEL` | Server only | Defaults to `FunAudioLLM/SenseVoiceSmall`. |
 | `STRIPE_SECRET_KEY` | Server only | Stripe payment secret key. |

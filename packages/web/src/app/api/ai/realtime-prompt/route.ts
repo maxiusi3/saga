@@ -1,16 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
+import { getTextAiConfig } from '@/lib/server/text-ai-config'
 
-// Initialize OpenRouter client
-const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
-    apiKey: process.env.OPENROUTER_API_KEY,
-    baseURL: 'https://openrouter.ai/api/v1',
-    defaultHeaders: {
-        'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
-        'X-Title': 'Saga Family Biography Platform'
+function createTextAiClient() {
+    const config = getTextAiConfig()
+    if (!config) return null
+
+    return {
+        client: new OpenAI({
+            apiKey: config.apiKey,
+            baseURL: config.baseURL,
+            defaultHeaders: {
+                'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
+                'X-Title': 'Saga Family Biography Platform'
+            }
+        }),
+        model: config.model,
     }
-}) : null
+}
 
 export async function POST(request: NextRequest) {
     const guard = await requireAiRequest(request, 'realtime-prompt')
@@ -34,11 +42,13 @@ export async function POST(request: NextRequest) {
         }
         const langInstruction = languageInstructions[language] || languageInstructions['en']
 
+        const textAi = createTextAiClient()
+
         // 1. Try Real AI if available
-        if (openai && effectiveTranscript.length > 5) {
+        if (textAi && effectiveTranscript.length > 5) {
             try {
-                const completion = await openai.chat.completions.create({
-                    model: 'openai/gpt-oss-20b:free', // Fast, free model
+                const completion = await textAi.client.chat.completions.create({
+                    model: textAi.model,
                     messages: [
                         {
                             role: 'system',
@@ -115,7 +125,7 @@ export async function POST(request: NextRequest) {
         const randomPrompt = candidatePrompts[Math.floor(Math.random() * candidatePrompts.length)]
 
         // Simulate network delay for realism if mocking
-        if (!openai) await new Promise(resolve => setTimeout(resolve, 500))
+        if (!textAi) await new Promise(resolve => setTimeout(resolve, 500))
 
         return jsonWithRateLimit({
             prompt: randomPrompt,

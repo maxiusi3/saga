@@ -1,26 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
+import { getTextAiConfig } from '@/lib/server/text-ai-config'
 
-// Initialize OpenRouter client (compatible with OpenAI SDK)
-const openai = process.env.OPENROUTER_API_KEY ? new OpenAI({
-  apiKey: process.env.OPENROUTER_API_KEY,
-  baseURL: 'https://openrouter.ai/api/v1',
-  defaultHeaders: {
-    'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
-    'X-Title': 'Saga Family Biography Platform'
+function createTextAiClient() {
+  const config = getTextAiConfig()
+  if (!config) return null
+
+  return {
+    client: new OpenAI({
+      apiKey: config.apiKey,
+      baseURL: config.baseURL,
+      defaultHeaders: {
+        'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
+        'X-Title': 'Saga Family Biography Platform'
+      }
+    }),
+    model: config.model,
   }
-}) : null
+}
 
 export async function POST(request: NextRequest) {
   const guard = await requireAiRequest(request, 'generate-content')
   if (!guard.ok) return guard.response
 
   try {
-    // Check if OpenRouter API key is configured
-    if (!process.env.OPENROUTER_API_KEY) {
+    const textAi = createTextAiClient()
+    if (!textAi) {
       return jsonWithRateLimit(
-        { error: 'OpenRouter API key not configured' },
+        { error: 'Text AI API key not configured' },
         guard.headers,
         500
       )
@@ -82,15 +90,10 @@ ${prompt ? `Story context/prompt: ${prompt}\n\n` : ''}Story transcript:
 
 Generate a title, summary, and follow-up questions that would help this person share more meaningful memories. Remember to use the SAME LANGUAGE as the transcript above.`
 
-    // Call OpenRouter GPT API
-    if (!openai) {
-      throw new Error('OpenRouter client not initialized')
-    }
+    console.log(`Calling text AI API with model: ${textAi.model}`)
 
-    console.log('Calling OpenRouter API with model: openai/gpt-oss-20b:free')
-
-    const completion = await openai.chat.completions.create({
-      model: 'openai/gpt-oss-20b:free', // Use GPT OSS 20B free model
+    const completion = await textAi.client.chat.completions.create({
+      model: textAi.model,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
