@@ -31,12 +31,13 @@ export class AIService {
 
   /**
    * Transcribe audio using OpenAI Whisper API
+   * AUD-03 FIX: For large files (>4MB), upload to storage first and pass storagePath
    */
   static async transcribeAudio(
     audioBlob: Blob,
-    options: AIProcessingOptions = {}
+    options: AIProcessingOptions & { storagePath?: string } = {}
   ): Promise<TranscriptionResult> {
-    const { onProgress, language = 'en', maxRetries = 3 } = options
+    const { onProgress, language = 'en', maxRetries = 3, storagePath } = options
 
     // Try real API first, fallback to mock if service unavailable
     try {
@@ -53,7 +54,13 @@ export class AIService {
       onProgress?.('Preparing audio for transcription...', 10)
 
       const formData = new FormData()
-      formData.append('audio', audioBlob, 'recording.webm')
+
+      // AUD-03 FIX: Send storagePath for large files, blob for small files
+      if (storagePath) {
+        formData.append('storagePath', storagePath)
+      } else {
+        formData.append('audio', audioBlob, 'recording.webm')
+      }
       formData.append('language', language)
 
       onProgress?.('Sending to transcription service...', 30)

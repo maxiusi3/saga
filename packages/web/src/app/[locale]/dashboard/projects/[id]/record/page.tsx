@@ -190,13 +190,14 @@ export default function ProjectRecordPage() {
         console.warn('[record/page] editor agent processing failed:', error)
       })
 
-      // 3. Show Resonance
-      const era = data.happenedAt.getFullYear().toString().slice(0, 3) + '0s'
-      setResonanceData({
-        era,
-        count: Math.floor(Math.random() * 500) + 50 // Mock count
-      })
-      setShowResonance(true)
+      // AUD-05 FIX: 移除随机数共鸣，待对接真实公共库统计
+      // TODO: Query public_contributions/public_event_clusters for real resonance count
+      // const era = data.happenedAt.getFullYear().toString().slice(0, 3) + '0s'
+      // setResonanceData({
+      //   era,
+      //   count: 0 // Will be populated from real public archive query
+      // })
+      // setShowResonance(true)
       toast.success('Story saved to timeline!')
 
     } catch (error) {

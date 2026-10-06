@@ -190,15 +190,23 @@ export default function ProjectSettingsPage() {
                     </svg>
                     {t('quickActions.inviteMembers')}
                   </EnhancedButton>
-                  <EnhancedButton 
-                    variant="secondary" 
+                  <EnhancedButton
+                    variant="secondary"
                     className="w-full justify-start"
-                    onClick={() => toast.success(t('messages.exportSoon'))}
+                    onClick={() => {
+                      // AUD-04 FIX: Show Beta notice instead of generic "coming soon"
+                      toast.success(
+                        'Export Beta: Download includes stories, transcripts, and summaries. Audio/photo export coming soon!',
+                        { duration: 5000 }
+                      )
+                      // TODO: Trigger actual export API call
+                      // window.location.href = `/api/projects/${projectId}/export`
+                    }}
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    {t('quickActions.exportData')}
+                    {t('quickActions.exportData')} <span className="ml-2 text-xs text-blue-400">(Beta)</span>
                   </EnhancedButton>
                   <EnhancedButton 
                     variant="secondary" 

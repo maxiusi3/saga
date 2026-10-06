@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard';
 
-// SiliconFlow Audio Transcription API endpoint
-// Docs: https://docs.siliconflow.cn/cn/api-reference/audio/create-audio-transcriptions
+// AUD-03 FIX: Accept either audio file OR storage path to bypass Vercel 4.5MB limit
 const SILICONFLOW_ENDPOINT = 'https://api.siliconflow.cn/v1/audio/transcriptions';
-const MAX_TRANSCRIBE_BYTES = 25 * 1024 * 1024;
+const MAX_TRANSCRIBE_BYTES = 4 * 1024 * 1024; // 4MB to stay under Vercel's 4.5MB limit
 
 /**
  * A simple retry wrapper with exponential backoff.
@@ -57,17 +56,55 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const audioFile = formData.get('audio') as File | null;
+    const storagePath = formData.get('storagePath') as string | null;
     const language = (formData.get('language') as string) || 'zh-CN';
 
-    if (!audioFile) {
-      return jsonWithRateLimit({ error: 'No audio file provided' }, guard.headers, 400);
-    }
+    // AUD-03 FIX: Support both direct upload (small files) and storage path (large files)
+    let audioBuffer: ArrayBuffer | null = null;
+    let audioSize = 0;
 
-    if (audioFile.size > MAX_TRANSCRIBE_BYTES) {
+    if (storagePath) {
+      // Fetch from Supabase Storage
+      try {
+        const { getSupabaseAdmin } = await import('@/lib/supabase');
+        const admin = getSupabaseAdmin();
+        const { data, error } = await admin.storage.from('saga').download(storagePath);
+
+        if (error || !data) {
+          return jsonWithRateLimit(
+            { error: 'Failed to fetch audio from storage' },
+            guard.headers,
+            404
+          );
+        }
+
+        const buffer = await data.arrayBuffer();
+        audioBuffer = buffer;
+        audioSize = buffer.byteLength;
+      } catch (err) {
+        console.error('Error fetching from storage:', err);
+        return jsonWithRateLimit(
+          { error: 'Storage fetch error' },
+          guard.headers,
+          500
+        );
+      }
+    } else if (audioFile) {
+      // Direct upload
+      if (audioFile.size > MAX_TRANSCRIBE_BYTES) {
+        return jsonWithRateLimit(
+          { error: `Audio file too large. Maximum size is ${MAX_TRANSCRIBE_BYTES / 1024 / 1024}MB for direct upload. Please upload to storage first.` },
+          guard.headers,
+          413,
+        );
+      }
+      audioBuffer = await audioFile.arrayBuffer();
+      audioSize = audioFile.size;
+    } else {
       return jsonWithRateLimit(
-        { error: 'Audio file too large. Maximum size is 25MB.' },
+        { error: 'No audio file or storage path provided' },
         guard.headers,
-        413,
+        400
       );
     }
 
@@ -83,12 +120,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const outForm = new FormData();
-    outForm.append('file', audioFile);
-    outForm.append('model', model);
-    outForm.append('language', language); // Supported by SenseVoice for better accuracy
+    // Type guard: audioBuffer must be non-null at this point
+    if (!audioBuffer) {
+      return jsonWithRateLimit(
+        { error: 'Audio buffer is empty' },
+        guard.headers,
+        400
+      );
+    }
 
-    console.log(`Transcribing audio file of size ${audioFile.size} bytes using model ${model}`);
+    const outForm = new FormData();
+    const audioBlob = new Blob([audioBuffer]);
+    outForm.append('file', audioBlob, 'audio.webm');
+    outForm.append('model', model);
+    outForm.append('language', language);
+
+    console.log(`Transcribing audio of size ${audioSize} bytes using model ${model}`);
 
     const doRequest = async () => {
       const response = await fetch(SILICONFLOW_ENDPOINT, {

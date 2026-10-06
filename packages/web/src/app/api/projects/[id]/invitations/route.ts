@@ -373,13 +373,14 @@ export async function POST(
       )
     }
 
-    // 使用数据库函数发送邀请 - 使用 admin 客户端
+    // SEC-03 FIX: 使用数据库函数发送邀请 - 标准化参数名
+    const invitationToken = crypto.randomUUID()
     const { data: invitation, error } = await adminSupabase.rpc('send_project_invitation', {
-      project_id: projectId,
-      inviter_id: user.id,
-      invitee_email: email.toLowerCase(),
-      invitation_role: role,
-      invitation_message: message || null
+      p_project_id: projectId,
+      p_inviter_id: user.id,
+      p_invitee_email: email.toLowerCase(),
+      p_role: role,
+      p_token: invitationToken
     })
 
     if (error) {

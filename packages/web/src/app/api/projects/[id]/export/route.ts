@@ -81,6 +81,25 @@ export async function POST(
     // 创建ZIP文件
     const zip = new JSZip()
 
+    // AUD-04 FIX: Add Beta notice in README
+    const betaNotice = `# UR Saga Data Export (Beta)
+
+This export currently includes:
+- ✅ Project information (JSON)
+- ✅ All stories with transcripts and summaries (JSON + TXT)
+- ✅ Story interactions and comments
+
+Coming soon:
+- 🔜 Audio recordings (.webm/.mp3)
+- 🔜 Photos and media attachments
+- 🔜 Timeline visualizations
+
+Export Date: ${new Date().toISOString()}
+Export Version: 1.0 (Beta)
+`
+
+    zip.file('README.md', betaNotice)
+
     // 添加项目信息文件
     const projectInfo = {
       project: {

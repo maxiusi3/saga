@@ -123,15 +123,15 @@ export async function POST(
       )
     }
 
-    // 通过 RPC 完成接受（RLS 依然依据 user 上下文）
+    // SEC-03 FIX: 通过 RPC 完成接受（使用新的标准化参数名）
     // debug=1 时仅用数据库命中的原始 token 进行调用，以便精准定位
     const tokensToTry = (debug && invitationRow?.token) ? [invitationRow.token] : candidates
     let result: any = null
     let error: any = null
     for (const t of tokensToTry) {
       const r = await supabaseClientForRpc.rpc('accept_project_invitation', {
-        invitation_token: t,
-        _user_id: user.id
+        p_token: t,
+        p_user_id: user.id
       })
       if (!r.error) { result = r.data; error = null; break }
       error = r.error

@@ -180,21 +180,14 @@ class SupabaseApiClient {
         return newWallet
       }
 
-      // 兜底：已有钱包但为0时也进行幂等初始化（极少数情况下触发）
+      // SEC-02 FIX: 已有钱包但为0时通过RPC初始化（不允许客户端直接update）
       if (
         data.project_vouchers === 0 &&
         data.facilitator_seats === 0 &&
         data.storyteller_seats === 0
       ) {
         const { error: fallbackError } = await this.supabase
-          .from('user_resource_wallets')
-          .update({
-            project_vouchers: 1,
-            facilitator_seats: 2,
-            storyteller_seats: 2,
-            updated_at: new Date().toISOString(),
-          })
-          .match({ user_id: user.id, project_vouchers: 0, facilitator_seats: 0, storyteller_seats: 0 })
+          .rpc('initialize_user_wallet', { p_user_id: user.id })
 
         if (!fallbackError) {
           await this.supabase.from('seat_transactions').insert({
@@ -348,11 +341,14 @@ class SupabaseApiClient {
       const user = await this.auth.getCurrentUser()
       if (!user) throw new Error('Not authenticated')
 
+      // SEC-03 FIX: 使用标准化参数名，添加token生成
+      const token = crypto.randomUUID()
       const { data, error } = await this.supabase.rpc('send_project_invitation', {
-        project_id: projectId,
-        inviter_id: user.id,
-        invitee_email: email,
-        invitation_role: role
+        p_project_id: projectId,
+        p_inviter_id: user.id,
+        p_invitee_email: email,
+        p_role: role,
+        p_token: token
       })
 
       if (error) throw error
@@ -363,9 +359,10 @@ class SupabaseApiClient {
       const user = await this.auth.getCurrentUser()
       if (!user) throw new Error('Not authenticated')
 
+      // SEC-03 FIX: 使用标准化参数名
       const { data, error } = await this.supabase.rpc('accept_project_invitation', {
-        invitation_token: token,
-        user_id: user.id
+        p_token: token,
+        p_user_id: user.id
       })
 
       if (error) throw error
@@ -504,10 +501,12 @@ class SupabaseApiClient {
       const user = await this.auth.getCurrentUser()
       if (!user) throw new Error('Not authenticated')
 
+      // SEC-03 FIX: 使用标准化参数名
       const { data, error } = await this.supabase.rpc('request_data_export', {
-        project_id: projectId,
-        user_id: user.id,
-        export_options: options
+        p_user_id: user.id,
+        p_project_id: projectId,
+        p_include_audio: options.includeAudio,
+        p_include_photos: options.includePhotos
       })
 
       if (error) throw error
