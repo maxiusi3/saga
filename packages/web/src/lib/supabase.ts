@@ -26,7 +26,10 @@ let _supabaseClient: ReturnType<typeof createClient> | null = null
 // Client-side Supabase client
 export const createClientSupabase = (): any => {
   if (!supabaseUrl || !supabaseAnonKey || !isValidUrl(supabaseUrl)) {
-    console.warn('Supabase client configuration is incomplete or invalid URL. Using stub client for local preview.')
+    // Don't warn in test environment to avoid test failures
+    if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'test') {
+      console.warn('Supabase client configuration is incomplete or invalid URL. Using stub client for local preview.')
+    }
     // Minimal stub client to avoid runtime errors in environments without Supabase
     const stubAuth: any = {
       getSession: async () => ({ data: { session: null }, error: null }),
