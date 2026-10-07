@@ -4,6 +4,7 @@
 
 | Version | Date | Author | Revision Details |
 | :--- | :--- | :--- | :--- |
+| **V1.8.3** | 2026-10-07 | Technical Audit | **Audio Processing Scope Clarification.** <br>1. Moved "NPR-grade audio processing" from Phase 1 MVP to future enhancement (Phase 2+).<br>2. Current MVP implements basic audio stitching, storage, and transcription only.<br>3. Documented three candidate approaches for future audio enhancement: FFmpeg Serverless, Third-Party API, and Client-Side Processing.<br>4. Decision criteria: Monitor user feedback for 3 months; implement if audio quality appears in >20% of feedback. |
 | **V1.8.2** | 2026-06-11 | Codex Audit | **Phase 1 Scope Correction.** <br>1. Clarified that Phase 1 delivers only the private biography loop: Interview Agent + Editor & Librarian Agent.<br>2. Deferred Wiki Editor Agent, public archive clustering, Media Agent, photo restoration, and video generation to later phases.<br>3. Required Phase 1 implementation plans to cover host intervention controls, durable interview events, standalone story artifacts, structured story elements, and private biography review surfaces. |
 | **V1.8.1** | 2026-06-11 | Codex Audit | **Multi-Agent Collaboration Update.** <br>1. Added a host-style Interview Agent responsible for opening, warmup, prior-story recap, transitions, gentle probing, emotional support, and closing.<br>2. Added user-configurable Interview Agent intervention levels: Off, Low, and High.<br>3. Defined follow-on agent responsibilities for private biography editing, public collective archive curation, and media enhancement services. |
 | **V1.8** | 2025-12-01 | AIO-PM | **Strategic Pivot: "The Audiobook & Resonance Edition".** <br>1. **Rebranding:** Renamed to "UR Saga" to avoid trademark conflicts and emphasize "Your Origin".<br>2. **Audio First:** Shifted deliverable focus from "Text Book" to "NPR-Style Audiobook".<br>3. **Dual-Mode Recording:** Introduced "Deep Dive" (Long) & "Chat" (Short) modes with specialized Web audio handling.<br>4. **The "Resonance" Engine:** Defined the "Private-to-Public" bridge via emotional solidarity hooks.<br>5. **Taxonomy:** Adopted a "Timeline-First, Tag-Later" structure based on MECE principles. |
@@ -11,7 +12,7 @@
 | V1.1 | 2025-10-XX | AI PM | Initial Mobile App MVP definition. |
 
 ### **1.1 Strategic Rationale for V1.8**
-*   **The "NPR" Audio Standard:** Unlike competitors who treat audio merely as raw material for text, UR Saga treats the *voice itself* as the primary asset. We will implement an AI Audio Pipeline that removes silence and optimizes levels without destroying the speaker's authenticity (The "NPR Producer" Persona).
+*   **Audio-First Approach:** Unlike competitors who treat audio merely as raw material for text, UR Saga treats the *voice itself* as the primary asset. While Phase 1 focuses on capturing and transcribing audio, future phases will implement professional-grade audio processing when validated by user demand.
 *   **The "Resonance" Moat:** To build a defensible "Collective Memory" database without violating privacy, we introduce a *post-analysis* incentive loop. Users are invited to share only after realizing their story connects them to a larger historical cohort ("You are not alone").
 *   **Technical Robustness:** Addressing the fragility of Web-based recording via "Chunked Uploads" and "Screen Wake Lock" APIs.
 
@@ -85,16 +86,53 @@ To accommodate different storytelling styles and network conditions.
     *   **Low:** The agent gives a short opening and closing, may recap prior stories, and only intervenes after long silence, clear confusion, or emotional distress.
     *   **High:** The agent behaves like an active host with opening, warmup, recap, occasional transitions, and more proactive detail prompts while still avoiding interruption during fluent speech.
 
-### **Module 2: The "NPR" AI Audio Pipeline (Backend)**
+### **Module 2: Audio Processing Pipeline (Backend)**
 
-*   **Input:** Raw, potentially noisy, chunked audio files.
-*   **Process (The "Secret Sauce"):**
-    1.  **Stitching:** Reassemble chunks/bubbles.
-    2.  **Noise Reduction:** Remove steady-state background noise (hiss/hum).
-    3.  **Smart Silence Truncation:** Shorten silences >3s to 0.8s (natural pause), *unless* the context suggests a poignant pause (Phase 2 advanced feature, MVP uses simple truncation).
-    4.  **De-clicking/De-breathing:** Reduce harsh mouth sounds.
-    5.  **Loudness Normalization:** Target -16 LUFS (Podcast standard).
-*   **Output:** A "Mastered" MP3 file for the Facilitator.
+#### **2.1 Phase 1 (MVP): Basic Audio Handling**
+*   **Current Implementation (V1.8.2):**
+    *   **Input:** Raw audio files (WebM/Opus format from browser `MediaRecorder`).
+    *   **Processing:** 
+        1.  **Stitching:** Reassemble 60-second chunks or chat bubbles into a single audio file.
+        2.  **Storage:** Store raw recordings in Supabase Storage for transcription.
+        3.  **Transcription:** Use OpenAI Whisper API for automatic transcription.
+    *   **Output:** Raw audio + transcript for the Facilitator to review.
+    *   **Rationale:** This simplified approach ensures MVP delivery without complex audio engineering dependencies. Current quality is sufficient for transcription purposes.
+
+#### **2.2 Future Enhancement: Professional Audio Post-Processing**
+*   **Planned for Post-MVP (Phase 2+):**
+    *   The "NPR-style" audio processing pipeline will be implemented as a future enhancement when audio quality becomes a key user demand signal.
+    *   **Target Processing Steps:**
+        1.  **Noise Reduction:** Remove steady-state background noise (hiss/hum) using spectral filtering.
+        2.  **Smart Silence Truncation:** Shorten silences >3s to 0.8s (natural pause) while preserving intentional dramatic pauses.
+        3.  **De-clicking/De-breathing:** Reduce harsh mouth sounds and breathing artifacts.
+        4.  **Loudness Normalization:** Target -16 LUFS (Podcast/Audiobook standard).
+        5.  **Format Conversion:** Convert to optimized MP3/AAC for compatibility and file size.
+    *   **Output:** A "Mastered" audio file ready for audiobook-style listening.
+    
+#### **2.3 Candidate Implementation Approaches**
+Research conducted (2026-10-07) identified three viable approaches for future audio enhancement:
+
+1.  **FFmpeg + Serverless (AWS Lambda / Cloudflare Workers)**
+    *   **Pros:** Full control, extensive audio processing capabilities, mature ecosystem.
+    *   **Cons:** Requires WebAssembly compilation, cold start latency, complex configuration.
+    *   **Cost:** ~$0.20 per hour of audio processed.
+    *   **Timeline:** 2-3 weeks for initial implementation.
+
+2.  **Third-Party Audio Enhancement API (Dolby.io, Auphonic, Adobe Podcast Enhance)**
+    *   **Pros:** Professionally tuned algorithms, minimal development effort, fast integration.
+    *   **Cons:** Recurring per-minute costs, API rate limits, vendor lock-in.
+    *   **Cost:** $0.10-$0.30 per minute (Auphonic: €0.22/min).
+    *   **Timeline:** 1 week integration.
+
+3.  **Client-Side Processing (Web Audio API)**
+    *   **Pros:** No backend costs, instant feedback, works offline.
+    *   **Cons:** Limited capabilities (basic normalization only), device performance dependency.
+    *   **Cost:** Free (user's CPU).
+    *   **Timeline:** 1 week for basic normalization.
+
+**Recommendation:** Monitor user feedback for 3 months post-launch. If "audio quality" appears in >20% of user feedback or support requests, prioritize Option 2 (Third-Party API) for fastest delivery, then migrate to Option 1 (FFmpeg Serverless) when monthly audio volume justifies the engineering investment.
+
+**Current Status:** MVP ships with raw audio + transcription. This satisfies the core value proposition (preserving family stories) while deferring audio post-processing to a future phase when validated by user demand.
 
 ### **Module 3: Taxonomy & Structure (Timeline First)**
 
