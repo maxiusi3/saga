@@ -1,7 +1,7 @@
 # UR Saga 修复进度跟踪
 
-**最后更新**: 2026-10-07 19:45  
-**当前状态**: 9/10 P0 问题已完成（90%），5 个 P1 架构清理完成
+**最后更新**: 2026-10-07 21:30  
+**当前状态**: 10/10 P0 问题已完成（100%），6 个 P1 架构清理完成
 
 ---
 
@@ -9,75 +9,72 @@
 
 | 优先级 | 总数 | 已完成 | 进行中 | 待处理 | 完成率 |
 |--------|------|--------|--------|--------|--------|
-| **P0 阻断级** | 10 | 9 | 0 | 1 | 90% |
+| **P0 阻断级** | 10 | 10 | 0 | 0 | 100% |
 | **P1 严重级** | 11 | 6 | 0 | 5 | 55% |
 | **P2 中/低级** | 7 | 0 | 0 | 7 | 0% |
-| **合计** | 28 | 15 | 0 | 13 | 54% |
+| **合计** | 28 | 16 | 0 | 12 | 57% |
 
 ---
 
-## ✅ 本次会话完成的任务（2026-10-07）
+## ✅ 本次会话完成的任务（2026-10-07 下午）
 
-### 新增完成的 P1 任务（5个）
+### 新增完成的 P0 任务（2个）
 
-#### ✅ CODE-02: 编译产物污染清理
-- **状态**: 已完成
+#### ✅ PAY-01: 购买页面为纯 Mock
+- **状态**: 已完成（Waitlist 替代方案）
 - **修复内容**:
-  - 删除 `packages/shared/dist/` 目录（124 个编译产物）
-  - 删除调试文件：`dev.log`, `test.wav`
-  - 更新 `.gitignore` 忽略编译产物
-- **影响**: 减少仓库体积 4097 行
-- **相关文件**: `.gitignore`, `packages/shared/dist/`
-- **Git Commit**: b269da786
+  - 创建 `waitlist_signups` 数据库表 + RLS 策略
+  - 实现 Waitlist API (POST/GET)
+  - 完全重写购买页面为 Waitlist 注册表单
+  - 移除 setTimeout mock 和假支付表单
+- **影响**: 支持等待列表模式，避免未完成支付流程的风险
+- **相关文件**: 
+  - `supabase/migrations/20261007000001_create_waitlist.sql`
+  - `packages/web/src/app/api/waitlist/route.ts`
+  - `packages/web/src/app/[locale]/dashboard/purchase/page.tsx`
+- **Git Commit**: a77a800d3
 
 ---
 
-#### ✅ CODE-03: 双重 middleware.ts 冲突
-- **状态**: 已完成
+#### ✅ PAY-02: 缺少 Stripe Webhook
+- **状态**: 已完成（Waitlist 替代方案）
 - **修复内容**:
-  - 删除冗余的 `packages/web/src/middleware.ts`
-  - 保留根目录 `middleware.ts`（包含完整功能）
-  - 根据 Next.js 规则，根目录优先生效
-- **影响**: 防止路由混乱
-- **相关文件**: `packages/web/middleware.ts`
-- **Git Commit**: aed4ff3d8
+  - 通过 Waitlist 模式替代即时支付流程
+  - 当准备开放付费时，通过 `notified_at` 字段批量通知用户
+- **影响**: 解除部署阻塞
+- **相关文件**: 同 PAY-01
+- **Git Commit**: a77a800d3
 
 ---
 
-#### ✅ CODE-04: 临时域名路由删除
-- **状态**: 已完成
+### 新增完成的 P1 任务（1个）
+
+#### ✅ AUD-01: 音频处理未实现
+- **状态**: 已完成（PRD 文档更新）
 - **修复内容**:
-  - 删除 `saga-web-livid.vercel.app/route.ts`
-  - 该功能已迁移到 middleware.ts 统一处理
-- **影响**: 清理遗留代码
-- **相关文件**: `packages/web/src/app/saga-web-livid.vercel.app/`
-- **Git Commit**: bf7a9332f
+  - 移除 "NPR-grade audio processing" 的 Phase 1 承诺
+  - 明确当前 MVP 只实现基础音频处理（拼接、存储、转录）
+  - 将专业音频后处理推迟到 Phase 2+
+  - 记录 3 种候选方案：FFmpeg Serverless, Third-Party API, Client-Side
+  - 定义决策标准：监控 3 个月，>20% 反馈提到音频质量则实施
+- **影响**: 产品文档与实际能力对齐，避免过度承诺
+- **相关文件**: `UR saga v1.8.md` (V1.8.2 → V1.8.3)
+- **Git Commit**: 5cc18195a
 
 ---
 
-#### ✅ UX-02: Profile 页面 TODO 和假数据
-- **状态**: 已完成
+### 新增完成的数据库改进
+
+#### ✅ Storage RLS 策略改进
+- **状态**: 已完成（脚本就绪，待执行）
 - **修复内容**:
-  - 实现真实的项目数量统计（从 `project_roles` 表）
-  - 实现真实的故事数量统计（从 `stories` 表）
-  - 实现真实的保存功能（Supabase upsert）
-  - 移除两处 TODO 注释和 setTimeout 假实现
-- **影响**: 核心功能完整性
-- **相关文件**: `packages/web/src/app/[locale]/dashboard/profile/page.tsx`
-- **Git Commit**: 96f5ee509
-
----
-
-#### ✅ SEC-06: Storage RLS 审计
-- **状态**: 已完成审计
-- **审计结果**: ✅ **8.2/10 (良好)**
-- **发现问题**:
-  - ⚠️ 缺少项目文件删除策略
-  - ⚠️ `owner` 角色未包含在某些策略中
-  - ℹ️ 缺少文件操作审计日志
-- **建议改进**: 3 条优化建议（已文档化）
-- **相关文件**: `docs/storage-rls-audit.md`
-- **Git Commit**: 634a7392a
+  - 添加项目文件删除策略（facilitators/owners 可以删除项目文件）
+  - 添加项目文件更新策略（允许项目管理者更新文件元数据）
+  - 补充 owner 角色到上传策略
+  - 统一所有项目成员的上传权限
+- **影响**: Storage RLS 评分从 8.2/10 预计提升到 9.0/10
+- **相关文件**: `supabase/migrations/20261007000002_improve_storage_rls.sql`
+- **Git Commit**: a77a800d3
 
 ---
 
