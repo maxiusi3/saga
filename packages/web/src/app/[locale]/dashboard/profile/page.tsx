@@ -58,6 +58,19 @@ export default function ProfilePage() {
             .eq('id', user.id)
             .single()
 
+          // Count user's projects (as owner or member)
+          const { count: projectCount } = await supabase
+            .from('project_roles')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id)
+            .eq('status', 'active')
+
+          // Count user's stories
+          const { count: storyCount } = await supabase
+            .from('stories')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id)
+
           const realProfile: UserProfile = {
             full_name: profile?.name || user.user_metadata?.full_name || user.email || '',
             email: user.email || '',
@@ -65,8 +78,8 @@ export default function ProfilePage() {
             phone: profile?.phone || '',
             bio: profile?.bio || '',
             joined_date: user.created_at || new Date().toISOString(),
-            total_projects: 0, // TODO: Count from projects table
-            total_stories: 0   // TODO: Count from stories table
+            total_projects: projectCount || 0,
+            total_stories: storyCount || 0
           }
 
           setProfile(realProfile)
@@ -91,19 +104,35 @@ export default function ProfilePage() {
 
     setSaving(true)
     try {
-      // TODO: Update profile in Supabase
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      // Update profile in Supabase
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          user_id: user.id,
+          display_name: formData.full_name,
+          phone: formData.phone,
+          user_metadata: {
+            ...profile,
+            full_name: formData.full_name,
+            bio: formData.bio
+          },
+          updated_at: new Date().toISOString()
+        })
+
+      if (error) throw error
+
       setProfile({
         ...profile,
         full_name: formData.full_name,
         phone: formData.phone,
         bio: formData.bio
       })
-      
+
       setIsEditing(false)
     } catch (error) {
       console.error('Error updating profile:', error)
+      alert('Failed to update profile. Please try again.')
     } finally {
       setSaving(false)
     }
