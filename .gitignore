@@ -52,3 +52,18 @@ _archive_backend/**/node_modules
 
 # local audit outputs
 tsc_output.txt
+
+# TypeScript compiled output
+packages/*/dist/
+packages/*/build/
+*.js.map
+*.d.ts.map
+
+# Development and test files
+*.log
+*.wav
+*.mp3
+deployment-trigger.txt
+
+# Archived/deprecated directories
+_archive_backend/

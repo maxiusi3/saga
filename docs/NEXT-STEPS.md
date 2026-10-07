@@ -42,6 +42,7 @@ WHERE tablename = 'user_resource_wallets';"
 ```
 
 **预期结果**:
+
 - ✅ 6个RPC函数已创建
 - ✅ `user_resource_wallets` 只有 `wallet_select_self (SELECT)` 策略
 - ✅ 无 UPDATE/INSERT 策略
@@ -84,6 +85,7 @@ curl -X POST $DEV_URL/api/media/delete-image \
 ```
 
 **预期结果**:
+
 - ✅ 测试1返回 `{"error": "Unauthorized"}` 401
 - ✅ 测试2返回 `{"error": "Unauthorized: Cannot delete..."}` 403
 - ✅ 测试3返回 `{"message": "...deleted successfully"}` 200
@@ -110,6 +112,7 @@ curl -X POST $DEV_URL/api/ai/transcribe \
 ```
 
 **预期结果**:
+
 - ✅ 小文件模式成功转录
 - ✅ Storage路径模式成功转录
 - ✅ 无4.5MB大小错误
@@ -166,11 +169,13 @@ SELECT * FROM pg_policies WHERE tablename = 'project_members';
 ```
 
 **检查要点**:
+
 - ✅ Storage路径隔离（用户ID前缀）
 - ✅ 项目成员表RLS正确
 - ✅ 无绕过邀请系统的写入路径
 
 **如发现问题**:
+
 1. 记录到 `/docs/storage-rls-audit.md`
 2. 创建新的迁移脚本修复
 3. 测试验证后提交
@@ -325,16 +330,19 @@ git commit -m "Add remediation progress tracking"
 ## 🔔 关键提醒
 
 ### ⚠️ 部署前必须完成
+
 1. **数据库迁移** - 必须应用，否则邀请/支付/钱包功能全部损坏
 2. **安全测试** - 验证SEC-01/02修复，防止生产数据泄露
 3. **SEC-05修复** - 等待npm audit完成，确保无Critical漏洞
 
 ### 📧 需要人工决策的事项
+
 1. **支付上线时机** - Waitlist模式何时切换到真实支付？
 2. **音频处理方案** - 3个候选方案选哪个？预算多少？
 3. **Beta功能迭代** - 导出音频/照片何时排期？
 
 ### 🎯 成功标准
+
 - ✅ 所有P0安全漏洞已修复
 - ✅ 核心功能可用（录音/转录/存储/导出）
 - ✅ 用户清楚了解Beta限制
