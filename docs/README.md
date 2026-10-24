@@ -1,16 +1,19 @@
 # UR Saga 项目文档索引
 
-更新：2026-10-23（Asia/Taipei）。当前决策为负责人“D03=A，其他按照推荐”：**D01–D16全部A，一名主要开发者，高质量优先，约24–34周。** 决策已确认；产品实施和G0–G4验收分别跟踪。
+更新：2026-10-24（Asia/Taipei）。当前决策为负责人“D03=A，其他按照推荐”：**D01–D16全部A，一名主要开发者，高质量优先，约24–34周。** 决策已确认；产品实施和G0–G4验收分别跟踪。
 
 ## 当前执行入口
 
-最新：[P0差距与Storage/旧删除修复](research/2026-10-23-p0-gap-and-storage-audit.md)。六函数/七触发器真实只读采集及静态语义审查完成，旧删除调用本地关闭；Web108/1438、shared4/16、infra7与180页构建通过，原P0/G0仍未通过。范围、审查和限制见[本批汇总](research/evidence/2026-10-23-storage-definition-capture/verification.json)及[handoff](HANDOFF-2026-10-13-upgrade.md)。下列PG17组合结论作为前批保留。
+最新：[Storage行为预演与7份未登记根迁移对账](research/2026-10-24-storage-behavior-and-migrations.md)。在本地 PG17.4 重放私有捕获的 6 个 `storage` 函数与 7 个触发器（RED 4/53、GREEN 22/974、生命周期 4 例，规格 PASS/质量 Approved），并完成 7 份未登记根迁移逐项对账、前向幂等收敛顺序与回滚方案。按负责人确认的 §7.1 口径，G0 工程与规格项已全部收口，仅剩 2 项外部/Owner 输入（迁移前备份确认、供应商账户数据设置与合成短样本探针）即可通过 G0。详见[本批验证汇总](research/evidence/2026-10-24-storage-behavior/verification.json)、[里程碑判定](research/evidence/2026-10-24-storage-behavior/milestone-check.json)及[handoff](HANDOFF-2026-10-13-upgrade.md)。
 
-部署安排：2026-10-13负责人明确暂不部署，完成里程碑后再统一部署；2026-10-15授权达到原计划里程碑后推送 GitHub。前批PG17组合本地实测完成；实现、协作材料、文档和整批独立审查均PASS／Approved，零待修项；最终完整性结果见验证汇总中的封存报告；原P0/G0–G4未通过，未提交/推送/迁移/部署。
+前批：[P0差距与Storage/旧删除修复](research/2026-10-23-p0-gap-and-storage-audit.md)。六函数/七触发器真实只读采集及静态语义审查完成，旧删除调用本地关闭；Web108/1438、shared4/16、infra7与180页构建通过。范围、审查和限制见[前批汇总](research/evidence/2026-10-23-storage-definition-capture/verification.json)。
+
+部署安排：2026-10-13负责人明确暂不部署，完成里程碑后再统一部署；2026-10-15授权达到原计划里程碑后推送 GitHub。2026-10-24 负责人授权在本地分支 `codex/october-upgrade-p0` 创建检查点提交（不推送远端）。
 
 
 | 文档 | 用途 |
 |---|---|
+| [Storage行为预演与迁移对账报告](research/2026-10-24-storage-behavior-and-migrations.md) · [本批证据索引](research/evidence/2026-10-24-storage-behavior/README.md) | PG17 精确函数/触发器重放（22场景/974断言）、4项极端生命周期清理、7份未登记根迁移逐项对账与回滚方案、G0工程收口 |
 | [Storage定义/旧删除本批证据](research/evidence/2026-10-23-storage-definition-capture/README.md) | 精确采集、语义审查、53项采集回归、34项PG17验证、18项删除回归及完整项目检查；真实HTTP/恢复未验收 |
 | [PG17旧RLS/来源账本组合](research/2026-10-22-pg17-rls-source-composition.md) | 正常/污染环境各72场景、832个行为断言、236项账本检查及18条真实锁证据；六项兼容RED和四类生命周期均通过；[汇总](research/evidence/2026-10-22-pg17-rls-source-composition/verification.json)记录四项通过审查与最终封存状态 |
 | [用户协作清单](research/2026-10-22-user-action-checklist.md) | Storage、迁移/备份、模型账户、部署/Auth只读步骤；真机暂缓 |

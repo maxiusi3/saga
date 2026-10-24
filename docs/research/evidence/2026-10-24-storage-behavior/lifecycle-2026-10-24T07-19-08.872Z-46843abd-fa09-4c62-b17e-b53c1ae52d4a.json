@@ -1,0 +1,159 @@
+{
+  "startedAt": "2026-10-24T07:19:08.871Z",
+  "status": "passed",
+  "scope": "External child/process/socket/directory lifecycle observations, local only.",
+  "limits": {
+    "suiteMs": 240000,
+    "childMs": 140000,
+    "outputBytes": 32768
+  },
+  "cases": [
+    {
+      "name": "hostile_environment",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started"
+      ],
+      "allocationObserved": true,
+      "postmasterObservedAlive": true,
+      "socketObservedPresent": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-24-storage-behavior/run-2026-10-24T07-19-09.683Z-37dc4a6f-476c-4279-aa8b-5b9ec7907a22.json",
+      "sha256": "611826d46cc00cbd573127b76dbff8db9cb1c01ad17fdb65ba9907279b52c61e",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "childStatus": "passed",
+      "phase": "behavior_matrix",
+      "directoryAbsent": true,
+      "socketAbsent": true,
+      "postmasterAbsent": true,
+      "stdoutSafe": true,
+      "scrubbedKeys": [
+        "DATABASE_URL",
+        "PGDATABASE",
+        "PGHOST",
+        "PGHOSTADDR",
+        "PGOPTIONS",
+        "PGPASSFILE",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGSERVICE",
+        "PGSERVICEFILE",
+        "PGSSLMODE",
+        "PGSSLROOTCERT",
+        "PGSYSCONFDIR",
+        "PGUSER"
+      ],
+      "behaviorCounts": {
+        "scenarios": 22,
+        "behaviorAssertions": 974,
+        "observations": 211,
+        "totalAssertionsIncludingPins": 1018
+      }
+    },
+    {
+      "name": "actual_SIGTERM_after_fixture",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started",
+        "fixture-ready",
+        "shutdown-requested"
+      ],
+      "allocationObserved": true,
+      "postmasterObservedAlive": true,
+      "socketObservedPresent": true,
+      "readyObservedBeforeSignal": true,
+      "postmasterAliveAtSignal": true,
+      "socketPresentAtSignal": true,
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-24-storage-behavior/run-2026-10-24T07-19-16.154Z-87df28fb-cae8-4b2c-87db-7bd257341dfc.json",
+      "sha256": "918c9ff8addb07da33ad533a54224a1eea469ea9ecde94e6e9db531f9d2ee449",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "childStatus": "interrupted",
+      "phase": "fixture_ready",
+      "directoryAbsent": true,
+      "socketAbsent": true,
+      "postmasterAbsent": true,
+      "stdoutSafe": true
+    },
+    {
+      "name": "failed_actual_start",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation"
+      ],
+      "allocationObserved": true,
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-24-storage-behavior/run-2026-10-24T07-19-18.256Z-82f52833-c390-46b9-8a38-012dcdae3381.json",
+      "sha256": "5e6fef514b428cee52f3478d84afd071b61a2cca61aa843505806d3c0a38e123",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "childStatus": "failed",
+      "phase": "cluster_start",
+      "directoryAbsent": true,
+      "socketAbsent": true,
+      "stdoutSafe": true
+    },
+    {
+      "name": "failed_actual_connection",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started"
+      ],
+      "allocationObserved": true,
+      "postmasterObservedAlive": true,
+      "socketObservedPresent": true,
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-24-storage-behavior/run-2026-10-24T07-19-20.155Z-65aec629-b43e-4969-948b-c462b07a6fc4.json",
+      "sha256": "de0867814b937dcdd4e675ec49ae56d6cb8a62eb413c994c8c060f5787208079",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "childStatus": "failed",
+      "phase": "client_connection_failure",
+      "directoryAbsent": true,
+      "socketAbsent": true,
+      "postmasterAbsent": true,
+      "stdoutSafe": true
+    }
+  ],
+  "inputPinsSha256": "77e41292cf7f52cf66ff08a7880d03bdafdfda3c38918971ed209fed2f36bb09",
+  "inputsUnchangedAtFinish": true,
+  "finishedAt": "2026-10-24T07:19:22.413Z",
+  "elapsedMs": 13542
+}

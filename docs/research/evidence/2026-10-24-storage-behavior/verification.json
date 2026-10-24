@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-24T07:35:00.000Z",
+  "status": "completed_local_batch",
+  "scope": "Captured Storage behavior/lifecycle rehearsal (Task 1) and 7 unregistered root migrations reconciliation + G0 engineering closeout (Task 2)",
+  "sourceSha256": {
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "docs/research/evidence/2026-10-23-storage-definition-capture/capture-storage-2026-10-23T10-39-09-891Z-703d8318-8589-48d0-ba55-e519f02b74fa.json": "eb5e76b7d39a8eeff4b1fc59ee37704b4278dd531ee0b287673f38ad8ea024a1",
+    "docs/research/evidence/2026-10-23-storage-definition-capture/semantic-audit.md": "887b2c40ab5ebea346649a9cf56d1e20d4fb8e09cd48e0db66a389bb972ce354",
+    "docs/research/evidence/2026-10-23-supabase-feedback/user-query-results.json": "abacf44ede2dbf339b2e2ebf4c2c01c3897c9fa4526bdb31c3c61d58d7bbce92",
+    "docs/superpowers/specs/2026-10-24-storage-behavior-rehearsal.md": "8818325acc049835dbb951f5005dc386d2844fc85dc9f93957493694fae21e5f",
+    "experiments/pg17-rls-source-composition/fixture.mjs": "636f51fbb2fbf5cb3345f981354965f01170262c2213c618c48299740fe73508",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-storage-behavior/README.md": "5b923673c3d423ac955fe8c92e39ca6e492a90cd54003b1e1c2948dd648e3026",
+    "experiments/pg17-storage-behavior/fixture.mjs": "5a54b9777f8f4845c81a2741b1f2bef0eb5bbeeb043187e55b0c9aa36b5cb209",
+    "experiments/pg17-storage-behavior/inputs.mjs": "1bfe710e6cff430568246ad7061d809f2fd7d9da36794619d01c6b42ad888ec7",
+    "experiments/pg17-storage-behavior/pin-inputs.mjs": "306b10e5ad77911dbd6a53e55714dbfb638782c2c419eec225d0fe1a1aeb37a1",
+    "experiments/pg17-storage-behavior/scenarios.mjs": "e956d80b43c5ab7409313cfd72a8a76de05c2030d7a487f8948e8606eca01e98",
+    "experiments/pg17-storage-behavior/scenarios/deletion.mjs": "8b94aa5f2e524fd15f3279ee64c13e78a882a44362905f3e2459b82a1b6f1fca",
+    "experiments/pg17-storage-behavior/scenarios/lifecycle.mjs": "a3e2dc52d0edcf5746f2c61127590af4fc81a8b8c01bfc331473b4379a6960cb",
+    "experiments/pg17-storage-behavior/scenarios/support.mjs": "4dd786087c2692fb3c54a0b3fe13af4d6f72a17feb281241bd8947da95ce196a",
+    "experiments/pg17-storage-behavior/scenarios/timestamps.mjs": "af621dbb9ae1d1d52b897494e626e9f2cb061c2996a5d27d7c0a332f0591cda9",
+    "experiments/pg17-storage-behavior/verify-lifecycle.mjs": "88d7d9d9083b5da537a4105d5bc5129ede12494aa4e0a000ac95e9427de82a9b",
+    "experiments/pg17-storage-behavior/verify.mjs": "0dcffe2fd3b69e2585aab456a019222d4a3431ff59e75018633077b93ac1136f"
+  },
+  "storageBehaviorRehearsal": {
+    "redReport": "red-2026-10-24T07-18-58.344Z-3790acf2-ea81-4202-b0a8-f5be25cf6862.json",
+    "redScenarios": 4,
+    "redBehaviorAssertions": 53,
+    "redTotalAssertions": 97,
+    "greenReport": "run-2026-10-24T07-19-01.154Z-05f60d7c-94a2-4087-a26a-18292d8f2fd6.json",
+    "greenScenarios": 22,
+    "greenBehaviorAssertions": 974,
+    "greenObservations": 211,
+    "greenTotalAssertions": 1018,
+    "lifecycleReport": "lifecycle-2026-10-24T07-19-08.872Z-46843abd-fa09-4c62-b17e-b53c1ae52d4a.json",
+    "lifecycleCases": [
+      "hostile_environment",
+      "actual_SIGTERM_after_fixture",
+      "failed_actual_start",
+      "failed_actual_connection"
+    ],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    },
+    "privateCaptureBodyLeakedToTrackedFiles": false
+  },
+  "migrationReconciliation": {
+    "report": "docs/research/2026-10-24-storage-behavior-and-migrations.md",
+    "catalogSelection": "migration-catalog-selection.json",
+    "unregisteredRootMigrationsAudited": 7,
+    "registeredPlaceholderMigrations": 4,
+    "remoteMutationExecuted": false
+  },
+  "project": {
+    "historicalBaselineReport": "docs/research/evidence/2026-10-23-storage-definition-capture/project-verification.json",
+    "inputsChecked": 810,
+    "inputChanges": [],
+    "freshTakeoverVerifyExitCode": 0,
+    "webSuites": 108,
+    "webTests": 1438,
+    "staticPages": 180,
+    "nextEnvRestored": true
+  },
+  "reviews": {
+    "task1Spec": "task-1-spec-review.md",
+    "task1SpecVerdict": "PASS",
+    "task1Quality": "task-1-quality-review.md",
+    "task1QualityVerdict": "Approved"
+  },
+  "notPerformed": [
+    "Production DB/Storage mutation or deploy",
+    "Blind supabase db push or migration repair on remote",
+    "Real Storage HTTP API / Private bucket cutover (scoped to G1)",
+    "GitHub push (held until G0 passed)"
+  ]
+}

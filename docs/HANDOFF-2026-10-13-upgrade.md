@@ -1,11 +1,16 @@
 # Handoff：UR Saga 十月升级继续执行
 
-- 更新时间：2026-10-23（Asia/Taipei）
+- 更新时间：2026-10-24（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 基线 HEAD：`1caa21a72`（当前工作树包含大量未提交变更）
+- 基线 HEAD：`1caa21a72`（本地已在 `codex/october-upgrade-p0` 创建检查点提交 `458207c7a` 及 2026-10-24 批次提交，未推送 GitHub）
 
-**10月23日本轮接续：Storage完整定义与旧删除阻断。** [P0差距与实施记录](research/2026-10-23-p0-gap-and-storage-audit.md)按原计划重新区分P0/G0与P1/G1：两入口原型可评审已有证据，T01观察仍0/6–8户；真机继续deferred_by_user，不加成G0新门槛。一次真实metadata_reader只读采集取得六函数/七触发器，全部指纹匹配；[语义审查](research/evidence/2026-10-23-storage-definition-capture/semantic-audit.md)已补齐参数、UPDATE OF、删除GUC与生命周期角色约束。无需再索要这些正文或A/B/C/D。
+**10月24日本轮收口：Storage 行为与生命周期预演（Task 1）＋7份未登记根迁移逐项对账与 G0 工程收口（Task 2）。** 详见[Storage 行为预演与迁移对账报告](research/2026-10-24-storage-behavior-and-migrations.md)、[本批验证汇总](research/evidence/2026-10-24-storage-behavior/verification.json)与[原计划 §7.1 里程碑判定](research/evidence/2026-10-24-storage-behavior/milestone-check.json)：
+- **Task 1（Storage 行为与生命周期预演）**：在临时 PostgreSQL 17.4 集群中重放私有捕获的 6 个 `storage` 函数与 7 个触发器。RED 4 场景/53 行为断言（`red-2026-10-24T07-18-58.344Z-3790acf2-ea81-4202-b0a8-f5be25cf6862.json`）、GREEN 22 场景/974 行为断言/211 观察项（`run-2026-10-24T07-19-01.154Z-05f60d7c-94a2-4087-a26a-18292d8f2fd6.json`）、生命周期 4 项极端清理用例（`lifecycle-2026-10-24T07-19-08.872Z-46843abd-fa09-4c62-b17e-b53c1ae52d4a.json`）全部通过；[规格审查](research/evidence/2026-10-24-storage-behavior/task-1-spec-review.md) `PASS`、[质量审查](research/evidence/2026-10-24-storage-behavior/task-1-quality-review.md) `Approved`，零私有正文泄露。
+- **Task 2（7份未登记根迁移逐项对账与回滚计划）**：完成 `20260611000000` 至 `20261007000002` 共 7 份未登记根迁移与远程快照（表/列/约束/索引/RLS/函数/ACL/触发器/Bucket）及 `packages/web/src` 调用点的逐项对账，证明盲目执行 `supabase db push` 或 `migration repair` 会导致 `authenticated` 全表 `GRANT ALL` 复辟、函数签名冲突或掩盖 `user_settings`/`user_resource_wallets`/`storage.objects` 漂移；已制定单份前向幂等收敛迁移顺序与可回滚方案。
+- **应用验证与 G0 结论（按负责人确认的原计划 §7.1 口径）**：810 项应用输入 SHA-256 零变化，且接手时新跑 `npm run verify`（Web 108 套/1438 项、类型、lint、180 页构建）退出 0。**G0 五项标准中工程与规格部分已全部完成**（D01–D08/D12/D13 决策、可评审原型、实际资产路径与权限清单、7 份迁移对账与回滚方案）；真实 Storage HTTP/Private 桶改造归入 **G1**，T01 6–8 户观察与 P1 并行推进。当前仅剩 **2 项外部/Owner 输入**（① 确认/执行迁移前备份；② 核实 ElevenLabs/Anthropic 账户数据条款并跑 1 次合成短样本探针）即可将 `G0` 翻转为 `true` 并推送 GitHub。
+
+**10月23日本轮接续（前批）：Storage完整定义与旧删除阻断。** [P0差距与实施记录](research/2026-10-23-p0-gap-and-storage-audit.md)按原计划重新区分P0/G0与P1/G1：两入口原型可评审已有证据，T01观察仍0/6–8户；真机继续deferred_by_user，不加成G0新门槛。一次真实metadata_reader只读采集取得六函数/七触发器，全部指纹匹配；[语义审查](research/evidence/2026-10-23-storage-definition-capture/semantic-audit.md)已补齐参数、UPDATE OF、删除GUC与生命周期角色约束。无需再索要这些正文或A/B/C/D。
 
 本轮已关闭旧故事/文件删除服务与管理员图片删除接口；已上传评论图片不可移除时保留引用并提示，纯本地预览仍可移除。它是本地安全阻断，**正式物理删除adapter未完成，线上旧代码/Public桶未改变**。新旧采集测试53项、PG17合成采集34断言/4场景、删除定向3套/18项通过；两项实现的独立规格/质量分别PASS/Approved。新执行项目验证为 **10月23日18:52:57—18:56:11 Asia/Taipei，Web108/1438、shared4/16、infra7、180页**，810输入未变、next-env恢复。构建仍有旧Next配置及缺服务端key诊断，audit42项沿用旧证据未重跑。整批独立审查PASS/Approved、零待修项；本批本地收尾完成。收尾状态见[本批汇总](research/evidence/2026-10-23-storage-definition-capture/verification.json)与[计划](superpowers/plans/2026-10-23-storage-definition-capture.md)。
 
