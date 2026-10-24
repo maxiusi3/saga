@@ -1,0 +1,8 @@
+{
+  "command": "npm ls --all --json",
+  "exitCode": 0,
+  "problems": [
+    "extraneous: @emnapi/runtime@1.11.3 /Users/eat/Documents/eatpotato/saga\u4f20\u5947/node_modules/@emnapi/runtime"
+  ],
+  "interpretation": "One optional WASM helper remains after npm ci on macOS x64. It is present in the lockfile as optional; its platform-specific consumers are not installed. No missing/invalid dependency or peer constraint. Left unchanged and disclosed; not pruned to disguise clean-install behavior."
+}

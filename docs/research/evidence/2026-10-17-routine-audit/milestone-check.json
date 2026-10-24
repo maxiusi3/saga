@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-10-17T13:14:30.982550+00:00",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "conditionalPushAuthorized": true,
+  "decision": "original_milestones_not_reached",
+  "G0": {
+    "passed": false,
+    "remaining": [
+      "production RLS/RPC authorization and legacy client/delete compatibility",
+      "complete dependency/trigger semantics and seven migration versions reconciled, including invitation/payment/export contracts",
+      "bucket configuration and object inventory within separately approved scope",
+      "backup/restore, incremental migration/backfill and rollback evidence",
+      "provider account/data conditions"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "remaining": [
+      "formal asset/session/Storage/consent/deletion adapters",
+      "real device 5/20/30 minute fault matrix",
+      "cross-family and complete original delivery acceptance"
+    ]
+  },
+  "dependencyAudit": {
+    "executedThisBatch": false,
+    "source": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+    "sha256": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866",
+    "priorExitCode": 1,
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "dependenciesUnchanged": true
+  },
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "deploymentPerformed": false,
+  "remoteMigrationPerformed": false,
+  "remotePermissionChangePerformed": false,
+  "remoteMetadataQueriesPerformedThisBatch": true,
+  "remoteRoutineDefinitionsReadThisBatch": 12,
+  "remoteTargetRoutineCallsPerformed": false,
+  "batchPlan": "docs/superpowers/plans/2026-10-17-upgrade-routine-audit.md",
+  "originalMilestoneSource": "docs/2026-10-10-integrated-upgrade-plan.md",
+  "localBatchIsAdditionalMilestone": false
+}

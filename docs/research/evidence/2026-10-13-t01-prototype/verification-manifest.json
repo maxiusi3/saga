@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-13",
+  "branch": "codex/october-upgrade-p0",
+  "base_commit": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "state": "uncommitted local prototype and documentation; deployment held",
+  "prototype_sha256": {
+    "docs/prototypes/2026-10-13-two-entry/index.html": "10a7eeb62f24af7537275617fcb70ae6afa1d272c6b8dcdc2a162efb052958a1"
+  },
+  "document_sha256": {
+    "CLAUDE.md": "70d0f650acad0268c22d6800092f3895e6964b11ad1bf7860e572cb53ec8343d",
+    "docs/README.md": "a97f825401d6ac1854e43e3d3e410c7025d6964224701aa8370b8c574142ada6",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "17becff1d273aedbd883ca98b575da1b5a6f7ab1e76ee35a69b3f6c48997ad3b",
+    "docs/2026-10-10-upgrade-decisions.md": "a6d7f0a50d675a4f6bce31cb800f29e29daa35719f1fe1f96a74637e4aafaf98",
+    "docs/research/2026-10-10-implementation-gap-audit.md": "2f5024544c3c4d1e48957e265917d5dc7d1901adf7caab372cdd84b6783016c2",
+    "docs/research/2026-10-10-evidence-and-artifact-review.md": "a7131d92148369901f24d15558235a8ec240607f11cead555b32e4f37b29b1d9",
+    "docs/superpowers/plans/2026-10-11-upgrade-p0-preparation.md": "af18ccd76f43ff4fe720bc060d1a8bb3acb795d17933e1320643ee044bbad21d",
+    "docs/superpowers/plans/2026-10-13-upgrade-t01-prototype.md": "6e6b15b5faf7385569fe2f361470aa63592195805636592683dbacd2b85f2a70",
+    "docs/superpowers/specs/2026-10-13-upgrade-t01-prototype.md": "0fd2f7a9d718f7116a819cd0b4d438ecb86eb905399de96f2b91399023866052",
+    "docs/prototypes/2026-10-13-two-entry/README.md": "79c1af7772b80e80e5e15a3b566868fc0f262b744371e3da83c0bae1f641f643",
+    "docs/research/2026-10-13-t01-study-guide.md": "c3f0e5529c673a9a87a39a8bd3cb05b71b4694f431b8f8f4396c0c2d26a695f8",
+    "docs/research/2026-10-13-t01-prototype-implementation.md": "d2d37ce656c0e0e76ead99147e14e7544a9ee2207f49a3810e115b5e4680ab35",
+    "docs/research/evidence/2026-10-13-t01-prototype/README.md": "3847b5ac937e36f08458e7e63d7246552ab92cd0602dd98e6dd75f26d990d2bc"
+  },
+  "evidence_sha256": {
+    "docs/research/evidence/2026-10-13-t01-prototype/README.md": "3847b5ac937e36f08458e7e63d7246552ab92cd0602dd98e6dd75f26d990d2bc",
+    "docs/research/evidence/2026-10-13-t01-prototype/browser-additional-checks.json": "743e9f165b15cace363856797f51ec624d3c571782273b83ff0b4510552fbcf7",
+    "docs/research/evidence/2026-10-13-t01-prototype/browser-diagnostics.json": "2b2dd829847df58e0c5b4bb470138e651fabce7c73e06be1ec7fafc580af82ef",
+    "docs/research/evidence/2026-10-13-t01-prototype/browser-walkthroughs.json": "93752e8ab30c66fc55353c63a7da871a26796637d40fbf3591fdc865581cc393",
+    "docs/research/evidence/2026-10-13-t01-prototype/demo-receipt.json": "0d76ce532e8a5ed55e9e5831c8d147d647993fc85edc5c218b7ddc5828a95150",
+    "docs/research/evidence/2026-10-13-t01-prototype/desktop-initial.jpg": "99f6169a18b8cb04d8fe55e782ac0bd0400e2b9097116859839b67bb7cd87a23",
+    "docs/research/evidence/2026-10-13-t01-prototype/local-checks.log": "8da6e07b1ed29480e71c6ccdc5e555b18a97eb61ab50a23571d0272fe1e870f0",
+    "docs/research/evidence/2026-10-13-t01-prototype/mobile-320.jpg": "257f15a71e429605d1b7decfe9ef36343d35509f3ad0532274ece6c33dad36df",
+    "docs/research/evidence/2026-10-13-t01-prototype/mobile-initial.jpg": "8a5bc4a51b6941b5ebd1892533c63e7a2293581bc4e6350642e08f83591091fc",
+    "docs/research/evidence/2026-10-13-t01-prototype/quality-review.md": "4d3233081a9e654e4cdcda41f245ab4b3c5dc663e02b6ff6e095f681bd09ce51",
+    "docs/research/evidence/2026-10-13-t01-prototype/spec-review.md": "b6b1bfc02f37cbc2f6355429924e34c7096caa0380e895e6f9cd9a0d3cb4ac09"
+  },
+  "preserved_production_source_sha256": {
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/record/page.tsx": "ba2200bdc15e50c32143b95bd4ddbcc9e7c177fe93122ef12815005759068076",
+    "packages/web/src/app/api/ai/generate-content/__tests__/route.test.ts": "608dd4969046b2928b9e16ea9f38dac8f1dba588a723b47554f5e709ba2f6b6c",
+    "packages/web/src/app/api/ai/generate-content/route.ts": "ea66a40c60fc362da25e15b250dc2a7558c5936253dd53274f35fdf4144ead58",
+    "packages/web/src/app/api/ai/health/__tests__/route.test.ts": "8b0f738988b8caa315a0f06655e3e06abea8474effc27235e90c225d2d743dcf",
+    "packages/web/src/app/api/ai/health/route.ts": "7e5680eb8df1d68e5df65fe50d7598ad9e4947732b15e4fb369d6e992f66b4bf",
+    "packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts": "edeb71fb5577d058cf19943b30cc141ab936e7dd122b4ebc57c353fc19e88de0",
+    "packages/web/src/app/api/ai/transcribe/route.ts": "81fd364db6a02d243d68e9529edc79cd1a53489498ea30ab4a4064bc8cb85896",
+    "packages/web/src/app/api/media/__tests__/access.test.ts": "a329b29609856badd98111b143330ac202da6760b9ac4b0e692dccf6ae8bcdbf",
+    "packages/web/src/app/api/media/signed-url/route.ts": "ad46967c46b2ed23d63eeca9428c6b6672e0b8111dd8e724a247e1ebeb6f5791",
+    "packages/web/src/app/api/media/upload-image/route.ts": "c1bf1adf6579f9551e8ca94b327fe58f70b32ea5c062f1aeee518eaf3926342f",
+    "packages/web/src/components/recording/ReviewStage.tsx": "39356de3fa020e5e00ac9d3deac4fbd5a9eaee0667d2cbc7577a8885f9228011",
+    "packages/web/src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx": "b26bd9b53c511f9bffb2d4cdc3341fa674986d70381e3e0f2179237d4a57023a",
+    "packages/web/src/lib/__tests__/ai-service.test.ts": "6e64d2bafad82376478997a4d305ed545a2bbcb0366d0026d58d1a5ed36f75ff",
+    "packages/web/src/lib/ai-response.ts": "36e4df8bb3d1322c48699468871690c152c0b3b5a38cb8f477477b56858b388f",
+    "packages/web/src/lib/ai-service.ts": "e7ed29f2558d7bb55f8781fa0927f12a9b0d54b7effdbabbce6b297661aa28b5",
+    "packages/web/src/lib/media-reference.ts": "8f3fe5d37530ca09f777066a31c78ce0804a8cb76e27523f6810b6bd1cdb360f",
+    "packages/web/src/lib/server/media-access.ts": "6f781e6a31c04622737cb1a87ef4fedbd427dd4ff5ca176442e16248bb9d9c0f"
+  },
+  "historical_manifest": {
+    "path": "docs/research/evidence/2026-10-13-media-access/verification-manifest.json",
+    "sha256": "644b47ca403e1de4337af112eb4562862dc7a2a988cbdfe017fb1b36bd20d12c",
+    "unchanged": true
+  },
+  "verification": {
+    "guided_scenarios": {
+      "Import to receipt": 13,
+      "Invitation returns": 13,
+      "Interrupted recording": 18,
+      "Upload retry": 10,
+      "Text failure": 11,
+      "Disagreement & missing": 20
+    },
+    "browser_steps": 85,
+    "expected_refusals": 7,
+    "unexpected_refusals": 0,
+    "local_document_links": 206,
+    "javascript_syntax": "passed",
+    "git_diff_check": "passed",
+    "spec_review": "passed",
+    "quality_review": "passed"
+  },
+  "reused_production_verify": {
+    "source": "../2026-10-13-media-access/verification-manifest.json",
+    "web_suites": 58,
+    "web_tests": 488,
+    "rerun_in_this_batch": false,
+    "reason": "No production source or configuration changes; all 17 source/test fingerprints match"
+  },
+  "limits": {
+    "real_households": 0,
+    "real_recording": false,
+    "real_ai": false,
+    "durable_storage": false,
+    "complete_media_archive": false,
+    "file_url_browser_tested": false,
+    "network_capture": false,
+    "deployed": false,
+    "passed_quality_gates": []
+  }
+}

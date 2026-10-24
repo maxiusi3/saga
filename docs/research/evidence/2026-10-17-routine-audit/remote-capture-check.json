@@ -1,0 +1,32 @@
+{
+  "publicReport": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+  "publicSha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+  "privateSha256": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+  "directoryMode": "0o700",
+  "fileMode": "0o600",
+  "privateIgnored": true,
+  "privateTracked": false,
+  "targetCount": 12,
+  "allTargetsMatched": true,
+  "allDefinitionMd5Valid": true,
+  "serverVersionMatchesPrior": true,
+  "priorServerVersion": "17.4",
+  "tls": {
+    "authorized": true,
+    "protocol": "TLSv1.3"
+  },
+  "identity": {
+    "current_user": "metadata_reader",
+    "current_database": "postgres",
+    "read_only": "on",
+    "isolation": "repeatable read",
+    "statement_timeout": "10s",
+    "lock_timeout": "2s",
+    "idle_transaction_timeout": "15s",
+    "serverVersionSha256": "c6893771323e13ada0a002f7d6917d0ee0a458a22644e7d742555f291366d609",
+    "snapshotTimeSha256": "00758bdda30310bd19a5a32c9b70318239af904deadde4639fa935427dcde113"
+  },
+  "connectionClosed": true,
+  "remoteTargetCalls": false,
+  "remoteWrites": false
+}

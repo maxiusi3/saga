@@ -1,0 +1,179 @@
+TAP version 13
+# Subtest: reads the whole password after the first equals sign and accepts CRLF
+ok 1 - reads the whole password after the first equals sign and accepts CRLF
+  ---
+  duration_ms: 2.655834
+  type: 'test'
+  ...
+# Subtest: rejects duplicate, missing and unexpected keys without reflecting input
+ok 2 - rejects duplicate, missing and unexpected keys without reflecting input
+  ---
+  duration_ms: 0.763169
+  type: 'test'
+  ...
+# Subtest: rejects privileged roles, another project and untrusted host names
+ok 3 - rejects privileged roles, another project and untrusted host names
+  ---
+  duration_ms: 0.378363
+  type: 'test'
+  ...
+# Subtest: connection always verifies TLS and defaults to bounded read-only operations
+ok 4 - connection always verifies TLS and defaults to bounded read-only operations
+  ---
+  duration_ms: 0.36252
+  type: 'test'
+  ...
+# Subtest: error serialization preserves only approved machine codes
+ok 5 - error serialization preserves only approved machine codes
+  ---
+  duration_ms: 0.30032
+  type: 'test'
+  ...
+# Subtest: a denied category is distinct from a successful empty category
+ok 6 - a denied category is distinct from a successful empty category
+  ---
+  duration_ms: 1.860654
+  type: 'test'
+  ...
+# Subtest: failed rollback stops collection instead of pretending later queries are valid
+ok 7 - failed rollback stops collection instead of pretending later queries are valid
+  ---
+  duration_ms: 0.41074
+  type: 'test'
+  ...
+# Subtest: refuses the wrong server role or a writable transaction before metadata reads
+ok 8 - refuses the wrong server role or a writable transaction before metadata reads
+  ---
+  duration_ms: 0.442021
+  type: 'test'
+  ...
+# Subtest: rejects backend timeout settings that differ from the required transaction limits
+ok 9 - rejects backend timeout settings that differ from the required transaction limits
+  ---
+  duration_ms: 0.49459
+  type: 'test'
+  ...
+# Subtest: successful capture closes its read-only snapshot and retains denied bucket status
+ok 10 - successful capture closes its read-only snapshot and retains denied bucket status
+  ---
+  duration_ms: 1.071574
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when connect never settles, even after stream destruction
+ok 11 - CLI saves safe deadline evidence when connect never settles, even after stream destruction
+  ---
+  duration_ms: 16.927337
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when collect never settles, even after stream destruction
+ok 12 - CLI saves safe deadline evidence when collect never settles, even after stream destruction
+  ---
+  duration_ms: 2.630757
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when rollback never settles, even after stream destruction
+ok 13 - CLI saves safe deadline evidence when rollback never settles, even after stream destruction
+  ---
+  duration_ms: 6.973674
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when close never settles, even after stream destruction
+ok 14 - CLI saves safe deadline evidence when close never settles, even after stream destruction
+  ---
+  duration_ms: 3.235913
+  type: 'test'
+  ...
+# Subtest: CLI records close rejection and attempts forced cleanup before saving evidence
+ok 15 - CLI records close rejection and attempts forced cleanup before saving evidence
+  ---
+  duration_ms: 2.936702
+  type: 'test'
+  ...
+# Subtest: CLI still saves deadline evidence if forced cleanup throws
+ok 16 - CLI still saves deadline evidence if forced cleanup throws
+  ---
+  duration_ms: 4.436266
+  type: 'test'
+  ...
+# Subtest: CLI verifies TLS, completes normal cleanup, and saves exclusive success evidence
+ok 17 - CLI verifies TLS, completes normal cleanup, and saves exclusive success evidence
+  ---
+  duration_ms: 2.808563
+  type: 'test'
+  ...
+# Subtest: CLI never begins a metadata transaction when TLS is unauthorized
+ok 18 - CLI never begins a metadata transaction when TLS is unauthorized
+  ---
+  duration_ms: 2.304897
+  type: 'test'
+  ...
+# Subtest: CLI preserves the original failure while explicitly recording a later close deadline
+ok 19 - CLI preserves the original failure while explicitly recording a later close deadline
+  ---
+  duration_ms: 2.43683
+  type: 'test'
+  ...
+# Subtest: function inventory excludes bodies/default values and scopes effective execution to the four audit roles
+ok 20 - function inventory excludes bodies/default values and scopes effective execution to the four audit roles
+  ---
+  duration_ms: 0.545682
+  type: 'test'
+  ...
+# Subtest: trigger inventory hashes definitions and reveals neither argument values nor WHEN expressions
+ok 21 - trigger inventory hashes definitions and reveals neither argument values nor WHEN expressions
+  ---
+  duration_ms: 0.340235
+  type: 'test'
+  ...
+# Subtest: schema access and default ACL queries cover only public/storage plus global defaults applying to them
+not ok 22 - schema access and default ACL queries cover only public/storage plus global defaults applying to them
+  ---
+  duration_ms: 2.532477
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-metadata.test.cjs:273:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /d\.defaclobjtype IN \('r','S','f','T'\)/. Input:
+    
+    'SELECT n.nspname AS schema_name,\n' +
+      "      CASE WHEN d.defaclnamespace=0 THEN 'global' ELSE 'schema' END AS default_scope,\n" +
+      '      pg_catalog.pg_get_userbyid(d.defaclrole) AS owner, d.defaclobjtype AS object_type,\n' +
+      '      d.defaclacl::text[] AS acl\n' +
+      '    FROM pg_catalog.pg_namespace n JOIN pg_catalog.pg_default_acl d ON d.defaclnamespace IN (0,n.oid)\n' +
+      "    WHERE n.nspname IN ('public','storage') ORDER BY 1,2,3,4"
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    SELECT n.nspname AS schema_name,
+          CASE WHEN d.defaclnamespace=0 THEN 'global' ELSE 'schema' END AS default_scope,
+          pg_catalog.pg_get_userbyid(d.defaclrole) AS owner, d.defaclobjtype AS object_type,
+          d.defaclacl::text[] AS acl
+        FROM pg_catalog.pg_namespace n JOIN pg_catalog.pg_default_acl d ON d.defaclnamespace IN (0,n.oid)
+        WHERE n.nspname IN ('public','storage') ORDER BY 1,2,3,4
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-metadata.test.cjs:282:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: supplement category errors stay distinct and roll back their savepoints without losing later categories
+ok 23 - supplement category errors stay distinct and roll back their savepoints without losing later categories
+  ---
+  duration_ms: 0.631012
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 22
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 250.086225

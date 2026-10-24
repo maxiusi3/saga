@@ -1,0 +1,31 @@
+{
+  "decision": "original_milestones_not_reached",
+  "source": "docs/2026-10-10-integrated-upgrade-plan.md section7.1 and docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+  "G0": {
+    "passed": false,
+    "missing": [
+      "production permission path remediation and compatibility validation",
+      "seven unregistered migration semantic reconciliation and recovery/rollback proof",
+      "bucket configuration and original-object reconciliation",
+      "backup restoration evidence",
+      "selected provider account/data-processing conditions"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "missing": [
+      "formal asset/Storage/session/deletion adapters",
+      "real-device 5/20/30 minute failure matrix",
+      "original-file hash and offline delivery acceptance",
+      "end-to-end current membership and deletion behavior"
+    ]
+  },
+  "localBatchIsMilestone": false,
+  "thisBatchCommit": false,
+  "thisBatchPush": false,
+  "thisBatchRemoteMigrations": false,
+  "thisBatchDeployment": false,
+  "checkedAt": "2026-10-18T02:51:00.746690+00:00",
+  "completedLocalBatch": "PG17 audited dependencies and durable export request candidates",
+  "localVerification": "normal and hostile141/874, lifecycle4/4, independent reviewsPASS; original production gates remain unmet"
+}

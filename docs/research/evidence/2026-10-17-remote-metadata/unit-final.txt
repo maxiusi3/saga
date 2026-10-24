@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: reads the whole password after the first equals sign and accepts CRLF
+ok 1 - reads the whole password after the first equals sign and accepts CRLF
+  ---
+  duration_ms: 9.46862
+  type: 'test'
+  ...
+# Subtest: rejects duplicate, missing and unexpected keys without reflecting input
+ok 2 - rejects duplicate, missing and unexpected keys without reflecting input
+  ---
+  duration_ms: 1.00847
+  type: 'test'
+  ...
+# Subtest: rejects privileged roles, another project and untrusted host names
+ok 3 - rejects privileged roles, another project and untrusted host names
+  ---
+  duration_ms: 0.551951
+  type: 'test'
+  ...
+# Subtest: connection always verifies TLS and defaults to bounded read-only operations
+ok 4 - connection always verifies TLS and defaults to bounded read-only operations
+  ---
+  duration_ms: 0.606682
+  type: 'test'
+  ...
+# Subtest: error serialization preserves only approved machine codes
+ok 5 - error serialization preserves only approved machine codes
+  ---
+  duration_ms: 3.367157
+  type: 'test'
+  ...
+# Subtest: a denied category is distinct from a successful empty category
+ok 6 - a denied category is distinct from a successful empty category
+  ---
+  duration_ms: 4.946923
+  type: 'test'
+  ...
+# Subtest: failed rollback stops collection instead of pretending later queries are valid
+ok 7 - failed rollback stops collection instead of pretending later queries are valid
+  ---
+  duration_ms: 0.884532
+  type: 'test'
+  ...
+# Subtest: refuses the wrong server role or a writable transaction before metadata reads
+ok 8 - refuses the wrong server role or a writable transaction before metadata reads
+  ---
+  duration_ms: 0.891981
+  type: 'test'
+  ...
+# Subtest: rejects backend timeout settings that differ from the required transaction limits
+ok 9 - rejects backend timeout settings that differ from the required transaction limits
+  ---
+  duration_ms: 0.720953
+  type: 'test'
+  ...
+# Subtest: successful capture closes its read-only snapshot and retains denied bucket status
+ok 10 - successful capture closes its read-only snapshot and retains denied bucket status
+  ---
+  duration_ms: 1.209517
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 424.922908

@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-10-17T04:07:02.434900+00:00",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "conditionalPushAuthorized": true,
+  "decision": "original_milestones_not_reached",
+  "localRlsCandidate": {
+    "scenarios": 61,
+    "assertions": 199,
+    "passed": true,
+    "deployed": false
+  },
+  "G0": {
+    "passed": false,
+    "remaining": [
+      "production RLS remediation not applied; candidate is local only",
+      "bucket configuration still denied in prior read-only capture",
+      "full migration/function/trigger/ACL reconciliation and backup/rollback",
+      "provider account/data handling qualifications",
+      "independent review of metadata collector and guarded RLS candidate",
+      "legacy direct delete/overwrite compatibility and PG17/Storage HTTP acceptance"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "remaining": [
+      "formal session/Storage/asset/consent/deletion adapters",
+      "real-device 5/20/30-minute interruption matrix",
+      "formal cross-family/original delivery acceptance"
+    ]
+  },
+  "dependencyAudit": {
+    "executedThisBatch": true,
+    "exitCode": 1,
+    "info": 0,
+    "low": 0,
+    "moderate": 8,
+    "high": 34,
+    "critical": 0,
+    "total": 42
+  },
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "deploymentPerformed": false,
+  "remoteMigrationPerformed": false,
+  "remotePermissionChangePerformed": false,
+  "remoteQueriesPerformedThisBatch": false,
+  "independentReview": {
+    "status": "unavailable_pending",
+    "reason": "independent reviewer returned model rate_limit_exceeded",
+    "agent": "/root/rls_review",
+    "file": "review-status.md",
+    "independentPass": false,
+    "selfReviewCompleted": true,
+    "previousMetadataReviewStillPending": true
+  }
+}

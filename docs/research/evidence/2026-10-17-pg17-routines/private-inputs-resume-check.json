@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-18T02:24:57.831025+00:00",
+  "status": "passed",
+  "remoteRequestsOnResume": 0,
+  "captureIntegrity": [
+    {
+      "report": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+      "publicSha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+      "privateSha256Matches": true,
+      "regularSingleLink": true,
+      "fileMode": "0o600",
+      "directoryMode": "0o700",
+      "gitIgnored": true,
+      "gitTracked": false
+    },
+    {
+      "report": "docs/research/evidence/2026-10-17-pg17-routines/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json",
+      "publicSha256": "e876b1f1ed636b57ac110ae515b6158373bc981fcb3bd2c2398c7561eb61275e",
+      "privateSha256Matches": true,
+      "regularSingleLink": true,
+      "fileMode": "0o600",
+      "directoryMode": "0o700",
+      "gitIgnored": true,
+      "gitTracked": false
+    }
+  ],
+  "scope": "Hash/mode/ignore/index checks only; no new remote capture or raw definition output."
+}

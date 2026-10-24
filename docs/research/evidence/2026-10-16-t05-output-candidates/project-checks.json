@@ -1,0 +1,44 @@
+[
+  {
+    "name": "verify",
+    "command": [
+      "npm",
+      "run",
+      "verify"
+    ],
+    "startedAt": "2026-10-16T14:26:07.181175+00:00",
+    "exitCode": 0,
+    "log": "docs/research/evidence/2026-10-16-t05-output-candidates/verify.log",
+    "logSha256": "c08f5eb72e98ef59741a5a3bcb0d3e91c92ab4da4d643f84ba0793595d39d206"
+  },
+  {
+    "name": "shared",
+    "command": [
+      "npm",
+      "test",
+      "--workspace=packages/shared",
+      "--",
+      "--runInBand"
+    ],
+    "startedAt": "2026-10-16T14:28:07.754036+00:00",
+    "exitCode": 0,
+    "log": "docs/research/evidence/2026-10-16-t05-output-candidates/shared.log",
+    "logSha256": "36ffffe0d19d49abd92fadbaef08583b57c23255b67b1be84d175a671424e9b7"
+  },
+  {
+    "name": "infra",
+    "command": [
+      "npm",
+      "run",
+      "test:infra"
+    ],
+    "startedAt": "2026-10-16T14:28:11.921392+00:00",
+    "exitCode": 0,
+    "log": "docs/research/evidence/2026-10-16-t05-output-candidates/infra.log",
+    "logSha256": "52ba0ed5feae6b1434f868d4c74d76292a38bc2ef36d81da6f7b14e10cb0fbd4"
+  },
+  {
+    "nextEnvRestored": true,
+    "nextEnvSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+  }
+]

@@ -1,0 +1,92 @@
+{
+  "checkedAt": "2026-10-22T10:25:05.504575+00:00",
+  "scope": "Read-only frozen input, runtime, inventory and log verification; no application or old SQL suites rerun. Source inventories exclude Finder .DS_Store; runtime inventory matches pinned bin/lib/share, not build headers.",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "checks": {
+    "originalProjectReport": {
+      "files": 1,
+      "mismatches": []
+    },
+    "applicationInputs": {
+      "files": 796,
+      "mismatches": []
+    },
+    "priorBatchSources": {
+      "files": 19,
+      "mismatches": []
+    },
+    "protectedPriorInputs": {
+      "files": 986,
+      "mismatches": []
+    },
+    "webSourceInventory": {
+      "files": 500,
+      "added": [],
+      "removed": []
+    },
+    "sharedSourceInventory": {
+      "files": 71,
+      "added": [],
+      "removed": []
+    },
+    "webPublicInventory": {
+      "files": 180,
+      "added": [],
+      "removed": []
+    },
+    "originalSQLReport": {
+      "files": 1,
+      "mismatches": []
+    },
+    "priorSQLSourcesAndRuntime": {
+      "files": 774,
+      "mismatches": []
+    },
+    "pgDriverFiles": {
+      "files": 44,
+      "mismatches": []
+    },
+    "pgRuntimeInventory:bin": {
+      "files": 35,
+      "added": [],
+      "removed": []
+    },
+    "pgRuntimeInventory:lib": {
+      "files": 59,
+      "added": [],
+      "removed": []
+    },
+    "pgRuntimeInventory:share": {
+      "files": 649,
+      "added": [],
+      "removed": []
+    },
+    "frozenLogs": {
+      "files": 38,
+      "mismatches": []
+    },
+    "nodeRuntime": {
+      "version": "v22.22.2",
+      "sha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b"
+    },
+    "nextEnv": {
+      "sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "expected": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+    }
+  },
+  "originalProjectReport": "docs/research/evidence/2026-10-21-invitation-management/project-verification.json",
+  "originalProjectExecutedAt": "2026-10-21T15:01:19.264Z",
+  "originalCommandExitCodes": {
+    "targeted": 0,
+    "verify": 0,
+    "shared": 0,
+    "infra": 0,
+    "diff-check": 0
+  },
+  "applicationSuitesRerun": false,
+  "diffCheckExitCode": 0,
+  "verifierSha256": "f1c4b0392c2e7cb895a25b59bfca6bd0f5f8c5e1b293407dd57befbd61b8e666",
+  "errors": [],
+  "status": "passed"
+}

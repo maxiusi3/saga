@@ -1,0 +1,18 @@
+{
+  "verified_at": "2026-10-15T18:36:00+08:00",
+  "command": "npm run verify",
+  "exit_code": 0,
+  "web_test_suites": 75,
+  "web_tests": 702,
+  "type_check": "passed",
+  "lint": "passed",
+  "next_pages_generated": 175,
+  "next_env_restored": true,
+  "warnings": [
+    "SUPABASE_SERVICE_ROLE_KEY missing in local build",
+    "Next eslint configuration unsupported",
+    "Next images.domains deprecated",
+    "multiple lockfiles / inferred workspace root warning"
+  ],
+  "scope": "project verification after isolated T05 heartbeat/reconciliation changes; no remote schema, Storage, provider, deployment, or G0/G1 acceptance"
+}

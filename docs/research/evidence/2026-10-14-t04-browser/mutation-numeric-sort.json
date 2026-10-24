@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-10-14T12:01:03.278Z",
+  "mutation": "numeric-sort",
+  "checks": [
+    "v1 upgrade keeps legacy bytes and supplies compatible defaults",
+    "native MediaRecorder emits multiple nonempty tone chunks",
+    "reopened drafts are scoped to project/user and newest first",
+    "unknown users have no recoverable drafts"
+  ],
+  "sourceSha256": "157d12dce74291f4b0a2c989a99b2bd32b3873060a6d908e7e62606107b1b88a",
+  "os": "darwin 22.6.0 x64",
+  "limits": "Synthetic fixture bytes plus a short Web Audio tone captured with native MediaRecorder, persisted and reopened through native IndexedDB, verified by the production recovery helper, decoded and played by desktop Chromium. No microphone, crash, mobile, long recording, quota, remote authorization, or cloud confirmation evidence.",
+  "recoverySourceSha256": "ee6c63541acf944b748a0481588c8633d369cd92d433d4c1017fa0eeee3be5c1",
+  "browser": "Chromium 147.0.7727.15",
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: indices are numeric after page close/reopen\n+ actual - expected\n\n  [\n    0,\n+   10,\n    2,\n-   10\n  ]\n\n    at check (/Users/eat/Documents/eatpotato/saga传奇/scripts/verify-recorder-db.cjs:20:10)\n    at main (/Users/eat/Documents/eatpotato/saga传奇/scripts/verify-recorder-db.cjs:192:3)"
+}

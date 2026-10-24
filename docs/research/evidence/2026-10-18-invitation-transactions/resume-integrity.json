@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-18T12:22:40.971247+00:00",
+  "status": "passed",
+  "executedTransactionSuitesThisResume": false,
+  "implementationManifest": {
+    "path": "docs/research/evidence/2026-10-18-invitation-transactions/implementation-verification.json",
+    "sha256": "28a007ff93595ad7746c92e25412234b9f71347c18987c94ddced88032d8b501"
+  },
+  "checkedGroups": {
+    "sources": {
+      "checked": 24,
+      "mismatches": []
+    },
+    "commonJS": {
+      "checked": 44,
+      "mismatches": []
+    },
+    "runtimeFiles": {
+      "checked": 743,
+      "mismatches": []
+    },
+    "evidence": {
+      "checked": 27,
+      "mismatches": []
+    }
+  },
+  "inputPinsMatched": true,
+  "nodeExecutableMatched": true,
+  "previousApplicationEvidence": {
+    "path": "docs/research/evidence/2026-10-18-rpc-access-guards/project-checks.json",
+    "sha256": "a2c6a37876d89c89eabbdfd3cf1e0b001ff4f004e45c197ed374b734ee3144af"
+  },
+  "applicationInputCount": 707,
+  "applicationChanges": [],
+  "applicationLogChanges": [],
+  "logCount": 3,
+  "sourceExecutionStartedAt": "2026-10-18T04:24:38.969365+00:00",
+  "sourceExecutionFinishedAt": "2026-10-18T04:26:48.304226+00:00",
+  "limitations": "Fresh file/evidence integrity verification after interrupted session; original execution timestamps preserved, no production or real JWT/payment evidence added."
+}

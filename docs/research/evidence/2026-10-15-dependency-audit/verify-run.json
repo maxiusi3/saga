@@ -1,0 +1,7 @@
+{
+  "command": "npm run verify",
+  "exitCode": 0,
+  "startedAt": "2026-10-15T12:34:26.736552+00:00",
+  "completedAt": "2026-10-15T12:36:56.050139+00:00",
+  "nextEnvRestored": true
+}

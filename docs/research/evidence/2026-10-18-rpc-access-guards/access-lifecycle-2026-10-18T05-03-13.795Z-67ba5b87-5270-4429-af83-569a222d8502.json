@@ -1,0 +1,135 @@
+{
+  "startedAt": "2026-10-18T05:03:13.796Z",
+  "status": "passed",
+  "cases": [
+    {
+      "name": "hostile_pg_environment",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started"
+      ],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-13.977Z-fe66e2ff-afaa-472d-8d6c-7c8acbc04c58.json",
+      "evidenceSha256": "29e6343604a03f15ee5cc949a227369ed5079ed31c1ffe8d1b5d74d299ad8f21",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "stderrEmpty": true,
+      "stdoutSafeJSONOnly": true,
+      "serverPid": 24975,
+      "serverAbsent": true,
+      "scrubbedKeys": [
+        "DATABASE_URL",
+        "PGDATABASE",
+        "PGHOST",
+        "PGHOSTADDR",
+        "PGOPTIONS",
+        "PGPASSFILE",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGSERVICE",
+        "PGSERVICEFILE",
+        "PGSSLMODE",
+        "PGSSLROOTCERT",
+        "PGSYSCONFDIR",
+        "PGUSER"
+      ],
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "SIGTERM_after_fixture_ready",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started",
+        "fixture-ready",
+        "shutdown-requested"
+      ],
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-23.402Z-82dcf853-84ad-4198-b65b-4bc86c2c3943.json",
+      "evidenceSha256": "9c2cda230571012128c9aeb82c2494d2040c9d931ae46c5196b1013835ed9467",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "stderrEmpty": true,
+      "stdoutSafeJSONOnly": true,
+      "serverPid": 25186,
+      "serverAbsent": true,
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "invalid_actual_server_start",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation"
+      ],
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-25.288Z-775255a2-6f0b-4157-b245-373151e3607e.json",
+      "evidenceSha256": "fdd47f93c43e274dae576ceede3f7bf80259752f020570cd7ff608c24a335813",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "stderrEmpty": true,
+      "stdoutSafeJSONOnly": true,
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "failed_client_connect_cleanup",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started"
+      ],
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-26.782Z-e15aba13-bd47-4c85-a8ef-4a1494a10ed7.json",
+      "evidenceSha256": "07e1f6b2bd4b508fb93f3dfffd956a4fb7cc12fa9c0b751dbdcdc77b15cfd45e",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "stderrEmpty": true,
+      "stdoutSafeJSONOnly": true,
+      "serverPid": 25241,
+      "serverAbsent": true,
+      "rescue": {
+        "needed": false
+      }
+    }
+  ],
+  "observerSourceSha256": "01fbff6e7365d5d32426161673aa8fdd52be32eca46225816f115cd4bdc21bf7",
+  "finishedAt": "2026-10-18T05:03:28.514Z"
+}

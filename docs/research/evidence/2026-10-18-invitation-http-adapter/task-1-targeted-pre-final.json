@@ -1,0 +1,20 @@
+{
+  "phase": "preserved-pre-final-combined-check",
+  "startedAt": "2026-10-18T13:30:58.766Z",
+  "finishedAt": "2026-10-18T13:31:14.001Z",
+  "executor": "Task 1 implementation subagent",
+  "command": "npm test --workspace=@saga/web -- --runInBand --detectOpenHandles --runTestsByPath src/lib/__tests__/invitation-acceptance-protocol.test.ts src/lib/__tests__/invitation-acceptance-client.test.ts src/lib/server/__tests__/invitation-acceptance.test.ts",
+  "exitCode": 1,
+  "summary": [
+    "Test Suites: 1 failed, 2 passed, 3 total",
+    "Tests:       1 failed, 193 passed, 194 total",
+    "Snapshots:   0 total",
+    "Time:        13.219 s"
+  ],
+  "sourceInputDigest": "fbf16ee2b9669beef96cbd20e3a60c59f9335978066b50b591d2849f773aceda",
+  "rawSha256": "17ea5fcf8909e903ff6b025324b56643efe9126c3bde2cbeecdd0415261130f4",
+  "sourceUnchanged": true,
+  "provenance": "Protocol and client tests use fixed external-boundary fixtures; handler tests run the real Supabase JS 2.105.3 SDK against a synthetic loopback HTTP Auth/REST provider. This does not validate real JWTs, production PostgREST or PG17.",
+  "openHandleWarning": false,
+  "classification": "Fixture omitted modern Auth API-version header; see final combined check after correction."
+}

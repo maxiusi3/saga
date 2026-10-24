@@ -1,0 +1,150 @@
+{
+  "checkedAt": "2026-10-16T15:10:52.518883+00:00",
+  "status": "local_verification_and_independent_review_passed",
+  "scope": "Isolated PoC output candidate protocol; no physical GC, production adapter or device acceptance",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "integration": {
+    "candidates": {
+      "report": "candidates-implementation-final.json",
+      "reportSha256": "68b9aad2873ab6da862bbe26eff231968eb208b6b16d810eb4dd358066acf0ef",
+      "status": "passed",
+      "scenarios": 45,
+      "assertions": 277,
+      "startedAt": "2026-10-16T14:39:38.754Z",
+      "finishedAt": "2026-10-16T14:39:59.824Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "executedThisBatch": true,
+      "processOwnership": {
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      }
+    },
+    "merge": {
+      "report": "merge-final.json",
+      "reportSha256": "f06a32789cbb46b4a0d4f76189ac84d4d707c00b54cc3df2248a89f2cf86ed1d",
+      "status": "passed",
+      "scenarios": 52,
+      "assertions": 402,
+      "startedAt": "2026-10-16T14:41:54.043Z",
+      "finishedAt": "2026-10-16T14:42:54.646Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "executedThisBatch": true,
+      "processOwnership": {
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      }
+    },
+    "failures": {
+      "report": "failures-final.json",
+      "reportSha256": "5ba46a1fd8824e849907b7f3c526aeca2080171baaf3f055c838e35b51c88ebb",
+      "status": "passed",
+      "scenarios": 42,
+      "assertions": 371,
+      "startedAt": "2026-10-16T14:41:54.233Z",
+      "finishedAt": "2026-10-16T14:42:35.768Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "executedThisBatch": true,
+      "processOwnership": {
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      }
+    },
+    "t05": {
+      "report": "t05-final.json",
+      "reportSha256": "30a12657ca3393ed14b2bca47718382353401d01afe714fbeeaa199aaf25503a",
+      "status": "passed",
+      "scenarios": 39,
+      "assertions": 307,
+      "startedAt": "2026-10-16T14:41:54.135Z",
+      "finishedAt": "2026-10-16T14:45:28.226Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "executedThisBatch": true,
+      "processOwnership": {
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      }
+    }
+  },
+  "application": {
+    "evidence": "project-checks.json",
+    "webSuites": 76,
+    "webTests": 730,
+    "pages": 175,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "allExitCodes": 0,
+    "executedThisBatch": true
+  },
+  "protectedFilesUnchanged": {
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "experiments/t05-durable-worker/package.json": "a34f22500fbe32d38ef8e3a430fda81270a5bdb6760923164b161b734b8720d4",
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+    "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+    "experiments/t05-durable-worker/verify-merge-cleanup.mjs": "c1e7b997ea4ecd0ecb8bb6cd453662417b52a03265e0db5eb9880cc6e0cebca5"
+  },
+  "independentReview": {
+    "report": "review-initial.md",
+    "reportSha256": "bf9b72b2c0e08d2ded57e91ab898ed605e3b59338fb22af205c61eeac8b878d5",
+    "spec": "PASS",
+    "quality": "PASS",
+    "critical": 0,
+    "important": 0,
+    "minor": 0
+  },
+  "milestoneEvidence": "milestone-check.json",
+  "implementationReport": "implementation-report.md",
+  "reviewedIncrementalSources": {
+    "experiments/t05-durable-worker/recording-output-candidates.mjs": "5ef0000d648e0242edcf378d439b6d82da9ab435ebc4d5276fa70cc59ff3f225",
+    "experiments/t05-durable-worker/output-candidate-scenarios.mjs": "8ad34d44ba0da50f0e92317d1939fd7b8135f5cec5999bbe9cf05fde23e540df",
+    "experiments/t05-durable-worker/store.mjs": "30ff73eecfb01fb2ef1937dc46cf2a8150b711e8b779ebb603a040d383618e86",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "0b86c400ec5ceed3f2dccb0d0b860d792d86e2d3ddf6f510976f78c53fd5d4ce",
+    "experiments/t05-durable-worker/verify.mjs": "eaea542a6ad5f6bb0e281f9e1b9fa2d80fe5f59adb0ced38a6533b1ab1862837",
+    "experiments/t05-durable-worker/README.md": "6049bc52e01535fae822030e1f59cc2db1ae8de0586a3d63f31efe81df1d71ca"
+  },
+  "scopeNotes": [
+    "Final PoC tests and application gates executed in this batch.",
+    "Dependency audit reused from previous actual run; manifests/lockfiles unchanged.",
+    "No physical GC; direct privileged SQL bypass is outside supported-API guarantees.",
+    "Existing 300-second synthetic soak and unmodified external observer not rerun."
+  ],
+  "finalCheck": "final-check.json"
+}

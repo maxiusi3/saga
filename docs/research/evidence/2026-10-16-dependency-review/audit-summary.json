@@ -1,0 +1,45 @@
+{
+  "initialAttempt": {
+    "command": "npm run audit:high",
+    "timedOutSeconds": 90,
+    "exitCode": null
+  },
+  "processOnlyNetworkSettings": {
+    "fetchTimeoutMs": 20000,
+    "fetchRetries": 0,
+    "noProxy": "registry.npmjs.org"
+  },
+  "runs": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "audit:high"
+      ],
+      "exitCode": 1,
+      "timeout": false,
+      "log": "audit-high.log"
+    },
+    {
+      "command": [
+        "npm",
+        "audit",
+        "--workspaces",
+        "--audit-level=high",
+        "--json"
+      ],
+      "exitCode": 1,
+      "timeout": false,
+      "log": "audit-current.json"
+    }
+  ],
+  "vulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 8,
+    "high": 34,
+    "critical": 0,
+    "total": 42
+  },
+  "checkedAt": "2026-10-16T02:38:05.111792+00:00"
+}

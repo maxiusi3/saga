@@ -1,0 +1,79 @@
+{
+  "status": "local_checks_and_independent_review_passed",
+  "checkedAt": "2026-10-16T05:51:42.944785+00:00",
+  "scope": "Local fictional audio / private PostgreSQL / pg-boss / explicit FFmpeg; not formal Storage or G0/G1 acceptance",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3",
+    "ffmpeg": "ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffmpegSha256": "4a4a968b98859588e98500ae25973d80a5ca5eed0724222b9f76360dcb72a001",
+    "realtimeWrapperSha256": "2cd840fea2fcc555efa76f64fbd08657d158a0664b9dbd4d1f897cddfd1b5ec9"
+  },
+  "merge": {
+    "file": "worker-round2-verified.json",
+    "exitCode": 0,
+    "scenarios": 52,
+    "assertions": 396
+  },
+  "existingT05Regression": {
+    "file": "regression-final.json",
+    "run": "regression-final-run.json",
+    "exitCode": 0,
+    "scenarios": 39,
+    "assertions": 307
+  },
+  "exceptionalCleanup": {
+    "file": "cleanup-round2-verified.json",
+    "exitCode": 0,
+    "scenarios": 6
+  },
+  "observerFaultCleanup": {
+    "file": "observer-round2-verified.json",
+    "exitCode": 0,
+    "scenarios": 2,
+    "expectedFaults": [
+      "timeout with stopped harness/runner/decoder",
+      "unexpected harness exit17 without raw evidence"
+    ]
+  },
+  "observerInterruption": {
+    "file": "observer-round2-verified-interrupt.json",
+    "expectedExitCode": 143,
+    "status": "interrupted_as_expected_cleanup_verified",
+    "scenarios": 1
+  },
+  "allCurrentSourceFingerprintsMatch": true,
+  "application": {
+    "file": "project-checks.json",
+    "verifyExitCode": 0,
+    "webSuites": 75,
+    "webTests": 716,
+    "generatedPages": 175,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "nextEnvRestored": true
+  },
+  "independentReviews": {
+    "helper": "task-1-review.md",
+    "initialBatch": "review-initial.md",
+    "round1": "review-round1.md",
+    "finalFix": "review-final.md",
+    "resolved": [
+      "P2 unowned FFmpeg descendants on exceptional harness cleanup",
+      "P2 observer timeout/unexpected-exit bypassing ownership and leaving unbounded wait"
+    ]
+  },
+  "milestoneCheck": "milestone-check.json",
+  "limitations": [
+    "Private temporary PostgreSQL tables and an allowed flag simulate authorization; no production schema, RLS, Storage, outbox, migration or paid provider.",
+    "No filesystem/database distributed transaction. Prepared outputs may remain private orphans after process death or unknown COMMIT; no automatic GC or manual reuse.",
+    "Private directories, regular files, bounded streams and O_NOFOLLOW protect local paths; same-user hostile directory replacement races and non-preemptible kernel filesystem operations are outside this PoC.",
+    "Generated sine audio is split into contiguous file chunks; this is not physical-device MediaRecorder or production media sandbox evidence.",
+    "Checkpoint pauses are fault wrappers, not decoder CPU work. Real-time input throttling (-re) is explicitly labeled where used with real FFmpeg.",
+    "The existing local nonfree FFmpeg 7.1 executable is used for tests only and is not copied or redistributed."
+  ],
+  "noCommitPushDeploy": true
+}

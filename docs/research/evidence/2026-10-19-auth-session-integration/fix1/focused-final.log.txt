@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand auth-session auth-store auth-return auth-callback auth-signin-return auth-verify-session home-auth-landing supabase-session supabase-server-isolation supabase-browser-errors auth-locale-middleware invitation
+
+
+Test Suites: 19 passed, 19 total
+Tests:       515 passed, 515 total
+Snapshots:   0 total
+Time:        43.398 s
+Ran all test suites matching auth-session|auth-store|auth-return|auth-callback|auth-signin-return|auth-verify-session|home-auth-landing|supabase-session|supabase-server-isolation|supabase-browser-errors|auth-locale-middleware|invitation.

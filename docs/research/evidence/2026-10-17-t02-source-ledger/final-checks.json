@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "markdownFilesChecked": 15,
+  "missingLinks": [],
+  "gitDiffCheck": true,
+  "newCodeWhitespaceCheck": true,
+  "sourceAndDocumentHashesMatch": true,
+  "finalScratchDirectoriesAbsent": true,
+  "credentialValueNotInNewArtifacts": true,
+  "credentialsIgnoredAndNotTracked": true,
+  "metadataCompletionSha256": "f4b65b6d77340bd6e37b4d0ad7a1fb34fbf02b96a371c018a0cf2d84f4b17a8b"
+}

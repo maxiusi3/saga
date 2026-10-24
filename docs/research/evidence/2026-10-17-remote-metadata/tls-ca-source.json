@@ -1,0 +1,9 @@
+{
+  "retrievedAt": "2026-10-17T02:30:03.123696+00:00",
+  "url": "https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt",
+  "documentation": "https://supabase.com/docs/guides/platform/ssl-enforcement",
+  "sha256": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7",
+  "transport": "Python default HTTPS certificate and hostname verification",
+  "initialConnectionFailure": "SELF_SIGNED_CERT_IN_CHAIN",
+  "tlsVerificationDisabled": false
+}

@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-21T15:14:32.725Z",
+  "scope": "Recheck previous evidence/experiments/dependencies and SQL runtime pins; not a rerun of old business matrices.",
+  "sqlRun": {
+    "path": "docs/research/evidence/2026-10-21-invitation-management/sql-run-2026-10-21T14-47-16.084Z-8e804a59-f438-4c16-b9c8-3559d2bc64af.json",
+    "sha256": "177a479669d23fcaaed154308769ce25346eea9b7b9f6622cc0ec20da596a883"
+  },
+  "sqlSourcePinsChecked": 774,
+  "sqlSourceMismatches": [],
+  "protectedInputsChecked": 986,
+  "protectedInputMismatches": [],
+  "priorSourceFilesChecked": 20,
+  "intentionalPriorSourceChanges": [
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+    "packages/web/src/components/invitations/invitation-manager.tsx",
+    "packages/web/src/components/invitations/__tests__/invitation-sender-ui.test.tsx"
+  ],
+  "unexpectedPriorSourceChanges": [],
+  "expectedChangesMissing": [],
+  "status": "passed"
+}

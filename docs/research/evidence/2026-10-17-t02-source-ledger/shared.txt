@@ -1,0 +1,20 @@
+
+> @saga/shared@1.5.0 test
+> jest --runInBand
+
+watchman warning:  Recrawled this watch 9 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/eat/Documents/eatpotato/saga传奇' ; watchman watch-project '/Users/eat/Documents/eatpotato/saga传奇'`
+
+PASS src/types/__tests__/agents.test.ts
+PASS src/types/__tests__/public-archive.test.ts
+PASS src/types/__tests__/types.test.ts
+PASS src/__tests__/basic.test.ts
+
+Test Suites: 4 passed, 4 total
+Tests:       16 passed, 16 total
+Snapshots:   0 total
+Time:        2.442 s, estimated 3 s
+Ran all test suites.

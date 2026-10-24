@@ -1,0 +1,505 @@
+{
+  "startedAt": "2026-10-16T04:25:37.041Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "ccd2b47f5f834517e461f5d429872065e0874a3fd67d8730c68d478f80ea859b",
+    "experiments/t05-durable-worker/worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "experiments/t05-durable-worker/verify.mjs": "d454ae02d7fabf009b82576d5f2ed2a85956869388ace56ca9e34d0dac8ede97",
+    "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+    "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+    "experiments/t05-durable-worker/README.md": "4f77ef29cda6cfebd2ecef7384de031feb2a481d4cd897bd671e9dcfc2ad77e4",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "a6bf18704d0472eaff1ebb72f42a32be46a34ad2b0093aeab9ea97cf94d7d358",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "4c6d5832040ffb02a7a2ad9209ff3e1e31f0f4fd2cf9884a7ceb3d2e55872af6",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [
+    {
+      "name": "heartbeat success and stale fencing",
+      "status": "passed",
+      "assertions": 18,
+      "elapsedMs": 25657
+    },
+    {
+      "name": "unknown result reconciliation is fail-closed",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 6713
+    },
+    {
+      "name": "unknown prepared artifact is reused without provider call",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 6
+    },
+    {
+      "name": "cancelled unknown reconciliation is rejected",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 9
+    },
+    {
+      "name": "controlled retry claims once and completes",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 473
+    },
+    {
+      "name": "heartbeat lock contention checks expiry after lock",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 6369
+    },
+    {
+      "name": "socket-only isolated database",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 1
+    },
+    {
+      "name": "atomic business and queue creation",
+      "status": "passed",
+      "assertions": 12,
+      "elapsedMs": 368
+    },
+    {
+      "name": "concurrent duplicate envelopes",
+      "status": "passed",
+      "assertions": 11,
+      "elapsedMs": 1023
+    },
+    {
+      "name": "SIGKILL at leased",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 6051,
+      "expiryWaitMs": 5354,
+      "fault": "SIGKILL",
+      "provider": "synthetic ledger"
+    },
+    {
+      "name": "SIGKILL at provider",
+      "status": "passed",
+      "assertions": 12,
+      "elapsedMs": 6719,
+      "expiryWaitMs": 5688,
+      "fault": "SIGKILL",
+      "provider": "synthetic ledger"
+    },
+    {
+      "name": "SIGKILL at before_commit",
+      "status": "passed",
+      "assertions": 15,
+      "elapsedMs": 6376,
+      "expiryWaitMs": 5350,
+      "fault": "SIGKILL",
+      "provider": "synthetic ledger"
+    },
+    {
+      "name": "stale live worker after replacement cannot publish",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 6024
+    },
+    {
+      "name": "lease expiry inside uncommitted publication rolls back",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 5911
+    },
+    {
+      "name": "queue attempt acknowledgment fencing",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 5344
+    },
+    {
+      "name": "cross-day review releases lease and reuses prepared result",
+      "status": "passed",
+      "assertions": 13,
+      "elapsedMs": 722,
+      "clock": "explicit logical clock",
+      "reviewAt": "2026-10-15T04:26:55.533Z",
+      "approvalAt": "2026-10-16T04:26:55.533Z",
+      "simulatedGapMs": 86400000
+    },
+    {
+      "name": "revocation before late result blocks publication",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 671
+    },
+    {
+      "name": "row-lock wait cannot dispatch after lease expiry",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 5540,
+      "contention": "business row locked across real lease expiry before dispatch",
+      "providerCalls": 0
+    },
+    {
+      "name": "transaction heartbeat fences and rollback",
+      "status": "passed",
+      "assertions": 14,
+      "elapsedMs": 491,
+      "burstHeartbeats": 20,
+      "maxLeaseLeadMs": 5000,
+      "injections": [
+        "business-save trigger exception",
+        "queue heartbeat timestamp aged 11s via SQL"
+      ]
+    },
+    {
+      "name": "heartbeat queue lock wait samples both locks",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 5495,
+      "clock": "actual PostgreSQL clock after both locks",
+      "queueLockHeldAcrossExpiry": true
+    },
+    {
+      "name": "stale heartbeat cannot refresh redelivered attempt",
+      "status": "passed",
+      "assertions": 11,
+      "elapsedMs": 6055,
+      "oldRetryCount": 0,
+      "newRetryCount": 1
+    },
+    {
+      "name": "transaction heartbeat preserves actual queue claim",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 12429,
+      "heartbeatSamples": 12
+    },
+    {
+      "name": "automatic 20s asynchronous synthetic task",
+      "status": "passed",
+      "assertions": 16,
+      "elapsedMs": 20009,
+      "durationMs": 20000,
+      "heartbeats": 19,
+      "maxHeartbeatGapMs": 1016,
+      "workerPid": 43994,
+      "queueId": "9034f42d-6da9-43a2-80f9-4e2c53de2a79",
+      "synthetic": true
+    },
+    {
+      "name": "automatic recovery after leased SIGKILL",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 12491,
+      "fault": "SIGKILL",
+      "stage": "leased",
+      "killedPid": 44020,
+      "replacementPid": 44024,
+      "recoveryMs": 11708
+    },
+    {
+      "name": "automatic recovery after provider SIGKILL",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 11697,
+      "fault": "SIGKILL",
+      "stage": "provider",
+      "killedPid": 44051,
+      "replacementPid": 44055,
+      "recoveryMs": 10154
+    },
+    {
+      "name": "automatic heartbeat stops revoked synthetic work",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 12604,
+      "cancellationMs": 996
+    },
+    {
+      "name": "queue hard cap bounds automatic heartbeats",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 7562,
+      "hardCapSeconds": 6,
+      "requestedTaskMs": 20000,
+      "interruptionMs": 6053
+    },
+    {
+      "name": "three bounded restarts then nonzero exit",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 2297,
+      "fault": "four runner SIGKILLs",
+      "backoffs": [
+        100,
+        200,
+        400
+      ]
+    },
+    {
+      "name": "runner creation failure is bounded and cleaned",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 1042,
+      "fault": "runner ENOENT",
+      "backoffs": [
+        100,
+        200,
+        400
+      ]
+    },
+    {
+      "name": "maintenance lock cannot hang supervisor shutdown",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 5059,
+      "shutdownMs": 3505,
+      "cause": "automatic pg-boss maintenance waiting for expired queue row",
+      "forcedExitCode": 1
+    },
+    {
+      "name": "abort while dispatch guard awaits lock",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 26,
+      "abort": "AbortController while real third business-row lock is blocked",
+      "providerCalls": 0
+    },
+    {
+      "name": "abort after final clock rolls publication back",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 25,
+      "injection": "abort after real final clock query response",
+      "fabricatedDatabaseResults": false
+    },
+    {
+      "name": "SIGTERM while dispatch guard awaits lock",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 1229,
+      "signal": "SIGTERM",
+      "blockedStage": "before dispatch guard",
+      "providerCalls": 0
+    },
+    {
+      "name": "forced runner stop is nonzero",
+      "status": "passed",
+      "assertions": 2,
+      "elapsedMs": 2677,
+      "fault": "runner SIGSTOP then supervisor SIGTERM",
+      "forcedExitCode": 1
+    },
+    {
+      "name": "runner shutdown outcome external-kill",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 776,
+      "fault": "external SIGKILL during shutdown before escalation"
+    },
+    {
+      "name": "runner shutdown outcome exit1",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 709,
+      "fault": "runner deliberately exits1 on SIGTERM"
+    },
+    {
+      "name": "IPC disconnect stops owned runner",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 11172,
+      "supervisorPid": 44152,
+      "runnerPid": 44154,
+      "fault": "harness IPC disconnect"
+    },
+    {
+      "name": "killed supervisor cannot leak owned runner",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 11320,
+      "supervisorPid": 44168,
+      "runnerPid": 44170,
+      "fault": "supervisor SIGKILL"
+    },
+    {
+      "name": "failed worker fork cleans the existing owned cluster",
+      "status": "passed",
+      "assertions": 11,
+      "elapsedMs": 903,
+      "injection": "worker fork execPath unavailable; expected ENOENT caught",
+      "ownership": "one harness-owned cluster; no nested database owner",
+      "cleanupElapsedMs": 229,
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      }
+    }
+  ],
+  "assertions": 307,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "Local asynchronous synthetic tasks and process supervision only; no real audio, provider cancellation/billing, production hosting, real-device recording, backup restore, or load qualification."
+  ],
+  "supervisionHeartbeat": {
+    "samples": [
+      {
+        "elapsedMs": 1037,
+        "leaseExpiresAt": "2026-10-16T04:27:21.190Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:16.186Z"
+      },
+      {
+        "elapsedMs": 2068,
+        "leaseExpiresAt": "2026-10-16T04:27:22.224Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:17.221Z"
+      },
+      {
+        "elapsedMs": 3098,
+        "leaseExpiresAt": "2026-10-16T04:27:23.256Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:18.252Z"
+      },
+      {
+        "elapsedMs": 4136,
+        "leaseExpiresAt": "2026-10-16T04:27:24.288Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:19.284Z"
+      },
+      {
+        "elapsedMs": 5165,
+        "leaseExpiresAt": "2026-10-16T04:27:25.324Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:20.321Z"
+      },
+      {
+        "elapsedMs": 6198,
+        "leaseExpiresAt": "2026-10-16T04:27:26.352Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:21.348Z"
+      },
+      {
+        "elapsedMs": 7235,
+        "leaseExpiresAt": "2026-10-16T04:27:27.386Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:22.383Z"
+      },
+      {
+        "elapsedMs": 8270,
+        "leaseExpiresAt": "2026-10-16T04:27:28.422Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:23.418Z"
+      },
+      {
+        "elapsedMs": 9302,
+        "leaseExpiresAt": "2026-10-16T04:27:29.456Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:24.453Z"
+      },
+      {
+        "elapsedMs": 10331,
+        "leaseExpiresAt": "2026-10-16T04:27:30.490Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:25.487Z"
+      },
+      {
+        "elapsedMs": 11363,
+        "leaseExpiresAt": "2026-10-16T04:27:31.518Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:26.515Z"
+      },
+      {
+        "elapsedMs": 12399,
+        "leaseExpiresAt": "2026-10-16T04:27:32.552Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T04:27:27.548Z"
+      }
+    ],
+    "provider": "synthetic ledger",
+    "clock": "actual PostgreSQL and wall clock"
+  },
+  "blockedShutdown": {
+    "waitedForActualMaintenanceLock": true,
+    "elapsedMs": 3501,
+    "supervisorStillAlive": false,
+    "remainingMaintenanceBackends": []
+  },
+  "processOwnership": {
+    "supervisorPids": [
+      43992,
+      44012,
+      44018,
+      44049,
+      44061,
+      44070,
+      44091,
+      44106,
+      44115,
+      44128,
+      44134,
+      44140,
+      44145,
+      44152,
+      44158,
+      44168,
+      44174,
+      44348
+    ],
+    "runnerPids": [
+      43994,
+      44014,
+      44020,
+      44024,
+      44051,
+      44055,
+      44063,
+      44072,
+      44093,
+      44097,
+      44100,
+      44103,
+      44118,
+      44130,
+      44136,
+      44142,
+      44148,
+      44154,
+      44160,
+      44170,
+      44176,
+      44350
+    ],
+    "remainingGroups": [],
+    "remainingRunnerPids": []
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "status": "passed",
+  "finishedAt": "2026-10-16T04:29:10.566Z"
+}

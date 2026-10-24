@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-16T02:38:46.566Z",
+  "command": [
+    "/usr/local/Cellar/node@22/22.22.2/bin/node",
+    "--test",
+    "docs/research/evidence/2026-10-16-dependency-review/runtime-smoke-startup.test.cjs"
+  ],
+  "source": "docs/research/evidence/2026-10-15-dependency-audit/runtime-smoke.cjs",
+  "sourceSha256": "78fbea29b72f67392a78015356ccbe3ecc156336cda9d93879bf6c00e053d386",
+  "exitCode": 0,
+  "log": "docs/research/evidence/2026-10-16-dependency-review/runtime-startup-regression-green.log"
+}

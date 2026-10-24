@@ -1,0 +1,165 @@
+{
+  "updatedAt": "2026-10-22T11:06:37.423944+08:00",
+  "status": "LOCAL_COMPLETE_REVIEWED_VERIFIED",
+  "scope": "Local invitation-management SQL, HTTP, shared UI and recovery complete; October 22 documentation/whole-batch review and final integrity closeout without application or SQL test reruns.",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "workingTree": "Uncommitted upgrade work retained; no checkpoint commit or push.",
+  "implementation": {
+    "task1": "complete",
+    "task2": "complete",
+    "sourceManifest": "docs/research/evidence/2026-10-21-invitation-management/source-sha256.json",
+    "sourceFiles": 19,
+    "reports": [
+      "docs/research/evidence/2026-10-21-invitation-management/task-1-report.md",
+      "docs/research/evidence/2026-10-21-invitation-management/task-2-report.md"
+    ]
+  },
+  "historicalExecution": {
+    "project": {
+      "startedAt": "2026-10-21T15:01:19.264Z",
+      "finishedAt": "2026-10-21T15:04:58.554Z",
+      "report": "docs/research/evidence/2026-10-21-invitation-management/project-verification.json",
+      "sha256": "a2bb06b8dd3c7522b13b6d2042635dc2c0f26f4bf8d559c30808be5ced687618",
+      "commandExitCodes": {
+        "targeted": 0,
+        "verify": 0,
+        "shared": 0,
+        "infra": 0,
+        "diff-check": 0
+      },
+      "targeted": {
+        "suites": 5,
+        "tests": 54,
+        "passed": true
+      },
+      "web": {
+        "suites": 105,
+        "tests": 1420,
+        "passed": true
+      },
+      "shared": {
+        "suites": 4,
+        "tests": 16,
+        "passed": true
+      },
+      "infra": {
+        "tests": 7,
+        "passed": true
+      },
+      "typecheck": "passed",
+      "lint": "passed",
+      "staticPages": 180,
+      "applicationInputsUnchanged": 796,
+      "nextEnvRestored": true
+    },
+    "sql": {
+      "startedAt": "2026-10-21T14:47:16.083Z",
+      "finishedAt": "2026-10-21T14:47:23.096Z",
+      "report": "docs/research/evidence/2026-10-21-invitation-management/sql-run-2026-10-21T14-47-16.084Z-8e804a59-f438-4c16-b9c8-3559d2bc64af.json",
+      "sha256": "177a479669d23fcaaed154308769ce25346eea9b7b9f6622cc0ec20da596a883",
+      "status": "passed",
+      "scenarios": 16,
+      "assertions": 2448,
+      "cleanup": "cluster stopped, temporary directory removed, zero clients and errors"
+    },
+    "lifecycle": {
+      "startedAt": "2026-10-21T14:49:45.907Z",
+      "finishedAt": "2026-10-21T14:49:59.005Z",
+      "report": "docs/research/evidence/2026-10-21-invitation-management/sql-lifecycle-2026-10-21T14-49-45.910Z-877999de-cb4b-4603-9b9e-9af16843648d.json",
+      "sha256": "b858c6cea49dcab8421c65ec9a8e6e7662947c33fb3315f3b519c7bb36b6751b",
+      "status": "passed",
+      "cases": 4,
+      "cleanupComplete": true
+    }
+  },
+  "resumeIntegrity": {
+    "checkedAt": "2026-10-22T02:28:58.575708+00:00",
+    "report": "docs/research/evidence/2026-10-21-invitation-management/resume-integrity-20261022T022858575708Z.json",
+    "sha256": "313638afbfd6e1bec5a25d113bbcae25b36b2b7b9af4219b9de0a7e7378c3b8f",
+    "status": "passed",
+    "applicationOrSqlTestsRerun": false,
+    "matched": {
+      "applicationInputs": 796,
+      "batchSourceInputs": 19,
+      "protectedPriorInputs": 986,
+      "sqlInputsAndRuntime": 774,
+      "rawAndPublishedLogs": 38,
+      "linkedReportsAndFinalLogs": 17,
+      "applicationInventory": 571,
+      "runtimeInventory": 743
+    },
+    "nodeRuntimeMatches": true,
+    "nextEnvMatchesSavedBytes": true,
+    "diffCheckExitCode": 0,
+    "errors": []
+  },
+  "reviews": {
+    "implementation": {
+      "date": "2026-10-21",
+      "specCompliance": "approved",
+      "codeQuality": "approved",
+      "openFindings": 0,
+      "report": "docs/research/evidence/2026-10-21-invitation-management/implementation-review.md",
+      "sha256": "c3702cb4e6ea7336a44b70e870a0eb2611aec3c5872ba92822f5c0c05ca83480"
+    },
+    "documentation": {
+      "status": "approved",
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "openFindings": 0,
+      "report": "docs/research/evidence/2026-10-21-invitation-management/task-3-review.md",
+      "sha256": "ad03b68980aa26116b0c302218fe8ada98e67b5ea8365a35eff66bd2f6330909"
+    },
+    "wholeBatch": {
+      "status": "approved",
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "openFindings": 0,
+      "report": "docs/research/evidence/2026-10-21-invitation-management/batch-final-review.md",
+      "sha256": "1b4a52de4771b74b164f550a345d01fa7c359974de66212cdbb2f3712e04454f"
+    },
+    "postDocumentationIntegrity": {
+      "status": "passed",
+      "report": "docs/research/evidence/2026-10-21-invitation-management/final-integrity-20261022T110637+0800.json",
+      "hashDirection": "Final report hashes this summary; no reverse hash is stored here to avoid a cycle."
+    },
+    "reviewerIndependence": "One reviewer independent of implementation/documentation authors assessed both closeout scopes; these are not two independent opinions. The interrupted documentation attempt produced no verdict."
+  },
+  "evidenceIndex": "docs/research/evidence/2026-10-21-invitation-management/README.md",
+  "milestoneAssessment": "docs/research/evidence/2026-10-21-invitation-management/milestone-check.json",
+  "limitations": [
+    "Real isolated PG17 with synthetic identity/events, actual SDK with local loopback, and React fixtures are layered local verification, not real Auth/JWT/PostgREST/database end-to-end qualification.",
+    "Production permissions, Storage, provider account/data and event qualification, historical opaque-token/member mapping, migration equivalence/backfill/rollback/backup recovery and formal adapters/device acceptance remain open.",
+    "Build retains old Next configuration and missing server-key diagnostics; successful exit does not qualify production configuration.",
+    "Dependencies unchanged; historical audit 42 issues (34 high, 8 moderate) was not rerun or resolved."
+  ],
+  "productionSwitchesEnabled": false,
+  "P0Complete": false,
+  "originalMilestonePassed": false,
+  "committed": false,
+  "githubPushed": false,
+  "migrated": false,
+  "deployed": false,
+  "earlierResumeIntegrity": {
+    "checkedAt": "2026-10-22T01:18:25.076698+00:00",
+    "report": "docs/research/evidence/2026-10-21-invitation-management/resume-integrity-20261022T011825076698Z.json",
+    "sha256": "8ae4c00454e0294d3aa4d8ef4e2691ac6ab3987a29fc816bdf8f6430668dc00e",
+    "status": "passed",
+    "applicationOrSqlTestsRerun": false,
+    "matched": {
+      "applicationInputs": 796,
+      "batchSourceInputs": 19,
+      "protectedPriorInputs": 986,
+      "sqlInputsAndRuntime": 774,
+      "rawAndPublishedLogs": 38,
+      "linkedReportsAndFinalLogs": 17,
+      "applicationInventory": 571,
+      "runtimeInventory": 743
+    },
+    "nodeRuntimeMatches": true,
+    "nextEnvMatchesSavedBytes": true,
+    "diffCheckExitCode": 0,
+    "errors": []
+  }
+}

@@ -1,0 +1,13 @@
+COMMAND: npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts
+
+
+Test Suites: 3 passed, 3 total
+Tests:       158 passed, 158 total
+Snapshots:   0 total
+Time:        4.024 s
+Ran all test suites within paths "src/lib/__tests__/auth-return.test.ts", "src/components/auth/__tests__/auth-signin-return.test.tsx", "src/lib/server/__tests__/auth-callback.test.ts".
+
+EXIT: 0

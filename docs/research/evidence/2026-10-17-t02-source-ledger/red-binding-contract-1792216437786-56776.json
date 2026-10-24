@@ -1,0 +1,52 @@
+{
+  "startedAt": "2026-10-17T05:53:57.787Z",
+  "label": "red-binding-contract",
+  "status": "failed",
+  "scope": "synthetic local PostgreSQL source ledger only; no real Storage or production authorization verification",
+  "sources": {
+    "experiments/t02-source-ledger/schema.sql": "cbe8c5a9bdda966d773990cbd09f27657e915bd7a0e534b043118b8223bd5193",
+    "experiments/t02-source-ledger/ledger.cjs": "8240665c26bafe86803364e65cd26ab4830fcd7f34783ddaf6c39c4b71fd1f36",
+    "experiments/t02-source-ledger/scenarios.cjs": "f46c4b775f394f9a98b1e80fe5d6c8b404ad0892486294b234d956e465a984c0",
+    "experiments/t02-source-ledger/verify.cjs": "77bff38aaf6c16d8f7abc9a098187f6ad5097cbdf4bb322f43096a81a7806699",
+    "experiments/t02-source-ledger/README.md": "0d3c102ef50101daa89566063a19f87a7724ea01a1348bb046fe2aebef974072",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e"
+  },
+  "checks": [
+    "pinned actual stories.images type",
+    "pinned actual stories.photo_urls type",
+    "pinned actual stories.title type",
+    "pinned actual stories.storyteller_id type",
+    "local client ignores ambient SSL and credentials",
+    "TCP disabled",
+    "real PostgreSQL source produces all nine positional observations",
+    "duplicate source versions return their original durable observations",
+    "database has exactly nine observations after duplicate collection"
+  ],
+  "lockEvidence": [],
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3",
+    "typescript": "5.9.3"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f"
+  },
+  "scratch": "/tmp/saga-t02-ledger-amTU57",
+  "error": {
+    "message": "verified exact fixture asset atomically creates a durable binding\n\nfalse !== true\n",
+    "code": "ERR_ASSERTION",
+    "actual": false,
+    "expected": true,
+    "stack": "AssertionError [ERR_ASSERTION]: verified exact fixture asset atomically creates a durable binding\n\nfalse !== true\n\n    at check (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:28:58)\n    at run (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/scenarios.cjs:63:3)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async main (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:83:3)"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:53:59.533Z"
+}

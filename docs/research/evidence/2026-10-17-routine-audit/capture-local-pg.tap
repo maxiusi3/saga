@@ -1,0 +1,16 @@
+TAP version 13
+# Subtest: real catalog SQL selects exact overloaded identities and reports missing/drift using synthetic definitions
+ok 1 - real catalog SQL selects exact overloaded identities and reports missing/drift using synthetic definitions
+  ---
+  duration_ms: 3750.691557
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3939.705997

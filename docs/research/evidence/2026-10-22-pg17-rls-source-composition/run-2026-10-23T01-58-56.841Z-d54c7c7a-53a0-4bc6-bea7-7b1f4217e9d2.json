@@ -1,0 +1,3166 @@
+{
+  "startedAt": "2026-10-23T01:58:56.839Z",
+  "status": "passed",
+  "mode": "composition",
+  "scope": "local synthetic PostgreSQL 17.4; no remote, provider, device or production operations",
+  "assertions": 997,
+  "actorConnections": [
+    {
+      "current_user": "saga_anon",
+      "session_user": "saga_anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "saga_authenticated",
+      "session_user": "saga_authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "entitlement_writer",
+      "session_user": "entitlement_writer",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "compatibility_RED_rls_projects_columns",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "compatibility_RED_rls_roles_columns",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "compatibility_RED_ledger_project_name",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "compatibility_RED_ledger_roles_columns",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "compatibility_RED_storage_partial_conflict_target",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "full_story_trigger_RED_and_business_columns_proof",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "complete_frozen_source_ledger_run",
+      "status": "passed",
+      "assertions": 236
+    },
+    {
+      "name": "ledger_actual_low_privilege_table_refusals",
+      "status": "passed",
+      "assertions": 22
+    },
+    {
+      "name": "rls_candidate_wrong_marker_and_transaction_rollback",
+      "status": "passed",
+      "assertions": 5
+    },
+    {
+      "name": "rls_candidate_reapplication",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "anonymous_cannot_read_audio",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "anonymous_with_subject_claim_still_denied",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "foreign_or_removed_audio_00000000-0000-4000-8000-000000000006",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "foreign_or_removed_audio_00000000-0000-4000-8000-000000000007",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "foreign_or_removed_audio_00000000-0000-4000-8000-000000000004",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "current_member_reads_both_buckets_00000000-0000-4000-8000-000000000001",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "current_member_reads_both_buckets_00000000-0000-4000-8000-000000000002",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "current_member_reads_both_buckets_00000000-0000-4000-8000-000000000003",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "removed_original_uploader_has_no_prefix_exception",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "path_like_project_name_cannot_grant_foreign_access",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "story_scoped_image_00000000-0000-4000-8000-000000000130",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "story_scoped_image_00000000-0000-4000-8000-000000000135",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "private_media_00000000-0000-4000-8000-000000000131",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "private_media_00000000-0000-4000-8000-000000000134",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "unrelated_bucket_policy_is_preserved",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "authorized_insert_audio-recordings_projects",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "authorized_insert_saga_images",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "authorized_insert_audio-recordings_temp",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "canonical_edge_whitespace_matches_ecmascript_trim",
+      "status": "passed",
+      "assertions": 200
+    },
+    {
+      "name": "interior_unicode_filename_remains_valid",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_1",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_2",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_3",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_4",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_5",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_6",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_7",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_8",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_9",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_10",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_11",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_12",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_13",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_14",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_15",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_16",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_17",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_18",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_19",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_20",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_21",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_22",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_23",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_24",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_25",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_26",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "invalid_or_unauthorized_key_27",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "object_owner_metadata_cannot_impersonate_another_user",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "owner_id_compatibility_still_requires_path_and_membership",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "managed_objects_cannot_be_overwritten_renamed_or_deleted",
+      "status": "passed",
+      "assertions": 22
+    },
+    {
+      "name": "unknown_permissive_policy_cannot_reopen_managed_access",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "name": "projects_and_role_queries_have_no_recursive_policy_error",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "story_reads_require_current_project_membership",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "story_insert_is_own_active_storyteller_only",
+      "status": "passed",
+      "assertions": 21
+    },
+    {
+      "name": "story_edit_does_not_transfer_project_or_creator",
+      "status": "passed",
+      "assertions": 18
+    },
+    {
+      "name": "raw_story_delete_stays_closed_until_tombstone_adapter",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "unexpected_story_policy_cannot_override_project_boundary",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "revocation_applies_on_next_read_committed_statement",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "old_repeatable_read_snapshot_is_not_instantly_revoked",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "fixed_security_definer_helpers_cannot_be_replaced_by_caller",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "combined_trusted_grant_accept_read_revoke_read_and_bind",
+      "status": "passed",
+      "assertions": 52
+    },
+    {
+      "name": "combined_retains_all_seven_RPC_and_wallet_member_bypass_denials",
+      "status": "passed",
+      "assertions": 29
+    }
+  ],
+  "observations": [
+    {
+      "name": "exact_snapshot_policy_graph",
+      "result": {
+        "code": "42P17"
+      },
+      "mode": "all 32 saved predicates with dependency RLS enabled"
+    },
+    {
+      "name": "isolated_audio_public_read",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_audio_cross_project_insert",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_removed_uploader_read",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_project_name_binding",
+      "mode": "dependency RLS disabled",
+      "ordinaryMemberRows": 0,
+      "crossProjectRows": 1
+    },
+    {
+      "name": "isolated_story_insert_or_branch",
+      "mode": "projects/roles/member RLS disabled",
+      "rows": 1
+    }
+  ],
+  "checks": [
+    "real PostgreSQL source produces all nine positional observations",
+    "duplicate source versions return their original durable observations",
+    "database has exactly nine observations after duplicate collection",
+    "verified exact fixture asset atomically creates a durable binding",
+    "binding was truly committed",
+    "repeated exact binding returns original ID",
+    "mapped source does not create assets or ready state",
+    "all anomalous array positions persist as unresolved",
+    "same basename preserves distinct exact keys",
+    "original media columns unchanged by observe and bind",
+    "changed sibling slot changes entire-field version for unchanged locator",
+    "changed source appends a linked conflict",
+    "old source payload remains immutable",
+    "old review conclusion remains intact",
+    "old bound observation still points at the original asset",
+    "new conflicting version inherits no prior binding",
+    "changed source cannot use an old reviewed observation",
+    "return to original source version reuses original identity",
+    "PostgreSQL canonical jsonb ignores object key insertion order",
+    "digest distinguishes SQL NULL array element from JSON null",
+    "digest retains array order",
+    "digest retains PostgreSQL array bounds beyond JSON projection",
+    "historical jsonb and actual jsonb[] remain distinct typed versions",
+    "fixture type experiment restores the exact source row",
+    "caller cannot supply sourceField to observation collection",
+    "caller cannot supply sourcePath to observation collection",
+    "caller cannot supply sourceDigest to observation collection",
+    "caller cannot supply locator to observation collection",
+    "caller cannot supply projectId to observation collection",
+    "caller cannot supply a binding locator",
+    "database unique source/version constraint prevents duplicate history",
+    "observation update is rejected even for the fixture owner",
+    "review deletion is rejected",
+    "binding update is rejected",
+    "binding deletion is rejected",
+    "binding history cannot be truncated",
+    "saga_anon cannot read source_observations",
+    "saga_anon cannot write source_observations",
+    "saga_anon cannot read source_reviews",
+    "saga_anon cannot write source_reviews",
+    "saga_anon cannot read source_bindings",
+    "saga_anon cannot write source_bindings",
+    "saga_anon cannot read fixture_assets",
+    "saga_anon cannot write fixture_assets",
+    "saga_anon cannot read fixture_verifications",
+    "saga_anon cannot write fixture_verifications",
+    "saga_authenticated cannot read source_observations",
+    "saga_authenticated cannot write source_observations",
+    "saga_authenticated cannot read source_reviews",
+    "saga_authenticated cannot write source_reviews",
+    "saga_authenticated cannot read source_bindings",
+    "saga_authenticated cannot write source_bindings",
+    "saga_authenticated cannot read fixture_assets",
+    "saga_authenticated cannot write fixture_assets",
+    "saga_authenticated cannot read fixture_verifications",
+    "saga_authenticated cannot write fixture_verifications",
+    "R1 scalar to null: previously observed path has a durable removed successor",
+    "R1 scalar to null: removal is explicit and has no locator",
+    "R1 scalar to null: removed path uses new whole-field typed snapshot",
+    "R1 scalar to null: successor links the prior observation",
+    "R1 scalar to null: repeated collection returns the same IDs",
+    "R1 scalar to null: repeated collection inserts no extra observations",
+    "R1 scalar to null: durable removed version is queryable from the ledger",
+    "R1 scalar to null: original observation is unchanged",
+    "R1 scalar to null: original review is unchanged",
+    "R1 scalar to null: original binding is unchanged",
+    "R1 scalar to null: removal cannot bind",
+    "R1 scalar to null: old mapped version cannot be rebound after removal",
+    "R1 scalar to null: removed successor has no inherited binding",
+    "R1 scalar to null: restoring the earlier source reuses its mapped identity",
+    "R1 text array to empty: previously observed path has a durable removed successor",
+    "R1 text array to empty: removal is explicit and has no locator",
+    "R1 text array to empty: removed path uses new whole-field typed snapshot",
+    "R1 text array to empty: successor links the prior observation",
+    "R1 text array to empty: repeated collection returns the same IDs",
+    "R1 text array to empty: repeated collection inserts no extra observations",
+    "R1 text array to empty: durable removed version is queryable from the ledger",
+    "R1 text array to empty: original observation is unchanged",
+    "R1 text array to empty: original review is unchanged",
+    "R1 text array to empty: original binding is unchanged",
+    "R1 text array to empty: removal cannot bind",
+    "R1 text array to empty: old mapped version cannot be rebound after removal",
+    "R1 text array to empty: removed successor has no inherited binding",
+    "R1 text array to empty: restoring the earlier source reuses its mapped identity",
+    "R1 text array to null: previously observed path has a durable removed successor",
+    "R1 text array to null: removal is explicit and has no locator",
+    "R1 text array to null: removed path uses new whole-field typed snapshot",
+    "R1 text array to null: successor links the prior observation",
+    "R1 text array to null: repeated collection returns the same IDs",
+    "R1 text array to null: repeated collection inserts no extra observations",
+    "R1 text array to null: durable removed version is queryable from the ledger",
+    "R1 text array to null: original observation is unchanged",
+    "R1 text array to null: original review is unchanged",
+    "R1 text array to null: original binding is unchanged",
+    "R1 text array to null: removal cannot bind",
+    "R1 text array to null: old mapped version cannot be rebound after removal",
+    "R1 text array to null: removed successor has no inherited binding",
+    "R1 text array to null: restoring the earlier source reuses its mapped identity",
+    "R1 jsonb array to empty: previously observed path has a durable removed successor",
+    "R1 jsonb array to empty: removal is explicit and has no locator",
+    "R1 jsonb array to empty: removed path uses new whole-field typed snapshot",
+    "R1 jsonb array to empty: successor links the prior observation",
+    "R1 jsonb array to empty: repeated collection returns the same IDs",
+    "R1 jsonb array to empty: repeated collection inserts no extra observations",
+    "R1 jsonb array to empty: durable removed version is queryable from the ledger",
+    "R1 jsonb array to empty: original observation is unchanged",
+    "R1 jsonb array to empty: original review is unchanged",
+    "R1 jsonb array to empty: original binding is unchanged",
+    "R1 jsonb array to empty: removal cannot bind",
+    "R1 jsonb array to empty: old mapped version cannot be rebound after removal",
+    "R1 jsonb array to empty: removed successor has no inherited binding",
+    "R1 jsonb array to empty: restoring the earlier source reuses its mapped identity",
+    "R1 jsonb array to null: previously observed path has a durable removed successor",
+    "R1 jsonb array to null: removal is explicit and has no locator",
+    "R1 jsonb array to null: removed path uses new whole-field typed snapshot",
+    "R1 jsonb array to null: successor links the prior observation",
+    "R1 jsonb array to null: repeated collection returns the same IDs",
+    "R1 jsonb array to null: repeated collection inserts no extra observations",
+    "R1 jsonb array to null: durable removed version is queryable from the ledger",
+    "R1 jsonb array to null: original observation is unchanged",
+    "R1 jsonb array to null: original review is unchanged",
+    "R1 jsonb array to null: original binding is unchanged",
+    "R1 jsonb array to null: removal cannot bind",
+    "R1 jsonb array to null: old mapped version cannot be rebound after removal",
+    "R1 jsonb array to null: removed successor has no inherited binding",
+    "R1 jsonb array to null: restoring the earlier source reuses its mapped identity",
+    "R1 array position removed: previously observed path has a durable removed successor",
+    "R1 array position removed: removal is explicit and has no locator",
+    "R1 array position removed: removed path uses new whole-field typed snapshot",
+    "R1 array position removed: successor links the prior observation",
+    "R1 array position removed: repeated collection returns the same IDs",
+    "R1 array position removed: repeated collection inserts no extra observations",
+    "R1 array position removed: durable removed version is queryable from the ledger",
+    "R1 array position removed: original observation is unchanged",
+    "R1 array position removed: original review is unchanged",
+    "R1 array position removed: original binding is unchanged",
+    "R1 array position removed: removal cannot bind",
+    "R1 array position removed: old mapped version cannot be rebound after removal",
+    "R1 array position removed: removed successor has no inherited binding",
+    "R1 array position removed: surviving source stays separately mapped",
+    "R1 array position removed: restoring the earlier source reuses its mapped identity",
+    "R1 nested image property removed: previously observed path has a durable removed successor",
+    "R1 nested image property removed: removal is explicit and has no locator",
+    "R1 nested image property removed: removed path uses new whole-field typed snapshot",
+    "R1 nested image property removed: successor links the prior observation",
+    "R1 nested image property removed: repeated collection returns the same IDs",
+    "R1 nested image property removed: repeated collection inserts no extra observations",
+    "R1 nested image property removed: durable removed version is queryable from the ledger",
+    "R1 nested image property removed: original observation is unchanged",
+    "R1 nested image property removed: original review is unchanged",
+    "R1 nested image property removed: original binding is unchanged",
+    "R1 nested image property removed: removal cannot bind",
+    "R1 nested image property removed: old mapped version cannot be rebound after removal",
+    "R1 nested image property removed: removed successor has no inherited binding",
+    "R1 nested image property removed: surviving source stays separately mapped",
+    "R1 nested image property removed: restoring the earlier source reuses its mapped identity",
+    "same locator in another family has a distinct durable source identity",
+    "same project and source path in another story remain distinct identities",
+    "other family member cannot observe this project",
+    "a second asset cannot replace an existing binding",
+    "database unique observation constraint prevents second-asset binding",
+    "verified asset from another project is rejected",
+    "cross-project failure leaves no partial binding",
+    "asset in same project but another story is rejected",
+    "thumbnail cannot replace an original image",
+    "different exact key is rejected",
+    "different exact bucket is rejected",
+    "missing explicit verification evidence is rejected",
+    "asset not ready is rejected",
+    "asset state deleting is rejected without a timestamp",
+    "asset state deleted is rejected without a timestamp",
+    "stale verification rejects changed version",
+    "stale verification rejects changed object_version",
+    "stale verification rejects changed byte_size",
+    "stale verification rejects changed sha256",
+    "ambiguous source cannot bind",
+    "unresolved source cannot bind",
+    "current project facilitator can bind without a membership row",
+    "source version changed during wait: server confirms row/transaction lock wait",
+    "source version changed during wait: current READ COMMITTED value is checked after waiting",
+    "source version changed during wait: rejection leaves no binding",
+    "story moved to another project during wait: server confirms row/transaction lock wait",
+    "story moved to another project during wait: current READ COMMITTED value is checked after waiting",
+    "story moved to another project during wait: rejection leaves no binding",
+    "asset version changed during wait: server confirms row/transaction lock wait",
+    "asset version changed during wait: current READ COMMITTED value is checked after waiting",
+    "asset version changed during wait: rejection leaves no binding",
+    "uploader membership revoked during wait: server confirms row/transaction lock wait",
+    "uploader membership revoked during wait: current READ COMMITTED value is checked after waiting",
+    "uploader membership revoked during wait: rejection leaves no binding",
+    "old uploader gains no access after revocation",
+    "captured nullable membership status fails closed",
+    "facilitator removed during wait: server confirms row/transaction lock wait",
+    "facilitator removed during wait: current READ COMMITTED value is checked after waiting",
+    "facilitator removed during wait: rejection leaves no binding",
+    "project tombstone during wait: server confirms row/transaction lock wait",
+    "project tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "project tombstone during wait: rejection leaves no binding",
+    "source tombstone during wait: server confirms row/transaction lock wait",
+    "source tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "source tombstone during wait: rejection leaves no binding",
+    "asset tombstone during wait: server confirms row/transaction lock wait",
+    "asset tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "asset tombstone during wait: rejection leaves no binding",
+    "concurrent duplicate observations: server confirms row/transaction lock wait",
+    "concurrent duplicate observations: server confirms row/transaction lock wait",
+    "concurrent source/version collectors return the same durable identities",
+    "concurrent identical binding: server confirms row/transaction lock wait",
+    "concurrent identical binding: server confirms row/transaction lock wait",
+    "concurrent identical bindings share one durable ID",
+    "concurrent identical bindings create exactly one record",
+    "concurrent conflicting asset binding: server confirms row/transaction lock wait",
+    "concurrent conflicting asset binding: server confirms row/transaction lock wait",
+    "concurrent differing assets produce one success and one explicit conflict",
+    "project lock held through COMMIT: server confirms row/transaction lock wait",
+    "source lock held through COMMIT: server confirms row/transaction lock wait",
+    "member lock held through COMMIT: server confirms row/transaction lock wait",
+    "asset lock held through COMMIT: server confirms row/transaction lock wait",
+    "protected binding commits before blocked changes",
+    "blocked mutations apply only after commit",
+    "real SQL error after INSERT rolls back binding",
+    "rollback leaves no partial binding",
+    "connection loss surfaces original failure",
+    "failed ROLLBACK is recorded without claiming it succeeded",
+    "PostgreSQL disconnect rollback removes uncommitted binding",
+    "committed but lost acknowledgement reports unknown",
+    "unknown COMMIT never issues compensating rollback",
+    "fresh connection reconciles durable observation and verification identity",
+    "unknown COMMIT preserved exactly one binding",
+    "retry after unknown COMMIT returns original durable binding",
+    "historical reconciliation remains durable after later source and asset versions change",
+    "reconciliation reports a different requested verification as a conflict",
+    "reconciliation distinguishes a known unbound observation",
+    "other family cannot reconcile a binding",
+    "stopping writes leaves observations and assets present",
+    "baseline source media row remains byte-equivalent after all collection/binding"
+  ],
+  "lockEvidence": [
+    {
+      "name": "source version changed during wait",
+      "pid": 32545,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32544
+      ],
+      "blocking_chain": [
+        32544
+      ],
+      "expectedBlocker": 32544
+    },
+    {
+      "name": "story moved to another project during wait",
+      "pid": 32547,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32546
+      ],
+      "blocking_chain": [
+        32546
+      ],
+      "expectedBlocker": 32546
+    },
+    {
+      "name": "asset version changed during wait",
+      "pid": 32549,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32548
+      ],
+      "blocking_chain": [
+        32548
+      ],
+      "expectedBlocker": 32548
+    },
+    {
+      "name": "uploader membership revoked during wait",
+      "pid": 32551,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32550
+      ],
+      "blocking_chain": [
+        32550
+      ],
+      "expectedBlocker": 32550
+    },
+    {
+      "name": "facilitator removed during wait",
+      "pid": 32553,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32552
+      ],
+      "blocking_chain": [
+        32552
+      ],
+      "expectedBlocker": 32552
+    },
+    {
+      "name": "project tombstone during wait",
+      "pid": 32555,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32554
+      ],
+      "blocking_chain": [
+        32554
+      ],
+      "expectedBlocker": 32554
+    },
+    {
+      "name": "source tombstone during wait",
+      "pid": 32557,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32556
+      ],
+      "blocking_chain": [
+        32556
+      ],
+      "expectedBlocker": 32556
+    },
+    {
+      "name": "asset tombstone during wait",
+      "pid": 32559,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32558
+      ],
+      "blocking_chain": [
+        32558
+      ],
+      "expectedBlocker": 32558
+    },
+    {
+      "name": "concurrent duplicate observations",
+      "pid": 32561,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32562
+      ],
+      "blocking_chain": [
+        32562,
+        32560
+      ],
+      "expectedBlocker": 32560
+    },
+    {
+      "name": "concurrent duplicate observations",
+      "pid": 32562,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32560
+      ],
+      "blocking_chain": [
+        32560
+      ],
+      "expectedBlocker": 32560
+    },
+    {
+      "name": "concurrent identical binding",
+      "pid": 32564,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32563
+      ],
+      "blocking_chain": [
+        32563
+      ],
+      "expectedBlocker": 32563
+    },
+    {
+      "name": "concurrent identical binding",
+      "pid": 32565,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32564
+      ],
+      "blocking_chain": [
+        32564,
+        32563
+      ],
+      "expectedBlocker": 32563
+    },
+    {
+      "name": "concurrent conflicting asset binding",
+      "pid": 32567,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32566
+      ],
+      "blocking_chain": [
+        32566
+      ],
+      "expectedBlocker": 32566
+    },
+    {
+      "name": "concurrent conflicting asset binding",
+      "pid": 32568,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32567
+      ],
+      "blocking_chain": [
+        32567,
+        32566
+      ],
+      "expectedBlocker": 32566
+    },
+    {
+      "name": "project lock held through COMMIT",
+      "pid": 32570,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32569
+      ],
+      "blocking_chain": [
+        32569
+      ],
+      "expectedBlocker": 32569
+    },
+    {
+      "name": "source lock held through COMMIT",
+      "pid": 32571,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32569
+      ],
+      "blocking_chain": [
+        32569
+      ],
+      "expectedBlocker": 32569
+    },
+    {
+      "name": "member lock held through COMMIT",
+      "pid": 32572,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32569
+      ],
+      "blocking_chain": [
+        32569
+      ],
+      "expectedBlocker": 32569
+    },
+    {
+      "name": "asset lock held through COMMIT",
+      "pid": 32573,
+      "wait_event_type": "Lock",
+      "blockers": [
+        32569
+      ],
+      "blocking_chain": [
+        32569
+      ],
+      "expectedBlocker": 32569
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [
+      "DATABASE_URL",
+      "PGDATABASE",
+      "PGHOST",
+      "PGHOSTADDR",
+      "PGOPTIONS",
+      "PGPASSFILE",
+      "PGPASSWORD",
+      "PGPORT",
+      "PGSERVICE",
+      "PGSERVICEFILE",
+      "PGSSLMODE",
+      "PGSSLROOTCERT",
+      "PGSYSCONFDIR",
+      "PGUSER"
+    ],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 32534,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-tX5QLu/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    },
+    "replayedDefinitions": 13
+  },
+  "phase": "same_fixture_rls_entitlement_invitation_management_ledger",
+  "inputPins": {
+    "path": "experiments/pg17-rls-source-composition/input-pins.json",
+    "sha256": "c730e281df0fde3b9f8069be60bd3fb8fccaa4c8402b1579923eab6993efd7a2"
+  },
+  "sources": {
+    "docs/research/evidence/2026-10-17-pg17-routines/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json": "e876b1f1ed636b57ac110ae515b6158373bc981fcb3bd2c2398c7561eb61275e",
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f",
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+    "experiments/pg17-access-guards/input-pins.json": "cd04c3a208cb38a334d782c4ab8b89ec8efb22728d51113408d7b3c5a00665e7",
+    "experiments/pg17-entitlement-events/README.md": "86a4cb97bcb658132c6d26b2e88269c61ce170bdac6b7a5d21def498a6f74bc5",
+    "experiments/pg17-entitlement-events/candidate.sql": "97045cd661e420d4b55f157a8667c0434ea11ea9a741bffcf2294583c5288300",
+    "experiments/pg17-entitlement-events/concurrency.mjs": "5a630fdb5b82557b681bc9a742ad39bb5b46bc7f71ebc40270963d23bfee60ca",
+    "experiments/pg17-entitlement-events/fixture.sql": "f4cf5dd583d0a1ffd572e9c36cf7ef7eee1783d7a167efdfb5bcea15b5bc6f4e",
+    "experiments/pg17-entitlement-events/input-files.mjs": "3ae445a633a64c7adc01b643abbbedb8bf6988f2d575d89d9f1704a14d45cff8",
+    "experiments/pg17-entitlement-events/input-pins.json": "af0f5c27bbd091462a17224039efbc3b113de844e57f05d8716a1ec1f3a53dea",
+    "experiments/pg17-entitlement-events/pin-inputs.mjs": "289156c6de9d546d94aed07ac87ebcf0107fb3db7c4d358f94c59d684edf41fe",
+    "experiments/pg17-entitlement-events/scenarios.mjs": "72e822106e3c658630e0673ee86a99d2d8d0c1022fc4e4543ba006cd7eea837b",
+    "experiments/pg17-entitlement-events/verify-lifecycle.mjs": "e0c0a716f4ee0d16a86ea15241ea6715046d15d3aacb80bc69d9cf8216c486e9",
+    "experiments/pg17-entitlement-events/verify.mjs": "fcfe03984500a3c372965af74bb216cac8c8ebd018cddc1bd258cb24e2d3265a",
+    "experiments/pg17-invitation-management/README.md": "b0cab9d09a2a7992d1526218dd25ab105c7692bdffb69938cf2fe47e92d7cee3",
+    "experiments/pg17-invitation-management/candidate.sql": "e2063af8a44dbbf045ec1c47aae210a7a070629c17c0702093e391b7150c8c9a",
+    "experiments/pg17-invitation-management/scenarios.mjs": "6dabb172500007151e934819e3605cb67d0672af833d293c15a5965d94e44bea",
+    "experiments/pg17-invitation-management/verify-lifecycle.mjs": "2221b6d5ece337b90a981fcb1d1c61ef3c2f57ac8253ad34d8824c8379c6dc5b",
+    "experiments/pg17-invitation-management/verify.mjs": "7849a2b701e50977546de64d46c03edf9b802e94b40b55ca6ad12f056a802eb2",
+    "experiments/pg17-invitation-transactions/candidate.sql": "0f5af3964f537387675f662209d2ebd1dce9745d548ab6886bb275b7d560f305",
+    "experiments/pg17-invitation-transactions/fixture.sql": "64c0dfb245fda01326480b14dfe33d38f6f14d7d8c4ac92a80f00bbbf6866f35",
+    "experiments/pg17-invitation-transactions/input-pins.json": "b26c44860db6d53d97fde1e8a5fb85673fee51953c3df71be27607e6dc81e982",
+    "experiments/pg17-invitation-transactions/scenarios.mjs": "dd35e03bc04004e272900c8d6ecebd4287ae6d914dac30d37b29f4ac223c9d5a",
+    "experiments/pg17-rls-source-composition/README.md": "ffceee1e2fd2709abd99c9f0d550769d174842f969f550a1ad43729e6eec6f12",
+    "experiments/pg17-rls-source-composition/compatibility.mjs": "090f25f614deb00ec67ed517d9271fd4190a8ebe22084a2cb7a702c3c0d0ab43",
+    "experiments/pg17-rls-source-composition/fixture.mjs": "636f51fbb2fbf5cb3345f981354965f01170262c2213c618c48299740fe73508",
+    "experiments/pg17-rls-source-composition/inputs.mjs": "cb38568f15cdd841eaf7ea0204dd2318ec7422069323f16317c9c5cf1930eed5",
+    "experiments/pg17-rls-source-composition/pin-inputs.mjs": "17ac9f0d902be26f3483db12c2fc2cdd3be92a8a181c4dcd95c859c5b60cdee1",
+    "experiments/pg17-rls-source-composition/scenarios.mjs": "af1dc140937c09a896366a55e7b8c13ddab853da4c4b339cb8ccc3452da4232b",
+    "experiments/pg17-rls-source-composition/verify-lifecycle.mjs": "6cc7dbb3925fc4839436668fefbf7b0ec0bf0493af394b06a66816e43744e84f",
+    "experiments/pg17-rls-source-composition/verify.mjs": "0089f2e2aefd890822c278245a5a7640f0db2e072ebd159957cc32fc1c5cb910",
+    "experiments/pg17-routines/candidate.sql": "23c158ed3dc530c9c8b35cfab8639903589bfaf74099acf2cf18b8bfe1050379",
+    "experiments/pg17-routines/fixture.sql": "f09cb35321cf38593eb173474f69c5b381e4d3a303f285ab42eaa6538f6ca6eb",
+    "experiments/pg17-routines/replay.mjs": "c937c2c82eb77231a73adf1ac4fb07ea3662585526b50b903c9cc330fac33f55",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/schema-manifest.json": "0c8c1f5a60ce8b3db3c0c2fdb9a9cef92ce421ddf75daad78535b8475ba9fae6",
+    "experiments/rls-rehearsal/README.md": "62712b43e2e702fc3225b636e21680161c1545a31cde1f4b678c409bd92b96ec",
+    "experiments/rls-rehearsal/candidate.sql": "4fbb8a4449c27b8f19dee2a173fcf8f03c945b5a6949f5e3c9a752e3c496164b",
+    "experiments/rls-rehearsal/fixture.sql": "d70b14d3f789f10fcf3f37c40767b0e877fbb5f6851cf83ef41d01d625e9f550",
+    "experiments/rls-rehearsal/scenarios.mjs": "029af8de89675f3f90d6b4b201b25a911b969e4f4229f9e52074b726d6a83c91",
+    "experiments/rls-rehearsal/verify-shutdown.mjs": "b643a37aca55fd05d8cd4415be425a7e6d809eb012d6debc667fcaa559b551d8",
+    "experiments/rls-rehearsal/verify.mjs": "2131ef7c1ac40669b1c12c5868c5f28eb5873a1e12634d9a6e514fd0964e4c70",
+    "experiments/t02-source-ledger/README.md": "20850528dbdfb08d85d1d6029761324d1005b15e638b6a940454721ff25740d2",
+    "experiments/t02-source-ledger/ledger.cjs": "a9d5ea5b52252897a4952bd2e48e24ab33f814490e42db74b3c040de11d7a63e",
+    "experiments/t02-source-ledger/scenarios.cjs": "0558af3fd7421b0808f2dc1e49c2e51ddf1923ee94e9a15d48d76e5fe1eb6518",
+    "experiments/t02-source-ledger/schema.sql": "1ee41a18d58a45b07ffef264534f8dca94d02757a0381883606b49b2c67323a4",
+    "experiments/t02-source-ledger/verify.cjs": "2812de7790a5fad62bfac32e1ef85ff2121b4b0200a5b02af547a57e7d113749",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e",
+    "supabase/.temp/routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+    "supabase/.temp/routine-audit/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json": "45ec35ec3f9bf45741705d9fd2c7ce09953683e342dbe313fe7e482cb20067e5"
+  },
+  "dependencyClosure": {
+    "files": 49,
+    "sha256": "be651e3b8291b576e3033ce912eb440d642a2522b45e3ccdc3e42ca60b321c8b",
+    "verified": true
+  },
+  "runtimeClosure": {
+    "files": 743,
+    "sha256": "2bb791048e95680456a1e55b9b6bb47f8281fcf274b9cc0821137a2f905462ff",
+    "verified": true,
+    "systemLibraries": "ambient macOS libSystem/kernel not byte pinned"
+  },
+  "capture": [
+    {
+      "publicPath": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+      "publicSha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+      "privateSha256": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+      "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+    },
+    {
+      "publicPath": "docs/research/evidence/2026-10-17-pg17-routines/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json",
+      "publicSha256": "e876b1f1ed636b57ac110ae515b6158373bc981fcb3bd2c2398c7561eb61275e",
+      "privateSha256": "45ec35ec3f9bf45741705d9fd2c7ce09953683e342dbe313fe7e482cb20067e5",
+      "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+    }
+  ],
+  "schema": {
+    "counts": {
+      "tables": 7,
+      "columns": 70,
+      "constraints": 34,
+      "triggers": 3,
+      "indexes": 34
+    },
+    "differences": [
+      "auth.users has only synthetic id primary key; auth.uid reads a local session GUC and does not verify JWT.",
+      "extensions.uuid_generate_v4 is a local SQL shim to pg_catalog.gen_random_uuid; original extension runtime omitted.",
+      "Objects owned by a private nonlogin non-superuser fixture_owner instead of production postgres.",
+      "RLS enabled and not forced as captured; production policies omitted and caller table grants revoked. This is stricter than production and does not validate its direct-table authorization.",
+      "Only seven relevant public tables and three captured trigger bindings; other public/auth/storage objects and external workers omitted.",
+      "Four independent caller login roles, no inheritance or bypass. Actual Supabase/PostgREST role inheritance, claims verification and service bypass not reproduced.",
+      "No rules/extension hooks/remote data; native upstream PostgreSQL 17.4 is not complete Supabase."
+    ],
+    "constraintDifferences": [
+      {
+        "actual": {
+          "schema_name": "public",
+          "table_name": "notifications",
+          "constraint_name": "notifications_type_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((type)::text = ANY (ARRAY[('new_story'::character varying)::text, ('new_comment'::character varying)::text, ('new_follow_up_question'::character varying)::text, ('story_response'::character varying)::text, ('project_invitation'::character varying)::text, ('member_joined'::character varying)::text, ('chapter_completed'::character varying)::text, ('export_ready'::character varying)::text])))"
+        },
+        "expected": {
+          "schema_name": "public",
+          "table_name": "notifications",
+          "constraint_name": "notifications_type_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((type)::text = ANY ((ARRAY['new_story'::character varying, 'new_comment'::character varying, 'new_follow_up_question'::character varying, 'story_response'::character varying, 'project_invitation'::character varying, 'member_joined'::character varying, 'chapter_completed'::character varying, 'export_ready'::character varying])::text[])))"
+        }
+      },
+      {
+        "actual": {
+          "schema_name": "public",
+          "table_name": "project_members",
+          "constraint_name": "project_members_role_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((role)::text = ANY (ARRAY[('facilitator'::character varying)::text, ('storyteller'::character varying)::text])))"
+        },
+        "expected": {
+          "schema_name": "public",
+          "table_name": "project_members",
+          "constraint_name": "project_members_role_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((role)::text = ANY ((ARRAY['facilitator'::character varying, 'storyteller'::character varying])::text[])))"
+        }
+      }
+    ],
+    "actualCatalogMatched": true
+  },
+  "replay": [
+    {
+      "id": "F01",
+      "name": "accept_project_invitation",
+      "identityArguments": "p_invitation_id uuid, p_user_id uuid",
+      "md5": "638c776a2a70d1cddd47055c583e1abd",
+      "sha256": "f1dd6fcb4bdeee50612ce8f587319bb5cee37ccac091ecafa5e9a01845cd563d",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F02",
+      "name": "cleanup_expired_invitations",
+      "identityArguments": "",
+      "md5": "84e83304fb503123d44f16e9fc18cb31",
+      "sha256": "106cde429e924524639d645f102172b06097ea36f720823c3edf0b51ce66181d",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F03",
+      "name": "create_checkout_session",
+      "identityArguments": "user_email text, user_id uuid, project_title text",
+      "md5": "cc86b4d0449681833037c4a5c49c79a6",
+      "sha256": "fb443cdcf6bc5784892fbb28f3d87876b4b28dba0ebd0466f1a907d2708a96bd",
+      "approvedRelations": [],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F04",
+      "name": "create_project_with_role",
+      "identityArguments": "project_name text, project_description text, facilitator_id uuid, creator_role text",
+      "md5": "a9ae4c08fe1027490af42b4943c70113",
+      "sha256": "a544a3455c60f0ea966558a6be0a6006f4ebf5940268ca8a17b1640c6cc79d75",
+      "approvedRelations": [
+        "projects",
+        "project_roles",
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F05",
+      "name": "get_unread_notification_count",
+      "identityArguments": "user_id uuid",
+      "md5": "0b7d901de660b8805848cc9951a3a8fc",
+      "sha256": "e02ae936f2f179a8a7beae8cd92eb41cd43fcce568c56133b42ef2cdf2e7460a",
+      "approvedRelations": [
+        "notifications"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F06",
+      "name": "initialize_user_wallet",
+      "identityArguments": "p_user_id uuid",
+      "md5": "bf1912760ae1eeb5ad2f534522b441bb",
+      "sha256": "b47697b80c2ab6e08e59d71d09036b3d93b8900f34273f8abec4974a74ad7f75",
+      "approvedRelations": [
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F07",
+      "name": "mark_notifications_as_read",
+      "identityArguments": "user_id uuid, notification_ids uuid[]",
+      "md5": "38d9f9ae6c7efc989c81a1802eff4a65",
+      "sha256": "ee583da55c990eb98b93afbe8fdade646ec504f2387bc59b0f030a3474663ed4",
+      "approvedRelations": [
+        "notifications"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F08",
+      "name": "process_package_purchase",
+      "identityArguments": "p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text",
+      "md5": "d3b557cfc133eaef1d2c31a4877f46a7",
+      "sha256": "e11c607e28af8c4c0d581f74b7d18db67595df3e77ab322563886d005020a6e1",
+      "approvedRelations": [
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F09",
+      "name": "process_package_purchase",
+      "identityArguments": "package_id text, payment_intent_id text, user_id uuid",
+      "md5": "a18c3ebea702558e8f4e9a67811a3fc3",
+      "sha256": "05b7ffea9610c49ff0c5e2b27e771fbc312fc772e0ee049aa4161e1014a2593e",
+      "approvedRelations": [
+        "user_resource_wallets",
+        "seat_transactions"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F10",
+      "name": "request_data_export",
+      "identityArguments": "p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean",
+      "md5": "9199018230b9e447414fe18d89cda98a",
+      "sha256": "856e6043496dc68f1cf15a79557a4b9d23fc4a213d2ab85d90ba3765a750c131",
+      "approvedRelations": [
+        "project_members",
+        "projects"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F11",
+      "name": "request_data_export",
+      "identityArguments": "project_id uuid, user_id uuid, export_options jsonb",
+      "md5": "84ccf96f336d775446fb11369a68c3c7",
+      "sha256": "c73c9da4c9217b83bf654a2faa52c11ca7de1c40298284ffdeb8b24506941b6a",
+      "approvedRelations": [
+        "project_roles",
+        "export_requests"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F12",
+      "name": "send_project_invitation",
+      "identityArguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+      "md5": "ab14eb2828efb74945e3de7cf4039472",
+      "sha256": "9f818ef44dc6f1b98a68371d6628f32dee0277893af502b1406c6326b429d971",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "T01",
+      "name": "update_updated_at_column",
+      "identityArguments": "",
+      "md5": "3bfa5e64985d89e65932564c89520d5b",
+      "sha256": "7df724556927ccb4789c4c22e0d78a874adfefce676fddd5c442b614a7aa52f0",
+      "approvedRelations": [],
+      "review": "pg17-routines/trigger-semantic-review.md"
+    }
+  ],
+  "scratch": "/tmp/saga-pg17-tX5QLu",
+  "fixture": {
+    "snapshotPath": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+    "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "selected": {
+      "tables": [
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "relkind": "r",
+          "rls_enabled": true,
+          "rls_forced": false,
+          "owner": "postgres"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "relkind": "r",
+          "rls_enabled": true,
+          "rls_forced": false,
+          "owner": "supabase_storage_admin"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "relkind": "r",
+          "rls_enabled": true,
+          "rls_forced": false,
+          "owner": "supabase_storage_admin"
+        }
+      ],
+      "columns": [
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "id",
+          "ordinal_position": 1,
+          "data_type": "uuid",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": "gen_random_uuid()"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "project_id",
+          "ordinal_position": 2,
+          "data_type": "uuid",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "storyteller_id",
+          "ordinal_position": 3,
+          "data_type": "uuid",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "title",
+          "ordinal_position": 4,
+          "data_type": "text",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "content",
+          "ordinal_position": 5,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "audio_url",
+          "ordinal_position": 6,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "audio_duration",
+          "ordinal_position": 7,
+          "data_type": "integer",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "transcript",
+          "ordinal_position": 8,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "ai_prompt",
+          "ordinal_position": 9,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "photo_urls",
+          "ordinal_position": 10,
+          "data_type": "text[]",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "status",
+          "ordinal_position": 11,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "'draft'::text"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "metadata",
+          "ordinal_position": 12,
+          "data_type": "jsonb",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "'{}'::jsonb"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "created_at",
+          "ordinal_position": 13,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "now()"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "updated_at",
+          "ordinal_position": 14,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "now()"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "ai_generated_title",
+          "ordinal_position": 15,
+          "data_type": "character varying(255)",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "ai_summary",
+          "ordinal_position": 16,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "ai_follow_up_questions",
+          "ordinal_position": 17,
+          "data_type": "jsonb",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "ai_confidence_score",
+          "ordinal_position": 18,
+          "data_type": "numeric(3,2)",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "has_multiple_transcripts",
+          "ordinal_position": 19,
+          "data_type": "boolean",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "false"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "transcript_count",
+          "ordinal_position": 20,
+          "data_type": "integer",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "1"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "parent_story_id",
+          "ordinal_position": 21,
+          "data_type": "uuid",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "images",
+          "ordinal_position": 22,
+          "data_type": "jsonb[]",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "segments",
+          "ordinal_position": 23,
+          "data_type": "jsonb",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "happened_at",
+          "ordinal_position": 24,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "recording_mode",
+          "ordinal_position": 25,
+          "data_type": "character varying(255)",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "'deep_dive'::character varying"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "is_public",
+          "ordinal_position": 26,
+          "data_type": "boolean",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "false"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "mastered_audio_url",
+          "ordinal_position": 27,
+          "data_type": "character varying(255)",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "user_id",
+          "ordinal_position": 28,
+          "data_type": "uuid",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "photo_url",
+          "ordinal_position": 29,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "chapter_id",
+          "ordinal_position": 30,
+          "data_type": "uuid",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "prompt_id",
+          "ordinal_position": 31,
+          "data_type": "uuid",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "duration",
+          "ordinal_position": 32,
+          "data_type": "integer",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "file_size",
+          "ordinal_position": 33,
+          "data_type": "bigint",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "column_name": "stt_metadata",
+          "ordinal_position": 34,
+          "data_type": "jsonb",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "id",
+          "ordinal_position": 1,
+          "data_type": "text",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "name",
+          "ordinal_position": 2,
+          "data_type": "text",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "owner",
+          "ordinal_position": 3,
+          "data_type": "uuid",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "created_at",
+          "ordinal_position": 4,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "now()"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "updated_at",
+          "ordinal_position": 5,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "now()"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "public",
+          "ordinal_position": 6,
+          "data_type": "boolean",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "false"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "avif_autodetection",
+          "ordinal_position": 7,
+          "data_type": "boolean",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "false"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "file_size_limit",
+          "ordinal_position": 8,
+          "data_type": "bigint",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "allowed_mime_types",
+          "ordinal_position": 9,
+          "data_type": "text[]",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "owner_id",
+          "ordinal_position": 10,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "type",
+          "ordinal_position": 11,
+          "data_type": "storage.buckettype",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": "'STANDARD'::storage.buckettype"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "versioning_status",
+          "ordinal_position": 12,
+          "data_type": "text",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": "'DISABLED'::text"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "lifecycle_configuration",
+          "ordinal_position": 13,
+          "data_type": "jsonb",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "column_name": "lifecycle_configuration_generation",
+          "ordinal_position": 14,
+          "data_type": "uuid",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "id",
+          "ordinal_position": 1,
+          "data_type": "uuid",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": "gen_random_uuid()"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "bucket_id",
+          "ordinal_position": 2,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "name",
+          "ordinal_position": 3,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "owner",
+          "ordinal_position": 4,
+          "data_type": "uuid",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "created_at",
+          "ordinal_position": 5,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "now()"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "updated_at",
+          "ordinal_position": 6,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "now()"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "last_accessed_at",
+          "ordinal_position": 7,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": "now()"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "metadata",
+          "ordinal_position": 8,
+          "data_type": "jsonb",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "path_tokens",
+          "ordinal_position": 9,
+          "data_type": "text[]",
+          "not_null": false,
+          "identity": "",
+          "generated": "s",
+          "default_expression": "string_to_array(name, '/'::text)"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "version",
+          "ordinal_position": 10,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "owner_id",
+          "ordinal_position": 11,
+          "data_type": "text",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "user_metadata",
+          "ordinal_position": 12,
+          "data_type": "jsonb",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "archived_at",
+          "ordinal_position": 14,
+          "data_type": "timestamp with time zone",
+          "not_null": false,
+          "identity": "",
+          "generated": "",
+          "default_expression": null
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "is_delete_marker",
+          "ordinal_position": 15,
+          "data_type": "boolean",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": "false"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "column_name": "is_versioned",
+          "ordinal_position": 16,
+          "data_type": "boolean",
+          "not_null": true,
+          "identity": "",
+          "generated": "",
+          "default_expression": "false"
+        }
+      ],
+      "constraints": [
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "constraint_name": "stories_parent_story_id_fkey",
+          "constraint_type": "f",
+          "validated": true,
+          "definition": "FOREIGN KEY (parent_story_id) REFERENCES stories(id) ON DELETE SET NULL"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "constraint_name": "stories_pkey",
+          "constraint_type": "p",
+          "validated": true,
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "constraint_name": "stories_project_id_fkey",
+          "constraint_type": "f",
+          "validated": true,
+          "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "constraint_name": "stories_storyteller_id_fkey",
+          "constraint_type": "f",
+          "validated": true,
+          "definition": "FOREIGN KEY (storyteller_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "constraint_name": "buckets_lifecycle_configuration_pair_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((lifecycle_configuration IS NULL) = (lifecycle_configuration_generation IS NULL)))"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "constraint_name": "buckets_lifecycle_configuration_shape_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((lifecycle_configuration IS NULL) OR ((jsonb_typeof(lifecycle_configuration) = 'object'::text) AND (lifecycle_configuration ? 'rules'::text) AND\nCASE\n    WHEN (jsonb_typeof((lifecycle_configuration -> 'rules'::text)) = 'array'::text) THEN ((jsonb_array_length((lifecycle_configuration -> 'rules'::text)) >= 1) AND (jsonb_array_length((lifecycle_configuration -> 'rules'::text)) <= 1000))\n    ELSE false\nEND)))"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "constraint_name": "buckets_lifecycle_configuration_standard_only_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((type = 'STANDARD'::storage.buckettype) OR ((lifecycle_configuration IS NULL) AND (lifecycle_configuration_generation IS NULL))))"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "constraint_name": "buckets_pkey",
+          "constraint_type": "p",
+          "validated": true,
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "constraint_name": "buckets_versioning_dark_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK ((versioning_status = 'DISABLED'::text))"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "constraint_name": "buckets_versioning_standard_only_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((type = 'STANDARD'::storage.buckettype) OR (versioning_status = 'DISABLED'::text)))"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "constraint_name": "buckets_versioning_status_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK ((versioning_status = ANY (ARRAY['DISABLED'::text, 'ENABLED'::text, 'SUSPENDED'::text])))"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "constraint_name": "objects_bucketId_fkey",
+          "constraint_type": "f",
+          "validated": true,
+          "definition": "FOREIGN KEY (bucket_id) REFERENCES storage.buckets(id)"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "constraint_name": "objects_pkey",
+          "constraint_type": "p",
+          "validated": true,
+          "definition": "PRIMARY KEY (id)"
+        }
+      ],
+      "indexes": [
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "idx_stories_ai_confidence",
+          "indexdef": "CREATE INDEX idx_stories_ai_confidence ON public.stories USING btree (ai_confidence_score)"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "idx_stories_content",
+          "indexdef": "CREATE INDEX idx_stories_content ON public.stories USING gin (to_tsvector('english'::regconfig, content))"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "idx_stories_created_at",
+          "indexdef": "CREATE INDEX idx_stories_created_at ON public.stories USING btree (created_at)"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "idx_stories_parent_story_id",
+          "indexdef": "CREATE INDEX idx_stories_parent_story_id ON public.stories USING btree (parent_story_id)"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "idx_stories_project",
+          "indexdef": "CREATE INDEX idx_stories_project ON public.stories USING btree (project_id)"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "idx_stories_status",
+          "indexdef": "CREATE INDEX idx_stories_status ON public.stories USING btree (status)"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "idx_stories_storyteller",
+          "indexdef": "CREATE INDEX idx_stories_storyteller ON public.stories USING btree (storyteller_id)"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "stories_pkey",
+          "indexdef": "CREATE UNIQUE INDEX stories_pkey ON public.stories USING btree (id)"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "stories_project_id_idx",
+          "indexdef": "CREATE INDEX stories_project_id_idx ON public.stories USING btree (project_id)"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "stories",
+          "indexname": "stories_user_id_idx",
+          "indexdef": "CREATE INDEX stories_user_id_idx ON public.stories USING btree (user_id)"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "buckets",
+          "indexname": "bname",
+          "indexdef": "CREATE UNIQUE INDEX bname ON storage.buckets USING btree (name)"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "buckets",
+          "indexname": "buckets_pkey",
+          "indexdef": "CREATE UNIQUE INDEX buckets_pkey ON storage.buckets USING btree (id)"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "objects",
+          "indexname": "idx_objects_bucket_id_name",
+          "indexdef": "CREATE INDEX idx_objects_bucket_id_name ON storage.objects USING btree (bucket_id, name COLLATE \"C\")"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "objects",
+          "indexname": "idx_objects_bucket_id_name_lower",
+          "indexdef": "CREATE INDEX idx_objects_bucket_id_name_lower ON storage.objects USING btree (bucket_id, lower(name) COLLATE \"C\")"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "objects",
+          "indexname": "idx_objects_current_version",
+          "indexdef": "CREATE UNIQUE INDEX idx_objects_current_version ON storage.objects USING btree (bucket_id, name COLLATE \"C\") WHERE (archived_at IS NULL)"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "objects",
+          "indexname": "idx_objects_delete_markers",
+          "indexdef": "CREATE INDEX idx_objects_delete_markers ON storage.objects USING btree (bucket_id, name COLLATE \"C\") WHERE is_delete_marker"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "objects",
+          "indexname": "idx_objects_null_version",
+          "indexdef": "CREATE UNIQUE INDEX idx_objects_null_version ON storage.objects USING btree (bucket_id, name COLLATE \"C\") WHERE (NOT is_versioned)"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "objects",
+          "indexname": "name_prefix_search",
+          "indexdef": "CREATE INDEX name_prefix_search ON storage.objects USING btree (name text_pattern_ops)"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "objects",
+          "indexname": "objects_bucket_id_name_version_key",
+          "indexdef": "CREATE UNIQUE INDEX objects_bucket_id_name_version_key ON storage.objects USING btree (bucket_id, name COLLATE \"C\", version) NULLS NOT DISTINCT"
+        },
+        {
+          "schemaname": "storage",
+          "tablename": "objects",
+          "indexname": "objects_pkey",
+          "indexdef": "CREATE UNIQUE INDEX objects_pkey ON storage.objects USING btree (id)"
+        }
+      ],
+      "triggers": [
+        {
+          "schema_name": "public",
+          "table_name": "stories",
+          "trigger_name": "update_stories_updated_at",
+          "enabled": "O",
+          "type_bitmask": 19,
+          "function_schema": "public",
+          "function_name": "update_updated_at_column",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 0,
+          "condition_present": false,
+          "definition_hash_md5": "0ff2242bcbe8e5314418e71b16edda3d"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "trigger_name": "enforce_bucket_name_length_trigger",
+          "enabled": "O",
+          "type_bitmask": 23,
+          "function_schema": "storage",
+          "function_name": "enforce_bucket_name_length",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 0,
+          "condition_present": false,
+          "definition_hash_md5": "7774f4b5e39e4ad07a16a589aef6277c"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "trigger_name": "protect_bucket_control_insert",
+          "enabled": "O",
+          "type_bitmask": 7,
+          "function_schema": "storage",
+          "function_name": "protect_bucket_control_columns",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 1,
+          "condition_present": false,
+          "definition_hash_md5": "5c2f86adf97481d45808f2ed4eb4673b"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "trigger_name": "protect_bucket_control_update",
+          "enabled": "O",
+          "type_bitmask": 19,
+          "function_schema": "storage",
+          "function_name": "protect_bucket_control_columns",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 0,
+          "condition_present": false,
+          "definition_hash_md5": "ae169c5f8d35b69020459ddddbe65d7e"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "trigger_name": "protect_bucket_control_update_role",
+          "enabled": "O",
+          "type_bitmask": 17,
+          "function_schema": "storage",
+          "function_name": "enforce_bucket_lifecycle_service_role",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 1,
+          "condition_present": false,
+          "definition_hash_md5": "34d64d2c71ac2a26720ae99bd0da100b"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "buckets",
+          "trigger_name": "protect_buckets_delete",
+          "enabled": "O",
+          "type_bitmask": 10,
+          "function_schema": "storage",
+          "function_name": "protect_delete",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 0,
+          "condition_present": false,
+          "definition_hash_md5": "50288cfc0da92cd8f2f573c018c16382"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "trigger_name": "protect_objects_delete",
+          "enabled": "O",
+          "type_bitmask": 10,
+          "function_schema": "storage",
+          "function_name": "protect_delete",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 0,
+          "condition_present": false,
+          "definition_hash_md5": "45c5692d486583888bac16ef789d847f"
+        },
+        {
+          "schema_name": "storage",
+          "table_name": "objects",
+          "trigger_name": "update_objects_updated_at",
+          "enabled": "O",
+          "type_bitmask": 19,
+          "function_schema": "storage",
+          "function_name": "update_updated_at_column",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 0,
+          "condition_present": false,
+          "definition_hash_md5": "7457963f6a733c584baf08e4e7a451d0"
+        }
+      ]
+    },
+    "omissions": [
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "enforce_bucket_name_length_trigger",
+        "enabled": "O",
+        "type_bitmask": 23,
+        "function_schema": "storage",
+        "function_name": "enforce_bucket_name_length",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 0,
+        "condition_present": false,
+        "definition_hash_md5": "7774f4b5e39e4ad07a16a589aef6277c"
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_insert",
+        "enabled": "O",
+        "type_bitmask": 7,
+        "function_schema": "storage",
+        "function_name": "protect_bucket_control_columns",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 1,
+        "condition_present": false,
+        "definition_hash_md5": "5c2f86adf97481d45808f2ed4eb4673b"
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_update",
+        "enabled": "O",
+        "type_bitmask": 19,
+        "function_schema": "storage",
+        "function_name": "protect_bucket_control_columns",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 0,
+        "condition_present": false,
+        "definition_hash_md5": "ae169c5f8d35b69020459ddddbe65d7e"
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_update_role",
+        "enabled": "O",
+        "type_bitmask": 17,
+        "function_schema": "storage",
+        "function_name": "enforce_bucket_lifecycle_service_role",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 1,
+        "condition_present": false,
+        "definition_hash_md5": "34d64d2c71ac2a26720ae99bd0da100b"
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_buckets_delete",
+        "enabled": "O",
+        "type_bitmask": 10,
+        "function_schema": "storage",
+        "function_name": "protect_delete",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 0,
+        "condition_present": false,
+        "definition_hash_md5": "50288cfc0da92cd8f2f573c018c16382"
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "objects",
+        "trigger_name": "protect_objects_delete",
+        "enabled": "O",
+        "type_bitmask": 10,
+        "function_schema": "storage",
+        "function_name": "protect_delete",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 0,
+        "condition_present": false,
+        "definition_hash_md5": "45c5692d486583888bac16ef789d847f"
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "objects",
+        "trigger_name": "update_objects_updated_at",
+        "enabled": "O",
+        "type_bitmask": 19,
+        "function_schema": "storage",
+        "function_name": "update_updated_at_column",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 0,
+        "condition_present": false,
+        "definition_hash_md5": "7457963f6a733c584baf08e4e7a451d0"
+      }
+    ],
+    "differences": [
+      "Synthetic auth.users and request GUC identity; no Auth/JWT/PostgREST validation.",
+      "storage.buckettype is a local enum containing only observed STANDARD; complete enum labels were not captured.",
+      "Seven Storage trigger bindings are deliberately omitted because reviewed function bodies were not captured; no guessed behavior.",
+      "storage.foldername is the disclosed old RLS local SQL shim; Storage HTTP and service role inheritance are not reproduced.",
+      "Storage object ordinal 13 is preserved by creating then dropping an inert text placeholder.",
+      "Owners are local fixture_owner, not production postgres or supabase_storage_admin.",
+      "Synthetic project/story deleted_at and all t02 asset, verification, observation and binding tables are test-only.",
+      "Historical ledger source-project mutation races run before the RLS immutable-story trigger is installed. All final integration checks run with that trigger and candidate RLS active."
+    ],
+    "actualCatalogMatched": true
+  },
+  "compatibility": [
+    {
+      "id": "rls_projects_columns",
+      "from": "INSERT INTO public.projects VALUES ($1,$2,$3),($4,$5,$6)",
+      "to": "INSERT INTO public.projects(id,name,facilitator_id) VALUES ($1,$2,$3),($4,$5,$6)",
+      "fromSha256": "07daa08de900ea47993b240892a9ae0d080b3b72fe2c23ac0be24b2ec7da20a8",
+      "toSha256": "147859317d7ce49c43916c406e30aeb980cb5bd13ee90ccfea0bced7eae23f66",
+      "sourceOccurrences": 1,
+      "uses": 1
+    },
+    {
+      "id": "rls_roles_columns",
+      "from": "INSERT INTO public.project_roles VALUES ($1,$2,$3,$4,$5)",
+      "to": "INSERT INTO public.project_roles(id,project_id,user_id,role,status) VALUES ($1,$2,$3,$4,$5)",
+      "fromSha256": "8ebf80cc28490bf6adf38da69c1e1fba0cfbec5186e7f0525e62a71e00579730",
+      "toSha256": "5b83c4b62b6edbfafb9a88f84f306386757420d3d8e4f6dabecfb353dbf7187e",
+      "sourceOccurrences": 2,
+      "uses": 7
+    },
+    {
+      "id": "ledger_project_name",
+      "from": "INSERT INTO projects(id,facilitator_id) VALUES ($1,$3),($2,$4)",
+      "to": "INSERT INTO projects(id,facilitator_id,name) VALUES ($1,$3,'Synthetic A'),($2,$4,'Synthetic B')",
+      "fromSha256": "bd68da46904ab542bc8cc1af6d158eb4a4267d4300f3e2e872a82affffd80553",
+      "toSha256": "6b67c42e1a534890cfab63b33f98ce37e3d48edcae1ddf5d3934a0be05d39aaf",
+      "sourceOccurrences": 1,
+      "uses": 1
+    },
+    {
+      "id": "ledger_roles_columns",
+      "from": "INSERT INTO project_roles VALUES\n    ('40000000-0000-4000-8000-000000000001',$1,$2,'storyteller','active'),\n    ('40000000-0000-4000-8000-000000000002',$3,$4,'storyteller','active')",
+      "to": "INSERT INTO project_roles(id,project_id,user_id,role,status) VALUES\n    ('40000000-0000-4000-8000-000000000001',$1,$2,'storyteller','active'),\n    ('40000000-0000-4000-8000-000000000002',$3,$4,'storyteller','active')",
+      "fromSha256": "0700f2970969496ff4adf6574ccc495e579b979919b1c9cb36644f0e25a06b54",
+      "toSha256": "f1d0b84115abb70d95d856620ebbadc6391565e6e23973abd6128b5691805e6b",
+      "sourceOccurrences": 1,
+      "uses": 1
+    },
+    {
+      "id": "story_hash_excludes_only_updated_at",
+      "from": "SELECT md5(row_to_json(s)::text) AS hash FROM stories s WHERE id=$1",
+      "to": "SELECT md5((to_jsonb(s)-'updated_at')::text) AS hash FROM stories s WHERE id=$1",
+      "fromSha256": "cb9b817bac4078c1f87e3b09302e51659f1f5ad41b9c690071c8d013c6bd6db0",
+      "toSha256": "ed513b0e3e75b5ef7865df4759eb5f5f7de601d3e7802f0240a4798805af9010",
+      "sourceOccurrences": 1,
+      "uses": 4
+    },
+    {
+      "id": "storage_partial_conflict_target",
+      "from": "INSERT INTO storage.objects(id,bucket_id,name,owner,metadata) VALUES ($1,$2,$3,$4,'{}') ON CONFLICT(bucket_id,name) DO UPDATE SET metadata='{}' RETURNING id",
+      "to": "INSERT INTO storage.objects(id,bucket_id,name,owner,metadata) VALUES ($1,$2,$3,$4,'{}') ON CONFLICT(bucket_id,name COLLATE \"C\") WHERE archived_at IS NULL DO UPDATE SET metadata='{}' RETURNING id",
+      "fromSha256": "1c1fe7f80cfd5f18e2bf51a7c46c97c5595c02a018e6ce06aee8e54444ba546b",
+      "toSha256": "40bbe9c28e70a9606af58439eb311f0092a3dca8a17f656c0dcd776e653b49af",
+      "sourceOccurrences": 1,
+      "uses": 1
+    }
+  ],
+  "compatibilityRed": [
+    {
+      "id": "rls_projects_columns",
+      "sqlstate": "23502",
+      "expected": "23502",
+      "statementSha256": "07daa08de900ea47993b240892a9ae0d080b3b72fe2c23ac0be24b2ec7da20a8",
+      "independentSetup": true
+    },
+    {
+      "id": "rls_roles_columns",
+      "sqlstate": "23503",
+      "expected": "23503",
+      "statementSha256": "8ebf80cc28490bf6adf38da69c1e1fba0cfbec5186e7f0525e62a71e00579730",
+      "independentSetup": true
+    },
+    {
+      "id": "ledger_project_name",
+      "sqlstate": "23502",
+      "expected": "23502",
+      "statementSha256": "bd68da46904ab542bc8cc1af6d158eb4a4267d4300f3e2e872a82affffd80553",
+      "independentSetup": true
+    },
+    {
+      "id": "ledger_roles_columns",
+      "sqlstate": "23503",
+      "expected": "23503",
+      "statementSha256": "0700f2970969496ff4adf6574ccc495e579b979919b1c9cb36644f0e25a06b54",
+      "independentSetup": true
+    },
+    {
+      "id": "storage_partial_conflict_target",
+      "sqlstate": "42P10",
+      "expected": "42P10",
+      "statementSha256": "1c1fe7f80cfd5f18e2bf51a7c46c97c5595c02a018e6ce06aee8e54444ba546b",
+      "independentSetup": true
+    },
+    {
+      "id": "story_hash_excludes_only_updated_at",
+      "oldInvariantFailed": true,
+      "businessColumnsUnchanged": true,
+      "updatedAtAdvanced": true,
+      "beforeSha256": "fa2b1f6e93ccce69051048b1558489c498f1acad5b132f00b0a3f9907f410f47",
+      "afterSha256": "325d191bc7d6238f9e6f38b3dc28f395b594a87481026b3f783b868ffd707534"
+    }
+  ],
+  "projector": {
+    "typescript": "5.9.3",
+    "outputs": [
+      {
+        "source": "packages/web/src/lib/legacy-media-reference.ts",
+        "sourceSha256": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+        "generatedSha256": "d475f8fb249e3fdf680a19e3efa0066bbca4edb96fc2dd9d95825e3311261053"
+      },
+      {
+        "source": "packages/web/src/lib/legacy-story-media.ts",
+        "sourceSha256": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e",
+        "generatedSha256": "1b355940e70ad6fd46dab00185f1a14fcf6039520eea842454a391d99a3cbaa0"
+      }
+    ]
+  },
+  "matrixPhases": {
+    "ledger": "Full historical source ledger run on PG17/full metadata fixture before candidate RLS immutable identity trigger; administrative adapter unchanged.",
+    "rls": "Complete frozen RLS characterization and candidate run, using separate synthetic IDs and actual low privilege sessions.",
+    "combined": "Own end-to-end seed with all RLS, entitlement, invitation, management and ledger candidates active in the same database.",
+    "observedReverseOrderFailure": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-49-34.634Z-1143fc6b-a88b-4ad9-a3a3-c70b7920cb02.json",
+      "code": "42501",
+      "ledgerChecksCompleted": 181,
+      "lastCompleted": "source version changed during wait: rejection leaves no binding",
+      "cause": "The next source-project mutation is rejected by the candidate immutable-story-identity trigger."
+    }
+  },
+  "ledgerPhaseCounts": {
+    "observations": 82,
+    "reviews": 8,
+    "bindings": 13,
+    "synthetic_assets": 39
+  },
+  "digestExamples": [
+    {
+      "source_field": "audio_url",
+      "source_path": "/audio_url",
+      "source_type": "text",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "00a470b44be536e0fa9de1f797edea3cd165139396b9f251714e5b0d99c10ecc",
+      "source_payload": "{\"value\": \"stories/voice.webm\", \"pg_text\": \"stories/voice.webm\", \"pg_type\": \"text\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "photo_urls",
+      "source_path": "/photo_urls/0",
+      "source_type": "text[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "76ae45d482d79e2063ba1be8ca5be87155148434b47e921d7b83821ad83540e8",
+      "source_payload": "{\"value\": [\"alice/images/same.jpg\", \"bob/images/same.jpg\", null], \"pg_text\": \"{alice/images/same.jpg,bob/images/same.jpg,NULL}\", \"pg_type\": \"text[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "photo_urls",
+      "source_path": "/photo_urls/1",
+      "source_type": "text[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "76ae45d482d79e2063ba1be8ca5be87155148434b47e921d7b83821ad83540e8",
+      "source_payload": "{\"value\": [\"alice/images/same.jpg\", \"bob/images/same.jpg\", null], \"pg_text\": \"{alice/images/same.jpg,bob/images/same.jpg,NULL}\", \"pg_type\": \"text[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "photo_urls",
+      "source_path": "/photo_urls/2",
+      "source_type": "text[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "76ae45d482d79e2063ba1be8ca5be87155148434b47e921d7b83821ad83540e8",
+      "source_payload": "{\"value\": [\"alice/images/same.jpg\", \"bob/images/same.jpg\", null], \"pg_text\": \"{alice/images/same.jpg,bob/images/same.jpg,NULL}\", \"pg_type\": \"text[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "images",
+      "source_path": "/images/0/url",
+      "source_type": "jsonb[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "2c3fe72813394dc56e9d01e683a46530702abcf9dc3b41e251e8ab8ddb1e54f2",
+      "source_payload": "{\"value\": [{\"url\": \"alice/images/a.jpg\", \"thumbUrl\": \"alice/images/t.jpg\"}, null, \"alice/images/same.jpg\", 4], \"pg_text\": \"{\\\"{\\\\\\\"url\\\\\\\": \\\\\\\"alice/images/a.jpg\\\\\\\", \\\\\\\"thumbUrl\\\\\\\": \\\\\\\"alice/images/t.jpg\\\\\\\"}\\\",\\\"null\\\",\\\"\\\\\\\"alice/images/same.jpg\\\\\\\"\\\",4}\", \"pg_type\": \"jsonb[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "images",
+      "source_path": "/images/0/thumbUrl",
+      "source_type": "jsonb[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "2c3fe72813394dc56e9d01e683a46530702abcf9dc3b41e251e8ab8ddb1e54f2",
+      "source_payload": "{\"value\": [{\"url\": \"alice/images/a.jpg\", \"thumbUrl\": \"alice/images/t.jpg\"}, null, \"alice/images/same.jpg\", 4], \"pg_text\": \"{\\\"{\\\\\\\"url\\\\\\\": \\\\\\\"alice/images/a.jpg\\\\\\\", \\\\\\\"thumbUrl\\\\\\\": \\\\\\\"alice/images/t.jpg\\\\\\\"}\\\",\\\"null\\\",\\\"\\\\\\\"alice/images/same.jpg\\\\\\\"\\\",4}\", \"pg_type\": \"jsonb[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "images",
+      "source_path": "/images/1",
+      "source_type": "jsonb[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "2c3fe72813394dc56e9d01e683a46530702abcf9dc3b41e251e8ab8ddb1e54f2",
+      "source_payload": "{\"value\": [{\"url\": \"alice/images/a.jpg\", \"thumbUrl\": \"alice/images/t.jpg\"}, null, \"alice/images/same.jpg\", 4], \"pg_text\": \"{\\\"{\\\\\\\"url\\\\\\\": \\\\\\\"alice/images/a.jpg\\\\\\\", \\\\\\\"thumbUrl\\\\\\\": \\\\\\\"alice/images/t.jpg\\\\\\\"}\\\",\\\"null\\\",\\\"\\\\\\\"alice/images/same.jpg\\\\\\\"\\\",4}\", \"pg_type\": \"jsonb[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "images",
+      "source_path": "/images/2",
+      "source_type": "jsonb[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "2c3fe72813394dc56e9d01e683a46530702abcf9dc3b41e251e8ab8ddb1e54f2",
+      "source_payload": "{\"value\": [{\"url\": \"alice/images/a.jpg\", \"thumbUrl\": \"alice/images/t.jpg\"}, null, \"alice/images/same.jpg\", 4], \"pg_text\": \"{\\\"{\\\\\\\"url\\\\\\\": \\\\\\\"alice/images/a.jpg\\\\\\\", \\\\\\\"thumbUrl\\\\\\\": \\\\\\\"alice/images/t.jpg\\\\\\\"}\\\",\\\"null\\\",\\\"\\\\\\\"alice/images/same.jpg\\\\\\\"\\\",4}\", \"pg_type\": \"jsonb[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "images",
+      "source_path": "/images/3",
+      "source_type": "jsonb[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "2c3fe72813394dc56e9d01e683a46530702abcf9dc3b41e251e8ab8ddb1e54f2",
+      "source_payload": "{\"value\": [{\"url\": \"alice/images/a.jpg\", \"thumbUrl\": \"alice/images/t.jpg\"}, null, \"alice/images/same.jpg\", 4], \"pg_text\": \"{\\\"{\\\\\\\"url\\\\\\\": \\\\\\\"alice/images/a.jpg\\\\\\\", \\\\\\\"thumbUrl\\\\\\\": \\\\\\\"alice/images/t.jpg\\\\\\\"}\\\",\\\"null\\\",\\\"\\\\\\\"alice/images/same.jpg\\\\\\\"\\\",4}\", \"pg_type\": \"jsonb[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "images",
+      "source_path": "/images/0/url",
+      "source_type": "jsonb[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "15771d0316fc7576fc3a83950529409102595fde6c52747f0a1cfc6a0f4d8d9b",
+      "source_payload": "{\"value\": [{\"url\": \"alice/images/a.jpg\", \"thumbUrl\": \"alice/images/t.jpg\"}, null, \"alice/images/same.jpg\", 5], \"pg_text\": \"{\\\"{\\\\\\\"url\\\\\\\": \\\\\\\"alice/images/a.jpg\\\\\\\", \\\\\\\"thumbUrl\\\\\\\": \\\\\\\"alice/images/t.jpg\\\\\\\"}\\\",\\\"null\\\",\\\"\\\\\\\"alice/images/same.jpg\\\\\\\"\\\",5}\", \"pg_type\": \"jsonb[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "images",
+      "source_path": "/images/0/thumbUrl",
+      "source_type": "jsonb[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "15771d0316fc7576fc3a83950529409102595fde6c52747f0a1cfc6a0f4d8d9b",
+      "source_payload": "{\"value\": [{\"url\": \"alice/images/a.jpg\", \"thumbUrl\": \"alice/images/t.jpg\"}, null, \"alice/images/same.jpg\", 5], \"pg_text\": \"{\\\"{\\\\\\\"url\\\\\\\": \\\\\\\"alice/images/a.jpg\\\\\\\", \\\\\\\"thumbUrl\\\\\\\": \\\\\\\"alice/images/t.jpg\\\\\\\"}\\\",\\\"null\\\",\\\"\\\\\\\"alice/images/same.jpg\\\\\\\"\\\",5}\", \"pg_type\": \"jsonb[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    },
+    {
+      "source_field": "images",
+      "source_path": "/images/1",
+      "source_type": "jsonb[]",
+      "digest_algorithm": "saga-pg-jsonb-media-v1",
+      "source_digest": "15771d0316fc7576fc3a83950529409102595fde6c52747f0a1cfc6a0f4d8d9b",
+      "source_payload": "{\"value\": [{\"url\": \"alice/images/a.jpg\", \"thumbUrl\": \"alice/images/t.jpg\"}, null, \"alice/images/same.jpg\", 5], \"pg_text\": \"{\\\"{\\\\\\\"url\\\\\\\": \\\\\\\"alice/images/a.jpg\\\\\\\", \\\\\\\"thumbUrl\\\\\\\": \\\\\\\"alice/images/t.jpg\\\\\\\"}\\\",\\\"null\\\",\\\"\\\\\\\"alice/images/same.jpg\\\\\\\"\\\",5}\", \"pg_type\": \"jsonb[]\", \"algorithm\": \"saga-pg-jsonb-media-v1\"}"
+    }
+  ],
+  "digestScope": "Observed PostgreSQL 17.4 canonical representation only; no universal PG14/PG17 digest stability claim.",
+  "replayedPolicies": [
+    {
+      "schemaname": "public",
+      "tablename": "project_members",
+      "policyname": "project_members_delete",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "DELETE",
+      "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_members.project_id) AND (p.facilitator_id = auth.uid()))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_members",
+      "policyname": "project_members_insert",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_members.project_id) AND (p.facilitator_id = auth.uid()))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_members",
+      "policyname": "project_members_select",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "((auth.uid() = user_id) OR (EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_members.project_id) AND (p.facilitator_id = auth.uid())))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_members",
+      "policyname": "project_members_update",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "UPDATE",
+      "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_members.project_id) AND (p.facilitator_id = auth.uid()))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_roles",
+      "policyname": "project_roles_delete",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "DELETE",
+      "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_roles.project_id) AND (p.facilitator_id = auth.uid()))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_roles",
+      "policyname": "project_roles_insert",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_roles.project_id) AND (p.facilitator_id = auth.uid()))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_roles",
+      "policyname": "project_roles_select",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "((auth.uid() = user_id) OR (EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_roles.project_id) AND (p.facilitator_id = auth.uid())))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_roles",
+      "policyname": "project_roles_select_self",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "(auth.uid() = user_id)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_roles",
+      "policyname": "project_roles_update",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "UPDATE",
+      "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_roles.project_id) AND (p.facilitator_id = auth.uid()))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "projects",
+      "policyname": "projects_delete",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "DELETE",
+      "qual": "(auth.uid() = facilitator_id)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "projects",
+      "policyname": "projects_insert",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(auth.uid() = facilitator_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "projects",
+      "policyname": "projects_insert_authenticated",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(auth.uid() = facilitator_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "projects",
+      "policyname": "projects_select",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "((auth.uid() = facilitator_id) OR (EXISTS ( SELECT 1\n   FROM project_roles pr\n  WHERE ((pr.project_id = projects.id) AND (pr.user_id = auth.uid()) AND (pr.status = 'active'::text)))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "projects",
+      "policyname": "projects_select_members",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "((auth.uid() = facilitator_id) OR (EXISTS ( SELECT 1\n   FROM project_roles pr\n  WHERE ((pr.project_id = projects.id) AND (pr.user_id = auth.uid()) AND (pr.status = 'active'::text)))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "projects",
+      "policyname": "projects_update",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "UPDATE",
+      "qual": "(auth.uid() = facilitator_id)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "stories",
+      "policyname": "stories_delete",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "DELETE",
+      "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = stories.project_id) AND (p.facilitator_id = auth.uid()))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "stories",
+      "policyname": "stories_insert",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((auth.uid() = storyteller_id) AND ((EXISTS ( SELECT 1\n   FROM project_members pm\n  WHERE ((pm.project_id = stories.project_id) AND (pm.user_id = auth.uid()) AND ((pm.status)::text = 'active'::text)))) OR (EXISTS ( SELECT 1\n   FROM project_roles pr\n  WHERE ((pr.project_id = stories.project_id) AND (pr.user_id = auth.uid()) AND (pr.status = 'active'::text)))) OR (EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = stories.project_id) AND (p.facilitator_id = auth.uid()))))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "stories",
+      "policyname": "stories_insert_members",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((auth.uid() = COALESCE(user_id, storyteller_id)) OR (EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = stories.project_id) AND (p.facilitator_id = auth.uid())))) OR (EXISTS ( SELECT 1\n   FROM project_roles pr\n  WHERE ((pr.project_id = stories.project_id) AND (pr.user_id = auth.uid()) AND (pr.status = 'active'::text)))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "stories",
+      "policyname": "stories_select",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "((auth.uid() = storyteller_id) OR (EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = stories.project_id) AND (p.facilitator_id = auth.uid())))) OR (EXISTS ( SELECT 1\n   FROM project_roles pr\n  WHERE ((pr.project_id = stories.project_id) AND (pr.user_id = auth.uid()) AND (pr.status = 'active'::text)))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "stories",
+      "policyname": "stories_select_members",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = stories.project_id) AND ((p.facilitator_id = auth.uid()) OR (EXISTS ( SELECT 1\n           FROM project_roles pr\n          WHERE ((pr.project_id = p.id) AND (pr.user_id = auth.uid()) AND (pr.status = 'active'::text))))))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "stories",
+      "policyname": "stories_update",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "UPDATE",
+      "qual": "((auth.uid() = storyteller_id) OR (EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = stories.project_id) AND (p.facilitator_id = auth.uid())))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Allow authenticated users to upload audio jf5dkp_0",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((auth.role() = 'authenticated'::text) AND (bucket_id = 'audio-recordings'::text))"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Allow public read access to audio jf5dkp_0",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "(bucket_id = 'audio-recordings'::text)",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Project facilitators can delete project files",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "DELETE",
+      "qual": "((bucket_id = 'saga'::text) AND (((auth.uid())::text = (storage.foldername(name))[1]) OR (((storage.foldername(name))[2] = 'projects'::text) AND (EXISTS ( SELECT 1\n   FROM (project_roles pr\n     JOIN projects p ON ((pr.project_id = p.id)))\n  WHERE ((pr.user_id = auth.uid()) AND (pr.role = ANY (ARRAY['owner'::text, 'facilitator'::text, 'co_facilitator'::text])) AND (pr.status = 'active'::text) AND ((storage.foldername(p.name))[3] = (p.id)::text)))))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Project facilitators can update project files",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "UPDATE",
+      "qual": "((bucket_id = 'saga'::text) AND (((auth.uid())::text = (storage.foldername(name))[1]) OR (((storage.foldername(name))[2] = 'projects'::text) AND (EXISTS ( SELECT 1\n   FROM (project_roles pr\n     JOIN projects p ON ((pr.project_id = p.id)))\n  WHERE ((pr.user_id = auth.uid()) AND (pr.role = ANY (ARRAY['owner'::text, 'facilitator'::text, 'co_facilitator'::text])) AND (pr.status = 'active'::text) AND ((storage.foldername(p.name))[3] = (p.id)::text)))))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Project facilitators can upload project files",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((bucket_id = 'saga'::text) AND (((auth.uid())::text = (storage.foldername(name))[1]) OR (((storage.foldername(name))[2] = 'projects'::text) AND (EXISTS ( SELECT 1\n   FROM (project_roles pr\n     JOIN projects p ON ((pr.project_id = p.id)))\n  WHERE ((pr.user_id = auth.uid()) AND (pr.role = ANY (ARRAY['owner'::text, 'facilitator'::text, 'co_facilitator'::text])) AND (pr.status = 'active'::text) AND ((storage.foldername(p.name))[3] = (p.id)::text)))))))"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Project members can view project files",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "((bucket_id = 'saga'::text) AND (((auth.uid())::text = (storage.foldername(name))[1]) OR (EXISTS ( SELECT 1\n   FROM (project_roles pr\n     JOIN projects p ON ((pr.project_id = p.id)))\n  WHERE ((pr.user_id = auth.uid()) AND ((storage.foldername(p.name))[2] = 'projects'::text) AND ((storage.foldername(p.name))[3] = (p.id)::text))))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Storytellers can upload story files",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((bucket_id = 'saga'::text) AND (((auth.uid())::text = (storage.foldername(name))[1]) OR (((storage.foldername(name))[2] = 'projects'::text) AND (EXISTS ( SELECT 1\n   FROM (project_roles pr\n     JOIN projects p ON ((pr.project_id = p.id)))\n  WHERE ((pr.user_id = auth.uid()) AND (pr.role = ANY (ARRAY['owner'::text, 'facilitator'::text, 'co_facilitator'::text, 'storyteller'::text])) AND (pr.status = 'active'::text) AND ((storage.foldername(p.name))[3] = (p.id)::text)))))))"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Users can delete their own files",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "DELETE",
+      "qual": "((bucket_id = 'saga'::text) AND ((auth.uid())::text = (storage.foldername(name))[1]))",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Users can update their own files",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "UPDATE",
+      "qual": "((bucket_id = 'saga'::text) AND ((auth.uid())::text = (storage.foldername(name))[1]))",
+      "with_check": null
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Users can upload files to their own folders",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((bucket_id = 'saga'::text) AND ((auth.uid())::text = (storage.foldername(name))[1]))"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects",
+      "policyname": "Users can view their own files",
+      "permissive": "PERMISSIVE",
+      "roles": [
+        "public"
+      ],
+      "cmd": "SELECT",
+      "qual": "((bucket_id = 'saga'::text) AND ((auth.uid())::text = (storage.foldername(name))[1]))",
+      "with_check": null
+    }
+  ],
+  "rlsCandidateDerivation": {
+    "originalSha256": "4fbb8a4449c27b8f19dee2a173fcf8f03c945b5a6949f5e3c9a752e3c496164b",
+    "derivedSha256": "4d4a570bae8591feddd7292f1d1e4eca94f485f06fdfa395aa7832ed2b54cfe4",
+    "from": "current_database() <> 'saga_rls_rehearsal'",
+    "to": "current_database() <> 'saga_pg17_rehearsal'",
+    "replacements": 1
+  },
+  "combined": {
+    "sameDatabase": true,
+    "project": "21000000-0000-0000-0000-000000000001",
+    "story": "31f05774-638d-4e8c-a751-b97b180234c3",
+    "object": "867a3904-a2db-41a9-8280-0fd18a3114dd",
+    "source": "79decebb-ff87-41be-aee5-dcc8391afc1d",
+    "sourceRevoked": true,
+    "membership": "inactive",
+    "nextStatementReads": 0,
+    "ledgerBind": "access_denied"
+  },
+  "retainedRpcDenials": [
+    {
+      "identity": "public.accept_project_invitation(uuid,uuid)",
+      "sqlstate": "42501"
+    },
+    {
+      "identity": "public.cleanup_expired_invitations()",
+      "sqlstate": "42501"
+    },
+    {
+      "identity": "public.create_project_with_role(text,text,uuid,text)",
+      "sqlstate": "42501"
+    },
+    {
+      "identity": "public.initialize_user_wallet(uuid)",
+      "sqlstate": "42501"
+    },
+    {
+      "identity": "public.process_package_purchase(uuid,text,integer,integer,text)",
+      "sqlstate": "42501"
+    },
+    {
+      "identity": "public.process_package_purchase(text,text,uuid)",
+      "sqlstate": "42501"
+    },
+    {
+      "identity": "public.send_project_invitation(uuid,uuid,text,uuid,text)",
+      "sqlstate": "42501"
+    }
+  ],
+  "finalCounts": {
+    "observations": 83,
+    "reviews": 8,
+    "bindings": 13,
+    "synthetic_assets": 40
+  },
+  "finalRls": [
+    {
+      "nspname": "public",
+      "relname": "export_requests",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "public",
+      "relname": "invitations",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "public",
+      "relname": "notifications",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "public",
+      "relname": "project_members",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "public",
+      "relname": "project_roles",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "public",
+      "relname": "projects",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "public",
+      "relname": "seat_transactions",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "public",
+      "relname": "stories",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "public",
+      "relname": "user_resource_wallets",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "storage",
+      "relname": "buckets",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    },
+    {
+      "nspname": "storage",
+      "relname": "objects",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false
+    }
+  ],
+  "sourcesUnchangedAtFinish": true,
+  "postgresLog": {
+    "sha256": "9ad57a59bbf92232463b3d32b75a0424af285f359f588e8dc46fd5d288da6485",
+    "bytes": 64935,
+    "contents": "withheld: PostgreSQL error CONTEXT may contain private function text"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "counts": {
+    "scenarios": 72,
+    "behaviorAssertions": 832,
+    "ledgerChecks": 236,
+    "lockObservations": 18,
+    "totalAssertionsIncludingPins": 997
+  },
+  "finishedAt": "2026-10-23T01:59:02.717Z"
+}

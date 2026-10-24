@@ -1,0 +1,513 @@
+{
+  "updatedAt": "2026-10-19T11:06:20.413637+08:00",
+  "status": "local_batch_complete",
+  "bindingSpec": "docs/superpowers/specs/2026-10-19-invitation-read-ui.md",
+  "plan": "docs/superpowers/plans/2026-10-19-upgrade-invitation-read-ui.md",
+  "implementation": {
+    "status": "implemented_and_fix1_independently_approved",
+    "report": {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-implementation-final.md",
+      "sha256": "afdbe3980f3f7f474cc5afe96064ff14d3089f76ef21045ef5947c000e4593aa"
+    },
+    "sourceManifest": {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-source-sha256.json",
+      "sha256": "f2aaa596dbb11ec8ba786172ae5aadcc96651c2c896fba0f135c5f04a7e1851e"
+    },
+    "sourceFiles": 18,
+    "sourceCheck": {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/controller-fix-1-source-check.json",
+      "sha256": "5c4a5ee6c81d15709064589c6f9eb10ff8cebfb925dcdcd0b6bc4081235ff9a8"
+    },
+    "changedSinceInitialFreeze": [
+      "packages/web/src/components/invitations/invitation-recipient.tsx",
+      "packages/web/src/components/invitations/__tests__/invitation-recipient.test.tsx"
+    ],
+    "focusedTests": {
+      "executor": "Task 1 implementer",
+      "executedThisBatch": true,
+      "suites": 5,
+      "total": 253,
+      "newReadRouteActualSdkSyntheticLoopback": 18,
+      "reactComponentsActualHelperParserMockFetchAuthRouter": 41,
+      "previousRegressionsRerun": {
+        "protocol": 77,
+        "clientAndFacade": 29,
+        "acceptanceHandler": 88,
+        "total": 194
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-focused-tests.txt",
+        "sha256": "b5c43b7a45fe34f20635f2964bc9967c9d8b6ab0cf4a76e6bf6bab260ec9f263"
+      }
+    },
+    "typeCheck": {
+      "exitCode": 0,
+      "executor": "Task 1 implementer",
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-type-check.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      }
+    },
+    "scopedLint": {
+      "exitCode": 0,
+      "executor": "Task 1 implementer",
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-lint.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "emptyOutputIntentional": true
+    },
+    "diffCheck": {
+      "exitCode": 0,
+      "executor": "Task 1 implementer",
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-diff-check.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "emptyOutputIntentional": true
+    }
+  },
+  "reviews": {
+    "task1Initial": {
+      "spec": "FAIL",
+      "quality": "Needs fixes",
+      "finding": "I1: batched account departure/return permits stale acceptance navigation and stale accepted-state continuation",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-review.md",
+        "sha256": "16f8f7b42f9c500e7b4d2680bb6de6d941b7e962fdff8afa277a1b70895f16d8"
+      }
+    },
+    "task1Fix1": {
+      "status": "approved",
+      "finding": "I1 ADDRESSED",
+      "spec": "Approved for fix 1",
+      "quality": "Approved at the scoped review gate",
+      "newBlockingFindings": 0,
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-fix-1-review.md",
+        "sha256": "b2390fcc310ef179039ef2ff617c7c345ab17f3781fbff941e91702a4387aed8"
+      }
+    },
+    "task2": {
+      "status": "passed",
+      "spec": "PASS",
+      "quality": "Approved",
+      "newFindings": 0,
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-2-review.md",
+        "sha256": "e606d0500a16f5b0776a69dfe7a476ac2ecedff4f59226e50909bc1fb7c5c6d1"
+      }
+    },
+    "batchFinal": {
+      "status": "passed",
+      "spec": "PASS",
+      "quality": "Approved as a local candidate",
+      "newCritical": 0,
+      "newImportant": 0,
+      "newMinor": 0,
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/batch-final-review.md",
+        "sha256": "489859c3c0ea66349977231aee123c67f5211f785dbcd2d6eac808fb4d1b93f2"
+      }
+    },
+    "knownMinorFollowUp": {
+      "id": "M1",
+      "status": "unresolved_separate_cleanup",
+      "description": "Existing Next configuration warnings and missing-server-configuration diagnostics persist; exit 0 is not warning-free or production configuration validation."
+    },
+    "aggregatePass": true
+  },
+  "redGreen": {
+    "legacyRoutes": {
+      "red": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/red-read-routes.txt",
+        "sha256": "f51e54637cea54dcea046f001996a1d9cd95ebf41db6cfdae7db5354fca61e32"
+      },
+      "redNpmExitCode": 1,
+      "redFailed": 3,
+      "redSkipped": 15,
+      "outerInspectionShellExitCode": 0,
+      "outerShellNote": "The shell printed the captured npm output after the failed command; its exit 0 is not a passing test.",
+      "green": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/green-read-routes.txt",
+        "sha256": "9354fc37f787253b8756fe79d59b137a43cfce4d7aaa49b67d18ac097ad480e3"
+      },
+      "greenPassed": 18
+    },
+    "recipient": {
+      "preliminaryFixtureFailure": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/red-recipient-ui.txt",
+        "sha256": "b454d7b4a02842ae421b34b3b6b5632a7cb01ac68532de6a0799a79b7d2bfef8"
+      },
+      "behaviorRed": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/red-recipient-behaviors.txt",
+        "sha256": "8075a7d11cbbb5f627f88524917f55f59e28d40edcbe328a3f2ba3c9da0b5419"
+      },
+      "behaviorRedFailed": 36,
+      "initialGreen": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/green-recipient-ui-initial.txt",
+        "sha256": "330a63fe23335e5ea3025c62eedc59c01fef47c69f7647c231ccfb2655bf0783"
+      },
+      "initialGreenPassed": 36,
+      "missingModuleUsedAsBusinessFailure": false
+    },
+    "selfReviewAccountReturn": {
+      "red": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/red-account-return-count.txt",
+        "sha256": "915a04921a5f144a878b50915a7b64c9e9532caa5ca610594b630d2c4006acaf"
+      },
+      "failed": 1,
+      "passed": 1,
+      "skipped": 36,
+      "historicalFocusedPass": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/focused-tests.txt",
+        "sha256": "79cac8c5628ed28a317f4c179de180e895b8ac96b128b00c4fbe426200efe7dd"
+      },
+      "historicalFocusedTests": 250
+    },
+    "independentI1": {
+      "red": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-red.txt",
+        "sha256": "360c95db8f74b3d6b0660d160f6bc545dc92167e09f0f614128b47e39c6903a0"
+      },
+      "redExitCode": 1,
+      "redFailed": 2,
+      "redPassed": 1,
+      "redSkipped": 38,
+      "green": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-green.txt",
+        "sha256": "4d98de23b40b7bcf1cc2040daaeadcc045e6c4df099fb1c0085062bd260e4998"
+      },
+      "greenExitCode": 0,
+      "greenPassed": 3,
+      "greenSkipped": 38,
+      "fix": "Synchronously invalidate identity generations on genuine user-ID changes, including null; preserve same-account credential refresh generation and parent per-user write locks."
+    }
+  },
+  "projectChecks": {
+    "status": "passed",
+    "executor": "Controller",
+    "executedThisBatch": true,
+    "runId": "20261019T023821Z",
+    "executionManifest": {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-verification-20261019T023821Z.json",
+      "sha256": "8b01b3c0d6042774944db26340a81a50ef4aaf67100edc6e0e9f5d535ce5421c"
+    },
+    "startedAt": "2026-10-19T02:38:22.286239+00:00",
+    "finishedAt": "2026-10-19T02:40:45.305674+00:00",
+    "applicationAndConfigurationInputs": 751,
+    "inputChanges": [],
+    "nextEnvRestored": true,
+    "commands": [
+      {
+        "label": "verify",
+        "command": [
+          "npm",
+          "run",
+          "verify"
+        ],
+        "startedAt": "2026-10-19T02:38:22.286276+00:00",
+        "finishedAt": "2026-10-19T02:40:40.481699+00:00",
+        "exitCode": 0,
+        "log": {
+          "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-verify-20261019T023821Z.txt",
+          "sha256": "53f650427dac0d78e86db6f23dd25404327d8520a09f6875cfc422acef026d9c"
+        }
+      },
+      {
+        "label": "shared",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=packages/shared",
+          "--",
+          "--runInBand"
+        ],
+        "startedAt": "2026-10-19T02:40:40.482533+00:00",
+        "finishedAt": "2026-10-19T02:40:44.246873+00:00",
+        "exitCode": 0,
+        "log": {
+          "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-shared-20261019T023821Z.txt",
+          "sha256": "d74bab769868bb61493cfad040c1b90eb76c6f85f1b1ea81a05d167ec8bcc35f"
+        }
+      },
+      {
+        "label": "infra",
+        "command": [
+          "npm",
+          "run",
+          "test:infra"
+        ],
+        "startedAt": "2026-10-19T02:40:44.247373+00:00",
+        "finishedAt": "2026-10-19T02:40:45.060937+00:00",
+        "exitCode": 0,
+        "log": {
+          "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-infra-20261019T023821Z.txt",
+          "sha256": "abf882c8c1649786084d51a55989e9f9b66dd9fabef24336dd3805e86e387e40"
+        }
+      }
+    ],
+    "results": {
+      "webSuites": 82,
+      "webTests": 1019,
+      "sharedSuites": 4,
+      "sharedTests": 16,
+      "infraTests": 7,
+      "pages": 176
+    },
+    "supersededExecution": {
+      "manifest": {
+        "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-verification-20261019T022711Z.json",
+        "sha256": "681094e1c6a07c4def17a0039e6e1d2b8793cbfa8b4526a94029917f25a71ea7"
+      },
+      "status": "passed_on_pre_fix_sources",
+      "webSuites": 82,
+      "webTests": 1016,
+      "reason": "I1 changed the component and its tests after this run; this run is historical and does not verify the fix."
+    }
+  },
+  "integrity": {
+    "status": "passed",
+    "finalReport": "docs/research/evidence/2026-10-19-invitation-read-ui/final-integrity.json",
+    "note": "Final mutable checkpoint is regenerated after actual review/report and status closure. No circular hash of this summary or final checkpoint.",
+    "task1EvidenceScan": {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-evidence-scan.json",
+      "sha256": "d11cc4ee7d582b1d2627d35fbd4193c98e46f0a5c3a3e2201ebeeb974d75626b"
+    },
+    "fix1EvidenceScan": {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-evidence-scan.json",
+      "sha256": "ee2fa5c8e671fcb71348dd14fabcaae22e1b94b40fe46626824a00d7248635fc"
+    }
+  },
+  "priorEvidence": {
+    "checks": {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/prior-evidence-check.json",
+      "sha256": "9088da2a94431697c185d1542001b8e467f7fca0f3d720eb1b643dc4f7625eef"
+    },
+    "scope": "Prior HTTP direct references; historical PG17/HTTP evidence keeps its original execution date and attribution.",
+    "pgMatricesRerun": false,
+    "priorHttpResultsUsedAsCurrentProjectRun": false
+  },
+  "rollout": {
+    "enabledInProduction": false,
+    "exactEnabledValue": "true",
+    "tokenGetDisabledStatus": 503,
+    "pendingDiscoveryStatus": 503,
+    "pendingDiscoveryEnabledByFlag": false,
+    "tokenGetReadOnly": true,
+    "getMutation": false,
+    "serviceRoleReadFallback": false,
+    "cookieIdentityFallback": false,
+    "historicalOpaqueTokenSupported": false,
+    "automaticAcceptance": false,
+    "automaticWriteRetry": false,
+    "automaticUnknownRecoveryPolling": false,
+    "unknownWriteRemainsLockedAfterPendingRead": true,
+    "confirmedAcceptedCurrentUserRequiredForContinuation": true,
+    "staleIdentityGenerationInvalidated": true,
+    "sameAccountCredentialRefreshPreservesWriteLock": true
+  },
+  "evidenceBoundary": "18 new read-route tests exercise actual handlers and Supabase SDK against synthetic loopback Auth/REST. 41 React tests exercise real pages/component/helper/parser with mocked fetch/auth/router. The other 194 are rerun protocol, client/facade and acceptance-handler regressions. No real-provider Auth/JWT, deployed PostgREST schema, PG17 end-to-end, browser/device matrix or production RLS/ACL validation is established.",
+  "unresolved": {
+    "authPrivacyReleaseBlocker": {
+      "signinLogsUrlAndNext": true,
+      "signinPersistsAuthNextInLocalStorage": true,
+      "callbackLogsAuthInformationAndRawProviderErrors": true,
+      "authFilesChangedThisBatch": false,
+      "endToEndAuthPrivacyClaimed": false
+    },
+    "pendingDiscovery": "Unavailable until a trusted list contract exists; 503 does not mean no invitations.",
+    "minimalPreview": "No trusted project/inviter/email/question/message preview or visibility contract; role/state display does not complete who invited / what question / who can hear.",
+    "historicalCompatibility": "Opaque tokens and historical member bindings need trusted mapping, forward migration and rollback; no automatic adoption or old write fallback.",
+    "dependencyAudit": {
+      "rerun": false,
+      "total": 42,
+      "high": 34,
+      "moderate": 8,
+      "critical": 0,
+      "resolved": false
+    },
+    "buildWarnings": [
+      "Missing SUPABASE_SERVICE_ROLE_KEY",
+      "Obsolete Next eslint configuration",
+      "Obsolete Next images.domains configuration"
+    ],
+    "nextWork": [
+      "First follow-up: remediate signin/callback URL/next/raw-auth logging and auth_next lifecycle before end-to-end auth privacy claims",
+      "Trusted entitlement source/event provisioning, revocation and persistent deduplication",
+      "Send/release and direct RPC/table ACL closure",
+      "Separate trusted pending/minimal-preview contracts and historical token/member mapping",
+      "Production schema/PostgREST/Auth/RLS and historical forward migration/rollback validation",
+      "Original G0/G1 bucket, backup, provider, formal adapter, cross-family and actual-device evidence"
+    ]
+  },
+  "milestones": {
+    "assessment": "docs/research/evidence/2026-10-19-invitation-read-ui/milestone-check.json",
+    "G0": false,
+    "G1": false,
+    "localBatchIsMilestone": false,
+    "pushAuthorizedNow": false
+  },
+  "actions": {
+    "commit": false,
+    "push": false,
+    "merge": false,
+    "remoteMigration": false,
+    "deployment": false,
+    "remoteAuthPaymentMailFamilyDataCalls": false,
+    "recoveryDataPreserved": true
+  },
+  "immutableArtifacts": [
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-implementation.md",
+      "sha256": "061fe993e7c679d375d43d3cc1f119ca880f55c1ae57dcb8748bf12e756f5247"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-implementation-final.md",
+      "sha256": "afdbe3980f3f7f474cc5afe96064ff14d3089f76ef21045ef5947c000e4593aa"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-source-sha256.json",
+      "sha256": "40f1b10d9ed3ed5cc1443347d4529ef2ad82f04ff7d0708e0f32c302bdfad3bc"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/controller-source-check.json",
+      "sha256": "805698804ae4d33df3f1768c81e3c330ecdfc9dc50b893f05ea5f99fb1dd292b"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-source-sha256.json",
+      "sha256": "f2aaa596dbb11ec8ba786172ae5aadcc96651c2c896fba0f135c5f04a7e1851e"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/controller-fix-1-source-check.json",
+      "sha256": "5c4a5ee6c81d15709064589c6f9eb10ff8cebfb925dcdcd0b6bc4081235ff9a8"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-review.md",
+      "sha256": "16f8f7b42f9c500e7b4d2680bb6de6d941b7e962fdff8afa277a1b70895f16d8"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-fix-1-review.md",
+      "sha256": "b2390fcc310ef179039ef2ff617c7c345ab17f3781fbff941e91702a4387aed8"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/red-read-routes.txt",
+      "sha256": "f51e54637cea54dcea046f001996a1d9cd95ebf41db6cfdae7db5354fca61e32"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/green-read-routes.txt",
+      "sha256": "9354fc37f787253b8756fe79d59b137a43cfce4d7aaa49b67d18ac097ad480e3"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/red-recipient-ui.txt",
+      "sha256": "b454d7b4a02842ae421b34b3b6b5632a7cb01ac68532de6a0799a79b7d2bfef8"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/red-recipient-behaviors.txt",
+      "sha256": "8075a7d11cbbb5f627f88524917f55f59e28d40edcbe328a3f2ba3c9da0b5419"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/green-recipient-ui-initial.txt",
+      "sha256": "330a63fe23335e5ea3025c62eedc59c01fef47c69f7647c231ccfb2655bf0783"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/red-account-return-count.txt",
+      "sha256": "915a04921a5f144a878b50915a7b64c9e9532caa5ca610594b630d2c4006acaf"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/focused-tests.txt",
+      "sha256": "79cac8c5628ed28a317f4c179de180e895b8ac96b128b00c4fbe426200efe7dd"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/type-check-initial.txt",
+      "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/type-check.txt",
+      "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/lint-initial.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/lint.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-red.txt",
+      "sha256": "360c95db8f74b3d6b0660d160f6bc545dc92167e09f0f614128b47e39c6903a0"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-green.txt",
+      "sha256": "4d98de23b40b7bcf1cc2040daaeadcc045e6c4df099fb1c0085062bd260e4998"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-focused-tests.txt",
+      "sha256": "b5c43b7a45fe34f20635f2964bc9967c9d8b6ab0cf4a76e6bf6bab260ec9f263"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-type-check.txt",
+      "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-lint.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-diff-check.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/task-1-evidence-scan.json",
+      "sha256": "d11cc4ee7d582b1d2627d35fbd4193c98e46f0a5c3a3e2201ebeeb974d75626b"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-evidence-scan.json",
+      "sha256": "ee2fa5c8e671fcb71348dd14fabcaae22e1b94b40fe46626824a00d7248635fc"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-verification-20261019T022711Z.json",
+      "sha256": "681094e1c6a07c4def17a0039e6e1d2b8793cbfa8b4526a94029917f25a71ea7"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-verify-20261019T022711Z.txt",
+      "sha256": "43cdb336a80f13e6c88407c85dc37fcd1d8b4aa917b98fb4e767b3e6c013a2fe"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-shared-20261019T022711Z.txt",
+      "sha256": "67e428c834e68e6229164e2acade81f333df7112092d6b6956b64bf3b9ca85d3"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-infra-20261019T022711Z.txt",
+      "sha256": "d783004097c1fe92c001b276ffe32f34c112cfdb41381d31eae6beb6a236f1d0"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-verification-20261019T023821Z.json",
+      "sha256": "8b01b3c0d6042774944db26340a81a50ef4aaf67100edc6e0e9f5d535ce5421c"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-verify-20261019T023821Z.txt",
+      "sha256": "53f650427dac0d78e86db6f23dd25404327d8520a09f6875cfc422acef026d9c"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-shared-20261019T023821Z.txt",
+      "sha256": "d74bab769868bb61493cfad040c1b90eb76c6f85f1b1ea81a05d167ec8bcc35f"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/project-infra-20261019T023821Z.txt",
+      "sha256": "abf882c8c1649786084d51a55989e9f9b66dd9fabef24336dd3805e86e387e40"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-19-invitation-read-ui/prior-evidence-check.json",
+      "sha256": "9088da2a94431697c185d1542001b8e467f7fca0f3d720eb1b643dc4f7625eef"
+    }
+  ],
+  "closure": {
+    "task1": "complete_after_I1_fix_and_independent_re_review",
+    "task2": "complete",
+    "batchFinal": "passed",
+    "finalIntegrity": "passed",
+    "postReviewChanges": "Approval references, current status, next-step pointers and plan checkboxes only; sources/tests and immutable prior evidence unchanged."
+  }
+}

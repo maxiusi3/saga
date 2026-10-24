@@ -1,0 +1,271 @@
+{
+  "purpose": "Repository ignores *.log; published .log.txt files preserve exact bytes for GitHub delivery without changing originals or ignore rules.",
+  "logs": [
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/browser-attempt-1.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/browser-attempt-1.log.txt",
+        "sha256": "ad52efd98c3cf1c9e2804cd7f2e367ccf7910dc8815b4b7ce3caf6a16943534e"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/browser-attempt-2.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/browser-attempt-2.log.txt",
+        "sha256": "27be8b76b786ac7d14622577c919d220b117a6398f67fce7e578071b92bde2d8"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/browser-attempt-3.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/browser-attempt-3.log.txt",
+        "sha256": "ed884f565af162ada499b06d8ed5055e89794c53ed724ea92634df613b8e7a25"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/browser-before-token-race-fix.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/browser-before-token-race-fix.log.txt",
+        "sha256": "ed884f565af162ada499b06d8ed5055e89794c53ed724ea92634df613b8e7a25"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/browser-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/browser-final.log.txt",
+        "sha256": "ed884f565af162ada499b06d8ed5055e89794c53ed724ea92634df613b8e7a25"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/expanded-attempt-1.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/expanded-attempt-1.log.txt",
+        "sha256": "d651b58025e468d35756a5ba7c1a370d7313ea79f3ee7112cda57ead7435db3f"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/browser-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/browser-final.log.txt",
+        "sha256": "ed884f565af162ada499b06d8ed5055e89794c53ed724ea92634df613b8e7a25"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/focused-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/focused-final.log.txt",
+        "sha256": "37181c87542450089aee2d09622574662345b219bdb14b75af7bd093bebe33d7"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/green-attempt-1.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/green-attempt-1.log.txt",
+        "sha256": "ea000d116a65ac66e935c2085c544f7457bfcd4f21775fb42137197560e8eaad"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/lint-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/lint-final.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/red-confirmed.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/red-confirmed.log.txt",
+        "sha256": "827af8be89375572a9b50e79f2be0e034aab85f1e05492e435dd6734b31ff8d1"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/red.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/red.log.txt",
+        "sha256": "baeb5477d6c6aaa9d2a3423673333c06e6583f212b1908e88cae8e5e65d6cfa9"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/typecheck-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/typecheck-final.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/browser-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/browser-final.log.txt",
+        "sha256": "ed884f565af162ada499b06d8ed5055e89794c53ed724ea92634df613b8e7a25"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/focused-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/focused-final.log.txt",
+        "sha256": "77c34342670d7128f877934077a90ad0cb9d7450fe33bb693dcb40c8a9fee13b"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/green-attempt-1.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/green-attempt-1.log.txt",
+        "sha256": "acece1fef26276d4f0f4293271163e8c147480b25ef5a3108e958921c4e70d4a"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/lint-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/lint-final.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/quality-event-refresh-probe.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/quality-event-refresh-probe.log.txt",
+        "sha256": "44f8b8acd8ef3172d2378ce71c37bc8f02d6347ac27584afcf770fc48813ad8a"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/quality-guard-refresh-probe.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/quality-guard-refresh-probe.log.txt",
+        "sha256": "be2aee2035eeb72f30313656cd1675ec9ecdcbb2c89e81ebc2e12391195744ac"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/red-confirmed.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/red-confirmed.log.txt",
+        "sha256": "84245d812937cbb74a40d1c0fe5ed39da47617f92523e9ccb33fbd0930e1f1da"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/red.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/red.log.txt",
+        "sha256": "99c762b41afc181a3c9eb5e0536516e7302492eb565f09e20aafb6090c955d42"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/typecheck-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/typecheck-final.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/focused-before-home-ruling.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/focused-before-home-ruling.log.txt",
+        "sha256": "85d951c289ad6eb7d20e8f7115f8a2b1b01a534115a05022f0da92bdd650d194"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/focused-before-token-race-fix.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/focused-before-token-race-fix.log.txt",
+        "sha256": "2fdb1ee1aca9fd94d730158908d93c99762faf6b51342d03bad60325797981cc"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/focused-final-attempt-1.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/focused-final-attempt-1.log.txt",
+        "sha256": "33a6964380782816ccc7b6b8661bab0c88c6e0b06d0fb784fb59f8219c35a97c"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/focused-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/focused-final.log.txt",
+        "sha256": "66f48121259ace3f492b423d46e35eb979f9d03c9f521c7010bf49ababedb05d"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/green-attempt-1.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/green-attempt-1.log.txt",
+        "sha256": "ac617a017ee7557fd96f3f06a5e4e1eccce0161151571b584916951b0674ec11"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/green-core.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/green-core.log.txt",
+        "sha256": "653abeeb59fd8b366bb8b8bd0d6134f2f081c0e4bb5b1715889b43484e8cb6d6"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/green-self-review.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/green-self-review.log.txt",
+        "sha256": "d72aaf777e8b48136d07c93ee85a9aac00b9c8a27528db6b36196e4141be9f09"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/lint-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/lint-final.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/red-guard-home.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red-guard-home.log.txt",
+        "sha256": "c0cf5a2b7dd7de3849eeaa572e58e7219eb1aeb7ba0e463b960e6ab6097e0f0e"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/red-home-guidance.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red-home-guidance.log.txt",
+        "sha256": "8ada883bd6ddf324b6061e7015dac4df60cc207538b38e7ccca3d20439136ccd"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/red-self-review.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red-self-review.log.txt",
+        "sha256": "dcd051eb49d7b4362bc54369649cdca7e2f1e952abcb12ea032fc45521facea1"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/red-token-race.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red-token-race.log.txt",
+        "sha256": "3b40fc42b3fe895e32fe813a495652cbbaa41ed4d5605942b0203cbdac8fa3a9"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/red.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red.log.txt",
+        "sha256": "4fd90322d96fae3a614eeb3f202f669ce9c19147d0bbed058199a06cdc273a87"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/spec-fix1-focused-review.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/spec-fix1-focused-review.log.txt",
+        "sha256": "3dc643d8eb5a616bc00861589852a78a7143bf0a91952f6dccdb3cbadf768ead"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/typecheck-attempt-1.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/typecheck-attempt-1.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      }
+    },
+    {
+      "originalLocalPath": "docs/research/evidence/2026-10-19-auth-session-integration/typecheck-final.log",
+      "published": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/typecheck-final.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      }
+    }
+  ]
+}

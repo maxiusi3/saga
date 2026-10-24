@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: token is exactly one decoded lowercase versioned identifier
+ok 1 - token is exactly one decoded lowercase versioned identifier
+  ---
+  duration_ms: 2.541173
+  type: 'test'
+  ...
+# Subtest: send confirms exactly one complete matching row
+ok 2 - send confirms exactly one complete matching row
+  ---
+  duration_ms: 0.80547
+  type: 'test'
+  ...
+# Subtest: send malformed or uncertain transport never succeeds
+ok 3 - send malformed or uncertain transport never succeeds
+  ---
+  duration_ms: 2.491327
+  type: 'test'
+  ...
+# Subtest: send only safe explicit database rejections classify rejected
+ok 4 - send only safe explicit database rejections classify rejected
+  ---
+  duration_ms: 0.351064
+  type: 'test'
+  ...
+# Subtest: accept confirms exactly one complete matching row
+ok 5 - accept confirms exactly one complete matching row
+  ---
+  duration_ms: 0.235004
+  type: 'test'
+  ...
+# Subtest: accept malformed or uncertain transport never succeeds
+ok 6 - accept malformed or uncertain transport never succeeds
+  ---
+  duration_ms: 0.228605
+  type: 'test'
+  ...
+# Subtest: accept only safe explicit database rejections classify rejected
+ok 7 - accept only safe explicit database rejections classify rejected
+  ---
+  duration_ms: 0.229538
+  type: 'test'
+  ...
+# Subtest: release confirms exactly one complete matching row
+ok 8 - release confirms exactly one complete matching row
+  ---
+  duration_ms: 0.189598
+  type: 'test'
+  ...
+# Subtest: release malformed or uncertain transport never succeeds
+ok 9 - release malformed or uncertain transport never succeeds
+  ---
+  duration_ms: 0.555343
+  type: 'test'
+  ...
+# Subtest: release only safe explicit database rejections classify rejected
+ok 10 - release only safe explicit database rejections classify rejected
+  ---
+  duration_ms: 0.486858
+  type: 'test'
+  ...
+# Subtest: status confirms exactly one complete matching row
+ok 11 - status confirms exactly one complete matching row
+  ---
+  duration_ms: 0.279796
+  type: 'test'
+  ...
+# Subtest: status malformed or uncertain transport never succeeds
+ok 12 - status malformed or uncertain transport never succeeds
+  ---
+  duration_ms: 0.205015
+  type: 'test'
+  ...
+# Subtest: status only safe explicit database rejections classify rejected
+ok 13 - status only safe explicit database rejections classify rejected
+  ---
+  duration_ms: 0.194805
+  type: 'test'
+  ...
+# Subtest: state/result combinations and durable mapping are strict
+ok 14 - state/result combinations and durable mapping are strict
+  ---
+  duration_ms: 0.22979
+  type: 'test'
+  ...
+# Subtest: send rejects wrong field types and mismatched expected facts
+ok 15 - send rejects wrong field types and mismatched expected facts
+  ---
+  duration_ms: 0.223567
+  type: 'test'
+  ...
+# Subtest: accept rejects wrong field types and mismatched expected facts
+ok 16 - accept rejects wrong field types and mismatched expected facts
+  ---
+  duration_ms: 0.13331
+  type: 'test'
+  ...
+# Subtest: release rejects wrong field types and mismatched expected facts
+ok 17 - release rejects wrong field types and mismatched expected facts
+  ---
+  duration_ms: 0.199093
+  type: 'test'
+  ...
+# Subtest: status rejects wrong field types and mismatched expected facts
+ok 18 - status rejects wrong field types and mismatched expected facts
+  ---
+  duration_ms: 0.124662
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 240.548108

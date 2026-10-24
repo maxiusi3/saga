@@ -1,0 +1,271 @@
+{
+  "@istanbuljs/load-nyc-config": {
+    "severity": "moderate",
+    "rootAdvisories": [
+      "sprintf-js"
+    ]
+  },
+  "@jest/console": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "@jest/core": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "@jest/environment": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "@jest/expect": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "@jest/fake-timers": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "@jest/globals": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "@jest/reporters": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "@jest/test-result": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "@jest/test-sequencer": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "@jest/transform": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "@next/eslint-plugin-next": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "@tailwindcss/typography": {
+    "severity": "moderate",
+    "rootAdvisories": [
+      "braces",
+      "postcss-selector-parser"
+    ]
+  },
+  "@types/jest": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "argparse": {
+    "severity": "moderate",
+    "rootAdvisories": [
+      "sprintf-js"
+    ]
+  },
+  "babel-jest": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "babel-plugin-istanbul": {
+    "severity": "moderate",
+    "rootAdvisories": [
+      "sprintf-js"
+    ]
+  },
+  "braces": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "chokidar": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "create-jest": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "eslint-config-next": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "expect": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "fast-glob": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "jest": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "jest-circus": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "jest-cli": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "jest-config": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "jest-environment-node": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "jest-haste-map": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "jest-message-util": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "jest-resolve": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "jest-resolve-dependencies": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "jest-runner": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "jest-runtime": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "jest-snapshot": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "sprintf-js"
+    ]
+  },
+  "jest-watcher": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "js-yaml": {
+    "severity": "moderate",
+    "rootAdvisories": [
+      "sprintf-js"
+    ]
+  },
+  "micromatch": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces"
+    ]
+  },
+  "postcss-nested": {
+    "severity": "moderate",
+    "rootAdvisories": [
+      "postcss-selector-parser"
+    ]
+  },
+  "postcss-selector-parser": {
+    "severity": "moderate",
+    "rootAdvisories": [
+      "postcss-selector-parser"
+    ]
+  },
+  "sprintf-js": {
+    "severity": "moderate",
+    "rootAdvisories": [
+      "sprintf-js"
+    ]
+  },
+  "tailwindcss": {
+    "severity": "high",
+    "rootAdvisories": [
+      "braces",
+      "postcss-selector-parser"
+    ]
+  }
+}

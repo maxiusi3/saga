@@ -1,0 +1,34 @@
+{
+  "verified_at": "2026-10-15T02:32:51.118050+00:00",
+  "client_date": "2026-10-15",
+  "client_timezone": "Asia/Taipei",
+  "branch": "codex/october-upgrade-p0",
+  "base_head": "1caa21a72",
+  "worktree": "uncommitted changes retained",
+  "command": "npm run verify",
+  "exit_code": 0,
+  "web_test_suites": 75,
+  "web_tests": 702,
+  "new_test_suites": 2,
+  "new_tests": 41,
+  "type_check": "passed",
+  "lint": "passed",
+  "next_pages_generated": 175,
+  "ffmpeg_integration_checks": 56,
+  "ffmpeg_integration_status": "passed",
+  "review": "Focused independent production review: one iterator resource-cleanup P2 addressed and independently re-reviewed; no additional blocking finding. Not a review of all historical uncommitted changes.",
+  "warnings": [
+    "SUPABASE_SERVICE_ROLE_KEY missing in local build",
+    "Next eslint configuration unsupported",
+    "Next images.domains deprecated",
+    "multiple lockfiles / inferred workspace root"
+  ],
+  "source_sha256": {
+    "packages/web/src/lib/server/recording-merge-executor.ts": "d5cbd92f26c9a322a4084f183943e67eb4e544cce3e4d7a66cc1341e13a46529",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "499b8c1006fd76c0d81bcf9c9af4c2bd25d68da1298b2c975cfd700759b61418",
+    "packages/web/src/lib/server/__tests__/recording-merge-executor.test.ts": "8640b2e7a7239e70fa268d924bada294f6241d0b7f98bbff7ba63ad782539155",
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts": "b7be4210f03b7b6867007aad6b7ed32d3fef06c7112801415b560e6048754bb5",
+    "scripts/verify-recording-merge.cjs": "9de0757e017f5099f3101a4023345a447b43be32cca84743c8db63f12c40baf9"
+  },
+  "limits": "Local synthetic validation only. No remote Storage/DB/queue/authorization, cloud confirmation, deployment or real-device G1 evidence."
+}

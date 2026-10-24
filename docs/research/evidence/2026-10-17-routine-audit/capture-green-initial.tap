@@ -1,0 +1,256 @@
+TAP version 13
+# Subtest: reads the whole password after the first equals sign and accepts CRLF
+ok 1 - reads the whole password after the first equals sign and accepts CRLF
+  ---
+  duration_ms: 2.629236
+  type: 'test'
+  ...
+# Subtest: rejects duplicate, missing and unexpected keys without reflecting input
+ok 2 - rejects duplicate, missing and unexpected keys without reflecting input
+  ---
+  duration_ms: 0.689499
+  type: 'test'
+  ...
+# Subtest: rejects privileged roles, another project and untrusted host names
+ok 3 - rejects privileged roles, another project and untrusted host names
+  ---
+  duration_ms: 0.389584
+  type: 'test'
+  ...
+# Subtest: connection always verifies TLS and defaults to bounded read-only operations
+ok 4 - connection always verifies TLS and defaults to bounded read-only operations
+  ---
+  duration_ms: 0.374519
+  type: 'test'
+  ...
+# Subtest: error serialization preserves only approved machine codes
+ok 5 - error serialization preserves only approved machine codes
+  ---
+  duration_ms: 0.350874
+  type: 'test'
+  ...
+# Subtest: a denied category is distinct from a successful empty category
+ok 6 - a denied category is distinct from a successful empty category
+  ---
+  duration_ms: 2.489866
+  type: 'test'
+  ...
+# Subtest: failed rollback stops collection instead of pretending later queries are valid
+ok 7 - failed rollback stops collection instead of pretending later queries are valid
+  ---
+  duration_ms: 0.399274
+  type: 'test'
+  ...
+# Subtest: refuses the wrong server role or a writable transaction before metadata reads
+ok 8 - refuses the wrong server role or a writable transaction before metadata reads
+  ---
+  duration_ms: 0.486415
+  type: 'test'
+  ...
+# Subtest: rejects backend timeout settings that differ from the required transaction limits
+ok 9 - rejects backend timeout settings that differ from the required transaction limits
+  ---
+  duration_ms: 0.537961
+  type: 'test'
+  ...
+# Subtest: successful capture closes its read-only snapshot and retains denied bucket status
+ok 10 - successful capture closes its read-only snapshot and retains denied bucket status
+  ---
+  duration_ms: 1.233234
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when connect never settles, even after stream destruction
+ok 11 - CLI saves safe deadline evidence when connect never settles, even after stream destruction
+  ---
+  duration_ms: 21.645956
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when collect never settles, even after stream destruction
+ok 12 - CLI saves safe deadline evidence when collect never settles, even after stream destruction
+  ---
+  duration_ms: 4.378534
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when rollback never settles, even after stream destruction
+ok 13 - CLI saves safe deadline evidence when rollback never settles, even after stream destruction
+  ---
+  duration_ms: 7.878231
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when close never settles, even after stream destruction
+ok 14 - CLI saves safe deadline evidence when close never settles, even after stream destruction
+  ---
+  duration_ms: 8.090764
+  type: 'test'
+  ...
+# Subtest: CLI records close rejection and attempts forced cleanup before saving evidence
+ok 15 - CLI records close rejection and attempts forced cleanup before saving evidence
+  ---
+  duration_ms: 6.41352
+  type: 'test'
+  ...
+# Subtest: CLI still saves deadline evidence if forced cleanup throws
+ok 16 - CLI still saves deadline evidence if forced cleanup throws
+  ---
+  duration_ms: 4.366692
+  type: 'test'
+  ...
+# Subtest: CLI verifies TLS, completes normal cleanup, and saves exclusive success evidence
+ok 17 - CLI verifies TLS, completes normal cleanup, and saves exclusive success evidence
+  ---
+  duration_ms: 3.762489
+  type: 'test'
+  ...
+# Subtest: CLI never begins a metadata transaction when TLS is unauthorized
+ok 18 - CLI never begins a metadata transaction when TLS is unauthorized
+  ---
+  duration_ms: 2.649134
+  type: 'test'
+  ...
+# Subtest: CLI preserves the original failure while explicitly recording a later close deadline
+ok 19 - CLI preserves the original failure while explicitly recording a later close deadline
+  ---
+  duration_ms: 3.197224
+  type: 'test'
+  ...
+# Subtest: function inventory excludes bodies/default values and scopes effective execution to the four audit roles
+ok 20 - function inventory excludes bodies/default values and scopes effective execution to the four audit roles
+  ---
+  duration_ms: 0.710951
+  type: 'test'
+  ...
+# Subtest: trigger inventory hashes definitions and reveals neither argument values nor WHEN expressions
+ok 21 - trigger inventory hashes definitions and reveals neither argument values nor WHEN expressions
+  ---
+  duration_ms: 0.261948
+  type: 'test'
+  ...
+# Subtest: schema access and default ACL queries cover only public/storage plus global defaults applying to them
+ok 22 - schema access and default ACL queries cover only public/storage plus global defaults applying to them
+  ---
+  duration_ms: 0.731929
+  type: 'test'
+  ...
+# Subtest: supplement category errors stay distinct and roll back their savepoints without losing later categories
+ok 23 - supplement category errors stay distinct and roll back their savepoints without losing later categories
+  ---
+  duration_ms: 0.762272
+  type: 'test'
+  ...
+# Subtest: the entry point binds exactly twelve targets to the immutable snapshot bytes
+ok 24 - the entry point binds exactly twelve targets to the immutable snapshot bytes
+  ---
+  duration_ms: 11.007689
+  type: 'test'
+  ...
+# Subtest: catalog SQL binds exact identities and never invokes public functions or reads business relations
+ok 25 - catalog SQL binds exact identities and never invokes public functions or reads business relations
+  ---
+  duration_ms: 1.167492
+  type: 'test'
+  ...
+# Subtest: matched definitions stay exact privately while the public result contains only pinned identities and hashes
+ok 26 - matched definitions stay exact privately while the public result contains only pinned identities and hashes
+  ---
+  duration_ms: 2.557412
+  type: 'test'
+  ...
+# Subtest: definition drift is explicit and a changed body can only be retained privately
+ok 27 - definition drift is explicit and a changed body can only be retained privately
+  ---
+  duration_ms: 4.51056
+  type: 'test'
+  ...
+# Subtest: security and identity attribute changes prevent a pinned success without reflecting new values
+ok 28 - security and identity attribute changes prevent a pinned success without reflecting new values
+  ---
+  duration_ms: 5.591095
+  type: 'test'
+  ...
+# Subtest: missing, duplicate, unexpected, malformed and falsely hashed rows never become successful evidence
+ok 29 - missing, duplicate, unexpected, malformed and falsely hashed rows never become successful evidence
+  ---
+  duration_ms: 2.150697
+  type: 'test'
+  ...
+# Subtest: routine collection verifies a read-only snapshot and sends only the pinned signatures as parameters
+ok 30 - routine collection verifies a read-only snapshot and sends only the pinned signatures as parameters
+  ---
+  duration_ms: 5.379681
+  type: 'test'
+  ...
+# Subtest: unsafe session identity and denied reads roll back without exposing server diagnostics
+ok 31 - unsafe session identity and denied reads roll back without exposing server diagnostics
+  ---
+  duration_ms: 1.9764
+  type: 'test'
+  ...
+# Subtest: private persistence uses directory 0700 and exclusive file 0600 with exact content and verified hash
+ok 32 - private persistence uses directory 0700 and exclusive file 0600 with exact content and verified hash
+  ---
+  duration_ms: 20.531615
+  type: 'test'
+  ...
+# Subtest: private persistence rejects traversal, insecure existing directories and symlinks at every directory depth
+ok 33 - private persistence rejects traversal, insecure existing directories and symlinks at every directory depth
+  ---
+  duration_ms: 10.960295
+  type: 'test'
+  ...
+# Subtest: an existing private file symlink is never followed or overwritten
+ok 34 - an existing private file symlink is never followed or overwritten
+  ---
+  duration_ms: 2.830952
+  type: 'test'
+  ...
+# Subtest: routine CLI records safe deadline evidence when connect hangs
+ok 35 - routine CLI records safe deadline evidence when connect hangs
+  ---
+  duration_ms: 23.062589
+  type: 'test'
+  ...
+# Subtest: routine CLI records safe deadline evidence when collect hangs
+ok 36 - routine CLI records safe deadline evidence when collect hangs
+  ---
+  duration_ms: 8.458208
+  type: 'test'
+  ...
+# Subtest: routine CLI records safe deadline evidence when rollback hangs
+ok 37 - routine CLI records safe deadline evidence when rollback hangs
+  ---
+  duration_ms: 10.3313
+  type: 'test'
+  ...
+# Subtest: routine CLI records safe deadline evidence when close hangs
+ok 38 - routine CLI records safe deadline evidence when close hangs
+  ---
+  duration_ms: 17.635507
+  type: 'test'
+  ...
+# Subtest: routine CLI privately retains drift, hashes its artifacts and reports bounded cleanup
+ok 39 - routine CLI privately retains drift, hashes its artifacts and reports bounded cleanup
+  ---
+  duration_ms: 107.245675
+  type: 'test'
+  ...
+# Subtest: routine CLI never reflects raw diagnostics, malformed results, or cleanup exceptions
+ok 40 - routine CLI never reflects raw diagnostics, malformed results, or cleanup exceptions
+  ---
+  duration_ms: 73.693824
+  type: 'test'
+  ...
+# Subtest: routine CLI preserves an earlier failure when closing subsequently reaches the deadline
+ok 41 - routine CLI preserves an earlier failure when closing subsequently reaches the deadline
+  ---
+  duration_ms: 8.641819
+  type: 'test'
+  ...
+1..41
+# tests 41
+# suites 0
+# pass 41
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 520.174865

@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-19T19:16:01.153163+08:00",
+  "G0": false,
+  "G1": false,
+  "originalMilestoneReached": false,
+  "requirementsLowered": false,
+  "newLocalBatchIsMilestone": false,
+  "requirements": [
+    "docs/2026-10-10-integrated-upgrade-plan.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md"
+  ],
+  "openReleaseBlockers": [
+    {
+      "id": "RB1",
+      "description": "Actual implicit OAuth/OTP return routing and browser/SSR session integration remain unresolved. Mixed error plus fragment probe rejects current return; scoped implementation approval does not clear this blocker.",
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/implicit-fragment-compatibility-probe.txt",
+        "sha256": "2e20e9404558847211ea6489d58ae608e0c50b833c068c50863a1feadfb9ff6a"
+      }
+    }
+  ],
+  "missingG0": [
+    "production permissions and formal adapters",
+    "Storage bucket configuration and complete dependency environment",
+    "historical forward migration, backfill and rollback evidence",
+    "provider account and data conditions"
+  ],
+  "missingG1": [
+    "formal Storage/recording/worker adapters and production authorization evidence",
+    "actual device fault matrix and remote restore/delete/offline-export acceptance"
+  ],
+  "dependencyAudit": {
+    "rerun": false,
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "resolved": false
+  },
+  "decision": "Preserve branch, preexisting dirty files and recovery data; no commit, push, merge, remote migration or deployment."
+}

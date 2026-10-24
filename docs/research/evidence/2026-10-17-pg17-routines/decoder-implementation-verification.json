@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "changedFile": "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts",
+  "changedFileSha256": "f22c497b38c718da04378fb4491a9cf2d8e63da1327d262adc21267a9c022562",
+  "production": {
+    "file": "packages/web/src/lib/server/recording-audio-decoder.ts",
+    "unchanged": true,
+    "sha256": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03"
+  },
+  "red": {
+    "exitCode": 1,
+    "failed": 3,
+    "skipped": 35,
+    "seconds": 5.814,
+    "note": "Existing 1000ms budget plus controlled readiness regression and strengthened process-exit assertion"
+  },
+  "green": {
+    "exitCode": 0,
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "jestSeconds": 21.804,
+    "suiteMs": 21349,
+    "scenarioTimings": [
+      {
+        "name": "fails closed for timeout",
+        "status": "passed",
+        "durationMs": 158
+      },
+      {
+        "name": "awaits child termination before reporting timeout",
+        "status": "passed",
+        "durationMs": 174
+      },
+      {
+        "name": "awaits child close on abort after PCM output (0 ms readiness delay) and never accepts valid PCM as success",
+        "status": "passed",
+        "durationMs": 708
+      },
+      {
+        "name": "awaits child close on abort after process exit (0 ms readiness delay) and never accepts valid PCM as success",
+        "status": "passed",
+        "durationMs": 691
+      },
+      {
+        "name": "awaits child close on abort after PCM output (1500 ms readiness delay) and never accepts valid PCM as success",
+        "status": "passed",
+        "durationMs": 2167
+      },
+      {
+        "name": "removes its abort listener after timeout",
+        "status": "passed",
+        "durationMs": 157
+      },
+      {
+        "name": "keeps uncertain timeout failures unclassified",
+        "status": "passed",
+        "durationMs": 158
+      }
+    ]
+  },
+  "sourceWhitespaceCheck": "no errors reported",
+  "evidence": [
+    {
+      "file": "decoder-test-before.txt",
+      "sha256": "e3f8178348672604d13b8988a0655b799acef8d77cb478bd3a926f1d05032cb8"
+    },
+    {
+      "file": "decoder-startup-probe.cjs",
+      "sha256": "cd9cff96f92676a8853a63db3b770778b44a34ed88b5e95e328218dcd680b52e"
+    },
+    {
+      "file": "decoder-startup-measurements.json",
+      "sha256": "b9ac1bd18c40dec318a99cad63d7e515bb7cad25222d2cc0c6a6e72eb403a890"
+    },
+    {
+      "file": "decoder-startup-fresh-probe.cjs",
+      "sha256": "a4b71828e01c4c4483c1232115e39b9d21373cce941bc28d15a6ba919190cca2"
+    },
+    {
+      "file": "decoder-startup-fresh-measurements.json",
+      "sha256": "4e1cd6ea84da7d9de0d3dc353b00470b5a239331cede56d6b744f92be06ec223"
+    },
+    {
+      "file": "decoder-controlled-red.txt",
+      "sha256": "113f6fe7526dcc80c644876c9039830ffc24f26d0bbe9ee6e85ccc34ff019c89"
+    },
+    {
+      "file": "decoder-focused-green.txt",
+      "sha256": "913b9e483baa0a8846b02ffd6a13d7006100101dbfaa3417d04afe0d21adc7c1"
+    },
+    {
+      "file": "decoder-focused-green.json",
+      "sha256": "946ddfcbb56ca227338d9b1dd829ad1a5ccc3a470821b22edbaa726e1e974851"
+    },
+    {
+      "file": "decoder-test-change.patch",
+      "sha256": "37d9e5de5c9fe30767ec6ec055b7867ba801e949554594858471f7767f933e79"
+    }
+  ]
+}

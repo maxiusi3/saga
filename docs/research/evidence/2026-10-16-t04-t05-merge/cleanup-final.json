@@ -1,0 +1,278 @@
+{
+  "startedAt": "2026-10-16T04:47:21.257Z",
+  "scenarios": [
+    {
+      "owner": "runner",
+      "fault": "fatal",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-final-runner-fatal.json",
+      "status": "failed",
+      "harnessPid": 46259,
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "runner",
+        "fault": "fatal",
+        "ownerPid": 46325,
+        "decoderPid": 46328,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 46325,
+        "stoppedOwner": false,
+        "ownerExitedBeforeCleanup": true,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "workerPids": [],
+        "runnerPids": [
+          46325
+        ],
+        "groupIds": [
+          46325
+        ],
+        "forcedGroupKills": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      },
+      "decoderAliveAfterHarnessExit": false,
+      "error": "AssertionError [ERR_ASSERTION]: stopped decoder exercises bounded forced group termination\n    at file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify-merge-cleanup.mjs:54:36",
+      "diagnostic": "failed: harness unexpected failure; cleanup {\"ownedChildrenRemaining\":0,\"clusterStopped\":true,\"tempDirectoryRemoved\":true,\"errors\":[]}\n",
+      "decoderAliveAfterRescue": false
+    },
+    {
+      "owner": "runner",
+      "fault": "SIGTERM",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-final-runner-SIGTERM.json",
+      "status": "passed",
+      "harnessPid": 46375,
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "runner",
+        "fault": "SIGTERM",
+        "ownerPid": 46436,
+        "decoderPid": 46440,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 46436,
+        "stoppedOwner": true,
+        "ownerExitedBeforeCleanup": false,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "workerPids": [],
+        "runnerPids": [
+          46436
+        ],
+        "groupIds": [
+          46436
+        ],
+        "forcedGroupKills": [
+          46436
+        ],
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      },
+      "decoderAliveAfterHarnessExit": false,
+      "decoderAliveAfterRescue": false
+    },
+    {
+      "owner": "worker",
+      "fault": "fatal",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-final-worker-fatal.json",
+      "status": "failed",
+      "harnessPid": 46488,
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "worker",
+        "fault": "fatal",
+        "ownerPid": 46549,
+        "decoderPid": 46552,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 46549,
+        "stoppedOwner": false,
+        "ownerExitedBeforeCleanup": true,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "workerPids": [
+          46549
+        ],
+        "runnerPids": [],
+        "groupIds": [
+          46549
+        ],
+        "forcedGroupKills": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      },
+      "decoderAliveAfterHarnessExit": false,
+      "error": "AssertionError [ERR_ASSERTION]: stopped decoder exercises bounded forced group termination\n    at file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify-merge-cleanup.mjs:54:36",
+      "diagnostic": "failed: harness unexpected failure; cleanup {\"ownedChildrenRemaining\":0,\"clusterStopped\":true,\"tempDirectoryRemoved\":true,\"errors\":[]}\n",
+      "decoderAliveAfterRescue": false
+    },
+    {
+      "owner": "worker",
+      "fault": "SIGTERM",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-final-worker-SIGTERM.json",
+      "status": "passed",
+      "harnessPid": 46600,
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "worker",
+        "fault": "SIGTERM",
+        "ownerPid": 46663,
+        "decoderPid": 46666,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 46663,
+        "stoppedOwner": true,
+        "ownerExitedBeforeCleanup": false,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "workerPids": [
+          46663
+        ],
+        "runnerPids": [],
+        "groupIds": [
+          46663
+        ],
+        "forcedGroupKills": [
+          46663
+        ],
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      },
+      "decoderAliveAfterHarnessExit": false,
+      "decoderAliveAfterRescue": false
+    },
+    {
+      "owner": "direct",
+      "fault": "fatal",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-final-direct-fatal.json",
+      "status": "passed",
+      "harnessPid": 46713,
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "direct",
+        "fault": "fatal",
+        "ownerPid": 46713,
+        "decoderPid": 46777,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 46713,
+        "stoppedOwner": false,
+        "ownerExitedBeforeCleanup": false,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "workerPids": [],
+        "runnerPids": [],
+        "groupIds": [],
+        "forcedGroupKills": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      },
+      "decoderAliveAfterHarnessExit": false,
+      "decoderAliveAfterRescue": false
+    },
+    {
+      "owner": "direct",
+      "fault": "SIGTERM",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-final-direct-SIGTERM.json",
+      "status": "passed",
+      "harnessPid": 46850,
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "direct",
+        "fault": "SIGTERM",
+        "ownerPid": 46850,
+        "decoderPid": 46955,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 46850,
+        "stoppedOwner": false,
+        "ownerExitedBeforeCleanup": false,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "workerPids": [],
+        "runnerPids": [],
+        "groupIds": [],
+        "forcedGroupKills": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      },
+      "decoderAliveAfterHarnessExit": false,
+      "decoderAliveAfterRescue": false
+    }
+  ],
+  "sources": {
+    "verify.mjs": "3249592b1ebc709574d752ffa76fdd2c76650b48f0bd68208a10306d8ebc195a",
+    "merge-scenarios.mjs": "04e0aafb11a64775accb136297ae45a19e0e7ce8e789d6893b775913a0f4dce0",
+    "verify-merge-cleanup.mjs": "ef7c416d99a6f5b030de58103623ecbb84a131c576ce5412e15fe2ecae12d5a7",
+    "worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc"
+  },
+  "status": "failed",
+  "finishedAt": "2026-10-16T04:47:50.091Z"
+}

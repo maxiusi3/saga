@@ -1,0 +1,7 @@
+{
+  "cause": "Full intermediate harness exited on unhandled test assertion before finally; only its recorded private cluster was manually stopped and removed. Test rejection handling and harness emergency cleanup are being fixed.",
+  "cluster": "/tmp/saga-t05-ouiXYU",
+  "postmasterPid": 29489,
+  "clusterStopped": true,
+  "tempDirectoryRemoved": true
+}

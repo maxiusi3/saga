@@ -1,0 +1,29 @@
+{
+  "files": {
+    "packages/web/middleware.ts": "7144b249542564bdceb7f820e26f3344a2e417cccb9b5748bd15a5a482591244",
+    "packages/web/src/app/[locale]/auth/verify/page.tsx": "5b90c35ba63b18fbb8539b6b3bf2b34982e7791e84f79be09641ab7cc1086bc5",
+    "packages/web/src/app/[locale]/page.tsx": "e37b772ec9a740fcb86bf47b54e082ab3201c5c62734a69c93558262b14fab9b",
+    "packages/web/src/components/auth/__tests__/auth-verify-session.test.tsx": "f4e426671a4623c69387a11d778ea2bdee005f4a966a1925855fd952f2ede4fa",
+    "packages/web/src/components/auth/__tests__/home-auth-landing.test.tsx": "d74e7589513de0fc7731bcbe4d739d390ddca50ca7056cb9c314a67ccb613701",
+    "packages/web/src/lib/__tests__/supabase-server-isolation.test.ts": "1ad0753eee8f34ace1f680110758004ae0480e8a0bf98ba663a81c1a67a5b2d6",
+    "packages/web/src/lib/__tests__/supabase-session.test.ts": "3cb68d37bdf8f7f9228c2ce02875d149d9edce8b949e5735b1c08d350f8c37bc",
+    "packages/web/src/lib/server/__tests__/auth-locale-middleware.test.ts": "1ff738a95786dbe89eeb4eb2334f2069481cec558831f5f10b2b6473c78d2258",
+    "packages/web/src/lib/server/__tests__/auth-session-guard.test.ts": "5ccf419bb1e922066720b0b096f45a11b96ffd0e072fbb64f4d147bb943a8aa6",
+    "packages/web/src/lib/server/auth.ts": "c82ecf7ada8f410324780573d536f91a0e9d7d4f8622d8cc001ac81fafa763b5",
+    "packages/web/src/lib/supabase.ts": "318ba8fff029f00b75c0c6b565bdf47b3be3cfd0aabb83a145a9de79ed2a3ec1",
+    "packages/web/src/stores/__tests__/auth-session-lifecycle.test.ts": "cab57bb20903edf56efcb60ecc9fcc230f98e16c7786f9d8f8f7c864f3137ad1",
+    "packages/web/src/stores/__tests__/auth-store.test.ts": "b04d042804b0925a72f401ee8a243eb4647d367869ffa0c78b38a7cbd2eea3f7",
+    "packages/web/src/stores/auth-store.ts": "21ba3fd7911a0d16bd9bb7838a295d7e461da588981c66e9d0c622000e1f1c1c",
+    "scripts/test-support/auth-session-fixture.cjs": "57f158841bf23b471be1617afc684461280df98ce8754edea7c11dd7203b07c5",
+    "scripts/test-support/auth-session-ts-loader.cjs": "c610f944c9a6bdd1b35167571fa64be17bf929c52826a46f4f63c7458ad7c1fa",
+    "scripts/verify-auth-session-browser.cjs": "525381e9ec3d67bdb1990a78cad03d4b16e2028a3dbf66717b2740bd61b7d913",
+    "packages/web/src/lib/__tests__/supabase-browser-errors.test.ts": "e9277c35ede6f74ffa2a8e1e7c69617a9be4f3c2c0cf4b182592a20d312e8fea"
+  },
+  "fix1DeltaPaths": [
+    "packages/web/src/lib/supabase.ts",
+    "packages/web/src/stores/__tests__/auth-session-lifecycle.test.ts",
+    "packages/web/src/stores/auth-store.ts",
+    "packages/web/src/lib/__tests__/supabase-browser-errors.test.ts"
+  ],
+  "historicalEvidenceUnchanged": true
+}

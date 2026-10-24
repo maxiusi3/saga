@@ -1,0 +1,175 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand auth-session auth-store auth-return auth-callback auth-signin-return auth-verify-session home-auth-landing supabase-session supabase-server-isolation auth-locale-middleware invitation
+
+FAIL src/components/invitations/__tests__/invitation-recipient.test.tsx
+  ● home invite callback goes straight to original-link guidance without discovery or timers
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "/zh-TW/accept-invitation"
+
+    Number of calls: 0
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<nav[39m
+            [33mclass[39m=[32m"fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center gap-2"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-book-open w-6 h-6 text-[#2D5A3D]"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 7v14"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"text-xl font-bold text-[#2D5A3D]"[39m
+                [36m>[39m
+                  [0mnavigation.brandName[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"hidden md:flex items-center gap-8 text-gray-700"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"hover:text-[#2D5A3D] transition-colors"[39m
+                  [33mhref[39m=[32m"#features"[39m
+                [36m>[39m
+                  [0mnavigation.features[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"hover:text-[#2D5A3D] transition-colors"[39m
+                  [33mhref[39m=[32m"#how-it-works"[39m
+                [36m>[39m
+                  [0mnavigation.howItWorks[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"hover:text-[#2D5A3D] transition-colors"[39m
+                  [33mhref[39m=[32m"#testimonials"[39m
+                [36m>[39m
+                  [0mnavigation.testimonials[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"hover:text-[#2D5A3D] transition-colors"[39m
+                  [33mhref[39m=[32m"#pricing"[39m
+                [36m>[39m
+                  [0mnavigation.pricing[0m
+                [36m</a>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center gap-4"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mhref[39m=[32m"/zh-TW/auth/signin"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-11 px-6 py-3 text-sm bg-[#F59E0B] text-white hover:bg-[#D97706]"[39m
+                    [33mdata-slot[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0mnavigation.startFree[0m
+                  [36m</button>[39m
+                [36m</a>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</nav>[39m
+          [36m<section[39m
+            [33mclass[39m=[32m"relative min-h-screen flex items-center justify-center overflow-hidden pt-20"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"absolute inset-0 bg-cover bg-center"[39m
+              [33mstyle[39m=[32m"background-image: url(\"https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2070\");"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"absolute inset-0 bg-gradient-to-br from-[#2D5A3D]/95 via-[#3D6B4D]/90 to-[#2D5A3D]/95"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"relative z-10 text-center px-6 max-w-5xl animate-fade-in-up"[39m
+            [36m>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-xs md:text-sm uppercase tracking-[0.3em] text-[#F59E0B]/90 font-semibold mb-8"[39m
+              [36m>[39m
+                [0mhero.tagline[0m
+              [36m</p>[39m
+              [36m<h1[39m
+                [33mclass[39m=[32m"text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-[1.1] tracking-tight"[39m
+              [36m>[39m
+                [36m<span>[39m
+                  [0mhero.title[0m
+                [36m</span>[39m
+              [36m</h1>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-lg md:text-xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed"[39m
+              [36m>[39m
+                [0mhero.subtitle[0m
+              [36m</p>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex flex-col sm:flex-row gap-5 justify-center items-center"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mhref[39m=[32m"/zh-TW/auth/signin"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-12 px-8 py-3 text-base bg-[#F59E0B] text-white hover:bg-[#D97706] text-lg px-10 py-6 rounded-xl shadow-2xl hover:shadow-[0_25px_70px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-1 font-semibold group"[39m
+                    [33mdata-slot[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0mhero.ctaPrimary[0m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"lucide lucide-arrow-right ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"24"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33ms...
+
+      250 |   window.history.replaceState({}, '', '/zh-TW?type=invite')
+      251 |   render(<HomePage />)
+    > 252 |   await waitFor(() => expect(router.push).toHaveBeenCalledWith('/zh-TW/accept-invitation'))
+          |                                           ^
+      253 |   expect(fetchMock).not.toHaveBeenCalled()
+      254 |   expect(getSession).not.toHaveBeenCalled()
+      255 | })
+
+      at toHaveBeenCalledWith (src/components/invitations/__tests__/invitation-recipient.test.tsx:252:43)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+
+Test Suites: 1 failed, 17 passed, 18 total
+Tests:       1 failed, 496 passed, 497 total
+Snapshots:   0 total
+Time:        39.681 s, estimated 40 s
+Ran all test suites matching auth-session|auth-store|auth-return|auth-callback|auth-signin-return|auth-verify-session|home-auth-landing|supabase-session|supabase-server-isolation|auth-locale-middleware|invitation.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand auth-session auth-store auth-return auth-callback auth-signin-return auth-verify-session home-auth-landing supabase-session supabase-server-isolation auth-locale-middleware invitation

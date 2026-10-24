@@ -1,0 +1,49 @@
+{
+  "startedAt": "2026-10-17T05:48:10.284Z",
+  "label": "red-observation-behavior",
+  "status": "failed",
+  "scope": "synthetic local PostgreSQL source ledger only; no real Storage or production authorization verification",
+  "sources": {
+    "experiments/t02-source-ledger/schema.sql": "bc36090406916bc83ca6e9e495a19d9aabc038a0ef01024e485b1bceed9b310f",
+    "experiments/t02-source-ledger/ledger.cjs": "b01cab7eb89ca4dda4fda420adf03d87d762f0eae4b258083b823d83fe35f4c9",
+    "experiments/t02-source-ledger/scenarios.cjs": "c9b84ad701dcb74e4ec4ccda4795f072b8dc48d617220cc8f72c9ab964d8d762",
+    "experiments/t02-source-ledger/verify.cjs": "77bff38aaf6c16d8f7abc9a098187f6ad5097cbdf4bb322f43096a81a7806699",
+    "experiments/t02-source-ledger/README.md": "0d3c102ef50101daa89566063a19f87a7724ea01a1348bb046fe2aebef974072",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e"
+  },
+  "checks": [
+    "pinned actual stories.images type",
+    "pinned actual stories.photo_urls type",
+    "pinned actual stories.title type",
+    "pinned actual stories.storyteller_id type",
+    "local client ignores ambient SSL and credentials",
+    "TCP disabled"
+  ],
+  "lockEvidence": [],
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3",
+    "typescript": "5.9.3"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f"
+  },
+  "scratch": "/tmp/saga-t02-ledger-m0DZU3",
+  "error": {
+    "message": "real PostgreSQL source produces all nine positional observations\n\n0 !== 9\n",
+    "code": "ERR_ASSERTION",
+    "actual": 0,
+    "expected": 9,
+    "stack": "AssertionError [ERR_ASSERTION]: real PostgreSQL source produces all nine positional observations\n\n0 !== 9\n\n    at check (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:28:58)\n    at run (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/scenarios.cjs:30:3)\n    at async main (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:83:3)"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:48:12.787Z"
+}

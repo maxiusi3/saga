@@ -3,7 +3,7 @@
 // 避免构建期预渲染导致的环境变量缺失问题
 // 在 Next.js 15 中，我们通过运行时检查来避免 SSG
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale } from 'next-intl'
 import { createClientSupabase } from '@/lib/supabase'
+import { authLocale, authReturnTarget, hasVerifiedSession } from '@/lib/auth-return'
 
 function VerifyPageContent() {
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
@@ -24,9 +25,34 @@ function VerifyPageContent() {
   const email = searchParams?.get('email') || ''
   const locale = useLocale()
 
+  const safeLocale = authLocale(locale)
+  const query = searchParams?.toString() || ''
+  const target = authReturnTarget(new URLSearchParams(query), safeLocale)
+  const context = `${safeLocale}:${query}`
+  const latest = useRef(context)
+  latest.current = context
+  const mounted = useRef(false)
+  const generation = useRef(0)
+  const busy = useRef(false)
+  useEffect(() => {
+    generation.current++
+    busy.current = false
+    setIsLoading(false)
+    setMessage('')
+    setOtp(['', '', '', '', '', ''])
+  }, [context])
+  const start = () => {
+    const version = ++generation.current
+    const location = window.location.href
+    busy.current = true
+    return () => mounted.current && generation.current === version && latest.current === context && window.location.href === location
+  }
+
   // 确保只在客户端执行
   useEffect(() => {
+    mounted.current = true
     setIsClient(true)
+    return () => { mounted.current = false; generation.current++ }
   }, [])
 
   // 仅在客户端事件中创建 Supabase 实例
@@ -46,7 +72,7 @@ function VerifyPageContent() {
   }, [countdown])
 
   const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) return
+    if (!/^[0-9]?$/.test(value)) return
     
     const newOtp = [...otp]
     newOtp[index] = value
@@ -69,7 +95,8 @@ function VerifyPageContent() {
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
     const otpCode = otp.join('')
-    if (otpCode.length !== 6) return
+    if (!/^[0-9]{6}$/.test(otpCode) || busy.current || !isClient) return
+    const current = start()
 
     setIsLoading(true)
     setMessage('')
@@ -77,27 +104,29 @@ function VerifyPageContent() {
     try {
       const supabase = getSupabase()
       if (!supabase) throw new Error('Supabase client not available')
-      const { error } = await supabase.auth.verifyOtp({
+      const { data, error } = await supabase.auth.verifyOtp({
         email,
         token: otpCode,
         type: 'email'
       })
 
-      if (error) throw error
-
-      router.push(`/${locale}/dashboard`)
-    } catch (error) {
+      if (!current()) return
+      if (error || !hasVerifiedSession(data)) throw new Error('Authentication unavailable')
+      router.replace(target)
+    } catch {
+      if (!current()) return
       setMessage('Invalid verification code. Please try again.')
       setOtp(['', '', '', '', '', ''])
       const firstInput = document.getElementById('otp-0')
       firstInput?.focus()
     } finally {
-      setIsLoading(false)
+      if (current()) { busy.current = false; setIsLoading(false) }
     }
   }
 
   const handleResend = async () => {
-    if (!canResend || !isClient) return
+    if (!canResend || !isClient || busy.current) return
+    const current = start()
 
     setIsLoading(true)
     try {
@@ -106,19 +135,20 @@ function VerifyPageContent() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/${locale}/auth/callback`
+          emailRedirectTo: `${window.location.origin}/${safeLocale}/auth/callback?${new URLSearchParams({ next: target })}`
         }
       })
 
-      if (error) throw error
+      if (!current()) return
+      if (error) throw new Error('Authentication unavailable')
 
       setMessage('New verification code sent!')
       setCanResend(false)
       setCountdown(60)
-    } catch (error) {
-      setMessage('Error sending new code')
+    } catch {
+      if (current()) setMessage('Error sending new code')
     } finally {
-      setIsLoading(false)
+      if (current()) { busy.current = false; setIsLoading(false) }
     }
   }
 

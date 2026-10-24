@@ -1,0 +1,44 @@
+{
+  "checkedAt": "2026-10-18T13:45:27.040613+00:00",
+  "plan": "docs/2026-10-10-integrated-upgrade-plan.md",
+  "gateSpec": "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+  "G0": {
+    "achieved": false,
+    "remaining": [
+      "Production permission/RPC and complete dependency reconciliation",
+      "Seven unregistered migration versions need semantic reconciliation and compatible rollback evidence",
+      "Bucket configuration remains unverified after 42501",
+      "Backups, restoration and rollback rehearsal",
+      "Selected provider account capabilities and data terms"
+    ]
+  },
+  "G1": {
+    "achieved": false,
+    "remaining": [
+      "Formal asset, Storage, consent/deletion and worker adapters",
+      "Real-device 5/20/30-minute failure matrix",
+      "Integrated cross-family access denial and original-file export hash verification",
+      "Backup restoration with deletion tombstone replay"
+    ]
+  },
+  "higherGates": {
+    "G2": false,
+    "G3": false,
+    "G4": false,
+    "reason": "Required earlier gates and phase-specific validation absent"
+  },
+  "localBatchIsMilestone": false,
+  "actions": {
+    "commit": false,
+    "pushGitHub": false,
+    "mergeMain": false,
+    "remoteMigration": false,
+    "deployment": false
+  },
+  "authorization": "Push is authorized only when an existing upgrade-plan milestone is actually achieved; do not redefine a local batch as a milestone.",
+  "previousAssessment": {
+    "path": "docs/research/evidence/2026-10-18-invitation-transactions/milestone-check.json",
+    "sha256": "d02d615b542f9ef04abba7aeb40859de49b9fb141ea91d8f9b920109f127a750"
+  },
+  "batchScope": "Default-disabled local HTTP identity/acceptance adapter with actual SDK and synthetic loopback Auth/REST. No production permissions, entitlement event provenance, compatibility migration or other missing G0/G1 evidence supplied."
+}

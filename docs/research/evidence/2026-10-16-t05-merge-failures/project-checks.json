@@ -1,0 +1,60 @@
+{
+  "commands": {
+    "project-verify": {
+      "command": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "startedAt": "2026-10-16T12:31:17.117521+00:00",
+      "finishedAt": "2026-10-16T12:33:20.939657+00:00",
+      "elapsedSeconds": 123.821,
+      "exitCode": 0,
+      "log": "project-verify.log",
+      "suites": 76,
+      "tests": 728,
+      "generatedPages": 175
+    },
+    "shared": {
+      "command": [
+        "npm",
+        "test",
+        "--workspace=packages/shared",
+        "--",
+        "--runInBand"
+      ],
+      "startedAt": "2026-10-16T12:28:36.237017+00:00",
+      "finishedAt": "2026-10-16T12:28:41.598596+00:00",
+      "elapsedSeconds": 5.362,
+      "exitCode": 0,
+      "log": "shared.log",
+      "suites": 4,
+      "tests": 16
+    },
+    "infra": {
+      "command": [
+        "npm",
+        "run",
+        "test:infra"
+      ],
+      "startedAt": "2026-10-16T12:28:36.238462+00:00",
+      "finishedAt": "2026-10-16T12:28:37.068277+00:00",
+      "elapsedSeconds": 0.83,
+      "exitCode": 0,
+      "log": "infra.log",
+      "tests": 7
+    }
+  },
+  "nextEnvRestored": true,
+  "applicationSourceSha256": {
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "681de1522dbc45b1073680762a61baafca4e38a3e7bcdc325a1f76973363df9a",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-processing-error.ts": "7232456c9931f2bf592e2638b9b685a609956585bc76599557979386671f88d2",
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts": "5ccc8413a3d86e8c4473ca4125c1bb28061bf677b40ff4827f172a4bfb1a328f",
+    "packages/web/src/lib/server/__tests__/recording-merge-executor.test.ts": "74d9809bf868ac685789f1e281c115d77a8a00a6e106a9c771a9adcf6d0c3146",
+    "packages/web/src/lib/server/__tests__/recording-merge.test.ts": "fe7d7404e938bef9b26f8e28302aed3c14d53da66dd52f6af1703070401e6574",
+    "packages/web/src/lib/server/__tests__/recording-processing-error.test.ts": "e2a6267c535f9eab24ffa76b7bb598946fe912f7306adf4f5db6153f52e76b31"
+  },
+  "sourceChangedDuringRun": []
+}

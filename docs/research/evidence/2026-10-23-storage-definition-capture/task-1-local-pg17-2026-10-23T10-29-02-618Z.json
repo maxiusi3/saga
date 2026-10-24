@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-23T10:29:02.610Z",
+  "status": "passed",
+  "scope": "Isolated PostgreSQL 17.4 synthetic Storage catalog fixtures; no remote connection or captured routine execution",
+  "assertions": 33,
+  "scenarios": [
+    {
+      "name": "pg_get_expr compatibility for OLD and NEW trigger condition",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "real exact-target SQL, empty argument and OLD/NEW condition",
+      "status": "passed",
+      "assertions": 16
+    },
+    {
+      "name": "missing function and trigger identities are drift",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "changed attributes and definitions are drift",
+      "status": "passed",
+      "assertions": 4
+    }
+  ],
+  "sourceSha256": {
+    "scripts/inspect-supabase-storage.cjs": "497e3cd404089be7f189e136aa19d65e1de7853cb906b9c68a914fb9294e30ef",
+    "scripts/inspect-supabase-routines.cjs": "f838b8762324302073bdfc657551069666357b9a2bd66299a3fe2f6ec4d4f928",
+    "scripts/supabase-capture-runtime.cjs": "6b6e2ed78758076af37cb6fa2383d61f0e07090b32d44288b3abe46c6e15353a",
+    "scripts/inspect-supabase-metadata.cjs": "be8f08d62a6ac3fcae20911f8b6569dab8f6a52bb2e099a233855ac63f8e27d2",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/verify-storage-capture.mjs": "43e7cd3c658bb11bc08eea01db1ea29e537fe8fc0c2ea930f2a019873a606213"
+  },
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 16202,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-Iu6oWD/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-Iu6oWD",
+  "conditionExpressionProbe": {
+    "status": "rejected",
+    "sqlstate": "22023",
+    "note": "Trigger OLD/NEW Vars cannot be represented by pg_get_expr(tgqual,tgrelid); trigger definition retains authoritative WHEN SQL"
+  },
+  "capture": {
+    "status": "captured",
+    "functions": [
+      {
+        "schema_name": "storage",
+        "function_name": "enforce_bucket_lifecycle_service_role",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "05a1d63eb885ea2360f9c94fac3b9450",
+        "actualDefinitionMd5": "05a1d63eb885ea2360f9c94fac3b9450",
+        "definitionSha256": "c064512613de74e82a63d1c3b3f3c9b8186cf401c86441f50e8ad0703140777f",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "enforce_bucket_name_length",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "71dd818080637e58ac5d7bc8089ca048",
+        "actualDefinitionMd5": "71dd818080637e58ac5d7bc8089ca048",
+        "definitionSha256": "d7423fa347d28ff38793b9e2dc800f7d3f41b1a90375b98118195e3f3a86f544",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "foldername",
+        "identity_arguments": "name text",
+        "expectedDefinitionMd5": "dcd8d4c69317d1d8c8676f54ab781103",
+        "actualDefinitionMd5": "dcd8d4c69317d1d8c8676f54ab781103",
+        "definitionSha256": "f6798a79a26304ba766ab07eeb72fe13175254703b20c11dc41cc923660e05c2",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "protect_bucket_control_columns",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "d01db67a9b898eb8134984f66037da96",
+        "actualDefinitionMd5": "d01db67a9b898eb8134984f66037da96",
+        "definitionSha256": "940603cf57cdff93d9516e07726238bec29169108dffc82be69e048b51ebb907",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "protect_delete",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "40b0ccd0a883029640db8481cd7ad8fc",
+        "actualDefinitionMd5": "40b0ccd0a883029640db8481cd7ad8fc",
+        "definitionSha256": "b71acb43ab9f784e675d270d887f163538896de257acc210e8f84e9b995f13d0",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "update_updated_at_column",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "52754d6c5106aeffb56776265b2bcd50",
+        "actualDefinitionMd5": "52754d6c5106aeffb56776265b2bcd50",
+        "definitionSha256": "b10498084c042ad86882c486937949847d53998043449210c258b0aed0c89a1d",
+        "status": "matched",
+        "changedAttributes": []
+      }
+    ],
+    "triggers": [
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "enforce_bucket_name_length_trigger",
+        "expectedDefinitionMd5": "abe8dd733ebbde41ef5bfdec3ff9c794",
+        "actualDefinitionMd5": "abe8dd733ebbde41ef5bfdec3ff9c794",
+        "definitionSha256": "659f659c68923b1bc5260db7b2869f911ff149e7d0a78180d38835835d8184b4",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_insert",
+        "expectedDefinitionMd5": "2f4edaac1f29ea02fe6ae091bcb1d48a",
+        "actualDefinitionMd5": "2f4edaac1f29ea02fe6ae091bcb1d48a",
+        "definitionSha256": "4886e31968548f7946aefb5923ab8fc56652aacca8fab5baf5c44f24dbe09dad",
+        "argumentsSha256": "b3710238eee85151525e2fd06007bac88e02bfed59c866d908e127364f4d13f8",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_update",
+        "expectedDefinitionMd5": "e6ce0ba41d6ab9a953ab9dc49cf3c9f4",
+        "actualDefinitionMd5": "e6ce0ba41d6ab9a953ab9dc49cf3c9f4",
+        "definitionSha256": "8aeb78bdb0d3bfe57a0f580bfc20b9ad11ea6f7a2a7bccd7eae9516500732056",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_update_role",
+        "expectedDefinitionMd5": "c6644eedca0f23f894d3d93efbc476b8",
+        "actualDefinitionMd5": "c6644eedca0f23f894d3d93efbc476b8",
+        "definitionSha256": "54dd338e3a2ad0c1f39f3220b99b87b7e2e00beb5bf2ae1ffe0929a009924916",
+        "argumentsSha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_buckets_delete",
+        "expectedDefinitionMd5": "50288cfc0da92cd8f2f573c018c16382",
+        "actualDefinitionMd5": "50288cfc0da92cd8f2f573c018c16382",
+        "definitionSha256": "9177b20f0ce99604e60dbeef1f9f05ff05dfc8df075fea756e18b91fa5e8c494",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "objects",
+        "trigger_name": "protect_objects_delete",
+        "expectedDefinitionMd5": "45c5692d486583888bac16ef789d847f",
+        "actualDefinitionMd5": "45c5692d486583888bac16ef789d847f",
+        "definitionSha256": "b6dfbee7d5d339f311f34633772872a6474e88b17450da06310aadad83531d9a",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "objects",
+        "trigger_name": "update_objects_updated_at",
+        "expectedDefinitionMd5": "7e39313dd8cc01cc4a51cb9a702b2b8a",
+        "actualDefinitionMd5": "7e39313dd8cc01cc4a51cb9a702b2b8a",
+        "definitionSha256": "083e4b785748ba040bdefd032f3b75827cee68198ac26f3b213a346d5872f624",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": "3bbcf34e04c257a1208758c592615747e20e7b84fbd6ed47c3bdbbcd7338d131",
+        "status": "matched",
+        "changedAttributes": []
+      }
+    ],
+    "identity": {
+      "current_user": "metadata_reader",
+      "current_database": "postgres",
+      "read_only": "on",
+      "isolation": "repeatable read",
+      "statement_timeout": "10s",
+      "lock_timeout": "2s",
+      "idle_transaction_timeout": "15s",
+      "serverVersionSha256": "c6893771323e13ada0a002f7d6917d0ee0a458a22644e7d742555f291366d609",
+      "snapshotTimeSha256": "4c8b654027464f4dd43ba24f2055b918bef62b6a6d058f360175961603efea89"
+    }
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-23T10:29:04.956Z"
+}

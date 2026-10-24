@@ -1,5 +1,6 @@
 // 统一的Supabase API客户端 - 完全替换混合模式
 import { supabaseApi } from './api-supabase'
+import type { SendOptions, ReleaseInput, LookupInput } from './invitation-sender-protocol'
 import { httpApi, type ApiRequestOptions, type ApiResponse } from './api-http'
 
 // 为了向后兼容，保持原有的API接口结构
@@ -84,9 +85,11 @@ class ApiClient {
 
     generateInvitation: async (
       projectId: string,
-      data: { email: string; role: 'facilitator' | 'storyteller'; message?: string },
+      data: { email: string; role: 'facilitator' | 'storyteller'; message?: string | null; request_id?: string; source_id?: string },
     ) => {
-      return httpApi.post(`/projects/${projectId}/invitations`, data)
+      const options = data.request_id !== undefined && data.source_id !== undefined
+        ? { request_id: data.request_id, source_id: data.source_id, message: data.message } : undefined
+      return { data: await supabaseApi.invitations.send(projectId, data.email, data.role, options) }
     },
 
     getMembers: async (projectId: string) => {
@@ -114,9 +117,17 @@ class ApiClient {
 
   // 邀请管理 - 使用Supabase
   invitations = {
-    send: async (projectId: string, email: string, role: 'facilitator' | 'storyteller') => {
-      const invitation = await supabaseApi.invitations.send(projectId, email, role)
+    send: async (projectId: string, email: string, role: 'facilitator' | 'storyteller', options?: SendOptions) => {
+      const invitation = await supabaseApi.invitations.send(projectId, email, role, options)
       return { data: invitation }
+    },
+
+    release: async (input: ReleaseInput, expectedProjectId?: string) => {
+      return { data: await supabaseApi.invitations.release(input, expectedProjectId) }
+    },
+
+    lookup: async (input: LookupInput) => {
+      return { data: await supabaseApi.invitations.lookup(input) }
     },
 
     accept: async (token: string) => {

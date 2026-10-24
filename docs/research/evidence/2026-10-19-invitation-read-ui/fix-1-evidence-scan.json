@@ -1,0 +1,12 @@
+{
+  "scope": "Completed fix-round 1 raw text evidence; synthetic loopback and session fixtures only. No environment-file values read.",
+  "findings": [],
+  "checked": [
+    "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-diff-check.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-focused-tests.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-green.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-lint.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-red.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/fix-1-type-check.txt"
+  ]
+}

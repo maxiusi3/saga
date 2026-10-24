@@ -1,0 +1,105 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/server/__tests__/invitation-read-routes.test.ts -t disabled|pending discovery
+
+FAIL src/lib/server/__tests__/invitation-read-routes.test.ts
+  ● disabled path GET stops before external work
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 200
+
+      62 | }
+      63 | async function reply(response: Response, status: number, outcome: string) {
+    > 64 |   expect(response.status).toBe(status)
+         |                           ^
+      65 |   expect(response.headers.get('cache-control')).toBe('no-store')
+      66 |   expect(response.headers.get('vary')).toBe('Authorization')
+      67 |   const body = await response.json()
+
+      at toBe (src/lib/server/__tests__/invitation-read-routes.test.ts:64:27)
+      at reply (src/lib/server/__tests__/invitation-read-routes.test.ts:81:11)
+
+  ● disabled query GET stops before external work
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      62 | }
+      63 | async function reply(response: Response, status: number, outcome: string) {
+    > 64 |   expect(response.status).toBe(status)
+         |                           ^
+      65 |   expect(response.headers.get('cache-control')).toBe('no-store')
+      66 |   expect(response.headers.get('vary')).toBe('Authorization')
+      67 |   const body = await response.json()
+
+      at toBe (src/lib/server/__tests__/invitation-read-routes.test.ts:64:27)
+      at reply (src/lib/server/__tests__/invitation-read-routes.test.ts:81:11)
+
+  ● disabled query GET stops before external work
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      44 |   cookieAuth.mockClear()
+      45 |   expect(cleanup).toEqual({ listening: false, sockets: 0, held: 0 })
+    > 46 |   expect(logged).toBe(false)
+         |                  ^
+      47 | })
+      48 | function request(query = '', bearer: string | null = fixtureBearer, signal?: AbortSignal) {
+      49 |   const headers: Record<string, string> = { Cookie: 'unrelated-user-cookie=other-user' }
+
+      at Object.toBe (src/lib/server/__tests__/invitation-read-routes.test.ts:46:18)
+
+  ● pending discovery is unavailable for every flag without configuration or auth
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 200
+
+      62 | }
+      63 | async function reply(response: Response, status: number, outcome: string) {
+    > 64 |   expect(response.status).toBe(status)
+         |                           ^
+      65 |   expect(response.headers.get('cache-control')).toBe('no-store')
+      66 |   expect(response.headers.get('vary')).toBe('Authorization')
+      67 |   const body = await response.json()
+
+      at toBe (src/lib/server/__tests__/invitation-read-routes.test.ts:64:27)
+      at Object.reply (src/lib/server/__tests__/invitation-read-routes.test.ts:93:24)
+
+  ● pending discovery is unavailable for every flag without configuration or auth
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      44 |   cookieAuth.mockClear()
+      45 |   expect(cleanup).toEqual({ listening: false, sockets: 0, held: 0 })
+    > 46 |   expect(logged).toBe(false)
+         |                  ^
+      47 | })
+      48 | function request(query = '', bearer: string | null = fixtureBearer, signal?: AbortSignal) {
+      49 |   const headers: Record<string, string> = { Cookie: 'unrelated-user-cookie=other-user' }
+
+      at Object.toBe (src/lib/server/__tests__/invitation-read-routes.test.ts:46:18)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 15 skipped, 18 total
+Snapshots:   0 total
+Time:        1.569 s
+Ran all test suites within paths "src/lib/server/__tests__/invitation-read-routes.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/server/__tests__/invitation-read-routes.test.ts -t 'disabled|pending discovery'

@@ -1,0 +1,1376 @@
+{
+  "snapshotPath": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+  "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+  "selected": {
+    "tables": [
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "relkind": "r",
+        "rls_enabled": true,
+        "rls_forced": false,
+        "owner": "postgres"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "relkind": "r",
+        "rls_enabled": true,
+        "rls_forced": false,
+        "owner": "postgres"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "relkind": "r",
+        "rls_enabled": true,
+        "rls_forced": false,
+        "owner": "postgres"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "relkind": "r",
+        "rls_enabled": true,
+        "rls_forced": false,
+        "owner": "postgres"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "relkind": "r",
+        "rls_enabled": true,
+        "rls_forced": false,
+        "owner": "postgres"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "relkind": "r",
+        "rls_enabled": true,
+        "rls_forced": false,
+        "owner": "postgres"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "relkind": "r",
+        "rls_enabled": true,
+        "rls_forced": false,
+        "owner": "postgres"
+      }
+    ],
+    "columns": [
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "id",
+        "ordinal_position": 1,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": "gen_random_uuid()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "project_id",
+        "ordinal_position": 2,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "user_id",
+        "ordinal_position": 3,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "status",
+        "ordinal_position": 4,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'pending'::text"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "progress",
+        "ordinal_position": 5,
+        "data_type": "integer",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "0"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "options",
+        "ordinal_position": 6,
+        "data_type": "jsonb",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'{}'::jsonb"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "download_url",
+        "ordinal_position": 7,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "file_size_bytes",
+        "ordinal_position": 8,
+        "data_type": "bigint",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "error_message",
+        "ordinal_position": 9,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "created_at",
+        "ordinal_position": 10,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "column_name": "completed_at",
+        "ordinal_position": 11,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "id",
+        "ordinal_position": 1,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": "extensions.uuid_generate_v4()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "recipient_id",
+        "ordinal_position": 2,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "sender_id",
+        "ordinal_position": 3,
+        "data_type": "uuid",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "type",
+        "ordinal_position": 4,
+        "data_type": "character varying(50)",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "title",
+        "ordinal_position": 5,
+        "data_type": "character varying(255)",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "message",
+        "ordinal_position": 6,
+        "data_type": "text",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "data",
+        "ordinal_position": 7,
+        "data_type": "jsonb",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "action_url",
+        "ordinal_position": 8,
+        "data_type": "character varying(500)",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "is_read",
+        "ordinal_position": 9,
+        "data_type": "boolean",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "false"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "read_at",
+        "ordinal_position": 10,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "created_at",
+        "ordinal_position": 11,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "column_name": "updated_at",
+        "ordinal_position": 12,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "column_name": "id",
+        "ordinal_position": 1,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": "gen_random_uuid()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "column_name": "project_id",
+        "ordinal_position": 2,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "column_name": "user_id",
+        "ordinal_position": 3,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "column_name": "role",
+        "ordinal_position": 4,
+        "data_type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "column_name": "status",
+        "ordinal_position": 5,
+        "data_type": "character varying(20)",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'active'::character varying"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "column_name": "created_at",
+        "ordinal_position": 6,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "column_name": "updated_at",
+        "ordinal_position": 7,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "id",
+        "ordinal_position": 1,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": "gen_random_uuid()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "user_id",
+        "ordinal_position": 2,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "project_id",
+        "ordinal_position": 3,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "role",
+        "ordinal_position": 4,
+        "data_type": "text",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "status",
+        "ordinal_position": 5,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'active'::text"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "invited_by",
+        "ordinal_position": 6,
+        "data_type": "uuid",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "joined_at",
+        "ordinal_position": 7,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "created_at",
+        "ordinal_position": 8,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "column_name": "updated_at",
+        "ordinal_position": 9,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "id",
+        "ordinal_position": 1,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": "gen_random_uuid()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "name",
+        "ordinal_position": 2,
+        "data_type": "text",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "description",
+        "ordinal_position": 3,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "facilitator_id",
+        "ordinal_position": 4,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "status",
+        "ordinal_position": 5,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'active'::text"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "settings",
+        "ordinal_position": 6,
+        "data_type": "jsonb",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'{}'::jsonb"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "subscription_mode",
+        "ordinal_position": 7,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'interactive'::text"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "subscription_expires_at",
+        "ordinal_position": 8,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "created_at",
+        "ordinal_position": 9,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "updated_at",
+        "ordinal_position": 10,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "owner_id",
+        "ordinal_position": 11,
+        "data_type": "uuid",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "storyteller_id",
+        "ordinal_position": 12,
+        "data_type": "uuid",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "title",
+        "ordinal_position": 13,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "invitation_token",
+        "ordinal_position": 14,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "invitation_expires_at",
+        "ordinal_position": 15,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "column_name": "payment_status",
+        "ordinal_position": 16,
+        "data_type": "text",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'paid'::text"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "column_name": "id",
+        "ordinal_position": 1,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": "gen_random_uuid()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "column_name": "user_id",
+        "ordinal_position": 2,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "column_name": "transaction_type",
+        "ordinal_position": 3,
+        "data_type": "text",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "column_name": "resource_type",
+        "ordinal_position": 4,
+        "data_type": "text",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "column_name": "amount",
+        "ordinal_position": 5,
+        "data_type": "integer",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "column_name": "project_id",
+        "ordinal_position": 6,
+        "data_type": "uuid",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "column_name": "metadata",
+        "ordinal_position": 7,
+        "data_type": "jsonb",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "'{}'::jsonb"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "column_name": "created_at",
+        "ordinal_position": 8,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "column_name": "user_id",
+        "ordinal_position": 1,
+        "data_type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "column_name": "project_vouchers",
+        "ordinal_position": 2,
+        "data_type": "integer",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "0"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "column_name": "facilitator_seats",
+        "ordinal_position": 3,
+        "data_type": "integer",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "0"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "column_name": "storyteller_seats",
+        "ordinal_position": 4,
+        "data_type": "integer",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "0"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "column_name": "created_at",
+        "ordinal_position": 5,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "column_name": "updated_at",
+        "ordinal_position": 6,
+        "data_type": "timestamp with time zone",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": "now()"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "column_name": "last_payment_reference",
+        "ordinal_position": 7,
+        "data_type": "text",
+        "not_null": false,
+        "identity": "",
+        "generated": "",
+        "default_expression": null
+      }
+    ],
+    "constraints": [
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "constraint_name": "export_requests_pkey",
+        "constraint_type": "p",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "constraint_name": "export_requests_progress_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK (((progress >= 0) AND (progress <= 100)))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "constraint_name": "export_requests_project_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "constraint_name": "export_requests_status_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'processing'::text, 'completed'::text, 'failed'::text])))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "export_requests",
+        "constraint_name": "export_requests_user_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "constraint_name": "notifications_pkey",
+        "constraint_type": "p",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "constraint_name": "notifications_recipient_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (recipient_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "constraint_name": "notifications_sender_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (sender_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "notifications",
+        "constraint_name": "notifications_type_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK (((type)::text = ANY ((ARRAY['new_story'::character varying, 'new_comment'::character varying, 'new_follow_up_question'::character varying, 'story_response'::character varying, 'project_invitation'::character varying, 'member_joined'::character varying, 'chapter_completed'::character varying, 'export_ready'::character varying])::text[])))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "constraint_name": "project_members_pkey",
+        "constraint_type": "p",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "constraint_name": "project_members_project_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "constraint_name": "project_members_project_id_user_id_key",
+        "constraint_type": "u",
+        "validated": true,
+        "definition": "UNIQUE (project_id, user_id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "constraint_name": "project_members_role_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK (((role)::text = ANY ((ARRAY['facilitator'::character varying, 'storyteller'::character varying])::text[])))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_members",
+        "constraint_name": "project_members_user_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "constraint_name": "project_roles_invited_by_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (invited_by) REFERENCES auth.users(id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "constraint_name": "project_roles_pkey",
+        "constraint_type": "p",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "constraint_name": "project_roles_project_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "constraint_name": "project_roles_role_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((role = ANY (ARRAY['facilitator'::text, 'storyteller'::text])))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "constraint_name": "project_roles_status_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((status = ANY (ARRAY['active'::text, 'inactive'::text, 'pending'::text])))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "constraint_name": "project_roles_user_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "constraint_name": "project_roles_user_id_project_id_role_key",
+        "constraint_type": "u",
+        "validated": true,
+        "definition": "UNIQUE (user_id, project_id, role)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "constraint_name": "projects_facilitator_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (facilitator_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "constraint_name": "projects_pkey",
+        "constraint_type": "p",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "constraint_name": "projects_subscription_mode_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((subscription_mode = ANY (ARRAY['interactive'::text, 'archive'::text])))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "constraint_name": "seat_transactions_pkey",
+        "constraint_type": "p",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "constraint_name": "seat_transactions_project_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "constraint_name": "seat_transactions_resource_type_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((resource_type = ANY (ARRAY['project_voucher'::text, 'facilitator_seat'::text, 'storyteller_seat'::text, 'package'::text])))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "constraint_name": "seat_transactions_transaction_type_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((transaction_type = ANY (ARRAY['purchase'::text, 'consume'::text, 'reserve'::text, 'release'::text, 'activate'::text])))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "seat_transactions",
+        "constraint_name": "seat_transactions_user_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "constraint_name": "user_resource_wallets_facilitator_seats_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((facilitator_seats >= 0))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "constraint_name": "user_resource_wallets_pkey",
+        "constraint_type": "p",
+        "validated": true,
+        "definition": "PRIMARY KEY (user_id)"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "constraint_name": "user_resource_wallets_project_vouchers_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((project_vouchers >= 0))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "constraint_name": "user_resource_wallets_storyteller_seats_check",
+        "constraint_type": "c",
+        "validated": true,
+        "definition": "CHECK ((storyteller_seats >= 0))"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "constraint_name": "user_resource_wallets_user_id_fkey",
+        "constraint_type": "f",
+        "validated": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      }
+    ],
+    "triggers": [
+      {
+        "schema_name": "public",
+        "table_name": "project_roles",
+        "trigger_name": "update_project_roles_updated_at",
+        "enabled": "O",
+        "type_bitmask": 19,
+        "function_schema": "public",
+        "function_name": "update_updated_at_column",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 0,
+        "condition_present": false,
+        "definition_hash_md5": "f6bb1255f3772469525f3b616969b922"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "projects",
+        "trigger_name": "update_projects_updated_at",
+        "enabled": "O",
+        "type_bitmask": 19,
+        "function_schema": "public",
+        "function_name": "update_updated_at_column",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 0,
+        "condition_present": false,
+        "definition_hash_md5": "dc68d896993612cf282d7448c32bdd15"
+      },
+      {
+        "schema_name": "public",
+        "table_name": "user_resource_wallets",
+        "trigger_name": "update_user_resource_wallets_updated_at",
+        "enabled": "O",
+        "type_bitmask": 19,
+        "function_schema": "public",
+        "function_name": "update_updated_at_column",
+        "function_identity_arguments": "",
+        "is_constraint": false,
+        "argument_count": 0,
+        "condition_present": false,
+        "definition_hash_md5": "9942eefa65bf1b0fe4a0794ef1a606c7"
+      }
+    ],
+    "indexes": [
+      {
+        "schemaname": "public",
+        "tablename": "export_requests",
+        "indexname": "export_requests_pkey",
+        "indexdef": "CREATE UNIQUE INDEX export_requests_pkey ON public.export_requests USING btree (id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "export_requests",
+        "indexname": "idx_export_requests_created_at",
+        "indexdef": "CREATE INDEX idx_export_requests_created_at ON public.export_requests USING btree (created_at)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "export_requests",
+        "indexname": "idx_export_requests_project",
+        "indexdef": "CREATE INDEX idx_export_requests_project ON public.export_requests USING btree (project_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "export_requests",
+        "indexname": "idx_export_requests_status",
+        "indexdef": "CREATE INDEX idx_export_requests_status ON public.export_requests USING btree (status)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "export_requests",
+        "indexname": "idx_export_requests_user",
+        "indexdef": "CREATE INDEX idx_export_requests_user ON public.export_requests USING btree (user_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "notifications",
+        "indexname": "idx_notifications_created_at",
+        "indexdef": "CREATE INDEX idx_notifications_created_at ON public.notifications USING btree (created_at)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "notifications",
+        "indexname": "idx_notifications_is_read",
+        "indexdef": "CREATE INDEX idx_notifications_is_read ON public.notifications USING btree (is_read)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "notifications",
+        "indexname": "idx_notifications_recipient_id",
+        "indexdef": "CREATE INDEX idx_notifications_recipient_id ON public.notifications USING btree (recipient_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "notifications",
+        "indexname": "idx_notifications_type",
+        "indexdef": "CREATE INDEX idx_notifications_type ON public.notifications USING btree (type)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "notifications",
+        "indexname": "notifications_pkey",
+        "indexdef": "CREATE UNIQUE INDEX notifications_pkey ON public.notifications USING btree (id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_members",
+        "indexname": "project_members_pkey",
+        "indexdef": "CREATE UNIQUE INDEX project_members_pkey ON public.project_members USING btree (id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_members",
+        "indexname": "project_members_project_id_user_id_key",
+        "indexdef": "CREATE UNIQUE INDEX project_members_project_id_user_id_key ON public.project_members USING btree (project_id, user_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "idx_project_roles_project",
+        "indexdef": "CREATE INDEX idx_project_roles_project ON public.project_roles USING btree (project_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "idx_project_roles_role",
+        "indexdef": "CREATE INDEX idx_project_roles_role ON public.project_roles USING btree (role)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "idx_project_roles_status",
+        "indexdef": "CREATE INDEX idx_project_roles_status ON public.project_roles USING btree (status)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "idx_project_roles_user",
+        "indexdef": "CREATE INDEX idx_project_roles_user ON public.project_roles USING btree (user_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "project_roles_pkey",
+        "indexdef": "CREATE UNIQUE INDEX project_roles_pkey ON public.project_roles USING btree (id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "project_roles_project_user_unique",
+        "indexdef": "CREATE UNIQUE INDEX project_roles_project_user_unique ON public.project_roles USING btree (project_id, user_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "project_roles_user_id_idx",
+        "indexdef": "CREATE INDEX project_roles_user_id_idx ON public.project_roles USING btree (user_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "project_roles_user_id_project_id_role_key",
+        "indexdef": "CREATE UNIQUE INDEX project_roles_user_id_project_id_role_key ON public.project_roles USING btree (user_id, project_id, role)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "project_roles",
+        "indexname": "uq_project_roles_project_user",
+        "indexdef": "CREATE UNIQUE INDEX uq_project_roles_project_user ON public.project_roles USING btree (project_id, user_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "projects",
+        "indexname": "idx_projects_created_at",
+        "indexdef": "CREATE INDEX idx_projects_created_at ON public.projects USING btree (created_at)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "projects",
+        "indexname": "idx_projects_facilitator",
+        "indexdef": "CREATE INDEX idx_projects_facilitator ON public.projects USING btree (facilitator_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "projects",
+        "indexname": "idx_projects_status",
+        "indexdef": "CREATE INDEX idx_projects_status ON public.projects USING btree (status)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "projects",
+        "indexname": "projects_facilitator_id_idx",
+        "indexdef": "CREATE INDEX projects_facilitator_id_idx ON public.projects USING btree (facilitator_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "projects",
+        "indexname": "projects_pkey",
+        "indexdef": "CREATE UNIQUE INDEX projects_pkey ON public.projects USING btree (id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "seat_transactions",
+        "indexname": "idx_seat_transactions_created_at",
+        "indexdef": "CREATE INDEX idx_seat_transactions_created_at ON public.seat_transactions USING btree (created_at)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "seat_transactions",
+        "indexname": "idx_seat_transactions_project",
+        "indexdef": "CREATE INDEX idx_seat_transactions_project ON public.seat_transactions USING btree (project_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "seat_transactions",
+        "indexname": "idx_seat_transactions_resource",
+        "indexdef": "CREATE INDEX idx_seat_transactions_resource ON public.seat_transactions USING btree (resource_type)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "seat_transactions",
+        "indexname": "idx_seat_transactions_type",
+        "indexdef": "CREATE INDEX idx_seat_transactions_type ON public.seat_transactions USING btree (transaction_type)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "seat_transactions",
+        "indexname": "idx_seat_transactions_user",
+        "indexdef": "CREATE INDEX idx_seat_transactions_user ON public.seat_transactions USING btree (user_id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "seat_transactions",
+        "indexname": "seat_transactions_pkey",
+        "indexdef": "CREATE UNIQUE INDEX seat_transactions_pkey ON public.seat_transactions USING btree (id)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "user_resource_wallets",
+        "indexname": "idx_wallet_payment_ref",
+        "indexdef": "CREATE INDEX idx_wallet_payment_ref ON public.user_resource_wallets USING btree (last_payment_reference)"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "user_resource_wallets",
+        "indexname": "user_resource_wallets_pkey",
+        "indexdef": "CREATE UNIQUE INDEX user_resource_wallets_pkey ON public.user_resource_wallets USING btree (user_id)"
+      }
+    ]
+  },
+  "counts": {
+    "tables": 7,
+    "columns": 70,
+    "constraints": 34,
+    "triggers": 3,
+    "indexes": 34
+  },
+  "differences": [
+    "auth.users has only synthetic id primary key; auth.uid reads a local session GUC and does not verify JWT.",
+    "extensions.uuid_generate_v4 is a local SQL shim to pg_catalog.gen_random_uuid; original extension runtime omitted.",
+    "Objects owned by a private nonlogin non-superuser fixture_owner instead of production postgres.",
+    "RLS enabled and not forced as captured; production policies omitted and caller table grants revoked. This is stricter than production and does not validate its direct-table authorization.",
+    "Only seven relevant public tables and three captured trigger bindings; other public/auth/storage objects and external workers omitted.",
+    "Four independent caller login roles, no inheritance or bypass. Actual Supabase/PostgREST role inheritance, claims verification and service bypass not reproduced.",
+    "No rules/extension hooks/remote data; native upstream PostgreSQL 17.4 is not complete Supabase."
+  ]
+}

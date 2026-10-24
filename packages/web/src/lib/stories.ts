@@ -186,39 +186,10 @@ export class StoryService {
   }
 
   /**
-   * Delete a story
+   * Legacy deletion stays closed until the asset/tombstone transaction is available.
    */
-  async deleteStory(storyId: string): Promise<boolean> {
-    try {
-      // First get the story to find the audio file
-      const story = await this.getStoryById(storyId)
-
-      // Delete audio file if it exists
-      if (story?.audio_url && typeof story.audio_url === 'string') {
-        const fileName = story.audio_url.split('/').pop()
-        if (fileName) {
-          await this.supabase.storage
-            .from('audio-recordings')
-            .remove([`stories/${fileName}`])
-        }
-      }
-
-      // Delete the story record
-      const { error } = await this.supabase
-        .from('stories')
-        .delete()
-        .eq('id', storyId)
-
-      if (error) {
-        console.error('Error deleting story:', error)
-        return false
-      }
-
-      return true
-    } catch (error) {
-      console.error('Error deleting story:', error)
-      return false
-    }
+  async deleteStory(_storyId: string): Promise<boolean> {
+    return false
   }
 
   /**

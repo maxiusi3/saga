@@ -1,0 +1,226 @@
+{
+  "checkedAt": "2026-10-23T02:40:05.662315+00:00",
+  "scope": "Reviewed local batch, frozen inputs, original gates, current docs and evidence seal. No business test suites or remote operations run.",
+  "status": "passed",
+  "checks": {
+    "priorEvidenceAndExperiments": {
+      "files": 1226,
+      "mismatches": []
+    },
+    "experimentSources": {
+      "files": 9,
+      "mismatches": []
+    },
+    "compositionInputClosure": {
+      "matches": true,
+      "sources": 53,
+      "dependencies": 49,
+      "runtimeFiles": 743
+    },
+    "evidence:normal": {
+      "files": 1,
+      "mismatches": []
+    },
+    "runSources:normal": {
+      "files": 53,
+      "mismatches": []
+    },
+    "runPins:normal": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:red": {
+      "files": 1,
+      "mismatches": []
+    },
+    "runSources:red": {
+      "files": 53,
+      "mismatches": []
+    },
+    "runPins:red": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:lifecycle": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:hostile": {
+      "files": 1,
+      "mismatches": []
+    },
+    "runSources:hostile": {
+      "files": 53,
+      "mismatches": []
+    },
+    "runPins:hostile": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:signal": {
+      "files": 1,
+      "mismatches": []
+    },
+    "runSources:signal": {
+      "files": 53,
+      "mismatches": []
+    },
+    "runPins:signal": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:startFailure": {
+      "files": 1,
+      "mismatches": []
+    },
+    "runSources:startFailure": {
+      "files": 53,
+      "mismatches": []
+    },
+    "runPins:startFailure": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:connectionFailure": {
+      "files": 1,
+      "mismatches": []
+    },
+    "runSources:connectionFailure": {
+      "files": 53,
+      "mismatches": []
+    },
+    "runPins:connectionFailure": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:userSQL": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:preservedInputs": {
+      "files": 1,
+      "mismatches": []
+    },
+    "evidence:originalProject": {
+      "files": 1,
+      "mismatches": []
+    },
+    "lifecycleChild:hostile_environment": {
+      "files": 1,
+      "mismatches": []
+    },
+    "lifecycleChild:actual_SIGTERM_after_fixture": {
+      "files": 1,
+      "mismatches": []
+    },
+    "lifecycleChild:failed_actual_start": {
+      "files": 1,
+      "mismatches": []
+    },
+    "lifecycleChild:failed_actual_connection": {
+      "files": 1,
+      "mismatches": []
+    },
+    "review:implementation": {
+      "files": 1,
+      "mismatches": []
+    },
+    "review:assistance": {
+      "files": 1,
+      "mismatches": []
+    },
+    "review:documentation": {
+      "files": 1,
+      "mismatches": []
+    },
+    "review:wholeBatch": {
+      "files": 1,
+      "mismatches": []
+    },
+    "freshPreservedInputs": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/preserved-inputs-a48f8f8e-35fd-430c-af7f-f67c62bc0ac4.json",
+      "sha256": "6b46991fa4bec1fe4ccd49616379c80111c390037e01080b39258e3eb07f9145"
+    },
+    "documentLinks": {
+      "documents": 14,
+      "broken": []
+    },
+    "git": {
+      "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+      "branch": "codex/october-upgrade-p0",
+      "diffCheckExitCode": 0
+    }
+  },
+  "files": {
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/batch-review-snapshot.json": "c0bf354b5c65927e28b77f6e425120e1f3c16d2aa282bf9f93d3842534f50681",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/current-documents-before.json": "03eb3519766453705078c9dc4e4331097f32e962e75ba793af3e066637edf36f",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/documentation-fix-1.json": "b01707b6c3ef87c3effbaba17ea574e44399e36032b282238e6efd149c622f2f",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/progress.md": "5a6a0de82f96e01d9715d4c177468db1060b0e53aa65b2ed1cbc7cbfd253c043",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/resume-before-2026-10-23.json": "d99c7ef13c0be797a1ffcd3ee6634da862275dcec480a70c258e21e7a8d57648",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/seal-closeout.py": "ed87f379432bf87d950f87dea37e12137be0e5b7368b75ee0423e40fc47ee7af",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/task-1-brief.md": "34c0ce8f0d8ea53cb9579cdb748ba0f7cd54b68819fbba563a7c15f43ee1d616",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/task-1-report.md": "0078d847b9eb084fe9f6ff60b61e7da57fa4f6896677dc80c6723d8370a95939",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/task-1-review-source-hashes.json": "ddceaf7fbcd4a9653871bfea41e9417c81334e524096766cbf837c8bb89252ea",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/task-2-prepared-before.json": "9b5934586b8c39ca3c627efbda765f16cb8106be7d6df5c3467dd38854a80b29",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/task-2-report.md": "f522fc1116286052919965aab21b42e1b121a77d5a48d834646e43257817a627",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/task-2-review-snapshot.json": "9f7e5be5cbaace73a0d808044377c57b0442a848e7d6b9f67a18544db76fb52c",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/verify-preserved-inputs.py": "f1c4b0392c2e7cb895a25b59bfca6bd0f5f8c5e1b293407dd57befbd61b8e666",
+    ".superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/verify-user-sql.mjs": "7ced95b53487faa46b08a793e6dc3725be1b96a7afed5fdd79f27f33339f55f3",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "d8facd6973c12bb06c12821a1cfa196747a3b28d567fca57f38de2db59035f57",
+    "docs/HANDOFF-2026-10-13-upgrade.md": "a1fde39dd903bd9354f15968e964dc2ef689d02b92f54630a55b17ad950d032c",
+    "docs/README.md": "8404bc51df5a59d1cd956ede6c3dfa394df7afe65cbd2b4841ac015996a5609e",
+    "docs/research/2026-10-22-pg17-rls-source-composition.md": "6c908bb0195615b8adf4712eb5bfaa04221460c8a46561db4d7254b49b078fb2",
+    "docs/research/2026-10-22-user-action-checklist.md": "bc256975317b375e03d891905e7937245e2ec30d8e54000b7246a8039c03643b",
+    "docs/research/2026-10-22-user-readonly-evidence.sql": "3d1eb2a5c8073846d47518941943560014500f72c2b9778b3f78088b010841b7",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/README.md": "1e95f36001232ad3253e619795b10dc04f61176336584b978c9c094587016c5d",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/application-inputs-before.json": "880d5d98b714752c0cb2a705f190b02b4d59501c6a9c985c0d2f79a5bee012b6",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/assistance-review.md": "ca1cb5bcf27b27492542fe5a389454c0d31e6d56ba84063653adf59ab177759f",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/batch-final-review.md": "9c7af9e3346d7f0e93af42336ead969d39d311a7aa482f3677416ad01617fb50",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/documentation-fix-1-review.md": "36471fa9073fcc53a3d01f6b5d5106f00e4299f80473ec34001499307d76f97e",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/documentation-review.md": "b9475350b3fa6debb21bf5f22835174d29b223f842493f3e7ed4f8af538d7010",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/implementation-review.md": "ca382cf72c93c13cc4d0275e8f511c7016fdf702302902d9e3f31ca9a1ab07e5",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/lifecycle-2026-10-23T01-55-43.575Z-25be0421-9495-4ff9-b39e-9ef8bb14ad83.json": "2b9f89c9e4675130009e4dcf10ae9eac9dff0db2276710da752567d81f608a20",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/lifecycle-2026-10-23T01-58-56.415Z-ccdd7767-5d65-4dea-89db-4d6656532b4b.json": "6dddf31f4cc4808e845b678d85b268b4417249e43bb88c659edb795293b7953d",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/milestone-check.json": "23cfb491417f521717404ed25b592e1164a5cff55e72e7456f73abd7bc6caec1",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/preserved-inputs-1c2b6ddf-bdb5-46d1-ad04-0e6d3a614ab2.json": "08dacda0a0b0a8547cc4792d23fe9c1bb43bd003d3502362d852787ed77c7e1d",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/preserved-inputs-629a4e55-6f3c-4bd3-85a4-6c4b51d9fded.json": "77253ed2372ae4b51d4c4703781a916fa64ad32b07a1702b1dc243ba2dc4df98",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/preserved-inputs-84f42d4d-7f37-4821-aab0-524e6c598f8b.json": "0cd2bfe479816bd8c9d90ccc28f3bb0aac3e419978a87ce63e7261d1552dbdd2",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/preserved-inputs-a48f8f8e-35fd-430c-af7f-f67c62bc0ac4.json": "6b46991fa4bec1fe4ccd49616379c80111c390037e01080b39258e3eb07f9145",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/red-2026-10-23T01-44-33.043Z-5b1e32c4-7981-4d86-8ae0-713158eaf956.json": "676e414a2b8979ca9e93c01d1f0603e3503f46c53d7ba5dba0ca539c581cdd80",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/red-2026-10-23T01-45-24.168Z-ab6c7b0a-6816-442a-a125-18bf94c76844.json": "9b8d20696c768a1aa64ba123f5a381f5e15f2c6c5f913b14bb22bc6f26139aaa",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/red-2026-10-23T01-48-01.488Z-495abf28-405c-45ad-a537-597f24e51400.json": "229824183d05ff6d16e3ed3ef2ac809bed8e7414ab41922a1479c774a33af4d0",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/red-2026-10-23T01-48-51.056Z-7425ddb9-5e2d-4499-925c-621b40c60676.json": "a468a47388b01bc8ab4268c7194fa785194b2d5b5c249d326f85f46b1bdaee44",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/red-2026-10-23T01-54-03.755Z-cedab23d-0470-4931-9a10-f86daec7f2ed.json": "abd5ead151a12d9c9a8dbea9a901e75650c756821c6fdfb368888564c755fbb5",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/red-2026-10-23T01-58-32.869Z-ccb54d4b-eff2-49c8-8767-ed140e3cba27.json": "5a6e0138318df1fb05eb701ba2cf1c4f0cb22eb1e66c5d86539c2ce3b44fc52a",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-49-34.634Z-1143fc6b-a88b-4ad9-a3a3-c70b7920cb02.json": "3644985c7efded2caac3d0dc12e61e3788976415baa14acf209731c5ec5453bf",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-51-37.131Z-3670855d-5b40-4cfe-94e8-51c9e27f718b.json": "4d9bd737f97acce23b4c64533b663bfdb619b3fd2902c470e52b6130580dd9a2",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-52-40.762Z-924a64a2-6942-4e9b-9c17-2c3cbdc84e68.json": "52ea4f59dd7bd33d845073915f8cd5b746958634ea8178025a88f9771a7c13c2",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-55-43.990Z-181387d1-b9f1-4215-a264-7cf814f504b3.json": "29d4a24af3f162812eda2dd9f9954b0b36ea12849d92c62c61461a521101c62f",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-55-50.036Z-45ea319e-90c7-4c81-93f7-5ba612cfd8ec.json": "abd59b04119f53ea0320a1455d558019032e6e574cc12a7bb48f47503f218e80",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-55-52.545Z-a4e76bb5-92a2-4079-aa42-8b794cb48af4.json": "d5bd2320e6640af33e7d8bd2adfe2cd28376b435d025cb1c7cc316930153c95f",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-55-54.627Z-0c60d3a1-b737-4e86-9dfb-1539046ad4f8.json": "8545e5669ef39ac9bcb54579d2ad86537cb490f570cb6e1b68c31ec071c14b5b",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-57-40.064Z-866c69eb-00c2-46b6-9637-5e96f4d4dbd7.json": "4bde0ca5cdb2ced8de01cb4f4e4e39d5466cf9ba1837405b75d0fff06c971a0a",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-58-56.841Z-d54c7c7a-53a0-4bc6-bea7-7b1f4217e9d2.json": "485d9bfad68ee7f4b0f170f0e096a08487f852ecb4fef8bb4acedf5658b808bb",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-59-03.168Z-df09e994-6896-4a92-8c92-3cba1ad8fccc.json": "fa94c57674836cfa1a5267e084b2b239fb29d70dd071c78756f5a6faac8f32a4",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-59-05.837Z-73b6fb61-1f47-46e2-a2be-71dba358df18.json": "0bdc9330369ce07dbf54bbabc06fa19d319767a45c282d4858f4bb88f0f3aeb5",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-59-07.996Z-ba519266-6059-4440-8d82-937330943c97.json": "567caac3ab99f372360b5f7f48edfac8b2641c572ddf926752c50c31588e8434",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/user-sql-966bafbd-3f76-46f5-8aeb-d333824d008e.json": "e9ddc9afa67cb12e737edd5c235505cf2cfa2fd980cdf45496a9a6eeca363e27",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/verification.json": "b326a69429a51af3d5cd96a189486546e2d366427f80539dd920fea471603c42",
+    "docs/superpowers/plans/2026-10-11-upgrade-p0-preparation.md": "a651a0b61ed3e0bd0c9e16868d6be7355a85f6022a2865cddc8c675517479819",
+    "docs/superpowers/plans/2026-10-22-upgrade-pg17-rls-source-composition.md": "d70658959adedb6e338e7c8df8bb5129de58e3e1af0de1db01e833d72949041f",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "18ff0680510bb4689d36723dd5516bbc37bb43b320c1b554d54d1e859bb6caaf",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "323d79ae48e701603ec765c03e906d1daf44512c6e053f3c5cb4505a42500782",
+    "docs/superpowers/specs/2026-10-22-pg17-rls-source-composition.md": "ac702833a2e78258f511763511bda6f3d1e108b249ca991aa8f6980ed4e16388",
+    "experiments/pg17-rls-source-composition/README.md": "ffceee1e2fd2709abd99c9f0d550769d174842f969f550a1ad43729e6eec6f12",
+    "experiments/pg17-rls-source-composition/compatibility.mjs": "090f25f614deb00ec67ed517d9271fd4190a8ebe22084a2cb7a702c3c0d0ab43",
+    "experiments/pg17-rls-source-composition/fixture.mjs": "636f51fbb2fbf5cb3345f981354965f01170262c2213c618c48299740fe73508",
+    "experiments/pg17-rls-source-composition/input-pins.json": "c730e281df0fde3b9f8069be60bd3fb8fccaa4c8402b1579923eab6993efd7a2",
+    "experiments/pg17-rls-source-composition/inputs.mjs": "cb38568f15cdd841eaf7ea0204dd2318ec7422069323f16317c9c5cf1930eed5",
+    "experiments/pg17-rls-source-composition/pin-inputs.mjs": "17ac9f0d902be26f3483db12c2fc2cdd3be92a8a181c4dcd95c859c5b60cdee1",
+    "experiments/pg17-rls-source-composition/scenarios.mjs": "af1dc140937c09a896366a55e7b8c13ddab853da4c4b339cb8ccc3452da4232b",
+    "experiments/pg17-rls-source-composition/verify-lifecycle.mjs": "6cc7dbb3925fc4839436668fefbf7b0ec0bf0493af394b06a66816e43744e84f",
+    "experiments/pg17-rls-source-composition/verify.mjs": "0089f2e2aefd890822c278245a5a7640f0db2e072ebd159957cc32fc1c5cb910"
+  },
+  "verifierSha256": "ed87f379432bf87d950f87dea37e12137be0e5b7368b75ee0423e40fc47ee7af",
+  "errors": []
+}

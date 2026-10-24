@@ -35,6 +35,11 @@ yarn-error.log*
 .env*.local
 .env
 
+# Local Supabase metadata-reader credentials
+/supabase/.temp/metadata-reader-credentials
+/supabase/.temp/metadata-reader-password
+/supabase/.temp/routine-audit/
+
 # vercel
 .vercel
 

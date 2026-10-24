@@ -1,0 +1,92 @@
+{
+  "startedAt": "2026-10-16T05:10:57.656Z",
+  "scope": "isolated PostgreSQL + pg-boss + real local fictional audio + existing T04 streaming merge and FFmpeg decoder",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3",
+    "ffmpeg": "ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffmpegSha256": "4a4a968b98859588e98500ae25973d80a5ca5eed0724222b9f76360dcb72a001",
+    "realtimeWrapperSha256": "4a66844e33d8c85bf23ed0f5be9d71a47319498eb089b8a430214982babbeaa0"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "ccd2b47f5f834517e461f5d429872065e0874a3fd67d8730c68d478f80ea859b",
+    "experiments/t05-durable-worker/worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "experiments/t05-durable-worker/verify.mjs": "de7370ea78c81070738c1e5cd7ef441468fe7820c1eb3feeabf3641571390580",
+    "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+    "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+    "experiments/t05-durable-worker/README.md": "d75c6809f4ff9a82051249890b10f06de4be359efd6726d41dd333d992da6ab0",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "a6bf18704d0472eaff1ebb72f42a32be46a34ad2b0093aeab9ea97cf94d7d358",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "e555de35fb4b262b86f1b219563e2ef9124d8c15a00f6a658527308863217509",
+    "experiments/t05-durable-worker/verify-merge-cleanup.mjs": "7c045b4f67e6f4344d11c98ca9738e925a1179eea9c334c992e392400b754c9c",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a9485b57ac13f5606e41436975a1f57f0198b51e2a858cea505b0141b0e07f12",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "c1f0fcac4bd631dcefe160bcb7ac67886f975bcdb3a4d1a05b3ca1a6a265cd27"
+  },
+  "scenarios": [],
+  "assertions": 0,
+  "limitations": [
+    "Private temporary PostgreSQL tables and an allowed flag simulate authorization; no production schema, RLS, Storage, outbox, migration or paid provider.",
+    "No filesystem/database distributed transaction. Prepared outputs may remain private orphans after process death or unknown COMMIT; no automatic GC or manual reuse.",
+    "Private directories, regular files, bounded streams and O_NOFOLLOW protect local paths; same-user hostile directory replacement races and non-preemptible kernel filesystem operations are outside this PoC.",
+    "Generated sine audio is split into contiguous file chunks; this is not physical-device MediaRecorder or production media sandbox evidence.",
+    "Checkpoint pauses are fault wrappers, not decoder CPU work. Real-time input throttling (-re) is explicitly labeled where used with real FFmpeg.",
+    "The existing local nonfree FFmpeg 7.1 executable is used for tests only and is not copied or redistributed."
+  ],
+  "resourceOwnership": {
+    "version": 1,
+    "harnessPid": 50154,
+    "scratch": "/tmp/saga-t05-BnOwoI",
+    "clusterMayHaveStarted": true,
+    "postmasterPid": 50200,
+    "groupIds": [],
+    "decoderPids": [
+      50215
+    ],
+    "fixture": {
+      "owner": "direct",
+      "fault": "fatal",
+      "ownerPid": 50154,
+      "decoderPid": 50215,
+      "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+      "decoderGroup": 50154,
+      "stoppedOwner": false,
+      "ownerExitedBeforeCleanup": false,
+      "stoppedDecoder": true
+    }
+  },
+  "mergeCleanupFixture": {
+    "owner": "direct",
+    "fault": "fatal",
+    "ownerPid": 50154,
+    "decoderPid": 50215,
+    "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+    "decoderGroup": 50154,
+    "stoppedOwner": false,
+    "ownerExitedBeforeCleanup": false,
+    "stoppedDecoder": true
+  },
+  "status": "failed",
+  "error": "Error: Injected merge harness fatal cleanup\n    at runMergeScenarios (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/merge-scenarios.mjs:170:57)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:676:5",
+  "processOwnership": {
+    "supervisorPids": [],
+    "workerPids": [],
+    "runnerPids": [],
+    "groupIds": [],
+    "forcedGroupKills": [],
+    "remainingGroups": [],
+    "remainingRunnerPids": [],
+    "directOperationsRemaining": 0
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T05:11:00.182Z"
+}

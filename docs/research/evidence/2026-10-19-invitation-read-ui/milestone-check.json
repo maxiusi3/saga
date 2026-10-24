@@ -1,0 +1,32 @@
+{
+  "assessedAt": "2026-10-19T02:16:29.581471+00:00",
+  "authoritativePlan": "docs/2026-10-10-integrated-upgrade-plan.md#71-质量门的具体验收",
+  "priorBatch": {
+    "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/verification.json",
+    "sha256": "dd3eb4b47b5bfc75a1dea7bf687711a7a530fa449f98ba12ee7e7567c0e89c89"
+  },
+  "G0": {
+    "passed": false,
+    "missing": [
+      "Existing signin/callback URL/next/raw auth logs and auth_next retention need dedicated closure before end-to-end auth privacy claims",
+      "Production permission closure including direct RPC/table paths",
+      "Fixed bucket configuration and full migration/history equivalence",
+      "Backup restore and rollback rehearsal",
+      "Selected provider account capability and data terms"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "missing": [
+      "Formal authenticated Storage/database adapters",
+      "Actual iPhone Safari/Android Chrome/desktop 5/20/30-minute fault matrix",
+      "Production-equivalent cross-family ASR/playback/export/deletion and original export checksum evidence"
+    ]
+  },
+  "G2": false,
+  "G3": false,
+  "G4": false,
+  "localBatchIsMilestone": false,
+  "pushAuthorizedNow": false,
+  "note": "Local recipient read/UI compatibility work cannot satisfy missing original gates. Do not lower gates or infer pass from unit test counts."
+}

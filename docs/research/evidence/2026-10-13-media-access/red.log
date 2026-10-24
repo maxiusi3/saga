@@ -1,0 +1,755 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/__tests__/access.test.ts
+
+FAIL src/app/api/media/__tests__/access.test.ts
+  ● private media signing › denies another family or removed uploader: other/projects/family-b/stories/temp/audio.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      100 |   it.each(['other/projects/family-b/stories/temp/audio.mp3', 'alice/projects/family-b/stories/temp/audio.mp3'])('denies another family or removed uploader: %s', async path => {
+      101 |     const response = await sign(request({ bucket: 'audio-recordings', path }))
+    > 102 |     expect(response.status).toBe(403)
+          |                             ^
+      103 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+      104 |     noStorage()
+      105 |   })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:102:29)
+
+  ● private media signing › denies another family or removed uploader: alice/projects/family-b/stories/temp/audio.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      100 |   it.each(['other/projects/family-b/stories/temp/audio.mp3', 'alice/projects/family-b/stories/temp/audio.mp3'])('denies another family or removed uploader: %s', async path => {
+      101 |     const response = await sign(request({ bucket: 'audio-recordings', path }))
+    > 102 |     expect(response.status).toBe(403)
+          |                             ^
+      103 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+      104 |     noStorage()
+      105 |   })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:102:29)
+
+  ● private media signing › signs the exact project key for an active member and preserves auth headers
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "session=refreshed"
+    Received: null
+
+      110 |     expect(mockStorageBucket).toHaveBeenCalledWith('audio-recordings')
+      111 |     expect(mockSign).toHaveBeenCalledWith(path, 3600)
+    > 112 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+          |                                                ^
+      113 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      114 |   })
+      115 |   it.each(['other/images/stories/story-a/photo.png', 'other/images/interactions/story-a/photo.png'])('checks actual story project for legacy image %s', async path => {
+
+      at Object.toBe (src/app/api/media/__tests__/access.test.ts:112:48)
+
+  ● private media signing › checks actual story project for legacy image other/images/stories/story-a/photo.png
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 403
+
+      114 |   })
+      115 |   it.each(['other/images/stories/story-a/photo.png', 'other/images/interactions/story-a/photo.png'])('checks actual story project for legacy image %s', async path => {
+    > 116 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(200)
+          |                                                                    ^
+      117 |     expect(mockSign).toHaveBeenCalledWith(path, 3600)
+      118 |   })
+      119 |   it('does not treat ownership prefix as story permission', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:116:68)
+
+  ● private media signing › checks actual story project for legacy image other/images/interactions/story-a/photo.png
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 403
+
+      114 |   })
+      115 |   it.each(['other/images/stories/story-a/photo.png', 'other/images/interactions/story-a/photo.png'])('checks actual story project for legacy image %s', async path => {
+    > 116 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(200)
+          |                                                                    ^
+      117 |     expect(mockSign).toHaveBeenCalledWith(path, 3600)
+      118 |   })
+      119 |   it('does not treat ownership prefix as story permission', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:116:68)
+
+  ● private media signing › does not treat ownership prefix as story permission
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      118 |   })
+      119 |   it('does not treat ownership prefix as story permission', async () => {
+    > 120 |     expect((await sign(request({ bucket: 'saga', path: 'alice/images/stories/story-b/photo.png' }))).status).toBe(403)
+          |                                                                                                              ^
+      121 |     noStorage()
+      122 |   })
+      123 |   it('allows only the owner of a non-project personal file', async () => {
+
+      at Object.toBe (src/app/api/media/__tests__/access.test.ts:120:110)
+
+  ● private media signing › rejects ambiguous key before storage: alice/projects/family-a/../family-b/a.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: alice/projects/family-a/%2e%2e/a.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: alice/projects/family-a/%252f/a.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: /alice/projects/family-a/a.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: alice/projects//a.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: alice/projects/family-a/a\b.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: https://example.com/alice/projects/family-a/a.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: alice/foo/projects/family-a/a.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: alice/images/stories
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects ambiguous key before storage: alice/projects/family-a/a.mp3?token=foo
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      134 |     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
+      135 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 136 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      137 |     noStorage()
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:136:68)
+
+  ● private media signing › rejects invalid expiry 900
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+    > 140 |     expect((await sign(request({ bucket: 'saga', path: 'alice/images/photo.png', expiresIn }))).status).toBe(400)
+          |                                                                                                         ^
+      141 |     noStorage()
+      142 |   })
+      143 |   it('fails closed on project lookup error', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:140:105)
+
+  ● private media signing › rejects invalid expiry 0
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+    > 140 |     expect((await sign(request({ bucket: 'saga', path: 'alice/images/photo.png', expiresIn }))).status).toBe(400)
+          |                                                                                                         ^
+      141 |     noStorage()
+      142 |   })
+      143 |   it('fails closed on project lookup error', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:140:105)
+
+  ● private media signing › rejects invalid expiry -5
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+    > 140 |     expect((await sign(request({ bucket: 'saga', path: 'alice/images/photo.png', expiresIn }))).status).toBe(400)
+          |                                                                                                         ^
+      141 |     noStorage()
+      142 |   })
+      143 |   it('fails closed on project lookup error', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:140:105)
+
+  ● private media signing › rejects invalid expiry null
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      138 |   })
+      139 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+    > 140 |     expect((await sign(request({ bucket: 'saga', path: 'alice/images/photo.png', expiresIn }))).status).toBe(400)
+          |                                                                                                         ^
+      141 |     noStorage()
+      142 |   })
+      143 |   it('fails closed on project lookup error', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:140:105)
+
+  ● private media signing › fails closed on project lookup error
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      143 |   it('fails closed on project lookup error', async () => {
+      144 |     mockLookupError = true
+    > 145 |     expect((await sign(request({ bucket: 'saga', path: 'alice/projects/family-a/a.mp3' }))).status).toBe(500)
+          |                                                                                                     ^
+      146 |     noStorage()
+      147 |   })
+      148 |   it('returns service unavailable instead of signing when admin configuration is absent', async () => {
+
+      at Object.toBe (src/app/api/media/__tests__/access.test.ts:145:101)
+
+  ● private media signing › returns service unavailable instead of signing when admin configuration is absent
+
+    not configured
+
+      30 | jest.mock('@/lib/supabase', () => ({
+      31 |   getSupabaseAdmin: () => {
+    > 32 |     if (mockDatabaseUnavailable) throw new Error('not configured')
+         |                                        ^
+      33 |     return {
+      34 |       auth: { getUser: async () => ({ data: { user: null } }) },
+      35 |       storage: { from: (...args: unknown[]) => mockStorageBucket(...args) },
+
+      at getSupabaseAdmin (src/app/api/media/__tests__/access.test.ts:32:40)
+      at POST (src/app/api/media/signed-url/route.ts:24:49)
+      at Object.<anonymous> (src/app/api/media/__tests__/access.test.ts:150:13)
+
+  ● private media signing › rejects malformed JSON without an unhandled route failure
+
+    SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+        at JSON.parse (<anonymous>)
+
+       9 |   if (!auth.ok) return auth.response
+      10 |
+    > 11 |   const body = await request.json()
+         |                ^
+      12 |   const bucket = String(body.bucket || '')
+      13 |   const path = String(body.path || '')
+      14 |   const expiresIn = Number(body.expiresIn || 3600)
+
+      at POST (src/app/api/media/signed-url/route.ts:11:16)
+      at Object.<anonymous> (src/app/api/media/__tests__/access.test.ts:154:22)
+
+  ● stored audio transcription › uses exact path and explicit/default bucket undefined with original MIME/name
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "audio-recordings"
+    Received: "saga"
+
+    Number of calls: 1
+
+      163 |     const response = await transcribe(multipart({ storagePath, ...(storageBucket ? { storageBucket } : {}) }))
+      164 |     expect(response.status).toBe(200)
+    > 165 |     expect(mockStorageBucket).toHaveBeenCalledWith(storageBucket ?? 'audio-recordings')
+          |                               ^
+      166 |     expect(mockDownload).toHaveBeenCalledWith(storagePath)
+      167 |     const file = mockProvider.mock.calls[0][1].body.get('file') as File
+      168 |     expect(file.name).toBe('memory.mp3')
+
+      at toHaveBeenCalledWith (src/app/api/media/__tests__/access.test.ts:165:31)
+
+  ● stored audio transcription › uses exact path and explicit/default bucket saga with original MIME/name
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "memory.mp3"
+    Received: "audio.webm"
+
+      166 |     expect(mockDownload).toHaveBeenCalledWith(storagePath)
+      167 |     const file = mockProvider.mock.calls[0][1].body.get('file') as File
+    > 168 |     expect(file.name).toBe('memory.mp3')
+          |                       ^
+      169 |     expect(file.type).toBe('audio/mpeg')
+      170 |     expect(await file.text()).toBe('original audio')
+      171 |   })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:168:23)
+
+  ● stored audio transcription › rejects a removed uploader before downloading or calling the provider
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      172 |   it('rejects a removed uploader before downloading or calling the provider', async () => {
+      173 |     const response = await transcribe(multipart({ storagePath: 'alice/projects/family-b/stories/temp/memory.mp3' }))
+    > 174 |     expect(response.status).toBe(403)
+          |                             ^
+      175 |     expect(response.headers.get('X-RateLimit-Limit')).toBe('30')
+      176 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+      177 |     noStorage()
+
+      at Object.toBe (src/app/api/media/__tests__/access.test.ts:174:29)
+
+  ● stored audio transcription › does not search another bucket when an authorized object is missing
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        Array [
+    -     "audio-recordings",
+    +     "saga",
+        ],
+      ]
+
+      181 |     mockDownloaded = null
+      182 |     expect((await transcribe(multipart({ storagePath: 'alice/projects/family-a/temp/memory.mp3' }))).status).toBe(404)
+    > 183 |     expect(mockStorageBucket.mock.calls).toEqual([['audio-recordings']])
+          |                                          ^
+      184 |     expect(mockProvider).not.toHaveBeenCalled()
+      185 |   })
+      186 |   it.each([
+
+      at Object.toEqual (src/app/api/media/__tests__/access.test.ts:183:42)
+
+  ● stored audio transcription › rejects malformed or conflicting inputs {"audio":"not a file"}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      188 |     { storagePath: 'alice/temp/a.mp3', audio: new Blob(['a'], { type: 'audio/mpeg' }) },
+      189 |   ])('rejects malformed or conflicting inputs %j', async fields => {
+    > 190 |     expect((await transcribe(multipart(fields))).status).toBe(400)
+          |                                                          ^
+      191 |     noStorage()
+      192 |     expect(mockProvider).not.toHaveBeenCalled()
+      193 |   })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:190:58)
+
+  ● stored audio transcription › rejects malformed or conflicting inputs {"storagePath":"alice/temp/a.mp3","storageBucket":"unknown"}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      188 |     { storagePath: 'alice/temp/a.mp3', audio: new Blob(['a'], { type: 'audio/mpeg' }) },
+      189 |   ])('rejects malformed or conflicting inputs %j', async fields => {
+    > 190 |     expect((await transcribe(multipart(fields))).status).toBe(400)
+          |                                                          ^
+      191 |     noStorage()
+      192 |     expect(mockProvider).not.toHaveBeenCalled()
+      193 |   })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:190:58)
+
+  ● stored audio transcription › rejects malformed or conflicting inputs {"storagePath":"alice/temp/a.mp3","audio":{}}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      188 |     { storagePath: 'alice/temp/a.mp3', audio: new Blob(['a'], { type: 'audio/mpeg' }) },
+      189 |   ])('rejects malformed or conflicting inputs %j', async fields => {
+    > 190 |     expect((await transcribe(multipart(fields))).status).toBe(400)
+          |                                                          ^
+      191 |     noStorage()
+      192 |     expect(mockProvider).not.toHaveBeenCalled()
+      193 |   })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:190:58)
+
+  ● stored audio transcription › retains the actual name and MIME of a direct upload
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "voice.mp3"
+    Received: "audio.webm"
+
+      195 |     expect((await transcribe(multipart({ audio: new Blob(['a'], { type: 'audio/mpeg' }) }))).status).toBe(200)
+      196 |     const file = mockProvider.mock.calls[0][1].body.get('file') as File
+    > 197 |     expect(file.name).toBe('voice.mp3')
+          |                       ^
+      198 |     expect(file.type).toBe('audio/mpeg')
+      199 |   })
+      200 |   it('rejects an oversized stored object without reading its bytes or calling the provider', async () => {
+
+      at Object.toBe (src/app/api/media/__tests__/access.test.ts:197:23)
+
+  ● stored audio transcription › rejects an oversized stored object without reading its bytes or calling the provider
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 413
+    Received: 200
+
+      201 |     Object.defineProperty(mockDownloaded, 'size', { value: 101 * 1024 * 1024 })
+      202 |     const read = jest.spyOn(mockDownloaded!, 'arrayBuffer')
+    > 203 |     expect((await transcribe(multipart({ storagePath: 'alice/temp/large.mp3' }))).status).toBe(413)
+          |                                                                                           ^
+      204 |     expect(read).not.toHaveBeenCalled()
+      205 |     expect(mockProvider).not.toHaveBeenCalled()
+      206 |   })
+
+      at Object.toBe (src/app/api/media/__tests__/access.test.ts:203:91)
+
+  ● authenticated image upload › requires authentication before parsing or processing the image
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 500
+
+      212 |     const formData = jest.fn()
+      213 |     const response = await uploadImage({ formData } as unknown as NextRequest)
+    > 214 |     expect(response.status).toBe(401)
+          |                             ^
+      215 |     expect(formData).not.toHaveBeenCalled()
+      216 |     expect(mockSharp).not.toHaveBeenCalled()
+      217 |     noStorage()
+
+      at Object.toBe (src/app/api/media/__tests__/access.test.ts:214:29)
+
+  ● authenticated image upload › preserves original bytes in authenticated folder images
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "session=refreshed"
+    Received: null
+
+      220 |     const response = await uploadImage(multipart({ folder, file: new Blob(['original photo'], { type: 'image/png' }) }))
+      221 |     expect(response.status).toBe(200)
+    > 222 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+          |                                                ^
+      223 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      224 |     expect(mockUpload.mock.calls[0][0]).toMatch(new RegExp(`^alice/${folder}/[^/]+\\.png$`))
+      225 |     expect(mockUpload.mock.calls[0][1]).toEqual(Buffer.from('original photo'))
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:222:48)
+
+  ● authenticated image upload › preserves original bytes in authenticated folder images/stories/story-a
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "session=refreshed"
+    Received: null
+
+      220 |     const response = await uploadImage(multipart({ folder, file: new Blob(['original photo'], { type: 'image/png' }) }))
+      221 |     expect(response.status).toBe(200)
+    > 222 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+          |                                                ^
+      223 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      224 |     expect(mockUpload.mock.calls[0][0]).toMatch(new RegExp(`^alice/${folder}/[^/]+\\.png$`))
+      225 |     expect(mockUpload.mock.calls[0][1]).toEqual(Buffer.from('original photo'))
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:222:48)
+
+  ● authenticated image upload › preserves original bytes in authenticated folder images/interactions/story-a
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "session=refreshed"
+    Received: null
+
+      220 |     const response = await uploadImage(multipart({ folder, file: new Blob(['original photo'], { type: 'image/png' }) }))
+      221 |     expect(response.status).toBe(200)
+    > 222 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+          |                                                ^
+      223 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      224 |     expect(mockUpload.mock.calls[0][0]).toMatch(new RegExp(`^alice/${folder}/[^/]+\\.png$`))
+      225 |     expect(mockUpload.mock.calls[0][1]).toEqual(Buffer.from('original photo'))
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:222:48)
+
+  ● authenticated image upload › preserves original bytes in authenticated folder projects/family-a/images
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "session=refreshed"
+    Received: null
+
+      220 |     const response = await uploadImage(multipart({ folder, file: new Blob(['original photo'], { type: 'image/png' }) }))
+      221 |     expect(response.status).toBe(200)
+    > 222 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+          |                                                ^
+      223 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      224 |     expect(mockUpload.mock.calls[0][0]).toMatch(new RegExp(`^alice/${folder}/[^/]+\\.png$`))
+      225 |     expect(mockUpload.mock.calls[0][1]).toEqual(Buffer.from('original photo'))
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:222:48)
+
+  ● authenticated image upload › denies another family folder images/stories/story-b before processing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      228 |   })
+      229 |   it.each(['images/stories/story-b', 'projects/family-b/images'])('denies another family folder %s before processing', async folder => {
+    > 230 |     expect((await uploadImage(multipart({ folder, file: new Blob(['a'], { type: 'image/png' }) }))).status).toBe(403)
+          |                                                                                                             ^
+      231 |     expect(mockSharp).not.toHaveBeenCalled()
+      232 |     noStorage()
+      233 |   })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:230:109)
+
+  ● authenticated image upload › denies another family folder projects/family-b/images before processing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      228 |   })
+      229 |   it.each(['images/stories/story-b', 'projects/family-b/images'])('denies another family folder %s before processing', async folder => {
+    > 230 |     expect((await uploadImage(multipart({ folder, file: new Blob(['a'], { type: 'image/png' }) }))).status).toBe(403)
+          |                                                                                                             ^
+      231 |     expect(mockSharp).not.toHaveBeenCalled()
+      232 |     noStorage()
+      233 |   })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:230:109)
+
+  ● authenticated image upload › rejects invalid folder images/../projects/family-b
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      233 |   })
+      234 |   it.each(['images/../projects/family-b', 'images/%2e%2e/family-b', 'other/folder', 'images/stories'])('rejects invalid folder %s', async folder => {
+    > 235 |     expect((await uploadImage(multipart({ folder, file: new Blob(['a'], { type: 'image/png' }) }))).status).toBe(400)
+          |                                                                                                             ^
+      236 |     noStorage()
+      237 |   })
+      238 |   it('does not return success if thumbnail upload fails', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:235:109)
+
+  ● authenticated image upload › rejects invalid folder images/%2e%2e/family-b
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      233 |   })
+      234 |   it.each(['images/../projects/family-b', 'images/%2e%2e/family-b', 'other/folder', 'images/stories'])('rejects invalid folder %s', async folder => {
+    > 235 |     expect((await uploadImage(multipart({ folder, file: new Blob(['a'], { type: 'image/png' }) }))).status).toBe(400)
+          |                                                                                                             ^
+      236 |     noStorage()
+      237 |   })
+      238 |   it('does not return success if thumbnail upload fails', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:235:109)
+
+  ● authenticated image upload › rejects invalid folder other/folder
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      233 |   })
+      234 |   it.each(['images/../projects/family-b', 'images/%2e%2e/family-b', 'other/folder', 'images/stories'])('rejects invalid folder %s', async folder => {
+    > 235 |     expect((await uploadImage(multipart({ folder, file: new Blob(['a'], { type: 'image/png' }) }))).status).toBe(400)
+          |                                                                                                             ^
+      236 |     noStorage()
+      237 |   })
+      238 |   it('does not return success if thumbnail upload fails', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:235:109)
+
+  ● authenticated image upload › rejects invalid folder images/stories
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      233 |   })
+      234 |   it.each(['images/../projects/family-b', 'images/%2e%2e/family-b', 'other/folder', 'images/stories'])('rejects invalid folder %s', async folder => {
+    > 235 |     expect((await uploadImage(multipart({ folder, file: new Blob(['a'], { type: 'image/png' }) }))).status).toBe(400)
+          |                                                                                                             ^
+      236 |     noStorage()
+      237 |   })
+      238 |   it('does not return success if thumbnail upload fails', async () => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:235:109)
+
+Test Suites: 1 failed, 1 total
+Tests:       43 failed, 3 passed, 46 total
+Snapshots:   0 total
+Time:        1.242 s
+Ran all test suites within paths "src/app/api/media/__tests__/access.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/__tests__/access.test.ts

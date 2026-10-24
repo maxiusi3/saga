@@ -1,0 +1,135 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand supabase-browser-errors auth-session-lifecycle
+
+FAIL src/lib/__tests__/supabase-browser-errors.test.ts
+  ● Console
+
+    console.error
+      AuthApiError: SYNTHETIC_PRIVATE_PROVIDER_SENTINEL
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 401,
+        code: 'refresh_token_not_found'
+      }
+
+      at console.<anonymous> (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:631:25)
+      at SupabaseAuthClient._recoverAndRefresh (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4609:21)
+      at SupabaseAuthClient._initialize (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:600:7)
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:522:16
+
+    console.error
+      Error: SYNTHETIC_PRIVATE_PROVIDER_SENTINEL
+          at Object.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/packages/web/src/lib/__tests__/supabase-browser-errors.test.ts:38:54)
+          at Promise.finally.completed (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1497:10)
+          at _callCircusTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1007:40)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _runTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:947:3)
+          at /Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:862:11)
+          at run (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1918:21)
+          at jestAdapter (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/runner.js:101:19)
+          at runTestInternal (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-runner/build/index.js:275:16)
+          at runTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-runner/build/index.js:343:7)
+
+      at console.<anonymous> (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:631:25)
+      at _handleRequest (../../node_modules/@supabase/auth-js/src/lib/fetch.ts:225:13)
+      at _request (../../node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+      at ../../node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26
+
+  ● expired-cookie initialization keeps rejected-refresh diagnostics safe and removes invalid session
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "SYNTHETIC_PRIVATE_PROVIDER_SENTINEL"
+    Received string:        "AuthApiError: SYNTHETIC_PRIVATE_PROVIDER_SENTINEL"
+
+      31 |   await create(true).auth.initialize()
+      32 |   expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+    > 33 |   expect(messages()).not.toContain(sentinel)
+         |                          ^
+      34 |   expect(errors).toHaveBeenCalled()
+      35 |   expect(document.cookie).not.toContain('sb-127-auth-token=')
+      36 | })
+
+      at Object.toContain (src/lib/__tests__/supabase-browser-errors.test.ts:33:26)
+
+  ● expired-cookie transport rejection is sanitized while SDK retry can recover normally
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "SYNTHETIC_PRIVATE_PROVIDER_SENTINEL"
+    Received string:        "Error: SYNTHETIC_PRIVATE_PROVIDER_SENTINEL"
+
+      39 |   await create(true).auth.initialize()
+      40 |   expect(globalThis.fetch).toHaveBeenCalledTimes(2)
+    > 41 |   expect(messages()).not.toContain(sentinel)
+         |                          ^
+      42 |   expect(errors).toHaveBeenCalled()
+      43 |   expect((await client.auth.getSession()).data.session.access_token).toBe('synthetic-access')
+      44 |   expect(document.cookie).toContain('sb-127-auth-token=')
+
+      at Object.toContain (src/lib/__tests__/supabase-browser-errors.test.ts:41:26)
+
+  ● HTTP error code and body cannot leak private text through SDK auth errors
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "SYNTHETIC_PRIVATE_PROVIDER_SENTINEL"
+    Received string:        "{\"name\":\"AuthApiError\",\"message\":\"SYNTHETIC_PRIVATE_PROVIDER_SENTINEL\",\"status\":400,\"code\":\"SYNTHETIC_PRIVATE_PROVIDER_SENTINEL\"}"
+
+      48 |   const result = await create().auth.signInWithPassword({ email: user.email, password: 'synthetic' })
+      49 |   expect(result.error).toBeTruthy()
+    > 50 |   expect(JSON.stringify(result.error)).not.toContain(sentinel)
+         |                                            ^
+      51 |   expect(result.error.message).not.toContain(sentinel)
+      52 | })
+      53 | test('successful auth responses and cookie persistence retain provider/session data', async () => {
+
+      at Object.toContain (src/lib/__tests__/supabase-browser-errors.test.ts:50:44)
+
+FAIL src/stores/__tests__/auth-session-lifecycle.test.ts
+  ● concurrent unchanged provider-confirmed token reads both receive the current token
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "synthetic-access",
+    +   null,
+        "synthetic-access",
+      ]
+
+      126 |   await store.getState().initialize()
+      127 |   const results = await Promise.all([store.getState().getAccessToken(), store.getState().getAccessToken()])
+    > 128 |   expect(results).toEqual(['synthetic-access', 'synthetic-access'])
+          |                   ^
+      129 |   expect(store.getState()).toMatchObject({ isAuthenticated: true, user })
+      130 | })
+      131 | test('provider rejection invalidates concurrent earlier token verification', async () => {
+
+      at Object.toEqual (src/stores/__tests__/auth-session-lifecycle.test.ts:128:19)
+
+Test Suites: 2 failed, 2 total
+Tests:       4 failed, 16 passed, 20 total
+Snapshots:   0 total
+Time:        2.589 s, estimated 8 s
+Ran all test suites matching supabase-browser-errors|auth-session-lifecycle.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand supabase-browser-errors auth-session-lifecycle

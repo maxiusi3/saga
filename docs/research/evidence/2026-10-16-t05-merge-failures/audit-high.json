@@ -1,0 +1,27 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "audit:high",
+    "--",
+    "--json"
+  ],
+  "startedAt": "2026-10-16T12:19:35.343284+00:00",
+  "finishedAt": "2026-10-16T12:20:35.343287+00:00",
+  "elapsedSeconds": 59.999,
+  "exitCode": 1,
+  "vulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 8,
+    "high": 34,
+    "critical": 0,
+    "total": 42
+  },
+  "protectedFiles": {
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea"
+  },
+  "scope": "Dependency gate refresh only; no dependency mutations"
+}

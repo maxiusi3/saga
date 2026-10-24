@@ -1,0 +1,478 @@
+{
+  "checkedAt": "2026-10-17T06:16:42.698051+00:00",
+  "snapshot": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+  "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+  "previousSnapshot": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+  "previousSnapshotSha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f",
+  "captureStatus": "partial",
+  "exitCode": 2,
+  "identity": {
+    "current_user": "metadata_reader",
+    "current_database": "postgres",
+    "read_only": "on",
+    "isolation": "repeatable read",
+    "server_version": "17.4",
+    "statement_timeout": "10s",
+    "lock_timeout": "2s",
+    "idle_transaction_timeout": "15s",
+    "snapshot_time": "2026-10-17T06:13:06.684Z"
+  },
+  "tls": {
+    "authorized": true,
+    "protocol": "TLSv1.3"
+  },
+  "captureDeadline": {
+    "limitMs": 90000,
+    "exceeded": false
+  },
+  "connectionClosed": true,
+  "connectionCleanup": {
+    "status": "closed"
+  },
+  "originalSectionEquality": {
+    "tables": true,
+    "columns": true,
+    "policies": true,
+    "indexes": true,
+    "constraints": true,
+    "privileges": true,
+    "roles": true,
+    "audit_views": true,
+    "audit_visibility": true,
+    "migrations": true,
+    "buckets": true
+  },
+  "counts": {
+    "tables": 43,
+    "columns": 459,
+    "policies": 79,
+    "indexes": 141,
+    "constraints": 167,
+    "privileges": 172,
+    "functions": 39,
+    "function_privileges": 156,
+    "triggers": 21,
+    "schema_privileges": 8,
+    "default_privileges": 9,
+    "roles": 4,
+    "audit_views": 6,
+    "audit_visibility": 2,
+    "migrations": 4,
+    "buckets": null
+  },
+  "publicFunctions": {
+    "total": 20,
+    "securityDefiner": 14,
+    "nonTriggerSecurityDefiner": 12,
+    "unconfiguredSearchPathSecurityDefiner": [
+      "accept_project_invitation(p_invitation_id uuid, p_user_id uuid)",
+      "cleanup_expired_invitations()",
+      "initialize_user_wallet(p_user_id uuid)",
+      "process_package_purchase(p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text)",
+      "process_package_purchase(package_id text, payment_intent_id text, user_id uuid)",
+      "request_data_export(p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean)",
+      "request_data_export(project_id uuid, user_id uuid, export_options jsonb)",
+      "send_project_invitation(p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text)"
+    ],
+    "allPublicExecute": true
+  },
+  "effectiveExecuteCounts": {
+    "anon": 39,
+    "authenticated": 39,
+    "metadata_reader": 39,
+    "service_role": 39
+  },
+  "schemaPrivileges": [
+    {
+      "schema_name": "public",
+      "role_name": "anon",
+      "can_use": true,
+      "can_create": false
+    },
+    {
+      "schema_name": "public",
+      "role_name": "authenticated",
+      "can_use": true,
+      "can_create": false
+    },
+    {
+      "schema_name": "public",
+      "role_name": "metadata_reader",
+      "can_use": true,
+      "can_create": false
+    },
+    {
+      "schema_name": "public",
+      "role_name": "service_role",
+      "can_use": true,
+      "can_create": false
+    },
+    {
+      "schema_name": "storage",
+      "role_name": "anon",
+      "can_use": true,
+      "can_create": false
+    },
+    {
+      "schema_name": "storage",
+      "role_name": "authenticated",
+      "can_use": true,
+      "can_create": false
+    },
+    {
+      "schema_name": "storage",
+      "role_name": "metadata_reader",
+      "can_use": false,
+      "can_create": false
+    },
+    {
+      "schema_name": "storage",
+      "role_name": "service_role",
+      "can_use": true,
+      "can_create": false
+    }
+  ],
+  "triggerCountBySchema": {
+    "public": 14,
+    "storage": 7
+  },
+  "migrationCrosswalk": [
+    {
+      "file": "supabase/migrations/20260611000000_agent_phase1.sql",
+      "sha256": "77fa360a9174c3af2e27e7b63fefaf3e3cc420ea785d3422f41051731638f2f9",
+      "versionRegistered": false,
+      "functions": [
+        {
+          "localName": "public.set_agent_phase1_updated_at",
+          "localArgumentsRaw": "",
+          "line": 113,
+          "remoteOverloads": [
+            {
+              "identityArguments": "",
+              "returnType": "trigger",
+              "definitionHashMd5": "621fda35b623c4d60b333f151ed54f4d"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        }
+      ],
+      "triggersByName": [
+        {
+          "name": "set_agent_artifacts_updated_at",
+          "remote": [
+            {
+              "schema_name": "public",
+              "table_name": "agent_artifacts",
+              "trigger_name": "set_agent_artifacts_updated_at",
+              "enabled": "O",
+              "type_bitmask": 19,
+              "function_schema": "public",
+              "function_name": "set_agent_phase1_updated_at",
+              "function_identity_arguments": "",
+              "is_constraint": false,
+              "argument_count": 0,
+              "condition_present": false,
+              "definition_hash_md5": "39870094ec917176c17a626dd6df5939"
+            }
+          ]
+        },
+        {
+          "name": "set_story_elements_updated_at",
+          "remote": [
+            {
+              "schema_name": "public",
+              "table_name": "story_elements",
+              "trigger_name": "set_story_elements_updated_at",
+              "enabled": "O",
+              "type_bitmask": 19,
+              "function_schema": "public",
+              "function_name": "set_agent_phase1_updated_at",
+              "function_identity_arguments": "",
+              "is_constraint": false,
+              "argument_count": 0,
+              "condition_present": false,
+              "definition_hash_md5": "103dcfcf8b642483fe74bda599a5262b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "supabase/migrations/20260612000000_agent_phase2_public_archive.sql",
+      "sha256": "cb9545b79425861d5ee5ab9a8fc7d71c48358983ab6c9a8f66b467ffa5c62834",
+      "versionRegistered": false,
+      "functions": [
+        {
+          "localName": "public.enforce_public_archive_story_consistency",
+          "localArgumentsRaw": "",
+          "line": 173,
+          "remoteOverloads": [
+            {
+              "identityArguments": "",
+              "returnType": "trigger",
+              "definitionHashMd5": "cbbefbc0b7dd51a2964e1e5cfc7f7d7d"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        },
+        {
+          "localName": "public.set_public_archive_updated_at",
+          "localArgumentsRaw": "",
+          "line": 262,
+          "remoteOverloads": [
+            {
+              "identityArguments": "",
+              "returnType": "trigger",
+              "definitionHashMd5": "c13f393752b84730a92e9acc819b79e4"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        }
+      ],
+      "triggersByName": [
+        {
+          "name": "enforce_public_contributions_story_consistency",
+          "remote": [
+            {
+              "schema_name": "public",
+              "table_name": "public_contributions",
+              "trigger_name": "enforce_public_contributions_story_consistency",
+              "enabled": "O",
+              "type_bitmask": 23,
+              "function_schema": "public",
+              "function_name": "enforce_public_archive_story_consistency",
+              "function_identity_arguments": "",
+              "is_constraint": false,
+              "argument_count": 0,
+              "condition_present": false,
+              "definition_hash_md5": "087e92444ef30ead8266f8b487c7d8d6"
+            }
+          ]
+        },
+        {
+          "name": "enforce_public_contribution_invitations_story_consistency",
+          "remote": [
+            {
+              "schema_name": "public",
+              "table_name": "public_contribution_invitations",
+              "trigger_name": "enforce_public_contribution_invitations_story_consistency",
+              "enabled": "O",
+              "type_bitmask": 23,
+              "function_schema": "public",
+              "function_name": "enforce_public_archive_story_consistency",
+              "function_identity_arguments": "",
+              "is_constraint": false,
+              "argument_count": 0,
+              "condition_present": false,
+              "definition_hash_md5": "80655f06ccd0e228429c2f4b9af66863"
+            }
+          ]
+        },
+        {
+          "name": "set_public_contribution_elements_updated_at",
+          "remote": [
+            {
+              "schema_name": "public",
+              "table_name": "public_contribution_elements",
+              "trigger_name": "set_public_contribution_elements_updated_at",
+              "enabled": "O",
+              "type_bitmask": 19,
+              "function_schema": "public",
+              "function_name": "set_public_archive_updated_at",
+              "function_identity_arguments": "",
+              "is_constraint": false,
+              "argument_count": 0,
+              "condition_present": false,
+              "definition_hash_md5": "127f892980902446fc3f6ec09c62de9e"
+            }
+          ]
+        },
+        {
+          "name": "set_public_event_clusters_updated_at",
+          "remote": [
+            {
+              "schema_name": "public",
+              "table_name": "public_event_clusters",
+              "trigger_name": "set_public_event_clusters_updated_at",
+              "enabled": "O",
+              "type_bitmask": 19,
+              "function_schema": "public",
+              "function_name": "set_public_archive_updated_at",
+              "function_identity_arguments": "",
+              "is_constraint": false,
+              "argument_count": 0,
+              "condition_present": false,
+              "definition_hash_md5": "a42da5dc5d9c7e4db1a32418a27c8552"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "supabase/migrations/20260621000000_storage_policies.sql",
+      "sha256": "6cfc526f0c3ea4245eb1847748d61d2e8f37db03cd8c10f9cb79f3b16b6188bc",
+      "versionRegistered": false,
+      "functions": [],
+      "triggersByName": []
+    },
+    {
+      "file": "supabase/migrations/20260625081000_dashboard_support_tables.sql",
+      "sha256": "526130a7fe84dca1327fd3b8cc7546c3445eadf0d6d29b896499ccfcb73a32de",
+      "versionRegistered": false,
+      "functions": [
+        {
+          "localName": "public.mark_notifications_as_read",
+          "localArgumentsRaw": "user_id uuid,\n  notification_ids uuid[] default null",
+          "line": 201,
+          "remoteOverloads": [
+            {
+              "identityArguments": "user_id uuid, notification_ids uuid[]",
+              "returnType": "integer",
+              "definitionHashMd5": "38d9f9ae6c7efc989c81a1802eff4a65"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        },
+        {
+          "localName": "public.get_unread_notification_count",
+          "localArgumentsRaw": "user_id uuid",
+          "line": 235,
+          "remoteOverloads": [
+            {
+              "identityArguments": "user_id uuid",
+              "returnType": "integer",
+              "definitionHashMd5": "0b7d901de660b8805848cc9951a3a8fc"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        }
+      ],
+      "triggersByName": []
+    },
+    {
+      "file": "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql",
+      "sha256": "8aa01d232796c63c56e4e6d85bfbf262741d1ff908b2d17c1e95c1332895752b",
+      "versionRegistered": false,
+      "functions": [
+        {
+          "localName": "initialize_user_wallet",
+          "localArgumentsRaw": "p_user_id UUID",
+          "line": 32,
+          "remoteOverloads": [
+            {
+              "identityArguments": "p_user_id uuid",
+              "returnType": "TABLE(user_id uuid, standard_hours integer, premium_hours integer, created_at timestamp with time zone, updated_at timestamp with time zone)",
+              "definitionHashMd5": "bf1912760ae1eeb5ad2f534522b441bb"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        },
+        {
+          "localName": "process_package_purchase",
+          "localArgumentsRaw": "p_user_id UUID,\n  p_package_code TEXT,\n  p_standard_hours INTEGER,\n  p_premium_hours INTEGER,\n  p_payment_reference TEXT",
+          "line": 62,
+          "remoteOverloads": [
+            {
+              "identityArguments": "p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text",
+              "returnType": "TABLE(user_id uuid, standard_hours integer, premium_hours integer, updated_at timestamp with time zone)",
+              "definitionHashMd5": "d3b557cfc133eaef1d2c31a4877f46a7"
+            },
+            {
+              "identityArguments": "package_id text, payment_intent_id text, user_id uuid",
+              "returnType": "jsonb",
+              "definitionHashMd5": "a18c3ebea702558e8f4e9a67811a3fc3"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        },
+        {
+          "localName": "send_project_invitation",
+          "localArgumentsRaw": "p_project_id UUID,\n  p_inviter_id UUID,\n  p_invitee_email TEXT,\n  p_role TEXT,\n  p_token TEXT",
+          "line": 133,
+          "remoteOverloads": [
+            {
+              "identityArguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+              "returnType": "TABLE(invitation_id uuid, project_id uuid, invitee_id uuid, role text, status text, invited_at timestamp with time zone)",
+              "definitionHashMd5": "ab14eb2828efb74945e3de7cf4039472"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        },
+        {
+          "localName": "accept_project_invitation",
+          "localArgumentsRaw": "p_token TEXT,\n  p_user_id UUID",
+          "line": 204,
+          "remoteOverloads": [
+            {
+              "identityArguments": "p_invitation_id uuid, p_user_id uuid",
+              "returnType": "TABLE(project_id uuid, user_id uuid, role text, status text, joined_at timestamp with time zone)",
+              "definitionHashMd5": "638c776a2a70d1cddd47055c583e1abd"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        },
+        {
+          "localName": "cleanup_expired_invitations",
+          "localArgumentsRaw": "",
+          "line": 246,
+          "remoteOverloads": [
+            {
+              "identityArguments": "",
+              "returnType": "integer",
+              "definitionHashMd5": "84e83304fb503123d44f16e9fc18cb31"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        },
+        {
+          "localName": "request_data_export",
+          "localArgumentsRaw": "p_user_id UUID,\n  p_project_id UUID,\n  p_include_audio BOOLEAN,\n  p_include_photos BOOLEAN",
+          "line": 267,
+          "remoteOverloads": [
+            {
+              "identityArguments": "p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean",
+              "returnType": "TABLE(export_id uuid, status text, created_at timestamp with time zone)",
+              "definitionHashMd5": "9199018230b9e447414fe18d89cda98a"
+            },
+            {
+              "identityArguments": "project_id uuid, user_id uuid, export_options jsonb",
+              "returnType": "uuid",
+              "definitionHashMd5": "84ccf96f336d775446fb11369a68c3c7"
+            }
+          ],
+          "comparison": "name/signature only; body equivalence unverified"
+        }
+      ],
+      "triggersByName": []
+    },
+    {
+      "file": "supabase/migrations/20261007000001_create_waitlist.sql",
+      "sha256": "20d2193287988a84de23b9224df8cbd7513fb93439a740da2dc0cce0e0c11a1c",
+      "versionRegistered": false,
+      "functions": [],
+      "triggersByName": []
+    },
+    {
+      "file": "supabase/migrations/20261007000002_improve_storage_rls.sql",
+      "sha256": "d0375b2abbeff1b4f8357c5704dc6de37c3ecb64f3fcaae1cfeead949b3e8cff",
+      "versionRegistered": false,
+      "functions": [],
+      "triggersByName": []
+    }
+  ],
+  "scope": "Signature/structure/ACL metadata only, no routine bodies or invocation; no SQL semantic equivalence or exploitation proof",
+  "confirmedSignatureDifferences": [
+    {
+      "function": "public.accept_project_invitation",
+      "local": "p_token TEXT, p_user_id UUID",
+      "remote": "p_invitation_id uuid, p_user_id uuid",
+      "impact": "Different overload identity and return table; do not replay or repair history blindly"
+    },
+    {
+      "function": "public.send_project_invitation",
+      "local": "p_project_id UUID, p_inviter_id UUID, p_invitee_email TEXT, p_role TEXT, p_token TEXT",
+      "remote": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+      "impact": "Different fourth argument type and named RPC contract; do not replay blindly"
+    }
+  ]
+}

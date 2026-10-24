@@ -1,0 +1,108 @@
+{
+  "sourceInputDigest": "690149536961419859643d1e5348866856edec38311e6a4844688d997481fa9e",
+  "importsOnly": true,
+  "fixtureBytesUnchanged": true,
+  "results": [
+    {
+      "name": "targeted",
+      "executor": "Task 1 implementation subagent",
+      "command": "npm",
+      "args": [
+        "test",
+        "--workspace=@saga/web",
+        "--",
+        "--runInBand",
+        "--detectOpenHandles",
+        "--runTestsByPath",
+        "src/lib/__tests__/invitation-acceptance-protocol.test.ts",
+        "src/lib/__tests__/invitation-acceptance-client.test.ts",
+        "src/lib/server/__tests__/invitation-acceptance.test.ts"
+      ],
+      "cwd": "/Users/eat/Documents/eatpotato/saga传奇",
+      "startedAt": "2026-10-18T13:40:52.388Z",
+      "finishedAt": "2026-10-18T13:41:08.352Z",
+      "exitCode": 0,
+      "summary": [
+        "Test Suites: 3 passed, 3 total",
+        "Tests:       194 passed, 194 total",
+        "Snapshots:   0 total",
+        "Time:        13.324 s"
+      ],
+      "sourceInputDigest": "690149536961419859643d1e5348866856edec38311e6a4844688d997481fa9e",
+      "rawSha256": "1136947b9a6a09873436a7c60835450bd1c6c38378014aab133c48c1c0359dcc",
+      "sourceUnchanged": true,
+      "openHandleWarning": false
+    },
+    {
+      "name": "discovery-green",
+      "executor": "Task 1 implementation subagent",
+      "command": "npm",
+      "args": [
+        "test",
+        "--workspace=@saga/web",
+        "--",
+        "--listTests",
+        "--runInBand",
+        "--json"
+      ],
+      "cwd": "/Users/eat/Documents/eatpotato/saga传奇",
+      "startedAt": "2026-10-18T13:40:52.392Z",
+      "finishedAt": "2026-10-18T13:40:54.899Z",
+      "exitCode": 0,
+      "summary": null,
+      "sourceInputDigest": "690149536961419859643d1e5348866856edec38311e6a4844688d997481fa9e",
+      "rawSha256": "45084e9c28d241f5db53ff8f927120837f2459d7ca22f6cbd4ed14a902e3825e",
+      "sourceUnchanged": true,
+      "openHandleWarning": false,
+      "oldFixtureDiscovered": false,
+      "newFixtureDiscovered": false,
+      "ownedTestSuitesDiscovered": true
+    },
+    {
+      "name": "type-check",
+      "executor": "Task 1 implementation subagent",
+      "command": "npm",
+      "args": [
+        "run",
+        "type-check",
+        "--workspace=@saga/web"
+      ],
+      "cwd": "/Users/eat/Documents/eatpotato/saga传奇",
+      "startedAt": "2026-10-18T13:40:52.393Z",
+      "finishedAt": "2026-10-18T13:41:00.207Z",
+      "exitCode": 0,
+      "summary": null,
+      "sourceInputDigest": "690149536961419859643d1e5348866856edec38311e6a4844688d997481fa9e",
+      "rawSha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+      "sourceUnchanged": true,
+      "openHandleWarning": false
+    },
+    {
+      "name": "lint",
+      "executor": "Task 1 implementation subagent",
+      "command": "../../node_modules/.bin/eslint",
+      "args": [
+        "src/app/api/invitations/accept/route.ts",
+        "src/app/api/invitations/[token]/accept/route.ts",
+        "src/lib/api-supabase.ts",
+        "src/lib/invitation-acceptance-protocol.ts",
+        "src/lib/invitation-acceptance-client.ts",
+        "src/lib/server/invitation-acceptance.ts",
+        "src/app/api/invitations/status/route.ts",
+        "src/lib/__tests__/invitation-acceptance-protocol.test.ts",
+        "src/lib/__tests__/invitation-acceptance-client.test.ts",
+        "src/lib/server/__tests__/invitation-acceptance.test.ts",
+        "src/lib/server/test-support/invitation-fixture.ts"
+      ],
+      "cwd": "/Users/eat/Documents/eatpotato/saga传奇/packages/web",
+      "startedAt": "2026-10-18T13:40:52.394Z",
+      "finishedAt": "2026-10-18T13:40:54.462Z",
+      "exitCode": 0,
+      "summary": null,
+      "sourceInputDigest": "690149536961419859643d1e5348866856edec38311e6a4844688d997481fa9e",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceUnchanged": true,
+      "openHandleWarning": false
+    }
+  ]
+}

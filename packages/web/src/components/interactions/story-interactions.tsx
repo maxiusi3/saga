@@ -360,20 +360,8 @@ export function StoryInteractions({
                 commentUploads.map((img, idx) => (
                   <div key={idx} className="relative">
                     <img src={img.thumbUrl} alt="thumb" className="w-16 h-16 object-cover rounded" />
-                    <button className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6" aria-label="Remove" onClick={async () => {
-                      const removed = commentUploads[idx]
-                      const next = commentUploads.filter((_, i) => i !== idx)
-                      setCommentUploads(next)
-                      persistUploads(next)
-                      // 删除服务器上的已上传资源
-                      const toDelete: string[] = []
-                      if (removed?.path) toDelete.push(removed.path)
-                      if (removed?.thumbPath) toDelete.push(removed.thumbPath)
-                      if (toDelete.length > 0) {
-                        try {
-                          await fetch('/api/media/delete-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paths: toDelete }) })
-                        } catch {}
-                      }
+                    <button className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6" aria-label="Remove" onClick={() => {
+                      toast.error('Image removal is temporarily unavailable. Your images have been kept.')
                     }}>×</button>
                   </div>
                 ))
@@ -394,12 +382,10 @@ export function StoryInteractions({
             </div>
             {(commentUploads.length > 0 || commentPreviewUrls.length > 0) && (
               <div className="mt-2">
-                <Button variant="ghost" size="sm" onClick={async () => {
-                  // 删除所有已上传的服务器资源
-                  const paths: string[] = []
-                  commentUploads.forEach(u => { if (u.path) paths.push(u.path); if (u.thumbPath) paths.push(u.thumbPath) })
-                  if (paths.length > 0) {
-                    try { await fetch('/api/media/delete-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paths }) }) } catch {}
+                <Button variant="ghost" size="sm" onClick={() => {
+                  if (commentUploads.length > 0) {
+                    toast.error('Image removal is temporarily unavailable. Your images have been kept.')
+                    return
                   }
                   // revoke previews
                   commentPreviewUrls.forEach((p) => { try { URL.revokeObjectURL(p) } catch {} })

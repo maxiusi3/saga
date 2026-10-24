@@ -1,0 +1,55 @@
+{
+  "qualification": "Actual server guard and installed SSR/Auth SDK; complete expired synthetic cookie; fully mocked fetch, no network or provider revocation",
+  "results": [
+    {
+      "mode": "503",
+      "status": 503,
+      "cookies": [],
+      "captured": [
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "mode": "429",
+      "status": 503,
+      "cookies": [],
+      "captured": [
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "mode": "fetch-rejection",
+      "status": 503,
+      "cookies": [],
+      "captured": [
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "mode": "recovered-provider",
+      "status": 200,
+      "cookies": [
+        "sb-127-auth-token=base64-eyJ1c2VyIjp7ImlkIjoiMTExMTExMTEtMTExMS00MTExLTgxMTEtMTExMTExMTExMTExIiwiYXVkIjoiYXV0aGVudGljYXRlZCIsImVtYWlsIjoic3ludGhldGljQGV4YW1wbGUuaW52YWxpZCIsImFwcF9tZXRhZGF0YSI6e30sInVzZXJfbWV0YWRhdGEiOnt9LCJjcmVhdGVkX2F0IjoiMjAyNi0wMS0wMVQwMDowMDowMFoifSwiYWNjZXNzX3Rva2VuIjoic3ludGhldGljLXJlZnJlc2hlZC1hY2Nlc3MiLCJyZWZyZXNoX3Rva2VuIjoic3ludGhldGljLXJlZnJlc2hlZC1yZWZyZXNoIiwidG9rZW5fdHlwZSI6ImJlYXJlciIsImV4cGlyZXNfaW4iOjM2MDAsImV4cGlyZXNfYXQiOjE3OTI0MTY5MzIuNTQ3fQ; Max-Age=34560000; Path=/; SameSite=Lax"
+      ],
+      "captured": [
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+          "method": "POST"
+        },
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/user",
+          "method": "GET"
+        }
+      ]
+    }
+  ]
+}

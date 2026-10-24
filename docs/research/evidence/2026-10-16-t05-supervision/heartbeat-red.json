@@ -1,0 +1,125 @@
+{
+  "startedAt": "2026-10-16T02:34:44.968Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "62696e15684a1f07290796cb3e1b3a6e2a77c84c31813eae34a742c77da3e729",
+    "experiments/t05-durable-worker/worker.mjs": "fb0fc4fd2e3f7bd937166848d75a5d4af3323d60693a4406692954d3aae3cb50",
+    "experiments/t05-durable-worker/verify.mjs": "c49b6472b3d587ef66d1f3a3b715015b0766186cda2c4538a2cb462e7fb8053f",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "59ea4997a1cb86f8a0386d8a3b6a0a4efc273a48db73cbe12038c49f4d2f7140",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [],
+  "assertions": 2,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "No long-running lease heartbeat, production supervisor, real-device recording, backup restore, or production load qualification."
+  ],
+  "supervisionHeartbeat": {
+    "samples": [
+      {
+        "elapsedMs": 1188,
+        "leaseExpiresAt": "2026-10-16T02:34:58.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 2227,
+        "leaseExpiresAt": "2026-10-16T02:35:03.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 3257,
+        "leaseExpiresAt": "2026-10-16T02:35:08.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 4288,
+        "leaseExpiresAt": "2026-10-16T02:35:13.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 5316,
+        "leaseExpiresAt": "2026-10-16T02:35:18.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 6342,
+        "leaseExpiresAt": "2026-10-16T02:35:23.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 7365,
+        "leaseExpiresAt": "2026-10-16T02:35:28.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 8390,
+        "leaseExpiresAt": "2026-10-16T02:35:33.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 9499,
+        "leaseExpiresAt": "2026-10-16T02:35:38.008Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:34:47.988Z"
+      },
+      {
+        "elapsedMs": 10548,
+        "leaseExpiresAt": "2026-10-16T02:35:43.008Z",
+        "queueState": "retry",
+        "retryCount": 0,
+        "heartbeatOn": null
+      },
+      {
+        "elapsedMs": 11579,
+        "leaseExpiresAt": "2026-10-16T02:35:48.008Z",
+        "queueState": "retry",
+        "retryCount": 0,
+        "heartbeatOn": null
+      },
+      {
+        "elapsedMs": 12687,
+        "leaseExpiresAt": "2026-10-16T02:35:53.008Z",
+        "queueState": "retry",
+        "retryCount": 0,
+        "heartbeatOn": null
+      }
+    ],
+    "provider": "synthetic ledger",
+    "clock": "actual PostgreSQL and wall clock"
+  },
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: transactional heartbeat must retain the queue claim beyond its 10 second heartbeat window\n\n'retry' !== 'active'\n\n    at equal (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:46:10)\n    at supervisionHeartbeat (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/supervision-scenarios.mjs:31:3)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async scenario (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:56:19)\n    at async file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:481:5",
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T02:35:01.592Z"
+}

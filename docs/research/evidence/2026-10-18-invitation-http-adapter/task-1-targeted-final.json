@@ -1,0 +1,32 @@
+{
+  "name": "targeted-final",
+  "executor": "Task 1 implementation subagent",
+  "command": "npm",
+  "args": [
+    "test",
+    "--workspace=@saga/web",
+    "--",
+    "--runInBand",
+    "--detectOpenHandles",
+    "--runTestsByPath",
+    "src/lib/__tests__/invitation-acceptance-protocol.test.ts",
+    "src/lib/__tests__/invitation-acceptance-client.test.ts",
+    "src/lib/server/__tests__/invitation-acceptance.test.ts"
+  ],
+  "cwd": "/Users/eat/Documents/eatpotato/saga传奇",
+  "startedAt": "2026-10-18T13:32:45.679Z",
+  "finishedAt": "2026-10-18T13:33:01.700Z",
+  "exitCode": 0,
+  "summary": [
+    "Test Suites: 3 passed, 3 total",
+    "Tests:       194 passed, 194 total",
+    "Snapshots:   0 total",
+    "Time:        13.179 s"
+  ],
+  "sourceInputDigest": "3546f70018324f5b9d54752180581a4dd55e92bd9f9ded2fe04736f39d498a59",
+  "rawSha256": "5a4fefcb41fae2074fd3151309ae064398ef95d4ef4458ac8b37e8e8a734b41a",
+  "sourceUnchanged": true,
+  "openHandleWarning": false,
+  "failures": null,
+  "provenance": "Protocol/client tests use fixed external-boundary fixtures. Handler tests use real Supabase JS 2.105.3 and loopback HTTP synthetic Auth/REST providers; modern Auth errors include the provider API version header. No real JWT, deployed PostgREST, PG17 or production credentials are validated."
+}

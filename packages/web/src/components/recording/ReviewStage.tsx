@@ -8,10 +8,12 @@ import { Label } from '@/components/ui/label'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { format } from 'date-fns'
-import { CalendarIcon, Wand2, Check } from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { cn } from '@/lib/utils'
+
+export type DraftStatus = 'idle' | 'processing' | 'ready' | 'failed'
 
 interface ReviewStageProps {
     audioUrl: string
@@ -20,6 +22,7 @@ interface ReviewStageProps {
     onSave: (data: { title: string, happenedAt: Date, isPublic: boolean }) => void
     onDiscard: () => void
     isProcessing?: boolean
+    draftStatus?: DraftStatus
 }
 
 export function ReviewStage({
@@ -28,11 +31,11 @@ export function ReviewStage({
     transcript,
     onSave,
     onDiscard,
-    isProcessing = false
+    isProcessing = false,
+    draftStatus = 'idle'
 }: ReviewStageProps) {
     const [title, setTitle] = useState('')
     const [happenedAt, setHappenedAt] = useState<Date | undefined>(new Date())
-    const [isAutoLeveling, setIsAutoLeveling] = useState(true)
 
     const [isPublic, setIsPublic] = useState(false)
 
@@ -60,13 +63,7 @@ export function ReviewStage({
                 {/* Audio Preview */}
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                        <Label className="text-stone-500">Preview</Label>
-                        {isAutoLeveling && (
-                            <div className="flex items-center gap-1.5 text-xs font-medium text-amber-600 dark:text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-full">
-                                <Wand2 className="w-3 h-3" />
-                                Auto-Leveling Applied
-                            </div>
-                        )}
+                        <Label className="text-stone-500">Original recording</Label>
                     </div>
                     {duration > 0 ? (
                         <AudioPlayer src={audioUrl} duration={duration} className="w-full" />
@@ -76,6 +73,16 @@ export function ReviewStage({
                         </div>
                     )}
                 </div>
+
+                <p
+                    role={draftStatus === 'failed' ? 'alert' : 'status'}
+                    className="text-sm text-stone-600 dark:text-stone-400"
+                >
+                    {draftStatus === 'processing' && 'Preparing a draft. You can save the recording now.'}
+                    {draftStatus === 'failed' && 'A draft could not be prepared. You can still save the recording and any available transcript.'}
+                    {draftStatus === 'ready' && 'Draft prepared. Review the recording before saving.'}
+                    {draftStatus === 'idle' && 'No transcript is available, so a draft cannot be prepared. You can still save the recording.'}
+                </p>
 
                 {/* Date Picker (Timeline Anchor) */}
                 <div className="space-y-2">

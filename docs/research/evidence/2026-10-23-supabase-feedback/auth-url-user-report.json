@@ -1,0 +1,47 @@
+{
+  "provenance": {
+    "source": "User supplied non-secret URLs and Vercel warning in the current continuation of chat 24",
+    "referencedThreadId": "01a16723-1eb7-7251-90b4-e6522089da72",
+    "receivedDate": "2026-10-23",
+    "timezone": "Asia/Taipei",
+    "checkedByAssistantInDashboard": false,
+    "secretValuesReceived": false
+  },
+  "siteUrlReported": "maxiusi.dpdns.org",
+  "redirectUrlsReported": [
+    "https://saga-web-livid.vercel.app/en/auth/callback",
+    "https://saga-web-livid.vercel.app/zh-CN/auth/callback",
+    "https://saga-web-livid.vercel.app/zh-TW/auth/callback",
+    "https://saga-web-livid.vercel.app/ja/auth/callback",
+    "https://saga-web-livid.vercel.app/ko/auth/callback",
+    "https://saga-web-livid.vercel.app/es/auth/callback",
+    "https://saga-web-livid.vercel.app/fr/auth/callback",
+    "https://saga-web-livid.vercel.app/pt/auth/callback",
+    "https://localhost:3000/en/auth/callback",
+    "https://maxiusi.dpdns.org/zh-CN/auth/callback",
+    "https://maxiusi.dpdns.org/zh-TW/auth/callback",
+    "https://maxiusi.dpdns.org/en/auth/callback",
+    "https://maxiusi.dpdns.org/ja/auth/callback",
+    "https://maxiusi.dpdns.org/ko/auth/callback",
+    "https://maxiusi.dpdns.org/es/auth/callback",
+    "https://maxiusi.dpdns.org/pt/auth/callback",
+    "https://maxiusi.dpdns.org/fr/auth/callback"
+  ],
+  "applicationUrlReported": "https://maxiusi.dpdns.org/",
+  "attentionDetail": {
+    "variable": "SUPABASE_SERVICE_ROLE_KEY",
+    "text": "SUPABASE_SERVICE_ROLE_KEY looks like a secret, but its value is visible to anyone with access. Consider rotating at the source and saving as Secret."
+  },
+  "normalizationNotes": [
+    "Redirect URL order preserved from user list. U+FFFC separators, surrounding Markdown, and final punctuation excluded. The duplicated Markdown link target is not a second list.",
+    "Site URL missing scheme retained verbatim; omission in chat is not proof of the dashboard value.",
+    "No secret value or key type was supplied."
+  ],
+  "priorSnapshot": "deployment-user-report.json",
+  "remainingUnknowns": [
+    "actual saved dashboard Site URL scheme",
+    "other three Needs Attention detail messages",
+    "key type and actual access history",
+    "actual deployment environment values and login round trip"
+  ]
+}

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
 import { getTextAiConfig } from '@/lib/server/text-ai-config'
+import { InvalidAIResponseError, parseGeneratedContent } from '@/lib/ai-response'
 
 function createTextAiClient() {
   const config = getTextAiConfig()
@@ -77,8 +78,8 @@ Guidelines:
 Response format should be valid JSON with these fields:
 - title: A compelling, specific title (max 60 characters)
 - summary: A warm, engaging summary (2-3 sentences)
-- followUpQuestions: Array of 3-4 thoughtful questions
-- confidence: Number between 0.7 and 1.0 indicating analysis confidence`
+- followUpQuestions: Optional array of up to 4 thoughtful questions; omit if none are useful
+- confidence: Optional self-reported number between 0 and 1; omit if unknown`
 
     // Create user prompt with the transcript
     const userPrompt = `${languageInstruction}
@@ -117,24 +118,11 @@ Generate a title, summary, and follow-up questions that would help this person s
       aiContent = JSON.parse(responseText)
     } catch (parseError) {
       console.error('Failed to parse AI response:', parseError)
-      throw new Error('Invalid response format from AI')
+      throw new InvalidAIResponseError()
     }
 
     // Validate and sanitize the response
-    const result = {
-      title: aiContent.title || 'Untitled Story',
-      summary: aiContent.summary || 'A meaningful personal story.',
-      followUpQuestions: Array.isArray(aiContent.followUpQuestions) 
-        ? aiContent.followUpQuestions.slice(0, 4) // Limit to 4 questions
-        : [
-            'Can you tell me more about how that experience affected you?',
-            'What do you remember most vividly about that time?',
-            'How did that moment shape who you are today?'
-          ],
-      confidence: typeof aiContent.confidence === 'number' 
-        ? Math.max(0.7, Math.min(1.0, aiContent.confidence))
-        : 0.8
-    }
+    const result = parseGeneratedContent(aiContent)
 
     // Ensure title is not too long
     if (result.title.length > 60) {
@@ -144,6 +132,9 @@ Generate a title, summary, and follow-up questions that would help this person s
     return jsonWithRateLimit(result, guard.headers)
 
   } catch (error: any) {
+    if (error instanceof InvalidAIResponseError) {
+      return jsonWithRateLimit({ error: 'Invalid response from AI service' }, guard.headers, 502)
+    }
     console.error('AI content generation error:', error)
     console.error('Error details:', {
       message: error.message,

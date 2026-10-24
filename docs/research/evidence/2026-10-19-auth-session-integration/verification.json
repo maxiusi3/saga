@@ -1,0 +1,363 @@
+{
+  "batch": "2026-10-19-auth-session-integration",
+  "date": "2026-10-19",
+  "timezone": "Asia/Taipei",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "status": "complete_local_batch",
+  "scope": "本地认证会话修复与合成集成；不含真实提供方或生产部署资格",
+  "reviews": {
+    "implementation": "complete_local_scope",
+    "specification": {
+      "status": "PASS_after_fix1",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/task-1-spec-fix1-review.md",
+        "sha256": "694745e0d91b805851904a94e885c31885be06837da3749de3ac18bc719fa532"
+      },
+      "independentFocused": {
+        "suites": 2,
+        "tests": 23,
+        "log": {
+          "path": "docs/research/evidence/2026-10-19-auth-session-integration/spec-fix1-focused-review.log.txt",
+          "sha256": "3dc643d8eb5a616bc00861589852a78a7143bf0a91952f6dccdb3cbadf768ead"
+        }
+      }
+    },
+    "quality": {
+      "status": "Approved_after_fix2",
+      "newSpecificationIssues": false,
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/task-1-quality-fix2-review.md",
+        "sha256": "e349489d7820fa4d904a98b446d0883c8070f362fc5c6ebd409b6fde22d384a7"
+      },
+      "independentFocused": {
+        "suites": 5,
+        "tests": 41,
+        "log": {
+          "path": "docs/research/evidence/2026-10-19-auth-session-integration/quality-fix2-reviewer-focused.log.txt",
+          "sha256": "1a0d89b36c4087e89ca1cac1b32eb02d3a3e1859b94c4a7ab6aeefc6a94a4328"
+        }
+      }
+    },
+    "documentationIndependentReview": {
+      "status": "Spec_PASS_Quality_Approved",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/task-2-review.md",
+        "sha256": "49678db222393eb244d4dba2b16142475667d2c5de969c9452d971ca6abd4748"
+      }
+    },
+    "finalBatchIndependentReview": {
+      "status": "Spec_PASS_Quality_Approved",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/batch-final-review.md",
+        "sha256": "632292ecc3a4fab4712175b7e90b91a53d0ce1f5f5767875a16cad94ad7316a3"
+      }
+    },
+    "finalIntegrity": {
+      "status": "passed",
+      "owner": "controller",
+      "path": "docs/research/evidence/2026-10-19-auth-session-integration/final-integrity.json",
+      "selfHashIncluded": false
+    }
+  },
+  "source": {
+    "finalFreeze": {
+      "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/source-freeze-fix2.json",
+      "sha256": "c69cc8b9f800b66ee772e5e3bdca778781c4efe0263720a077348be9533a7ab7"
+    },
+    "pathCount": 21,
+    "documentationWorkerRehashMatched": true,
+    "controllerBindingPath": ".superpowers/sdd/2026-10-19-upgrade-auth-session-integration/frozen-source.json",
+    "projectReport": {
+      "path": "docs/research/evidence/2026-10-19-auth-session-integration/project-verification-20261019T123731Z.json",
+      "sha256": "080a10716d3e6be27bc776f953f1ef4ae57ded10006b6a4c5c14527e09982453"
+    },
+    "browserInputsMatched": 7
+  },
+  "finalResults": {
+    "focused": {
+      "suites": 28,
+      "tests": 605,
+      "exitCode": 0,
+      "coverage": "认证、邀请和相关录音回归；无真实麦克风",
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/focused-final.log.txt",
+        "sha256": "77c34342670d7128f877934077a90ad0cb9d7450fe33bb693dcb40c8a9fee13b"
+      }
+    },
+    "chromium": {
+      "checks": 14,
+      "version": "147.0.7727.15",
+      "results": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/browser-results.json",
+        "sha256": "573aa2ce9278ab1cc98a912228fd884eadfc7e9457173447a01c08624b6ef623"
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/browser-final.log.txt",
+        "sha256": "ed884f565af162ada499b06d8ed5055e89794c53ed724ea92634df613b8e7a25"
+      },
+      "cleanup": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/browser-cleanup.json",
+        "sha256": "360dafc780900653c1795d6f74c3a1253d485a9c493a0b61c6efcb94e7a211f9"
+      },
+      "screenshot": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/browser-session.png",
+        "sha256": "a4376e76c9c1830d907360c7b4dfcb735e9e6dea129d5b5efb9395d094593645"
+      },
+      "boundary": "合成HTML桥使用实际facade/store/SDK/callback/guard和浏览器导航/cookie；不是完整Next部署",
+      "network": "exact loopback origin only; no blocked requests in final run",
+      "expectedConsole401": 2
+    },
+    "typecheck": {
+      "exitCode": 0,
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/typecheck-final.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      }
+    },
+    "scopedLint": {
+      "exitCode": 0,
+      "paths": 5,
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/lint-final.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "exitObservation": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/task-1-fix2-report.md",
+        "sha256": "4dbbc842b438e3526b2abf02aa982e354de8434201ef6f35fcd35ff61c0eaf66"
+      },
+      "limitation": "空输出；既有规则较宽松，不替代语义审查"
+    },
+    "project": {
+      "startedAt": "2026-10-19T12:37:31.600690+00:00",
+      "finishedAt": "2026-10-19T12:40:22.476016+00:00",
+      "commands": [
+        {
+          "label": "verify",
+          "command": [
+            "npm",
+            "run",
+            "verify"
+          ],
+          "startedAt": "2026-10-19T12:37:31.977237+00:00",
+          "exitCode": 0,
+          "finishedAt": "2026-10-19T12:40:16.054291+00:00",
+          "log": {
+            "path": "docs/research/evidence/2026-10-19-auth-session-integration/project-verify-20261019T123731Z.txt",
+            "sha256": "4581ba17431e9750ed6b57c221902849a7f0203dbcd8c01e0a46f9cb9d7b3236"
+          }
+        },
+        {
+          "label": "shared",
+          "command": [
+            "npm",
+            "test",
+            "--workspace=packages/shared",
+            "--",
+            "--runInBand"
+          ],
+          "startedAt": "2026-10-19T12:40:16.055952+00:00",
+          "exitCode": 0,
+          "finishedAt": "2026-10-19T12:40:21.279869+00:00",
+          "log": {
+            "path": "docs/research/evidence/2026-10-19-auth-session-integration/project-shared-20261019T123731Z.txt",
+            "sha256": "1b6e1ca1975b29a3db8ac954e372cbfa126fd8efa4b90f08cb6bbf2926764d1e"
+          }
+        },
+        {
+          "label": "infra",
+          "command": [
+            "npm",
+            "run",
+            "test:infra"
+          ],
+          "startedAt": "2026-10-19T12:40:21.280804+00:00",
+          "exitCode": 0,
+          "finishedAt": "2026-10-19T12:40:22.177490+00:00",
+          "log": {
+            "path": "docs/research/evidence/2026-10-19-auth-session-integration/project-infra-20261019T123731Z.txt",
+            "sha256": "f2d2a61ed4e4bdd6296350364516047f966f57bd352c9a26c2aabb6e7c08871e"
+          }
+        }
+      ],
+      "web": {
+        "suites": 96,
+        "tests": 1278
+      },
+      "shared": {
+        "suites": 4,
+        "tests": 16
+      },
+      "infra": {
+        "tests": 7
+      },
+      "builtPages": 176,
+      "inputs": 773,
+      "inputChanges": [],
+      "nextEnvRestored": true,
+      "nextEnvSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "qualification": "successful build; production configuration not qualified",
+      "retainedDiagnostics": [
+        "旧Next eslint配置不支持",
+        "images.domains弃用",
+        "缺少SUPABASE_SERVICE_ROLE_KEY导致configuration-validation诊断"
+      ]
+    }
+  },
+  "migrationSemantics": {
+    "deletedLocalStorageKeys": [
+      "auth-store",
+      "sb-<Supabase URL hostname first segment>-auth-token",
+      "sb-<Supabase URL hostname first segment>-auth-token-code-verifier"
+    ],
+    "credentialsReadOrImported": false,
+    "businessOrIndexedDbCleanup": false,
+    "localStorageOnlyUsersMustSignInAgain": true,
+    "automaticUrlDetection": false,
+    "legacyFragmentOrMalformedCallbackRestored": false,
+    "bareSingleTypeInviteGuidancePreserved": true,
+    "safeNextAndDashboardFallbackPreserved": true
+  },
+  "history": {
+    "initialFocused": {
+      "suites": 18,
+      "tests": 505,
+      "scope": "historical initial source",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/task-1-report.md",
+        "sha256": "da2b31f8a3d946b3d851804d74bd70ee22e43072d4d294bbcdc85e3df0ba2977"
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/focused-final.log.txt",
+        "sha256": "66f48121259ace3f492b423d46e35eb979f9d03c9f521c7010bf49ababedb05d"
+      }
+    },
+    "fix1Focused": {
+      "suites": 19,
+      "tests": 515,
+      "scope": "historical fix1 source",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/task-1-fix1-report.md",
+        "sha256": "714052a0cea73e83ba13dd0a8eb0c5c321b9d6c29baaf6872893ac5b915eb778"
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/focused-final.log.txt",
+        "sha256": "37181c87542450089aee2d09622574662345b219bdb14b75af7bd093bebe33d7"
+      }
+    },
+    "initialSpecReview": {
+      "path": "docs/research/evidence/2026-10-19-auth-session-integration/task-1-spec-review.md",
+      "sha256": "18f23ea781319bc4ac4de97bb1641b4e0eda3b9d4c5b56c767fece4b724ff7c0"
+    },
+    "initialQualityReview": {
+      "path": "docs/research/evidence/2026-10-19-auth-session-integration/task-1-quality-review.md",
+      "sha256": "5a650d923287290e57848e325ed15aa5fad799df82d0fefac9d4f3be219d8bb4"
+    },
+    "retainedRedAndAttempts": [
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red.log.txt",
+        "sha256": "4fd90322d96fae3a614eeb3f202f669ce9c19147d0bbed058199a06cdc273a87"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red-guard-home.log.txt",
+        "sha256": "c0cf5a2b7dd7de3849eeaa572e58e7219eb1aeb7ba0e463b960e6ab6097e0f0e"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/green-attempt-1.log.txt",
+        "sha256": "ac617a017ee7557fd96f3f06a5e4e1eccce0161151571b584916951b0674ec11"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/browser-attempt-1.log.txt",
+        "sha256": "ad52efd98c3cf1c9e2804cd7f2e367ccf7910dc8815b4b7ce3caf6a16943534e"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/browser-attempt-2.log.txt",
+        "sha256": "27be8b76b786ac7d14622577c919d220b117a6398f67fce7e578071b92bde2d8"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/focused-final-attempt-1.log.txt",
+        "sha256": "33a6964380782816ccc7b6b8661bab0c88c6e0b06d0fb784fb59f8219c35a97c"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/focused-before-home-ruling.log.txt",
+        "sha256": "85d951c289ad6eb7d20e8f7115f8a2b1b01a534115a05022f0da92bdd650d194"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red-home-guidance.log.txt",
+        "sha256": "8ada883bd6ddf324b6061e7015dac4df60cc207538b38e7ccca3d20439136ccd"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/red-token-race.log.txt",
+        "sha256": "3b40fc42b3fe895e32fe813a495652cbbaa41ed4d5605942b0203cbdac8fa3a9"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/red-confirmed.log.txt",
+        "sha256": "827af8be89375572a9b50e79f2be0e034aab85f1e05492e435dd6734b31ff8d1"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/red-confirmed.log.txt",
+        "sha256": "84245d812937cbb74a40d1c0fe5ed39da47617f92523e9ccb33fbd0930e1f1da"
+      }
+    ],
+    "historicalManifests": [
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/evidence-sha256.json",
+        "sha256": "de2ed9b455af39263fb09a077a00000539d055cf3e96f3bded32a23e6b12d89b"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix1/evidence-manifest-fix1.json",
+        "sha256": "10cb44328cbdac92629cf322466dadc51da958965da9fa87b8d837a8bbbdfc08"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/fix2/evidence-manifest-fix2.json",
+        "sha256": "c28488e66f428276c366f764b045102580c9a5a1803e0d6ad1bb40aadaf383a5"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/quality-review-probe-sha256.json",
+        "sha256": "413f3b51c749a81cf12a798b0e6189480d52047c284ea0701613eadef2fc998c"
+      },
+      {
+        "path": "docs/research/evidence/2026-10-19-auth-session-integration/quality-fix2-reviewer-sha256.json",
+        "sha256": "6144860924af35264ff4f8271fcd33705eb3ed0855875c4089b447607e61dcc3"
+      }
+    ],
+    "reportsDescribeStatusAtTimeOfWriting": true
+  },
+  "publishedLogs": {
+    "manifest": {
+      "path": "docs/research/evidence/2026-10-19-auth-session-integration/published-logs.json",
+      "sha256": "3e840c119a067d538243cba9e59d75fb2f2259ce715afc38cb8b40be430706c9"
+    },
+    "byteIdenticalCopies": 38,
+    "originalLogPathsInImmutableReports": "local originals ignored by repository; use manifest to locate identical .log.txt copies"
+  },
+  "releaseBoundary": {
+    "RB1": {
+      "localRootCauseRepair": "complete",
+      "syntheticIntegration": "passed",
+      "liveProviderAndDeploymentQualification": "open"
+    },
+    "notQualified": [
+      "真实Google授权",
+      "真实SMTP投递",
+      "完整Next部署与生产域名/redirect/cookie",
+      "真实Supabase JWT签名/RLS/PostgREST",
+      "真实录音与G1设备矩阵"
+    ],
+    "nextIndependentLocalTask": "可信权益source/event供给、撤销/持久去重、send/release与直接RPC/表ACL",
+    "G0": false,
+    "G1": false,
+    "audit": {
+      "rerun": false,
+      "fixedHere": false,
+      "historicalVulnerabilities": 42,
+      "high": 34,
+      "moderate": 8
+    },
+    "productionSwitchesEnabled": false,
+    "committed": false,
+    "githubPushed": false,
+    "migrated": false,
+    "deployed": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "task_source_files": 20,
+  "changed_since_freeze": {},
+  "protected_files": 129,
+  "changed_protected_files": [],
+  "scoped_patch": {
+    "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/task-1-scoped.patch",
+    "sha256": "cede3b175c942144a415608d46a1b7e1a2ed390eec184ad4b2e104c919751761",
+    "reverse_apply_check_exit": 0
+  }
+}

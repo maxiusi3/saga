@@ -1,0 +1,53 @@
+{
+  "status": "implementation-frozen-for-independent-review",
+  "capturedAt": "2026-10-17T12:39:45.352574+00:00",
+  "sourceSha256": {
+    "scripts/inspect-supabase-routines.cjs": "f838b8762324302073bdfc657551069666357b9a2bd66299a3fe2f6ec4d4f928",
+    "scripts/supabase-capture-runtime.cjs": "6b6e2ed78758076af37cb6fa2383d61f0e07090b32d44288b3abe46c6e15353a",
+    "scripts/inspect-supabase-metadata.cjs": "be8f08d62a6ac3fcae20911f8b6569dab8f6a52bb2e099a233855ac63f8e27d2",
+    "scripts/__tests__/inspect-supabase-routines.test.cjs": "0bd3c95ca57d60566ca0bf3df46d33866f03f03d005d81b0d42b9ad0b6adbdc8",
+    "scripts/__tests__/inspect-supabase-routines-local.test.cjs": "77626e450bd96402d324d02e074501f8ed6a28ee779bc1df453bf7cd8c564936",
+    "scripts/__tests__/inspect-supabase-metadata.test.cjs": "772cf50cb7fa3d5cfbc9c07400a842b5dbe9039db37f83504a64d0e00406686a",
+    ".gitignore": "d32441029111fe11e841724d2cc515f05029d6d46160336239acd0c034d1ef67"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+    "sha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "targetCount": 12
+  },
+  "testCommand": "SAGA_ROUTINE_LOCAL_PG=1 node --test scripts/__tests__/inspect-supabase-metadata.test.cjs scripts/__tests__/inspect-supabase-routines.test.cjs scripts/__tests__/inspect-supabase-routines-local.test.cjs",
+  "testResult": {
+    "exitCode": 0,
+    "tests": 43,
+    "pass": 43,
+    "fail": 0,
+    "skip": 0,
+    "metadataRegressionTests": 23,
+    "routineTests": 19,
+    "localSqlTests": 1
+  },
+  "evidence": "capture-green.tap",
+  "baseline": "capture-baseline.json",
+  "originalMetadataQueryTextsUnchanged": 16,
+  "runtime": "PostgreSQL 16.11 (Homebrew), isolated temporary Unix socket with listen_addresses empty",
+  "cleanup": "Client close bounded to 3 seconds; pg_ctl immediate stop bounded with -t 10 and 20s subprocess timeout; pg_ctl status exit 3 asserted; temporary cluster removed",
+  "checks": [
+    "node --check on all three production scripts",
+    "git diff --check -- .gitignore scripts",
+    "git check-ignore supabase/.temp/routine-audit/capture-example.json"
+  ],
+  "boundaries": {
+    "actualCredentialReads": false,
+    "remoteConnections": false,
+    "businessRowReads": false,
+    "businessRoutineInvocations": false,
+    "dependencyChanges": false,
+    "rootMigrationsChanged": false,
+    "commitsOrPushes": false,
+    "projectWideVerifyRun": false
+  },
+  "remaining": [
+    "Independent spec and code-quality review",
+    "Controller-owned actual remote capture"
+  ]
+}

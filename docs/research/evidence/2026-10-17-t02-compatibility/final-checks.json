@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-17T05:36:11.968992+00:00",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "baselineFileCount": 1217,
+  "changedExistingFiles": [
+    "docs/2026-10-10-integrated-upgrade-plan.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/README.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md",
+    "experiments/rls-rehearsal/README.md",
+    "experiments/rls-rehearsal/candidate.sql",
+    "experiments/rls-rehearsal/scenarios.mjs",
+    "experiments/rls-rehearsal/verify.mjs",
+    "packages/web/src/lib/__tests__/legacy-media-reference.test.ts",
+    "packages/web/src/lib/legacy-media-reference.ts"
+  ],
+  "protectedFileCount": 1206,
+  "protectedFilesUnchanged": true,
+  "sourceHashesMatch": true,
+  "allFinalChildHashesMatch": true,
+  "finalCleanupVerified": true,
+  "nextEnvRestored": true,
+  "markdownLinksChecked": 256,
+  "missingMarkdownLinks": [],
+  "gitDiffCheck": "passed",
+  "newSourcesAndDocsWhitespaceCheck": "passed",
+  "documentSha256": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "84857c5c2f4c1b3d7f6d0ef2fafdbdf1103edacb740b6a33f4b5e2ee516693a9",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "c24551eb853b499839d6906e03403307f8f0657871fa28d0f7a21f86864998ed",
+    "docs/README.md": "16e847098eb3ce755a5c6d07fcb130636f2ee588e282da46db8702ae3c07c00e",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "66cc6eb63ca26c5e9dfdd3adceddda0304e4cdf4af244dd10dd99444a31dc54e",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "3fda1e9da01b69462ed2f8840c6edcdc048542d5adf2fcd69c52d837d18fa517",
+    "docs/superpowers/plans/2026-10-17-upgrade-t02-compatibility.md": "bc562b9dc06d6bc292998acea13063fad386e7feb29026ec16d0c1efef2f5246",
+    "docs/research/2026-10-17-t02-legacy-mapping.md": "a1147278fc47de441065b09c9d5d2420a1e61e479ad484eb7416fc73ab665ea3",
+    "docs/research/2026-10-17-rls-review-followup.md": "4c439a0f2e58d8256001e0c8784fafb433ae5f3f72eb630328495c2caa7f7473",
+    "docs/research/evidence/2026-10-17-t02-compatibility/review-status.md": "9c666584ebd27daa867b9a089ccf8a9b10f3c2dce248419a86f1a3b871eb9504",
+    "docs/research/evidence/2026-10-17-t02-compatibility/review-initial.md": "bd93ece004bcaf85fa8cdd2be1329a2b7a868953405d92fd30a562eec3de239f",
+    "docs/research/evidence/2026-10-17-rls-rehearsal/review-followup.md": "e09bf57ac9882f6db786a6934429e586b8028ee6d58cde6e1e55ab2f03646bea",
+    "docs/research/evidence/2026-10-17-rls-rehearsal/review-fixes.md": "4f44011e3ed8de1ed5c7d9964cb3325ac836b60ceeb250357a460631f77d87b9"
+  }
+}

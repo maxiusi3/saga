@@ -1,0 +1,10 @@
+PASS mixed error/token URL caused no SDK exchange/session write
+PASS OAuth uses S256 and writes browser verifier cookie
+BROWSER error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector
+PASS real navigation passes provider/callback 303 to safe locale target
+page.evaluate: TypeError: Cannot read properties of undefined (reading 'client')
+    at eval (eval at evaluate (:302:30), <anonymous>:1:53)
+    at UtilityScript.evaluate (<anonymous>:304:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at main (/Users/eat/Documents/eatpotato/saga传奇/scripts/verify-auth-session-browser.cjs:77:31)
+{"cleanup":{"listening":false,"sockets":0},"ownedBrowserClosed":true,"ownedTempRemoved":true,"nextEnvUnchanged":true,"nextEnvRestoredHash":"7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"}

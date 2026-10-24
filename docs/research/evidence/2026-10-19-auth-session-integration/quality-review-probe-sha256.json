@@ -1,0 +1,8 @@
+{
+  ".superpowers/sdd/2026-10-19-upgrade-auth-session-integration/quality-event-refresh-probe.cjs": "3037257401350ffa345743d95970f70baaee66b5dc666c83bdb2b1f54d18d90f",
+  ".superpowers/sdd/2026-10-19-upgrade-auth-session-integration/quality-guard-refresh-probe.cjs": "1b6504f3f92c95c1c7eae57409fd5700f75ba903491b3394703ec1094081aa94",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-event-refresh-probe.json": "09eb4c34eab5c823b6108d6079eae3512498f8ef238b0109e5073012caaf0f63",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-event-refresh-probe.log.txt": "d5a6aa1cde692e06681e640a9b44769dfdd3278dfe1489d225bfdb217be44407",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-guard-refresh-probe.json": "77a0a767c2a8e6b173350367ab34dc49e208638946618954eceb545317db296b",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-guard-refresh-probe.log.txt": "ce642ca211fe10f6e397a3fe5edee88e90360dc0ffdf45f74debf45029407f5a"
+}

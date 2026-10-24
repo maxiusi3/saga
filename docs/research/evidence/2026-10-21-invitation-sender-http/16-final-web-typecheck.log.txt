@@ -1,0 +1,27 @@
+
+> @saga/web@1.0.0 type-check
+> tsc --noEmit
+
+.next/types/app/api/admin/cleanup-invitations/route.ts(46,7): error TS2344: Type '{ __tag__: "GET"; __param_position__: "first"; __param_type__: Request | undefined; }' does not satisfy the constraint 'ParamCheck<Request | NextRequest>'.
+  Types of property '__param_type__' are incompatible.
+    Type 'Request | undefined' is not assignable to type 'Request | NextRequest'.
+      Type 'undefined' is not assignable to type 'Request | NextRequest'.
+.next/types/app/api/admin/cleanup-invitations/route.ts(163,7): error TS2344: Type '{ __tag__: "POST"; __param_position__: "first"; __param_type__: Request | undefined; }' does not satisfy the constraint 'ParamCheck<Request | NextRequest>'.
+  Types of property '__param_type__' are incompatible.
+    Type 'Request | undefined' is not assignable to type 'Request | NextRequest'.
+      Type 'undefined' is not assignable to type 'Request | NextRequest'.
+.next/types/app/api/projects/[id]/invitations/route.ts(46,7): error TS2344: Type '{ __tag__: "GET"; __param_position__: "first"; __param_type__: Request | undefined; }' does not satisfy the constraint 'ParamCheck<Request | NextRequest>'.
+  Types of property '__param_type__' are incompatible.
+    Type 'Request | undefined' is not assignable to type 'Request | NextRequest'.
+      Type 'undefined' is not assignable to type 'Request | NextRequest'.
+.next/types/app/api/projects/[id]/invitations/route.ts(241,7): error TS2344: Type '{ __tag__: "DELETE"; __param_position__: "first"; __param_type__: Request | undefined; }' does not satisfy the constraint 'ParamCheck<Request | NextRequest>'.
+  Types of property '__param_type__' are incompatible.
+    Type 'Request | undefined' is not assignable to type 'Request | NextRequest'.
+      Type 'undefined' is not assignable to type 'Request | NextRequest'.
+npm error Lifecycle script `type-check` failed with error:
+npm error code 2
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c tsc --noEmit

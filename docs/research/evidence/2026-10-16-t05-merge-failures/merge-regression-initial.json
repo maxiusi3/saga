@@ -1,0 +1,131 @@
+{
+  "startedAt": "2026-10-16T12:29:44.051Z",
+  "scope": "isolated PostgreSQL + pg-boss + real local fictional audio + existing T04 streaming merge and FFmpeg decoder",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3",
+    "ffmpeg": "ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffmpegSha256": "4a4a968b98859588e98500ae25973d80a5ca5eed0724222b9f76360dcb72a001"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "390893bd89d2e5694ad00c3ed96a5993a1316ddbccff7eae3537eb78364d5865",
+    "experiments/t05-durable-worker/worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "experiments/t05-durable-worker/verify.mjs": "f48110f0252de7c5b329dd5bc11d4e9db55e286340723ff7b5b834517605f5e3",
+    "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+    "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+    "experiments/t05-durable-worker/README.md": "537d552f68ebce901d30bdd859f96cd675c57d154ba6034bed312bc81acd84fa",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "084c2ef032453922551f8ab685c22968d3f63283a2c7aefb209c99c3467e2010",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "86a215108becb849b2e0889924d41a2b2f3828489a0850c295c7eb6150b40998",
+    "experiments/t05-durable-worker/merge-failure-scenarios.mjs": "40d31f33fdb80b6cd861a6794d19e223f317439beae20edf35689de3aff81642",
+    "experiments/t05-durable-worker/verify-merge-cleanup.mjs": "c1e7b997ea4ecd0ecb8bb6cd453662417b52a03265e0db5eb9880cc6e0cebca5",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "133ea2a252afaf06d0d9512899a056d45bc23c0bb18418edeff3389e33e5fa5d",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "681de1522dbc45b1073680762a61baafca4e38a3e7bcdc325a1f76973363df9a",
+    "packages/web/src/lib/server/recording-processing-error.ts": "2783e7e171979bc7a1a10b751c3dc83195265e435d69e627225463fca46e26e3"
+  },
+  "scenarios": [
+    {
+      "name": "recording input and private adapter are explicit",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 14
+    },
+    {
+      "name": "real webm merge and checked output readback",
+      "status": "passed",
+      "assertions": 28,
+      "elapsedMs": 841,
+      "format": "webm",
+      "chunkCount": 12,
+      "bytes": 4742,
+      "durationMs": 400,
+      "sha256": "f6f982b936bcdb9d46f3a64f06a7d2296c7d1672f7016de936c4ea9899acc6b7"
+    },
+    {
+      "name": "real mp4 merge and checked output readback",
+      "status": "passed",
+      "assertions": 19,
+      "elapsedMs": 797,
+      "format": "mp4",
+      "chunkCount": 3,
+      "bytes": 4692,
+      "durationMs": 406,
+      "sha256": "d6c11d1f93b008688cd204055fa84c68e5b96fbb098716ce1e5a8ea2a7cc53dd"
+    },
+    {
+      "name": "real ogg merge and checked output readback",
+      "status": "passed",
+      "assertions": 19,
+      "elapsedMs": 808,
+      "format": "ogg",
+      "chunkCount": 3,
+      "bytes": 4243,
+      "durationMs": 400,
+      "sha256": "448ffdcac9f5d6819720bdb2fff2d39d32d80b2c0da6a8b0e7742391f816fc60"
+    }
+  ],
+  "assertions": 90,
+  "limitations": [
+    "Private temporary PostgreSQL tables and an allowed flag simulate authorization; no production schema, RLS, Storage, outbox, migration or paid provider.",
+    "No filesystem/database distributed transaction. Prepared outputs may remain private orphans after process death or unknown COMMIT; no automatic GC or manual reuse.",
+    "Private directories, regular files, bounded streams and O_NOFOLLOW protect local paths; same-user hostile directory replacement races and non-preemptible kernel filesystem operations are outside this PoC.",
+    "Generated sine audio is split into contiguous file chunks; this is not physical-device MediaRecorder or production media sandbox evidence.",
+    "Checkpoint pauses are fault wrappers, not decoder CPU work. Real-time input throttling (-re) is explicitly labeled where used with real FFmpeg.",
+    "The existing local nonfree FFmpeg 7.1 executable is used for tests only and is not copied or redistributed."
+  ],
+  "resourceOwnership": {
+    "version": 1,
+    "harnessPid": 69239,
+    "scratch": "/tmp/saga-t05-OPtiYJ",
+    "clusterMayHaveStarted": true,
+    "clusterStopped": true,
+    "postmasterPid": 69339,
+    "groupIds": [
+      69376,
+      69380,
+      69385,
+      69394,
+      69398,
+      69402
+    ],
+    "decoderPids": []
+  },
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: cancelled pending entry settles\n+ actual - expected\n\n+ 'empty'\n- 'cancelled'\n\n    at equal (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:71:10)\n    at file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/merge-scenarios.mjs:230:44\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async scenario (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:81:19)\n    at async runMergeScenarios (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/merge-scenarios.mjs:209:3)\n    at async file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:677:5",
+  "processOwnership": {
+    "supervisorPids": [],
+    "workerPids": [
+      69376,
+      69380,
+      69385,
+      69394,
+      69398,
+      69402
+    ],
+    "runnerPids": [],
+    "groupIds": [
+      69376,
+      69380,
+      69385,
+      69394,
+      69398,
+      69402
+    ],
+    "forcedGroupKills": [],
+    "remainingGroups": [],
+    "remainingRunnerPids": [],
+    "directOperationsRemaining": 0
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T12:29:48.743Z"
+}

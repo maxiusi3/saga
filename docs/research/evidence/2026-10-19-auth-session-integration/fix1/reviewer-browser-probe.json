@@ -1,0 +1,13 @@
+{
+  "qualification": "Actual browser facade and installed SDK with synthetic expired cookie and mocked fetch; no network",
+  "requests": [
+    {
+      "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+      "method": "POST"
+    }
+  ],
+  "messages": [
+    "AuthApiError: Authentication unavailable"
+  ],
+  "rawSentinelLogged": false
+}

@@ -1,0 +1,57 @@
+{
+  "batch": "2026-10-19-auth-session-integration",
+  "date": "2026-10-19",
+  "basis": "原综合计划第7节与P0质量门定义；本地实现批不是新增里程碑",
+  "criteriaSources": [
+    "docs/2026-10-10-integrated-upgrade-plan.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md"
+  ],
+  "G0": {
+    "passed": false,
+    "localEvidence": "会话根因修复、独立Task 1复审和合成浏览器/项目检查已完成；已有决策/原型/schema/history/RLS证据保持",
+    "missing": [
+      "正式生产权限与完整adapter/认证部署资格",
+      "Storage/bucket配置及完整依赖隔离",
+      "迁移历史等价、回填/回退与备份恢复",
+      "供应商账户与数据条件"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "localEvidence": "本地权限/合并/录音恢复及本批相关回归不代替正式验收",
+    "missing": [
+      "正式Storage/会话/任务/删除adapter集成",
+      "声明设备的5/20/30分钟故障矩阵",
+      "远端对象授权反例与原件哈希",
+      "基础离线导出、保存后恢复和删除证据"
+    ]
+  },
+  "RB1": {
+    "localRootCauseRepair": "complete",
+    "syntheticIntegration": "passed",
+    "liveProviderAndDeploymentQualification": "open"
+  },
+  "task1Reviews": {
+    "specification": "PASS_after_fix1",
+    "quality": "Approved_after_fix2_no_new_specification_issue"
+  },
+  "documentationIndependentReview": "Spec_PASS_Quality_Approved",
+  "finalBatchIndependentReview": "Spec_PASS_Quality_Approved",
+  "finalIntegrity": "passed",
+  "audit": {
+    "historicalTotal": 42,
+    "high": 34,
+    "moderate": 8,
+    "rerun": false,
+    "fixedHere": false
+  },
+  "build": "exit0且176页；旧Next配置与缺服务端key的configuration-validation诊断保留，非生产配置资格证明",
+  "originalMilestonePassed": false,
+  "githubPushAuthorizedByMilestone": false,
+  "githubPushed": false,
+  "committed": false,
+  "migrated": false,
+  "deployed": false,
+  "productionSwitchesEnabled": false,
+  "nextIndependentLocalTask": "可信权益source/event供给、撤销/持久去重、send/release与直接RPC/表ACL；真实提供方/部署资格单独保留"
+}

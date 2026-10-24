@@ -1,0 +1,54 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": "packages/web/src/app/api/invitations/accept/route.ts",
+      "sha256": "8948cbb3b160d1b4fc2f25a4c5347380513f59a8d5768a8129d6e38b87022939"
+    },
+    {
+      "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+      "sha256": "ab24e17cf9f15382c9bd070edbd7106571bf0274e4b7a956351d57a087c272dc"
+    },
+    {
+      "path": "packages/web/src/lib/api-supabase.ts",
+      "sha256": "95420aa15d1b10af54e2664fde028c5e292448e0bcc9420763ffce1a62b4a0cc"
+    },
+    {
+      "path": "packages/web/src/lib/invitation-acceptance-protocol.ts",
+      "sha256": "fc820ec8c6210a772bdd5e8f098380c4f4ac293fd176d8589ef8c3fb55a06206"
+    },
+    {
+      "path": "packages/web/src/lib/invitation-acceptance-client.ts",
+      "sha256": "37e32f8c3390ce7409b3210c26cd0f26634f459555dcf0209a350facd15e9d8d"
+    },
+    {
+      "path": "packages/web/src/lib/server/invitation-acceptance.ts",
+      "sha256": "d7be106395b2fce43fd94abe4ebf2841da928ddf1d017e407002e3c4f1ef0084"
+    },
+    {
+      "path": "packages/web/src/app/api/invitations/status/route.ts",
+      "sha256": "5b5407c41c7527e5b316532099a4848f936e8d0c0dffc4cf85e10f58bba82891"
+    },
+    {
+      "path": "packages/web/src/lib/__tests__/invitation-acceptance-protocol.test.ts",
+      "sha256": "88b297b0dee9cc14c148bc78028620a908274f99336a02035ebec635b6721238"
+    },
+    {
+      "path": "packages/web/src/lib/__tests__/invitation-acceptance-client.test.ts",
+      "sha256": "f3ded0aac40c3660cc3dcbaef5546711fb95fba6c787bdae4c4711406b5f44cd"
+    },
+    {
+      "path": "packages/web/src/lib/server/__tests__/invitation-acceptance.test.ts",
+      "sha256": "31e8066758b8c15937019823e83204b499679366d04c60dc36e57429c5d56885"
+    },
+    {
+      "path": "packages/web/src/lib/server/test-support/invitation-fixture.ts",
+      "sha256": "ccd34db2d2957a4f2670cf9839a45673bcdc1269640f7061fcf331c05208d193"
+    }
+  ],
+  "digestAlgorithm": "sha256(JSON.stringify(files))",
+  "inputDigest": "690149536961419859643d1e5348866856edec38311e6a4844688d997481fa9e",
+  "previousInputDigest": "3546f70018324f5b9d54752180581a4dd55e92bd9f9ded2fe04736f39d498a59",
+  "importsOnly": true,
+  "fixtureBytesUnchanged": true
+}

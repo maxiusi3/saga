@@ -1,0 +1,350 @@
+{
+  "capturedAt": "2026-10-17T06:00:29.707Z",
+  "status": "passed",
+  "postgresVersion": "14.17 (Homebrew)",
+  "connection": "temporary local Unix socket; listen_addresses empty; no existing database or remote connection",
+  "sourceSha256": "bb7a8caff1711d253f90b90401af68ccac02ad65e66a48ef8736d6c5fa373219",
+  "fixtureSql": "CREATE ROLE metadata_reader LOGIN; CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role;\nCREATE SCHEMA storage; CREATE SCHEMA other_schema;\nREVOKE CREATE ON SCHEMA public FROM PUBLIC;\nGRANT USAGE ON SCHEMA storage TO metadata_reader, authenticated, service_role;\nCREATE FUNCTION public.fixture_default(x text DEFAULT 'SYNTHETIC_DEFAULT_VALUE') RETURNS text LANGUAGE plpgsql STRICT SECURITY DEFINER SET search_path = pg_catalog, public SET application_name = 'SYNTHETIC_PROCONFIG_VALUE' AS $$BEGIN RAISE EXCEPTION 'SYNTHETIC_BODY_VALUE'; END$$;\nCREATE FUNCTION public.fixture_revoked() RETURNS integer LANGUAGE sql AS $$SELECT 1$$;\nREVOKE ALL ON FUNCTION public.fixture_revoked() FROM PUBLIC;\nGRANT EXECUTE ON FUNCTION public.fixture_revoked() TO authenticated;\nCREATE PROCEDURE storage.fixture_procedure() LANGUAGE plpgsql AS $$BEGIN RAISE EXCEPTION 'SYNTHETIC_PROCEDURE_VALUE'; END$$;\nCREATE FUNCTION other_schema.fixture_excluded() RETURNS integer LANGUAGE sql AS $$SELECT 2$$;\nCREATE FUNCTION public.fixture_trigger() RETURNS trigger LANGUAGE plpgsql AS $$BEGIN RAISE EXCEPTION 'SYNTHETIC_TRIGGER_BODY'; END$$;\nCREATE TABLE public.fixture_rows(id text PRIMARY KEY, note text);\nCREATE TRIGGER fixture_trigger BEFORE INSERT ON public.fixture_rows FOR EACH ROW WHEN (NEW.note = 'SYNTHETIC_WHEN_VALUE') EXECUTE FUNCTION public.fixture_trigger('SYNTHETIC_ARG_VALUE');\nALTER DEFAULT PRIVILEGES FOR ROLE fixture_admin REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;\nALTER DEFAULT PRIVILEGES FOR ROLE fixture_admin REVOKE EXECUTE ON FUNCTIONS FROM fixture_admin;\nALTER DEFAULT PRIVILEGES FOR ROLE fixture_admin IN SCHEMA public GRANT SELECT ON TABLES TO authenticated;\nALTER DEFAULT PRIVILEGES FOR ROLE fixture_admin IN SCHEMA other_schema GRANT SELECT ON TABLES TO anon;",
+  "checks": [
+    {
+      "name": "all five new catalog sections execute as the restricted reader on PostgreSQL 14.17",
+      "status": "passed"
+    },
+    {
+      "name": "only four target-schema routines and their sixteen role combinations appear",
+      "status": "passed"
+    },
+    {
+      "name": "function defaults/body and non-search_path configuration are not serialized",
+      "status": "passed"
+    },
+    {
+      "name": "PUBLIC fallback and explicit revocation produce different effective role access",
+      "status": "passed"
+    },
+    {
+      "name": "trigger structure is present without argument or WHEN values",
+      "status": "passed"
+    },
+    {
+      "name": "schema privilege grid reports USAGE denial independently from routine EXECUTE",
+      "status": "passed"
+    },
+    {
+      "name": "global empty ACLs and public-specific ACLs survive while other-schema defaults stay excluded",
+      "status": "passed"
+    }
+  ],
+  "sections": {
+    "functions": {
+      "status": "ok",
+      "rowCount": 4,
+      "rows": [
+        {
+          "schema_name": "public",
+          "function_name": "fixture_default",
+          "identity_arguments": "x text",
+          "return_type": "text",
+          "kind": "f",
+          "owner": "fixture_admin",
+          "language": "plpgsql",
+          "security_definer": true,
+          "volatility": "v",
+          "is_strict": true,
+          "leakproof": false,
+          "search_path": [
+            "search_path=pg_catalog, public"
+          ],
+          "definition_hash_md5": "2efbb45ad0e88aa61690f3cee018cda6",
+          "acl_is_null": true,
+          "builtin_default_public_execute": true,
+          "public_execute": true,
+          "public_execute_grantable": false
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_revoked",
+          "identity_arguments": "",
+          "return_type": "integer",
+          "kind": "f",
+          "owner": "fixture_admin",
+          "language": "sql",
+          "security_definer": false,
+          "volatility": "v",
+          "is_strict": false,
+          "leakproof": false,
+          "search_path": [],
+          "definition_hash_md5": "5d0b897307d6517543e8b9a30453705c",
+          "acl_is_null": false,
+          "builtin_default_public_execute": true,
+          "public_execute": false,
+          "public_execute_grantable": false
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_trigger",
+          "identity_arguments": "",
+          "return_type": "trigger",
+          "kind": "f",
+          "owner": "fixture_admin",
+          "language": "plpgsql",
+          "security_definer": false,
+          "volatility": "v",
+          "is_strict": false,
+          "leakproof": false,
+          "search_path": [],
+          "definition_hash_md5": "3279b53d5a77b61628a7a3a760609851",
+          "acl_is_null": true,
+          "builtin_default_public_execute": true,
+          "public_execute": true,
+          "public_execute_grantable": false
+        },
+        {
+          "schema_name": "storage",
+          "function_name": "fixture_procedure",
+          "identity_arguments": "",
+          "return_type": null,
+          "kind": "p",
+          "owner": "fixture_admin",
+          "language": "plpgsql",
+          "security_definer": false,
+          "volatility": "v",
+          "is_strict": false,
+          "leakproof": false,
+          "search_path": [],
+          "definition_hash_md5": "f74f9041a1c7d8955652edb8990e9df9",
+          "acl_is_null": true,
+          "builtin_default_public_execute": true,
+          "public_execute": true,
+          "public_execute_grantable": false
+        }
+      ]
+    },
+    "function_privileges": {
+      "status": "ok",
+      "rowCount": 16,
+      "rows": [
+        {
+          "schema_name": "public",
+          "function_name": "fixture_default",
+          "identity_arguments": "x text",
+          "role_name": "anon",
+          "can_execute": true
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_default",
+          "identity_arguments": "x text",
+          "role_name": "authenticated",
+          "can_execute": true
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_default",
+          "identity_arguments": "x text",
+          "role_name": "metadata_reader",
+          "can_execute": true
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_default",
+          "identity_arguments": "x text",
+          "role_name": "service_role",
+          "can_execute": true
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_revoked",
+          "identity_arguments": "",
+          "role_name": "anon",
+          "can_execute": false
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_revoked",
+          "identity_arguments": "",
+          "role_name": "authenticated",
+          "can_execute": true
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_revoked",
+          "identity_arguments": "",
+          "role_name": "metadata_reader",
+          "can_execute": false
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_revoked",
+          "identity_arguments": "",
+          "role_name": "service_role",
+          "can_execute": false
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_trigger",
+          "identity_arguments": "",
+          "role_name": "anon",
+          "can_execute": true
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_trigger",
+          "identity_arguments": "",
+          "role_name": "authenticated",
+          "can_execute": true
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_trigger",
+          "identity_arguments": "",
+          "role_name": "metadata_reader",
+          "can_execute": true
+        },
+        {
+          "schema_name": "public",
+          "function_name": "fixture_trigger",
+          "identity_arguments": "",
+          "role_name": "service_role",
+          "can_execute": true
+        },
+        {
+          "schema_name": "storage",
+          "function_name": "fixture_procedure",
+          "identity_arguments": "",
+          "role_name": "anon",
+          "can_execute": true
+        },
+        {
+          "schema_name": "storage",
+          "function_name": "fixture_procedure",
+          "identity_arguments": "",
+          "role_name": "authenticated",
+          "can_execute": true
+        },
+        {
+          "schema_name": "storage",
+          "function_name": "fixture_procedure",
+          "identity_arguments": "",
+          "role_name": "metadata_reader",
+          "can_execute": true
+        },
+        {
+          "schema_name": "storage",
+          "function_name": "fixture_procedure",
+          "identity_arguments": "",
+          "role_name": "service_role",
+          "can_execute": true
+        }
+      ]
+    },
+    "triggers": {
+      "status": "ok",
+      "rowCount": 1,
+      "rows": [
+        {
+          "schema_name": "public",
+          "table_name": "fixture_rows",
+          "trigger_name": "fixture_trigger",
+          "enabled": "O",
+          "type_bitmask": 7,
+          "function_schema": "public",
+          "function_name": "fixture_trigger",
+          "function_identity_arguments": "",
+          "is_constraint": false,
+          "argument_count": 1,
+          "condition_present": true,
+          "definition_hash_md5": "00f8a9f9ad62235d85b6070295342899"
+        }
+      ]
+    },
+    "schema_privileges": {
+      "status": "ok",
+      "rowCount": 8,
+      "rows": [
+        {
+          "schema_name": "public",
+          "role_name": "anon",
+          "can_use": true,
+          "can_create": false
+        },
+        {
+          "schema_name": "public",
+          "role_name": "authenticated",
+          "can_use": true,
+          "can_create": false
+        },
+        {
+          "schema_name": "public",
+          "role_name": "metadata_reader",
+          "can_use": true,
+          "can_create": false
+        },
+        {
+          "schema_name": "public",
+          "role_name": "service_role",
+          "can_use": true,
+          "can_create": false
+        },
+        {
+          "schema_name": "storage",
+          "role_name": "anon",
+          "can_use": false,
+          "can_create": false
+        },
+        {
+          "schema_name": "storage",
+          "role_name": "authenticated",
+          "can_use": true,
+          "can_create": false
+        },
+        {
+          "schema_name": "storage",
+          "role_name": "metadata_reader",
+          "can_use": true,
+          "can_create": false
+        },
+        {
+          "schema_name": "storage",
+          "role_name": "service_role",
+          "can_use": true,
+          "can_create": false
+        }
+      ]
+    },
+    "default_privileges": {
+      "status": "ok",
+      "rowCount": 3,
+      "rows": [
+        {
+          "schema_name": "public",
+          "default_scope": "global",
+          "owner": "fixture_admin",
+          "object_type": "f",
+          "acl": []
+        },
+        {
+          "schema_name": "public",
+          "default_scope": "schema",
+          "owner": "fixture_admin",
+          "object_type": "r",
+          "acl": [
+            "authenticated=r/fixture_admin"
+          ]
+        },
+        {
+          "schema_name": "storage",
+          "default_scope": "global",
+          "owner": "fixture_admin",
+          "object_type": "f",
+          "acl": []
+        }
+      ]
+    }
+  },
+  "limits": [
+    "This local fixture does not verify remote PostgreSQL 17 permissions or TLS handshakes.",
+    "No fixture routine was executed; the trigger table contained no rows.",
+    "Only the five new sections are asserted here; audit_meta and bucket objects intentionally do not exist."
+  ]
+}

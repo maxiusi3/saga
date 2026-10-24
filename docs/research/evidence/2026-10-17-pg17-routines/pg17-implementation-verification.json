@@ -1,0 +1,3376 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-18T02:40:02.062Z",
+  "status": "passed_local_rehearsal",
+  "independentReview": "pending_parent_review",
+  "scope": {
+    "remoteConnections": false,
+    "remoteRoutineCalls": false,
+    "realBusinessData": false,
+    "appDependencyOrOldExperimentEdits": false,
+    "rootMigrationEdits": false,
+    "commitsOrPushes": false,
+    "subagents": false,
+    "productionDeployment": false
+  },
+  "implementationReport": {
+    "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-implementation.md",
+    "sha256": "594f0d7a8d7c951f32f0a5eff5c47a12e7b922869a2c6b17b24e53b10632d2e3"
+  },
+  "sources": {
+    "experiments/pg17-routines/README.md": "ec47be8b044197a4ae9243b0bcab1bcae761a56f2286fd7b85e2cb362cf9b609",
+    "experiments/pg17-routines/candidate.sql": "23c158ed3dc530c9c8b35cfab8639903589bfaf74099acf2cf18b8bfe1050379",
+    "experiments/pg17-routines/concurrency.mjs": "ae4e12e5cfd2f63aa79f1bf980a82aafcc88e4ef3baf0eecbdb9df9c2ab0fd4e",
+    "experiments/pg17-routines/fixture.sql": "f09cb35321cf38593eb173474f69c5b381e4d3a303f285ab42eaa6538f6ca6eb",
+    "experiments/pg17-routines/replay.mjs": "c937c2c82eb77231a73adf1ac4fb07ea3662585526b50b903c9cc330fac33f55",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/scenarios.mjs": "01aea744fa83e566f29969388f9bde8a28d73ab0e10f8379d1e96f90f77e55ac",
+    "experiments/pg17-routines/schema-manifest.json": "0c8c1f5a60ce8b3db3c0c2fdb9a9cef92ce421ddf75daad78535b8475ba9fae6",
+    "experiments/pg17-routines/setup-fixture.cjs": "98c9ebe07de651ef381d96a198a090594b63fbac963a78f77ea1f535cd47499f",
+    "experiments/pg17-routines/verify-lifecycle.mjs": "b6324559913a85df8e2ad17b2c791d65825e9dd611bb842277699994b099d6b0",
+    "experiments/pg17-routines/verify.mjs": "2274a631a54b139670666753069612246215d65928cd8176f4ef40dba4349c8d"
+  },
+  "sourceCount": 12,
+  "finalSourcesMatchNormalAndAllLifecycleChildren": true,
+  "resume": {
+    "previousFinalHostile": {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-17T16-33-58.563Z-b79bd1df-572d-49fb-8e1d-7b31525b16f7.json",
+      "sha256": "2bdc9426834b47d2653f08c30dc2fed9952164c38bd23678d7e69af156284f9b"
+    },
+    "priorCounts": {
+      "scenarios": 141,
+      "assertions": 864
+    },
+    "changedExistingSources": [
+      {
+        "path": "experiments/pg17-routines/scenarios.mjs",
+        "beforeSha256": "9af290ef5e2796cdb62b527fbfeff160c10199ffebfd627500a973ec2adfd481",
+        "afterSha256": "01aea744fa83e566f29969388f9bde8a28d73ab0e10f8379d1e96f90f77e55ac"
+      }
+    ],
+    "newSourceFiles": [
+      "experiments/pg17-routines/README.md"
+    ],
+    "scenarioCountUnchanged": true,
+    "addedPrerequisiteAssertions": 10,
+    "correctedPrerequisites": [
+      {
+        "case": "project_members_only",
+        "priorGap": "Seeded inactive alternative membership",
+        "correction": "Seed active project_members row and assert active status plus no project_roles before denial for each overload"
+      },
+      {
+        "case": "deleted_member",
+        "priorGap": "User had never held membership",
+        "correction": "Insert and verify active project_roles membership, delete exactly one row, assert absence, then deny each overload"
+      }
+    ],
+    "prerequisiteScenarios": [
+      {
+        "name": "candidate_4_deny_deleted_member",
+        "status": "passed",
+        "assertions": 6
+      },
+      {
+        "name": "candidate_4_deny_project_members_only",
+        "status": "passed",
+        "assertions": 5
+      },
+      {
+        "name": "candidate_3_deny_deleted_member",
+        "status": "passed",
+        "assertions": 6
+      },
+      {
+        "name": "candidate_3_deny_project_members_only",
+        "status": "passed",
+        "assertions": 5
+      }
+    ]
+  },
+  "commands": [
+    {
+      "argv": [
+        "node",
+        "experiments/pg17-routines/verify.mjs"
+      ],
+      "exitCode": 0,
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+        "sha256": "3d96c748299e37139c3790bc21aab6cdf16daa8c8881e93cb1121227a149048b"
+      }
+    },
+    {
+      "argv": [
+        "node",
+        "experiments/pg17-routines/verify-lifecycle.mjs"
+      ],
+      "exitCode": 0,
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-lifecycle-2026-10-18T02-31-48.265Z-52dcf725-6ae7-4eb5-be2b-3028f0f1dbe9.json",
+        "sha256": "0a11e668a5289c8aa7a8fa5c68d4f34a8e58ec2078bfa87bd18b72299bd470df"
+      }
+    }
+  ],
+  "finalCounts": {
+    "normal": {
+      "scenarios": 141,
+      "assertions": 874
+    },
+    "hostile": {
+      "scenarios": 141,
+      "assertions": 874
+    },
+    "lifecycle": {
+      "passed": 4,
+      "total": 4
+    },
+    "replayedDefinitions": 13,
+    "rpcIdentities": 12,
+    "baselineScenarios": 62,
+    "baselineExplicitRollbackCases": 60,
+    "concurrencyScenarios": 12,
+    "domainScenarios": 2,
+    "otherScenarios": 65
+  },
+  "syntaxChecks": [
+    {
+      "argv": [
+        "node",
+        "--check",
+        "experiments/pg17-routines/concurrency.mjs"
+      ],
+      "exitCode": 0,
+      "stderrEmpty": true
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "experiments/pg17-routines/replay.mjs"
+      ],
+      "exitCode": 0,
+      "stderrEmpty": true
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "experiments/pg17-routines/runtime.mjs"
+      ],
+      "exitCode": 0,
+      "stderrEmpty": true
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "experiments/pg17-routines/scenarios.mjs"
+      ],
+      "exitCode": 0,
+      "stderrEmpty": true
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "experiments/pg17-routines/setup-fixture.cjs"
+      ],
+      "exitCode": 0,
+      "stderrEmpty": true
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "experiments/pg17-routines/verify-lifecycle.mjs"
+      ],
+      "exitCode": 0,
+      "stderrEmpty": true
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "experiments/pg17-routines/verify.mjs"
+      ],
+      "exitCode": 0,
+      "stderrEmpty": true
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 9486,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-s6jg0C/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    },
+    "replayedDefinitions": 13,
+    "build": {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/runtime-build.json",
+      "sha256": "01fcac64c0490d2ec8b4e88236abaf4511bcbf306772c4b062de45f4f3e0e123"
+    },
+    "officialSourceArchive": {
+      "url": "https://ftp.postgresql.org/pub/source/v17.4/postgresql-17.4.tar.bz2",
+      "sha256": "c4605b73fea11963406699f949b966e5d173a7ee0ccaef8938dec0ca8a995fe7",
+      "checksumMatched": true
+    }
+  },
+  "references": [
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/runtime-build.json",
+      "sha256": "01fcac64c0490d2ec8b4e88236abaf4511bcbf306772c4b062de45f4f3e0e123"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/trigger-semantic-review.md",
+      "sha256": "fc395b989f73e8f8fabef8dedc70d0544f91cfb926741ab40f10c2f3edd06dc9"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-routine-audit/semantic-review.md",
+      "sha256": "4e6aad45ef2cae98fe14c06768d468f71e4e2226b3aef6d62f415419f1994bbf"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-routine-audit/callsite-review.md",
+      "sha256": "a997a45d9c2d63426e5c6713a34a9b9d11e59abc2c29320e12dd9c2eafad6654"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/project-checks-resume.json",
+      "sha256": "cc470da3392c0228d8b73ddb00a8a516a4d01a240457887186e6d1fc58efebc8"
+    }
+  ],
+  "capture": [
+    {
+      "publicPath": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+      "publicSha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+      "privateSha256": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+      "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+    },
+    {
+      "publicPath": "docs/research/evidence/2026-10-17-pg17-routines/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json",
+      "publicSha256": "e876b1f1ed636b57ac110ae515b6158373bc981fcb3bd2c2398c7561eb61275e",
+      "privateSha256": "45ec35ec3f9bf45741705d9fd2c7ce09953683e342dbe313fe7e482cb20067e5",
+      "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+    }
+  ],
+  "replay": [
+    {
+      "id": "F01",
+      "name": "accept_project_invitation",
+      "identityArguments": "p_invitation_id uuid, p_user_id uuid",
+      "md5": "638c776a2a70d1cddd47055c583e1abd",
+      "sha256": "f1dd6fcb4bdeee50612ce8f587319bb5cee37ccac091ecafa5e9a01845cd563d",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F02",
+      "name": "cleanup_expired_invitations",
+      "identityArguments": "",
+      "md5": "84e83304fb503123d44f16e9fc18cb31",
+      "sha256": "106cde429e924524639d645f102172b06097ea36f720823c3edf0b51ce66181d",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F03",
+      "name": "create_checkout_session",
+      "identityArguments": "user_email text, user_id uuid, project_title text",
+      "md5": "cc86b4d0449681833037c4a5c49c79a6",
+      "sha256": "fb443cdcf6bc5784892fbb28f3d87876b4b28dba0ebd0466f1a907d2708a96bd",
+      "approvedRelations": [],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F04",
+      "name": "create_project_with_role",
+      "identityArguments": "project_name text, project_description text, facilitator_id uuid, creator_role text",
+      "md5": "a9ae4c08fe1027490af42b4943c70113",
+      "sha256": "a544a3455c60f0ea966558a6be0a6006f4ebf5940268ca8a17b1640c6cc79d75",
+      "approvedRelations": [
+        "projects",
+        "project_roles",
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F05",
+      "name": "get_unread_notification_count",
+      "identityArguments": "user_id uuid",
+      "md5": "0b7d901de660b8805848cc9951a3a8fc",
+      "sha256": "e02ae936f2f179a8a7beae8cd92eb41cd43fcce568c56133b42ef2cdf2e7460a",
+      "approvedRelations": [
+        "notifications"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F06",
+      "name": "initialize_user_wallet",
+      "identityArguments": "p_user_id uuid",
+      "md5": "bf1912760ae1eeb5ad2f534522b441bb",
+      "sha256": "b47697b80c2ab6e08e59d71d09036b3d93b8900f34273f8abec4974a74ad7f75",
+      "approvedRelations": [
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F07",
+      "name": "mark_notifications_as_read",
+      "identityArguments": "user_id uuid, notification_ids uuid[]",
+      "md5": "38d9f9ae6c7efc989c81a1802eff4a65",
+      "sha256": "ee583da55c990eb98b93afbe8fdade646ec504f2387bc59b0f030a3474663ed4",
+      "approvedRelations": [
+        "notifications"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F08",
+      "name": "process_package_purchase",
+      "identityArguments": "p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text",
+      "md5": "d3b557cfc133eaef1d2c31a4877f46a7",
+      "sha256": "e11c607e28af8c4c0d581f74b7d18db67595df3e77ab322563886d005020a6e1",
+      "approvedRelations": [
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F09",
+      "name": "process_package_purchase",
+      "identityArguments": "package_id text, payment_intent_id text, user_id uuid",
+      "md5": "a18c3ebea702558e8f4e9a67811a3fc3",
+      "sha256": "05b7ffea9610c49ff0c5e2b27e771fbc312fc772e0ee049aa4161e1014a2593e",
+      "approvedRelations": [
+        "user_resource_wallets",
+        "seat_transactions"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F10",
+      "name": "request_data_export",
+      "identityArguments": "p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean",
+      "md5": "9199018230b9e447414fe18d89cda98a",
+      "sha256": "856e6043496dc68f1cf15a79557a4b9d23fc4a213d2ab85d90ba3765a750c131",
+      "approvedRelations": [
+        "project_members",
+        "projects"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F11",
+      "name": "request_data_export",
+      "identityArguments": "project_id uuid, user_id uuid, export_options jsonb",
+      "md5": "84ccf96f336d775446fb11369a68c3c7",
+      "sha256": "c73c9da4c9217b83bf654a2faa52c11ca7de1c40298284ffdeb8b24506941b6a",
+      "approvedRelations": [
+        "project_roles",
+        "export_requests"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F12",
+      "name": "send_project_invitation",
+      "identityArguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+      "md5": "ab14eb2828efb74945e3de7cf4039472",
+      "sha256": "9f818ef44dc6f1b98a68371d6628f32dee0277893af502b1406c6326b429d971",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "T01",
+      "name": "update_updated_at_column",
+      "identityArguments": "",
+      "md5": "3bfa5e64985d89e65932564c89520d5b",
+      "sha256": "7df724556927ccb4789c4c22e0d78a874adfefce676fddd5c442b614a7aa52f0",
+      "approvedRelations": [],
+      "review": "pg17-routines/trigger-semantic-review.md"
+    }
+  ],
+  "schema": {
+    "counts": {
+      "tables": 7,
+      "columns": 70,
+      "constraints": 34,
+      "triggers": 3,
+      "indexes": 34
+    },
+    "differences": [
+      "auth.users has only synthetic id primary key; auth.uid reads a local session GUC and does not verify JWT.",
+      "extensions.uuid_generate_v4 is a local SQL shim to pg_catalog.gen_random_uuid; original extension runtime omitted.",
+      "Objects owned by a private nonlogin non-superuser fixture_owner instead of production postgres.",
+      "RLS enabled and not forced as captured; production policies omitted and caller table grants revoked. This is stricter than production and does not validate its direct-table authorization.",
+      "Only seven relevant public tables and three captured trigger bindings; other public/auth/storage objects and external workers omitted.",
+      "Four independent caller login roles, no inheritance or bypass. Actual Supabase/PostgREST role inheritance, claims verification and service bypass not reproduced.",
+      "No rules/extension hooks/remote data; native upstream PostgreSQL 17.4 is not complete Supabase."
+    ],
+    "constraintDifferences": [
+      {
+        "actual": {
+          "schema_name": "public",
+          "table_name": "notifications",
+          "constraint_name": "notifications_type_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((type)::text = ANY (ARRAY[('new_story'::character varying)::text, ('new_comment'::character varying)::text, ('new_follow_up_question'::character varying)::text, ('story_response'::character varying)::text, ('project_invitation'::character varying)::text, ('member_joined'::character varying)::text, ('chapter_completed'::character varying)::text, ('export_ready'::character varying)::text])))"
+        },
+        "expected": {
+          "schema_name": "public",
+          "table_name": "notifications",
+          "constraint_name": "notifications_type_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((type)::text = ANY ((ARRAY['new_story'::character varying, 'new_comment'::character varying, 'new_follow_up_question'::character varying, 'story_response'::character varying, 'project_invitation'::character varying, 'member_joined'::character varying, 'chapter_completed'::character varying, 'export_ready'::character varying])::text[])))"
+        }
+      },
+      {
+        "actual": {
+          "schema_name": "public",
+          "table_name": "project_members",
+          "constraint_name": "project_members_role_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((role)::text = ANY (ARRAY[('facilitator'::character varying)::text, ('storyteller'::character varying)::text])))"
+        },
+        "expected": {
+          "schema_name": "public",
+          "table_name": "project_members",
+          "constraint_name": "project_members_role_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((role)::text = ANY ((ARRAY['facilitator'::character varying, 'storyteller'::character varying])::text[])))"
+        }
+      }
+    ],
+    "actualCatalogMatched": true,
+    "domainTests": [
+      {
+        "table": "notifications",
+        "column": "type",
+        "observed": [
+          {
+            "value": "new_story",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "new_comment",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "new_follow_up_question",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "story_response",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "project_invitation",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "member_joined",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "chapter_completed",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "export_ready",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "synthetic_invalid",
+            "sqlstate": "23514"
+          },
+          {
+            "value": null,
+            "sqlstate": "23502"
+          }
+        ],
+        "checkAlonePermitsNull": true,
+        "nullabilityRestoredByRollback": true
+      },
+      {
+        "table": "project_members",
+        "column": "role",
+        "observed": [
+          {
+            "value": "facilitator",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "storyteller",
+            "sqlstate": "00000"
+          },
+          {
+            "value": "synthetic_invalid",
+            "sqlstate": "23514"
+          },
+          {
+            "value": null,
+            "sqlstate": "23502"
+          }
+        ],
+        "checkAlonePermitsNull": true,
+        "nullabilityRestoredByRollback": true
+      }
+    ]
+  },
+  "baseline": {
+    "source": {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+      "sha256": "3d96c748299e37139c3790bc21aab6cdf16daa8c8881e93cb1121227a149048b"
+    },
+    "normalMatchesHostile": true,
+    "results": [
+      {
+        "id": "F01",
+        "case": "valid",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "joined_at",
+            "project_id",
+            "role",
+            "status",
+            "user_id"
+          ],
+          "scalarType": "undefined"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [
+          "project_roles"
+        ],
+        "failedStatementAtomic": null,
+        "invitationBecameActive": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F01",
+        "case": "no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "joined_at",
+            "project_id",
+            "role",
+            "status",
+            "user_id"
+          ],
+          "scalarType": "undefined"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [
+          "project_roles"
+        ],
+        "failedStatementAtomic": null,
+        "invitationBecameActive": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F01",
+        "case": "spoofed_caller",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "joined_at",
+            "project_id",
+            "role",
+            "status",
+            "user_id"
+          ],
+          "scalarType": "undefined"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [
+          "project_roles"
+        ],
+        "failedStatementAtomic": null,
+        "invitationBecameActive": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F01",
+        "case": "invalid_arguments",
+        "clientSqlstate": "P0001",
+        "errorClassification": "other",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F01",
+        "case": "anon_no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "joined_at",
+            "project_id",
+            "role",
+            "status",
+            "user_id"
+          ],
+          "scalarType": "undefined"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [
+          "project_roles"
+        ],
+        "failedStatementAtomic": null,
+        "invitationBecameActive": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F02",
+        "case": "valid",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F02",
+        "case": "no_claim",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F02",
+        "case": "spoofed_caller",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F02",
+        "case": "invalid_arguments",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F02",
+        "case": "anon_no_claim",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F03",
+        "case": "valid",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "jsonObject": true,
+          "jsonFieldCount": 2,
+          "approvedTypes": {
+            "success": "boolean",
+            "message": "string"
+          },
+          "success": true,
+          "internalSqlstateAvailable": false
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F03",
+        "case": "no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "jsonObject": true,
+          "jsonFieldCount": 2,
+          "approvedTypes": {
+            "success": "boolean",
+            "message": "string"
+          },
+          "success": true,
+          "internalSqlstateAvailable": false
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F03",
+        "case": "spoofed_caller",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "jsonObject": true,
+          "jsonFieldCount": 2,
+          "approvedTypes": {
+            "success": "boolean",
+            "message": "string"
+          },
+          "success": true,
+          "internalSqlstateAvailable": false
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F03",
+        "case": "invalid_arguments",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "jsonObject": true,
+          "jsonFieldCount": 2,
+          "approvedTypes": {
+            "success": "boolean",
+            "message": "string"
+          },
+          "success": true,
+          "internalSqlstateAvailable": false
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F03",
+        "case": "anon_no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "jsonObject": true,
+          "jsonFieldCount": 2,
+          "approvedTypes": {
+            "success": "boolean",
+            "message": "string"
+          },
+          "success": true,
+          "internalSqlstateAvailable": false
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F04",
+        "case": "valid",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "string"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 6,
+          "projects": 3,
+          "user_resource_wallets": 3
+        },
+        "changedTables": [
+          "project_roles",
+          "projects",
+          "user_resource_wallets"
+        ],
+        "failedStatementAtomic": null,
+        "createdWithoutVoucher": true,
+        "newProjectPaid": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F04",
+        "case": "no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "string"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 6,
+          "projects": 3,
+          "user_resource_wallets": 3
+        },
+        "changedTables": [
+          "project_roles",
+          "projects",
+          "user_resource_wallets"
+        ],
+        "failedStatementAtomic": null,
+        "createdWithoutVoucher": true,
+        "newProjectPaid": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F04",
+        "case": "spoofed_caller",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "string"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 6,
+          "projects": 3,
+          "user_resource_wallets": 3
+        },
+        "changedTables": [
+          "project_roles",
+          "projects",
+          "user_resource_wallets"
+        ],
+        "failedStatementAtomic": null,
+        "createdWithoutVoucher": true,
+        "newProjectPaid": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F04",
+        "case": "invalid_arguments",
+        "clientSqlstate": "23502",
+        "errorClassification": "other",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F04",
+        "case": "anon_no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "string"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 6,
+          "projects": 3,
+          "user_resource_wallets": 3
+        },
+        "changedTables": [
+          "project_roles",
+          "projects",
+          "user_resource_wallets"
+        ],
+        "failedStatementAtomic": null,
+        "createdWithoutVoucher": true,
+        "newProjectPaid": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F05",
+        "case": "valid",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "syntheticCount": 1,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F05",
+        "case": "no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "syntheticCount": 1,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F05",
+        "case": "spoofed_caller",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "syntheticCount": 1,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F05",
+        "case": "invalid_arguments",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "syntheticCount": 0,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F05",
+        "case": "anon_no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "syntheticCount": 1,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F06",
+        "case": "valid",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F06",
+        "case": "no_claim",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F06",
+        "case": "spoofed_caller",
+        "clientSqlstate": "P0001",
+        "errorClassification": "other",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F06",
+        "case": "invalid_arguments",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F06",
+        "case": "anon_no_claim",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F07",
+        "case": "valid",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [
+          "notifications"
+        ],
+        "failedStatementAtomic": null,
+        "syntheticCount": 1,
+        "notificationMarked": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F07",
+        "case": "no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [
+          "notifications"
+        ],
+        "failedStatementAtomic": null,
+        "syntheticCount": 1,
+        "notificationMarked": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F07",
+        "case": "spoofed_caller",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [
+          "notifications"
+        ],
+        "failedStatementAtomic": null,
+        "syntheticCount": 1,
+        "notificationMarked": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F07",
+        "case": "invalid_arguments",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "syntheticCount": 0,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F07",
+        "case": "anon_no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "value"
+          ],
+          "scalarType": "number"
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [
+          "notifications"
+        ],
+        "failedStatementAtomic": null,
+        "syntheticCount": 1,
+        "notificationMarked": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F08",
+        "case": "valid",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F08",
+        "case": "no_claim",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F08",
+        "case": "spoofed_caller",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F08",
+        "case": "invalid_arguments",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F08",
+        "case": "anon_no_claim",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F09",
+        "case": "valid",
+        "clientSqlstate": "P0001",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F09",
+        "case": "no_claim",
+        "clientSqlstate": "P0001",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F09",
+        "case": "spoofed_caller",
+        "clientSqlstate": "P0001",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F09",
+        "case": "invalid_arguments",
+        "clientSqlstate": "P0001",
+        "errorClassification": "other",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F09",
+        "case": "anon_no_claim",
+        "clientSqlstate": "P0001",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F10",
+        "case": "valid",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "created_at",
+            "export_id",
+            "status"
+          ],
+          "scalarType": "undefined",
+          "queued": true
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "queuedWithoutRow": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F10",
+        "case": "no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "created_at",
+            "export_id",
+            "status"
+          ],
+          "scalarType": "undefined",
+          "queued": true
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "queuedWithoutRow": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F10",
+        "case": "spoofed_caller",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "created_at",
+            "export_id",
+            "status"
+          ],
+          "scalarType": "undefined",
+          "queued": true
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "queuedWithoutRow": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F10",
+        "case": "invalid_arguments",
+        "clientSqlstate": "P0001",
+        "errorClassification": "other",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F10",
+        "case": "anon_no_claim",
+        "clientSqlstate": "00000",
+        "resultShape": {
+          "rowCount": 1,
+          "columns": [
+            "created_at",
+            "export_id",
+            "status"
+          ],
+          "scalarType": "undefined",
+          "queued": true
+        },
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": null,
+        "queuedWithoutRow": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F11",
+        "case": "valid",
+        "clientSqlstate": "42702",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F11",
+        "case": "no_claim",
+        "clientSqlstate": "42702",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F11",
+        "case": "spoofed_caller",
+        "clientSqlstate": "42702",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F11",
+        "case": "invalid_arguments",
+        "clientSqlstate": "42702",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F11",
+        "case": "anon_no_claim",
+        "clientSqlstate": "42702",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F12",
+        "case": "valid",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F12",
+        "case": "no_claim",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F12",
+        "case": "spoofed_caller",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F12",
+        "case": "invalid_arguments",
+        "clientSqlstate": "P0001",
+        "errorClassification": "other",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F12",
+        "case": "anon_no_claim",
+        "clientSqlstate": "42703",
+        "errorClassification": "missing_object",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "beforeCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "afterCounts": {
+          "export_requests": 1,
+          "notifications": 1,
+          "seat_transactions": 0,
+          "project_members": 2,
+          "project_roles": 5,
+          "projects": 2,
+          "user_resource_wallets": 2
+        },
+        "changedTables": [],
+        "failedStatementAtomic": true,
+        "explicitRollbackVerified": true
+      },
+      {
+        "id": "F09",
+        "case": "private_branch_2",
+        "clientSqlstate": "P0001",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "changedTables": []
+      },
+      {
+        "id": "F09",
+        "case": "private_branch_3",
+        "clientSqlstate": "P0001",
+        "errorClassification": "ambiguous_reference",
+        "classificationSource": "private_error_message_pattern_only",
+        "resultShape": null,
+        "changedTables": []
+      }
+    ],
+    "classificationLimit": "clientSqlstate is the observed PostgreSQL client code. errorClassification is only a sanitized private-message pattern; no hidden internal SQLSTATE is inferred. F09 valid private branches returned P0001, not 42702. F11 directly returned 42702."
+  },
+  "candidate": {
+    "path": "experiments/pg17-routines/candidate.sql",
+    "sha256": "23c158ed3dc530c9c8b35cfab8639903589bfaf74099acf2cf18b8bfe1050379",
+    "changedOnResume": false,
+    "overloads": [
+      {
+        "identity": "request_data_export(uuid,uuid,boolean,boolean)",
+        "prosecdef": true,
+        "proconfig": [
+          "search_path=\"\""
+        ],
+        "pronargdefaults": 0,
+        "proargnames": [
+          "p_user_id",
+          "p_project_id",
+          "p_include_audio",
+          "p_include_photos",
+          "export_id",
+          "status",
+          "created_at"
+        ],
+        "return_type": "record",
+        "owner": "fixture_owner",
+        "public_execute": false
+      },
+      {
+        "identity": "request_data_export(uuid,uuid,jsonb)",
+        "prosecdef": true,
+        "proconfig": [
+          "search_path=\"\""
+        ],
+        "pronargdefaults": 0,
+        "proargnames": [
+          "project_id",
+          "user_id",
+          "export_options"
+        ],
+        "return_type": "uuid",
+        "owner": "fixture_owner",
+        "public_execute": false
+      }
+    ],
+    "actorConnections": [
+      {
+        "current_user": "authenticated",
+        "session_user": "authenticated",
+        "rolsuper": false,
+        "rolbypassrls": false
+      },
+      {
+        "current_user": "anon",
+        "session_user": "anon",
+        "rolsuper": false,
+        "rolbypassrls": false
+      },
+      {
+        "current_user": "metadata_reader",
+        "session_user": "metadata_reader",
+        "rolsuper": false,
+        "rolbypassrls": false
+      },
+      {
+        "current_user": "service_role",
+        "session_user": "service_role",
+        "rolsuper": false,
+        "rolbypassrls": false
+      }
+    ],
+    "contract": {
+      "authorization": "Non-NULL auth.uid equals requested user; same-project facilitator_id or active project_roles; owner_id and project_members excluded",
+      "executeRoles": [
+        "authenticated"
+      ],
+      "revokedExecute": [
+        "PUBLIC",
+        "anon",
+        "metadata_reader",
+        "service_role"
+      ],
+      "serviceFallback": false,
+      "searchPath": "",
+      "persistedStatus": "pending",
+      "fourArgReturnedStatus": "queued",
+      "fourArgOptions": [
+        "includeAudio",
+        "includePhotos"
+      ],
+      "threeArgAllowedBooleanOptions": [
+        "includeAudio",
+        "includePhotos",
+        "includeTranscripts",
+        "includeInteractions"
+      ],
+      "threeArgOmittedKeysDefault": true,
+      "nullOptionsRejected": true,
+      "unknownKeysRejected": true,
+      "callerTransactionCommitRequiredForDurability": true,
+      "workerOrDeliveryImplemented": false,
+      "idempotencyGuarantee": false
+    },
+    "concurrency": [
+      {
+        "overload": 4,
+        "target": "membership_update",
+        "order": "request_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "registered_before_revocation"
+      },
+      {
+        "overload": 4,
+        "target": "membership_update",
+        "order": "revoke_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "revocation_denied_registration"
+      },
+      {
+        "overload": 4,
+        "target": "membership_delete",
+        "order": "request_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "registered_before_revocation"
+      },
+      {
+        "overload": 4,
+        "target": "membership_delete",
+        "order": "revoke_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "revocation_denied_registration"
+      },
+      {
+        "overload": 4,
+        "target": "facilitator_update",
+        "order": "request_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "registered_before_revocation"
+      },
+      {
+        "overload": 4,
+        "target": "facilitator_update",
+        "order": "revoke_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "revocation_denied_registration"
+      },
+      {
+        "overload": 3,
+        "target": "membership_update",
+        "order": "request_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "registered_before_revocation"
+      },
+      {
+        "overload": 3,
+        "target": "membership_update",
+        "order": "revoke_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "revocation_denied_registration"
+      },
+      {
+        "overload": 3,
+        "target": "membership_delete",
+        "order": "request_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "registered_before_revocation"
+      },
+      {
+        "overload": 3,
+        "target": "membership_delete",
+        "order": "revoke_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "revocation_denied_registration"
+      },
+      {
+        "overload": 3,
+        "target": "facilitator_update",
+        "order": "request_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "registered_before_revocation"
+      },
+      {
+        "overload": 3,
+        "target": "facilitator_update",
+        "order": "revoke_first",
+        "observedLocks": [
+          {
+            "locktype": "transactionid",
+            "mode": "ShareLock",
+            "granted": false,
+            "relation": null,
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": 1
+          }
+        ],
+        "postcondition": "revocation_denied_registration"
+      }
+    ],
+    "atomicityScenarios": [
+      {
+        "name": "candidate_marker_guard_atomic",
+        "status": "passed",
+        "assertions": 2
+      },
+      {
+        "name": "whole_candidate_DDL_rollback_restores_before_state",
+        "status": "passed",
+        "assertions": 3
+      },
+      {
+        "name": "repeat_candidate_apply_preserves_existing_rows",
+        "status": "passed",
+        "assertions": 2
+      },
+      {
+        "name": "candidate_4_constraint_failure_atomic",
+        "status": "passed",
+        "assertions": 3
+      },
+      {
+        "name": "candidate_4_caller_rollback",
+        "status": "passed",
+        "assertions": 3
+      },
+      {
+        "name": "candidate_3_constraint_failure_atomic",
+        "status": "passed",
+        "assertions": 3
+      },
+      {
+        "name": "candidate_3_caller_rollback",
+        "status": "passed",
+        "assertions": 3
+      }
+    ],
+    "throughputLimit": "Project row FOR UPDATE serializes requests on the same project; no throughput measurement."
+  },
+  "lifecycle": {
+    "source": {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-lifecycle-2026-10-18T02-31-48.265Z-52dcf725-6ae7-4eb5-be2b-3028f0f1dbe9.json",
+      "sha256": "0a11e668a5289c8aa7a8fa5c68d4f34a8e58ec2078bfa87bd18b72299bd470df"
+    },
+    "cases": [
+      {
+        "name": "hostile_pg_environment",
+        "status": "passed",
+        "events": [
+          "evidence",
+          "allocation",
+          "server-started"
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "evidence": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-31-48.447Z-e843ebe6-0786-4fff-b593-90f7f8b62775.json",
+        "evidenceSha256": "6336e9927648caeb20394ca01461accc09983f11e22cfc2cda02e6d3f89a4bdd",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        },
+        "stderrEmpty": true,
+        "stdoutSafeJSONOnly": true,
+        "serverPid": 10168,
+        "serverAbsent": true,
+        "scrubbedKeys": [
+          "DATABASE_URL",
+          "PGDATABASE",
+          "PGHOST",
+          "PGHOSTADDR",
+          "PGOPTIONS",
+          "PGPASSFILE",
+          "PGPASSWORD",
+          "PGPORT",
+          "PGSERVICE",
+          "PGSERVICEFILE",
+          "PGSSLMODE",
+          "PGSSLROOTCERT",
+          "PGSYSCONFDIR",
+          "PGUSER"
+        ],
+        "rescue": {
+          "needed": false
+        }
+      },
+      {
+        "name": "SIGTERM_after_fixture_ready",
+        "status": "passed",
+        "events": [
+          "evidence",
+          "allocation",
+          "server-started",
+          "fixture-ready",
+          "shutdown-requested"
+        ],
+        "exit": {
+          "code": 143,
+          "signal": null
+        },
+        "evidence": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-31-59.154Z-e2d318d7-a20a-47e5-9123-aac21f4ce21e.json",
+        "evidenceSha256": "94e627f53dd5ca9bcb78d5ed76b0fc9169d530617f6180766bef9e3e1038587b",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        },
+        "stderrEmpty": true,
+        "stdoutSafeJSONOnly": true,
+        "serverPid": 10486,
+        "serverAbsent": true,
+        "rescue": {
+          "needed": false
+        }
+      },
+      {
+        "name": "invalid_actual_server_start",
+        "status": "passed",
+        "events": [
+          "evidence",
+          "allocation"
+        ],
+        "exit": {
+          "code": 1,
+          "signal": null
+        },
+        "evidence": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-32-00.797Z-97c419b8-23d7-4e6c-8a9a-53ae5ef84b8e.json",
+        "evidenceSha256": "0b64fa7fc812f5e40f85f4fd477f17d4786c3758ce59019fe1039086738b8e6a",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        },
+        "stderrEmpty": true,
+        "stdoutSafeJSONOnly": true,
+        "rescue": {
+          "needed": false
+        }
+      },
+      {
+        "name": "failed_client_connect_cleanup",
+        "status": "passed",
+        "events": [
+          "evidence",
+          "allocation",
+          "server-started"
+        ],
+        "exit": {
+          "code": 1,
+          "signal": null
+        },
+        "evidence": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-32-02.075Z-25a4d827-302b-4851-b4d6-88e2eb0cf5df.json",
+        "evidenceSha256": "5a9f93cbaf1a095cce217c28deb3675a47702333c080ba6324fcb5adee6dd79d",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        },
+        "stderrEmpty": true,
+        "stdoutSafeJSONOnly": true,
+        "serverPid": 10545,
+        "serverAbsent": true,
+        "rescue": {
+          "needed": false
+        }
+      }
+    ],
+    "childSummaries": [
+      {
+        "name": "hostile_pg_environment",
+        "evidence": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-31-48.447Z-e843ebe6-0786-4fff-b593-90f7f8b62775.json",
+          "sha256": "6336e9927648caeb20394ca01461accc09983f11e22cfc2cda02e6d3f89a4bdd"
+        },
+        "status": "passed",
+        "scenarios": 141,
+        "assertions": 874,
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        }
+      },
+      {
+        "name": "SIGTERM_after_fixture_ready",
+        "evidence": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-31-59.154Z-e2d318d7-a20a-47e5-9123-aac21f4ce21e.json",
+          "sha256": "94e627f53dd5ca9bcb78d5ed76b0fc9169d530617f6180766bef9e3e1038587b"
+        },
+        "status": "interrupted",
+        "scenarios": 0,
+        "assertions": 126,
+        "signal": "SIGTERM",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        }
+      },
+      {
+        "name": "invalid_actual_server_start",
+        "evidence": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-32-00.797Z-97c419b8-23d7-4e6c-8a9a-53ae5ef84b8e.json",
+          "sha256": "0b64fa7fc812f5e40f85f4fd477f17d4786c3758ce59019fe1039086738b8e6a"
+        },
+        "status": "failed",
+        "scenarios": 0,
+        "assertions": 102,
+        "error": {
+          "code": "SUBPROCESS_FAILED",
+          "subprocessExit": 1
+        },
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        }
+      },
+      {
+        "name": "failed_client_connect_cleanup",
+        "evidence": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-32-02.075Z-25a4d827-302b-4851-b4d6-88e2eb0cf5df.json",
+          "sha256": "5a9f93cbaf1a095cce217c28deb3675a47702333c080ba6324fcb5adee6dd79d"
+        },
+        "status": "failed",
+        "scenarios": 0,
+        "assertions": 125,
+        "error": {
+          "code": "28000"
+        },
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        }
+      }
+    ],
+    "normalCleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    },
+    "rescueNeeded": false
+  },
+  "historicalEvidence": [
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-lifecycle-2026-10-17T16-33-58.075Z-36c95afd-c24b-4014-874f-9a8785146a5d.json",
+      "sha256": "12a5a52d7d5a0da5518e4864df03b13b912665cb9dee1d68c3804e490984d2ab",
+      "unchanged": true,
+      "status": "passed"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-red-2026-10-17T16-25-06.984Z-e02512f7-d364-4355-8acf-2843f2b8cc7d.json",
+      "sha256": "28e7dc6dbeb25daa465dd6fd8cab08a37b8c6137306ccdfc7b6ee9d1420aca5f",
+      "unchanged": true,
+      "status": "failed",
+      "mode": "red",
+      "scenarios": 0,
+      "assertions": 105,
+      "error": {
+        "code": "42830"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-red-2026-10-17T16-26-24.596Z-7d80822e-348c-4cde-a70e-836232f59957.json",
+      "sha256": "5dd5ea59afccc42673b0e30d7f727f9c49fe8bbeac847249afa5e1f57274cddc",
+      "unchanged": true,
+      "status": "failed",
+      "mode": "red",
+      "scenarios": 0,
+      "assertions": 105,
+      "error": {
+        "code": "42830"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-red-2026-10-17T16-26-49.004Z-96b4adf7-4d86-47d1-a679-2ea0c4fb1c09.json",
+      "sha256": "a705ffc61884738683a181fded5e01dda1b899fd3362feb4438254dd67f9829b",
+      "unchanged": true,
+      "status": "failed",
+      "mode": "red",
+      "scenarios": 0,
+      "assertions": 121,
+      "error": {
+        "code": "ASSERT_FAILED",
+        "label": "all70 column shapes actual catalog"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-red-2026-10-17T16-28-11.084Z-e3ad35ef-f606-4e98-bce0-9fe734d16e00.json",
+      "sha256": "9268141992f865de8d7b07c414dc6961b227c530c385cd0fbd4fd5c25bf59f2f",
+      "unchanged": true,
+      "status": "failed",
+      "mode": "red",
+      "scenarios": 0,
+      "assertions": 122,
+      "error": {
+        "code": "ASSERT_FAILED",
+        "label": "all34 constraints actual catalog"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-red-2026-10-17T16-28-55.190Z-1cf544eb-f190-4ce3-848e-706bfad7b781.json",
+      "sha256": "dd35e16aa493e9f816a96acee72869d1544fce576600265d42be6b818f1da7f4",
+      "unchanged": true,
+      "status": "failed",
+      "mode": "red",
+      "scenarios": 0,
+      "assertions": 122,
+      "error": {
+        "code": "ASSERT_FAILED",
+        "label": "all34 constraints actual catalog"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-red-2026-10-17T16-29-46.233Z-dd51b3a7-8f32-4aa3-bdee-cddbc2a60564.json",
+      "sha256": "f2853b6fe511a4551be4435b0fb01bc0f68b4422499ccec27e14314361c3e256",
+      "unchanged": true,
+      "status": "failed",
+      "mode": "red",
+      "scenarios": 63,
+      "assertions": 410,
+      "error": {
+        "code": "ASSERT_FAILED",
+        "label": "returned id identifies one persistent request"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-17T16-31-12.374Z-bb3c4304-ffe9-4c7d-82d4-f7485fc032dd.json",
+      "sha256": "fb1851d454236c7b6f5ecad5511fd788a72544e4aaeb0112ed86401f5400e02c",
+      "unchanged": true,
+      "status": "passed",
+      "mode": "candidate",
+      "scenarios": 141,
+      "assertions": 864,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-17T16-33-58.563Z-b79bd1df-572d-49fb-8e1d-7b31525b16f7.json",
+      "sha256": "2bdc9426834b47d2653f08c30dc2fed9952164c38bd23678d7e69af156284f9b",
+      "unchanged": true,
+      "status": "passed",
+      "mode": "candidate",
+      "scenarios": 141,
+      "assertions": 864,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-17T16-34-38.888Z-fd65c08f-d5fc-4b8d-a3aa-8de3ae00f767.json",
+      "sha256": "c817a8e8235c8276b421544e1d3719b55997262778507c941976e5b2fb55089f",
+      "unchanged": true,
+      "status": "interrupted",
+      "mode": "candidate",
+      "scenarios": 0,
+      "assertions": 126,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-17T16-34-43.208Z-3d475630-824a-42cb-b8e1-3043ad34efa6.json",
+      "sha256": "5ac288b9445bac4b8c04b6216a4aa6a7b9ac5f72b8057c9a100bf8e39d11867b",
+      "unchanged": true,
+      "status": "failed",
+      "mode": "candidate",
+      "scenarios": 0,
+      "assertions": 102,
+      "error": {
+        "code": "SUBPROCESS_FAILED",
+        "subprocessExit": 1
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-17T16-34-47.101Z-7c57423f-eb31-4c31-b86a-f8b199fdc2db.json",
+      "sha256": "2d4862f73b336ac76e2dc0e210d45d447d990afba1cdde19b13e5603cfe8eb8a",
+      "unchanged": true,
+      "status": "failed",
+      "mode": "candidate",
+      "scenarios": 0,
+      "assertions": 125,
+      "error": {
+        "code": "28000"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  ],
+  "historicalEvidenceCount": 12,
+  "allHistoricalEvidencePreserved": true,
+  "historicalRed": {
+    "evidence": {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-red-2026-10-17T16-29-46.233Z-dd51b3a7-8f32-4aa3-bdee-cddbc2a60564.json",
+      "sha256": "f2853b6fe511a4551be4435b0fb01bc0f68b4422499ccec27e14314361c3e256"
+    },
+    "expectedCommand": [
+      "node",
+      "experiments/pg17-routines/verify.mjs",
+      "--red"
+    ],
+    "recordedStatus": "failed",
+    "scenarios": {
+      "passed": 62,
+      "failed": 1
+    },
+    "assertions": 410,
+    "assertion": "returned id identifies one persistent request",
+    "freshRedRunOnResume": false,
+    "reason": "Preserved valid historical RED; both final full runs repeat all captured baseline behaviors before applying candidate."
+  },
+  "privacyChecks": {
+    "filesChecked": 19,
+    "fullPrivateDefinitionsAbsent": true,
+    "privatePackageLiteralsAbsent": true,
+    "privateCheckoutReturnStringsAbsent": true,
+    "rawDatabaseMessageOrContextPublication": "Code review: actor emits SQLSTATE and bounded classification, shape emits whitelisted keys/types only; child observer confirms empty stderr and safe JSON stdout."
+  },
+  "selfReview": {
+    "status": "complete",
+    "candidateOrRuntimeDefectFoundOnResume": false,
+    "independentReview": false,
+    "remainingConcerns": [
+      "Other unpatched RPCs can create memberships/projects/resources without binding the actual caller; those permission paths require fixes before deployment.",
+      "Synthetic auth.uid is a trusted-claim adapter only, not JWT verification; direct authenticated SQL credentials and administrator mutations are outside the modeled boundary.",
+      "Production table policies, role inheritance/service bypass, full Supabase extensions/hooks/rules and deployed PostgREST behavior are not reproduced.",
+      "Invitation contract migration, payment proof/integrity, worker/Storage authorization and delivery remain unresolved.",
+      "Caller response loss after COMMIT can duplicate registration on retry; coarse project locking can constrain throughput."
+    ]
+  },
+  "projectVerificationReference": {
+    "path": "docs/research/evidence/2026-10-17-pg17-routines/project-checks-resume.json",
+    "sha256": "cc470da3392c0228d8b73ddb00a8a516a4d01a240457887186e6d1fc58efebc8",
+    "status": "passed",
+    "applicationInputs": 707,
+    "protectedFiles": 52,
+    "counts": {
+      "webSuites": 77,
+      "webTests": 766,
+      "sharedSuites": 4,
+      "sharedTests": 16,
+      "infraTests": 7,
+      "pages": 175
+    },
+    "reexecutedByThisTask": false
+  },
+  "finalDocumentChecks": {
+    "implementationLinksResolvable": true,
+    "experimentReadmeLinksResolvable": true,
+    "whitespaceChecked": true
+  }
+}

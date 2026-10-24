@@ -1,0 +1,35 @@
+{
+  "readDate": "2026-10-15",
+  "workflowRun": 37647995510,
+  "logDate": "2026-10-07",
+  "source": "gh run view 37647995510 --repo maxiusi3/saga --log-failed",
+  "scope": "historical CI audit step, not a new local dependency audit",
+  "reportedTotal": 58,
+  "reportedSeverity": {
+    "moderate": 17,
+    "high": 40,
+    "critical": 1
+  },
+  "observedPackages": [
+    "next",
+    "postcss",
+    "sharp",
+    "postcss-selector-parser",
+    "sprintf-js"
+  ],
+  "examples": [
+    {
+      "package": "next",
+      "advisory": "https://github.com/advisories/GHSA-2xp9-vwfh-vxw4"
+    },
+    {
+      "package": "postcss",
+      "advisory": "https://github.com/advisories/GHSA-r28c-9q8g-f849"
+    },
+    {
+      "package": "sharp",
+      "advisory": "https://github.com/advisories/GHSA-wq5f-xc86-pv6w"
+    }
+  ],
+  "notes": "Examples are a subset of the historical audit output. Refresh current lockfile audit before choosing compatible fixes. No audit fix --force or dependency mutation performed."
+}

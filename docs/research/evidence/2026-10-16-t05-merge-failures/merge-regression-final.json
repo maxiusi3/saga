@@ -1,0 +1,555 @@
+{
+  "startedAt": "2026-10-16T12:33:01.388Z",
+  "scope": "isolated PostgreSQL + pg-boss + real local fictional audio + existing T04 streaming merge and FFmpeg decoder",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3",
+    "ffmpeg": "ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffmpegSha256": "4a4a968b98859588e98500ae25973d80a5ca5eed0724222b9f76360dcb72a001",
+    "realtimeWrapperSha256": "c167d1ea8adc5faa26877290d14edcdaeb39044b68734b41fe121e7563af468e"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "390893bd89d2e5694ad00c3ed96a5993a1316ddbccff7eae3537eb78364d5865",
+    "experiments/t05-durable-worker/worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "experiments/t05-durable-worker/verify.mjs": "f48110f0252de7c5b329dd5bc11d4e9db55e286340723ff7b5b834517605f5e3",
+    "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+    "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+    "experiments/t05-durable-worker/README.md": "b50ecfa1da126b9f5cc168381a7f479c3a262b5f9efea9282f4a9e4d2c95f33e",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "084c2ef032453922551f8ab685c22968d3f63283a2c7aefb209c99c3467e2010",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "df3dd2a6421fc330b40732ccdef6a48de5efedab3e8b07ddffe817b251764d08",
+    "experiments/t05-durable-worker/merge-failure-scenarios.mjs": "9fcc7f792dfeddab0c42946ea21203dcf10f22229a3675f482cf6d59cc574bcd",
+    "experiments/t05-durable-worker/verify-merge-cleanup.mjs": "c1e7b997ea4ecd0ecb8bb6cd453662417b52a03265e0db5eb9880cc6e0cebca5",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "681de1522dbc45b1073680762a61baafca4e38a3e7bcdc325a1f76973363df9a",
+    "packages/web/src/lib/server/recording-processing-error.ts": "7232456c9931f2bf592e2638b9b685a609956585bc76599557979386671f88d2"
+  },
+  "scenarios": [
+    {
+      "name": "recording input and private adapter are explicit",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 49
+    },
+    {
+      "name": "real webm merge and checked output readback",
+      "status": "passed",
+      "assertions": 28,
+      "elapsedMs": 1585,
+      "format": "webm",
+      "chunkCount": 12,
+      "bytes": 4742,
+      "durationMs": 400,
+      "sha256": "9b4072d46baac98c7d55d76443ed3ce489fd55bce4c52748811e07d238105f1a"
+    },
+    {
+      "name": "real mp4 merge and checked output readback",
+      "status": "passed",
+      "assertions": 19,
+      "elapsedMs": 1270,
+      "format": "mp4",
+      "chunkCount": 3,
+      "bytes": 4692,
+      "durationMs": 406,
+      "sha256": "d6c11d1f93b008688cd204055fa84c68e5b96fbb098716ce1e5a8ea2a7cc53dd"
+    },
+    {
+      "name": "real ogg merge and checked output readback",
+      "status": "passed",
+      "assertions": 19,
+      "elapsedMs": 1179,
+      "format": "ogg",
+      "chunkCount": 3,
+      "bytes": 4243,
+      "durationMs": 400,
+      "sha256": "26d6440d5361e0251ef797e2e0252fb7d7fb1a2777bbd89155abf82c290f4cde"
+    },
+    {
+      "name": "recording enqueue rollback and changed input rejection",
+      "status": "passed",
+      "assertions": 20,
+      "elapsedMs": 63
+    },
+    {
+      "name": "concurrent duplicate envelopes retain one real result",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 1431
+    },
+    {
+      "name": "real source missing fails closed",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 31
+    },
+    {
+      "name": "real source hash fails closed",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 26
+    },
+    {
+      "name": "real source size fails closed",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 34
+    },
+    {
+      "name": "real source symlink fails closed",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 39
+    },
+    {
+      "name": "real source fifo fails closed",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 56
+    },
+    {
+      "name": "real source decode fails closed",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 65
+    },
+    {
+      "name": "prepared result rejects changed id identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 557
+    },
+    {
+      "name": "prepared result rejects changed projectId identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 527
+    },
+    {
+      "name": "prepared result rejects changed sessionId identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 642
+    },
+    {
+      "name": "prepared result rejects changed assetId identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 557
+    },
+    {
+      "name": "prepared result rejects changed inputVersion identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 550
+    },
+    {
+      "name": "prepared result rejects changed jobType identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 586
+    },
+    {
+      "name": "prepared result rejects changed processorVersion identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 631
+    },
+    {
+      "name": "prepared result rejects changed parameterVersion identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 562
+    },
+    {
+      "name": "prepared result rejects changed modelConfigVersion identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 636
+    },
+    {
+      "name": "prepared result rejects changed idempotencyKey identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 577
+    },
+    {
+      "name": "prepared result rejects missing frozen manifest",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 624
+    },
+    {
+      "name": "prepared result rejects corrupt frozen manifest",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 611
+    },
+    {
+      "name": "prepared result rejects coherent frozen manifest",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 577
+    },
+    {
+      "name": "recording job cannot dispatch without its adapter or use synthetic review",
+      "status": "passed",
+      "assertions": 12,
+      "elapsedMs": 81
+    },
+    {
+      "name": "cancel after prepare blocks publication",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 1000
+    },
+    {
+      "name": "deletion after prepare blocks publication",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 768
+    },
+    {
+      "name": "revoke after prepare blocks publication",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 680
+    },
+    {
+      "name": "prepared output hash fails second readback",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 527
+    },
+    {
+      "name": "prepared output missing fails second readback",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 542
+    },
+    {
+      "name": "prepared output symlink fails second readback",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 519
+    },
+    {
+      "name": "published read rechecks permission deletion binding and disk",
+      "status": "passed",
+      "assertions": 11,
+      "elapsedMs": 98
+    },
+    {
+      "name": "lease loss after prepare fences publication",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 530
+    },
+    {
+      "name": "queue-attempt loss after prepare fences publication",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 488
+    },
+    {
+      "name": "queue-job loss after prepare fences publication",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 445
+    },
+    {
+      "name": "business-attempt loss after prepare fences publication",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 455
+    },
+    {
+      "name": "lease expires during final real publication transaction",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 5724
+    },
+    {
+      "name": "process death at merge_prepared retains only private orphan",
+      "status": "passed",
+      "assertions": 16,
+      "elapsedMs": 6142,
+      "fault": "actual child SIGKILL",
+      "stage": "merge_prepared"
+    },
+    {
+      "name": "process death at before_commit retains only private orphan",
+      "status": "passed",
+      "assertions": 16,
+      "elapsedMs": 6361,
+      "fault": "actual child SIGKILL",
+      "stage": "before_commit"
+    },
+    {
+      "name": "old pre-dispatch worker cannot overwrite replacement output",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 6617
+    },
+    {
+      "name": "COMMIT response fault with database commit false",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 63,
+      "fault": "client query wrapper throws instead of returning COMMIT response",
+      "actualDatabaseCommit": false
+    },
+    {
+      "name": "COMMIT response fault with database commit true",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 58,
+      "fault": "client query wrapper throws instead of returning COMMIT response",
+      "actualDatabaseCommit": true
+    },
+    {
+      "name": "abort immediately before real publication COMMIT rolls back",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 56
+    },
+    {
+      "name": "abort during local source iteration cooperates and cleans",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 17,
+      "fault": "cancellable checkpoint pause while the actual file stream is open"
+    },
+    {
+      "name": "timeout during local source iteration cooperates and cleans",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 147,
+      "fault": "cancellable checkpoint pause while the actual file stream is open"
+    },
+    {
+      "name": "continuous runner heartbeats through a labeled read pause",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 6677,
+      "fault": "6200 ms cancellable read checkpoint pause, not claimed decoder CPU time",
+      "heartbeats": 6
+    },
+    {
+      "name": "runner stop during read stops uncommitted work",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 410,
+      "fault": "10000 ms cancellable read checkpoint pause"
+    },
+    {
+      "name": "runner revoke during read stops uncommitted work",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 1380,
+      "fault": "10000 ms cancellable read checkpoint pause"
+    },
+    {
+      "name": "runner deletion during read stops uncommitted work",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 1368,
+      "fault": "10000 ms cancellable read checkpoint pause"
+    },
+    {
+      "name": "real FFmpeg input throttling with runner heartbeats",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 6889,
+      "fault": "shell exec wrapper adds FFmpeg -re (real-time input throttling)",
+      "decoderPid": 70850,
+      "shutdown": false
+    },
+    {
+      "name": "real FFmpeg input throttling with runner shutdown",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 1376,
+      "fault": "shell exec wrapper adds FFmpeg -re (real-time input throttling)",
+      "decoderPid": 70883,
+      "shutdown": true
+    }
+  ],
+  "assertions": 402,
+  "limitations": [
+    "Private temporary PostgreSQL tables and an allowed flag simulate authorization; no production schema, RLS, Storage, outbox, migration or paid provider.",
+    "No filesystem/database distributed transaction. Prepared outputs may remain private orphans after process death or unknown COMMIT; no automatic GC or manual reuse.",
+    "Private directories, regular files, bounded streams and O_NOFOLLOW protect local paths; same-user hostile directory replacement races and non-preemptible kernel filesystem operations are outside this PoC.",
+    "Generated sine audio is split into contiguous file chunks; this is not physical-device MediaRecorder or production media sandbox evidence.",
+    "Checkpoint pauses are fault wrappers, not decoder CPU work. Real-time input throttling (-re) is explicitly labeled where used with real FFmpeg.",
+    "The existing local nonfree FFmpeg 7.1 executable is used for tests only and is not copied or redistributed."
+  ],
+  "resourceOwnership": {
+    "version": 1,
+    "harnessPid": 70268,
+    "scratch": "/tmp/saga-t05-be5K2c",
+    "clusterMayHaveStarted": true,
+    "clusterStopped": true,
+    "postmasterPid": 70404,
+    "groupIds": [
+      70460,
+      70473,
+      70483,
+      70489,
+      70498,
+      70512,
+      70527,
+      70541,
+      70556,
+      70560,
+      70564,
+      70573,
+      70579,
+      70583,
+      70588,
+      70595,
+      70600,
+      70604,
+      70608,
+      70612,
+      70616,
+      70624,
+      70631,
+      70642,
+      70646,
+      70658,
+      70664,
+      70669,
+      70673,
+      70677,
+      70681,
+      70688,
+      70707,
+      70724,
+      70727,
+      70776,
+      70780,
+      70800,
+      70809,
+      70823,
+      70826,
+      70830,
+      70847,
+      70880
+    ],
+    "decoderPids": []
+  },
+  "status": "passed",
+  "processOwnership": {
+    "supervisorPids": [],
+    "workerPids": [
+      70460,
+      70473,
+      70483,
+      70489,
+      70498,
+      70512,
+      70527,
+      70541,
+      70556,
+      70560,
+      70564,
+      70573,
+      70579,
+      70583,
+      70588,
+      70595,
+      70600,
+      70604,
+      70608,
+      70612,
+      70616,
+      70624,
+      70631,
+      70642,
+      70646,
+      70658,
+      70664,
+      70669,
+      70673,
+      70677,
+      70681,
+      70688,
+      70707,
+      70724,
+      70727,
+      70776,
+      70780,
+      70800
+    ],
+    "runnerPids": [
+      70809,
+      70823,
+      70826,
+      70830,
+      70847,
+      70880
+    ],
+    "groupIds": [
+      70460,
+      70473,
+      70483,
+      70489,
+      70498,
+      70512,
+      70527,
+      70541,
+      70556,
+      70560,
+      70564,
+      70573,
+      70579,
+      70583,
+      70588,
+      70595,
+      70600,
+      70604,
+      70608,
+      70612,
+      70616,
+      70624,
+      70631,
+      70642,
+      70646,
+      70658,
+      70664,
+      70669,
+      70673,
+      70677,
+      70681,
+      70688,
+      70707,
+      70724,
+      70727,
+      70776,
+      70780,
+      70800,
+      70809,
+      70823,
+      70826,
+      70830,
+      70847,
+      70880
+    ],
+    "forcedGroupKills": [],
+    "remainingGroups": [],
+    "remainingRunnerPids": [],
+    "directOperationsRemaining": 0
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T12:34:08.289Z"
+}

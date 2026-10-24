@@ -1,0 +1,15 @@
+{
+  "startedAt": "2026-10-18T07:20:58.565823+00:00",
+  "finishedAt": "2026-10-18T07:20:59.083808+00:00",
+  "status": "passed",
+  "exitCode": 0,
+  "nodeTestCount": 18,
+  "nodeTestPassed": 18,
+  "stderrEmpty": true,
+  "log": "docs/research/evidence/2026-10-18-invitation-transactions/protocol-final-2026-10-18T07-20-58.565823+00-00-349202cb-a985-4553-bd7f-f3c9033c9bd9.tap",
+  "logSha256": "7c44df0e5c7b875964c3a51862939cdfebc09ec923171071c198579a2aa23bee",
+  "sources": {
+    "experiments/pg17-invitation-transactions/protocol.mjs": "8c6cca8bd7bd9edaa4fe344eb223e0a76ff46d822be7282ddfcf054acf38d274",
+    "experiments/pg17-invitation-transactions/protocol.test.mjs": "d010893082fc6229f78b5d886c7250f56526adcb2a5e63764a6f2f81ee9be9d1"
+  }
+}

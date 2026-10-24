@@ -1,0 +1,154 @@
+{
+  "checkedAt": "2026-10-17T06:26:32.982771+00:00",
+  "status": "local_batch_verified_and_independently_reviewed",
+  "scope": "local synthetic source ledger plus bounded read-only remote metadata supplement; no production adapter/DDL/deployment",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "runs": {
+    "normal": {
+      "file": "fix1-normal-final-1792217755916-59095.json",
+      "sha256": "6743e26ea850bb192016bf36c12256ee82c2b64b811e7a44dff7e795a34feb26",
+      "status": "passed",
+      "exitCode": 0,
+      "checks": 290,
+      "lockRecords": 18,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "hostEnvironment": {
+      "file": "fix1-host-env-final-1792217781277-59229.json",
+      "sha256": "6f18866ba0b23f4cf6a88c5457c9567675c49511b479ba9d7e4701af2406de46",
+      "status": "passed",
+      "exitCode": 0,
+      "checks": 290,
+      "lockRecords": 18,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "signal": {
+      "file": "fix1-signal-final-1792217781277-59230.json",
+      "sha256": "c43fec3e4bfa68129f38ef03dd1dd702180f2a38cd8b13c19467b34d00b3130d",
+      "status": "interrupted",
+      "exitCode": 143,
+      "checks": 21,
+      "lockRecords": 0,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  },
+  "sourceSha256": {
+    "experiments/t02-source-ledger/schema.sql": "1ee41a18d58a45b07ffef264534f8dca94d02757a0381883606b49b2c67323a4",
+    "experiments/t02-source-ledger/ledger.cjs": "a9d5ea5b52252897a4952bd2e48e24ab33f814490e42db74b3c040de11d7a63e",
+    "experiments/t02-source-ledger/scenarios.cjs": "0558af3fd7421b0808f2dc1e49c2e51ddf1923ee94e9a15d48d76e5fe1eb6518",
+    "experiments/t02-source-ledger/verify.cjs": "2812de7790a5fad62bfac32e1ef85ff2121b4b0200a5b02af547a57e7d113749",
+    "experiments/t02-source-ledger/README.md": "20850528dbdfb08d85d1d6029761324d1005b15e638b6a940454721ff25740d2",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e"
+  },
+  "sourceLedgerReview": {
+    "initial": "one_P2_missing_removed_source_history",
+    "fix1": "scoped_pass_R1_closed",
+    "file": "review-fix1.md"
+  },
+  "metadataCompletion": "docs/research/evidence/2026-10-17-metadata-supplement/completion.json",
+  "metadataCompletionSha256": "f4b65b6d77340bd6e37b4d0ad7a1fb34fbf02b96a371c018a0cf2d84f4b17a8b",
+  "project": {
+    "file": "project-checks.json",
+    "sha256": "9f62d9e6ccedda7faffa1df68ec6e0ddf684d04c56659c1bb1744d3734ab1c6b",
+    "verifyExitCode": 0,
+    "webSuites": 77,
+    "webTests": 765,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "pages": 175
+  },
+  "reviews": {
+    "sourceLedgerInitial": {
+      "file": "docs/research/evidence/2026-10-17-t02-source-ledger/review-initial.md",
+      "sha256": "feac16541ae9dd93709590a644fb5d97b6af0a55470dcf960f3c1352c421d572"
+    },
+    "sourceLedgerFix1": {
+      "file": "docs/research/evidence/2026-10-17-t02-source-ledger/review-fix1.md",
+      "sha256": "52aaa5e078daf2f701316748d9a1b3bc1056068a86be5912065cb5dce76fb514"
+    },
+    "priorT02Fix": {
+      "file": "docs/research/evidence/2026-10-17-t02-compatibility/review-followup.md",
+      "sha256": "89d82333e8b6c3a9d2f6436986d9535828b11f1027bc4c0450a338095b3939c4"
+    },
+    "metadataInitial": {
+      "file": "docs/research/evidence/2026-10-17-remote-metadata/review-initial.md",
+      "sha256": "de3c433ee7b31007ba8d034f2b44ee673f57602da2c6846df7aadf7e6e1e8d30"
+    },
+    "metadataFix": {
+      "file": "docs/research/evidence/2026-10-17-metadata-supplement/review-followup.md",
+      "sha256": "9689469ae8cd3c5d965632448decff7dcdd816a06bfc3495d074609188626be7"
+    },
+    "metadataFacts": {
+      "file": "docs/research/evidence/2026-10-17-metadata-supplement/remote-evidence-review.md",
+      "sha256": "4bab2e93e15b784787479b81308e37582c8e559c27554f642d742ff21cd99979"
+    }
+  },
+  "dependencyAudit": {
+    "executedThisBatch": false,
+    "source": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+    "sha256": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866",
+    "priorExitCode": 1,
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "dependenciesUnchanged": true
+  },
+  "milestone": "milestone-check.json",
+  "milestoneSha256": "3f459ea8b726c6489c38dc11bc82664f26755ce8b2c9d4e1776f2069a44699c3",
+  "nextEnvRestored": true,
+  "protectedBaselineCount": 820,
+  "modifiedExistingNonDocFiles": [
+    "scripts/__tests__/inspect-supabase-metadata.test.cjs",
+    "scripts/inspect-supabase-metadata.cjs"
+  ],
+  "allOtherBaselineFilesUnchanged": true,
+  "documentsSha256": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "1c878b1e856675ea83e3d15e70c6845a94273630cc65270e8e303b894af28653",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "0f9c7f2d1bc0fd7080528e1fb9353e2a35054ea4d78a300dc50234dee3b3ddf4",
+    "docs/README.md": "dc36da4b8a07f34ee26ac9c5a73420f76627b5073c9f8d1bd7a90491a3941758",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "6a416bab0a9739d20aafdab68f056f3402d227db4b152a97d5f8b0992bd37f30",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "d1d7ca93667f69fc3c10176027d58fbba39aa7a40c088646bb25cad64f6c30a2",
+    "docs/superpowers/plans/2026-10-17-upgrade-t02-source-ledger.md": "95dbb15f745d1c173af1c73709a31ba54e7c99f106856eb03946799cdab468d4",
+    "docs/superpowers/plans/2026-10-17-upgrade-t02-compatibility.md": "c048a0a8d61642892c626982ffbd88b424c7d026b3d6c7f151256a2cbb5d8533",
+    "docs/research/2026-10-17-t02-source-ledger.md": "f6af53d1d7c24ed7600fc7b178b1075f3ff64e8502910c02f7ae4a6dbb4cd844",
+    "docs/research/2026-10-17-metadata-supplement.md": "ba9063fd3f14140bf3ca1855d0ddaf9a6e4d60a631c4e053c0235e4148487a1e"
+  },
+  "evidenceSha256": {
+    "verify.txt": "a1ff1b5d143c9a08fda9327a2bb164bc8d83c7ef0233c538cba217bf046e100f",
+    "shared.txt": "25d5500e4d568366891d2b4a67256cb8a78475de6325a3f196235c1d95651e98",
+    "infra.txt": "d7daaee2550841f1cbe30074949816d00ddd5ac7c55fd00f1ad5cea6964eaeb7",
+    "implementation-report.md": "c7aaba66a45830f959bbf996f751177a002edad9b2d2e71ed29bbe8f59d3306c",
+    "review-package-initial.diff": "60be9a10fa49f651ed187dde804b9e0ed688aafc2728e5b802ac640f82b84ba2",
+    "review-package-fix1.diff": "a71a3f91c2caf8cfdfb3852aec979f4e2b8496676ea76be5e43a9b249124877b"
+  },
+  "redEvidence": [
+    "fix1-red-r1-1792217681643-58863.json",
+    "red-observation-behavior-1792216090284-56157.json",
+    "red-binding-contract-1792216437786-56776.json",
+    "red-append-only-truncate-1792216647908-57198.json"
+  ],
+  "historicalEvidencePreserved": true,
+  "finalChecks": {
+    "file": "final-checks.json",
+    "sha256": "4710666c4536b67e43263a117986a06a6b5fd46e23ed1bbf2cd06e685b31cda8"
+  }
+}

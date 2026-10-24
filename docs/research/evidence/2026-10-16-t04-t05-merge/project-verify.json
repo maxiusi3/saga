@@ -1,0 +1,12 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "verify"
+  ],
+  "startedAt": "2026-10-16T03:55:04.277973+00:00",
+  "exitCode": 0,
+  "elapsedSeconds": 116.006,
+  "finishedAt": "2026-10-16T03:57:00.283627+00:00",
+  "nextEnvRestored": true
+}

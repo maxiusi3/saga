@@ -1,0 +1,141 @@
+{
+  "provenance": {
+    "source": "User supplied A/B/C SQL result tables in the current chat",
+    "receivedDate": "2026-10-23",
+    "timezone": "Asia/Taipei",
+    "queryExecutedAt": null,
+    "projectRefInResult": null,
+    "projectContext": "existing Saga project; not independently reauthenticated this turn",
+    "remoteQueryExecutedByAssistant": false
+  },
+  "A": [
+    {
+      "id": "audio-recordings",
+      "name": "audio-recordings",
+      "public": true,
+      "file_size_limit": null,
+      "allowed_mime_types": null,
+      "type": "STANDARD",
+      "versioning_status": "DISABLED",
+      "lifecycle_configured": false,
+      "lifecycle_rule_count": null
+    },
+    {
+      "id": "saga",
+      "name": "saga",
+      "public": true,
+      "file_size_limit": 52428800,
+      "allowed_mime_types": [
+        "audio/mpeg",
+        "audio/mp3",
+        "audio/wav",
+        "audio/m4a",
+        "audio/aac",
+        "audio/ogg",
+        "audio/webm",
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+        "image/gif"
+      ],
+      "type": "STANDARD",
+      "versioning_status": "DISABLED",
+      "lifecycle_configured": false,
+      "lifecycle_rule_count": null
+    }
+  ],
+  "B": [
+    {
+      "schema_name": "storage",
+      "typname": "buckettype",
+      "enumsortorder": 1,
+      "enumlabel": "STANDARD"
+    },
+    {
+      "schema_name": "storage",
+      "typname": "buckettype",
+      "enumsortorder": 2,
+      "enumlabel": "ANALYTICS"
+    },
+    {
+      "schema_name": "storage",
+      "typname": "buckettype",
+      "enumsortorder": 3,
+      "enumlabel": "VECTOR"
+    }
+  ],
+  "C": [
+    {
+      "schema_name": "storage",
+      "proname": "enforce_bucket_lifecycle_service_role",
+      "identity_arguments": "",
+      "result_type": "trigger",
+      "language": "plpgsql",
+      "security_definer": false,
+      "owner": "supabase_storage_admin",
+      "definition_md5": "b839722d462ea1003fbcf028bd6f6c01"
+    },
+    {
+      "schema_name": "storage",
+      "proname": "enforce_bucket_name_length",
+      "identity_arguments": "",
+      "result_type": "trigger",
+      "language": "plpgsql",
+      "security_definer": false,
+      "owner": "supabase_storage_admin",
+      "definition_md5": "11b3bd509f6b254ec1cd859e712e8c78"
+    },
+    {
+      "schema_name": "storage",
+      "proname": "foldername",
+      "identity_arguments": "name text",
+      "result_type": "text[]",
+      "language": "plpgsql",
+      "security_definer": false,
+      "owner": "supabase_storage_admin",
+      "definition_md5": "93671af66e1fe108a56068ad4137d001"
+    },
+    {
+      "schema_name": "storage",
+      "proname": "protect_bucket_control_columns",
+      "identity_arguments": "",
+      "result_type": "trigger",
+      "language": "plpgsql",
+      "security_definer": false,
+      "owner": "supabase_storage_admin",
+      "definition_md5": "7c31ae406e2f6281ead4009fff69fc68"
+    },
+    {
+      "schema_name": "storage",
+      "proname": "protect_delete",
+      "identity_arguments": "",
+      "result_type": "trigger",
+      "language": "plpgsql",
+      "security_definer": false,
+      "owner": "supabase_storage_admin",
+      "definition_md5": "4371ae544fb1ef704f9c5d42265ac324"
+    },
+    {
+      "schema_name": "storage",
+      "proname": "update_updated_at_column",
+      "identity_arguments": "",
+      "result_type": "trigger",
+      "language": "plpgsql",
+      "security_definer": false,
+      "owner": "supabase_storage_admin",
+      "definition_md5": "bfecc08a6034296258f0c3e10193076c"
+    }
+  ],
+  "priorUserReports": {
+    "D": [
+      "20250731012532",
+      "20250731015259",
+      "20250802015525",
+      "20250802015612"
+    ],
+    "databaseBackups": "Free plan; Backups not enabled (user report)",
+    "audioVideoIndependentCopies": false,
+    "imageIndependentCopies": null
+  }
+}

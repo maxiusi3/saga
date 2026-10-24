@@ -1,0 +1,512 @@
+TAP version 13
+# Subtest: the entry point binds exactly twelve targets to the immutable snapshot bytes
+not ok 1 - the entry point binds exactly twelve targets to the immutable snapshot bytes
+  ---
+  duration_ms: 4.758537
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    pinned target loader must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:27:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: catalog SQL binds exact identities and never invokes public functions or reads business relations
+not ok 2 - catalog SQL binds exact identities and never invokes public functions or reads business relations
+  ---
+  duration_ms: 0.475001
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:38:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    restricted catalog SQL must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'string'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'string'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:39:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: matched definitions stay exact privately while the public result contains only pinned identities and hashes
+not ok 3 - matched definitions stay exact privately while the public result contains only pinned identities and hashes
+  ---
+  duration_ms: 0.277764
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:50:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    definition validator must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:51:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: definition drift is explicit and a changed body can only be retained privately
+not ok 4 - definition drift is explicit and a changed body can only be retained privately
+  ---
+  duration_ms: 0.348845
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:61:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:62:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: security and identity attribute changes prevent a pinned success without reflecting new values
+not ok 5 - security and identity attribute changes prevent a pinned success without reflecting new values
+  ---
+  duration_ms: 0.320352
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:73:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:74:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: missing, duplicate, unexpected, malformed and falsely hashed rows never become successful evidence
+not ok 6 - missing, duplicate, unexpected, malformed and falsely hashed rows never become successful evidence
+  ---
+  duration_ms: 0.399149
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:87:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:88:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: routine collection verifies a read-only snapshot and sends only the pinned signatures as parameters
+not ok 7 - routine collection verifies a read-only snapshot and sends only the pinned signatures as parameters
+  ---
+  duration_ms: 0.605309
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:110:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:111:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unsafe session identity and denied reads roll back without exposing server diagnostics
+not ok 8 - unsafe session identity and denied reads roll back without exposing server diagnostics
+  ---
+  duration_ms: 0.457009
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:128:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:129:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: private persistence uses directory 0700 and exclusive file 0600 with exact content and verified hash
+not ok 9 - private persistence uses directory 0700 and exclusive file 0600 with exact content and verified hash
+  ---
+  duration_ms: 1.00398
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:154:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:155:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: private persistence rejects traversal, insecure existing directories and symlinks at every directory depth
+not ok 10 - private persistence rejects traversal, insecure existing directories and symlinks at every directory depth
+  ---
+  duration_ms: 0.712613
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:171:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:172:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: an existing private file symlink is never followed or overwritten
+not ok 11 - an existing private file symlink is never followed or overwritten
+  ---
+  duration_ms: 0.414808
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:193:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:194:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: routine CLI records safe deadline evidence when connect hangs
+not ok 12 - routine CLI records safe deadline evidence when connect hangs
+  ---
+  duration_ms: 0.340229
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:277:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:278:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: routine CLI records safe deadline evidence when collect hangs
+not ok 13 - routine CLI records safe deadline evidence when collect hangs
+  ---
+  duration_ms: 0.210776
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:277:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:278:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: routine CLI records safe deadline evidence when rollback hangs
+not ok 14 - routine CLI records safe deadline evidence when rollback hangs
+  ---
+  duration_ms: 0.201339
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:277:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:278:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: routine CLI records safe deadline evidence when close hangs
+not ok 15 - routine CLI records safe deadline evidence when close hangs
+  ---
+  duration_ms: 0.194817
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:277:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:278:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: routine CLI privately retains drift, hashes its artifacts and reports bounded cleanup
+not ok 16 - routine CLI privately retains drift, hashes its artifacts and reports bounded cleanup
+  ---
+  duration_ms: 0.385781
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:292:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:293:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: routine CLI never reflects raw diagnostics, malformed results, or cleanup exceptions
+not ok 17 - routine CLI never reflects raw diagnostics, malformed results, or cleanup exceptions
+  ---
+  duration_ms: 0.309845
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:310:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:311:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: routine CLI preserves an earlier failure when closing subsequently reaches the deadline
+not ok 18 - routine CLI preserves an earlier failure when closing subsequently reaches the deadline
+  ---
+  duration_ms: 0.333156
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:322:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines.test.cjs:323:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 0
+# fail 18
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 280.28562

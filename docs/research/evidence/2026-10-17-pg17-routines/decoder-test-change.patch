@@ -1,0 +1,52 @@
+diff --git a/docs/research/evidence/2026-10-17-pg17-routines/decoder-test-before.txt b/packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts
+index d5ecdb0ed..7d3806ec3 100644
+--- a/docs/research/evidence/2026-10-17-pg17-routines/decoder-test-before.txt
++++ b/packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts
+@@ -117,23 +117,43 @@ it('rejects pre-cancellation without spawning a decoder or registering a listene
+   } finally { spawned.mockRestore() }
+ })
+ 
+-it.each(['PCM output', 'process exit'] as const)('awaits child close on abort after %s and never accepts valid PCM as success', async phase => {
+-  const bin = await executable(`process.stdout.write(Buffer.alloc(3200)); ${phase === 'PCM output' ? 'setInterval(() => {}, 1000)' : ''}`)
++it.each([
++  ['PCM output', 0],
++  ['process exit', 0],
++  ['PCM output', 1500],
++] as const)('awaits child close on abort after %s (%i ms readiness delay) and never accepts valid PCM as success', async (phase, readinessDelayMs) => {
++  const body = `process.stdout.write(Buffer.alloc(3200)); ${phase === 'PCM output' ? 'setInterval(() => {}, 1000)' : ''}`
++  const bin = await executable(readinessDelayMs ? `setTimeout(() => { ${body} }, ${readinessDelayMs})` : body)
+   const controller = new AbortController()
+   const reason = new Error('worker lease expired')
+   const callerListener = () => undefined
+   controller.signal.addEventListener('abort', callerListener)
+   const spawned = jest.spyOn(childProcess, 'spawn')
+   try {
+-    const decode = createFfmpegRecordingDecoder({ executable: bin, timeoutMs: 1000, maxDurationMs: 1000 })
++    // Allow the real child to reach the cancellation phase, including delayed
++    // readiness; use the same startup budget as the other child behavior tests.
++    const decode = createFfmpegRecordingDecoder({ executable: bin, timeoutMs: 10000, maxDurationMs: 1000 })
+     const decoding = decode(audioPath, 'audio/webm', controller.signal)
+     const child = spawned.mock.results[0].value as childProcess.ChildProcessWithoutNullStreams
+     const listenersWhileDecoding = getEventListeners(controller.signal, 'abort').length
+     let closed = false
++    let pcmBytes = 0
++    let exitCode: number | null | undefined
++    let exitSignal: NodeJS.Signals | null | undefined
+     child.once('close', () => { closed = true })
++    child.stdout.on('data', bytes => { pcmBytes += bytes.length })
+     if (phase === 'PCM output') child.stdout.once('data', () => controller.abort(reason))
+-    else child.once('exit', () => controller.abort(reason))
++    else child.once('exit', (code, signal) => {
++      exitCode = code
++      exitSignal = signal
++      controller.abort(reason)
++    })
+     await expect(decoding).rejects.toBe(reason)
++    expect(pcmBytes).toBe(3200)
++    if (phase === 'process exit') {
++      expect(exitCode).toBe(0)
++      expect(exitSignal).toBeNull()
++    }
+     expect(listenersWhileDecoding).toBe(2)
+     expect(closed).toBe(true)
+     expect(child.pid).toBeGreaterThan(0)

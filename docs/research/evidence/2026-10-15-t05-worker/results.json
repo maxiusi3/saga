@@ -1,0 +1,172 @@
+{
+  "startedAt": "2026-10-15T10:24:05.424Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "62696e15684a1f07290796cb3e1b3a6e2a77c84c31813eae34a742c77da3e729",
+    "experiments/t05-durable-worker/worker.mjs": "fb0fc4fd2e3f7bd937166848d75a5d4af3323d60693a4406692954d3aae3cb50",
+    "experiments/t05-durable-worker/verify.mjs": "f24a84f9b5d5be345a1fe163509477fa6ae2dfa1a428fd3a77e391b177af18ae",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [
+    {
+      "name": "heartbeat success and stale fencing",
+      "status": "passed",
+      "assertions": 18,
+      "elapsedMs": 25705
+    },
+    {
+      "name": "unknown result reconciliation is fail-closed",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 6558
+    },
+    {
+      "name": "unknown prepared artifact is reused without provider call",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 6
+    },
+    {
+      "name": "cancelled unknown reconciliation is rejected",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 8
+    },
+    {
+      "name": "controlled retry claims once and completes",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 390
+    },
+    {
+      "name": "heartbeat lock contention checks expiry after lock",
+      "status": "passed",
+      "assertions": 2,
+      "elapsedMs": 1214
+    },
+    {
+      "name": "socket-only isolated database",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 1
+    },
+    {
+      "name": "atomic business and queue creation",
+      "status": "passed",
+      "assertions": 12,
+      "elapsedMs": 425
+    },
+    {
+      "name": "concurrent duplicate envelopes",
+      "status": "passed",
+      "assertions": 11,
+      "elapsedMs": 1032
+    },
+    {
+      "name": "SIGKILL at leased",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 6023,
+      "expiryWaitMs": 5283,
+      "fault": "SIGKILL",
+      "provider": "synthetic ledger"
+    },
+    {
+      "name": "SIGKILL at provider",
+      "status": "passed",
+      "assertions": 12,
+      "elapsedMs": 6699,
+      "expiryWaitMs": 5545,
+      "fault": "SIGKILL",
+      "provider": "synthetic ledger"
+    },
+    {
+      "name": "SIGKILL at before_commit",
+      "status": "passed",
+      "assertions": 15,
+      "elapsedMs": 6565,
+      "expiryWaitMs": 5328,
+      "fault": "SIGKILL",
+      "provider": "synthetic ledger"
+    },
+    {
+      "name": "stale live worker after replacement cannot publish",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 6090
+    },
+    {
+      "name": "lease expiry inside uncommitted publication rolls back",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 5946
+    },
+    {
+      "name": "queue attempt acknowledgment fencing",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 5288
+    },
+    {
+      "name": "cross-day review releases lease and reuses prepared result",
+      "status": "passed",
+      "assertions": 13,
+      "elapsedMs": 704,
+      "clock": "explicit logical clock",
+      "reviewAt": "2026-10-14T10:25:19.285Z",
+      "approvalAt": "2026-10-15T10:25:19.285Z",
+      "simulatedGapMs": 86400000
+    },
+    {
+      "name": "revocation before late result blocks publication",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 720
+    },
+    {
+      "name": "row-lock wait cannot dispatch after lease expiry",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 5521,
+      "contention": "business row locked across real lease expiry before dispatch",
+      "providerCalls": 0
+    },
+    {
+      "name": "failed worker fork cleans the existing owned cluster",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 227,
+      "injection": "worker fork execPath unavailable; expected ENOENT caught",
+      "ownership": "one harness-owned cluster; no nested database owner",
+      "cleanupElapsedMs": 226,
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      }
+    }
+  ],
+  "assertions": 167,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "No long-running lease heartbeat, production supervisor, real-device recording, backup restore, or production load qualification."
+  ],
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "status": "passed",
+  "finishedAt": "2026-10-15T10:25:26.817Z"
+}

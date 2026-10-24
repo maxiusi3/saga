@@ -1,0 +1,121 @@
+AuthApiError: Authentication unavailable
+    at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:82:11)
+    at async _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:125:9)
+    at async _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:107:18)
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js:3764:24
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/helpers.js:208:36 {
+  __isAuthError: true,
+  status: 400,
+  code: undefined
+}
+AuthApiError: Authentication unavailable
+    at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:82:11)
+    at async _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:125:9)
+    at async _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:107:18)
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js:3764:24
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/helpers.js:208:36 {
+  __isAuthError: true,
+  status: 400,
+  code: undefined
+}
+AuthApiError: Authentication unavailable
+    at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:82:11)
+    at async _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:125:9)
+    at async _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:107:18)
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js:3764:24
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/helpers.js:208:36 {
+  __isAuthError: true,
+  status: 400,
+  code: undefined
+}
+AuthApiError: Authentication unavailable
+    at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:82:11)
+    at async _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:125:9)
+    at async _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:107:18)
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js:3764:24
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/helpers.js:208:36 {
+  __isAuthError: true,
+  status: 400,
+  code: undefined
+}
+AuthApiError: Authentication unavailable
+    at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:82:11)
+    at async _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:125:9)
+    at async _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:107:18)
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js:3764:24
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/helpers.js:208:36 {
+  __isAuthError: true,
+  status: 400,
+  code: undefined
+}
+AuthApiError: Authentication unavailable
+    at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:82:11)
+    at async _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:125:9)
+    at async _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/fetch.js:107:18)
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js:3764:24
+    at async /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/dist/main/lib/helpers.js:208:36 {
+  __isAuthError: true,
+  status: 400,
+  code: undefined
+}
+{
+  "qualification": "Actual server guard and installed SSR/Auth SDK; complete expired synthetic cookie; fully mocked fetch, no network or provider revocation",
+  "results": [
+    {
+      "mode": "503",
+      "status": 503,
+      "cookies": [
+        "sb-127-auth-token=; Max-Age=0; Path=/; SameSite=Lax"
+      ],
+      "captured": [
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "mode": "429",
+      "status": 503,
+      "cookies": [
+        "sb-127-auth-token=; Max-Age=0; Path=/; SameSite=Lax"
+      ],
+      "captured": [
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "mode": "fetch-rejection",
+      "status": 503,
+      "cookies": [
+        "sb-127-auth-token=; Max-Age=0; Path=/; SameSite=Lax"
+      ],
+      "captured": [
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "mode": "recovered-provider",
+      "status": 200,
+      "cookies": [
+        "sb-127-auth-token=base64-eyJ1c2VyIjp7ImlkIjoiMTExMTExMTEtMTExMS00MTExLTgxMTEtMTExMTExMTExMTExIiwiYXVkIjoiYXV0aGVudGljYXRlZCIsImVtYWlsIjoic3ludGhldGljQGV4YW1wbGUuaW52YWxpZCIsImFwcF9tZXRhZGF0YSI6e30sInVzZXJfbWV0YWRhdGEiOnt9LCJjcmVhdGVkX2F0IjoiMjAyNi0wMS0wMVQwMDowMDowMFoifSwiYWNjZXNzX3Rva2VuIjoic3ludGhldGljLXJlZnJlc2hlZC1hY2Nlc3MiLCJyZWZyZXNoX3Rva2VuIjoic3ludGhldGljLXJlZnJlc2hlZC1yZWZyZXNoIiwidG9rZW5fdHlwZSI6ImJlYXJlciIsImV4cGlyZXNfaW4iOjM2MDAsImV4cGlyZXNfYXQiOjE3OTI0MTYwMDEuNjEyfQ; Max-Age=34560000; Path=/; SameSite=Lax"
+      ],
+      "captured": [
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+          "method": "POST"
+        },
+        {
+          "url": "http://127.0.0.1:54321/auth/v1/user",
+          "method": "GET"
+        }
+      ]
+    }
+  ]
+}

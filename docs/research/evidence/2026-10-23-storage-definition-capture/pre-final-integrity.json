@@ -1,0 +1,14 @@
+{
+  "documentCount": 13,
+  "localLinksChecked": 468,
+  "brokenLinks": [],
+  "changedStartingInputs": [
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/page.tsx",
+    "packages/web/src/app/api/media/delete-image/route.ts",
+    "packages/web/src/components/interactions/story-interactions.tsx",
+    "packages/web/src/lib/storage.ts",
+    "packages/web/src/lib/stories.ts"
+  ],
+  "unexpectedStartingChanges": [],
+  "inputCount": 805
+}

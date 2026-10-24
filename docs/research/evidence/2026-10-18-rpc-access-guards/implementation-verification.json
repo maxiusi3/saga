@@ -1,0 +1,176 @@
+{
+  "status": "PASS_WITH_COMPATIBILITY_CONCERN",
+  "task": "Task 2 local RPC access guards",
+  "scope": "new experiments/pg17-access-guards; task evidence; no application, migration, dependency or old experiment modifications",
+  "commands": [
+    {
+      "command": "node experiments/pg17-access-guards/verify.mjs --red",
+      "exit": 1,
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-red-2026-10-18T04-45-45.640Z-3f4708e1-9e97-426a-bfb0-27edf9635b1d.json",
+      "result": "EXPECTED_RED: missing/forged authenticated claims activated the member; zero-voucher creation added project and role; candidate did not yet exist",
+      "scenarios": 3,
+      "assertions": 129
+    },
+    {
+      "command": "node experiments/pg17-access-guards/verify.mjs",
+      "exit": 0,
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T04-50-36.707Z-98bf3ead-7499-4b0e-aaf5-fbc7ed07d18f.json",
+      "result": "first GREEN",
+      "scenarios": 115,
+      "assertions": 1035
+    },
+    {
+      "command": "node experiments/pg17-access-guards/verify.mjs",
+      "exit": 0,
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-01-48.774Z-c571c810-3111-4864-b38f-5fca5d7f97cf.json",
+      "result": "complete source/runtime/dependency pin checks GREEN before focused compatibility scenario",
+      "scenarios": 115,
+      "assertions": 1817
+    },
+    {
+      "command": "node experiments/pg17-access-guards/verify.mjs",
+      "exit": 0,
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-03.536Z-46082b93-c013-4643-a735-c4e31b9830bf.json",
+      "result": "FINAL normal GREEN",
+      "scenarios": 116,
+      "assertions": 1828,
+      "observedLockRaces": 25
+    },
+    {
+      "command": "node experiments/pg17-access-guards/verify-lifecycle.mjs",
+      "exit": 0,
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-lifecycle-2026-10-18T05-03-13.795Z-67ba5b87-5270-4429-af83-569a222d8502.json",
+      "result": "FINAL lifecycle GREEN",
+      "cases": 4,
+      "childResults": [
+        {
+          "name": "hostile_pg_environment",
+          "status": "passed",
+          "exit": {
+            "code": 0,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-13.977Z-fe66e2ff-afaa-472d-8d6c-7c8acbc04c58.json",
+          "evidenceSha256": "29e6343604a03f15ee5cc949a227369ed5079ed31c1ffe8d1b5d74d299ad8f21",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "SIGTERM_after_fixture_ready",
+          "status": "passed",
+          "exit": {
+            "code": 143,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-23.402Z-82dcf853-84ad-4198-b65b-4bc86c2c3943.json",
+          "evidenceSha256": "9c2cda230571012128c9aeb82c2494d2040c9d931ae46c5196b1013835ed9467",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "invalid_actual_server_start",
+          "status": "passed",
+          "exit": {
+            "code": 1,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-25.288Z-775255a2-6f0b-4157-b245-373151e3607e.json",
+          "evidenceSha256": "fdd47f93c43e274dae576ceede3f7bf80259752f020570cd7ff608c24a335813",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "failed_client_connect_cleanup",
+          "status": "passed",
+          "exit": {
+            "code": 1,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-26.782Z-e15aba13-bd47-4c85-a8ef-4a1494a10ed7.json",
+          "evidenceSha256": "07e1f6b2bd4b508fb93f3dfffd956a4fb7cc12fa9c0b751dbdcdc77b15cfd45e",
+          "rescue": {
+            "needed": false
+          }
+        }
+      ]
+    }
+  ],
+  "finalExperimentFiles": {
+    "experiments/pg17-access-guards/README.md": "641dcc15b5545fe1da9ded2b6bda7e06e8fdca201a1cd2ca1d60feb1f94c2b13",
+    "experiments/pg17-access-guards/candidate.sql": "e169d6c62f43795a77d183d84edf9cdea23be2da6cab5d058e83d4d386ef9954",
+    "experiments/pg17-access-guards/concurrency.mjs": "8406148c2b5fc2b5d734b3d71a4c6aa29ac5d94c30012aa0cf344c8fe0d819b7",
+    "experiments/pg17-access-guards/input-pins.json": "e159ea968d7f1a6ae268ab90a25c2f107ae58c7ad2539dfc62ff61907347f35c",
+    "experiments/pg17-access-guards/scenarios.mjs": "01a0a53ddb1c5f2811bd946039f16379185bd808bd5f98f65979342c051bd5f9",
+    "experiments/pg17-access-guards/verify-lifecycle.mjs": "01fbff6e7365d5d32426161673aa8fdd52be32eca46225816f115cd4bdc21bf7",
+    "experiments/pg17-access-guards/verify.mjs": "54c834caf72e90380ba349d363f0c760924c06314a0ac5e9ed39a93c39297f98"
+  },
+  "allTaskRunEvidence": {
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-lifecycle-2026-10-18T05-03-13.795Z-67ba5b87-5270-4429-af83-569a222d8502.json": "1bb287d68a0aa79769494d4a96d737d2eab6592ab68fe47ab072c93ea772923c",
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-red-2026-10-18T04-45-45.640Z-3f4708e1-9e97-426a-bfb0-27edf9635b1d.json": "5e719143619e1f604307fa3e4132f817549a309e7cb9afda50a84ea095a86c0e",
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T04-50-36.707Z-98bf3ead-7499-4b0e-aaf5-fbc7ed07d18f.json": "cff828e36d98dc03c21941d17b82ef50577af91ca592606f83f0c23d64c15870",
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-01-48.774Z-c571c810-3111-4864-b38f-5fca5d7f97cf.json": "3baa5917e7b92cd798c348bc4e36642650c329c317042db3ebe4b2fa9ea09f75",
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-03.536Z-46082b93-c013-4643-a735-c4e31b9830bf.json": "beac1c6c6f58fad472bdd2080b4167f12cbd72459c883944f7ab4208c2cfd80e",
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-13.977Z-fe66e2ff-afaa-472d-8d6c-7c8acbc04c58.json": "29e6343604a03f15ee5cc949a227369ed5079ed31c1ffe8d1b5d74d299ad8f21",
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-23.402Z-82dcf853-84ad-4198-b65b-4bc86c2c3943.json": "9c2cda230571012128c9aeb82c2494d2040c9d931ae46c5196b1013835ed9467",
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-25.288Z-775255a2-6f0b-4157-b245-373151e3607e.json": "fdd47f93c43e274dae576ceede3f7bf80259752f020570cd7ff608c24a335813",
+    "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-03-26.782Z-e15aba13-bd47-4c85-a8ef-4a1494a10ed7.json": "07e1f6b2bd4b508fb93f3dfffd956a4fb7cc12fa9c0b751dbdcdc77b15cfd45e"
+  },
+  "inputPins": {
+    "path": "experiments/pg17-access-guards/input-pins.json",
+    "sha256": "e159ea968d7f1a6ae268ab90a25c2f107ae58c7ad2539dfc62ff61907347f35c",
+    "directSources": 12,
+    "commonJSAndPackageManifests": 44,
+    "postgresInstalledBinLibShareFiles": 743,
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "allFinalChildrenMatched": true,
+    "allFinalSourcesUnchangedAtFinish": true,
+    "macOSLibSystemKernel": "ambient, not byte-pinned"
+  },
+  "preservation": {
+    "readOnlyPriorInputsMatchOriginalRed": {
+      "experiments/pg17-routines/candidate.sql": "23c158ed3dc530c9c8b35cfab8639903589bfaf74099acf2cf18b8bfe1050379",
+      "experiments/pg17-routines/fixture.sql": "f09cb35321cf38593eb173474f69c5b381e4d3a303f285ab42eaa6538f6ca6eb",
+      "experiments/pg17-routines/replay.mjs": "c937c2c82eb77231a73adf1ac4fb07ea3662585526b50b903c9cc330fac33f55",
+      "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+      "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+      "experiments/pg17-routines/schema-manifest.json": "0c8c1f5a60ce8b3db3c0c2fdb9a9cef92ce421ddf75daad78535b8475ba9fae6"
+    },
+    "existingEvidenceOverwritten": false,
+    "candidateDdlAndRepeatPreserveHistory": true,
+    "applicationTests": "controller already ran verify/shared/infra; not rerun or edited by Task 2"
+  },
+  "selfReview": {
+    "identityNullSafety": true,
+    "exactSignatureDefaultAndReturnCatalogCompared": true,
+    "onlyAuthenticatedExecute": true,
+    "projectThenMemberLocksWithRechecks": true,
+    "walletLocksAndTwoConsumeLogs": true,
+    "bothRoleResourcesAndUnverifiedPayment": true,
+    "failuresCompareAllSevenTables": true,
+    "observedConcurrencyAndUnknownCommitDocumented": true,
+    "combinedBothExportOverloads": true,
+    "runtimeFailuresObservedWithoutRescue": true,
+    "reportsDoNotEmitPrivateBodiesOrRawErrors": true,
+    "independentReview": "pending controller; self-review is not independent PASS"
+  },
+  "concerns": [
+    {
+      "scenario": "accept_committed_valid_rebinding_has_no_prior_version_fact",
+      "preInvocationRebindCommitted": true,
+      "sqlstate": "00000",
+      "returnedCurrentBinding": true,
+      "limitation": "No immutable prior member/project/user binding or version exists in this signature; this test does not claim historical binding immutability. Concurrent rebinding after the locator read is separately denied."
+    }
+  ],
+  "limitations": [
+    "Synthetic auth.uid and database roles; real JWTs/verified email/role inheritance not tested",
+    "Production RLS/table ACL, trusted wallet grants/payments, other RPCs and Storage remain outside this local candidate",
+    "No token adapter, expiry or durable invitation seat reservation; missing/stale inviter compatibility tightened without history repair",
+    "No idempotency key or network unknown-commit recovery implementation",
+    "Prior fully committed valid rebinding is accepted as current state; immutable historical binding cannot be proved by the existing schema/signature",
+    "Local batch is not a G0/G1 milestone, deployment or push authorization"
+  ]
+}

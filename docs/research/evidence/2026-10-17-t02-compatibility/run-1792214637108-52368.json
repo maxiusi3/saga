@@ -1,0 +1,35 @@
+{
+  "startedAt": "2026-10-17T05:23:57.109Z",
+  "status": "failed",
+  "scope": "synthetic local data compatibility only; no remote access or production mutation",
+  "sources": {
+    "experiments/t02-legacy-mapping/verify.cjs": "b101fd568a6235bdd5a11cf3270eee0a9cc0fe8dd77fb1acb032ef7bfb2c8640",
+    "experiments/t02-legacy-mapping/README.md": "c04abe1643b093d3340828700a03b42b55ec175bafe8e030a828441393a6b5a3",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e",
+    "packages/web/src/lib/__tests__/legacy-media-reference.test.ts": "e88c50333db66ed7fa997fd092e48e2b2b997ef535059704fb4bb37773e5da94",
+    "packages/web/src/lib/__tests__/legacy-story-media.test.ts": "1e2286683a6df63288886f8b631feac2a33cc83f2eb4c0fb9d4eb07499c443e6"
+  },
+  "checks": [],
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3",
+    "typescript": "5.9.3"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f"
+  },
+  "scratch": "/tmp/saga-t02-yiUBYJ",
+  "error": {
+    "message": "The server does not support SSL connections"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:23:58.848Z"
+}

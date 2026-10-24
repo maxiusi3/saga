@@ -1,0 +1,48 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand invitation-sender-protocol invitation-sender.test
+
+FAIL src/lib/server/__tests__/invitation-sender.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../../../app/api/invitations/release/route' from 'src/lib/server/__tests__/invitation-sender.test.ts'
+
+       5 | import { POST as lookup } from '@/app/api/invitations/lookup/route'
+       6 | import { startInvitationFixture, fixtureBearer, fixtureProject, fixtureToken, providerUser, pendingRow, acceptedStatusRow, otherUser } from '../test-support/invitation-fixture'
+    >  7 | import { sendInput, releaseInput, lookupInput, sendRow, releaseRow, sendHttp, releaseHttp, lookupHttp } from '../test-support/invitation-sender-fixture'
+         |                 ^
+       8 |
+       9 | const savedEnv = { ...process.env }
+      10 | const nativeFetch = globalThis.fetch
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/index.js:863:11)
+      at Object.<anonymous> (src/lib/server/__tests__/invitation-sender.test.ts:7:17)
+
+FAIL src/lib/__tests__/invitation-sender-protocol.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../invitation-sender-protocol' from 'src/lib/__tests__/invitation-sender-protocol.test.ts'
+
+      3 | import { sendInput, releaseInput, lookupInput, sendRow, releaseRow, sendHttp, releaseHttp, lookupHttp } from '../server/test-support/invitation-sender-fixture'
+      4 |
+    > 5 | test('send normalizes only ASCII email edges and empty message, retaining message code points', () => {
+        |                                   ^
+      6 |   expect(parseSendInput({ ...sendInput, email: ' \[REDACTED_SYNTHETIC_EMAIL]\r\n', message: '' })).toEqual(sendInput)
+      7 |   expect(parseSendInput({ ...sendInput, message: ' text \n' })).toEqual({ ...sendInput, message: ' text \n' })
+      8 |   expect(parseSendInput({ ...sendInput, message: '😀'.repeat(2000) })).not.toBeNull()
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/index.js:863:11)
+      at Object.<anonymous> (src/lib/__tests__/invitation-sender-protocol.test.ts:5:35)
+
+Test Suites: 2 failed, 2 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        2.053 s
+Ran all test suites matching invitation-sender-protocol|invitation-sender.test.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand invitation-sender-protocol invitation-sender.test

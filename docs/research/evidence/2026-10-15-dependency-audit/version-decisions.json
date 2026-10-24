@@ -1,0 +1,44 @@
+{
+  "next": {
+    "from": "16.2.6",
+    "to": "16.4.1",
+    "reason": "Stable Next 16; outside all current direct advisory ranges; bundled PostCSS 8.5.23 is above affected <=8.5.22; optional sharp ^0.35.5; Node >=20.9 and React19 supported."
+  },
+  "eslint-config-next": {
+    "from": "16.2.6",
+    "to": "16.4.1",
+    "reason": "Match Next exact version; existing nested ESLint peer arrangement retained; root ESLint8 not changed."
+  },
+  "sharp": {
+    "from": "0.33.5 (range ^0.33.3)",
+    "to": "0.35.5 (range ^0.35.5)",
+    "reason": "First stable version above all three current native-library advisory ranges; verify actual thumbnails and decode."
+  },
+  "@sentry/nextjs": {
+    "from": "10.51.0 (range ^10.5.0)",
+    "to": "10.76.2 (range ^10.76.2)",
+    "reason": "Latest stable compatible major 10 at lookup; avoids Sentry 11 migration and updates the affected OpenTelemetry dependency graph."
+  },
+  "postcss": {
+    "from": "8.5.29 (range ^8.4.32)",
+    "to": "root 8.5.29 retained; web/Next 8.5.23 (web minimum ^8.5.23)",
+    "reason": "Raise declared minimum to first unaffected8.5.23, keep already-safe installed8.5.29; Next upgrade removes vulnerable nested8.4.31. Registry latest endpoint advertised8.5.30 but cached packument omitted it; no need to select an unnecessary newer patch."
+  },
+  "handlebars": {
+    "from": "4.7.9",
+    "to": "4.7.10",
+    "reason": "Compatible transitive patch above critical advisory ranges; use targeted npm update."
+  },
+  "braces": {
+    "decision": "retain and disclose",
+    "reason": "Latest3.0.3 is affected; micromatch4.0.8 still requires braces^3.0.3. No compatible released fix shown by registry."
+  },
+  "sprintf-js": {
+    "decision": "retain and disclose",
+    "reason": "Latest1.1.3 is affected; old js-yaml3/argparse1 path requires separate supported upstream migration."
+  },
+  "postcss-selector-parser": {
+    "decision": "retain v6 paths and disclose",
+    "reason": "Fix starts7.1.6; Tailwind3/postcss-nested6 request v6. No unverified major override."
+  }
+}

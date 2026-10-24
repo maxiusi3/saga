@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-10-16T12:22:28.415073+00:00",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "conditionalPushAuthorized": true,
+  "decision": "original_milestones_not_reached",
+  "G0": {
+    "passed": false,
+    "missing": [
+      "actual remote migration history/schema/RLS and asset/bucket permissions",
+      "backup and migration/rollback evidence",
+      "qualified provider account/data handling evidence"
+    ],
+    "basis": [
+      "readiness.json",
+      "../../2026-10-15-readiness-refresh.md",
+      "../../../2026-10-10-integrated-upgrade-plan.md"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "missing": [
+      "formal Storage/session/asset transaction adapter",
+      "real-device 5/20/30 minute and interruption matrix",
+      "formal cross-family and original-delivery acceptance"
+    ],
+    "basis": [
+      "../../2026-10-16-t04-t05-local-merge.md",
+      "../../../superpowers/specs/2026-10-13-upgrade-p0-gates.md"
+    ]
+  },
+  "dependencyAudit": {
+    "passed": false,
+    "exitCode": 1,
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "evidence": "audit-high.json"
+  },
+  "localBatchIsMilestone": false,
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "deploymentPerformed": false,
+  "remoteMigrationPerformed": false
+}

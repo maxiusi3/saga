@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-13",
+  "checks": [
+    {
+      "check": "escaped family edit",
+      "text": "Alex & Sam’s family space\nVisible only to this invited family · demo\nOn this device\nOriginal available · 72s\nSimulated local copy\nIn the family archive\nComplete original confirmed\nComplete original · simulated\n\nEXISTING VOICE / ALEX, ORGANIZER\n\nKeep a voice you already have.\nCheck what the story says.\n\nResolve the name and year before approving. You can return later; skipping keeps an item unresolved.\n\nName · handled\n\nThe draft names <b>Pat & Jo</b>.\n\nShow name sourceCorrect the name as a family edit\nAccept Alex\nSave name correction\nDecide later\nYear · uncertainty preserved\n\nAlex remembers 1990. Sam remembers 1989. Neither is externally verified.\n\nShow year source\nKeep both memories\nUse “around 1990”\nDecide later\n\nBoth choices keep the precise year uncertain and retain each person’s memory.\n\nRevised story\n\n<b>Pat & Jo</b> remembers moving into the first family home around 1990. The exact year is uncertain.\n\nAlex: 1990 · fictional original. Sam: 1989 · family addition. Different memories are kept separately.\n\nApprove story snapshot\n\nApproval is blocked while either serious item remains unresolved. Nothing is automatically published.\n\nName correction recorded as a family edit. It does not change the original source."
+    },
+    {
+      "check": "tab ArrowRight",
+      "result": {
+        "focused": "Invitation returns",
+        "selected": "Invitation returns"
+      }
+    },
+    {
+      "check": "tab End",
+      "result": {
+        "focused": "Disagreement & missing",
+        "selected": "Disagreement & missing"
+      }
+    },
+    {
+      "check": "tab Home",
+      "result": {
+        "focused": "Import to receipt",
+        "selected": "Import to receipt"
+      }
+    },
+    {
+      "check": "guide consecutive keyboard focus 2",
+      "result": {
+        "bottom": 501.7578125,
+        "text": "Step 2: Choose fictional audio",
+        "top": 453.7578125,
+        "viewport": 844,
+        "visible": true
+      }
+    },
+    {
+      "check": "guide consecutive keyboard focus 3",
+      "result": {
+        "bottom": 501.7578125,
+        "text": "Step 3: Confirm source permission",
+        "top": 453.7578125,
+        "viewport": 844,
+        "visible": true
+      }
+    },
+    {
+      "check": "guide consecutive keyboard focus 4",
+      "result": {
+        "bottom": 501.7578125,
+        "text": "Step 4: Allow text preparation",
+        "top": 453.7578125,
+        "viewport": 844,
+        "visible": true
+      }
+    },
+    {
+      "check": "guide consecutive keyboard focus 5",
+      "result": {
+        "bottom": 501.7265625,
+        "text": "Step 5: Mark local original available",
+        "top": 453.7265625,
+        "viewport": 844,
+        "visible": true
+      }
+    },
+    {
+      "check": "source permission keyboard focus",
+      "result": {
+        "tag": "INPUT",
+        "text": "Allow text preparation for this example. No AI request is made in this prototype."
+      }
+    },
+    {
+      "check": "text permission keyboard focus",
+      "result": {
+        "tag": "BUTTON",
+        "text": "Continue with the local original"
+      }
+    },
+    {
+      "check": "source focus and excerpt",
+      "result": {
+        "focused": "Show year source",
+        "noAudio": true,
+        "source": true
+      }
+    },
+    {
+      "check": "320 viewport",
+      "result": {
+        "clientWidth": 305,
+        "controls": [
+          {
+            "height": 145,
+            "label": "I have a recordingBegin with a fictional audio sample.",
+            "width": 239
+          },
+          {
+            "height": 167.1875,
+            "label": "Sam invited me to talkSee the question and who can listen.",
+            "width": 239
+          }
+        ],
+        "scrollWidth": 305
+      }
+    },
+    {
+      "check": "390 viewport",
+      "result": {
+        "clientWidth": 375,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "check": "skip then accompanied start; paused controls",
+      "result": {
+        "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\npaused\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery",
+        "preview": "Alex & Sam’s family space\nVisible only to this invited family · demo\nOn this device\nNo saved audio\nNo data saved yet\nIn the family archive\nNot yet uploaded\nNo complete cloud guarantee\n\nFAMILY INVITATION / ALEX, STORYTELLER\n\nOne question from Sam.\n\nSam invited you into Alex & Sam’s private family space. Only the invited family can listen in this example.\n\nSam would like to know\nWhat do you remember about your first home?\nQuestion: first-home-01\nYour choice, before continuing\n\nThis fictional example stays with the invited family. Text preparation is optional; the voice can be kept without it.\n\nI have permission to record this example and keep it in the family space.\nAllow text preparation for this example. No AI request is made in this prototype.\n\nPaused · 0s saved\n\nNo microphone is active. Use “Save a segment” to simulate data reaching this device.\n\nResume\nEnd recording\nSimulate interruption\nPaused. Any on-device segments are retained."
+      }
+    },
+    {
+      "check": "paused free segment refused",
+      "feedback": "Action not allowed. Start or resume the demo recording before saving a segment."
+    },
+    {
+      "check": "missing original then text failure",
+      "feedback": "Text preparation failed. This did not change original storage; the archive original is currently missing. Restore and confirm it before retrying text.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nOriginal missing\nText preparation\nfailed\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "check": "final paused copy",
+      "preview": "Alex & Sam’s family space\nVisible only to this invited family · demo\nOn this device\nSaved segments · 12s\nOnly these saved segments\nIn the family archive\nNot yet uploaded\nNo complete cloud guarantee\n\nFAMILY INVITATION / ALEX, STORYTELLER\n\nOne question from Sam.\n\nSam invited you into Alex & Sam’s private family space. Only the invited family can listen in this example.\n\nSam would like to know\nWhat do you remember about your first home?\nQuestion: first-home-01\nYour choice, before continuing\n\nThis fictional example stays with the invited family. Text preparation is optional; the voice can be kept without it.\n\nI have permission to record this example and keep it in the family space.\nAllow text preparation for this example. No AI request is made in this prototype.\n\nPaused · 12s saved\n\nNo microphone is active. Resume to add more simulated segments, or end with what is already saved.\n\nResume\nEnd recording\nSimulate interruption\nPaused. Any on-device segments are retained."
+    },
+    {
+      "check": "final resumed copy",
+      "preview": "Alex & Sam’s family space\nVisible only to this invited family · demo\nOn this device\nSaved segments · 12s\nOnly these saved segments\nIn the family archive\nNot yet uploaded\nNo complete cloud guarantee\n\nFAMILY INVITATION / ALEX, STORYTELLER\n\nOne question from Sam.\n\nSam invited you into Alex & Sam’s private family space. Only the invited family can listen in this example.\n\nSam would like to know\nWhat do you remember about your first home?\nQuestion: first-home-01\nYour choice, before continuing\n\nThis fictional example stays with the invited family. Text preparation is optional; the voice can be kept without it.\n\nI have permission to record this example and keep it in the family space.\nAllow text preparation for this example. No AI request is made in this prototype.\n\nRecording (simulated) · 12s saved\n\nNo microphone is active. Use “Save a segment” to simulate data reaching this device.\n\nSave a segment\nPause\nEnd recording\nSimulate interruption\nDemo recording resumed. Saved segments remain on this device."
+    }
+  ]
+}

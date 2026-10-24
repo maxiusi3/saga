@@ -1,0 +1,344 @@
+const { createLedger } = require('./ledger.cjs')
+const { randomUUID } = require('node:crypto')
+
+const ids = {
+  user: '30000000-0000-4000-8000-000000000001',
+  other: '30000000-0000-4000-8000-000000000002',
+  facilitator: '30000000-0000-4000-8000-000000000003',
+  project: '20000000-0000-4000-8000-000000000001',
+  otherProject: '20000000-0000-4000-8000-000000000002',
+  story: '10000000-0000-4000-8000-000000000001',
+  otherStory: '10000000-0000-4000-8000-000000000002',
+}
+async function verifiedAsset(db, observation, override={}) {
+  const asset = {id:randomUUID(),project_id:observation.project_id,story_id:observation.source_row_id,
+    created_by:ids.user,kind:observation.kind,bucket:observation.bucket,object_key:observation.object_key,
+    version:1,object_version:'fixture-object-v1',byte_size:'120',sha256:'a'.repeat(64),state:'ready',...override}
+  await db.query(`INSERT INTO t02.fixture_assets(id,project_id,story_id,created_by,kind,bucket,object_key,
+    version,object_version,byte_size,sha256,state)
+    VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
+  ['id','project_id','story_id','created_by','kind','bucket','object_key','version','object_version','byte_size','sha256','state'].map(k=>asset[k]))
+  const verificationId=randomUUID()
+  await db.query(`INSERT INTO t02.fixture_verifications(id,asset_id,project_id,story_id,kind,bucket,object_key,
+    asset_version,object_version,byte_size,sha256,evidence_kind)
+    SELECT $2,id,project_id,story_id,kind,bucket,object_key,version,object_version,byte_size,sha256,
+      'synthetic_fixture_only' FROM t02.fixture_assets WHERE id=$1`, [asset.id,verificationId])
+  return {...asset,verificationId}
+}
+async function seed(db) {
+  await db.query('INSERT INTO auth.users VALUES ($1),($2),($3)', [ids.user,ids.other,ids.facilitator])
+  await db.query('INSERT INTO projects(id,facilitator_id) VALUES ($1,$3),($2,$4)', [ids.project,ids.otherProject,ids.facilitator,ids.other])
+  await db.query(`INSERT INTO project_roles VALUES
+    ('40000000-0000-4000-8000-000000000001',$1,$2,'storyteller','active'),
+    ('40000000-0000-4000-8000-000000000002',$3,$4,'storyteller','active')`,
+  [ids.project,ids.user,ids.otherProject,ids.other])
+  await db.query(`INSERT INTO stories(id,project_id,storyteller_id,title,audio_url,photo_urls,images)
+    VALUES ($1,$2,$3,'Synthetic only','stories/voice.webm',ARRAY['alice/images/same.jpg','bob/images/same.jpg',NULL],
+      ARRAY['{"url":"alice/images/a.jpg","thumbUrl":"alice/images/t.jpg"}'::jsonb,'null'::jsonb,
+        '"alice/images/same.jpg"'::jsonb,'4'::jsonb])`, [ids.story,ids.project,ids.user])
+  await db.query(`INSERT INTO stories(id,project_id,storyteller_id,title,photo_url)
+    VALUES ($1,$2,$3,'Other synthetic family','alice/images/a.jpg')`, [ids.otherStory,ids.otherProject,ids.other])
+}
+async function run({db,connect,planLegacyStoryMedia,check,checkpoint,report}) {
+  const ledger = createLedger({ planLegacyStoryMedia })
+  async function rejected(name, work, code) {
+    let error
+    try { await work() } catch (caught) { error=caught }
+    check(name,error?.code,code)
+    return error
+  }
+  const sourceHash=async()=> (await db.query('SELECT md5(row_to_json(s)::text) AS hash FROM stories s WHERE id=$1',[ids.story])).rows[0].hash
+  const originalHash=await sourceHash()
+  const original=(await db.query('SELECT images::text AS images,photo_urls::text AS photo_urls FROM stories WHERE id=$1',[ids.story])).rows[0]
+  const request = {storyId:ids.story,actorId:ids.user}
+  const observations = await ledger.observeStory(db, request)
+  check('real PostgreSQL source produces all nine positional observations', observations.length, 9)
+  const repeated = await ledger.observeStory(db, request)
+  check('duplicate source versions return their original durable observations', repeated.map(r=>r.id), observations.map(r=>r.id))
+  check('database has exactly nine observations after duplicate collection',
+    (await db.query('SELECT count(*)::int AS n FROM t02.source_observations')).rows[0].n, 9)
+  const photo=observations.find(o=>o.source_path==='/images/0/url')
+  const asset=await verifiedAsset(db,photo)
+  const binding=await ledger.bind(db,{observationId:photo.id,verificationId:asset.verificationId,actorId:ids.user})
+  check('verified exact fixture asset atomically creates a durable binding',Boolean(binding?.id),true)
+  check('binding was truly committed',(await db.query('SELECT count(*)::int AS n FROM t02.source_bindings')).rows[0].n,1)
+  const bindRequest={observationId:photo.id,verificationId:asset.verificationId,actorId:ids.user}
+  check('repeated exact binding returns original ID',(await ledger.bind(db,bindRequest)).id,binding.id)
+  check('mapped source does not create assets or ready state',
+    observations.some(o=>o.asset_id||o.state==='ready'),false)
+  check('all anomalous array positions persist as unresolved',
+    observations.filter(o=>o.locator_status==='unresolved').map(o=>o.source_path),['/photo_urls/2','/images/1','/images/3'])
+  check('same basename preserves distinct exact keys',observations.filter(o=>o.source_field==='photo_urls').map(o=>o.object_key),
+    ['alice/images/same.jpg','bob/images/same.jpg',null])
+  check('original media columns unchanged by observe and bind',await sourceHash(),originalHash)
+
+  await db.query('INSERT INTO t02.source_reviews(observation_id,conclusion) VALUES($1,$2)',[photo.id,'Synthetic reviewer retained original v1'])
+  await db.query(`UPDATE stories SET images[4]='5'::jsonb WHERE id=$1`,[ids.story])
+  const changed=await ledger.observeStory(db,request)
+  const changedPhoto=changed.find(o=>o.source_path===photo.source_path)
+  check('changed sibling slot changes entire-field version for unchanged locator',changedPhoto.source_digest!==photo.source_digest,true)
+  check('changed source appends a linked conflict',changedPhoto.conflicts_with,photo.id)
+  check('old source payload remains immutable',(await db.query('SELECT source_payload FROM t02.source_observations WHERE id=$1',[photo.id])).rows[0].source_payload,photo.source_payload)
+  check('old review conclusion remains intact',(await db.query('SELECT conclusion FROM t02.source_reviews WHERE observation_id=$1',[photo.id])).rows[0].conclusion,'Synthetic reviewer retained original v1')
+  check('old bound observation still points at the original asset',(await db.query('SELECT asset_id FROM t02.source_bindings WHERE observation_id=$1',[photo.id])).rows[0].asset_id,asset.id)
+  await rejected('changed source cannot use an old reviewed observation',()=>ledger.bind(db,bindRequest),'source_version_changed')
+  await db.query('UPDATE stories SET images=$2::jsonb[] WHERE id=$1',[ids.story,original.images])
+  check('return to original source version reuses original identity',
+    (await ledger.observeStory(db,request)).find(o=>o.source_path===photo.source_path).id,photo.id)
+
+  await db.query(`UPDATE stories SET images[1]='{"thumbUrl":"alice/images/t.jpg","url":"alice/images/a.jpg"}'::jsonb WHERE id=$1`,[ids.story])
+  check('PostgreSQL canonical jsonb ignores object key insertion order',
+    (await ledger.observeStory(db,request)).find(o=>o.source_path===photo.source_path).id,photo.id)
+  await db.query('UPDATE stories SET images[2]=NULL WHERE id=$1',[ids.story])
+  const sqlNull=(await ledger.observeStory(db,request)).find(o=>o.source_path===photo.source_path)
+  check('digest distinguishes SQL NULL array element from JSON null',sqlNull.source_digest!==photo.source_digest,true)
+  await db.query('UPDATE stories SET images=$2::jsonb[] WHERE id=$1',[ids.story,original.images])
+  const firstPhoto=observations.find(o=>o.source_path==='/photo_urls/0')
+  await db.query(`UPDATE stories SET photo_urls=ARRAY['bob/images/same.jpg','alice/images/same.jpg',NULL] WHERE id=$1`,[ids.story])
+  check('digest retains array order',
+    (await ledger.observeStory(db,request)).find(o=>o.source_path==='/photo_urls/0').source_digest!==firstPhoto.source_digest,true)
+  await db.query(`UPDATE stories SET photo_urls='[0:2]={alice/images/same.jpg,bob/images/same.jpg,NULL}'::text[] WHERE id=$1`,[ids.story])
+  check('digest retains PostgreSQL array bounds beyond JSON projection',
+    (await ledger.observeStory(db,request)).find(o=>o.source_path==='/photo_urls/0').source_digest!==firstPhoto.source_digest,true)
+  await db.query('UPDATE stories SET photo_urls=$2::text[] WHERE id=$1',[ids.story,original.photo_urls])
+  await db.query('ALTER TABLE stories ALTER COLUMN images TYPE jsonb USING to_jsonb(images)')
+  const differentType=(await ledger.observeStory(db,request)).find(o=>o.source_path===photo.source_path)
+  check('historical jsonb and actual jsonb[] remain distinct typed versions',
+    [differentType.source_type,differentType.source_digest!==photo.source_digest],['jsonb',true])
+  await db.query(`CREATE FUNCTION pg_temp.jsonb_array_to_pg(value jsonb) RETURNS jsonb[] LANGUAGE sql IMMUTABLE AS
+    $$ SELECT CASE WHEN value IS NULL THEN NULL ELSE ARRAY(SELECT jsonb_array_elements(value)) END $$;
+    ALTER TABLE stories ALTER COLUMN images TYPE jsonb[] USING pg_temp.jsonb_array_to_pg(images)`)
+  await db.query('UPDATE stories SET images=$2::jsonb[] WHERE id=$1',[ids.story,original.images])
+  check('fixture type experiment restores the exact source row',await sourceHash(),originalHash)
+
+  for(const extra of ['sourceField','sourcePath','sourceDigest','locator','projectId']) {
+    await rejected(`caller cannot supply ${extra} to observation collection`,()=>ledger.observeStory(db,{...request,[extra]:'malicious'}),'invalid_request')
+  }
+  await rejected('caller cannot supply a binding locator',()=>ledger.bind(db,{...bindRequest,objectKey:'elsewhere/key.jpg'}),'invalid_request')
+  await rejected('database unique source/version constraint prevents duplicate history',()=>db.query(`
+    INSERT INTO t02.source_observations(project_id,source_table,source_row_id,source_field,source_path,digest_algorithm,
+      source_digest,source_type,source_payload,raw_value,kind,locator_status,bucket,object_key)
+    SELECT project_id,source_table,source_row_id,source_field,source_path,digest_algorithm,
+      source_digest,source_type,source_payload,raw_value,kind,locator_status,bucket,object_key
+    FROM t02.source_observations WHERE id=$1`,[photo.id]),'23505')
+  await rejected('observation update is rejected even for the fixture owner',()=>db.query('UPDATE t02.source_observations SET raw_value=null WHERE id=$1',[photo.id]),'55000')
+  await rejected('review deletion is rejected',()=>db.query('DELETE FROM t02.source_reviews WHERE observation_id=$1',[photo.id]),'55000')
+  await rejected('binding update is rejected',()=>db.query('UPDATE t02.source_bindings SET asset_version=2 WHERE id=$1',[binding.id]),'55000')
+  for(const role of ['saga_anon','saga_authenticated']) {
+    await db.query(`SET ROLE ${role}`)
+    try {
+      for(const table of ['source_observations','source_reviews','source_bindings','fixture_assets','fixture_verifications']) {
+        await rejected(`${role} cannot read ${table}`,()=>db.query(`SELECT * FROM t02.${table}`),'42501')
+        await rejected(`${role} cannot write ${table}`,()=>db.query(`INSERT INTO t02.${table} DEFAULT VALUES`),'42501')
+      }
+    } finally { await db.query('RESET ROLE') }
+  }
+
+  let sequence=0
+  async function fresh(overrides={}) {
+    const storyId=randomUUID()
+    await db.query(`INSERT INTO stories(id,project_id,storyteller_id,title,photo_url) VALUES($1,$2,$3,'Synthetic race fixture',$4)`,
+      [storyId,ids.project,ids.user,`fixture/photos/${++sequence}.jpg`])
+    const observation=(await ledger.observeStory(db,{storyId,actorId:ids.user}))[0]
+    const verified=await verifiedAsset(db,observation,overrides)
+    return {storyId,observation,asset:verified,input:{observationId:observation.id,verificationId:verified.verificationId,actorId:ids.user}}
+  }
+  async function noBinding(name, observationId) {
+    check(name,(await db.query('SELECT count(*)::int AS n FROM t02.source_bindings WHERE observation_id=$1',[observationId])).rows[0].n,0)
+  }
+  const otherObserved=(await ledger.observeStory(db,{storyId:ids.otherStory,actorId:ids.other}))[0]
+  check('same locator in another family has a distinct durable source identity',
+    otherObserved.id!==photo.id&&otherObserved.object_key===photo.object_key,true)
+  await rejected('other family member cannot observe this project',()=>ledger.observeStory(db,{...request,actorId:ids.other}),'access_denied')
+  const conflictAsset=await verifiedAsset(db,photo)
+  await rejected('a second asset cannot replace an existing binding',()=>ledger.bind(db,{...bindRequest,verificationId:conflictAsset.verificationId}),'binding_conflict')
+  await rejected('database unique observation constraint prevents second-asset binding',()=>db.query(`
+    INSERT INTO t02.source_bindings(observation_id,project_id,asset_id,verification_id,asset_version,created_by)
+    VALUES($1,$2,$3,$4,1,$5)`,[photo.id,ids.project,conflictAsset.id,conflictAsset.verificationId,ids.user]),'23505')
+  const cross=await fresh({project_id:ids.otherProject,story_id:ids.otherStory,created_by:ids.other})
+  await rejected('verified asset from another project is rejected',()=>ledger.bind(db,cross.input),'asset_scope_mismatch')
+  await noBinding('cross-project failure leaves no partial binding',cross.observation.id)
+  const wrongStory=await fresh({story_id:ids.story})
+  await rejected('asset in same project but another story is rejected',()=>ledger.bind(db,wrongStory.input),'asset_scope_mismatch')
+  const wrongKind=await fresh({kind:'thumbnail'})
+  await rejected('thumbnail cannot replace an original image',()=>ledger.bind(db,wrongKind.input),'asset_locator_mismatch')
+  const wrongKey=await fresh({object_key:'other/exact.jpg'})
+  await rejected('different exact key is rejected',()=>ledger.bind(db,wrongKey.input),'asset_locator_mismatch')
+  const wrongBucket=await fresh({bucket:'audio-recordings'})
+  await rejected('different exact bucket is rejected',()=>ledger.bind(db,wrongBucket.input),'asset_locator_mismatch')
+  const missingEvidence=await fresh()
+  await rejected('missing explicit verification evidence is rejected',()=>ledger.bind(db,{...missingEvidence.input,verificationId:randomUUID()}),'verification_missing')
+  const pending=await fresh({state:'quarantined'})
+  await rejected('asset not ready is rejected',()=>ledger.bind(db,pending.input),'asset_not_ready')
+  for(const [column,value] of [['version',2],['object_version','fixture-object-v2'],['byte_size','121'],['sha256','b'.repeat(64)]]) {
+    const stale=await fresh()
+    await db.query(`UPDATE t02.fixture_assets SET ${column}=$2 WHERE id=$1`,[stale.asset.id,value])
+    await rejected(`stale verification rejects changed ${column}`,()=>ledger.bind(db,stale.input),'verification_stale')
+  }
+  const ambiguity=await fresh()
+  await db.query(`UPDATE stories SET photo_url=NULL,images=ARRAY['{"url":"a/photo.jpg","path":"b/photo.jpg"}'::jsonb] WHERE id=$1`,[ambiguity.storyId])
+  const ambiguous=(await ledger.observeStory(db,{storyId:ambiguity.storyId,actorId:ids.user}))[0]
+  await rejected('ambiguous source cannot bind',()=>ledger.bind(db,{...ambiguity.input,observationId:ambiguous.id}),'source_not_mapped')
+  const unresolved=observations.find(o=>o.source_path==='/images/1')
+  await rejected('unresolved source cannot bind',()=>ledger.bind(db,{...bindRequest,observationId:unresolved.id}),'source_not_mapped')
+  const facilitator=await fresh()
+  check('current project facilitator can bind without a membership row',
+    Boolean((await ledger.bind(db,{...facilitator.input,actorId:ids.facilitator})).id),true)
+
+  // Poll actual blocking state. The interval is never accepted as evidence by itself.
+  async function blocked(name,waiter,blocker) {
+    const end=Date.now()+4000
+    while(Date.now()<end) {
+      checkpoint()
+      const row=(await db.query(`SELECT pid,wait_event_type,pg_blocking_pids(pid) AS blockers
+        FROM pg_stat_activity WHERE pid=$1`,[waiter.processID])).rows[0]
+      if(row?.wait_event_type==='Lock'&&row.blockers.includes(blocker.processID)) {
+        report.lockEvidence.push({name,...row,expectedBlocker:blocker.processID})
+        check(`${name}: server confirms row/transaction lock wait`,true,true)
+        return
+      }
+      await new Promise(resolve=>setTimeout(resolve,15))
+    }
+    throw new Error(`No PostgreSQL lock evidence for ${name}`)
+  }
+  const resultOf=promise=>promise.then(value=>({value}),error=>({error}))
+  async function raceChange(name,sql,args,input,code) {
+    const locker=await connect(), waiter=await connect()
+    try {
+      await locker.query('BEGIN');await locker.query(sql,args)
+      const pending=resultOf(ledger.bind(waiter,input))
+      await blocked(name,waiter,locker)
+      await locker.query('COMMIT')
+      const result=await pending
+      check(`${name}: current READ COMMITTED value is checked after waiting`,result.error?.code,code)
+      await noBinding(`${name}: rejection leaves no binding`,input.observationId)
+    } finally { await locker.query('ROLLBACK').catch(()=>{});await locker.end();await waiter.end() }
+  }
+  const sourceRace=await fresh()
+  await raceChange('source version changed during wait','UPDATE stories SET photo_url=$2 WHERE id=$1',
+    [sourceRace.storyId,'changed/new.jpg'],sourceRace.input,'source_version_changed')
+  const assetRace=await fresh()
+  await raceChange('asset version changed during wait','UPDATE t02.fixture_assets SET version=2 WHERE id=$1',
+    [assetRace.asset.id],assetRace.input,'verification_stale')
+  const revoked=await fresh()
+  await raceChange('uploader membership revoked during wait',`UPDATE project_roles SET status='inactive' WHERE project_id=$1 AND user_id=$2`,
+    [ids.project,ids.user],revoked.input,'access_denied')
+  await rejected('old uploader gains no access after revocation',()=>ledger.bind(db,revoked.input),'access_denied')
+  await db.query(`UPDATE project_roles SET status='active' WHERE project_id=$1 AND user_id=$2`,[ids.project,ids.user])
+  const projectDeleted=await fresh()
+  await raceChange('project tombstone during wait','UPDATE projects SET deleted_at=clock_timestamp() WHERE id=$1',
+    [ids.project],projectDeleted.input,'project_deleted')
+  await db.query('UPDATE projects SET deleted_at=NULL WHERE id=$1',[ids.project])
+  const sourceDeleted=await fresh()
+  await raceChange('source tombstone during wait','UPDATE stories SET deleted_at=clock_timestamp() WHERE id=$1',
+    [sourceDeleted.storyId],sourceDeleted.input,'source_deleted')
+  const assetDeleted=await fresh()
+  await raceChange('asset tombstone during wait','UPDATE t02.fixture_assets SET deleted_at=clock_timestamp() WHERE id=$1',
+    [assetDeleted.asset.id],assetDeleted.input,'asset_deleted')
+
+  async function simultaneous(name,operations) {
+    const locker=await connect(), workers=await Promise.all(operations.map(()=>connect()))
+    try {
+      await locker.query('BEGIN');await locker.query('SELECT id FROM projects WHERE id=$1 FOR UPDATE',[ids.project])
+      const pending=operations.map((work,i)=>resultOf(work(workers[i])))
+      for(const worker of workers) await blocked(name,worker,locker)
+      await locker.query('COMMIT')
+      return await Promise.all(pending)
+    } finally {await locker.query('ROLLBACK').catch(()=>{});await locker.end();await Promise.all(workers.map(c=>c.end()))}
+  }
+  const repeatedRace=await simultaneous('concurrent duplicate observations',[
+    client=>ledger.observeStory(client,request),client=>ledger.observeStory(client,request)])
+  check('concurrent source/version collectors return the same durable identities',
+    repeatedRace.map(r=>r.value?.map(o=>o.id)),[observations.map(o=>o.id),observations.map(o=>o.id)])
+  const bindRace=await fresh()
+  const concurrentBindings=await simultaneous('concurrent identical binding',[
+    client=>ledger.bind(client,bindRace.input),client=>ledger.bind(client,bindRace.input)])
+  check('concurrent identical bindings share one durable ID',
+    Boolean(concurrentBindings[0].value?.id)&&concurrentBindings[0].value.id===concurrentBindings[1].value?.id,true)
+  check('concurrent identical bindings create exactly one record',
+    (await db.query('SELECT count(*)::int AS n FROM t02.source_bindings WHERE observation_id=$1',[bindRace.observation.id])).rows[0].n,1)
+  const contested=await fresh(), competing=await verifiedAsset(db,contested.observation)
+  const conflicts=await simultaneous('concurrent conflicting asset binding',[
+    client=>ledger.bind(client,contested.input),client=>ledger.bind(client,{...contested.input,verificationId:competing.verificationId})])
+  check('concurrent differing assets produce one success and one explicit conflict',
+    [conflicts.filter(r=>r.value?.id).length,conflicts.filter(r=>r.error?.code==='binding_conflict').length],[1,1])
+
+  // Pause at the actual COMMIT boundary with all checks and INSERT completed.
+  const protectedFixture=await fresh(), protectedClient=await connect()
+  const actualQuery=protectedClient.query.bind(protectedClient)
+  let releaseCommit, reachedCommit
+  const commitBarrier=new Promise(resolve=>{releaseCommit=resolve})
+  const commitReached=new Promise(resolve=>{reachedCommit=resolve})
+  protectedClient.query=async(sql,args)=>{
+    if(sql==='COMMIT'){reachedCommit();await commitBarrier}
+    return actualQuery(sql,args)
+  }
+  const protectedPending=resultOf(ledger.bind(protectedClient,protectedFixture.input))
+  await commitReached
+  const mutations=[
+    ['project','UPDATE projects SET deleted_at=clock_timestamp() WHERE id=$1',[ids.project]],
+    ['source','UPDATE stories SET deleted_at=clock_timestamp() WHERE id=$1',[protectedFixture.storyId]],
+    ['member',`UPDATE project_roles SET status='inactive' WHERE project_id=$1 AND user_id=$2`,[ids.project,ids.user]],
+    ['asset','UPDATE t02.fixture_assets SET version=2 WHERE id=$1',[protectedFixture.asset.id]],
+  ]
+  const mutationClients=await Promise.all(mutations.map(()=>connect()))
+  const pendingMutations=mutations.map(([,sql,args],i)=>resultOf(mutationClients[i].query(sql,args)))
+  try {
+    for(let i=0;i<mutations.length;i++)await blocked(`${mutations[i][0]} lock held through COMMIT`,mutationClients[i],protectedClient)
+  } finally {releaseCommit()}
+  check('protected binding commits before blocked changes',(await protectedPending).value?.observation_id,protectedFixture.observation.id)
+  check('blocked mutations apply only after commit',(await Promise.all(pendingMutations)).every(r=>!r.error),true)
+  await Promise.all(mutationClients.map(c=>c.end()));await protectedClient.end()
+  await db.query('UPDATE projects SET deleted_at=NULL WHERE id=$1',[ids.project])
+  await db.query(`UPDATE project_roles SET status='active' WHERE project_id=$1 AND user_id=$2`,[ids.project,ids.user])
+
+  const failed=await fresh(), failureClient=await connect()
+  const failureQuery=failureClient.query.bind(failureClient)
+  failureClient.query=async(sql,args)=>{
+    const result=await failureQuery(sql,args)
+    if(sql.includes('INSERT INTO t02.source_bindings'))await failureQuery('SELECT 1/0')
+    return result
+  }
+  await rejected('real SQL error after INSERT rolls back binding',()=>ledger.bind(failureClient,failed.input),'22012')
+  await noBinding('rollback leaves no partial binding',failed.observation.id)
+  await failureClient.end()
+  const disconnected=await fresh(), disconnectedClient=await connect()
+  const disconnectedQuery=disconnectedClient.query.bind(disconnectedClient)
+  disconnectedClient.query=async(sql,args)=>{
+    const result=await disconnectedQuery(sql,args)
+    if(sql.includes('INSERT INTO t02.source_bindings')){
+      const ended=new Promise(resolve=>disconnectedClient.once('end',resolve))
+      await db.query('SELECT pg_terminate_backend($1)',[disconnectedClient.processID]);await ended
+      throw Object.assign(new Error('synthetic disconnect after INSERT'),{code:'injected_disconnect'})
+    }
+    return result
+  }
+  const rollbackFailure=await rejected('connection loss surfaces original failure',()=>ledger.bind(disconnectedClient,disconnected.input),'injected_disconnect')
+  check('failed ROLLBACK is recorded without claiming it succeeded',typeof rollbackFailure.rollbackError,'string')
+  await noBinding('PostgreSQL disconnect rollback removes uncommitted binding',disconnected.observation.id)
+
+  const unknown=await fresh(), unknownClient=await connect()
+  const unknownQuery=unknownClient.query.bind(unknownClient)
+  let rollbacksAfterCommit=0
+  unknownClient.query=async(sql,args)=>{
+    if(sql==='ROLLBACK')rollbacksAfterCommit++
+    const result=await unknownQuery(sql,args)
+    if(sql==='COMMIT')throw Object.assign(new Error('synthetic lost COMMIT acknowledgement after server committed'),{code:'ECONNRESET'})
+    return result
+  }
+  await rejected('committed but lost acknowledgement reports unknown',()=>ledger.bind(unknownClient,unknown.input),'commit_outcome_unknown')
+  check('unknown COMMIT never issues compensating rollback',rollbacksAfterCommit,0)
+  await unknownClient.end()
+  const reconciliation=await ledger.reconcileBinding(db,unknown.input)
+  check('fresh connection reconciles durable observation and verification identity',reconciliation.status,'committed')
+  check('unknown COMMIT preserved exactly one binding',
+    (await db.query('SELECT count(*)::int AS n FROM t02.source_bindings WHERE observation_id=$1',[unknown.observation.id])).rows[0].n,1)
+  check('retry after unknown COMMIT returns original durable binding',(await ledger.bind(db,unknown.input)).id,reconciliation.binding.id)
+  check('stopping writes leaves observations and assets present',
+    (await db.query('SELECT (SELECT count(*)>0 FROM t02.source_observations) AND (SELECT count(*)>0 FROM t02.fixture_assets) AS retained')).rows[0].retained,true)
+  check('baseline source media row remains byte-equivalent after all collection/binding',await sourceHash(),originalHash)
+  report.finalCounts=(await db.query(`SELECT (SELECT count(*)::int FROM t02.source_observations) AS observations,
+    (SELECT count(*)::int FROM t02.source_reviews) AS reviews,(SELECT count(*)::int FROM t02.source_bindings) AS bindings,
+    (SELECT count(*)::int FROM t02.fixture_assets) AS synthetic_assets`)).rows[0]
+}
+module.exports = { seed, run, ids }

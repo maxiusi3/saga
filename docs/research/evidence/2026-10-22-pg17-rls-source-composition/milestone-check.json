@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-10-23T10:39:31.298689+08:00",
+  "basis": "Original integrated upgrade plan sections 7/7.1 and P0 acceptance remain unchanged. This local PG17 composition batch does not introduce a release milestone.",
+  "basisDocument": "docs/2026-10-10-integrated-upgrade-plan.md",
+  "gateSpecification": "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+  "localScope": "Normal/hostile PG17 composition passed 72 scenarios, 832 behavior assertions, 236 ledger checks and 18 actual lock observations; six compatibility RED and four lifecycle cases passed. Implementation, assistance, documentation and whole-batch reviews PASS / Approved with zero open findings. Final integrity and local closeout depend on the referenced fresh seal report.",
+  "G0": {
+    "passed": false,
+    "missing": [
+      "Real production Auth/JWT/PostgREST/RLS/ACL and provider/deployment permission qualification",
+      "Production Storage bucket configuration, object authorization, uncaptured trigger/enum semantics and actual Supabase dependency integration",
+      "Seven unregistered migrations: semantic equivalence, trusted historical mapping/backfill, forward/rollback compatibility and backup recovery",
+      "Selected provider account/data conditions, actual event signature/product mapping and writer qualification"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "missing": [
+      "Formal media/Storage/session/job/deletion adapters and old media/delete compatibility",
+      "Declared-device 5/20/30-minute disconnect, refresh, reopen, lock-screen, call, quota and duplicate-save matrix",
+      "Remote cross-family ASR/playback/export/deletion refusal, confirmed-save recovery, original hashes and verifiable offline export"
+    ],
+    "deviceVerification": "deferred_by_user"
+  },
+  "G2": {
+    "passed": false,
+    "reason": "Formal no-mock archives, source/fidelity acceptance, family-separated retained set and measured seeded-error/negative-case thresholds are not complete."
+  },
+  "G3": {
+    "passed": false,
+    "reason": "Supported-device delivery, real payment/refund/reconciliation, backup/revocation/deletion drills and 6–8-household experience acceptance are not complete."
+  },
+  "G4": {
+    "passed": false,
+    "reason": "Complete household observation windows, actual payment/delivery/listening denominators and traceable whole-batch economics are not available."
+  },
+  "P0Complete": false,
+  "originalMilestonePassed": false,
+  "batchImplementationStatus": "LOCAL_COMPLETE_REVIEWED",
+  "independentReview": {
+    "implementation": "PASS / Approved; zero actionable findings",
+    "assistance": "PASS / Approved; zero actionable findings",
+    "documentation": "PASS / Approved; zero actionable findings",
+    "wholeBatch": "PASS / Approved; zero actionable findings"
+  },
+  "audit": {
+    "rerun": false,
+    "historicalTotal": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "source": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+    "reason": "Dependencies unchanged; historical audit failure was not resolved in this batch."
+  },
+  "previousAssessment": {
+    "path": "docs/research/evidence/2026-10-21-invitation-management/milestone-check.json",
+    "sha256": "a990668ed63b6423808f39567881b50aaf9e2acd6755ce56ee2e3ce7af35c0c4"
+  },
+  "nextLocalStep": "Design formal media/Storage/deletion adapters and old delete compatibility; integrate actual object verification, purpose/consent, digest versions and commit boundaries while keeping production prerequisites explicit.",
+  "productionSwitchesEnabled": false,
+  "committed": false,
+  "githubPushed": false,
+  "migrated": false,
+  "deployed": false,
+  "finalIntegrity": {
+    "status": "see_report",
+    "report": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/final-integrity-5d5d3a4a-93f7-4918-a7cd-e0065d14974d.json"
+  }
+}

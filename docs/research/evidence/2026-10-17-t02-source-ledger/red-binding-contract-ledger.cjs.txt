@@ -1,0 +1,101 @@
+const { createHash } = require('node:crypto')
+
+const fields = Object.freeze(['audio_url', 'mastered_audio_url', 'photo_url', 'photo_urls', 'images'])
+const algorithm = 'saga-pg-jsonb-media-v1'
+const context = {
+  verifiedStorageHost: 'fixture.supabase.co',
+  verifiedBucketsByField: {
+    audio_url: 'audio-recordings', mastered_audio_url: 'audio-recordings',
+    photo_url: 'saga', photo_urls: 'saga', images: 'saga',
+  },
+}
+function failure(code, detail) {
+  return Object.assign(new Error(detail || code), {code})
+}
+function request(input, keys) {
+  if (!input || typeof input !== 'object' || Object.keys(input).some(key => !keys.includes(key)) ||
+      keys.some(key => typeof input[key] !== 'string' || !input[key])) throw failure('invalid_request')
+}
+async function transaction(db, work) {
+  await db.query('BEGIN ISOLATION LEVEL READ COMMITTED')
+  let committing = false
+  try {
+    const result = await work()
+    committing = true
+    await db.query('COMMIT')
+    return result
+  } catch (error) {
+    if (committing) {
+      // A failed acknowledgement says nothing about durability. Never compensate.
+      throw Object.assign(failure('commit_outcome_unknown'), {cause: error})
+    }
+    try { await db.query('ROLLBACK') }
+    catch (rollbackError) { error.rollbackError = rollbackError.message }
+    throw error
+  }
+}
+
+function createLedger({planLegacyStoryMedia}) {
+  // Every operation uses project -> story -> current member -> asset -> observation.
+  // The coarse project row lock also serializes new source identities, which have
+  // no observation row to lock yet. Only this trusted fixture adapter is a writer.
+  async function lockSource(db, storyId, actorId, expectedProject) {
+    const preliminary = (await db.query('SELECT project_id FROM public.stories WHERE id=$1', [storyId])).rows[0]
+    if (!preliminary) throw failure('source_missing')
+    const projectId = expectedProject || preliminary.project_id
+    const project = (await db.query('SELECT * FROM public.projects WHERE id=$1 FOR UPDATE', [projectId])).rows[0]
+    if (!project || project.deleted_at) throw failure('project_deleted')
+    const story = (await db.query(`SELECT id,project_id,storyteller_id,title,deleted_at,
+      audio_url,mastered_audio_url,photo_url,photo_urls,images FROM public.stories WHERE id=$1 FOR UPDATE`, [storyId])).rows[0]
+    if (!story || story.deleted_at) throw failure('source_deleted')
+    if (story.project_id !== projectId) throw failure('source_project_changed')
+    const membership = (await db.query(`SELECT role,status FROM public.project_roles
+      WHERE project_id=$1 AND user_id=$2 FOR UPDATE`, [projectId, actorId])).rows[0]
+    if (project.facilitator_id !== actorId && (!membership || membership.status !== 'active')) {
+      throw failure('access_denied')
+    }
+    return story
+  }
+
+  async function fieldVersion(db, storyId, field) {
+    // Only constants from this allowlist can become identifiers; never a request locator.
+    if (!fields.includes(field)) throw failure('invalid_source_field')
+    const row = (await db.query(`SELECT pg_typeof("${field}")::text AS source_type,
+      jsonb_build_object('algorithm',$2::text,'pg_type',pg_typeof("${field}")::text,
+        'value',to_jsonb("${field}"),'pg_text',"${field}"::text)::text AS source_payload
+      FROM public.stories WHERE id=$1`, [storyId, algorithm])).rows[0]
+    return {...row, source_digest:createHash('sha256').update(row.source_payload).digest('hex')}
+  }
+
+  async function observeStory(db, input) {
+    request(input, ['storyId','actorId'])
+    return transaction(db, async () => {
+      const story = await lockSource(db, input.storyId, input.actorId)
+      const plan = planLegacyStoryMedia(story, context)
+      if (!plan.schemaCompatible) throw failure('incompatible_source')
+      const versions = new Map()
+      const observations = []
+      for (const ref of plan.references) {
+        if (!versions.has(ref.sourceField)) versions.set(ref.sourceField, await fieldVersion(db, story.id, ref.sourceField))
+        const version = versions.get(ref.sourceField)
+        const identity = [story.project_id,'stories',story.id,ref.sourceField,ref.sourcePath,algorithm,version.source_digest]
+        const conflict = (await db.query(`SELECT id FROM t02.source_observations
+          WHERE project_id=$1 AND source_table=$2 AND source_row_id=$3 AND source_field=$4 AND source_path=$5
+            AND (digest_algorithm<>$6 OR source_digest<>$7) ORDER BY id DESC LIMIT 1`, identity)).rows[0]
+        const inserted = (await db.query(`INSERT INTO t02.source_observations(
+          project_id,source_table,source_row_id,source_field,source_path,digest_algorithm,source_digest,
+          source_type,source_payload,raw_value,kind,locator_status,bucket,object_key,reason,conflicts_with)
+          VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10::jsonb,$11,$12,$13,$14,$15,$16)
+          ON CONFLICT (project_id,source_table,source_row_id,source_field,source_path,digest_algorithm,source_digest)
+          DO NOTHING RETURNING *`, [...identity,version.source_type,version.source_payload,JSON.stringify(ref.rawValue),
+          ref.kind,ref.locator.status,ref.locator.bucket || null,ref.locator.objectKey || null,ref.locator.reason || null,conflict?.id || null])).rows[0]
+        observations.push(inserted || (await db.query(`SELECT * FROM t02.source_observations WHERE
+          project_id=$1 AND source_table=$2 AND source_row_id=$3 AND source_field=$4 AND source_path=$5
+          AND digest_algorithm=$6 AND source_digest=$7`,identity)).rows[0])
+      }
+      return observations
+    })
+  }
+  return {observeStory, bind: async () => null}
+}
+module.exports = {createLedger}

@@ -3,7 +3,7 @@
 // 避免构建期预渲染导致的环境变量缺失问题
 // 在 Next.js 15 中，我们通过运行时检查来避免 SSG
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -13,7 +13,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClientSupabase } from '@/lib/supabase'
 import { useLocale, useTranslations } from 'next-intl'
-import { locales } from '@/i18n/config'
+import { AUTH_RETURN_ERROR, authLocale, authReturnTarget, hasVerifiedSession, parseSessionReturn, removeLegacyAuthNext } from '@/lib/auth-return'
 
 function SignInPageContent() {
   const [email, setEmail] = useState('')
@@ -25,153 +25,125 @@ function SignInPageContent() {
   const locale = useLocale()
   const t = useTranslations('auth')
 
-  const withLocale = (path: string) => {
-    let normalized = path || '/dashboard'
-    normalized = normalized.startsWith('/') ? normalized : `/${normalized}`
-    const seg = normalized.split('/')[1]
-    if (locales.includes(seg as (typeof locales)[number])) return normalized
-    return `/${locale}${normalized}`
+  const safeLocale = authLocale(locale)
+  const query = searchParams?.toString() || ''
+  const target = authReturnTarget(new URLSearchParams(query), safeLocale)
+  const context = `${safeLocale}:${target}`
+  type Flow = {
+    context: string
+    query: string
+    fragment: string
+    cleaned: string
+    originalLocation: string
+    cleanedLocation: string
+    parsed: ReturnType<typeof parseSessionReturn>
+    pending?: Promise<{ data?: unknown; error?: unknown }>
   }
-
-  // 确保只在客户端执行
-  useEffect(() => {
-    setIsClient(true)
+  const flowRef = useRef<Flow | null>(null)
+  const mounted = useRef(false)
+  const fragment = isClient ? window.location.hash.slice(1) : ''
+  const currentContext = useRef({ context, query, fragment })
+  currentContext.current = { context, query, fragment }
+  const isCurrent = useCallback((flow: Flow | null) => {
+    const latest = currentContext.current
+    const location = window.location.pathname + window.location.search + window.location.hash
+    return !!flow && mounted.current && flowRef.current === flow && latest.context === flow.context
+      && (latest.query === flow.query || latest.query === flow.cleaned)
+      && (!latest.fragment || latest.fragment === flow.fragment)
+      && (location === flow.originalLocation || location === flow.cleanedLocation)
   }, [])
 
-  // 仅在客户端事件中创建 Supabase 实例，避免服务端渲染阶段访问环境变量
-  const getSupabase = () => {
-    if (typeof window === 'undefined') return null
-    // 统一使用单例客户端，避免多个 GoTrueClient 导致的异常
-    return createClientSupabase()
-  }
+  useEffect(() => {
+    mounted.current = true
+    removeLegacyAuthNext()
+    setIsClient(true)
+    return () => { mounted.current = false }
+  }, [])
 
-  // Handle Magic Link tokens from URL
   useEffect(() => {
     if (!isClient) return
-
-    const next = searchParams?.get('next')
-    // 将 next 暂存到 localStorage，防止回调丢失
-    if (next && typeof window !== 'undefined') {
-      try { localStorage.setItem('auth_next', next) } catch {}
-    }
-
-    // Debug: Log full URL information
-    const fullUrl = window.location.href
-    console.log('SignIn page: Full URL:', fullUrl)
-    console.log('SignIn page: Search string:', window.location.search)
-    console.log('SignIn page: next param:', next)
-
-    // Extract tokens using regex from full URL (more reliable than URLSearchParams)
-    const accessTokenMatch = fullUrl.match(/access_token=([^&]+)/)
-    const refreshTokenMatch = fullUrl.match(/refresh_token=([^&]+)/)
-    const tokenTypeMatch = fullUrl.match(/token_type=([^&]+)/)
-    // Use more specific regex to avoid matching token_type instead of type
-    const typeMatch = fullUrl.match(/[?&]type=([^&]+)/)
-
-    const accessToken = accessTokenMatch ? decodeURIComponent(accessTokenMatch[1]) : null
-    const refreshToken = refreshTokenMatch ? decodeURIComponent(refreshTokenMatch[1]) : null
-    const tokenType = tokenTypeMatch ? decodeURIComponent(tokenTypeMatch[1]) : null
-    const type = typeMatch ? decodeURIComponent(typeMatch[1]) : null
-
-    // Also try with traditional methods for comparison
-    const urlParams = new URLSearchParams(window.location.search)
-    const accessTokenFromSearch = searchParams?.get('access_token')
-    const refreshTokenFromSearch = searchParams?.get('refresh_token')
-    const typeFromSearch = searchParams?.get('type')
-
-    console.log('SignIn page: Regex extraction results:', { accessToken: !!accessToken, refreshToken: !!refreshToken, tokenType, type })
-    console.log('SignIn page: URLSearchParams results:', { accessToken: !!urlParams.get('access_token'), refreshToken: !!urlParams.get('refresh_token'), type: urlParams.get('type') })
-    console.log('SignIn page: useSearchParams results:', { accessToken: !!accessTokenFromSearch, refreshToken: !!refreshTokenFromSearch, type: typeFromSearch })
-
-    // Use regex-extracted tokens (most reliable)
-    // Support both Magic Link (type=magiclink) and Google OAuth (no type parameter)
-    if (accessToken && refreshToken) {
-      const authType = type === 'magiclink' ? 'Magic Link' : 'Google OAuth'
-      console.log(`SignIn page: ${authType} tokens found, setting session and redirecting`)
-
-      // Set the session using the tokens
-      const supabase = getSupabase()
-      if (supabase) {
-        supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken
-        }).then(({ data, error }: any) => {
-          if (error) {
-            console.error('SignIn page: Error setting session:', error)
-            setMessage(`Error setting session: ${error.message}`)
-          } else {
-            console.log(`SignIn page: ${authType} session set successfully, redirecting`)
-            let next: string | null = searchParams?.get('next') ?? null
-            if (!next && typeof window !== 'undefined') {
-              try { next = localStorage.getItem('auth_next') || null } catch {}
-            }
-            // 清理暂存
-            try { localStorage.removeItem('auth_next') } catch {}
-            router.push(withLocale(next || '/dashboard'))
-          }
-        })
+    let flow = flowRef.current
+    // Next may publish our replaceState cleanup as new search params. Keep the
+    // same in-memory attempt in that case, including StrictMode's effect replay.
+    if (!flow || flow.context !== context || (query !== flow.query && query !== flow.cleaned)
+      || (fragment !== '' && fragment !== flow.fragment)) {
+      const cleaned = new URLSearchParams({ next: target }).toString()
+      flow = {
+        context, query, fragment, cleaned,
+        originalLocation: window.location.pathname + window.location.search + window.location.hash,
+        cleanedLocation: `/${safeLocale}/auth/signin?${cleaned}`,
+        parsed: parseSessionReturn(new URLSearchParams(query), new URLSearchParams(fragment)),
       }
+      flowRef.current = flow
+      setMessage('')
+      setIsLoading(false)
     }
-  }, [isClient, router, searchParams])
+    const attempt = flow
+    try {
+      window.history.replaceState(window.history.state, '', attempt.cleanedLocation)
+    } catch { /* URL cleanup is best effort, including restricted history APIs. */ }
+    if (attempt.parsed.kind === 'invalid') { setMessage(AUTH_RETURN_ERROR); return }
+    if (attempt.parsed.kind !== 'session') return
+    if (!attempt.pending) {
+      const credentials = attempt.parsed.credentials
+      attempt.pending = Promise.resolve().then(() => createClientSupabase().auth.setSession(credentials))
+    }
+    let active = true
+    const current = () => active && isCurrent(attempt)
+    attempt.pending.then(result => {
+      if (!current()) return
+      if (!result?.error && hasVerifiedSession(result?.data)) router.replace(target)
+      else setMessage(AUTH_RETURN_ERROR)
+    }).catch(() => { if (current()) setMessage(AUTH_RETURN_ERROR) })
+    return () => { active = false }
+  }, [context, fragment, isClient, isCurrent, query, router, safeLocale, target])
 
-  // Check for error from callback
-  useEffect(() => {
-    const error = searchParams?.get('error')
-    if (error) {
-      setMessage(`Error: ${error}`)
-    }
-  }, [searchParams])
+  const providerRedirect = () => `${window.location.origin}/${safeLocale}/auth/callback?${new URLSearchParams({ next: target })}`
 
   const handleGoogleSignIn = async () => {
     if (!isClient) return
+    const flow = flowRef.current
     setIsLoading(true)
+    setMessage('')
     try {
-      const supabase = getSupabase()
-      if (!supabase) throw new Error('Supabase client not available')
-      const next = searchParams?.get('next')
-      if (next) { try { localStorage.setItem('auth_next', next) } catch {} }
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          // 使用运行时当前域名与当前语言，避免丢失 locale
-          redirectTo: `${window.location.origin}/${locale}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
-        }
+      const redirectTo = providerRedirect()
+      const { data, error } = await createClientSupabase().auth.signInWithOAuth({
+        provider: 'google', options: { redirectTo, skipBrowserRedirect: true },
       })
-      if (error) throw error
-    } catch (error) {
-      console.error('Google sign in error:', error)
-      setMessage('Error signing in with Google')
+      if (!isCurrent(flow)) return
+      if (error || !data || typeof data.url !== 'string') throw new Error('Authentication unavailable')
+      const configured = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || '')
+      const provider = new URL(data.url)
+      if (!['https:', 'http:'].includes(configured.protocol) || configured.username || configured.password
+        || provider.origin !== configured.origin || provider.username || provider.password || provider.hash
+        || provider.pathname !== `${configured.pathname.replace(/\/$/, '')}/auth/v1/authorize`
+        || provider.searchParams.getAll('provider').length !== 1 || provider.searchParams.get('provider') !== 'google'
+        || provider.searchParams.getAll('redirect_to').length !== 1 || provider.searchParams.get('redirect_to') !== redirectTo) {
+        throw new Error('Authentication unavailable')
+      }
+      router.replace(provider.toString())
+    } catch {
+      if (isCurrent(flow)) setMessage('Error signing in with Google')
     } finally {
-      setIsLoading(false)
+      if (isCurrent(flow)) setIsLoading(false)
     }
   }
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !isClient) return
-
+    const flow = flowRef.current
     setIsLoading(true)
     setMessage('')
-
     try {
-      const supabase = getSupabase()
-      if (!supabase) throw new Error('Supabase client not available')
-      const next = searchParams?.get('next')
-      if (next) { try { localStorage.setItem('auth_next', next) } catch {} }
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/${locale}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
-        }
+      const { error } = await createClientSupabase().auth.signInWithOtp({
+        email, options: { emailRedirectTo: providerRedirect() },
       })
-
-      if (error) throw error
-
-      setMessage('Check your email for the login link!')
-    } catch (error) {
-      setMessage('Error sending login email')
+      if (isCurrent(flow)) setMessage(error ? 'Error sending login email' : 'Check your email for the login link!')
+    } catch {
+      if (isCurrent(flow)) setMessage('Error sending login email')
     } finally {
-      setIsLoading(false)
+      if (isCurrent(flow)) setIsLoading(false)
     }
   }
 
@@ -265,11 +237,11 @@ function SignInPageContent() {
 
         {/* Footer Links */}
         <div className="text-center text-sm text-muted-foreground space-x-4">
-          <Link href={`/${locale}/terms`} className="hover:text-foreground">
+          <Link href={`/${safeLocale}/terms`} className="hover:text-foreground">
             {t('signin.termsOfService')}
           </Link>
           <span>•</span>
-          <Link href={`/${locale}/privacy`} className="hover:text-foreground">
+          <Link href={`/${safeLocale}/privacy`} className="hover:text-foreground">
             {t('signin.privacyPolicy')}
           </Link>
         </div>

@@ -1,0 +1,38 @@
+{
+  "startedAt": "2026-10-17T05:17:53.985Z",
+  "status": "failed",
+  "scope": "isolated synthetic PostgreSQL RLS replay; no remote access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/rls-rehearsal/README.md": "492b5c80d943c8be4b465cc791a0f8a9c33e3861a34c5aa52f6d50efd5d3efa1",
+    "experiments/rls-rehearsal/fixture.sql": "d70b14d3f789f10fcf3f37c40767b0e877fbb5f6851cf83ef41d01d625e9f550",
+    "experiments/rls-rehearsal/scenarios.mjs": "029af8de89675f3f90d6b4b201b25a911b969e4f4229f9e52074b726d6a83c91",
+    "experiments/rls-rehearsal/verify.mjs": "d1bc5e394db9273b341856db572d1c24aa646b62a828cd56587064e21754c2d8",
+    "experiments/rls-rehearsal/verify-shutdown.mjs": "d888221dcbead3353c433917102b05428dac7f912e05115780f33a566765cd7b",
+    "experiments/rls-rehearsal/candidate.sql": "4fbb8a4449c27b8f19dee2a173fcf8f03c945b5a6949f5e3c9a752e3c496164b"
+  },
+  "observations": [],
+  "scenarios": [],
+  "assertions": 0,
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f",
+    "captureTime": "2026-10-17T02:45:52.407Z"
+  },
+  "scratch": "/tmp/saga-rls-Bf5qlB",
+  "error": {
+    "message": "Injected setup failure after allocation",
+    "code": "TEST_SETUP_FAILURE"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:17:54.014Z"
+}

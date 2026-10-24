@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-18T02:51:02.168114+00:00",
+  "status": "failed",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "prebatchFilesChecked": 1434,
+  "prebatchMissingFiles": [],
+  "prebatchChangedFiles": [
+    "docs/2026-10-10-integrated-upgrade-plan.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/README.md",
+    "docs/superpowers/plans/2026-10-17-upgrade-pg17-routines.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md",
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts"
+  ],
+  "unexpectedPrebatchChanges": [],
+  "applicationInputsChecked": 707,
+  "applicationInputMismatches": [],
+  "manifestPathHashReferencesChecked": 31,
+  "manifestReferenceMismatches": [],
+  "experimentSourcesChecked": 12,
+  "experimentSourceMismatches": [],
+  "relativeLinksChecked": 371,
+  "brokenLinks": [],
+  "gitDiffCheckExit": 0,
+  "newFileWhitespaceFailures": [
+    "docs/HANDOFF-2026-10-13-upgrade.md"
+  ],
+  "nextEnvMatchesPrebatchBytes": true,
+  "documentSha256": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "d244a87451e309d39c14982eaa885c1bff9a9d436afea48ee7257d88e15274ab",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "e192f70aedc1d402a224e7d70da1f17b0fb36497786422c372afe6057ddf7ed7",
+    "docs/README.md": "beeab36b8d4f04bb287ed9d26303539053d1b085d2fc128704a74a083656b83e",
+    "docs/research/2026-10-18-pg17-routines.md": "b69f64624cd22c1045392227613619b0c820cbe9aa86d0735c322a4cba15a662",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "08f8fa7b63d8216f067750fe881bae03eddb8bc767b80e04426772d44178786b",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "44987fd8c1e97424c81c9b865f1902b7219cea601bbb0df816e57d039a8c8a8c",
+    "docs/superpowers/plans/2026-10-17-upgrade-pg17-routines.md": "a68c2581780076a074f6e45533bef11ecd3d0c000e94adc7091a05c2868d6c4c"
+  },
+  "scope": "Local artifact, preservation and evidence integrity; no test rerun or remote operation."
+}

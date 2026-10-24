@@ -1,0 +1,154 @@
+{
+  "startedAt": "2026-10-22T03:28:49.139Z",
+  "status": "passed",
+  "assertions": 18,
+  "scenarios": [],
+  "actorConnections": [],
+  "scope": "Read-only user SQL syntax and selected-result check in synthetic local PG17; no remote access",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 18736,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-KYDFKI/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "source": {
+    "path": "docs/research/2026-10-22-user-readonly-evidence.sql",
+    "sha256": "3d1eb2a5c8073846d47518941943560014500f72c2b9778b3f78088b010841b7"
+  },
+  "scratch": "/tmp/saga-pg17-KYDFKI",
+  "results": [
+    {
+      "block": 1,
+      "columns": [
+        "id",
+        "name",
+        "public",
+        "file_size_limit",
+        "allowed_mime_types",
+        "type",
+        "versioning_status",
+        "lifecycle_configured",
+        "lifecycle_rule_count"
+      ],
+      "rows": [
+        {
+          "id": "audio-recordings",
+          "name": "audio-recordings",
+          "public": false,
+          "file_size_limit": "2048",
+          "allowed_mime_types": [
+            "audio/webm"
+          ],
+          "type": "STANDARD",
+          "versioning_status": "DISABLED",
+          "lifecycle_configured": true,
+          "lifecycle_rule_count": 0
+        },
+        {
+          "id": "saga",
+          "name": "saga",
+          "public": false,
+          "file_size_limit": "1024",
+          "allowed_mime_types": [
+            "image/jpeg"
+          ],
+          "type": "STANDARD",
+          "versioning_status": "DISABLED",
+          "lifecycle_configured": false,
+          "lifecycle_rule_count": null
+        }
+      ]
+    },
+    {
+      "block": 2,
+      "columns": [
+        "schema_name",
+        "typname",
+        "enumsortorder",
+        "enumlabel"
+      ],
+      "rows": [
+        {
+          "schema_name": "storage",
+          "typname": "buckettype",
+          "enumsortorder": 1,
+          "enumlabel": "STANDARD"
+        },
+        {
+          "schema_name": "storage",
+          "typname": "buckettype",
+          "enumsortorder": 2,
+          "enumlabel": "ANALYTICS"
+        },
+        {
+          "schema_name": "storage",
+          "typname": "buckettype",
+          "enumsortorder": 3,
+          "enumlabel": "VECTOR"
+        }
+      ]
+    },
+    {
+      "block": 3,
+      "columns": [
+        "schema_name",
+        "proname",
+        "identity_arguments",
+        "result_type",
+        "language",
+        "security_definer",
+        "owner",
+        "definition_md5"
+      ],
+      "rows": [
+        {
+          "schema_name": "storage",
+          "proname": "foldername",
+          "identity_arguments": "name text",
+          "result_type": "text[]",
+          "language": "sql",
+          "security_definer": false,
+          "owner": "rehearsal_admin",
+          "definition_md5": "6bd9a20d97604c42e66449f271b8d3ce"
+        }
+      ]
+    },
+    {
+      "block": 4,
+      "columns": [
+        "version"
+      ],
+      "rows": [
+        {
+          "version": "20261001000001"
+        }
+      ]
+    }
+  ],
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-22T03:28:50.856Z"
+}

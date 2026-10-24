@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-10-18T02:07:16.802682+00:00",
+  "status": "passed",
+  "source": "project-checks.json",
+  "sourceLogSha256": {
+    "project-checks.json": "e2df9389b07432cb850ffa74bc206c254dbed8766c1e3cebfaefe84cba0c07a4",
+    "verify.txt": "7f3cce2513d9ab1d2036acb1822b5ac6386b100b31a01e762e525d559a5ef567",
+    "shared.txt": "c36314ab3f70ea18fb054e1bca889ddca2516d572a55a4500a3f20dffdb24b5e",
+    "infra.txt": "0d5b01f37e94824ff1406746acf4c44c984cf63c7212ce0d10ade3900c891cee"
+  },
+  "applicationInputCount": 707,
+  "applicationInputMismatches": [],
+  "prebatchMissingFiles": [],
+  "prebatchChangedFilesBeforeHandoffUpdate": [
+    "docs/superpowers/plans/2026-10-17-upgrade-pg17-routines.md",
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts"
+  ],
+  "protectedFilesChecked": 52,
+  "protectedFileMismatches": [],
+  "nextEnvMatchesPrebatchBytes": true,
+  "testsReexecutedOnResume": false,
+  "reason": "Interrupted batch had already completed full project verification; all707 recorded inputs unchanged. Resume changes confined to independent PG17 experiment and docs. No new app change/failure warrants repeating the project suite.",
+  "counts": {
+    "webSuites": 77,
+    "webTests": 766,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "pages": 175
+  },
+  "commands": {
+    "verify": {
+      "argv": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 137.27,
+      "output": "verify.txt",
+      "retryAfter": "Test-only decoder readiness/exit correction; native compiler completed."
+    },
+    "shared": {
+      "argv": [
+        "npm",
+        "test",
+        "--workspace=packages/shared",
+        "--",
+        "--runInBand"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 66.97,
+      "output": "shared.txt"
+    },
+    "infra": {
+      "argv": [
+        "npm",
+        "run",
+        "test:infra"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 3.54,
+      "output": "infra.txt"
+    }
+  }
+}

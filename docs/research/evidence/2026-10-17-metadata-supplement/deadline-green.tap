@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: reads the whole password after the first equals sign and accepts CRLF
+ok 1 - reads the whole password after the first equals sign and accepts CRLF
+  ---
+  duration_ms: 2.395001
+  type: 'test'
+  ...
+# Subtest: rejects duplicate, missing and unexpected keys without reflecting input
+ok 2 - rejects duplicate, missing and unexpected keys without reflecting input
+  ---
+  duration_ms: 0.640428
+  type: 'test'
+  ...
+# Subtest: rejects privileged roles, another project and untrusted host names
+ok 3 - rejects privileged roles, another project and untrusted host names
+  ---
+  duration_ms: 0.358273
+  type: 'test'
+  ...
+# Subtest: connection always verifies TLS and defaults to bounded read-only operations
+ok 4 - connection always verifies TLS and defaults to bounded read-only operations
+  ---
+  duration_ms: 0.364702
+  type: 'test'
+  ...
+# Subtest: error serialization preserves only approved machine codes
+ok 5 - error serialization preserves only approved machine codes
+  ---
+  duration_ms: 0.307228
+  type: 'test'
+  ...
+# Subtest: a denied category is distinct from a successful empty category
+ok 6 - a denied category is distinct from a successful empty category
+  ---
+  duration_ms: 1.907038
+  type: 'test'
+  ...
+# Subtest: failed rollback stops collection instead of pretending later queries are valid
+ok 7 - failed rollback stops collection instead of pretending later queries are valid
+  ---
+  duration_ms: 0.355746
+  type: 'test'
+  ...
+# Subtest: refuses the wrong server role or a writable transaction before metadata reads
+ok 8 - refuses the wrong server role or a writable transaction before metadata reads
+  ---
+  duration_ms: 0.434169
+  type: 'test'
+  ...
+# Subtest: rejects backend timeout settings that differ from the required transaction limits
+ok 9 - rejects backend timeout settings that differ from the required transaction limits
+  ---
+  duration_ms: 0.519435
+  type: 'test'
+  ...
+# Subtest: successful capture closes its read-only snapshot and retains denied bucket status
+ok 10 - successful capture closes its read-only snapshot and retains denied bucket status
+  ---
+  duration_ms: 1.163042
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when connect never settles, even after stream destruction
+ok 11 - CLI saves safe deadline evidence when connect never settles, even after stream destruction
+  ---
+  duration_ms: 16.542992
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when collect never settles, even after stream destruction
+ok 12 - CLI saves safe deadline evidence when collect never settles, even after stream destruction
+  ---
+  duration_ms: 2.567279
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when rollback never settles, even after stream destruction
+ok 13 - CLI saves safe deadline evidence when rollback never settles, even after stream destruction
+  ---
+  duration_ms: 3.403969
+  type: 'test'
+  ...
+# Subtest: CLI saves safe deadline evidence when close never settles, even after stream destruction
+ok 14 - CLI saves safe deadline evidence when close never settles, even after stream destruction
+  ---
+  duration_ms: 4.938789
+  type: 'test'
+  ...
+# Subtest: CLI records close rejection and attempts forced cleanup before saving evidence
+ok 15 - CLI records close rejection and attempts forced cleanup before saving evidence
+  ---
+  duration_ms: 2.738553
+  type: 'test'
+  ...
+# Subtest: CLI still saves deadline evidence if forced cleanup throws
+ok 16 - CLI still saves deadline evidence if forced cleanup throws
+  ---
+  duration_ms: 4.64564
+  type: 'test'
+  ...
+# Subtest: CLI verifies TLS, completes normal cleanup, and saves exclusive success evidence
+ok 17 - CLI verifies TLS, completes normal cleanup, and saves exclusive success evidence
+  ---
+  duration_ms: 3.10932
+  type: 'test'
+  ...
+# Subtest: CLI never begins a metadata transaction when TLS is unauthorized
+ok 18 - CLI never begins a metadata transaction when TLS is unauthorized
+  ---
+  duration_ms: 3.557307
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 240.414017

@@ -1,0 +1,286 @@
+{
+  "startedAt": "2026-10-16T12:29:42.808Z",
+  "scope": "isolated PostgreSQL + pg-boss + real local fictional audio + existing T04 streaming merge and FFmpeg decoder",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3",
+    "ffmpeg": "ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffmpegSha256": "4a4a968b98859588e98500ae25973d80a5ca5eed0724222b9f76360dcb72a001"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "390893bd89d2e5694ad00c3ed96a5993a1316ddbccff7eae3537eb78364d5865",
+    "experiments/t05-durable-worker/worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "experiments/t05-durable-worker/verify.mjs": "f48110f0252de7c5b329dd5bc11d4e9db55e286340723ff7b5b834517605f5e3",
+    "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+    "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+    "experiments/t05-durable-worker/README.md": "537d552f68ebce901d30bdd859f96cd675c57d154ba6034bed312bc81acd84fa",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "084c2ef032453922551f8ab685c22968d3f63283a2c7aefb209c99c3467e2010",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "86a215108becb849b2e0889924d41a2b2f3828489a0850c295c7eb6150b40998",
+    "experiments/t05-durable-worker/merge-failure-scenarios.mjs": "40d31f33fdb80b6cd861a6794d19e223f317439beae20edf35689de3aff81642",
+    "experiments/t05-durable-worker/verify-merge-cleanup.mjs": "c1e7b997ea4ecd0ecb8bb6cd453662417b52a03265e0db5eb9880cc6e0cebca5",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "133ea2a252afaf06d0d9512899a056d45bc23c0bb18418edeff3389e33e5fa5d",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "681de1522dbc45b1073680762a61baafca4e38a3e7bcdc325a1f76973363df9a",
+    "packages/web/src/lib/server/recording-processing-error.ts": "2783e7e171979bc7a1a10b751c3dc83195265e435d69e627225463fca46e26e3"
+  },
+  "scenarios": [
+    {
+      "name": "permanent missing",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 48
+    },
+    {
+      "name": "permanent size",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 46
+    },
+    {
+      "name": "permanent hash",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 26
+    },
+    {
+      "name": "permanent symlink",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 34
+    },
+    {
+      "name": "permanent fifo",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 26
+    },
+    {
+      "name": "permanent public",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 17
+    },
+    {
+      "name": "permanent hardlink",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 17
+    },
+    {
+      "name": "permanent decode",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 46
+    },
+    {
+      "name": "permanent duration",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 91
+    },
+    {
+      "name": "transient timeout repair and backoff across reopen",
+      "status": "passed",
+      "assertions": 18,
+      "elapsedMs": 1172
+    },
+    {
+      "name": "transient timeout exhausts original budget",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 1194
+    },
+    {
+      "name": "conservative generic",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 19
+    },
+    {
+      "name": "conservative forged-code",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 16
+    },
+    {
+      "name": "conservative stop",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 19
+    },
+    {
+      "name": "conservative typed-stop",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 15
+    },
+    {
+      "name": "atomic rollback attempt-write",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 92
+    },
+    {
+      "name": "atomic rollback enqueue",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 93
+    },
+    {
+      "name": "atomic rollback ack",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 94
+    },
+    {
+      "name": "atomic rollback final-abort",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 99
+    },
+    {
+      "name": "failure guard cancel",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 107
+    },
+    {
+      "name": "failure guard revoke",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 94
+    },
+    {
+      "name": "failure guard delete",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 93
+    },
+    {
+      "name": "failure guard input",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 101
+    },
+    {
+      "name": "failure guard queue-attempt",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 100
+    },
+    {
+      "name": "failure guard attempt-binding",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 97
+    },
+    {
+      "name": "failure lease expires at job-lock",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 5210
+    },
+    {
+      "name": "failure lease expires at queue-lock",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 5203
+    },
+    {
+      "name": "failure lease expires at before-commit",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 5203
+    },
+    {
+      "name": "source OS EAGAIN",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 24
+    },
+    {
+      "name": "source OS EINTR",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 22
+    },
+    {
+      "name": "source OS EBUSY",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 19
+    },
+    {
+      "name": "source OS ETIMEDOUT",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 19
+    },
+    {
+      "name": "source OS EMFILE",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 14
+    },
+    {
+      "name": "source OS EIO",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 13
+    },
+    {
+      "name": "cleanup failure stays unknown temporary-cleanup",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 93
+    },
+    {
+      "name": "cleanup failure stays unknown source-close",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 101
+    }
+  ],
+  "assertions": 302,
+  "limitations": [
+    "Private temporary PostgreSQL tables and an allowed flag simulate authorization; no production schema, RLS, Storage, outbox, migration or paid provider.",
+    "No filesystem/database distributed transaction. Prepared outputs may remain private orphans after process death or unknown COMMIT; no automatic GC or manual reuse.",
+    "Private directories, regular files, bounded streams and O_NOFOLLOW protect local paths; same-user hostile directory replacement races and non-preemptible kernel filesystem operations are outside this PoC.",
+    "Generated sine audio is split into contiguous file chunks; this is not physical-device MediaRecorder or production media sandbox evidence.",
+    "Checkpoint pauses are fault wrappers, not decoder CPU work. Real-time input throttling (-re) is explicitly labeled where used with real FFmpeg.",
+    "The existing local nonfree FFmpeg 7.1 executable is used for tests only and is not copied or redistributed."
+  ],
+  "resourceOwnership": {
+    "version": 1,
+    "harnessPid": 69236,
+    "scratch": "/tmp/saga-t05-hi6RUP",
+    "clusterMayHaveStarted": true,
+    "clusterStopped": true,
+    "postmasterPid": 69317,
+    "groupIds": [],
+    "decoderPids": []
+  },
+  "status": "passed",
+  "processOwnership": {
+    "supervisorPids": [],
+    "workerPids": [],
+    "runnerPids": [],
+    "groupIds": [],
+    "forcedGroupKills": [],
+    "remainingGroups": [],
+    "remainingRunnerPids": [],
+    "directOperationsRemaining": 0
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T12:30:05.417Z"
+}

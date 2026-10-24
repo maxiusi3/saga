@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-16T12:20:07.155419+00:00",
+  "environmentKeyPresence": {
+    "SUPABASE_SERVICE_ROLE_KEY": false,
+    "SUPABASE_ACCESS_TOKEN": false,
+    "SUPABASE_DB_PASSWORD": false,
+    "DATABASE_URL": false
+  },
+  "existingFiles": [
+    {
+      "path": "packages/web/.env.local",
+      "configuredKeyPresence": {}
+    }
+  ],
+  "scope": "Presence only for the four previously missing keys in environment and explicitly named repository env files; no values emitted or saved. No keychain, unrelated files or remote SQL inspected.",
+  "schemaHistoryRls": "unverified",
+  "remoteSQLExecuted": false,
+  "priorDeniedCliPathRetried": false,
+  "limitation": "Absence in this bounded scan does not prove absence of all possible read-only access mechanisms."
+}

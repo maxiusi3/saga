@@ -1,0 +1,177 @@
+TAP version 13
+# Subtest: a failed local start with no live server removes owned scratch without issuing stop
+not ok 1 - a failed local start with no live server removes owned scratch without issuing stop
+  ---
+  duration_ms: 43.456949
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:64:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'initdb',
+        'start',
+    +   'stop',
+        'status'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'initdb'
+    1: 'start'
+    2: 'status'
+  actual:
+    0: 'initdb'
+    1: 'start'
+    2: 'stop'
+    3: 'status'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:66:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: a failed or timed-out start that left a live server stops it and confirms stopped before removal
+not ok 2 - a failed or timed-out start that left a live server stops it and confirms stopped before removal
+  ---
+  duration_ms: 4.097696
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:72:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'initdb',
+        'start',
+    -   'status',
+        'stop',
+        'status'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'initdb'
+    1: 'start'
+    2: 'status'
+    3: 'stop'
+    4: 'status'
+  actual:
+    0: 'initdb'
+    1: 'start'
+    2: 'stop'
+    3: 'status'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:74:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: local cleanup preserves scratch and removes both listeners on unknown pre-stop status
+not ok 3 - local cleanup preserves scratch and removes both listeners on unknown pre-stop status
+  ---
+  duration_ms: 15.036608
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:85:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:88:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: local cleanup preserves scratch and removes both listeners on failed stop
+not ok 4 - local cleanup preserves scratch and removes both listeners on failed stop
+  ---
+  duration_ms: 2.852727
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:85:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:88:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: local cleanup preserves scratch and removes both listeners on still-running post-stop status
+not ok 5 - local cleanup preserves scratch and removes both listeners on still-running post-stop status
+  ---
+  duration_ms: 3.024174
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:85:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:88:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a signal during a failed startup still removes both listeners when cleanup cannot prove a stop
+not ok 6 - a signal during a failed startup still removes both listeners when cleanup cannot prove a stop
+  ---
+  duration_ms: 3.126449
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:93:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs:96:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: initdb failure removes owned scratch without attempting server lifecycle commands
+ok 7 - initdb failure removes owned scratch without attempting server lifecycle commands
+  ---
+  duration_ms: 3.817215
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 1
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 285.153462

@@ -1,0 +1,48 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/legacy-media-reference.test.ts
+
+watchman warning: Recrawled this watch 9 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/eat/Documents/eatpotato/saga传奇' ; watchman watch-project '/Users/eat/Documents/eatpotato/saga传奇'`
+
+FAIL src/lib/__tests__/legacy-media-reference.test.ts
+  ● legacy media reference mapping › accepts an exact root key in a verified full URL without guessing a raw basename
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 2
+
+      Object {
+    -   "bucket": "saga",
+    -   "objectKey": "root.jpg",
+    -   "status": "mapped",
+    +   "reason": "ambiguous object path",
+    +   "status": "ambiguous",
+      }
+
+      68 |     expect(resolveLegacyMediaReference({ ...base, verifiedStorageHost: 'fixture.supabase.co',
+      69 |       legacyValue: 'https://fixture.supabase.co/storage/v1/object/public/saga/root.jpg',
+    > 70 |     })).toEqual({ status: 'mapped', bucket: 'saga', objectKey: 'root.jpg' })
+         |         ^
+      71 |   })
+      72 | })
+      73 |
+
+      at Object.toEqual (src/lib/__tests__/legacy-media-reference.test.ts:70:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 23 passed, 24 total
+Snapshots:   0 total
+Time:        2.052 s
+Ran all test suites within paths "src/lib/__tests__/legacy-media-reference.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/legacy-media-reference.test.ts

@@ -1,0 +1,63 @@
+{
+  "startedAt": "2026-10-16T03:07:43.373Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "68cc9934994d07f16b082a921b103933574b48cbdcb22659853583ac176385ba",
+    "experiments/t05-durable-worker/worker.mjs": "87bf8f280aae7b34c588411d2284b1b4fdf78d27d74bbedae41494fe864b915b",
+    "experiments/t05-durable-worker/verify.mjs": "7554515781c88045446c54eb7d510491963e15aafb12fa0f731d757a364cde4b",
+    "experiments/t05-durable-worker/runner.mjs": "7ffe3c3e618dbc3b175d7d1b6cb720ab1884dd2770edd2744266f7a6d7adc6e7",
+    "experiments/t05-durable-worker/supervisor.mjs": "c7f2069c0c132c2e11e5b860ef6be4643398ce1b532d18bdde2a186fb5dcf11f",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "b60b6c1fb2f950544ecfdbf65c0b27d28a53b6a6074572c608ecb43988b01a13",
+    "experiments/t05-durable-worker/README.md": "6f483a115463eafd15b1fe5b7243fff2060a34555e3bf8582112edf6a9379655",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [
+    {
+      "name": "maintenance lock cannot hang supervisor shutdown",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 4844,
+      "shutdownMs": 3516,
+      "cause": "automatic pg-boss maintenance waiting for expired queue row",
+      "forcedExitCode": 1
+    }
+  ],
+  "assertions": 6,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "Local asynchronous synthetic tasks and process supervision only; no real audio, provider cancellation/billing, production hosting, real-device recording, backup restore, or load qualification."
+  ],
+  "blockedShutdown": {
+    "waitedForActualMaintenanceLock": true,
+    "elapsedMs": 3503,
+    "supervisorStillAlive": false,
+    "remainingMaintenanceBackends": []
+  },
+  "status": "passed",
+  "processOwnership": {
+    "supervisorPids": [
+      30719
+    ],
+    "runnerPids": [
+      30721
+    ],
+    "remainingGroups": [],
+    "remainingRunnerPids": []
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T03:07:49.782Z"
+}

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { initializeAuth } from '@/stores/auth-store'
+import { removeLegacyAuthNext } from '@/lib/auth-return'
 
 interface AuthProviderProps {
   children: React.ReactNode
@@ -9,6 +10,7 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
+    removeLegacyAuthNext()
     initializeAuth()
   }, [])
 

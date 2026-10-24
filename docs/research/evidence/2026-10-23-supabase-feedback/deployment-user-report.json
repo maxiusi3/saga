@@ -1,0 +1,137 @@
+{
+  "provenance": {
+    "source": "User supplied Vercel environment listing and Supabase configuration status in current chat",
+    "receivedDate": "2026-10-23",
+    "timezone": "Asia/Taipei",
+    "checkedByAssistantInDashboard": false,
+    "secretValuesReceived": false,
+    "listedVariableCompletenessVerified": false
+  },
+  "isolatedSupabaseTestProject": {
+    "exists": false,
+    "source": "user report"
+  },
+  "deployment": {
+    "domain": "maxiusi.dpdns.org",
+    "commitReported": "1caa21a",
+    "dateReported": "10月7日",
+    "deploymentId": null,
+    "status": null,
+    "domainBindingIndependentlyVerified": false
+  },
+  "variables": [
+    {
+      "name": "ADMIN_CRON_SECRET",
+      "reportedPresent": true,
+      "scope": "Production",
+      "needsAttentionLabelReported": true,
+      "dateAction": "Added",
+      "displayedDate": "Jun 24",
+      "value": null,
+      "valueRead": false
+    },
+    {
+      "name": "SUPABASE_SERVICE_ROLE_KEY",
+      "reportedPresent": true,
+      "scope": "All Environments",
+      "needsAttentionLabelReported": true,
+      "dateAction": "Updated",
+      "displayedDate": "Jun 24",
+      "value": null,
+      "valueRead": false
+    },
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "reportedPresent": true,
+      "scope": "All Environments",
+      "needsAttentionLabelReported": false,
+      "dateAction": "Updated",
+      "displayedDate": "Jun 24",
+      "value": null,
+      "valueRead": false
+    },
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_URL",
+      "reportedPresent": true,
+      "scope": "All Environments",
+      "needsAttentionLabelReported": false,
+      "dateAction": "Updated",
+      "displayedDate": "Jun 24",
+      "value": null,
+      "valueRead": false
+    },
+    {
+      "name": "SILICONFLOW_API_KEY",
+      "reportedPresent": true,
+      "scope": "All Environments",
+      "needsAttentionLabelReported": true,
+      "dateAction": "Updated",
+      "displayedDate": "11/7/25",
+      "value": null,
+      "valueRead": false
+    },
+    {
+      "name": "OPENROUTER_API_KEY",
+      "reportedPresent": true,
+      "scope": "All Environments",
+      "needsAttentionLabelReported": true,
+      "dateAction": "Updated",
+      "displayedDate": "11/7/25",
+      "value": null,
+      "valueRead": false
+    },
+    {
+      "name": "NEXT_PUBLIC_APP_URL",
+      "reportedPresent": true,
+      "scope": "All Environments",
+      "needsAttentionLabelReported": false,
+      "dateAction": "Updated",
+      "displayedDate": "11/7/25",
+      "value": null,
+      "valueRead": false
+    },
+    {
+      "name": "NEXT_PUBLIC_GOOGLE_CLIENT_ID",
+      "reportedPresent": true,
+      "scope": "All Environments",
+      "needsAttentionLabelReported": false,
+      "dateAction": "Added",
+      "displayedDate": "8/15/25",
+      "value": null,
+      "valueRead": false
+    },
+    {
+      "name": "NODE_ENV",
+      "reportedPresent": true,
+      "scope": "All Environments",
+      "needsAttentionLabelReported": false,
+      "dateAction": "Added",
+      "displayedDate": "8/14/25",
+      "value": null,
+      "valueRead": false
+    }
+  ],
+  "attentionDetails": null,
+  "auth": {
+    "google": {
+      "enabled": true,
+      "configurationCompleteReported": true,
+      "loginRoundTripVerified": false
+    },
+    "smtp": {
+      "enabled": true,
+      "configurationCompleteReported": true,
+      "deliveryVerified": false
+    },
+    "siteUrl": null,
+    "redirectUrls": null
+  },
+  "applicationUrlValue": null,
+  "restoreTestBudget": null,
+  "notes": [
+    "Masked presence does not prove a key is valid or funded.",
+    "Needs Attention meaning is unknown until its detail is supplied.",
+    "All Environments does not prove Preview uses a separate Supabase project; branch-specific overrides were not reported.",
+    "Displayed variable dates are preserved verbatim; ambiguous dates are not normalized."
+  ]
+}

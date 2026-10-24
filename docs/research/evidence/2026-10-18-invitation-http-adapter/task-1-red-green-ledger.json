@@ -1,0 +1,132 @@
+{
+  "executor": "Task 1 implementation subagent",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "oldSources": [
+    {
+      "path": "packages/web/src/app/api/invitations/accept/route.ts",
+      "sha256": "270b28c7850ac197ccb93c328d351cdb3cad51221228de94977c3ce00c3b1983"
+    },
+    {
+      "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+      "sha256": "a285dc8b4dd3fa48099772b644e4a60417a514fae1f8ba68a95e3184e9247489"
+    }
+  ],
+  "entries": [
+    {
+      "phase": "old-handler-red",
+      "classification": "business RED: original two routes each returned 401 and called the external Cookie authentication boundary once, contrary to disabled 503/zero-call contract.",
+      "rawSha256": "b9cde87ab0725c360e62cd3ea44b379cf052048f539d04cf56f446079501db54",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       2 failed, 2 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "protocol-red",
+      "classification": "test-first protocol stubs: eight positive contract assertions fail; rejection assertions remain fail-closed. Not the old-handler business RED.",
+      "rawSha256": "f0638a9b34d324d040ceb25f2416a6cbb14955cb41ac98fe12f51e11e03e58e7",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       8 failed, 69 passed, 77 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "handler-red",
+      "classification": "test-first enabled flow: selected auth, acceptance, and read-only status cases fail against disabled-only adapter.",
+      "rawSha256": "8cc69f1628f8c78acdffa9dca46f04b59da6a2731778b015a070743a4b1e57eb",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       20 failed, 65 skipped, 85 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "handler-first-run",
+      "classification": "implementation behavior passed, but 53 teardown assertions detected socket-close events were not awaited correctly by fixture cleanup. Test-fixture defect, not business RED.",
+      "rawSha256": "fbc587f4746df8c45f98f83d1633809da5364861c95ecce0540cd976cc3f451a",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       53 failed, 32 passed, 85 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "handler-cleanup-run",
+      "classification": "85 handler tests pass after awaiting actual close events for all fixture connections.",
+      "rawSha256": "b37d02014ea146da9afc5ffdc4c6ad0eb2303f6bde9cc70894ae7df942bcb8f7",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 1 passed, 1 total",
+        "Tests:       85 passed, 85 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "client-red",
+      "classification": "28 test-first client/facade assertions fail against HTTP helper stubs and original legacy-RPC facade.",
+      "rawSha256": "f8e5fb10c3ec7dd80b1a2f66e954da3096b76c39783079471d1ba6ff72784b08",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 1 failed, 1 total",
+        "Tests:       28 failed, 28 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "boundary-refinement-red",
+      "classification": "two additional boundary cases fail before safe session-promise rejection and explicit provider bad_jwt classification.",
+      "rawSha256": "1eb0fd05b26e3b970eb9dd9ceb22c082d1e49a26114e22f3e753aa5bf1e5e71f",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 2 failed, 2 total",
+        "Tests:       2 failed, 115 skipped, 117 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "targeted-pre-final",
+      "classification": "193/194 combined assertions pass. The synthetic modern Auth error omitted X-Supabase-Api-Version, preventing SDK error.code exposure. Preserved fixture-contract failure, not business RED.",
+      "rawSha256": "17ea5fcf8909e903ff6b025324b56643efe9126c3bde2cbeecdd0415261130f4",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 1 failed, 2 passed, 3 total",
+        "Tests:       1 failed, 193 passed, 194 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "targeted-final",
+      "classification": "final combined 194-case validation after fixture API-version correction, with open-handle detection.",
+      "rawSha256": "5a4fefcb41fae2074fd3151309ae064398ef95d4ef4458ac8b37e8e8a734b41a",
+      "rawMode": "600",
+      "summary": [
+        "Test Suites: 3 passed, 3 total",
+        "Tests:       194 passed, 194 total"
+      ],
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "type-check-final",
+      "classification": "final scoped implementation TypeScript check.",
+      "rawSha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+      "rawMode": "600",
+      "summary": null,
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    },
+    {
+      "phase": "lint-final",
+      "classification": "final lint on all 11 owned application/test files.",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawMode": "600",
+      "summary": null,
+      "rawStorage": "ignored workspace; credential-bearing raw output is not published"
+    }
+  ],
+  "limits": "Only the original-route RED substitutes Cookie Auth helper at the external boundary. Enabled handler validation uses actual SDK and actual HTTP with synthetic local provider data; never production JWT/PostgREST/PG17 evidence."
+}

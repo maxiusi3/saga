@@ -1,0 +1,116 @@
+{
+  "startedAt": "2026-10-23T01:55:43.572Z",
+  "status": "passed",
+  "sourceSha256": "6cc7dbb3925fc4839436668fefbf7b0ec0bf0493af394b06a66816e43744e84f",
+  "cases": [
+    {
+      "name": "hostile_environment",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started"
+      ],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-55-43.990Z-181387d1-b9f1-4215-a264-7cf814f504b3.json",
+      "sha256": "29d4a24af3f162812eda2dd9f9954b0b36ea12849d92c62c61461a521101c62f",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "postmasterAbsent": true,
+      "stdoutSafe": true,
+      "scrubbedKeys": [
+        "DATABASE_URL",
+        "PGDATABASE",
+        "PGHOST",
+        "PGHOSTADDR",
+        "PGOPTIONS",
+        "PGPASSFILE",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGSERVICE",
+        "PGSERVICEFILE",
+        "PGSSLMODE",
+        "PGSSLROOTCERT",
+        "PGSYSCONFDIR",
+        "PGUSER"
+      ]
+    },
+    {
+      "name": "actual_SIGTERM_after_fixture",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started",
+        "fixture-ready",
+        "shutdown-requested"
+      ],
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-55-50.036Z-45ea319e-90c7-4c81-93f7-5ba612cfd8ec.json",
+      "sha256": "abd59b04119f53ea0320a1455d558019032e6e574cc12a7bb48f47503f218e80",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "postmasterAbsent": true,
+      "stdoutSafe": true
+    },
+    {
+      "name": "failed_actual_start",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation"
+      ],
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-55-52.545Z-a4e76bb5-92a2-4079-aa42-8b794cb48af4.json",
+      "sha256": "d5bd2320e6640af33e7d8bd2adfe2cd28376b435d025cb1c7cc316930153c95f",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "stdoutSafe": true
+    },
+    {
+      "name": "failed_actual_connection",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "server-started"
+      ],
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-55-54.627Z-0c60d3a1-b737-4e86-9dfb-1539046ad4f8.json",
+      "sha256": "8545e5669ef39ac9bcb54579d2ad86537cb490f570cb6e1b68c31ec071c14b5b",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "postmasterAbsent": true,
+      "stdoutSafe": true
+    }
+  ],
+  "finishedAt": "2026-10-23T01:55:56.612Z"
+}

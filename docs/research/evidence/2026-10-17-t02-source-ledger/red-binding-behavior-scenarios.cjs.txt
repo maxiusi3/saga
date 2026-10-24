@@ -1,0 +1,57 @@
+const { createLedger } = require('./ledger.cjs')
+const { randomUUID } = require('node:crypto')
+
+const ids = {
+  user: '30000000-0000-4000-8000-000000000001',
+  other: '30000000-0000-4000-8000-000000000002',
+  facilitator: '30000000-0000-4000-8000-000000000003',
+  project: '20000000-0000-4000-8000-000000000001',
+  otherProject: '20000000-0000-4000-8000-000000000002',
+  story: '10000000-0000-4000-8000-000000000001',
+  otherStory: '10000000-0000-4000-8000-000000000002',
+}
+async function verifiedAsset(db, observation, override={}) {
+  const asset = {id:randomUUID(),project_id:observation.project_id,story_id:observation.source_row_id,
+    created_by:ids.user,kind:observation.kind,bucket:observation.bucket,object_key:observation.object_key,
+    version:1,object_version:'fixture-object-v1',byte_size:'120',sha256:'a'.repeat(64),state:'ready',...override}
+  await db.query(`INSERT INTO t02.fixture_assets(id,project_id,story_id,created_by,kind,bucket,object_key,
+    version,object_version,byte_size,sha256,state)
+    VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
+  ['id','project_id','story_id','created_by','kind','bucket','object_key','version','object_version','byte_size','sha256','state'].map(k=>asset[k]))
+  const verificationId=randomUUID()
+  await db.query(`INSERT INTO t02.fixture_verifications(id,asset_id,project_id,story_id,kind,bucket,object_key,
+    asset_version,object_version,byte_size,sha256,evidence_kind)
+    SELECT $2,id,project_id,story_id,kind,bucket,object_key,version,object_version,byte_size,sha256,
+      'synthetic_fixture_only' FROM t02.fixture_assets WHERE id=$1`, [asset.id,verificationId])
+  return {...asset,verificationId}
+}
+async function seed(db) {
+  await db.query('INSERT INTO auth.users VALUES ($1),($2),($3)', [ids.user,ids.other,ids.facilitator])
+  await db.query('INSERT INTO projects(id,facilitator_id) VALUES ($1,$3),($2,$4)', [ids.project,ids.otherProject,ids.facilitator,ids.other])
+  await db.query(`INSERT INTO project_roles VALUES
+    ('40000000-0000-4000-8000-000000000001',$1,$2,'storyteller','active'),
+    ('40000000-0000-4000-8000-000000000002',$3,$4,'storyteller','active')`,
+  [ids.project,ids.user,ids.otherProject,ids.other])
+  await db.query(`INSERT INTO stories(id,project_id,storyteller_id,title,audio_url,photo_urls,images)
+    VALUES ($1,$2,$3,'Synthetic only','stories/voice.webm',ARRAY['alice/images/same.jpg','bob/images/same.jpg',NULL],
+      ARRAY['{"url":"alice/images/a.jpg","thumbUrl":"alice/images/t.jpg"}'::jsonb,'null'::jsonb,
+        '"alice/images/same.jpg"'::jsonb,'4'::jsonb])`, [ids.story,ids.project,ids.user])
+  await db.query(`INSERT INTO stories(id,project_id,storyteller_id,title,photo_url)
+    VALUES ($1,$2,$3,'Other synthetic family','alice/images/a.jpg')`, [ids.otherStory,ids.otherProject,ids.other])
+}
+async function run({db,planLegacyStoryMedia,check}) {
+  const ledger = createLedger({ planLegacyStoryMedia })
+  const request = {storyId:ids.story,actorId:ids.user}
+  const observations = await ledger.observeStory(db, request)
+  check('real PostgreSQL source produces all nine positional observations', observations.length, 9)
+  const repeated = await ledger.observeStory(db, request)
+  check('duplicate source versions return their original durable observations', repeated.map(r=>r.id), observations.map(r=>r.id))
+  check('database has exactly nine observations after duplicate collection',
+    (await db.query('SELECT count(*)::int AS n FROM t02.source_observations')).rows[0].n, 9)
+  const photo=observations.find(o=>o.source_path==='/images/0/url')
+  const asset=await verifiedAsset(db,photo)
+  const binding=await ledger.bind(db,{observationId:photo.id,verificationId:asset.verificationId,actorId:ids.user})
+  check('verified exact fixture asset atomically creates a durable binding',Boolean(binding?.id),true)
+  check('binding was truly committed',(await db.query('SELECT count(*)::int AS n FROM t02.source_bindings')).rows[0].n,1)
+}
+module.exports = { seed, run, ids }

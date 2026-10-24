@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react'
 
 const mockSupabaseAuth = {
   getSession: jest.fn(),
+  getUser: jest.fn(),
   onAuthStateChange: jest.fn(),
   signInWithPassword: jest.fn(),
   signUp: jest.fn(),
@@ -15,6 +16,8 @@ jest.mock('@/lib/supabase', () => ({
   })),
 }))
 
+const sessionFor = (user: any) => ({ user, access_token: 'access-token', refresh_token: 'refresh-token', token_type: 'bearer', expires_in: 3600, expires_at: Date.now() / 1000 + 3600 })
+const safeError = 'Error: Authentication could not be confirmed. Please sign in again.'
 const { useAuthStore } = require('../auth-store')
 
 describe('AuthStore', () => {
@@ -27,14 +30,15 @@ describe('AuthStore', () => {
     })
 
     jest.clearAllMocks()
+    mockSupabaseAuth.getUser.mockResolvedValue({ data: { user: { id: '11111111-1111-4111-8111-111111111111', email: 'test@example.com' } }, error: null })
   })
 
   describe('signin', () => {
     it('should sign in successfully', async () => {
-      const mockUser = { id: '1', email: 'test@example.com' }
+      const mockUser = { id: '11111111-1111-4111-8111-111111111111', email: 'test@example.com' }
 
       mockSupabaseAuth.signInWithPassword.mockResolvedValue({
-        data: { user: mockUser },
+        data: { user: mockUser, session: sessionFor(mockUser) },
         error: null,
       })
 
@@ -63,24 +67,22 @@ describe('AuthStore', () => {
       const { result } = renderHook(() => useAuthStore())
 
       await act(async () => {
-        await expect(result.current.signin('test@example.com', 'wrong-password')).rejects.toEqual({
-          message: 'Invalid credentials',
-        })
+        await expect(result.current.signin('test@example.com', 'wrong-password')).rejects.toThrow(safeError)
       })
 
       expect(result.current.user).toBeNull()
       expect(result.current.isAuthenticated).toBe(false)
       expect(result.current.isLoading).toBe(false)
-      expect(result.current.error).toBe('Invalid credentials')
+      expect(result.current.error).toBe(safeError)
     })
   })
 
   describe('signup', () => {
     it('should sign up successfully', async () => {
-      const mockUser = { id: '1', email: 'test@example.com' }
+      const mockUser = { id: '11111111-1111-4111-8111-111111111111', email: 'test@example.com' }
 
       mockSupabaseAuth.signUp.mockResolvedValue({
-        data: { user: mockUser, session: { access_token: 'access-token' } },
+        data: { user: mockUser, session: sessionFor(mockUser) },
         error: null,
       })
 
@@ -113,7 +115,7 @@ describe('AuthStore', () => {
   describe('signout', () => {
     it('should sign out successfully', async () => {
       useAuthStore.setState({
-        user: { id: '1', email: 'test@example.com' },
+        user: { id: '11111111-1111-4111-8111-111111111111', email: 'test@example.com' },
         isAuthenticated: true,
       })
 
@@ -174,15 +176,13 @@ describe('AuthStore', () => {
       const { result } = renderHook(() => useAuthStore())
 
       await act(async () => {
-        await expect(result.current.googleSignIn()).rejects.toEqual({
-          message: 'Invalid Google token',
-        })
+        await expect(result.current.googleSignIn()).rejects.toThrow(safeError)
       })
 
       expect(result.current.user).toBeNull()
       expect(result.current.isAuthenticated).toBe(false)
       expect(result.current.isLoading).toBe(false)
-      expect(result.current.error).toBe('Invalid Google token')
+      expect(result.current.error).toBe(safeError)
     })
   })
 

@@ -1,0 +1,226 @@
+{
+  "startedAt": "2026-10-17T16:34:43.202Z",
+  "status": "failed",
+  "mode": "candidate",
+  "scope": "Exact audited12 RPCs plus trigger; synthetic local PG17.4; no remote calls",
+  "sources": {
+    "experiments/pg17-routines/candidate.sql": "23c158ed3dc530c9c8b35cfab8639903589bfaf74099acf2cf18b8bfe1050379",
+    "experiments/pg17-routines/concurrency.mjs": "ae4e12e5cfd2f63aa79f1bf980a82aafcc88e4ef3baf0eecbdb9df9c2ab0fd4e",
+    "experiments/pg17-routines/fixture.sql": "f09cb35321cf38593eb173474f69c5b381e4d3a303f285ab42eaa6538f6ca6eb",
+    "experiments/pg17-routines/replay.mjs": "c937c2c82eb77231a73adf1ac4fb07ea3662585526b50b903c9cc330fac33f55",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/scenarios.mjs": "9af290ef5e2796cdb62b527fbfeff160c10199ffebfd627500a973ec2adfd481",
+    "experiments/pg17-routines/schema-manifest.json": "0c8c1f5a60ce8b3db3c0c2fdb9a9cef92ce421ddf75daad78535b8475ba9fae6",
+    "experiments/pg17-routines/setup-fixture.cjs": "98c9ebe07de651ef381d96a198a090594b63fbac963a78f77ea1f535cd47499f",
+    "experiments/pg17-routines/verify-lifecycle.mjs": "b6324559913a85df8e2ad17b2c791d65825e9dd611bb842277699994b099d6b0",
+    "experiments/pg17-routines/verify.mjs": "2274a631a54b139670666753069612246215d65928cd8176f4ef40dba4349c8d"
+  },
+  "assertions": 102,
+  "actorConnections": [],
+  "scenarios": [],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true
+  },
+  "capture": [
+    {
+      "publicPath": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+      "publicSha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+      "privateSha256": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+      "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+    },
+    {
+      "publicPath": "docs/research/evidence/2026-10-17-pg17-routines/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json",
+      "publicSha256": "e876b1f1ed636b57ac110ae515b6158373bc981fcb3bd2c2398c7561eb61275e",
+      "privateSha256": "45ec35ec3f9bf45741705d9fd2c7ce09953683e342dbe313fe7e482cb20067e5",
+      "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+    }
+  ],
+  "schema": {
+    "counts": {
+      "tables": 7,
+      "columns": 70,
+      "constraints": 34,
+      "triggers": 3,
+      "indexes": 34
+    },
+    "differences": [
+      "auth.users has only synthetic id primary key; auth.uid reads a local session GUC and does not verify JWT.",
+      "extensions.uuid_generate_v4 is a local SQL shim to pg_catalog.gen_random_uuid; original extension runtime omitted.",
+      "Objects owned by a private nonlogin non-superuser fixture_owner instead of production postgres.",
+      "RLS enabled and not forced as captured; production policies omitted and caller table grants revoked. This is stricter than production and does not validate its direct-table authorization.",
+      "Only seven relevant public tables and three captured trigger bindings; other public/auth/storage objects and external workers omitted.",
+      "Four independent caller login roles, no inheritance or bypass. Actual Supabase/PostgREST role inheritance, claims verification and service bypass not reproduced.",
+      "No rules/extension hooks/remote data; native upstream PostgreSQL 17.4 is not complete Supabase."
+    ]
+  },
+  "replay": [
+    {
+      "id": "F01",
+      "name": "accept_project_invitation",
+      "identityArguments": "p_invitation_id uuid, p_user_id uuid",
+      "md5": "638c776a2a70d1cddd47055c583e1abd",
+      "sha256": "f1dd6fcb4bdeee50612ce8f587319bb5cee37ccac091ecafa5e9a01845cd563d",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F02",
+      "name": "cleanup_expired_invitations",
+      "identityArguments": "",
+      "md5": "84e83304fb503123d44f16e9fc18cb31",
+      "sha256": "106cde429e924524639d645f102172b06097ea36f720823c3edf0b51ce66181d",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F03",
+      "name": "create_checkout_session",
+      "identityArguments": "user_email text, user_id uuid, project_title text",
+      "md5": "cc86b4d0449681833037c4a5c49c79a6",
+      "sha256": "fb443cdcf6bc5784892fbb28f3d87876b4b28dba0ebd0466f1a907d2708a96bd",
+      "approvedRelations": [],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F04",
+      "name": "create_project_with_role",
+      "identityArguments": "project_name text, project_description text, facilitator_id uuid, creator_role text",
+      "md5": "a9ae4c08fe1027490af42b4943c70113",
+      "sha256": "a544a3455c60f0ea966558a6be0a6006f4ebf5940268ca8a17b1640c6cc79d75",
+      "approvedRelations": [
+        "projects",
+        "project_roles",
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F05",
+      "name": "get_unread_notification_count",
+      "identityArguments": "user_id uuid",
+      "md5": "0b7d901de660b8805848cc9951a3a8fc",
+      "sha256": "e02ae936f2f179a8a7beae8cd92eb41cd43fcce568c56133b42ef2cdf2e7460a",
+      "approvedRelations": [
+        "notifications"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F06",
+      "name": "initialize_user_wallet",
+      "identityArguments": "p_user_id uuid",
+      "md5": "bf1912760ae1eeb5ad2f534522b441bb",
+      "sha256": "b47697b80c2ab6e08e59d71d09036b3d93b8900f34273f8abec4974a74ad7f75",
+      "approvedRelations": [
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F07",
+      "name": "mark_notifications_as_read",
+      "identityArguments": "user_id uuid, notification_ids uuid[]",
+      "md5": "38d9f9ae6c7efc989c81a1802eff4a65",
+      "sha256": "ee583da55c990eb98b93afbe8fdade646ec504f2387bc59b0f030a3474663ed4",
+      "approvedRelations": [
+        "notifications"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F08",
+      "name": "process_package_purchase",
+      "identityArguments": "p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text",
+      "md5": "d3b557cfc133eaef1d2c31a4877f46a7",
+      "sha256": "e11c607e28af8c4c0d581f74b7d18db67595df3e77ab322563886d005020a6e1",
+      "approvedRelations": [
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F09",
+      "name": "process_package_purchase",
+      "identityArguments": "package_id text, payment_intent_id text, user_id uuid",
+      "md5": "a18c3ebea702558e8f4e9a67811a3fc3",
+      "sha256": "05b7ffea9610c49ff0c5e2b27e771fbc312fc772e0ee049aa4161e1014a2593e",
+      "approvedRelations": [
+        "user_resource_wallets",
+        "seat_transactions"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F10",
+      "name": "request_data_export",
+      "identityArguments": "p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean",
+      "md5": "9199018230b9e447414fe18d89cda98a",
+      "sha256": "856e6043496dc68f1cf15a79557a4b9d23fc4a213d2ab85d90ba3765a750c131",
+      "approvedRelations": [
+        "project_members",
+        "projects"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F11",
+      "name": "request_data_export",
+      "identityArguments": "project_id uuid, user_id uuid, export_options jsonb",
+      "md5": "84ccf96f336d775446fb11369a68c3c7",
+      "sha256": "c73c9da4c9217b83bf654a2faa52c11ca7de1c40298284ffdeb8b24506941b6a",
+      "approvedRelations": [
+        "project_roles",
+        "export_requests"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F12",
+      "name": "send_project_invitation",
+      "identityArguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+      "md5": "ab14eb2828efb74945e3de7cf4039472",
+      "sha256": "9f818ef44dc6f1b98a68371d6628f32dee0277893af502b1406c6326b429d971",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "T01",
+      "name": "update_updated_at_column",
+      "identityArguments": "",
+      "md5": "3bfa5e64985d89e65932564c89520d5b",
+      "sha256": "7df724556927ccb4789c4c22e0d78a874adfefce676fddd5c442b614a7aa52f0",
+      "approvedRelations": [],
+      "review": "pg17-routines/trigger-semantic-review.md"
+    }
+  ],
+  "scratch": "/tmp/saga-pg17-0VNWKf",
+  "error": {
+    "code": "SUBPROCESS_FAILED",
+    "subprocessExit": 1
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T16:34:46.566Z"
+}

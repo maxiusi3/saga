@@ -1,0 +1,416 @@
+{
+  "updatedAt": "2026-10-18T13:06:09.489656+00:00",
+  "status": "passed_local_candidate_and_independent_reviews",
+  "scope": "Isolated invitation transaction candidate plus documentation/integrity closeout; no production readiness or milestone claim.",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "bindingSpec": {
+    "path": "docs/superpowers/specs/2026-10-18-invitation-transactions.md",
+    "sha256": "0b003e13cc4a80c22aa784ed8a2d330685af6088daa3c17d0810d32c00cda9df"
+  },
+  "implementation": {
+    "manifest": {
+      "path": "docs/research/evidence/2026-10-18-invitation-transactions/implementation-verification.json",
+      "sha256": "28a007ff93595ad7746c92e25412234b9f71347c18987c94ddced88032d8b501"
+    },
+    "manifestPreserved": true,
+    "originalEvidenceArtifactsPreserved": 27,
+    "originalManifestReviewPendingField": "Historical status when the immutable Task 1 manifest was generated; current review is separately referenced below.",
+    "allCurrentInputAndEvidenceBytesMatched": true,
+    "checkedGroups": {
+      "sources": {
+        "checked": 24,
+        "mismatches": []
+      },
+      "commonJS": {
+        "checked": 44,
+        "mismatches": []
+      },
+      "runtimeFiles": {
+        "checked": 743,
+        "mismatches": []
+      },
+      "evidence": {
+        "checked": 27,
+        "mismatches": []
+      }
+    },
+    "inputPins": {
+      "path": "experiments/pg17-invitation-transactions/input-pins.json",
+      "sha256": "b26c44860db6d53d97fde1e8a5fb85673fee51953c3df71be27607e6dc81e982"
+    },
+    "pinMapsEqualManifestMaps": true,
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "nodeExecutableMatched": true,
+    "normal": {
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-run-2026-10-18T07-15-37.556Z-cec5d717-766d-4c0f-a7d3-f44c3e547941.json",
+        "sha256": "ba4d93b887fb8b8d86f6aae4f2e05f00cf06fc4a1e59f0ead93beeac7872faa1"
+      },
+      "startedAt": "2026-10-18T07:15:37.554Z",
+      "finishedAt": "2026-10-18T07:15:56.491Z",
+      "status": "passed",
+      "scenarios": 158,
+      "harnessAssertions": 2288,
+      "actualConcurrencyScenarios": 33,
+      "concurrencyCasesWithObservedBlockers": 33,
+      "completeStateChecks": 282,
+      "allStateChecksUnchanged": true,
+      "unknownCommitRecovery": {
+        "send": {
+          "committed": true,
+          "responseDiscarded": true,
+          "recoveredBy": "lookup"
+        },
+        "accept": {
+          "committed": true,
+          "responseDiscarded": true,
+          "recoveredBy": "status"
+        },
+        "readOnlyRecovery": true
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "hostileEnvironment": {
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-run-2026-10-18T07-23-12.149Z-5495bb94-d463-4849-a371-cfa906554bdb.json",
+        "sha256": "e1ca90cd221ef0e97b46919a6b7713af98bee357be8b879df08f8f6a991975aa"
+      },
+      "startedAt": "2026-10-18T07:23:12.147Z",
+      "finishedAt": "2026-10-18T07:23:31.357Z",
+      "status": "passed",
+      "scenarios": 158,
+      "harnessAssertions": 2288,
+      "actualConcurrencyScenarios": 33,
+      "concurrencyCasesWithObservedBlockers": 33,
+      "completeStateChecks": 282,
+      "allStateChecksUnchanged": true,
+      "unknownCommitRecovery": {
+        "send": {
+          "committed": true,
+          "responseDiscarded": true,
+          "recoveredBy": "lookup"
+        },
+        "accept": {
+          "committed": true,
+          "responseDiscarded": true,
+          "recoveredBy": "status"
+        },
+        "readOnlyRecovery": true
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "protocol": {
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/protocol-final-2026-10-18T07-20-58.565823+00-00-349202cb-a985-4553-bd7f-f3c9033c9bd9.json",
+        "sha256": "08759c20a75968424ba3bbd8f263aaec79b14d7c79d65d9b3c2cba70261f3a0c"
+      },
+      "startedAt": "2026-10-18T07:20:58.565823+00:00",
+      "finishedAt": "2026-10-18T07:20:59.083808+00:00",
+      "status": "passed",
+      "exitCode": 0,
+      "nodeTestCount": 18,
+      "nodeTestPassed": 18,
+      "stderrEmpty": true,
+      "tap": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/protocol-final-2026-10-18T07-20-58.565823+00-00-349202cb-a985-4553-bd7f-f3c9033c9bd9.tap",
+        "sha256": "7c44df0e5c7b875964c3a51862939cdfebc09ec923171071c198579a2aa23bee"
+      }
+    },
+    "lifecycle": {
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-lifecycle-2026-10-18T07-23-11.943Z-cab3fff6-3760-4728-812c-7359f80a5585.json",
+        "sha256": "3eb3c8f6cec91a9f4129cb009d1453716704eead086a2a658f480168c773be72"
+      },
+      "startedAt": "2026-10-18T07:23:11.945Z",
+      "finishedAt": "2026-10-18T07:23:37.336Z",
+      "observerStatus": "passed",
+      "observerExitCode": 0,
+      "cases": [
+        {
+          "name": "hostile_pg_environment",
+          "observerStatus": "passed",
+          "childExit": {
+            "code": 0,
+            "signal": null
+          },
+          "childEvidence": {
+            "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-run-2026-10-18T07-23-12.149Z-5495bb94-d463-4849-a371-cfa906554bdb.json",
+            "sha256": "e1ca90cd221ef0e97b46919a6b7713af98bee357be8b879df08f8f6a991975aa"
+          },
+          "childStatus": "passed",
+          "cleanup": {
+            "clusterStopped": true,
+            "tempDirectoryRemoved": true,
+            "clientsRemaining": 0,
+            "errors": []
+          },
+          "rescueNeeded": false
+        },
+        {
+          "name": "SIGTERM_after_fixture_ready",
+          "observerStatus": "passed",
+          "childExit": {
+            "code": 143,
+            "signal": null
+          },
+          "childEvidence": {
+            "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-run-2026-10-18T07-23-31.610Z-8441a715-3fed-4487-be10-1c49c416d225.json",
+            "sha256": "2a5a37581fcd153d85f6b4a9dd27e712319ddeb2a274ccba6b7eb871b9f9b386"
+          },
+          "childStatus": "interrupted",
+          "cleanup": {
+            "clusterStopped": true,
+            "tempDirectoryRemoved": true,
+            "clientsRemaining": 0,
+            "errors": []
+          },
+          "rescueNeeded": false
+        },
+        {
+          "name": "invalid_actual_server_start",
+          "observerStatus": "passed",
+          "childExit": {
+            "code": 1,
+            "signal": null
+          },
+          "childEvidence": {
+            "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-run-2026-10-18T07-23-33.816Z-87c5826d-ad2e-4f5f-9d97-cd9e39a07767.json",
+            "sha256": "7b10c857779852aab2ee65c0b8e37d9a98d76993a89ca61476f7eba89bd913d1"
+          },
+          "childStatus": "failed",
+          "cleanup": {
+            "clusterStopped": true,
+            "tempDirectoryRemoved": true,
+            "clientsRemaining": 0,
+            "errors": []
+          },
+          "rescueNeeded": false
+        },
+        {
+          "name": "failed_client_connect_cleanup",
+          "observerStatus": "passed",
+          "childExit": {
+            "code": 1,
+            "signal": null
+          },
+          "childEvidence": {
+            "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-run-2026-10-18T07-23-35.458Z-73ccd94d-83e3-4585-92f2-7350346d84aa.json",
+            "sha256": "4b2783fdaafce0abdea23ed174cfbfd08c6ad8eaf7100f5fd9281d2311950857"
+          },
+          "childStatus": "failed",
+          "cleanup": {
+            "clusterStopped": true,
+            "tempDirectoryRemoved": true,
+            "clientsRemaining": 0,
+            "errors": []
+          },
+          "rescueNeeded": false
+        }
+      ],
+      "interpretation": "Observer passes include deliberately interrupted/failed child processes with exits 143/1/1; these are not successful business suite exits."
+    },
+    "redClassification": {
+      "oldTokenSignature": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-red-2026-10-18T06-45-06.598Z-85c661e0-483d-4b8d-96df-b496a23d4acb.json",
+        "expectedSqlstate": "00000",
+        "actualSqlstate": "42883",
+        "zeroWrites": true,
+        "relatedTableCount": 9,
+        "meaning": "unimplemented token overload, not an authorization regression"
+      },
+      "protocolMissingModule": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/protocol-red-missing-module.tap",
+        "meaning": "missing not-yet-implemented interface; not a claim of an old decoder vulnerability"
+      },
+      "newCandidateFkDeadlock": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/invitation-run-2026-10-18T07-11-23.863Z-5fc1922b-5f9d-4f46-a5f8-a6a8fcedd67b.json",
+        "actualSqlstates": [
+          "00000",
+          "40P01"
+        ],
+        "losingCallZeroWrites": true,
+        "fixedBy": "auth.users FOR NO KEY UPDATE, retaining identity mutation/deletion exclusion"
+      }
+    },
+    "selfReview": {
+      "path": "docs/research/evidence/2026-10-18-invitation-transactions/implementation-self-review.md",
+      "sha256": "1aa013e0ed9fbed64d6d7da234fe9d43b82cefa63b6f734c289c08f2a7f80f65"
+    },
+    "intermediateEvidence": "The immutable implementation manifest separately classifies all nonfinal failures and earlier successes; none supersedes the final source-bound runs."
+  },
+  "executionReuse": {
+    "transactionSuitesExecutedDuringResumeOrTask2": false,
+    "protocolSuiteExecutedDuringResumeOrTask2": false,
+    "resumeIntegrity": {
+      "path": "docs/research/evidence/2026-10-18-invitation-transactions/resume-integrity.json",
+      "sha256": "98b1f7be0db16cda732ef2733d87f95d97b1399f98d98614f043f6219fc86fcb"
+    },
+    "freshChecks": "Current file hashes and raw final results were checked again for Task 2; original suite timestamps are preserved."
+  },
+  "applicationChecks": {
+    "currentBatchRecheck": {
+      "path": "docs/research/evidence/2026-10-18-invitation-transactions/project-checks.json",
+      "sha256": "15e0601cf7eab32a7f3b4218177ff7b322595686766af3df92880f80f51e15b6"
+    },
+    "sourceEvidence": {
+      "path": "docs/research/evidence/2026-10-18-rpc-access-guards/project-checks.json",
+      "sha256": "a2c6a37876d89c89eabbdfd3cf1e0b001ff4f004e45c197ed374b734ee3144af"
+    },
+    "sourceBatch": "2026-10-18-rpc-access-guards",
+    "sourceStartedAt": "2026-10-18T04:24:38.969365+00:00",
+    "sourceFinishedAt": "2026-10-18T04:26:48.304226+00:00",
+    "executedThisBatch": false,
+    "applicationInputsMatched": 707,
+    "applicationInputChanges": [],
+    "logCount": 3,
+    "logChanges": [],
+    "commands": {
+      "verify": {
+        "command": "npm run verify",
+        "exitCode": 0,
+        "log": "docs/research/evidence/2026-10-18-rpc-access-guards/verify.log",
+        "sha256": "2f24655feb6d53711bd0fa59fcc4dc3d141afacc96e9ee4dabdc5170a2f0d2b9"
+      },
+      "shared": {
+        "command": "npm test --workspace=packages/shared -- --runInBand",
+        "exitCode": 0,
+        "log": "docs/research/evidence/2026-10-18-rpc-access-guards/shared.log",
+        "sha256": "2650663e10fe0e9edb4ee88adc6ce94beebca9a7a8f914d6049dc7355eba2d26"
+      },
+      "infra": {
+        "command": "npm run test:infra",
+        "exitCode": 0,
+        "log": "docs/research/evidence/2026-10-18-rpc-access-guards/infra.log",
+        "sha256": "d80a40996c8cab65bada72fe2f892a9fc598f9f9147aa4eb80a222a78b10c002"
+      }
+    },
+    "nextEnvMatchesBatchStartBytes": true,
+    "webSuites": 77,
+    "webTests": 766,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "pages": 175,
+    "limitations": "Matching 707 inputs and three logs justifies reuse of the prior local execution; it does not create a new run or validate production configuration. Existing Supabase service and Next configuration warnings remain."
+  },
+  "dependencyAudit": {
+    "executedThisBatch": false,
+    "dependenciesChanged": false,
+    "evidence": {
+      "path": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+      "sha256": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866"
+    },
+    "status": "failed_unresolved",
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "thresholdUnchanged": true
+  },
+  "independentReviews": {
+    "task1": {
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/task-1-review.md",
+        "sha256": "29c406c29f10c26ecef2c3bb225ac4d7017116f719cd5dc7bb05129da437aaf5"
+      },
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "critical": 0,
+      "important": 0,
+      "minor": 0
+    },
+    "task2": {
+      "status": "passed",
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/task-2-review.md",
+        "sha256": "799c5f27d2e527f9510e53820b01f7a34fecdd81a4dbc5bd0790a43590d55889"
+      },
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "critical": 0,
+      "important": 0,
+      "minor": 0
+    },
+    "batchFinal": {
+      "status": "passed",
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-18-invitation-transactions/batch-final-review.md",
+        "sha256": "425c1cd9626b96a930b21f56467b0bf624c8661f8a59d09bb73adc0889bf0043"
+      },
+      "assessment": "PASS — Approved for the isolated local candidate scope",
+      "critical": 0,
+      "important": 0,
+      "minor": 0
+    },
+    "aggregatePass": true
+  },
+  "workspaceIntegrity": {
+    "evidencePath": "docs/research/evidence/2026-10-18-invitation-transactions/final-checks.json",
+    "scope": "Final generated checkpoint after actual Task 1, Task 2 and final batch approval and current-status bookkeeping; consult its status/checkedAt. No behavioral suite was rerun.",
+    "baselineFileCount": 1551,
+    "allowedExistingDocumentationChanges": [
+      "docs/HANDOFF-2026-10-13-upgrade.md",
+      "docs/2026-10-10-integrated-upgrade-plan.md",
+      "docs/README.md",
+      "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+      "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md"
+    ],
+    "originalImplementationManifestAnd27ArtifactsImmutable": true,
+    "historicalProjectAndMilestoneChecksImmutable": true,
+    "privateCapturesRemainPrivate": true,
+    "preserveIgnoredRecoveryDirectory": true,
+    "hashPolicy": "Only immutable inputs/evidence carry digests here. Current status documents and final-checks are referenced by path to avoid self-referential or cross-file hash cycles."
+  },
+  "milestones": {
+    "evidence": {
+      "path": "docs/research/evidence/2026-10-18-invitation-transactions/milestone-check.json",
+      "sha256": "d02d615b542f9ef04abba7aeb40859de49b9fb141ea91d8f9b920109f127a750"
+    },
+    "G0": false,
+    "G1": false,
+    "G2": false,
+    "G3": false,
+    "G4": false,
+    "localBatchIsMilestone": false,
+    "productDecisions": "D01–D16 and original products unchanged"
+  },
+  "limitations": [
+    "Synthetic GUC identity and confirmed-email fixture are not real JWT verification; trusted_seat_sources is a protected synthetic entitlement port, not verified payment provenance.",
+    "Original public RPCs, direct-table and old UI/API routes remain production bypass/compatibility risks outside this candidate. Formal identity/source adapters and closure or restriction of old entrypoints remain required.",
+    "No automatic adoption of legacy opaque tokens, invitations or members; trustworthy history mapping/versioning and compatible forward/backward migration remain to be designed.",
+    "Production authentication/role inheritance/ACL/RLS/Storage, complete dependency integration and seven unregistered migration versions remain unreconciled.",
+    "Bucket configuration, object audit, backup restoration/rollback, provider account/data terms, formal media/deletion/worker/session adapters and real-device 5/20/30-minute checks remain incomplete.",
+    "macOS kernel and system shared libraries remain ambient platform dependencies."
+  ],
+  "nextSteps": [
+    "Design production JWT/confirmed-email and trusted server payment/entitlement event adapters, provisioning/revocation, durable deduplication and audit.",
+    "Resolve five legacy invitation call signatures, strict TABLE responses and unknown-commit recovery; design legacy token/member history compatibility and old entrypoint shutdown/restriction.",
+    "Complete permission/migration/bucket/backup/provider/formal adapter and device evidence against original gates."
+  ],
+  "actions": {
+    "commit": false,
+    "pushGitHub": false,
+    "mergeMain": false,
+    "remoteMigration": false,
+    "deployment": false,
+    "remoteAuthMailPaymentCalls": false
+  },
+  "integrationDecision": "Keep current local branch, all uncommitted work and ignored recovery directory; original G0/G1 remain unmet.",
+  "closure": {
+    "reviewReportsPreserved": true,
+    "task2ReviewSnapshotPreserved": true,
+    "postReviewChanges": "Current approval/checklist/next-step status and review links only; implementation and immutable evidence unchanged.",
+    "remainingProductionGatesUnchanged": true
+  }
+}

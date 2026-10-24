@@ -1,0 +1,14 @@
+
+> @saga/shared@1.5.0 test
+> jest --runInBand
+
+PASS src/types/__tests__/agents.test.ts
+PASS src/types/__tests__/public-archive.test.ts
+PASS src/types/__tests__/types.test.ts
+PASS src/__tests__/basic.test.ts
+
+Test Suites: 4 passed, 4 total
+Tests:       16 passed, 16 total
+Snapshots:   0 total
+Time:        2.371 s, estimated 4 s
+Ran all test suites.

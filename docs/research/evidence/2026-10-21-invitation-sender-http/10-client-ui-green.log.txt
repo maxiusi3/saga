@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand invitation-sender-client invitation-sender-ui
+
+
+Test Suites: 2 passed, 2 total
+Tests:       19 passed, 19 total
+Snapshots:   0 total
+Time:        2.955 s
+Ran all test suites matching invitation-sender-client|invitation-sender-ui.

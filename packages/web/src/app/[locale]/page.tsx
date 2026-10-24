@@ -54,77 +54,18 @@ export default function HomePage() {
   const finalCtaTitleParts = t('finalCta.title').split('\n')
 
   useEffect(() => {
-    // Check if URL contains auth tokens from Supabase
-    const urlParams = new URLSearchParams(window.location.search)
-    const hashParams = new URLSearchParams(window.location.hash.substring(1))
-    const accessToken = urlParams.get('access_token') || hashParams.get('access_token')
-    const refreshToken = urlParams.get('refresh_token') || hashParams.get('refresh_token')
-    const tokenType = urlParams.get('token_type') || hashParams.get('token_type')
-    const type = urlParams.get('type') || hashParams.get('type')
-
-    if (accessToken && refreshToken && type === 'magiclink') {
-      router.push(
-        `/${locale}/dashboard?access_token=${accessToken}&refresh_token=${refreshToken}&token_type=${tokenType}&type=${type}`
-      )
-    } else if (type === 'invite') {
-      checkPendingInvitations()
+    const query = new URLSearchParams(window.location.search)
+    const fragment = new URLSearchParams(window.location.hash.slice(1))
+    // Preserve bare invite-link guidance; it carries no credential or token.
+    if (!window.location.hash && query.size === 1 && query.get('type') === 'invite') {
+      router.push(`/${locale}/accept-invitation`)
+      return
     }
-
-    async function checkPendingInvitations() {
-      try {
-        let retryCount = 0
-        const maxRetries = 3
-
-        const checkWithRetry = async () => {
-          try {
-            const { createClientSupabase } = await import('@/lib/supabase')
-            const supabase = createClientSupabase()
-            const {
-              data: { session },
-            } = await supabase.auth.getSession()
-
-            const headers: Record<string, string> = {
-              'Content-Type': 'application/json',
-            }
-
-            if (session?.access_token) {
-              headers['Authorization'] = `Bearer ${session.access_token}`
-            }
-
-            const response = await fetch('/api/invitations/check-pending', {
-              credentials: 'include',
-              headers,
-            })
-
-            if (response.ok) {
-              const data = await response.json()
-              if (data.hasPendingInvitations) {
-                router.push(`/${locale}/accept-invitation`)
-                return true
-              }
-              return false
-            } else if (response.status === 401 && retryCount < maxRetries - 1) {
-              retryCount++
-              setTimeout(checkWithRetry, 2000)
-              return
-            }
-            return false
-          } catch (error) {
-            if (retryCount < maxRetries - 1) {
-              retryCount++
-              setTimeout(checkWithRetry, 2000)
-              return
-            }
-            return false
-          }
-        }
-
-        setTimeout(checkWithRetry, 2000)
-      } catch (error) {
-        console.error('Error checking pending invitations:', error)
-      }
-    }
-  }, [router])
+    const keys = ['access_token', 'refresh_token', 'token_type', 'type', 'expires_in', 'expires_at', 'provider_token', 'provider_refresh_token', 'code', 'token_hash', 'error', 'error_code', 'error_description']
+    if (!keys.some(key => query.has(key) || fragment.has(key))) return
+    try { window.history.replaceState(window.history.state, '', window.location.pathname) } catch { /* best effort */ }
+    router.replace(`/${locale}/auth/signin?error=auth_failed`)
+  }, [router, locale])
 
   return (
     <>

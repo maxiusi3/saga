@@ -1,0 +1,34 @@
+{
+  "run": "candidates-green-1",
+  "status": "harness fault; manually verified cleanup",
+  "reason": "test wrapper omitted pool.connect callback forwarding; SIGTERM cleanup stopped DB but leaked checked-out client error prevented raw report/temp deletion",
+  "harnessPid": 81261,
+  "postmasterPid": 81314,
+  "scratch": "/tmp/saga-t05-eTf9iE",
+  "config": {
+    "host": "/tmp/saga-t05-eTf9iE/socket",
+    "port": 5432,
+    "user": "saga_poc",
+    "database": "postgres",
+    "stateModule": "/tmp/saga-t05-eTf9iE/state.mjs",
+    "recording": {
+      "root": "/tmp/saga-t05-eTf9iE/recording",
+      "helpersDirectory": "/tmp/saga-t05-eTf9iE/helpers",
+      "executable": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+      "maxInputBytes": 8388608,
+      "maxChunks": 1000,
+      "ioTimeoutMs": 15000,
+      "decodeTimeoutMs": 15000,
+      "maxDurationMs": 30000
+    }
+  },
+  "postgresLog": "2026-10-16 22:31:13.885 CST [81314] LOG:  starting PostgreSQL 14.17 (Homebrew) on x86_64-apple-darwin22.6.0, compiled by Apple clang version 15.0.0 (clang-1500.1.0.2.5), 64-bit\n2026-10-16 22:31:13.885 CST [81314] LOG:  listening on Unix socket \"/tmp/saga-t05-eTf9iE/socket/.s.PGSQL.5432\"\n2026-10-16 22:31:13.890 CST [81315] LOG:  database system was shut down at 2026-10-16 22:31:13 CST\n2026-10-16 22:31:13.894 CST [81314] LOG:  database system is ready to accept connections\n2026-10-16 22:32:56.629 CST [81314] LOG:  received immediate shutdown request\n2026-10-16 22:32:56.636 CST [81314] LOG:  database system is shut down\n",
+  "pgCtlStatus": {
+    "exitCode": 3,
+    "stdout": "pg_ctl: no server running\n",
+    "stderr": ""
+  },
+  "pidsAbsent": true,
+  "tempDirectoryRemoved": true,
+  "finishedAt": "2026-10-16T22:35:33.495067"
+}

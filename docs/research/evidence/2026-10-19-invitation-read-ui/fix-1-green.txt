@@ -1,0 +1,9 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/invitations/__tests__/invitation-recipient.test.tsx -t batched|same-account token refresh keeps
+
+Test Suites: 1 passed, 1 total
+Tests:       38 skipped, 3 passed, 41 total
+Snapshots:   0 total
+Time:        1.526 s, estimated 2 s
+Ran all test suites within paths "src/components/invitations/__tests__/invitation-recipient.test.tsx".

@@ -4,9 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-UR Saga is an AI-powered family biography platform ("Your Origin") for intergenerational storytelling. Seniors record audio stories via a frictionless web (PWA) experience; AI agents transcribe, structure, and curate them into a private biography, with an opt-in path to an anonymized public collective archive. The authoritative product spec is `UR saga v1.8.md` at the repo root.
+UR Saga is an AI-powered family biography platform ("Your Origin") for intergenerational storytelling. Seniors record audio stories via a frictionless web (PWA) experience; AI agents transcribe, structure, and curate them into a private biography, with an opt-in path to an anonymized public collective archive. The baseline product spec is `UR saga v1.8.md` at the repo root. For the October upgrade, the user-confirmed decisions in `docs/2026-10-10-upgrade-decisions.md` and their implementation in `docs/2026-10-10-integrated-upgrade-plan.md` take precedence where they conflict with the baseline or older plans. On 2026-10-11 the user selected D03=A and all other recommendations: D01–D16 are all A, with one primary developer, quality gates, and a 24–34 week planning range. Start preparation from `docs/superpowers/plans/2026-10-11-upgrade-p0-preparation.md`; decisions being confirmed does not mean implementation or quality gates are complete.
 
 ## Commands
+
+October deployment and push policy (user instructions, 2026-10-13 and 2026-10-15): continue development and validation; do not deploy or apply remote migrations during incremental batches. On 2026-10-15 the user authorized pushing to GitHub when an existing upgrade-plan milestone is actually achieved. Verify the corresponding milestone evidence before committing/pushing; a completed local code batch or prototype is not itself a release milestone. This conditional push authorization does not authorize merging to main, remote migrations, or deployment before the release conditions are met. Preserve existing uncommitted work and keep deployment evidence separate from local test results.
+
 
 All commands run from the repo root unless noted. This is an npm workspaces monorepo.
 
@@ -46,7 +49,7 @@ There is **no custom backend server**. Persistence, auth, and storage are all Su
 - `packages/web/src/lib/supabase.ts` - client factories. `createClientSupabase()` is a browser singleton with a stub fallback when env vars are missing (so local preview doesn't crash). `getSupabaseAdmin()` provides the service-role client for server code.
 - Server-side auth is centralized in `packages/web/src/lib/server/auth.ts` via `getAuthenticatedUser(request)` (accepts a Bearer token or SSR cookies). API routes call it first and thread the returned `headers` back into responses.
 - Project-scoped authorization goes through `packages/web/src/lib/server/project-access.ts` (`requireProjectAccess`). Permissions logic is shared in `@saga/shared/lib/permissions`.
-- Database schema is applied via SQL files in `packages/web/supabase/` (`agent-phase1.sql`, `agent-phase2-public-archive.sql`, `storage-policies.sql`) - **not** a migrations framework. `supabase/config.toml` at root configures the local Supabase CLI.
+- Database changes use the Supabase CLI migrations in root `supabase/migrations/`; `.github/workflows/deploy.yml` applies them before production web deployment. The SQL files in `packages/web/supabase/` are historical source/reference files. Compare remote migration history before applying changes; do not replay the old SQL blindly. Root `supabase/config.toml` configures the local CLI.
 
 ### API layer
 - API routes are Next.js Route Handlers under `packages/web/src/app/api/**/route.ts` (e.g. `api/agents`, `api/ai`, `api/payments`, `api/stories`). Standard pattern: authenticate -> validate input -> check project access -> do work -> return `NextResponse.json(..., { headers: auth.headers })`.
@@ -68,7 +71,7 @@ Phasing matters: Phase 1 = private biography loop (Interview + Editor/Librarian 
 - State: Zustand stores in `src/stores/` (`auth-store`, `project-store`, `export-store`).
 - UI: Tailwind CSS + Radix primitives + `class-variance-authority`; design tokens in `src/lib/design-tokens.ts` / `design-system.ts`.
 - Payments: Stripe (`src/lib/payments`, `src/services/stripe.service.ts`, `subscription.service.ts`). Service/plan definitions are in `@saga/shared/config/service-plans`.
-- Audio recording is browser-based (`MediaRecorder` chunked uploads, Screen Wake Lock); transcription/AI via OpenAI (`src/lib/ai-service.ts`, `api/ai`).
+- Audio recording is browser-based (`MediaRecorder` chunked uploads, Screen Wake Lock). The current ASR route uses SiliconFlow; text generation uses configured TEXT/OpenRouter endpoints (`src/lib/server/text-ai-config.ts`). T00 removes mock fallbacks and reports configured capabilities separately; configuration alone does not prove availability. October provider candidates and remaining qualification requirements are in `docs/research/2026-10-11-provider-readiness.md`.
 
 ## Conventions
 - Path alias `@/*` -> `packages/web/src/*` (mirrored in `jest.config.js` and `tsconfig.json`). The jest config also remaps a few legacy non-locale dashboard paths to their `[locale]` equivalents.

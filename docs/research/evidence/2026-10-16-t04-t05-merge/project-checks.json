@@ -1,0 +1,55 @@
+{
+  "projectVerify": {
+    "command": [
+      "npm",
+      "run",
+      "verify"
+    ],
+    "startedAt": "2026-10-16T03:55:04.277973+00:00",
+    "exitCode": 0,
+    "elapsedSeconds": 116.006,
+    "finishedAt": "2026-10-16T03:57:00.283627+00:00",
+    "nextEnvRestored": true
+  },
+  "webSuites": 75,
+  "webTests": 716,
+  "generatedPages": 175,
+  "shared": {
+    "run": {
+      "command": [
+        "npm",
+        "test",
+        "--workspace=packages/shared",
+        "--",
+        "--runInBand"
+      ],
+      "startedAt": "2026-10-16T03:55:04.277986+00:00",
+      "exitCode": 0,
+      "elapsedSeconds": 8.386,
+      "finishedAt": "2026-10-16T03:55:12.663361+00:00"
+    },
+    "suites": 4,
+    "tests": 16
+  },
+  "infra": {
+    "run": {
+      "command": [
+        "npm",
+        "run",
+        "test:infra"
+      ],
+      "startedAt": "2026-10-16T03:55:04.277974+00:00",
+      "exitCode": 0,
+      "elapsedSeconds": 2.319,
+      "finishedAt": "2026-10-16T03:55:06.597063+00:00"
+    },
+    "tests": 7
+  },
+  "scope": "Current application helpers; independent integration evidence follows.",
+  "applicationSourceSha256": {
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a9485b57ac13f5606e41436975a1f57f0198b51e2a858cea505b0141b0e07f12",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "c1f0fcac4bd631dcefe160bcb7ac67886f975bcdb3a4d1a05b3ca1a6a265cd27",
+    "packages/web/src/lib/server/__tests__/recording-merge-executor.test.ts": "e739a7dd6476f036a4557588cf2a9f005032571b76b6dff43d560b872c335cb7",
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts": "8c74089937cfb2bf0e35dbedee77b49f6babf8ac8f575380688b81c4aad346e2"
+  }
+}

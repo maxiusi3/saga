@@ -1,0 +1,41 @@
+{
+  "startedAt": "2026-10-17T05:10:51.135Z",
+  "status": "interrupted",
+  "scope": "synthetic local data compatibility only; no remote access or production mutation",
+  "sources": {
+    "experiments/t02-legacy-mapping/verify.cjs": "b101fd568a6235bdd5a11cf3270eee0a9cc0fe8dd77fb1acb032ef7bfb2c8640",
+    "experiments/t02-legacy-mapping/README.md": "c04abe1643b093d3340828700a03b42b55ec175bafe8e030a828441393a6b5a3",
+    "packages/web/src/lib/legacy-media-reference.ts": "d9f7cf09eb01b0626bb282edfd3c2be102632a383c5b5cf51feced69e99aedc8",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e",
+    "packages/web/src/lib/__tests__/legacy-media-reference.test.ts": "9b7fe4ddb7dbc073a34024b483b58d01c6878d5e33c222d4acad2803bcfd9744",
+    "packages/web/src/lib/__tests__/legacy-story-media.test.ts": "1e2286683a6df63288886f8b631feac2a33cc83f2eb4c0fb9d4eb07499c443e6"
+  },
+  "checks": [
+    "TCP disabled"
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3",
+    "typescript": "5.9.3"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f"
+  },
+  "scratch": "/tmp/saga-t02-qirv9Q",
+  "fixture": {
+    "sql": "CREATE SCHEMA auth;\nCREATE TABLE auth.users(id uuid PRIMARY KEY);\nCREATE TABLE public.projects(id uuid PRIMARY KEY);\nCREATE TABLE public.\"stories\" (\"id\" uuid NOT NULL,\"project_id\" uuid NOT NULL,\"storyteller_id\" uuid NOT NULL,\"user_id\" uuid,\"title\" text NOT NULL,\"audio_url\" text,\"mastered_audio_url\" character varying(255),\"photo_url\" text,\"photo_urls\" text[],\"images\" jsonb[]);\nCREATE TABLE public.\"project_roles\" (\"id\" uuid NOT NULL,\"project_id\" uuid NOT NULL,\"user_id\" uuid NOT NULL,\"role\" text NOT NULL,\"status\" text);\nALTER TABLE public.\"project_roles\" ADD CONSTRAINT \"project_roles_pkey\" PRIMARY KEY (id);\nALTER TABLE public.\"project_roles\" ADD CONSTRAINT \"project_roles_project_id_fkey\" FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;\nALTER TABLE public.\"project_roles\" ADD CONSTRAINT \"project_roles_role_check\" CHECK ((role = ANY (ARRAY['facilitator'::text, 'storyteller'::text])));\nALTER TABLE public.\"project_roles\" ADD CONSTRAINT \"project_roles_status_check\" CHECK ((status = ANY (ARRAY['active'::text, 'inactive'::text, 'pending'::text])));\nALTER TABLE public.\"project_roles\" ADD CONSTRAINT \"project_roles_user_id_fkey\" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE;\nALTER TABLE public.\"project_roles\" ADD CONSTRAINT \"project_roles_user_id_project_id_role_key\" UNIQUE (user_id, project_id, role);\nALTER TABLE public.\"stories\" ADD CONSTRAINT \"stories_pkey\" PRIMARY KEY (id);\nALTER TABLE public.\"stories\" ADD CONSTRAINT \"stories_project_id_fkey\" FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;\nALTER TABLE public.\"stories\" ADD CONSTRAINT \"stories_storyteller_id_fkey\" FOREIGN KEY (storyteller_id) REFERENCES auth.users(id) ON DELETE CASCADE;\nCREATE UNIQUE INDEX project_roles_project_user_unique ON public.project_roles USING btree (project_id, user_id);\nCREATE UNIQUE INDEX uq_project_roles_project_user ON public.project_roles USING btree (project_id, user_id);",
+    "sha256": "923a0a2705ba1edec9d004c4537a1f98f3d3dac3227c81551ae14623d46f3b68",
+    "limits": "selected column types/nullability and constraints only; no RLS/functions/triggers/defaults restore"
+  },
+  "phase": "synthetic_fixture_ready",
+  "signal": "SIGTERM",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:10:53.202Z"
+}

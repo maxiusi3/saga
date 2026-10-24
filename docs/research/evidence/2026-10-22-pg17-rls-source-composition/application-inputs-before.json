@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-22T03:30:20.448232+00:00",
+  "scope": "Application inputs retained from October 21 project verification; new experiment not covered by old application suites",
+  "applicationInputs": 796,
+  "mismatches": [],
+  "originalReport": "docs/research/evidence/2026-10-21-invitation-management/project-verification.json",
+  "originalReportSha256": "a2bb06b8dd3c7522b13b6d2042635dc2c0f26f4bf8d559c30808be5ced687618",
+  "applicationSuitesRerun": false,
+  "status": "passed"
+}

@@ -1,0 +1,20 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-fix-1-discovery-red.json",
+      "sha256": "09585d34cab18581bdf013709fb6f564af79ff4834f91f63cb44f6637169a215"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-fix-1-source-manifest.json",
+      "sha256": "d7c7c87521a233a7dd839716e14c39f1b1cc11cddfb7b0b67cb081f02e9ed912"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-fix-1-focused-checks.json",
+      "sha256": "e13a98f33a1d886fc2414ff32b8f4eb13a1264e37aad8b7a4f1aa4b824625825"
+    }
+  ],
+  "digestAlgorithm": "sha256(JSON.stringify(files))",
+  "evidenceDigest": "c8b08358f80a75a45e8ec359e9f5e0e560fbba6b988dbf752b60c8eaf57edd68",
+  "priorEvidenceUnchanged": true
+}

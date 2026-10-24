@@ -1,0 +1,181 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand invitation-sender-legacy
+
+FAIL src/lib/server/__tests__/invitation-sender-legacy.test.ts
+  ● disabled legacy POST stops before authentication
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "externalCalls": 0,
+    -   "status": 503,
+    +   "externalCalls": 1,
+    +   "status": 401,
+      }
+
+      22 |   const request = new NextRequest('http://localhost/api/projects/22222222-2222-4222-8222-222222222222/invitations', { method })
+      23 |   const response = await handler(request, { params: Promise.resolve({ id: '22222222-2222-4222-8222-222222222222' }) })
+    > 24 |   expect({ status: response.status, externalCalls: externalBoundary.mock.calls.length }).toEqual({ status: 503, externalCalls: 0 })
+         |                                                                                          ^
+      25 |   expect(await response.json()).toMatchObject({ success: false, outcome: 'not_attempted' })
+      26 | })
+      27 | test.each([['GET', GET], ['DELETE', DELETE], ['cleanup GET', cleanupGet], ['cleanup POST', cleanupPost]] as const)('%s is permanently unavailable even with enabled flag and valid cron header', async (_, handler) => {
+
+      at toEqual (src/lib/server/__tests__/invitation-sender-legacy.test.ts:24:90)
+
+  ● disabled legacy GET stops before authentication
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "externalCalls": 0,
+    -   "status": 503,
+    +   "externalCalls": 1,
+    +   "status": 401,
+      }
+
+      22 |   const request = new NextRequest('http://localhost/api/projects/22222222-2222-4222-8222-222222222222/invitations', { method })
+      23 |   const response = await handler(request, { params: Promise.resolve({ id: '22222222-2222-4222-8222-222222222222' }) })
+    > 24 |   expect({ status: response.status, externalCalls: externalBoundary.mock.calls.length }).toEqual({ status: 503, externalCalls: 0 })
+         |                                                                                          ^
+      25 |   expect(await response.json()).toMatchObject({ success: false, outcome: 'not_attempted' })
+      26 | })
+      27 | test.each([['GET', GET], ['DELETE', DELETE], ['cleanup GET', cleanupGet], ['cleanup POST', cleanupPost]] as const)('%s is permanently unavailable even with enabled flag and valid cron header', async (_, handler) => {
+
+      at toEqual (src/lib/server/__tests__/invitation-sender-legacy.test.ts:24:90)
+
+  ● disabled legacy DELETE stops before authentication
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "externalCalls": 0,
+    -   "status": 503,
+    +   "externalCalls": 1,
+    +   "status": 401,
+      }
+
+      22 |   const request = new NextRequest('http://localhost/api/projects/22222222-2222-4222-8222-222222222222/invitations', { method })
+      23 |   const response = await handler(request, { params: Promise.resolve({ id: '22222222-2222-4222-8222-222222222222' }) })
+    > 24 |   expect({ status: response.status, externalCalls: externalBoundary.mock.calls.length }).toEqual({ status: 503, externalCalls: 0 })
+         |                                                                                          ^
+      25 |   expect(await response.json()).toMatchObject({ success: false, outcome: 'not_attempted' })
+      26 | })
+      27 | test.each([['GET', GET], ['DELETE', DELETE], ['cleanup GET', cleanupGet], ['cleanup POST', cleanupPost]] as const)('%s is permanently unavailable even with enabled flag and valid cron header', async (_, handler) => {
+
+      at toEqual (src/lib/server/__tests__/invitation-sender-legacy.test.ts:24:90)
+
+  ● GET is permanently unavailable even with enabled flag and valid cron header
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "externalCalls": 0,
+    -   "status": 503,
+    +   "externalCalls": 1,
+    +   "status": 401,
+      }
+
+      30 |   const request = new NextRequest('http://localhost/api/invitations', { headers: { 'x-cron-secret': 'synthetic-cron' } })
+      31 |   const response = await handler(request, { params: Promise.resolve({ id: '22222222-2222-4222-8222-222222222222' }) })
+    > 32 |   expect({ status: response.status, externalCalls: externalBoundary.mock.calls.length }).toEqual({ status: 503, externalCalls: 0 })
+         |                                                                                          ^
+      33 | })
+      34 |
+
+      at toEqual (src/lib/server/__tests__/invitation-sender-legacy.test.ts:32:90)
+
+  ● DELETE is permanently unavailable even with enabled flag and valid cron header
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "externalCalls": 0,
+    -   "status": 503,
+    +   "externalCalls": 1,
+    +   "status": 401,
+      }
+
+      30 |   const request = new NextRequest('http://localhost/api/invitations', { headers: { 'x-cron-secret': 'synthetic-cron' } })
+      31 |   const response = await handler(request, { params: Promise.resolve({ id: '22222222-2222-4222-8222-222222222222' }) })
+    > 32 |   expect({ status: response.status, externalCalls: externalBoundary.mock.calls.length }).toEqual({ status: 503, externalCalls: 0 })
+         |                                                                                          ^
+      33 | })
+      34 |
+
+      at toEqual (src/lib/server/__tests__/invitation-sender-legacy.test.ts:32:90)
+
+  ● cleanup GET is permanently unavailable even with enabled flag and valid cron header
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "externalCalls": 0,
+    -   "status": 503,
+    +   "externalCalls": 1,
+    +   "status": 500,
+      }
+
+      30 |   const request = new NextRequest('http://localhost/api/invitations', { headers: { 'x-cron-secret': 'synthetic-cron' } })
+      31 |   const response = await handler(request, { params: Promise.resolve({ id: '22222222-2222-4222-8222-222222222222' }) })
+    > 32 |   expect({ status: response.status, externalCalls: externalBoundary.mock.calls.length }).toEqual({ status: 503, externalCalls: 0 })
+         |                                                                                          ^
+      33 | })
+      34 |
+
+      at toEqual (src/lib/server/__tests__/invitation-sender-legacy.test.ts:32:90)
+
+  ● cleanup POST is permanently unavailable even with enabled flag and valid cron header
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "externalCalls": 0,
+    -   "status": 503,
+    +   "externalCalls": 1,
+    +   "status": 500,
+      }
+
+      30 |   const request = new NextRequest('http://localhost/api/invitations', { headers: { 'x-cron-secret': 'synthetic-cron' } })
+      31 |   const response = await handler(request, { params: Promise.resolve({ id: '22222222-2222-4222-8222-222222222222' }) })
+    > 32 |   expect({ status: response.status, externalCalls: externalBoundary.mock.calls.length }).toEqual({ status: 503, externalCalls: 0 })
+         |                                                                                          ^
+      33 | })
+      34 |
+
+      at toEqual (src/lib/server/__tests__/invitation-sender-legacy.test.ts:32:90)
+
+Test Suites: 1 failed, 1 total
+Tests:       7 failed, 7 total
+Snapshots:   0 total
+Time:        1.034 s
+Ran all test suites matching invitation-sender-legacy.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand invitation-sender-legacy

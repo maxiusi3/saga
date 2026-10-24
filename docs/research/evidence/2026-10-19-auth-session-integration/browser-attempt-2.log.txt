@@ -1,0 +1,9 @@
+PASS mixed error/token URL caused no SDK exchange/session write
+PASS OAuth uses S256 and writes browser verifier cookie
+BLOCKED http://localhost:54393/bundle.js
+BROWSER error: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector
+page.waitForFunction: Timeout 30000ms exceeded.
+    at main (/Users/eat/Documents/eatpotato/saga传奇/scripts/verify-auth-session-browser.cjs:76:14) {
+  name: 'TimeoutError'
+}
+{"cleanup":{"listening":false,"sockets":0},"ownedBrowserClosed":true,"ownedTempRemoved":true,"nextEnvUnchanged":true,"nextEnvRestoredHash":"7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"}

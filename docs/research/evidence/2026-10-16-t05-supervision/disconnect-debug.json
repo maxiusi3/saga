@@ -1,0 +1,51 @@
+{
+  "startedAt": "2026-10-16T02:47:34.696Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "a0216f0133d2489224da97bbcfee2bfae1d97e8528da65520554a7a530ce9375",
+    "experiments/t05-durable-worker/worker.mjs": "87bf8f280aae7b34c588411d2284b1b4fdf78d27d74bbedae41494fe864b915b",
+    "experiments/t05-durable-worker/verify.mjs": "314c01c15bb12f2dd754cf81ec0b9b9bdb12c550d46521c574c4edc2efb8aa91",
+    "experiments/t05-durable-worker/runner.mjs": "62526bc2fdf4e6e61447350bb48a684a4e1ada9982ce4498fe745cc61c864df6",
+    "experiments/t05-durable-worker/supervisor.mjs": "22e0acfedef07ce896a54b9ca2b43847948e83229b56353d610a27da84c4e6b0",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "9b77c1a27fb7dfe0e4830e053240aaee5e6161d47ecb6a00e6e2d6651a8adb08",
+    "experiments/t05-durable-worker/README.md": "9a87cddf54cc0000fc1fb2976d63a0f2b6cef096322c369923471bff876541f7",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [],
+  "assertions": 0,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "Local asynchronous synthetic tasks and process supervision only; no real audio, provider cancellation/billing, production hosting, real-device recording, backup restore, or load qualification."
+  ],
+  "status": "failed",
+  "error": "Error: Supervisor did not close: exit={\"code\":0,\"signal\":null} exists=false messages=[{\"type\":\"supervisor_ready\",\"supervisorPid\":25182,\"receivedAt\":1792118856478},{\"type\":\"runner_spawn\",\"pid\":25184,\"supervisorPid\":25182,\"receivedAt\":1792118856481},{\"type\":\"ready\",\"pid\":25184,\"supervisorPid\":25182,\"receivedAt\":1792118856931},{\"type\":\"checkpoint\",\"stage\":\"leased\",\"info\":{\"jobId\":\"supervision-parent-disconnect\",\"queueId\":\"8db200fe-bb07-4d89-b2ae-04213313453c\",\"attempt\":1,\"workerId\":\"runner-25184\",\"retryCount\":0},\"pid\":25184,\"supervisorPid\":25182,\"receivedAt\":1792118856949},{\"type\":\"checkpoint\",\"stage\":\"before_dispatch\",\"info\":{\"jobId\":\"supervision-parent-disconnect\",\"queueId\":\"8db200fe-bb07-4d89-b2ae-04213313453c\",\"attempt\":1,\"workerId\":\"runner-25184\",\"retryCount\":0},\"pid\":25184,\"supervisorPid\":25182,\"receivedAt\":1792118856952},{\"type\":\"checkpoint\",\"stage\":\"provider\",\"info\":{\"jobId\":\"supervision-parent-disconnect\",\"queueId\":\"8db200fe-bb07-4d89-b2ae-04213313453c\",\"attempt\":1,\"workerId\":\"runner-25184\",\"retryCount\":0,\"reused\":false},\"pid\":25184,\"supervisorPid\":25182,\"receivedAt\":1792118856955}] output=\n    at Object.closed (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:217:29)\n    at async supervisedDisconnect (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/supervision-scenarios.mjs:170:19)\n    at async scenario (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:58:19)\n    at async file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:589:5",
+  "processOwnership": {
+    "supervisorPids": [
+      25182
+    ],
+    "runnerPids": [
+      25184
+    ],
+    "remainingGroups": [],
+    "remainingRunnerPids": []
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 1,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": [
+      "Could not stop owned child: Child termination not confirmed within 2s (pid 25182)"
+    ]
+  },
+  "cleanupError": "Cleanup incomplete: {\"ownedChildrenRemaining\":1,\"clusterStopped\":true,\"tempDirectoryRemoved\":true,\"errors\":[\"Could not stop owned child: Child termination not confirmed within 2s (pid 25182)\"]}",
+  "finishedAt": "2026-10-16T02:47:53.211Z"
+}

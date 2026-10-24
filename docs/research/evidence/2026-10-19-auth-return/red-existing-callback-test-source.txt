@@ -1,0 +1,13 @@
+/** @jest-environment node */
+import { NextRequest } from 'next/server'
+import { GET } from '@/app/[locale]/auth/callback/route'
+
+test('callback error is a private fixed 303 and preserves only a safe next', async () => {
+  const log = jest.spyOn(console, 'log').mockImplementation(() => {})
+  const error = jest.spyOn(console, 'error').mockImplementation(() => {})
+  try {
+    const response = await GET(new NextRequest('http://localhost/en/auth/callback?error=PRIVATE_AUTH_SENTINEL&error_description=PRIVATE_DESCRIPTION_SENTINEL&next=%2Fdashboard'))
+    expect({ status: response.status, location: response.headers.get('location'), cache: response.headers.get('cache-control'), referrer: response.headers.get('referrer-policy'), logs: log.mock.calls, errors: error.mock.calls }).toEqual({ status: 303, location: 'http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard', cache: 'no-store', referrer: 'no-referrer', logs: [], errors: [] })
+  } finally { jest.restoreAllMocks() }
+})
+

@@ -1,0 +1,15 @@
+M1 scoped evidence-wording correction verified. Only the specified sentence replacement changed; both current report copies are identical. No application source changes.
+
+--- reviewed-report
++++ current-report
+@@ -26,7 +26,7 @@
+ 
+    `npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts`
+ 
+-   Jest/npm exit **1**, **2 failed suites / 5 failed tests**. Old code demonstrably omitted obsolete-key deletion, reflected raw signin error, used push, logged complete callback URL/code/error sentinels, reflected error_description, and returned 307 without privacy headers. Original test bytes are retained as `red-existing-signin-test-source.txt` and `red-existing-callback-test-source.txt`; original application bytes remain in controller recovery `before/`.
++   Jest/npm exit **1**, **2 failed suites / 5 failed tests**. Old code demonstrably omitted obsolete-key deletion, reflected raw signin error, used push, logged the full callback URL and raw error sentinels, reflected error_description, and returned 307 without privacy headers. Old-source inspection also found code/token_hash logging; this initial five-test RED did not execute a code-sentinel disclosure case. Original test bytes are retained as `red-existing-signin-test-source.txt` and `red-existing-callback-test-source.txt`; original application bytes remain in controller recovery `before/`.
+ 
+ 2. `red-contract-tests.txt`: expanded helper/React tests, npm exit **1**. This includes the initially missing helper module and therefore is **not** described as wholly behavioral RED. `first-implementation-tests.txt`: **57 failed / 77 passed**, exit **1**, due to a test-only attempt to spy on the SDK's nonconfigurable export. That harness issue was fixed by observing the actual underlying exported constructor without replacing SDK/auth implementations. `callback-fixture-run-2.txt` then passed **57 callback tests**, exit **0**.
+ 
+
+PASS

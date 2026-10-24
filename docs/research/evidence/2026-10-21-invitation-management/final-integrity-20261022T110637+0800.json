@@ -1,0 +1,108 @@
+{
+  "checkedAt": "2026-10-22T03:07:05.531903+00:00",
+  "scope": "Final documentation, reviewed evidence, frozen inputs and original gates; no application/SQL test reruns or remote calls.",
+  "files": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "84f0328ed4f8d2ec1a7be76cf7c3ef7ba91288fb894ae21bc0c89e214e8af3b1",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "58a2db3dd7a6ae5d96d7de6790fc3f0c26786d26ede06d027b5ff7ecfb3ddf23",
+    "docs/README.md": "b8ea94aa6d7caa7ff593453447dac5c73c268650585c8585cda68448f9b267ab",
+    "docs/superpowers/plans/2026-10-11-upgrade-p0-preparation.md": "0f3785366aa981a2b9ba1707d63c7784977913569784af9aadeef505f67fe92c",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "3ea1d8ddcdaba3a88b9e1cc0dabaf65f800536b94ac5b7e62a104d3cd46b8562",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "27fd0541442073120772d687db8722cc9fa09d3fd41ed3f9a50bb983d7b5d8ca",
+    "docs/superpowers/plans/2026-10-21-upgrade-invitation-management.md": "4382906f8ceb2916772e44666a9d0a36fd593e5079ba5aab2465f562f31f96c9",
+    "docs/research/2026-10-21-invitation-management.md": "24179e415e0fafdc663649752c1cfb1215b6f5ecd5c864cf8e49db728a8bceae",
+    "docs/research/evidence/2026-10-21-invitation-management/README.md": "1620c130dfde44d7581e250eea30d856d42213aa630a2326f95a96ee180eefc4",
+    "docs/research/evidence/2026-10-21-invitation-management/verification.json": "d753aad374ffd857e4abc8cd82a75770de0da3107f362006b36ba1c6a2564f04",
+    "docs/research/evidence/2026-10-21-invitation-management/milestone-check.json": "a990668ed63b6423808f39567881b50aaf9e2acd6755ce56ee2e3ce7af35c0c4",
+    ".superpowers/sdd/2026-10-21-upgrade-invitation-management/progress.md": "fdf0e777fd50120fe455d8abd9b3aa496909ffcafac932e06069259e7850835b",
+    "docs/research/evidence/2026-10-21-invitation-management/task-3-review.md": "ad03b68980aa26116b0c302218fe8ada98e67b5ea8365a35eff66bd2f6330909",
+    "docs/research/evidence/2026-10-21-invitation-management/batch-final-review.md": "1b4a52de4771b74b164f550a345d01fa7c359974de66212cdbb2f3712e04454f"
+  },
+  "linkFailures": [],
+  "referenceFailures": [],
+  "frozenInputRecovery": {
+    "report": "docs/research/evidence/2026-10-21-invitation-management/resume-integrity-20261022T030705608226Z.json",
+    "sha256": "f3990f42b6fbd54ac52754516cc2c368a3ec4b138bb82fff9d6d752354d77ebb",
+    "status": "passed",
+    "checks": {
+      "applicationInputs": {
+        "checked": 796,
+        "mismatches": []
+      },
+      "batchSourceInputs": {
+        "checked": 19,
+        "mismatches": []
+      },
+      "protectedPriorInputs": {
+        "checked": 986,
+        "mismatches": []
+      },
+      "sqlInputsAndRuntime": {
+        "checked": 774,
+        "mismatches": []
+      },
+      "rawAndPublishedLogs": {
+        "checked": 38,
+        "mismatches": []
+      },
+      "linkedReportsAndFinalLogs": {
+        "checked": 17,
+        "mismatches": []
+      },
+      "applicationInventory": {
+        "checked": 571,
+        "added": [],
+        "removed": []
+      },
+      "runtimeInventory": {
+        "checked": 743,
+        "added": [],
+        "removed": []
+      },
+      "nodeRuntime": {
+        "version": "v22.22.2",
+        "sha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+        "expectedSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+        "matches": true
+      },
+      "nextEnv": {
+        "currentSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+        "savedSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+        "matchesSavedBytes": true
+      }
+    }
+  },
+  "originalGates": {
+    "unchanged": true,
+    "sha256": "1f2985e8f32864393544381232a1624af423b61aa19ba5ff414f8ffd5bcb90ca",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": true,
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": true
+  },
+  "reviews": {
+    "documentation": {
+      "status": "approved",
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "openFindings": 0,
+      "report": "docs/research/evidence/2026-10-21-invitation-management/task-3-review.md",
+      "sha256": "ad03b68980aa26116b0c302218fe8ada98e67b5ea8365a35eff66bd2f6330909"
+    },
+    "wholeBatch": {
+      "status": "approved",
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "openFindings": 0,
+      "report": "docs/research/evidence/2026-10-21-invitation-management/batch-final-review.md",
+      "sha256": "1b4a52de4771b74b164f550a345d01fa7c359974de66212cdbb2f3712e04454f"
+    }
+  },
+  "reviewerIndependence": "The same reviewer independently assessed the original authors' documentation and whole-batch implementation; these are two scopes, not two independent opinions.",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "diffCheck": {
+    "exitCode": 0,
+    "diagnostics": ""
+  },
+  "status": "passed",
+  "errors": [],
+  "hashDirection": "This report hashes final verification.json; verification.json links here without a reverse hash to avoid circular hashing."
+}

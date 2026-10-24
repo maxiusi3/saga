@@ -1,0 +1,160 @@
+--- a/packages/web/src/app/api/ai/transcribe/route.ts
++++ b/packages/web/src/app/api/ai/transcribe/route.ts
+@@ -85,7 +85,17 @@
+       const access = await requireMediaAccess(reference, guard.user);
+       if (!access.ok) return withMediaHeaders(access.response, guard.headers);
+       try {
+-        const { data, error } = await access.admin.storage.from(reference.bucket).download(reference.path);
++        const storage = access.admin.storage.from(reference.bucket);
++        const { data: info, error: infoError } = await storage.info(reference.path);
++        if (infoError || !info) {
++          return jsonWithRateLimit({ error: 'Failed to fetch audio from storage' }, guard.headers, 404);
++        }
++        if (typeof info.size === 'number' && info.size > MAX_STORED_AUDIO_BYTES) {
++          return jsonWithRateLimit({ error: 'Stored audio exceeds the 100MB limit' }, guard.headers, 413);
++        }
++        // The SDK's default download buffers the whole object as a Blob. Read a
++        // stream so absent or stale size metadata cannot bypass the byte limit.
++        const { data, error } = await storage.download(reference.path).asStream();
+ 
+         if (error || !data) {
+           return jsonWithRateLimit(
+@@ -95,17 +105,31 @@
+           );
+         }
+ 
+-        if (data.size > MAX_STORED_AUDIO_BYTES) {
+-          return jsonWithRateLimit({ error: 'Stored audio exceeds the 100MB limit' }, guard.headers, 413);
+-        }
+         filename = reference.path.split('/').pop()!;
+-        mimeType = audioMimeType(data.type, filename);
+-        const buffer = await data.arrayBuffer();
+-        if (buffer.byteLength > MAX_STORED_AUDIO_BYTES) {
+-          return jsonWithRateLimit({ error: 'Stored audio exceeds the 100MB limit' }, guard.headers, 413);
+-        }
+-        audioBuffer = buffer;
+-        audioSize = buffer.byteLength;
++        mimeType = audioMimeType(info.contentType ?? '', filename);
++        const reader = data.getReader();
++        const chunks: Uint8Array[] = [];
++        try {
++          while (true) {
++            const { done, value } = await reader.read();
++            if (done) break;
++            audioSize += value.byteLength;
++            if (audioSize > MAX_STORED_AUDIO_BYTES) {
++              await reader.cancel().catch(() => {});
++              return jsonWithRateLimit({ error: 'Stored audio exceeds the 100MB limit' }, guard.headers, 413);
++            }
++            chunks.push(value);
++          }
++        } finally {
++          reader.releaseLock();
++        }
++        const buffer = new Uint8Array(audioSize);
++        let offset = 0;
++        for (const chunk of chunks) {
++          buffer.set(chunk, offset);
++          offset += chunk.byteLength;
++        }
++        audioBuffer = buffer.buffer;
+       } catch (err) {
+         console.error('Error fetching from storage:', err);
+         return jsonWithRateLimit(
+--- a/packages/web/src/app/api/media/__tests__/access.test.ts
++++ b/packages/web/src/app/api/media/__tests__/access.test.ts
+@@ -8,6 +8,8 @@
+ let mockDatabaseUnavailable = false
+ let mockLookupError = false
+ let mockDownloaded: Blob | null
++let mockDownloadStream: ReadableStream<Uint8Array> | undefined
++const mockInfo = jest.fn()
+ const mockSign = jest.fn()
+ const mockDownload = jest.fn()
+ const mockUpload = jest.fn()
+@@ -77,9 +79,20 @@
+   mockAuth.mockResolvedValue({ ok: true, user: { id: 'alice' }, headers: headers() })
+   mockDownloaded = new Blob(['original audio'], { type: 'audio/mpeg' })
+   mockSign.mockResolvedValue({ data: { signedUrl: 'https://storage.example/signed' }, error: null })
+-  mockDownload.mockImplementation(async () => ({ data: mockDownloaded, error: mockDownloaded ? null : { message: 'missing' } }))
++  mockDownloadStream = undefined
++  mockInfo.mockImplementation(async () => ({
++    data: mockDownloaded ? { size: mockDownloaded.size, contentType: mockDownloaded.type } : null,
++    error: mockDownloaded ? null : { message: 'missing' },
++  }))
++  mockDownload.mockImplementation(() => Object.assign(
++    Promise.resolve({ data: mockDownloaded, error: mockDownloaded ? null : { message: 'missing' } }),
++    { asStream: async () => ({
++      data: mockDownloadStream ?? mockDownloaded?.stream() ?? null,
++      error: mockDownloaded ? null : { message: 'missing' },
++    }) },
++  ))
+   mockUpload.mockImplementation(async (path: string) => ({ data: { path }, error: null }))
+-  mockStorageBucket.mockReturnValue({ createSignedUrl: mockSign, download: mockDownload, upload: mockUpload })
++  mockStorageBucket.mockReturnValue({ createSignedUrl: mockSign, download: mockDownload, info: mockInfo, upload: mockUpload })
+   const sharpChain = { resize: jest.fn(), toFormat: jest.fn(), jpeg: jest.fn(), png: jest.fn(), toBuffer: jest.fn(async () => Buffer.from('thumbnail')) }
+   for (const method of ['resize', 'toFormat', 'jpeg', 'png'] as const) sharpChain[method].mockReturnValue(sharpChain)
+   mockSharp.mockReturnValue(sharpChain)
+@@ -142,6 +155,7 @@
+     'alice/projects//a.mp3', 'alice/projects/family-a/a\\b.mp3',
+     'https://example.com/alice/projects/family-a/a.mp3', 'alice/foo/projects/family-a/a.mp3',
+     'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
++    'alice/projects/family-a/control\u0085.mp3',
+   ])('rejects ambiguous key before storage: %s', async path => {
+     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+     noStorage()
+@@ -207,11 +221,33 @@
+     expect(file.name).toBe('voice.mp3')
+     expect(file.type).toBe('audio/mpeg')
+   })
+-  it('rejects an oversized stored object without reading its bytes or calling the provider', async () => {
++  it.each(['constructor', '__proto__'])('uses octet-stream for unknown extension %s', async extension => {
++    mockDownloaded = new Blob(['original audio'])
++    expect((await transcribe(multipart({ storagePath: `alice/temp/audio.${extension}` }))).status).toBe(200)
++    const file = mockProvider.mock.calls[0][1].body.get('file') as File
++    expect(file.type).toBe('application/octet-stream')
++  })
++  it.each([undefined, 1])('stops an oversized stream when metadata size is %s', async size => {
++    mockInfo.mockResolvedValue({ data: { size, contentType: 'audio/mpeg' }, error: null })
++    const cancel = jest.fn()
++    let reads = 0
++    const chunk = new Uint8Array(1024 * 1024)
++    mockDownloadStream = new ReadableStream({
++      pull(controller) { reads += 1; controller.enqueue(chunk) },
++      cancel,
++    }, { highWaterMark: 0 })
++    const response = await transcribe(multipart({ storagePath: 'alice/temp/large.mp3' }))
++    expect(response.status).toBe(413)
++    expect(reads).toBe(101)
++    expect(cancel).toHaveBeenCalledTimes(1)
++    expect(mockProvider).not.toHaveBeenCalled()
++  })
++  it('rejects an oversized stored object before downloading or calling the provider', async () => {
+     Object.defineProperty(mockDownloaded, 'size', { value: 101 * 1024 * 1024 })
+     const read = jest.spyOn(mockDownloaded!, 'arrayBuffer')
+     expect((await transcribe(multipart({ storagePath: 'alice/temp/large.mp3' }))).status).toBe(413)
+     expect(read).not.toHaveBeenCalled()
++    expect(mockDownload).not.toHaveBeenCalled()
+     expect(mockProvider).not.toHaveBeenCalled()
+   })
+ })
+--- a/packages/web/src/lib/media-reference.ts
++++ b/packages/web/src/lib/media-reference.ts
+@@ -14,7 +14,7 @@
+ /** Validate an exact Storage key; never decode or normalize an authorization input. */
+ export function parseMediaReference(bucket: unknown, path: unknown): MediaReference | null {
+   if (bucket !== 'saga' && bucket !== 'audio-recordings') return null
+-  if (typeof path !== 'string' || !path || path !== path.trim() || /[\\%?#:\u0000-\u001f\u007f]/.test(path)) return null
++  if (typeof path !== 'string' || !path || path !== path.trim() || /[\\%?#:\u0000-\u001f\u007f-\u009f]/.test(path)) return null
+   const parts = path.split('/')
+   if (parts.length < 2 || parts.some(part => !part || part === '.' || part === '..')) return null
+   if (parts.slice(2).includes('projects')) return null
+@@ -47,5 +47,7 @@
+     mp3: 'audio/mpeg', mp4: 'audio/mp4', m4a: 'audio/mp4', wav: 'audio/wav',
+     webm: 'audio/webm', ogg: 'audio/ogg', oga: 'audio/ogg', aac: 'audio/aac', flac: 'audio/flac',
+   }
+-  return types[extension ?? ''] ?? 'application/octet-stream'
++  return extension && Object.prototype.hasOwnProperty.call(types, extension)
++    ? types[extension]
++    : 'application/octet-stream'
+ }

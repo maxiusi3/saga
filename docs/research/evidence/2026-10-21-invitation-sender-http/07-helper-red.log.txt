@@ -1,0 +1,179 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand invitation-sender-client --testNamePattern=helper|failure responses|lost write|invalid local
+
+FAIL src/lib/__tests__/invitation-sender-client.test.ts
+  ● send helper uses exact normalized command and no browser cookies/storage
+
+    InvitationHttpError: Invitation was not attempted.
+
+      1 | import { InvitationHttpError } from './invitation-acceptance-client'
+    > 2 | export async function sendInvitationOverHttp(..._args: unknown[]) { throw new InvitationHttpError('not_attempted', 503) }
+        |                                                                           ^
+      3 | export async function releaseInvitationOverHttp(..._args: unknown[]) { throw new InvitationHttpError('not_attempted', 503) }
+      4 | export async function lookupInvitationOverHttp(..._args: unknown[]) { throw new InvitationHttpError('not_attempted', 503) }
+      5 |
+
+      at sendInvitationOverHttp (src/lib/invitation-sender-client.ts:2:75)
+      at Object.<anonymous> (src/lib/__tests__/invitation-sender-client.test.ts:76:38)
+
+  ● send helper rejects a malformed 2xx with no retry or implicit recovery
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "canQueryStatus": true,
+    -   "outcome": "unknown",
+    +   "canQueryStatus": false,
+    +   "outcome": "not_attempted",
+      }
+
+      20 |   const error = await work.then(() => null, e => e)
+      21 |   expect(error).toBeInstanceOf(InvitationHttpError)
+    > 22 |   expect(error).toMatchObject({ outcome, canQueryStatus: outcome === 'unknown' })
+         |                 ^
+      23 |   expect(String(error).includes('PRIVATE_UPSTREAM_ERROR')).toBe(false)
+      24 | }
+      25 | test('old send/generate/list facades are unavailable before session, RPC, table or HTTP access', async () => {
+
+      at toMatchObject (src/lib/__tests__/invitation-sender-client.test.ts:22:17)
+      at src/lib/__tests__/invitation-sender-client.test.ts:83:5
+
+  ● release helper rejects a malformed 2xx with no retry or implicit recovery
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "canQueryStatus": true,
+    -   "outcome": "unknown",
+    +   "canQueryStatus": false,
+    +   "outcome": "not_attempted",
+      }
+
+      20 |   const error = await work.then(() => null, e => e)
+      21 |   expect(error).toBeInstanceOf(InvitationHttpError)
+    > 22 |   expect(error).toMatchObject({ outcome, canQueryStatus: outcome === 'unknown' })
+         |                 ^
+      23 |   expect(String(error).includes('PRIVATE_UPSTREAM_ERROR')).toBe(false)
+      24 | }
+      25 | test('old send/generate/list facades are unavailable before session, RPC, table or HTTP access', async () => {
+
+      at toMatchObject (src/lib/__tests__/invitation-sender-client.test.ts:22:17)
+      at src/lib/__tests__/invitation-sender-client.test.ts:83:5
+
+  ● lookup helper rejects a malformed 2xx with no retry or implicit recovery
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "canQueryStatus": true,
+    -   "outcome": "unknown",
+    +   "canQueryStatus": false,
+    +   "outcome": "not_attempted",
+      }
+
+      20 |   const error = await work.then(() => null, e => e)
+      21 |   expect(error).toBeInstanceOf(InvitationHttpError)
+    > 22 |   expect(error).toMatchObject({ outcome, canQueryStatus: outcome === 'unknown' })
+         |                 ^
+      23 |   expect(String(error).includes('PRIVATE_UPSTREAM_ERROR')).toBe(false)
+      24 | }
+      25 | test('old send/generate/list facades are unavailable before session, RPC, table or HTTP access', async () => {
+
+      at toMatchObject (src/lib/__tests__/invitation-sender-client.test.ts:22:17)
+      at src/lib/__tests__/invitation-sender-client.test.ts:83:5
+
+  ● failure responses need compatible status and complete failure contract before implying no write
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "canQueryStatus": false,
+    -   "outcome": "rejected",
+    +   "outcome": "not_attempted",
+      }
+
+      20 |   const error = await work.then(() => null, e => e)
+      21 |   expect(error).toBeInstanceOf(InvitationHttpError)
+    > 22 |   expect(error).toMatchObject({ outcome, canQueryStatus: outcome === 'unknown' })
+         |                 ^
+      23 |   expect(String(error).includes('PRIVATE_UPSTREAM_ERROR')).toBe(false)
+      24 | }
+      25 | test('old send/generate/list facades are unavailable before session, RPC, table or HTTP access', async () => {
+
+      at toMatchObject (src/lib/__tests__/invitation-sender-client.test.ts:22:17)
+      at Object.<anonymous> (src/lib/__tests__/invitation-sender-client.test.ts:96:5)
+
+  ● lost write response and invalid JSON are unknown; explicit lookup never resends
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "canQueryStatus": true,
+    -   "outcome": "unknown",
+    +   "canQueryStatus": false,
+    +   "outcome": "not_attempted",
+      }
+
+      20 |   const error = await work.then(() => null, e => e)
+      21 |   expect(error).toBeInstanceOf(InvitationHttpError)
+    > 22 |   expect(error).toMatchObject({ outcome, canQueryStatus: outcome === 'unknown' })
+         |                 ^
+      23 |   expect(String(error).includes('PRIVATE_UPSTREAM_ERROR')).toBe(false)
+      24 | }
+      25 | test('old send/generate/list facades are unavailable before session, RPC, table or HTTP access', async () => {
+
+      at toMatchObject (src/lib/__tests__/invitation-sender-client.test.ts:22:17)
+      at Object.<anonymous> (src/lib/__tests__/invitation-sender-client.test.ts:101:3)
+
+  ● invalid local commands and pre-abort stop before any fetch
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "canQueryStatus": false,
+    -   "outcome": "rejected",
+    +   "outcome": "not_attempted",
+      }
+
+      20 |   const error = await work.then(() => null, e => e)
+      21 |   expect(error).toBeInstanceOf(InvitationHttpError)
+    > 22 |   expect(error).toMatchObject({ outcome, canQueryStatus: outcome === 'unknown' })
+         |                 ^
+      23 |   expect(String(error).includes('PRIVATE_UPSTREAM_ERROR')).toBe(false)
+      24 | }
+      25 | test('old send/generate/list facades are unavailable before session, RPC, table or HTTP access', async () => {
+
+      at toMatchObject (src/lib/__tests__/invitation-sender-client.test.ts:22:17)
+      at Object.<anonymous> (src/lib/__tests__/invitation-sender-client.test.ts:110:3)
+
+Test Suites: 1 failed, 1 total
+Tests:       7 failed, 5 skipped, 12 total
+Snapshots:   0 total
+Time:        0.612 s, estimated 1 s
+Ran all test suites matching invitation-sender-client with tests matching "helper|failure responses|lost write|invalid local".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand invitation-sender-client '--testNamePattern=helper|failure responses|lost write|invalid local'

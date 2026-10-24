@@ -1,0 +1,5 @@
+{
+  "command": "npm audit --workspaces --audit-level=high --package-lock-only --json --prefer-offline --fetch-timeout=30000 --fetch-retries=1",
+  "exitCode": 1,
+  "checkedAt": "2026-10-15T12:05:31.505425+00:00"
+}

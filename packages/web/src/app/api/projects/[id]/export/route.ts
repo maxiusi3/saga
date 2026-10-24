@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import JSZip from 'jszip'
+import { addVerifiedMediaAssetsToZip } from '@/lib/server/media-export'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function POST(
   request: NextRequest,
@@ -80,6 +82,35 @@ export async function POST(
 
     // 创建ZIP文件
     const zip = new JSZip()
+
+    if (process.env.MEDIA_ASSETS_ENABLED === 'true') {
+      let mediaAdmin: ReturnType<typeof getSupabaseAdmin>
+      try {
+        mediaAdmin = getSupabaseAdmin()
+      } catch {
+        return NextResponse.json({ error: 'Media asset export is not configured' }, { status: 503 })
+      }
+      const { data: assets, error: assetsError } = await mediaAdmin
+        .from('media_assets')
+        .select('id, kind, original_filename, mime_type, byte_size, sha256, state, version, bucket, object_key')
+        .eq('project_id', projectId)
+        .order('created_at', { ascending: true })
+
+      if (assetsError) {
+        return NextResponse.json({ error: 'Failed to load media assets for export' }, { status: 500 })
+      }
+
+      try {
+        await addVerifiedMediaAssetsToZip(zip, assets || [], async asset => {
+          const { data, error } = await mediaAdmin.storage.from(asset.bucket).download(asset.object_key)
+          if (error || !data) throw new Error(`Media asset unavailable: ${asset.id}`)
+          return Buffer.from(await data.arrayBuffer())
+        })
+      } catch (error) {
+        console.error('Media asset export verification failed:', error)
+        return NextResponse.json({ error: 'Media assets are incomplete and cannot be exported' }, { status: 409 })
+      }
+    }
 
     // AUD-04 FIX: Add Beta notice in README
     const betaNotice = `# UR Saga Data Export (Beta)

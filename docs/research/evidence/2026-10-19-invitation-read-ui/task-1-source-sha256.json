@@ -1,0 +1,79 @@
+{
+  "algorithm": "SHA-256",
+  "changedSources": {
+    "packages/web/src/lib/server/invitation-acceptance.ts": {
+      "sha256": "84d0afb2e06b34474f8c6b389c7136c202a969b6030a6b822a46ab151c427159",
+      "bytes": 6926
+    },
+    "packages/web/src/app/api/invitations/[token]/route.ts": {
+      "sha256": "1a843649f1ab5d666706b5b7099b1b0257286bf869cf026955574a7cf8545de3",
+      "bytes": 293
+    },
+    "packages/web/src/app/api/invitations/verify/route.ts": {
+      "sha256": "4f1658896953db2f32e5a824ff93d68d4f03646fceca6eb1ad50bb07bdebd92c",
+      "bytes": 361
+    },
+    "packages/web/src/app/api/invitations/check-pending/route.ts": {
+      "sha256": "1c235ade986dff4635e2b2063f9309557c42e668d5ffafcd7517fd03b145b0cb",
+      "bytes": 392
+    },
+    "packages/web/src/app/[locale]/invite/[token]/page.tsx": {
+      "sha256": "e1f37de35ae00df640756d5bd765e496803e86a996a9a69bf7448795ca34c589",
+      "bytes": 605
+    },
+    "packages/web/src/app/[locale]/accept-invitation/page.tsx": {
+      "sha256": "db57cf5502760596adb4c44b5b75d5b1fec72600362799d042350ee9a884fd65",
+      "bytes": 779
+    },
+    "packages/web/src/app/[locale]/page.tsx": {
+      "sha256": "bc3e467eaf7bd3edadde27a96804bfc116960345969c34e27b6df168330ce4aa",
+      "bytes": 25109
+    },
+    "packages/web/src/components/invitations/invitation-recipient.tsx": {
+      "sha256": "1cb092ae8b277fd93c69ff8526ed23d5f29a8f8dcab992f05172c791a2a899cf",
+      "bytes": 9703
+    },
+    "packages/web/src/lib/server/__tests__/invitation-read-routes.test.ts": {
+      "sha256": "440ec8e1c88e0594ed7d066f579e06016a5f49ab2614dce157ec110b5d61dd57",
+      "bytes": 9997
+    },
+    "packages/web/src/components/invitations/__tests__/invitation-recipient.test.tsx": {
+      "sha256": "75e83f9688e7b8c197b1d4689cefea4446a89bb325ce1aebc197f8d92272a7bc",
+      "bytes": 15624
+    }
+  },
+  "unchangedContractAndRegressionSources": {
+    "packages/web/src/lib/invitation-acceptance-client.ts": {
+      "sha256": "37e32f8c3390ce7409b3210c26cd0f26634f459555dcf0209a350facd15e9d8d",
+      "bytes": 2204
+    },
+    "packages/web/src/lib/invitation-acceptance-protocol.ts": {
+      "sha256": "fc820ec8c6210a772bdd5e8f098380c4f4ac293fd176d8589ef8c3fb55a06206",
+      "bytes": 6748
+    },
+    "packages/web/src/lib/server/__tests__/invitation-acceptance.test.ts": {
+      "sha256": "31e8066758b8c15937019823e83204b499679366d04c60dc36e57429c5d56885",
+      "bytes": 17614
+    },
+    "packages/web/src/lib/__tests__/invitation-acceptance-client.test.ts": {
+      "sha256": "f3ded0aac40c3660cc3dcbaef5546711fb95fba6c787bdae4c4711406b5f44cd",
+      "bytes": 6943
+    },
+    "packages/web/src/lib/__tests__/invitation-acceptance-protocol.test.ts": {
+      "sha256": "88b297b0dee9cc14c148bc78028620a908274f99336a02035ebec635b6721238",
+      "bytes": 5967
+    },
+    "packages/web/src/lib/server/test-support/invitation-fixture.ts": {
+      "sha256": "ccd34db2d2957a4f2670cf9839a45673bcdc1269640f7061fcf331c05208d193",
+      "bytes": 5175
+    },
+    "packages/web/src/app/[locale]/auth/signin/page.tsx": {
+      "sha256": "a0d8f4b324fd341a3ca4747f42db5257639dc80324482cd023813b1ec6e3b08a",
+      "bytes": 11203
+    },
+    "packages/web/src/app/[locale]/auth/callback/route.ts": {
+      "sha256": "b65a2b95705a41b27bd87c2e1be4fa59ea47dc2e59d7bdf466a504210c5ef0ef",
+      "bytes": 5479
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "checkedAt": "2026-10-17T03:12:57.880464+00:00",
+  "status": "local_evidence_and_handoff_complete_independent_review_pending",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "sourceSha256": {
+    "scripts/inspect-supabase-metadata.cjs": "2f8330bf74023629b6c862d1fc049c3e1e2d4ac40ac3258ff57bdb906c5b240d",
+    "scripts/__tests__/inspect-supabase-metadata.test.cjs": "067694696c04363fffa0a11620bb6128595ccf6f4c0216a5aef19a93956384e2",
+    ".gitignore": "1824aac1eaabcc8b2e3bbe2f518178792fa447b247b8c94bb2915df5f8019eb5"
+  },
+  "finalSnapshot": {
+    "file": "snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f",
+    "status": "partial",
+    "exitCode": 2,
+    "tlsAuthorized": true,
+    "readOnly": "on",
+    "timeouts": {
+      "statement_timeout": "10s",
+      "lock_timeout": "2s",
+      "idle_transaction_timeout": "15s"
+    },
+    "connectionClosed": true
+  },
+  "historicalSnapshot": {
+    "file": "snapshot-2026-10-17T02-33-19-509Z.json",
+    "currentSourceMatch": false,
+    "reason": "pooler startup timeout options not applied; corrected with verified SET LOCAL; final also casts policy roles to text[]"
+  },
+  "targetedTests": {
+    "file": "unit-final.txt",
+    "passed": 10,
+    "exitCode": 0
+  },
+  "project": "project-checks.json",
+  "projectCommandsAllPassedExceptAudit": true,
+  "applicationChanged": false,
+  "dependenciesChanged": false,
+  "nextEnvRestored": true,
+  "priorT05SuitesRerun": false,
+  "milestone": "milestone-check.json",
+  "review": {
+    "status": "unavailable_pending",
+    "evidence": "review-status.md",
+    "reason": "advertised-model routing failures and inherited-model token rate limiting before execution",
+    "selfReview": "final-checks.json",
+    "independentPassClaimed": false
+  },
+  "evidenceSha256": {
+    "snapshot-2026-10-17T02-33-19-509Z.json": "276c16b6c162a8402196368cf18fd70d14baf590ca895fab71f7e657cda25256",
+    "unit-green.txt": "bed0873e04a37c93c8e298a1388a99313d41aa3350f780edddc05088161b131f",
+    "review-status.md": "afdb2f2d4a2a4651f6fa1c6b51e4341e8eaf9abef22c5a14f5370365f9bfb17d",
+    "shared.txt": "5175b3f5804eea39ddcc1f5575abeab471573f740f733909b323a0cfea56420f",
+    "infra.txt": "fb4eed742cb3b6f95a9e02f0662b8a1ccb9cb7448d65aad4abc04e2f132b4f32",
+    "snapshot-2026-10-17T02-45-52-407Z.json": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f",
+    "project-checks.json": "413665d79c8bd8de2146084a5311da67beb8b3db3ddf2086cf8ff1053dda8975",
+    "audit-command.txt": "5966247f7a2a5a35391f96537e67991ce11a188f0bf633c8d50cdb6b493f3a3f",
+    "comparison.json": "0cf54bbba49872eaf9101bfe7b96d06bf7b0a05b24be1d5a6d6d992f413b7218",
+    "unit-final.txt": "87c9db6539a763827bc15467109f740368b8fc130b26be125f686f535347489c",
+    "unit-red.txt": "fc0d1918cdc252c62f81033f27114a6dce23a81d7cc3b567ffb15415c3f79b8e",
+    "verify.txt": "141a1ae8c2097feb339ffc2c3d412623d7065f5997f81a9f2c1fff5973d49a2e",
+    "supabase-prod-ca-2021.crt": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7",
+    "tls-ca-source.json": "a2ebf10d3b13034c93dd8ff24da451ed9092672e9f267ccb145f4ba93da75198",
+    "audit-high.json": "7e04faa3dfcc8d93633aa1fa26e5c344842f248d4e4fd9cf09d98e98eebac35f",
+    "milestone-check.json": "a625b233ce01ac888c495ef2a739a4cfe2a23701c53c6ad4a10f0df94e69f0f2",
+    "final-checks.json": "bcff999ab3602a5d596a91cdec070f7beba96483f315bb310dbe1adfb8dffb8d"
+  },
+  "finalChecks": "final-checks.json",
+  "documentSha256": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "0827b219125f675d6b1975f162fb6cf0486254898646a3e556eae653e73a8191",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "c86d7be9f532d9f823d847a3f64f5208b1ceaf085325dd3da8a1f31c5914e9af",
+    "docs/README.md": "5ce35548db2b75137965228b26fe6b39bc47328c2eff36c82ef0d4dfa6cc0241",
+    "docs/superpowers/plans/2026-10-11-upgrade-p0-preparation.md": "bdfa4c1898b4ac020d343f8df63438f501f8a1fdcba9c3db23a65563e435ff47",
+    "docs/superpowers/plans/2026-10-17-upgrade-remote-metadata.md": "ac4dc967d859a402a6bafb1ae1868c7f7345ebd9ce6f0538df96d5013d80419d",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "85ae429b0afef4a92250e3cb7915db37276a3237a6fdab79a50b535b83b6366c",
+    "docs/research/2026-10-13-t02-schema-and-deployment-check.md": "57e9c06acabbb76c12a42ac55c7569b0caba4bacce6a71b904e9e9359e8fee91",
+    "docs/research/2026-10-17-remote-metadata-reconciliation.md": "3c839b2f182e31288f83ad3d0c09b97d87561b774a0e589782d31ee818d5e719"
+  }
+}

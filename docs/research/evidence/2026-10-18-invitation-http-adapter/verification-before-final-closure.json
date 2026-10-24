@@ -1,0 +1,189 @@
+{
+  "updatedAt": "2026-10-18T22:15:49.416376+08:00",
+  "status": "local_tasks_approved_final_batch_review_pending",
+  "bindingSpec": "docs/superpowers/specs/2026-10-18-invitation-http-adapter.md",
+  "plan": "docs/superpowers/plans/2026-10-18-upgrade-invitation-http-adapter.md",
+  "implementation": {
+    "status": "passed",
+    "sourceManifest": {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-fix-1-source-manifest.json",
+      "sha256": "d7c7c87521a233a7dd839716e14c39f1b1cc11cddfb7b0b67cb081f02e9ed912"
+    },
+    "sourceInputDigest": "690149536961419859643d1e5348866856edec38311e6a4844688d997481fa9e",
+    "sourceFiles": 11,
+    "report": {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-implementation-final.md",
+      "sha256": "09f41a6d808895dc633672e77726d92dc963f904a3b9fdeda8233a7c0a925bae"
+    },
+    "focusedChecks": {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-fix-1-focused-checks.json",
+      "sha256": "e13a98f33a1d886fc2414ff32b8f4eb13a1264e37aad8b7a4f1aa4b824625825"
+    },
+    "tests": {
+      "protocol": 77,
+      "clientAndFacade": 29,
+      "handler": 88,
+      "total": 194
+    },
+    "fixturePath": "packages/web/src/lib/server/test-support/invitation-fixture.ts",
+    "fix": "Fixture moved outside Jest test discovery; fixture bytes and seven production files unchanged, only three test imports changed."
+  },
+  "reviews": {
+    "task1Initial": {
+      "spec": "FAIL",
+      "quality": "Needs fixes",
+      "finding": "I1: helper collected as empty test suite",
+      "report": {
+        "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-review.md",
+        "sha256": "f82a19f09b1c011f2373b82df6c0fd9e596471fccf14ec2c0843eb14f0d6f64e"
+      }
+    },
+    "task1Fix1": {
+      "finding": "I1 ADDRESSED",
+      "spec": "PASS",
+      "quality": "Approved",
+      "newFindings": 0,
+      "report": {
+        "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-fix-1-review.md",
+        "sha256": "35ddc3b63d6efc0c12769ec6c33fa7e73b56243820e3de76eda3ac119124254c"
+      }
+    },
+    "task2": {
+      "status": "passed",
+      "spec": "PASS",
+      "quality": "Approved",
+      "minorFindings": [
+        {
+          "id": "M1",
+          "status": "deferred_to_final_review",
+          "description": "Two summaries over-attribute the 194 combined tests to actual SDK/loopback checks; protocol and client suites use other boundaries."
+        }
+      ],
+      "report": {
+        "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-2-review.md",
+        "sha256": "b323e850c9b87a2c8eeefabe020a3e699b38646d4045d973fe54aacb385ec4e9"
+      }
+    },
+    "batchFinal": {
+      "status": "pending",
+      "report": null
+    }
+  },
+  "projectChecks": {
+    "status": "passed",
+    "executor": "Controller, current invitation HTTP adapter batch",
+    "executedThisBatch": true,
+    "canonical": {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/project-checks.json",
+      "sha256": "204285afbdd781552b6356f826c776cd6c8ac741bd297490ba9e715cf6c14130"
+    },
+    "executionManifest": {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/project-checks-20261018T134430.json",
+      "sha256": "c46d48737e1e08176105989868955def216aa5ba9b953b84021173a23b94030c"
+    },
+    "previousFailedExecution": {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/project-checks-20261018T133506.json",
+      "sha256": "f623493aff208d43723b08de66662f416b7bc916a7e2a8afcffbc2c56b505873",
+      "reason": "Jest discovered helper inside __tests__ as empty suite; 960 tests passed but execution failed before build/shared/infra. Fixed through fixture relocation, then full matrix rerun."
+    },
+    "startedAt": "2026-10-18T13:42:20.032948+00:00",
+    "finishedAt": "2026-10-18T13:44:30.910777+00:00",
+    "applicationInputs": 715,
+    "inputsUnchanged": true,
+    "nextEnvRestored": true,
+    "exitCodes": {
+      "verify": 0,
+      "shared": 0,
+      "infra": 0
+    },
+    "results": {
+      "webSuites": 80,
+      "webTests": 960,
+      "sharedSuites": 4,
+      "sharedTests": 16,
+      "infraTests": 7,
+      "pages": 176
+    }
+  },
+  "integrity": {
+    "status": "pre_document_checks_passed_final_pending",
+    "preDocumentEvidence": {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/integrity-pre-docs.json",
+      "sha256": "6b74bf30cd7e99fc6fd345b5b83d2623835c1eb45604ac4dfc37ce49196556ea"
+    },
+    "baselineFileCount": 1604,
+    "applicationInputsMatched": 715,
+    "priorExperimentItemsMatched": 838,
+    "task1SourceFilesMatched": 11,
+    "immutableTaskEvidenceArtifactsMatched": 10,
+    "privateRawLogReferencesMatched": 18,
+    "rawLogMode": "0600",
+    "finalChecks": "docs/research/evidence/2026-10-18-invitation-http-adapter/final-checks.json",
+    "note": "Counts describe the pre-document snapshot only. Controller will regenerate final integrity after document/review updates."
+  },
+  "priorExperiments": {
+    "checks": {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/prior-experiment-checks.json",
+      "sha256": "7ad4b233ee8cc5bf60352a322343874b84752cea02be19f2493d3eed45c9a428"
+    },
+    "databaseSuitesRerun": false,
+    "evidenceUse": "Frozen fingerprints only; previous PostgreSQL transaction evidence is not HTTP/Auth integration evidence."
+  },
+  "rollout": {
+    "enabledInProduction": false,
+    "exactEnabledValue": "true",
+    "disabledResponse": 503,
+    "disabledExternalCalls": 0,
+    "oldAcceptHandlersReplaced": true,
+    "oldWriteFallback": false,
+    "bearerRequired": true,
+    "cookieOnlyAcceptance": false,
+    "legacyOpaqueTokenAcceptance": false,
+    "statusReadOnly": true,
+    "automaticAcceptRetry": false,
+    "automaticStatusRecovery": false,
+    "facadeDataWrapperPreserved": true,
+    "successIncludes": [
+      "project_id",
+      "role"
+    ]
+  },
+  "evidenceBoundary": "Actual Supabase SDK and real local loopback HTTP with synthetic Auth/REST responses. No real Auth/JWT, deployed PostgREST schema, PostgreSQL 17 end-to-end integration or production authorization validation.",
+  "unresolved": {
+    "dependencyAudit": {
+      "rerun": false,
+      "total": 42,
+      "high": 34,
+      "moderate": 8,
+      "critical": 0,
+      "resolved": false
+    },
+    "buildWarnings": [
+      "Missing SUPABASE_SERVICE_ROLE_KEY",
+      "Obsolete Next eslint configuration",
+      "Obsolete Next images.domains configuration"
+    ],
+    "nextWork": [
+      "Trusted entitlement source/event provisioning, revocation and persistent deduplication",
+      "Legacy read/send/direct-RPC/table path closure",
+      "Historical token/member compatibility, forward migration and rollback",
+      "Production schema/PostgREST/Auth/RLS/ACL integration and explicit recovery UI",
+      "Separate original G0/G1 evidence including bucket, backup, providers, formal adapters and real-device matrix"
+    ]
+  },
+  "milestones": {
+    "assessment": "docs/research/evidence/2026-10-18-invitation-http-adapter/milestone-check.json",
+    "G0": false,
+    "G1": false,
+    "localBatchIsMilestone": false
+  },
+  "actions": {
+    "commit": false,
+    "push": false,
+    "merge": false,
+    "remoteMigration": false,
+    "deployment": false,
+    "remoteAuthPaymentMailFamilyDataCalls": false,
+    "recoveryDataPreserved": true
+  }
+}

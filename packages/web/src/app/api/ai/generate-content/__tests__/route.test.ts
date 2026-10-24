@@ -92,4 +92,46 @@ describe('/api/ai/generate-content', () => {
       model: 'glm-5.1',
     }))
   })
+
+  it.each([0, 0.2, undefined])('does not raise or fabricate the reported confidence %s', async confidence => {
+    createChatCompletion.mockResolvedValue({ choices: [{ message: { content: JSON.stringify({
+      title: 'A memory', summary: 'The original account.', followUpQuestions: [], confidence,
+    }) } }] })
+    const { POST } = await import('../route')
+    const response = await POST(new NextRequest('http://localhost/api/ai/generate-content', {
+      method: 'POST', body: JSON.stringify({ transcript: 'The original account.' }),
+    }))
+    const body = await response.json()
+    expect(response.status).toBe(200)
+    expect(body.summary).toBe('The original account.')
+    expect(body.confidence).toBe(confidence)
+  })
+
+  it('keeps a valid draft without inventing follow-up questions when they are omitted', async () => {
+    createChatCompletion.mockResolvedValue({ choices: [{ message: { content: JSON.stringify({
+      title: 'A memory', summary: 'The original account.',
+    }) } }] })
+    const { POST } = await import('../route')
+    const response = await POST(new NextRequest('http://localhost/api/ai/generate-content', {
+      method: 'POST', body: JSON.stringify({ transcript: 'The original account.' }),
+    }))
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual({
+      title: 'A memory', summary: 'The original account.', followUpQuestions: [],
+    })
+  })
+
+  it.each([{}, null, { title: 'A title', summary: {} }, { title: '', summary: 'Words' }, {
+    title: 'A title', summary: 'Words', followUpQuestions: null,
+  }])('rejects malformed model content %j without substituting a template', async content => {
+    createChatCompletion.mockResolvedValue({ choices: [{ message: { content: JSON.stringify(content) } }] })
+    const { POST } = await import('../route')
+    const response = await POST(new NextRequest('http://localhost/api/ai/generate-content', {
+      method: 'POST', body: JSON.stringify({ transcript: 'Original words.' }),
+    }))
+    expect(response.status).toBe(502)
+    const body = await response.json()
+    expect(body.error).toBeTruthy()
+    expect(body.summary).toBeUndefined()
+  })
 })

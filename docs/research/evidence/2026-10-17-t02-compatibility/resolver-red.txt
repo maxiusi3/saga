@@ -1,0 +1,146 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/legacy-media-reference.test.ts
+
+watchman warning: Recrawled this watch 9 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/eat/Documents/eatpotato/saga传奇' ; watchman watch-project '/Users/eat/Documents/eatpotato/saga传奇'`
+
+FAIL src/lib/__tests__/legacy-media-reference.test.ts
+  ● legacy media reference mapping › preserves the exact key in a standard public Storage URL
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 2
+
+      Object {
+    -   "bucket": "saga",
+    -   "objectKey": "alice/images/a.png",
+    -   "status": "mapped",
+    +   "reason": "bucket was not verified",
+    +   "status": "unresolved",
+      }
+
+      34 |       legacyValue: `https://fixture.supabase.co/storage/v1/object/${mode}/saga/alice/images/a.png?token=fixture-only`,
+      35 |     })
+    > 36 |     expect(result).toEqual({ status: 'mapped', bucket: 'saga', objectKey: 'alice/images/a.png' })
+         |                    ^
+      37 |     expect(JSON.stringify(result)).not.toContain('fixture-only')
+      38 |   })
+      39 |
+
+      at toEqual (src/lib/__tests__/legacy-media-reference.test.ts:36:20)
+
+  ● legacy media reference mapping › preserves the exact key in a standard sign Storage URL
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 2
+
+      Object {
+    -   "bucket": "saga",
+    -   "objectKey": "alice/images/a.png",
+    -   "status": "mapped",
+    +   "reason": "bucket was not verified",
+    +   "status": "unresolved",
+      }
+
+      34 |       legacyValue: `https://fixture.supabase.co/storage/v1/object/${mode}/saga/alice/images/a.png?token=fixture-only`,
+      35 |     })
+    > 36 |     expect(result).toEqual({ status: 'mapped', bucket: 'saga', objectKey: 'alice/images/a.png' })
+         |                    ^
+      37 |     expect(JSON.stringify(result)).not.toContain('fixture-only')
+      38 |   })
+      39 |
+
+      at toEqual (src/lib/__tests__/legacy-media-reference.test.ts:36:20)
+
+  ● legacy media reference mapping › preserves the exact key in a standard authenticated Storage URL
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 2
+
+      Object {
+    -   "bucket": "saga",
+    -   "objectKey": "alice/images/a.png",
+    -   "status": "mapped",
+    +   "reason": "bucket was not verified",
+    +   "status": "unresolved",
+      }
+
+      34 |       legacyValue: `https://fixture.supabase.co/storage/v1/object/${mode}/saga/alice/images/a.png?token=fixture-only`,
+      35 |     })
+    > 36 |     expect(result).toEqual({ status: 'mapped', bucket: 'saga', objectKey: 'alice/images/a.png' })
+         |                    ^
+      37 |     expect(JSON.stringify(result)).not.toContain('fixture-only')
+      38 |   })
+      39 |
+
+      at toEqual (src/lib/__tests__/legacy-media-reference.test.ts:36:20)
+
+  ● legacy media reference mapping › does not normalize an ambiguous locator:  alice/images/a.png
+
+    expect(received).not.toBe(expected) // Object.is equality
+
+    Expected: not "mapped"
+
+      55 |     expect(resolveLegacyMediaReference({ ...base, legacyValue,
+      56 |       verifiedStorageHost: 'fixture.supabase.co', verifiedBucket: 'saga',
+    > 57 |     }).status).not.toBe('mapped')
+         |                    ^
+      58 |   })
+      59 |
+      60 |   it('rejects a URL whose bucket conflicts with the supplied bucket evidence', () => {
+
+      at toBe (src/lib/__tests__/legacy-media-reference.test.ts:57:20)
+
+  ● legacy media reference mapping › does not normalize an ambiguous locator: alice/images/a.png 
+
+    expect(received).not.toBe(expected) // Object.is equality
+
+    Expected: not "mapped"
+
+      55 |     expect(resolveLegacyMediaReference({ ...base, legacyValue,
+      56 |       verifiedStorageHost: 'fixture.supabase.co', verifiedBucket: 'saga',
+    > 57 |     }).status).not.toBe('mapped')
+         |                    ^
+      58 |   })
+      59 |
+      60 |   it('rejects a URL whose bucket conflicts with the supplied bucket evidence', () => {
+
+      at toBe (src/lib/__tests__/legacy-media-reference.test.ts:57:20)
+
+  ● legacy media reference mapping › does not normalize an ambiguous locator: https://fixture.supabase.co/other/object/saga/alice/a.png
+
+    expect(received).not.toBe(expected) // Object.is equality
+
+    Expected: not "mapped"
+
+      55 |     expect(resolveLegacyMediaReference({ ...base, legacyValue,
+      56 |       verifiedStorageHost: 'fixture.supabase.co', verifiedBucket: 'saga',
+    > 57 |     }).status).not.toBe('mapped')
+         |                    ^
+      58 |   })
+      59 |
+      60 |   it('rejects a URL whose bucket conflicts with the supplied bucket evidence', () => {
+
+      at toBe (src/lib/__tests__/legacy-media-reference.test.ts:57:20)
+
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 17 passed, 23 total
+Snapshots:   0 total
+Time:        2.206 s
+Ran all test suites within paths "src/lib/__tests__/legacy-media-reference.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/legacy-media-reference.test.ts

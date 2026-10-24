@@ -1,0 +1,34 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand auth-session auth-store auth-return auth-callback auth-signin-return auth-verify-session home-auth-landing supabase-session supabase-server-isolation auth-locale-middleware invitation
+
+FAIL src/stores/__tests__/auth-session-lifecycle.test.ts
+  ● a newer missing-session observation invalidates earlier access-token validation
+
+    expect(received).toBeNull()
+
+    Received: "synthetic-access"
+
+      120 |   expect(await store.getState().getAccessToken()).toBeNull()
+      121 |   earlier.resolve({ data: { user }, error: null })
+    > 122 |   expect(await oldToken).toBeNull()
+          |                          ^
+      123 |   expect(store.getState()).toMatchObject({ isAuthenticated: false, user: null })
+      124 | })
+      125 |
+
+      at Object.toBeNull (src/stores/__tests__/auth-session-lifecycle.test.ts:122:26)
+
+
+Test Suites: 1 failed, 17 passed, 18 total
+Tests:       1 failed, 504 passed, 505 total
+Snapshots:   0 total
+Time:        38.337 s, estimated 40 s
+Ran all test suites matching auth-session|auth-store|auth-return|auth-callback|auth-signin-return|auth-verify-session|home-auth-landing|supabase-session|supabase-server-isolation|auth-locale-middleware|invitation.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand auth-session auth-store auth-return auth-callback auth-signin-return auth-verify-session home-auth-landing supabase-session supabase-server-isolation auth-locale-middleware invitation

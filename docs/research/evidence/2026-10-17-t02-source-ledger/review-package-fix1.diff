@@ -1,0 +1,389 @@
+# Task2 R1 fix review
+Only differences since initial reviewed frozen implementation.
+
+--- reviewed/experiments/t02-source-ledger/README.md
++++ experiments/t02-source-ledger/README.md
+@@ -11,98 +11,108 @@
+ an inert nonempty password, while subprocesses remove PG* and DATABASE_URL.
+ Connection, statement, lock, transaction-idle, barrier and overall timeouts are
+ finite. Every run records runtime/source/snapshot hashes, assertion names, actual
+ PostgreSQL blocking chains and cleanup results in
+ `docs/research/evidence/2026-10-17-t02-source-ledger/`.
+ 
+ ## Scope and records
+ 
+ Only fictional stories, actors and assets enter this database. Source columns
+ include the captured `images jsonb[]`, `photo_urls text[]`, required identities
+ and title. Two families use the captured role/status values; experimental
+ tombstones and asset tables are explicitly synthetic additions. No body,
+ metadata or interactions are queried. `schema.sql` belongs only in this
+ experiment, never in root migrations or a production database.
+ 
+ `source_observations` records project, table, row, field and positional source
+ path. The real TypeScript projector produces all references, including abnormal
+ array slots and conflicting aliases. `mapped` remains a locator candidate.
+ `source_reviews` stores append-only review conclusions separately.
+ `source_bindings` stores one immutable binding per observation, independently of
+ the source and review. The synthetic asset/evidence tables do not imply that any
+ real object has been checked.
+ 
+ Observations, reviews, verification evidence and bindings reject UPDATE, DELETE
+ and TRUNCATE. Observation uniqueness covers project + table + row + field + path
+ + algorithm + digest. A different source version appends an observation with a
+ `conflicts_with` link; returning to a previous version returns its existing ID.
+ The old payload, review and binding remain intact. Foreign keys enforce the
+ binding's project and verification/asset/version identity; a unique constraint
+ prevents a second binding for the same observation.
++
++Clearing a previously observed scalar/array, shortening an array or removing an
++image property still appends a version for each historical path absent from the
++current projector output. These records use the current complete field snapshot,
++`locator_status='unresolved'`, `reason='source reference removed'`, JSON null raw
++value and no bucket/key. They link to prior conflicting observations and cannot
++bind or inherit a binding. Repeated collection reuses their durable IDs; restoring
++an earlier source version reuses its original mapped ID without deleting the
++removal history. Never-observed absent fields do not invent source paths. The
++original projector remains unchanged and creates no locator for an absent value.
+ 
+ ## Digest and trusted adapter
+ 
+ `saga-pg-jsonb-media-v1` hashes the UTF-8 bytes of a deterministic PostgreSQL
+ `jsonb_build_object(...)::text` envelope containing the algorithm tag,
+ `pg_typeof(field)::text`, `to_jsonb(field)` and `field::text`. It covers the full
+ selected field. The canonical jsonb representation removes JavaScript object
+ key-order dependence; the PostgreSQL text representation additionally preserves
+ SQL NULL versus JSON null elements and PostgreSQL array bounds. Array order,
+ other array slots and the actual database type all contribute to the digest.
+ Cross-major PostgreSQL representation stability is not asserted; PG17 requires
+ its own validation before adopting this algorithm in a migration.
+ 
+ `createLedger({planLegacyStoryMedia})` accepts the trusted, actual projector and
+ exposes `observeStory(client,{storyId,actorId})`,
+ `bind(client,{observationId,verificationId,actorId})` and
+ `reconcileBinding(client,{observationId,verificationId,actorId})`.
+ Each operation requires a dedicated idle owner connection. Do not overlap calls
+ on one connection or embed them in a caller transaction. The actor is supplied
+ by this trusted fixture harness; this is not a public API authentication boundary.
+ Input keys are strict. SQL field identifiers come only from a fixed allowlist;
+ request data cannot specify a table, source path, locator, raw payload or digest.
+ 
+ Binding consumes an explicit immutable `synthetic_fixture_only` verification
+ record and compares project/story, kind, bucket/key, asset version, object
+ version, byte size and SHA-256 against the locked asset. It also verifies current
+ source field/type/digest/projection. This does **not** verify real Storage bytes,
+ ownership, RLS, auth tokens, story action roles or purpose consent.
+ 
+ ## Transaction and fault contract
+ 
+ The lock order is project -> story -> current membership -> asset -> observation.
+ All are row locks held through COMMIT. The coarse project lock serializes newly
+ observed source identities and same-project binding requests; scalability is
+ not a goal of this experiment. Every transaction explicitly uses READ COMMITTED.
+ After blocking it reads current project/story/membership/asset values, so a
+ source edit, project move, revocation or tombstone cannot slip between checking
+ and inserting. Being an old uploader grants no privilege; a current active
+ member or the project's current facilitator is required by this fixture policy.
+ The ordinary anonymous/authenticated roles, including inherited PUBLIC grants,
+ have no direct access to the ledger schema, tables, sequences or functions.
+ The owner can still change schema/disable triggers: the adapter remains trusted.
+ 
+ Concurrent tests wait for actual `pg_stat_activity`/`pg_blocking_pids` evidence,
+ including indirect blocker chains; arbitrary elapsed time is not proof of a
+ race. A barrier immediately before COMMIT verifies project, story, membership
+ and asset mutations remain blocked until the binding commits.
+ 
+ A genuine division-by-zero after INSERT verifies ordinary rollback. A real
+ `pg_terminate_backend` verifies connection-loss rollback and captures the failed
+ ROLLBACK attempt. The unknown-COMMIT case lets PostgreSQL actually COMMIT, then
+ the test transport wrapper throws before returning that acknowledgement to the
+ adapter. It is an explicit lost-acknowledgement injection, not a network proxy
+ test. The adapter reports `commit_outcome_unknown` without rollback or deletion;
+ a fresh connection reconciles durable observation/verification IDs, even after
+ later source or asset versions change. Reconciliation of a committed historical
+ binding does not reauthorize new use of its asset.
+ 
+ The runner preserves exact RED source snapshots and reports, including genuine
+-missing-observation, missing-binding and truncate failures. Intermediate failed
++missing-observation, missing-binding, truncate and cleared-source-history failures. Intermediate failed
+ runs remain history. Only the final normal/host-environment reports attest the
+ final source hashes. The stable-fixture SIGTERM report attests cleanup, not all
+ behavioral assertions.
+ 
+ PostgreSQL 14 fixture results do not replace PG17, complete production
+ RLS/triggers, Storage HTTP, real object inventory, backup/restore/rollback or G1
+ device acceptance. No credentials, remote connections, real objects,
+ dependencies, commits, pushes, migrations or deployment are part of this runner.
+
+--- reviewed/experiments/t02-source-ledger/ledger.cjs
++++ experiments/t02-source-ledger/ledger.cjs
+@@ -46,63 +46,77 @@
+     const project = (await db.query('SELECT * FROM public.projects WHERE id=$1 FOR UPDATE', [projectId])).rows[0]
+     if (!project || project.deleted_at) throw failure('project_deleted')
+     const story = (await db.query(`SELECT id,project_id,storyteller_id,title,deleted_at,
+       audio_url,mastered_audio_url,photo_url,photo_urls,images FROM public.stories WHERE id=$1 FOR UPDATE`, [storyId])).rows[0]
+     if (!story || story.deleted_at) throw failure('source_deleted')
+     if (story.project_id !== projectId) throw failure('source_project_changed')
+     const membership = (await db.query(`SELECT role,status FROM public.project_roles
+       WHERE project_id=$1 AND user_id=$2 FOR UPDATE`, [projectId, actorId])).rows[0]
+     if (project.facilitator_id !== actorId && (!membership || membership.status !== 'active')) {
+       throw failure('access_denied')
+     }
+     return story
+   }
+ 
+   async function fieldVersion(db, storyId, field) {
+     // Only constants from this allowlist can become identifiers; never a request locator.
+     if (!fields.includes(field)) throw failure('invalid_source_field')
+     const row = (await db.query(`SELECT pg_typeof("${field}")::text AS source_type,
+       jsonb_build_object('algorithm',$2::text,'pg_type',pg_typeof("${field}")::text,
+         'value',to_jsonb("${field}"),'pg_text',"${field}"::text)::text AS source_payload
+       FROM public.stories WHERE id=$1`, [storyId, algorithm])).rows[0]
+     return {...row, source_digest:createHash('sha256').update(row.source_payload).digest('hex')}
+   }
+ 
+   async function observeStory(db, input) {
+     request(input, ['storyId','actorId'])
+     return transaction(db, async () => {
+       const story = await lockSource(db, input.storyId, input.actorId)
+       const plan = planLegacyStoryMedia(story, context)
+       if (!plan.schemaCompatible) throw failure('incompatible_source')
++      const references = [...plan.references]
++      const presentPaths = new Set(references.map(ref => JSON.stringify([ref.sourceField,ref.sourcePath])))
++      const priorPaths = (await db.query(`SELECT DISTINCT ON(source_field,source_path) source_field,source_path,kind
++        FROM t02.source_observations WHERE project_id=$1 AND source_table='stories' AND source_row_id=$2
++        ORDER BY source_field,source_path,id DESC`, [story.project_id,story.id])).rows
++      // The projector emits no locator for cleared fields or removed positions.
++      // Retain those previously observed identities with the current full-field
++      // version, so a collected removal is distinct from an unvisited old source.
++      for (const prior of priorPaths) {
++        if (!presentPaths.has(JSON.stringify([prior.source_field,prior.source_path]))) references.push({
++          sourceField:prior.source_field, sourcePath:prior.source_path, kind:prior.kind, rawValue:null,
++          locator:{status:'unresolved',reason:'source reference removed'},
++        })
++      }
+       const versions = new Map()
+       const observations = []
+-      for (const ref of plan.references) {
++      for (const ref of references) {
+         if (!versions.has(ref.sourceField)) versions.set(ref.sourceField, await fieldVersion(db, story.id, ref.sourceField))
+         const version = versions.get(ref.sourceField)
+         const identity = [story.project_id,'stories',story.id,ref.sourceField,ref.sourcePath,algorithm,version.source_digest]
+         const conflict = (await db.query(`SELECT id FROM t02.source_observations
+           WHERE project_id=$1 AND source_table=$2 AND source_row_id=$3 AND source_field=$4 AND source_path=$5
+             AND (digest_algorithm<>$6 OR source_digest<>$7) ORDER BY id DESC LIMIT 1`, identity)).rows[0]
+         const inserted = (await db.query(`INSERT INTO t02.source_observations(
+           project_id,source_table,source_row_id,source_field,source_path,digest_algorithm,source_digest,
+           source_type,source_payload,raw_value,kind,locator_status,bucket,object_key,reason,conflicts_with)
+           VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10::jsonb,$11,$12,$13,$14,$15,$16)
+           ON CONFLICT (project_id,source_table,source_row_id,source_field,source_path,digest_algorithm,source_digest)
+           DO NOTHING RETURNING *`, [...identity,version.source_type,version.source_payload,JSON.stringify(ref.rawValue),
+           ref.kind,ref.locator.status,ref.locator.bucket || null,ref.locator.objectKey || null,ref.locator.reason || null,conflict?.id || null])).rows[0]
+         observations.push(inserted || (await db.query(`SELECT * FROM t02.source_observations WHERE
+           project_id=$1 AND source_table=$2 AND source_row_id=$3 AND source_field=$4 AND source_path=$5
+           AND digest_algorithm=$6 AND source_digest=$7`,identity)).rows[0])
+       }
+       return observations
+     })
+   }
+   async function observationForRequest(db, input) {
+     const observation = (await db.query('SELECT * FROM t02.source_observations WHERE id=$1', [input.observationId])).rows[0]
+     if (!observation) throw failure('observation_missing')
+     return observation
+   }
+ 
+   async function bind(db, input) {
+     request(input, ['observationId','verificationId','actorId'])
+     return transaction(db, async () => {
+       // Immutable identity supplies the project/story/field/path; callers supply no source payload.
+
+--- reviewed/experiments/t02-source-ledger/scenarios.cjs
++++ experiments/t02-source-ledger/scenarios.cjs
+@@ -123,60 +123,122 @@
+     SELECT project_id,source_table,source_row_id,source_field,source_path,digest_algorithm,
+       source_digest,source_type,source_payload,raw_value,kind,locator_status,bucket,object_key
+     FROM t02.source_observations WHERE id=$1`,[photo.id]),'23505')
+   await rejected('observation update is rejected even for the fixture owner',()=>db.query('UPDATE t02.source_observations SET raw_value=null WHERE id=$1',[photo.id]),'55000')
+   await rejected('review deletion is rejected',()=>db.query('DELETE FROM t02.source_reviews WHERE observation_id=$1',[photo.id]),'55000')
+   await rejected('binding update is rejected',()=>db.query('UPDATE t02.source_bindings SET asset_version=2 WHERE id=$1',[binding.id]),'55000')
+   await rejected('binding deletion is rejected',()=>db.query('DELETE FROM t02.source_bindings WHERE id=$1',[binding.id]),'55000')
+   await rejected('binding history cannot be truncated',()=>db.query('TRUNCATE t02.source_bindings'),'55000')
+   for(const role of ['saga_anon','saga_authenticated']) {
+     await db.query(`SET ROLE ${role}`)
+     try {
+       for(const table of ['source_observations','source_reviews','source_bindings','fixture_assets','fixture_verifications']) {
+         await rejected(`${role} cannot read ${table}`,()=>db.query(`SELECT * FROM t02.${table}`),'42501')
+         await rejected(`${role} cannot write ${table}`,()=>db.query(`INSERT INTO t02.${table} DEFAULT VALUES`),'42501')
+       }
+     } finally { await db.query('RESET ROLE') }
+   }
+ 
+   let sequence=0
+   async function fresh(overrides={}) {
+     const storyId=randomUUID()
+     await db.query(`INSERT INTO stories(id,project_id,storyteller_id,title,photo_url) VALUES($1,$2,$3,'Synthetic race fixture',$4)`,
+       [storyId,ids.project,ids.user,`fixture/photos/${++sequence}.jpg`])
+     const observation=(await ledger.observeStory(db,{storyId,actorId:ids.user}))[0]
+     const verified=await verifiedAsset(db,observation,overrides)
+     return {storyId,observation,asset:verified,input:{observationId:observation.id,verificationId:verified.verificationId,actorId:ids.user}}
+   }
+   async function noBinding(name, observationId) {
+     check(name,(await db.query('SELECT count(*)::int AS n FROM t02.source_bindings WHERE observation_id=$1',[observationId])).rows[0].n,0)
+   }
++  // R1: absence in the current projector output still needs a durable successor
++  // for paths observed previously. Each case uses actual PostgreSQL field values.
++  const removalCases=[
++    {name:'scalar to null',field:'photo_url',type:'text',before:'fix1/scalar.jpg',after:null,path:'/photo_url'},
++    {name:'text array to empty',field:'photo_urls',type:'text[]',before:['fix1/text-empty.jpg'],after:[],path:'/photo_urls/0'},
++    {name:'text array to null',field:'photo_urls',type:'text[]',before:['fix1/text-null.jpg'],after:null,path:'/photo_urls/0'},
++    {name:'jsonb array to empty',field:'images',type:'jsonb[]',before:[{url:'fix1/json-empty.jpg'}],after:[],path:'/images/0/url'},
++    {name:'jsonb array to null',field:'images',type:'jsonb[]',before:[{url:'fix1/json-null.jpg'}],after:null,path:'/images/0/url'},
++    {name:'array position removed',field:'photo_urls',type:'text[]',before:['fix1/retained.jpg','fix1/removed.jpg'],
++      after:['fix1/retained.jpg'],path:'/photo_urls/1',retained:'/photo_urls/0'},
++    {name:'nested image property removed',field:'images',type:'jsonb[]',
++      before:[{url:'fix1/image.jpg',thumbUrl:'fix1/thumb.jpg'}],after:[{url:'fix1/image.jpg'}],
++      path:'/images/0/thumbUrl',retained:'/images/0/url'},
++  ]
++  for(const test of removalCases) {
++    const storyId=randomUUID()
++    await db.query(`INSERT INTO stories(id,project_id,storyteller_id,title,${test.field})
++      VALUES($1,$2,$3,'Synthetic removal regression',$4::${test.type})`,[storyId,ids.project,ids.user,test.before])
++    const input={storyId,actorId:ids.user}
++    const initial=await ledger.observeStory(db,input)
++    const previous=initial.find(o=>o.source_path===test.path)
++    const verified=await verifiedAsset(db,previous)
++    const priorBinding=await ledger.bind(db,{observationId:previous.id,verificationId:verified.verificationId,actorId:ids.user})
++    await db.query('INSERT INTO t02.source_reviews(observation_id,conclusion) VALUES($1,$2)',
++      [previous.id,`Keep reviewed original: ${test.name}`])
++    await db.query(`UPDATE stories SET ${test.field}=$2::${test.type} WHERE id=$1`,[storyId,test.after])
++    const cleared=await ledger.observeStory(db,input)
++    const removed=cleared.find(o=>o.source_path===test.path)
++    check(`R1 ${test.name}: previously observed path has a durable removed successor`,Boolean(removed),true)
++    check(`R1 ${test.name}: removal is explicit and has no locator`,
++      [removed.locator_status,removed.reason,removed.raw_value,removed.bucket,removed.object_key],
++      ['unresolved','source reference removed',null,null,null])
++    check(`R1 ${test.name}: removed path uses new whole-field typed snapshot`,
++      [removed.source_digest!==previous.source_digest,removed.source_type,JSON.parse(removed.source_payload).value],
++      [true,test.type,test.after])
++    check(`R1 ${test.name}: successor links the prior observation`,removed.conflicts_with,previous.id)
++    const countBeforeRepeat=(await db.query('SELECT count(*)::int AS n FROM t02.source_observations WHERE source_row_id=$1',[storyId])).rows[0].n
++    check(`R1 ${test.name}: repeated collection returns the same IDs`,
++      (await ledger.observeStory(db,input)).map(o=>o.id),cleared.map(o=>o.id))
++    check(`R1 ${test.name}: repeated collection inserts no extra observations`,
++      (await db.query('SELECT count(*)::int AS n FROM t02.source_observations WHERE source_row_id=$1',[storyId])).rows[0].n,countBeforeRepeat)
++    check(`R1 ${test.name}: durable removed version is queryable from the ledger`,
++      (await db.query('SELECT source_payload,reason FROM t02.source_observations WHERE id=$1',[removed.id])).rows[0],
++      {source_payload:removed.source_payload,reason:'source reference removed'})
++    check(`R1 ${test.name}: original observation is unchanged`,
++      (await db.query('SELECT * FROM t02.source_observations WHERE id=$1',[previous.id])).rows[0],previous)
++    check(`R1 ${test.name}: original review is unchanged`,
++      (await db.query('SELECT conclusion FROM t02.source_reviews WHERE observation_id=$1',[previous.id])).rows[0].conclusion,
++      `Keep reviewed original: ${test.name}`)
++    check(`R1 ${test.name}: original binding is unchanged`,
++      (await db.query('SELECT * FROM t02.source_bindings WHERE observation_id=$1',[previous.id])).rows[0],priorBinding)
++    await rejected(`R1 ${test.name}: removal cannot bind`,
++      ()=>ledger.bind(db,{observationId:removed.id,verificationId:verified.verificationId,actorId:ids.user}),'source_not_mapped')
++    await rejected(`R1 ${test.name}: old mapped version cannot be rebound after removal`,
++      ()=>ledger.bind(db,{observationId:previous.id,verificationId:verified.verificationId,actorId:ids.user}),'source_version_changed')
++    await noBinding(`R1 ${test.name}: removed successor has no inherited binding`,removed.id)
++    if(test.retained)check(`R1 ${test.name}: surviving source stays separately mapped`,
++      cleared.find(o=>o.source_path===test.retained)?.locator_status,'mapped')
++    await db.query(`UPDATE stories SET ${test.field}=$2::${test.type} WHERE id=$1`,[storyId,test.before])
++    check(`R1 ${test.name}: restoring the earlier source reuses its mapped identity`,
++      (await ledger.observeStory(db,input)).find(o=>o.source_path===test.path).id,previous.id)
++  }
+   const otherObserved=(await ledger.observeStory(db,{storyId:ids.otherStory,actorId:ids.other}))[0]
+   check('same locator in another family has a distinct durable source identity',
+     otherObserved.id!==photo.id&&otherObserved.object_key===photo.object_key,true)
+   const anotherStory=randomUUID()
+   await db.query(`INSERT INTO stories(id,project_id,storyteller_id,title,images)
+     VALUES($1,$2,$3,'Duplicate locator distinct source',ARRAY['{"url":"alice/images/a.jpg"}'::jsonb])`,[anotherStory,ids.project,ids.user])
+   const sameProjectDuplicate=(await ledger.observeStory(db,{storyId:anotherStory,actorId:ids.user}))[0]
+   check('same project and source path in another story remain distinct identities',
+     [sameProjectDuplicate.id!==photo.id,sameProjectDuplicate.source_path,sameProjectDuplicate.object_key],
+     [true,photo.source_path,photo.object_key])
+   await rejected('other family member cannot observe this project',()=>ledger.observeStory(db,{...request,actorId:ids.other}),'access_denied')
+   const conflictAsset=await verifiedAsset(db,photo)
+   await rejected('a second asset cannot replace an existing binding',()=>ledger.bind(db,{...bindRequest,verificationId:conflictAsset.verificationId}),'binding_conflict')
+   await rejected('database unique observation constraint prevents second-asset binding',()=>db.query(`
+     INSERT INTO t02.source_bindings(observation_id,project_id,asset_id,verification_id,asset_version,created_by)
+     VALUES($1,$2,$3,$4,1,$5)`,[photo.id,ids.project,conflictAsset.id,conflictAsset.verificationId,ids.user]),'23505')
+   const cross=await fresh({project_id:ids.otherProject,story_id:ids.otherStory,created_by:ids.other})
+   await rejected('verified asset from another project is rejected',()=>ledger.bind(db,cross.input),'asset_scope_mismatch')
+   await noBinding('cross-project failure leaves no partial binding',cross.observation.id)
+   const wrongStory=await fresh({story_id:ids.story})
+   await rejected('asset in same project but another story is rejected',()=>ledger.bind(db,wrongStory.input),'asset_scope_mismatch')
+   const wrongKind=await fresh({kind:'thumbnail'})
+   await rejected('thumbnail cannot replace an original image',()=>ledger.bind(db,wrongKind.input),'asset_locator_mismatch')
+   const wrongKey=await fresh({object_key:'other/exact.jpg'})
+   await rejected('different exact key is rejected',()=>ledger.bind(db,wrongKey.input),'asset_locator_mismatch')
+   const wrongBucket=await fresh({bucket:'audio-recordings'})
+   await rejected('different exact bucket is rejected',()=>ledger.bind(db,wrongBucket.input),'asset_locator_mismatch')
+   const missingEvidence=await fresh()
+   await rejected('missing explicit verification evidence is rejected',()=>ledger.bind(db,{...missingEvidence.input,verificationId:randomUUID()}),'verification_missing')
+   const pending=await fresh({state:'quarantined'})
+
+--- reviewed/experiments/t02-source-ledger/verify.cjs
++++ experiments/t02-source-ledger/verify.cjs
+@@ -15,61 +15,61 @@
+ const snapshotFile = 'docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json'
+ const digest = bytes => createHash('sha256').update(bytes).digest('hex')
+ const env = Object.fromEntries(Object.entries(process.env).filter(([key])=> !key.startsWith('PG') && key !== 'DATABASE_URL'))
+ const command = (binary,args)=>execFileSync(binary,args,{env,encoding:'utf8',timeout:30000,stdio:['ignore','pipe','pipe']}).trim()
+ const report = {startedAt:new Date().toISOString(),label,status:'running',
+   scope:'synthetic local PostgreSQL source ledger only; no real Storage or production authorization verification',
+   sources:{},checks:[],lockEvidence:[],runtime:{node:process.version}}
+ let scratch, clusterMayExist=false, requestedSignal, finishing=false
+ const clients = new Set()
+ function checkpoint(){if(requestedSignal)throw new Error('rehearsal interrupted')}
+ function onSignal(signal){if(!finishing)requestedSignal=signal}
+ process.on('SIGTERM',onSignal);process.on('SIGINT',onSignal)
+ const deadline=setTimeout(()=>onSignal('deadline'),120000)
+ function check(name,actual,expected){checkpoint();assert.deepEqual(actual,expected,name);report.checks.push(name)}
+ async function connect(){
+   checkpoint()
+   const client=new Client({host:path.join(scratch,'socket'),port:5432,user:'saga_t02_admin',database:'saga_t02_ledger',
+     ssl:false,password:'synthetic-local-unused',connectionTimeoutMillis:5000,
+     options:'-c statement_timeout=10000 -c lock_timeout=5000 -c idle_in_transaction_session_timeout=15000'})
+   clients.add(client);client.on('error',()=>{});client.once('end',()=>clients.delete(client))
+   await client.connect();checkpoint()
+   check('local client ignores ambient SSL and credentials',
+     [client.connectionParameters.ssl,client.connectionParameters.password],[false,'synthetic-local-unused'])
+   return client
+ }
+ async function main(){
+   await fs.mkdir(evidence,{recursive:true})
+   for(const name of ['schema.sql','ledger.cjs','scenarios.cjs','verify.cjs','README.md']){
+     const bytes=await fs.readFile(path.join(__dirname,name))
+     report.sources[`experiments/t02-source-ledger/${name}`]=digest(bytes)
+-    if(label.startsWith('red-'))await fs.writeFile(path.join(evidence,`${label}-${name}.txt`),bytes)
++    if(/(?:^|-)red-/.test(label))await fs.writeFile(path.join(evidence,`${label}-${name}.txt`),bytes)
+   }
+   for(const name of ['legacy-media-reference','legacy-story-media']){
+     report.sources[`packages/web/src/lib/${name}.ts`]=digest(await fs.readFile(path.join(root,`packages/web/src/lib/${name}.ts`)))
+   }
+   const bytes=await fs.readFile(path.join(root,snapshotFile))
+   report.snapshot={path:snapshotFile,sha256:digest(bytes)}
+   assert.equal(digest(bytes),'bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f')
+   const snapshot=JSON.parse(bytes)
+   for(const [column,type] of [['images','jsonb[]'],['photo_urls','text[]'],['title','text'],['storyteller_id','uuid']]){
+     const saved=snapshot.sections.columns.rows.find(c=>c.schema_name==='public'&&c.table_name==='stories'&&c.column_name===column)
+     check(`pinned actual stories.${column} type`,saved.data_type,type)
+   }
+   report.runtime.postgres=command('postgres',['--version'])
+   report.runtime.pg=require('../t05-durable-worker/node_modules/pg/package.json').version
+   report.runtime.typescript=ts.version
+   scratch=await fs.mkdtemp('/tmp/saga-t02-ledger-');report.scratch=scratch;checkpoint()
+   await fs.mkdir(path.join(scratch,'socket'),{mode:0o700});checkpoint()
+   command('initdb',['-D',path.join(scratch,'data'),'-U','saga_t02_admin','-A','trust','--no-locale','-E','UTF8']);checkpoint()
+   clusterMayExist=true
+   command('pg_ctl',['-D',path.join(scratch,'data'),'-l',path.join(scratch,'postgres.log'),'-w','-t','20',
+     '-o',`-k ${path.join(scratch,'socket')} -p 5432 -c listen_addresses='' -c unix_socket_permissions=0700`,'start']);checkpoint()
+   command('createdb',['-h',path.join(scratch,'socket'),'-p','5432','-U','saga_t02_admin','saga_t02_ledger'])
+   const db=await connect()
+   check('TCP disabled',(await db.query('SHOW listen_addresses')).rows[0].listen_addresses,'')
+   await db.query(await fs.readFile(path.join(__dirname,'schema.sql'),'utf8'))
+   const columns=(await db.query(`SELECT c.relname AS table_name,a.attname AS column_name,
+     format_type(a.atttypid,a.atttypmod) AS data_type,a.attnotnull AS not_null
+     FROM pg_attribute a JOIN pg_class c ON c.oid=a.attrelid JOIN pg_namespace n ON n.oid=c.relnamespace
+     WHERE n.nspname='public' AND c.relname IN ('stories','project_roles') AND a.attnum>0 AND NOT a.attisdropped
+       AND a.attname<>'deleted_at' ORDER BY c.relname,a.attnum`)).rows

@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand auth-session auth-store auth-return auth-callback auth-signin-return auth-verify-session home-auth-landing supabase-session supabase-server-isolation supabase-browser-errors auth-locale-middleware invitation auth-dashboard-continuity auth-token-refresh-races smart-recorder-session record-page-uses-smart-recorder recording-session recording-recovery storage-recording-user
+
+
+Test Suites: 28 passed, 28 total
+Tests:       605 passed, 605 total
+Snapshots:   0 total
+Time:        85.628 s
+Ran all test suites matching auth-session|auth-store|auth-return|auth-callback|auth-signin-return|auth-verify-session|home-auth-landing|supabase-session|supabase-server-isolation|supabase-browser-errors|auth-locale-middleware|invitation|auth-dashboard-continuity|auth-token-refresh-races|smart-recorder-session|record-page-uses-smart-recorder|recording-session|recording-recovery|storage-recording-user.

@@ -1,0 +1,41 @@
+{
+  "startedAt": "2026-10-17T05:47:54.547Z",
+  "label": "red-observe",
+  "status": "failed",
+  "scope": "synthetic local PostgreSQL source ledger only; no real Storage or production authorization verification",
+  "sources": {
+    "experiments/t02-source-ledger/schema.sql": "f72f8ae3c4d8b65c74c63c9917294ccc43d2b9557c77078c94b28553815ff245",
+    "experiments/t02-source-ledger/ledger.cjs": "b01cab7eb89ca4dda4fda420adf03d87d762f0eae4b258083b823d83fe35f4c9",
+    "experiments/t02-source-ledger/scenarios.cjs": "c9b84ad701dcb74e4ec4ccda4795f072b8dc48d617220cc8f72c9ab964d8d762",
+    "experiments/t02-source-ledger/verify.cjs": "0d72805c5f69ca98158896e4b91f2eed55a16e3b393143af57300fd4f04c31c8",
+    "experiments/t02-source-ledger/README.md": "0d3c102ef50101daa89566063a19f87a7724ea01a1348bb046fe2aebef974072",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e"
+  },
+  "checks": [
+    "pinned actual stories.images type",
+    "pinned actual stories.photo_urls type"
+  ],
+  "lockEvidence": [],
+  "runtime": {
+    "node": "v22.22.2"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f"
+  },
+  "error": {
+    "message": "pinned actual stories.title type\n+ actual - expected\n\n+ 'text'\n- 'character varying(255)'\n",
+    "code": "ERR_ASSERTION",
+    "actual": "text",
+    "expected": "character varying(255)",
+    "stack": "AssertionError [ERR_ASSERTION]: pinned actual stories.title type\n+ actual - expected\n\n+ 'text'\n- 'character varying(255)'\n\n    at check (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:28:58)\n    at main (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:56:5)"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": false,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:47:54.562Z"
+}

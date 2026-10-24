@@ -1,0 +1,136 @@
+{
+  "startedAt": "2026-10-23T05:06:48.020Z",
+  "status": "passed",
+  "scope": "Synthetic local PG17.4 only; no remote access; fixture rows are not production evidence",
+  "assertions": 938,
+  "scenarios": [],
+  "actorConnections": [],
+  "results": [
+    {
+      "block": "A",
+      "originalWithoutNewlinesSqlstate": "42601",
+      "correctedSqlstate": "00000",
+      "columns": [
+        "id",
+        "name",
+        "public",
+        "file_size_limit",
+        "allowed_mime_types",
+        "type",
+        "versioning_status",
+        "lifecycle_configured",
+        "lifecycle_rule_count"
+      ],
+      "syntheticRowCount": 2
+    },
+    {
+      "block": "B",
+      "originalWithoutNewlinesSqlstate": "42601",
+      "correctedSqlstate": "00000",
+      "columns": [
+        "schema_name",
+        "typname",
+        "enumsortorder",
+        "enumlabel"
+      ],
+      "syntheticRowCount": 3
+    },
+    {
+      "block": "C",
+      "originalWithoutNewlinesSqlstate": "42601",
+      "correctedSqlstate": "00000",
+      "columns": [
+        "schema_name",
+        "proname",
+        "identity_arguments",
+        "result_type",
+        "language",
+        "security_definer",
+        "owner",
+        "definition_md5"
+      ],
+      "syntheticRowCount": 3
+    },
+    {
+      "block": "D",
+      "correctedSqlstate": "00000",
+      "columns": [
+        "version"
+      ],
+      "syntheticRowCount": 4
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 65730,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-MFDcGl/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-MFDcGl",
+  "settings": {
+    "read_only": "on",
+    "statement_timeout": "10s",
+    "lock_timeout": "2s"
+  },
+  "unchangedImplementationFiles": 909,
+  "sources": {
+    "original": {
+      "path": "docs/research/2026-10-22-user-readonly-evidence.sql",
+      "sha256": "3d1eb2a5c8073846d47518941943560014500f72c2b9778b3f78088b010841b7"
+    },
+    "corrected": {
+      "path": "docs/research/2026-10-23-user-readonly-evidence.sql",
+      "sha256": "6ee367a4164ca6505beae7a10d3d96cfa7f54f65e45d92645583966ae57e7fd9"
+    }
+  },
+  "migrationComparison": {
+    "suppliedVersions": [
+      "20250731012532",
+      "20250731015259",
+      "20250802015525",
+      "20250802015612"
+    ],
+    "matchesOct17": true,
+    "notRegisteredLocalVersions": [
+      "20260611000000",
+      "20260612000000",
+      "20260621000000",
+      "20260625081000",
+      "20261006000001",
+      "20261007000001",
+      "20261007000002"
+    ],
+    "semanticEquivalenceVerified": false
+  },
+  "userScreenshot": {
+    "path": "docs/research/evidence/2026-10-23-supabase-feedback/storage-dashboard.png",
+    "sha256": "c761605d35bb88f81a2464afc869e49a7473e28aa630e06c86b0b7937322b818",
+    "projectRefVisible": false
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-23T05:06:50.394Z"
+}

@@ -1,0 +1,18 @@
+{
+  "scope": "Task 1 raw text evidence; test fixtures use synthetic .invalid addresses and loopback only. No environment-file values were read for this check.",
+  "findings": [],
+  "checked": [
+    "docs/research/evidence/2026-10-19-invitation-read-ui/green-read-routes.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/red-account-return-count.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/red-read-routes.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/lint-initial.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/green-recipient-ui-initial.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/project-verify-20261019T022711Z.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/focused-tests.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/lint.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/type-check-initial.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/red-recipient-ui.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/type-check.txt",
+    "docs/research/evidence/2026-10-19-invitation-read-ui/red-recipient-behaviors.txt"
+  ]
+}

@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand auth-dashboard-continuity auth-session-transient auth-token-refresh-races auth-session-lifecycle auth-session-guard auth-store
+
+
+Test Suites: 6 passed, 6 total
+Tests:       49 passed, 49 total
+Snapshots:   0 total
+Time:        13.849 s, estimated 14 s
+Ran all test suites matching auth-dashboard-continuity|auth-session-transient|auth-token-refresh-races|auth-session-lifecycle|auth-session-guard|auth-store.

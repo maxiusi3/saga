@@ -1,0 +1,71 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand invitation-sender.test --testNamePattern=provider identity
+
+FAIL src/lib/server/__tests__/invitation-sender.test.ts
+  ● send provider identity uses only confirmed top-level UUID and email
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 200
+
+      51 | const paths = () => fixture.captured.map(x => x.path)
+      52 | async function failure(response: Response, status: number, outcome: string) {
+    > 53 |   expect(response.status).toBe(status)
+         |                           ^
+      54 |   expect(response.headers.get('cache-control')).toBe('no-store')
+      55 |   expect(response.headers.get('vary')).toBe('Authorization')
+      56 |   const body = await response.json()
+
+      at toBe (src/lib/server/__tests__/invitation-sender.test.ts:53:27)
+      at failure (src/lib/server/__tests__/invitation-sender.test.ts:111:11)
+
+  ● release provider identity uses only confirmed top-level UUID and email
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 200
+
+      51 | const paths = () => fixture.captured.map(x => x.path)
+      52 | async function failure(response: Response, status: number, outcome: string) {
+    > 53 |   expect(response.status).toBe(status)
+         |                           ^
+      54 |   expect(response.headers.get('cache-control')).toBe('no-store')
+      55 |   expect(response.headers.get('vary')).toBe('Authorization')
+      56 |   const body = await response.json()
+
+      at toBe (src/lib/server/__tests__/invitation-sender.test.ts:53:27)
+      at failure (src/lib/server/__tests__/invitation-sender.test.ts:111:11)
+
+  ● lookup provider identity uses only confirmed top-level UUID and email
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 200
+
+      51 | const paths = () => fixture.captured.map(x => x.path)
+      52 | async function failure(response: Response, status: number, outcome: string) {
+    > 53 |   expect(response.status).toBe(status)
+         |                           ^
+      54 |   expect(response.headers.get('cache-control')).toBe('no-store')
+      55 |   expect(response.headers.get('vary')).toBe('Authorization')
+      56 |   const body = await response.json()
+
+      at toBe (src/lib/server/__tests__/invitation-sender.test.ts:53:27)
+      at failure (src/lib/server/__tests__/invitation-sender.test.ts:111:11)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 28 skipped, 31 total
+Snapshots:   0 total
+Time:        1.103 s, estimated 11 s
+Ran all test suites matching invitation-sender.test with tests matching "provider identity".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand invitation-sender.test '--testNamePattern=provider identity'

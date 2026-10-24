@@ -1,0 +1,22 @@
+{
+  "packages/web/src/lib/api.ts": "f99f09fd3f32fdd6ee1cf1caa51e8db876155f3e6e2865e4eb08c52fa71b8146",
+  "packages/web/src/lib/api-supabase.ts": "243e0cac879ebe36deef209cf07f48f3256e5fd8f9939ab50f9ee718f60d3c28",
+  "packages/web/src/lib/invitation-acceptance-protocol.ts": "2d3163a8530ed2df6959f3f8d383875873fcf6d45ae87f3fd4583eb12f4287a6",
+  "packages/web/src/app/api/projects/[id]/invitations/route.ts": "5b77cb3f61116138c1be301e4367750536121de7a80818990f7a7da0f39a9a79",
+  "packages/web/src/app/api/admin/cleanup-invitations/route.ts": "db24c3195787b61e3112782f075a8b24054e0608e61b57f40963dcc151c773a8",
+  "packages/web/src/app/api/admin/cleanup-invitations/__tests__/route.test.ts": "e572b5874e426d5e66d15a4a0f2afffbc2ce7e50f7e853ab7d2f942ceb83071d",
+  "packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx": "94b93564b12540887f8173a52f7571c671dcef0237afcf6a3d0eed8e11d6b1bb",
+  "packages/web/src/components/invitations/invitation-manager.tsx": "680fd3450e259ffe89d65d1bb34a1d15e36d209be13f3f05412b5614735d522a",
+  "packages/web/src/lib/invitation-sender-protocol.ts": "33608fb755ed1dae9a2338c1c06e15cfccb7bb2654c99e56269aafbe6129da57",
+  "packages/web/src/lib/invitation-sender-client.ts": "228dda215f3589fd75c92136ab2278d5f415d426b309b71b018521629782cc1d",
+  "packages/web/src/lib/invitation-sender-deadline.ts": "45e0b9783e572df91702ebad46e137682cccafb49a4b5be036c76705ab4cb112",
+  "packages/web/src/lib/server/invitation-sender.ts": "feba7741eece028f39cddb416332cad00d6f6f8e4b1acad275f79714cc52db2d",
+  "packages/web/src/lib/server/test-support/invitation-sender-fixture.ts": "88f523a8a5eaedbc1a6d6a68fa5300d52e30be5b3cd9272d66c3a9dc31b750d9",
+  "packages/web/src/lib/server/__tests__/invitation-sender-legacy.test.ts": "7ae0b79f7763c0f3b36d6561f81e1033d696428ee06a361ca7913e0c98b7d681",
+  "packages/web/src/lib/server/__tests__/invitation-sender.test.ts": "70feaa62a5320c2811d07ad58a3207fd5823918e7ac86ca9b662c7dfed451d90",
+  "packages/web/src/lib/__tests__/invitation-sender-protocol.test.ts": "11124e2e736fc92637143b702aeebfcc9408572e833d591e053ecbf48e46ba2a",
+  "packages/web/src/lib/__tests__/invitation-sender-client.test.ts": "16c693b9885c472e8c386e34202435bdc46da1723c4e931c593368f672455ef9",
+  "packages/web/src/components/invitations/__tests__/invitation-sender-ui.test.tsx": "09fd8092d811f0d0c2f04a35a0115631d3b297c1f8bebcc26310712da19b433b",
+  "packages/web/src/app/api/invitations/release/route.ts": "94207ff539c1f39ed07d0ec67cb8cb9cba1f7319634f503ca8e4c3eec2ecb469",
+  "packages/web/src/app/api/invitations/lookup/route.ts": "1bc75d54b6a44792a643752a69d82723f75b0497b2b26fcb6860db2c315fdfa3"
+}

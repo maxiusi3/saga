@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-17T16:07:31.856Z",
+  "status": "captured",
+  "scope": "Exactly one pinned public.update_updated_at_column() trigger function; pg_catalog reads only; definition retained privately",
+  "snapshotPath": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+  "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+  "catalogQuerySha256": "903020d000b4c5a388fa5a3b27daa7102f447a223cc924dca664a951cb543f8d",
+  "tlsVerificationDisabled": false,
+  "captureDeadline": {
+    "limitMs": 90000,
+    "exceeded": false
+  },
+  "sourceSha256": {
+    "scripts/inspect-supabase-trigger.cjs": "28550950685ec509a2e20c7e8992caac28be5c690b69ecb65c69332b31eeb7e5",
+    "scripts/inspect-supabase-routines.cjs": "f838b8762324302073bdfc657551069666357b9a2bd66299a3fe2f6ec4d4f928",
+    "scripts/supabase-capture-runtime.cjs": "6b6e2ed78758076af37cb6fa2383d61f0e07090b32d44288b3abe46c6e15353a"
+  },
+  "caSha256": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7",
+  "tls": {
+    "authorized": true,
+    "protocol": "TLSv1.3"
+  },
+  "targets": [
+    {
+      "schema_name": "public",
+      "function_name": "update_updated_at_column",
+      "identity_arguments": "",
+      "expectedDefinitionMd5": "3bfa5e64985d89e65932564c89520d5b",
+      "actualDefinitionMd5": "3bfa5e64985d89e65932564c89520d5b",
+      "definitionSha256": "7df724556927ccb4789c4c22e0d78a874adfefce676fddd5c442b614a7aa52f0",
+      "status": "matched",
+      "changedAttributes": []
+    }
+  ],
+  "identity": {
+    "current_user": "metadata_reader",
+    "current_database": "postgres",
+    "read_only": "on",
+    "isolation": "repeatable read",
+    "statement_timeout": "10s",
+    "lock_timeout": "2s",
+    "idle_transaction_timeout": "15s",
+    "serverVersionSha256": "c6893771323e13ada0a002f7d6917d0ee0a458a22644e7d742555f291366d609",
+    "snapshotTimeSha256": "8bef3ac1d30485ef496466dbb402de0a47b86287238c00708f5712087c6b4b13"
+  },
+  "privateCapture": {
+    "relativePath": "supabase/.temp/routine-audit/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json",
+    "sha256": "45ec35ec3f9bf45741705d9fd2c7ce09953683e342dbe313fe7e482cb20067e5",
+    "permissionsVerified": true,
+    "directoryMode": "0700",
+    "fileMode": "0600",
+    "exclusiveCreation": true
+  },
+  "connectionClosed": true,
+  "connectionCleanup": {
+    "status": "closed"
+  }
+}

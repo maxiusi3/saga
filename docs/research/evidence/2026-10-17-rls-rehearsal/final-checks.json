@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-17T04:07:02.434900+00:00",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "baselineFileCount": 1197,
+  "changedExistingFiles": [
+    "docs/2026-10-10-integrated-upgrade-plan.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/README.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md"
+  ],
+  "protectedFileCount": 1192,
+  "protectedFilesUnchanged": true,
+  "missingFiles": [],
+  "nextEnvRestored": true,
+  "sourceHashesMatch": true,
+  "separateNormalAndSignalReports": true,
+  "temporaryClustersRemoved": true,
+  "reportSha256": {
+    "run-1792208657930-45113.json": "ccddb9cc9f09e1f40eff221a2e6ef385219bef6c5381aa4f29937729fcba43a0",
+    "run-1792208657922-45114.json": "08afc9fd86e3c6aa948c6864d1cd661220f10b9c967462aa6c4ebc2bdd756770"
+  },
+  "documentSha256": {
+    "docs/2026-10-10-integrated-upgrade-plan.md": "e6d83e2437d83dbe34365a1902dedeff32a57661c3fa852dfa880b00a748db68",
+    "docs/HANDOFF-2026-10-13-upgrade.md": "5f8eea9b5798d8bfbb3356a948710c8156108e7291ececb752ffcf29621b85d0",
+    "docs/README.md": "c340d2500cda19f9c6df8345abb2b50ec4452b7f823ef90e2df87ce3113e01e5",
+    "docs/research/2026-10-17-rls-rehearsal.md": "82f8fb6c0f1a5dba5d9ac8950062f5a76b880bece40b247c211da3f30e4d3ec6",
+    "docs/research/evidence/2026-10-17-rls-rehearsal/review-status.md": "5756b7559dd78c0f8ddbc49c6b5f5b4dcea8f34ff8c9e2e8fe1a4d63cb8f4a79",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "aef916867f0965acf738f059b87cd7adec08cd8c1ec0d6d941b799b9ebbb9568",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "99feae1fd49843f1bb8025325e3b8f737b288af5a89f5d2a8df11adef011d7c0"
+  },
+  "markdownLinksChecked": 230,
+  "missingMarkdownLinks": [],
+  "gitDiffCheck": "passed",
+  "newExperimentAndNewDocumentationWhitespaceCheck": "passed",
+  "independentReview": "unavailable_pending"
+}

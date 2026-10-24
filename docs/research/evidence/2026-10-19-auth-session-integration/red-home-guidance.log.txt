@@ -1,0 +1,35 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand home-auth-landing
+
+FAIL src/components/auth/__tests__/home-auth-landing.test.tsx
+  ● bare invite type preserves original-link guidance without treating it as authentication
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "/en/accept-invitation"
+
+    Number of calls: 0
+
+      19 |   window.history.replaceState(null, '', '/en?type=invite')
+      20 |   render(<HomePage />)
+    > 21 |   expect(mockPush).toHaveBeenCalledWith('/en/accept-invitation')
+         |                    ^
+      22 |   expect(mockReplace).not.toHaveBeenCalled()
+      23 | })
+      24 | test.each(['?type=invite&type=invite', '?type=invite&error=synthetic', '?type=invite&access_token=synthetic', '?type=invite&next=/dashboard', '?type=invite#access_token=synthetic', '#type=invite'])('mixed or ambiguous invite landing cleans URL and reauthenticates: %s', suffix => {
+
+      at Object.toHaveBeenCalledWith (src/components/auth/__tests__/home-auth-landing.test.tsx:21:20)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 8 passed, 9 total
+Snapshots:   0 total
+Time:        1.546 s
+Ran all test suites matching home-auth-landing.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand home-auth-landing

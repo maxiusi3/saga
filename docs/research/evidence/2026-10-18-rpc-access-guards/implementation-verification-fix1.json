@@ -1,0 +1,194 @@
+{
+  "status": "PASS_PENDING_SCOPED_REVIEW",
+  "round": 1,
+  "finding": "R1 P2: initial user binding was not compared after member lock wait",
+  "review": {
+    "path": "docs/research/evidence/2026-10-18-rpc-access-guards/access-task-review.md",
+    "sha256": "25d238d0d49ec1c8b98e760d906be5a808b0d0708174de65855b4a80492949bf",
+    "originalVerdicts": "CHANGES_REQUIRED on both axes; retained unchanged",
+    "scopedRereview": "pending controller"
+  },
+  "changes": {
+    "docs/superpowers/specs/2026-10-18-rpc-access-guards.md": {
+      "before": "8efd8b8cebb434bcd5e2d0ecf4eaee8bc865bf58e9ef4434cd0cc29e5921cd30",
+      "after": "55b3af526d34d49244365258cbf01ae09ca918646d0ad593f8dde16c99113bbe"
+    },
+    "experiments/pg17-access-guards/README.md": {
+      "before": "641dcc15b5545fe1da9ded2b6bda7e06e8fdca201a1cd2ca1d60feb1f94c2b13",
+      "after": "482a634c5979c12d49f6a43257b4f7716def678fffcd92a1672693b10bba35fd"
+    },
+    "experiments/pg17-access-guards/candidate.sql": {
+      "before": "e169d6c62f43795a77d183d84edf9cdea23be2da6cab5d058e83d4d386ef9954",
+      "after": "f37f6ce363fd63a9891fbe85c137033e8d3d5a4f2aeb72b6ebdd6748b5358057"
+    },
+    "experiments/pg17-access-guards/concurrency.mjs": {
+      "before": "8406148c2b5fc2b5d734b3d71a4c6aa29ac5d94c30012aa0cf344c8fe0d819b7",
+      "after": "9e8030ada79f01312dc7e7a1eaaf18e45a90d325e17f6d18f7583911b454b5af"
+    },
+    "experiments/pg17-access-guards/input-pins.json": {
+      "before": "e159ea968d7f1a6ae268ab90a25c2f107ae58c7ad2539dfc62ff61907347f35c",
+      "after": "cd04c3a208cb38a334d782c4ab8b89ec8efb22728d51113408d7b3c5a00665e7"
+    },
+    "experiments/pg17-access-guards/scenarios.mjs": {
+      "before": "01a0a53ddb1c5f2811bd946039f16379185bd808bd5f98f65979342c051bd5f9",
+      "after": "d03a02e1fbc2bde00b143eccd5d71675e96c7742c39c65905059f8e7c06e8b4b"
+    }
+  },
+  "minimalSqlChange": "Capture initial user_id beside project_id and NULL-safely compare locked user_id to initial user and authenticated parameter; signature/defaults/lock order/current eligibility guards remain unchanged",
+  "specRuling": "First observed (project_id,user_id) is the per-call consistency baseline; locked tuple must match. Valid committed bindings before first lookup are judged as current facts. No lifetime/ABA immutability promise.",
+  "commands": [
+    {
+      "command": "node experiments/pg17-access-guards/verify.mjs",
+      "phase": "R1 RED on unchanged reviewed candidate, after test/pin addition",
+      "exit": 1,
+      "status": "failed",
+      "scenarios": 92,
+      "assertions": 1492,
+      "error": {
+        "code": "ASSERT_FAILED",
+        "label": "new user cannot accept a binding changed after locator read"
+      },
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-18-28.555Z-3d8248df-b464-414d-b657-97a22b621969.json",
+      "sha256": "6f5514a5d1d20b7aca0bf58060edd9d630111086e405f3807d15a54439868d83",
+      "race": {
+        "name": "rebind_to_invoking_new_user_after_locator",
+        "outcome": "00000",
+        "expectedSqlstate": "42501",
+        "changedTables": [
+          "project_roles"
+        ],
+        "acceptingCallMadeNoWrites": false,
+        "activationObserved": true
+      },
+      "candidateSha256": "e169d6c62f43795a77d183d84edf9cdea23be2da6cab5d058e83d4d386ef9954"
+    },
+    {
+      "command": "node experiments/pg17-access-guards/verify.mjs",
+      "phase": "final fixed normal GREEN",
+      "exit": 0,
+      "status": "passed",
+      "scenarios": 117,
+      "assertions": 1834,
+      "observedLockRaces": 26,
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-20-35.358Z-b6769df7-72cc-45ae-8f5b-f74c737b55d3.json",
+      "sha256": "3e010a2f175ac349e7ca3deba7ab20fb1250c0494d2a9b9f8766151460609534",
+      "race": {
+        "name": "rebind_to_invoking_new_user_after_locator",
+        "outcome": "42501",
+        "expectedSqlstate": "42501",
+        "changedTables": [],
+        "acceptingCallMadeNoWrites": true,
+        "activationObserved": false
+      }
+    },
+    {
+      "command": "node experiments/pg17-access-guards/verify-lifecycle.mjs",
+      "phase": "final fixed lifecycle GREEN",
+      "exit": 0,
+      "status": "passed",
+      "cases": 4,
+      "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-lifecycle-2026-10-18T05-21-01.893Z-46872d1a-77be-453e-94fb-4de292da7898.json",
+      "sha256": "a94a2e6ed18ce7ea67e507da213ab395dca8d4b46d051690782a865bf6c74671",
+      "children": [
+        {
+          "name": "hostile_pg_environment",
+          "status": "passed",
+          "exit": {
+            "code": 0,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-21-02.095Z-0e46405f-d365-455f-9e82-08e6f6e76c69.json",
+          "evidenceSha256": "6ee968f427e876d48d2b6964ea29ab4157104520ff3352161897d722fab662ad",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "SIGTERM_after_fixture_ready",
+          "status": "passed",
+          "exit": {
+            "code": 143,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-21-12.054Z-df76f27f-0ed6-47bc-a27c-9cfd2ed86784.json",
+          "evidenceSha256": "e55abcb93ce956aff1a062e331afacb0b675db2b5d3f59a94843f5d20a01d1d2",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "invalid_actual_server_start",
+          "status": "passed",
+          "exit": {
+            "code": 1,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-21-14.122Z-93dc5e22-54a2-4b18-99e3-ff9f20ffd1cc.json",
+          "evidenceSha256": "299c680cc85b77566f38820d5ff593c700de6d11d26342a5e927cb7297f446c6",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "failed_client_connect_cleanup",
+          "status": "passed",
+          "exit": {
+            "code": 1,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-18-rpc-access-guards/access-run-2026-10-18T05-21-15.768Z-0d598177-dee4-48cc-8fe1-ba3c708558e4.json",
+          "evidenceSha256": "1d94ce57266ca9e5afdfdec5318e35d02dbb63e2e6df6991ec458782f145fbad",
+          "rescue": {
+            "needed": false
+          }
+        }
+      ]
+    }
+  ],
+  "finalExperimentFiles": {
+    "experiments/pg17-access-guards/README.md": "482a634c5979c12d49f6a43257b4f7716def678fffcd92a1672693b10bba35fd",
+    "experiments/pg17-access-guards/candidate.sql": "f37f6ce363fd63a9891fbe85c137033e8d3d5a4f2aeb72b6ebdd6748b5358057",
+    "experiments/pg17-access-guards/concurrency.mjs": "9e8030ada79f01312dc7e7a1eaaf18e45a90d325e17f6d18f7583911b454b5af",
+    "experiments/pg17-access-guards/input-pins.json": "cd04c3a208cb38a334d782c4ab8b89ec8efb22728d51113408d7b3c5a00665e7",
+    "experiments/pg17-access-guards/scenarios.mjs": "d03a02e1fbc2bde00b143eccd5d71675e96c7742c39c65905059f8e7c06e8b4b",
+    "experiments/pg17-access-guards/verify-lifecycle.mjs": "01fbff6e7365d5d32426161673aa8fdd52be32eca46225816f115cd4bdc21bf7",
+    "experiments/pg17-access-guards/verify.mjs": "54c834caf72e90380ba349d363f0c760924c06314a0ac5e9ed39a93c39297f98"
+  },
+  "inputPins": {
+    "path": "experiments/pg17-access-guards/input-pins.json",
+    "sha256": "cd04c3a208cb38a334d782c4ab8b89ec8efb22728d51113408d7b3c5a00665e7",
+    "directSources": 12,
+    "commonJSAndPackageManifests": 44,
+    "postgresInstalledBinLibShareFiles": 743,
+    "allFinalChildrenMatched": true,
+    "allFinalSourcesUnchangedAtFinish": true
+  },
+  "preservation": {
+    "originalImplementationManifestSha256": "fee0fad0578fca19979068b3b72152985d639d041e6b2fe59d87935045a1ac6f",
+    "originalNineRunEvidenceHashesVerified": true,
+    "originalSixReadOnlyInputHashesVerified": true,
+    "unchangedRunnerAndLifecycleComparedToBeforeSnapshot": true,
+    "priorReviewAndEvidenceOverwritten": false,
+    "applicationTests": "not rerun; no app/dependency/old experiment modifications",
+    "reportAppendPrefix": {
+      "path": ".superpowers/sdd/2026-10-18-upgrade-rpc-access-guards/task-2-report.md",
+      "bytes": 14484,
+      "sha256": "832816471f72cacde5ba0923927409d4f87d587a30f7588b5e5b1f40509e7ffe"
+    }
+  },
+  "focusedChecks": {
+    "newUserWaitR1ReproducedBeforeSqlEdit": true,
+    "changedBindingDeniedForInvokingNewUser": true,
+    "zeroAcceptingCallWritesAcrossAllSevenTables": true,
+    "oldUserRaceRetainedAndPasses": true,
+    "preLookupValidRebindingRetainedAndPasses": true,
+    "all26RacesHaveActualWaitAndBlocker": true,
+    "noCleanupRescue": true
+  },
+  "limitations": [
+    "First-lookup tuple consistency is not trusted historical identity/versioning or ABA detection",
+    "Synthetic identities/roles and local schema remain distinct from real authentication/production RLS/ACL",
+    "No remote token adapter, trusted grants/payment source, Storage closure or unknown-commit/idempotency implementation",
+    "No deployment/commit/push or milestone claim"
+  ]
+}

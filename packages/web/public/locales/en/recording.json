@@ -96,5 +96,27 @@
     "detail": {
       "recordFollowUp": "Record Follow-up"
     }
+  },
+  "recovery": {
+    "title": "Recordings on this device",
+    "notice": "Listen to or download the part saved on this device. The ending may be missing if recording was interrupted. These copies have not been confirmed as saved to your project.",
+    "loading": "Looking for recordings…",
+    "listError": "We could not read recordings on this device. Try again.",
+    "retry": "Try again",
+    "draft": "Recording {number}",
+    "unknownDate": "Date unavailable",
+    "open": "Listen / recover",
+    "opening": "Checking the saved audio…",
+    "readError": "We could not open this recording. The local copy has been kept. Try again.",
+    "preview": "Saved audio preview",
+    "playbackError": "This browser cannot play this copy. You can still download it and try another audio player.",
+    "download": "Download this copy",
+    "close": "Close preview",
+    "errors": {
+      "empty": "No audio was saved in this recording. The draft has been kept.",
+      "damaged": "Some saved audio is missing or damaged, so we cannot open this copy. The draft has been kept.",
+      "changed": "This recording changed while we were opening it. Finish recording in other tabs, then try again.",
+      "unavailable": "This recording is no longer available for recovery in this account and project."
+    }
   }
 }

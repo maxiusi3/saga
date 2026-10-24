@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-18T02:54:17.880746+00:00",
+  "status": "passed",
+  "plan": "docs/superpowers/plans/2026-10-17-upgrade-pg17-routines.md",
+  "evidence": {
+    "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json": "3d96c748299e37139c3790bc21aab6cdf16daa8c8881e93cb1121227a149048b",
+    "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-31-48.447Z-e843ebe6-0786-4fff-b593-90f7f8b62775.json": "6336e9927648caeb20394ca01461accc09983f11e22cfc2cda02e6d3f89a4bdd",
+    "docs/research/evidence/2026-10-17-pg17-routines/pg17-lifecycle-2026-10-18T02-31-48.265Z-52dcf725-6ae7-4eb5-be2b-3028f0f1dbe9.json": "0a11e668a5289c8aa7a8fa5c68d4f34a8e58ec2078bfa87bd18b72299bd470df",
+    "docs/research/evidence/2026-10-17-pg17-routines/project-checks.json": "e2df9389b07432cb850ffa74bc206c254dbed8766c1e3cebfaefe84cba0c07a4",
+    "docs/research/evidence/2026-10-17-pg17-routines/project-checks-resume.json": "cc470da3392c0228d8b73ddb00a8a516a4d01a240457887186e6d1fc58efebc8",
+    "docs/research/evidence/2026-10-17-pg17-routines/private-inputs-resume-check.json": "7716a6302b48f80eb27423bfdb271cdd510e7c1c767f5fe85a48c870cafae1e3",
+    "docs/research/evidence/2026-10-17-pg17-routines/milestone-check.json": "2b5aefa33961b9e20a76742421c434863d4458835bfe0958f432b0b3fb613a18",
+    "docs/research/evidence/2026-10-17-pg17-routines/pg17-task-review.md": "4e1ba198607f884900fdc04fbb4800a3652248fce900c51a24c7425545d0fa0c",
+    "docs/research/evidence/2026-10-17-pg17-routines/pg17-implementation.md": "594f0d7a8d7c951f32f0a5eff5c47a12e7b922869a2c6b17b24e53b10632d2e3",
+    "docs/research/evidence/2026-10-17-pg17-routines/pg17-implementation-verification.json": "3514d738df2a192dc12e72bd1034cffc4795c12dfe1cf34b77e1fcbfa85ab93b",
+    "docs/research/evidence/2026-10-17-pg17-routines/public-definition-scan.json": "ef471eeb164862165a2538c3346a0b57580d93a3bbf6c0e907b3de023f137518",
+    "docs/research/evidence/2026-10-17-pg17-routines/batch-final-review.md": "58e44e25cbbe71bd957f991c46f848380e8537b599dcbe9018515686e1f7c455",
+    "docs/research/evidence/2026-10-17-pg17-routines/final-checks.json": "f9ece8be079aa4f0d741f9fcf5d0e335cce26369c8cc35da1191a7f12db512e3",
+    "docs/research/evidence/2026-10-17-pg17-routines/final-checks-whitespace-failed.json": "89bcf28eb8070de3426e4c5f92f109cab26165279f14167219accdda9f0a3832"
+  },
+  "pg17": {
+    "version": "17.4",
+    "normalScenarios": 141,
+    "normalAssertions": 874,
+    "hostileScenarios": 141,
+    "hostileAssertions": 874,
+    "concurrencyCases": 12,
+    "lifecycleCases": 4,
+    "fullCleanup": true,
+    "finalSourceHashesMatch": true
+  },
+  "application": {
+    "webSuites": 77,
+    "webTests": 766,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "pages": 175,
+    "inputsCheckedOnResume": 707,
+    "reexecutedOnResume": false
+  },
+  "collector": {
+    "inherited": 52,
+    "new": 17,
+    "passed": 69,
+    "remoteCaptureRepeatedOnResume": false
+  },
+  "reviews": {
+    "trigger": "PASS",
+    "triggerSemantics": "PASS",
+    "decoder": "PASS",
+    "pg17Task": "PASS",
+    "batchFinal": "PASS",
+    "openFindings": 0
+  },
+  "milestones": {
+    "G0": false,
+    "G1": false,
+    "commit": false,
+    "push": false,
+    "remoteMigration": false,
+    "deployment": false
+  },
+  "finalIntegrity": {
+    "status": "passed",
+    "baselineFilesPreserved": 1434,
+    "applicationInputsMatched": 707,
+    "experimentSourcesMatched": 12,
+    "manifestPathHashReferencesMatched": 31,
+    "relativeLinksValid": 371,
+    "gitDiffCheckExit": 0,
+    "newFileWhitespaceFailures": [],
+    "nextEnvMatchesPrebatchBytes": true
+  },
+  "postReviewFinalization": "Only completion status/link/count updates and handoff header list formatting after final reviewer snapshot; no code or experiment README changes.",
+  "finalCheckHistory": {
+    "initial": "final-checks-whitespace-failed.json",
+    "cause": "Three existing Markdown hard-break trailing spaces in handoff header; converted to a list.",
+    "final": "final-checks.json"
+  }
+}

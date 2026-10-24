@@ -1,0 +1,14 @@
+{
+  "publicReport": "docs/research/evidence/2026-10-17-pg17-routines/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json",
+  "publicSha256": "e876b1f1ed636b57ac110ae515b6158373bc981fcb3bd2c2398c7561eb61275e",
+  "privateSha256": "45ec35ec3f9bf45741705d9fd2c7ce09953683e342dbe313fe7e482cb20067e5",
+  "targetCount": 1,
+  "allMatched": true,
+  "definitionMd5": "3bfa5e64985d89e65932564c89520d5b",
+  "permissionsVerified": true,
+  "ignoredAndUntracked": true,
+  "sourceHashesMatch": true,
+  "remoteRPCInvoked": false,
+  "remoteBusinessRowsRead": false,
+  "remoteWrites": false
+}

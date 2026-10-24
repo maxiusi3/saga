@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-16T05:51:42.818914+00:00",
+  "plan": "docs/2026-10-10-integrated-upgrade-plan.md#71-质量门的具体验收",
+  "G0": {
+    "status": "not_met",
+    "missing": [
+      "Actual remote migration history/schema/RLS/Storage and rollback/backup evidence",
+      "Selected provider account capability/data qualification"
+    ]
+  },
+  "G1": {
+    "status": "not_met",
+    "missing": [
+      "Supported real-device 5/20/30 minute recording and interruption matrix",
+      "Formal cross-family ASR/playback/export/delete isolation",
+      "Actual complete original export and confirmation through formal adapters"
+    ]
+  },
+  "scope": "Local synthetic-audio integration advances T04/T05 but is not an existing release milestone. No new external evidence in this batch.",
+  "git": {
+    "branch": "codex/october-upgrade-p0",
+    "head": "1caa21a72",
+    "committed": false,
+    "pushed": false
+  },
+  "deployed": false,
+  "remoteMigrationsApplied": false
+}

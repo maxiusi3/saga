@@ -1,0 +1,9 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/server/__tests__/invitation-read-routes.test.ts
+
+Test Suites: 1 passed, 1 total
+Tests:       18 passed, 18 total
+Snapshots:   0 total
+Time:        11.29 s
+Ran all test suites within paths "src/lib/server/__tests__/invitation-read-routes.test.ts".

@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-18T13:21:07.007286+00:00",
+  "status": "passed",
+  "sourceManifest": {
+    "path": "docs/research/evidence/2026-10-18-invitation-transactions/implementation-verification.json",
+    "sha256": "28a007ff93595ad7746c92e25412234b9f71347c18987c94ddced88032d8b501"
+  },
+  "groups": {
+    "sources": {
+      "checked": 24,
+      "mismatches": []
+    },
+    "commonJS": {
+      "checked": 44,
+      "mismatches": []
+    },
+    "runtimeFiles": {
+      "checked": 743,
+      "mismatches": []
+    },
+    "evidence": {
+      "checked": 27,
+      "mismatches": []
+    }
+  },
+  "originalDatabaseSuitesRerun": false,
+  "scope": "Preserve completed prior PG17 source/runtime/private-input and evidence bytes; this does not validate the new HTTP adapter or production integration."
+}

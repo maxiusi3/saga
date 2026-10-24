@@ -1,0 +1,75 @@
+[
+  {
+    "conclusion": "failure",
+    "name": "CI",
+    "steps": [
+      {
+        "conclusion": "success",
+        "name": "Set up job"
+      },
+      {
+        "conclusion": "success",
+        "name": "Checkout code"
+      },
+      {
+        "conclusion": "success",
+        "name": "Setup Node.js"
+      },
+      {
+        "conclusion": "success",
+        "name": "Install dependencies"
+      },
+      {
+        "conclusion": "success",
+        "name": "Build shared package"
+      },
+      {
+        "conclusion": "success",
+        "name": "Validate deployment configuration"
+      },
+      {
+        "conclusion": "success",
+        "name": "Type check"
+      },
+      {
+        "conclusion": "success",
+        "name": "Lint"
+      },
+      {
+        "conclusion": "success",
+        "name": "Web tests"
+      },
+      {
+        "conclusion": "failure",
+        "name": "Dependency audit"
+      },
+      {
+        "conclusion": "skipped",
+        "name": "Post Setup Node.js"
+      },
+      {
+        "conclusion": "success",
+        "name": "Post Checkout code"
+      },
+      {
+        "conclusion": "success",
+        "name": "Complete job"
+      }
+    ]
+  },
+  {
+    "conclusion": "skipped",
+    "name": "Supabase Production Migrations",
+    "steps": []
+  },
+  {
+    "conclusion": "skipped",
+    "name": "Vercel Preview",
+    "steps": []
+  },
+  {
+    "conclusion": "skipped",
+    "name": "Vercel Production",
+    "steps": []
+  }
+]

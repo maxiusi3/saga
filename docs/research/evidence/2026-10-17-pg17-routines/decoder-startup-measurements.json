@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "nodeVersion": "v22.22.2",
+  "executable": "/usr/local/Cellar/node@22/22.22.2/bin/node",
+  "scope": "Five sequential synthetic Node child readiness measurements; no native PG build required",
+  "samples": [
+    {
+      "index": 1,
+      "spawnReturnedMs": 6.427255000000002,
+      "spawnEventMs": 7.355002999999982,
+      "firstPcmMs": 859.16285,
+      "exitMs": 862.558248,
+      "closeMs": 864.512722,
+      "pcmBytes": 3200,
+      "pidGone": true
+    },
+    {
+      "index": 2,
+      "spawnReturnedMs": 2.369098000000008,
+      "spawnEventMs": 2.4467839999999796,
+      "firstPcmMs": 134.13209300000005,
+      "exitMs": 136.4311859999999,
+      "closeMs": 136.5507879999999,
+      "pcmBytes": 3200,
+      "pidGone": true
+    },
+    {
+      "index": 3,
+      "spawnReturnedMs": 1.9556549999999788,
+      "spawnEventMs": 2.0163319999999203,
+      "firstPcmMs": 165.9057539999999,
+      "exitMs": 169.35709599999996,
+      "closeMs": 169.8436099999999,
+      "pcmBytes": 3200,
+      "pidGone": true
+    },
+    {
+      "index": 4,
+      "spawnReturnedMs": 3.0673659999999927,
+      "spawnEventMs": 3.168984000000137,
+      "firstPcmMs": 165.92269299999998,
+      "exitMs": 168.75347899999997,
+      "closeMs": 169.108471,
+      "pcmBytes": 3200,
+      "pidGone": true
+    },
+    {
+      "index": 5,
+      "spawnReturnedMs": 2.7993220000000747,
+      "spawnEventMs": 2.8598299999998744,
+      "firstPcmMs": 145.27466800000002,
+      "exitMs": 148.71801699999992,
+      "closeMs": 148.74091799999997,
+      "pcmBytes": 3200,
+      "pidGone": true
+    }
+  ]
+}

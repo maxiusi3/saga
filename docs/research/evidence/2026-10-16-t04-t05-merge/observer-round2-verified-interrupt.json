@@ -1,0 +1,66 @@
+{
+  "startedAt": "2026-10-16T05:19:38.086Z",
+  "scenarios": [
+    {
+      "owner": "direct",
+      "fault": "observer-interrupt",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/observer-round2-verified-interrupt-direct-observer-interrupt.json",
+      "status": "passed",
+      "harnessPid": 50587,
+      "fixture": {
+        "owner": "direct",
+        "fault": "observer-interrupt",
+        "ownerPid": 50587,
+        "decoderPid": 50809,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 50587,
+        "stoppedOwner": false,
+        "ownerExitedBeforeCleanup": false,
+        "stoppedDecoder": true
+      },
+      "ownership": {
+        "scratch": "/tmp/saga-t05-mkDSPV",
+        "postmasterPid": 50759,
+        "groupIds": [],
+        "decoderPids": [
+          50809
+        ],
+        "snapshotCount": 5
+      },
+      "decoderAliveAtObservation": true,
+      "clusterAliveAtObservation": true,
+      "rawEvidenceError": "ENOENT",
+      "expectedFaultObserved": "actual observer SIGTERM",
+      "observerCleanup": {
+        "elapsedMs": 7332,
+        "harnessExited": true,
+        "ownershipComplete": true,
+        "remainingGroups": [],
+        "remainingDecoders": [],
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "usedFallbackPgStop": true,
+        "forcedGroups": [
+          50587
+        ],
+        "errors": []
+      },
+      "exitAfterCleanup": {
+        "code": null,
+        "signal": "SIGKILL"
+      },
+      "diagnostic": "",
+      "decoderAliveAfterCleanup": false
+    }
+  ],
+  "sources": {
+    "verify.mjs": "8d89c9601f001ce63798f9a6a0d78b03e591233236e5927b8940ac7206f6225b",
+    "merge-scenarios.mjs": "e555de35fb4b262b86f1b219563e2ef9124d8c15a00f6a658527308863217509",
+    "verify-merge-cleanup.mjs": "c1e7b997ea4ecd0ecb8bb6cd453662417b52a03265e0db5eb9880cc6e0cebca5",
+    "worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc"
+  },
+  "status": "interrupted",
+  "finishedAt": "2026-10-16T05:19:50.792Z",
+  "signal": "SIGTERM"
+}

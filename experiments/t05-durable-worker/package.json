@@ -1,0 +1,9 @@
+{
+  "name": "saga-t05-durable-worker-poc",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": { "verify": "node verify.mjs" },
+  "dependencies": { "pg": "8.16.3", "pg-boss": "12.37.1" }
+}

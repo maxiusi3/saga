@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-13",
+  "branch": "codex/october-upgrade-p0",
+  "base_commit": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "state": "uncommitted working tree; local verification only; no deployment",
+  "runtime": {
+    "node": "v22.22.2",
+    "npm": "10.9.7"
+  },
+  "batch_source_files": [
+    "packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts",
+    "packages/web/src/app/api/ai/transcribe/route.ts",
+    "packages/web/src/app/api/media/__tests__/access.test.ts",
+    "packages/web/src/app/api/media/signed-url/route.ts",
+    "packages/web/src/app/api/media/upload-image/route.ts",
+    "packages/web/src/lib/__tests__/ai-service.test.ts",
+    "packages/web/src/lib/ai-service.ts",
+    "packages/web/src/lib/media-reference.ts",
+    "packages/web/src/lib/server/media-access.ts"
+  ],
+  "source_sha256": {
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/record/page.tsx": "ba2200bdc15e50c32143b95bd4ddbcc9e7c177fe93122ef12815005759068076",
+    "packages/web/src/app/api/ai/generate-content/__tests__/route.test.ts": "608dd4969046b2928b9e16ea9f38dac8f1dba588a723b47554f5e709ba2f6b6c",
+    "packages/web/src/app/api/ai/generate-content/route.ts": "ea66a40c60fc362da25e15b250dc2a7558c5936253dd53274f35fdf4144ead58",
+    "packages/web/src/app/api/ai/health/__tests__/route.test.ts": "8b0f738988b8caa315a0f06655e3e06abea8474effc27235e90c225d2d743dcf",
+    "packages/web/src/app/api/ai/health/route.ts": "7e5680eb8df1d68e5df65fe50d7598ad9e4947732b15e4fb369d6e992f66b4bf",
+    "packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts": "edeb71fb5577d058cf19943b30cc141ab936e7dd122b4ebc57c353fc19e88de0",
+    "packages/web/src/app/api/ai/transcribe/route.ts": "81fd364db6a02d243d68e9529edc79cd1a53489498ea30ab4a4064bc8cb85896",
+    "packages/web/src/app/api/media/__tests__/access.test.ts": "a329b29609856badd98111b143330ac202da6760b9ac4b0e692dccf6ae8bcdbf",
+    "packages/web/src/app/api/media/signed-url/route.ts": "ad46967c46b2ed23d63eeca9428c6b6672e0b8111dd8e724a247e1ebeb6f5791",
+    "packages/web/src/app/api/media/upload-image/route.ts": "c1bf1adf6579f9551e8ca94b327fe58f70b32ea5c062f1aeee518eaf3926342f",
+    "packages/web/src/components/recording/ReviewStage.tsx": "39356de3fa020e5e00ac9d3deac4fbd5a9eaee0667d2cbc7577a8885f9228011",
+    "packages/web/src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx": "b26bd9b53c511f9bffb2d4cdc3341fa674986d70381e3e0f2179237d4a57023a",
+    "packages/web/src/lib/__tests__/ai-service.test.ts": "6e64d2bafad82376478997a4d305ed545a2bbcb0366d0026d58d1a5ed36f75ff",
+    "packages/web/src/lib/ai-response.ts": "36e4df8bb3d1322c48699468871690c152c0b3b5a38cb8f477477b56858b388f",
+    "packages/web/src/lib/ai-service.ts": "e7ed29f2558d7bb55f8781fa0927f12a9b0d54b7effdbabbce6b297661aa28b5",
+    "packages/web/src/lib/media-reference.ts": "8f3fe5d37530ca09f777066a31c78ce0804a8cb76e27523f6810b6bd1cdb360f",
+    "packages/web/src/lib/server/media-access.ts": "6f781e6a31c04622737cb1a87ef4fedbd427dd4ff5ca176442e16248bb9d9c0f"
+  },
+  "document_sha256": {
+    "docs/2026-10-10-integrated-upgrade-plan.md": "cdf66b7af09bd58611b022844ca87cc357067d7267908278d40d81e9ca9c6fcb",
+    "docs/2026-10-10-upgrade-decisions.md": "605890b35cad5f0774f9778a4a92d0a1d491d6c187c36f00badfc311d2446817",
+    "docs/research/2026-10-10-implementation-gap-audit.md": "e095e00d979d5a00889711dbdd89330e265404c605035bea68c563ebe1764c85",
+    "docs/research/2026-10-10-evidence-and-artifact-review.md": "1c6191e27b73b3ab99431e5962f6a050bca6f5297415822cfee849d3ef392ace",
+    "docs/README.md": "6ae930567af0216676ebf10007e5b869a77c4e1d99a8bd79ee2ede89594d3174",
+    "docs/superpowers/plans/2026-10-11-upgrade-p0-preparation.md": "e77e627afd0d19d8293e1e65554cbec7e93235e80b05658c81a9cc96ec4e3946",
+    "docs/superpowers/plans/2026-10-13-upgrade-media-access.md": "2cda5add1a288c9b0f3cca70751db6a1f87a1b3a134ea8d69de297a718ad2dc5",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "22fa6a837bf6cdd4f961eadb8f1d8947da1fecc6c8457f5302e7653c2fdbea54",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "06608195ed31d272d99d080d9a032b20db10e6f80c60c050ef7ae154d9497274",
+    "docs/research/2026-10-13-media-access-implementation.md": "298507f51ee681ba3173e3e98b23029c0828dc9694cddc8e03517e185db0cfdd",
+    "docs/research/evidence/2026-10-13-media-access/README.md": "3e9f795a35670388bd24c0a827195af41f8b0afeb8dc171d7d5d593cc829982c"
+  },
+  "base_snapshot_sha256": {
+    "packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts": "d76dad1154529ea691124db83271d078f5f5f32da8d2977258a1b8332952e7f2",
+    "packages/web/src/app/api/ai/transcribe/route.ts": "2b1e00efbdc147d37b6dd37b1e5804639efd6ce9e812ebece555f86d109658f2",
+    "packages/web/src/app/api/media/__tests__/access.test.ts": null,
+    "packages/web/src/app/api/media/signed-url/route.ts": "5475463bdbf2f2a8023d487711fd5c90763a98556d96be4259b46e893b93d53e",
+    "packages/web/src/app/api/media/upload-image/route.ts": "7f56601bcc92c795b0822a82fb4e57c7081e82b58d8b7054366fb3bac820260e",
+    "packages/web/src/lib/__tests__/ai-service.test.ts": "85be55570bdd00c19907948383e03858c390dff448058a080de65b4aaf6d8206",
+    "packages/web/src/lib/ai-service.ts": "9e85df9d777e7f365208ce7771aec4b2d49ca449a21cda8a674001a3d134f6a7",
+    "packages/web/src/lib/media-reference.ts": null,
+    "packages/web/src/lib/server/media-access.ts": null
+  },
+  "final_results": {
+    "focused": {
+      "exit_code": 0,
+      "suites": 3,
+      "tests": 75
+    },
+    "verify": {
+      "exit_code": 0,
+      "web_suites": 58,
+      "web_tests": 488,
+      "type_check": "passed",
+      "lint": "passed",
+      "build": "passed"
+    },
+    "independent_review": {
+      "initial_findings": 3,
+      "closed": 3,
+      "followup": "approved; no new blocking findings"
+    }
+  },
+  "reused_checks": {
+    "source": "../2026-10-11-t00/verification-manifest.json",
+    "reason": "No shared/infra source or configuration changes in this batch",
+    "shared": {
+      "suites": 4,
+      "tests": 16
+    },
+    "infra": {
+      "tests": 7
+    }
+  },
+  "log_sha256": {
+    "client-red.log": "2034d4d2ef55aebf625af78a821aa35c30f0e3666d7d0e06a6669d94cee02154",
+    "cookie-red.log": "55e5c1164bce9b6f8051ed5e8f61b0fd41cc8d4153491beb5c15e92bf3a447fc",
+    "focused-final.log": "12195f48fd12ce3cd5032e0cc9be838bbadd53aae3739cabcd54775cfdb1b3a7",
+    "focused.log": "202c1573d941a8c1113e5649c18f2369f37d8ee406319bc55042423359a5d4d3",
+    "red.log": "b71f85704a8726724a9ebcd8ba6069005f0e9f1a89bb99a53d703aee35bd4055",
+    "review-red.log": "68c9a7fffc4fb2dcc96d124bb34f1a597f3003bef1dc39b702bda8914da2c68b",
+    "type-check.log": "6096d610ac3f63cdd32e2b1e498d6cd9874b0341e7193944ee329b9e7650d1b6",
+    "verify-final.log": "935019cbb4386c14c2c0b25e15c2abfa4b530ff15fd8924618227e21f63fc4ea",
+    "verify.log": "c54295268bd0155c00d726bf0283658c9a30a0a0e3d934ad77d21025266421f5"
+  },
+  "review_and_patch_sha256": {
+    "implementation.patch": "afff2d356be0cf548c620f899f4147f419926bf59c3a4f2feeef97399aac0e01",
+    "review-fixes.patch": "21625422381a5b3bd71b2427380f7224dc732c29901a3f76f1f667625edb9c73",
+    "review-followup.md": "87c4dee3e834fa05822a28e39b5113c916eb607be4eb34725fb6f93e8d613ed6",
+    "review-initial.md": "af651acb1d07be83635155daeef67cd8d900da48808a85e02a04f73de346ea2b",
+    "reviewed-initial.patch": "d796eb232471297052c9cab6636b3bb317da2c12e6ababdd83dd49bff4439c71"
+  }
+}

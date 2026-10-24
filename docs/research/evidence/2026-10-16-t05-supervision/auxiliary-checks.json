@@ -1,0 +1,20 @@
+{
+  "shared-tests": {
+    "command": [
+      "npm",
+      "test",
+      "--workspace=packages/shared",
+      "--",
+      "--runInBand"
+    ],
+    "exitCode": 0
+  },
+  "infra-tests": {
+    "command": [
+      "npm",
+      "run",
+      "test:infra"
+    ],
+    "exitCode": 0
+  }
+}

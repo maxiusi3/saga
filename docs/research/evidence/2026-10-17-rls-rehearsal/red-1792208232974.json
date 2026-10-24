@@ -1,0 +1,239 @@
+{
+  "startedAt": "2026-10-17T03:37:12.976Z",
+  "status": "failed",
+  "scope": "isolated synthetic PostgreSQL RLS replay; no remote access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/rls-rehearsal/README.md": "d733738e15e4a15b0c41029521f7fdc334dadacf65ab7f02d83f0c420de413cc",
+    "experiments/rls-rehearsal/fixture.sql": "f772b72dc15d120530216107b4b4e8838d7395bf30e7b65f3b9771092d27eeb5",
+    "experiments/rls-rehearsal/scenarios.mjs": "2ab193685fa9f4d9f4c9f424525cfea19b7a8e2073f1eca152dbaab165822145",
+    "experiments/rls-rehearsal/verify.mjs": "617ec7005fac2b66f7505ef414dd0686eaed0793596c2a41dcab2ec219ec1227"
+  },
+  "observations": [
+    {
+      "name": "exact_snapshot_policy_graph",
+      "result": {
+        "code": "42P17"
+      },
+      "mode": "all 32 saved predicates with dependency RLS enabled"
+    },
+    {
+      "name": "isolated_audio_public_read",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_audio_cross_project_insert",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_removed_uploader_read",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_project_name_binding",
+      "mode": "dependency RLS disabled",
+      "ordinaryMemberRows": 0,
+      "crossProjectRows": 1
+    },
+    {
+      "name": "isolated_story_insert_or_branch",
+      "mode": "projects/roles/member RLS disabled",
+      "rows": 1
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "anonymous_cannot_read_audio",
+      "status": "failed",
+      "assertions": 1,
+      "error": "anonymous audio hidden\n\n1 !== 0\n"
+    }
+  ],
+  "assertions": 9,
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f",
+    "captureTime": "2026-10-17T02:45:52.407Z"
+  },
+  "scratch": "/tmp/saga-rls-nUyqVO",
+  "replayedPolicies": [
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_delete"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_insert"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_select"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_update"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_delete"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_insert"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_select"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_select_self"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_update"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_delete"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_insert"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_insert_authenticated"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_select"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_select_members"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_update"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_delete"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_insert"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_insert_members"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_select"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_select_members"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_update"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Allow authenticated users to upload audio jf5dkp_0"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Allow public read access to audio jf5dkp_0"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Project facilitators can delete project files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Project facilitators can update project files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Project facilitators can upload project files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Project members can view project files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Storytellers can upload story files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Users can delete their own files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Users can update their own files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Users can upload files to their own folders"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Users can view their own files"
+    }
+  ],
+  "error": {
+    "message": "anonymous audio hidden\n\n1 !== 0\n",
+    "code": "ERR_ASSERTION"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T03:37:15.357Z"
+}

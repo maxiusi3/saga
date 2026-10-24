@@ -1,0 +1,151 @@
+{
+  "checkedAt": "2026-10-19T19:16:19.117002+08:00",
+  "status": "passed",
+  "kind": "interruption-recovery evidence and source identity revalidation",
+  "broadTestsRerun": false,
+  "reason": "All 757 project inputs and 9 frozen source files still match the original successful full run; continuation changes only documentation, review and evidence status.",
+  "originalProjectRun": {
+    "path": "docs/research/evidence/2026-10-19-auth-return/project-verification-20261019T033925Z.json",
+    "sha256": "b670e34708171dfa19a2b5082fbaa193d13f45dd18f55181deabc2ddc7933f85",
+    "startedAt": "2026-10-19T03:39:25.439638+00:00",
+    "finishedAt": "2026-10-19T03:41:51.553033+00:00"
+  },
+  "verifiedLogs": [
+    {
+      "label": "verify",
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/project-verify-20261019T033925Z.txt",
+        "sha256": "91be789195c5ac469180389da199d7cdbd958c648f30cd59dab9f74af4685ea7"
+      },
+      "originalExitCode": 0,
+      "observedSummaryLines": [
+        "Test Suites: 85 passed, 85 total",
+        "Tests:       1196 passed, 1196 total",
+        "✓ Generating static pages using 7 workers (176/176) in 2.3s"
+      ]
+    },
+    {
+      "label": "shared",
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/project-shared-20261019T033925Z.txt",
+        "sha256": "e5bbf97604b4aa45dcb933adb4108881982152f132d80e0b923bd45123f90130"
+      },
+      "originalExitCode": 0,
+      "observedSummaryLines": [
+        "Test Suites: 4 passed, 4 total",
+        "Tests:       16 passed, 16 total"
+      ]
+    },
+    {
+      "label": "infra",
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/project-infra-20261019T033925Z.txt",
+        "sha256": "9787df1014c7efdbf8ab44b54b282a68274048a949f529928aef63c6f1e4003e"
+      },
+      "originalExitCode": 0,
+      "observedSummaryLines": [
+        "# tests 7",
+        "# pass 7",
+        "# fail 0"
+      ]
+    }
+  ],
+  "focused": {
+    "path": "docs/research/evidence/2026-10-19-auth-return/final-v2-focused-and-invitation-regressions.txt",
+    "sha256": "c58c38f84222b175c57df25bb3a15fb9a45dbe9696192c8d65e1af9922192f13",
+    "observedSummaryLines": [
+      "Test Suites: 8 passed, 8 total",
+      "Tests:       430 passed, 430 total"
+    ]
+  },
+  "integrityCheckpoint": {
+    "checkedAt": "2026-10-19T11:15:02.380634+00:00",
+    "baselineFileCount": 1696,
+    "changedBaselineFiles": [
+      "docs/2026-10-10-integrated-upgrade-plan.md",
+      "docs/HANDOFF-2026-10-13-upgrade.md",
+      "docs/README.md",
+      "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+      "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md",
+      "packages/web/src/app/[locale]/auth/callback/route.ts",
+      "packages/web/src/app/[locale]/auth/signin/page.tsx",
+      "packages/web/src/components/auth/auth-provider.tsx"
+    ],
+    "unexpectedChanges": [],
+    "newFiles": [
+      "docs/research/2026-10-19-auth-return.md",
+      "docs/research/evidence/2026-10-19-auth-return/README.md",
+      "docs/research/evidence/2026-10-19-auth-return/baseline-preservation-audit.txt",
+      "docs/research/evidence/2026-10-19-auth-return/callback-extra-edge-tests.txt",
+      "docs/research/evidence/2026-10-19-auth-return/callback-fixture-run-2.txt",
+      "docs/research/evidence/2026-10-19-auth-return/final-focused-and-invitation-regressions.txt",
+      "docs/research/evidence/2026-10-19-auth-return/final-integrity.json",
+      "docs/research/evidence/2026-10-19-auth-return/final-scoped-lint.txt",
+      "docs/research/evidence/2026-10-19-auth-return/final-source-sha256-v2.txt",
+      "docs/research/evidence/2026-10-19-auth-return/final-source-sha256.txt",
+      "docs/research/evidence/2026-10-19-auth-return/final-typecheck.txt",
+      "docs/research/evidence/2026-10-19-auth-return/final-v2-focused-and-invitation-regressions.txt",
+      "docs/research/evidence/2026-10-19-auth-return/final-v2-scoped-lint.txt",
+      "docs/research/evidence/2026-10-19-auth-return/final-v2-typecheck.txt",
+      "docs/research/evidence/2026-10-19-auth-return/first-implementation-tests.txt",
+      "docs/research/evidence/2026-10-19-auth-return/focused-and-invitation-regressions-run-1.txt",
+      "docs/research/evidence/2026-10-19-auth-return/focused-tests-run-3.txt",
+      "docs/research/evidence/2026-10-19-auth-return/green-native-context-and-session-tokens.txt",
+      "docs/research/evidence/2026-10-19-auth-return/implicit-fragment-compatibility-probe-source.txt",
+      "docs/research/evidence/2026-10-19-auth-return/implicit-fragment-compatibility-probe.txt",
+      "docs/research/evidence/2026-10-19-auth-return/project-infra-20261019T033925Z.txt",
+      "docs/research/evidence/2026-10-19-auth-return/project-shared-20261019T033925Z.txt",
+      "docs/research/evidence/2026-10-19-auth-return/project-verification-20261019T033925Z.json",
+      "docs/research/evidence/2026-10-19-auth-return/project-verify-20261019T033925Z.txt",
+      "docs/research/evidence/2026-10-19-auth-return/red-contract-tests.txt",
+      "docs/research/evidence/2026-10-19-auth-return/red-existing-behavior.txt",
+      "docs/research/evidence/2026-10-19-auth-return/red-existing-callback-test-source.txt",
+      "docs/research/evidence/2026-10-19-auth-return/red-existing-signin-test-source.txt",
+      "docs/research/evidence/2026-10-19-auth-return/red-native-context-and-session-tokens.txt",
+      "docs/research/evidence/2026-10-19-auth-return/red-opaque-and-long-session.txt",
+      "docs/research/evidence/2026-10-19-auth-return/scoped-lint-run-1.txt",
+      "docs/research/evidence/2026-10-19-auth-return/task-1-M1-wording-verification.txt",
+      "docs/research/evidence/2026-10-19-auth-return/task-1-report.md",
+      "docs/research/evidence/2026-10-19-auth-return/task-1-review.md",
+      "docs/research/evidence/2026-10-19-auth-return/task-2-report.md",
+      "docs/research/evidence/2026-10-19-auth-return/typecheck-run-1.txt",
+      "docs/research/evidence/2026-10-19-auth-return/verification.json",
+      "docs/superpowers/plans/2026-10-19-upgrade-auth-return.md",
+      "docs/superpowers/specs/2026-10-19-auth-return.md",
+      "packages/web/src/components/auth/__tests__/auth-signin-return.test.tsx",
+      "packages/web/src/lib/__tests__/auth-return.test.ts",
+      "packages/web/src/lib/auth-return.ts",
+      "packages/web/src/lib/server/__tests__/auth-callback.test.ts",
+      "packages/web/src/lib/server/auth-callback.ts",
+      "packages/web/src/lib/server/test-support/auth-callback-fixture.ts"
+    ],
+    "unexpectedNewFiles": [],
+    "currentProjectInputsChecked": 757,
+    "currentProjectInputChanges": [],
+    "fixedSourcesChecked": 9,
+    "fixedSourceChanges": [],
+    "linksChecked": 414,
+    "brokenLinks": [],
+    "summaryReferencesChecked": 50,
+    "badReferences": [],
+    "gitDiffCheckExit": 0,
+    "gitDiffCheckOutput": "",
+    "nextEnvRestored": true,
+    "preexistingTrackedMetadataPaths": [
+      "supabase/.temp/cli-latest",
+      "supabase/.temp/gotrue-version",
+      "supabase/.temp/linked-project.json",
+      "supabase/.temp/pooler-url",
+      "supabase/.temp/postgres-version",
+      "supabase/.temp/project-ref",
+      "supabase/.temp/rest-version",
+      "supabase/.temp/storage-migration",
+      "supabase/.temp/storage-version"
+    ],
+    "privatePathsTracked": [],
+    "credentialPatternFiles": [],
+    "status": "passed"
+  },
+  "milestoneG0": false,
+  "milestoneG1": false
+}

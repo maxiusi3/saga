@@ -1,0 +1,57 @@
+{
+  "startedAt": "2026-10-17T05:45:35.877152+00:00",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "protectedBefore": {
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "experiments/t05-durable-worker/package.json": "a34f22500fbe32d38ef8e3a430fda81270a5bdb6760923164b161b734b8720d4",
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "packages/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+  },
+  "commands": {
+    "verify": {
+      "argv": [
+        "npm",
+        "run",
+        "verify"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 112.24,
+      "output": "verify.txt"
+    },
+    "shared": {
+      "argv": [
+        "npm",
+        "test",
+        "--workspace=packages/shared",
+        "--",
+        "--runInBand"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 4.38,
+      "output": "shared.txt"
+    },
+    "infra": {
+      "argv": [
+        "npm",
+        "run",
+        "test:infra"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.72,
+      "output": "infra.txt"
+    }
+  },
+  "scope": "Application gate only; new isolated experiment verified separately",
+  "nextEnvRestored": true,
+  "protectedAfter": {
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "experiments/t05-durable-worker/package.json": "a34f22500fbe32d38ef8e3a430fda81270a5bdb6760923164b161b734b8720d4",
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "packages/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+  },
+  "finishedAt": "2026-10-17T05:47:33.254548+00:00"
+}

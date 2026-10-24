@@ -1,0 +1,210 @@
+{
+  "createdAt": "2026-10-21T02:43:36.682932+00:00",
+  "purpose": "Distribution aliases: repository *.log ignores the original review-time public copies. Byte-identical .log.txt copies are git-visible. Original raw logs, review-time .log files, original run manifest and independent Task 1 reports remain unchanged. Current documentation links to these aliases.",
+  "originalRunManifest": {
+    "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-1-run-manifest.json",
+    "sha256": "13018698f55522addfe84623b8815d73f2eac2a374e9f0391d85f6e6103bcd2a"
+  },
+  "logs": [
+    {
+      "run": 1,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/01-legacy-red.log",
+      "originalPublicSha256": "2fdd37f35030e14e5fb3a82fc53583cdee12a9a855f5dca47d59c6cb4be7ab5e",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/01-legacy-red.log.txt",
+        "sha256": "2fdd37f35030e14e5fb3a82fc53583cdee12a9a855f5dca47d59c6cb4be7ab5e"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 2,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/02-contract-scaffolding-red.log",
+      "originalPublicSha256": "7d042fbb09aa8d918e0cb8aa28c91c8fee3acc8275c68de492c5d1f548446fad",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/02-contract-scaffolding-red.log.txt",
+        "sha256": "7d042fbb09aa8d918e0cb8aa28c91c8fee3acc8275c68de492c5d1f548446fad"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 3,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/03-contract-behavior-red.log",
+      "originalPublicSha256": "7e35af58f64f75d1f9c88e6fe09798bfb4ab7b72b753e520aeff42831ea3ce7d",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/03-contract-behavior-red.log.txt",
+        "sha256": "7e35af58f64f75d1f9c88e6fe09798bfb4ab7b72b753e520aeff42831ea3ce7d"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 4,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/04-server-protocol-green-attempt.log",
+      "originalPublicSha256": "65d65585399c5fbe2a5ae34e6121f381fd5f0cd7458b354043e58d34396a6615",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/04-server-protocol-green-attempt.log.txt",
+        "sha256": "65d65585399c5fbe2a5ae34e6121f381fd5f0cd7458b354043e58d34396a6615"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 5,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/05-client-ui-red.log",
+      "originalPublicSha256": "613dae80068f394d95b2d419763ebf02269bf4527a55517fde87e0f72fe16578",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/05-client-ui-red.log.txt",
+        "sha256": "613dae80068f394d95b2d419763ebf02269bf4527a55517fde87e0f72fe16578"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 6,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/06-component-send-red.log",
+      "originalPublicSha256": "3fa4bed0b595842a707d47f22da4dc0c54b4de081e5e5f215b956e55b192be0a",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/06-component-send-red.log.txt",
+        "sha256": "3fa4bed0b595842a707d47f22da4dc0c54b4de081e5e5f215b956e55b192be0a"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 7,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/07-helper-red.log",
+      "originalPublicSha256": "e32993111131213f89f107153299cc2cda65671ef0f13cae958adb7b820baf6e",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/07-helper-red.log.txt",
+        "sha256": "e32993111131213f89f107153299cc2cda65671ef0f13cae958adb7b820baf6e"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 8,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/08-client-ui-green-attempt.log",
+      "originalPublicSha256": "29864f8c949b991ef1d36f7bf89d63419d193094734b44586311607212dedeca",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/08-client-ui-green-attempt.log.txt",
+        "sha256": "29864f8c949b991ef1d36f7bf89d63419d193094734b44586311607212dedeca"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 9,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/09-web-typecheck-attempt.log",
+      "originalPublicSha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/09-web-typecheck-attempt.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 10,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/10-client-ui-green.log",
+      "originalPublicSha256": "7df179298a0faca1f74cc99d95851097317939b215252721e2e1c54354394ffa",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/10-client-ui-green.log.txt",
+        "sha256": "7df179298a0faca1f74cc99d95851097317939b215252721e2e1c54354394ffa"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 11,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/11-unicode-email-red.log",
+      "originalPublicSha256": "92a3a3cb04e33037274aba675758effb2f94d30b1b51c4bd38dc76d8ff379f45",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/11-unicode-email-red.log.txt",
+        "sha256": "92a3a3cb04e33037274aba675758effb2f94d30b1b51c4bd38dc76d8ff379f45"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 12,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/12-targeted-regressions-green-attempt.log",
+      "originalPublicSha256": "6d70f8e9f23da87f1738a84dc2ffbf3280093651596cd64b3ffafce676d686a9",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/12-targeted-regressions-green-attempt.log.txt",
+        "sha256": "6d70f8e9f23da87f1738a84dc2ffbf3280093651596cd64b3ffafce676d686a9"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 13,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/13-scoped-lint-attempt.log",
+      "originalPublicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/13-scoped-lint-attempt.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 14,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/14-provider-uuid-red.log",
+      "originalPublicSha256": "6ac3e9bf4fa9384b28b2a7e0a8d81be130aca01e50cb52113739c52d3098f7d5",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/14-provider-uuid-red.log.txt",
+        "sha256": "6ac3e9bf4fa9384b28b2a7e0a8d81be130aca01e50cb52113739c52d3098f7d5"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 15,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/15-final-targeted-green.log",
+      "originalPublicSha256": "cf586ae49ad9a068073760a6d0e0eabed1ae5a5beeaab0082a7640893b17823d",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/15-final-targeted-green.log.txt",
+        "sha256": "cf586ae49ad9a068073760a6d0e0eabed1ae5a5beeaab0082a7640893b17823d"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 16,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/16-final-web-typecheck.log",
+      "originalPublicSha256": "a63fa05ab84874d6d975ca392c94f3bf5670ea6133bc564dddc7b7918446d39b",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/16-final-web-typecheck.log.txt",
+        "sha256": "a63fa05ab84874d6d975ca392c94f3bf5670ea6133bc564dddc7b7918446d39b"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 17,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/17-final-scoped-lint.log",
+      "originalPublicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/17-final-scoped-lint.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 18,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/18-web-typecheck-green.log",
+      "originalPublicSha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/18-web-typecheck-green.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 19,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/19-frozen-targeted-green.log",
+      "originalPublicSha256": "fd45011c745584494d560bbc8ab91e3308e3d28921d55ce92a9cf8fe9fd706e8",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/19-frozen-targeted-green.log.txt",
+        "sha256": "fd45011c745584494d560bbc8ab91e3308e3d28921d55ce92a9cf8fe9fd706e8"
+      },
+      "byteIdentical": true
+    },
+    {
+      "run": 20,
+      "originalPublicPath": "docs/research/evidence/2026-10-21-invitation-sender-http/20-frozen-scoped-lint.log",
+      "originalPublicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-sender-http/20-frozen-scoped-lint.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "byteIdentical": true
+    }
+  ]
+}

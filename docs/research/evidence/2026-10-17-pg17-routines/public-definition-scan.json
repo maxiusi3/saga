@@ -1,0 +1,8 @@
+{
+  "checkedAt": "2026-10-18T02:40:09.260715+00:00",
+  "status": "passed",
+  "exactPrivateDefinitionsCompared": 13,
+  "publicFilesChecked": 73,
+  "exactDefinitionMatches": [],
+  "scope": "Exact private function-definition byte scan only; supplements source review and private input permissions checks, not a general secret-scanner claim."
+}

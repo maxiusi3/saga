@@ -1,0 +1,584 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts
+
+FAIL src/components/auth/__tests__/auth-signin-return.test.tsx
+  ● signin deletes the obsolete target without reading or writing it and never logs URL secrets
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "auth_next"
+
+    Number of calls: 0
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"max-w-md w-full space-y-8"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-center"[39m
+              [36m>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+                [36m>[39m
+                  [0msignin.title[0m
+                [36m</h1>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"mt-2 text-muted-foreground"[39m
+                [36m>[39m
+                  [0msignin.subtitle[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6 p-8"[39m
+                [33mdata-slot[39m=[32m"card"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"space-y-4"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 border-2 border-primary text-primary bg-background hover:bg-gray-50 rounded-lg h-12 px-8 py-3 text-base w-full"[39m
+                    [33mdata-slot[39m=[32m"button"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-5 h-5 mr-2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                        [33mfill[39m=[32m"currentColor"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                        [33mfill[39m=[32m"currentColor"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                        [33mfill[39m=[32m"currentColor"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                        [33mfill[39m=[32m"currentColor"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                    [0msignin.googleButton[0m
+                  [36m</button>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"relative"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                    [36m>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px w-full"[39m
+                        [33mdata-orientation[39m=[32m"horizontal"[39m
+                        [33mdata-slot[39m=[32m"separator"[39m
+                        [33mrole[39m=[32m"none"[39m
+                      [36m/>[39m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"relative flex justify-center text-xs uppercase"[39m
+                    [36m>[39m
+                      [36m<span[39m
+                        [33mclass[39m=[32m"bg-background px-2 text-muted-foreground"[39m
+                      [36m>[39m
+                        [0msignin.divider[0m
+                      [36m</span>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<form[39m
+                    [33mclass[39m=[32m"space-y-4"[39m
+                  [36m>[39m
+                    [36m<div>[39m
+                      [36m<label[39m
+                        [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                        [33mdata-slot[39m=[32m"label"[39m
+                        [33mfor[39m=[32m"email"[39m
+                      [36m>[39m
+                        [0msignin.emailLabel[0m
+                      [36m</label>[39m
+                      [36m<input[39m
+                        [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive mt-1"[39m
+                        [33mdata-slot[39m=[32m"input"[39m
+                        [33mid[39m=[32m"email"[39m
+                        [33mplaceholder[39m=[32m"signin.emailPlaceholder"[39m
+                        [33mrequired[39m=[32m""[39m
+                        [33mtype[39m=[32m"email"[39m
+                        [33mvalue[39m=[32m""[39m
+                      [36m/>[39m
+                    [36m</div>[39m
+                    [36m<button[39m
+                      [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-12 px-8 py-3 text-base w-full"[39m
+                      [33mdata-slot[39m=[32m"button"[39m
+                      [33mdisabled[39m=[32m""[39m
+                      [33mtype[39m=[32m"submit"[39m
+                    [36m>[39m
+                      [0msignin.submitButton[0m
+                    [36m</button>[39m
+                  [36m</form>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-center text-destructive"[39m
+                  [36m>[39m
+                    [0mError: PRIVATE_AUTH_SENTINEL[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-center text-sm text-muted-foreground space-x-4"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"hover:text-foreground"[39m
+                  [33mhref[39m=[32m"/en/terms"[39m
+                [36m>[39m
+                  [0msignin.termsOfService[0m
+                [36m</a>[39m
+                [36m<span>[39m
+                  [0m•[0m
+                [36m</span>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"hover:text-foreground"[39m
+                  [33mhref[39m=[32m"/en/privacy"[39m
+                [36m>[39m
+                  [0msignin.privacyPolicy[0m
+                [36m</a>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</body>[39m
+    [36m</html>[39m
+
+      47 |   url(`next=/dashboard&error=${sentinel}`)
+      48 |   render(<SignInPage />)
+    > 49 |   await waitFor(() => expect(remove).toHaveBeenCalledWith('auth_next'))
+         |                                      ^
+      50 |   expect(read).not.toHaveBeenCalled()
+      51 |   expect(write).not.toHaveBeenCalled()
+      52 |   expect(log).not.toHaveBeenCalled()
+
+      at toHaveBeenCalledWith (src/components/auth/__tests__/auth-signin-return.test.tsx:49:38)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● AuthProvider removes only auth_next before initializing auth
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "auth_next"
+
+    Number of calls: 0
+
+      62 |   const remove = jest.spyOn(Storage.prototype, 'removeItem')
+      63 |   render(<AuthProvider><span>child</span></AuthProvider>)
+    > 64 |   expect(remove).toHaveBeenCalledWith('auth_next')
+         |                  ^
+      65 |   expect(read).not.toHaveBeenCalled()
+      66 |   expect(mockInitializeAuth).toHaveBeenCalledTimes(1)
+      67 |   expect(localStorage.getItem('session-key')).toBe('keep')
+
+      at Object.toHaveBeenCalledWith (src/components/auth/__tests__/auth-signin-return.test.tsx:64:18)
+
+  ● callback error text is fixed and the URL retains only safe next
+
+    Unable to find an element with the text: Error: Authentication could not be confirmed. Please sign in again.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full space-y-8"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-center"[39m
+            [36m>[39m
+              [36m<h1[39m
+                [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+              [36m>[39m
+                [0msignin.title[0m
+              [36m</h1>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"mt-2 text-muted-foreground"[39m
+              [36m>[39m
+                [0msignin.subtitle[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6 p-8"[39m
+              [33mdata-slot[39m=[32m"card"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-4"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 border-2 border-primary text-primary bg-background hover:bg-gray-50 rounded-lg h-12 px-8 py-3 text-base w-full"[39m
+                  [33mdata-slot[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33mclass[39m=[32m"w-5 h-5 mr-2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                      [33mfill[39m=[32m"currentColor"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                      [33mfill[39m=[32m"currentColor"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                      [33mfill[39m=[32m"currentColor"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                      [33mfill[39m=[32m"currentColor"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [0msignin.googleButton[0m
+                [36m</button>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px w-full"[39m
+                      [33mdata-orientation[39m=[32m"horizontal"[39m
+                      [33mdata-slot[39m=[32m"separator"[39m
+                      [33mrole[39m=[32m"none"[39m
+                    [36m/>[39m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"relative flex justify-center text-xs uppercase"[39m
+                  [36m>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"bg-background px-2 text-muted-foreground"[39m
+                    [36m>[39m
+                      [0msignin.divider[0m
+                    [36m</span>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+                [36m<form[39m
+                  [33mclass[39m=[32m"space-y-4"[39m
+                [36m>[39m
+                  [36m<div>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                      [33mfor[39m=[32m"email"[39m
+                    [36m>[39m
+                      [0msignin.emailLabel[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive mt-1"[39m
+                      [33mdata-slot[39m=[32m"input"[39m
+                      [33mid[39m=[32m"email"[39m
+                      [33mplaceholder[39m=[32m"signin.emailPlaceholder"[39m
+                      [33mrequired[39m=[32m""[39m
+                      [33mtype[39m=[32m"email"[39m
+                      [33mvalue[39m=[32m""[39m
+                    [36m/>[39m
+                  [36m</div>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-12 px-8 py-3 text-base w-full"[39m
+                    [33mdata-slot[39m=[32m"button"[39m
+                    [33mdisabled[39m=[32m""[39m
+                    [33mtype[39m=[32m"submit"[39m
+                  [36m>[39m
+                    [0msignin.submitButton[0m
+                  [36m</button>[39m
+                [36m</form>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"text-sm text-center text-destructive"[39m
+                [36m>[39m
+                  [0mError: PRIVATE_AUTH_SENTINEL[0m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-center text-sm text-muted-foreground space-x-4"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mclass[39m=[32m"hover:text-foreground"[39m
+                [33mhref[39m=[32m"/en/terms"[39m
+              [36m>[39m
+                [0msignin.termsOfService[0m
+              [36m</a>[39m
+              [36m<span>[39m
+                [0m•[0m
+              [36m</span>[39m
+              [36m<a[39m
+                [33mclass[39m=[32m"hover:text-foreground"[39m
+                [33mhref[39m=[32m"/en/privacy"[39m
+              [36m>[39m
+                [0msignin.privacyPolicy[0m
+              [36m</a>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      71 |   url(`error=${sentinel}&error_description=${sentinel}&next=/dashboard/projects`)
+      72 |   render(<SignInPage />)
+    > 73 |   expect(await screen.findByText('Error: Authentication could not be confirmed. Please sign in again.')).toBeInTheDocument()
+         |                       ^
+      74 |   expect(window.location.search).toBe('?next=%2Fen%2Fdashboard%2Fprojects')
+      75 |   expect(mockAuth.setSession).not.toHaveBeenCalled()
+      76 | })
+
+      at waitForWrapper (../../node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+      at Object.findByText (src/components/auth/__tests__/auth-signin-return.test.tsx:73:23)
+
+  ● verified session returns with replace to a safe current target and cleans credentials
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "/en/invite/v1_0123456789abcdef0123456789abcdef"
+
+    Number of calls: 0
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 lg:px-8"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"max-w-md w-full space-y-8"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-center"[39m
+              [36m>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+                [36m>[39m
+                  [0msignin.title[0m
+                [36m</h1>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"mt-2 text-muted-foreground"[39m
+                [36m>[39m
+                  [0msignin.subtitle[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6 p-8"[39m
+                [33mdata-slot[39m=[32m"card"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"space-y-4"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 border-2 border-primary text-primary bg-background hover:bg-gray-50 rounded-lg h-12 px-8 py-3 text-base w-full"[39m
+                    [33mdata-slot[39m=[32m"button"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-5 h-5 mr-2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                        [33mfill[39m=[32m"currentColor"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                        [33mfill[39m=[32m"currentColor"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                        [33mfill[39m=[32m"currentColor"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                        [33mfill[39m=[32m"currentColor"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                    [0msignin.googleButton[0m
+                  [36m</button>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"relative"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                    [36m>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px w-full"[39m
+                        [33mdata-orientation[39m=[32m"horizontal"[39m
+                        [33mdata-slot[39m=[32m"separator"[39m
+                        [33mrole[39m=[32m"none"[39m
+                      [36m/>[39m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"relative flex justify-center text-xs uppercase"[39m
+                    [36m>[39m
+                      [36m<span[39m
+                        [33mclass[39m=[32m"bg-background px-2 text-muted-foreground"[39m
+                      [36m>[39m
+                        [0msignin.divider[0m
+                      [36m</span>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<form[39m
+                    [33mclass[39m=[32m"space-y-4"[39m
+                  [36m>[39m
+                    [36m<div>[39m
+                      [36m<label[39m
+                        [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                        [33mdata-slot[39m=[32m"label"[39m
+                        [33mfor[39m=[32m"email"[39m
+                      [36m>[39m
+                        [0msignin.emailLabel[0m
+                      [36m</label>[39m
+                      [36m<input[39m
+                        [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive mt-1"[39m
+                        [33mdata-slot[39m=[32m"input"[39m
+                        [33mid[39m=[32m"email"[39m
+                        [33mplaceholder[39m=[32m"signin.emailPlaceholder"[39m
+                        [33mrequired[39m=[32m""[39m
+                        [33mtype[39m=[32m"email"[39m
+                        [33mvalue[39m=[32m""[39m
+                      [36m/>[39m
+                    [36m</div>[39m
+                    [36m<button[39m
+                      [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-12 px-8 py-3 text-base w-full"[39m
+                      [33mdata-slot[39m=[32m"button"[39m
+                      [33mdisabled[39m=[32m""[39m
+                      [33mtype[39m=[32m"submit"[39m
+                    [36m>[39m
+                      [0msignin.submitButton[0m
+                    [36m</button>[39m
+                  [36m</form>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-center text-sm text-muted-foreground space-x-4"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"hover:text-foreground"[39m
+                  [33mhref[39m=[32m"/en/terms"[39m
+                [36m>[39m
+                  [0msignin.termsOfService[0m
+                [36m</a>[39m
+                [36m<span>[39m
+                  [0m•[0m
+                [36m</span>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"hover:text-foreground"[39m
+                  [33mhref[39m=[32m"/en/privacy"[39m
+                [36m>[39m
+                  [0msignin.privacyPolicy[0m
+                [36m</a>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</body>[39m
+    [36m</html>[39m
+
+      79 |   url(`access_token=${sentinel}&refresh_token=synthetic-refresh&next=/invite/${token}`)
+      80 |   render(<SignInPage />)
+    > 81 |   await waitFor(() => expect(mockReplace).toHaveBeenCalledWith(`/en/invite/${token}`))
+         |                                           ^
+      82 |   expect(mockPush).not.toHaveBeenCalled()
+      83 |   expect(mockAuth.setSession).toHaveBeenCalledWith({ access_token: sentinel, refresh_token: 'synthetic-refresh' })
+      84 |   expect(window.location.href).not.toContain(sentinel)
+
+      at toHaveBeenCalledWith (src/components/auth/__tests__/auth-signin-return.test.tsx:81:43)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+FAIL src/lib/server/__tests__/auth-callback.test.ts
+  ● callback error is a private fixed 303 and preserves only a safe next
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  6
+    + Received  + 38
+
+      Object {
+    -   "cache": "no-store",
+    -   "errors": Array [],
+    -   "location": "http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard",
+    -   "logs": Array [],
+    -   "referrer": "no-referrer",
+    -   "status": 303,
+    +   "cache": null,
+    +   "errors": Array [
+    +     Array [
+    +       "Auth callback error:",
+    +       "PRIVATE_AUTH_SENTINEL",
+    +       "PRIVATE_DESCRIPTION_SENTINEL",
+    +     ],
+    +   ],
+    +   "location": "http://localhost/en/auth/signin?error=PRIVATE_DESCRIPTION_SENTINEL",
+    +   "logs": Array [
+    +     Array [
+    +       "=== Auth Callback Debug ===",
+    +     ],
+    +     Array [
+    +       "Full URL:",
+    +       "http://localhost/en/auth/callback?error=PRIVATE_AUTH_SENTINEL&error_description=PRIVATE_DESCRIPTION_SENTINEL&next=%2Fdashboard",
+    +     ],
+    +     Array [
+    +       "All search params:",
+    +       Object {
+    +         "error": "PRIVATE_AUTH_SENTINEL",
+    +         "error_description": "PRIVATE_DESCRIPTION_SENTINEL",
+    +         "next": "/dashboard",
+    +       },
+    +     ],
+    +     Array [
+    +       "Parsed params:",
+    +       Object {
+    +         "code": null,
+    +         "error": "PRIVATE_AUTH_SENTINEL",
+    +         "error_description": "PRIVATE_DESCRIPTION_SENTINEL",
+    +         "token_hash": null,
+    +         "type": null,
+    +       },
+    +     ],
+    +   ],
+    +   "referrer": null,
+    +   "status": 307,
+      }
+
+       8 |   try {
+       9 |     const response = await GET(new NextRequest('http://localhost/en/auth/callback?error=PRIVATE_AUTH_SENTINEL&error_description=PRIVATE_DESCRIPTION_SENTINEL&next=%2Fdashboard'))
+    > 10 |     expect({ status: response.status, location: response.headers.get('location'), cache: response.headers.get('cache-control'), referrer: response.headers.get('referrer-policy'), logs: log.mock.calls, errors: error.mock.calls }).toEqual({ status: 303, location: 'http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard', cache: 'no-store', referrer: 'no-referrer', logs: [], errors: [] })
+         |                                                                                                                                                                                                                                      ^
+      11 |   } finally { jest.restoreAllMocks() }
+      12 | })
+      13 |
+
+      at Object.toEqual (src/lib/server/__tests__/auth-callback.test.ts:10:230)
+
+Test Suites: 2 failed, 2 total
+Tests:       5 failed, 5 total
+Snapshots:   0 total
+Time:        5.923 s
+Ran all test suites within paths "src/components/auth/__tests__/auth-signin-return.test.tsx", "src/lib/server/__tests__/auth-callback.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts

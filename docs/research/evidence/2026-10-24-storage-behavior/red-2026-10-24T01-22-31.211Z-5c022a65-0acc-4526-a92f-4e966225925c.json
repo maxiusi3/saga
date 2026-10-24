@@ -1,0 +1,512 @@
+{
+  "startedAt": "2026-10-24T01:22:31.210Z",
+  "status": "passed",
+  "mode": "expected_incompatibilities",
+  "scope": "Local synthetic PostgreSQL 17.4. No remote, provider, business rows, object bytes or production operations.",
+  "assertions": 96,
+  "actorConnections": [
+    {
+      "alias": "ordinary",
+      "superuser": false,
+      "bypassRls": false,
+      "memberOfR": false,
+      "exactR": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "catalog missing-trigger RED",
+      "status": "passed",
+      "assertions": 8
+    },
+    {
+      "name": "RED missing seven triggers with full enum",
+      "status": "passed",
+      "assertions": 29
+    },
+    {
+      "name": "catalog old-enum RED",
+      "status": "passed",
+      "assertions": 8
+    },
+    {
+      "name": "RED old STANDARD-only enum with exact seven triggers",
+      "status": "passed",
+      "assertions": 8
+    }
+  ],
+  "observations": [
+    {
+      "label": "RED unprotected 101 character name accepted",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "1cf02ecfd2d65de069ddcd69b67cda18441715df343b14c542cd516dcc96ed80",
+      "afterSha256": "4cb452f2a49d9f4561cf7f849b76e0124633e7750e7330c3a8b3b36e0c0ca449",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "RED ordinary nonempty lifecycle accepted",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "4cb452f2a49d9f4561cf7f849b76e0124633e7750e7330c3a8b3b36e0c0ca449",
+      "afterSha256": "95560a882ea02eb0a71268a93ab6c1e8fdb98a70a3d45304544c0ecd4a3e6e73",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "RED ordinary lifecycle change accepted",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "95560a882ea02eb0a71268a93ab6c1e8fdb98a70a3d45304544c0ecd4a3e6e73",
+      "afterSha256": "9ef8f7ab9a6a58a8da6e6d07da3b93526deb948019628afa9062b976fe27d077",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "RED unguarded zero-row bucket DELETE",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 0,
+      "sqlstate": "00000",
+      "rowCount": 0,
+      "beforeSha256": "9ef8f7ab9a6a58a8da6e6d07da3b93526deb948019628afa9062b976fe27d077",
+      "afterSha256": "9ef8f7ab9a6a58a8da6e6d07da3b93526deb948019628afa9062b976fe27d077",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "RED unguarded nonzero bucket DELETE",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "9ef8f7ab9a6a58a8da6e6d07da3b93526deb948019628afa9062b976fe27d077",
+      "afterSha256": "30b6f114b4978185c836d458df869cd59a1e163b91ffb572f6451810dda9e30b",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "RED object UPDATE keeps caller old timestamp",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "c2b19d4d0e73ba71d43b4bece6ae24c4ced9bb209dce4bd6aa5f0f5d636241ea",
+      "afterSha256": "8bbc6b6bac4946c5396742b2bf833d9dff8e280c77668361c9d7047abe14adb3",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "RED unguarded zero-row object DELETE",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 0,
+      "sqlstate": "00000",
+      "rowCount": 0,
+      "beforeSha256": "8bbc6b6bac4946c5396742b2bf833d9dff8e280c77668361c9d7047abe14adb3",
+      "afterSha256": "8bbc6b6bac4946c5396742b2bf833d9dff8e280c77668361c9d7047abe14adb3",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "RED unguarded nonzero object DELETE",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "8bbc6b6bac4946c5396742b2bf833d9dff8e280c77668361c9d7047abe14adb3",
+      "afterSha256": "30b6f114b4978185c836d458df869cd59a1e163b91ffb572f6451810dda9e30b",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "RED enum cannot represent ANALYTICS",
+      "actor": "ordinary",
+      "expectedSqlstate": "22P02",
+      "expectedRowCount": null,
+      "sqlstate": "22P02",
+      "layer": "type_input",
+      "rowCount": null,
+      "beforeSha256": "1cf02ecfd2d65de069ddcd69b67cda18441715df343b14c542cd516dcc96ed80",
+      "afterSha256": "1cf02ecfd2d65de069ddcd69b67cda18441715df343b14c542cd516dcc96ed80",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "RED enum cannot represent VECTOR",
+      "actor": "ordinary",
+      "expectedSqlstate": "22P02",
+      "expectedRowCount": null,
+      "sqlstate": "22P02",
+      "layer": "type_input",
+      "rowCount": null,
+      "beforeSha256": "1cf02ecfd2d65de069ddcd69b67cda18441715df343b14c542cd516dcc96ed80",
+      "afterSha256": "1cf02ecfd2d65de069ddcd69b67cda18441715df343b14c542cd516dcc96ed80",
+      "completeStateUnchanged": true
+    }
+  ],
+  "redGaps": [
+    {
+      "gap": "missing_seven_triggers",
+      "observedIncompatibility": true,
+      "completeEnum": true,
+      "expectedWithCapturedTriggers": {
+        "name101": "P0001",
+        "ordinaryNonemptyInsert": "42501",
+        "ordinaryLifecycleUpdate": "PST01",
+        "deleteWithoutGuc": "42501",
+        "timestamp": "transaction now()"
+      }
+    },
+    {
+      "gap": "STANDARD_only_enum",
+      "observedIncompatibility": true,
+      "capturedTriggers": 7,
+      "missingLabels": [
+        "ANALYTICS",
+        "VECTOR"
+      ],
+      "expectedWithFullEnum": "00000"
+    }
+  ],
+  "limits": {
+    "totalDurationMs": 120000,
+    "connectionTimeoutMs": 5000,
+    "queryTimeoutMs": 10000,
+    "statementTimeoutMs": 8000,
+    "lockTimeoutMs": 4000,
+    "subprocessTimeoutMs": 30000
+  },
+  "boundaries": [
+    "Synthetic role graph and family policies; not production authorization or the old full RLS composition.",
+    "No Storage HTTP, real Auth/JWT, object backend, multipart runtime, media byte checks, privacy qualification, or backup restore.",
+    "Direct SQL deletion changes synthetic metadata only. Timestamps are not object-byte versions.",
+    "Runtime dynamic libraries are pinned; ambient macOS system libraries and kernel are not."
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 50418,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-b9MJNR/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "phase": "old_enum_red",
+  "inputPins": {
+    "path": "experiments/pg17-storage-behavior/input-pins.json",
+    "sha256": "dca784a449e69f13f83f3d4e5384424d35578bbd6fd8e3b9c0964520f2f3b5e0"
+  },
+  "sources": {
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "docs/research/evidence/2026-10-23-storage-definition-capture/capture-storage-2026-10-23T10-39-09-891Z-703d8318-8589-48d0-ba55-e519f02b74fa.json": "eb5e76b7d39a8eeff4b1fc59ee37704b4278dd531ee0b287673f38ad8ea024a1",
+    "docs/research/evidence/2026-10-23-storage-definition-capture/semantic-audit.md": "887b2c40ab5ebea346649a9cf56d1e20d4fb8e09cd48e0db66a389bb972ce354",
+    "docs/research/evidence/2026-10-23-supabase-feedback/user-query-results.json": "abacf44ede2dbf339b2e2ebf4c2c01c3897c9fa4526bdb31c3c61d58d7bbce92",
+    "docs/superpowers/specs/2026-10-24-storage-behavior-rehearsal.md": "8818325acc049835dbb951f5005dc386d2844fc85dc9f93957493694fae21e5f",
+    "experiments/pg17-rls-source-composition/fixture.mjs": "636f51fbb2fbf5cb3345f981354965f01170262c2213c618c48299740fe73508",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-storage-behavior/README.md": "08f283bda187c1585ea45b52a40b30b224d695df03d62d7d214c79938aefa5bb",
+    "experiments/pg17-storage-behavior/fixture.mjs": "7f2edbeab98b4bf7b0aa2c52913f4a253775e15862a74f98a897055b951c54e2",
+    "experiments/pg17-storage-behavior/inputs.mjs": "1bfe710e6cff430568246ad7061d809f2fd7d9da36794619d01c6b42ad888ec7",
+    "experiments/pg17-storage-behavior/pin-inputs.mjs": "306b10e5ad77911dbd6a53e55714dbfb638782c2c419eec225d0fe1a1aeb37a1",
+    "experiments/pg17-storage-behavior/scenarios.mjs": "9732999969a2055a941f7300876661d3d9369fb0bf6ac015cd0eb26ff7f5964a",
+    "experiments/pg17-storage-behavior/scenarios/deletion.mjs": "ab142a0774ded6b193d368406d6a27b69e97aea8dcf8c6d0ef457e7fccaef556",
+    "experiments/pg17-storage-behavior/scenarios/lifecycle.mjs": "5b1c74d039496b10c9341e50f7573fd1b6020b7990e8c672f862fe93126c72aa",
+    "experiments/pg17-storage-behavior/scenarios/support.mjs": "80ee2d775b2f100083fe5701e8a5f35aace72b1c2b5a4df046ccc40552c34731",
+    "experiments/pg17-storage-behavior/scenarios/timestamps.mjs": "fd5f3254e3bd36b63d9d08f1ff4e6373967817b645967463ac699077fb1af763",
+    "experiments/pg17-storage-behavior/verify-lifecycle.mjs": "28c959b755029265d2756ed88bc5ebb7af182d8d30e8d9c49cbae858d7cf9127",
+    "experiments/pg17-storage-behavior/verify.mjs": "0dcffe2fd3b69e2585aab456a019222d4a3431ff59e75018633077b93ac1136f",
+    "supabase/.temp/routine-audit/capture-storage-2026-10-23T10-39-09-891Z-703d8318-8589-48d0-ba55-e519f02b74fa.json": "f0574a22dda946436936d65234a07302f8b9100862d431f11535c9074a12cf4f"
+  },
+  "dependencyClosure": {
+    "files": 48,
+    "sha256": "344fa2cc1b9f5b8bbb53685e9262f53b2d207cd617fd63d50e355d8ef12f4917",
+    "verified": true
+  },
+  "runtimeClosure": {
+    "files": 743,
+    "sha256": "2bb791048e95680456a1e55b9b6bb47f8281fcf274b9cc0821137a2f905462ff",
+    "verified": true
+  },
+  "capture": {
+    "publicPath": "docs/research/evidence/2026-10-23-storage-definition-capture/capture-storage-2026-10-23T10-39-09-891Z-703d8318-8589-48d0-ba55-e519f02b74fa.json",
+    "publicSha256": "eb5e76b7d39a8eeff4b1fc59ee37704b4278dd531ee0b287673f38ad8ea024a1",
+    "privateSha256": "f0574a22dda946436936d65234a07302f8b9100862d431f11535c9074a12cf4f",
+    "fileMode": "0600",
+    "directoryMode": "0700",
+    "snapshotPath": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+    "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "functions": [
+      {
+        "schema_name": "storage",
+        "function_name": "enforce_bucket_lifecycle_service_role",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "b839722d462ea1003fbcf028bd6f6c01",
+        "actualDefinitionMd5": "b839722d462ea1003fbcf028bd6f6c01",
+        "definitionSha256": "1cb7aecc95a27f8600fc8e7aab11f6a40b9b46a5cb86e02438f3af9642a0d2c4",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "enforce_bucket_name_length",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "11b3bd509f6b254ec1cd859e712e8c78",
+        "actualDefinitionMd5": "11b3bd509f6b254ec1cd859e712e8c78",
+        "definitionSha256": "bf9dcf9beab8062d27f9f6f5db850fac0c22423d6d62d31a3fe9622b1244336e",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "foldername",
+        "identity_arguments": "name text",
+        "expectedDefinitionMd5": "93671af66e1fe108a56068ad4137d001",
+        "actualDefinitionMd5": "93671af66e1fe108a56068ad4137d001",
+        "definitionSha256": "a673a01626cb42e9eb507eb18e4cb038ce5db1da875a22e254df2ebb597bd2bc",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "protect_bucket_control_columns",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "7c31ae406e2f6281ead4009fff69fc68",
+        "actualDefinitionMd5": "7c31ae406e2f6281ead4009fff69fc68",
+        "definitionSha256": "dac4257ed931d18bac0cbbc3135d0c75a36aae55309059d2913ed5e6792fa8de",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "protect_delete",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "4371ae544fb1ef704f9c5d42265ac324",
+        "actualDefinitionMd5": "4371ae544fb1ef704f9c5d42265ac324",
+        "definitionSha256": "60b634ed07bf3c08749b31168c62d598f2a9d10f8cef4ee8251bde93909cd30b",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "update_updated_at_column",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "bfecc08a6034296258f0c3e10193076c",
+        "actualDefinitionMd5": "bfecc08a6034296258f0c3e10193076c",
+        "definitionSha256": "5b3d8ac75beaf9d1532159c055aa927297f5611ad2ea82c27dbadf76887bb25e",
+        "status": "matched",
+        "changedAttributes": []
+      }
+    ],
+    "triggers": [
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "enforce_bucket_name_length_trigger",
+        "expectedDefinitionMd5": "7774f4b5e39e4ad07a16a589aef6277c",
+        "actualDefinitionMd5": "7774f4b5e39e4ad07a16a589aef6277c",
+        "definitionSha256": "580a7c83d8d39b8d3a8e6d12cc2e8074fc35c08434cfe0b30c74a435396fa3db",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_insert",
+        "expectedDefinitionMd5": "5c2f86adf97481d45808f2ed4eb4673b",
+        "actualDefinitionMd5": "5c2f86adf97481d45808f2ed4eb4673b",
+        "definitionSha256": "9c4f45c4c979edd35a555fbc3f8fff288f6e51798a873c5979609f81357eff48",
+        "argumentsSha256": "c3bd4f6c134ff7ebc3f64532f7ee5018485fe1019e38f9038d9ceb691cf9be5b",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_update",
+        "expectedDefinitionMd5": "ae169c5f8d35b69020459ddddbe65d7e",
+        "actualDefinitionMd5": "ae169c5f8d35b69020459ddddbe65d7e",
+        "definitionSha256": "fff25903becd8ef98f74225ea9a56c4b05b44eee251bd4dccb884bbb97ce245d",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_update_role",
+        "expectedDefinitionMd5": "34d64d2c71ac2a26720ae99bd0da100b",
+        "actualDefinitionMd5": "34d64d2c71ac2a26720ae99bd0da100b",
+        "definitionSha256": "2fcecce16bd2112f9f7a1abe081d62c44e51bc04f948f8e7a2dee96e10be572f",
+        "argumentsSha256": "c3bd4f6c134ff7ebc3f64532f7ee5018485fe1019e38f9038d9ceb691cf9be5b",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_buckets_delete",
+        "expectedDefinitionMd5": "50288cfc0da92cd8f2f573c018c16382",
+        "actualDefinitionMd5": "50288cfc0da92cd8f2f573c018c16382",
+        "definitionSha256": "9177b20f0ce99604e60dbeef1f9f05ff05dfc8df075fea756e18b91fa5e8c494",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "objects",
+        "trigger_name": "protect_objects_delete",
+        "expectedDefinitionMd5": "45c5692d486583888bac16ef789d847f",
+        "actualDefinitionMd5": "45c5692d486583888bac16ef789d847f",
+        "definitionSha256": "b6dfbee7d5d339f311f34633772872a6474e88b17450da06310aadad83531d9a",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "objects",
+        "trigger_name": "update_objects_updated_at",
+        "expectedDefinitionMd5": "7457963f6a733c584baf08e4e7a451d0",
+        "actualDefinitionMd5": "7457963f6a733c584baf08e4e7a451d0",
+        "definitionSha256": "95588c3979662033900b6913b10e0aab15cf1f8ab0d1ccc477fec1aef79ca393",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      }
+    ]
+  },
+  "scratch": "/tmp/saga-pg17-b9MJNR",
+  "syntheticRoleGraph": {
+    "scope": "Local test graph only. No production pg_auth_members, service connection, JWT or role-switch equivalence.",
+    "owner": {
+      "alias": "captured_owner",
+      "login": false,
+      "superuser": false,
+      "bypassRls": false
+    },
+    "roles": [
+      {
+        "alias": "ordinary",
+        "memberOfR": false,
+        "superuser": false,
+        "bypassRls": false
+      },
+      {
+        "alias": "member",
+        "memberOfR": true,
+        "superuser": false,
+        "bypassRls": false
+      },
+      {
+        "alias": "R",
+        "memberOfR": true,
+        "superuser": false,
+        "bypassRls": false
+      },
+      {
+        "alias": "superuser",
+        "memberOfR": true,
+        "superuser": true,
+        "bypassRls": true
+      },
+      {
+        "alias": "bypass",
+        "memberOfR": false,
+        "superuser": false,
+        "bypassRls": true
+      }
+    ],
+    "membershipEdges": [
+      [
+        "member",
+        "R"
+      ]
+    ],
+    "roleNamesInTriggerArguments": "withheld; R is used in reports"
+  },
+  "catalogChecks": [
+    {
+      "missingTriggers": true,
+      "oldEnum": false,
+      "columns": 29,
+      "constraints": 9,
+      "indexes": 10,
+      "functions": 6,
+      "triggers": 0,
+      "enumLabels": [
+        "STANDARD",
+        "ANALYTICS",
+        "VECTOR"
+      ],
+      "matched": true,
+      "enumSource": "docs/research/evidence/2026-10-23-supabase-feedback/user-query-results.json",
+      "enumSourceBoundary": "User-returned labels; execution time and project ref not supplied. Not a new remote capture."
+    },
+    {
+      "missingTriggers": false,
+      "oldEnum": true,
+      "columns": 29,
+      "constraints": 9,
+      "indexes": 10,
+      "functions": 6,
+      "triggers": 7,
+      "enumLabels": [
+        "STANDARD"
+      ],
+      "matched": true,
+      "enumSource": "docs/research/evidence/2026-10-23-supabase-feedback/user-query-results.json",
+      "enumSourceBoundary": "User-returned labels; execution time and project ref not supplied. Not a new remote capture."
+    }
+  ],
+  "sourcesUnchangedAtFinish": true,
+  "pinManifestUnchangedAtFinish": true,
+  "postgresLog": {
+    "sha256": "de55dbf04fff8815d9bd0d778ebe3a1a8ef7602b08ea09817f0d562c27c3db87",
+    "bytes": 1052,
+    "contents": "withheld: error CONTEXT may contain private definition or arguments"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "counts": {
+    "scenarios": 4,
+    "behaviorAssertions": 53,
+    "observations": 10,
+    "totalAssertionsIncludingPins": 96
+  },
+  "finishedAt": "2026-10-24T01:22:33.230Z"
+}

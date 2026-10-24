@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-18T06:19:07.680403+00:00",
+  "batch": "2026-10-18 RPC access guards",
+  "status": "LOCAL_VALIDATION_AND_FINAL_BATCH_REVIEW_PASSED",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72",
+  "scope": "Local original-signature acceptance/project-creation candidates and invitation compatibility audit; no production integration or new milestone.",
+  "tasks": {
+    "task1": {
+      "status": "complete",
+      "specReview": "PASS",
+      "qualityReview": "PASS",
+      "openFindings": 0,
+      "evidence": {
+        "path": "docs/research/evidence/2026-10-18-rpc-access-guards/invitation-contract-audit.json",
+        "sha256": "4482108e0bcfc95c7fc2fae04701f3f3e8452de1522bd8d57b3bf85bacb28c38"
+      },
+      "review": {
+        "path": "docs/research/evidence/2026-10-18-rpc-access-guards/invitation-task-review.md",
+        "sha256": "958efc6f8166d704f4ecbad641e5176f550ba1b762495a5e87e761154de60333"
+      },
+      "authorChecks": {
+        "callSites": 5,
+        "sourceHashes": 32,
+        "lineReferences": 245,
+        "jsonPointers": 184,
+        "metadataValues": 145,
+        "markdownLinks": 38
+      }
+    },
+    "task2": {
+      "status": "complete_after_fix_round_1",
+      "specReview": "PASS",
+      "qualityReview": "PASS",
+      "openFindings": 0,
+      "finalEvidence": {
+        "path": "docs/research/evidence/2026-10-18-rpc-access-guards/implementation-verification-fix1.json",
+        "sha256": "dd974deb30a473c8789b1b0879dfd09a12286d4bc2e478b9822274d0559cb923"
+      },
+      "finalReview": {
+        "path": "docs/research/evidence/2026-10-18-rpc-access-guards/access-review-fix1.md",
+        "sha256": "ac2357c8b1cbbc3ccec1127ed1f589a45f8ffdc8186c651fa9f03f80fc43f740"
+      },
+      "initialReview": {
+        "path": "docs/research/evidence/2026-10-18-rpc-access-guards/access-task-review.md",
+        "sha256": "25d238d0d49ec1c8b98e760d906be5a808b0d0708174de65855b4a80492949bf"
+      },
+      "initialEvidence": {
+        "path": "docs/research/evidence/2026-10-18-rpc-access-guards/implementation-verification.json",
+        "sha256": "fee0fad0578fca19979068b3b72152985d639d041e6b2fe59d87935045a1ac6f"
+      },
+      "history": "Initial CHANGES_REQUIRED and 116/1828 evidence retained unchanged. Fix manifest was written before scoped review; final task verdict is from access-review-fix1.md."
+    },
+    "task3": {
+      "projectVerification": "passed_by_controller_this_session",
+      "documentation": "complete",
+      "integrityCheck": {
+        "status": "passed",
+        "path": "docs/research/evidence/2026-10-18-rpc-access-guards/final-checks.json",
+        "baselineFiles": 1514,
+        "unchangedBaselineFiles": 1507,
+        "intentionalExistingDocumentationChanges": 7,
+        "unexpectedChanges": 0,
+        "unexpectedNewFiles": 0,
+        "applicationInputsMatched": 707,
+        "experimentDependencyInputsMatched": 799,
+        "nodeExecutableMatched": true,
+        "nextEnvMatchesPrebatchBytes": true,
+        "relativeLinksChecked": 392,
+        "brokenLinks": 0,
+        "whitespaceFailures": 0,
+        "gitDiffCheckExit": 0,
+        "privateDefinitionsChecked": 13,
+        "publicPrivateDefinitionCopies": 0,
+        "credentialPatternMatches": 0,
+        "privatePathsTracked": 0,
+        "newFilesInBatch": 37,
+        "checkedAfterFinalStatusUpdate": true
+      },
+      "finalWholeBatchIndependentReview": "PASS",
+      "finalWholeBatchReviewPassed": true,
+      "status": "complete",
+      "specReview": "PASS",
+      "qualityReview": "PASS",
+      "openFindings": 0,
+      "finalReview": {
+        "path": "docs/research/evidence/2026-10-18-rpc-access-guards/batch-final-review.md",
+        "sha256": "5c5770cf0d599e44e2620f4b75918c2dbf5f5813ebd99172e867676e1010e012"
+      }
+    }
+  },
+  "finalLocalResults": {
+    "normal": {
+      "scenarios": 117,
+      "assertions": 1834,
+      "actualLockWaits": 26,
+      "exitCode": 0
+    },
+    "hostile": {
+      "scenarios": 117,
+      "assertions": 1834,
+      "actualLockWaits": 26,
+      "exitCode": 0
+    },
+    "lifecycle": {
+      "cases": 4,
+      "expectedChildExitCodes": [
+        0,
+        143,
+        1,
+        1
+      ],
+      "completeCleanup": true,
+      "rescueNeeded": false
+    },
+    "r1": {
+      "finding": "P2 in-call same-project rebind to invoking replacement user",
+      "redExitCode": 1,
+      "redCandidateActivated": true,
+      "fixedSqlstate": "42501",
+      "fixedAcceptingCallWrites": 0,
+      "tableSnapshotsCompared": 7
+    },
+    "finalExperimentFiles": {
+      "experiments/pg17-access-guards/README.md": "482a634c5979c12d49f6a43257b4f7716def678fffcd92a1672693b10bba35fd",
+      "experiments/pg17-access-guards/candidate.sql": "f37f6ce363fd63a9891fbe85c137033e8d3d5a4f2aeb72b6ebdd6748b5358057",
+      "experiments/pg17-access-guards/concurrency.mjs": "9e8030ada79f01312dc7e7a1eaaf18e45a90d325e17f6d18f7583911b454b5af",
+      "experiments/pg17-access-guards/input-pins.json": "cd04c3a208cb38a334d782c4ab8b89ec8efb22728d51113408d7b3c5a00665e7",
+      "experiments/pg17-access-guards/scenarios.mjs": "d03a02e1fbc2bde00b143eccd5d71675e96c7742c39c65905059f8e7c06e8b4b",
+      "experiments/pg17-access-guards/verify-lifecycle.mjs": "01fbff6e7365d5d32426161673aa8fdd52be32eca46225816f115cd4bdc21bf7",
+      "experiments/pg17-access-guards/verify.mjs": "54c834caf72e90380ba349d363f0c760924c06314a0ac5e9ed39a93c39297f98"
+    },
+    "inputPins": {
+      "path": "experiments/pg17-access-guards/input-pins.json",
+      "sha256": "cd04c3a208cb38a334d782c4ab8b89ec8efb22728d51113408d7b3c5a00665e7",
+      "directSources": 12,
+      "commonJSAndPackageManifests": 44,
+      "postgresInstalledBinLibShareFiles": 743,
+      "allFinalChildrenMatched": true,
+      "allFinalSourcesUnchangedAtFinish": true
+    }
+  },
+  "projectVerification": {
+    "evidence": {
+      "path": "docs/research/evidence/2026-10-18-rpc-access-guards/project-checks.json",
+      "sha256": "a2c6a37876d89c89eabbdfd3cf1e0b001ff4f004e45c197ed374b734ee3144af"
+    },
+    "commands": {
+      "verify": {
+        "command": "npm run verify",
+        "exitCode": 0,
+        "log": "docs/research/evidence/2026-10-18-rpc-access-guards/verify.log",
+        "sha256": "2f24655feb6d53711bd0fa59fcc4dc3d141afacc96e9ee4dabdc5170a2f0d2b9"
+      },
+      "shared": {
+        "command": "npm test --workspace=packages/shared -- --runInBand",
+        "exitCode": 0,
+        "log": "docs/research/evidence/2026-10-18-rpc-access-guards/shared.log",
+        "sha256": "2650663e10fe0e9edb4ee88adc6ce94beebca9a7a8f914d6049dc7355eba2d26"
+      },
+      "infra": {
+        "command": "npm run test:infra",
+        "exitCode": 0,
+        "log": "docs/research/evidence/2026-10-18-rpc-access-guards/infra.log",
+        "sha256": "d80a40996c8cab65bada72fe2f892a9fc598f9f9147aa4eb80a222a78b10c002"
+      }
+    },
+    "webSuites": 77,
+    "webTests": 766,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "buildPages": 175,
+    "task3RecheckedApplicationInputs": 707,
+    "task3RecheckedLogs": 3,
+    "inputChanges": [],
+    "nextEnvRestored": true,
+    "successfulUnchangedSuitesRerunByTask3": false,
+    "warnings": "Existing missing Supabase service configuration and Next build configuration warnings remain; not proof of production configuration."
+  },
+  "auditSourceReconciliation": {
+    "checkedAt": "2026-10-18T06:18:14.653476+00:00",
+    "originalAuditUnmodified": true,
+    "currentMatched": 30,
+    "intentionalDocumentationUpdates": [
+      {
+        "path": "docs/superpowers/specs/2026-10-18-rpc-access-guards.md",
+        "auditSha256": "8efd8b8cebb434bcd5e2d0ecf4eaee8bc865bf58e9ef4434cd0cc29e5921cd30",
+        "currentSha256": "55b3af526d34d49244365258cbf01ae09ca918646d0ad593f8dde16c99113bbe",
+        "reason": "Task 2 fix round 1: only paragraphs 17/19 clarified to first-read per-call binding consistency; original signature retained; no historical/ABA guarantee."
+      },
+      {
+        "path": "docs/superpowers/plans/2026-10-18-upgrade-rpc-access-guards.md",
+        "auditSha256": "e7180037c2b6430d6753fa64d288072b08764428c18e6a24ff8453aecc740ed8",
+        "currentSha256": "07dc8895c55c97014c515c57438df4e67b7c38f1faded8f2659327f964994719",
+        "reason": "Task 3: completed task/check state and evidence links; final independent review PASS recorded after actual verdict."
+      }
+    ],
+    "unexpectedMismatches": [],
+    "interpretation": "32 hashes describe the Task 1 audit time. Two documented spec/plan updates do not rewrite that historical audit; the other 30 sources still match."
+  },
+  "dependencyAudit": {
+    "status": "historical_failure_still_open",
+    "rerun": false,
+    "dependenciesChanged": false,
+    "findings": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json"
+  },
+  "bindingRuling": {
+    "keepOriginalSignature": true,
+    "baseline": "first observed (project_id,user_id) tuple in this call",
+    "lockedCurrentAuthorizationRequired": true,
+    "validCommittedBindingBeforeFirstRead": "judged as current facts",
+    "historicalImmutability": false,
+    "abaDetection": false,
+    "strongerGuaranteeRequires": "separate trusted version/mapping design and compatible migration"
+  },
+  "limitations": [
+    "Only isolated local candidates and synthetic identities; formal UI/API and token adapter not implemented.",
+    "Trusted authentication and confirmed email, token expiry/state, current inviter authority, durable seat reservations and atomic invitation mapping remain.",
+    "Wallet grants/initialization/direct table paths and payment overloads still require trusted server-side payment provenance and durable deduplication. Consumption and unverified status are not payment evidence.",
+    "No request idempotency key or automatic unknown-commit recovery; full resources permit two independent successful creations.",
+    "No historical/ABA binding immutability beyond first-read per-call tuple consistency.",
+    "Production JWT, role inheritance, table ACL, RLS and Storage behavior, plus old RLS/source-ledger matrices in full PG17 dependencies remain unverified.",
+    "Seven unregistered migrations require historical semantic equivalence and compatible rollback evidence.",
+    "Bucket/object configuration, backup restoration/rollback, provider account/data terms, formal asset/Storage/deletion/worker/session adapters and real-device 5/20/30-minute matrix remain incomplete."
+  ],
+  "milestones": {
+    "evidence": {
+      "path": "docs/research/evidence/2026-10-18-rpc-access-guards/milestone-check.json",
+      "sha256": "c40afcbe7f6f7b09916ef1191570dc74260ac8ad391650f7be6938be9997f805"
+    },
+    "G0": false,
+    "G1": false,
+    "localBatchIsMilestone": false
+  },
+  "actions": {
+    "commit": false,
+    "pushGitHub": false,
+    "mergeMain": false,
+    "remoteMigration": false,
+    "deployment": false,
+    "remoteAuthMailPaymentCalls": false
+  },
+  "nextSteps": [
+    "Implement full token/confirmed-email/durable-reservation adapter with cancellation/expiry/duplicate/unknown-commit handling; design trusted history version/mapping separately if required.",
+    "Resolve trusted wallet/payment sources and remaining RPC/return/dependency compatibility.",
+    "Complete production permission, historical migration, bucket/backup/provider and formal adapter/real-device gates."
+  ],
+  "finalStatusClosure": {
+    "scope": "Current status/checkbox/next-step and final-review references only after actual independent PASS; no implementation changes.",
+    "historicalEvidencePreserved": true,
+    "finalCandidateAndDependencyFingerprintsUnchanged": true,
+    "preservedWorkspace": true,
+    "integrationDecision": "Keep codex/october-upgrade-p0 and uncommitted work; original G0/G1 not achieved."
+  }
+}

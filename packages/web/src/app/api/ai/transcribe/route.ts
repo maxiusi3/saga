@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard';
+import { InvalidAIResponseError, parseTranscriptionResponse } from '@/lib/ai-response';
+import { audioMimeType, parseMediaReference } from '@/lib/media-reference';
+import { requireMediaAccess, withMediaHeaders } from '@/lib/server/media-access';
 
 // AUD-03 FIX: Accept either audio file OR storage path to bypass Vercel 4.5MB limit
 const SILICONFLOW_ENDPOINT = 'https://api.siliconflow.cn/v1/audio/transcriptions';
 const MAX_TRANSCRIBE_BYTES = 4 * 1024 * 1024; // 4MB to stay under Vercel's 4.5MB limit
+const MAX_STORED_AUDIO_BYTES = 100 * 1024 * 1024;
 
 /**
  * A simple retry wrapper with exponential backoff.
@@ -15,7 +19,7 @@ async function withRetry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
   try {
     return await fn();
   } catch (err) {
-    if (retries <= 0) throw err;
+    if (retries <= 0 || err instanceof InvalidAIResponseError) throw err;
     // Exponential backoff: 0.8s, 1.6s
     const delay = (3 - retries) * 800;
     await new Promise(resolve => setTimeout(resolve, delay));
@@ -48,27 +52,50 @@ export async function POST(request: NextRequest) {
     const contentLength = Number(request.headers.get('content-length') || 0);
     if (contentLength > MAX_TRANSCRIBE_BYTES) {
       return jsonWithRateLimit(
-        { error: 'Audio file too large. Maximum size is 25MB.' },
+        { error: 'Audio file too large. Maximum size is 4MB for direct upload.' },
         guard.headers,
         413,
       );
     }
 
-    const formData = await request.formData();
-    const audioFile = formData.get('audio') as File | null;
-    const storagePath = formData.get('storagePath') as string | null;
+    let formData: FormData;
+    try { formData = await request.formData(); } catch {
+      return jsonWithRateLimit({ error: 'Invalid audio request' }, guard.headers, 400);
+    }
+    const audioFile = formData.get('audio');
+    const storagePath = formData.get('storagePath');
+    const storageBucket = formData.get('storageBucket') ?? 'audio-recordings';
     const language = (formData.get('language') as string) || 'zh-CN';
+    if ((audioFile !== null && !(audioFile instanceof File)) ||
+        (storagePath !== null && (typeof storagePath !== 'string' || !storagePath)) ||
+        (audioFile !== null && storagePath !== null) ||
+        (storagePath === null && formData.has('storageBucket'))) {
+      return jsonWithRateLimit({ error: 'Invalid audio source' }, guard.headers, 400);
+    }
 
     // AUD-03 FIX: Support both direct upload (small files) and storage path (large files)
     let audioBuffer: ArrayBuffer | null = null;
     let audioSize = 0;
+    let filename = 'audio';
+    let mimeType = 'application/octet-stream';
 
     if (storagePath) {
-      // Fetch from Supabase Storage
+      const reference = parseMediaReference(storageBucket, storagePath);
+      if (!reference) return jsonWithRateLimit({ error: 'Invalid media reference' }, guard.headers, 400);
+      const access = await requireMediaAccess(reference, guard.user);
+      if (!access.ok) return withMediaHeaders(access.response, guard.headers);
       try {
-        const { getSupabaseAdmin } = await import('@/lib/supabase');
-        const admin = getSupabaseAdmin();
-        const { data, error } = await admin.storage.from('saga').download(storagePath);
+        const storage = access.admin.storage.from(reference.bucket);
+        const { data: info, error: infoError } = await storage.info(reference.path);
+        if (infoError || !info) {
+          return jsonWithRateLimit({ error: 'Failed to fetch audio from storage' }, guard.headers, 404);
+        }
+        if (typeof info.size === 'number' && info.size > MAX_STORED_AUDIO_BYTES) {
+          return jsonWithRateLimit({ error: 'Stored audio exceeds the 100MB limit' }, guard.headers, 413);
+        }
+        // The SDK's default download buffers the whole object as a Blob. Read a
+        // stream so absent or stale size metadata cannot bypass the byte limit.
+        const { data, error } = await storage.download(reference.path).asStream();
 
         if (error || !data) {
           return jsonWithRateLimit(
@@ -78,9 +105,31 @@ export async function POST(request: NextRequest) {
           );
         }
 
-        const buffer = await data.arrayBuffer();
-        audioBuffer = buffer;
-        audioSize = buffer.byteLength;
+        filename = reference.path.split('/').pop()!;
+        mimeType = audioMimeType(info.contentType ?? '', filename);
+        const reader = data.getReader();
+        const chunks: Uint8Array[] = [];
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            audioSize += value.byteLength;
+            if (audioSize > MAX_STORED_AUDIO_BYTES) {
+              await reader.cancel().catch(() => {});
+              return jsonWithRateLimit({ error: 'Stored audio exceeds the 100MB limit' }, guard.headers, 413);
+            }
+            chunks.push(value);
+          }
+        } finally {
+          reader.releaseLock();
+        }
+        const buffer = new Uint8Array(audioSize);
+        let offset = 0;
+        for (const chunk of chunks) {
+          buffer.set(chunk, offset);
+          offset += chunk.byteLength;
+        }
+        audioBuffer = buffer.buffer;
       } catch (err) {
         console.error('Error fetching from storage:', err);
         return jsonWithRateLimit(
@@ -100,6 +149,8 @@ export async function POST(request: NextRequest) {
       }
       audioBuffer = await audioFile.arrayBuffer();
       audioSize = audioFile.size;
+      filename = audioFile.name;
+      mimeType = audioMimeType(audioFile.type, filename);
     } else {
       return jsonWithRateLimit(
         { error: 'No audio file or storage path provided' },
@@ -130,8 +181,8 @@ export async function POST(request: NextRequest) {
     }
 
     const outForm = new FormData();
-    const audioBlob = new Blob([audioBuffer]);
-    outForm.append('file', audioBlob, 'audio.webm');
+    const audioBlob = new Blob([audioBuffer], { type: mimeType });
+    outForm.append('file', audioBlob, filename);
     outForm.append('model', model);
     outForm.append('language', language);
 
@@ -162,11 +213,9 @@ export async function POST(request: NextRequest) {
       const data = await response.json();
 
       // Ensure compatibility with the expected response structure
-      const text = data.text || '';
+      const result = parseTranscriptionResponse(data);
       const detectedLanguage = data.language || language;
-      const confidence = typeof data.confidence === 'number' ? data.confidence : 0.9; // Default confidence
-
-      return { text, confidence, language: detectedLanguage };
+      return { ...result, language: detectedLanguage };
     };
 
     const result = await withRetry(doRequest, 2);
@@ -174,6 +223,9 @@ export async function POST(request: NextRequest) {
     return jsonWithRateLimit(result, guard.headers);
 
   } catch (error: any) {
+    if (error instanceof InvalidAIResponseError) {
+      return jsonWithRateLimit({ error: 'Invalid response from transcription service' }, guard.headers, 502);
+    }
     console.error('Transcription API error:', error.message);
 
     const message = error.message || 'An unknown error occurred.';

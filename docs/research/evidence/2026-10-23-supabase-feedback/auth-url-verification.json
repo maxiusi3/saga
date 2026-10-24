@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "checkedDate": "2026-10-23",
+  "timezone": "Asia/Taipei",
+  "scope": "Documentation and static evidence only",
+  "changedDocs": [
+    "docs/research/2026-10-23-deployment-config-user-feedback.md",
+    "docs/research/2026-10-22-user-action-checklist.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/2026-10-10-integrated-upgrade-plan.md"
+  ],
+  "unchangedImplementationFiles": 877,
+  "unchangedPriorEvidenceFiles": 7,
+  "checkedLocalMarkdownLinks": 321,
+  "sourceHashesMatch": true,
+  "redirectURLChecks": "17 unique URLs; production 8/8 and legacy Vercel 8/8 locale paths",
+  "legacyInviteDoubleSlashReproducedWithSyntheticToken": true,
+  "applicationTestsRun": false,
+  "liveLoginTestRun": false,
+  "productionConfigurationChanged": false,
+  "independentAgentReviewPerformed": false,
+  "releaseGatesPassed": false,
+  "reviewedFilesSha256": {
+    "docs/research/2026-10-23-deployment-config-user-feedback.md": "fc6bfc056562c69adb233905e89415d6dda0716c1b899490e91a94d434bfcebf",
+    "docs/research/2026-10-22-user-action-checklist.md": "34a237e0352213c85537f93abbc867d416f47a21780f6d4f9c9388592fc8df58",
+    "docs/HANDOFF-2026-10-13-upgrade.md": "f25dafd253f2cf22929cf4dd66ffd59dcc1b2cad6d1eb21224b8832a708aaa4d",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "64a7ac35133549aca0b3167e11da3b43a33103485df79e799a4033db828d0861",
+    "docs/research/evidence/2026-10-23-supabase-feedback/auth-url-user-report.json": "3b52665df3cd658a60b19bee12760463c26d56baa77815dad235eb99602fd781",
+    "docs/research/evidence/2026-10-23-supabase-feedback/auth-url-reconciliation.json": "f57aa3c96e80233471a12be5108951254f7d6062144f119692c04d8f4b01562f"
+  }
+}

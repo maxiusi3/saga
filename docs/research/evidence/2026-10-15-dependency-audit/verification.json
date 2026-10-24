@@ -1,0 +1,82 @@
+{
+  "status": "local_compatibility_checks_passed_audit_gate_failed",
+  "checkedAt": "2026-10-15T12:47:08.914421+00:00",
+  "runtime": {
+    "node": "22.22.2",
+    "npm": "10.9.7",
+    "next": "16.4.1",
+    "sharp": "0.35.5",
+    "chromium": "147.0.7727.15"
+  },
+  "cleanInstall": {
+    "exitCode": 0,
+    "packagesAdded": 1416
+  },
+  "verify": {
+    "command": "npm run verify",
+    "exitCode": 0,
+    "startedAt": "2026-10-15T12:34:26.736552+00:00",
+    "completedAt": "2026-10-15T12:36:56.050139+00:00",
+    "nextEnvRestored": true,
+    "webSuites": 75,
+    "webTests": 702,
+    "generatedPages": 175
+  },
+  "sharedTests": {
+    "exitCode": 0,
+    "suites": 4,
+    "tests": 16
+  },
+  "infraTests": {
+    "exitCode": 0,
+    "tests": 7
+  },
+  "runtimeSmoke": {
+    "exitCode": 0,
+    "checks": 18
+  },
+  "audit": {
+    "before": {
+      "info": 0,
+      "low": 0,
+      "moderate": 17,
+      "high": 40,
+      "critical": 2,
+      "total": 59
+    },
+    "after": {
+      "info": 0,
+      "low": 0,
+      "moderate": 8,
+      "high": 34,
+      "critical": 0,
+      "total": 42
+    },
+    "actualGateCommand": "npm run audit:high",
+    "actualGateExitCode": 1
+  },
+  "lockTreeCheck": "dependency-tree-check.json",
+  "installedTreeCheck": {
+    "command": "npm ls --all --json",
+    "exitCode": 0,
+    "problems": [
+      "extraneous: @emnapi/runtime@1.11.3 /Users/eat/Documents/eatpotato/saga传奇/node_modules/@emnapi/runtime"
+    ],
+    "interpretation": "One optional WASM helper remains after npm ci on macOS x64. It is present in the lockfile as optional; its platform-specific consumers are not installed. No missing/invalid dependency or peer constraint. Left unchanged and disclosed; not pruned to disguise clean-install behavior."
+  },
+  "independentReview": "unavailable: no independent review verdict; controller self-review only",
+  "sourceHashes": {
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/shared/package.json": "618910c86d4acdcf43b40db06f619b42f9172334f3e9b5165ca5d856eb1c87c2",
+    "packages/web/next.config.js": "b0b161dba6a784cc576679b99521bc6c78ffd4000984a2f767cffe9f3989b4b2",
+    "docs/research/evidence/2026-10-15-dependency-audit/runtime-smoke.cjs": "e6c4cd62839bbe9d9dec5dbbb58f8ba0a8649bb92de526c21c9daed7fd072809"
+  },
+  "milestone": {
+    "G0": "not_met",
+    "G1": "not_met",
+    "pushed": false,
+    "deployed": false
+  }
+}

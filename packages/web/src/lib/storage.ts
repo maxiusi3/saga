@@ -6,6 +6,7 @@ export interface UploadOptions {
   fileName?: string
   maxSize?: number // in bytes
   allowedTypes?: string[]
+  expectedUserId?: string
 }
 
 export interface UploadResult {
@@ -31,6 +32,7 @@ export class StorageService {
         bucket = this.defaultBucket,
         folder = 'uploads',
         fileName,
+        expectedUserId,
         maxSize = 50 * 1024 * 1024, // 50MB default
         allowedTypes = [
           'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/m4a', 'audio/aac',
@@ -70,6 +72,10 @@ export class StorageService {
           success: false,
           error: 'User not authenticated'
         }
+      }
+
+      if (expectedUserId && user.id !== expectedUserId) {
+        return { success: false, error: 'Recording belongs to a different signed-in user' }
       }
 
       // Generate file path
@@ -166,24 +172,10 @@ export class StorageService {
   }
 
   /**
-   * Delete a file from storage
+   * Legacy deletion stays closed until the asset/tombstone transaction is available.
    */
-  async deleteFile(filePath: string, bucket: string = this.defaultBucket): Promise<boolean> {
-    try {
-      const { error } = await this.supabase.storage
-        .from(bucket)
-        .remove([filePath])
-
-      if (error) {
-        console.error('Storage delete error:', error)
-        return false
-      }
-
-      return true
-    } catch (error) {
-      console.error('Delete error:', error)
-      return false
-    }
+  async deleteFile(_filePath: string, _bucket: string = this.defaultBucket): Promise<boolean> {
+    return false
   }
 
   /**

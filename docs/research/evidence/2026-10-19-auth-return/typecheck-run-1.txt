@@ -1,0 +1,16 @@
+COMMAND: npm run type-check --workspace=@saga/web
+
+> @saga/web@1.0.0 type-check
+> tsc --noEmit
+
+src/lib/server/auth-callback.ts(105,44): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+npm error Lifecycle script `type-check` failed with error:
+npm error code 2
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c tsc --noEmit
+
+EXIT: 2

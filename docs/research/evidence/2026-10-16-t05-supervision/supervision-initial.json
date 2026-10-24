@@ -1,0 +1,242 @@
+{
+  "startedAt": "2026-10-16T02:43:53.832Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "640925f4b45baead7a132aca585b3bc2c2a617fa27cca84c67624e23649e49a8",
+    "experiments/t05-durable-worker/worker.mjs": "87bf8f280aae7b34c588411d2284b1b4fdf78d27d74bbedae41494fe864b915b",
+    "experiments/t05-durable-worker/verify.mjs": "f3846c7500495f4ef3799d4768d9f684e904efb6629091ba6b1a4fc38669f48c",
+    "experiments/t05-durable-worker/runner.mjs": "62526bc2fdf4e6e61447350bb48a684a4e1ada9982ce4498fe745cc61c864df6",
+    "experiments/t05-durable-worker/supervisor.mjs": "0527fdfe4aa83bef85aa79bb79504ba5ba9ddf20bff30825ed6896f049f6a2c5",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "aa1d737c4598281cf9955359254c0d4f040bf6cd40571c7891bf667b0b3677d7",
+    "experiments/t05-durable-worker/README.md": "9a87cddf54cc0000fc1fb2976d63a0f2b6cef096322c369923471bff876541f7",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [
+    {
+      "name": "transaction heartbeat preserves actual queue claim",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 12452,
+      "heartbeatSamples": 12
+    },
+    {
+      "name": "automatic 20s asynchronous synthetic task",
+      "status": "passed",
+      "assertions": 15,
+      "elapsedMs": 20014,
+      "durationMs": 20000,
+      "heartbeats": 19,
+      "workerPid": 16420,
+      "queueId": "4ed5d34f-0129-4330-99ad-53b91a717851",
+      "synthetic": true
+    },
+    {
+      "name": "automatic recovery after leased SIGKILL",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 14350,
+      "fault": "SIGKILL",
+      "stage": "leased",
+      "killedPid": 16486,
+      "replacementPid": 16490,
+      "recoveryMs": 11606
+    },
+    {
+      "name": "automatic recovery after provider SIGKILL",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 13644,
+      "fault": "SIGKILL",
+      "stage": "provider",
+      "killedPid": 16540,
+      "replacementPid": 16545,
+      "recoveryMs": 10068
+    },
+    {
+      "name": "automatic heartbeat stops revoked synthetic work",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 14681,
+      "cancellationMs": 985
+    },
+    {
+      "name": "queue hard cap bounds automatic heartbeats",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 9528,
+      "hardCapSeconds": 6,
+      "requestedTaskMs": 20000,
+      "interruptionMs": 6034
+    },
+    {
+      "name": "three bounded restarts then nonzero exit",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 2288,
+      "fault": "four runner SIGKILLs",
+      "backoffs": [
+        100,
+        200,
+        400
+      ]
+    },
+    {
+      "name": "runner creation failure is bounded and cleaned",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 1019,
+      "fault": "runner ENOENT",
+      "backoffs": [
+        100,
+        200,
+        400
+      ]
+    }
+  ],
+  "assertions": 64,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "Local asynchronous synthetic tasks and process supervision only; no real audio, provider cancellation/billing, production hosting, real-device recording, backup restore, or load qualification."
+  ],
+  "supervisionHeartbeat": {
+    "samples": [
+      {
+        "elapsedMs": 1052,
+        "leaseExpiresAt": "2026-10-16T02:44:02.150Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:43:57.145Z"
+      },
+      {
+        "elapsedMs": 2090,
+        "leaseExpiresAt": "2026-10-16T02:44:03.200Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:43:58.196Z"
+      },
+      {
+        "elapsedMs": 3120,
+        "leaseExpiresAt": "2026-10-16T02:44:04.239Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:43:59.235Z"
+      },
+      {
+        "elapsedMs": 4151,
+        "leaseExpiresAt": "2026-10-16T02:44:05.267Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:00.263Z"
+      },
+      {
+        "elapsedMs": 5184,
+        "leaseExpiresAt": "2026-10-16T02:44:06.298Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:01.296Z"
+      },
+      {
+        "elapsedMs": 6221,
+        "leaseExpiresAt": "2026-10-16T02:44:07.333Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:02.329Z"
+      },
+      {
+        "elapsedMs": 7252,
+        "leaseExpiresAt": "2026-10-16T02:44:08.369Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:03.365Z"
+      },
+      {
+        "elapsedMs": 8280,
+        "leaseExpiresAt": "2026-10-16T02:44:09.400Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:04.396Z"
+      },
+      {
+        "elapsedMs": 9315,
+        "leaseExpiresAt": "2026-10-16T02:44:10.430Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:05.426Z"
+      },
+      {
+        "elapsedMs": 10357,
+        "leaseExpiresAt": "2026-10-16T02:44:11.464Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:06.459Z"
+      },
+      {
+        "elapsedMs": 11390,
+        "leaseExpiresAt": "2026-10-16T02:44:12.507Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:07.502Z"
+      },
+      {
+        "elapsedMs": 12419,
+        "leaseExpiresAt": "2026-10-16T02:44:13.539Z",
+        "queueState": "active",
+        "retryCount": 0,
+        "heartbeatOn": "2026-10-16T02:44:08.536Z"
+      }
+    ],
+    "provider": "synthetic ledger",
+    "clock": "actual PostgreSQL and wall clock"
+  },
+  "status": "failed",
+  "error": "Error: Supervisor did not close\n    at Timeout.<anonymous> (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:92:39)\n    at listOnTimeout (node:internal/timers:585:17)\n    at process.processTimers (node:internal/timers:521:7)",
+  "processOwnership": {
+    "supervisorPids": [
+      16418,
+      16476,
+      16484,
+      16538,
+      16574,
+      16616,
+      16659,
+      16671,
+      16678
+    ],
+    "runnerPids": [
+      16420,
+      16478,
+      16486,
+      16490,
+      16540,
+      16545,
+      16576,
+      16632,
+      16661,
+      16665,
+      16667,
+      16669,
+      16680
+    ],
+    "remainingGroups": [],
+    "remainingRunnerPids": []
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 1,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": [
+      "Could not stop owned child: Child termination not confirmed within 2s (pid 16678)"
+    ]
+  },
+  "cleanupError": "Cleanup incomplete: {\"ownedChildrenRemaining\":1,\"clusterStopped\":true,\"tempDirectoryRemoved\":true,\"errors\":[\"Could not stop owned child: Child termination not confirmed within 2s (pid 16678)\"]}",
+  "finishedAt": "2026-10-16T02:45:46.445Z"
+}

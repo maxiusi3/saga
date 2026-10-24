@@ -1,0 +1,112 @@
+TAP version 13
+# Subtest: the trigger entry pins only the zero-argument public trigger in the immutable snapshot
+ok 1 - the trigger entry pins only the zero-argument public trigger in the immutable snapshot
+  ---
+  duration_ms: 156.0923
+  type: 'test'
+  ...
+# Subtest: trigger collection reuses the validated query and emits only pinned identity parameters
+ok 2 - trigger collection reuses the validated query and emits only pinned identity parameters
+  ---
+  duration_ms: 5.514888
+  type: 'test'
+  ...
+# Subtest: the trigger CLI persists definition drift privately and records exact scope, hashes and verified configuration
+ok 3 - the trigger CLI persists definition drift privately and records exact scope, hashes and verified configuration
+  ---
+  duration_ms: 120.245665
+  type: 'test'
+  ...
+# Subtest: CLI configuration is rejected before reading credentials or creating a client
+ok 4 - CLI configuration is rejected before reading credentials or creating a client
+  ---
+  duration_ms: 124.356263
+  type: 'test'
+  ...
+# Subtest: snapshot drift blocks credential access and connection creation
+ok 5 - snapshot drift blocks credential access and connection creation
+  ---
+  duration_ms: 45.836574
+  type: 'test'
+  ...
+# Subtest: invalid credentials cannot construct a client and raw configuration stays out of reports
+ok 6 - invalid credentials cannot construct a client and raw configuration stays out of reports
+  ---
+  duration_ms: 28.411636
+  type: 'test'
+  ...
+# Subtest: missing and attribute-drift trigger rows cannot report a matched capture
+ok 7 - missing and attribute-drift trigger rows cannot report a matched capture
+  ---
+  duration_ms: 302.789079
+  type: 'test'
+  ...
+# Subtest: wrong identities, duplicates, invalid digests and malformed rows produce only safe errors
+ok 8 - wrong identities, duplicates, invalid digests and malformed rows produce only safe errors
+  ---
+  duration_ms: 354.442471
+  type: 'test'
+  ...
+# Subtest: unsafe backend session properties prevent definition reads and still roll back
+ok 9 - unsafe backend session properties prevent definition reads and still roll back
+  ---
+  duration_ms: 371.725332
+  type: 'test'
+  ...
+# Subtest: unverified TLS prevents any transaction or definition read
+ok 10 - unverified TLS prevents any transaction or definition read
+  ---
+  duration_ms: 34.775432
+  type: 'test'
+  ...
+# Subtest: a denied catalog read is rolled back and reports the allowlisted code only
+ok 11 - a denied catalog read is rolled back and reports the allowlisted code only
+  ---
+  duration_ms: 23.315958
+  type: 'test'
+  ...
+# Subtest: the trigger CLI enforces its asynchronous deadline when connect hangs
+ok 12 - the trigger CLI enforces its asynchronous deadline when connect hangs
+  ---
+  duration_ms: 30.141713
+  type: 'test'
+  ...
+# Subtest: the trigger CLI enforces its asynchronous deadline when collect hangs
+ok 13 - the trigger CLI enforces its asynchronous deadline when collect hangs
+  ---
+  duration_ms: 21.347313
+  type: 'test'
+  ...
+# Subtest: the trigger CLI enforces its asynchronous deadline when rollback hangs
+ok 14 - the trigger CLI enforces its asynchronous deadline when rollback hangs
+  ---
+  duration_ms: 29.166281
+  type: 'test'
+  ...
+# Subtest: the trigger CLI enforces its asynchronous deadline when close hangs
+ok 15 - the trigger CLI enforces its asynchronous deadline when close hangs
+  ---
+  duration_ms: 67.895756
+  type: 'test'
+  ...
+# Subtest: a later close error retains completed private evidence without reporting capture success
+ok 16 - a later close error retains completed private evidence without reporting capture success
+  ---
+  duration_ms: 51.958852
+  type: 'test'
+  ...
+# Subtest: an insecure existing private directory prevents persistence and successful reporting
+ok 17 - an insecure existing private directory prevents persistence and successful reporting
+  ---
+  duration_ms: 66.967734
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3084.418867

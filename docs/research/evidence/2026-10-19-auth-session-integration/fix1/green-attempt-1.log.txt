@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand supabase-browser-errors auth-session-lifecycle supabase-session auth-store
+
+
+Test Suites: 4 passed, 4 total
+Tests:       31 passed, 31 total
+Snapshots:   0 total
+Time:        2.939 s
+Ran all test suites matching supabase-browser-errors|auth-session-lifecycle|supabase-session|auth-store.

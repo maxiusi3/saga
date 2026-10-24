@@ -1,0 +1,198 @@
+{
+  "checkedAt": "2026-10-22T03:07:05.608226+00:00",
+  "checkedAtTaipei": "2026-10-22T11:07:05.608226+08:00",
+  "scope": "Read-only recovery verification of frozen implementation, prior results and evidence. No application/SQL tests rerun and no provider or remote database calls.",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "checks": {
+    "applicationInputs": {
+      "checked": 796,
+      "mismatches": []
+    },
+    "batchSourceInputs": {
+      "checked": 19,
+      "mismatches": []
+    },
+    "protectedPriorInputs": {
+      "checked": 986,
+      "mismatches": []
+    },
+    "sqlInputsAndRuntime": {
+      "checked": 774,
+      "mismatches": []
+    },
+    "rawAndPublishedLogs": {
+      "checked": 38,
+      "mismatches": []
+    },
+    "linkedReportsAndFinalLogs": {
+      "checked": 17,
+      "mismatches": []
+    },
+    "applicationInventory": {
+      "checked": 571,
+      "added": [],
+      "removed": []
+    },
+    "runtimeInventory": {
+      "checked": 743,
+      "added": [],
+      "removed": []
+    },
+    "nodeRuntime": {
+      "version": "v22.22.2",
+      "sha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+      "expectedSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+      "matches": true
+    },
+    "nextEnv": {
+      "currentSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "savedSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "matchesSavedBytes": true
+    }
+  },
+  "evidence": {
+    "project-verification.json": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/project-verification.json",
+      "sha256": "a2bb06b8dd3c7522b13b6d2042635dc2c0f26f4bf8d559c30808be5ced687618"
+    },
+    "source-sha256.json": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/source-sha256.json",
+      "sha256": "98fae85fa188e2e341c51aa840fdbe2f068306017ec4958d83e848ce386d5c2b"
+    },
+    "protected-input-sha256.json": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/protected-input-sha256.json",
+      "sha256": "4719e622daa86558459658e852810e8f3446214c58b3f42c210969a722c69830"
+    },
+    "previous-input-integrity.json": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/previous-input-integrity.json",
+      "sha256": "de22de8404597b5e1c99866696ce5eede77513e2dcb26ec80a38826fcdad1fe1"
+    },
+    "published-log-manifest.json": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/published-log-manifest.json",
+      "sha256": "4ca4988e5f9edd3284a4eb0b4b08fb64c42ba092edf480246c113cc5b20f2778"
+    },
+    "implementation-review.md": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/implementation-review.md",
+      "sha256": "c3702cb4e6ea7336a44b70e870a0eb2611aec3c5872ba92822f5c0c05ca83480"
+    },
+    "sql": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/sql-run-2026-10-21T14-47-16.084Z-8e804a59-f438-4c16-b9c8-3559d2bc64af.json",
+      "sha256": "177a479669d23fcaaed154308769ce25346eea9b7b9f6622cc0ec20da596a883"
+    },
+    "lifecycle": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/sql-lifecycle-2026-10-21T14-49-45.910Z-877999de-cb4b-4603-9b9e-9af16843648d.json",
+      "sha256": "b858c6cea49dcab8421c65ec9a8e6e7662947c33fb3315f3b519c7bb36b6751b"
+    }
+  },
+  "verifiedHistoricalResults": {
+    "projectStartedAt": "2026-10-21T15:01:19.264Z",
+    "projectFinishedAt": "2026-10-21T15:04:58.554Z",
+    "commands": [
+      {
+        "label": "targeted",
+        "exitCode": 0
+      },
+      {
+        "label": "verify",
+        "exitCode": 0
+      },
+      {
+        "label": "shared",
+        "exitCode": 0
+      },
+      {
+        "label": "infra",
+        "exitCode": 0
+      },
+      {
+        "label": "diff-check",
+        "exitCode": 0
+      }
+    ],
+    "sqlStartedAt": "2026-10-21T14:47:16.083Z",
+    "sqlFinishedAt": "2026-10-21T14:47:23.096Z",
+    "sqlStatus": "passed",
+    "sqlScenarios": 16,
+    "sqlAssertions": 2448,
+    "sqlAllScenariosPassed": true,
+    "sqlCleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    },
+    "lifecycleStatus": "passed",
+    "lifecycleCases": [
+      {
+        "name": "hostile_environment",
+        "status": "passed",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        }
+      },
+      {
+        "name": "actual_SIGTERM_after_fixture",
+        "status": "passed",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        }
+      },
+      {
+        "name": "failed_actual_start",
+        "status": "passed",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        }
+      },
+      {
+        "name": "failed_actual_connection",
+        "status": "passed",
+        "cleanup": {
+          "clusterStopped": true,
+          "tempDirectoryRemoved": true,
+          "clientsRemaining": 0,
+          "errors": []
+        }
+      }
+    ],
+    "testCountsFromLogs": {
+      "targeted": [
+        "Test Suites: 5 passed, 5 total",
+        "Tests:       54 passed, 54 total"
+      ],
+      "verify": [
+        "Test Suites: 105 passed, 105 total",
+        "Tests:       1420 passed, 1420 total",
+        "  Generating static pages using 7 workers (0/180) ...",
+        "  Generating static pages using 7 workers (45/180) ",
+        "  Generating static pages using 7 workers (90/180) ",
+        "  Generating static pages using 7 workers (135/180) ",
+        "✓ Generating static pages using 7 workers (180/180) in 2.0s"
+      ],
+      "shared": [
+        "Test Suites: 4 passed, 4 total",
+        "Tests:       16 passed, 16 total"
+      ],
+      "infra": [
+        "# tests 7",
+        "# pass 7",
+        "# fail 0"
+      ],
+      "diff-check": []
+    }
+  },
+  "diffCheckExitCode": 0,
+  "diffCheckDiagnostics": "",
+  "errors": [],
+  "status": "passed"
+}

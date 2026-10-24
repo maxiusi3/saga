@@ -1,0 +1,557 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand auth-dashboard-continuity auth-session-transient auth-token-refresh-races
+
+FAIL src/components/auth/__tests__/auth-dashboard-continuity.test.ts
+  ● Console
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: true,
+        isLoading: false,
+        isAuthenticated: true,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: true, isAuthenticated: false, user: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Showing loading spinner
+
+      at log (src/app/[locale]/dashboard/layout.tsx:62:13)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: false,
+        isLoading: true,
+        isAuthenticated: false,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: true, isAuthenticated: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: true,
+        isLoading: false,
+        isAuthenticated: true,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: true,
+        isLoading: false,
+        isAuthenticated: true,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: true, isAuthenticated: false, user: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Showing loading spinner
+
+      at log (src/app/[locale]/dashboard/layout.tsx:62:13)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: false,
+        isLoading: true,
+        isAuthenticated: false,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: true, isAuthenticated: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: true,
+        isLoading: false,
+        isAuthenticated: true,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: true,
+        isLoading: false,
+        isAuthenticated: true,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: true, isAuthenticated: false, user: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Showing loading spinner
+
+      at log (src/app/[locale]/dashboard/layout.tsx:62:13)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: false,
+        isLoading: true,
+        isAuthenticated: false,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: true, isAuthenticated: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: false, user: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Not authenticated, returning null
+
+      at log (src/app/[locale]/dashboard/layout.tsx:71:13)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: false,
+        isLoading: false,
+        isAuthenticated: false,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Initializing auth store (first time)
+
+      at log (src/app/[locale]/dashboard/layout.tsx:35:15)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Setting redirect timer (2s)
+
+      at log (src/app/[locale]/dashboard/layout.tsx:46:15)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: false, user: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Not authenticated, returning null
+
+      at log (src/app/[locale]/dashboard/layout.tsx:71:13)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: false,
+        isLoading: false,
+        isAuthenticated: false,
+        initialized: true
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Clearing redirect timer
+
+      at log (src/app/[locale]/dashboard/layout.tsx:53:17)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: true,
+        isLoading: false,
+        isAuthenticated: true,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: true, isAuthenticated: false, user: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Showing loading spinner
+
+      at log (src/app/[locale]/dashboard/layout.tsx:62:13)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: false,
+        isLoading: true,
+        isAuthenticated: false,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: true, isAuthenticated: false }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+    console.log
+      Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:59:11)
+
+    console.log
+      Dashboard Layout: Auth state check {
+        user: true,
+        isLoading: false,
+        isAuthenticated: true,
+        initialized: false
+      }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:31:13)
+
+    console.log
+      Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+
+      at log (src/app/[locale]/dashboard/layout.tsx:42:13)
+
+  ● same-session SDK visibility SIGNED_IN preserves mounted dashboard work during and after verification
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: <div id="stateful-child">synthetic unsaved state</div>
+    Received: null
+
+      49 |   const original = child(); blocked = true
+      50 |   await React.act(async () => { window.dispatchEvent(new window.Event('visibilitychange')); await started.promise })
+    > 51 |   expect(child()).toBe(original); expect({ mounts, unmounts }).toEqual({ mounts: 1, unmounts: 0 })
+         |                   ^
+      52 |   expect(store.getState()).toMatchObject({ user, isAuthenticated: true, isLoading: false })
+      53 |   await React.act(async () => { blocked = false; provider.resolve(Response.json(user)); await new Promise(resolve => setTimeout(resolve, 0)) })
+      54 |   expect(child()).toBe(original); expect({ mounts, unmounts }).toEqual({ mounts: 1, unmounts: 0 })
+
+      at Object.toBe (src/components/auth/__tests__/auth-dashboard-continuity.test.ts:51:19)
+
+  ● successful SDK refresh inside concurrent token reads returns verified fresh tokens without unmounting
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      58 |   let pending!: Promise<any>, settled = false
+      59 |   await React.act(async () => { pending = Promise.all([store.getState().getAccessToken(), store.getState().getAccessToken()]).then(result => { settled = true; return result }); await started.promise })
+    > 60 |   expect(settled).toBe(false); expect(child()).toBe(original); expect({ mounts, unmounts }).toEqual({ mounts: 1, unmounts: 0 })
+         |                   ^
+      61 |   let values
+      62 |   await React.act(async () => { blocked = false; provider.resolve(Response.json(user)); values = await pending })
+      63 |   expect(values).toEqual(['synthetic-refreshed-access', 'synthetic-refreshed-access'])
+
+      at Object.toBe (src/components/auth/__tests__/auth-dashboard-continuity.test.ts:60:19)
+
+FAIL src/lib/server/__tests__/auth-session-transient.test.ts
+  ● Console
+
+    console.error
+      AuthApiError: Authentication unavailable
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 400,
+        code: undefined
+      }
+
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4084:19
+      at SupabaseAuthClient._useSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:2779:14)
+      at SupabaseAuthClient._emitInitialSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4068:12)
+
+    console.error
+      AuthApiError: Authentication unavailable
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 400,
+        code: undefined
+      }
+
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4084:19
+      at SupabaseAuthClient._useSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:2779:14)
+      at SupabaseAuthClient._emitInitialSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4068:12)
+
+    console.error
+      AuthApiError: Authentication unavailable
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 400,
+        code: undefined
+      }
+
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4084:19
+      at SupabaseAuthClient._useSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:2779:14)
+      at SupabaseAuthClient._emitInitialSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4068:12)
+
+    console.error
+      AuthApiError: Authentication unavailable
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 400,
+        code: undefined
+      }
+
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4084:19
+      at SupabaseAuthClient._useSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:2779:14)
+      at SupabaseAuthClient._emitInitialSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4068:12)
+
+    console.error
+      AuthApiError: Authentication unavailable
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 400,
+        code: undefined
+      }
+
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4084:19
+      at SupabaseAuthClient._useSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:2779:14)
+      at SupabaseAuthClient._emitInitialSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4068:12)
+
+    console.error
+      AuthApiError: Authentication unavailable
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 400,
+        code: undefined
+      }
+
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4084:19
+      at SupabaseAuthClient._useSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:2779:14)
+      at SupabaseAuthClient._emitInitialSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4068:12)
+
+    console.error
+      AuthApiError: Authentication unavailable
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 400,
+        code: undefined
+      }
+
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4084:19
+      at SupabaseAuthClient._useSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:2779:14)
+      at SupabaseAuthClient._emitInitialSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4068:12)
+
+    console.error
+      AuthApiError: Authentication unavailable
+          at handleError (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:139:9)
+          at processTicksAndRejections (node:internal/process/task_queues:103:5)
+          at _handleRequest (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:232:5)
+          at _request (/Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/fetch.ts:194:16)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/GoTrueClient.ts:4471:18
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@supabase/auth-js/src/lib/helpers.ts:232:26 {
+        __isAuthError: true,
+        status: 400,
+        code: undefined
+      }
+
+      at ../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4084:19
+      at SupabaseAuthClient._useSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:2779:14)
+      at SupabaseAuthClient._emitInitialSession (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4068:12)
+
+  ● temporary expired-session refresh 503 rejects safely without deleting the recoverable cookie
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "sb-127-auth-token=; Max-Age=0; Path=/; SameSite=Lax",
+    + ]
+
+      21 |   if (timer) clearTimeout(timer)
+      22 |   expect(result.ok).toBe(false)
+    > 23 |   if (!result.ok) { expect(result.response.status).toBe(503); expect(result.response.headers.getSetCookie()).toEqual([]) }
+         |                                                                                                              ^
+      24 |   expect(fixture.captured).toHaveLength(1)
+      25 |   fixture.control.refreshStatus = 200; fixture.control.drop = false; fixture.control.headersOnly = false
+      26 |   const recovered = await getAuthenticatedUser(request(original))
+
+      at toEqual (src/lib/server/__tests__/auth-session-transient.test.ts:23:110)
+
+  ● temporary expired-session refresh 429 rejects safely without deleting the recoverable cookie
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "sb-127-auth-token=; Max-Age=0; Path=/; SameSite=Lax",
+    + ]
+
+      21 |   if (timer) clearTimeout(timer)
+      22 |   expect(result.ok).toBe(false)
+    > 23 |   if (!result.ok) { expect(result.response.status).toBe(503); expect(result.response.headers.getSetCookie()).toEqual([]) }
+         |                                                                                                              ^
+      24 |   expect(fixture.captured).toHaveLength(1)
+      25 |   fixture.control.refreshStatus = 200; fixture.control.drop = false; fixture.control.headersOnly = false
+      26 |   const recovered = await getAuthenticatedUser(request(original))
+
+      at toEqual (src/lib/server/__tests__/auth-session-transient.test.ts:23:110)
+
+  ● temporary expired-session refresh drop rejects safely without deleting the recoverable cookie
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "sb-127-auth-token=; Max-Age=0; Path=/; SameSite=Lax",
+    + ]
+
+      21 |   if (timer) clearTimeout(timer)
+      22 |   expect(result.ok).toBe(false)
+    > 23 |   if (!result.ok) { expect(result.response.status).toBe(503); expect(result.response.headers.getSetCookie()).toEqual([]) }
+         |                                                                                                              ^
+      24 |   expect(fixture.captured).toHaveLength(1)
+      25 |   fixture.control.refreshStatus = 200; fixture.control.drop = false; fixture.control.headersOnly = false
+      26 |   const recovered = await getAuthenticatedUser(request(original))
+
+      at toEqual (src/lib/server/__tests__/auth-session-transient.test.ts:23:110)
+
+
+Test Suites: 2 failed, 1 passed, 3 total
+Tests:       5 failed, 6 passed, 11 total
+Snapshots:   0 total
+Time:        3.492 s, estimated 4 s
+Ran all test suites matching auth-dashboard-continuity|auth-session-transient|auth-token-refresh-races.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand auth-dashboard-continuity auth-session-transient auth-token-refresh-races

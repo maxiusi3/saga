@@ -1,0 +1,281 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/legacy-story-media.test.ts
+
+watchman warning: Recrawled this watch 9 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/eat/Documents/eatpotato/saga传奇' ; watchman watch-project '/Users/eat/Documents/eatpotato/saga传奇'`
+
+FAIL src/lib/__tests__/legacy-story-media.test.ts
+  ● legacy stories media projection › preserves every field, array position and duplicate source without promoting derivatives
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      17 |       images: [{ url: 'alice/images/original.jpg', thumbUrl: 'alice/images/thumb.jpg' }, 'alice/images/same.jpg'],
+      18 |     }, context)
+    > 19 |     expect(plan.schemaCompatible).toBe(true)
+         |                                   ^
+      20 |     expect(plan.references.map(r => [r.sourcePath, r.kind, r.locator.objectKey])).toEqual([
+      21 |       ['/audio_url', 'original_audio', 'stories/same.webm'],
+      22 |       ['/mastered_audio_url', 'derived_audio', 'alice/mastered/same.webm'],
+
+      at Object.toBe (src/lib/__tests__/legacy-story-media.test.ts:19:35)
+
+  ● legacy stories media projection › keeps matching URL and path observations separate while excluding signed query from the locator
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 2
+    Received length: 0
+    Received array:  []
+
+      38 |       path: 'alice/images/a.jpg',
+      39 |     }] }, context)
+    > 40 |     expect(plan.references).toHaveLength(2)
+         |                             ^
+      41 |     expect(plan.references.map(r => r.locator)).toEqual([
+      42 |       { status: 'mapped', bucket: 'saga', objectKey: 'alice/images/a.jpg' },
+      43 |       { status: 'mapped', bucket: 'saga', objectKey: 'alice/images/a.jpg' },
+
+      at Object.toHaveLength (src/lib/__tests__/legacy-story-media.test.ts:40:29)
+
+  ● legacy stories media projection › does not choose between conflicting URL/path aliases on the same image
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 5
+    + Received  + 1
+
+    - Array [
+    -   "ambiguous",
+    -   "ambiguous",
+    -   "mapped",
+    - ]
+    + Array []
+
+      49 |       url: 'alice/images/a.jpg', path: 'bob/images/a.jpg', thumbUrl: 'alice/images/t.jpg',
+      50 |     }] }, context)
+    > 51 |     expect(plan.references.map(r => r.locator.status)).toEqual(['ambiguous', 'ambiguous', 'mapped'])
+         |                                                        ^
+      52 |     expect(plan.references[0].locator.objectKey).toBeUndefined()
+      53 |   })
+      54 |
+
+      at Object.toEqual (src/lib/__tests__/legacy-story-media.test.ts:51:56)
+
+  ● legacy stories media projection › reports a missing original instead of using its thumbnail
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 10
+    + Received  +  1
+
+    - Array [
+    -   Array [
+    -     "original_image",
+    -     "unresolved",
+    -   ],
+    -   Array [
+    -     "thumbnail",
+    -     "mapped",
+    -   ],
+    - ]
+    + Array []
+
+      60 |   it('reports a missing original instead of using its thumbnail', () => {
+      61 |     const plan = planLegacyStoryMedia({ ...row, images: [{ thumbUrl: 'alice/images/t.jpg' }] }, context)
+    > 62 |     expect(plan.references.map(r => [r.kind, r.locator.status])).toEqual([
+         |                                                                  ^
+      63 |       ['original_image', 'unresolved'], ['thumbnail', 'mapped'],
+      64 |     ])
+      65 |   })
+
+      at Object.toEqual (src/lib/__tests__/legacy-story-media.test.ts:62:66)
+
+  ● legacy stories media projection › keeps invalid and null array entries at their original positions
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 1
+
+    - Array [
+    -   "/photo_urls/0",
+    -   "/photo_urls/1",
+    -   "/photo_urls/2",
+    -   "/images/0",
+    -   "/images/1",
+    -   "/images/2",
+    -   "/images/3",
+    - ]
+    + Array []
+
+      68 |     const plan = planLegacyStoryMedia({ ...row, images: [null, 4, ['alice/a.jpg'], { futureUrl: 'alice/b.jpg' }],
+      69 |       photo_urls: [null, '', 5] }, context)
+    > 70 |     expect(plan.references.map(r => r.sourcePath)).toEqual([
+         |                                                    ^
+      71 |       '/photo_urls/0', '/photo_urls/1', '/photo_urls/2', '/images/0', '/images/1', '/images/2', '/images/3',
+      72 |     ])
+      73 |     expect(plan.references.every(r => r.locator.status === 'unresolved')).toBe(true)
+
+      at Object.toEqual (src/lib/__tests__/legacy-story-media.test.ts:70:52)
+
+  ● legacy stories media projection › does not guess an array from a malformed field: "[{\"url\":\"alice/a.jpg\"}]"
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      77 |   it.each(['[{"url":"alice/a.jpg"}]', { url: 'alice/a.jpg' }, 7])('does not guess an array from a malformed field: %j', images => {
+      78 |     const plan = planLegacyStoryMedia({ ...row, images }, context)
+    > 79 |     expect(plan.references).toHaveLength(1)
+         |                             ^
+      80 |     expect(plan.references[0]).toMatchObject({ sourcePath: '/images', rawValue: images, locator: { status: 'unresolved' } })
+      81 |   })
+      82 |
+
+      at toHaveLength (src/lib/__tests__/legacy-story-media.test.ts:79:29)
+
+  ● legacy stories media projection › does not guess an array from a malformed field: {"url":"alice/a.jpg"}
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      77 |   it.each(['[{"url":"alice/a.jpg"}]', { url: 'alice/a.jpg' }, 7])('does not guess an array from a malformed field: %j', images => {
+      78 |     const plan = planLegacyStoryMedia({ ...row, images }, context)
+    > 79 |     expect(plan.references).toHaveLength(1)
+         |                             ^
+      80 |     expect(plan.references[0]).toMatchObject({ sourcePath: '/images', rawValue: images, locator: { status: 'unresolved' } })
+      81 |   })
+      82 |
+
+      at toHaveLength (src/lib/__tests__/legacy-story-media.test.ts:79:29)
+
+  ● legacy stories media projection › does not guess an array from a malformed field: 7
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      77 |   it.each(['[{"url":"alice/a.jpg"}]', { url: 'alice/a.jpg' }, 7])('does not guess an array from a malformed field: %j', images => {
+      78 |     const plan = planLegacyStoryMedia({ ...row, images }, context)
+    > 79 |     expect(plan.references).toHaveLength(1)
+         |                             ^
+      80 |     expect(plan.references[0]).toMatchObject({ sourcePath: '/images', rawValue: images, locator: { status: 'unresolved' } })
+      81 |   })
+      82 |
+
+      at toHaveLength (src/lib/__tests__/legacy-story-media.test.ts:79:29)
+
+  ● legacy stories media projection › does not default a raw path bucket when field evidence is absent
+
+    TypeError: Cannot read properties of undefined (reading 'locator')
+
+      83 |   it('does not default a raw path bucket when field evidence is absent', () => {
+      84 |     const plan = planLegacyStoryMedia({ ...row, audio_url: 'stories/a.webm' }, {})
+    > 85 |     expect(plan.references[0].locator.status).toBe('unresolved')
+         |                               ^
+      86 |   })
+      87 |
+      88 |   it('does not use user_id as a replacement for missing storyteller_id', () => {
+
+      at Object.locator (src/lib/__tests__/legacy-story-media.test.ts:85:31)
+
+  ● legacy stories media projection › does not use user_id as a replacement for missing storyteller_id
+
+    TypeError: Cannot read properties of undefined (reading 'locator')
+
+      89 |     const plan = planLegacyStoryMedia({ ...row, storyteller_id: null, user_id: user, audio_url: 'stories/a.webm' }, context)
+      90 |     expect(plan.schemaCompatible).toBe(false)
+    > 91 |     expect(plan.references[0].locator.status).toBe('unresolved')
+         |                               ^
+      92 |   })
+      93 |
+      94 |   it.each([{ title: null }, { id: '' }, { project_id: 'wrong' }])('blocks a schema-incompatible identity: %j', invalid => {
+
+      at Object.locator (src/lib/__tests__/legacy-story-media.test.ts:91:31)
+
+  ● legacy stories media projection › blocks a schema-incompatible identity: {"title":null}
+
+    TypeError: Cannot read properties of undefined (reading 'locator')
+
+       95 |     const plan = planLegacyStoryMedia({ ...row, ...invalid, photo_url: 'alice/images/a.jpg' }, context)
+       96 |     expect(plan.schemaCompatible).toBe(false)
+    >  97 |     expect(plan.references[0].locator.status).toBe('unresolved')
+          |                               ^
+       98 |   })
+       99 |
+      100 |   it('does not read content or metadata and never mutates the caller projection', () => {
+
+      at locator (src/lib/__tests__/legacy-story-media.test.ts:97:31)
+
+  ● legacy stories media projection › blocks a schema-incompatible identity: {"id":""}
+
+    TypeError: Cannot read properties of undefined (reading 'locator')
+
+       95 |     const plan = planLegacyStoryMedia({ ...row, ...invalid, photo_url: 'alice/images/a.jpg' }, context)
+       96 |     expect(plan.schemaCompatible).toBe(false)
+    >  97 |     expect(plan.references[0].locator.status).toBe('unresolved')
+          |                               ^
+       98 |   })
+       99 |
+      100 |   it('does not read content or metadata and never mutates the caller projection', () => {
+
+      at locator (src/lib/__tests__/legacy-story-media.test.ts:97:31)
+
+  ● legacy stories media projection › blocks a schema-incompatible identity: {"project_id":"wrong"}
+
+    TypeError: Cannot read properties of undefined (reading 'locator')
+
+       95 |     const plan = planLegacyStoryMedia({ ...row, ...invalid, photo_url: 'alice/images/a.jpg' }, context)
+       96 |     expect(plan.schemaCompatible).toBe(false)
+    >  97 |     expect(plan.references[0].locator.status).toBe('unresolved')
+          |                               ^
+       98 |   })
+       99 |
+      100 |   it('does not read content or metadata and never mutates the caller projection', () => {
+
+      at locator (src/lib/__tests__/legacy-story-media.test.ts:97:31)
+
+  ● legacy stories media projection › does not read content or metadata and never mutates the caller projection
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      104 |     const before = JSON.stringify(input)
+      105 |     const result = planLegacyStoryMedia(input, context)
+    > 106 |     expect(result.references).toHaveLength(1)
+          |                               ^
+      107 |     expect(result.references[0].sourcePath).toBe('/images/0/url')
+      108 |     expect(JSON.stringify(input)).toBe(before)
+      109 |   })
+
+      at Object.toHaveLength (src/lib/__tests__/legacy-story-media.test.ts:106:31)
+
+Test Suites: 1 failed, 1 total
+Tests:       14 failed, 2 passed, 16 total
+Snapshots:   0 total
+Time:        1.955 s
+Ran all test suites within paths "src/lib/__tests__/legacy-story-media.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/legacy-story-media.test.ts

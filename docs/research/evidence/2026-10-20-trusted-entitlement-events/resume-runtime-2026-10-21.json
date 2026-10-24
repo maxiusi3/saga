@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-21T01:07:13.814Z",
+  "scope": "Read-only inventory/hash verification of retained runtime and direct source closure; no SQL or project test rerun",
+  "nodeVersion": "v22.22.2",
+  "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+  "nodeMatches": true,
+  "directSourceInventory": 25,
+  "directInventoryMatches": true,
+  "runtimeFiles": 743,
+  "runtimeInventoryMatches": true,
+  "status": "passed"
+}

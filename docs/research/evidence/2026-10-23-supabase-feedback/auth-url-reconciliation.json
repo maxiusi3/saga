@@ -1,0 +1,126 @@
+{
+  "checkedDate": "2026-10-23",
+  "timezone": "Asia/Taipei",
+  "scope": "Static URL/configuration review; no dashboard access, login, email, key read, production configuration mutation, or deployment",
+  "userReport": "auth-url-user-report.json",
+  "sourceSha256": {
+    "packages/web/src/i18n/config.ts": "ebf6955979c4248f2384473e11c0b71a9a7d77d81741037b8cb3e4a88bff8b24",
+    "packages/web/src/stores/auth-store.ts": "df0e501c2522b1402677c984b53645c853363b0b907641bde2a77ea30d4e1f80",
+    "packages/web/src/app/[locale]/auth/signin/page.tsx": "9f80568c5ac5a2ec34c5a807f6c73b64878ca804bdb8bcdba9e2ee124fa5e14b",
+    "packages/web/src/lib/server/auth-callback.ts": "b6d0046c0d757c3a58e21be23aa57371ee901d23b27b084871acb8633fadc7b5",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/web/src/lib/supabase.ts": "318ba8fff029f00b75c0c6b565bdf47b3be3cfd0aabb83a145a9de79ed2a3ec1"
+  },
+  "reportedCommitResolved": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "oldInvitationSource": {
+    "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+    "sha256": "dd9fdb764c7efa93b75f3b6db14555077271ffe44a85249b2f6adebeb5f58fa6"
+  },
+  "urlChecks": {
+    "totalRedirectUrls": 17,
+    "uniqueRedirectUrls": 17,
+    "locales": [
+      "en",
+      "zh-CN",
+      "zh-TW",
+      "ja",
+      "ko",
+      "es",
+      "fr",
+      "pt"
+    ],
+    "pathsByOrigin": {
+      "https://saga-web-livid.vercel.app": [
+        "/en/auth/callback",
+        "/zh-CN/auth/callback",
+        "/zh-TW/auth/callback",
+        "/ja/auth/callback",
+        "/ko/auth/callback",
+        "/es/auth/callback",
+        "/fr/auth/callback",
+        "/pt/auth/callback"
+      ],
+      "https://localhost:3000": [
+        "/en/auth/callback"
+      ],
+      "https://maxiusi.dpdns.org": [
+        "/zh-CN/auth/callback",
+        "/zh-TW/auth/callback",
+        "/en/auth/callback",
+        "/ja/auth/callback",
+        "/ko/auth/callback",
+        "/es/auth/callback",
+        "/pt/auth/callback",
+        "/fr/auth/callback"
+      ]
+    },
+    "productionLocaleCoverageComplete": true,
+    "legacyVercelLocaleCoverageComplete": true,
+    "applicationOriginMatchesProduction": true,
+    "siteUrlAsPastedIsAbsolute": false,
+    "siteUrlDashboardSchemeVerified": false,
+    "recommendedSiteUrl": "https://maxiusi.dpdns.org",
+    "recommendedApplicationUrl": "https://maxiusi.dpdns.org"
+  },
+  "callbackContract": {
+    "clientOrigin": "window.location.origin",
+    "serverOrigin": "new URL(request.url).origin",
+    "currentCallbackHasNextParameter": true,
+    "legacySigninCallbackMayHaveNextParameter": true,
+    "currentSrcApplicationUrlUses": [],
+    "legacyVercelAndPreviewQueryAllowListVerified": false,
+    "hostedAuthVersionVerified": false
+  },
+  "legacyInvitationUrlReproduction": {
+    "input": "https://maxiusi.dpdns.org/",
+    "syntheticToken": true,
+    "result": "https://maxiusi.dpdns.org//en/invite/synthetic-token",
+    "doubleSlashInPath": true,
+    "actualEmailAffectedVerified": false
+  },
+  "localDevelopment": {
+    "script": "next dev",
+    "defaultProtocol": "http:",
+    "reportedCallbackProtocol": "https:",
+    "customTLSVerified": false,
+    "productionImpact": false
+  },
+  "attentionInterpretation": {
+    "reportedVariable": "SUPABASE_SERVICE_ROLE_KEY",
+    "meaning": "Config can be read by authorized members; server-side credentials should be stored as Secret",
+    "keyValidityProven": false,
+    "externalLeakProven": false,
+    "actualKeyTypeVerified": false,
+    "rotationPerformed": false,
+    "otherWarningsSameCauseProven": false
+  },
+  "references": [
+    {
+      "url": "https://supabase.com/docs/guides/auth/redirect-urls",
+      "supports": "Use a complete production Site URL; explicit redirect allow list and query-aware preview verification"
+    },
+    {
+      "url": "https://github.com/supabase/auth/blob/master/internal/utilities/request.go",
+      "supports": "Current public IsRedirectURLValid accepts the Site URL scheme/host/port; other URLs use allow-list glob matching",
+      "limitation": "Public master source, not the hosted project version"
+    },
+    {
+      "url": "https://vercel.com/docs/environment-variables/sensitive-environment-variables",
+      "supports": "Current Config/Secret distinction and Secret write-only storage"
+    },
+    {
+      "url": "https://supabase.com/docs/guides/api/api-keys",
+      "supports": "New secret keys and legacy service_role can coexist; creating a new key does not revoke legacy keys"
+    }
+  ],
+  "requestedInformationReceived": true,
+  "pending": [
+    "verify or correct Site URL scheme in dashboard",
+    "normalize application URL trailing slash for reported baseline",
+    "classify server-side credentials as Secret and plan any rotation with consumers/deployment",
+    "actual controlled login round trip including next parameters",
+    "isolated restore environment and budget",
+    "backup/restore and provider qualification"
+  ],
+  "releaseGatesPassed": false
+}

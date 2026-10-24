@@ -1,0 +1,423 @@
+{
+  "startedAt": "2026-10-16T14:39:38.754Z",
+  "scope": "isolated PostgreSQL + pg-boss + real local fictional audio + existing T04 streaming merge and FFmpeg decoder",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3",
+    "ffmpeg": "ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffmpegSha256": "4a4a968b98859588e98500ae25973d80a5ca5eed0724222b9f76360dcb72a001"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "30ff73eecfb01fb2ef1937dc46cf2a8150b711e8b779ebb603a040d383618e86",
+    "experiments/t05-durable-worker/worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "experiments/t05-durable-worker/verify.mjs": "eaea542a6ad5f6bb0e281f9e1b9fa2d80fe5f59adb0ced38a6533b1ab1862837",
+    "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+    "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+    "experiments/t05-durable-worker/README.md": "6049bc52e01535fae822030e1f59cc2db1ae8de0586a3d63f31efe81df1d71ca",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "0b86c400ec5ceed3f2dccb0d0b860d792d86e2d3ddf6f510976f78c53fd5d4ce",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "0006050eb55068aade89531a9d788c068646dd575bbc5791bd8f757cd1446cd3",
+    "experiments/t05-durable-worker/merge-failure-scenarios.mjs": "836971e9631551b04f617a5e15ffbcb0ada44ebadc36ce60fc1d201913faba9b",
+    "experiments/t05-durable-worker/verify-merge-cleanup.mjs": "c1e7b997ea4ecd0ecb8bb6cd453662417b52a03265e0db5eb9880cc6e0cebca5",
+    "experiments/t05-durable-worker/output-candidate-scenarios.mjs": "8ad34d44ba0da50f0e92317d1939fd7b8135f5cec5999bbe9cf05fde23e540df",
+    "experiments/t05-durable-worker/recording-output-candidates.mjs": "5ef0000d648e0242edcf378d439b6d82da9ab435ebc4d5276fa70cc59ff3f225",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e"
+  },
+  "scenarios": [
+    {
+      "name": "candidate committed before first output creation and read requires publication",
+      "status": "passed",
+      "assertions": 14,
+      "elapsedMs": 121
+    },
+    {
+      "name": "reservation COMMIT rollback never creates file",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 19
+    },
+    {
+      "name": "reservation COMMIT receipt-lost never creates file",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 16
+    },
+    {
+      "name": "SIGKILL output_reserved retains reserved identity",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 358
+    },
+    {
+      "name": "SIGKILL merge_output_create retains reserved identity",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 405
+    },
+    {
+      "name": "SIGKILL merge_file_prepared retains reserved identity",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 407
+    },
+    {
+      "name": "SIGKILL before_output_prepared_commit retains reserved identity",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 402
+    },
+    {
+      "name": "SIGKILL merge_prepared retains prepared identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 402
+    },
+    {
+      "name": "SIGKILL before_output_publishing_commit retains prepared identity",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 407
+    },
+    {
+      "name": "SIGKILL output_publishing retains publishing identity",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 421
+    },
+    {
+      "name": "SIGKILL before_commit retains publishing identity",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 425
+    },
+    {
+      "name": "unique attempt and reference reject replacement",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 444
+    },
+    {
+      "name": "known failure cleaned and bounded retry gets distinct candidate",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 1207
+    },
+    {
+      "name": "permanent failure candidate cleanup is atomic rollback=false",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 28
+    },
+    {
+      "name": "permanent failure candidate cleanup is atomic rollback=true",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 31
+    },
+    {
+      "name": "retry budget exhaustion preserves both cleaned candidate identities",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 1221
+    },
+    {
+      "name": "prepared candidate metadata drift prevents publishing intent",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 68
+    },
+    {
+      "name": "prepared candidate worker drift prevents publishing intent",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 54
+    },
+    {
+      "name": "unknown prepare remains reserved and never quarantined",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 15
+    },
+    {
+      "name": "intent COMMIT receipt lost committed=false retains uncertain output",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 61
+    },
+    {
+      "name": "intent COMMIT receipt lost committed=true retains uncertain output",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 70
+    },
+    {
+      "name": "publication COMMIT receipt lost committed=false retains uncertain output",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 63
+    },
+    {
+      "name": "publication COMMIT receipt lost committed=true retains uncertain output",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 61
+    },
+    {
+      "name": "prepared cancellation quarantine survives context reopen without deleting or reusing file",
+      "status": "passed",
+      "assertions": 12,
+      "elapsedMs": 438
+    },
+    {
+      "name": "unknown lease recovery then cancellation preserves prepared output",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 419
+    },
+    {
+      "name": "pending publication versus quarantine publication-first",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 423
+    },
+    {
+      "name": "pending publication versus quarantine quarantine-first",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 408
+    },
+    {
+      "name": "quarantine forged ref rejected",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 417
+    },
+    {
+      "name": "quarantine forged attempt rejected",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 395
+    },
+    {
+      "name": "quarantine forged inputDigest rejected",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 397
+    },
+    {
+      "name": "quarantine drift worker rejects or retains",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 395
+    },
+    {
+      "name": "quarantine drift queue rejects or retains",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 478
+    },
+    {
+      "name": "quarantine drift digest rejects or retains",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 415
+    },
+    {
+      "name": "quarantine drift metadata rejects or retains",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 413
+    },
+    {
+      "name": "quarantine drift artifact rejects or retains",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 408
+    },
+    {
+      "name": "quarantine drift other-snapshot rejects or retains",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 413
+    },
+    {
+      "name": "published read candidate drift checked before and after I/O",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 64
+    },
+    {
+      "name": "published read artifact drift checked before and after I/O",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 58
+    },
+    {
+      "name": "published read attempt drift checked before and after I/O",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 57
+    },
+    {
+      "name": "quarantine abort rolls back declaration",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 427
+    },
+    {
+      "name": "quarantine query rolls back declaration",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 405
+    },
+    {
+      "name": "quarantine commit rolls back declaration",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 427
+    },
+    {
+      "name": "publication candidate lock wait rechecks abort",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 68
+    },
+    {
+      "name": "publication candidate lock wait rechecks lease",
+      "status": "passed",
+      "assertions": 4,
+      "elapsedMs": 5276
+    },
+    {
+      "name": "all original fictional blocks unchanged and only killed helper scratch remains",
+      "status": "passed",
+      "assertions": 46,
+      "elapsedMs": 13
+    }
+  ],
+  "assertions": 277,
+  "limitations": [
+    "Private temporary PostgreSQL tables and an allowed flag simulate authorization; no production schema, RLS, Storage, outbox, migration or paid provider.",
+    "No filesystem/database distributed transaction. Prepared outputs may remain private orphans after process death or unknown COMMIT; no automatic GC or manual reuse.",
+    "Private directories, regular files, bounded streams and O_NOFOLLOW protect local paths; same-user hostile directory replacement races and non-preemptible kernel filesystem operations are outside this PoC.",
+    "Generated sine audio is split into contiguous file chunks; this is not physical-device MediaRecorder or production media sandbox evidence.",
+    "Checkpoint pauses are fault wrappers, not decoder CPU work. Real-time input throttling (-re) is explicitly labeled where used with real FFmpeg.",
+    "The existing local nonfree FFmpeg 7.1 executable is used for tests only and is not copied or redistributed."
+  ],
+  "resourceOwnership": {
+    "version": 1,
+    "harnessPid": 82382,
+    "scratch": "/tmp/saga-t05-kdIUkf",
+    "clusterMayHaveStarted": true,
+    "clusterStopped": true,
+    "postmasterPid": 82437,
+    "groupIds": [
+      82452,
+      82455,
+      82460,
+      82464,
+      82468,
+      82472,
+      82477,
+      82481,
+      82486,
+      82509,
+      82515,
+      82519,
+      82524,
+      82529,
+      82533,
+      82538,
+      82542,
+      82546,
+      82552,
+      82556,
+      82561,
+      82565,
+      82573,
+      82577,
+      82581
+    ],
+    "decoderPids": []
+  },
+  "outputCandidateCrashScratch": [
+    "saga-recording-merge-tiveoC"
+  ],
+  "status": "passed",
+  "processOwnership": {
+    "supervisorPids": [],
+    "workerPids": [
+      82452,
+      82455,
+      82460,
+      82464,
+      82468,
+      82472,
+      82477,
+      82481,
+      82486,
+      82509,
+      82515,
+      82519,
+      82524,
+      82529,
+      82533,
+      82538,
+      82542,
+      82546,
+      82552,
+      82556,
+      82561,
+      82565,
+      82573,
+      82577,
+      82581
+    ],
+    "runnerPids": [],
+    "groupIds": [
+      82452,
+      82455,
+      82460,
+      82464,
+      82468,
+      82472,
+      82477,
+      82481,
+      82486,
+      82509,
+      82515,
+      82519,
+      82524,
+      82529,
+      82533,
+      82538,
+      82542,
+      82546,
+      82552,
+      82556,
+      82561,
+      82565,
+      82573,
+      82577,
+      82581
+    ],
+    "forcedGroupKills": [],
+    "remainingGroups": [],
+    "remainingRunnerPids": [],
+    "directOperationsRemaining": 0
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T14:39:59.824Z"
+}

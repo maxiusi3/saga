@@ -1,0 +1,85 @@
+
+> saga-family-biography@1.0.0 verify
+> npm run type-check && npm run lint && npm test --workspace=packages/web -- --runInBand && npm run build:vercel
+
+
+> saga-family-biography@1.0.0 type-check
+> npm run type-check --workspaces
+
+
+> @saga/shared@1.5.0 type-check
+> tsc --noEmit
+
+
+> @saga/web@1.0.0 type-check
+> tsc --noEmit
+
+
+> saga-family-biography@1.0.0 lint
+> npm run lint --workspaces
+
+
+> @saga/shared@1.5.0 lint
+> eslint "src/**/*.{ts,tsx}"
+
+
+> @saga/web@1.0.0 lint
+> ../../node_modules/.bin/eslint .
+
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand
+
+FAIL src/lib/server/__tests__/recording-audio-decoder.test.ts (38.188 s)
+  ● awaits child close on abort after PCM output and never accepts valid PCM as success
+
+    expect(received).rejects.toBe(expected) // Object.is equality
+
+    Expected: [Error: worker lease expired]
+    Received: [Error: Recording decoder timed out]
+
+      134 |     if (phase === 'PCM output') child.stdout.once('data', () => controller.abort(reason))
+      135 |     else child.once('exit', () => controller.abort(reason))
+    > 136 |     await expect(decoding).rejects.toBe(reason)
+          |                                    ^
+      137 |     expect(listenersWhileDecoding).toBe(2)
+      138 |     expect(closed).toBe(true)
+      139 |     expect(child.pid).toBeGreaterThan(0)
+
+      at Object.toBe (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at toBe (src/lib/server/__tests__/recording-audio-decoder.test.ts:136:36)
+
+
+Summary of all failing tests
+FAIL src/lib/server/__tests__/recording-audio-decoder.test.ts (38.188 s)
+  ● awaits child close on abort after PCM output and never accepts valid PCM as success
+
+    expect(received).rejects.toBe(expected) // Object.is equality
+
+    Expected: [Error: worker lease expired]
+    Received: [Error: Recording decoder timed out]
+
+      134 |     if (phase === 'PCM output') child.stdout.once('data', () => controller.abort(reason))
+      135 |     else child.once('exit', () => controller.abort(reason))
+    > 136 |     await expect(decoding).rejects.toBe(reason)
+          |                                    ^
+      137 |     expect(listenersWhileDecoding).toBe(2)
+      138 |     expect(closed).toBe(true)
+      139 |     expect(child.pid).toBeGreaterThan(0)
+
+      at Object.toBe (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at toBe (src/lib/server/__tests__/recording-audio-decoder.test.ts:136:36)
+
+
+Test Suites: 1 failed, 76 passed, 77 total
+Tests:       1 failed, 764 passed, 765 total
+Snapshots:   0 total
+Time:        122.723 s
+Ran all test suites.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand

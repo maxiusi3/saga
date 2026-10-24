@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-15",
+  "branch": "codex/october-upgrade-p0",
+  "baseHead": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "appVerify": {
+    "command": "npm run verify",
+    "exitCode": 0,
+    "typeCheck": "passed",
+    "lint": "passed",
+    "webSuites": 75,
+    "webTests": 702,
+    "nextStaticPages": 175,
+    "logSha256": "7686100a7f2228d65d29ec3624faefdac7e96155176d9380de70ffbe555d65ad"
+  },
+  "warnings": [
+    "SUPABASE_SERVICE_ROLE_KEY missing in local build",
+    "Existing Next eslint/images.domains config warnings",
+    "Existing multiple-lockfile workspace root inference warning"
+  ],
+  "nextEnvRestoredFromPreBuildBackup": true,
+  "pocEvidence": "results.json",
+  "review": {
+    "status": "passed",
+    "specCompliance": "pass",
+    "codeQuality": "pass",
+    "scope": "current T05 PoC files only; historical dirty work excluded",
+    "resolvedFindings": [
+      "P2 stale lease clock across row lock",
+      "P2 failed child spawn cleanup",
+      "P2 nested test cluster orphaned by outer interruption; nested DB owner removed"
+    ],
+    "report": "review-final.md"
+  },
+  "milestones": {
+    "G0": "not met: actual schema/RLS/assets/rollback and provider qualification missing",
+    "G1": "not met: real device capture/isolation/export/recovery matrix missing"
+  },
+  "gitPush": {
+    "authorizedWhen": "existing upgrade-plan milestone achieved",
+    "performed": false,
+    "reason": "G0 and G1 remain unmet"
+  },
+  "remoteMigrations": false,
+  "deployment": false,
+  "pocVerify": {
+    "command": "npm run verify --prefix experiments/t05-durable-worker",
+    "exitCode": 0,
+    "scenarios": 13,
+    "assertions": 125,
+    "cleanup": {
+      "ownedChildrenRemaining": 0,
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "errors": []
+    }
+  },
+  "sourceHashesVerified": true,
+  "remainingPocDataDirectories": [],
+  "remainingPocPostgresProcesses": [],
+  "gitDiffCheck": "passed"
+}

@@ -1,0 +1,23 @@
+{
+  "command": [
+    "node",
+    "experiments/t05-durable-worker/verify.mjs",
+    "docs/research/evidence/2026-10-16-t05-output-candidates/t05-final.json"
+  ],
+  "startedAt": "2026-10-16T14:41:51.328238+00:00",
+  "finishedAt": "2026-10-16T14:45:28.240252+00:00",
+  "exitCode": 0,
+  "report": "docs/research/evidence/2026-10-16-t05-output-candidates/t05-final.json",
+  "log": "docs/research/evidence/2026-10-16-t05-output-candidates/t05-final.log",
+  "logSha256": "3a219b6cca5cd185016f8d8f96133a1e00d82890855f9bda74ff958f96104959",
+  "status": "passed",
+  "scenarios": 39,
+  "assertions": 307,
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "error": null
+}

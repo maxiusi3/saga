@@ -1,0 +1,187 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx -t shows draft failure --silent=false
+
+  console.error
+    AI processing error Error: provider unavailable
+        at Object.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/packages/web/src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx:254:43)
+        at Promise.finally.completed (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1557:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1497:10)
+        at _callCircusTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1007:40)
+        at processTicksAndRejections (node:internal/process/task_queues:103:5)
+        at _runTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:947:3)
+        at /Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:849:7
+        at _runTestsForDescribeBlock (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:862:11)
+        at _runTestsForDescribeBlock (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:857:11)
+        at run (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:761:3)
+        at runAndTransformResultsToJestFormat (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1918:21)
+        at jestAdapter (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/runner.js:101:19)
+        at runTestInternal (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-runner/build/index.js:275:16)
+        at runTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-runner/build/index.js:343:7)
+
+      145 |         }
+      146 |       } catch (e) {
+    > 147 |         console.error('AI processing error', e)
+          |                 ^
+      148 |       } finally {
+      149 |         setIsAiProcessing(false)
+      150 |       }
+
+      at error (src/app/[locale]/dashboard/projects/[id]/record/page.tsx:147:17)
+      at src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx:260:31
+
+  console.error
+    Nested render errors [
+      ReferenceError: ResizeObserver is not defined
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@radix-ui/react-use-size/src/use-size.tsx:14:30
+          at Object.react_stack_bottom_frame (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:25989:20)
+          at runWithFiberInDEV (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+          at commitHookEffectListMount (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13249:29)
+          at commitHookLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13213:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13951:13)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14165:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14165:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          ... collapsed 8 duplicate lines matching above 2 lines 4 times...
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14165:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          ... collapsed 6 duplicate lines matching above lines ...
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          ... collapsed 6 duplicate lines matching above lines ...
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          ... collapsed 4 duplicate lines matching above lines ...
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14031:11)
+          at flushLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18138:15)
+          at commitRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:17954:9)
+          at performWorkOnRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+          at performSyncWorkOnRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+          at flushSyncWorkAcrossRoots_impl (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+          at flushSpawnedWork (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18334:9)
+          at commitRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+          at performWorkOnRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+          at performWorkOnRootViaSchedulerTask (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18957:7)
+          at flushActQueue (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react/cjs/react.development.js:590:34)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/react/cjs/react.development.js:847:21,
+      ReferenceError: ResizeObserver is not defined
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/@radix-ui/react-use-size/src/use-size.tsx:14:30
+          at Object.react_stack_bottom_frame (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:25989:20)
+          at runWithFiberInDEV (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+          at commitHookEffectListMount (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13249:29)
+          at commitHookLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13213:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13951:13)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14165:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14165:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          ... collapsed 8 duplicate lines matching above 2 lines 4 times...
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14165:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          ... collapsed 6 duplicate lines matching above lines ...
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          ... collapsed 6 duplicate lines matching above 2 lines 3 times...
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          ... collapsed 4 duplicate lines matching above lines ...
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14065:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:13949:11)
+          at recursivelyTraverseLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:15159:11)
+          at commitLayoutEffectOnFiber (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:14031:11)
+          at flushLayoutEffects (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18138:15)
+          at commitRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:17954:9)
+          at performWorkOnRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+          at performSyncWorkOnRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+          at flushSyncWorkAcrossRoots_impl (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+          at flushSpawnedWork (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18334:9)
+          at commitRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+          at performWorkOnRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+          at performWorkOnRootViaSchedulerTask (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18957:7)
+          at flushActQueue (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react/cjs/react.development.js:590:34)
+          at /Users/eat/Documents/eatpotato/saga传奇/node_modules/react/cjs/react.development.js:847:21
+    ]
+
+      260 |       await act(async () => { await finish({ audioBlob: audio, transcript: 'The actual words.', duration: 12 }) })
+      261 |     } catch (error) {
+    > 262 |       console.error('Nested render errors', (error as AggregateError).errors)
+          |               ^
+      263 |       throw error
+      264 |     }
+      265 |
+
+      at Object.error (src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx:262:15)
+
+FAIL src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx
+  ● recording review truthfulness › shows draft failure and still saves the original recording without AI content
+
+    AggregateError:
+
+      at aggregateErrors (../../node_modules/react/cjs/react.development.js:551:11)
+      at ../../node_modules/react/cjs/react.development.js:859:40
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 7 skipped, 8 total
+Snapshots:   0 total
+Time:        4.177 s
+Ran all test suites within paths "src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx -t 'shows draft failure' --silent=false

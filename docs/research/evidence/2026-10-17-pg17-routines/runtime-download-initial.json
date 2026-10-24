@@ -1,0 +1,10 @@
+{
+  "status": "failed",
+  "stage": "official_archive_download",
+  "curlExitCode": 28,
+  "maxTimeSeconds": 180,
+  "bytesReceived": 2357419,
+  "expectedBytes": 21519810,
+  "nextAttempt": "parallel byte ranges from same official URL with complete official SHA256 check before extraction",
+  "databaseStarted": false
+}

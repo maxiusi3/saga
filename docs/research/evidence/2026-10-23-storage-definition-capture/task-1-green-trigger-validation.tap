@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: the immutable snapshot selects exactly six function identities and seven bucket/object triggers
+ok 1 - the immutable snapshot selects exactly six function identities and seven bucket/object triggers
+  ---
+  duration_ms: 12.26752
+  type: 'test'
+  ...
+# Subtest: trigger definition capture retains private data and publishes only fixed identities and fingerprints
+ok 2 - trigger definition capture retains private data and publishes only fixed identities and fingerprints
+  ---
+  duration_ms: 5.786632
+  type: 'test'
+  ...
+# Subtest: trigger arguments distinguish none, an empty argument, text and multiple NUL-terminated arguments
+ok 3 - trigger arguments distinguish none, an empty argument, text and multiple NUL-terminated arguments
+  ---
+  duration_ms: 16.327292
+  type: 'test'
+  ...
+# Subtest: condition presence must agree with a nonempty expression or null
+ok 4 - condition presence must agree with a nonempty expression or null
+  ---
+  duration_ms: 3.9867
+  type: 'test'
+  ...
+# Subtest: malformed argument bytes and counts never pass validation
+ok 5 - malformed argument bytes and counts never pass validation
+  ---
+  duration_ms: 3.89633
+  type: 'test'
+  ...
+# Subtest: missing rows and every pinned attribute change are drift, with raw values kept private
+ok 6 - missing rows and every pinned attribute change are drift, with raw values kept private
+  ---
+  duration_ms: 3.416403
+  type: 'test'
+  ...
+# Subtest: unexpected identities, duplicates and partially missing trigger rows are errors
+ok 7 - unexpected identities, duplicates and partially missing trigger rows are errors
+  ---
+  duration_ms: 4.678599
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 260.433526

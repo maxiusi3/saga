@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "sourceHashesMatch": true,
+  "unchangedApplicationExperimentAndMigrationFiles": 750,
+  "credentialsIgnoredAndUntracked": true,
+  "newEvidenceContainsCredentialValues": false,
+  "documentLinksChecked": 246,
+  "tlsVerified": true,
+  "readOnlyAndTransactionTimeoutsVerified": true,
+  "remoteCoverage": "partial_bucket_denied",
+  "nextEnvRestored": true,
+  "checkedAt": "2026-10-17T03:13:18.124282+00:00",
+  "independentReview": "pending_service_unavailable"
+}

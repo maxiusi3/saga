@@ -1,0 +1,33 @@
+{
+  "kind": "PROTOTYPE_DEMO_RECEIPT",
+  "fictional": true,
+  "containsAudio": false,
+  "isCompleteMediaArchive": false,
+  "question": {
+    "id": "first-home-01",
+    "text": "What do you remember about your first home?"
+  },
+  "entry": "import",
+  "approvedSnapshot": {
+    "version": 1,
+    "text": "Alex remembers moving into the first family home around 1990. The exact year is uncertain.",
+    "review": {
+      "name": "accepted",
+      "nameValue": "Alex",
+      "year": "both"
+    },
+    "memories": [
+      {
+        "by": "Alex",
+        "year": "1990",
+        "source": "00:12–00:25 · fictional original"
+      },
+      {
+        "by": "Sam",
+        "year": "1989",
+        "source": "Family addition · fictional"
+      }
+    ]
+  },
+  "notice": "Fictional demonstration receipt only. No original media, no storage or research proof."
+}

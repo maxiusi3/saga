@@ -1,0 +1,11 @@
+{
+  "node": "v22.22.2",
+  "sdk": {
+    "@supabase/ssr": "0.10.2",
+    "@supabase/supabase-js": "2.105.3",
+    "@supabase/auth-js": "2.105.3",
+    "playwright": "1.59.1",
+    "next": "16.4.1",
+    "typescript": "5.9.3"
+  }
+}

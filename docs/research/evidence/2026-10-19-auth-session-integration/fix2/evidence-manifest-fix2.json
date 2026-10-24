@@ -1,0 +1,23 @@
+{
+  "browser-cleanup.json": "360dafc780900653c1795d6f74c3a1253d485a9c493a0b61c6efcb94e7a211f9",
+  "browser-final.log": "ed884f565af162ada499b06d8ed5055e89794c53ed724ea92634df613b8e7a25",
+  "browser-results.json": "573aa2ce9278ab1cc98a912228fd884eadfc7e9457173447a01c08624b6ef623",
+  "browser-session.png": "a4376e76c9c1830d907360c7b4dfcb735e9e6dea129d5b5efb9395d094593645",
+  "focused-final.log": "77c34342670d7128f877934077a90ad0cb9d7450fe33bb693dcb40c8a9fee13b",
+  "green-attempt-1.log": "acece1fef26276d4f0f4293271163e8c147480b25ef5a3108e958921c4e70d4a",
+  "lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "quality-event-refresh-probe-fix2.cjs": "744a080e7a17c6ce1e03dc93a1a141f2b30edecc799a82c879c5339d9893fe73",
+  "quality-event-refresh-probe.json": "15935a352bbcfa4bbbc638e5ed765390ed843c38ce7d323d7b2de9b76476a963",
+  "quality-event-refresh-probe.log": "44f8b8acd8ef3172d2378ce71c37bc8f02d6347ac27584afcf770fc48813ad8a",
+  "quality-guard-refresh-probe-fix2.cjs": "2d52cf745d93e42cc2ec1aacf1d4b6f0ead4e58417d98e2099a408cf542c9d44",
+  "quality-guard-refresh-probe.json": "26d30f8d9bf380addaebf0fc17c4fe12423dee56a6fb87567751baa9d3e0863c",
+  "quality-guard-refresh-probe.log": "be2aee2035eeb72f30313656cd1675ec9ecdcbb2c89e81ebc2e12391195744ac",
+  "red-confirmed.log": "84245d812937cbb74a40d1c0fe5ed39da47617f92523e9ccb33fbd0930e1f1da",
+  "red-source/auth-dashboard-continuity.test.ts": "81f55c3544c14179e1dafc0ba769069122e0932e9c6f87a0c458e301be4c69af",
+  "red-source/auth-dashboard-token-first.test.ts": "a255cd2b0f773509bf0280e7ec5771d4804257360526e967d20f4b8f4da19644",
+  "red-source/auth-session-transient.test.ts": "68fa5c9423159621a2202fd62e66deaa126f1a568421fbaaa57952c1f2f9e5e5",
+  "red-source/auth-token-refresh-races.test.ts": "0ade14b3a137b2a87184834988540a9853c805447f1e6be324391f8adb454dd0",
+  "red.log": "99c762b41afc181a3c9eb5e0536516e7302492eb565f09e20aafb6090c955d42",
+  "source-freeze-fix2.json": "c69cc8b9f800b66ee772e5e3bdca778781c4efe0263720a077348be9533a7ab7",
+  "typecheck-final.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+}

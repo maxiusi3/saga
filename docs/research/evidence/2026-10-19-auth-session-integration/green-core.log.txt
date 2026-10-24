@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand supabase-session auth-session-lifecycle auth-verify-session auth-session-guard home-auth-landing auth-store
+
+
+Test Suites: 6 passed, 6 total
+Tests:       29 passed, 29 total
+Snapshots:   0 total
+Time:        2.45 s
+Ran all test suites matching supabase-session|auth-session-lifecycle|auth-verify-session|auth-session-guard|home-auth-landing|auth-store.

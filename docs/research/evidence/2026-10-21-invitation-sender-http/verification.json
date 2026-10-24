@@ -1,0 +1,117 @@
+{
+  "updatedAt": "2026-10-21T10:57:21.162833+08:00",
+  "status": "LOCAL_BATCH_COMPLETE",
+  "implementation": "complete",
+  "review": {
+    "independentSpec": "PASS",
+    "independentQuality": "Approved",
+    "independentDocumentation": "PASS_APPROVED",
+    "independentFinalBatch": "PASS"
+  },
+  "tests": {
+    "targetedSuites": 17,
+    "targetedTests": 521,
+    "webTypecheck": "passed",
+    "scopedLint": "passed",
+    "taskSourceFiles": 20,
+    "webSuites": 101,
+    "webTests": 1373,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "builtPages": 178,
+    "applicationInputsUnchanged": 785
+  },
+  "evidence": {
+    "spec": {
+      "path": "docs/superpowers/specs/2026-10-21-invitation-sender-http.md",
+      "sha256": "2c055e1d1f3034811b9ba10f2bd484bfb878f3c4cbea74299342a41d8603d81d"
+    },
+    "previousInputIntegrity": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/previous-input-integrity.json",
+      "sha256": "0a7b4083957805d9414b7d783146cc2347f3ccd996ae2ba8a0e66815b3cbf897"
+    },
+    "protectedInputs": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/protected-input-sha256.json",
+      "sha256": "3a9b348d01b88a5f72d5670780b9aab2090921b292b1cbee9c1108b48d6280ac"
+    },
+    "milestone": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/milestone-check.json",
+      "sha256": "0960b4771602b11ed8e3d83c8c198e694f655cb54b25559960e6e61d34c79537"
+    },
+    "implementationReport": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-1-report.md",
+      "sha256": "837fdf5bdd80fababd8aa3d6111e0699220883ba51da83e52c2257411510a709"
+    },
+    "scope": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-1-scope.json",
+      "sha256": "04f2d729b1889e69bbe8640e12999bcf87469eedc878c29d5ce74e966af727bb"
+    },
+    "sourceFreeze": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-1-source-sha256.json",
+      "sha256": "b048e2fb7e96b13d5ad732ba086f1782f06bbb2bc22cf6c748cab28b4f0585f8"
+    },
+    "targetedRuns": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-1-run-manifest.json",
+      "sha256": "13018698f55522addfe84623b8815d73f2eac2a374e9f0391d85f6e6103bcd2a"
+    },
+    "targetedFinal": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/19-frozen-targeted-green.log.txt",
+      "sha256": "fd45011c745584494d560bbc8ab91e3308e3d28921d55ce92a9cf8fe9fd706e8"
+    },
+    "typecheckFinal": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/18-web-typecheck-green.log.txt",
+      "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+    },
+    "lintFinal": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/20-frozen-scoped-lint.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "project": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/project-verification-20261021T022537Z-f5820706-f190-44bf-9100-8aa7dfc5b528.json",
+      "sha256": "d6eefcd4ef1468b2587dca790ea674ec888e0bb6fe51380234feee638efcd751"
+    },
+    "independentSpec": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-1-spec-review.md",
+      "sha256": "da33c20e18235c8ab41d3f1e7391cdca09df160a039964fa6547796bdc4fd388"
+    },
+    "logIntegrity": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-1-log-integrity.json",
+      "sha256": "69ba7f487e7bc27e5e235d6404e72e1b146a4bf885e431858a4d43322e2851eb"
+    },
+    "independentQuality": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-1-quality-review.md",
+      "sha256": "a92f4ed0f6366eb5c58a7c8fce1dd51b222d850cb49ba68d54b061e7db61dd91"
+    },
+    "publishedLogs": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/published-log-manifest.json",
+      "sha256": "ef0d4728b48236dc308a613b7da02fa89303ade1cae5f10cb9f84a5f765ce187"
+    },
+    "independentDocumentation": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/task-2-doc-review.md",
+      "sha256": "39d127a4cf9fa36bade810f093b954d19d296603709fda8b531d0a932277c6e7"
+    },
+    "independentFinalBatch": {
+      "path": "docs/research/evidence/2026-10-21-invitation-sender-http/batch-final-review.md",
+      "sha256": "6186190c8f4585538f4bb48b253c660193c18de0bd220c2a0f80e3c3c27e70e1"
+    }
+  },
+  "gates": {
+    "P0Complete": false,
+    "G0": false,
+    "G1": false,
+    "originalMilestonePassed": false
+  },
+  "actions": {
+    "commit": false,
+    "push": false,
+    "merge": false,
+    "migration": false,
+    "deployment": false,
+    "remoteCalls": false
+  },
+  "firstNextWork": "Design and validate restricted verified-source selection, then complete sender management/list/history and explicit recovery. Qualify actual provider events, production permissions and migration/backup separately; do not invent source IDs or consume wallet mirrors.",
+  "validationLimits": "Actual Supabase SDK with synthetic loopback upstreams and React fixtures; not real Auth/JWT/PostgREST/PG17 E2E. Existing SQL unchanged; only hashes rechecked. Historical dependency audit not rerun.",
+  "integrity": "passed",
+  "integrityReport": "docs/research/evidence/2026-10-21-invitation-sender-http/final-integrity.json"
+}

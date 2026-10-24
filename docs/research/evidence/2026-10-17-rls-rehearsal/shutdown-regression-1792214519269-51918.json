@@ -1,0 +1,184 @@
+{
+  "startedAt": "2026-10-17T05:21:59.269Z",
+  "scope": "real local directories/PG14; explicit IPC scheduling injection; no remote services",
+  "sources": {
+    "experiments/rls-rehearsal/README.md": "7bae942905186d9a3aebc199b8bd4797f1de2dde6b2d6dadaba160fa9b8567fa",
+    "experiments/rls-rehearsal/candidate.sql": "4fbb8a4449c27b8f19dee2a173fcf8f03c945b5a6949f5e3c9a752e3c496164b",
+    "experiments/rls-rehearsal/fixture.sql": "d70b14d3f789f10fcf3f37c40767b0e877fbb5f6851cf83ef41d01d625e9f550",
+    "experiments/rls-rehearsal/scenarios.mjs": "029af8de89675f3f90d6b4b201b25a911b969e4f4229f9e52074b726d6a83c91",
+    "experiments/rls-rehearsal/verify-shutdown.mjs": "d888221dcbead3353c433917102b05428dac7f912e05115780f33a566765cd7b",
+    "experiments/rls-rehearsal/verify.mjs": "d1bc5e394db9273b341856db572d1c24aa646b62a828cd56587064e21754c2d8"
+  },
+  "cases": [
+    {
+      "name": "allocation_sigterm",
+      "args": [
+        "--test-pause-before-allocation-return"
+      ],
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation-pending",
+        "shutdown-requested"
+      ],
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214519493-51919.json",
+      "allocation": "/tmp/saga-rls-0Dc4SD",
+      "directoryExistsAfterExit": false,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "signal": "SIGTERM",
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "allocation_sigint",
+      "args": [
+        "--test-pause-before-allocation-return"
+      ],
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation-pending",
+        "shutdown-requested"
+      ],
+      "exit": {
+        "code": 130,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214519723-51956.json",
+      "allocation": "/tmp/saga-rls-s2bcEu",
+      "directoryExistsAfterExit": false,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "signal": "SIGINT",
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "allocation_deadline",
+      "args": [
+        "--test-pause-before-allocation-return",
+        "--test-deadline-during-allocation"
+      ],
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation-pending",
+        "shutdown-requested"
+      ],
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214519956-51967.json",
+      "allocation": "/tmp/saga-rls-w6rPaE",
+      "directoryExistsAfterExit": false,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "signal": "deadline",
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "stable_fixture_sigterm",
+      "args": [
+        "--signal-after-setup"
+      ],
+      "status": "passed",
+      "events": [
+        "evidence",
+        "shutdown-requested"
+      ],
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214520212-51981.json",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "signal": "SIGTERM",
+      "allocation": "/tmp/saga-rls-b2BlHg",
+      "directoryExistsAfterExit": false,
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "allocation_exception",
+      "args": [
+        "--test-fail-after-allocation"
+      ],
+      "status": "passed",
+      "events": [
+        "evidence"
+      ],
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214522143-52147.json",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "allocation": "/tmp/saga-rls-S2G1al",
+      "directoryExistsAfterExit": false,
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "fixture_exception",
+      "args": [
+        "--test-fail-after-setup"
+      ],
+      "status": "passed",
+      "events": [
+        "evidence"
+      ],
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214522377-52176.json",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "allocation": "/tmp/saga-rls-QIHqC9",
+      "directoryExistsAfterExit": false,
+      "rescue": {
+        "needed": false
+      }
+    }
+  ],
+  "status": "passed",
+  "finishedAt": "2026-10-17T05:22:04.048Z"
+}

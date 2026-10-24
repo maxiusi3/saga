@@ -1,0 +1,268 @@
+{
+  "qualification": "Synthetic bridge with actual browser SDK/store, callback and guard; not production Next, live Google/SMTP, JWT signature or RLS validation",
+  "checks": 14,
+  "names": [
+    "mixed error/token URL caused no SDK exchange/session write",
+    "OAuth uses S256 and writes browser verifier cookie",
+    "real navigation passes provider/callback 303 to safe locale target",
+    "fresh browser bundle restores provider-verified store identity",
+    "callback consumed the S256 verifier and exchanged code only once",
+    "SSR cookie and public Bearer agree; invalid Bearer cannot fall back",
+    "browser signout removes shared session and next SSR request is rejected",
+    "mail request carries PKCE S256 challenge and browser verifier",
+    "email code return restores same verified browser/SSR session",
+    "token_hash return writes cookies restored by browser store",
+    "numeric OTP writes cookies used by provider-verified browser store and SSR",
+    "missing verifier fails privately without provider exchange",
+    "mixed callback is rejected with no exchange",
+    "page network remained loopback-only"
+  ],
+  "browser": "147.0.7727.15",
+  "blockedRequests": [],
+  "consoleMessages": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    }
+  ],
+  "callbackReplies": [
+    {
+      "status": 303,
+      "location": "http://127.0.0.1:55080/fr/dashboard",
+      "cookieNames": [
+        {
+          "name": "sb-127-auth-token-code-verifier",
+          "deleted": true
+        },
+        {
+          "name": "sb-127-auth-token",
+          "deleted": false
+        }
+      ]
+    },
+    {
+      "status": 303,
+      "location": "http://127.0.0.1:55080/ja/dashboard",
+      "cookieNames": [
+        {
+          "name": "sb-127-auth-token-code-verifier",
+          "deleted": true
+        },
+        {
+          "name": "sb-127-auth-token",
+          "deleted": false
+        }
+      ]
+    },
+    {
+      "status": 303,
+      "location": "http://127.0.0.1:55080/pt/dashboard",
+      "cookieNames": [
+        {
+          "name": "sb-127-auth-token",
+          "deleted": false
+        }
+      ]
+    },
+    {
+      "status": 303,
+      "location": "http://127.0.0.1:55080/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard",
+      "cookieNames": []
+    },
+    {
+      "status": 303,
+      "location": "http://127.0.0.1:55080/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard",
+      "cookieNames": []
+    }
+  ],
+  "capturedSyntheticAuthRequests": [
+    {
+      "path": "/auth/v1/authorize?provider=google&redirect_to=http%3A%2F%2F127.0.0.1%3A55080%2Fen%2Fauth%2Fcallback%3Fnext%3D%252Ffr%252Fdashboard&code_challenge=DqLzMi3ynnOqOuXzFAoDhBMVBYT9RZzel5bf9-Wv0l0&code_challenge_method=s256",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/auth/v1/token?grant_type=pkce",
+      "method": "POST",
+      "body": {
+        "auth_code": "synthetic-code-1",
+        "code_verifier": "852711310a96c8adb5a25b3017619a77fd8df8c6ad75f2c403413467620f77bec975cb87ba9fbc748e177bc592ab58d4e6254068133fcc49"
+      },
+      "authorization": "Bearer synthetic-public-key",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjoyfQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjoyfQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjoyfQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjoyfQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer forged",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/logout?scope=global",
+      "method": "POST",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjoyfQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/otp?redirect_to=http%3A%2F%2F127.0.0.1%3A55080%2Fen%2Fauth%2Fcallback%3Fnext%3D%252Fja%252Fdashboard",
+      "method": "POST",
+      "body": {
+        "email": "synthetic@example.invalid",
+        "data": {},
+        "create_user": true,
+        "gotrue_meta_security": {},
+        "code_challenge": "Q_KpAAWRp1wphIqiNFy5uXcCOuP2hulVI2SEfPiX75g",
+        "code_challenge_method": "s256"
+      },
+      "authorization": "Bearer synthetic-public-key",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/token?grant_type=pkce",
+      "method": "POST",
+      "body": {
+        "auth_code": "synthetic-email-code-3",
+        "code_verifier": "72c72a86a39fe71c17a5fcf4a78d7bff293e19dd77a26f4484500e773cc7e1b4853bebb7b0d92c3c0d59297e6027c247d3d9410f90165f9e"
+      },
+      "authorization": "Bearer synthetic-public-key",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjo0fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjo0fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjo0fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/logout?scope=global",
+      "method": "POST",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTAsImlhdCI6MTc5MjQxMDc5MCwic3ludGhldGljIjo0fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/verify",
+      "method": "POST",
+      "body": {
+        "token_hash": "synthetic-token-hash",
+        "type": "magiclink",
+        "gotrue_meta_security": {}
+      },
+      "authorization": "Bearer synthetic-public-key",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTEsImlhdCI6MTc5MjQxMDc5MSwic3ludGhldGljIjo1fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTEsImlhdCI6MTc5MjQxMDc5MSwic3ludGhldGljIjo1fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/logout?scope=global",
+      "method": "POST",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTEsImlhdCI6MTc5MjQxMDc5MSwic3ludGhldGljIjo1fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/verify",
+      "method": "POST",
+      "body": {
+        "email": "synthetic@example.invalid",
+        "token": "123456",
+        "type": "email",
+        "gotrue_meta_security": {}
+      },
+      "authorization": "Bearer synthetic-public-key",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTEsImlhdCI6MTc5MjQxMDc5MSwic3ludGhldGljIjo2fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/user",
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTEsImlhdCI6MTc5MjQxMDc5MSwic3ludGhldGljIjo2fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    },
+    {
+      "path": "/auth/v1/logout?scope=global",
+      "method": "POST",
+      "body": null,
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTI0MTQzOTEsImlhdCI6MTc5MjQxMDc5MSwic3ludGhldGljIjo2fQ.synthetic-signature",
+      "apikey": "synthetic-public-key"
+    }
+  ],
+  "sourceHashes": {
+    "packages/web/src/lib/supabase.ts": "b48e7c1dc8354f736f86ffe349409410ed48dde57686f881d0b68b299064c8de",
+    "packages/web/src/stores/auth-store.ts": "e08a34efb372aeb956596910c82c019f5bdf295096749a1b57ab8ebb41645fc6",
+    "packages/web/src/lib/server/auth.ts": "c82ecf7ada8f410324780573d536f91a0e9d7d4f8622d8cc001ac81fafa763b5",
+    "packages/web/src/lib/server/auth-callback.ts": "b6d0046c0d757c3a58e21be23aa57371ee901d23b27b084871acb8633fadc7b5",
+    "packages/web/src/lib/auth-return.ts": "6339af4dac4ac49aafcf3e44ae3b0859870e7e00892f73bef04439de1a7e0d6c",
+    "scripts/verify-auth-session-browser.cjs": "525381e9ec3d67bdb1990a78cad03d4b16e2028a3dbf66717b2740bd61b7d913",
+    "scripts/test-support/auth-session-fixture.cjs": "57f158841bf23b471be1617afc684461280df98ce8754edea7c11dd7203b07c5"
+  },
+  "nextEnvBefore": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+}

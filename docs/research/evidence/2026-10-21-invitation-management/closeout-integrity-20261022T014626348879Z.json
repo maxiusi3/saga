@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-22T01:46:26.152714+00:00",
+  "scope": "Document and evidence integrity; no application or SQL tests rerun.",
+  "files": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "311bab882cc642ec0097e5a7bb956795dec77271170887fbe9d425f72ab16565",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "bc1035e67e122c8256b002e8b8ab5a604737d633c91e77523392055832663e46",
+    "docs/README.md": "5abd55a20968eedad15ca90825543f66fb707f3b1b7f9d9e9f71ffa92f639e74",
+    "docs/superpowers/plans/2026-10-11-upgrade-p0-preparation.md": "b74f0009838e815837d5b90b07e31fbd1c46d0a4ca959652945af8a08a8529b4",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "a60cb770335292d31f7bca8b0de240011b6d11372b32ceee2d61489630217403",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "725edd7c1e728b2c2b846a1fcda4a234f7c68f8283729b840b2b69c898b1eee6",
+    "docs/superpowers/plans/2026-10-21-upgrade-invitation-management.md": "67dfcea8e3a2ee5f80187e31d7c0d504765aa97174f8386e09dafb09de9309ab",
+    "docs/research/2026-10-21-invitation-management.md": "ba0fdd80de6227a6896761637676f3a3a693b881618364b9b269f5e643e5fdfc",
+    "docs/research/evidence/2026-10-21-invitation-management/README.md": "9fde8f7c1c9ff3b9cec4904082a841b44f6d5b1569bbc9483fc0028d22aef863",
+    "docs/research/evidence/2026-10-21-invitation-management/verification.json": "9de5cb21b93c29b7bf5ad4452ccd7d387352e76fdc243b72e7b5d22eaf513a63",
+    "docs/research/evidence/2026-10-21-invitation-management/milestone-check.json": "4873be0d7fa0fa0af5ff997048bf5096fceab4decde73e034b8bd6d72c0ac45d",
+    ".superpowers/sdd/2026-10-21-upgrade-invitation-management/progress.md": "bf0099027d5ea694f1d0c92e30aac55524452185d1b9c4144f645da7456fdb56"
+  },
+  "introducedMissingLinks": [],
+  "preexistingMissingLinks": [],
+  "jsonReferenceFailures": [],
+  "diffCheck": {
+    "exitCode": 0,
+    "diagnostics": ""
+  },
+  "status": "passed"
+}

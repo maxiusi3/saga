@@ -1,4 +1,7 @@
 import { createClientSupabase } from '@/lib/supabase'
+import { acceptInvitationOverHttp, InvitationHttpError } from '@/lib/invitation-acceptance-client'
+import { sendInvitationOverHttp, releaseInvitationOverHttp, lookupInvitationOverHttp, prepareInvitationSend, prepareInvitationRelease, prepareInvitationLookup } from '@/lib/invitation-sender-client'
+import type { SendOptions, ReleaseInput, LookupInput } from '@/lib/invitation-sender-protocol'
 import type { Database } from '@/types/supabase'
 
 // 统一的Supabase API客户端，替换混合的API调用
@@ -337,56 +340,40 @@ class SupabaseApiClient {
 
   // 邀请管理
   invitations = {
-    send: async (projectId: string, email: string, role: 'facilitator' | 'storyteller') => {
-      const user = await this.auth.getCurrentUser()
-      if (!user) throw new Error('Not authenticated')
+    send: async (projectId: string, email: string, role: 'facilitator' | 'storyteller', options?: SendOptions) => {
+      const input = prepareInvitationSend(projectId, { email, role, ...options })
+      return sendInvitationOverHttp(projectId, input, await this.invitationAccessToken())
+    },
 
-      // SEC-03 FIX: 使用标准化参数名，添加token生成
-      const token = crypto.randomUUID()
-      const { data, error } = await this.supabase.rpc('send_project_invitation', {
-        p_project_id: projectId,
-        p_inviter_id: user.id,
-        p_invitee_email: email,
-        p_role: role,
-        p_token: token
-      })
+    release: async (input: ReleaseInput, expectedProjectId?: string) => {
+      const command = prepareInvitationRelease(input, expectedProjectId)
+      return releaseInvitationOverHttp(command, await this.invitationAccessToken(), expectedProjectId)
+    },
 
-      if (error) throw error
-      return data
+    lookup: async (input: LookupInput) => {
+      const command = prepareInvitationLookup(input)
+      return lookupInvitationOverHttp(command, await this.invitationAccessToken())
     },
 
     accept: async (token: string) => {
-      const user = await this.auth.getCurrentUser()
-      if (!user) throw new Error('Not authenticated')
-
-      // SEC-03 FIX: 使用标准化参数名
-      const { data, error } = await this.supabase.rpc('accept_project_invitation', {
-        p_token: token,
-        p_user_id: user.id
+      const { data, error } = await this.supabase.auth.getSession().catch(() => {
+        throw new InvitationHttpError('not_attempted', 401)
       })
-
-      if (error) throw error
-      return data
+      if (error || !data?.session?.access_token) throw new InvitationHttpError('not_attempted', 401)
+      return acceptInvitationOverHttp(token, data.session.access_token)
     },
 
-    list: async (projectId?: string) => {
-      const user = await this.auth.getCurrentUser()
-      if (!user) throw new Error('Not authenticated')
-
-      let query = this.supabase
-        .from('invitations')
-        .select('*')
-        .eq('inviter_id', user.id)
-
-      if (projectId) {
-        query = query.eq('project_id', projectId)
-      }
-
-      const { data, error } = await query.order('created_at', { ascending: false })
-
-      if (error) throw error
-      return data
+    list: async (_projectId?: string): Promise<never> => {
+      throw new InvitationHttpError('not_attempted', 503)
     }
+  }
+
+  private async invitationAccessToken(): Promise<string> {
+    try {
+      const { data, error } = await this.supabase.auth.getSession()
+      if (error || !data?.session?.access_token) throw new Error('No session')
+      return data.session.access_token
+    } catch { throw new InvitationHttpError('not_attempted', 401) }
   }
 
   // 故事管理

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-23T10:28:00.724Z",
+  "status": "failed",
+  "scope": "Isolated PostgreSQL 17.4 synthetic Storage catalog fixtures; no remote connection or captured routine execution",
+  "assertions": 10,
+  "scenarios": [
+    {
+      "name": "pg_get_expr compatibility for OLD and NEW trigger condition",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "real exact-target SQL, empty argument and OLD/NEW condition",
+      "status": "failed",
+      "code": "22023"
+    }
+  ],
+  "sourceSha256": {
+    "scripts/inspect-supabase-storage.cjs": "1d936bd2dc15739ab250c5f607e07fff8d9cb07a2a9911639feda23913a245ca",
+    "scripts/inspect-supabase-routines.cjs": "f838b8762324302073bdfc657551069666357b9a2bd66299a3fe2f6ec4d4f928",
+    "scripts/supabase-capture-runtime.cjs": "6b6e2ed78758076af37cb6fa2383d61f0e07090b32d44288b3abe46c6e15353a",
+    "scripts/inspect-supabase-metadata.cjs": "be8f08d62a6ac3fcae20911f8b6569dab8f6a52bb2e099a233855ac63f8e27d2",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/verify-storage-capture.mjs": "d767a530e23ef0be38f98ae0694b2527d71e8d8b4ba0c6d8731ca05d7187f2c9"
+  },
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 15997,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-xilvHs/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-xilvHs",
+  "conditionExpressionProbe": {
+    "status": "rejected",
+    "sqlstate": "22023",
+    "note": "Trigger OLD/NEW Vars cannot be represented by pg_get_expr(tgqual,tgrelid); trigger definition retains authoritative WHEN SQL"
+  },
+  "error": {
+    "code": "22023"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-23T10:28:02.394Z"
+}

@@ -1,0 +1,215 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand invitation-sender-legacy invitation-sender-protocol invitation-sender.test --testNamePattern=disabled|permanently|normalizes|confirms|directly|one exact|sender lookup|HTTP parsers|failure parser
+
+FAIL src/lib/__tests__/invitation-sender-protocol.test.ts
+  ● send normalizes only ASCII email edges and empty message, retaining message code points
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"email": "[REDACTED_SYNTHETIC_EMAIL]", "message": null, "request_id": "66666666-6666-4666-8666-666666666666", "role": "storyteller", "source_id": "77777777-7777-4777-8777-777777777777"}
+    Received: null
+
+      4 |
+      5 | test('send normalizes only ASCII email edges and empty message, retaining message code points', () => {
+    > 6 |   expect(parseSendInput({ ...sendInput, email: ' \[REDACTED_SYNTHETIC_EMAIL]\r\n', message: '' })).toEqual(sendInput)
+        |                                                                                                  ^
+      7 |   expect(parseSendInput({ ...sendInput, message: ' text \n' })).toEqual({ ...sendInput, message: ' text \n' })
+      8 |   expect(parseSendInput({ ...sendInput, message: '😀'.repeat(2000) })).not.toBeNull()
+      9 |   const { message: _, ...withoutMessage } = sendInput
+
+      at Object.toEqual (src/lib/__tests__/invitation-sender-protocol.test.ts:6:98)
+
+  ● send confirms both roles and only created pending or reused terminal rows, whitelisting fields
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"expires_at": "2030-01-01T00:00:00+00:00", "invitation_id": "33333333-3333-4333-8333-333333333333", "outcome": "created", "project_id": "22222222-2222-4222-8222-222222222222", "role": "storyteller", "status": "pending", "token": "[REDACTED_SYNTHETIC_INVITATION_TOKEN]"}
+    Received: null
+
+      25 | })
+      26 | test('send confirms both roles and only created pending or reused terminal rows, whitelisting fields', () => {
+    > 27 |   expect(parseSendRow([{ ...sendRow, secret: 'discard' }], fixtureProject, 'storyteller')).toEqual(sendRow)
+         |                                                                                            ^
+      28 |   for (const role of ['facilitator', 'storyteller'] as const) for (const status of ['pending', 'accepted', 'declined', 'expired']) {
+      29 |     expect(parseSendRow([{ ...sendRow, role, status, outcome: 'reused' }], fixtureProject, role)).toEqual({ ...sendRow, role, status, outcome: 'reused' })
+      30 |   }
+
+      at Object.toEqual (src/lib/__tests__/invitation-sender-protocol.test.ts:27:92)
+
+  ● sender lookup accepts a different accepted recipient identity and enforces nullable fields
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"expires_at": "2030-01-01T00:00:00+00:00", "invitation_id": "33333333-3333-4333-8333-333333333333", "is_expired": false, "joined_at": "2026-10-18T12:34:56.123456+00:00", "member_id": "44444444-4444-4444-8444-444444444444", "project_id": "22222222-2222-4222-8222-222222222222", "role": "storyteller", "status": "accepted", "token": "[REDACTED_SYNTHETIC_INVITATION_TOKEN]", "user_id": "55555555-5555-4555-8555-555555555555"}
+    Received: null
+
+      41 | })
+      42 | test('sender lookup accepts a different accepted recipient identity and enforces nullable fields', () => {
+    > 43 |   expect(parseLookupRow([{ ...acceptedStatusRow, user_id: otherUser }], lookupInput)).toEqual({ ...acceptedStatusRow, user_id: otherUser })
+         |                                                                                       ^
+      44 |   for (const role of ['facilitator', 'storyteller'] as const) for (const status of ['pending', 'declined', 'expired']) {
+      45 |     const row = { ...pendingRow, role, status, is_expired: status === 'expired' }
+      46 |     expect(parseLookupRow([row], { ...lookupInput, role })).toEqual(row)
+
+      at Object.toEqual (src/lib/__tests__/invitation-sender-protocol.test.ts:43:87)
+
+  ● HTTP parsers reject claimed success without full consistent confirmation
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"expires_at": "2030-01-01T00:00:00+00:00", "invitation_id": "33333333-3333-4333-8333-333333333333", "outcome": "created", "project_id": "22222222-2222-4222-8222-222222222222", "role": "storyteller", "status": "pending", "success": true, "token": "[REDACTED_SYNTHETIC_INVITATION_TOKEN]"}
+    Received: null
+
+      49 | })
+      50 | test('HTTP parsers reject claimed success without full consistent confirmation', () => {
+    > 51 |   expect(parseSendResponse(sendHttp, fixtureProject, 'storyteller')).toEqual(sendHttp)
+         |                                                                      ^
+      52 |   expect(parseReleaseResponse(releaseHttp, releaseInput, fixtureProject)).toEqual(releaseHttp)
+      53 |   expect(parseLookupResponse(lookupHttp, lookupInput)).toEqual(lookupHttp)
+      54 |   expect(parseReleaseResponse(releaseHttp, releaseInput, otherUser)).toBeNull()
+
+      at Object.toEqual (src/lib/__tests__/invitation-sender-protocol.test.ts:51:70)
+
+  ● failure parser requires compatible HTTP status, explicit failure, safe fields and recovery flag
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rejected"
+    Received: null
+
+      58 | test('failure parser requires compatible HTTP status, explicit failure, safe fields and recovery flag', () => {
+      59 |   for (const [status, outcome] of [[400, 'rejected'], [403, 'rejected'], [409, 'rejected'], [401, 'not_attempted'], [503, 'not_attempted'], [503, 'unknown']] as const) {
+    > 60 |     expect(parseSenderFailure({ success: false, outcome, error: 'safe', can_query_status: outcome === 'unknown' }, status)).toBe(outcome)
+         |                                                                                                                             ^
+      61 |   }
+      62 |   for (const [body, status] of [[{ success: true, outcome: 'not_attempted' }, 503], [{ success: false, outcome: 'not_attempted' }, 503], [{ success: false, outcome: 'rejected', error: 'safe', can_query_status: false }, 503], [{ success: false, outcome: 'unknown', error: 'safe', can_query_status: false }, 503]]) expect(parseSenderFailure(body, status as number)).toBeNull()
+      63 | })
+
+      at Object.toBe (src/lib/__tests__/invitation-sender-protocol.test.ts:60:125)
+
+FAIL src/lib/server/__tests__/invitation-sender.test.ts
+  ● send verifies Bearer then issues one exact RPC without cookie or service key
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 503
+
+      73 | test.each(['send', 'release', 'lookup'] as const)('%s verifies Bearer then issues one exact RPC without cookie or service key', async mode => {
+      74 |   const response = await run(mode)
+    > 75 |   expect(response.status).toBe(200)
+         |                           ^
+      76 |   expect(await response.json()).toEqual({ send: sendHttp, release: releaseHttp, lookup: lookupHttp }[mode])
+      77 |   expect(fixture.captured.map(x => [x.path, x.body])).toEqual([[authPath, null], [pathsByMode[mode], {
+      78 |     send: { p_project_id: fixtureProject, p_request_id: sendInput.request_id, p_invitee_email: sendInput.email, p_role: 'storyteller', p_source_id: sendInput.source_id, p_message: null },
+
+      at toBe (src/lib/server/__tests__/invitation-sender.test.ts:75:27)
+
+  ● release verifies Bearer then issues one exact RPC without cookie or service key
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 503
+
+      73 | test.each(['send', 'release', 'lookup'] as const)('%s verifies Bearer then issues one exact RPC without cookie or service key', async mode => {
+      74 |   const response = await run(mode)
+    > 75 |   expect(response.status).toBe(200)
+         |                           ^
+      76 |   expect(await response.json()).toEqual({ send: sendHttp, release: releaseHttp, lookup: lookupHttp }[mode])
+      77 |   expect(fixture.captured.map(x => [x.path, x.body])).toEqual([[authPath, null], [pathsByMode[mode], {
+      78 |     send: { p_project_id: fixtureProject, p_request_id: sendInput.request_id, p_invitee_email: sendInput.email, p_role: 'storyteller', p_source_id: sendInput.source_id, p_message: null },
+
+      at toBe (src/lib/server/__tests__/invitation-sender.test.ts:75:27)
+
+  ● lookup verifies Bearer then issues one exact RPC without cookie or service key
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 503
+
+      73 | test.each(['send', 'release', 'lookup'] as const)('%s verifies Bearer then issues one exact RPC without cookie or service key', async mode => {
+      74 |   const response = await run(mode)
+    > 75 |   expect(response.status).toBe(200)
+         |                           ^
+      76 |   expect(await response.json()).toEqual({ send: sendHttp, release: releaseHttp, lookup: lookupHttp }[mode])
+      77 |   expect(fixture.captured.map(x => [x.path, x.body])).toEqual([[authPath, null], [pathsByMode[mode], {
+      78 |     send: { p_project_id: fixtureProject, p_request_id: sendInput.request_id, p_invitee_email: sendInput.email, p_role: 'storyteller', p_source_id: sendInput.source_id, p_message: null },
+
+      at toBe (src/lib/server/__tests__/invitation-sender.test.ts:75:27)
+
+  ● send confirms both roles and every reused terminal status without secondary IO
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 8
+    + Received  + 4
+
+      Object {
+    -   "expires_at": "2030-01-01T00:00:00+00:00",
+    -   "invitation_id": "33333333-3333-4333-8333-333333333333",
+    -   "outcome": "reused",
+    -   "project_id": "22222222-2222-4222-8222-222222222222",
+    -   "role": "facilitator",
+    -   "status": "pending",
+    -   "success": true,
+    -   "token": "[REDACTED_SYNTHETIC_INVITATION_TOKEN]",
+    +   "can_query_status": false,
+    +   "error": "Invitation result could not be confirmed.",
+    +   "outcome": "not_attempted",
+    +   "success": false,
+      }
+
+      117 |     const row = { ...sendRow, role, status, outcome: 'reused' }
+      118 |     fixture.replies[pathsByMode.send] = { body: [{ ...row, private_extra: 'discard' }] }
+    > 119 |     expect(await (await run('send', request('send', { ...sendInput, role, email: ' \[REDACTED_SYNTHETIC_EMAIL]\r\n' }))).json()).toEqual({ success: true, ...row })
+          |                                                                                                                                ^
+      120 |   }
+      121 |   expect(paths()).toEqual(Array(8).fill([authPath, pathsByMode.send]).flat())
+      122 | })
+
+      at Object.toEqual (src/lib/server/__tests__/invitation-sender.test.ts:119:128)
+
+  ● release directly confirms release/replay for either reason without lookup permission preconditions
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 5
+    + Received  + 4
+
+      Object {
+    -   "invitation_id": "33333333-3333-4333-8333-333333333333",
+    -   "outcome": "released",
+    -   "project_id": "22222222-2222-4222-8222-222222222222",
+    -   "status": "declined",
+    -   "success": true,
+    +   "can_query_status": false,
+    +   "error": "Invitation result could not be confirmed.",
+    +   "outcome": "not_attempted",
+    +   "success": false,
+      }
+
+      126 |     fixture.replies[pathsByMode.lookup] = { status: 403, body: { code: '42501' } }
+      127 |     fixture.replies[pathsByMode.release] = { body: [{ ...row, token: fixtureToken }] }
+    > 128 |     expect(await (await run('release', request('release', { ...releaseInput, reason }))).json()).toEqual({ success: true, ...row })
+          |                                                                                                  ^
+      129 |   }
+      130 |   expect(paths()).toEqual(Array(4).fill([authPath, pathsByMode.release]).flat())
+      131 | })
+
+      at Object.toEqual (src/lib/server/__tests__/invitation-sender.test.ts:128:98)
+
+Test Suites: 2 failed, 1 passed, 3 total
+Tests:       10 failed, 58 skipped, 7 passed, 75 total
+Snapshots:   0 total
+Time:        2.038 s
+Ran all test suites matching invitation-sender-legacy|invitation-sender-protocol|invitation-sender.test with tests matching "disabled|permanently|normalizes|confirms|directly|one exact|sender lookup|HTTP parsers|failure parser".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand invitation-sender-legacy invitation-sender-protocol invitation-sender.test '--testNamePattern=disabled|permanently|normalizes|confirms|directly|one exact|sender lookup|HTTP parsers|failure parser'

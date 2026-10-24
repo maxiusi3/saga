@@ -1,0 +1,331 @@
+{
+  "generatedAt": "2026-10-16T03:27:46.519039+00:00",
+  "status": "passed",
+  "scope": "Task 1 only: harness-owned local PostgreSQL, pg-boss, real child processes and asynchronous synthetic provider tasks; no remote access, production deployment, real provider requests or real audio.",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sourceHashes": {
+    "experiments/t05-durable-worker/store.mjs": "68cc9934994d07f16b082a921b103933574b48cbdcb22659853583ac176385ba",
+    "experiments/t05-durable-worker/worker.mjs": "87bf8f280aae7b34c588411d2284b1b4fdf78d27d74bbedae41494fe864b915b",
+    "experiments/t05-durable-worker/verify.mjs": "b9cfedd15738b2ae5eef2e4b6cef836cd8bc069859bf5d2cc722906e88c436a4",
+    "experiments/t05-durable-worker/runner.mjs": "23f2819b64211cadb68441703152f2b5cb96e475215986d83c9413fb42d11078",
+    "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+    "experiments/t05-durable-worker/README.md": "9064daf1b68d5e9a0e3e79098de71692c90bcfcde698be32c34a5011b91e5c38",
+    "experiments/t05-durable-worker/package.json": "a34f22500fbe32d38ef8e3a430fda81270a5bdb6760923164b161b734b8720d4",
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "pgBossApiEvidenceHashes": {
+    "experiments/t05-durable-worker/node_modules/pg-boss/package.json": "d5884ab65b2603fe4d1c7e70a936826d656b9006056adf817c78f2072ed0d51b",
+    "experiments/t05-durable-worker/node_modules/pg-boss/dist/plans.js": "2d76620551ba6c15001c792253846c7224cf05e576b2023cb26d553b26a5a945",
+    "experiments/t05-durable-worker/node_modules/pg-boss/dist/manager.js": "dc647806868fe8ab558476f3a76e4f557467108a2e15ec10523bf4fd54e8ed0d",
+    "experiments/t05-durable-worker/node_modules/pg-boss/dist/boss.js": "37d425d8146ecedd95c830f3534535f98988b3e8692b87de09e6486b05afb601",
+    "experiments/t05-durable-worker/node_modules/pg-boss/dist/attorney.js": "1eb0ad087375bf296e1b7bf9ecf0628fd9aeae54c071aa684c80012964def7bd",
+    "experiments/t05-durable-worker/node_modules/pg/package.json": "f7b678a8055c234669e8dd272dd624771e29d9f0e3a3353f15c3005ab1a5fd29"
+  },
+  "protectedFilesUnchanged": {
+    "package.json": {
+      "beforeSha256": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+      "afterSha256": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+      "unchanged": true
+    },
+    "package-lock.json": {
+      "beforeSha256": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+      "afterSha256": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+      "unchanged": true
+    },
+    "packages/web/package.json": {
+      "beforeSha256": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+      "afterSha256": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+      "unchanged": true
+    },
+    "packages/web/next-env.d.ts": {
+      "beforeSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "afterSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/package-lock.json": {
+      "beforeSha256": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+      "afterSha256": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+      "unchanged": true
+    },
+    "packages/web/src/lib/server/processing-jobs.ts": {
+      "beforeSha256": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+      "afterSha256": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+      "unchanged": true,
+      "baseline": "heartbeat-red.json"
+    }
+  },
+  "commands": {
+    "results": {
+      "command": [
+        "node",
+        "experiments/t05-durable-worker/verify.mjs",
+        "docs/research/evidence/2026-10-16-t05-supervision/results.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "reportStatus": "passed",
+      "expectedReportStatus": "passed",
+      "expectationMatched": true,
+      "scenarios": 39,
+      "recordedAssertions": 307,
+      "report": "results.json",
+      "log": "results.log",
+      "startedAt": "2026-10-16T03:15:53.774Z",
+      "finishedAt": "2026-10-16T03:19:25.549Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [
+          32950,
+          32984,
+          32990,
+          33021,
+          33044,
+          33080,
+          33090,
+          33108,
+          33126,
+          33139,
+          33145,
+          33151,
+          33168,
+          33174,
+          33181,
+          33201,
+          33207,
+          33228
+        ],
+        "runnerPids": [
+          32952,
+          32986,
+          32992,
+          32996,
+          33023,
+          33027,
+          33046,
+          33082,
+          33092,
+          33096,
+          33100,
+          33105,
+          33128,
+          33141,
+          33147,
+          33153,
+          33170,
+          33176,
+          33183,
+          33203,
+          33209,
+          33230
+        ],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      }
+    },
+    "soak": {
+      "command": [
+        "node",
+        "experiments/t05-durable-worker/verify.mjs",
+        "docs/research/evidence/2026-10-16-t05-supervision/soak.json",
+        "--only-supervision-soak"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "reportStatus": "passed",
+      "expectedReportStatus": "passed",
+      "expectationMatched": true,
+      "scenarios": 1,
+      "recordedAssertions": 11,
+      "report": "soak.json",
+      "log": "soak.log",
+      "startedAt": "2026-10-16T03:15:54.950Z",
+      "finishedAt": "2026-10-16T03:20:57.518Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [
+          32435
+        ],
+        "runnerPids": [
+          32440
+        ],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      }
+    },
+    "signal-term": {
+      "command": [
+        "node",
+        "experiments/t05-durable-worker/verify.mjs",
+        "docs/research/evidence/2026-10-16-t05-supervision/signal-term.json",
+        "--only-supervision-signal"
+      ],
+      "exitCode": 143,
+      "expectedExitCode": 143,
+      "reportStatus": "interrupted",
+      "expectedReportStatus": "interrupted",
+      "expectationMatched": true,
+      "scenarios": 0,
+      "recordedAssertions": 0,
+      "report": "signal-term.json",
+      "log": "signal-term.log",
+      "startedAt": "2026-10-16T03:15:56.177Z",
+      "finishedAt": "2026-10-16T03:15:59.766Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [
+          32492
+        ],
+        "runnerPids": [
+          32497
+        ],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      }
+    },
+    "signal-int": {
+      "command": [
+        "node",
+        "experiments/t05-durable-worker/verify.mjs",
+        "docs/research/evidence/2026-10-16-t05-supervision/signal-int.json",
+        "--only-supervision-signal",
+        "--signal=SIGINT"
+      ],
+      "exitCode": 130,
+      "expectedExitCode": 130,
+      "reportStatus": "interrupted",
+      "expectedReportStatus": "interrupted",
+      "expectationMatched": true,
+      "scenarios": 0,
+      "recordedAssertions": 0,
+      "report": "signal-int.json",
+      "log": "signal-int.log",
+      "startedAt": "2026-10-16T03:15:57.358Z",
+      "finishedAt": "2026-10-16T03:16:00.921Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [
+          32548
+        ],
+        "runnerPids": [
+          32553
+        ],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      }
+    },
+    "fatal-cleanup": {
+      "command": [
+        "node",
+        "experiments/t05-durable-worker/verify.mjs",
+        "docs/research/evidence/2026-10-16-t05-supervision/fatal-cleanup.json",
+        "--only-supervision-fatal-cleanup"
+      ],
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "reportStatus": "failed",
+      "expectedReportStatus": "failed",
+      "expectationMatched": true,
+      "scenarios": 0,
+      "recordedAssertions": 0,
+      "report": "fatal-cleanup.json",
+      "log": "fatal-cleanup.log",
+      "startedAt": "2026-10-16T03:15:58.523Z",
+      "finishedAt": "2026-10-16T03:16:00.917Z",
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [
+          32588
+        ],
+        "runnerPids": [
+          32590
+        ],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      }
+    }
+  },
+  "fullSuite": {
+    "scenarios": 39,
+    "recordedAssertions": 307,
+    "legacyScenariosRetained": 19,
+    "newSupervisionScenarios": 20
+  },
+  "soak": {
+    "name": "automatic supervised duration",
+    "status": "passed",
+    "assertions": 11,
+    "elapsedMs": 300018,
+    "durationMs": 300000,
+    "heartbeats": 297,
+    "maxHeartbeatGapMs": 1017,
+    "workerPid": 32440,
+    "queueId": "9b262a1e-ce62-4222-87f7-04a5d836ae2e",
+    "synthetic": true
+  },
+  "cleanupConfirmed": true,
+  "finalPreviouslyOwnedPidsStillAlive": [],
+  "projectVerification": "project-checks.json",
+  "auxiliaryProjectVerification": "auxiliary-checks.json",
+  "history": {
+    "initialHeartbeatRed": "heartbeat-red.json",
+    "initialHeartbeatGreen": "heartbeat-green.json",
+    "reviewFindings": "review-initial.md",
+    "shutdownBackendRed": "shutdown-backend-red.json",
+    "shutdownBackendGreen": "shutdown-backend-green.json",
+    "shutdownOutcomeRed": "shutdown-outcome-red.json",
+    "shutdownOutcomeGreen": "shutdown-outcome-green.json",
+    "dispatchAbortRed": "abort-dispatch-red.json",
+    "dispatchAbortGreen": "abort-dispatch-green.json",
+    "publicationAbortRed": "abort-publication-red.json",
+    "publicationAbortGreen": "abort-publication-green.json",
+    "intermediateUnhandledFailure": "intermediate-unhandled.json",
+    "intermediateOwnedClusterCleanup": "intermediate-emergency-cleanup.json",
+    "historicalResultsUnmodified": "../2026-10-15-t05-worker/results.json"
+  },
+  "limitations": [
+    "Synthetic ledger entries and async waits do not prove real provider cancellation, idempotency, billing or real audio decoding.",
+    "Cancelled maintenance is scoped to a unique openPoc instance; cancellation/close failure still ends nonzero via a bounded forced-exit fallback. That fallback does not assert server SQL cancellation succeeded.",
+    "An abort observed before COMMIT is sent prevents commit; an already-sent COMMIT cannot be undone.",
+    "Final clock abort probe executes actual PostgreSQL and injects an abort at the real query-response boundary; it does not fabricate DB rows. One queue-heartbeat fixture explicitly ages its timestamp11s via SQL.",
+    "Historical review uses logical24h advance; only20s and300s synthetic durations are actual wall-clock sustained-task evidence.",
+    "Harness SIGKILL cannot run cleanup. SIGINT, SIGTERM, expected fork errors, unhandled test rejection and descendant cleanup were exercised.",
+    "No production schema/adapter, RLS, Storage/story publication, production hosting/load, backups, real devices, G0 or G1 qualification."
+  ]
+}

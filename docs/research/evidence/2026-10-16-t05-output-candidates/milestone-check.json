@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-10-16T14:46:58.874668+00:00",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "conditionalPushAuthorized": true,
+  "decision": "original_milestones_not_reached",
+  "G0": {
+    "passed": false,
+    "missing": [
+      "actual schema/migration history/RLS and bucket/asset permissions",
+      "backup and migration/rollback evidence",
+      "provider account/data handling qualifications"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "missing": [
+      "formal Storage/session/asset transaction adapter",
+      "real-device 5/20/30-minute interruption matrix",
+      "formal cross-family and original-delivery acceptance"
+    ]
+  },
+  "readOnlyAccess": {
+    "newAccessOrExportProvidedThisBatch": false,
+    "userClarification": "User asked what metadata means; explained scope. No new access method or export supplied.",
+    "priorEvidence": "../2026-10-16-t05-merge-failures/readiness.json",
+    "priorDeniedCliPathRetried": false,
+    "remoteSQLExecuted": false
+  },
+  "dependencyAudit": {
+    "executedThisBatch": false,
+    "basis": "unchanged manifests/lockfiles; reuse latest actual audit",
+    "evidence": "../2026-10-16-t05-merge-failures/audit-high.json",
+    "exitCode": 1,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "total": 42
+  },
+  "localBatchIsMilestone": false,
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "deploymentPerformed": false,
+  "remoteMigrationPerformed": false
+}

@@ -1,0 +1,70 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --verbose src/lib/server/__tests__/recording-audio-decoder.test.ts --testNamePattern=awaits child close on abort
+
+FAIL src/lib/server/__tests__/recording-audio-decoder.test.ts
+  ● awaits child close on abort after PCM output (0 ms readiness delay) and never accepts valid PCM as success
+
+    expect(received).rejects.toBe(expected) // Object.is equality
+
+    Expected: [Error: worker lease expired]
+    Received: [Error: Recording decoder timed out]
+
+      147 |       controller.abort(reason)
+      148 |     })
+    > 149 |     await expect(decoding).rejects.toBe(reason)
+          |                                    ^
+      150 |     expect(pcmBytes).toBe(3200)
+      151 |     if (phase === 'process exit') {
+      152 |       expect(exitCode).toBe(0)
+
+      at Object.toBe (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at toBe (src/lib/server/__tests__/recording-audio-decoder.test.ts:149:36)
+
+  ● awaits child close on abort after process exit (0 ms readiness delay) and never accepts valid PCM as success
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 3200
+    Received: 0
+
+      148 |     })
+      149 |     await expect(decoding).rejects.toBe(reason)
+    > 150 |     expect(pcmBytes).toBe(3200)
+          |                      ^
+      151 |     if (phase === 'process exit') {
+      152 |       expect(exitCode).toBe(0)
+      153 |       expect(exitSignal).toBeNull()
+
+      at toBe (src/lib/server/__tests__/recording-audio-decoder.test.ts:150:22)
+
+  ● awaits child close on abort after PCM output (1500 ms readiness delay) and never accepts valid PCM as success
+
+    expect(received).rejects.toBe(expected) // Object.is equality
+
+    Expected: [Error: worker lease expired]
+    Received: [Error: Recording decoder timed out]
+
+      147 |       controller.abort(reason)
+      148 |     })
+    > 149 |     await expect(decoding).rejects.toBe(reason)
+          |                                    ^
+      150 |     expect(pcmBytes).toBe(3200)
+      151 |     if (phase === 'process exit') {
+      152 |       expect(exitCode).toBe(0)
+
+      at Object.toBe (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at toBe (src/lib/server/__tests__/recording-audio-decoder.test.ts:149:36)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 35 skipped, 38 total
+Snapshots:   0 total
+Time:        5.814 s, estimated 39 s
+Ran all test suites matching src/lib/server/__tests__/recording-audio-decoder.test.ts with tests matching "awaits child close on abort".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --verbose src/lib/server/__tests__/recording-audio-decoder.test.ts '--testNamePattern=awaits child close on abort'

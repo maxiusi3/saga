@@ -1,9 +1,12 @@
 # **Product Requirements Document: UR Saga - V1.8 (MVP)**
 
+> **2026-10-11 upgrade decision:** This remains the baseline PRD. The user selected D03=A and all other recommendations in the [October decision register](docs/2026-10-10-upgrade-decisions.md), so D01–D16 are all A. The [confirmed implementation plan](docs/2026-10-10-integrated-upgrade-plan.md) supersedes conflicting legacy scope, schedule, pricing, hosting, and release assumptions below. The upgrade prioritizes private original audio, faithful stories, family review, complete export/PDF, one primary developer, and G0–G4 quality gates. Public archive, real-time hosting, and additional media products remain conditional extensions; this decision is not a completion claim.
+
 ## **1. Revision History & Strategic Context**
 
 | Version | Date | Author | Revision Details |
 | :--- | :--- | :--- | :--- |
+| **V1.8.4 scope correction** | 2026-10-11 | Confirmed October upgrade | Supersede false processing/saving guarantees, implicit authentication, raw-deletion suggestions and mandatory public/NPR flows. Current delivery is private original media plus faithful reviewable text and complete export/PDF. T00 implementation and later quality gates are tracked separately. |
 | **V1.8.3** | 2026-10-07 | Technical Audit | **Audio Processing Scope Clarification.** <br>1. Moved "NPR-grade audio processing" from Phase 1 MVP to future enhancement (Phase 2+).<br>2. Current MVP implements basic audio stitching, storage, and transcription only.<br>3. Documented three candidate approaches for future audio enhancement: FFmpeg Serverless, Third-Party API, and Client-Side Processing.<br>4. Decision criteria: Monitor user feedback for 3 months; implement if audio quality appears in >20% of feedback. |
 | **V1.8.2** | 2026-06-11 | Codex Audit | **Phase 1 Scope Correction.** <br>1. Clarified that Phase 1 delivers only the private biography loop: Interview Agent + Editor & Librarian Agent.<br>2. Deferred Wiki Editor Agent, public archive clustering, Media Agent, photo restoration, and video generation to later phases.<br>3. Required Phase 1 implementation plans to cover host intervention controls, durable interview events, standalone story artifacts, structured story elements, and private biography review surfaces. |
 | **V1.8.1** | 2026-06-11 | Codex Audit | **Multi-Agent Collaboration Update.** <br>1. Added a host-style Interview Agent responsible for opening, warmup, prior-story recap, transitions, gentle probing, emotional support, and closing.<br>2. Added user-configurable Interview Agent intervention levels: Off, Low, and High.<br>3. Defined follow-on agent responsibilities for private biography editing, public collective archive curation, and media enhancement services. |
@@ -12,7 +15,7 @@
 | V1.1 | 2025-10-XX | AI PM | Initial Mobile App MVP definition. |
 
 ### **1.1 Strategic Rationale for V1.8**
-*   **Audio-First Approach:** Unlike competitors who treat audio merely as raw material for text, UR Saga treats the *voice itself* as the primary asset. While Phase 1 focuses on capturing and transcribing audio, future phases will implement professional-grade audio processing when validated by user demand.
+*   **Audio-First Approach:** UR Saga treats the voice itself as a primary asset. Competitors also offer voice capture and preservation; differentiation must be established through family completion, faithful review and portable delivery. Professional audio processing remains a conditional later capability.
 *   **The "Resonance" Moat:** To build a defensible "Collective Memory" database without violating privacy, we introduce a *post-analysis* incentive loop. Users are invited to share only after realizing their story connects them to a larger historical cohort ("You are not alone").
 *   **Technical Robustness:** Addressing the fragility of Web-based recording via "Chunked Uploads" and "Screen Wake Lock" APIs.
 
@@ -25,8 +28,8 @@ Family stories are often lost because recording them feels like "work," and the 
 
 ### **2.2 MVP Objectives (V1.8)**
 1.  **Experience:** Validate that a **Web-First, link-based entry** combined with **Dual-Mode Recording** can achieve >80% recording success rates for seniors (70+).
-2.  **Quality:** Prove that automated **"NPR-style" audio processing** creates an "Audiobook" experience that Facilitators value enough to share and save.
-3.  **Growth:** Test if the **"Resonance Notification"** (e.g., "300 others remembered this event") drives >10% of users to opt-in to the Public Collective Archive.
+2.  **Quality:** Preserve original media, produce faithful drafts with valid sources, and let families approve and export the result. Do not label processing complete without a real output.
+3.  **Completion:** Measure approved first outcomes, completed projects and later family playback under the October quality gates. Public archive growth is outside the first upgrade release.
 
 ---
 
@@ -46,8 +49,8 @@ Family stories are often lost because recording them feels like "work," and the 
 
 #### **1.1 Frictionless Onboarding**
 *   **Requirement:** Magic Link Authentication. No passwords.
-*   **Flow:** Click Link -> "Welcome [Name]" -> "Privacy Pledge" -> Home.
-*   **Tech Spec:** Use persistent browser tokens (LocalStorage/Cookies) with a long expiration (1 year) to prevent frequent logouts.
+*   **Flow:** Click invitation -> validate invitation and authentication -> explain audience and obtain applicable consent -> return to the invited question.
+*   **Tech Spec:** Use the configured Supabase session and refresh lifecycle. An expired invitation or missing authentication requires recovery; accepting a privacy pledge cannot authenticate a user or grant project access.
 
 #### **1.2 Dual-Mode Recording Engine (Critical Update)**
 To accommodate different storytelling styles and network conditions.
@@ -57,8 +60,8 @@ To accommodate different storytelling styles and network conditions.
     *   **UI:** Immersive full screen. Darker background (focus).
     *   **The "Silent Guide":** If the mic detects silence >20s, a gentle text prompt fades in: *"It's okay to take your time. What happened next?"* (Toggleable by Facilitator).
     *   **Technical Implementation:**
-        *   **Screen Wake Lock API:** MUST prevent the phone from sleeping during recording.
-        *   **Chunked Uploads:** Slice audio every 60 seconds (using `MediaRecorder` API `timeslice`) and upload in background. If one chunk fails, retry automatically. Prevents data loss if the browser crashes at minute 29.
+        *   **Screen Wake Lock API:** Request where supported and show the actual granted/released state. Browsers and operating systems can interrupt recording; no unconditional prevention guarantee.
+        *   **Chunked Uploads:** Persist ordered chunks and their session metadata locally before upload, then validate the final object. MediaRecorder timeslice is not a reliable wall-clock boundary or crash-loss guarantee. Recovery must pass the declared device and fault matrix.
     *   **Logic:** Users can pause/resume.
 
 *   **Mode B: "Chat Bubbles" (Short Recording)**
@@ -70,7 +73,7 @@ To accommodate different storytelling styles and network conditions.
 #### **1.3 The "Review & Polish" Step**
 *   **User Story:** "As a Storyteller, I want to sound good, not confused."
 *   **Feature:** Before sending, the user sees a "Review" screen.
-*   **Auto-Leveling (Client-side preview):** The preview playback should have basic volume normalization applied immediately so they can hear themselves clearly.
+*   **Preview:** Play the original recording. Display normalization or enhancement completion only when the selected media version has a verified processing artifact; never add a decorative success badge.
 
 #### **1.4 The AI Interview Host**
 *   **User Story:** "As a Storyteller, I want the system to feel like a patient host, not a machine waiting for input."
@@ -89,14 +92,14 @@ To accommodate different storytelling styles and network conditions.
 ### **Module 2: Audio Processing Pipeline (Backend)**
 
 #### **2.1 Phase 1 (MVP): Basic Audio Handling**
-*   **Current Implementation (V1.8.2):**
+*   **Required target, not a statement of completed implementation:**
     *   **Input:** Raw audio files (WebM/Opus format from browser `MediaRecorder`).
     *   **Processing:** 
-        1.  **Stitching:** Reassemble 60-second chunks or chat bubbles into a single audio file.
+        1.  **Stitching:** Validate and reassemble ordered chunks or chat bubbles into a decodable audio file through the persistent media workflow.
         2.  **Storage:** Store raw recordings in Supabase Storage for transcription.
-        3.  **Transcription:** Use OpenAI Whisper API for automatic transcription.
+        3.  **Transcription:** Use a qualified server ASR adapter; Scribe is the approved candidate baseline, subject to account/data/quality checks. Browser captions remain provisional.
     *   **Output:** Raw audio + transcript for the Facilitator to review.
-    *   **Rationale:** This simplified approach ensures MVP delivery without complex audio engineering dependencies. Current quality is sufficient for transcription purposes.
+    *   **Verification:** Saving and AI processing have separate statuses. Pipeline existence, quality, failure recovery and provider access require actual evidence before a release claim.
 
 #### **2.2 Future Enhancement: Professional Audio Post-Processing**
 *   **Planned for Post-MVP (Phase 2+):**
@@ -132,7 +135,7 @@ Research conducted (2026-10-07) identified three viable approaches for future au
 
 **Recommendation:** Monitor user feedback for 3 months post-launch. If "audio quality" appears in >20% of user feedback or support requests, prioritize Option 2 (Third-Party API) for fastest delivery, then migrate to Option 1 (FFmpeg Serverless) when monthly audio volume justifies the engineering investment.
 
-**Current Status:** MVP ships with raw audio + transcription. This satisfies the core value proposition (preserving family stories) while deferring audio post-processing to a future phase when validated by user demand.
+**Current Status:** The first upgrade targets original media plus faithful text and portable delivery. Refer to the October implementation record for completed code and remaining gates; this PRD does not certify deployment or media quality.
 
 ### **Module 3: Taxonomy & Structure (Timeline First)**
 
@@ -142,6 +145,8 @@ Research conducted (2026-10-07) identified three viable approaches for future au
 
 ### **Module 4: The "Resonance" Engine (The Moat)**
 
+**Conditional future concept:** excluded from the first private release. Example counts below are illustrations, never runtime defaults. Public contribution requires separate per-story authorization, review and withdrawal; it is not ordinary family sharing.
+
 *   **Trigger:** Post-processing of a story.
 *   **Logic:** If the story matches a high-frequency cluster in the global database (e.g., "Moon Landing," "COVID-19," "First Car"), send a "Resonance Notification."
 *   **Notification Copy:** *"Your story about the 1976 Earthquake is powerful. 342 other community members remember that day, too. You are not alone."*
@@ -149,7 +154,7 @@ Research conducted (2026-10-07) identified three viable approaches for future au
 
 ### **Module 5: Deliverables (The Product)**
 
-*   **The Audiobook:** A generated playlist of "Mastered" audio files, organized by Timeline, with AI-generated intro/outro text (read by a synthetic voice).
+*   **The Audio Archive:** Original recordings, compatible playback copies, source/version metadata, checksums and an offline directory. Mastered audio, synthetic introductions and narrated books are separately validated future products.
 *   **The E-Book (PDF):** High-quality typeset PDF containing photos + edited transcripts. Ready for home printing.
 
 ### **Module 6: Multi-Agent Collaboration Layer**
@@ -205,12 +210,12 @@ Phase 1 is complete only when:
 
 ### **5.1 Architecture: Web-First + Offline Resilience**
 *   **Frontend:** React / Vue.js (PWA).
-*   **Local Storage:** `IndexedDB` is MANDATORY. Audio chunks are saved locally immediately. If network fails, the user is alerted, but data is safe on the device until connection restores.
+*   **Local Storage:** Persist chunks and session metadata in IndexedDB before upload and show verified state. Quota failure, storage eviction or an interrupted write can lose unsaved data; offer recovery only for data actually present and validated.
 *   **Audio Codec:** Use `Opus` inside a `WebM` container for high quality at low bandwidth during upload. Convert to `MP3/AAC` on server for compatibility.
 
 ### **5.2 Key Technical Metrics (Success Criteria)**
-1.  **Wake Lock Success Rate:** >95% of recording sessions successfully prevent screen sleep.
-2.  **Chunk Reassembly Accuracy:** 100%. No audible "gaps" or "clicks" at the 60s stitch points.
+1.  **Wake Lock Evidence:** Record granted/released/unsupported states and the declared device matrix. Do not promise uninterrupted background recording.
+2.  **Chunk Reassembly:** Every confirmed final asset passes completeness, checksum, duration and decoding checks; fault tests must not label missing or damaged audio successful.
 3.  **Upload Resilience:** System must demonstrate recovery from a "Flight Mode on/off" test during upload without data loss.
 4.  **Intervention Respect:** In user testing, storytellers should report that the Interview Agent did not interrupt their train of thought in >85% of sessions.
 5.  **Artifact Traceability:** 100% of agent-generated story edits, extracted elements, and public archive contributions must link back to source transcript spans or source media assets.
@@ -219,6 +224,8 @@ Phase 1 is complete only when:
 ---
 
 ## **6. Visualizing the Logic**
+
+**Historical concept diagrams:** The diagrams in this section and the later Chinese business/product/page diagrams preserve the older vision. They are not the current release state machine. The governing October flow is private source media → durable processing → family review → complete export; NPR, public matching and synthetic voice remain conditional extensions. Expired invitation nodes must never imply authentication.
 
 ### **Diagram 1: The "Dual-Mode" Recording & Processing Pipeline**
 
@@ -295,7 +302,7 @@ sequenceDiagram
 
 ## **7. Open Questions & Risks**
 
-1.  **Storage Costs:** Storing dual versions (Raw + Mastered) of high-quality audio is expensive. need a lifecycle policy (e.g., delete Raw after 30 days?).
+1.  **Storage Costs:** Account for original and derived media over the approved hosting period. Do not automatically delete originals after 30 days or when a processed copy exists; deletion follows the confirmed retention policy and user requests.
 2.  **Browser Compatibility:** Safari on iOS has specific quirks with `MediaRecorder` and `Wake Lock`. Strict cross-browser testing is required.
 3.  **Legal/Privacy (Collective Archive):** The "Opt-in" consent must be granular. "Can we use your voice? Or just the text?" Needs clear legal UX.
 4.  **Interview Agent Intrusion:** Even a helpful host can disrupt memory flow. The Off/Low/High intervention control must be prominent before recording and easy to change.
@@ -473,7 +480,7 @@ graph TD
     Start((开始)) --> Link[点击邀请链接]
     Link --> Check{Token有效?}
     
-    Check -- 否/过期 --> Privacy[**隐私承诺页**<br/>"您的故事仅家人可见"<br/>(隐式登录)]
+    Check -- 否/过期 --> Privacy[**重新认证/恢复邀请**<br/>核验身份及项目权限]
     Check -- 是 --> Home
     
     Privacy -- 点击"我同意" --> Home[**主页 (Home)**<br/>显示当前AI问题<br/>双模选择入口]
@@ -506,7 +513,7 @@ graph TD
 这是给 UI 设计师和前端开发的直接指令。我们重点拆解 **讲述者端 (Storyteller PWA)** 的核心页面。
 
 #### **P1: 隐私承诺页 (Landing / Privacy Pledge)**
-*   **目标：** 建立信任，完成“无感登录”。
+*   **目标：** 建立信任；使用有效认证和邀请确认身份，隐私同意不代替登录。
 *   **元素：**
     *   `Avatar Group`: 显示邀请者（子女）的头像。
     *   `Welcome Text`: “Hi [John], [Alex] 邀请您以此记录家族回忆。”
@@ -538,7 +545,7 @@ graph TD
 *   **目标：** 沉浸式录音，防止干扰，确保技术稳定。
 *   **状态：录音中 (Recording)**
     *   `Background`: 深色/黑色 (省电且专注)。
-    *   `Wake Lock Indicator`: (隐形) 浏览器地址栏不应有锁屏警告。
+    *   `Wake Lock Indicator`: 显示实际保持唤醒状态；释放或不支持时清楚提示，不能隐藏中断风险。
     *   `Timer`: 大号数字 `04:23`。
     *   `Visualizer`: 动态声波纹，随音量跳动 (给用户反馈“正在录”)。
     *   `AI Guide Text`: (Fade in if silence > 20s) “别着急，慢慢想... 后来呢？”
@@ -550,9 +557,9 @@ graph TD
 *   **目标：** 质量把关，赋予用户掌控感。
 *   **元素：**
     *   `Waveform Player`: 显示整个音频波形。
-    *   `Auto-Level Badge`: “✨ 已自动优化音质” (给用户心理暗示)。
+    *   `Audio Version Label`: 未处理素材标为“原始录音”；仅有真实处理凭据时标明对应优化版本，禁止心理暗示式假成功。
     *   `Play/Pause Control`.
-    *   `Date Picker`: **“这件事大约发生在哪一年？”** (默认当前年份，用户可滚轮调整，这是 V1.8 “时间轴优先”的关键数据输入)。
+    *   `Date Picker`: **“这件事大约发生在哪一年？”** 支持未知、约某年、年代；录制时间单独记录，不把当前日期默认成往事发生日期。此交互由T01/T08继续实现和验收。
     *   `Primary Button`: “发送给家人” (Send to Family)。
     *   `Secondary Button`: “重录” (Re-record)。
 

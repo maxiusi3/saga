@@ -1,0 +1,168 @@
+{
+  "checkedAt": "2026-10-16T13:29:25.655220+00:00",
+  "status": "local_verification_and_independent_review_passed",
+  "scope": "Current batch only: fictional local audio, private temporary PostgreSQL, pg-boss, existing FFmpeg; not formal adapter, remote or device acceptance",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3",
+    "ffmpeg": "ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffmpegSha256": "4a4a968b98859588e98500ae25973d80a5ca5eed0724222b9f76360dcb72a001"
+  },
+  "integration": {
+    "knownFailures": {
+      "file": "fix1-failure-final.json",
+      "exitCode": 0,
+      "status": "passed",
+      "startedAt": "2026-10-16T13:15:22.798Z",
+      "finishedAt": "2026-10-16T13:16:03.989Z",
+      "scenarios": 42,
+      "assertions": 371,
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "reportSha256": "f9a2fa5affe013612a07da38c1e7424884f152e4a322c129974c569d553d3999"
+    },
+    "fullMerge": {
+      "file": "fix1-merge-regression-final.json",
+      "exitCode": 0,
+      "status": "passed",
+      "startedAt": "2026-10-16T13:15:24.096Z",
+      "finishedAt": "2026-10-16T13:16:23.502Z",
+      "scenarios": 52,
+      "assertions": 402,
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "reportSha256": "639d85c78f1acbb15d368b576e0f867cbfd249a137f23c43250ec46620043b13"
+    }
+  },
+  "focusedUnit": {
+    "suites": 3,
+    "tests": 69,
+    "exitCode": 0,
+    "log": "fix1-unit-green.log"
+  },
+  "project": "fix1-project-checks.json",
+  "applicationCounts": {
+    "webSuites": 76,
+    "webTests": 730,
+    "pages": 175,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7
+  },
+  "incrementalSourceSha256": {
+    "experiments/t05-durable-worker/README.md": "7c1555f1e6ee0166f4faa37b395f0a944ea7820e1ddc20a2ac1b6d33bc56f5b4",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "084c2ef032453922551f8ab685c22968d3f63283a2c7aefb209c99c3467e2010",
+    "experiments/t05-durable-worker/merge-failure-scenarios.mjs": "836971e9631551b04f617a5e15ffbcb0ada44ebadc36ce60fc1d201913faba9b",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "0006050eb55068aade89531a9d788c068646dd575bbc5791bd8f757cd1446cd3",
+    "experiments/t05-durable-worker/store.mjs": "390893bd89d2e5694ad00c3ed96a5993a1316ddbccff7eae3537eb78364d5865",
+    "experiments/t05-durable-worker/verify.mjs": "f48110f0252de7c5b329dd5bc11d4e9db55e286340723ff7b5b834517605f5e3",
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts": "e3f8178348672604d13b8988a0655b799acef8d77cb478bd3a926f1d05032cb8",
+    "packages/web/src/lib/server/__tests__/recording-merge-executor.test.ts": "74d9809bf868ac685789f1e281c115d77a8a00a6e106a9c771a9adcf6d0c3146",
+    "packages/web/src/lib/server/__tests__/recording-processing-error.test.ts": "e2a6267c535f9eab24ffa76b7bb598946fe912f7306adf4f5db6153f52e76b31",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e"
+  },
+  "protectedFiles": {
+    "package.json": {
+      "sha256": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+      "unchanged": true
+    },
+    "package-lock.json": {
+      "sha256": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+      "unchanged": true
+    },
+    "packages/web/package.json": {
+      "sha256": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+      "unchanged": true
+    },
+    "packages/web/next-env.d.ts": {
+      "sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/package.json": {
+      "sha256": "a34f22500fbe32d38ef8e3a430fda81270a5bdb6760923164b161b734b8720d4",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/package-lock.json": {
+      "sha256": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+      "unchanged": true
+    },
+    "packages/web/src/lib/server/processing-jobs.ts": {
+      "sha256": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/runner.mjs": {
+      "sha256": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/supervisor.mjs": {
+      "sha256": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/verify-merge-cleanup.mjs": {
+      "sha256": "c1e7b997ea4ecd0ecb8bb6cd453662417b52a03265e0db5eb9880cc6e0cebca5",
+      "unchanged": true
+    }
+  },
+  "review": {
+    "status": "R1_addressed_no_new_important_or_critical",
+    "initial": "review-initial.md",
+    "final": "review-final.md",
+    "finalSha256": "f9a5d8a8e17c9757097fade3abc5520fc66c9fc5d649a102a111c1121f30ecde",
+    "ruling": "Unproven decoder exit/diagnostics remains unknown, without diagnostic-string matching; some malformed input requires later review."
+  },
+  "milestoneCheck": "milestone-check.json",
+  "dependencyAudit": "audit-high.json",
+  "readiness": "readiness.json",
+  "limitations": [
+    "No automatic private-output GC; unknown COMMIT preserved",
+    "No formal Storage/session/asset adapter or production routing",
+    "No real-device G1 matrix or qualified provider calls",
+    "Unchanged external cleanup observer and 300-second synthetic soak not rerun",
+    "Existing build configuration/watchman warnings remain documented"
+  ],
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "deploymentPerformed": false,
+  "originalT05EvidenceReuse": {
+    "report": "t05-regression-final.json",
+    "exitCode": 0,
+    "scenarios": 39,
+    "assertions": 307,
+    "unchangedExercisedSourceHashes": {
+      "experiments/t05-durable-worker/store.mjs": "390893bd89d2e5694ad00c3ed96a5993a1316ddbccff7eae3537eb78364d5865",
+      "experiments/t05-durable-worker/worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+      "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+      "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+      "experiments/t05-durable-worker/verify.mjs": "f48110f0252de7c5b329dd5bc11d4e9db55e286340723ff7b5b834517605f5e3",
+      "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+      "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+    },
+    "changedIncidentalSources": [
+      "experiments/t05-durable-worker/README.md",
+      "experiments/t05-durable-worker/merge-scenarios.mjs",
+      "experiments/t05-durable-worker/merge-failure-scenarios.mjs"
+    ],
+    "currentIncidentalHashMismatches": [
+      "experiments/t05-durable-worker/README.md",
+      "experiments/t05-durable-worker/merge-scenarios.mjs",
+      "experiments/t05-durable-worker/merge-failure-scenarios.mjs"
+    ],
+    "rerunAfterR1": false
+  }
+}

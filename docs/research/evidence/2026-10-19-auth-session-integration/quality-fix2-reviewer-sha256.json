@@ -1,0 +1,10 @@
+{
+  ".superpowers/sdd/2026-10-19-upgrade-auth-session-integration/task-1-quality-fix2-review.md": "e349489d7820fa4d904a98b446d0883c8070f362fc5c6ebd409b6fde22d384a7",
+  ".superpowers/sdd/2026-10-19-upgrade-auth-session-integration/quality-fix2-reviewer-event-probe.cjs": "a7d178cdd95eacf4173d63908793b73858cd3e3052666441d8867cd97e500bc4",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-fix2-reviewer-event-probe.json": "15935a352bbcfa4bbbc638e5ed765390ed843c38ce7d323d7b2de9b76476a963",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-fix2-reviewer-event-probe.log.txt": "44f8b8acd8ef3172d2378ce71c37bc8f02d6347ac27584afcf770fc48813ad8a",
+  ".superpowers/sdd/2026-10-19-upgrade-auth-session-integration/quality-fix2-reviewer-guard-probe.cjs": "439d03f8a1838e5fe05223a61b6443101d98da4d4ee1f2b213278de59c7bf50d",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-fix2-reviewer-guard-probe.json": "f75b553a089012914434b05f6e7158533a8fa4d261c64f69a47e32ce128b07f0",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-fix2-reviewer-guard-probe.log.txt": "b351b48ca141994aea5c607bf2e1fb43459e1da1bb5c0ad59d07527c8aac794e",
+  "docs/research/evidence/2026-10-19-auth-session-integration/quality-fix2-reviewer-focused.log.txt": "1a0d89b36c4087e89ca1cac1b32eb02d3a3e1859b94c4a7ab6aeefc6a94a4328"
+}

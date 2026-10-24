@@ -1,0 +1,252 @@
+{
+  "checkedAt": "2026-10-17T05:36:11.968992+00:00",
+  "status": "local_batch_verified_t02_followup_review_pending",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "mappingUnit": {
+    "suites": 2,
+    "tests": 40,
+    "exitCode": 0,
+    "file": "mapping-final.txt"
+  },
+  "runs": {
+    "t02Normal": {
+      "file": "docs/research/evidence/2026-10-17-t02-compatibility/run-1792215305355-53519.json",
+      "sha256": "15a5f4bd0042d0c4e512567c1945d0b250966826ba2be303f1fa5b52a99e1308",
+      "exitCode": 0,
+      "status": "passed",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "checks": 19
+    },
+    "t02HostEnvironment": {
+      "file": "docs/research/evidence/2026-10-17-t02-compatibility/run-1792214844943-52595.json",
+      "sha256": "fc32e5f648bc05f6a5f44a9f1e2ea48ad912f06fb9062836052a87cf0106d937",
+      "exitCode": 0,
+      "status": "passed",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "checks": 19,
+      "syntheticEnvironment": {
+        "PGSSLMODE": "require",
+        "PGPASSWORD": "synthetic-ignored"
+      }
+    },
+    "t02Signal": {
+      "file": "docs/research/evidence/2026-10-17-t02-compatibility/run-1792215196345-53374.json",
+      "sha256": "12ca4af231dd8768267cf9656c4e8c65d5a4930503497c39f652180687ac31ea",
+      "exitCode": 143,
+      "status": "interrupted",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "checks": 3
+    },
+    "rlsNormalHostEnvironment": {
+      "file": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214844651-52596.json",
+      "sha256": "786f647c3682d31bd05f0944b740a0b48de532bc134ed5102d3f489a040b421b",
+      "exitCode": 0,
+      "status": "passed",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "scenarios": 63,
+      "assertions": 351,
+      "syntheticEnvironment": {
+        "PGSSLMODE": "require",
+        "PGPASSWORD": "synthetic-ignored"
+      }
+    },
+    "rlsShutdown": {
+      "file": "docs/research/evidence/2026-10-17-rls-rehearsal/shutdown-regression-1792214844605-52597.json",
+      "sha256": "48af716ece774c062f42077a2fe94fced7f3dd3076a3e99507456222be160bcd",
+      "exitCode": 0,
+      "status": "passed",
+      "cases": [
+        {
+          "name": "allocation_sigterm",
+          "status": "passed",
+          "exit": {
+            "code": 143,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214844860-52598.json",
+          "verifiedSha256": "3fb412cf096509d6ee357c251549bdf33dceaec7164e8920994aa19e64f65b5e",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "allocation_sigint",
+          "status": "passed",
+          "exit": {
+            "code": 130,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214845121-52636.json",
+          "verifiedSha256": "d1dbc9708707201ed2f79d2cdf3d846580a48a38ce7b92571c26efbf13815adc",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "allocation_deadline",
+          "status": "passed",
+          "exit": {
+            "code": 143,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214845351-52675.json",
+          "verifiedSha256": "f50a78449e32d9b64bc34b252a78801542fe2cbdd27ec322c887b3cb9328cf1a",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "stable_fixture_sigterm",
+          "status": "passed",
+          "exit": {
+            "code": 143,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214845615-52690.json",
+          "verifiedSha256": "3186a5e04dc90dd20884c779431fb8750ad381c449b73caa098d37954de43981",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "allocation_exception",
+          "status": "passed",
+          "exit": {
+            "code": 1,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214847736-52905.json",
+          "verifiedSha256": "3c5d126d6c29dcbd947e01f2ad01cbe147aa3172012aa20b36a80865e8f19027",
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "fixture_exception",
+          "status": "passed",
+          "exit": {
+            "code": 1,
+            "signal": null
+          },
+          "evidence": "docs/research/evidence/2026-10-17-rls-rehearsal/run-1792214847979-52934.json",
+          "verifiedSha256": "de6ba70d3d2b671a65a1e36dfeaed1d7b18afff51dbd1f9d53f286b298f2b59c",
+          "rescue": {
+            "needed": false
+          }
+        }
+      ]
+    }
+  },
+  "sourceSha256": {
+    "experiments/t02-legacy-mapping/verify.cjs": "29018f0fdc1276d65c5aebb7a5a10e8873bbe1b6d70f5d672d71f3dd731a5ae0",
+    "experiments/t02-legacy-mapping/README.md": "9f20179a4ded8d6cb22bb9b29aa2df8d08ffdd9828080d4c036fc08ce7128500",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e",
+    "packages/web/src/lib/__tests__/legacy-media-reference.test.ts": "e88c50333db66ed7fa997fd092e48e2b2b997ef535059704fb4bb37773e5da94",
+    "packages/web/src/lib/__tests__/legacy-story-media.test.ts": "1e2286683a6df63288886f8b631feac2a33cc83f2eb4c0fb9d4eb07499c443e6",
+    "experiments/rls-rehearsal/README.md": "62712b43e2e702fc3225b636e21680161c1545a31cde1f4b678c409bd92b96ec",
+    "experiments/rls-rehearsal/fixture.sql": "d70b14d3f789f10fcf3f37c40767b0e877fbb5f6851cf83ef41d01d625e9f550",
+    "experiments/rls-rehearsal/scenarios.mjs": "029af8de89675f3f90d6b4b201b25a911b969e4f4229f9e52074b726d6a83c91",
+    "experiments/rls-rehearsal/verify.mjs": "2131ef7c1ac40669b1c12c5868c5f28eb5873a1e12634d9a6e514fd0964e4c70",
+    "experiments/rls-rehearsal/verify-shutdown.mjs": "b643a37aca55fd05d8cd4415be425a7e6d809eb012d6debc667fcaa559b551d8",
+    "experiments/rls-rehearsal/candidate.sql": "4fbb8a4449c27b8f19dee2a173fcf8f03c945b5a6949f5e3c9a752e3c496164b"
+  },
+  "project": "project-checks.json",
+  "nextEnvRestored": true,
+  "dependencyAudit": {
+    "executedThisBatch": false,
+    "source": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+    "sha256": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866",
+    "priorExitCode": 1,
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "dependenciesUnchanged": true
+  },
+  "review": {
+    "rls": {
+      "status": "scoped_pass",
+      "file": "docs/research/evidence/2026-10-17-rls-rehearsal/review-fixes.md",
+      "closed": [
+        "R1 P2",
+        "R2 P2",
+        "checkpoint P3",
+        "start marker P3"
+      ]
+    },
+    "t02": {
+      "initialStatus": "changes_requested_one_P2",
+      "initialFile": "review-initial.md",
+      "fixImplemented": true,
+      "fixVerified": true,
+      "independentFollowup": "pending_rate_limit",
+      "independentPass": false
+    },
+    "metadataCollector": "separately_pending",
+    "statusFile": "review-status.md"
+  },
+  "milestone": "milestone-check.json",
+  "scope": "local synthetic compatibility and RLS fixes; no production routes/migration/object scans",
+  "redEvidence": [
+    "resolver-red.txt",
+    "projection-red.txt",
+    "root-url-red.txt",
+    "run-1792214637108-52368.json",
+    "../2026-10-17-rls-rehearsal/run-1792214184167-50104.json",
+    "../2026-10-17-rls-rehearsal/shutdown-regression-1792214184125-50105.json",
+    "../2026-10-17-rls-rehearsal/run-1792214636839-52369.json"
+  ],
+  "historicalEvidencePreserved": true,
+  "finalChecks": {
+    "file": "final-checks.json",
+    "sha256": "a8634582351bfbac1f02e3b36a7a6a3e86934be7b08c94c47b3bab600ad84b58"
+  },
+  "documentsSha256": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "84857c5c2f4c1b3d7f6d0ef2fafdbdf1103edacb740b6a33f4b5e2ee516693a9",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "c24551eb853b499839d6906e03403307f8f0657871fa28d0f7a21f86864998ed",
+    "docs/README.md": "16e847098eb3ce755a5c6d07fcb130636f2ee588e282da46db8702ae3c07c00e",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "66cc6eb63ca26c5e9dfdd3adceddda0304e4cdf4af244dd10dd99444a31dc54e",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "3fda1e9da01b69462ed2f8840c6edcdc048542d5adf2fcd69c52d837d18fa517",
+    "docs/superpowers/plans/2026-10-17-upgrade-t02-compatibility.md": "bc562b9dc06d6bc292998acea13063fad386e7feb29026ec16d0c1efef2f5246",
+    "docs/research/2026-10-17-t02-legacy-mapping.md": "a1147278fc47de441065b09c9d5d2420a1e61e479ad484eb7416fc73ab665ea3",
+    "docs/research/2026-10-17-rls-review-followup.md": "4c439a0f2e58d8256001e0c8784fafb433ae5f3f72eb630328495c2caa7f7473",
+    "docs/research/evidence/2026-10-17-t02-compatibility/review-status.md": "9c666584ebd27daa867b9a089ccf8a9b10f3c2dce248419a86f1a3b871eb9504",
+    "docs/research/evidence/2026-10-17-t02-compatibility/review-initial.md": "bd93ece004bcaf85fa8cdd2be1329a2b7a868953405d92fd30a562eec3de239f",
+    "docs/research/evidence/2026-10-17-rls-rehearsal/review-followup.md": "e09bf57ac9882f6db786a6934429e586b8028ee6d58cde6e1e55ab2f03646bea",
+    "docs/research/evidence/2026-10-17-rls-rehearsal/review-fixes.md": "4f44011e3ed8de1ed5c7d9964cb3325ac836b60ceeb250357a460631f77d87b9"
+  },
+  "protectedFileCount": 1206,
+  "protectedFilesUnchanged": true,
+  "evidenceSha256": {
+    "project-checks.json": "67dbd361369f091491d73f42db041faa5650b684d4fb8a4750c8cdc0f4b08516",
+    "verify.txt": "7a30e799f09a39b451a1c6158ed1c015220a740b292e67efe202c8567fe0a5d6",
+    "shared.txt": "ca6ed6b6580efee2345affcc9720cc04c447c2e13bb3f104b2bdd8931202d09e",
+    "infra.txt": "e06d2c51b8578cb1bc278a44d19e4ce6a6fbb619f94949a5a91a6babcee70846",
+    "mapping-final.txt": "3467491723556034e84379a1f0e9ec53ff3ba86754f3fbe4db8b76fa14800ac0",
+    "milestone-check.json": "4d1d13baf27ec2e9a11ba23456c836b3ebfd841ebdd40c32d24030fb709d26da",
+    "review-status.md": "9c666584ebd27daa867b9a089ccf8a9b10f3c2dce248419a86f1a3b871eb9504",
+    "review-initial.md": "bd93ece004bcaf85fa8cdd2be1329a2b7a868953405d92fd30a562eec3de239f"
+  }
+}

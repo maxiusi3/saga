@@ -1,74 +1,73 @@
 import { NextRequest, NextResponse } from 'next/server'
 import sharp from 'sharp'
-import { getSupabaseAdmin } from '@/lib/supabase'
+import { getAuthenticatedUser } from '@/lib/server/auth'
+import { imageUploadReference } from '@/lib/media-reference'
+import { requireMediaAccess, withMediaHeaders } from '@/lib/server/media-access'
 
 export const runtime = 'nodejs'
 
 export async function POST(request: NextRequest) {
+  const auth = await getAuthenticatedUser(request)
+  if (!auth.ok) return auth.response
+  const reply = (body: unknown, status = 200) => withMediaHeaders(NextResponse.json(body, { status }), auth.headers)
   try {
-    const form = await request.formData()
-    const file = form.get('file') as File | null
-    const folder = (form.get('folder') as string) || 'images'
+    let form: FormData
+    try { form = await request.formData() } catch { return reply({ error: 'Invalid upload request' }, 400) }
+    const file = form.get('file')
+    const folder = form.get('folder') ?? 'images'
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
     const maxSize = 5 * 1024 * 1024
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    if (!(file instanceof File)) {
+      return reply({ error: 'No image file provided' }, 400)
     }
 
-    const type = (file as any).type || ''
+    const type = file.type
     if (!allowedTypes.includes(type)) {
-      return NextResponse.json({ error: 'Unsupported file type' }, { status: 400 })
+      return reply({ error: 'Unsupported file type' }, 400)
     }
 
     if (file.size > maxSize) {
-      return NextResponse.json({ error: 'File too large' }, { status: 400 })
+      return reply({ error: 'File too large' }, 400)
     }
+
+    const reference = imageUploadReference(auth.user.id, folder)
+    if (!reference) return reply({ error: 'Invalid upload folder' }, 400)
+    const access = await requireMediaAccess(reference, auth.user)
+    if (!access.ok) return withMediaHeaders(access.response, auth.headers)
 
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
     const timestamp = Date.now()
-    const originalName = file.name || 'image'
-    const isPng = originalName.toLowerCase().endsWith('.png') || type === 'image/png'
-    const isGif = originalName.toLowerCase().endsWith('.gif') || type === 'image/gif'
+    const isPng = type === 'image/png'
+    const isGif = type === 'image/gif'
     const ext = isPng ? 'png' : (isGif ? 'gif' : 'jpg')
     const baseName = `${timestamp}-${Math.random().toString(36).slice(2)}`
     const filename = `${baseName}.${ext}`
     const thumbFilename = `${baseName}-thumb.${isGif ? 'png' : ext}`
 
-    const admin = getSupabaseAdmin()
-
-    let originalBuffer: Buffer<ArrayBufferLike> = buffer
-    if (ext === 'jpg') {
-      originalBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer()
-    } else if (ext === 'png') {
-      originalBuffer = await sharp(buffer).png({ compressionLevel: 9 }).toBuffer()
-    } else {
-      originalBuffer = buffer
-    }
+    const admin = access.admin
 
     const thumbBuffer = await sharp(buffer)
       .resize({ width: 320, height: 320, fit: 'cover' })
       .toFormat(isGif ? 'png' : (isPng ? 'png' : 'jpeg'), isGif || isPng ? { compressionLevel: 9 } : { quality: 75 })
       .toBuffer()
 
-    const { data: userRes } = await admin.auth.getUser()
-    const userId = userRes?.user?.id || 'anonymous'
-    const basePath = `${userId}/${folder}`
+    const basePath = reference.path.slice(0, reference.path.lastIndexOf('/'))
 
     const { data: uploadOriginal, error: upErr1 } = await admin.storage
       .from('saga')
-      .upload(`${basePath}/${filename}`, originalBuffer, { contentType: type, upsert: false, cacheControl: '3600' })
+      .upload(`${basePath}/${filename}`, buffer, { contentType: type, upsert: false, cacheControl: '3600' })
     if (upErr1) {
-      return NextResponse.json({ error: upErr1.message }, { status: 500 })
+      return reply({ error: 'Image upload failed' }, 500)
     }
 
     const { data: uploadThumb, error: upErr2 } = await admin.storage
       .from('saga')
       .upload(`${basePath}/${thumbFilename}`, thumbBuffer, { contentType: isGif ? 'image/png' : (isPng ? 'image/png' : 'image/jpeg'), upsert: false, cacheControl: '3600' })
     if (upErr2) {
-      return NextResponse.json({ error: upErr2.message }, { status: 500 })
+      return reply({ error: 'Thumbnail upload failed' }, 500)
     }
 
     const { data: signedOriginal, error: signedOriginalError } = await admin.storage
@@ -79,17 +78,17 @@ export async function POST(request: NextRequest) {
       .createSignedUrl(uploadThumb.path, 3600)
 
     if (signedOriginalError || signedThumbError || !signedOriginal || !signedThumb) {
-      return NextResponse.json({ error: 'Failed to create signed image URL' }, { status: 500 })
+      return reply({ error: 'Failed to create signed image URL' }, 500)
     }
 
-    return NextResponse.json({
+    return reply({
       success: true,
       url: signedOriginal.signedUrl,
       thumbUrl: signedThumb.signedUrl,
       path: uploadOriginal.path,
       thumbPath: uploadThumb.path
     })
-  } catch (e: any) {
-    return NextResponse.json({ error: e?.message || 'Upload failed' }, { status: 500 })
+  } catch {
+    return reply({ error: 'Upload failed' }, 500)
   }
 }

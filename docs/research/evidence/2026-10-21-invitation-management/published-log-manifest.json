@@ -1,0 +1,215 @@
+{
+  "createdAt": "2026-10-21T15:14:33.291Z",
+  "policy": "Raw outputs preserved in ignored recovery directory. Public .log.txt snapshots redact email/token/bearer/JWT/URI credentials. Intermediate failures are historical, final-* logs prove frozen checks.",
+  "logs": [
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/final-diff-check-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/final-diff-check-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/final-infra-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log",
+        "sha256": "bcf977d636725f2555fd374b965fcc4c4e7f138d3f4478adcbb76211b6c9d902"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/final-infra-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log.txt",
+        "sha256": "bcf977d636725f2555fd374b965fcc4c4e7f138d3f4478adcbb76211b6c9d902"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/final-shared-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log",
+        "sha256": "accad07de725e1a31641edf5a9c3ca88e6fb678ffa3ba6c3afbf99584fc7534c"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/final-shared-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log.txt",
+        "sha256": "accad07de725e1a31641edf5a9c3ca88e6fb678ffa3ba6c3afbf99584fc7534c"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/final-targeted-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log",
+        "sha256": "fb4478a38328b7944741c36ed2a234480515c33e00a97b6c2087a1744f38581d"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/final-targeted-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log.txt",
+        "sha256": "fb4478a38328b7944741c36ed2a234480515c33e00a97b6c2087a1744f38581d"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/final-verify-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log",
+        "sha256": "e51d33a83200f07886eae9c0c89cea193f00059cfcffa6b2d224134a631b54ff"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/final-verify-2026-10-21T15-01-18.941Z-64d52b6a-d77e-48fd-a73d-5301e63a7128.log.txt",
+        "sha256": "e51d33a83200f07886eae9c0c89cea193f00059cfcffa6b2d224134a631b54ff"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/http-and-recovery-intermediate.log",
+        "sha256": "600fea7fff3f54e1974c6efbd516a10d8ca46ddcbb1347af5c1eceaf162185e7"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/http-and-recovery-intermediate.log.txt",
+        "sha256": "600fea7fff3f54e1974c6efbd516a10d8ca46ddcbb1347af5c1eceaf162185e7"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/http-red.log",
+        "sha256": "d54e3f1ab4a20ae8465aee6e9b4d7c56394ec40057e21a0948f2e4090db66268"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/http-red.log.txt",
+        "sha256": "d54e3f1ab4a20ae8465aee6e9b4d7c56394ec40057e21a0948f2e4090db66268"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/identity-fix.log",
+        "sha256": "1aa618446947685e70228de60ddf0976d274e7aef12dc1553e31382c353ddec0"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/identity-fix.log.txt",
+        "sha256": "1aa618446947685e70228de60ddf0976d274e7aef12dc1553e31382c353ddec0"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/lint-first.log",
+        "sha256": "b82b0e69e3c56d005ec1fbd82900e6fd4af1b21db6cedf6cd761507a0e46a83a"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/lint-first.log.txt",
+        "sha256": "b82b0e69e3c56d005ec1fbd82900e6fd4af1b21db6cedf6cd761507a0e46a83a"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/review-fix-green.log",
+        "sha256": "8c6c9e5a74302d26f596b26c652cb2676f7496fcb93dcb0e8b837d5c95e7fa14"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/review-fix-green.log.txt",
+        "sha256": "8c6c9e5a74302d26f596b26c652cb2676f7496fcb93dcb0e8b837d5c95e7fa14"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/review-fix-red.log",
+        "sha256": "ab97922418166fddd15923d44313654ec6d3b28d5396c0404ac5a23d2fe6f2cc"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/review-fix-red.log.txt",
+        "sha256": "52bbc7a7a29ab1db45e259cb3d299b5445fc8a7562f74bdda51a556c6674edd9"
+      },
+      "redacted": true
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/targeted-complete.log",
+        "sha256": "2758bda7a06d1d46a369936b19d60c951b66799da14c81ac0d7611b03e29f733"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/targeted-complete.log.txt",
+        "sha256": "2758bda7a06d1d46a369936b19d60c951b66799da14c81ac0d7611b03e29f733"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/targeted-expanded.log",
+        "sha256": "ba6c4a92f11404d85770dae0461d0748d5a9afeee53f338464b040fe11d3e4ca"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/targeted-expanded.log.txt",
+        "sha256": "ba6c4a92f11404d85770dae0461d0748d5a9afeee53f338464b040fe11d3e4ca"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/targeted-first.log",
+        "sha256": "ae1aa05b066e1599f857192b51fa4e17b203a45a4941a31b754c25c1996c0e89"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/targeted-first.log.txt",
+        "sha256": "ae1aa05b066e1599f857192b51fa4e17b203a45a4941a31b754c25c1996c0e89"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/typecheck-expanded.log",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/typecheck-expanded.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/typecheck-first.log",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/typecheck-first.log.txt",
+        "sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/ui-red-final.log",
+        "sha256": "250a1f0950afb14018a4b6275668446f66d09e9666db5c6a97f623ad36a1bd40"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/ui-red-final.log.txt",
+        "sha256": "250a1f0950afb14018a4b6275668446f66d09e9666db5c6a97f623ad36a1bd40"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/ui-red-verified.log",
+        "sha256": "8aed6076c279403a44648bd43704936cd87324be4b8d266d74125148a2260a74"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/ui-red-verified.log.txt",
+        "sha256": "8aed6076c279403a44648bd43704936cd87324be4b8d266d74125148a2260a74"
+      },
+      "redacted": false
+    },
+    {
+      "raw": {
+        "path": ".superpowers/sdd/2026-10-21-upgrade-invitation-management/ui-red.log",
+        "sha256": "92965dc70f2ca1ecab1bb5590933544cffdbc6a837d651c1018c953b8a9bb94b"
+      },
+      "published": {
+        "path": "docs/research/evidence/2026-10-21-invitation-management/ui-red.log.txt",
+        "sha256": "92965dc70f2ca1ecab1bb5590933544cffdbc6a837d651c1018c953b8a9bb94b"
+      },
+      "redacted": false
+    }
+  ]
+}

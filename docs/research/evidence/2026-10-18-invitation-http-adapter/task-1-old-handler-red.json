@@ -1,0 +1,22 @@
+{
+  "phase": "old-handler-business-RED",
+  "command": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/server/__tests__/invitation-acceptance.test.ts",
+  "exitCode": 1,
+  "failedTests": 2,
+  "expected": {
+    "status": 503,
+    "externalCalls": 0
+  },
+  "observed": {
+    "body": {
+      "status": 401,
+      "cookieAuthCalls": 1
+    },
+    "path": {
+      "status": 401,
+      "cookieAuthCalls": 1
+    }
+  },
+  "provenance": "Real pre-change Next route functions. Only external Cookie Auth helper boundary replaced; SDK transport not claimed. No missing-module/environment failure.",
+  "rawSha256": "b9cde87ab0725c360e62cd3ea44b379cf052048f539d04cf56f446079501db54"
+}

@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-10-22T11:06:37.423944+08:00",
+  "basis": "Original integrated upgrade plan sections 7/7.1 and P0 acceptance remain unchanged. Local invitation-management completion does not introduce a new milestone.",
+  "basisDocument": "docs/2026-10-10-integrated-upgrade-plan.md",
+  "gateSpecification": "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+  "localScope": "Restricted verified-source and bound-history reads, shared sender management, explicit recovery/release and minimal sessionStorage ticket; local implementation, frozen tests, independent implementation/documentation/whole-batch reviews and final integrity complete.",
+  "G0": {
+    "passed": false,
+    "missing": [
+      "Real production Auth/JWT/PostgREST/RLS/ACL and provider/deployment permission qualification",
+      "Storage bucket configuration, actual object authorization and complete dependency integration",
+      "Seven unregistered migrations: semantic equivalence, trusted historical mapping/backfill, forward/rollback compatibility and backup recovery",
+      "Selected provider account/data conditions, actual event signature/product mapping and writer qualification"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "missing": [
+      "Formal media/Storage/session/job/deletion adapters and old media/delete compatibility",
+      "Declared-device 5/20/30-minute disconnect, refresh, reopen, lock-screen, call, quota and duplicate-save matrix",
+      "Remote cross-family ASR/playback/export/deletion refusal, confirmed-save recovery, original hashes and verifiable offline export"
+    ]
+  },
+  "G2": {
+    "passed": false,
+    "reason": "Formal no-mock archives, source/fidelity acceptance, family-separated retained set and measured seeded-error/negative-case thresholds are not complete."
+  },
+  "G3": {
+    "passed": false,
+    "reason": "Supported-device delivery, real payment/refund/reconciliation, backup/revocation/deletion drills and 6–8-household experience acceptance are not complete."
+  },
+  "G4": {
+    "passed": false,
+    "reason": "Complete household observation windows, actual payment/delivery/listening denominators and traceable whole-batch economics are not available."
+  },
+  "P0Complete": false,
+  "originalMilestonePassed": false,
+  "batchImplementationStatus": "LOCAL_COMPLETE_REVIEWED_VERIFIED",
+  "independentReview": {
+    "implementation": "spec compliance approved / code quality approved; zero open findings",
+    "documentation": "PASS / Approved; zero open findings",
+    "wholeBatch": "PASS / Approved; zero open findings",
+    "reviewerIndependence": "The same independent reviewer assessed documentation and whole-batch scope; interrupted attempt supplied no verdict."
+  },
+  "audit": {
+    "rerun": false,
+    "historicalTotal": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "source": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+    "reason": "Dependencies unchanged; historical audit failure was not resolved in this batch."
+  },
+  "previousAssessment": {
+    "path": "docs/research/evidence/2026-10-21-invitation-sender-http/milestone-check.json",
+    "sha256": "0960b4771602b11ed8e3d83c8c198e694f655cb54b25559960e6e61d34c79537"
+  },
+  "nextLocalStep": "Compose the old RLS/source-ledger matrices with PG17 and complete dependencies; then design formal media/Storage/deletion adapters.",
+  "productionSwitchesEnabled": false,
+  "committed": false,
+  "githubPushed": false,
+  "migrated": false,
+  "deployed": false
+}

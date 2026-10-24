@@ -1,0 +1,55 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand supabase-session auth-session-lifecycle auth-verify-session auth-session-guard home-auth-landing auth-store
+
+FAIL src/lib/__tests__/supabase-session.test.ts
+  ● Console
+
+    console.warn
+      WebCrypto API is not supported. Code challenge method will default to use plain instead of sha256.
+
+      21 |   const client = createClientSupabase()
+      22 |   expect(client).toBe(createClientSupabase())
+    > 23 |   const result = await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'http://localhost/en/auth/callback', skipBrowserRedirect: true } })
+         |                  ^
+      24 |   expect(result.error).toBeNull()
+      25 |   const url = new URL(result.data.url)
+      26 |   expect(url.searchParams.get('code_challenge_method')).toBe('s256')
+
+      at generatePKCEChallenge (../../node_modules/@supabase/auth-js/src/lib/helpers.ts:290:13)
+      at getCodeChallengeAndMethod (../../node_modules/@supabase/auth-js/src/lib/helpers.ts:310:31)
+      at SupabaseAuthClient._getUrlForProvider (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:5139:52)
+      at SupabaseAuthClient._handleProviderSignIn (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:4519:25)
+      at SupabaseAuthClient.signInWithOAuth (../../node_modules/@supabase/auth-js/src/GoTrueClient.ts:1227:12)
+      at Object.<anonymous> (src/lib/__tests__/supabase-session.test.ts:23:18)
+
+  ● installed SDK creates S256 OAuth and a cookie verifier on the shared browser client
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "s256"
+    Received: "plain"
+
+      24 |   expect(result.error).toBeNull()
+      25 |   const url = new URL(result.data.url)
+    > 26 |   expect(url.searchParams.get('code_challenge_method')).toBe('s256')
+         |                                                         ^
+      27 |   expect(url.searchParams.get('code_challenge')).toMatch(/^[A-Za-z0-9_-]{43}$/)
+      28 |   expect(document.cookie).toContain('sb-127-auth-token-code-verifier=')
+      29 |   expect(localStorage.getItem('sb-127-auth-token-code-verifier')).toBeNull()
+
+      at Object.toBe (src/lib/__tests__/supabase-session.test.ts:26:57)
+
+
+Test Suites: 1 failed, 5 passed, 6 total
+Tests:       1 failed, 28 passed, 29 total
+Snapshots:   0 total
+Time:        2.798 s, estimated 6 s
+Ran all test suites matching supabase-session|auth-session-lifecycle|auth-verify-session|auth-session-guard|home-auth-landing|auth-store.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand supabase-session auth-session-lifecycle auth-verify-session auth-session-guard home-auth-landing auth-store

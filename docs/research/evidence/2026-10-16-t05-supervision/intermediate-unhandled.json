@@ -1,0 +1,12 @@
+{
+  "status": "failed",
+  "exitCode": 1,
+  "reason": "An expected-rejection assertion became an unhandled rejection when a leftover maintenance fixture was fetched; the old harness did not catch unexpected process errors.",
+  "log": "intermediate-unhandled.log",
+  "cleanupEvidence": "intermediate-emergency-cleanup.json",
+  "subsequentFixes": [
+    "Cancel and close the supervisor maintenance backend before releasing its blocker",
+    "Safely observe both checkpoint and processing outcome in the dispatch abort test",
+    "Add shared fatal-error cleanup to the harness"
+  ]
+}

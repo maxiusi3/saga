@@ -1,0 +1,98 @@
+{
+  "startedAt": "2026-10-17T13:16:27.364Z",
+  "status": "passed",
+  "sources": {
+    "experiments/routine-notifications/README.md": "01b43f0d1cf517c41f592fc106dc801a72ec4e88bfe15fe9341ac70ffe8d07b4",
+    "experiments/routine-notifications/candidate.sql": "df64b110ef18356d5d1d33b8e02131af13cafd70ee050d0b27b566ee5f15c38e",
+    "experiments/routine-notifications/fixture.sql": "aa20466171894b942d9eef82c48fc8329c0b28156fac7bb81e2c66a0fcf37515",
+    "experiments/routine-notifications/scenarios.mjs": "a2127e32a448764c1cf8b439c59d7ba4f58e793d415303084197de8bc7b7f2db",
+    "experiments/routine-notifications/verify-lifecycle.mjs": "639d15e0255e9d7e17d8642015babb3d2b3e36c671560ba45e1a99d7eb72318c",
+    "experiments/routine-notifications/verify.mjs": "43bc4e4318d3ceb6e147f003ade8f95121a6d0ac1cb9a80126e9e57b014acb4d"
+  },
+  "cases": [
+    {
+      "name": "hostile_pg_environment",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation"
+      ],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-routine-audit/notification-run-2026-10-17T13-16-27.531Z-bce20147-a75d-47b4-bc90-8778523ffd36.json",
+      "evidenceSha256": "26fca6e17abbe5b54ba328c85231b910f4cd954f3a15a971bfe7d62147f0aee5",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "scrubbedKeys": [
+        "DATABASE_URL",
+        "PGDATABASE",
+        "PGHOST",
+        "PGHOSTADDR",
+        "PGOPTIONS",
+        "PGPASSFILE",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGSSLMODE",
+        "PGUSER"
+      ],
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "real_sigterm_after_fixture",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation",
+        "fixture-ready",
+        "shutdown-requested"
+      ],
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-routine-audit/notification-run-2026-10-17T13-16-29.765Z-bb936877-3a11-48d4-a4fd-3572138a814f.json",
+      "evidenceSha256": "ba36c0866da9754d56a26300c0f52f1e601c15984b654dea686c475f06b02770",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "rescue": {
+        "needed": false
+      }
+    },
+    {
+      "name": "real_failed_start_without_server",
+      "status": "passed",
+      "events": [
+        "evidence",
+        "allocation"
+      ],
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "evidence": "docs/research/evidence/2026-10-17-routine-audit/notification-run-2026-10-17T13-16-31.420Z-d6a61048-06bd-46cd-bb1f-6d6778c8f106.json",
+      "evidenceSha256": "cae0209bd1e90ba5de4a0772162dba857e7cc41c821f11c9886155f0d94a85ff",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "rescue": {
+        "needed": false
+      }
+    }
+  ],
+  "finishedAt": "2026-10-17T13:16:32.667Z"
+}

@@ -1,0 +1,16 @@
+{
+  "phase": "fix-1-discovery-red",
+  "command": "npm",
+  "args": [
+    "test",
+    "--workspace=@saga/web",
+    "--",
+    "--listTests",
+    "--runInBand",
+    "--json"
+  ],
+  "exitCode": 0,
+  "oldFixtureDiscovered": true,
+  "classification": "Jest discovery lists a helper with no tests as a suite. Controller full verify independently failed this suite while 960 tests passed.",
+  "rawSha256": "dcdfa67b0ea7cbacf294fab1aa4354999994bdf5d702b50dc252386117bd848f"
+}

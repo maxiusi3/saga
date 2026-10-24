@@ -1,0 +1,516 @@
+TAP version 13
+# Subtest: the trigger entry pins only the zero-argument public trigger in the immutable snapshot
+not ok 1 - the trigger entry pins only the zero-argument public trigger in the immutable snapshot
+  ---
+  duration_ms: 10.393919
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:31:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:32:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: trigger collection reuses the validated query and emits only pinned identity parameters
+not ok 2 - trigger collection reuses the validated query and emits only pinned identity parameters
+  ---
+  duration_ms: 1.44089
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:49:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:50:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: the trigger CLI persists definition drift privately and records exact scope, hashes and verified configuration
+not ok 3 - the trigger CLI persists definition drift privately and records exact scope, hashes and verified configuration
+  ---
+  duration_ms: 3.16919
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:157:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:158:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: CLI configuration is rejected before reading credentials or creating a client
+not ok 4 - CLI configuration is rejected before reading credentials or creating a client
+  ---
+  duration_ms: 0.93713
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:199:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:201:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: snapshot drift blocks credential access and connection creation
+not ok 5 - snapshot drift blocks credential access and connection creation
+  ---
+  duration_ms: 1.740305
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:210:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:212:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid credentials cannot construct a client and raw configuration stays out of reports
+not ok 6 - invalid credentials cannot construct a client and raw configuration stays out of reports
+  ---
+  duration_ms: 0.971371
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:221:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:222:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: missing and attribute-drift trigger rows cannot report a matched capture
+not ok 7 - missing and attribute-drift trigger rows cannot report a matched capture
+  ---
+  duration_ms: 1.875984
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:229:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:234:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: wrong identities, duplicates, invalid digests and malformed rows produce only safe errors
+not ok 8 - wrong identities, duplicates, invalid digests and malformed rows produce only safe errors
+  ---
+  duration_ms: 1.568998
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:241:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:246:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unsafe backend session properties prevent definition reads and still roll back
+not ok 9 - unsafe backend session properties prevent definition reads and still roll back
+  ---
+  duration_ms: 2.444134
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:255:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:258:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unverified TLS prevents any transaction or definition read
+not ok 10 - unverified TLS prevents any transaction or definition read
+  ---
+  duration_ms: 1.873629
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:266:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:267:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a denied catalog read is rolled back and reports the allowlisted code only
+not ok 11 - a denied catalog read is rolled back and reports the allowlisted code only
+  ---
+  duration_ms: 1.199592
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:274:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:275:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: the trigger CLI enforces its asynchronous deadline when connect hangs
+not ok 12 - the trigger CLI enforces its asynchronous deadline when connect hangs
+  ---
+  duration_ms: 0.850716
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:283:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:284:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: the trigger CLI enforces its asynchronous deadline when collect hangs
+not ok 13 - the trigger CLI enforces its asynchronous deadline when collect hangs
+  ---
+  duration_ms: 1.86621
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:283:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:284:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: the trigger CLI enforces its asynchronous deadline when rollback hangs
+not ok 14 - the trigger CLI enforces its asynchronous deadline when rollback hangs
+  ---
+  duration_ms: 0.958109
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:283:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:284:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: the trigger CLI enforces its asynchronous deadline when close hangs
+not ok 15 - the trigger CLI enforces its asynchronous deadline when close hangs
+  ---
+  duration_ms: 0.678577
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:283:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:284:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a later close error retains completed private evidence without reporting capture success
+not ok 16 - a later close error retains completed private evidence without reporting capture success
+  ---
+  duration_ms: 4.223948
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:296:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:297:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: an insecure existing private directory prevents persistence and successful reporting
+not ok 17 - an insecure existing private directory prevents persistence and successful reporting
+  ---
+  duration_ms: 1.932373
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:306:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fixed trigger capture entry must exist
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    requireImplementation (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:22:44)
+    runMain (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:76:3)
+    TestContext.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-trigger.test.cjs:307:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 0
+# fail 17
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 688.642976

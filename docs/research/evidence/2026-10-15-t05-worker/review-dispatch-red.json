@@ -1,0 +1,34 @@
+{
+  "startedAt": "2026-10-15T03:22:05.234Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "9f551247ec3f12707fd6505ee9e788c66662b634919f708369a123f326135f73",
+    "experiments/t05-durable-worker/worker.mjs": "94722529965a25892da009547172c6a33e36050691a941459729b1d67cdc9fb1",
+    "experiments/t05-durable-worker/verify.mjs": "c3e9e292994564a8a7717903b09938f38666a5c9c2e52e996ce6502ea1cb1cfa",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [],
+  "assertions": 5,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "No long-running lease heartbeat, production supervisor, real-device recording, backup restore, or production load qualification."
+  ],
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: no simulated dispatch after expiry during row-lock wait\n\n1 !== 0\n\n    at equal (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:44:10)\n    at dispatchContentionRegression (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:163:3)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async scenario (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:54:19)\n    at async file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:280:5",
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-15T03:22:12.460Z"
+}

@@ -1,0 +1,71 @@
+{
+  "startedAt": "2026-10-23T05:14:52.376Z",
+  "status": "passed",
+  "scope": "Local synthetic PG17 only; reproduce missing comment opener and verify comment-free queries",
+  "assertions": 25,
+  "scenarios": [],
+  "actorConnections": [],
+  "results": [
+    {
+      "block": "A",
+      "missingCommentOpenerSqlstate": "42601",
+      "correctedSqlstate": "00000",
+      "path": "docs/research/2026-10-23-supabase-sql/A-buckets.sql",
+      "sha256": "457dfb0a35a415117c264dfc4c7ec4c94ae488070156c80c3db553f2ce9ddede",
+      "syntheticRowCount": 2
+    },
+    {
+      "block": "B",
+      "missingCommentOpenerSqlstate": "42601",
+      "correctedSqlstate": "00000",
+      "path": "docs/research/2026-10-23-supabase-sql/B-storage-enum.sql",
+      "sha256": "237eafffba62b1a0a5b86c6dec4dbe1bee7437a88c4f61c50f61d857f79d62e2",
+      "syntheticRowCount": 3
+    },
+    {
+      "block": "C",
+      "missingCommentOpenerSqlstate": "42601",
+      "correctedSqlstate": "00000",
+      "path": "docs/research/2026-10-23-supabase-sql/C-function-fingerprints.sql",
+      "sha256": "a474819fba61185a4f4e1f5f527e92fe6238d98fdb663b4e1a890b31a7304aef",
+      "syntheticRowCount": 3
+    }
+  ],
+  "original": {
+    "path": "docs/research/2026-10-23-user-readonly-evidence.sql",
+    "sha256": "6ee367a4164ca6505beae7a10d3d96cfa7f54f65e45d92645583966ae57e7fd9"
+  },
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 67115,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-kzDBUt/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-kzDBUt",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-23T05:14:54.023Z"
+}

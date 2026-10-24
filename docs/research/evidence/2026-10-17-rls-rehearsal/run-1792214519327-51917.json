@@ -1,0 +1,546 @@
+{
+  "startedAt": "2026-10-17T05:21:59.327Z",
+  "status": "passed",
+  "scope": "isolated synthetic PostgreSQL RLS replay; no remote access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/rls-rehearsal/README.md": "7bae942905186d9a3aebc199b8bd4797f1de2dde6b2d6dadaba160fa9b8567fa",
+    "experiments/rls-rehearsal/fixture.sql": "d70b14d3f789f10fcf3f37c40767b0e877fbb5f6851cf83ef41d01d625e9f550",
+    "experiments/rls-rehearsal/scenarios.mjs": "029af8de89675f3f90d6b4b201b25a911b969e4f4229f9e52074b726d6a83c91",
+    "experiments/rls-rehearsal/verify.mjs": "d1bc5e394db9273b341856db572d1c24aa646b62a828cd56587064e21754c2d8",
+    "experiments/rls-rehearsal/verify-shutdown.mjs": "d888221dcbead3353c433917102b05428dac7f912e05115780f33a566765cd7b",
+    "experiments/rls-rehearsal/candidate.sql": "4fbb8a4449c27b8f19dee2a173fcf8f03c945b5a6949f5e3c9a752e3c496164b"
+  },
+  "observations": [
+    {
+      "name": "exact_snapshot_policy_graph",
+      "result": {
+        "code": "42P17"
+      },
+      "mode": "all 32 saved predicates with dependency RLS enabled"
+    },
+    {
+      "name": "isolated_audio_public_read",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_audio_cross_project_insert",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_removed_uploader_read",
+      "mode": "dependency RLS disabled",
+      "rows": 1
+    },
+    {
+      "name": "isolated_project_name_binding",
+      "mode": "dependency RLS disabled",
+      "ordinaryMemberRows": 0,
+      "crossProjectRows": 1
+    },
+    {
+      "name": "isolated_story_insert_or_branch",
+      "mode": "projects/roles/member RLS disabled",
+      "rows": 1
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "candidate_rejects_wrong_marker_without_mutation",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "failed_candidate_rolls_back_all_ddl",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "candidate_can_be_applied_twice",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "anonymous_cannot_read_audio",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "anonymous_with_subject_claim_still_denied",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "foreign_or_removed_audio_00000000-0000-4000-8000-000000000006",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "foreign_or_removed_audio_00000000-0000-4000-8000-000000000007",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "foreign_or_removed_audio_00000000-0000-4000-8000-000000000004",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "current_member_reads_both_buckets_00000000-0000-4000-8000-000000000001",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "current_member_reads_both_buckets_00000000-0000-4000-8000-000000000002",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "current_member_reads_both_buckets_00000000-0000-4000-8000-000000000003",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "removed_original_uploader_has_no_prefix_exception",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "path_like_project_name_cannot_grant_foreign_access",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "story_scoped_image_00000000-0000-4000-8000-000000000130",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "story_scoped_image_00000000-0000-4000-8000-000000000135",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "private_media_00000000-0000-4000-8000-000000000131",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "private_media_00000000-0000-4000-8000-000000000134",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "unrelated_bucket_policy_is_preserved",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "authorized_insert_audio-recordings_projects",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "authorized_insert_saga_images",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "authorized_insert_audio-recordings_temp",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "canonical_edge_whitespace_matches_ecmascript_trim",
+      "status": "passed",
+      "assertions": 150
+    },
+    {
+      "name": "interior_unicode_filename_remains_valid",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_1",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_2",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_3",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_4",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_5",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_6",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_7",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_8",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_9",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_10",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_11",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_12",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_13",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_14",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_15",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_16",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_17",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_18",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_19",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_20",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_21",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_22",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_23",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_24",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_25",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_26",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "invalid_or_unauthorized_key_27",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "object_owner_metadata_cannot_impersonate_another_user",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "owner_id_compatibility_still_requires_path_and_membership",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "managed_objects_cannot_be_overwritten_renamed_or_deleted",
+      "status": "passed",
+      "assertions": 15
+    },
+    {
+      "name": "unknown_permissive_policy_cannot_reopen_managed_access",
+      "status": "passed",
+      "assertions": 8
+    },
+    {
+      "name": "projects_and_role_queries_have_no_recursive_policy_error",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "story_reads_require_current_project_membership",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "story_insert_is_own_active_storyteller_only",
+      "status": "passed",
+      "assertions": 14
+    },
+    {
+      "name": "story_edit_does_not_transfer_project_or_creator",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "name": "raw_story_delete_stays_closed_until_tombstone_adapter",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "unexpected_story_policy_cannot_override_project_boundary",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "revocation_applies_on_next_read_committed_statement",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "old_repeatable_read_snapshot_is_not_instantly_revoked",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "fixed_security_definer_helpers_cannot_be_replaced_by_caller",
+      "status": "passed",
+      "assertions": 3
+    }
+  ],
+  "assertions": 351,
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f",
+    "captureTime": "2026-10-17T02:45:52.407Z"
+  },
+  "scratch": "/tmp/saga-rls-C9SG2F",
+  "replayedPolicies": [
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_delete"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_insert"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_select"
+    },
+    {
+      "schema": "public",
+      "table": "project_members",
+      "name": "project_members_update"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_delete"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_insert"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_select"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_select_self"
+    },
+    {
+      "schema": "public",
+      "table": "project_roles",
+      "name": "project_roles_update"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_delete"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_insert"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_insert_authenticated"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_select"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_select_members"
+    },
+    {
+      "schema": "public",
+      "table": "projects",
+      "name": "projects_update"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_delete"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_insert"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_insert_members"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_select"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_select_members"
+    },
+    {
+      "schema": "public",
+      "table": "stories",
+      "name": "stories_update"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Allow authenticated users to upload audio jf5dkp_0"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Allow public read access to audio jf5dkp_0"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Project facilitators can delete project files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Project facilitators can update project files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Project facilitators can upload project files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Project members can view project files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Storytellers can upload story files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Users can delete their own files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Users can update their own files"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Users can upload files to their own folders"
+    },
+    {
+      "schema": "storage",
+      "table": "objects",
+      "name": "Users can view their own files"
+    }
+  ],
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:22:03.040Z"
+}

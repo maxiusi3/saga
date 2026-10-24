@@ -1,0 +1,16 @@
+Frozen implementation manifest 2026-10-19T03:34:41.528703+00:00
+SHA-256  path
+39277c5c3d5634d52cc87ccb84cd2837c619d20baf562179cde500a1110aa5ec  packages/web/src/app/[locale]/auth/signin/page.tsx
+f838b99171a76d5fc8c9d6d6d326ae0b7938bafb9145e39aaf6d75983cba0232  packages/web/src/app/[locale]/auth/callback/route.ts
+7e6735667b3fd76990f4dc976e37f09cc8a09840920e9f17da698fdd6b6a0987  packages/web/src/components/auth/auth-provider.tsx
+0651d3d5f2049f4145db8ce6896cbd04be58c7d5c6ecfa91693aa47ed515eb82  packages/web/src/lib/auth-return.ts
+b6d0046c0d757c3a58e21be23aa57371ee901d23b27b084871acb8633fadc7b5  packages/web/src/lib/server/auth-callback.ts
+fe55a4829948f4034ede75ad5c183a0ab89909fcfd232d608ee35a85197d837c  packages/web/src/lib/__tests__/auth-return.test.ts
+8ea0cd699c72d1575a8570b2cfba119bbe729f767209fbf91fde3020a75f43bc  packages/web/src/lib/server/__tests__/auth-callback.test.ts
+8ae2608bc5bc39e4ba643fe810ab2fc4d96d25ae89d54123645a7f80bcf9840e  packages/web/src/lib/server/test-support/auth-callback-fixture.ts
+3769036a630c9b511428d7780690785ed84362481aeea44e79c59faf329ad9ab  packages/web/src/components/auth/__tests__/auth-signin-return.test.tsx
+
+Actual installed SDK versions:
+@supabase/ssr 0.10.2
+@supabase/supabase-js 2.105.3
+@supabase/auth-js 2.105.3

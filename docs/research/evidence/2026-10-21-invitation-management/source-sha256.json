@@ -1,0 +1,21 @@
+{
+  "experiments/pg17-invitation-management/README.md": "b0cab9d09a2a7992d1526218dd25ab105c7692bdffb69938cf2fe47e92d7cee3",
+  "experiments/pg17-invitation-management/candidate.sql": "e2063af8a44dbbf045ec1c47aae210a7a070629c17c0702093e391b7150c8c9a",
+  "experiments/pg17-invitation-management/scenarios.mjs": "6dabb172500007151e934819e3605cb67d0672af833d293c15a5965d94e44bea",
+  "experiments/pg17-invitation-management/verify-lifecycle.mjs": "2221b6d5ece337b90a981fcb1d1c61ef3c2f57ac8253ad34d8824c8379c6dc5b",
+  "experiments/pg17-invitation-management/verify.mjs": "7849a2b701e50977546de64d46c03edf9b802e94b40b55ca6ad12f056a802eb2",
+  "packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx": "6bdfda95955eb5cb131ae7f372d91e63b86418853f773c45bf194895728183c3",
+  "packages/web/src/app/api/invitations/manage/route.ts": "7bfb1c07195566e32e338a7ce821df8da83f2a99d58730c84adacd590366b4fc",
+  "packages/web/src/app/api/invitations/sources/route.ts": "4c524767ade5b3526f4793d3b4265533f0825c8c6c99190f119bfc5692e6cf30",
+  "packages/web/src/components/invitations/__tests__/invitation-management-ui.test.tsx": "923defa14e17d0fc822786d9da54460ec5177a7f111f9696316685d979884abc",
+  "packages/web/src/components/invitations/__tests__/invitation-sender-ui.test.tsx": "6e381db5ed07245697d539a68cb20455e86b88e332a74b72b1646bfc4fba323d",
+  "packages/web/src/components/invitations/invitation-management.tsx": "b40069c7eb66e059b486777fc3f006da12297a8f4fcb2c2a48f16b41e8b7fa60",
+  "packages/web/src/components/invitations/invitation-manager.tsx": "4b185e9227d375c6ae4132b84a41678490c03428eb920d626a41b3063ba9f3da",
+  "packages/web/src/lib/__tests__/invitation-management-client.test.ts": "3228468fad615b34c1c67b4b0867b08df75a0323bff413e0fadf0ebf77180952",
+  "packages/web/src/lib/__tests__/invitation-recovery.test.ts": "8c1c6e81fd9bcbb9a15b99c66a1b074ed28153bafabb0271c10fbc9c609ed50e",
+  "packages/web/src/lib/invitation-management-client.ts": "ffab02b0c2eb9d7f861d6597f00f9a635c6a56ed393b85e77ca28c65b00ed233",
+  "packages/web/src/lib/invitation-management-protocol.ts": "860703225c783505a3ed24005500d56f00d3cbcaf90ba4ed33da6d5c8028c00c",
+  "packages/web/src/lib/invitation-recovery.ts": "142bef065701f0117a5dd7e5a7b590b55e703e1356476ed45e14076eef0af0b0",
+  "packages/web/src/lib/server/__tests__/invitation-management.test.ts": "44320535521b56b89e6014e5a0e1a7c4476d849f1e9a3113a2de46c60d0c3372",
+  "packages/web/src/lib/server/invitation-management.ts": "606cc5237b9b5a61644201453a5583bb1036e925d3c22bdffa40341c20a339ee"
+}

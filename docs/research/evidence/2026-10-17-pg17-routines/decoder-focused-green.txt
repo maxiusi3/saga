@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand src/lib/server/__tests__/recording-audio-decoder.test.ts --json --outputFile=../../docs/research/evidence/2026-10-17-pg17-routines/decoder-focused-green.json
+
+Test Suites: 1 passed, 1 total
+Tests:       38 passed, 38 total
+Snapshots:   0 total
+Time:        21.804 s
+Ran all test suites matching src/lib/server/__tests__/recording-audio-decoder.test.ts.
+Test results written to: ../../docs/research/evidence/2026-10-17-pg17-routines/decoder-focused-green.json

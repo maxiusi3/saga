@@ -1,0 +1,48 @@
+{
+  "startedAt": "2026-10-16T02:57:14.766Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "be63c3ccf1893e87a43a7c8e96c0a73b6c4cb8d504c0f148af37e62fe77a5bf1",
+    "experiments/t05-durable-worker/worker.mjs": "87bf8f280aae7b34c588411d2284b1b4fdf78d27d74bbedae41494fe864b915b",
+    "experiments/t05-durable-worker/verify.mjs": "cc9e81d925985dc52f5f1402d28c4c0d1c8e285ba41ae623ce2bd35249280404",
+    "experiments/t05-durable-worker/runner.mjs": "62526bc2fdf4e6e61447350bb48a684a4e1ada9982ce4498fe745cc61c864df6",
+    "experiments/t05-durable-worker/supervisor.mjs": "22e0acfedef07ce896a54b9ca2b43847948e83229b56353d610a27da84c4e6b0",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "e334cb2b493412f0e59af4fa7f2893d77833d2612295a5c54ee3e3ad97289a36",
+    "experiments/t05-durable-worker/README.md": "4c9e3ad43df0964f28702ff19732b9c190eca1f323189769801b7ede3c720c44",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [],
+  "assertions": 0,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "Local asynchronous synthetic tasks and process supervision only; no real audio, provider cancellation/billing, production hosting, real-device recording, backup restore, or load qualification."
+  ],
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: forced runner SIGKILL cannot be reported as clean shutdown\n+ actual - expected\n\n  {\n+   code: 0,\n-   code: 1,\n    signal: null\n  }\n\n    at equal (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:48:10)\n    at supervisedStoppedRunner (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/supervision-scenarios.mjs:393:5)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async scenario (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:58:19)\n    at async file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:600:5",
+  "processOwnership": {
+    "supervisorPids": [
+      27791
+    ],
+    "runnerPids": [
+      27799
+    ],
+    "remainingGroups": [],
+    "remainingRunnerPids": []
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T02:57:19.091Z"
+}

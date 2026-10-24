@@ -1,0 +1,166 @@
+{
+  "startedAt": "2026-10-16T04:42:44.566Z",
+  "scenarios": [
+    {
+      "owner": "runner",
+      "fault": "fatal",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-red-confirmed-runner-fatal.json",
+      "status": "failed",
+      "harnessPid": 45247,
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "runner",
+        "fault": "fatal",
+        "ownerPid": 45315,
+        "decoderPid": 45318,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 45247,
+        "stoppedOwner": true,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "runnerPids": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      },
+      "decoderAliveAfterHarnessExit": true,
+      "error": "AssertionError [ERR_ASSERTION]: recorded real FFmpeg PID must be dead after harness cleanup\n\ntrue !== false\n\n    at file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify-merge-cleanup.mjs:45:12",
+      "diagnostic": "failed: harness unexpected failure; cleanup {\"ownedChildrenRemaining\":0,\"clusterStopped\":true,\"tempDirectoryRemoved\":true,\"errors\":[]}\n",
+      "rescuedDecoder": true,
+      "decoderAliveAfterRescue": false
+    },
+    {
+      "owner": "runner",
+      "fault": "SIGTERM",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-red-confirmed-runner-SIGTERM.json",
+      "status": "failed",
+      "harnessPid": 45365,
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "runner",
+        "fault": "SIGTERM",
+        "ownerPid": 45426,
+        "decoderPid": 45429,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 45365,
+        "stoppedOwner": true,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "runnerPids": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      },
+      "decoderAliveAfterHarnessExit": true,
+      "error": "AssertionError [ERR_ASSERTION]: recorded real FFmpeg PID must be dead after harness cleanup\n\ntrue !== false\n\n    at file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify-merge-cleanup.mjs:45:12",
+      "diagnostic": "interrupted: harness SIGTERM; cleanup {\"ownedChildrenRemaining\":0,\"clusterStopped\":true,\"tempDirectoryRemoved\":true,\"errors\":[]}\n",
+      "rescuedDecoder": true,
+      "decoderAliveAfterRescue": false
+    },
+    {
+      "owner": "worker",
+      "fault": "fatal",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-red-confirmed-worker-fatal.json",
+      "status": "failed",
+      "harnessPid": 45476,
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "worker",
+        "fault": "fatal",
+        "ownerPid": 45536,
+        "decoderPid": 45539,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 45476,
+        "stoppedOwner": true,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "runnerPids": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      },
+      "decoderAliveAfterHarnessExit": true,
+      "error": "AssertionError [ERR_ASSERTION]: recorded real FFmpeg PID must be dead after harness cleanup\n\ntrue !== false\n\n    at file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify-merge-cleanup.mjs:45:12",
+      "diagnostic": "failed: harness unexpected failure; cleanup {\"ownedChildrenRemaining\":0,\"clusterStopped\":true,\"tempDirectoryRemoved\":true,\"errors\":[]}\n",
+      "rescuedDecoder": true,
+      "decoderAliveAfterRescue": false
+    },
+    {
+      "owner": "worker",
+      "fault": "SIGTERM",
+      "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-16-t04-t05-merge/cleanup-red-confirmed-worker-SIGTERM.json",
+      "status": "failed",
+      "harnessPid": 45588,
+      "exit": {
+        "code": 143,
+        "signal": null
+      },
+      "fixture": {
+        "owner": "worker",
+        "fault": "SIGTERM",
+        "ownerPid": 45648,
+        "decoderPid": 45651,
+        "decoderCommand": "/Users/eat/.codex/handoffs/videocut/2026-10-06-video-upgrade/evidence/runtime/ffmpeg-macos-x86_64-v7.1",
+        "decoderGroup": 45588,
+        "stoppedOwner": true,
+        "stoppedDecoder": true
+      },
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "runnerPids": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": []
+      },
+      "decoderAliveAfterHarnessExit": true,
+      "error": "AssertionError [ERR_ASSERTION]: recorded real FFmpeg PID must be dead after harness cleanup\n\ntrue !== false\n\n    at file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify-merge-cleanup.mjs:45:12",
+      "diagnostic": "interrupted: harness SIGTERM; cleanup {\"ownedChildrenRemaining\":0,\"clusterStopped\":true,\"tempDirectoryRemoved\":true,\"errors\":[]}\n",
+      "rescuedDecoder": true,
+      "decoderAliveAfterRescue": false
+    }
+  ],
+  "sources": {
+    "verify.mjs": "d0488ed296aaa36bba7aead48f6220d4e10af1d1489c8f6088a6bc772671f88d",
+    "merge-scenarios.mjs": "e7b58a9f3ecb8247337d70bf17d6dd2a1adfa12cad1daee54c220484d94e68ce",
+    "verify-merge-cleanup.mjs": "849479b972b71461e76225f3cb4638b8576b1871a0fe16eed2f997efac2453d4",
+    "worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+    "runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc"
+  },
+  "status": "failed",
+  "finishedAt": "2026-10-16T04:42:58.564Z"
+}

@@ -1,0 +1,348 @@
+
+> saga-family-biography@1.0.0 verify
+> npm run type-check && npm run lint && npm test --workspace=packages/web -- --runInBand && npm run build:vercel
+
+
+> saga-family-biography@1.0.0 type-check
+> npm run type-check --workspaces
+
+
+> @saga/shared@1.5.0 type-check
+> tsc --noEmit
+
+
+> @saga/web@1.0.0 type-check
+> tsc --noEmit
+
+
+> saga-family-biography@1.0.0 lint
+> npm run lint --workspaces
+
+
+> @saga/shared@1.5.0 lint
+> eslint "src/**/*.{ts,tsx}"
+
+
+> @saga/web@1.0.0 lint
+> ../../node_modules/.bin/eslint .
+
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand
+
+watchman warning: Recrawled this watch 9 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/eat/Documents/eatpotato/saga传奇' ; watchman watch-project '/Users/eat/Documents/eatpotato/saga传奇'`
+
+
+Test Suites: 77 passed, 77 total
+Tests:       765 passed, 765 total
+Snapshots:   0 total
+Time:        41.288 s, estimated 42 s
+Ran all test suites.
+
+> saga-family-biography@1.0.0 build:vercel
+> npm run build --workspace=packages/shared && npm run build --workspace=packages/web
+
+
+> @saga/shared@1.5.0 build
+> tsc
+
+
+> @saga/web@1.0.0 build
+> npm run build:shared && next build --webpack
+
+
+> @saga/web@1.0.0 build:shared
+> cd ../shared && npm run build
+
+
+> @saga/shared@1.5.0 build
+> tsc
+
+▲ Next.js 16.4.1 (webpack)
+- Environments: .env.local
+⚠ `eslint` configuration in next.config.js is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+⚠ `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.js to protect your application from malicious users.
+⚠ Invalid next.config.js options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+✓ Running next.config.js took 51ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 12.1s
+  Running TypeScript ...
+  Finished TypeScript in 7.9s ...
+  Collecting page data using 7 workers ...
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at 51529 (.next/server/chunks/6213.js:1:16689)
+    at Function.k (.next/server/webpack-runtime.js:1:143)
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at 51529 (.next/server/chunks/6213.js:1:16689)
+    at Function.k (.next/server/webpack-runtime.js:1:143)
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at 51529 (.next/server/chunks/6213.js:1:16689)
+    at Function.k (.next/server/webpack-runtime.js:1:143)
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at 51529 (.next/server/chunks/6213.js:1:16689)
+    at Function.k (.next/server/webpack-runtime.js:1:143)
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at 51529 (.next/server/chunks/6213.js:1:16689)
+    at Function.k (.next/server/webpack-runtime.js:1:143)
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at 51529 (.next/server/chunks/6213.js:1:16689)
+    at Function.k (.next/server/webpack-runtime.js:1:143)
+❌ Configuration validation failed:
+  - Missing required server environment variable: SUPABASE_SERVICE_ROLE_KEY
+Configuration validation failed: Error: Invalid configuration. Please check your environment variables.
+    at 51529 (.next/server/chunks/6213.js:1:16689)
+    at Function.k (.next/server/webpack-runtime.js:1:143)
+  Generating static pages using 7 workers (0/175) ...
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+  Generating static pages using 7 workers (43/175) 
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+  Generating static pages using 7 workers (87/175) 
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: en
+[LocaleLayout] Rendering with locale: ko
+[LocaleLayout] Rendering with locale: ja
+[LocaleLayout] Rendering with locale: zh-CN
+[LocaleLayout] Rendering with locale: zh-TW
+[LocaleLayout] Rendering with locale: es
+[LocaleLayout] Rendering with locale: pt
+[LocaleLayout] Rendering with locale: fr
+[LocaleLayout] Rendering with locale: zh-CN
+  Generating static pages using 7 workers (131/175) 
+✓ Generating static pages using 7 workers (175/175) in 2.6s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /[locale]
+├ ƒ /[locale]/accept-invitation
+├ ƒ /[locale]/accessibility
+├ ƒ /[locale]/auth/callback
+├ ƒ /[locale]/auth/signin
+├ ƒ /[locale]/auth/verify
+├ ƒ /[locale]/dashboard
+├ ƒ /[locale]/dashboard/help
+├ ƒ /[locale]/dashboard/notifications
+├ ƒ /[locale]/dashboard/profile
+├ ƒ /[locale]/dashboard/projects
+├ ƒ /[locale]/dashboard/projects/[id]
+├ ƒ /[locale]/dashboard/projects/[id]/invitations
+├ ƒ /[locale]/dashboard/projects/[id]/record
+├ ƒ /[locale]/dashboard/projects/[id]/settings
+├ ƒ /[locale]/dashboard/projects/[id]/stories/[storyId]
+├ ƒ /[locale]/dashboard/projects/create
+├ ƒ /[locale]/dashboard/purchase
+├ ƒ /[locale]/dashboard/resources
+├ ƒ /[locale]/dashboard/settings
+├ ƒ /[locale]/dashboard/settings/notifications
+├ ƒ /[locale]/invite/[token]
+├ ƒ /[locale]/privacy
+├ ƒ /[locale]/privacy-pledge
+├ ƒ /[locale]/terms
+├ ƒ /api/admin/cleanup-invitations
+├ ƒ /api/agents/editor/process-story
+├ ƒ /api/agents/interview/intervention
+├ ƒ /api/agents/interview/session
+├ ƒ /api/agents/wiki/process-contribution
+├ ƒ /api/ai/generate-content
+├ ƒ /api/ai/health
+├ ƒ /api/ai/process-stories
+├ ƒ /api/ai/realtime-prompt
+├ ƒ /api/ai/transcribe
+├ ƒ /api/health
+├ ƒ /api/invitations/[token]
+├ ƒ /api/invitations/[token]/accept
+├ ƒ /api/invitations/accept
+├ ƒ /api/invitations/check-pending
+├ ƒ /api/invitations/verify
+├ ƒ /api/media/assets
+├ ƒ /api/media/assets/[assetId]/access
+├ ƒ /api/media/assets/[assetId]/complete
+├ ƒ /api/media/delete-image
+├ ƒ /api/media/signed-url
+├ ƒ /api/media/upload-image
+├ ƒ /api/notifications
+├ ƒ /api/notifications/unread-count
+├ ƒ /api/payments/create-intent
+├ ƒ /api/privacy-pledge
+├ ƒ /api/project-roles
+├ ƒ /api/projects/[id]/chapters
+├ ƒ /api/projects/[id]/export
+├ ƒ /api/projects/[id]/interactions/answered-by-user
+├ ƒ /api/projects/[id]/interactions/pending
+├ ƒ /api/projects/[id]/invitations
+├ ƒ /api/projects/[id]/overview
+├ ƒ /api/projects/[id]/prompts/next
+├ ƒ /api/projects/[id]/stories
+├ ƒ /api/projects/by-ids
+├ ƒ /api/projects/owned
+├ ƒ /api/public-archive/contributions/[contributionId]/withdraw
+├ ƒ /api/public-archive/events/approved
+├ ƒ /api/public-archive/reviewer/event-drafts
+├ ƒ /api/public-archive/reviewer/event-drafts/[eventId]/review
+├ ƒ /api/stories/[storyId]/agent-artifacts
+├ ƒ /api/stories/[storyId]/images/select-from-interactions
+├ ƒ /api/stories/[storyId]/interactions
+├ ƒ /api/stories/[storyId]/public-archive
+├ ƒ /api/stories/[storyId]/public-archive/invitations
+├ ƒ /api/stories/[storyId]/public-archive/preview
+├ ƒ /api/stories/[storyId]/segments
+├ ƒ /api/waitlist
+└ ƒ /api/wallets/me
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

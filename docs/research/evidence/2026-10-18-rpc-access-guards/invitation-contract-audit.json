@@ -1,0 +1,4828 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-10-18",
+  "timezone": "Asia/Taipei",
+  "status": "audit_complete_adapter_not_implemented",
+  "scope": "October RPC access-guards Task 1: local source and fixed public metadata/prior audit only; no app/SQL/runtime/dependency change, database call or deployment.",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "decisions": "D01-D16 all A; local batch is not a milestone; token adapter is future work.",
+  "sourceManifest": [
+    {
+      "path": "CLAUDE.md",
+      "sha256": "fa6d0b1334eaf3b7abad08a5ffaa2bc5b74fadfbad7a1561ef0dfa7794ed85c6",
+      "bytes": 8901,
+      "lineCount": 81
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-18-rpc-access-guards.md",
+      "sha256": "8efd8b8cebb434bcd5e2d0ecf4eaee8bc865bf58e9ef4434cd0cc29e5921cd30",
+      "bytes": 6227,
+      "lineCount": 43
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-18-upgrade-rpc-access-guards.md",
+      "sha256": "e7180037c2b6430d6753fa64d288072b08764428c18e6a24ff8453aecc740ed8",
+      "bytes": 5908,
+      "lineCount": 67
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+      "sha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+      "bytes": 444331,
+      "lineCount": 12959
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+      "sha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+      "bytes": 9623,
+      "lineCount": 171
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-routine-audit/semantic-review.md",
+      "sha256": "4e6aad45ef2cae98fe14c06768d468f71e4e2226b3aef6d62f415419f1994bbf",
+      "bytes": 19811,
+      "lineCount": 95
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-routine-audit/callsite-review.md",
+      "sha256": "a997a45d9c2d63426e5c6713a34a9b9d11e59abc2c29320e12dd9c2eafad6654",
+      "bytes": 28270,
+      "lineCount": 140
+    },
+    {
+      "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+      "sha256": "3d96c748299e37139c3790bc21aab6cdf16daa8c8881e93cb1121227a149048b",
+      "bytes": 88685,
+      "lineCount": 3316
+    },
+    {
+      "path": "docs/research/2026-10-18-pg17-routines.md",
+      "sha256": "b69f64624cd22c1045392227613619b0c820cbe9aa86d0735c322a4cba15a662",
+      "bytes": 9159,
+      "lineCount": 58
+    },
+    {
+      "path": "packages/web/src/lib/api-supabase.ts",
+      "sha256": "38d90f5220e44a2ba0b54538ce3664bece06c7d320a7aba8292572ed4343084f",
+      "bytes": 15994,
+      "lineCount": 537
+    },
+    {
+      "path": "packages/web/src/lib/api.ts",
+      "sha256": "62dbe89a1b4c2fe92febd17995251c562a58d5cbac7fbf192e62dccced9aa5a0",
+      "bytes": 6819,
+      "lineCount": 226
+    },
+    {
+      "path": "packages/web/src/lib/supabase.ts",
+      "sha256": "3e5afe6cd9efbc09e82428eb102bd103f693cff02487ac05d37fe0452bc6629f",
+      "bytes": 3736,
+      "lineCount": 104
+    },
+    {
+      "path": "packages/web/src/app/api/invitations/accept/route.ts",
+      "sha256": "270b28c7850ac197ccb93c328d351cdb3cad51221228de94977c3ce00c3b1983",
+      "bytes": 4651,
+      "lineCount": 157
+    },
+    {
+      "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+      "sha256": "a285dc8b4dd3fa48099772b644e4a60417a514fae1f8ba68a95e3184e9247489",
+      "bytes": 9135,
+      "lineCount": 247
+    },
+    {
+      "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+      "sha256": "dd9fdb764c7efa93b75f3b6db14555077271ffe44a85249b2f6adebeb5f58fa6",
+      "bytes": 18084,
+      "lineCount": 553
+    },
+    {
+      "path": "packages/web/src/app/api/invitations/[token]/route.ts",
+      "sha256": "205b2b0eea38dc1870fc8eacb41cca0dc2cd8031e38e6598dc51e7a093c18d0b",
+      "bytes": 5420,
+      "lineCount": 154
+    },
+    {
+      "path": "packages/web/src/app/api/invitations/verify/route.ts",
+      "sha256": "272066146032e90c26056866ecb89500dd56ef2676fbe9a57931aeeefa142566",
+      "bytes": 2864,
+      "lineCount": 105
+    },
+    {
+      "path": "packages/web/src/app/api/invitations/check-pending/route.ts",
+      "sha256": "5110238425e39acb4d24adea11f6a634121a32752ca553f6f965d8de0156acbe",
+      "bytes": 4286,
+      "lineCount": 129
+    },
+    {
+      "path": "packages/web/src/app/api/admin/cleanup-invitations/route.ts",
+      "sha256": "a9258d49fee453b60c9cc607b5f77b0641899203f02d6b5059e9ee7c30a58773",
+      "bytes": 2679,
+      "lineCount": 94
+    },
+    {
+      "path": "packages/web/src/lib/server/cron.ts",
+      "sha256": "7c64d183a1c4c89714c530eb901ec44e2b5f7689af22c89804571f799451e10a",
+      "bytes": 667,
+      "lineCount": 26
+    },
+    {
+      "path": "packages/web/src/components/invitations/invitation-manager.tsx",
+      "sha256": "a5a756a810b83d842973521eace6a08b499b97da1e57c4cfa740ca26f8af4272",
+      "bytes": 17671,
+      "lineCount": 483
+    },
+    {
+      "path": "packages/web/src/app/[locale]/dashboard/projects/[id]/settings/page.tsx",
+      "sha256": "126e4453416347b379adc9c2aeb0e5d5b333920fa82f42f64a81b85e0bad99bd",
+      "bytes": 15434,
+      "lineCount": 336
+    },
+    {
+      "path": "packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+      "sha256": "f32ad64d55abb822182e6a5a55dfce5bf8f1c84f788aba63129533e32301466d",
+      "bytes": 11246,
+      "lineCount": 326
+    },
+    {
+      "path": "packages/web/src/app/[locale]/invite/[token]/page.tsx",
+      "sha256": "5952be5c22027abf1c9acfbf3b0b7b3ec34d0d995719c56294fa416627b66ba8",
+      "bytes": 8745,
+      "lineCount": 246
+    },
+    {
+      "path": "packages/web/src/app/[locale]/accept-invitation/page.tsx",
+      "sha256": "3d16ddfcf52a92912de233e5ec934af351a972f93a4b6ba302e19ff679c68696",
+      "bytes": 13014,
+      "lineCount": 393
+    },
+    {
+      "path": "packages/web/src/app/[locale]/page.tsx",
+      "sha256": "b4ee0c2efbea834b6f0ff9ec50687bc28d82203a678681ab01fa9d134f79b950",
+      "bytes": 26756,
+      "lineCount": 612
+    },
+    {
+      "path": "packages/web/src/lib/email-service.ts",
+      "sha256": "2a1ed23f1ec0099609fdeee28ab8b398b97cf0ab1cd773acbe23ce3e44b20f06",
+      "bytes": 9498,
+      "lineCount": 271
+    },
+    {
+      "path": "packages/web/src/app/api/wallets/me/route.ts",
+      "sha256": "382bf5cae2434b48411632284fc858ed492711dbe310ea20ad4455be0e8e6ce0",
+      "bytes": 3907,
+      "lineCount": 120
+    },
+    {
+      "path": "packages/web/src/lib/server/authenticated-client.ts",
+      "sha256": "74f650930609681008f1c19385d5ecc6cb7ae7e19dc691071ff3687d0a73012f",
+      "bytes": 2031,
+      "lineCount": 64
+    },
+    {
+      "path": "packages/web/src/lib/server/project-access.ts",
+      "sha256": "c6dd6eeeef8fd9030dad1ef9fd7664f2b66db2bc3181b36d8e33542fe9aa395e",
+      "bytes": 1878,
+      "lineCount": 70
+    },
+    {
+      "path": "packages/shared/src/types/invitation.ts",
+      "sha256": "44e0a628e8d778323633e0a6d2848b75894b40ed62eb6568dc17cf1bff2763ec",
+      "bytes": 464,
+      "lineCount": 24
+    },
+    {
+      "path": "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql",
+      "sha256": "8aa01d232796c63c56e4e6d85bfbf262741d1ff908b2d17c1e95c1332895752b",
+      "bytes": 9044,
+      "lineCount": 321
+    }
+  ],
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+    "sha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "capturedAt": "2026-10-17T06:13:03.052Z",
+    "status": "partial",
+    "scope": "public/storage schema, routine and trigger structure/hashes, effective role privileges and applicable default ACLs; audit_meta definitions and migration version/name; two bucket configurations; no business rows, storage objects, routine bodies or trigger argument/condition values",
+    "tableSectionSource": {
+      "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+      "jsonPointer": "/sections/tables",
+      "startLine": 49,
+      "endLine": 398
+    },
+    "totalRelationRows": 43,
+    "publicRelationNames": [
+      "agent_artifacts",
+      "agent_runs",
+      "chapters",
+      "export_requests",
+      "interactions",
+      "interview_events",
+      "interview_sessions",
+      "invitations",
+      "notification_settings",
+      "notifications",
+      "platform_roles",
+      "privacy_agreements",
+      "profiles",
+      "project_members",
+      "project_prompt_state",
+      "project_roles",
+      "projects",
+      "prompts",
+      "public_archive_audit_events",
+      "public_contribution_elements",
+      "public_contribution_invitations",
+      "public_contributions",
+      "public_event_clusters",
+      "public_event_contributions",
+      "seat_transactions",
+      "stories",
+      "story_elements",
+      "story_interactions",
+      "story_transcripts",
+      "subscriptions",
+      "user_profiles",
+      "user_resource_wallets",
+      "user_settings",
+      "waitlist_signups",
+      "waitlist_stats"
+    ],
+    "requiredSectionStatuses": {
+      "tables": "ok",
+      "columns": "ok",
+      "constraints": "ok",
+      "indexes": "ok",
+      "functions": "ok",
+      "policies": "ok",
+      "privileges": "ok"
+    },
+    "absenceClaim": "project_invitations absent from fixed public relation inventory only; not a fresh remote absence claim"
+  },
+  "functions": [
+    {
+      "catalog": {
+        "schema_name": "public",
+        "function_name": "send_project_invitation",
+        "identity_arguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+        "return_type": "TABLE(invitation_id uuid, project_id uuid, invitee_id uuid, role text, status text, invited_at timestamp with time zone)",
+        "kind": "f",
+        "owner": "postgres",
+        "language": "plpgsql",
+        "security_definer": true,
+        "volatility": "v",
+        "is_strict": false,
+        "leakproof": false,
+        "search_path": [],
+        "definition_hash_md5": "ab14eb2828efb74945e3de7cf4039472",
+        "acl_is_null": false,
+        "builtin_default_public_execute": true,
+        "public_execute": true,
+        "public_execute_grantable": false
+      },
+      "source": {
+        "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+        "jsonPointer": "/sections/functions/rows/13",
+        "startLine": 10763,
+        "endLine": 10781
+      },
+      "definitionCapture": {
+        "schema_name": "public",
+        "function_name": "send_project_invitation",
+        "identity_arguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+        "expectedDefinitionMd5": "ab14eb2828efb74945e3de7cf4039472",
+        "actualDefinitionMd5": "ab14eb2828efb74945e3de7cf4039472",
+        "definitionSha256": "9f818ef44dc6f1b98a68371d6628f32dee0277893af502b1406c6326b429d971",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      "definitionCaptureSource": {
+        "path": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+        "jsonPointer": "/targets/11",
+        "startLine": 137,
+        "endLine": 146
+      }
+    },
+    {
+      "catalog": {
+        "schema_name": "public",
+        "function_name": "accept_project_invitation",
+        "identity_arguments": "p_invitation_id uuid, p_user_id uuid",
+        "return_type": "TABLE(project_id uuid, user_id uuid, role text, status text, joined_at timestamp with time zone)",
+        "kind": "f",
+        "owner": "postgres",
+        "language": "plpgsql",
+        "security_definer": true,
+        "volatility": "v",
+        "is_strict": false,
+        "leakproof": false,
+        "search_path": [],
+        "definition_hash_md5": "638c776a2a70d1cddd47055c583e1abd",
+        "acl_is_null": false,
+        "builtin_default_public_execute": true,
+        "public_execute": true,
+        "public_execute_grantable": false
+      },
+      "source": {
+        "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+        "jsonPointer": "/sections/functions/rows/0",
+        "startLine": 10504,
+        "endLine": 10522
+      },
+      "definitionCapture": {
+        "schema_name": "public",
+        "function_name": "accept_project_invitation",
+        "identity_arguments": "p_invitation_id uuid, p_user_id uuid",
+        "expectedDefinitionMd5": "638c776a2a70d1cddd47055c583e1abd",
+        "actualDefinitionMd5": "638c776a2a70d1cddd47055c583e1abd",
+        "definitionSha256": "f1dd6fcb4bdeee50612ce8f587319bb5cee37ccac091ecafa5e9a01845cd563d",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      "definitionCaptureSource": {
+        "path": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+        "jsonPointer": "/targets/0",
+        "startLine": 27,
+        "endLine": 36
+      }
+    },
+    {
+      "catalog": {
+        "schema_name": "public",
+        "function_name": "cleanup_expired_invitations",
+        "identity_arguments": "",
+        "return_type": "integer",
+        "kind": "f",
+        "owner": "postgres",
+        "language": "plpgsql",
+        "security_definer": true,
+        "volatility": "v",
+        "is_strict": false,
+        "leakproof": false,
+        "search_path": [],
+        "definition_hash_md5": "84e83304fb503123d44f16e9fc18cb31",
+        "acl_is_null": false,
+        "builtin_default_public_execute": true,
+        "public_execute": true,
+        "public_execute_grantable": false
+      },
+      "source": {
+        "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+        "jsonPointer": "/sections/functions/rows/1",
+        "startLine": 10523,
+        "endLine": 10541
+      },
+      "definitionCapture": {
+        "schema_name": "public",
+        "function_name": "cleanup_expired_invitations",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "84e83304fb503123d44f16e9fc18cb31",
+        "actualDefinitionMd5": "84e83304fb503123d44f16e9fc18cb31",
+        "definitionSha256": "106cde429e924524639d645f102172b06097ea36f720823c3edf0b51ce66181d",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      "definitionCaptureSource": {
+        "path": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+        "jsonPointer": "/targets/1",
+        "startLine": 37,
+        "endLine": 46
+      }
+    }
+  ],
+  "callSites": [
+    {
+      "id": "C04",
+      "rpc": "send_project_invitation",
+      "source": {
+        "path": "packages/web/src/lib/api-supabase.ts",
+        "startLine": 346,
+        "endLine": 352
+      },
+      "parameterExpressions": {
+        "p_project_id": "projectId",
+        "p_inviter_id": "user.id",
+        "p_invitee_email": "email",
+        "p_role": "role",
+        "p_token": "token"
+      },
+      "tokenConstruction": "const token = crypto.randomUUID()",
+      "tokenConstructionSource": {
+        "path": "packages/web/src/lib/api-supabase.ts",
+        "startLine": 345,
+        "endLine": 345
+      },
+      "principal": "Browser anon-key client with user session; auth.getUser() required; not service role",
+      "identitySource": {
+        "path": "packages/web/src/lib/api-supabase.ts",
+        "startLine": 340,
+        "endLine": 342
+      },
+      "uiReachability": "Only lib/api.ts facade forwarding found in production TS/TSX. Test mocks are not a real UI caller.",
+      "facadeSource": {
+        "path": "packages/web/src/lib/api.ts",
+        "startLine": 117,
+        "endLine": 120
+      },
+      "returns": "Raw RPC data; facade wraps {data: invitation}; no TABLE row count/unpacking validation",
+      "returnSource": {
+        "path": "packages/web/src/lib/api-supabase.ts",
+        "startLine": 354,
+        "endLine": 355
+      },
+      "matchesFixedSignature": false,
+      "reason": "Email and token keys replace invitee UUID/invited_by/message; no trusted email-to-user or invitation-to-role mapping"
+    },
+    {
+      "id": "C05",
+      "rpc": "accept_project_invitation",
+      "source": {
+        "path": "packages/web/src/lib/api-supabase.ts",
+        "startLine": 363,
+        "endLine": 366
+      },
+      "parameterExpressions": {
+        "p_token": "token",
+        "p_user_id": "user.id"
+      },
+      "principal": "Browser user session after auth.getUser()",
+      "identitySource": {
+        "path": "packages/web/src/lib/api-supabase.ts",
+        "startLine": 358,
+        "endLine": 360
+      },
+      "uiReachability": "Only lib/api.ts facade forwarding found in production TS/TSX. Test mocks are not a real UI caller.",
+      "facadeSource": {
+        "path": "packages/web/src/lib/api.ts",
+        "startLine": 122,
+        "endLine": 125
+      },
+      "returns": "Raw RPC data; facade wraps {data: result}; no TABLE validation",
+      "returnSource": {
+        "path": "packages/web/src/lib/api-supabase.ts",
+        "startLine": 368,
+        "endLine": 369
+      },
+      "matchesFixedSignature": false,
+      "reason": "p_token absent from fixed signature; token is not project_roles.id"
+    },
+    {
+      "id": "C06",
+      "rpc": "accept_project_invitation",
+      "source": {
+        "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+        "startLine": 132,
+        "endLine": 136
+      },
+      "parameterExpressions": {
+        "p_token": "t",
+        "p_user_id": "user.id"
+      },
+      "principal": "Cookie client or anon-key client forwarding the user Bearer token. Admin getUser(bearer) fallback does not switch RPC to service client.",
+      "identitySource": {
+        "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+        "startLine": 28,
+        "endLine": 63
+      },
+      "preRead": "Service-key client searches token variants, checks expiry and email. Does not require pending. No service key means no pre-read match and 400 before RPC.",
+      "preReadSource": {
+        "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+        "startLine": 66,
+        "endLine": 124
+      },
+      "uiReachability": "/invite/[token] GET details then authenticated POST then project redirect",
+      "uiSource": {
+        "path": "packages/web/src/app/[locale]/invite/[token]/page.tsx",
+        "startLine": 43,
+        "endLine": 103
+      },
+      "returns": "Any no-error data ends candidate loop; result?.project_id read as object without TABLE unpacking/cardinality check",
+      "returnSource": {
+        "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+        "startLine": 234,
+        "endLine": 239
+      },
+      "matchesFixedSignature": false,
+      "reason": "p_token is not p_invitation_id; variants do not repair contract"
+    },
+    {
+      "id": "C07",
+      "rpc": "accept_project_invitation",
+      "source": {
+        "path": "packages/web/src/app/api/invitations/accept/route.ts",
+        "startLine": 126,
+        "endLine": 129
+      },
+      "parameterExpressions": {
+        "invitation_token": "token",
+        "user_id": "user_id"
+      },
+      "principal": "Separate service-key RPC client without end-user JWT, after cookie/admin.getUser(bearer) verification and user.id===body.user_id",
+      "identitySource": {
+        "path": "packages/web/src/app/api/invitations/accept/route.ts",
+        "startLine": 18,
+        "endLine": 64
+      },
+      "preRead": "Admin reads token+pending, compares email and expiry, checks active membership; pre-read is not locked transaction validation",
+      "preReadSource": {
+        "path": "packages/web/src/app/api/invitations/accept/route.ts",
+        "startLine": 66,
+        "endLine": 123
+      },
+      "uiReachability": "/accept-invitation POSTs token and current user.id; homepage/check-pending and verify/signup branches lead here",
+      "uiSource": {
+        "path": "packages/web/src/app/[locale]/accept-invitation/page.tsx",
+        "startLine": 204,
+        "endLine": 237
+      },
+      "returns": "success:true with result?.project_id/role OR pre-read invitation fields; no cardinality/state/commit proof",
+      "returnSource": {
+        "path": "packages/web/src/app/api/invitations/accept/route.ts",
+        "startLine": 144,
+        "endLine": 148
+      },
+      "matchesFixedSignature": false,
+      "reason": "Both parameter names mismatch fixed signature and historical p_token/p_user_id overload; service principal cannot satisfy future authenticated-only candidate"
+    },
+    {
+      "id": "C13",
+      "rpc": "send_project_invitation",
+      "source": {
+        "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+        "startLine": 378,
+        "endLine": 384
+      },
+      "parameterExpressions": {
+        "p_project_id": "projectId",
+        "p_inviter_id": "user.id",
+        "p_invitee_email": "email.toLowerCase()",
+        "p_role": "role",
+        "p_token": "invitationToken"
+      },
+      "tokenConstruction": "const invitationToken = crypto.randomUUID()",
+      "tokenConstructionSource": {
+        "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+        "startLine": 377,
+        "endLine": 377
+      },
+      "principal": "Separate service-key RPC client after cookie/admin.getUser(bearer) authentication; no user JWT forwarded",
+      "identitySource": {
+        "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+        "startLine": 171,
+        "endLine": 233
+      },
+      "preRead": "Current facilitator, role, duplicate invitation, storyteller and wallet seat checks. Some query errors ignored; duplicate check uses cookie client even after bearer authentication. No durable reserve.",
+      "preReadSource": {
+        "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+        "startLine": 261,
+        "endLine": 373
+      },
+      "uiReachability": "InvitationManager mounted in project settings and dedicated project invitations page",
+      "uiSources": [
+        {
+          "path": "packages/web/src/components/invitations/invitation-manager.tsx",
+          "startLine": 118,
+          "endLine": 174
+        },
+        {
+          "path": "packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+          "startLine": 82,
+          "endLine": 113
+        },
+        {
+          "path": "packages/web/src/app/[locale]/dashboard/projects/[id]/settings/page.tsx",
+          "startLine": 322,
+          "endLine": 328
+        }
+      ],
+      "returns": "Reads invitation.invitation_id as object and then assumes invitations.id; remote return belongs to project_roles. Post-RPC fetch failure is not rollback. Email boolean false not inspected.",
+      "returnSource": {
+        "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+        "startLine": 394,
+        "endLine": 437
+      },
+      "droppedInput": {
+        "name": "message",
+        "readSource": {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "startLine": 269,
+          "endLine": 270
+        },
+        "presentInDedicatedUi": {
+          "path": "packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+          "startLine": 101,
+          "endLine": 105
+        }
+      },
+      "matchesFixedSignature": false,
+      "reason": "Email/token parameter set differs; no mapping to remote invitee UUID or member record ID"
+    }
+  ],
+  "uiChains": [
+    {
+      "route": "/invite/[token]",
+      "sources": [
+        {
+          "path": "packages/web/src/app/[locale]/invite/[token]/page.tsx",
+          "startLine": 43,
+          "endLine": 103
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/[token]/route.ts",
+          "startLine": 37,
+          "endLine": 146
+        }
+      ],
+      "reads": "GET returns invitation id/project_id/project display/inviter display/role/status/expiry/created_at. No current-user authentication in detail handler.",
+      "writes": "POST C06 only after session; detail GET itself may mark expired without seat release."
+    },
+    {
+      "route": "/accept-invitation?token=...&type=invite or signed-in pending flow",
+      "sources": [
+        {
+          "path": "packages/web/src/app/[locale]/accept-invitation/page.tsx",
+          "startLine": 52,
+          "endLine": 196
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/verify/route.ts",
+          "startLine": 17,
+          "endLine": 96
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/check-pending/route.ts",
+          "startLine": 51,
+          "endLine": 120
+        },
+        {
+          "path": "packages/web/src/app/[locale]/page.tsx",
+          "startLine": 94,
+          "endLine": 102
+        }
+      ],
+      "reads": "verify returns email/project/display/role/message/expiry and normalized submitted token, not necessarily matched token variant. check-pending returns array with token; auth/query failures can return 200 hasPendingInvitations:false.",
+      "writes": "signUp does not accept invitation; C07 is separate. Signup comment requires email verification but API does not explicitly check confirmation."
+    },
+    {
+      "route": "/dashboard/projects/[id]/settings and /dashboard/projects/[id]/invitations",
+      "sources": [
+        {
+          "path": "packages/web/src/components/invitations/invitation-manager.tsx",
+          "startLine": 84,
+          "endLine": 205
+        },
+        {
+          "path": "packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+          "startLine": 55,
+          "endLine": 163
+        },
+        {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "startLine": 89,
+          "endLine": 141
+        }
+      ],
+      "reads": "GET invitation array from service client, with optional cleanup and detached expiry update.",
+      "writes": "POST C13; dedicated page cancellation URL differs from actual DELETE query parameter route."
+    }
+  ],
+  "metadata": {
+    "public.invitations": {
+      "tables": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "relkind": "r",
+            "rls_enabled": true,
+            "rls_forced": false,
+            "owner": "postgres"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/tables/rows/7",
+            "startLine": 109,
+            "endLine": 116
+          }
+        }
+      ],
+      "columns": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "id",
+            "ordinal_position": 1,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": "gen_random_uuid()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/78",
+            "startLine": 1261,
+            "endLine": 1271
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "project_id",
+            "ordinal_position": 2,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/79",
+            "startLine": 1272,
+            "endLine": 1282
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "inviter_id",
+            "ordinal_position": 3,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/80",
+            "startLine": 1283,
+            "endLine": 1293
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "invitee_email",
+            "ordinal_position": 4,
+            "data_type": "text",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/81",
+            "startLine": 1294,
+            "endLine": 1304
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "role",
+            "ordinal_position": 5,
+            "data_type": "text",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/82",
+            "startLine": 1305,
+            "endLine": 1315
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "status",
+            "ordinal_position": 6,
+            "data_type": "text",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "'pending'::text"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/83",
+            "startLine": 1316,
+            "endLine": 1326
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "token",
+            "ordinal_position": 7,
+            "data_type": "text",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/84",
+            "startLine": 1327,
+            "endLine": 1337
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "expires_at",
+            "ordinal_position": 8,
+            "data_type": "timestamp with time zone",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/85",
+            "startLine": 1338,
+            "endLine": 1348
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "accepted_at",
+            "ordinal_position": 9,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/86",
+            "startLine": 1349,
+            "endLine": 1359
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "created_at",
+            "ordinal_position": 10,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/87",
+            "startLine": 1360,
+            "endLine": 1370
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "updated_at",
+            "ordinal_position": 11,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/88",
+            "startLine": 1371,
+            "endLine": 1381
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "column_name": "message",
+            "ordinal_position": 12,
+            "data_type": "text",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/89",
+            "startLine": 1382,
+            "endLine": 1392
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "constraint_name": "invitations_inviter_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (inviter_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/36",
+            "startLine": 7552,
+            "endLine": 7559
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "constraint_name": "invitations_pkey",
+            "constraint_type": "p",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/37",
+            "startLine": 7560,
+            "endLine": 7567
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "constraint_name": "invitations_project_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/38",
+            "startLine": 7568,
+            "endLine": 7575
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "constraint_name": "invitations_role_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((role = ANY (ARRAY['facilitator'::text, 'storyteller'::text])))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/39",
+            "startLine": 7576,
+            "endLine": 7583
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "constraint_name": "invitations_status_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'accepted'::text, 'declined'::text, 'expired'::text])))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/40",
+            "startLine": 7584,
+            "endLine": 7591
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "constraint_name": "invitations_token_key",
+            "constraint_type": "u",
+            "validated": true,
+            "definition": "UNIQUE (token)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/41",
+            "startLine": 7592,
+            "endLine": 7599
+          }
+        }
+      ],
+      "indexes": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "idx_invitations_email",
+            "indexdef": "CREATE INDEX idx_invitations_email ON public.invitations USING btree (invitee_email)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/26",
+            "startLine": 6568,
+            "endLine": 6573
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "idx_invitations_expires_at",
+            "indexdef": "CREATE INDEX idx_invitations_expires_at ON public.invitations USING btree (expires_at)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/27",
+            "startLine": 6574,
+            "endLine": 6579
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "idx_invitations_inviter",
+            "indexdef": "CREATE INDEX idx_invitations_inviter ON public.invitations USING btree (inviter_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/28",
+            "startLine": 6580,
+            "endLine": 6585
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "idx_invitations_project",
+            "indexdef": "CREATE INDEX idx_invitations_project ON public.invitations USING btree (project_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/29",
+            "startLine": 6586,
+            "endLine": 6591
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "idx_invitations_status",
+            "indexdef": "CREATE INDEX idx_invitations_status ON public.invitations USING btree (status)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/30",
+            "startLine": 6592,
+            "endLine": 6597
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "idx_invitations_token",
+            "indexdef": "CREATE INDEX idx_invitations_token ON public.invitations USING btree (token)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/31",
+            "startLine": 6598,
+            "endLine": 6603
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "invitations_pkey",
+            "indexdef": "CREATE UNIQUE INDEX invitations_pkey ON public.invitations USING btree (id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/32",
+            "startLine": 6604,
+            "endLine": 6609
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "invitations_token_idx",
+            "indexdef": "CREATE INDEX invitations_token_idx ON public.invitations USING btree (token)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/33",
+            "startLine": 6610,
+            "endLine": 6615
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "indexname": "invitations_token_key",
+            "indexdef": "CREATE UNIQUE INDEX invitations_token_key ON public.invitations USING btree (token)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/34",
+            "startLine": 6616,
+            "endLine": 6621
+          }
+        }
+      ],
+      "policies": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "policyname": "Facilitators can create invitations",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "INSERT",
+            "qual": null,
+            "with_check": "((auth.uid() = inviter_id) AND (EXISTS ( SELECT 1\n   FROM project_roles\n  WHERE ((project_roles.project_id = invitations.project_id) AND (project_roles.user_id = auth.uid()) AND (project_roles.role = 'facilitator'::text) AND (project_roles.status = 'active'::text)))))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/6",
+            "startLine": 5530,
+            "endLine": 5541
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "policyname": "Facilitators can update invitations",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "UPDATE",
+            "qual": "(auth.uid() = inviter_id)",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/7",
+            "startLine": 5542,
+            "endLine": 5553
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "invitations",
+            "policyname": "Facilitators can view project invitations",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "SELECT",
+            "qual": "((auth.uid() = inviter_id) OR (EXISTS ( SELECT 1\n   FROM project_roles\n  WHERE ((project_roles.project_id = invitations.project_id) AND (project_roles.user_id = auth.uid()) AND (project_roles.role = 'facilitator'::text) AND (project_roles.status = 'active'::text)))))",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/8",
+            "startLine": 5554,
+            "endLine": 5565
+          }
+        }
+      ],
+      "privileges": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "role_name": "anon",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/28",
+            "startLine": 8914,
+            "endLine": 8924
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "role_name": "authenticated",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/29",
+            "startLine": 8925,
+            "endLine": 8935
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "role_name": "metadata_reader",
+            "schema_usage": true,
+            "can_select": false,
+            "can_select_any_column": false,
+            "can_insert": false,
+            "can_update": false,
+            "can_delete": false
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/30",
+            "startLine": 8936,
+            "endLine": 8946
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "role_name": "service_role",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/31",
+            "startLine": 8947,
+            "endLine": 8957
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "invitations",
+            "trigger_name": "update_invitations_updated_at",
+            "enabled": "O",
+            "type_bitmask": 19,
+            "function_schema": "public",
+            "function_name": "update_updated_at_column",
+            "function_identity_arguments": "",
+            "is_constraint": false,
+            "argument_count": 0,
+            "condition_present": false,
+            "definition_hash_md5": "ceb626fe7ddce66fd2b07fa3e1e1740d"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/triggers/rows/2",
+            "startLine": 12393,
+            "endLine": 12406
+          }
+        }
+      ]
+    },
+    "public.project_roles": {
+      "tables": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "relkind": "r",
+            "rls_enabled": true,
+            "rls_forced": false,
+            "owner": "postgres"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/tables/rows/15",
+            "startLine": 173,
+            "endLine": 180
+          }
+        }
+      ],
+      "columns": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "id",
+            "ordinal_position": 1,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": "gen_random_uuid()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/149",
+            "startLine": 2042,
+            "endLine": 2052
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "user_id",
+            "ordinal_position": 2,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/150",
+            "startLine": 2053,
+            "endLine": 2063
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "project_id",
+            "ordinal_position": 3,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/151",
+            "startLine": 2064,
+            "endLine": 2074
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "role",
+            "ordinal_position": 4,
+            "data_type": "text",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/152",
+            "startLine": 2075,
+            "endLine": 2085
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "status",
+            "ordinal_position": 5,
+            "data_type": "text",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "'active'::text"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/153",
+            "startLine": 2086,
+            "endLine": 2096
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "invited_by",
+            "ordinal_position": 6,
+            "data_type": "uuid",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/154",
+            "startLine": 2097,
+            "endLine": 2107
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "joined_at",
+            "ordinal_position": 7,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/155",
+            "startLine": 2108,
+            "endLine": 2118
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "created_at",
+            "ordinal_position": 8,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/156",
+            "startLine": 2119,
+            "endLine": 2129
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "column_name": "updated_at",
+            "ordinal_position": 9,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/157",
+            "startLine": 2130,
+            "endLine": 2140
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "constraint_name": "project_roles_invited_by_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (invited_by) REFERENCES auth.users(id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/70",
+            "startLine": 7824,
+            "endLine": 7831
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "constraint_name": "project_roles_pkey",
+            "constraint_type": "p",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/71",
+            "startLine": 7832,
+            "endLine": 7839
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "constraint_name": "project_roles_project_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/72",
+            "startLine": 7840,
+            "endLine": 7847
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "constraint_name": "project_roles_role_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((role = ANY (ARRAY['facilitator'::text, 'storyteller'::text])))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/73",
+            "startLine": 7848,
+            "endLine": 7855
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "constraint_name": "project_roles_status_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((status = ANY (ARRAY['active'::text, 'inactive'::text, 'pending'::text])))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/74",
+            "startLine": 7856,
+            "endLine": 7863
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "constraint_name": "project_roles_user_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/75",
+            "startLine": 7864,
+            "endLine": 7871
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "constraint_name": "project_roles_user_id_project_id_role_key",
+            "constraint_type": "u",
+            "validated": true,
+            "definition": "UNIQUE (user_id, project_id, role)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/76",
+            "startLine": 7872,
+            "endLine": 7879
+          }
+        }
+      ],
+      "indexes": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "idx_project_roles_project",
+            "indexdef": "CREATE INDEX idx_project_roles_project ON public.project_roles USING btree (project_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/54",
+            "startLine": 6736,
+            "endLine": 6741
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "idx_project_roles_role",
+            "indexdef": "CREATE INDEX idx_project_roles_role ON public.project_roles USING btree (role)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/55",
+            "startLine": 6742,
+            "endLine": 6747
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "idx_project_roles_status",
+            "indexdef": "CREATE INDEX idx_project_roles_status ON public.project_roles USING btree (status)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/56",
+            "startLine": 6748,
+            "endLine": 6753
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "idx_project_roles_user",
+            "indexdef": "CREATE INDEX idx_project_roles_user ON public.project_roles USING btree (user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/57",
+            "startLine": 6754,
+            "endLine": 6759
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "project_roles_pkey",
+            "indexdef": "CREATE UNIQUE INDEX project_roles_pkey ON public.project_roles USING btree (id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/58",
+            "startLine": 6760,
+            "endLine": 6765
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "project_roles_project_user_unique",
+            "indexdef": "CREATE UNIQUE INDEX project_roles_project_user_unique ON public.project_roles USING btree (project_id, user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/59",
+            "startLine": 6766,
+            "endLine": 6771
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "project_roles_user_id_idx",
+            "indexdef": "CREATE INDEX project_roles_user_id_idx ON public.project_roles USING btree (user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/60",
+            "startLine": 6772,
+            "endLine": 6777
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "project_roles_user_id_project_id_role_key",
+            "indexdef": "CREATE UNIQUE INDEX project_roles_user_id_project_id_role_key ON public.project_roles USING btree (user_id, project_id, role)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/61",
+            "startLine": 6778,
+            "endLine": 6783
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "indexname": "uq_project_roles_project_user",
+            "indexdef": "CREATE UNIQUE INDEX uq_project_roles_project_user ON public.project_roles USING btree (project_id, user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/62",
+            "startLine": 6784,
+            "endLine": 6789
+          }
+        }
+      ],
+      "policies": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "policyname": "project_roles_delete",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "DELETE",
+            "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_roles.project_id) AND (p.facilitator_id = auth.uid()))))",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/31",
+            "startLine": 5830,
+            "endLine": 5841
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "policyname": "project_roles_insert",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "INSERT",
+            "qual": null,
+            "with_check": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_roles.project_id) AND (p.facilitator_id = auth.uid()))))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/32",
+            "startLine": 5842,
+            "endLine": 5853
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "policyname": "project_roles_select",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "SELECT",
+            "qual": "((auth.uid() = user_id) OR (EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_roles.project_id) AND (p.facilitator_id = auth.uid())))))",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/33",
+            "startLine": 5854,
+            "endLine": 5865
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "policyname": "project_roles_select_self",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "SELECT",
+            "qual": "(auth.uid() = user_id)",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/34",
+            "startLine": 5866,
+            "endLine": 5877
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_roles",
+            "policyname": "project_roles_update",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "UPDATE",
+            "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_roles.project_id) AND (p.facilitator_id = auth.uid()))))",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/35",
+            "startLine": 5878,
+            "endLine": 5889
+          }
+        }
+      ],
+      "privileges": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "role_name": "anon",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/60",
+            "startLine": 9266,
+            "endLine": 9276
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "role_name": "authenticated",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/61",
+            "startLine": 9277,
+            "endLine": 9287
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "role_name": "metadata_reader",
+            "schema_usage": true,
+            "can_select": false,
+            "can_select_any_column": false,
+            "can_insert": false,
+            "can_update": false,
+            "can_delete": false
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/62",
+            "startLine": 9288,
+            "endLine": 9298
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "role_name": "service_role",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/63",
+            "startLine": 9299,
+            "endLine": 9309
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_roles",
+            "trigger_name": "update_project_roles_updated_at",
+            "enabled": "O",
+            "type_bitmask": 19,
+            "function_schema": "public",
+            "function_name": "update_updated_at_column",
+            "function_identity_arguments": "",
+            "is_constraint": false,
+            "argument_count": 0,
+            "condition_present": false,
+            "definition_hash_md5": "f6bb1255f3772469525f3b616969b922"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/triggers/rows/4",
+            "startLine": 12421,
+            "endLine": 12434
+          }
+        }
+      ]
+    },
+    "public.user_resource_wallets": {
+      "tables": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "relkind": "r",
+            "rls_enabled": true,
+            "rls_forced": false,
+            "owner": "postgres"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/tables/rows/31",
+            "startLine": 301,
+            "endLine": 308
+          }
+        }
+      ],
+      "columns": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "column_name": "user_id",
+            "ordinal_position": 1,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/339",
+            "startLine": 4132,
+            "endLine": 4142
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "column_name": "project_vouchers",
+            "ordinal_position": 2,
+            "data_type": "integer",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "0"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/340",
+            "startLine": 4143,
+            "endLine": 4153
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "column_name": "facilitator_seats",
+            "ordinal_position": 3,
+            "data_type": "integer",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "0"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/341",
+            "startLine": 4154,
+            "endLine": 4164
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "column_name": "storyteller_seats",
+            "ordinal_position": 4,
+            "data_type": "integer",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "0"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/342",
+            "startLine": 4165,
+            "endLine": 4175
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "column_name": "created_at",
+            "ordinal_position": 5,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/343",
+            "startLine": 4176,
+            "endLine": 4186
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "column_name": "updated_at",
+            "ordinal_position": 6,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/344",
+            "startLine": 4187,
+            "endLine": 4197
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "column_name": "last_payment_reference",
+            "ordinal_position": 7,
+            "data_type": "text",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/345",
+            "startLine": 4198,
+            "endLine": 4208
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "constraint_name": "user_resource_wallets_facilitator_seats_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((facilitator_seats >= 0))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/135",
+            "startLine": 8344,
+            "endLine": 8351
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "constraint_name": "user_resource_wallets_pkey",
+            "constraint_type": "p",
+            "validated": true,
+            "definition": "PRIMARY KEY (user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/136",
+            "startLine": 8352,
+            "endLine": 8359
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "constraint_name": "user_resource_wallets_project_vouchers_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((project_vouchers >= 0))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/137",
+            "startLine": 8360,
+            "endLine": 8367
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "constraint_name": "user_resource_wallets_storyteller_seats_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((storyteller_seats >= 0))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/138",
+            "startLine": 8368,
+            "endLine": 8375
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "constraint_name": "user_resource_wallets_user_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/139",
+            "startLine": 8376,
+            "endLine": 8383
+          }
+        }
+      ],
+      "indexes": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "user_resource_wallets",
+            "indexname": "idx_wallet_payment_ref",
+            "indexdef": "CREATE INDEX idx_wallet_payment_ref ON public.user_resource_wallets USING btree (last_payment_reference)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/111",
+            "startLine": 7078,
+            "endLine": 7083
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "user_resource_wallets",
+            "indexname": "user_resource_wallets_pkey",
+            "indexdef": "CREATE UNIQUE INDEX user_resource_wallets_pkey ON public.user_resource_wallets USING btree (user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/112",
+            "startLine": 7084,
+            "endLine": 7089
+          }
+        }
+      ],
+      "policies": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "user_resource_wallets",
+            "policyname": "Users can insert own wallet",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "INSERT",
+            "qual": null,
+            "with_check": "(auth.uid() = user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/55",
+            "startLine": 6118,
+            "endLine": 6129
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "user_resource_wallets",
+            "policyname": "Users can update own wallet",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "UPDATE",
+            "qual": "(auth.uid() = user_id)",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/56",
+            "startLine": 6130,
+            "endLine": 6141
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "user_resource_wallets",
+            "policyname": "Users can view own wallet",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "SELECT",
+            "qual": "(auth.uid() = user_id)",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/57",
+            "startLine": 6142,
+            "endLine": 6153
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "user_resource_wallets",
+            "policyname": "wallet_select_self",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "SELECT",
+            "qual": "(auth.uid() = user_id)",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/58",
+            "startLine": 6154,
+            "endLine": 6165
+          }
+        }
+      ],
+      "privileges": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "role_name": "anon",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/124",
+            "startLine": 9970,
+            "endLine": 9980
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "role_name": "authenticated",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/125",
+            "startLine": 9981,
+            "endLine": 9991
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "role_name": "metadata_reader",
+            "schema_usage": true,
+            "can_select": false,
+            "can_select_any_column": false,
+            "can_insert": false,
+            "can_update": false,
+            "can_delete": false
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/126",
+            "startLine": 9992,
+            "endLine": 10002
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "role_name": "service_role",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/127",
+            "startLine": 10003,
+            "endLine": 10013
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "user_resource_wallets",
+            "trigger_name": "update_user_resource_wallets_updated_at",
+            "enabled": "O",
+            "type_bitmask": 19,
+            "function_schema": "public",
+            "function_name": "update_updated_at_column",
+            "function_identity_arguments": "",
+            "is_constraint": false,
+            "argument_count": 0,
+            "condition_present": false,
+            "definition_hash_md5": "9942eefa65bf1b0fe4a0794ef1a606c7"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/triggers/rows/13",
+            "startLine": 12547,
+            "endLine": 12560
+          }
+        }
+      ]
+    },
+    "public.seat_transactions": {
+      "tables": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "relkind": "r",
+            "rls_enabled": true,
+            "rls_forced": false,
+            "owner": "postgres"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/tables/rows/24",
+            "startLine": 245,
+            "endLine": 252
+          }
+        }
+      ],
+      "columns": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "column_name": "id",
+            "ordinal_position": 1,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": "gen_random_uuid()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/248",
+            "startLine": 3131,
+            "endLine": 3141
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "column_name": "user_id",
+            "ordinal_position": 2,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/249",
+            "startLine": 3142,
+            "endLine": 3152
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "column_name": "transaction_type",
+            "ordinal_position": 3,
+            "data_type": "text",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/250",
+            "startLine": 3153,
+            "endLine": 3163
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "column_name": "resource_type",
+            "ordinal_position": 4,
+            "data_type": "text",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/251",
+            "startLine": 3164,
+            "endLine": 3174
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "column_name": "amount",
+            "ordinal_position": 5,
+            "data_type": "integer",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/252",
+            "startLine": 3175,
+            "endLine": 3185
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "column_name": "project_id",
+            "ordinal_position": 6,
+            "data_type": "uuid",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/253",
+            "startLine": 3186,
+            "endLine": 3196
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "column_name": "metadata",
+            "ordinal_position": 7,
+            "data_type": "jsonb",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "'{}'::jsonb"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/254",
+            "startLine": 3197,
+            "endLine": 3207
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "column_name": "created_at",
+            "ordinal_position": 8,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/255",
+            "startLine": 3208,
+            "endLine": 3218
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "constraint_name": "seat_transactions_pkey",
+            "constraint_type": "p",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/115",
+            "startLine": 8184,
+            "endLine": 8191
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "constraint_name": "seat_transactions_project_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/116",
+            "startLine": 8192,
+            "endLine": 8199
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "constraint_name": "seat_transactions_resource_type_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((resource_type = ANY (ARRAY['project_voucher'::text, 'facilitator_seat'::text, 'storyteller_seat'::text, 'package'::text])))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/117",
+            "startLine": 8200,
+            "endLine": 8207
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "constraint_name": "seat_transactions_transaction_type_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK ((transaction_type = ANY (ARRAY['purchase'::text, 'consume'::text, 'reserve'::text, 'release'::text, 'activate'::text])))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/118",
+            "startLine": 8208,
+            "endLine": 8215
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "constraint_name": "seat_transactions_user_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/119",
+            "startLine": 8216,
+            "endLine": 8223
+          }
+        }
+      ],
+      "indexes": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "seat_transactions",
+            "indexname": "idx_seat_transactions_created_at",
+            "indexdef": "CREATE INDEX idx_seat_transactions_created_at ON public.seat_transactions USING btree (created_at)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/84",
+            "startLine": 6916,
+            "endLine": 6921
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "seat_transactions",
+            "indexname": "idx_seat_transactions_project",
+            "indexdef": "CREATE INDEX idx_seat_transactions_project ON public.seat_transactions USING btree (project_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/85",
+            "startLine": 6922,
+            "endLine": 6927
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "seat_transactions",
+            "indexname": "idx_seat_transactions_resource",
+            "indexdef": "CREATE INDEX idx_seat_transactions_resource ON public.seat_transactions USING btree (resource_type)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/86",
+            "startLine": 6928,
+            "endLine": 6933
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "seat_transactions",
+            "indexname": "idx_seat_transactions_type",
+            "indexdef": "CREATE INDEX idx_seat_transactions_type ON public.seat_transactions USING btree (transaction_type)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/87",
+            "startLine": 6934,
+            "endLine": 6939
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "seat_transactions",
+            "indexname": "idx_seat_transactions_user",
+            "indexdef": "CREATE INDEX idx_seat_transactions_user ON public.seat_transactions USING btree (user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/88",
+            "startLine": 6940,
+            "endLine": 6945
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "seat_transactions",
+            "indexname": "seat_transactions_pkey",
+            "indexdef": "CREATE UNIQUE INDEX seat_transactions_pkey ON public.seat_transactions USING btree (id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/89",
+            "startLine": 6946,
+            "endLine": 6951
+          }
+        }
+      ],
+      "policies": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "seat_transactions",
+            "policyname": "Users can insert own transactions",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "INSERT",
+            "qual": null,
+            "with_check": "(auth.uid() = user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/43",
+            "startLine": 5974,
+            "endLine": 5985
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "seat_transactions",
+            "policyname": "Users can view own transactions",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "SELECT",
+            "qual": "(auth.uid() = user_id)",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/44",
+            "startLine": 5986,
+            "endLine": 5997
+          }
+        }
+      ],
+      "privileges": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "role_name": "anon",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/96",
+            "startLine": 9662,
+            "endLine": 9672
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "role_name": "authenticated",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/97",
+            "startLine": 9673,
+            "endLine": 9683
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "role_name": "metadata_reader",
+            "schema_usage": true,
+            "can_select": false,
+            "can_select_any_column": false,
+            "can_insert": false,
+            "can_update": false,
+            "can_delete": false
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/98",
+            "startLine": 9684,
+            "endLine": 9694
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "seat_transactions",
+            "role_name": "service_role",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/99",
+            "startLine": 9695,
+            "endLine": 9705
+          }
+        }
+      ],
+      "triggers": []
+    },
+    "public.project_members": {
+      "tables": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "relkind": "r",
+            "rls_enabled": true,
+            "rls_forced": false,
+            "owner": "postgres"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/tables/rows/13",
+            "startLine": 157,
+            "endLine": 164
+          }
+        }
+      ],
+      "columns": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "column_name": "id",
+            "ordinal_position": 1,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": "gen_random_uuid()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/135",
+            "startLine": 1888,
+            "endLine": 1898
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "column_name": "project_id",
+            "ordinal_position": 2,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/136",
+            "startLine": 1899,
+            "endLine": 1909
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "column_name": "user_id",
+            "ordinal_position": 3,
+            "data_type": "uuid",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/137",
+            "startLine": 1910,
+            "endLine": 1920
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "column_name": "role",
+            "ordinal_position": 4,
+            "data_type": "character varying(20)",
+            "not_null": true,
+            "identity": "",
+            "generated": "",
+            "default_expression": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/138",
+            "startLine": 1921,
+            "endLine": 1931
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "column_name": "status",
+            "ordinal_position": 5,
+            "data_type": "character varying(20)",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "'active'::character varying"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/139",
+            "startLine": 1932,
+            "endLine": 1942
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "column_name": "created_at",
+            "ordinal_position": 6,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/140",
+            "startLine": 1943,
+            "endLine": 1953
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "column_name": "updated_at",
+            "ordinal_position": 7,
+            "data_type": "timestamp with time zone",
+            "not_null": false,
+            "identity": "",
+            "generated": "",
+            "default_expression": "now()"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/columns/rows/141",
+            "startLine": 1954,
+            "endLine": 1964
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "constraint_name": "project_members_pkey",
+            "constraint_type": "p",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/60",
+            "startLine": 7744,
+            "endLine": 7751
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "constraint_name": "project_members_project_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/61",
+            "startLine": 7752,
+            "endLine": 7759
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "constraint_name": "project_members_project_id_user_id_key",
+            "constraint_type": "u",
+            "validated": true,
+            "definition": "UNIQUE (project_id, user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/62",
+            "startLine": 7760,
+            "endLine": 7767
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "constraint_name": "project_members_role_check",
+            "constraint_type": "c",
+            "validated": true,
+            "definition": "CHECK (((role)::text = ANY ((ARRAY['facilitator'::character varying, 'storyteller'::character varying])::text[])))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/63",
+            "startLine": 7768,
+            "endLine": 7775
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "constraint_name": "project_members_user_id_fkey",
+            "constraint_type": "f",
+            "validated": true,
+            "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/constraints/rows/64",
+            "startLine": 7776,
+            "endLine": 7783
+          }
+        }
+      ],
+      "indexes": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_members",
+            "indexname": "project_members_pkey",
+            "indexdef": "CREATE UNIQUE INDEX project_members_pkey ON public.project_members USING btree (id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/50",
+            "startLine": 6712,
+            "endLine": 6717
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_members",
+            "indexname": "project_members_project_id_user_id_key",
+            "indexdef": "CREATE UNIQUE INDEX project_members_project_id_user_id_key ON public.project_members USING btree (project_id, user_id)"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/indexes/rows/51",
+            "startLine": 6718,
+            "endLine": 6723
+          }
+        }
+      ],
+      "policies": [
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_members",
+            "policyname": "project_members_delete",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "DELETE",
+            "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_members.project_id) AND (p.facilitator_id = auth.uid()))))",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/26",
+            "startLine": 5770,
+            "endLine": 5781
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_members",
+            "policyname": "project_members_insert",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "INSERT",
+            "qual": null,
+            "with_check": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_members.project_id) AND (p.facilitator_id = auth.uid()))))"
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/27",
+            "startLine": 5782,
+            "endLine": 5793
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_members",
+            "policyname": "project_members_select",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "SELECT",
+            "qual": "((auth.uid() = user_id) OR (EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_members.project_id) AND (p.facilitator_id = auth.uid())))))",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/28",
+            "startLine": 5794,
+            "endLine": 5805
+          }
+        },
+        {
+          "value": {
+            "schemaname": "public",
+            "tablename": "project_members",
+            "policyname": "project_members_update",
+            "permissive": "PERMISSIVE",
+            "roles": [
+              "public"
+            ],
+            "cmd": "UPDATE",
+            "qual": "(EXISTS ( SELECT 1\n   FROM projects p\n  WHERE ((p.id = project_members.project_id) AND (p.facilitator_id = auth.uid()))))",
+            "with_check": null
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/policies/rows/29",
+            "startLine": 5806,
+            "endLine": 5817
+          }
+        }
+      ],
+      "privileges": [
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "role_name": "anon",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/52",
+            "startLine": 9178,
+            "endLine": 9188
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "role_name": "authenticated",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/53",
+            "startLine": 9189,
+            "endLine": 9199
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "role_name": "metadata_reader",
+            "schema_usage": true,
+            "can_select": false,
+            "can_select_any_column": false,
+            "can_insert": false,
+            "can_update": false,
+            "can_delete": false
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/54",
+            "startLine": 9200,
+            "endLine": 9210
+          }
+        },
+        {
+          "value": {
+            "schema_name": "public",
+            "table_name": "project_members",
+            "role_name": "service_role",
+            "schema_usage": true,
+            "can_select": true,
+            "can_select_any_column": true,
+            "can_insert": true,
+            "can_update": true,
+            "can_delete": true
+          },
+          "source": {
+            "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+            "jsonPointer": "/sections/privileges/rows/55",
+            "startLine": 9211,
+            "endLine": 9221
+          }
+        }
+      ],
+      "triggers": []
+    }
+  },
+  "findings": [
+    {
+      "id": "ID-MAPPING",
+      "finding": "invitations.id, invitations.token and project_roles.id are distinct facts with no typed mapping or FK between invitation, accepted user, member and reservation.",
+      "sourceSections": [
+        "metadata.public.invitations",
+        "metadata.public.project_roles",
+        "metadata.public.seat_transactions"
+      ]
+    },
+    {
+      "id": "CANCEL-ROUTE",
+      "finding": "UI DELETE nested /invitations/{invitationId} has no matching route.ts; implemented DELETE reads ?invitation_id= and authenticates cookies only.",
+      "sources": [
+        {
+          "path": "packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+          "startLine": 140,
+          "endLine": 151
+        },
+        {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "startLine": 447,
+          "endLine": 484
+        }
+      ],
+      "missingFile": "packages/web/src/app/api/projects/[id]/invitations/[invitationId]/route.ts"
+    },
+    {
+      "id": "CANCEL-SEAT",
+      "finding": "Separate pending pre-read, declined update and wallet read/current+1 write; no reserved-seat proof, conditional pending update, lock or release log; wallet write error ignored. Original inviter checked, not current project facilitator.",
+      "sources": [
+        {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "startLine": 493,
+          "endLine": 545
+        }
+      ],
+      "observed": "Static source risk; no concurrency execution in Task 1"
+    },
+    {
+      "id": "EXPIRY-SEAT",
+      "finding": "Expiry handlers mutate only status, without reservation release; writes lack pending predicate and may overwrite a concurrent acceptance. Some updates are not awaited or errors ignored.",
+      "sources": [
+        {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "startLine": 125,
+          "endLine": 139
+        },
+        {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "startLine": 303,
+          "endLine": 309
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/[token]/route.ts",
+          "startLine": 115,
+          "endLine": 130
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/verify/route.ts",
+          "startLine": 65,
+          "endLine": 76
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/accept/route.ts",
+          "startLine": 97,
+          "endLine": 106
+        }
+      ]
+    },
+    {
+      "id": "CLEANUP",
+      "finding": "Service cleanup callsites do not change the fixed routine meaning: it targets project_roles.invited_at (missing), not invitations expiry or wallet release; previous PG17 42703. Project-list call and cron GET ignore RPC returned error.",
+      "sources": [
+        {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "startLine": 102,
+          "endLine": 108
+        },
+        {
+          "path": "packages/web/src/app/api/admin/cleanup-invitations/route.ts",
+          "startLine": 9,
+          "endLine": 84
+        },
+        {
+          "path": "packages/web/src/lib/server/cron.ts",
+          "startLine": 7,
+          "endLine": 25
+        },
+        {
+          "path": "docs/research/evidence/2026-10-17-routine-audit/semantic-review.md",
+          "startLine": 41,
+          "endLine": 41
+        }
+      ]
+    },
+    {
+      "id": "BALANCE-GRANT",
+      "finding": "Missing-wallet fallbacks directly write project_vouchers=1, facilitator_seats=2, storyteller_seats=2 then separately insert grant/initial_package log, whose values violate fixed CHECKs. Own-zero condition is not a durable trusted grant identity. Existing-zero RPC branch currently has prior missing-column failure evidence.",
+      "sources": [
+        {
+          "path": "packages/web/src/app/api/wallets/me/route.ts",
+          "startLine": 31,
+          "endLine": 115
+        },
+        {
+          "path": "packages/web/src/lib/api-supabase.ts",
+          "startLine": 113,
+          "endLine": 217
+        },
+        {
+          "path": "packages/web/src/lib/server/authenticated-client.ts",
+          "startLine": 29,
+          "endLine": 63
+        }
+      ],
+      "schemaSections": [
+        "metadata.public.user_resource_wallets",
+        "metadata.public.seat_transactions"
+      ],
+      "observed": "Source and schema comparison only; no balance mutation executed"
+    },
+    {
+      "id": "DIRECT-WRITE-PAYMENT",
+      "finding": "Fixed own-wallet insert/update and own-transaction insert policies plus table ACL permit self-scoped write paths without trusted payment/reservation provenance. Prior purchase routines do not verify trusted payment. This audit does not claim a successful remote exploit or successful purchase.",
+      "sources": [
+        {
+          "path": "docs/research/evidence/2026-10-17-routine-audit/semantic-review.md",
+          "startLine": 45,
+          "endLine": 48
+        }
+      ],
+      "schemaSections": [
+        "metadata.public.user_resource_wallets",
+        "metadata.public.seat_transactions"
+      ]
+    },
+    {
+      "id": "RAW-TOKEN-OUTPUT",
+      "finding": "Token route debug payload includes candidates/db_token; check-pending logs returned invitation objects and acceptance UI logs token/details. Future adapter must not retain raw tokens in logs/debug/telemetry.",
+      "sources": [
+        {
+          "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+          "startLine": 143,
+          "endLine": 193
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/[token]/route.ts",
+          "startLine": 92,
+          "endLine": 101
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/check-pending/route.ts",
+          "startLine": 70,
+          "endLine": 95
+        },
+        {
+          "path": "packages/web/src/app/[locale]/accept-invitation/page.tsx",
+          "startLine": 58,
+          "endLine": 58
+        },
+        {
+          "path": "packages/web/src/app/[locale]/accept-invitation/page.tsx",
+          "startLine": 128,
+          "endLine": 146
+        }
+      ]
+    },
+    {
+      "id": "EMAIL-OUTCOME",
+      "finding": "EmailService calls auth.admin.inviteUserByEmail and returns false on error; project API ignores boolean and returns 201. No proof of delivery or membership acceptance.",
+      "sources": [
+        {
+          "path": "packages/web/src/lib/email-service.ts",
+          "startLine": 50,
+          "endLine": 81
+        },
+        {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "startLine": 416,
+          "endLine": 437
+        }
+      ]
+    }
+  ],
+  "priorLocalPg17Evidence": {
+    "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+    "status": "passed",
+    "startedAt": "2026-10-18T02:25:37.005Z",
+    "newRunInThisTask": false,
+    "scope": "Exact audited12 RPCs plus trigger; synthetic local PG17.4; no remote calls",
+    "selectedBaselineResults": [
+      {
+        "value": {
+          "id": "F01",
+          "case": "valid",
+          "clientSqlstate": "00000",
+          "resultShape": {
+            "rowCount": 1,
+            "columns": [
+              "joined_at",
+              "project_id",
+              "role",
+              "status",
+              "user_id"
+            ],
+            "scalarType": "undefined"
+          },
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [
+            "project_roles"
+          ],
+          "failedStatementAtomic": null,
+          "invitationBecameActive": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/0",
+          "startLine": 1073,
+          "endLine": 1112
+        }
+      },
+      {
+        "value": {
+          "id": "F01",
+          "case": "no_claim",
+          "clientSqlstate": "00000",
+          "resultShape": {
+            "rowCount": 1,
+            "columns": [
+              "joined_at",
+              "project_id",
+              "role",
+              "status",
+              "user_id"
+            ],
+            "scalarType": "undefined"
+          },
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [
+            "project_roles"
+          ],
+          "failedStatementAtomic": null,
+          "invitationBecameActive": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/1",
+          "startLine": 1113,
+          "endLine": 1152
+        }
+      },
+      {
+        "value": {
+          "id": "F01",
+          "case": "spoofed_caller",
+          "clientSqlstate": "00000",
+          "resultShape": {
+            "rowCount": 1,
+            "columns": [
+              "joined_at",
+              "project_id",
+              "role",
+              "status",
+              "user_id"
+            ],
+            "scalarType": "undefined"
+          },
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [
+            "project_roles"
+          ],
+          "failedStatementAtomic": null,
+          "invitationBecameActive": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/2",
+          "startLine": 1153,
+          "endLine": 1192
+        }
+      },
+      {
+        "value": {
+          "id": "F01",
+          "case": "invalid_arguments",
+          "clientSqlstate": "P0001",
+          "errorClassification": "other",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/3",
+          "startLine": 1193,
+          "endLine": 1221
+        }
+      },
+      {
+        "value": {
+          "id": "F01",
+          "case": "anon_no_claim",
+          "clientSqlstate": "00000",
+          "resultShape": {
+            "rowCount": 1,
+            "columns": [
+              "joined_at",
+              "project_id",
+              "role",
+              "status",
+              "user_id"
+            ],
+            "scalarType": "undefined"
+          },
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [
+            "project_roles"
+          ],
+          "failedStatementAtomic": null,
+          "invitationBecameActive": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/4",
+          "startLine": 1222,
+          "endLine": 1261
+        }
+      },
+      {
+        "value": {
+          "id": "F02",
+          "case": "valid",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/5",
+          "startLine": 1262,
+          "endLine": 1290
+        }
+      },
+      {
+        "value": {
+          "id": "F02",
+          "case": "no_claim",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/6",
+          "startLine": 1291,
+          "endLine": 1319
+        }
+      },
+      {
+        "value": {
+          "id": "F02",
+          "case": "spoofed_caller",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/7",
+          "startLine": 1320,
+          "endLine": 1348
+        }
+      },
+      {
+        "value": {
+          "id": "F02",
+          "case": "invalid_arguments",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/8",
+          "startLine": 1349,
+          "endLine": 1377
+        }
+      },
+      {
+        "value": {
+          "id": "F02",
+          "case": "anon_no_claim",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/9",
+          "startLine": 1378,
+          "endLine": 1406
+        }
+      },
+      {
+        "value": {
+          "id": "F06",
+          "case": "valid",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/25",
+          "startLine": 1962,
+          "endLine": 1990
+        }
+      },
+      {
+        "value": {
+          "id": "F06",
+          "case": "no_claim",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/26",
+          "startLine": 1991,
+          "endLine": 2019
+        }
+      },
+      {
+        "value": {
+          "id": "F06",
+          "case": "spoofed_caller",
+          "clientSqlstate": "P0001",
+          "errorClassification": "other",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/27",
+          "startLine": 2020,
+          "endLine": 2048
+        }
+      },
+      {
+        "value": {
+          "id": "F06",
+          "case": "invalid_arguments",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/28",
+          "startLine": 2049,
+          "endLine": 2077
+        }
+      },
+      {
+        "value": {
+          "id": "F06",
+          "case": "anon_no_claim",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/29",
+          "startLine": 2078,
+          "endLine": 2106
+        }
+      },
+      {
+        "value": {
+          "id": "F08",
+          "case": "valid",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/35",
+          "startLine": 2289,
+          "endLine": 2317
+        }
+      },
+      {
+        "value": {
+          "id": "F08",
+          "case": "no_claim",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/36",
+          "startLine": 2318,
+          "endLine": 2346
+        }
+      },
+      {
+        "value": {
+          "id": "F08",
+          "case": "spoofed_caller",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/37",
+          "startLine": 2347,
+          "endLine": 2375
+        }
+      },
+      {
+        "value": {
+          "id": "F08",
+          "case": "invalid_arguments",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/38",
+          "startLine": 2376,
+          "endLine": 2404
+        }
+      },
+      {
+        "value": {
+          "id": "F08",
+          "case": "anon_no_claim",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/39",
+          "startLine": 2405,
+          "endLine": 2433
+        }
+      },
+      {
+        "value": {
+          "id": "F09",
+          "case": "valid",
+          "clientSqlstate": "P0001",
+          "errorClassification": "ambiguous_reference",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/40",
+          "startLine": 2434,
+          "endLine": 2462
+        }
+      },
+      {
+        "value": {
+          "id": "F09",
+          "case": "no_claim",
+          "clientSqlstate": "P0001",
+          "errorClassification": "ambiguous_reference",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/41",
+          "startLine": 2463,
+          "endLine": 2491
+        }
+      },
+      {
+        "value": {
+          "id": "F09",
+          "case": "spoofed_caller",
+          "clientSqlstate": "P0001",
+          "errorClassification": "ambiguous_reference",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/42",
+          "startLine": 2492,
+          "endLine": 2520
+        }
+      },
+      {
+        "value": {
+          "id": "F09",
+          "case": "invalid_arguments",
+          "clientSqlstate": "P0001",
+          "errorClassification": "other",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/43",
+          "startLine": 2521,
+          "endLine": 2549
+        }
+      },
+      {
+        "value": {
+          "id": "F09",
+          "case": "anon_no_claim",
+          "clientSqlstate": "P0001",
+          "errorClassification": "ambiguous_reference",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/44",
+          "startLine": 2550,
+          "endLine": 2578
+        }
+      },
+      {
+        "value": {
+          "id": "F12",
+          "case": "valid",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/55",
+          "startLine": 2901,
+          "endLine": 2929
+        }
+      },
+      {
+        "value": {
+          "id": "F12",
+          "case": "no_claim",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/56",
+          "startLine": 2930,
+          "endLine": 2958
+        }
+      },
+      {
+        "value": {
+          "id": "F12",
+          "case": "spoofed_caller",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/57",
+          "startLine": 2959,
+          "endLine": 2987
+        }
+      },
+      {
+        "value": {
+          "id": "F12",
+          "case": "invalid_arguments",
+          "clientSqlstate": "P0001",
+          "errorClassification": "other",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/58",
+          "startLine": 2988,
+          "endLine": 3016
+        }
+      },
+      {
+        "value": {
+          "id": "F12",
+          "case": "anon_no_claim",
+          "clientSqlstate": "42703",
+          "errorClassification": "missing_object",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "beforeCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "afterCounts": {
+            "export_requests": 1,
+            "notifications": 1,
+            "seat_transactions": 0,
+            "project_members": 2,
+            "project_roles": 5,
+            "projects": 2,
+            "user_resource_wallets": 2
+          },
+          "changedTables": [],
+          "failedStatementAtomic": true,
+          "explicitRollbackVerified": true
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/59",
+          "startLine": 3017,
+          "endLine": 3045
+        }
+      },
+      {
+        "value": {
+          "id": "F09",
+          "case": "private_branch_2",
+          "clientSqlstate": "P0001",
+          "errorClassification": "ambiguous_reference",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "changedTables": []
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/60",
+          "startLine": 3046,
+          "endLine": 3054
+        }
+      },
+      {
+        "value": {
+          "id": "F09",
+          "case": "private_branch_3",
+          "clientSqlstate": "P0001",
+          "errorClassification": "ambiguous_reference",
+          "classificationSource": "private_error_message_pattern_only",
+          "resultShape": null,
+          "changedTables": []
+        },
+        "source": {
+          "path": "docs/research/evidence/2026-10-17-pg17-routines/pg17-run-2026-10-18T02-25-37.008Z-a5556a7c-71a9-470a-8df3-7658541381df.json",
+          "jsonPointer": "/baseline/61",
+          "startLine": 3055,
+          "endLine": 3063
+        }
+      }
+    ],
+    "semanticReview": {
+      "path": "docs/research/evidence/2026-10-17-routine-audit/semantic-review.md",
+      "lines": [
+        40,
+        41,
+        45,
+        47,
+        48,
+        51
+      ]
+    },
+    "limitations": "Synthetic fixed-schema local PG17 evidence; not remote HTTP, real authentication, current production state or a live business-row query."
+  },
+  "futureAdapter": {
+    "implementationStatus": "not implemented; requirements only",
+    "sourceOfTruth": {
+      "invitation": "public.invitations",
+      "memberAccess": "public.project_roles plus projects.facilitator_id/current active project checks",
+      "reservation": "future persistent typed invitation/reservation/accepted-user mapping and constraints required; not present in current snapshot"
+    },
+    "atomicBoundary": [
+      "Verified non-null user identity and provider-confirmed matching email, not request metadata or mere link possession.",
+      "Parse defined token protocol and locate exactly one invitation; reject ambiguous historical variants; no raw token logging.",
+      "Locate project, lock and revalidate active project and current facilitator inviter, pending status, allowed role and expiry. Maintain project-before-role order and define one compatible invitation/wallet/reservation lock order for accept/cancel/expire/transfer.",
+      "Require durable unconsumed reservation with correct invitation/project/role/payer/amount and trusted entitlement provenance. No implicit grant or inferred reservation from wallet balance.",
+      "In same transaction bind authenticated user to unique project membership and persist mapping, activate member/joined_at, accept invitation/accepted_at, consume reservation and ledger changes. Any failure rolls all affected facts back."
+    ],
+    "caseRules": {
+      "unregisteredEmail": "Keep email invitation and reservation, no synthetic user/member. Register and verify email, reauthenticate then atomically accept.",
+      "duplicateSend": "Future durable idempotency/uniqueness reuses one valid pending invitation and reservation; current pre-read plus token uniqueness is insufficient.",
+      "duplicateAccept": "No new member, debit or joined_at overwrite. Future adapter may report already-accepted only with durable same-user mapping and still-valid access; legacy Task 2 member-ID RPC explicitly rejects active repeats.",
+      "existingOrRevokedMember": "Reject different-role/inactive/deleted/rebound conflicts; never revive access by blind upsert or token retry.",
+      "cancelled": "Current legal status is declined, not cancelled. Future explicit cancellation meaning, current authority and exactly-once release of verified unconsumed reservation required.",
+      "expired": "Database clock, expires_at<=now rejects. Serialize with accept/cancel; release verified unconsumed reservation once and retain history. Missing historical reservation is not a reason to credit +1.",
+      "unknownCommit": "Timeout/lost response/post-RPC fetch error/bad TABLE shape remains unknown until authenticated lookup of the same mapped invitation/member/reservation proves result; no automatic reinvite, debit, release or new token.",
+      "fallback": "No service fallback, direct-table grant, legacy project_members/project_invitations write or token-variant write retries after auth/contract failure. Preserve committed history; disable new write entry on adapter rollback."
+    },
+    "resultValidation": "RPC error first; explicit TABLE unpack; exactly one row and types/user/project/role/status/joined_at verified; old token success field must be true if that interface is intentionally retained. Never use pre-read fallback as write proof.",
+    "emailBoundary": "Persistent post-commit delivery identity/outcome; retry same invite without second reserve. Creation, provider acceptance and delivery are separate outcomes.",
+    "outsideThisTask": [
+      "Production adapter/UI/API or migration changes",
+      "Real JWT/email confirmation integration",
+      "Trusted payment/entitlement source",
+      "Complete direct-table ACL/RLS and role inheritance",
+      "Database/HTTP/concurrency tests of future adapter",
+      "Deployment and original G0/G1 milestone completion"
+    ]
+  },
+  "checks": {
+    "sourceBackedStaticAudit": true,
+    "fixedSnapshotSha256Matched": true,
+    "fixedPublicCaptureSha256Matched": true,
+    "allSourceReferencesExistAndLineRangesInBounds": true,
+    "jsonPointersBoundToOriginalPublicInputs": true,
+    "literalRpcScan": {
+      "roots": [
+        "packages/web/src",
+        "packages/shared/src"
+      ],
+      "extensions": [
+        ".ts",
+        ".tsx",
+        ".js",
+        ".mjs",
+        ".cjs"
+      ],
+      "filesSearched": 499,
+      "count": 5,
+      "matches": [
+        {
+          "path": "packages/web/src/app/api/invitations/[token]/accept/route.ts",
+          "line": 132,
+          "rpc": "accept_project_invitation"
+        },
+        {
+          "path": "packages/web/src/app/api/invitations/accept/route.ts",
+          "line": 126,
+          "rpc": "accept_project_invitation"
+        },
+        {
+          "path": "packages/web/src/app/api/projects/[id]/invitations/route.ts",
+          "line": 378,
+          "rpc": "send_project_invitation"
+        },
+        {
+          "path": "packages/web/src/lib/api-supabase.ts",
+          "line": 346,
+          "rpc": "send_project_invitation"
+        },
+        {
+          "path": "packages/web/src/lib/api-supabase.ts",
+          "line": 363,
+          "rpc": "accept_project_invitation"
+        }
+      ],
+      "expectedFiveCallsitesMatched": true
+    },
+    "invitationColumns": 12,
+    "invitationConstraints": 6,
+    "invitationIndexes": 9,
+    "projectRoleColumns": 9,
+    "projectRoleConstraints": 7,
+    "projectRoleIndexes": 9,
+    "missingPublicProjectInvitationsConfirmed": true,
+    "missingProjectMembersJoinedAtConfirmed": true,
+    "missingCancellationSubrouteConfirmed": true,
+    "newDatabaseOrHttpRuns": 0,
+    "remoteQueries": 0,
+    "businessRowsRead": 0,
+    "privateRoutineBodiesRead": 0,
+    "applicationOrMigrationEdits": 0,
+    "mailAuthPaymentCalls": 0,
+    "runtimeTests": "Not run in documentation-only Task 1. Existing PG17 results read as prior evidence; npm verify/shared/infra belong to Task 3.",
+    "review": "Author self-review complete; independent controller review is separate and not claimed passed.",
+    "verificationSummary": {
+      "sourceHashesChecked": 32,
+      "lineReferencesChecked": 245,
+      "jsonPointersChecked": 184,
+      "metadataRowsExactlyEqualToReferencedSnapshotObjects": 145,
+      "markdownLinksChecked": 38,
+      "standaloneProjectUserUniqueIndexesChecked": 2,
+      "jsonParse": "passed",
+      "targetWhitespace": "passed",
+      "gitDiffCheckExitCode": 0,
+      "priorWorkspaceFilesHashPreserved": 1514,
+      "priorWorkspaceFilesChangedOrMissing": 0,
+      "concurrentControllerAdditions": [
+        "docs/research/evidence/2026-10-18-rpc-access-guards/project-checks.json",
+        "docs/research/evidence/2026-10-18-rpc-access-guards/milestone-check.json"
+      ],
+      "concurrentAdditionsModifiedByTask1": false
+    }
+  }
+}

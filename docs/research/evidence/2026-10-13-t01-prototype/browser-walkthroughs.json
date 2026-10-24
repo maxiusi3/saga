@@ -1,0 +1,518 @@
+{
+  "date": "2026-10-13",
+  "method": "Cua in-app browser; visible sequential guide controls",
+  "steps": [
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 1: Open import path",
+      "feedback": "Import path opened as the fictional organizer Alex. Previous demo work was cleared.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 2: Choose fictional audio",
+      "feedback": "Fictional sample selected: first-home.m4a. No file was read or uploaded.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 3: Confirm source permission",
+      "feedback": "Demo permission recorded to import or record this example and keep it in the invited family space.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 4: Allow text preparation",
+      "feedback": "Demo permission recorded for optional text preparation. This page makes no AI request.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 5: Mark local original available",
+      "feedback": "Demo: the original is available on this device. The family archive has no confirmed copy yet.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 6: Upload / retry original",
+      "feedback": "Upload is in progress in this demo. The cloud copy is not yet confirmed.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nUploading · not confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 7: Confirm cloud original",
+      "feedback": "Demo: the archive has confirmed the complete original. This is a simulated acknowledgement.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 8: Prepare / retry text",
+      "feedback": "Preparing text in this simulation. Original storage is unchanged.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nprocessing\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 9: Finish demo draft",
+      "feedback": "Fictional draft ready. Check the name and conflicting year before approval.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 10: Accept Alex as name",
+      "feedback": "Name accepted as Alex from the fictional source.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 11: Keep both memories",
+      "feedback": "The story now says “around 1990; exact year uncertain.” Alex’s 1990 and Sam’s 1989 memories remain attributed separately.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 12: Approve story snapshot",
+      "feedback": "A fixed demo snapshot is approved. Later AI actions cannot change it. Nothing was published.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Import to receipt",
+      "step": "Step 13: Download demo receipt",
+      "feedback": "A PROTOTYPE JSON receipt was requested. It contains fictional decisions only, no audio. This is not a complete media archive.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nDemo receipt requested · no audio"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 1: Open invitation",
+      "feedback": "Sam’s invitation is open. The same question will remain after demo sign-in.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nNo\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 2: Complete demo sign-in",
+      "feedback": "Demo sign-in complete. You returned to the same invitation and question: What do you remember about your first home?",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 3: Tell it with Sam",
+      "feedback": "Sam will help Alex tell the story.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 4: Confirm source permission",
+      "feedback": "Demo permission recorded to import or record this example and keep it in the invited family space.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 5: Allow text preparation",
+      "feedback": "Demo permission recorded for optional text preparation. This page makes no AI request.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 6: Start demo recording",
+      "feedback": "Recording is simulated. No microphone is in use and no segment is saved yet.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nrecording\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 7: Save a 12-second segment",
+      "feedback": "Demo: 12 seconds are on this device. There is no confirmed cloud copy.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nrecording\nDevice\nSaved segments · 12s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 8: Pause recording",
+      "feedback": "Paused. Any on-device segments are retained.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\npaused\nDevice\nSaved segments · 12s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 9: Resume recording",
+      "feedback": "Demo recording resumed. Saved segments remain on this device.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nrecording\nDevice\nSaved segments · 12s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 10: Save a 12-second segment",
+      "feedback": "Demo: 24 seconds are on this device. There is no confirmed cloud copy.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nrecording\nDevice\nSaved segments · 24s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 11: End recording",
+      "feedback": "Ended. The saved demo segments form a local original, ready to upload.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nended\nDevice\nOriginal available · 24s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 12: Upload / retry original",
+      "feedback": "Upload is in progress in this demo. The cloud copy is not yet confirmed.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nended\nDevice\nOriginal available · 24s\nCloud\nUploading · not confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Invitation returns",
+      "step": "Step 13: Confirm cloud original",
+      "feedback": "Demo: the archive has confirmed the complete original. This is a simulated acknowledgement.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nAccompanied by Sam\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nended\nDevice\nOriginal available · 24s\nCloud\nComplete original confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 1: Open invitation",
+      "feedback": "Sam’s invitation is open. The same question will remain after demo sign-in.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nNo\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 2: Complete demo sign-in",
+      "feedback": "Demo sign-in complete. You returned to the same invitation and question: What do you remember about your first home?",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 3: Confirm source permission",
+      "feedback": "Demo permission recorded to import or record this example and keep it in the invited family space.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 4: Start demo recording",
+      "feedback": "Recording is simulated. No microphone is in use and no segment is saved yet.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nrecording\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 5: Simulate interruption",
+      "feedback": "Interrupted before any segment was saved. There is nothing to recover.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\ninterrupted\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 6: Simulate reopening",
+      "feedback": "Simulated reopen only. An actual browser refresh resets this entire prototype.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\ninterrupted\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 7: Recover saved segments · expect refusal",
+      "feedback": "Action not allowed. No on-device segments were saved. There is no recording to recover.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\ninterrupted\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 8: Open invitation",
+      "feedback": "Sam’s invitation is open. The same question will remain after demo sign-in.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nNo\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 9: Complete demo sign-in",
+      "feedback": "Demo sign-in complete. You returned to the same invitation and question: What do you remember about your first home?",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 10: Confirm source permission",
+      "feedback": "Demo permission recorded to import or record this example and keep it in the invited family space.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 11: Start demo recording",
+      "feedback": "Recording is simulated. No microphone is in use and no segment is saved yet.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nrecording\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 12: Save a 12-second segment",
+      "feedback": "Demo: 12 seconds are on this device. There is no confirmed cloud copy.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nrecording\nDevice\nSaved segments · 12s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 13: Simulate interruption",
+      "feedback": "Interrupted. Only the saved on-device segments can be recovered.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\ninterrupted\nDevice\nSaved segments · 12s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 14: Simulate reopening",
+      "feedback": "Simulated reopen only. An actual browser refresh resets this entire prototype.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\ninterrupted\nDevice\nSaved segments · 12s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 15: Recover saved segments",
+      "feedback": "Recovered the saved 12 seconds in this simulation. Resume or end; unsaved audio is not recoverable.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\npaused\nDevice\nSaved segments · 12s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 16: Resume recording",
+      "feedback": "Demo recording resumed. Saved segments remain on this device.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nrecording\nDevice\nSaved segments · 12s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 17: Save a 12-second segment",
+      "feedback": "Demo: 24 seconds are on this device. There is no confirmed cloud copy.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nrecording\nDevice\nSaved segments · 24s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Interrupted recording",
+      "step": "Step 18: End recording",
+      "feedback": "Ended. The saved demo segments form a local original, ready to upload.",
+      "state": "Entry / role\nInvitation / storyteller\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nended\nDevice\nOriginal available · 24s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 1: Open import path",
+      "feedback": "Import path opened as the fictional organizer Alex. Previous demo work was cleared.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 2: Choose fictional audio",
+      "feedback": "Fictional sample selected: first-home.m4a. No file was read or uploaded.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 3: Confirm source permission",
+      "feedback": "Demo permission recorded to import or record this example and keep it in the invited family space.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 4: Mark local original available",
+      "feedback": "Demo: the original is available on this device. The family archive has no confirmed copy yet.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 5: Upload / retry original",
+      "feedback": "Upload is in progress in this demo. The cloud copy is not yet confirmed.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nUploading · not confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 6: Simulate upload failure",
+      "feedback": "Upload failed. The original remains on this device. Retry this upload; do not record again.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nUpload failed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 7: Confirm cloud original · expect refusal",
+      "feedback": "Action not allowed. Only an uploaded original undergoing confirmation can be marked complete.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nUpload failed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 8: Upload / retry original",
+      "feedback": "Upload is in progress in this demo. The cloud copy is not yet confirmed.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nUploading · not confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 9: Confirm cloud original",
+      "feedback": "Demo: the archive has confirmed the complete original. This is a simulated acknowledgement.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Upload retry",
+      "step": "Step 10: Upload / retry original · expect refusal",
+      "feedback": "Action not allowed. The original is already uploading or confirmed. Do not create a duplicate.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 1: Open import path",
+      "feedback": "Import path opened as the fictional organizer Alex. Previous demo work was cleared.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 2: Choose fictional audio",
+      "feedback": "Fictional sample selected: first-home.m4a. No file was read or uploaded.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 3: Confirm source permission",
+      "feedback": "Demo permission recorded to import or record this example and keep it in the invited family space.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 4: Allow text preparation",
+      "feedback": "Demo permission recorded for optional text preparation. This page makes no AI request.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 5: Mark local original available",
+      "feedback": "Demo: the original is available on this device. The family archive has no confirmed copy yet.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 6: Upload / retry original",
+      "feedback": "Upload is in progress in this demo. The cloud copy is not yet confirmed.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nUploading · not confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 7: Confirm cloud original",
+      "feedback": "Demo: the archive has confirmed the complete original. This is a simulated acknowledgement.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 8: Prepare / retry text",
+      "feedback": "Preparing text in this simulation. Original storage is unchanged.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nprocessing\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 9: Simulate text failure",
+      "feedback": "Text preparation failed. The confirmed original is still in the family archive. Retry text preparation when ready.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nfailed\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 10: Prepare / retry text",
+      "feedback": "Preparing text in this simulation. Original storage is unchanged.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nprocessing\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Text failure",
+      "step": "Step 11: Finish demo draft",
+      "feedback": "Fictional draft ready. Check the name and conflicting year before approval.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 1: Open import path",
+      "feedback": "Import path opened as the fictional organizer Alex. Previous demo work was cleared.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 2: Choose fictional audio",
+      "feedback": "Fictional sample selected: first-home.m4a. No file was read or uploaded.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nNot granted\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 3: Confirm source permission",
+      "feedback": "Demo permission recorded to import or record this example and keep it in the invited family space.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nNot granted\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 4: Allow text preparation",
+      "feedback": "Demo permission recorded for optional text preparation. This page makes no AI request.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nNo saved audio\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 5: Mark local original available",
+      "feedback": "Demo: the original is available on this device. The family archive has no confirmed copy yet.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nNot yet uploaded\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 6: Upload / retry original",
+      "feedback": "Upload is in progress in this demo. The cloud copy is not yet confirmed.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nUploading · not confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 7: Confirm cloud original",
+      "feedback": "Demo: the archive has confirmed the complete original. This is a simulated acknowledgement.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nidle\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 8: Prepare / retry text",
+      "feedback": "Preparing text in this simulation. Original storage is unchanged.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nprocessing\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 9: Finish demo draft",
+      "feedback": "Fictional draft ready. Check the name and conflicting year before approval.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\nunresolved\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 10: Accept Alex as name",
+      "feedback": "Name accepted as Alex from the fictional source.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 11: Approve story snapshot · expect refusal",
+      "feedback": "Action not allowed. Resolve the name and serious year disagreement before approving. Skipping is not approval.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 12: Try accepting exact year · expect refusal",
+      "feedback": "Action not allowed. 1989 and 1990 conflict. Keep both memories or use an explicitly approximate year; do not approve one as verified fact.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nunresolved\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 13: Keep both memories",
+      "feedback": "The story now says “around 1990; exact year uncertain.” Alex’s 1990 and Sam’s 1989 memories remain attributed separately.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nNot approved\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 14: Approve story snapshot",
+      "feedback": "A fixed demo snapshot is approved. Later AI actions cannot change it. Nothing was published.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 15: Prepare / retry text · expect refusal",
+      "feedback": "Action not allowed. An approved snapshot cannot be overwritten by AI. Withdraw approval before preparing another draft.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 16: Simulate missing original",
+      "feedback": "The original cannot be found in the archive. A complete delivery is blocked; your on-device copy remains.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nOriginal missing\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 17: Download demo receipt · expect refusal",
+      "feedback": "Action not allowed. Download blocked: the archive original is missing or unconfirmed. No complete archive or receipt was produced.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nOriginal missing\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 18: Upload / retry original",
+      "feedback": "Upload is in progress in this demo. The cloud copy is not yet confirmed.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nUploading · not confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 19: Confirm cloud original",
+      "feedback": "Demo: the archive has confirmed the complete original. This is a simulated acknowledgement.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nNo delivery"
+    },
+    {
+      "scenario": "Disagreement & missing",
+      "step": "Step 20: Download demo receipt",
+      "feedback": "A PROTOTYPE JSON receipt was requested. It contains fictional decisions only, no audio. This is not a complete media archive.",
+      "state": "Entry / role\nImport / organizer\nSigned in\nYes · simulated\nQuestion\nfirst-home-01 · What do you remember about your first home?\nHelp\nIndependent\nSource permission\nGranted in demo\nText permission\nGranted in demo\nRecording\nidle\nDevice\nOriginal available · 72s\nCloud\nComplete original confirmed\nText preparation\nready\nName review\naccepted\nYear review\nboth\nApproval\nFixed snapshot v1\nExport\nDemo receipt requested · no audio"
+    }
+  ],
+  "html_sha256_at_full_walkthrough": "964e3723ad9fc15a9ed3f15da83e831065de8bdc44ada27de3d6e5777f6809bd",
+  "final_delta": "Paused help text only; final paused/resumed browser checks recorded separately."
+}

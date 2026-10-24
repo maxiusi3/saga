@@ -1,0 +1,218 @@
+{
+  "checkedAt": "2026-10-17T02:47:53.099808+00:00",
+  "snapshot": "snapshot-2026-10-17T02-45-52-407Z.json",
+  "snapshotSha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f",
+  "identity": {
+    "current_user": "metadata_reader",
+    "current_database": "postgres",
+    "read_only": "on",
+    "isolation": "repeatable read",
+    "server_version": "17.4",
+    "statement_timeout": "10s",
+    "lock_timeout": "2s",
+    "idle_transaction_timeout": "15s",
+    "snapshot_time": "2026-10-17T02:45:55.101Z"
+  },
+  "counts": {
+    "tables": 43,
+    "columns": 459,
+    "policies": 79,
+    "indexes": 141,
+    "constraints": 167,
+    "privileges": 172,
+    "roles": 4,
+    "audit_views": 6,
+    "audit_visibility": 2,
+    "migrations": 4,
+    "buckets": null
+  },
+  "publicRelations": 35,
+  "publicBaseTables": 32,
+  "storageBaseTables": 8,
+  "views": 3,
+  "allBaseTablesRlsEnabled": true,
+  "allMetadataReaderBusinessTableAndColumnGrantsDenied": true,
+  "migrationComparison": [
+    {
+      "file": "supabase/migrations/20250731012532_remote_history_placeholder.sql",
+      "version": "20250731012532",
+      "sha256": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+      "versionRecorded": true,
+      "declaredPublicTables": [],
+      "declaredTablesPresent": [],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20250731015259_remote_history_placeholder.sql",
+      "version": "20250731015259",
+      "sha256": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+      "versionRecorded": true,
+      "declaredPublicTables": [],
+      "declaredTablesPresent": [],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20250802015525_remote_history_placeholder.sql",
+      "version": "20250802015525",
+      "sha256": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+      "versionRecorded": true,
+      "declaredPublicTables": [],
+      "declaredTablesPresent": [],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20250802015612_remote_history_placeholder.sql",
+      "version": "20250802015612",
+      "sha256": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+      "versionRecorded": true,
+      "declaredPublicTables": [],
+      "declaredTablesPresent": [],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20260611000000_agent_phase1.sql",
+      "version": "20260611000000",
+      "sha256": "77fa360a9174c3af2e27e7b63fefaf3e3cc420ea785d3422f41051731638f2f9",
+      "versionRecorded": false,
+      "declaredPublicTables": [
+        "agent_runs",
+        "interview_sessions",
+        "interview_events",
+        "agent_artifacts",
+        "story_elements"
+      ],
+      "declaredTablesPresent": [
+        "agent_runs",
+        "interview_sessions",
+        "interview_events",
+        "agent_artifacts",
+        "story_elements"
+      ],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20260612000000_agent_phase2_public_archive.sql",
+      "version": "20260612000000",
+      "sha256": "cb9545b79425861d5ee5ab9a8fc7d71c48358983ab6c9a8f66b467ffa5c62834",
+      "versionRecorded": false,
+      "declaredPublicTables": [
+        "platform_roles",
+        "public_contribution_invitations",
+        "public_contributions",
+        "public_contribution_elements",
+        "public_event_clusters",
+        "public_event_contributions",
+        "public_archive_audit_events"
+      ],
+      "declaredTablesPresent": [
+        "platform_roles",
+        "public_contribution_invitations",
+        "public_contributions",
+        "public_contribution_elements",
+        "public_event_clusters",
+        "public_event_contributions",
+        "public_archive_audit_events"
+      ],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20260621000000_storage_policies.sql",
+      "version": "20260621000000",
+      "sha256": "6cfc526f0c3ea4245eb1847748d61d2e8f37db03cd8c10f9cb79f3b16b6188bc",
+      "versionRecorded": false,
+      "declaredPublicTables": [],
+      "declaredTablesPresent": [],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20260625081000_dashboard_support_tables.sql",
+      "version": "20260625081000",
+      "sha256": "526130a7fe84dca1327fd3b8cc7546c3445eadf0d6d29b896499ccfcb73a32de",
+      "versionRecorded": false,
+      "declaredPublicTables": [
+        "user_resource_wallets",
+        "chapters",
+        "prompts",
+        "project_prompt_state",
+        "notifications",
+        "notification_settings",
+        "user_settings"
+      ],
+      "declaredTablesPresent": [
+        "user_resource_wallets",
+        "chapters",
+        "prompts",
+        "project_prompt_state",
+        "notifications",
+        "notification_settings",
+        "user_settings"
+      ],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql",
+      "version": "20261006000001",
+      "sha256": "8aa01d232796c63c56e4e6d85bfbf262741d1ff908b2d17c1e95c1332895752b",
+      "versionRecorded": false,
+      "declaredPublicTables": [],
+      "declaredTablesPresent": [],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20261007000001_create_waitlist.sql",
+      "version": "20261007000001",
+      "sha256": "20d2193287988a84de23b9224df8cbd7513fb93439a740da2dc0cce0e0c11a1c",
+      "versionRecorded": false,
+      "declaredPublicTables": [
+        "waitlist_signups"
+      ],
+      "declaredTablesPresent": [
+        "waitlist_signups"
+      ],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    },
+    {
+      "file": "supabase/migrations/20261007000002_improve_storage_rls.sql",
+      "version": "20261007000002",
+      "sha256": "d0375b2abbeff1b4f8357c5704dc6de37c3ecb64f3fcaae1cfeead949b3e8cff",
+      "versionRecorded": false,
+      "declaredPublicTables": [],
+      "declaredTablesPresent": [],
+      "declaredTablesAbsent": [],
+      "scope": "Table names only; presence does not establish full schema/function/policy equivalence or how applied"
+    }
+  ],
+  "plannedTablesAbsent": [
+    "media_assets",
+    "legacy_media_references",
+    "processing_jobs",
+    "processing_attempts",
+    "consent_records",
+    "deletion_requests",
+    "deletion_targets",
+    "recording_sessions"
+  ],
+  "bucketConfiguration": {
+    "status": "denied",
+    "code": "42501"
+  },
+  "objectInventory": "not_executed",
+  "businessReads": "not_executed",
+  "backupRestore": "not_verified",
+  "sourceHashes": {
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "a5c788235068de9d7c31ed46cb0da9cf710e4759185e4bcb8d5d139bebf82f20",
+    "packages/web/src/lib/server/project-access.ts": "c6dd6eeeef8fd9030dad1ef9fd7664f2b66db2bc3181b36d8e33542fe9aa395e",
+    "packages/web/src/lib/storage.ts": "275f7e6e77d940fbbfec8b4894d8c4b7125ba64379e96289e7f9717b170f6415",
+    "packages/web/src/lib/stories.ts": "80829df4ffd3ff6c7d9b3ae1697e09ba346d1430a8d38c4f842a22237e26ae3c"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-11",
+  "branch": "codex/october-upgrade-p0",
+  "base_commit": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "state": "uncommitted working tree; no deployment",
+  "source_sha256": {
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/record/page.tsx": "ba2200bdc15e50c32143b95bd4ddbcc9e7c177fe93122ef12815005759068076",
+    "packages/web/src/app/api/ai/generate-content/__tests__/route.test.ts": "608dd4969046b2928b9e16ea9f38dac8f1dba588a723b47554f5e709ba2f6b6c",
+    "packages/web/src/app/api/ai/generate-content/route.ts": "ea66a40c60fc362da25e15b250dc2a7558c5936253dd53274f35fdf4144ead58",
+    "packages/web/src/app/api/ai/health/__tests__/route.test.ts": "8b0f738988b8caa315a0f06655e3e06abea8474effc27235e90c225d2d743dcf",
+    "packages/web/src/app/api/ai/health/route.ts": "7e5680eb8df1d68e5df65fe50d7598ad9e4947732b15e4fb369d6e992f66b4bf",
+    "packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts": "d76dad1154529ea691124db83271d078f5f5f32da8d2977258a1b8332952e7f2",
+    "packages/web/src/app/api/ai/transcribe/route.ts": "2b1e00efbdc147d37b6dd37b1e5804639efd6ce9e812ebece555f86d109658f2",
+    "packages/web/src/components/recording/ReviewStage.tsx": "39356de3fa020e5e00ac9d3deac4fbd5a9eaee0667d2cbc7577a8885f9228011",
+    "packages/web/src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx": "b26bd9b53c511f9bffb2d4cdc3341fa674986d70381e3e0f2179237d4a57023a",
+    "packages/web/src/lib/__tests__/ai-service.test.ts": "85be55570bdd00c19907948383e03858c390dff448058a080de65b4aaf6d8206",
+    "packages/web/src/lib/ai-response.ts": "36e4df8bb3d1322c48699468871690c152c0b3b5a38cb8f477477b56858b388f",
+    "packages/web/src/lib/ai-service.ts": "9e85df9d777e7f365208ce7771aec4b2d49ca449a21cda8a674001a3d134f6a7"
+  },
+  "final_results": {
+    "focused": {
+      "exit_code": 0,
+      "suites": 5,
+      "tests": 41
+    },
+    "verify": {
+      "exit_code": 0,
+      "web_suites": 57,
+      "web_tests": 433,
+      "type_check": "passed",
+      "lint": "passed",
+      "build": "passed"
+    },
+    "shared": {
+      "exit_code": 0,
+      "suites": 4,
+      "tests": 16
+    },
+    "infra": {
+      "exit_code": 0,
+      "tests": 7
+    }
+  },
+  "log_sha256": {
+    "focused-tests.log": "82ad36d237ad8e393599cd078b91a320a2a020aeba19af3187e4b2839666c756",
+    "infra.log": "67bce835cdf5a80c79e1af7fc52dcaecf616600e26ae167a3286c50f9c5e7a37",
+    "recording-cleanup-failure.log": "f7bb7ef66721dfac2639c5ff4e2243ba2494a50ceac385e1b381b166a51a8dfb",
+    "recording-debug.log": "e1cb541f9a2510d4e48f8be2b492158822d50fc823f92e6394efbb02ded4c1a4",
+    "recording-red.log": "9242ab3e93f518cc6546f54feb98f625d02d400c1e5ac48b03a7ae21163a3c0a",
+    "review-followups-red.log": "74c0acb677ae1b866579c829fe664144fe74ce1060e0804720f1b8485fccc2f4",
+    "shared.log": "5d58583e761c6f2b52e01c80408d8673f2522f999a6848a664e5bb0acaf2b2f4",
+    "verify.log": "0e01178d1090ba32c89589e72d0ab0e6dee75dedf357855b074fc07523918d34"
+  }
+}

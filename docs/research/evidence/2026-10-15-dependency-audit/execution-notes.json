@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-15",
+  "timezone": "Asia/Taipei",
+  "branch": "codex/october-upgrade-p0",
+  "baseline": "1caa21a72",
+  "baselineAuditExitCode": 1,
+  "baselineAuditCounts": {
+    "moderate": 17,
+    "high": 40,
+    "critical": 2,
+    "total": 59
+  },
+  "dependencyResolution": {
+    "exitCode": 0,
+    "unexpectedOldNextPeer": "Initial install kept16.2.6 behind optional peers; npm ls reported ELSPROBLEMS. Targeted npm update next removed it; all Next references resolve16.4.1.",
+    "noForceOrCrossMajorOverrides": true
+  },
+  "independentReview": {
+    "status": "unavailable",
+    "attempts": [
+      "implementer failed twice: thinking_signature_invalid",
+      "alternate implementation model: model_not_found",
+      "inherited-model reviewer: resource mismatch"
+    ],
+    "noReviewVerdictReceived": true
+  },
+  "remoteReadiness": {
+    "credentialPresenceChecked": [
+      "SUPABASE_SERVICE_ROLE_KEY",
+      "SUPABASE_ACCESS_TOKEN",
+      "SUPABASE_DB_PASSWORD",
+      "DATABASE_URL"
+    ],
+    "allAbsentInProcessAndCheckedEnvFiles": true,
+    "blockedCliRoleInitializationRetried": false
+  },
+  "boundary": "No deployment, remote migration, production writes, household material access, paid provider calls, commits or pushes.",
+  "cleanInstall": {
+    "command": "npm_config_noproxy=registry.npmjs.org npm ci --no-audit --no-fund --prefer-offline --fetch-timeout=60000 --fetch-retries=1",
+    "exitCode": 0,
+    "packagesAdded": 1416,
+    "transport": "Direct official npm registry for this process only; no registry/TLS/config changes. Earlier incomplete installs were terminated before the final clean install.",
+    "log": "npm-ci.log"
+  },
+  "runtimeHarnessCorrection": {
+    "initialFailure": "The first Next CSS chunk had64 rules; the next had1596. The first-sheet-only assertion caused a harness false failure.",
+    "fix": "Count rules across all loaded Next CSS chunks. Application code and build unchanged.",
+    "productRegressionFound": false
+  },
+  "installedTreeNote": "One optional WASM helper remains after npm ci on macOS x64. It is present in the lockfile as optional; its platform-specific consumers are not installed. No missing/invalid dependency or peer constraint. Left unchanged and disclosed; not pruned to disguise clean-install behavior."
+}

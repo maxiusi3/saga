@@ -1,0 +1,1348 @@
+{
+  "startedAt": "2026-10-24T01:28:49.871Z",
+  "status": "failed",
+  "mode": "captured_storage_behavior",
+  "scope": "Local synthetic PostgreSQL 17.4. No remote, provider, business rows, object bytes or production operations.",
+  "assertions": 349,
+  "actorConnections": [
+    {
+      "alias": "ordinary",
+      "superuser": false,
+      "bypassRls": false,
+      "memberOfR": false,
+      "exactR": false
+    },
+    {
+      "alias": "member",
+      "superuser": false,
+      "bypassRls": false,
+      "memberOfR": true,
+      "exactR": false
+    },
+    {
+      "alias": "R",
+      "superuser": false,
+      "bypassRls": false,
+      "memberOfR": true,
+      "exactR": true
+    },
+    {
+      "alias": "superuser",
+      "superuser": true,
+      "bypassRls": true,
+      "memberOfR": true,
+      "exactR": false
+    },
+    {
+      "alias": "bypass",
+      "superuser": false,
+      "bypassRls": true,
+      "memberOfR": false,
+      "exactR": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "catalog exact complete fixture",
+      "status": "passed",
+      "assertions": 8
+    },
+    {
+      "name": "foldername literal independent boundary oracle",
+      "status": "passed",
+      "assertions": 10
+    },
+    {
+      "name": "bucket name INSERT and UPDATE character limits",
+      "status": "passed",
+      "assertions": 46
+    },
+    {
+      "name": "actual synthetic role attributes and MEMBER versus exact current_user",
+      "status": "passed",
+      "assertions": 11
+    },
+    {
+      "name": "lifecycle INSERT role matrix ordinary",
+      "status": "passed",
+      "assertions": 24
+    },
+    {
+      "name": "lifecycle INSERT role matrix member",
+      "status": "passed",
+      "assertions": 22
+    },
+    {
+      "name": "lifecycle INSERT role matrix R",
+      "status": "passed",
+      "assertions": 22
+    },
+    {
+      "name": "lifecycle INSERT role matrix superuser",
+      "status": "passed",
+      "assertions": 22
+    },
+    {
+      "name": "lifecycle INSERT role matrix bypass",
+      "status": "passed",
+      "assertions": 24
+    },
+    {
+      "name": "lifecycle INSERT shape pair UUID and versioning constraints",
+      "status": "passed",
+      "assertions": 72
+    },
+    {
+      "name": "lifecycle UPDATE branches ordinary",
+      "status": "failed",
+      "code": "ASSERT_FAILED",
+      "label": "ordinary both actually change AFTER gate source layer"
+    }
+  ],
+  "observations": [
+    {
+      "label": "foldername",
+      "input": null,
+      "expected": null,
+      "actual": null
+    },
+    {
+      "label": "foldername",
+      "input": "",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "label": "foldername",
+      "input": "file",
+      "expected": [],
+      "actual": []
+    },
+    {
+      "label": "foldername",
+      "input": "a/b/file",
+      "expected": [
+        "a",
+        "b"
+      ],
+      "actual": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "label": "foldername",
+      "input": "/file",
+      "expected": [
+        ""
+      ],
+      "actual": [
+        ""
+      ]
+    },
+    {
+      "label": "foldername",
+      "input": "a/",
+      "expected": [
+        "a"
+      ],
+      "actual": [
+        "a"
+      ]
+    },
+    {
+      "label": "foldername",
+      "input": "a//file",
+      "expected": [
+        "a",
+        ""
+      ],
+      "actual": [
+        "a",
+        ""
+      ]
+    },
+    {
+      "label": "foldername",
+      "input": "//",
+      "expected": [
+        "",
+        ""
+      ],
+      "actual": [
+        "",
+        ""
+      ]
+    },
+    {
+      "label": "foldername",
+      "input": "a/%2F/file",
+      "expected": [
+        "a",
+        "%2F"
+      ],
+      "actual": [
+        "a",
+        "%2F"
+      ]
+    },
+    {
+      "label": "foldername",
+      "input": "a%2Fb/file",
+      "expected": [
+        "a%2Fb"
+      ],
+      "actual": [
+        "a%2Fb"
+      ]
+    },
+    {
+      "label": "ascii INSERT 100",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "1cf02ecfd2d65de069ddcd69b67cda18441715df343b14c542cd516dcc96ed80",
+      "afterSha256": "810e85fc6658dc97cbe17abc3a3ca5d27981b5b716ec0b4d914fc8698437c166",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "ascii INSERT 101",
+      "actor": "ordinary",
+      "expectedSqlstate": "P0001",
+      "expectedRowCount": null,
+      "sqlstate": "P0001",
+      "layer": "trigger",
+      "function": "enforce_bucket_name_length",
+      "rowCount": null,
+      "beforeSha256": "810e85fc6658dc97cbe17abc3a3ca5d27981b5b716ec0b4d914fc8698437c166",
+      "afterSha256": "810e85fc6658dc97cbe17abc3a3ca5d27981b5b716ec0b4d914fc8698437c166",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ascii UPDATE OF name 101",
+      "actor": "ordinary",
+      "expectedSqlstate": "P0001",
+      "expectedRowCount": null,
+      "sqlstate": "P0001",
+      "layer": "trigger",
+      "function": "enforce_bucket_name_length",
+      "rowCount": null,
+      "beforeSha256": "810e85fc6658dc97cbe17abc3a3ca5d27981b5b716ec0b4d914fc8698437c166",
+      "afterSha256": "810e85fc6658dc97cbe17abc3a3ca5d27981b5b716ec0b4d914fc8698437c166",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ascii UPDATE OF name 100 unchanged",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "810e85fc6658dc97cbe17abc3a3ca5d27981b5b716ec0b4d914fc8698437c166",
+      "afterSha256": "810e85fc6658dc97cbe17abc3a3ca5d27981b5b716ec0b4d914fc8698437c166",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ascii UPDATE not listing name",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "810e85fc6658dc97cbe17abc3a3ca5d27981b5b716ec0b4d914fc8698437c166",
+      "afterSha256": "f3741836b2990255d4ae73d466661e364aa1530c5bd0752177d06f499c52401b",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "multibyte INSERT 100",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "f3741836b2990255d4ae73d466661e364aa1530c5bd0752177d06f499c52401b",
+      "afterSha256": "a99afb9006d1fa348a82207663392452c1baf336d10e9fb7ae88d5cf252afe5d",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "multibyte INSERT 101",
+      "actor": "ordinary",
+      "expectedSqlstate": "P0001",
+      "expectedRowCount": null,
+      "sqlstate": "P0001",
+      "layer": "trigger",
+      "function": "enforce_bucket_name_length",
+      "rowCount": null,
+      "beforeSha256": "a99afb9006d1fa348a82207663392452c1baf336d10e9fb7ae88d5cf252afe5d",
+      "afterSha256": "a99afb9006d1fa348a82207663392452c1baf336d10e9fb7ae88d5cf252afe5d",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "multibyte UPDATE OF name 101",
+      "actor": "ordinary",
+      "expectedSqlstate": "P0001",
+      "expectedRowCount": null,
+      "sqlstate": "P0001",
+      "layer": "trigger",
+      "function": "enforce_bucket_name_length",
+      "rowCount": null,
+      "beforeSha256": "a99afb9006d1fa348a82207663392452c1baf336d10e9fb7ae88d5cf252afe5d",
+      "afterSha256": "a99afb9006d1fa348a82207663392452c1baf336d10e9fb7ae88d5cf252afe5d",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "multibyte UPDATE OF name 100 unchanged",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "a99afb9006d1fa348a82207663392452c1baf336d10e9fb7ae88d5cf252afe5d",
+      "afterSha256": "a99afb9006d1fa348a82207663392452c1baf336d10e9fb7ae88d5cf252afe5d",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "multibyte UPDATE not listing name",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "a99afb9006d1fa348a82207663392452c1baf336d10e9fb7ae88d5cf252afe5d",
+      "afterSha256": "180f139651858aa3c8ddaf4db72173fa426515b6625fc82b5242cb3c79c6b018",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "NULL name table NOT NULL",
+      "actor": "ordinary",
+      "expectedSqlstate": "23502",
+      "expectedRowCount": null,
+      "sqlstate": "23502",
+      "layer": "not_null",
+      "rowCount": null,
+      "beforeSha256": "180f139651858aa3c8ddaf4db72173fa426515b6625fc82b5242cb3c79c6b018",
+      "afterSha256": "180f139651858aa3c8ddaf4db72173fa426515b6625fc82b5242cb3c79c6b018",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary empty insert STANDARD",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "180f139651858aa3c8ddaf4db72173fa426515b6625fc82b5242cb3c79c6b018",
+      "afterSha256": "c1bc3f0014a0fc200d971c1e83074c238277d3fa8405a2f92f9d437608a4a1a8",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "ordinary nonempty insert STANDARD",
+      "actor": "ordinary",
+      "expectedSqlstate": "42501",
+      "expectedRowCount": null,
+      "sqlstate": "42501",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "c1bc3f0014a0fc200d971c1e83074c238277d3fa8405a2f92f9d437608a4a1a8",
+      "afterSha256": "c1bc3f0014a0fc200d971c1e83074c238277d3fa8405a2f92f9d437608a4a1a8",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary empty insert ANALYTICS",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "c1bc3f0014a0fc200d971c1e83074c238277d3fa8405a2f92f9d437608a4a1a8",
+      "afterSha256": "ea97f3d22b0ad1f0ee86b6127d1f5e0e863ee852428c70e8b3732ea9241741b5",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "ordinary nonempty insert ANALYTICS",
+      "actor": "ordinary",
+      "expectedSqlstate": "42501",
+      "expectedRowCount": null,
+      "sqlstate": "42501",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "ea97f3d22b0ad1f0ee86b6127d1f5e0e863ee852428c70e8b3732ea9241741b5",
+      "afterSha256": "ea97f3d22b0ad1f0ee86b6127d1f5e0e863ee852428c70e8b3732ea9241741b5",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary empty insert VECTOR",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "ea97f3d22b0ad1f0ee86b6127d1f5e0e863ee852428c70e8b3732ea9241741b5",
+      "afterSha256": "5e85fa1378d0960d93158b91b1d80f1cfe01cc1e4789eb7cff80b504e7ced341",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "ordinary nonempty insert VECTOR",
+      "actor": "ordinary",
+      "expectedSqlstate": "42501",
+      "expectedRowCount": null,
+      "sqlstate": "42501",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "5e85fa1378d0960d93158b91b1d80f1cfe01cc1e4789eb7cff80b504e7ced341",
+      "afterSha256": "5e85fa1378d0960d93158b91b1d80f1cfe01cc1e4789eb7cff80b504e7ced341",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "member empty insert STANDARD",
+      "actor": "member",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "5e85fa1378d0960d93158b91b1d80f1cfe01cc1e4789eb7cff80b504e7ced341",
+      "afterSha256": "0b4741245776f619816a5eb8ef8932f01c7678a73324040f1701ba6f5dc5834b",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "member nonempty insert STANDARD",
+      "actor": "member",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "0b4741245776f619816a5eb8ef8932f01c7678a73324040f1701ba6f5dc5834b",
+      "afterSha256": "bd89d1e872a37ca0007017d90bb8301f28b87e998d09caba787c64d8fedc50d6",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "member empty insert ANALYTICS",
+      "actor": "member",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "bd89d1e872a37ca0007017d90bb8301f28b87e998d09caba787c64d8fedc50d6",
+      "afterSha256": "3c86786ba30646b452a421636719e7146d9d81f96c36b5d16162ec8c0487b702",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "member nonempty insert ANALYTICS",
+      "actor": "member",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_standard_only_check",
+      "rowCount": null,
+      "beforeSha256": "3c86786ba30646b452a421636719e7146d9d81f96c36b5d16162ec8c0487b702",
+      "afterSha256": "3c86786ba30646b452a421636719e7146d9d81f96c36b5d16162ec8c0487b702",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "member empty insert VECTOR",
+      "actor": "member",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "3c86786ba30646b452a421636719e7146d9d81f96c36b5d16162ec8c0487b702",
+      "afterSha256": "2949b2bf1e8bbece7af03ebdd0e825e076c2af8550c6b4944179c5c9fafffd6d",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "member nonempty insert VECTOR",
+      "actor": "member",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_standard_only_check",
+      "rowCount": null,
+      "beforeSha256": "2949b2bf1e8bbece7af03ebdd0e825e076c2af8550c6b4944179c5c9fafffd6d",
+      "afterSha256": "2949b2bf1e8bbece7af03ebdd0e825e076c2af8550c6b4944179c5c9fafffd6d",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "R empty insert STANDARD",
+      "actor": "R",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "2949b2bf1e8bbece7af03ebdd0e825e076c2af8550c6b4944179c5c9fafffd6d",
+      "afterSha256": "a7fd2833950bb7d4a0a42063313e41a06fe731b78f7b6d8e12f4fd2b611dd180",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "R nonempty insert STANDARD",
+      "actor": "R",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "a7fd2833950bb7d4a0a42063313e41a06fe731b78f7b6d8e12f4fd2b611dd180",
+      "afterSha256": "3419f94be7f1427ee5ba3d3db03cb0c99fd8be5a4971aaa86ee264e3d791af98",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "R empty insert ANALYTICS",
+      "actor": "R",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "3419f94be7f1427ee5ba3d3db03cb0c99fd8be5a4971aaa86ee264e3d791af98",
+      "afterSha256": "0c20b912ba4a77897f310c12dcdd00c8e138504459349dea3d742bc356325121",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "R nonempty insert ANALYTICS",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_standard_only_check",
+      "rowCount": null,
+      "beforeSha256": "0c20b912ba4a77897f310c12dcdd00c8e138504459349dea3d742bc356325121",
+      "afterSha256": "0c20b912ba4a77897f310c12dcdd00c8e138504459349dea3d742bc356325121",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "R empty insert VECTOR",
+      "actor": "R",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "0c20b912ba4a77897f310c12dcdd00c8e138504459349dea3d742bc356325121",
+      "afterSha256": "579249920d87f2d9693d14438c3d51b931c42f2d08852945d58e923dca2e4af5",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "R nonempty insert VECTOR",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_standard_only_check",
+      "rowCount": null,
+      "beforeSha256": "579249920d87f2d9693d14438c3d51b931c42f2d08852945d58e923dca2e4af5",
+      "afterSha256": "579249920d87f2d9693d14438c3d51b931c42f2d08852945d58e923dca2e4af5",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "superuser empty insert STANDARD",
+      "actor": "superuser",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "579249920d87f2d9693d14438c3d51b931c42f2d08852945d58e923dca2e4af5",
+      "afterSha256": "89caea4d4a398114fd9a0633444fdd8a882c74146cdb9bff02e9d98ea5479ceb",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "superuser nonempty insert STANDARD",
+      "actor": "superuser",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "89caea4d4a398114fd9a0633444fdd8a882c74146cdb9bff02e9d98ea5479ceb",
+      "afterSha256": "266b3c186c3c3d51f7085e5a6f32fa70ca442061877e99de74029bfb538b5855",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "superuser empty insert ANALYTICS",
+      "actor": "superuser",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "266b3c186c3c3d51f7085e5a6f32fa70ca442061877e99de74029bfb538b5855",
+      "afterSha256": "f61e72b3c22d374779d32f9121da1e472ea3838781f527cb413c7f3c741c2034",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "superuser nonempty insert ANALYTICS",
+      "actor": "superuser",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_standard_only_check",
+      "rowCount": null,
+      "beforeSha256": "f61e72b3c22d374779d32f9121da1e472ea3838781f527cb413c7f3c741c2034",
+      "afterSha256": "f61e72b3c22d374779d32f9121da1e472ea3838781f527cb413c7f3c741c2034",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "superuser empty insert VECTOR",
+      "actor": "superuser",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "f61e72b3c22d374779d32f9121da1e472ea3838781f527cb413c7f3c741c2034",
+      "afterSha256": "b5d7bd5f7b6903dc109768a67c5b114808cb88b6818ffebdc5307a3b190e2cf3",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "superuser nonempty insert VECTOR",
+      "actor": "superuser",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_standard_only_check",
+      "rowCount": null,
+      "beforeSha256": "b5d7bd5f7b6903dc109768a67c5b114808cb88b6818ffebdc5307a3b190e2cf3",
+      "afterSha256": "b5d7bd5f7b6903dc109768a67c5b114808cb88b6818ffebdc5307a3b190e2cf3",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "bypass empty insert STANDARD",
+      "actor": "bypass",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "b5d7bd5f7b6903dc109768a67c5b114808cb88b6818ffebdc5307a3b190e2cf3",
+      "afterSha256": "c1868b36ebe0a886d2db0d59c364bb312d16d892e5712c9536404a3c78ff7a14",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "bypass nonempty insert STANDARD",
+      "actor": "bypass",
+      "expectedSqlstate": "42501",
+      "expectedRowCount": null,
+      "sqlstate": "42501",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "c1868b36ebe0a886d2db0d59c364bb312d16d892e5712c9536404a3c78ff7a14",
+      "afterSha256": "c1868b36ebe0a886d2db0d59c364bb312d16d892e5712c9536404a3c78ff7a14",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "bypass empty insert ANALYTICS",
+      "actor": "bypass",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "c1868b36ebe0a886d2db0d59c364bb312d16d892e5712c9536404a3c78ff7a14",
+      "afterSha256": "7cdf9acc1cad2c321c7f32fbb437aa095386d0df83e69168738d49d1721e59d2",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "bypass nonempty insert ANALYTICS",
+      "actor": "bypass",
+      "expectedSqlstate": "42501",
+      "expectedRowCount": null,
+      "sqlstate": "42501",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "7cdf9acc1cad2c321c7f32fbb437aa095386d0df83e69168738d49d1721e59d2",
+      "afterSha256": "7cdf9acc1cad2c321c7f32fbb437aa095386d0df83e69168738d49d1721e59d2",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "bypass empty insert VECTOR",
+      "actor": "bypass",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "7cdf9acc1cad2c321c7f32fbb437aa095386d0df83e69168738d49d1721e59d2",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "bypass nonempty insert VECTOR",
+      "actor": "bypass",
+      "expectedSqlstate": "42501",
+      "expectedRowCount": null,
+      "sqlstate": "42501",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape array",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_shape_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape json-null",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_shape_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape scalar",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_shape_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape missing-rules",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_shape_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape rules-object",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_shape_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape rules-null",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_shape_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape rules-empty",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_shape_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape rules-1001",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_shape_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "pair config-only",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_pair_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "pair generation-only",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_lifecycle_configuration_pair_check",
+      "rowCount": null,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "shape accepts 1 rules without service semantics",
+      "actor": "R",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "93e981407bc5d1b5ebe04d3439ce28c1e0d6a8af635e4781a13ee2774bdc3f48",
+      "afterSha256": "0d778cd722192f6a1d7fa24c5576b59a6bc1acffe902113ea3ce5d410bd8c6e3",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "shape accepts 1000 rules without service semantics",
+      "actor": "R",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "0d778cd722192f6a1d7fa24c5576b59a6bc1acffe902113ea3ce5d410bd8c6e3",
+      "afterSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "generation is UUID input",
+      "actor": "R",
+      "expectedSqlstate": "22P02",
+      "expectedRowCount": null,
+      "sqlstate": "22P02",
+      "layer": "type_input",
+      "rowCount": null,
+      "beforeSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "afterSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "versioning remains disabled ENABLED",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_versioning_dark_check",
+      "rowCount": null,
+      "beforeSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "afterSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "versioning remains disabled SUSPENDED",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_versioning_dark_check",
+      "rowCount": null,
+      "beforeSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "afterSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "versioning remains disabled OTHER",
+      "actor": "R",
+      "expectedSqlstate": "23514",
+      "expectedRowCount": null,
+      "sqlstate": "23514",
+      "layer": "table_constraint",
+      "constraint": "buckets_versioning_dark_check",
+      "rowCount": null,
+      "beforeSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "afterSha256": "f5aff51c190706ce7804c9b1305e1ef6a5cb8e2a24a0b04dbd4c4fd499290aa5",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary UPDATE OF both unchanged",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "1d8e278d93bc9decd7db7f38521b6c05abf3c354dc15a89690147ae214f585a1",
+      "afterSha256": "1d8e278d93bc9decd7db7f38521b6c05abf3c354dc15a89690147ae214f585a1",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary UPDATE OF config unchanged",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "1d8e278d93bc9decd7db7f38521b6c05abf3c354dc15a89690147ae214f585a1",
+      "afterSha256": "1d8e278d93bc9decd7db7f38521b6c05abf3c354dc15a89690147ae214f585a1",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary UPDATE OF generation unchanged",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "1d8e278d93bc9decd7db7f38521b6c05abf3c354dc15a89690147ae214f585a1",
+      "afterSha256": "1d8e278d93bc9decd7db7f38521b6c05abf3c354dc15a89690147ae214f585a1",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary UPDATE unrelated column",
+      "actor": "ordinary",
+      "expectedSqlstate": "00000",
+      "expectedRowCount": 1,
+      "sqlstate": "00000",
+      "rowCount": 1,
+      "beforeSha256": "1d8e278d93bc9decd7db7f38521b6c05abf3c354dc15a89690147ae214f585a1",
+      "afterSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "completeStateUnchanged": false
+    },
+    {
+      "label": "ordinary only config changes",
+      "actor": "ordinary",
+      "expectedSqlstate": "22023",
+      "expectedRowCount": null,
+      "sqlstate": "22023",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "afterSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary only generation changes",
+      "actor": "ordinary",
+      "expectedSqlstate": "22023",
+      "expectedRowCount": null,
+      "sqlstate": "22023",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "afterSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary both listed but config unchanged",
+      "actor": "ordinary",
+      "expectedSqlstate": "22023",
+      "expectedRowCount": null,
+      "sqlstate": "22023",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "afterSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary both listed but generation unchanged",
+      "actor": "ordinary",
+      "expectedSqlstate": "22023",
+      "expectedRowCount": null,
+      "sqlstate": "22023",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "afterSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary only config clears",
+      "actor": "ordinary",
+      "expectedSqlstate": "22023",
+      "expectedRowCount": null,
+      "sqlstate": "22023",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "afterSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary only generation clears",
+      "actor": "ordinary",
+      "expectedSqlstate": "22023",
+      "expectedRowCount": null,
+      "sqlstate": "22023",
+      "layer": "trigger",
+      "function": "protect_bucket_control_columns",
+      "rowCount": null,
+      "beforeSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "afterSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "completeStateUnchanged": true
+    },
+    {
+      "label": "ordinary both actually change AFTER gate",
+      "actor": "ordinary",
+      "expectedSqlstate": "PST01",
+      "expectedRowCount": null,
+      "sqlstate": "PST01",
+      "layer": "table_constraint",
+      "constraint": "protect_bucket_control_update_role",
+      "rowCount": null,
+      "beforeSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "afterSha256": "2a3426ec7cd56cf37511f27b179ba15db6db4b67c40527919bf24b657faf14de",
+      "completeStateUnchanged": true
+    }
+  ],
+  "redGaps": [],
+  "limits": {
+    "totalDurationMs": 120000,
+    "connectionTimeoutMs": 5000,
+    "queryTimeoutMs": 10000,
+    "statementTimeoutMs": 8000,
+    "lockTimeoutMs": 4000,
+    "subprocessTimeoutMs": 30000
+  },
+  "boundaries": [
+    "Synthetic role graph and family policies; not production authorization or the old full RLS composition.",
+    "No Storage HTTP, real Auth/JWT, object backend, multipart runtime, media byte checks, privacy qualification, or backup restore.",
+    "Direct SQL deletion changes synthetic metadata only. Timestamps are not object-byte versions.",
+    "Runtime dynamic libraries are pinned; ambient macOS system libraries and kernel are not."
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 51398,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-n3HRj0/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "phase": "behavior_matrix",
+  "inputPins": {
+    "path": "experiments/pg17-storage-behavior/input-pins.json",
+    "sha256": "373b84935b142cf08ce10e924c1895f4104d0ad1a72644ac53f08413b592926e"
+  },
+  "sources": {
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "docs/research/evidence/2026-10-23-storage-definition-capture/capture-storage-2026-10-23T10-39-09-891Z-703d8318-8589-48d0-ba55-e519f02b74fa.json": "eb5e76b7d39a8eeff4b1fc59ee37704b4278dd531ee0b287673f38ad8ea024a1",
+    "docs/research/evidence/2026-10-23-storage-definition-capture/semantic-audit.md": "887b2c40ab5ebea346649a9cf56d1e20d4fb8e09cd48e0db66a389bb972ce354",
+    "docs/research/evidence/2026-10-23-supabase-feedback/user-query-results.json": "abacf44ede2dbf339b2e2ebf4c2c01c3897c9fa4526bdb31c3c61d58d7bbce92",
+    "docs/superpowers/specs/2026-10-24-storage-behavior-rehearsal.md": "8818325acc049835dbb951f5005dc386d2844fc85dc9f93957493694fae21e5f",
+    "experiments/pg17-rls-source-composition/fixture.mjs": "636f51fbb2fbf5cb3345f981354965f01170262c2213c618c48299740fe73508",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-storage-behavior/README.md": "08f283bda187c1585ea45b52a40b30b224d695df03d62d7d214c79938aefa5bb",
+    "experiments/pg17-storage-behavior/fixture.mjs": "7f2edbeab98b4bf7b0aa2c52913f4a253775e15862a74f98a897055b951c54e2",
+    "experiments/pg17-storage-behavior/inputs.mjs": "1bfe710e6cff430568246ad7061d809f2fd7d9da36794619d01c6b42ad888ec7",
+    "experiments/pg17-storage-behavior/pin-inputs.mjs": "306b10e5ad77911dbd6a53e55714dbfb638782c2c419eec225d0fe1a1aeb37a1",
+    "experiments/pg17-storage-behavior/scenarios.mjs": "a16262e0b8437aa146bf2494e0a4e79d4ebbf36b3c48ed9285f3f1885e2b4cf2",
+    "experiments/pg17-storage-behavior/scenarios/deletion.mjs": "ab142a0774ded6b193d368406d6a27b69e97aea8dcf8c6d0ef457e7fccaef556",
+    "experiments/pg17-storage-behavior/scenarios/lifecycle.mjs": "5b1c74d039496b10c9341e50f7573fd1b6020b7990e8c672f862fe93126c72aa",
+    "experiments/pg17-storage-behavior/scenarios/support.mjs": "80ee2d775b2f100083fe5701e8a5f35aace72b1c2b5a4df046ccc40552c34731",
+    "experiments/pg17-storage-behavior/scenarios/timestamps.mjs": "fd5f3254e3bd36b63d9d08f1ff4e6373967817b645967463ac699077fb1af763",
+    "experiments/pg17-storage-behavior/verify-lifecycle.mjs": "28c959b755029265d2756ed88bc5ebb7af182d8d30e8d9c49cbae858d7cf9127",
+    "experiments/pg17-storage-behavior/verify.mjs": "0dcffe2fd3b69e2585aab456a019222d4a3431ff59e75018633077b93ac1136f",
+    "supabase/.temp/routine-audit/capture-storage-2026-10-23T10-39-09-891Z-703d8318-8589-48d0-ba55-e519f02b74fa.json": "f0574a22dda946436936d65234a07302f8b9100862d431f11535c9074a12cf4f"
+  },
+  "dependencyClosure": {
+    "files": 48,
+    "sha256": "344fa2cc1b9f5b8bbb53685e9262f53b2d207cd617fd63d50e355d8ef12f4917",
+    "verified": true
+  },
+  "runtimeClosure": {
+    "files": 743,
+    "sha256": "2bb791048e95680456a1e55b9b6bb47f8281fcf274b9cc0821137a2f905462ff",
+    "verified": true
+  },
+  "capture": {
+    "publicPath": "docs/research/evidence/2026-10-23-storage-definition-capture/capture-storage-2026-10-23T10-39-09-891Z-703d8318-8589-48d0-ba55-e519f02b74fa.json",
+    "publicSha256": "eb5e76b7d39a8eeff4b1fc59ee37704b4278dd531ee0b287673f38ad8ea024a1",
+    "privateSha256": "f0574a22dda946436936d65234a07302f8b9100862d431f11535c9074a12cf4f",
+    "fileMode": "0600",
+    "directoryMode": "0700",
+    "snapshotPath": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+    "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "functions": [
+      {
+        "schema_name": "storage",
+        "function_name": "enforce_bucket_lifecycle_service_role",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "b839722d462ea1003fbcf028bd6f6c01",
+        "actualDefinitionMd5": "b839722d462ea1003fbcf028bd6f6c01",
+        "definitionSha256": "1cb7aecc95a27f8600fc8e7aab11f6a40b9b46a5cb86e02438f3af9642a0d2c4",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "enforce_bucket_name_length",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "11b3bd509f6b254ec1cd859e712e8c78",
+        "actualDefinitionMd5": "11b3bd509f6b254ec1cd859e712e8c78",
+        "definitionSha256": "bf9dcf9beab8062d27f9f6f5db850fac0c22423d6d62d31a3fe9622b1244336e",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "foldername",
+        "identity_arguments": "name text",
+        "expectedDefinitionMd5": "93671af66e1fe108a56068ad4137d001",
+        "actualDefinitionMd5": "93671af66e1fe108a56068ad4137d001",
+        "definitionSha256": "a673a01626cb42e9eb507eb18e4cb038ce5db1da875a22e254df2ebb597bd2bc",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "protect_bucket_control_columns",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "7c31ae406e2f6281ead4009fff69fc68",
+        "actualDefinitionMd5": "7c31ae406e2f6281ead4009fff69fc68",
+        "definitionSha256": "dac4257ed931d18bac0cbbc3135d0c75a36aae55309059d2913ed5e6792fa8de",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "protect_delete",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "4371ae544fb1ef704f9c5d42265ac324",
+        "actualDefinitionMd5": "4371ae544fb1ef704f9c5d42265ac324",
+        "definitionSha256": "60b634ed07bf3c08749b31168c62d598f2a9d10f8cef4ee8251bde93909cd30b",
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "function_name": "update_updated_at_column",
+        "identity_arguments": "",
+        "expectedDefinitionMd5": "bfecc08a6034296258f0c3e10193076c",
+        "actualDefinitionMd5": "bfecc08a6034296258f0c3e10193076c",
+        "definitionSha256": "5b3d8ac75beaf9d1532159c055aa927297f5611ad2ea82c27dbadf76887bb25e",
+        "status": "matched",
+        "changedAttributes": []
+      }
+    ],
+    "triggers": [
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "enforce_bucket_name_length_trigger",
+        "expectedDefinitionMd5": "7774f4b5e39e4ad07a16a589aef6277c",
+        "actualDefinitionMd5": "7774f4b5e39e4ad07a16a589aef6277c",
+        "definitionSha256": "580a7c83d8d39b8d3a8e6d12cc2e8074fc35c08434cfe0b30c74a435396fa3db",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_insert",
+        "expectedDefinitionMd5": "5c2f86adf97481d45808f2ed4eb4673b",
+        "actualDefinitionMd5": "5c2f86adf97481d45808f2ed4eb4673b",
+        "definitionSha256": "9c4f45c4c979edd35a555fbc3f8fff288f6e51798a873c5979609f81357eff48",
+        "argumentsSha256": "c3bd4f6c134ff7ebc3f64532f7ee5018485fe1019e38f9038d9ceb691cf9be5b",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_update",
+        "expectedDefinitionMd5": "ae169c5f8d35b69020459ddddbe65d7e",
+        "actualDefinitionMd5": "ae169c5f8d35b69020459ddddbe65d7e",
+        "definitionSha256": "fff25903becd8ef98f74225ea9a56c4b05b44eee251bd4dccb884bbb97ce245d",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_bucket_control_update_role",
+        "expectedDefinitionMd5": "34d64d2c71ac2a26720ae99bd0da100b",
+        "actualDefinitionMd5": "34d64d2c71ac2a26720ae99bd0da100b",
+        "definitionSha256": "2fcecce16bd2112f9f7a1abe081d62c44e51bc04f948f8e7a2dee96e10be572f",
+        "argumentsSha256": "c3bd4f6c134ff7ebc3f64532f7ee5018485fe1019e38f9038d9ceb691cf9be5b",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "buckets",
+        "trigger_name": "protect_buckets_delete",
+        "expectedDefinitionMd5": "50288cfc0da92cd8f2f573c018c16382",
+        "actualDefinitionMd5": "50288cfc0da92cd8f2f573c018c16382",
+        "definitionSha256": "9177b20f0ce99604e60dbeef1f9f05ff05dfc8df075fea756e18b91fa5e8c494",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "objects",
+        "trigger_name": "protect_objects_delete",
+        "expectedDefinitionMd5": "45c5692d486583888bac16ef789d847f",
+        "actualDefinitionMd5": "45c5692d486583888bac16ef789d847f",
+        "definitionSha256": "b6dfbee7d5d339f311f34633772872a6474e88b17450da06310aadad83531d9a",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      },
+      {
+        "schema_name": "storage",
+        "table_name": "objects",
+        "trigger_name": "update_objects_updated_at",
+        "expectedDefinitionMd5": "7457963f6a733c584baf08e4e7a451d0",
+        "actualDefinitionMd5": "7457963f6a733c584baf08e4e7a451d0",
+        "definitionSha256": "95588c3979662033900b6913b10e0aab15cf1f8ab0d1ccc477fec1aef79ca393",
+        "argumentsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "conditionSha256": null,
+        "status": "matched",
+        "changedAttributes": []
+      }
+    ]
+  },
+  "scratch": "/tmp/saga-pg17-n3HRj0",
+  "syntheticRoleGraph": {
+    "scope": "Local test graph only. No production pg_auth_members, service connection, JWT or role-switch equivalence.",
+    "owner": {
+      "alias": "captured_owner",
+      "login": false,
+      "superuser": false,
+      "bypassRls": false
+    },
+    "roles": [
+      {
+        "alias": "ordinary",
+        "memberOfR": false,
+        "superuser": false,
+        "bypassRls": false
+      },
+      {
+        "alias": "member",
+        "memberOfR": true,
+        "superuser": false,
+        "bypassRls": false
+      },
+      {
+        "alias": "R",
+        "memberOfR": true,
+        "superuser": false,
+        "bypassRls": false
+      },
+      {
+        "alias": "superuser",
+        "memberOfR": true,
+        "superuser": true,
+        "bypassRls": true
+      },
+      {
+        "alias": "bypass",
+        "memberOfR": false,
+        "superuser": false,
+        "bypassRls": true
+      }
+    ],
+    "membershipEdges": [
+      [
+        "member",
+        "R"
+      ]
+    ],
+    "roleNamesInTriggerArguments": "withheld; R is used in reports"
+  },
+  "catalogChecks": [
+    {
+      "missingTriggers": false,
+      "oldEnum": false,
+      "columns": 29,
+      "constraints": 9,
+      "indexes": 10,
+      "functions": 6,
+      "triggers": 7,
+      "enumLabels": [
+        "STANDARD",
+        "ANALYTICS",
+        "VECTOR"
+      ],
+      "matched": true,
+      "enumSource": "docs/research/evidence/2026-10-23-supabase-feedback/user-query-results.json",
+      "enumSourceBoundary": "User-returned labels; execution time and project ref not supplied. Not a new remote capture."
+    }
+  ],
+  "error": {
+    "code": "ASSERT_FAILED",
+    "label": "ordinary both actually change AFTER gate source layer"
+  },
+  "sourcesUnchangedAtFinish": true,
+  "pinManifestUnchangedAtFinish": true,
+  "postgresLog": {
+    "sha256": "98f9b4fc2623a3f70b13a284d63c79c5e32f21e0397958cb51fec04912ede9e9",
+    "bytes": 15856,
+    "contents": "withheld: error CONTEXT may contain private definition or arguments"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "counts": {
+    "scenarios": 11,
+    "behaviorAssertions": 261,
+    "observations": 78,
+    "totalAssertionsIncludingPins": 349
+  },
+  "finishedAt": "2026-10-24T01:28:52.908Z"
+}

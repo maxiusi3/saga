@@ -178,11 +178,11 @@ export default function ProjectDetailPage() {
         setStories(prev => prev.filter(story => story.id !== storyId))
         toast.success('Story deleted successfully')
       } else {
-        toast.error('Failed to delete story')
+        toast.error('Story deletion is temporarily unavailable. Your story has been kept.')
       }
     } catch (error) {
       console.error('Error deleting story:', error)
-      toast.error('Failed to delete story')
+      toast.error('Story deletion is temporarily unavailable. Your story has been kept.')
     }
   }
 

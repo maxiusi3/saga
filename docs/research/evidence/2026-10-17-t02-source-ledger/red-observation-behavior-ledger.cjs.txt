@@ -1,0 +1,5 @@
+// TDD scaffold: no observation behavior has been implemented yet.
+function createLedger() {
+  return { observeStory: async () => [] }
+}
+module.exports = { createLedger }

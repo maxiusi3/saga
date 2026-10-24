@@ -1,0 +1,933 @@
+COMMAND: npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts
+
+FAIL src/lib/server/__tests__/auth-callback.test.ts
+  ● callback error is a private fixed 303 and preserves only a safe next
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● real SSR PKCE exchange sends request verifier and retains cookie deletion and new session
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● real SSR verifies token_hash type email exactly once
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● real SSR verifies token_hash type magiclink exactly once
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● real SSR verifies token_hash type invite exactly once
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● real SSR verifies token_hash type signup exactly once
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● real SSR verifies token_hash type recovery exactly once
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● real SSR verifies token_hash type email_change exactly once
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: 
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=SYNTHETIC_CODE_SENTINEL&code=SYNTHETIC_CODE_SENTINEL
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=SYNTHETIC_CODE_SENTINEL&token_hash=SYNTHETIC_HASH_SENTINEL&type=email
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=SYNTHETIC_CODE_SENTINEL&type=email
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=SYNTHETIC_CODE_SENTINEL&token_hash=
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=%20
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=%0A
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: token_hash=hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh&type=email
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: token_hash=SYNTHETIC_HASH_SENTINEL
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: type=email
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: token_hash=SYNTHETIC_HASH_SENTINEL&type=unknown
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: token_hash=SYNTHETIC_HASH_SENTINEL&type=email&type=email
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: token_hash=SYNTHETIC_HASH_SENTINEL&token_hash=other&type=email
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: token_hash=SYNTHETIC_HASH_SENTINEL&type=
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: error=&code=SYNTHETIC_CODE_SENTINEL
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● invalid/ambiguous inputs never construct the SDK: code=SYNTHETIC_CODE_SENTINEL&access_token=bogus
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● missing PKCE verifier is a safe SDK refusal with no request
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● credential maximum is inclusive and values are decoded only once
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 0
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 1
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 2
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 3
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 4
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 5
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 6
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 7
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● incomplete provider success does not publish a session cookie: 8
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● provider HTTP 400 is safe without fallback or retry
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● provider HTTP 401 is safe without fallback or retry
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● provider HTTP 403 is safe without fallback or retry
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● provider HTTP 429 is safe without fallback or retry
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● provider HTTP 500 is safe without fallback or retry
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● provider HTTP 503 is safe without fallback or retry
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● transport drop is sanitized before SDK logging
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● transport invalid-json is sanitized before SDK logging
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● a rejected transport carrying secrets is not logged by actual SDK
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● large session is chunked and removes stale chunks with independent options
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● caller abort during hold includes body and prevents retries
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● caller abort during headers-only includes body and prevents retries
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● ten-second total deadline bounds hold and clears timers
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● ten-second total deadline bounds headers-only and clears timers
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● already aborted caller never invokes SDK or fetch
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● success clears its total deadline and caller listener
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● configuration/cookie failure missing-url is safe
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● configuration/cookie failure missing-key is safe
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● configuration/cookie failure invalid-url is safe
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+  ● configuration/cookie failure cookie-read-throws is safe
+
+    TypeError: Cannot redefine property: createServerClient
+        at Function.defineProperty (<anonymous>)
+
+      34 |   consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+      35 |   fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(nativeFetch)
+    > 36 |   clientSpy = jest.spyOn(ssr, 'createServerClient')
+         |                    ^
+      37 | })
+      38 | afterEach(async () => {
+      39 |   expect(consoleLog).not.toHaveBeenCalled()
+
+      at ModuleMocker.spyOn (node_modules/jest-environment-node/node_modules/jest-mock/build/index.js:616:16)
+      at Object.spyOn (src/lib/server/__tests__/auth-callback.test.ts:36:20)
+
+
+Test Suites: 1 failed, 2 passed, 3 total
+Tests:       57 failed, 77 passed, 134 total
+Snapshots:   0 total
+Time:        2.882 s, estimated 26 s
+Ran all test suites within paths "src/lib/__tests__/auth-return.test.ts", "src/components/auth/__tests__/auth-signin-return.test.tsx", "src/lib/server/__tests__/auth-callback.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts
+
+EXIT: 1

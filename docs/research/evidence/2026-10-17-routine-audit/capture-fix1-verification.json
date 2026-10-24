@@ -1,0 +1,56 @@
+{
+  "status": "fix1-frozen-awaiting-spec-rereview",
+  "capturedAt": "2026-10-17T12:46:27.327669+00:00",
+  "finding": "P2 local PostgreSQL harness inherited ambient PG*/DATABASE_URL settings",
+  "changedFiles": [
+    "scripts/__tests__/inspect-supabase-routines-local.test.cjs"
+  ],
+  "oldSourceSha256": {
+    "scripts/__tests__/inspect-supabase-routines-local.test.cjs": "77626e450bd96402d324d02e074501f8ed6a28ee779bc1df453bf7cd8c564936"
+  },
+  "sourceSha256": {
+    "scripts/__tests__/inspect-supabase-routines-local.test.cjs": "36380df711bcbe86ebc793d79c02326d5f0564769b73d00488b8ea421fefcf29"
+  },
+  "productionSourceSha256Unchanged": {
+    "scripts/inspect-supabase-routines.cjs": "f838b8762324302073bdfc657551069666357b9a2bd66299a3fe2f6ec4d4f928",
+    "scripts/supabase-capture-runtime.cjs": "6b6e2ed78758076af37cb6fa2383d61f0e07090b32d44288b3abe46c6e15353a",
+    "scripts/inspect-supabase-metadata.cjs": "be8f08d62a6ac3fcae20911f8b6569dab8f6a52bb2e099a233855ac63f8e27d2"
+  },
+  "red": {
+    "command": "PGSSLMODE=require PGPASSWORD=synthetic-local-password PGOPTIONS='-c default_transaction_read_only=on' PGHOST=/synthetic-unreachable-socket DATABASE_URL=postgresql://synthetic.invalid/unused SAGA_ROUTINE_LOCAL_PG=1 node --test scripts/__tests__/inspect-supabase-routines-local.test.cjs",
+    "exitCode": 1,
+    "evidence": "capture-fix1-red-hostile.tap",
+    "failure": "The server does not support SSL connections"
+  },
+  "redScrub": {
+    "command": "SAGA_ROUTINE_LOCAL_PG=0 node --test scripts/__tests__/inspect-supabase-routines-local.test.cjs",
+    "exitCode": 1,
+    "evidence": "capture-fix1-red-scrub.tap",
+    "failed": 2,
+    "skipped": 1,
+    "reason": "assertions for missing localEnvironment and withLocalEnvironment helpers"
+  },
+  "green": {
+    "command": "PGSSLMODE=require PGPASSWORD=synthetic-local-password PGOPTIONS='-c default_transaction_read_only=on' PGHOST=/synthetic-unreachable-socket DATABASE_URL=postgresql://synthetic.invalid/unused PGCLIENT_ENCODING=LATIN1 PGREPLICATION=database PGBINARY=1 PGAPPNAME=synthetic-hostile-app SAGA_ROUTINE_LOCAL_PG=1 node --test scripts/__tests__/inspect-supabase-metadata.test.cjs scripts/__tests__/inspect-supabase-routines.test.cjs scripts/__tests__/inspect-supabase-routines-local.test.cjs",
+    "exitCode": 0,
+    "evidence": "capture-fix1-green-hostile.tap",
+    "tests": 45,
+    "passed": 45,
+    "failed": 0,
+    "skipped": 0,
+    "metadataRegression": 23,
+    "routineTests": 19,
+    "environmentIsolationTests": 2,
+    "localSqlTests": 1
+  },
+  "environmentIsolation": "Filter keys before value access; scrub all case-insensitive PG* plus DATABASE_URL throughout async worker; preserve/restore original environment object reference in finally; pass explicitly scrubbed subprocess env; socket client ssl:false/password:local-inert-password",
+  "cleanup": "Existing 3s client close and bounded pg_ctl immediate stop/status3/temp removal preserved and completed even in genuine SSL-failure RED",
+  "checks": [
+    "All three production hashes equal original frozen values",
+    "node --check local harness",
+    "git diff --check local harness",
+    "Fix1 TAP outputs contain no synthetic password/host/app/definition markers"
+  ],
+  "liveCapture": false,
+  "hostCredentialValuesRead": false
+}

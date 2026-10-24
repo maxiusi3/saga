@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-10-17T03:06:44.961223+00:00",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "conditionalPushAuthorized": true,
+  "decision": "original_milestones_not_reached",
+  "G0": {
+    "passed": false,
+    "newEvidence": [
+      "actual schema/columns/RLS/indexes/constraints",
+      "migration version inventory and local comparison"
+    ],
+    "remaining": [
+      "actual Storage and direct-table policy defects require isolated remediation",
+      "bucket configuration denied; object inventory not executed",
+      "full migration/function/trigger/ACL reconciliation and backup/rollback",
+      "provider account/data qualifications"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "remaining": [
+      "formal Storage/session/asset transaction adapter",
+      "real-device 5/20/30-minute interruption matrix",
+      "formal cross-family/original delivery acceptance"
+    ]
+  },
+  "readOnlyAccess": {
+    "usedThisBatch": true,
+    "role": "metadata_reader",
+    "snapshot": "snapshot-2026-10-17T02-45-52-407Z.json",
+    "status": "partial",
+    "bucketStatus": "denied_42501",
+    "remoteBusinessReadsPerformed": false,
+    "remotePermissionChangesPerformed": false,
+    "priorDeniedCliPathRetried": false
+  },
+  "dependencyAudit": {
+    "executedThisBatch": true,
+    "exitCode": 1,
+    "info": 0,
+    "low": 0,
+    "moderate": 8,
+    "high": 34,
+    "critical": 0,
+    "total": 42
+  },
+  "localBatchIsMilestone": false,
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "deploymentPerformed": false,
+  "remoteMigrationPerformed": false
+}

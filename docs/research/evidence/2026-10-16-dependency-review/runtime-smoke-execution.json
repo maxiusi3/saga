@@ -1,0 +1,25 @@
+{
+  "startedAt": "2026-10-16T02:39:17.711Z",
+  "finishedAt": "2026-10-16T02:39:24.880Z",
+  "command": [
+    "/usr/local/Cellar/node@22/22.22.2/bin/node",
+    "docs/research/evidence/2026-10-15-dependency-audit/runtime-smoke.cjs",
+    "docs/research/evidence/2026-10-16-dependency-review/runtime-smoke.json"
+  ],
+  "exitCode": 0,
+  "signal": null,
+  "sourceSha256": "78fbea29b72f67392a78015356ccbe3ecc156336cda9d93879bf6c00e053d386",
+  "regressionTestSha256": "0f9d72549ee29f8ffec059c70c21edece52d434a6943ae8b9dca96c99cde943d",
+  "output": "docs/research/evidence/2026-10-16-dependency-review/runtime-smoke.json",
+  "outputSha256": "a850dba2659a75ad6e1473c9ad7fa254d7a695525ca9c496fe236c1a65979de4",
+  "log": "docs/research/evidence/2026-10-16-dependency-review/runtime-smoke.log",
+  "historicalBefore": {
+    "docs/research/evidence/2026-10-15-dependency-audit/runtime-smoke.json": "b2dbbf62613b8faf4d32f1b45fadf0b56f9f19f9b1c81e925ebd8ef39a71fc2d",
+    "docs/research/evidence/2026-10-15-dependency-audit/verification.json": "820b009b3e709dd35f6dbbf747d9df258cf09668d7073fcaf7e608f3ea77fc38"
+  },
+  "historicalAfter": {
+    "docs/research/evidence/2026-10-15-dependency-audit/runtime-smoke.json": "b2dbbf62613b8faf4d32f1b45fadf0b56f9f19f9b1c81e925ebd8ef39a71fc2d",
+    "docs/research/evidence/2026-10-15-dependency-audit/verification.json": "820b009b3e709dd35f6dbbf747d9df258cf09668d7073fcaf7e608f3ea77fc38"
+  },
+  "historicalPreserved": true
+}

@@ -1,0 +1,35 @@
+{
+  "command": "npm audit --workspaces --audit-level=high --json",
+  "exit_code": 1,
+  "observed_at": "2026-10-15T16:46:00+08:00",
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 17,
+      "high": 40,
+      "critical": 2,
+      "total": 59
+    },
+    "dependencies": {
+      "prod": 560,
+      "dev": 871,
+      "optional": 147,
+      "peer": 76,
+      "peerOptional": 0,
+      "total": 1592
+    }
+  },
+  "direct_high_or_critical": [
+    "@sentry/nextjs",
+    "@types/jest",
+    "@vercel/analytics",
+    "@vercel/speed-insights",
+    "eslint-config-next",
+    "next",
+    "next-intl",
+    "sharp",
+    "tailwindcss"
+  ],
+  "notes": "Fresh local audit output was captured during this session. No npm audit fix, lockfile mutation, or dependency upgrade was applied."
+}

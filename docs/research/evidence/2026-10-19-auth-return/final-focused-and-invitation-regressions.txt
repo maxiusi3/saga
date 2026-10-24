@@ -1,0 +1,13 @@
+COMMAND: npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts src/lib/server/__tests__/invitation-read-routes.test.ts src/lib/server/__tests__/invitation-acceptance.test.ts src/lib/__tests__/invitation-acceptance-client.test.ts src/lib/__tests__/invitation-acceptance-protocol.test.ts src/components/invitations/__tests__/invitation-recipient.test.tsx
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts src/lib/server/__tests__/invitation-read-routes.test.ts src/lib/server/__tests__/invitation-acceptance.test.ts src/lib/__tests__/invitation-acceptance-client.test.ts src/lib/__tests__/invitation-acceptance-protocol.test.ts src/components/invitations/__tests__/invitation-recipient.test.tsx
+
+
+Test Suites: 8 passed, 8 total
+Tests:       414 passed, 414 total
+Snapshots:   0 total
+Time:        26.859 s
+Ran all test suites within paths "src/lib/__tests__/auth-return.test.ts", "src/components/auth/__tests__/auth-signin-return.test.tsx", "src/lib/server/__tests__/auth-callback.test.ts", "src/lib/server/__tests__/invitation-read-routes.test.ts", "src/lib/server/__tests__/invitation-acceptance.test.ts", "src/lib/__tests__/invitation-acceptance-client.test.ts", "src/lib/__tests__/invitation-acceptance-protocol.test.ts", "src/components/invitations/__tests__/invitation-recipient.test.tsx".
+
+EXIT: 0

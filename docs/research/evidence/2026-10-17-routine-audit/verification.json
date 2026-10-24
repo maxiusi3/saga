@@ -1,0 +1,334 @@
+{
+  "completedAt": "2026-10-17T13:40:07.917601+00:00",
+  "status": "passed",
+  "scope": "Completed local routine audit batch; original G0/G1 not achieved",
+  "checks": {
+    "captureMatched12": true,
+    "captureClosedReadonlyTls": true,
+    "privateHashAndDefinitionsMatch": true,
+    "privateModeAndIgnored": true,
+    "projectCommandsPassed": true,
+    "nextEnvRestored": true,
+    "protectedProjectBytesUnchanged": true,
+    "finalSourcesMatch": true,
+    "notificationEvidenceMatches": true,
+    "notificationNormalAndHostilePass": true,
+    "lifecycleAllClean": true,
+    "independentReviewsPass": true,
+    "metadataQueriesAndExportsPreserved": true,
+    "baselinePreserved": true,
+    "noExactPrivateDefinitionCopies": true,
+    "linksValid": true,
+    "diffCheckPassed": true,
+    "headAndBranchPreserved": true,
+    "priorAuditEvidenceMatches": true,
+    "allPlanTasksChecked": true
+  },
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "collector": {
+    "finalTests": 52,
+    "evidence": "capture-fix2-green-hostile.tap",
+    "metadataQueryComparison": {
+      "count": 16,
+      "queriesUnchanged": true,
+      "exportsUnchanged": true
+    },
+    "finalSources": {
+      "scripts/inspect-supabase-routines.cjs": "f838b8762324302073bdfc657551069666357b9a2bd66299a3fe2f6ec4d4f928",
+      "scripts/supabase-capture-runtime.cjs": "6b6e2ed78758076af37cb6fa2383d61f0e07090b32d44288b3abe46c6e15353a",
+      "scripts/inspect-supabase-metadata.cjs": "be8f08d62a6ac3fcae20911f8b6569dab8f6a52bb2e099a233855ac63f8e27d2",
+      "scripts/__tests__/inspect-supabase-routines.test.cjs": "0bd3c95ca57d60566ca0bf3df46d33866f03f03d005d81b0d42b9ad0b6adbdc8",
+      "scripts/__tests__/inspect-supabase-routines-local.test.cjs": "9fd8a6badb57df3d880c4b6c46c1ce7ecde98719324aed891eee993624b57e1b",
+      "scripts/__tests__/inspect-supabase-metadata.test.cjs": "772cf50cb7fa3d5cfbc9c07400a842b5dbe9039db37f83504a64d0e00406686a",
+      ".gitignore": "d32441029111fe11e841724d2cc515f05029d6d46160336239acd0c034d1ef67",
+      "scripts/__tests__/inspect-supabase-routines-local-cleanup.test.cjs": "05c1073dbf458a76abf69aeb4f7a2e1ca65d0590d8fdbceefe40ae8e233b6554",
+      "experiments/routine-notifications/README.md": "01b43f0d1cf517c41f592fc106dc801a72ec4e88bfe15fe9341ac70ffe8d07b4",
+      "experiments/routine-notifications/candidate.sql": "df64b110ef18356d5d1d33b8e02131af13cafd70ee050d0b27b566ee5f15c38e",
+      "experiments/routine-notifications/fixture.sql": "aa20466171894b942d9eef82c48fc8329c0b28156fac7bb81e2c66a0fcf37515",
+      "experiments/routine-notifications/scenarios.mjs": "a2127e32a448764c1cf8b439c59d7ba4f58e793d415303084197de8bc7b7f2db",
+      "experiments/routine-notifications/verify-lifecycle.mjs": "639d15e0255e9d7e17d8642015babb3d2b3e36c671560ba45e1a99d7eb72318c",
+      "experiments/routine-notifications/verify.mjs": "43bc4e4318d3ceb6e147f003ade8f95121a6d0ac1cb9a80126e9e57b014acb4d"
+    }
+  },
+  "remoteCapture": {
+    "publicReport": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+    "publicSha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+    "privateSha256": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+    "targetsMatched": 12,
+    "remoteRoutineInvocations": false,
+    "remoteBusinessRowReads": false
+  },
+  "notificationEvidence": {
+    "notification-lifecycle-2026-10-17T13-16-27.362Z-0912edf2-a2bb-467f-99e3-bf1d623136da.json": {
+      "sha256": "a6684fc6cb90de56f94a71f80233238fadfb3a11b20649d58252580e583b6336",
+      "status": "passed",
+      "sourceHashesMatch": true,
+      "cases": [
+        {
+          "name": "hostile_pg_environment",
+          "status": "passed",
+          "exit": {
+            "code": 0,
+            "signal": null
+          },
+          "cleanup": {
+            "clusterStopped": true,
+            "tempDirectoryRemoved": true,
+            "clientsRemaining": 0,
+            "errors": []
+          },
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "real_sigterm_after_fixture",
+          "status": "passed",
+          "exit": {
+            "code": 143,
+            "signal": null
+          },
+          "cleanup": {
+            "clusterStopped": true,
+            "tempDirectoryRemoved": true,
+            "clientsRemaining": 0,
+            "errors": []
+          },
+          "rescue": {
+            "needed": false
+          }
+        },
+        {
+          "name": "real_failed_start_without_server",
+          "status": "passed",
+          "exit": {
+            "code": 1,
+            "signal": null
+          },
+          "cleanup": {
+            "clusterStopped": true,
+            "tempDirectoryRemoved": true,
+            "clientsRemaining": 0,
+            "errors": []
+          },
+          "rescue": {
+            "needed": false
+          }
+        }
+      ]
+    },
+    "notification-red-2026-10-17T13-14-57.248Z-ce36af05-db0b-4216-8972-9f1c5248e599.json": {
+      "sha256": "a74891ea04b17a244b8232aa6eebeff4f4357e05dcd5145682871bba1cb49b00",
+      "status": "failed",
+      "sourceHashesMatch": true,
+      "scenarioCount": 4,
+      "assertions": 50,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "scratchAbsent": true
+    },
+    "notification-run-2026-10-17T13-15-47.425Z-9da2b4d3-6fcb-4e2e-bb0c-7607ba09e06e.json": {
+      "sha256": "02e86e09d9d473f89704c2b12cf9e28f56154e8cc395fb54f180eef29722cb60",
+      "status": "passed",
+      "sourceHashesMatch": true,
+      "scenarioCount": 19,
+      "assertions": 181,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "scratchAbsent": true
+    },
+    "notification-run-2026-10-17T13-16-27.531Z-bce20147-a75d-47b4-bc90-8778523ffd36.json": {
+      "sha256": "26fca6e17abbe5b54ba328c85231b910f4cd954f3a15a971bfe7d62147f0aee5",
+      "status": "passed",
+      "sourceHashesMatch": true,
+      "scenarioCount": 19,
+      "assertions": 181,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "scratchAbsent": true
+    },
+    "notification-run-2026-10-17T13-16-29.765Z-bb936877-3a11-48d4-a4fd-3572138a814f.json": {
+      "sha256": "ba36c0866da9754d56a26300c0f52f1e601c15984b654dea686c475f06b02770",
+      "status": "interrupted",
+      "sourceHashesMatch": true,
+      "scenarioCount": 0,
+      "assertions": 42,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "scratchAbsent": true
+    },
+    "notification-run-2026-10-17T13-16-31.420Z-d6a61048-06bd-46cd-bb1f-6d6778c8f106.json": {
+      "sha256": "cae0209bd1e90ba5de4a0772162dba857e7cc41c821f11c9886155f0d94a85ff",
+      "status": "failed",
+      "sourceHashesMatch": true,
+      "scenarioCount": 0,
+      "assertions": 40,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "scratchAbsent": true
+    }
+  },
+  "reviews": {
+    "capture-spec-review-fix1.md": {
+      "status": "PASS",
+      "sha256": "896675419e36725eed227504db5aa2a28e4168aed4cb41a0b03b7b7f361d573b"
+    },
+    "capture-quality-review-fix2.md": {
+      "status": "PASS",
+      "sha256": "50c0e3fcbb7196f07e07bfffadc41995ac5097d41368937b4461800c0df18812"
+    },
+    "notification-spec-review.md": {
+      "status": "PASS",
+      "sha256": "98a5d7ef661efd094f220af9fcabf6271b289acf449bf11fecb996a5a582e0a7"
+    },
+    "notification-quality-review.md": {
+      "status": "PASS",
+      "sha256": "bd449034be184d85109cd1528c0d9b2772833f9719abe524a3b330960e579f3b"
+    }
+  },
+  "semanticReview": {
+    "targets": 12,
+    "path": "semantic-review.md",
+    "sha256": "4e6aad45ef2cae98fe14c06768d468f71e4e2226b3aef6d62f415419f1994bbf"
+  },
+  "callsites": {
+    "targets": 12,
+    "calls": 13,
+    "incompatibleInvitationCalls": 5,
+    "path": "callsite-review.md",
+    "sha256": "a997a45d9c2d63426e5c6713a34a9b9d11e59abc2c29320e12dd9c2eafad6654"
+  },
+  "project": {
+    "commands": {
+      "verify": {
+        "argv": [
+          "npm",
+          "run",
+          "verify"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 109.77,
+        "output": "verify.txt"
+      },
+      "shared": {
+        "argv": [
+          "npm",
+          "test",
+          "--workspace=packages/shared",
+          "--",
+          "--runInBand"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 4.93,
+        "output": "shared.txt"
+      },
+      "infra": {
+        "argv": [
+          "npm",
+          "run",
+          "test:infra"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 0.66,
+        "output": "infra.txt"
+      }
+    },
+    "webSuites": 77,
+    "webTests": 765,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "pages": 175,
+    "applicationChangesAfterRun": false,
+    "projectChecksSha256": "31d5523f2129bc34e606d773d6712c71d7d7905a786b3fb9d6790d49335d707a"
+  },
+  "preservation": {
+    "baselineFiles": 1383,
+    "changedExisting": [
+      "docs/2026-10-10-integrated-upgrade-plan.md",
+      "docs/HANDOFF-2026-10-13-upgrade.md",
+      "docs/superpowers/plans/2026-10-17-upgrade-routine-audit.md",
+      "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md",
+      "scripts/__tests__/inspect-supabase-metadata.test.cjs",
+      "scripts/inspect-supabase-metadata.cjs",
+      ".gitignore",
+      "docs/README.md"
+    ],
+    "newFileCountExcludingThisSummary": 49,
+    "missing": [],
+    "unexpectedNew": [],
+    "originalApplicationDependenciesRootMigrationsPriorExperimentsUnchanged": true
+  },
+  "privacy": {
+    "privateModes": "0700 directory / 0600 file",
+    "privateIgnoredNotTracked": true,
+    "exactPrivateDefinitionCopies": [],
+    "literalSanitizerIsPublicationAuthority": false
+  },
+  "links": {
+    "checked": 342,
+    "bad": []
+  },
+  "milestones": {
+    "G0": false,
+    "G1": false,
+    "decision": "No commit or push; original milestones not achieved",
+    "evidenceSha256": "2198de9080927fcdff9adb3acf58bacc4fbdd528e947ccc0dc2dcad01635b45e"
+  },
+  "dependencyAudit": {
+    "executedThisBatch": false,
+    "source": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+    "sha256": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866",
+    "priorExitCode": 1,
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "dependenciesUnchanged": true
+  },
+  "actions": {
+    "commit": false,
+    "push": false,
+    "remoteMigration": false,
+    "remotePermissionChange": false,
+    "deployment": false
+  },
+  "documentSha256": {
+    "docs/2026-10-10-integrated-upgrade-plan.md": "44d815ae36e52266092260459f8ceb7daddca00a7aca5adebcd7e72baf9953b7",
+    "docs/HANDOFF-2026-10-13-upgrade.md": "1e6e15a1217845fe7d9bdc6431063862fcb550d380de08964a9fe95fc31d1613",
+    "docs/superpowers/plans/2026-10-17-upgrade-routine-audit.md": "6ea6dedf753dc2a5cae52f74f530cbdc43b3bb9ac6a6fc30588bc8bdfcd0fd14",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "3cd7e61c38892a75f7a8e152964fa4901bf1c496cf216c614739d526da8390bc",
+    "docs/README.md": "a879703dd4b802c17df4d05e91d19bfe1f0f327b72b05ec1adb6dcef435600b4",
+    "docs/research/2026-10-17-routine-audit.md": "6622bdfc990ac2ac412a64be0caf8c7013e550a30d64fcb42b3288f87536a0d9",
+    "docs/research/evidence/2026-10-17-routine-audit/callsite-review.md": "a997a45d9c2d63426e5c6713a34a9b9d11e59abc2c29320e12dd9c2eafad6654",
+    "docs/research/evidence/2026-10-17-routine-audit/capture-quality-review-fix2.md": "50c0e3fcbb7196f07e07bfffadc41995ac5097d41368937b4461800c0df18812",
+    "docs/research/evidence/2026-10-17-routine-audit/capture-quality-review.md": "dc355a6deeca4ac8ee9403407859beedd0e5be905bcac1571e3029ce5a71d4ba",
+    "docs/research/evidence/2026-10-17-routine-audit/capture-spec-review-fix1.md": "896675419e36725eed227504db5aa2a28e4168aed4cb41a0b03b7b7f361d573b",
+    "docs/research/evidence/2026-10-17-routine-audit/capture-spec-review.md": "c0fd6aa01d108c1c8a457301fac8c73c4497ebf556a0e175a7cbd6a6256d7c5b",
+    "docs/research/evidence/2026-10-17-routine-audit/notification-quality-review.md": "bd449034be184d85109cd1528c0d9b2772833f9719abe524a3b330960e579f3b",
+    "docs/research/evidence/2026-10-17-routine-audit/notification-spec-review.md": "98a5d7ef661efd094f220af9fcabf6271b289acf449bf11fecb996a5a582e0a7",
+    "docs/research/evidence/2026-10-17-routine-audit/semantic-review.md": "4e6aad45ef2cae98fe14c06768d468f71e4e2226b3aef6d62f415419f1994bbf",
+    "experiments/routine-notifications/README.md": "01b43f0d1cf517c41f592fc106dc801a72ec4e88bfe15fe9341ac70ffe8d07b4"
+  }
+}

@@ -1,0 +1,206 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx src/app/api/ai/generate-content/__tests__/route.test.ts
+
+FAIL src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx
+  ● recording review truthfulness › does not save old transcript or late AI content into the next recording
+
+    expect(element).toHaveTextContent()
+
+    Expected element to have text content:
+      /no transcript is available/i
+    Received:
+      A draft is not available yet. You can save the recording.
+
+      291 |     const newAudio = new Blob(['new audio'])
+      292 |     await act(async () => { await finishNew({ audioBlob: newAudio, duration: 15 }) })
+    > 293 |     expect(screen.getByRole('status')).toHaveTextContent(/no transcript is available/i)
+          |                                        ^
+      294 |     expect(mockGenerateContent).toHaveBeenCalledTimes(1)
+      295 |     await act(async () => {
+      296 |       resolveOld({ title: 'Old title', summary: 'Old summary', transcript: 'Old transcript', followUpQuestions: [], confidence: 0.9 })
+
+      at Object.toHaveTextContent (src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx:293:40)
+
+FAIL src/app/api/ai/generate-content/__tests__/route.test.ts
+  ● Console
+
+    console.log
+      Generating AI content for transcript (26 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (21 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (21 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (21 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (21 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (15 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (15 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (15 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (15 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+    console.log
+      Generating AI content for transcript (15 chars) in language: en
+
+      at log (src/app/api/ai/generate-content/route.ts:49:13)
+
+    console.log
+      Calling text AI API with model: glm-5.1
+
+      at log (src/app/api/ai/generate-content/route.ts:94:13)
+
+    console.log
+      AI content generation completed successfully
+
+      at log (src/app/api/ai/generate-content/route.ts:113:13)
+
+  ● /api/ai/generate-content › rejects malformed model content {"title":"A title","summary":"Words","followUpQuestions":null} without substituting a template
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 502
+    Received: 200
+
+      130 |       method: 'POST', body: JSON.stringify({ transcript: 'Original words.' }),
+      131 |     }))
+    > 132 |     expect(response.status).toBe(502)
+          |                             ^
+      133 |     const body = await response.json()
+      134 |     expect(body.error).toBeTruthy()
+      135 |     expect(body.summary).toBeUndefined()
+
+      at toBe (src/app/api/ai/generate-content/__tests__/route.test.ts:132:29)
+
+Test Suites: 2 failed, 2 total
+Tests:       2 failed, 16 passed, 18 total
+Snapshots:   0 total
+Time:        5.481 s
+Ran all test suites within paths "src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx", "src/app/api/ai/generate-content/__tests__/route.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx src/app/api/ai/generate-content/__tests__/route.test.ts

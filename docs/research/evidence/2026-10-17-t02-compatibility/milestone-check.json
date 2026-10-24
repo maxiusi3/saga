@@ -1,0 +1,63 @@
+{
+  "checkedAt": "2026-10-17T05:36:11.968992+00:00",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "conditionalPushAuthorized": true,
+  "decision": "original_milestones_not_reached",
+  "G0": {
+    "passed": false,
+    "remaining": [
+      "production RLS and old-client delete compatibility",
+      "bucket configuration and full functions/triggers/ACL/history reconciliation",
+      "backup/restore and incremental migration/backfill evidence",
+      "provider account/data conditions"
+    ]
+  },
+  "G1": {
+    "passed": false,
+    "remaining": [
+      "formal session/Storage/asset/consent/deletion adapters",
+      "real device 5/20/30 minute interruption matrix",
+      "cross-family and complete original delivery acceptance"
+    ]
+  },
+  "dependencyAudit": {
+    "executedThisBatch": false,
+    "source": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+    "sha256": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866",
+    "priorExitCode": 1,
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "dependenciesUnchanged": true
+  },
+  "review": {
+    "rls": {
+      "status": "scoped_pass",
+      "file": "docs/research/evidence/2026-10-17-rls-rehearsal/review-fixes.md",
+      "closed": [
+        "R1 P2",
+        "R2 P2",
+        "checkpoint P3",
+        "start marker P3"
+      ]
+    },
+    "t02": {
+      "initialStatus": "changes_requested_one_P2",
+      "initialFile": "review-initial.md",
+      "fixImplemented": true,
+      "fixVerified": true,
+      "independentFollowup": "pending_rate_limit",
+      "independentPass": false
+    },
+    "metadataCollector": "separately_pending",
+    "statusFile": "review-status.md"
+  },
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "deploymentPerformed": false,
+  "remoteMigrationPerformed": false,
+  "remotePermissionChangePerformed": false,
+  "remoteQueriesPerformedThisBatch": false
+}

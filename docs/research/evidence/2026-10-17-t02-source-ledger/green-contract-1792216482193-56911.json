@@ -1,0 +1,217 @@
+{
+  "startedAt": "2026-10-17T05:54:42.194Z",
+  "label": "green-contract",
+  "status": "failed",
+  "scope": "synthetic local PostgreSQL source ledger only; no real Storage or production authorization verification",
+  "sources": {
+    "experiments/t02-source-ledger/schema.sql": "ddf3e97ac616323b44d1a5844f59d4bc76f52b5711dd1de1478073a1b00d1d96",
+    "experiments/t02-source-ledger/ledger.cjs": "995e447c9dc81bcc4d7307b336758577d437eb05662561f286e535d9669ad79f",
+    "experiments/t02-source-ledger/scenarios.cjs": "f46c4b775f394f9a98b1e80fe5d6c8b404ad0892486294b234d956e465a984c0",
+    "experiments/t02-source-ledger/verify.cjs": "77bff38aaf6c16d8f7abc9a098187f6ad5097cbdf4bb322f43096a81a7806699",
+    "experiments/t02-source-ledger/README.md": "0d3c102ef50101daa89566063a19f87a7724ea01a1348bb046fe2aebef974072",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e"
+  },
+  "checks": [
+    "pinned actual stories.images type",
+    "pinned actual stories.photo_urls type",
+    "pinned actual stories.title type",
+    "pinned actual stories.storyteller_id type",
+    "local client ignores ambient SSL and credentials",
+    "TCP disabled",
+    "real PostgreSQL source produces all nine positional observations",
+    "duplicate source versions return their original durable observations",
+    "database has exactly nine observations after duplicate collection",
+    "verified exact fixture asset atomically creates a durable binding",
+    "binding was truly committed",
+    "repeated exact binding returns original ID",
+    "mapped source does not create assets or ready state",
+    "all anomalous array positions persist as unresolved",
+    "same basename preserves distinct exact keys",
+    "original media columns unchanged by observe and bind",
+    "changed sibling slot changes entire-field version for unchanged locator",
+    "changed source appends a linked conflict",
+    "old source payload remains immutable",
+    "old review conclusion remains intact",
+    "old bound observation still points at the original asset",
+    "changed source cannot use an old reviewed observation",
+    "return to original source version reuses original identity",
+    "PostgreSQL canonical jsonb ignores object key insertion order",
+    "digest distinguishes SQL NULL array element from JSON null",
+    "digest retains array order",
+    "digest retains PostgreSQL array bounds beyond JSON projection",
+    "historical jsonb and actual jsonb[] remain distinct typed versions",
+    "fixture type experiment restores the exact source row",
+    "caller cannot supply sourceField to observation collection",
+    "caller cannot supply sourcePath to observation collection",
+    "caller cannot supply sourceDigest to observation collection",
+    "caller cannot supply locator to observation collection",
+    "caller cannot supply projectId to observation collection",
+    "caller cannot supply a binding locator",
+    "database unique source/version constraint prevents duplicate history",
+    "observation update is rejected even for the fixture owner",
+    "review deletion is rejected",
+    "binding update is rejected",
+    "saga_anon cannot read source_observations",
+    "saga_anon cannot write source_observations",
+    "saga_anon cannot read source_reviews",
+    "saga_anon cannot write source_reviews",
+    "saga_anon cannot read source_bindings",
+    "saga_anon cannot write source_bindings",
+    "saga_anon cannot read fixture_assets",
+    "saga_anon cannot write fixture_assets",
+    "saga_anon cannot read fixture_verifications",
+    "saga_anon cannot write fixture_verifications",
+    "saga_authenticated cannot read source_observations",
+    "saga_authenticated cannot write source_observations",
+    "saga_authenticated cannot read source_reviews",
+    "saga_authenticated cannot write source_reviews",
+    "saga_authenticated cannot read source_bindings",
+    "saga_authenticated cannot write source_bindings",
+    "saga_authenticated cannot read fixture_assets",
+    "saga_authenticated cannot write fixture_assets",
+    "saga_authenticated cannot read fixture_verifications",
+    "saga_authenticated cannot write fixture_verifications",
+    "same locator in another family has a distinct durable source identity",
+    "other family member cannot observe this project",
+    "a second asset cannot replace an existing binding",
+    "database unique observation constraint prevents second-asset binding",
+    "verified asset from another project is rejected",
+    "cross-project failure leaves no partial binding",
+    "asset in same project but another story is rejected",
+    "thumbnail cannot replace an original image",
+    "different exact key is rejected",
+    "different exact bucket is rejected",
+    "missing explicit verification evidence is rejected",
+    "asset not ready is rejected",
+    "stale verification rejects changed version",
+    "stale verification rejects changed object_version",
+    "stale verification rejects changed byte_size",
+    "stale verification rejects changed sha256",
+    "ambiguous source cannot bind",
+    "unresolved source cannot bind",
+    "current project facilitator can bind without a membership row",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "source version changed during wait: server confirms row/transaction lock wait",
+    "source version changed during wait: current READ COMMITTED value is checked after waiting",
+    "source version changed during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "asset version changed during wait: server confirms row/transaction lock wait",
+    "asset version changed during wait: current READ COMMITTED value is checked after waiting",
+    "asset version changed during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "uploader membership revoked during wait: server confirms row/transaction lock wait",
+    "uploader membership revoked during wait: current READ COMMITTED value is checked after waiting",
+    "uploader membership revoked during wait: rejection leaves no binding",
+    "old uploader gains no access after revocation",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "project tombstone during wait: server confirms row/transaction lock wait",
+    "project tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "project tombstone during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "source tombstone during wait: server confirms row/transaction lock wait",
+    "source tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "source tombstone during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "asset tombstone during wait: server confirms row/transaction lock wait",
+    "asset tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "asset tombstone during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "concurrent duplicate observations: server confirms row/transaction lock wait"
+  ],
+  "lockEvidence": [
+    {
+      "name": "source version changed during wait",
+      "pid": 56978,
+      "wait_event_type": "Lock",
+      "blockers": [
+        56977
+      ],
+      "expectedBlocker": 56977
+    },
+    {
+      "name": "asset version changed during wait",
+      "pid": 56980,
+      "wait_event_type": "Lock",
+      "blockers": [
+        56979
+      ],
+      "expectedBlocker": 56979
+    },
+    {
+      "name": "uploader membership revoked during wait",
+      "pid": 56982,
+      "wait_event_type": "Lock",
+      "blockers": [
+        56981
+      ],
+      "expectedBlocker": 56981
+    },
+    {
+      "name": "project tombstone during wait",
+      "pid": 56984,
+      "wait_event_type": "Lock",
+      "blockers": [
+        56983
+      ],
+      "expectedBlocker": 56983
+    },
+    {
+      "name": "source tombstone during wait",
+      "pid": 56986,
+      "wait_event_type": "Lock",
+      "blockers": [
+        56985
+      ],
+      "expectedBlocker": 56985
+    },
+    {
+      "name": "asset tombstone during wait",
+      "pid": 56988,
+      "wait_event_type": "Lock",
+      "blockers": [
+        56987
+      ],
+      "expectedBlocker": 56987
+    },
+    {
+      "name": "concurrent duplicate observations",
+      "pid": 56990,
+      "wait_event_type": "Lock",
+      "blockers": [
+        56989
+      ],
+      "expectedBlocker": 56989
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3",
+    "typescript": "5.9.3"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f"
+  },
+  "scratch": "/tmp/saga-t02-ledger-Hxk8tl",
+  "error": {
+    "message": "No PostgreSQL lock evidence for concurrent duplicate observations",
+    "stack": "Error: No PostgreSQL lock evidence for concurrent duplicate observations\n    at blocked (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/scenarios.cjs:202:11)\n    at async simultaneous (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/scenarios.cjs:244:36)\n    at async run (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/scenarios.cjs:249:22)\n    at async main (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:83:3)"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:54:48.624Z"
+}

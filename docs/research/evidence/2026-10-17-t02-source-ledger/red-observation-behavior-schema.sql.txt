@@ -1,0 +1,22 @@
+-- Disposable synthetic fixture; never apply to a project database.
+CREATE SCHEMA auth;
+CREATE TABLE auth.users(id uuid PRIMARY KEY);
+CREATE TABLE public.projects(
+  id uuid PRIMARY KEY, facilitator_id uuid REFERENCES auth.users(id), deleted_at timestamptz
+);
+CREATE TABLE public.stories(
+  id uuid PRIMARY KEY, project_id uuid NOT NULL REFERENCES public.projects(id),
+  storyteller_id uuid NOT NULL REFERENCES auth.users(id), user_id uuid,
+  title text NOT NULL,
+  audio_url text, mastered_audio_url text, photo_url text, photo_urls text[], images jsonb[],
+  deleted_at timestamptz
+);
+CREATE TABLE public.project_roles(
+  id uuid PRIMARY KEY, project_id uuid NOT NULL REFERENCES public.projects(id),
+  user_id uuid NOT NULL REFERENCES auth.users(id),
+  role text NOT NULL CHECK(role IN ('facilitator','storyteller')),
+  status text NOT NULL CHECK(status IN ('active','inactive','pending')),
+  UNIQUE(project_id,user_id)
+);
+CREATE ROLE saga_anon NOLOGIN;
+CREATE ROLE saga_authenticated NOLOGIN;

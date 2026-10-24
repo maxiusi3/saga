@@ -1,0 +1,27 @@
+Recovery probe source: .superpowers/sdd/2026-10-19-upgrade-auth-return/compatibility-probe.test.tsx
+Temporary test copy (removed in finally): packages/web/src/components/auth/__tests__/auth-return-compatibility-probe.test.tsx
+COMMAND: npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/components/auth/__tests__/auth-return-compatibility-probe.test.tsx
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/auth/__tests__/auth-return-compatibility-probe.test.tsx
+
+{
+  "scenario": "fixed callback error + implicit fragment",
+  "before": {
+    "setSessionCalls": 1,
+    "navigations": 1
+  },
+  "current": {
+    "setSessionCalls": 0,
+    "navigations": 0,
+    "cleanedHash": ""
+  },
+  "classification": "scoped compatibility change / release blocker; no real provider or browser redirect integration claimed"
+}
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        1.669 s
+Ran all test suites within paths "src/components/auth/__tests__/auth-return-compatibility-probe.test.tsx".
+
+EXIT: 0

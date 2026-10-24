@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-13",
+  "method": "Cua browser console and read-only rendered DOM inspection; no network traffic capture",
+  "logs": [],
+  "dom": {
+    "csp": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; media-src 'none'; form-action 'none'; base-uri 'none'",
+    "externalResources": [],
+    "mediaElements": 0,
+    "realFileInputs": 0
+  }
+}

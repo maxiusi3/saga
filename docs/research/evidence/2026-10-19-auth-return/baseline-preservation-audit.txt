@@ -1,0 +1,10 @@
+{
+  "baselineFileCount": 1696,
+  "changedExistingFiles": [
+    "packages/web/src/app/[locale]/auth/callback/route.ts",
+    "packages/web/src/app/[locale]/auth/signin/page.tsx",
+    "packages/web/src/components/auth/auth-provider.tsx"
+  ],
+  "missingFiles": [],
+  "unchangedFileCount": 1693
+}

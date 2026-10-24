@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-10-23",
+  "authority": "docs/2026-10-10-integrated-upgrade-plan.md sections 7/7.1 and T00/T01; original definitions unchanged",
+  "p0Complete": false,
+  "gates": {
+    "G0": false,
+    "G1": false,
+    "G2": false,
+    "G3": false,
+    "G4": false
+  },
+  "g0": {
+    "decisionsAndMeasurementDefinitions": "documented",
+    "reviewablePrototype": "historically_verified",
+    "assetPathsAndPermissions": "partial: exact definitions known, Public buckets/real private-access boundary unresolved",
+    "migrationRollback": "partial: history/schema known, semantic mapping/backup/isolated restore evidence incomplete",
+    "qualifiedProviderAccountsAndDataTerms": "not_verified"
+  },
+  "p0Remaining": [
+    "T00 real deployment/Auth and historical mock-data verification",
+    "Real media access qualification and private-read/legacy compatibility implementation path",
+    "Migration semantic mapping/backup and feasible verified recovery path",
+    "Provider accounts/data conditions/budget and permitted synthetic probes",
+    "T01 household observation 0 of 6–8"
+  ],
+  "p1G1Separate": [
+    "Formal asset/Storage/deletion/recording/worker adapters",
+    "Device matrix deferred_by_user",
+    "Fault/isolation/export/recovery qualification"
+  ],
+  "pushAuthorizedWhenMilestoneMet": true,
+  "pushConditionMet": false,
+  "committed": false,
+  "pushed": false,
+  "remoteMutation": false,
+  "deployed": false
+}

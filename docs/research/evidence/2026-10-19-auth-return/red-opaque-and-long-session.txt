@@ -1,0 +1,56 @@
+COMMAND: npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/server/__tests__/auth-callback.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/server/__tests__/auth-callback.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx
+
+FAIL src/lib/server/__tests__/auth-callback.test.ts
+  ● synthetic code is decoded once without rejecting opaque non-whitespace content
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "http://localhost/en/dashboard"
+    Received: "http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard"
+
+      51 |   expect(response.headers.get('referrer-policy')).toBe('no-referrer')
+      52 |   const location = response.headers.get('location')!
+    > 53 |   expect(location).toBe(success ? `http://localhost${next}` : `http://localhost/${locale}/auth/signin?error=auth_failed&next=${encodeURIComponent(next)}`)
+         |                    ^
+      54 |   const body = await response.text()
+      55 |   expect(body).toBe('')
+      56 |   for (const secret of [privateError, code, tokenHash, callbackUser.email, '<script', 'synthetic-service-never-used']) expect(location + body).not.toContain(secret)
+
+      at toBe (src/lib/server/__tests__/auth-callback.test.ts:53:20)
+      at Object.safeReply (src/lib/server/__tests__/auth-callback.test.ts:224:9)
+
+  ● verified session token may be longer than URL credential limit and still uses SSR cookie chunks
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "http://localhost/en/dashboard"
+    Received: "http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard"
+
+      51 |   expect(response.headers.get('referrer-policy')).toBe('no-referrer')
+      52 |   const location = response.headers.get('location')!
+    > 53 |   expect(location).toBe(success ? `http://localhost${next}` : `http://localhost/${locale}/auth/signin?error=auth_failed&next=${encodeURIComponent(next)}`)
+         |                    ^
+      54 |   const body = await response.text()
+      55 |   expect(body).toBe('')
+      56 |   for (const secret of [privateError, code, tokenHash, callbackUser.email, '<script', 'synthetic-service-never-used']) expect(location + body).not.toContain(secret)
+
+      at toBe (src/lib/server/__tests__/auth-callback.test.ts:53:20)
+      at Object.safeReply (src/lib/server/__tests__/auth-callback.test.ts:237:9)
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       2 failed, 103 passed, 105 total
+Snapshots:   0 total
+Time:        3.097 s
+Ran all test suites within paths "src/lib/server/__tests__/auth-callback.test.ts", "src/components/auth/__tests__/auth-signin-return.test.tsx".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/server/__tests__/auth-callback.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx
+
+EXIT: 1

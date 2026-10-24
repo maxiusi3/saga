@@ -1,0 +1,7 @@
+COMMAND: npm run type-check --workspace=@saga/web
+
+> @saga/web@1.0.0 type-check
+> tsc --noEmit
+
+
+EXIT: 0

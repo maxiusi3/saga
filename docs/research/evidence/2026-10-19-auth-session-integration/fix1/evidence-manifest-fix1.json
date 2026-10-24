@@ -1,0 +1,18 @@
+{
+  "browser-cleanup.json": "360dafc780900653c1795d6f74c3a1253d485a9c493a0b61c6efcb94e7a211f9",
+  "browser-final.log": "ed884f565af162ada499b06d8ed5055e89794c53ed724ea92634df613b8e7a25",
+  "browser-results.json": "ab598661a12f1349e9fe84142fbcd39d5052afe3fb42b004b420eb690b7c16a8",
+  "browser-session.png": "a4376e76c9c1830d907360c7b4dfcb735e9e6dea129d5b5efb9395d094593645",
+  "focused-final.log": "37181c87542450089aee2d09622574662345b219bdb14b75af7bd093bebe33d7",
+  "green-attempt-1.log": "ea000d116a65ac66e935c2085c544f7457bfcd4f21775fb42137197560e8eaad",
+  "lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "red-confirmed.log": "827af8be89375572a9b50e79f2be0e034aab85f1e05492e435dd6734b31ff8d1",
+  "red-source/auth-session-lifecycle.test.ts": "cab57bb20903edf56efcb60ecc9fcc230f98e16c7786f9d8f8f7c864f3137ad1",
+  "red-source/supabase-browser-errors-controlled-retry.test.ts": "be0351089e1843f6abf79b4eceb76c34e5c984fea2de8ad84bd0d9a431a1947a",
+  "red-source/supabase-browser-errors.test.ts": "0ba9a0e1b57db26c03cc0206cb15911be9ecdac479c35dcf530b14040d43beeb",
+  "red.log": "baeb5477d6c6aaa9d2a3423673333c06e6583f212b1908e88cae8e5e65d6cfa9",
+  "reviewer-browser-probe.json": "44811042d7623e7478803d1a808d87bafa5723f5c5dd6e7a3f0bacb4378ac916",
+  "reviewer-concurrency-probe.json": "9ef49d8ebe569979d0c6d94fcd219f5ef442ed2c18d64634548a313a9d2ba62b",
+  "source-freeze-fix1.json": "a422fe5c96385c28c271dc29b9770b8b8793d52999d1d8eefdca41c29b7ef1a3",
+  "typecheck-final.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+}

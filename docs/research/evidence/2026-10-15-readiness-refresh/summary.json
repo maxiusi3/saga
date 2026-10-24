@@ -1,0 +1,24 @@
+{
+  "checked_at": "2026-10-15T02:43:40.880367+00:00",
+  "client_date": "2026-10-15",
+  "supabase_project": {
+    "id": "encdblxyxztvfxotfuyh",
+    "name": "saga",
+    "region": "us-east-2",
+    "status": "ACTIVE_HEALTHY",
+    "source": "supabase projects list via existing CLI session"
+  },
+  "database_query": {
+    "status": "blocked",
+    "error": "PostgreSQL 42501: CLI login role initialization permission denied",
+    "query_executed": false,
+    "notes": "CLI help advertises Management API but command still initialized login role. No further role-init query attempts. Raw diagnostic omitted because it includes an ephemeral password verifier."
+  },
+  "credential_presence": {
+    "SUPABASE_SERVICE_ROLE_KEY": false,
+    "SUPABASE_ACCESS_TOKEN": false,
+    "SUPABASE_DB_PASSWORD": false,
+    "DATABASE_URL": false
+  },
+  "limits": "Project metadata and GitHub records only. No remote schema/RLS/bucket/backup or current Vercel settings evidence; no object or family-content reads."
+}

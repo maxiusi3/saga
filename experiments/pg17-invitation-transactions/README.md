@@ -1,0 +1,31 @@
+# Isolated invitation token and reservation candidate
+
+This local PostgreSQL 17.4 experiment adds five functions in `invitation_candidate`: `send`, `accept`, `release`, `status`, and `lookup`. It does not integrate the app, replace the original invitation RPC, deploy a migration, send mail, authenticate a real user, or verify a real payment. It is not a new product milestone.
+
+Run from the repository root with the existing Node executable:
+
+```sh
+node --test experiments/pg17-invitation-transactions/protocol.test.mjs
+node experiments/pg17-invitation-transactions/verify.mjs
+node experiments/pg17-invitation-transactions/verify-lifecycle.mjs
+```
+
+`pin-inputs.mjs` is an explicit authoring freeze command. Verification never updates pins. It checks all direct inputs, the actual 44-file loaded CommonJS/package closure, Node executable, and all 743 installed PostgreSQL bin/lib/share files. The macOS kernel/libSystem shared cache remains an ambient platform dependency. The original reviewed harness, definitions, metadata snapshot and export candidate are read-only dependencies; no package installation is required.
+
+`fixture.sql` adds the pinned 2026-10-17 invitations shape (12 columns, 6 constraints, 9 indexes and the actual captured timestamp trigger), plus synthetic `auth.users.email` and `email_confirmed_at`. The replay otherwise uses the already reviewed seven-table materialization, local UUID shim, synthetic roles/ACLs and GUC-based `auth.uid`. These are controlled dependency fixtures, not Supabase RLS/JWT parity. The captured private routine definitions remain on disk in their original protected location and appear in evidence only as hashes.
+
+`candidate.sql` requires both the exact local database name and its own session marker. A NOLOGIN fixture owner owns the schema, tables and functions. Only authenticated may execute the five operations; private helpers and candidate/identity tables are unavailable to all ordinary fixture callers. The original public RPCs and their existing grants remain unchanged by this candidate. Their historical bypass behavior is a production integration limit; the new interface alone cannot secure old production entry points.
+
+The protected source table is a **synthetic trusted entitlement port**. Fixture administration alone supplies or revokes it. A reservation requires one available role seat in both that source and the original payer's existing wallet. Each side is consumed once and refunded once; payment references and project vouchers are unchanged. Typed binding references validate the reserve/activate/release log records. Arbitrary metadata never establishes entitlement. Provider and production ledger adapters remain separate future work.
+
+New tokens have exactly `v1_` followed by 32 lowercase hexadecimal UUID bytes. UUID v4 has 122 random bits. SQL generates and persists them. No caller-selected token, legacy opaque-token adoption, repeated URL decoding, trimming, case correction or fallback account/service call exists. Email normalization trims outer ASCII whitespace, checks ASCII and one nonempty `@` pair, then lowercases. This limited candidate contract does not claim general production email compatibility.
+
+The common lock order is project, current auth row, invitation, original payer wallet, source/binding, then member. The auth row uses FOR NO KEY UPDATE: this excludes email/confirmation changes and deletion while permitting the member/log foreign keys to take KEY SHARE on the original payer. A deterministic three-connection regression reproduced the former FOR UPDATE deadlock before this correction. Locating reads do not authorize. The shared loader rereads protected fields and state after locks. Identity, source and membership revocations remain authoritative; repeated acceptance cannot recreate deleted or inactive members. The current facilitator can release an old invitation after a project transfer, including inactive-project cleanup; the refund always returns to the original payer/source, preserving source revocation.
+
+Request keys retain the normalized payload and original invitation forever. Different keys alias a reserved target only when source and message also match. Expired reservations require an explicit release before a new request can reserve again. Status and lookup only read durable facts; they never repair or charge resources. The recovery test really commits send and accept, discards each result, and then recovers by lookup/status. Email delivery is outside this transaction and is not implemented.
+
+The protocol module distinguishes `confirmed`, explicit safe SQLSTATE `rejected`, and `unknown`. TABLE results must contain exactly one correctly typed, matching row. Empty/multiple/inconsistent/null data, dropped connections, timeouts and unknown errors never manufacture success. An unknown result calls for durable lookup/status; it does not authorize automatic rewriting or replacing a token. PostgreSQL timestamps are parsed by the existing pg driver at JavaScript millisecond precision; database comparisons retain their original precision.
+
+Scenarios run as actual non-superuser database connections and hash complete snapshots of all 12 related tables, including identities and candidate state. Negative/rollback checks require zero writes. Concurrency uses two real connections and independently observes `pg_locks` and `pg_blocking_pids`, including both orders for project/identity/source/member revocation. The lifecycle observer exercises hostile PG environment variables, SIGTERM after the complete fixture/candidate is ready, a real invalid server start, and a real failed client connection; it verifies postmaster exit, removed temporary allocation and closed clients.
+
+The evidence directory preserves every RED, failed implementation attempt and intermediate run. The missing-module protocol RED is an unimplemented interface, not a finding about old protocol behavior. The SQL RED expects token acceptance success and records the actual absent old overload (42883) with zero writes. Only the immutable run paths listed in `implementation-verification.json` are final results. Scenario counts, harness assertions and protocol test counts are separate units. No application suites are claimed here; the controller verifies the prior application-input reuse independently.

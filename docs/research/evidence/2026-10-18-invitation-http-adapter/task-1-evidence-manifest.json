@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-focused-checks.json",
+      "sha256": "65eaf1d0bc8fc067987009d2b1edb04df9952714106c8b63dd4fe1c841133188"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-old-handler-red.json",
+      "sha256": "abbab2d45960f1c2c04adb2b0e64ac002c1866dbaa16a96553ef2b137f070bc4"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-red-green-ledger.json",
+      "sha256": "41896d108e8a4b6adc4a8a8da40de7512fa1e78989c31192ca4b28d4fca9638c"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-source-manifest-pre-final.json",
+      "sha256": "ca1cb3191c25d79a45c72625079b3bcbb293b51a1c92cecca9a247af0742f49e"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-source-manifest.json",
+      "sha256": "4374d678e13edcf83e3ff8f33cd8ae2ba3d43b9ee8c80d0dbe761126e5330edc"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-targeted-final.json",
+      "sha256": "3b7c6fbffb21755827794e06e75a32f9ba74ac9340ac2f0fbd1cb97d6137df04"
+    },
+    {
+      "path": "docs/research/evidence/2026-10-18-invitation-http-adapter/task-1-targeted-pre-final.json",
+      "sha256": "2c8f6396d94da30a0e96b094223d58ce55dcd899d1ff0d23922bc416573d277e"
+    }
+  ],
+  "digestAlgorithm": "sha256(JSON.stringify(files))",
+  "evidenceDigest": "899694a9381f30a466ef7386a3bac62d2009123c51ce2d50b17199288e2aff59"
+}

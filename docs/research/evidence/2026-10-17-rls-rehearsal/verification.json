@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-10-17T04:07:02.434900+00:00",
+  "status": "local_batch_recorded_independent_review_pending",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "mainRun": {
+    "file": "run-1792208657930-45113.json",
+    "sha256": "ccddb9cc9f09e1f40eff221a2e6ef385219bef6c5381aa4f29937729fcba43a0",
+    "exitCode": 0,
+    "scenarios": 61,
+    "assertions": 199
+  },
+  "signalRun": {
+    "file": "run-1792208657922-45114.json",
+    "sha256": "08afc9fd86e3c6aa948c6864d1cd661220f10b9c967462aa6c4ebc2bdd756770",
+    "exitCode": 143,
+    "signal": "SIGTERM",
+    "cleanup": "complete"
+  },
+  "initialRed": {
+    "file": "red-1792208232974.json",
+    "exitCode": 1,
+    "expectedFailure": "anonymous audio hidden: 1 != 0",
+    "currentSources": false
+  },
+  "intermediateEvidence": "intermediate-evidence-collision.md",
+  "sourceSha256": {
+    "experiments/rls-rehearsal/README.md": "492b5c80d943c8be4b465cc791a0f8a9c33e3861a34c5aa52f6d50efd5d3efa1",
+    "experiments/rls-rehearsal/fixture.sql": "d70b14d3f789f10fcf3f37c40767b0e877fbb5f6851cf83ef41d01d625e9f550",
+    "experiments/rls-rehearsal/scenarios.mjs": "67786579cf79c8c43b40163c5ec24bd80e95ad75c9203399a7c900cf2f7ceb1f",
+    "experiments/rls-rehearsal/verify.mjs": "1b2909f3197aae833f039f174b764c94adbe78073ba729e819cde0a8cf684380",
+    "experiments/rls-rehearsal/candidate.sql": "5375ceef7810fd373998883fb36ff05743f12334bf7a35e302687eeca17019cd"
+  },
+  "protectedFileCount": 1192,
+  "protectedFilesUnchanged": true,
+  "project": "project-checks.json",
+  "nextEnvRestored": true,
+  "milestone": "milestone-check.json",
+  "review": {
+    "status": "unavailable_pending",
+    "reason": "independent reviewer returned model rate_limit_exceeded",
+    "agent": "/root/rls_review",
+    "file": "review-status.md",
+    "independentPass": false,
+    "selfReviewCompleted": true,
+    "previousMetadataReviewStillPending": true
+  },
+  "scope": "local PG14 fixture and candidate only; no production migration/remote calls/real data",
+  "baselineFileCount": 1197,
+  "changedExistingFiles": [
+    "docs/2026-10-10-integrated-upgrade-plan.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/README.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md"
+  ],
+  "documentsSha256": {
+    "docs/2026-10-10-integrated-upgrade-plan.md": "e6d83e2437d83dbe34365a1902dedeff32a57661c3fa852dfa880b00a748db68",
+    "docs/HANDOFF-2026-10-13-upgrade.md": "5f8eea9b5798d8bfbb3356a948710c8156108e7291ececb752ffcf29621b85d0",
+    "docs/README.md": "c340d2500cda19f9c6df8345abb2b50ec4452b7f823ef90e2df87ce3113e01e5",
+    "docs/research/2026-10-17-rls-rehearsal.md": "82f8fb6c0f1a5dba5d9ac8950062f5a76b880bece40b247c211da3f30e4d3ec6",
+    "docs/research/evidence/2026-10-17-rls-rehearsal/review-status.md": "5756b7559dd78c0f8ddbc49c6b5f5b4dcea8f34ff8c9e2e8fe1a4d63cb8f4a79",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "aef916867f0965acf738f059b87cd7adec08cd8c1ec0d6d941b799b9ebbb9568",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md": "99feae1fd49843f1bb8025325e3b8f737b288af5a89f5d2a8df11adef011d7c0"
+  },
+  "finalChecks": {
+    "file": "final-checks.json",
+    "sha256": "614eef188a5b2515a4268d9e155d2c9d9d536da348ece3e1b5cef0484cc3f062"
+  },
+  "evidenceSha256": {
+    "project-checks.json": "fb93ed41413e24e0a40c2e8dd4cb4e0a38b06b8a709a8d7dff77642218fd96f5",
+    "verify.txt": "7027eb4a9a0ab90bf0fab0136d9a113ff4d7fa07660a14f1ccf756eee22c1812",
+    "shared.txt": "415774379fcd64b8254922af231e07d67a633b5bbd06e4f9f76abfc3dd80d5e9",
+    "infra.txt": "f6bf8642372f8e7555e87185bd7ed1514696ce04d84d45ff5f9db0257bff34d8",
+    "audit.txt": "5eb878bb7192f20bab18ae660e1547f0f0970283699135136a01b06faa3d310a",
+    "audit-high.json": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866",
+    "milestone-check.json": "611349234699cd83fad3e7a72d63c4003936d559f4289ae8febec7b87a5209f6",
+    "review-status.md": "5756b7559dd78c0f8ddbc49c6b5f5b4dcea8f34ff8c9e2e8fe1a4d63cb8f4a79",
+    "intermediate-evidence-collision.md": "abb84a9651e9475816e61e129b3be12982f08f9354cd6694ece3d7d0a8fbe2cd"
+  }
+}

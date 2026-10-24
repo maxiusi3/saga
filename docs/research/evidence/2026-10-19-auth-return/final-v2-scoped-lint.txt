@@ -1,0 +1,3 @@
+COMMAND: ../../node_modules/.bin/eslint src/lib/auth-return.ts src/lib/server/auth-callback.ts src/app/[locale]/auth/callback/route.ts src/app/[locale]/auth/signin/page.tsx src/components/auth/auth-provider.tsx src/lib/__tests__/auth-return.test.ts src/lib/server/__tests__/auth-callback.test.ts src/lib/server/test-support/auth-callback-fixture.ts src/components/auth/__tests__/auth-signin-return.test.tsx
+
+EXIT: 0

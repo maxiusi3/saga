@@ -1,0 +1,404 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.pause
+        at pause (src/hooks/useAudioPlayer.ts:118:13) {
+      type: 'not implemented'
+    }
+
+      116 |
+      117 |       // Clean up audio element
+    > 118 |       audio.pause()
+          |             ^
+      119 |       audio.src = ''
+      120 |       audio.load()
+      121 |     }
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.pause (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:121:5)
+      at HTMLAudioElement.pause (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:160:34)
+      at pause (src/hooks/useAudioPlayer.ts:118:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.load
+        at load (src/hooks/useAudioPlayer.ts:120:13) {
+      type: 'not implemented'
+    }
+
+      118 |       audio.pause()
+      119 |       audio.src = ''
+    > 120 |       audio.load()
+          |             ^
+      121 |     }
+      122 |   }, [initialSrc])
+      123 |
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.load (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:112:5)
+      at HTMLAudioElement.load (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:109:34)
+      at load (src/hooks/useAudioPlayer.ts:120:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.pause
+        at pause (src/hooks/useAudioPlayer.ts:118:13) {
+      type: 'not implemented'
+    }
+
+      116 |
+      117 |       // Clean up audio element
+    > 118 |       audio.pause()
+          |             ^
+      119 |       audio.src = ''
+      120 |       audio.load()
+      121 |     }
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.pause (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:121:5)
+      at HTMLAudioElement.pause (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:160:34)
+      at pause (src/hooks/useAudioPlayer.ts:118:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.load
+        at load (src/hooks/useAudioPlayer.ts:120:13) {
+      type: 'not implemented'
+    }
+
+      118 |       audio.pause()
+      119 |       audio.src = ''
+    > 120 |       audio.load()
+          |             ^
+      121 |     }
+      122 |   }, [initialSrc])
+      123 |
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.load (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:112:5)
+      at HTMLAudioElement.load (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:109:34)
+      at load (src/hooks/useAudioPlayer.ts:120:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.pause
+        at pause (src/hooks/useAudioPlayer.ts:118:13) {
+      type: 'not implemented'
+    }
+
+      116 |
+      117 |       // Clean up audio element
+    > 118 |       audio.pause()
+          |             ^
+      119 |       audio.src = ''
+      120 |       audio.load()
+      121 |     }
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.pause (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:121:5)
+      at HTMLAudioElement.pause (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:160:34)
+      at pause (src/hooks/useAudioPlayer.ts:118:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.load
+        at load (src/hooks/useAudioPlayer.ts:120:13) {
+      type: 'not implemented'
+    }
+
+      118 |       audio.pause()
+      119 |       audio.src = ''
+    > 120 |       audio.load()
+          |             ^
+      121 |     }
+      122 |   }, [initialSrc])
+      123 |
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.load (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:112:5)
+      at HTMLAudioElement.load (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:109:34)
+      at load (src/hooks/useAudioPlayer.ts:120:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+FAIL src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx
+  ● recording review truthfulness › shows draft failure and still saves the original recording without AI content
+
+    TypeError: URL.revokeObjectURL is not a function
+
+      80 |
+      81 |   useEffect(() => () => {
+    > 82 |     if (audioUrl) URL.revokeObjectURL(audioUrl)
+         |                       ^
+      83 |   }, [audioUrl])
+      84 |
+      85 |   const resetRecording = () => {
+
+      at revokeObjectURL (src/app/[locale]/dashboard/projects/[id]/record/page.tsx:82:23)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  ● recording review truthfulness › does not save old transcript or late AI content into the next recording
+
+    TypeError: URL.revokeObjectURL is not a function
+
+      80 |
+      81 |   useEffect(() => () => {
+    > 82 |     if (audioUrl) URL.revokeObjectURL(audioUrl)
+         |                       ^
+      83 |   }, [audioUrl])
+      84 |
+      85 |   const resetRecording = () => {
+
+      at revokeObjectURL (src/app/[locale]/dashboard/projects/[id]/record/page.tsx:82:23)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  ● recording review truthfulness › ignores an old failed request while the current draft is still processing
+
+    TypeError: URL.revokeObjectURL is not a function
+
+      80 |
+      81 |   useEffect(() => () => {
+    > 82 |     if (audioUrl) URL.revokeObjectURL(audioUrl)
+         |                       ^
+      83 |   }, [audioUrl])
+      84 |
+      85 |   const resetRecording = () => {
+
+      at revokeObjectURL (src/app/[locale]/dashboard/projects/[id]/record/page.tsx:82:23)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 5 passed, 8 total
+Snapshots:   0 total
+Time:        4.276 s
+Ran all test suites within paths "src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx

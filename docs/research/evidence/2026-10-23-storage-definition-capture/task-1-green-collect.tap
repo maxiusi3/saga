@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: the immutable snapshot selects exactly six function identities and seven bucket/object triggers
+ok 1 - the immutable snapshot selects exactly six function identities and seven bucket/object triggers
+  ---
+  duration_ms: 12.807087
+  type: 'test'
+  ...
+# Subtest: trigger definition capture retains private data and publishes only fixed identities and fingerprints
+ok 2 - trigger definition capture retains private data and publishes only fixed identities and fingerprints
+  ---
+  duration_ms: 5.183806
+  type: 'test'
+  ...
+# Subtest: trigger arguments distinguish none, an empty argument, text and multiple NUL-terminated arguments
+ok 3 - trigger arguments distinguish none, an empty argument, text and multiple NUL-terminated arguments
+  ---
+  duration_ms: 16.130122
+  type: 'test'
+  ...
+# Subtest: condition presence must agree with a nonempty expression or null
+ok 4 - condition presence must agree with a nonempty expression or null
+  ---
+  duration_ms: 3.200707
+  type: 'test'
+  ...
+# Subtest: malformed argument bytes and counts never pass validation
+ok 5 - malformed argument bytes and counts never pass validation
+  ---
+  duration_ms: 3.425913
+  type: 'test'
+  ...
+# Subtest: missing rows and every pinned attribute change are drift, with raw values kept private
+ok 6 - missing rows and every pinned attribute change are drift, with raw values kept private
+  ---
+  duration_ms: 3.630859
+  type: 'test'
+  ...
+# Subtest: unexpected identities, duplicates and partially missing trigger rows are errors
+ok 7 - unexpected identities, duplicates and partially missing trigger rows are errors
+  ---
+  duration_ms: 4.056829
+  type: 'test'
+  ...
+# Subtest: combined collection sends only exact identity parameters and uses one bounded read-only snapshot
+ok 8 - combined collection sends only exact identity parameters and uses one bounded read-only snapshot
+  ---
+  duration_ms: 6.319289
+  type: 'test'
+  ...
+# Subtest: overbroad, duplicate, changed or incomplete target sets are rejected before any SQL
+ok 9 - overbroad, duplicate, changed or incomplete target sets are rejected before any SQL
+  ---
+  duration_ms: 25.06027
+  type: 'test'
+  ...
+# Subtest: a missing or changed member of either group prevents combined capture success
+ok 10 - a missing or changed member of either group prevents combined capture success
+  ---
+  duration_ms: 14.593586
+  type: 'test'
+  ...
+# Subtest: unsafe sessions and malformed results roll back the combined transaction
+ok 11 - unsafe sessions and malformed results roll back the combined transaction
+  ---
+  duration_ms: 27.413876
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 338.248122

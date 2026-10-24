@@ -1,0 +1,82 @@
+{
+  "startedAt": "2026-10-17T05:57:27.908Z",
+  "label": "red-append-only-truncate",
+  "status": "failed",
+  "scope": "synthetic local PostgreSQL source ledger only; no real Storage or production authorization verification",
+  "sources": {
+    "experiments/t02-source-ledger/schema.sql": "ddf3e97ac616323b44d1a5844f59d4bc76f52b5711dd1de1478073a1b00d1d96",
+    "experiments/t02-source-ledger/ledger.cjs": "995e447c9dc81bcc4d7307b336758577d437eb05662561f286e535d9669ad79f",
+    "experiments/t02-source-ledger/scenarios.cjs": "ca56e3545e2c2ac0a01b7e4c9bf90010e4fb8da0fb386227e1b62226c756f593",
+    "experiments/t02-source-ledger/verify.cjs": "77bff38aaf6c16d8f7abc9a098187f6ad5097cbdf4bb322f43096a81a7806699",
+    "experiments/t02-source-ledger/README.md": "0d3c102ef50101daa89566063a19f87a7724ea01a1348bb046fe2aebef974072",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e"
+  },
+  "checks": [
+    "pinned actual stories.images type",
+    "pinned actual stories.photo_urls type",
+    "pinned actual stories.title type",
+    "pinned actual stories.storyteller_id type",
+    "local client ignores ambient SSL and credentials",
+    "TCP disabled",
+    "real PostgreSQL source produces all nine positional observations",
+    "duplicate source versions return their original durable observations",
+    "database has exactly nine observations after duplicate collection",
+    "verified exact fixture asset atomically creates a durable binding",
+    "binding was truly committed",
+    "repeated exact binding returns original ID",
+    "mapped source does not create assets or ready state",
+    "all anomalous array positions persist as unresolved",
+    "same basename preserves distinct exact keys",
+    "original media columns unchanged by observe and bind",
+    "changed sibling slot changes entire-field version for unchanged locator",
+    "changed source appends a linked conflict",
+    "old source payload remains immutable",
+    "old review conclusion remains intact",
+    "old bound observation still points at the original asset",
+    "changed source cannot use an old reviewed observation",
+    "return to original source version reuses original identity",
+    "PostgreSQL canonical jsonb ignores object key insertion order",
+    "digest distinguishes SQL NULL array element from JSON null",
+    "digest retains array order",
+    "digest retains PostgreSQL array bounds beyond JSON projection",
+    "historical jsonb and actual jsonb[] remain distinct typed versions",
+    "fixture type experiment restores the exact source row",
+    "caller cannot supply sourceField to observation collection",
+    "caller cannot supply sourcePath to observation collection",
+    "caller cannot supply sourceDigest to observation collection",
+    "caller cannot supply locator to observation collection",
+    "caller cannot supply projectId to observation collection",
+    "caller cannot supply a binding locator",
+    "database unique source/version constraint prevents duplicate history",
+    "observation update is rejected even for the fixture owner",
+    "review deletion is rejected",
+    "binding update is rejected",
+    "binding deletion is rejected"
+  ],
+  "lockEvidence": [],
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3",
+    "typescript": "5.9.3"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f"
+  },
+  "scratch": "/tmp/saga-t02-ledger-GgtB6k",
+  "error": {
+    "message": "binding history cannot be truncated\n+ actual - expected\n\n+ undefined\n- '55000'\n",
+    "code": "ERR_ASSERTION",
+    "expected": "55000",
+    "stack": "AssertionError [ERR_ASSERTION]: binding history cannot be truncated\n+ actual - expected\n\n+ undefined\n- '55000'\n\n    at check (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:28:58)\n    at rejected (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/scenarios.cjs:47:5)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async run (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/scenarios.cjs:128:3)\n    at async main (/Users/eat/Documents/eatpotato/saga传奇/experiments/t02-source-ledger/verify.cjs:83:3)"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T05:57:29.827Z"
+}

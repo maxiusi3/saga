@@ -1,0 +1,45 @@
+{
+  "verifiedAt": "2026-10-17T06:05:21.762Z",
+  "status": "local_checks_passed_remote_not_run",
+  "sourceSha256": {
+    "scripts/inspect-supabase-metadata.cjs": "df6493a88f861f720ba105efdf38aef34cb4e01a0cb3732cdd447f3f95670615",
+    "scripts/__tests__/inspect-supabase-metadata.test.cjs": "53efa031e628a66e376e945350a45ec2df76a91da1e3d2ff589dfee22f517314"
+  },
+  "originalSourceSha256": "2f8330bf74023629b6c862d1fc049c3e1e2d4ac40ac3258ff57bdb906c5b240d",
+  "checks": [
+    {
+      "command": "node --test scripts/__tests__/inspect-supabase-metadata.test.cjs",
+      "exitCode": 0,
+      "tests": 23,
+      "passed": 23,
+      "failed": 0,
+      "evidence": "docs/research/evidence/2026-10-17-metadata-supplement/scope-final-green.tap"
+    },
+    {
+      "command": "node --check scripts/inspect-supabase-metadata.cjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node --check scripts/__tests__/inspect-supabase-metadata.test.cjs",
+      "exitCode": 0
+    }
+  ],
+  "evidenceSha256": {
+    "docs/research/evidence/2026-10-17-metadata-supplement/catalog-green.tap": "3e8f56d24529b39e3a2497941e93566458184066235b83476ebd59ff6f87ead8",
+    "docs/research/evidence/2026-10-17-metadata-supplement/catalog-red.tap": "e74f201a44429315bf96a23dde36edadd86efaff9189a80681647c3950f776f1",
+    "docs/research/evidence/2026-10-17-metadata-supplement/deadline-green.tap": "a70cc7560fe383d51d30f0e0ce67a995ed7f9634822533a03dc95b9e595a2f41",
+    "docs/research/evidence/2026-10-17-metadata-supplement/deadline-red.tap": "02d69c9882f53993733646de1b45e630c1d7796bb8525c055dd1262f0e517fcf",
+    "docs/research/evidence/2026-10-17-metadata-supplement/deadline-state-red.tap": "25f8ea57d916bd330fa5eb6ab328efbaaea3d5e56ecf52afaffd31a2b5423e2a",
+    "docs/research/evidence/2026-10-17-metadata-supplement/default-scope-red.tap": "0b48a0ef371c654332c9fd6a37a501804b25ad6e34b02ca92a97bf77bd4e4830",
+    "docs/research/evidence/2026-10-17-metadata-supplement/final-green.tap": "276cf424dd03f7e5379c51292c563e5ccad7c8239591a7021309a1e01b14dcf2",
+    "docs/research/evidence/2026-10-17-metadata-supplement/local-catalog-final.json": "1c350607b0cfca03707741ceab9046540199f5922e80d639d2deba4f753831ff",
+    "docs/research/evidence/2026-10-17-metadata-supplement/local-catalog-postgres14.json": "d91a3287fbd7a55dba52f06d4211071cdb43264518114de0593ad98c1660f2c9",
+    "docs/research/evidence/2026-10-17-metadata-supplement/scope-final-green.tap": "c6125a9fe4b0d54dbc774e44f9d3435af33ca9e0663e2954737c90e8b96da45f"
+  },
+  "limits": [
+    "VM tests manually fire the unchanged 90000 ms timer; they do not wait 90 wall-clock seconds.",
+    "The deadline covers connect, every collect query including rollback, and end. It does not preempt blocked synchronous filesystem I/O or a blocked event loop.",
+    "SQL execution uses a disposable local PostgreSQL 14.17 cluster and cannot prove remote PostgreSQL 17 privileges/TLS.",
+    "No real credential read, remote capture, production DDL/grant, business function execution, deployment, dependency upgrade, commit, or push occurred."
+  ]
+}

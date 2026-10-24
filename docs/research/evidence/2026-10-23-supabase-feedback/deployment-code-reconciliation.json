@@ -1,0 +1,71 @@
+{
+  "checkedDate": "2026-10-23",
+  "scope": "Local Git/code inspection of user-reported configuration; no dashboard, runtime, login or provider requests",
+  "reportedCommitResolved": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "localHead": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "reportedCommitMatchesLocalUpgradeBase": true,
+  "localWorkingChangesIncludedInReportedCommit": false,
+  "sourceSha256": {
+    "packages/web/src/lib/server/text-ai-config.ts": "268520bc75fb626b551eb9cd0a4d1e79d55197959f30c49eb6a489e1053c3863",
+    "packages/web/src/lib/server/invitation-management.ts": "606cc5237b9b5a61644201453a5583bb1036e925d3c22bdffa40341c20a339ee",
+    "packages/web/src/lib/server/invitation-acceptance.ts": "84d0afb2e06b34474f8c6b389c7136c202a969b6030a6b822a46ab151c427159",
+    "packages/web/src/lib/server/auth-callback.ts": "b6d0046c0d757c3a58e21be23aa57371ee901d23b27b084871acb8633fadc7b5",
+    "packages/web/src/app/[locale]/auth/signin/page.tsx": "9f80568c5ac5a2ec34c5a807f6c73b64878ca804bdb8bcdba9e2ee124fa5e14b",
+    "packages/web/src/app/api/ai/transcribe/route.ts": "81fd364db6a02d243d68e9529edc79cd1a53489498ea30ab4a4064bc8cb85896",
+    ".github/workflows/deploy.yml": "d09af05a1cee24fade39104ae30a9ddd0e9a7ee3fcadfdb54fa91f70143a7049"
+  },
+  "environmentVariablesReported": 9,
+  "attentionLabelsReported": 4,
+  "notReportedInVariableList": [
+    "INVITATION_TRANSACTIONS_ENABLED",
+    "INVITATION_MANAGEMENT_ENABLED",
+    "TEXT_API_KEY",
+    "TEXT_API_BASE_URL",
+    "TEXT_MODEL",
+    "SILICONFLOW_MODEL"
+  ],
+  "textConfiguration": {
+    "source": "packages/web/src/lib/server/text-ai-config.ts",
+    "sameAtReportedCommitAndWorkingTree": true,
+    "keyPriority": [
+      "TEXT_API_KEY",
+      "OPENROUTER_API_KEY"
+    ],
+    "defaultBaseUrl": "https://openrouter.ai/api/v1",
+    "modelOverride": "TEXT_MODEL",
+    "defaultModel": "openai/gpt-oss-20b:free",
+    "conclusion": "If there are no omitted overrides and the listed key is valid, this config selects OpenRouter and the default model. Actual provider requests and account availability are unverified."
+  },
+  "transcriptionConfiguration": {
+    "source": "packages/web/src/app/api/ai/transcribe/route.ts",
+    "scope": "current working tree only",
+    "key": "SILICONFLOW_API_KEY",
+    "modelOverride": "SILICONFLOW_MODEL",
+    "defaultModel": "FunAudioLLM/SenseVoiceSmall",
+    "accountAvailabilityVerified": false
+  },
+  "invitationConfiguration": {
+    "scope": "current working tree only, not a claim about deployed baseline routes",
+    "requiredExactTrueFlags": [
+      "INVITATION_TRANSACTIONS_ENABLED",
+      "INVITATION_MANAGEMENT_ENABLED"
+    ],
+    "defaultIfAbsent": "disabled"
+  },
+  "isolation": {
+    "isolatedSupabaseProjectExistsReported": false,
+    "supabaseVariableScopes": "All Environments",
+    "branchOverridesVerified": false,
+    "previewDatabaseIsolationProven": false
+  },
+  "pending": [
+    "Supabase Site URL",
+    "Supabase Redirect URLs",
+    "NEXT_PUBLIC_APP_URL non-secret URL value",
+    "Needs Attention detail",
+    "isolated restore arrangement and budget",
+    "provider account/model/data conditions",
+    "actual login and deployment qualification"
+  ],
+  "releaseGatesPassed": false
+}

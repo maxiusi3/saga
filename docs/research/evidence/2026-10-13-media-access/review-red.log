@@ -1,0 +1,121 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/__tests__/access.test.ts
+
+FAIL src/app/api/media/__tests__/access.test.ts
+  ● private media signing › rejects ambiguous key before storage: alice/projects/family-a/control.mp3
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      158 |     'alice/projects/family-a/control\u0085.mp3',
+      159 |   ])('rejects ambiguous key before storage: %s', async path => {
+    > 160 |     expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
+          |                                                                    ^
+      161 |     noStorage()
+      162 |   })
+      163 |   it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:160:68)
+
+  ● stored audio transcription › uses octet-stream for unknown extension constructor
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "application/octet-stream"
+    Received: "function object() { [native code] }"
+
+      226 |     expect((await transcribe(multipart({ storagePath: `alice/temp/audio.${extension}` }))).status).toBe(200)
+      227 |     const file = mockProvider.mock.calls[0][1].body.get('file') as File
+    > 228 |     expect(file.type).toBe('application/octet-stream')
+          |                       ^
+      229 |   })
+      230 |   it.each([undefined, 1])('stops an oversized stream when metadata size is %s', async size => {
+      231 |     mockInfo.mockResolvedValue({ data: { size, contentType: 'audio/mpeg' }, error: null })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:228:23)
+
+  ● stored audio transcription › uses octet-stream for unknown extension __proto__
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "application/octet-stream"
+    Received: "[object object]"
+
+      226 |     expect((await transcribe(multipart({ storagePath: `alice/temp/audio.${extension}` }))).status).toBe(200)
+      227 |     const file = mockProvider.mock.calls[0][1].body.get('file') as File
+    > 228 |     expect(file.type).toBe('application/octet-stream')
+          |                       ^
+      229 |   })
+      230 |   it.each([undefined, 1])('stops an oversized stream when metadata size is %s', async size => {
+      231 |     mockInfo.mockResolvedValue({ data: { size, contentType: 'audio/mpeg' }, error: null })
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:228:23)
+
+  ● stored audio transcription › stops an oversized stream when metadata size is undefined
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 413
+    Received: 200
+
+      238 |     }, { highWaterMark: 0 })
+      239 |     const response = await transcribe(multipart({ storagePath: 'alice/temp/large.mp3' }))
+    > 240 |     expect(response.status).toBe(413)
+          |                             ^
+      241 |     expect(reads).toBe(101)
+      242 |     expect(cancel).toHaveBeenCalledTimes(1)
+      243 |     expect(mockProvider).not.toHaveBeenCalled()
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:240:29)
+
+  ● stored audio transcription › stops an oversized stream when metadata size is 1
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 413
+    Received: 200
+
+      238 |     }, { highWaterMark: 0 })
+      239 |     const response = await transcribe(multipart({ storagePath: 'alice/temp/large.mp3' }))
+    > 240 |     expect(response.status).toBe(413)
+          |                             ^
+      241 |     expect(reads).toBe(101)
+      242 |     expect(cancel).toHaveBeenCalledTimes(1)
+      243 |     expect(mockProvider).not.toHaveBeenCalled()
+
+      at toBe (src/app/api/media/__tests__/access.test.ts:240:29)
+
+  ● stored audio transcription › rejects an oversized stored object before downloading or calling the provider
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: "alice/temp/large.mp3"
+
+      248 |     expect((await transcribe(multipart({ storagePath: 'alice/temp/large.mp3' }))).status).toBe(413)
+      249 |     expect(read).not.toHaveBeenCalled()
+    > 250 |     expect(mockDownload).not.toHaveBeenCalled()
+          |                              ^
+      251 |     expect(mockProvider).not.toHaveBeenCalled()
+      252 |   })
+      253 | })
+
+      at Object.toHaveBeenCalled (src/app/api/media/__tests__/access.test.ts:250:30)
+
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 46 passed, 52 total
+Snapshots:   0 total
+Time:        1.278 s
+Ran all test suites within paths "src/app/api/media/__tests__/access.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/__tests__/access.test.ts

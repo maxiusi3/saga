@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "experiments/t05-durable-worker/verify.mjs",
+    "docs/research/evidence/2026-10-16-t04-t05-merge/regression-fixed.json"
+  ],
+  "startedAt": "2026-10-16T04:48:57.984173+00:00",
+  "exitCode": 0,
+  "elapsedSeconds": 213.992,
+  "finishedAt": "2026-10-16T04:52:31.977624+00:00"
+}

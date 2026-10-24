@@ -1,0 +1,181 @@
+{
+  "checkedAt": "2026-10-16T13:20:02.213166+00:00",
+  "basis": "actual command exit codes, report assertions/cleanup, and recomputed current source hashes",
+  "runs": {
+    "fix1-failure-final.json": {
+      "exitCode": 0,
+      "status": "passed",
+      "scenarios": 42,
+      "assertions": 371,
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "workerPids": [],
+        "runnerPids": [
+          74926
+        ],
+        "groupIds": [
+          74926
+        ],
+        "forcedGroupKills": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      }
+    },
+    "fix1-merge-regression-final.json": {
+      "exitCode": 0,
+      "status": "passed",
+      "scenarios": 52,
+      "assertions": 402,
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "processOwnership": {
+        "supervisorPids": [],
+        "workerPids": [
+          74630,
+          74635,
+          74640,
+          74644,
+          74651,
+          74656,
+          74661,
+          74668,
+          74686,
+          74691,
+          74710,
+          74719,
+          74724,
+          74732,
+          74737,
+          74741,
+          74750,
+          74768,
+          74780,
+          74793,
+          74797,
+          74804,
+          74811,
+          74815,
+          74821,
+          74825,
+          74831,
+          74837,
+          74841,
+          74846,
+          74852,
+          74859,
+          74888,
+          74903,
+          74906,
+          74915,
+          74920,
+          74944
+        ],
+        "runnerPids": [
+          74963,
+          74998,
+          75001,
+          75005,
+          75009,
+          75031
+        ],
+        "groupIds": [
+          74630,
+          74635,
+          74640,
+          74644,
+          74651,
+          74656,
+          74661,
+          74668,
+          74686,
+          74691,
+          74710,
+          74719,
+          74724,
+          74732,
+          74737,
+          74741,
+          74750,
+          74768,
+          74780,
+          74793,
+          74797,
+          74804,
+          74811,
+          74815,
+          74821,
+          74825,
+          74831,
+          74837,
+          74841,
+          74846,
+          74852,
+          74859,
+          74888,
+          74903,
+          74906,
+          74915,
+          74920,
+          74944,
+          74963,
+          74998,
+          75001,
+          75005,
+          75009,
+          75031
+        ],
+        "forcedGroupKills": [],
+        "remainingGroups": [],
+        "remainingRunnerPids": [],
+        "directOperationsRemaining": 0
+      }
+    }
+  },
+  "focusedUnit": {
+    "exitCode": 0,
+    "suites": 3,
+    "tests": 69,
+    "log": "fix1-unit-green.log"
+  },
+  "fixSourceHashes": {
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts": "e3f8178348672604d13b8988a0655b799acef8d77cb478bd3a926f1d05032cb8",
+    "experiments/t05-durable-worker/merge-failure-scenarios.mjs": "836971e9631551b04f617a5e15ffbcb0ada44ebadc36ce60fc1d201913faba9b",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "0006050eb55068aade89531a9d788c068646dd575bbc5791bd8f757cd1446cd3",
+    "experiments/t05-durable-worker/README.md": "7c1555f1e6ee0166f4faa37b395f0a944ea7820e1ddc20a2ac1b6d33bc56f5b4"
+  },
+  "originalT05EvidenceReuse": {
+    "report": "t05-regression-final.json",
+    "exitCode": 0,
+    "scenarios": 39,
+    "assertions": 307,
+    "unchangedExercisedSourceHashes": {
+      "experiments/t05-durable-worker/store.mjs": "390893bd89d2e5694ad00c3ed96a5993a1316ddbccff7eae3537eb78364d5865",
+      "experiments/t05-durable-worker/worker.mjs": "1d048e088d3a4f830f0f5ce8d28b3147d52136e0b16d352d8540cdcd4610d0a3",
+      "experiments/t05-durable-worker/runner.mjs": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+      "experiments/t05-durable-worker/supervisor.mjs": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+      "experiments/t05-durable-worker/verify.mjs": "f48110f0252de7c5b329dd5bc11d4e9db55e286340723ff7b5b834517605f5e3",
+      "experiments/t05-durable-worker/supervision-scenarios.mjs": "af0eb5de2d8a20c230e6d2266b6dc03cf01174e9829399245689eb9cd91c8a26",
+      "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+    },
+    "changedIncidentalSources": [
+      "experiments/t05-durable-worker/README.md",
+      "experiments/t05-durable-worker/merge-scenarios.mjs",
+      "experiments/t05-durable-worker/merge-failure-scenarios.mjs"
+    ]
+  }
+}

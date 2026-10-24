@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-10-21T02:08:03.780947+00:00",
+  "status": "passed",
+  "purpose": "Read-only check of previous experiment/runtime/dependency/raw evidence during HTTP implementation; not current source freeze or test run.",
+  "runtimeSourcePinsChecked": 813,
+  "pinMismatches": [],
+  "protectedInputsChecked": 129,
+  "protectedMismatches": [],
+  "previousFilesChecked": 975,
+  "previousFilesMismatches": []
+}

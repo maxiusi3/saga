@@ -1,0 +1,19 @@
+{
+  "sourceUrl": "https://ftp.postgresql.org/pub/source/v17.4/postgresql-17.4.tar.bz2",
+  "checksumUrl": "https://ftp.postgresql.org/pub/source/v17.4/postgresql-17.4.tar.bz2.sha256",
+  "sha256": "c4605b73fea11963406699f949b966e5d173a7ee0ccaef8938dec0ca8a995fe7",
+  "checksumMatched": true,
+  "configureArgs": [
+    "./configure",
+    "--prefix=/Users/eat/Documents/eatpotato/saga\u4f20\u5947/.superpowers/sdd/2026-10-17-upgrade-pg17-routines/runtime/install",
+    "--without-readline",
+    "--without-zlib",
+    "--without-icu",
+    "--without-lz4",
+    "--without-zstd"
+  ],
+  "notes": "Local exact-version native PostgreSQL; no Supabase patches/extensions. Private Unix sockets only. Range download assembled and full official SHA256 verified.",
+  "postgresVersion": "postgres (PostgreSQL) 17.4",
+  "postgresSha256": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+  "pgConfig": "'--prefix=/Users/eat/Documents/eatpotato/saga\u4f20\u5947/.superpowers/sdd/2026-10-17-upgrade-pg17-routines/runtime/install' '--without-readline' '--without-zlib' '--without-icu' '--without-lz4' '--without-zstd'"
+}

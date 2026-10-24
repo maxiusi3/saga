@@ -1,0 +1,147 @@
+{
+  "startedAt": "2026-10-17T13:16:31.422Z",
+  "status": "failed",
+  "mode": "candidate",
+  "scope": "exact two private captured definitions; reduced synthetic local database; no remote access",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "bin": "/usr/local/opt/postgresql@16/bin",
+    "scrubbedEnvironmentKeys": [],
+    "postgres17Verified": false,
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "postgres": "postgres (PostgreSQL) 16.11 (Homebrew)",
+    "binarySha256": {
+      "postgres": "d7cc81b4935efe1ebd0d6e16f495bee8b1c06d64b9804907605c0949f2f26419",
+      "pg_ctl": "eb67cb61ea66ce07373feb9717371bf7a9fa2d129bad201408e014ae98f76c36",
+      "initdb": "36b31868cd94c0968ebf96d4e729b380979c31318064f46ae107a0b399ebebaf"
+    },
+    "clusterStartAttempted": true
+  },
+  "sources": {
+    "experiments/routine-notifications/README.md": "01b43f0d1cf517c41f592fc106dc801a72ec4e88bfe15fe9341ac70ffe8d07b4",
+    "experiments/routine-notifications/candidate.sql": "df64b110ef18356d5d1d33b8e02131af13cafd70ee050d0b27b566ee5f15c38e",
+    "experiments/routine-notifications/fixture.sql": "aa20466171894b942d9eef82c48fc8329c0b28156fac7bb81e2c66a0fcf37515",
+    "experiments/routine-notifications/scenarios.mjs": "a2127e32a448764c1cf8b439c59d7ba4f58e793d415303084197de8bc7b7f2db",
+    "experiments/routine-notifications/verify-lifecycle.mjs": "639d15e0255e9d7e17d8642015babb3d2b3e36c671560ba45e1a99d7eb72318c",
+    "experiments/routine-notifications/verify.mjs": "43bc4e4318d3ceb6e147f003ade8f95121a6d0ac1cb9a80126e9e57b014acb4d"
+  },
+  "scenarios": [],
+  "assertions": 40,
+  "actorConnections": [],
+  "capture": {
+    "publicPath": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+    "publicSha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+    "privatePath": "supabase/.temp/routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+    "privateSha256": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+    "snapshotPath": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+    "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "allTwelveMd5": [
+      {
+        "name": "accept_project_invitation",
+        "identityArguments": "p_invitation_id uuid, p_user_id uuid",
+        "md5": "638c776a2a70d1cddd47055c583e1abd"
+      },
+      {
+        "name": "cleanup_expired_invitations",
+        "identityArguments": "",
+        "md5": "84e83304fb503123d44f16e9fc18cb31"
+      },
+      {
+        "name": "create_checkout_session",
+        "identityArguments": "user_email text, user_id uuid, project_title text",
+        "md5": "cc86b4d0449681833037c4a5c49c79a6"
+      },
+      {
+        "name": "create_project_with_role",
+        "identityArguments": "project_name text, project_description text, facilitator_id uuid, creator_role text",
+        "md5": "a9ae4c08fe1027490af42b4943c70113"
+      },
+      {
+        "name": "get_unread_notification_count",
+        "identityArguments": "user_id uuid",
+        "md5": "0b7d901de660b8805848cc9951a3a8fc"
+      },
+      {
+        "name": "initialize_user_wallet",
+        "identityArguments": "p_user_id uuid",
+        "md5": "bf1912760ae1eeb5ad2f534522b441bb"
+      },
+      {
+        "name": "mark_notifications_as_read",
+        "identityArguments": "user_id uuid, notification_ids uuid[]",
+        "md5": "38d9f9ae6c7efc989c81a1802eff4a65"
+      },
+      {
+        "name": "process_package_purchase",
+        "identityArguments": "p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text",
+        "md5": "d3b557cfc133eaef1d2c31a4877f46a7"
+      },
+      {
+        "name": "process_package_purchase",
+        "identityArguments": "package_id text, payment_intent_id text, user_id uuid",
+        "md5": "a18c3ebea702558e8f4e9a67811a3fc3"
+      },
+      {
+        "name": "request_data_export",
+        "identityArguments": "p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean",
+        "md5": "9199018230b9e447414fe18d89cda98a"
+      },
+      {
+        "name": "request_data_export",
+        "identityArguments": "project_id uuid, user_id uuid, export_options jsonb",
+        "md5": "84ccf96f336d775446fb11369a68c3c7"
+      },
+      {
+        "name": "send_project_invitation",
+        "identityArguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+        "md5": "ab14eb2828efb74945e3de7cf4039472"
+      }
+    ]
+  },
+  "replay": [
+    {
+      "id": "F05",
+      "name": "get_unread_notification_count",
+      "identityArguments": "user_id uuid",
+      "md5": "0b7d901de660b8805848cc9951a3a8fc",
+      "sha256": "e02ae936f2f179a8a7beae8cd92eb41cd43fcce568c56133b42ef2cdf2e7460a",
+      "approvedRelations": [
+        "public.notifications"
+      ],
+      "approvedCalls": [
+        "count"
+      ]
+    },
+    {
+      "id": "F07",
+      "name": "mark_notifications_as_read",
+      "identityArguments": "user_id uuid, notification_ids uuid[]",
+      "md5": "38d9f9ae6c7efc989c81a1802eff4a65",
+      "sha256": "ee583da55c990eb98b93afbe8fdade646ec504f2387bc59b0f030a3474663ed4",
+      "approvedRelations": [
+        "public.notifications"
+      ],
+      "approvedCalls": [
+        "any",
+        "coalesce",
+        "now"
+      ]
+    }
+  ],
+  "dependencyVerification": "Exact audited hashes plus complete-body builtin/relation allowlists; matching snapshot column types; no noninternal notification triggers; synthetic builtin defaults only.",
+  "scratch": "/tmp/saga-notification-PIQuib",
+  "testInjection": "real pg_ctl start with an unrecognized server setting",
+  "error": {
+    "code": "SUBPROCESS_FAILED",
+    "subprocessExit": 1
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T13:16:32.657Z"
+}

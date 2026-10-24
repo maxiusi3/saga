@@ -1,0 +1,109 @@
+{
+  "status": "matched",
+  "scope": "Compare user-reported metadata against preserved Oct 17 snapshot; not a production access or backup test",
+  "receivedDate": "2026-10-23",
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+    "sha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+  },
+  "rowCounts": {
+    "buckets": 2,
+    "enumLabels": 3,
+    "functions": 6
+  },
+  "functionComparisons": [
+    {
+      "identity": "storage.enforce_bucket_lifecycle_service_role()",
+      "allReturnedFieldsMatch": true
+    },
+    {
+      "identity": "storage.enforce_bucket_name_length()",
+      "allReturnedFieldsMatch": true
+    },
+    {
+      "identity": "storage.foldername(name text)",
+      "allReturnedFieldsMatch": true
+    },
+    {
+      "identity": "storage.protect_bucket_control_columns()",
+      "allReturnedFieldsMatch": true
+    },
+    {
+      "identity": "storage.protect_delete()",
+      "allReturnedFieldsMatch": true
+    },
+    {
+      "identity": "storage.update_updated_at_column()",
+      "allReturnedFieldsMatch": true
+    }
+  ],
+  "historicalTriggerMapping": [
+    {
+      "table": "storage.buckets",
+      "trigger": "enforce_bucket_name_length_trigger",
+      "function": "storage.enforce_bucket_name_length",
+      "argumentCount": 0,
+      "source": "Oct 17 trigger snapshot; bindings not freshly captured by A/B/C"
+    },
+    {
+      "table": "storage.buckets",
+      "trigger": "protect_bucket_control_insert",
+      "function": "storage.protect_bucket_control_columns",
+      "argumentCount": 1,
+      "source": "Oct 17 trigger snapshot; bindings not freshly captured by A/B/C"
+    },
+    {
+      "table": "storage.buckets",
+      "trigger": "protect_bucket_control_update",
+      "function": "storage.protect_bucket_control_columns",
+      "argumentCount": 0,
+      "source": "Oct 17 trigger snapshot; bindings not freshly captured by A/B/C"
+    },
+    {
+      "table": "storage.buckets",
+      "trigger": "protect_bucket_control_update_role",
+      "function": "storage.enforce_bucket_lifecycle_service_role",
+      "argumentCount": 1,
+      "source": "Oct 17 trigger snapshot; bindings not freshly captured by A/B/C"
+    },
+    {
+      "table": "storage.buckets",
+      "trigger": "protect_buckets_delete",
+      "function": "storage.protect_delete",
+      "argumentCount": 0,
+      "source": "Oct 17 trigger snapshot; bindings not freshly captured by A/B/C"
+    },
+    {
+      "table": "storage.objects",
+      "trigger": "protect_objects_delete",
+      "function": "storage.protect_delete",
+      "argumentCount": 0,
+      "source": "Oct 17 trigger snapshot; bindings not freshly captured by A/B/C"
+    },
+    {
+      "table": "storage.objects",
+      "trigger": "update_objects_updated_at",
+      "function": "storage.update_updated_at_column",
+      "argumentCount": 0,
+      "source": "Oct 17 trigger snapshot; bindings not freshly captured by A/B/C"
+    }
+  ],
+  "distinctHistoricalTriggerFunctions": 5,
+  "extraFunction": "storage.foldername(name text)",
+  "allMigrationVersionsMatch": true,
+  "closedInformationGaps": [
+    "two bucket exact configurations",
+    "storage.buckettype enum labels",
+    "current reported function fingerprints and attributes"
+  ],
+  "remaining": [
+    "function definitions and trigger arguments/conditions for reviewed replay",
+    "actual Auth/JWT/PostgREST/Storage authorization",
+    "private media cutover and legacy compatibility",
+    "migration equivalence/backfill/rollback",
+    "database and media backup plus verified restore",
+    "provider account/data conditions",
+    "deployment/Auth qualification"
+  ],
+  "releaseGatesPassed": false
+}

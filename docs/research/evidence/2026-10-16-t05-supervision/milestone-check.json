@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-16T03:25:07.182158+00:00",
+  "timezone": "Asia/Taipei",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "plan": "docs/2026-10-10-integrated-upgrade-plan.md",
+  "gates": {
+    "G0": {
+      "achieved": false,
+      "missingEvidence": [
+        "actual remote asset paths and RLS",
+        "remote migration history and recoverable migration/backup strategy",
+        "selected provider account capabilities and data conditions"
+      ]
+    },
+    "G1": {
+      "achieved": false,
+      "missingEvidence": [
+        "real-device 5/20/30 minute and fault matrix",
+        "real Storage/object authorization and formal adapters",
+        "verified original-media export and confirmed-save recovery"
+      ]
+    }
+  },
+  "dependencyAudit": {
+    "command": "npm run audit:high",
+    "exitCode": 1,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0
+  },
+  "localBatchIsReleaseMilestone": false,
+  "gitAction": {
+    "committed": false,
+    "pushed": false,
+    "deployed": false
+  },
+  "authorization": "Existing-plan milestone required for commit/push; no remote migrations, main merge, or deployment authorized by this local batch."
+}

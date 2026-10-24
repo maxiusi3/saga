@@ -1,0 +1,156 @@
+{
+  "base_scenario": {
+    "as_of": "2026-10-08",
+    "currency": "USD",
+    "initial_quality_reference": "high",
+    "pricing_boundary": "Public usage rates; paid-plan minimums, region/ZRM premiums, storage, Precision-3, second ASR, Fable, video and TTS are excluded. No promotional/free credits.",
+    "assumptions": {
+      "families": 1000,
+      "input_multiplier": 1.0,
+      "output_multiplier": 1.0,
+      "reserve": 0.2,
+      "asr_per_hour": 0.22,
+      "monthly_infra": 300.0,
+      "human_minutes": 20.0,
+      "human_hourly": 30.0
+    },
+    "fixed_workload": "120 recorded minutes, 20 photos, eight short stories, 20 retrieval queries; photo tokens are assumptions, not per-image tariffs. Text multipliers affect all text/vision calls but not audio, embedding or reranking. Output budgets include billed reasoning, not only prose.",
+    "tiers": {
+      "low": {
+        "line_items_usd": {
+          "scribe_v2_2_audio_hours": 0.44,
+          "voyage_4_large_30k_tokens": 0.0036,
+          "rerank_3_20_queries_10_docs_50_query_300_doc_tokens": 0.0035,
+          "extraction_organization_photos_luna_90k_in_12k_out": 0.015,
+          "editing_sonnet_50k_in_12k_out": 0.22,
+          "verification_luna_50k_in_4k_out": 0.007
+        },
+        "api_subtotal_usd": 0.6891,
+        "api_budget_with_reserve_usd": 0.82692,
+        "monthly_api_budget_usd": 826.92,
+        "illustrative_cost_with_infra_and_human_usd": 11.12692
+      },
+      "medium": {
+        "line_items_usd": {
+          "scribe_v2_2_audio_hours": 0.44,
+          "voyage_4_large_30k_tokens": 0.0036,
+          "rerank_3_20_queries_10_docs_50_query_300_doc_tokens": 0.0035,
+          "extraction_organization_photos_sonnet_90k_in_12k_out": 0.3,
+          "editing_sonnet_50k_in_12k_out": 0.22,
+          "verification_opus_50k_in_4k_out": 0.28
+        },
+        "api_subtotal_usd": 1.2471,
+        "api_budget_with_reserve_usd": 1.49652,
+        "monthly_api_budget_usd": 1496.52,
+        "illustrative_cost_with_infra_and_human_usd": 11.79652
+      },
+      "high": {
+        "line_items_usd": {
+          "scribe_v2_2_audio_hours": 0.44,
+          "voyage_4_large_30k_tokens": 0.0036,
+          "rerank_3_20_queries_10_docs_50_query_300_doc_tokens": 0.0035,
+          "extraction_organization_photos_opus_90k_in_12k_out": 0.6,
+          "editing_opus_50k_in_12k_out": 0.44,
+          "verification_astra_50k_in_4k_out": 0.7
+        },
+        "api_subtotal_usd": 2.1871,
+        "api_budget_with_reserve_usd": 2.62452,
+        "monthly_api_budget_usd": 2624.52,
+        "illustrative_cost_with_infra_and_human_usd": 12.92452
+      }
+    },
+    "voice_optional_incremental_60_minute_scenarios": {
+      "assumptions": {
+        "connected_minutes": 60,
+        "user_audio_minutes": 40,
+        "assistant_audio_minutes": 8,
+        "silent_minutes": 12,
+        "cumulative_text_input_tokens": 20000,
+        "cumulative_text_output_tokens": 2000,
+        "tts_characters_per_output_minute_assumed": 900
+      },
+      "gpt_live_1_astra_backend_quality_reference": 3.3,
+      "gpt_live_1_sol_backend_cost_candidate": 3.06,
+      "realtime_full_fresh_audio_plus_assumed_text_only": 1.5104,
+      "realtime_mini_fresh_audio_plus_assumed_text_only": 0.4488,
+      "exclusions": "Historical audio input/cache, extra text/reasoning, tools, optional transcription, network/telephony, recording and final offline processing; no retry reserve. These are different architectures, not quality-equivalent quotations."
+    }
+  },
+  "triple_output_scenario": {
+    "as_of": "2026-10-08",
+    "currency": "USD",
+    "initial_quality_reference": "high",
+    "pricing_boundary": "Public usage rates; paid-plan minimums, region/ZRM premiums, storage, Precision-3, second ASR, Fable, video and TTS are excluded. No promotional/free credits.",
+    "assumptions": {
+      "families": 1000,
+      "input_multiplier": 1.0,
+      "output_multiplier": 3.0,
+      "reserve": 0.2,
+      "asr_per_hour": 0.22,
+      "monthly_infra": 300.0,
+      "human_minutes": 20.0,
+      "human_hourly": 30.0
+    },
+    "fixed_workload": "120 recorded minutes, 20 photos, eight short stories, 20 retrieval queries; photo tokens are assumptions, not per-image tariffs. Text multipliers affect all text/vision calls but not audio, embedding or reranking. Output budgets include billed reasoning, not only prose.",
+    "tiers": {
+      "low": {
+        "line_items_usd": {
+          "scribe_v2_2_audio_hours": 0.44,
+          "voyage_4_large_30k_tokens": 0.0036,
+          "rerank_3_20_queries_10_docs_50_query_300_doc_tokens": 0.0035,
+          "extraction_organization_photos_luna_90k_in_12k_out": 0.027,
+          "editing_sonnet_50k_in_12k_out": 0.46,
+          "verification_luna_50k_in_4k_out": 0.011
+        },
+        "api_subtotal_usd": 0.9451,
+        "api_budget_with_reserve_usd": 1.13412,
+        "monthly_api_budget_usd": 1134.12,
+        "illustrative_cost_with_infra_and_human_usd": 11.43412
+      },
+      "medium": {
+        "line_items_usd": {
+          "scribe_v2_2_audio_hours": 0.44,
+          "voyage_4_large_30k_tokens": 0.0036,
+          "rerank_3_20_queries_10_docs_50_query_300_doc_tokens": 0.0035,
+          "extraction_organization_photos_sonnet_90k_in_12k_out": 0.54,
+          "editing_sonnet_50k_in_12k_out": 0.46,
+          "verification_opus_50k_in_4k_out": 0.44
+        },
+        "api_subtotal_usd": 1.8871,
+        "api_budget_with_reserve_usd": 2.26452,
+        "monthly_api_budget_usd": 2264.52,
+        "illustrative_cost_with_infra_and_human_usd": 12.56452
+      },
+      "high": {
+        "line_items_usd": {
+          "scribe_v2_2_audio_hours": 0.44,
+          "voyage_4_large_30k_tokens": 0.0036,
+          "rerank_3_20_queries_10_docs_50_query_300_doc_tokens": 0.0035,
+          "extraction_organization_photos_opus_90k_in_12k_out": 1.08,
+          "editing_opus_50k_in_12k_out": 0.92,
+          "verification_astra_50k_in_4k_out": 1.1
+        },
+        "api_subtotal_usd": 3.5471,
+        "api_budget_with_reserve_usd": 4.25652,
+        "monthly_api_budget_usd": 4256.52,
+        "illustrative_cost_with_infra_and_human_usd": 14.55652
+      }
+    },
+    "voice_optional_incremental_60_minute_scenarios": {
+      "assumptions": {
+        "connected_minutes": 60,
+        "user_audio_minutes": 40,
+        "assistant_audio_minutes": 8,
+        "silent_minutes": 12,
+        "cumulative_text_input_tokens": 20000,
+        "cumulative_text_output_tokens": 2000,
+        "tts_characters_per_output_minute_assumed": 900
+      },
+      "gpt_live_1_astra_backend_quality_reference": 3.3,
+      "gpt_live_1_sol_backend_cost_candidate": 3.06,
+      "realtime_full_fresh_audio_plus_assumed_text_only": 1.5104,
+      "realtime_mini_fresh_audio_plus_assumed_text_only": 0.4488,
+      "exclusions": "Historical audio input/cache, extra text/reasoning, tools, optional transcription, network/telephony, recording and final offline processing; no retry reserve. These are different architectures, not quality-equivalent quotations."
+    }
+  }
+}

@@ -8,7 +8,8 @@ import { StoryPrompt, getNextPrompt } from '@saga/shared'
 import type { InterventionLevel } from '@saga/shared/types/agents'
 import { RecorderHub } from '@/components/recording/RecorderHub'
 import { SmartRecorder } from '@/components/recording/SmartRecorder'
-import { ReviewStage } from '@/components/recording/ReviewStage'
+import { RecordingRecoveryPanel } from '@/components/recording/RecordingRecoveryPanel'
+import { ReviewStage, type DraftStatus } from '@/components/recording/ReviewStage'
 import { ResonanceCard } from '@/components/recording/ResonanceCard'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -52,7 +53,8 @@ export default function ProjectRecordPage() {
 
   // AI State
   const [aiContent, setAiContent] = useState<AIContentType | null>(null)
-  const [isAiProcessing, setIsAiProcessing] = useState(false)
+  const [draftStatus, setDraftStatus] = useState<DraftStatus>('idle')
+  const aiRequestVersionRef = useRef(0)
 
   // Submission State
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -74,9 +76,26 @@ export default function ProjectRecordPage() {
 
   useEffect(() => () => {
     interviewSessionRequestVersionRef.current += 1
+    aiRequestVersionRef.current += 1
   }, [])
 
+  useEffect(() => () => {
+    if (audioUrl) URL.revokeObjectURL(audioUrl)
+  }, [audioUrl])
+
+  const resetRecording = () => {
+    aiRequestVersionRef.current += 1
+    setAiContent(null)
+    setDraftStatus('idle')
+    setTranscript('')
+    setAudioBlob(null)
+    setAudioUrl(null)
+    setRecordingDuration(0)
+    setSavedStoryId(null)
+  }
+
   const handleReturnToHub = () => {
+    resetRecording()
     interviewSessionRequestVersionRef.current += 1
     setInterviewSessionId(null)
     setRecorderError(null)
@@ -84,6 +103,7 @@ export default function ProjectRecordPage() {
   }
 
   const handleModeSelect = (selectedMode: RecordingMode) => {
+    resetRecording()
     const requestVersion = interviewSessionRequestVersionRef.current + 1
     interviewSessionRequestVersionRef.current = requestVersion
 
@@ -122,31 +142,31 @@ export default function ProjectRecordPage() {
   }
 
   const handleRecordingComplete = async (result: { audioBlob?: Blob, transcript?: string, duration: number }) => {
-    if (result.audioBlob) {
-      setAudioBlob(result.audioBlob)
-      setAudioUrl(URL.createObjectURL(result.audioBlob))
-    }
+    const requestVersion = ++aiRequestVersionRef.current
+    setAiContent(null)
+    setDraftStatus('idle')
+    setAudioBlob(result.audioBlob ?? null)
+    setAudioUrl(result.audioBlob ? URL.createObjectURL(result.audioBlob) : null)
     setRecordingDuration(result.duration)
-    if (result.transcript) setTranscript(result.transcript)
+    setTranscript(result.transcript ?? '')
 
     setStage('review')
 
-    // Start background AI processing
-    if (result.transcript || result.audioBlob) {
-      setIsAiProcessing(true)
+    // Browser captions are provisional; durable server transcription is a later workflow.
+    // This draft must never gate saving the original recording.
+    if (result.transcript?.trim()) {
+      setDraftStatus('processing')
       try {
-        // Mock AI processing for now or use real service if available
-        // In a real scenario, we'd fire this off and update aiContent when done
-        if (result.transcript) {
-          // We can use the existing API call here if needed
-          // For now, we'll simulate a quick analysis for the "Review" stage title suggestion
-          const generated = await aiService.generateContentFromTranscript(result.transcript, currentPrompt?.text, locale)
+        const generated = await aiService.generateContentFromTranscript(result.transcript, currentPrompt?.text, locale)
+        if (aiRequestVersionRef.current === requestVersion) {
           setAiContent(generated)
+          setDraftStatus('ready')
         }
       } catch (e) {
-        console.error('AI processing error', e)
-      } finally {
-        setIsAiProcessing(false)
+        if (aiRequestVersionRef.current === requestVersion) {
+          console.error('AI processing error', e)
+          setDraftStatus('failed')
+        }
       }
     }
   }
@@ -275,12 +295,15 @@ export default function ProjectRecordPage() {
 
         {/* Stage: HUB */}
         {stage === 'hub' && (
-          <RecorderHub
-            onModeSelect={handleModeSelect}
-            interventionLevel={interventionLevel}
-            onInterventionLevelChange={setInterventionLevel}
-            projectTitle={currentPrompt.text}
-          />
+          <div className="space-y-6">
+            <RecordingRecoveryPanel projectId={projectId} userId={user?.id} />
+            <RecorderHub
+              onModeSelect={handleModeSelect}
+              interventionLevel={interventionLevel}
+              onInterventionLevelChange={setInterventionLevel}
+              projectTitle={currentPrompt.text}
+            />
+          </div>
         )}
 
         {/* Stage: RECORDING */}
@@ -374,6 +397,7 @@ export default function ProjectRecordPage() {
             onSave={handleSaveStory}
             onDiscard={handleReturnToHub}
             isProcessing={isSubmitting}
+            draftStatus={draftStatus}
           />
         )}
 

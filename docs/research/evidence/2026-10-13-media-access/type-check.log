@@ -1,0 +1,12 @@
+
+> saga-family-biography@1.0.0 type-check
+> npm run type-check --workspaces
+
+
+> @saga/shared@1.5.0 type-check
+> tsc --noEmit
+
+
+> @saga/web@1.0.0 type-check
+> tsc --noEmit
+

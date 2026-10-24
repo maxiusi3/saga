@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-16T02:37:17.126Z",
+  "command": [
+    "/usr/local/Cellar/node@22/22.22.2/bin/node",
+    "--test",
+    "docs/research/evidence/2026-10-16-dependency-review/runtime-smoke-startup.test.cjs"
+  ],
+  "source": "docs/research/evidence/2026-10-16-dependency-review/runtime-smoke-before.cjs",
+  "sourceSha256": "e6c4cd62839bbe9d9dec5dbbb58f8ba0a8649bb92de526c21c9daed7fd072809",
+  "exitCode": 1,
+  "log": "docs/research/evidence/2026-10-16-dependency-review/runtime-startup-regression-red.log",
+  "environment": {
+    "RUNTIME_SMOKE_SOURCE": "docs/research/evidence/2026-10-16-dependency-review/runtime-smoke-before.cjs"
+  }
+}

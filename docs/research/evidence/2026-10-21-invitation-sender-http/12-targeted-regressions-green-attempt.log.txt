@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand invitation-sender invitation-acceptance invitation-read-routes invitation-recipient auth-return auth-callback auth-session auth-token-refresh cleanup-invitations
+
+
+Test Suites: 17 passed, 17 total
+Tests:       521 passed, 521 total
+Snapshots:   0 total
+Time:        48.952 s
+Ran all test suites matching invitation-sender|invitation-acceptance|invitation-read-routes|invitation-recipient|auth-return|auth-callback|auth-session|auth-token-refresh|cleanup-invitations.

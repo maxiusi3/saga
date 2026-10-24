@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-17T13:06:48.036Z",
+  "status": "captured",
+  "scope": "Exactly 12 pinned public non-trigger SECURITY DEFINER routine identities; pg_catalog reads only; raw definitions retained privately",
+  "snapshotPath": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json",
+  "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+  "tlsVerificationDisabled": false,
+  "queries": {
+    "targets": "WITH targets AS (\n    SELECT * FROM pg_catalog.jsonb_to_recordset($1::jsonb)\n      AS target(schema_name text, function_name text, identity_arguments text)\n  )\n  SELECT target.schema_name, target.function_name, target.identity_arguments,\n    pg_catalog.pg_get_function_result(p.oid) AS return_type, p.prokind AS kind,\n    pg_catalog.pg_get_userbyid(p.proowner) AS owner, l.lanname AS language,\n    p.prosecdef AS security_definer, p.provolatile AS volatility,\n    p.proisstrict AS is_strict, p.proleakproof AS leakproof,\n    CASE WHEN p.oid IS NOT NULL THEN ARRAY(\n      SELECT setting FROM pg_catalog.unnest(p.proconfig) AS setting\n      WHERE pg_catalog.split_part(setting,'=',1)='search_path') END AS search_path,\n    CASE WHEN p.oid IS NOT NULL THEN p.proacl IS NULL END AS acl_is_null,\n    CASE WHEN p.oid IS NOT NULL THEN EXISTS(\n      SELECT 1 FROM pg_catalog.aclexplode(pg_catalog.acldefault('f',p.proowner)) a\n      WHERE a.grantee=0 AND a.privilege_type='EXECUTE') END AS builtin_default_public_execute,\n    CASE WHEN p.oid IS NOT NULL THEN EXISTS(\n      SELECT 1 FROM pg_catalog.aclexplode(COALESCE(p.proacl,pg_catalog.acldefault('f',p.proowner))) a\n      WHERE a.grantee=0 AND a.privilege_type='EXECUTE') END AS public_execute,\n    CASE WHEN p.oid IS NOT NULL THEN EXISTS(\n      SELECT 1 FROM pg_catalog.aclexplode(COALESCE(p.proacl,pg_catalog.acldefault('f',p.proowner))) a\n      WHERE a.grantee=0 AND a.privilege_type='EXECUTE' AND a.is_grantable) END AS public_execute_grantable,\n    CASE WHEN p.prokind IN ('f','p','w') THEN pg_catalog.md5(pg_catalog.pg_get_functiondef(p.oid)) END AS definition_hash_md5,\n    CASE WHEN p.prokind IN ('f','p','w') THEN pg_catalog.pg_get_functiondef(p.oid) END AS definition\n  FROM targets target\n  LEFT JOIN pg_catalog.pg_namespace n ON n.nspname=target.schema_name\n  LEFT JOIN pg_catalog.pg_proc p ON p.pronamespace=n.oid AND p.proname=target.function_name\n    AND pg_catalog.pg_get_function_identity_arguments(p.oid)=target.identity_arguments\n  LEFT JOIN pg_catalog.pg_language l ON l.oid=p.prolang\n  ORDER BY 1,2,3"
+  },
+  "captureDeadline": {
+    "limitMs": 90000,
+    "exceeded": false
+  },
+  "sourceSha256": {
+    "scripts/inspect-supabase-routines.cjs": "f838b8762324302073bdfc657551069666357b9a2bd66299a3fe2f6ec4d4f928",
+    "scripts/supabase-capture-runtime.cjs": "6b6e2ed78758076af37cb6fa2383d61f0e07090b32d44288b3abe46c6e15353a",
+    "scripts/inspect-supabase-metadata.cjs": "be8f08d62a6ac3fcae20911f8b6569dab8f6a52bb2e099a233855ac63f8e27d2"
+  },
+  "caSha256": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7",
+  "tls": {
+    "authorized": true,
+    "protocol": "TLSv1.3"
+  },
+  "targets": [
+    {
+      "schema_name": "public",
+      "function_name": "accept_project_invitation",
+      "identity_arguments": "p_invitation_id uuid, p_user_id uuid",
+      "expectedDefinitionMd5": "638c776a2a70d1cddd47055c583e1abd",
+      "actualDefinitionMd5": "638c776a2a70d1cddd47055c583e1abd",
+      "definitionSha256": "f1dd6fcb4bdeee50612ce8f587319bb5cee37ccac091ecafa5e9a01845cd563d",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "cleanup_expired_invitations",
+      "identity_arguments": "",
+      "expectedDefinitionMd5": "84e83304fb503123d44f16e9fc18cb31",
+      "actualDefinitionMd5": "84e83304fb503123d44f16e9fc18cb31",
+      "definitionSha256": "106cde429e924524639d645f102172b06097ea36f720823c3edf0b51ce66181d",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "create_checkout_session",
+      "identity_arguments": "user_email text, user_id uuid, project_title text",
+      "expectedDefinitionMd5": "cc86b4d0449681833037c4a5c49c79a6",
+      "actualDefinitionMd5": "cc86b4d0449681833037c4a5c49c79a6",
+      "definitionSha256": "fb443cdcf6bc5784892fbb28f3d87876b4b28dba0ebd0466f1a907d2708a96bd",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "create_project_with_role",
+      "identity_arguments": "project_name text, project_description text, facilitator_id uuid, creator_role text",
+      "expectedDefinitionMd5": "a9ae4c08fe1027490af42b4943c70113",
+      "actualDefinitionMd5": "a9ae4c08fe1027490af42b4943c70113",
+      "definitionSha256": "a544a3455c60f0ea966558a6be0a6006f4ebf5940268ca8a17b1640c6cc79d75",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "get_unread_notification_count",
+      "identity_arguments": "user_id uuid",
+      "expectedDefinitionMd5": "0b7d901de660b8805848cc9951a3a8fc",
+      "actualDefinitionMd5": "0b7d901de660b8805848cc9951a3a8fc",
+      "definitionSha256": "e02ae936f2f179a8a7beae8cd92eb41cd43fcce568c56133b42ef2cdf2e7460a",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "initialize_user_wallet",
+      "identity_arguments": "p_user_id uuid",
+      "expectedDefinitionMd5": "bf1912760ae1eeb5ad2f534522b441bb",
+      "actualDefinitionMd5": "bf1912760ae1eeb5ad2f534522b441bb",
+      "definitionSha256": "b47697b80c2ab6e08e59d71d09036b3d93b8900f34273f8abec4974a74ad7f75",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "mark_notifications_as_read",
+      "identity_arguments": "user_id uuid, notification_ids uuid[]",
+      "expectedDefinitionMd5": "38d9f9ae6c7efc989c81a1802eff4a65",
+      "actualDefinitionMd5": "38d9f9ae6c7efc989c81a1802eff4a65",
+      "definitionSha256": "ee583da55c990eb98b93afbe8fdade646ec504f2387bc59b0f030a3474663ed4",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "process_package_purchase",
+      "identity_arguments": "p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text",
+      "expectedDefinitionMd5": "d3b557cfc133eaef1d2c31a4877f46a7",
+      "actualDefinitionMd5": "d3b557cfc133eaef1d2c31a4877f46a7",
+      "definitionSha256": "e11c607e28af8c4c0d581f74b7d18db67595df3e77ab322563886d005020a6e1",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "process_package_purchase",
+      "identity_arguments": "package_id text, payment_intent_id text, user_id uuid",
+      "expectedDefinitionMd5": "a18c3ebea702558e8f4e9a67811a3fc3",
+      "actualDefinitionMd5": "a18c3ebea702558e8f4e9a67811a3fc3",
+      "definitionSha256": "05b7ffea9610c49ff0c5e2b27e771fbc312fc772e0ee049aa4161e1014a2593e",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "request_data_export",
+      "identity_arguments": "p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean",
+      "expectedDefinitionMd5": "9199018230b9e447414fe18d89cda98a",
+      "actualDefinitionMd5": "9199018230b9e447414fe18d89cda98a",
+      "definitionSha256": "856e6043496dc68f1cf15a79557a4b9d23fc4a213d2ab85d90ba3765a750c131",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "request_data_export",
+      "identity_arguments": "project_id uuid, user_id uuid, export_options jsonb",
+      "expectedDefinitionMd5": "84ccf96f336d775446fb11369a68c3c7",
+      "actualDefinitionMd5": "84ccf96f336d775446fb11369a68c3c7",
+      "definitionSha256": "c73c9da4c9217b83bf654a2faa52c11ca7de1c40298284ffdeb8b24506941b6a",
+      "status": "matched",
+      "changedAttributes": []
+    },
+    {
+      "schema_name": "public",
+      "function_name": "send_project_invitation",
+      "identity_arguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+      "expectedDefinitionMd5": "ab14eb2828efb74945e3de7cf4039472",
+      "actualDefinitionMd5": "ab14eb2828efb74945e3de7cf4039472",
+      "definitionSha256": "9f818ef44dc6f1b98a68371d6628f32dee0277893af502b1406c6326b429d971",
+      "status": "matched",
+      "changedAttributes": []
+    }
+  ],
+  "identity": {
+    "current_user": "metadata_reader",
+    "current_database": "postgres",
+    "read_only": "on",
+    "isolation": "repeatable read",
+    "statement_timeout": "10s",
+    "lock_timeout": "2s",
+    "idle_transaction_timeout": "15s",
+    "serverVersionSha256": "c6893771323e13ada0a002f7d6917d0ee0a458a22644e7d742555f291366d609",
+    "snapshotTimeSha256": "00758bdda30310bd19a5a32c9b70318239af904deadde4639fa935427dcde113"
+  },
+  "privateCapture": {
+    "relativePath": "supabase/.temp/routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+    "sha256": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+    "permissionsVerified": true,
+    "directoryMode": "0700",
+    "fileMode": "0600",
+    "exclusiveCreation": true
+  },
+  "connectionClosed": true,
+  "connectionCleanup": {
+    "status": "closed"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "nodeVersion": "v22.22.2",
+  "executable": "/usr/local/Cellar/node@22/22.22.2/bin/node",
+  "scope": "Five newly written synthetic Node executables; same fresh-file boundary as Jest fixture",
+  "samples": [
+    {
+      "index": 1,
+      "spawnReturnedMs": 4.789028000000002,
+      "spawnEventMs": 5.667881999999992,
+      "firstPcmMs": 577.733693,
+      "exitMs": 581.258482,
+      "closeMs": 583.926133,
+      "pcmBytes": 3200,
+      "pidGone": true
+    },
+    {
+      "index": 2,
+      "spawnReturnedMs": 1.8908010000000104,
+      "spawnEventMs": 1.9584110000000692,
+      "firstPcmMs": 603.641883,
+      "exitMs": 606.1177770000002,
+      "closeMs": 606.240172,
+      "pcmBytes": 3200,
+      "pidGone": true
+    },
+    {
+      "index": 3,
+      "spawnReturnedMs": 2.9640580000000227,
+      "spawnEventMs": 3.0196860000000925,
+      "firstPcmMs": 602.9656749999999,
+      "exitMs": 605.676428,
+      "closeMs": 605.7800810000001,
+      "pcmBytes": 3200,
+      "pidGone": true
+    },
+    {
+      "index": 4,
+      "spawnReturnedMs": 7.164007999999967,
+      "spawnEventMs": 7.240566999999828,
+      "firstPcmMs": 564.1218779999999,
+      "exitMs": 566.9145359999998,
+      "closeMs": 566.9412589999997,
+      "pcmBytes": 3200,
+      "pidGone": true
+    },
+    {
+      "index": 5,
+      "spawnReturnedMs": 3.570585999999821,
+      "spawnEventMs": 3.624945999999909,
+      "firstPcmMs": 565.9740120000001,
+      "exitMs": 569.095073,
+      "closeMs": 569.1187289999998,
+      "pcmBytes": 3200,
+      "pidGone": true
+    }
+  ]
+}

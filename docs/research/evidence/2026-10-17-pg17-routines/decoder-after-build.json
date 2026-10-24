@@ -1,0 +1,18 @@
+{
+  "hypothesis": "The 1000ms existing abort test watchdog can fire before synthetic PCM readiness; initial native compiler overlap was only a possible contributor.",
+  "command": [
+    "npm",
+    "test",
+    "--workspace=packages/web",
+    "--",
+    "--runInBand",
+    "src/lib/server/__tests__/recording-audio-decoder.test.ts"
+  ],
+  "exitCode": 1,
+  "seconds": 45.2,
+  "filesUnchanged": {
+    "packages/web/src/lib/server/recording-audio-decoder.ts": true,
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts": true
+  },
+  "finding": "Identical PCM abort failure reproduced after native build completed. Exact scheduling cause unproven; test prerequisite readiness and intended process exit require stronger assertions."
+}

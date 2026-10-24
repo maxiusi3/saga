@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: real catalog SQL selects exact overloaded identities and reports missing/drift using synthetic definitions
+not ok 1 - real catalog SQL selects exact overloaded identities and reports missing/drift using synthetic definitions
+  ---
+  duration_ms: 1520.922623
+  type: 'test'
+  location: '/Users/eat/Documents/eatpotato/saga传奇/scripts/__tests__/inspect-supabase-routines-local.test.cjs:13:1'
+  failureType: 'testCodeFailure'
+  error: 'The server does not support SSL connections'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Socket.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/experiments/t05-durable-worker/node_modules/pg/lib/connection.js:76:37)
+    Object.onceWrapper (node:events:634:26)
+    Socket.emit (node:events:519:28)
+    addChunk (node:internal/streams/readable:561:12)
+    readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    Readable.push (node:internal/streams/readable:392:5)
+    Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1762.570761

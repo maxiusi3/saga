@@ -1,0 +1,120 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/invitations/__tests__/invitation-management-ui.test.tsx
+
+  console.error
+    TypeError: invitations.map is not a function
+        at map (/Users/eat/Documents/eatpotato/saga传奇/packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx:226:28)
+        at Object.react_stack_bottom_frame (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:25904:20)
+        at renderWithHooks (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:7662:22)
+        at updateFunctionComponent (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:10166:19)
+        at beginWork (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:11778:18)
+        at runWithFiberInDEV (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+        at performUnitOfWork (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:17641:22)
+        at workLoopSync (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:17469:41)
+        at renderRootSync (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:17450:11)
+        at performWorkOnRoot (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:16583:35)
+        at performWorkOnRootViaSchedulerTask (/Users/eat/Documents/eatpotato/saga传奇/node_modules/react-dom/cjs/react-dom-client.development.js:18957:7)
+        at performWorkUntilDeadline (/Users/eat/Documents/eatpotato/saga传奇/node_modules/scheduler/cjs/scheduler.development.js:45:48)
+        at Timeout.task [as _onTimeout] (/Users/eat/Documents/eatpotato/saga传奇/node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+        at listOnTimeout (node:internal/timers:585:17)
+        at processTimers (node:internal/timers:521:7)
+
+      at process.env.NODE_ENV.reportGlobalError (../../node_modules/react-dom/cjs/react-dom-client.development.js:25513:23)
+      at defaultOnUncaughtError (../../node_modules/react-dom/cjs/react-dom-client.development.js:9361:7)
+      at logUncaughtError (../../node_modules/react-dom/cjs/react-dom-client.development.js:9431:11)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at lane.callback (../../node_modules/react-dom/cjs/react-dom-client.development.js:9461:9)
+      at callCallback (../../node_modules/react-dom/cjs/react-dom-client.development.js:7423:16)
+      at commitCallbacks (../../node_modules/react-dom/cjs/react-dom-client.development.js:7443:11)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitLayoutEffectOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:14047:15)
+      at flushLayoutEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18138:15)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17954:9)
+      at commitRootWhenReady (../../node_modules/react-dom/cjs/react-dom-client.development.js:16824:7)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16722:15)
+      at performWorkOnRootViaSchedulerTask (../../node_modules/react-dom/cjs/react-dom-client.development.js:18957:7)
+      at performWorkUntilDeadline (../../node_modules/scheduler/cjs/scheduler.development.js:45:48)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  console.warn
+    An error occurred in the <InvitationsPage> component.
+    
+    Consider adding an error boundary to your tree to customize error handling behavior.
+    Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+      at defaultOnUncaughtError (../../node_modules/react-dom/cjs/react-dom-client.development.js:9362:15)
+      at logUncaughtError (../../node_modules/react-dom/cjs/react-dom-client.development.js:9431:11)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at lane.callback (../../node_modules/react-dom/cjs/react-dom-client.development.js:9461:9)
+      at callCallback (../../node_modules/react-dom/cjs/react-dom-client.development.js:7423:16)
+      at commitCallbacks (../../node_modules/react-dom/cjs/react-dom-client.development.js:7443:11)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitLayoutEffectOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:14047:15)
+      at flushLayoutEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18138:15)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17954:9)
+      at commitRootWhenReady (../../node_modules/react-dom/cjs/react-dom-client.development.js:16824:7)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16722:15)
+      at performWorkOnRootViaSchedulerTask (../../node_modules/react-dom/cjs/react-dom-client.development.js:18957:7)
+      at performWorkUntilDeadline (../../node_modules/scheduler/cjs/scheduler.development.js:45:48)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+FAIL src/components/invitations/__tests__/invitation-management-ui.test.tsx
+  ● actual dashboard offers a verified source before sending
+
+    TypeError: invitations.map is not a function
+
+      224 |           ) : (
+      225 |             <div className="space-y-4">
+    > 226 |               {invitations.map((invitation) => (
+          |                            ^
+      227 |                 <div key={invitation.id} className="flex items-center justify-between p-4 border rounded-lg">
+      228 |                   <div className="flex-1 space-y-1">
+      229 |                     <div className="flex items-center space-x-3">
+
+      at map (src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx:226:28)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:25904:20)
+      at renderWithHooks (../../node_modules/react-dom/cjs/react-dom-client.development.js:7662:22)
+      at updateFunctionComponent (../../node_modules/react-dom/cjs/react-dom-client.development.js:10166:19)
+      at beginWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:11778:18)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at performUnitOfWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:17641:22)
+      at workLoopSync (../../node_modules/react-dom/cjs/react-dom-client.development.js:17469:41)
+      at renderRootSync (../../node_modules/react-dom/cjs/react-dom-client.development.js:17450:11)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16583:35)
+      at performWorkOnRootViaSchedulerTask (../../node_modules/react-dom/cjs/react-dom-client.development.js:18957:7)
+      at performWorkUntilDeadline (../../node_modules/scheduler/cjs/scheduler.development.js:45:48)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● actual dashboard offers a verified source before sending
+
+    Unable to find role="option" and name `/2 seats available/`
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div />[39m
+    [36m</body>[39m
+
+      20 | test('actual dashboard offers a verified source before sending', async () => {
+      21 |   render(<InvitationsPage />)
+    > 22 |   expect(await screen.findByRole('option', { name: /2 seats available/ })).toHaveValue(source)
+         |                       ^
+      23 | })
+      24 |
+
+      at waitForWrapper (../../node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+      at Object.findByRole (src/components/invitations/__tests__/invitation-management-ui.test.tsx:22:23)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        3.404 s
+Ran all test suites within paths "src/components/invitations/__tests__/invitation-management-ui.test.tsx".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/components/invitations/__tests__/invitation-management-ui.test.tsx

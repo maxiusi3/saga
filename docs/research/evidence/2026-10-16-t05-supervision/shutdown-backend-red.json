@@ -1,0 +1,58 @@
+{
+  "startedAt": "2026-10-16T03:05:15.973Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "c9890e91346402645b7a8be2ba8d4c1b1f34c776fa9f1470f2573b86ab3d460b",
+    "experiments/t05-durable-worker/worker.mjs": "87bf8f280aae7b34c588411d2284b1b4fdf78d27d74bbedae41494fe864b915b",
+    "experiments/t05-durable-worker/verify.mjs": "7554515781c88045446c54eb7d510491963e15aafb12fa0f731d757a364cde4b",
+    "experiments/t05-durable-worker/runner.mjs": "7ffe3c3e618dbc3b175d7d1b6cb720ab1884dd2770edd2744266f7a6d7adc6e7",
+    "experiments/t05-durable-worker/supervisor.mjs": "dd7cd7d252f5f5449594457785945782a18f7f07e4d0065c4324fe6caee4c6d6",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "5143cc4a74cf6fa7399ac2a62fbb5a9c1ca014a3a0c31a979127797d48ebeb7a",
+    "experiments/t05-durable-worker/README.md": "6f483a115463eafd15b1fe5b7243fff2060a34555e3bf8582112edf6a9379655",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [],
+  "assertions": 5,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "Local asynchronous synthetic tasks and process supervision only; no real audio, provider cancellation/billing, production hosting, real-device recording, backup restore, or load qualification."
+  ],
+  "blockedShutdown": {
+    "waitedForActualMaintenanceLock": true,
+    "elapsedMs": 3501,
+    "supervisorStillAlive": false,
+    "remainingMaintenanceBackends": [
+      {
+        "pid": 30322
+      }
+    ]
+  },
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: owned maintenance backend disappears while the independent row lock remains held\n+ actual - expected\n\n+ [\n+   {\n+     pid: 30322\n+   }\n+ ]\n- []\n\n    at equal (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:48:10)\n    at supervisedBlockedShutdown (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/supervision-scenarios.mjs:336:5)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async scenario (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:58:19)\n    at async file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:611:5",
+  "processOwnership": {
+    "supervisorPids": [
+      30321
+    ],
+    "runnerPids": [
+      30323
+    ],
+    "remainingGroups": [],
+    "remainingRunnerPids": []
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T03:05:22.384Z"
+}

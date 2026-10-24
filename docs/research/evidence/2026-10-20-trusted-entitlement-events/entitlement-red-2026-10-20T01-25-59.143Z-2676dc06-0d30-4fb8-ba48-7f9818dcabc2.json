@@ -1,0 +1,607 @@
+{
+  "startedAt": "2026-10-20T01:25:59.141Z",
+  "status": "failed",
+  "mode": "original-red",
+  "scope": "Synthetic local PostgreSQL 17.4; trusted entitlement events; no remote/business/auth/payment calls",
+  "sources": {
+    "docs/research/evidence/2026-10-17-pg17-routines/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json": "e876b1f1ed636b57ac110ae515b6158373bc981fcb3bd2c2398c7561eb61275e",
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+    "experiments/pg17-access-guards/input-pins.json": "cd04c3a208cb38a334d782c4ab8b89ec8efb22728d51113408d7b3c5a00665e7",
+    "experiments/pg17-entitlement-events/fixture.sql": "f4cf5dd583d0a1ffd572e9c36cf7ef7eee1783d7a167efdfb5bcea15b5bc6f4e",
+    "experiments/pg17-entitlement-events/input-files.mjs": "91dc0e9cc0307d4c3e09b0c15aa2ee376a36d5455aab16223c022c24a83a5396",
+    "experiments/pg17-entitlement-events/pin-inputs.mjs": "90717478ebfb7e3b0dba5559fa9f74a26d8a827ec1000ccd16fb554e5f235ea7",
+    "experiments/pg17-entitlement-events/scenarios.mjs": "d346b960d4e4921fd8a30aaa8156c1b554d50c309928c378df41ca7701078262",
+    "experiments/pg17-entitlement-events/verify-lifecycle.mjs": "812ac8dd8a792bc23740554170c5dbc4a3140b50ba384e3cdcf449c6da7dad9f",
+    "experiments/pg17-entitlement-events/verify.mjs": "10583de8fa2ac32c69bfe2d2a61a3faf7526e2a410a84085a097287a4c658936",
+    "experiments/pg17-invitation-transactions/candidate.sql": "0f5af3964f537387675f662209d2ebd1dce9745d548ab6886bb275b7d560f305",
+    "experiments/pg17-invitation-transactions/fixture.sql": "64c0dfb245fda01326480b14dfe33d38f6f14d7d8c4ac92a80f00bbbf6866f35",
+    "experiments/pg17-invitation-transactions/input-pins.json": "b26c44860db6d53d97fde1e8a5fb85673fee51953c3df71be27607e6dc81e982",
+    "experiments/pg17-invitation-transactions/scenarios.mjs": "dd35e03bc04004e272900c8d6ecebd4287ae6d914dac30d37b29f4ac223c9d5a",
+    "experiments/pg17-routines/candidate.sql": "23c158ed3dc530c9c8b35cfab8639903589bfaf74099acf2cf18b8bfe1050379",
+    "experiments/pg17-routines/fixture.sql": "f09cb35321cf38593eb173474f69c5b381e4d3a303f285ab42eaa6538f6ca6eb",
+    "experiments/pg17-routines/replay.mjs": "c937c2c82eb77231a73adf1ac4fb07ea3662585526b50b903c9cc330fac33f55",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/schema-manifest.json": "0c8c1f5a60ce8b3db3c0c2fdb9a9cef92ce421ddf75daad78535b8475ba9fae6",
+    "supabase/.temp/routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+    "supabase/.temp/routine-audit/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json": "45ec35ec3f9bf45741705d9fd2c7ce09953683e342dbe313fe7e482cb20067e5"
+  },
+  "assertions": 159,
+  "actorConnections": [
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "entitlement_writer",
+      "session_user": "entitlement_writer",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "old_column_write_bypass_RED",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "grant_interface_expected_success_RED",
+      "status": "failed",
+      "code": "ASSERT_FAILED",
+      "label": "event interface grant contract exists"
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 4232,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-fVG0C4/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    },
+    "replayedDefinitions": 13
+  },
+  "capture": [
+    {
+      "publicPath": "docs/research/evidence/2026-10-17-routine-audit/capture-2026-10-17T13-06-48-036Z-944080d1-0721-4174-a482-dd4e812eab1e.json",
+      "publicSha256": "feb2b22a900d372f6bcc24a912e1636789de16208d0c5975ece5d77998041c8f",
+      "privateSha256": "f2f37cf33860c4bc6ba22ccec90e0cc0f6d44f311e6be9c6f2e15707d2a2bedc",
+      "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+    },
+    {
+      "publicPath": "docs/research/evidence/2026-10-17-pg17-routines/capture-trigger-2026-10-17T16-07-31-856Z-f3cb9d16-8c1a-49c0-9ccb-537c82cf218f.json",
+      "publicSha256": "e876b1f1ed636b57ac110ae515b6158373bc981fcb3bd2c2398c7561eb61275e",
+      "privateSha256": "45ec35ec3f9bf45741705d9fd2c7ce09953683e342dbe313fe7e482cb20067e5",
+      "snapshotSha256": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e"
+    }
+  ],
+  "schema": {
+    "counts": {
+      "tables": 7,
+      "columns": 70,
+      "constraints": 34,
+      "triggers": 3,
+      "indexes": 34
+    },
+    "differences": [
+      "auth.users has only synthetic id primary key; auth.uid reads a local session GUC and does not verify JWT.",
+      "extensions.uuid_generate_v4 is a local SQL shim to pg_catalog.gen_random_uuid; original extension runtime omitted.",
+      "Objects owned by a private nonlogin non-superuser fixture_owner instead of production postgres.",
+      "RLS enabled and not forced as captured; production policies omitted and caller table grants revoked. This is stricter than production and does not validate its direct-table authorization.",
+      "Only seven relevant public tables and three captured trigger bindings; other public/auth/storage objects and external workers omitted.",
+      "Four independent caller login roles, no inheritance or bypass. Actual Supabase/PostgREST role inheritance, claims verification and service bypass not reproduced.",
+      "No rules/extension hooks/remote data; native upstream PostgreSQL 17.4 is not complete Supabase."
+    ],
+    "constraintDifferences": [
+      {
+        "actual": {
+          "schema_name": "public",
+          "table_name": "notifications",
+          "constraint_name": "notifications_type_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((type)::text = ANY (ARRAY[('new_story'::character varying)::text, ('new_comment'::character varying)::text, ('new_follow_up_question'::character varying)::text, ('story_response'::character varying)::text, ('project_invitation'::character varying)::text, ('member_joined'::character varying)::text, ('chapter_completed'::character varying)::text, ('export_ready'::character varying)::text])))"
+        },
+        "expected": {
+          "schema_name": "public",
+          "table_name": "notifications",
+          "constraint_name": "notifications_type_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((type)::text = ANY ((ARRAY['new_story'::character varying, 'new_comment'::character varying, 'new_follow_up_question'::character varying, 'story_response'::character varying, 'project_invitation'::character varying, 'member_joined'::character varying, 'chapter_completed'::character varying, 'export_ready'::character varying])::text[])))"
+        }
+      },
+      {
+        "actual": {
+          "schema_name": "public",
+          "table_name": "project_members",
+          "constraint_name": "project_members_role_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((role)::text = ANY (ARRAY[('facilitator'::character varying)::text, ('storyteller'::character varying)::text])))"
+        },
+        "expected": {
+          "schema_name": "public",
+          "table_name": "project_members",
+          "constraint_name": "project_members_role_check",
+          "constraint_type": "c",
+          "validated": true,
+          "definition": "CHECK (((role)::text = ANY ((ARRAY['facilitator'::character varying, 'storyteller'::character varying])::text[])))"
+        }
+      }
+    ],
+    "actualCatalogMatched": true
+  },
+  "replay": [
+    {
+      "id": "F01",
+      "name": "accept_project_invitation",
+      "identityArguments": "p_invitation_id uuid, p_user_id uuid",
+      "md5": "638c776a2a70d1cddd47055c583e1abd",
+      "sha256": "f1dd6fcb4bdeee50612ce8f587319bb5cee37ccac091ecafa5e9a01845cd563d",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F02",
+      "name": "cleanup_expired_invitations",
+      "identityArguments": "",
+      "md5": "84e83304fb503123d44f16e9fc18cb31",
+      "sha256": "106cde429e924524639d645f102172b06097ea36f720823c3edf0b51ce66181d",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F03",
+      "name": "create_checkout_session",
+      "identityArguments": "user_email text, user_id uuid, project_title text",
+      "md5": "cc86b4d0449681833037c4a5c49c79a6",
+      "sha256": "fb443cdcf6bc5784892fbb28f3d87876b4b28dba0ebd0466f1a907d2708a96bd",
+      "approvedRelations": [],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F04",
+      "name": "create_project_with_role",
+      "identityArguments": "project_name text, project_description text, facilitator_id uuid, creator_role text",
+      "md5": "a9ae4c08fe1027490af42b4943c70113",
+      "sha256": "a544a3455c60f0ea966558a6be0a6006f4ebf5940268ca8a17b1640c6cc79d75",
+      "approvedRelations": [
+        "projects",
+        "project_roles",
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F05",
+      "name": "get_unread_notification_count",
+      "identityArguments": "user_id uuid",
+      "md5": "0b7d901de660b8805848cc9951a3a8fc",
+      "sha256": "e02ae936f2f179a8a7beae8cd92eb41cd43fcce568c56133b42ef2cdf2e7460a",
+      "approvedRelations": [
+        "notifications"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F06",
+      "name": "initialize_user_wallet",
+      "identityArguments": "p_user_id uuid",
+      "md5": "bf1912760ae1eeb5ad2f534522b441bb",
+      "sha256": "b47697b80c2ab6e08e59d71d09036b3d93b8900f34273f8abec4974a74ad7f75",
+      "approvedRelations": [
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F07",
+      "name": "mark_notifications_as_read",
+      "identityArguments": "user_id uuid, notification_ids uuid[]",
+      "md5": "38d9f9ae6c7efc989c81a1802eff4a65",
+      "sha256": "ee583da55c990eb98b93afbe8fdade646ec504f2387bc59b0f030a3474663ed4",
+      "approvedRelations": [
+        "notifications"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F08",
+      "name": "process_package_purchase",
+      "identityArguments": "p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text",
+      "md5": "d3b557cfc133eaef1d2c31a4877f46a7",
+      "sha256": "e11c607e28af8c4c0d581f74b7d18db67595df3e77ab322563886d005020a6e1",
+      "approvedRelations": [
+        "user_resource_wallets"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F09",
+      "name": "process_package_purchase",
+      "identityArguments": "package_id text, payment_intent_id text, user_id uuid",
+      "md5": "a18c3ebea702558e8f4e9a67811a3fc3",
+      "sha256": "05b7ffea9610c49ff0c5e2b27e771fbc312fc772e0ee049aa4161e1014a2593e",
+      "approvedRelations": [
+        "user_resource_wallets",
+        "seat_transactions"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F10",
+      "name": "request_data_export",
+      "identityArguments": "p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean",
+      "md5": "9199018230b9e447414fe18d89cda98a",
+      "sha256": "856e6043496dc68f1cf15a79557a4b9d23fc4a213d2ab85d90ba3765a750c131",
+      "approvedRelations": [
+        "project_members",
+        "projects"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F11",
+      "name": "request_data_export",
+      "identityArguments": "project_id uuid, user_id uuid, export_options jsonb",
+      "md5": "84ccf96f336d775446fb11369a68c3c7",
+      "sha256": "c73c9da4c9217b83bf654a2faa52c11ca7de1c40298284ffdeb8b24506941b6a",
+      "approvedRelations": [
+        "project_roles",
+        "export_requests"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "F12",
+      "name": "send_project_invitation",
+      "identityArguments": "p_project_id uuid, p_invitee_id uuid, p_role text, p_invited_by uuid, p_invitation_message text",
+      "md5": "ab14eb2828efb74945e3de7cf4039472",
+      "sha256": "9f818ef44dc6f1b98a68371d6628f32dee0277893af502b1406c6326b429d971",
+      "approvedRelations": [
+        "project_roles"
+      ],
+      "review": "routine-audit/semantic-review.md"
+    },
+    {
+      "id": "T01",
+      "name": "update_updated_at_column",
+      "identityArguments": "",
+      "md5": "3bfa5e64985d89e65932564c89520d5b",
+      "sha256": "7df724556927ccb4789c4c22e0d78a874adfefce676fddd5c442b614a7aa52f0",
+      "approvedRelations": [],
+      "review": "pg17-routines/trigger-semantic-review.md"
+    }
+  ],
+  "scratch": "/tmp/saga-pg17-fVG0C4",
+  "redBypass": {
+    "expectedSqlstate": "42501",
+    "actualSqlstate": "00000",
+    "stateChanged": true,
+    "before": {
+      "auth.users": {
+        "rows": 4,
+        "sha256": "e3cea242d644c966f50906a75d14478f152874d141d0d3c660b26c9c212ee525"
+      },
+      "public.projects": {
+        "rows": 2,
+        "sha256": "271ee5d9205bd57ea3584edca5e5a37d375f3b71bafe5d6bf0130d50aba24059"
+      },
+      "public.project_roles": {
+        "rows": 1,
+        "sha256": "f9bdfe437ab26f50c8fdf2a5980af9b057d5a248dd17bd9bc3c413b34526a286"
+      },
+      "public.user_resource_wallets": {
+        "rows": 1,
+        "sha256": "c376fec9b3ab0c9e23f31b741df77c0a4c36ba76eda309ba084e8ab650c7efdc"
+      },
+      "public.seat_transactions": {
+        "rows": 1,
+        "sha256": "c091a4a19038df9d41a4cedf3604bacdf2aafe177b148584ba36fa066b5bb3ad"
+      },
+      "public.project_members": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "public.export_requests": {
+        "rows": 1,
+        "sha256": "9acef521fadced131788b4fa965ef6901e38349607cdfcfae1cf26f2041386af"
+      },
+      "public.notifications": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "public.invitations": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "invitation_candidate.trusted_seat_sources": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "invitation_candidate.bindings": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "invitation_candidate.requests": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    "after": {
+      "auth.users": {
+        "rows": 4,
+        "sha256": "e3cea242d644c966f50906a75d14478f152874d141d0d3c660b26c9c212ee525"
+      },
+      "public.projects": {
+        "rows": 2,
+        "sha256": "271ee5d9205bd57ea3584edca5e5a37d375f3b71bafe5d6bf0130d50aba24059"
+      },
+      "public.project_roles": {
+        "rows": 1,
+        "sha256": "f9bdfe437ab26f50c8fdf2a5980af9b057d5a248dd17bd9bc3c413b34526a286"
+      },
+      "public.user_resource_wallets": {
+        "rows": 1,
+        "sha256": "3c80662f332b9fc34c781b3d04786e405b4c64065f8736f22f1efc039f4f0b19"
+      },
+      "public.seat_transactions": {
+        "rows": 1,
+        "sha256": "c091a4a19038df9d41a4cedf3604bacdf2aafe177b148584ba36fa066b5bb3ad"
+      },
+      "public.project_members": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "public.export_requests": {
+        "rows": 1,
+        "sha256": "9acef521fadced131788b4fa965ef6901e38349607cdfcfae1cf26f2041386af"
+      },
+      "public.notifications": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "public.invitations": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "invitation_candidate.trusted_seat_sources": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "invitation_candidate.bindings": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "invitation_candidate.requests": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    }
+  },
+  "stateChecks": [
+    {
+      "label": "missing interface zero writes",
+      "before": {
+        "auth.users": {
+          "rows": 4,
+          "sha256": "e3cea242d644c966f50906a75d14478f152874d141d0d3c660b26c9c212ee525"
+        },
+        "public.projects": {
+          "rows": 2,
+          "sha256": "271ee5d9205bd57ea3584edca5e5a37d375f3b71bafe5d6bf0130d50aba24059"
+        },
+        "public.project_roles": {
+          "rows": 1,
+          "sha256": "f9bdfe437ab26f50c8fdf2a5980af9b057d5a248dd17bd9bc3c413b34526a286"
+        },
+        "public.user_resource_wallets": {
+          "rows": 1,
+          "sha256": "3c80662f332b9fc34c781b3d04786e405b4c64065f8736f22f1efc039f4f0b19"
+        },
+        "public.seat_transactions": {
+          "rows": 1,
+          "sha256": "c091a4a19038df9d41a4cedf3604bacdf2aafe177b148584ba36fa066b5bb3ad"
+        },
+        "public.project_members": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "public.export_requests": {
+          "rows": 1,
+          "sha256": "9acef521fadced131788b4fa965ef6901e38349607cdfcfae1cf26f2041386af"
+        },
+        "public.notifications": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "public.invitations": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "invitation_candidate.trusted_seat_sources": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "invitation_candidate.bindings": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "invitation_candidate.requests": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "after": {
+        "auth.users": {
+          "rows": 4,
+          "sha256": "e3cea242d644c966f50906a75d14478f152874d141d0d3c660b26c9c212ee525"
+        },
+        "public.projects": {
+          "rows": 2,
+          "sha256": "271ee5d9205bd57ea3584edca5e5a37d375f3b71bafe5d6bf0130d50aba24059"
+        },
+        "public.project_roles": {
+          "rows": 1,
+          "sha256": "f9bdfe437ab26f50c8fdf2a5980af9b057d5a248dd17bd9bc3c413b34526a286"
+        },
+        "public.user_resource_wallets": {
+          "rows": 1,
+          "sha256": "3c80662f332b9fc34c781b3d04786e405b4c64065f8736f22f1efc039f4f0b19"
+        },
+        "public.seat_transactions": {
+          "rows": 1,
+          "sha256": "c091a4a19038df9d41a4cedf3604bacdf2aafe177b148584ba36fa066b5bb3ad"
+        },
+        "public.project_members": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "public.export_requests": {
+          "rows": 1,
+          "sha256": "9acef521fadced131788b4fa965ef6901e38349607cdfcfae1cf26f2041386af"
+        },
+        "public.notifications": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "public.invitations": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "invitation_candidate.trusted_seat_sources": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "invitation_candidate.bindings": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "invitation_candidate.requests": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "unchanged": true
+    }
+  ],
+  "red": {
+    "expectedSqlstate": "00000",
+    "actualSqlstate": "42883"
+  },
+  "error": {
+    "code": "ASSERT_FAILED",
+    "label": "event interface grant contract exists"
+  },
+  "dependencyClosure": {
+    "nodeVersions": {
+      "node": "22.22.2",
+      "acorn": "8.15.0",
+      "ada": "2.9.2",
+      "amaro": "1.1.5",
+      "ares": "1.34.6",
+      "brotli": "1.2.0",
+      "cjs_module_lexer": "2.2.0",
+      "cldr": "48.0",
+      "icu": "78.3",
+      "llhttp": "9.3.0",
+      "modules": "127",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.68.1",
+      "openssl": "3.6.2",
+      "simdjson": "4.4.2",
+      "simdutf": "8.2.0",
+      "sqlite": "3.51.3",
+      "tz": "2026a",
+      "undici": "6.24.1",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "12.4.254.21-node.39",
+      "zlib": "1.2.11",
+      "zstd": "1.5.7"
+    },
+    "builtinModules": "provided by pinned Node executable",
+    "commonJS": {
+      "experiments/t05-durable-worker/node_modules/pg-connection-string/index.js": "d8c0ca43dc70daf05a9ff5469c92fd0a3cbcd11cacf68156ebb19ee32d127cfd",
+      "experiments/t05-durable-worker/node_modules/pg-connection-string/package.json": "53d453c5a426e69a11ff479e0d8a293505faa1833e6eb3ff7ceefdaac569e3ea",
+      "experiments/t05-durable-worker/node_modules/pg-int8/index.js": "f991b0a41119bce0efbb471275dbd02de31a79fe6f87f8f5e5678e373a0f1627",
+      "experiments/t05-durable-worker/node_modules/pg-int8/package.json": "147155887a41bb6f69ff98b3dde827b7e6a8214c3a71938da4babf8e12adff2e",
+      "experiments/t05-durable-worker/node_modules/pg-pool/index.js": "6f304776edaabde2954cbf8c4366fa6d9512bfba0e408e78cc56b3c46c69d058",
+      "experiments/t05-durable-worker/node_modules/pg-pool/package.json": "0a9924def9e06f791b09a44eaefb227f323a39199887f6ce17b44cb5a9193134",
+      "experiments/t05-durable-worker/node_modules/pg-protocol/dist/buffer-reader.js": "fdae5fd80c1ad1015f91a92da667467752eabdf531f19558897e205559e6b714",
+      "experiments/t05-durable-worker/node_modules/pg-protocol/dist/buffer-writer.js": "78428fc0607cd87c28009159e87ca3704faf7bda000ea44d2ec46a97805cec9d",
+      "experiments/t05-durable-worker/node_modules/pg-protocol/dist/index.js": "e7a99ac02633393d8c3ef16cd6385b8246100d28c838b02420844068429a46c9",
+      "experiments/t05-durable-worker/node_modules/pg-protocol/dist/messages.js": "dfd22ad639f3030b41617ff0ee201ece7cdbce4adb7e1aae7978541b1384cd31",
+      "experiments/t05-durable-worker/node_modules/pg-protocol/dist/parser.js": "6f841aabda7240df44e1b08bbe8e202502ead969576c1ecc17311af48f57f2ef",
+      "experiments/t05-durable-worker/node_modules/pg-protocol/dist/serializer.js": "0c81a499cd210334e14bc65ee514b2ecf842588e27533f5e9a461f914d0b9623",
+      "experiments/t05-durable-worker/node_modules/pg-protocol/package.json": "a4a4e23027b26c72be7729d045d0100ad9329959db0449c535fa7b2ba2e717c6",
+      "experiments/t05-durable-worker/node_modules/pg-types/index.js": "ece6d549270ba55d08126b10c9997324d808ee828ef00dad236e84e54d9d556d",
+      "experiments/t05-durable-worker/node_modules/pg-types/lib/arrayParser.js": "cad20b20e6312125b45f74480eba3ef46b456997da4f53bbec56356d66edd730",
+      "experiments/t05-durable-worker/node_modules/pg-types/lib/binaryParsers.js": "4b0105414068ea96450ef0d420db9449c00c565c5894683955af15bf94075fb9",
+      "experiments/t05-durable-worker/node_modules/pg-types/lib/builtins.js": "09213197e4b44012e4c83669aa80884a189e90c777ddfef1f44c90c412167354",
+      "experiments/t05-durable-worker/node_modules/pg-types/lib/textParsers.js": "bd811a530000508b6b90c1db462078e122f0404769d73f57ad41fe90aca159bd",
+      "experiments/t05-durable-worker/node_modules/pg-types/package.json": "3ec0293cb38cc8d9475e3eb32ac5f19d195bf9fccc8b19a0714e6ecd6e7c2cf0",
+      "experiments/t05-durable-worker/node_modules/pg/lib/client.js": "7e6ba79fe6bc1db15ec66ce67cd0f96b6b27c300ccec45911dc15f5121f709f4",
+      "experiments/t05-durable-worker/node_modules/pg/lib/connection-parameters.js": "db77bac013bfb5faae661d3056f3fbc49f5bae60334f60b149de0c271a9d9725",
+      "experiments/t05-durable-worker/node_modules/pg/lib/connection.js": "2069c662af9de8a708105f304a0e674a9766478da8250b416f5f3ee9ae0f4d99",
+      "experiments/t05-durable-worker/node_modules/pg/lib/crypto/cert-signatures.js": "206ec95c51012b73fe15d549b24db2acab969271e971940a0b79cfdcf830755b",
+      "experiments/t05-durable-worker/node_modules/pg/lib/crypto/sasl.js": "37206f4af85a0bf9973089c06ce54456938c3c74c9d4e65507053b8afd468889",
+      "experiments/t05-durable-worker/node_modules/pg/lib/crypto/utils-webcrypto.js": "a849cfe22d7590d79ddee76c8d7a058e2b67360a0d76683275d34133e5637117",
+      "experiments/t05-durable-worker/node_modules/pg/lib/crypto/utils.js": "a7d537da58f9ebc65dee84789ed5fa4175c6961c5be4a4dbb62b67d99c9c1213",
+      "experiments/t05-durable-worker/node_modules/pg/lib/defaults.js": "8bb1781954cb7695e1e1bf7200aa29327ad0e135c877d1a82878858b123ced31",
+      "experiments/t05-durable-worker/node_modules/pg/lib/index.js": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+      "experiments/t05-durable-worker/node_modules/pg/lib/query.js": "dea8044d70531cd16e514ecddbe44cdd65b4315a02287958d5ecfd0ebcd70ded",
+      "experiments/t05-durable-worker/node_modules/pg/lib/result.js": "2e9dfbbb89c84cfdb1977a1503f2ddd265ed2f943f8dc3957dc0db193ee81488",
+      "experiments/t05-durable-worker/node_modules/pg/lib/stream.js": "0bd4001775301604ddf7c94152e05f6f30a9354876717bdae2ab636d00eb12ba",
+      "experiments/t05-durable-worker/node_modules/pg/lib/type-overrides.js": "47cb7f7bc6a6e1b1d4dc7c92bacacb436f12e99242b77da8391fd5b71991d2a5",
+      "experiments/t05-durable-worker/node_modules/pg/lib/utils.js": "a109ef3b3a7572e8523b937ae0c100be72d4f36d1d3d4c7032e1ef0abaf92e38",
+      "experiments/t05-durable-worker/node_modules/pg/package.json": "f7b678a8055c234669e8dd272dd624771e29d9f0e3a3353f15c3005ab1a5fd29",
+      "experiments/t05-durable-worker/node_modules/postgres-array/index.js": "807ba580ed423e518672c27b4022a56acb693be04349733ffc1fe6f324fbcee2",
+      "experiments/t05-durable-worker/node_modules/postgres-array/package.json": "dcd6a505fcbc032b409ee2838ab2c776dea3a9cfe02b736364b6cb82a946665f",
+      "experiments/t05-durable-worker/node_modules/postgres-bytea/index.js": "c078b99e1009c4bcf6e3ab59d9fe808b12caee3461204ae599cdd9cccd990801",
+      "experiments/t05-durable-worker/node_modules/postgres-bytea/package.json": "9125568c5fb51a65b8f11adb0080c2775b99ee82822d73bff8b56b2a9d47d7aa",
+      "experiments/t05-durable-worker/node_modules/postgres-date/index.js": "9a09e3ec0775237576b1f6ff0fba0ed6171235aeded635a42c174b517e34cb1a",
+      "experiments/t05-durable-worker/node_modules/postgres-date/package.json": "03f9edefa96697072075e02df045cc61ed4ca2f8dfffb1ff87f4070bc3404151",
+      "experiments/t05-durable-worker/node_modules/postgres-interval/index.js": "836fe0a39e52f051d62583d8375d3b270b4cb93dd026b125438a89e5a0258c41",
+      "experiments/t05-durable-worker/node_modules/postgres-interval/package.json": "cc3056db105e66c9128cb8a387cda782d5f1ae9281be90de0b8d26a90af89c57",
+      "experiments/t05-durable-worker/node_modules/xtend/mutable.js": "71a38649c77408217483f81f55daee1d6646d6c670e3d034a4482cb3453886e9",
+      "experiments/t05-durable-worker/node_modules/xtend/package.json": "b02ffef8cda96c5c3ee00a00390e63f608362c2ddfb3ed754e181d013a45d48a"
+    }
+  },
+  "sourcesUnchangedAtFinish": true,
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-20T01:26:01.012Z"
+}

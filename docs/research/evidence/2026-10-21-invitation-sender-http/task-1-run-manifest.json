@@ -1,0 +1,479 @@
+{
+  "scope": "All data in fixtures was synthetic. Original output is retained byte-for-byte in the ignored batch recovery directory; public log copies redact email/token/Bearer fixture values. Runtime tests assert production logs contain no provider data. Green final outputs require no redaction.",
+  "runs": [
+    {
+      "run": 1,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-legacy",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "1 failed, 1 total",
+        "Tests": "7 failed, 7 total",
+        "Snapshots": "0 total",
+        "Time": "1.034 s"
+      },
+      "note": "Genuine pre-implementation legacy denial RED: existing routes performed cookie/admin boundary work.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/01-legacy-red.log",
+      "raw_sha256": "2fdd37f35030e14e5fb3a82fc53583cdee12a9a855f5dca47d59c6cb4be7ab5e",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/01-legacy-red.log",
+      "public_sha256": "2fdd37f35030e14e5fb3a82fc53583cdee12a9a855f5dca47d59c6cb4be7ab5e",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 2,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-protocol invitation-sender.test",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "2 failed, 2 total",
+        "Tests": "0 total",
+        "Snapshots": "0 total",
+        "Time": "2.053 s"
+      },
+      "note": "Scaffolding failure only: new modules did not exist; not counted as behavioral RED.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/02-contract-scaffolding-red.log",
+      "raw_sha256": "3fab68b6d3be6e2521a39d0e6810c3ec37e1715ef9025420f209fc13655c2062",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/02-contract-scaffolding-red.log",
+      "public_sha256": "7d042fbb09aa8d918e0cb8aa28c91c8fee3acc8275c68de492c5d1f548446fad",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 1
+      }
+    },
+    {
+      "run": 3,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-legacy invitation-sender-protocol invitation-sender.test --testNamePattern='disabled|permanently|normalizes|confirms|directly|one exact|sender lookup|HTTP parsers|failure parser'",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "2 failed, 1 passed, 3 total",
+        "Tests": "10 failed, 58 skipped, 7 passed, 75 total",
+        "Snapshots": "0 total",
+        "Time": "2.038 s"
+      },
+      "note": "Minimal denial scaffold: legacy safety GREEN; protocol/success transport behavioral RED.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/03-contract-behavior-red.log",
+      "raw_sha256": "147735b78c275343d33c90616183cb5a3e5469c4b31252770a069fa7524daaa3",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/03-contract-behavior-red.log",
+      "public_sha256": "7e35af58f64f75d1f9c88e6fe09798bfb4ab7b72b753e520aeff42831ea3ce7d",
+      "redactions": {
+        "synthetic_invitation_token": 4,
+        "synthetic_bearer": 0,
+        "synthetic_email": 3
+      }
+    },
+    {
+      "run": 4,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 0,
+      "summary": {
+        "Test Suites": "3 passed, 3 total",
+        "Tests": "75 passed, 75 total",
+        "Snapshots": "0 total",
+        "Time": "13.765 s"
+      },
+      "note": "Targeted GREEN.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/04-server-protocol-green-attempt.log",
+      "raw_sha256": "65d65585399c5fbe2a5ae34e6121f381fd5f0cd7458b354043e58d34396a6615",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/04-server-protocol-green-attempt.log",
+      "public_sha256": "65d65585399c5fbe2a5ae34e6121f381fd5f0cd7458b354043e58d34396a6615",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 5,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-client invitation-sender-ui",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "2 failed, 2 total",
+        "Tests": "11 failed, 11 total",
+        "Snapshots": "0 total",
+        "Time": "9.02 s"
+      },
+      "note": "Genuine old facade/page behavior RED, plus unavailable release API and one component selector error.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/05-client-ui-red.log",
+      "raw_sha256": "fee4eaf7ed49337e0bbc63850d43f6576dd795e58c0ff0d4352df3804275dab3",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/05-client-ui-red.log",
+      "public_sha256": "613dae80068f394d95b2d419763ebf02269bf4527a55517fde87e0f72fe16578",
+      "redactions": {
+        "synthetic_invitation_token": 1,
+        "synthetic_bearer": 0,
+        "synthetic_email": 6
+      }
+    },
+    {
+      "run": 6,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-ui --testNamePattern='component incomplete'",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "1 failed, 1 total",
+        "Tests": "1 failed, 6 skipped, 7 total",
+        "Snapshots": "0 total",
+        "Time": "2.46 s, estimated 8 s"
+      },
+      "note": "Corrected test selector: component old send accepts arbitrary 2xx and reports success (behavioral RED).",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/06-component-send-red.log",
+      "raw_sha256": "14b453791b3c678396d0e84335f90d23994cdec20e77b9ca928858ca2e49747d",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/06-component-send-red.log",
+      "public_sha256": "3fa4bed0b595842a707d47f22da4dc0c54b4de081e5e5f215b956e55b192be0a",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 1
+      }
+    },
+    {
+      "run": 7,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-client --testNamePattern='helper|failure responses|lost write|invalid local'",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "1 failed, 1 total",
+        "Tests": "7 failed, 5 skipped, 12 total",
+        "Snapshots": "0 total",
+        "Time": "0.612 s, estimated 1 s"
+      },
+      "note": "Minimal client scaffold behavioral RED for strict parsing and failure semantics.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/07-helper-red.log",
+      "raw_sha256": "e32993111131213f89f107153299cc2cda65671ef0f13cae958adb7b820baf6e",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/07-helper-red.log",
+      "public_sha256": "e32993111131213f89f107153299cc2cda65671ef0f13cae958adb7b820baf6e",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 8,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-client invitation-sender-ui",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "1 failed, 1 passed, 2 total",
+        "Tests": "2 failed, 17 passed, 19 total",
+        "Snapshots": "0 total",
+        "Time": "2.963 s, estimated 3 s"
+      },
+      "note": "Two fixture defects: reuse of an already consumed Response; production client correctly returned unknown.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/08-client-ui-green-attempt.log",
+      "raw_sha256": "29864f8c949b991ef1d36f7bf89d63419d193094734b44586311607212dedeca",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/08-client-ui-green-attempt.log",
+      "public_sha256": "29864f8c949b991ef1d36f7bf89d63419d193094734b44586311607212dedeca",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 9,
+      "command": "npm run type-check --workspace=packages/web",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 0,
+      "summary": {},
+      "note": "Intermediate source typecheck passed.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/09-web-typecheck-attempt.log",
+      "raw_sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/09-web-typecheck-attempt.log",
+      "public_sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 10,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-client invitation-sender-ui",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 0,
+      "summary": {
+        "Test Suites": "2 passed, 2 total",
+        "Tests": "19 passed, 19 total",
+        "Snapshots": "0 total",
+        "Time": "2.955 s"
+      },
+      "note": "Targeted GREEN.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/10-client-ui-green.log",
+      "raw_sha256": "7df179298a0faca1f74cc99d95851097317939b215252721e2e1c54354394ffa",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/10-client-ui-green.log",
+      "public_sha256": "7df179298a0faca1f74cc99d95851097317939b215252721e2e1c54354394ffa",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 11,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender-protocol",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "1 failed, 1 total",
+        "Tests": "1 failed, 37 passed, 38 total",
+        "Snapshots": "0 total",
+        "Time": "1.017 s"
+      },
+      "note": "Unicode email regression: lowercasing Kelvin sign before ASCII validation admitted non-ASCII input.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/11-unicode-email-red.log",
+      "raw_sha256": "6c309d1f0c8dd2741c297fa2483dbf9736b50a5874c857b81596d2661c6cfbe2",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/11-unicode-email-red.log",
+      "public_sha256": "92a3a3cb04e33037274aba675758effb2f94d30b1b51c4bd38dc76d8ff379f45",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 3
+      }
+    },
+    {
+      "run": 12,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender invitation-acceptance invitation-read-routes invitation-recipient auth-return auth-callback auth-session auth-token-refresh cleanup-invitations",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 0,
+      "summary": {
+        "Test Suites": "17 passed, 17 total",
+        "Tests": "521 passed, 521 total",
+        "Snapshots": "0 total",
+        "Time": "48.952 s"
+      },
+      "note": "Intermediate targeted 521-test GREEN after email fix.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/12-targeted-regressions-green-attempt.log",
+      "raw_sha256": "6d70f8e9f23da87f1738a84dc2ffbf3280093651596cd64b3ffafce676d686a9",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/12-targeted-regressions-green-attempt.log",
+      "public_sha256": "6d70f8e9f23da87f1738a84dc2ffbf3280093651596cd64b3ffafce676d686a9",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 13,
+      "command": [
+        "../../node_modules/.bin/eslint",
+        "src/lib/invitation-sender-protocol.ts",
+        "src/lib/invitation-sender-client.ts",
+        "src/lib/invitation-sender-deadline.ts",
+        "src/lib/server/invitation-sender.ts",
+        "src/lib/__tests__/invitation-sender-protocol.test.ts",
+        "src/lib/__tests__/invitation-sender-client.test.ts",
+        "src/lib/server/__tests__/invitation-sender.test.ts",
+        "src/lib/server/__tests__/invitation-sender-legacy.test.ts",
+        "src/lib/server/test-support/invitation-sender-fixture.ts",
+        "src/components/invitations/__tests__/invitation-sender-ui.test.tsx",
+        "src/app/api/projects/[id]/invitations/route.ts",
+        "src/app/api/invitations/release/route.ts",
+        "src/app/api/invitations/lookup/route.ts",
+        "src/app/api/admin/cleanup-invitations/route.ts",
+        "src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+        "src/components/invitations/invitation-manager.tsx",
+        "src/lib/api-supabase.ts",
+        "src/lib/api.ts"
+      ],
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web",
+      "exit_code": 0,
+      "summary": {},
+      "note": "Targeted GREEN.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/13-scoped-lint-attempt.log",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/13-scoped-lint-attempt.log",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 14,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender.test --testNamePattern='provider identity'",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 1,
+      "summary": {
+        "Test Suites": "1 failed, 1 total",
+        "Tests": "3 failed, 28 skipped, 31 total",
+        "Snapshots": "0 total",
+        "Time": "1.103 s, estimated 11 s"
+      },
+      "note": "Sender provider UUID regression: uppercase UUID admitted before canonical check.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/14-provider-uuid-red.log",
+      "raw_sha256": "6ac3e9bf4fa9384b28b2a7e0a8d81be130aca01e50cb52113739c52d3098f7d5",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/14-provider-uuid-red.log",
+      "public_sha256": "6ac3e9bf4fa9384b28b2a7e0a8d81be130aca01e50cb52113739c52d3098f7d5",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 15,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender invitation-acceptance invitation-read-routes invitation-recipient auth-return auth-callback auth-session auth-token-refresh cleanup-invitations",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 0,
+      "summary": {
+        "Test Suites": "17 passed, 17 total",
+        "Tests": "521 passed, 521 total",
+        "Snapshots": "0 total",
+        "Time": "48.136 s"
+      },
+      "note": "Targeted 521-test GREEN before route parameter type correction.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/15-final-targeted-green.log",
+      "raw_sha256": "cf586ae49ad9a068073760a6d0e0eabed1ae5a5beeaab0082a7640893b17823d",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/15-final-targeted-green.log",
+      "public_sha256": "cf586ae49ad9a068073760a6d0e0eabed1ae5a5beeaab0082a7640893b17823d",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 16,
+      "command": "npm run type-check --workspace=packages/web",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 2,
+      "summary": {},
+      "note": "Next route type constraint rejected optional Request; corrected to required Request without behavior change.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/16-final-web-typecheck.log",
+      "raw_sha256": "a63fa05ab84874d6d975ca392c94f3bf5670ea6133bc564dddc7b7918446d39b",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/16-final-web-typecheck.log",
+      "public_sha256": "a63fa05ab84874d6d975ca392c94f3bf5670ea6133bc564dddc7b7918446d39b",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 17,
+      "command": [
+        "../../node_modules/.bin/eslint",
+        "src/lib/invitation-sender-protocol.ts",
+        "src/lib/invitation-sender-client.ts",
+        "src/lib/invitation-sender-deadline.ts",
+        "src/lib/server/invitation-sender.ts",
+        "src/lib/__tests__/invitation-sender-protocol.test.ts",
+        "src/lib/__tests__/invitation-sender-client.test.ts",
+        "src/lib/server/__tests__/invitation-sender.test.ts",
+        "src/lib/server/__tests__/invitation-sender-legacy.test.ts",
+        "src/lib/server/test-support/invitation-sender-fixture.ts",
+        "src/components/invitations/__tests__/invitation-sender-ui.test.tsx",
+        "src/app/api/projects/[id]/invitations/route.ts",
+        "src/app/api/invitations/release/route.ts",
+        "src/app/api/invitations/lookup/route.ts",
+        "src/app/api/admin/cleanup-invitations/route.ts",
+        "src/app/api/admin/cleanup-invitations/__tests__/route.test.ts",
+        "src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+        "src/components/invitations/invitation-manager.tsx",
+        "src/lib/api-supabase.ts",
+        "src/lib/api.ts",
+        "src/lib/invitation-acceptance-protocol.ts"
+      ],
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web",
+      "exit_code": 0,
+      "summary": {},
+      "note": "Intermediate scoped lint passed.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/17-final-scoped-lint.log",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/17-final-scoped-lint.log",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 18,
+      "command": "npm run type-check --workspace=packages/web",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 0,
+      "summary": {},
+      "note": "Frozen-source typecheck GREEN.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/18-web-typecheck-green.log",
+      "raw_sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/18-web-typecheck-green.log",
+      "public_sha256": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 19,
+      "command": "npm test --workspace=packages/web -- --runInBand invitation-sender invitation-acceptance invitation-read-routes invitation-recipient auth-return auth-callback auth-session auth-token-refresh cleanup-invitations",
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+      "exit_code": 0,
+      "summary": {
+        "Test Suites": "17 passed, 17 total",
+        "Tests": "521 passed, 521 total",
+        "Snapshots": "0 total",
+        "Time": "48.193 s"
+      },
+      "note": "Frozen-source final targeted 521-test GREEN.",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/19-frozen-targeted-green.log",
+      "raw_sha256": "fd45011c745584494d560bbc8ab91e3308e3d28921d55ce92a9cf8fe9fd706e8",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/19-frozen-targeted-green.log",
+      "public_sha256": "fd45011c745584494d560bbc8ab91e3308e3d28921d55ce92a9cf8fe9fd706e8",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    },
+    {
+      "run": 20,
+      "command": [
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/node_modules/.bin/eslint",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/api.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/api-supabase.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/invitation-acceptance-protocol.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/app/api/projects/[id]/invitations/route.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/app/api/admin/cleanup-invitations/route.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/app/api/admin/cleanup-invitations/__tests__/route.test.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/app/[locale]/dashboard/projects/[id]/invitations/page.tsx",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/components/invitations/invitation-manager.tsx",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/invitation-sender-protocol.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/invitation-sender-client.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/invitation-sender-deadline.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/server/invitation-sender.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/server/test-support/invitation-sender-fixture.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/server/__tests__/invitation-sender-legacy.test.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/server/__tests__/invitation-sender.test.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/__tests__/invitation-sender-protocol.test.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/lib/__tests__/invitation-sender-client.test.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/components/invitations/__tests__/invitation-sender-ui.test.tsx",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/app/api/invitations/release/route.ts",
+        "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web/src/app/api/invitations/lookup/route.ts"
+      ],
+      "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web",
+      "exit_code": 0,
+      "summary": {},
+      "note": "Frozen-source final ESLint GREEN (20 scoped source/test files).",
+      "raw_path": ".superpowers/sdd/2026-10-21-upgrade-invitation-sender-http/raw-logs/20-frozen-scoped-lint.log",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_path": "docs/research/evidence/2026-10-21-invitation-sender-http/20-frozen-scoped-lint.log",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "redactions": {
+        "synthetic_invitation_token": 0,
+        "synthetic_bearer": 0,
+        "synthetic_email": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,967 @@
+[
+  {
+    "path": "node_modules/@emnapi/runtime",
+    "before": "1.10.0",
+    "after": "1.11.3"
+  },
+  {
+    "path": "node_modules/@fastify/otel",
+    "before": "0.18.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@fastify/otel/node_modules/@opentelemetry/api-logs",
+    "before": "0.212.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@fastify/otel/node_modules/@opentelemetry/instrumentation",
+    "before": "0.212.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@fastify/otel/node_modules/balanced-match",
+    "before": "4.0.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/@fastify/otel/node_modules/brace-expansion",
+    "before": "5.0.12",
+    "after": null
+  },
+  {
+    "path": "node_modules/@fastify/otel/node_modules/import-in-the-middle",
+    "before": "2.0.6",
+    "after": null
+  },
+  {
+    "path": "node_modules/@fastify/otel/node_modules/minimatch",
+    "before": "10.2.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/@img/sharp-darwin-arm64",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-darwin-x64",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-freebsd-wasm32",
+    "before": null,
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-freebsd-wasm32/node_modules/@img/sharp-wasm32",
+    "before": null,
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-darwin-arm64",
+    "before": "1.0.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-darwin-x64",
+    "before": "1.0.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-linux-arm",
+    "before": "1.0.5",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-linux-arm64",
+    "before": "1.0.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-linux-ppc64",
+    "before": "1.2.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-linux-riscv64",
+    "before": "1.2.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-linux-s390x",
+    "before": "1.0.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-linux-x64",
+    "before": "1.0.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-linuxmusl-arm64",
+    "before": "1.0.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-linuxmusl-x64",
+    "before": "1.0.4",
+    "after": "1.3.4"
+  },
+  {
+    "path": "node_modules/@img/sharp-linux-arm",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-linux-arm64",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-linux-ppc64",
+    "before": "0.34.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-linux-riscv64",
+    "before": "0.34.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-linux-s390x",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-linux-x64",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-linuxmusl-arm64",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-linuxmusl-x64",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-wasm32",
+    "before": "0.33.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/@img/sharp-webcontainers-wasm32",
+    "before": null,
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-webcontainers-wasm32/node_modules/@img/sharp-wasm32",
+    "before": null,
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-win32-arm64",
+    "before": "0.34.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-win32-ia32",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@img/sharp-win32-x64",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/@next/env",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/eslint-plugin-next",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/swc-darwin-arm64",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/swc-darwin-x64",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/swc-linux-arm64-gnu",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/swc-linux-arm64-musl",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/swc-linux-x64-gnu",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/swc-linux-x64-musl",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/swc-win32-arm64-msvc",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@next/swc-win32-x64-msvc",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/@opentelemetry/api-logs",
+    "before": "0.214.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/core",
+    "before": "2.8.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation",
+    "before": "0.214.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-amqplib",
+    "before": "0.61.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-connect",
+    "before": "0.57.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-dataloader",
+    "before": "0.31.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-fs",
+    "before": "0.33.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-generic-pool",
+    "before": "0.57.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-graphql",
+    "before": "0.62.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-hapi",
+    "before": "0.60.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-http",
+    "before": "0.214.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-http/node_modules/@opentelemetry/core",
+    "before": "2.6.1",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-ioredis",
+    "before": "0.62.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-kafkajs",
+    "before": "0.23.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-knex",
+    "before": "0.58.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-koa",
+    "before": "0.62.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-lru-memoizer",
+    "before": "0.58.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-mongodb",
+    "before": "0.67.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-mongoose",
+    "before": "0.60.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-mysql",
+    "before": "0.60.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-mysql2",
+    "before": "0.60.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-pg",
+    "before": "0.66.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-redis",
+    "before": "0.62.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/instrumentation-tedious",
+    "before": "0.33.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/redis-common",
+    "before": "0.38.3",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/resources",
+    "before": "2.8.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/sdk-trace",
+    "before": null,
+    "after": "2.12.0"
+  },
+  {
+    "path": "node_modules/@opentelemetry/sdk-trace-base",
+    "before": "2.8.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@opentelemetry/sdk-trace/node_modules/@opentelemetry/core",
+    "before": null,
+    "after": "2.12.0"
+  },
+  {
+    "path": "node_modules/@opentelemetry/sdk-trace/node_modules/@opentelemetry/resources",
+    "before": null,
+    "after": "2.12.0"
+  },
+  {
+    "path": "node_modules/@opentelemetry/sql-common",
+    "before": "0.41.2",
+    "after": null
+  },
+  {
+    "path": "node_modules/@prisma/instrumentation",
+    "before": "7.6.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@prisma/instrumentation/node_modules/@opentelemetry/api-logs",
+    "before": "0.207.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation",
+    "before": "0.207.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@prisma/instrumentation/node_modules/import-in-the-middle",
+    "before": "2.0.6",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry-internal/browser-utils",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry-internal/feedback",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry-internal/replay",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry-internal/replay-canvas",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/babel-plugin-component-annotate",
+    "before": "5.2.1",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/browser",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/browser-utils",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/browser-utils/node_modules/@sentry/core",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugin-core",
+    "before": "5.2.1",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugin-core/node_modules/balanced-match",
+    "before": "4.0.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugin-core/node_modules/brace-expansion",
+    "before": "5.0.12",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugin-core/node_modules/glob",
+    "before": "13.0.6",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugin-core/node_modules/lru-cache",
+    "before": "11.3.6",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugin-core/node_modules/minimatch",
+    "before": "10.2.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugin-core/node_modules/path-scurry",
+    "before": "2.0.2",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins/node_modules/@sentry/core",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins/node_modules/balanced-match",
+    "before": null,
+    "after": "4.0.4"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins/node_modules/brace-expansion",
+    "before": null,
+    "after": "5.0.12"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins/node_modules/dotenv",
+    "before": null,
+    "after": "17.4.2"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins/node_modules/glob",
+    "before": null,
+    "after": "13.0.6"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins/node_modules/lru-cache",
+    "before": null,
+    "after": "11.5.3"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins/node_modules/minimatch",
+    "before": null,
+    "after": "10.2.6"
+  },
+  {
+    "path": "node_modules/@sentry/bundler-plugins/node_modules/path-scurry",
+    "before": null,
+    "after": "2.0.2"
+  },
+  {
+    "path": "node_modules/@sentry/cli",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/cli-darwin",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/cli-linux-arm",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/cli-linux-arm64",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/cli-linux-i686",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/cli-linux-x64",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/cli-win32-arm64",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/cli-win32-i686",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/cli-win32-x64",
+    "before": "2.58.5",
+    "after": "2.58.6"
+  },
+  {
+    "path": "node_modules/@sentry/conventions",
+    "before": null,
+    "after": "0.16.0"
+  },
+  {
+    "path": "node_modules/@sentry/core",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/feedback",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/feedback/node_modules/@sentry/core",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/nextjs",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/node",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/node-core",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/opentelemetry",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/react",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/replay",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/replay-canvas",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/replay-canvas/node_modules/@sentry/core",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/replay/node_modules/@sentry/core",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/server-utils",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/server-utils/node_modules/@sentry/core",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "node_modules/@sentry/vercel-edge",
+    "before": "10.51.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/@sentry/webpack-plugin",
+    "before": "5.2.1",
+    "after": null
+  },
+  {
+    "path": "node_modules/@swc/helpers",
+    "before": "0.5.21",
+    "after": "0.5.23"
+  },
+  {
+    "path": "node_modules/@types/connect",
+    "before": "3.4.38",
+    "after": null
+  },
+  {
+    "path": "node_modules/@types/mysql",
+    "before": "2.15.27",
+    "after": null
+  },
+  {
+    "path": "node_modules/@types/pg",
+    "before": "8.15.6",
+    "after": null
+  },
+  {
+    "path": "node_modules/@types/pg-pool",
+    "before": "2.0.7",
+    "after": null
+  },
+  {
+    "path": "node_modules/@types/tedious",
+    "before": "4.0.14",
+    "after": null
+  },
+  {
+    "path": "node_modules/color",
+    "before": "4.2.3",
+    "after": null
+  },
+  {
+    "path": "node_modules/color-string",
+    "before": "1.9.1",
+    "after": null
+  },
+  {
+    "path": "node_modules/dotenv",
+    "before": "16.6.1",
+    "after": null
+  },
+  {
+    "path": "node_modules/forwarded-parse",
+    "before": "2.1.2",
+    "after": null
+  },
+  {
+    "path": "node_modules/handlebars",
+    "before": "4.7.9",
+    "after": "4.7.10"
+  },
+  {
+    "path": "node_modules/next",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-darwin-arm64",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-darwin-x64",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-libvips-darwin-arm64",
+    "before": "1.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-libvips-darwin-x64",
+    "before": "1.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-libvips-linux-arm",
+    "before": "1.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-libvips-linux-arm64",
+    "before": "1.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-libvips-linux-s390x",
+    "before": "1.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-libvips-linux-x64",
+    "before": "1.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-libvips-linuxmusl-arm64",
+    "before": "1.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-libvips-linuxmusl-x64",
+    "before": "1.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-linux-arm",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-linux-arm64",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-linux-s390x",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-linux-x64",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-linuxmusl-arm64",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-linuxmusl-x64",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-wasm32",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-win32-ia32",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@img/sharp-win32-x64",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/@swc/helpers",
+    "before": "0.5.15",
+    "after": null
+  },
+  {
+    "path": "node_modules/next/node_modules/postcss",
+    "before": "8.4.31",
+    "after": "8.5.23"
+  },
+  {
+    "path": "node_modules/next/node_modules/sharp",
+    "before": "0.34.5",
+    "after": null
+  },
+  {
+    "path": "node_modules/pg-int8",
+    "before": "1.0.1",
+    "after": null
+  },
+  {
+    "path": "node_modules/pg-protocol",
+    "before": "1.13.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/pg-types",
+    "before": "2.2.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/postgres-array",
+    "before": "2.0.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/postgres-bytea",
+    "before": "1.0.1",
+    "after": null
+  },
+  {
+    "path": "node_modules/postgres-date",
+    "before": "1.0.7",
+    "after": null
+  },
+  {
+    "path": "node_modules/postgres-interval",
+    "before": "1.2.0",
+    "after": null
+  },
+  {
+    "path": "node_modules/semver",
+    "before": "7.7.4",
+    "after": "7.8.5"
+  },
+  {
+    "path": "node_modules/sharp",
+    "before": "0.33.5",
+    "after": "0.35.5"
+  },
+  {
+    "path": "node_modules/simple-swizzle",
+    "before": "0.2.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/simple-swizzle/node_modules/is-arrayish",
+    "before": "0.3.4",
+    "after": null
+  },
+  {
+    "path": "node_modules/xtend",
+    "before": "4.0.2",
+    "after": null
+  },
+  {
+    "path": "packages/web/node_modules/@opentelemetry/api-logs",
+    "before": null,
+    "after": "0.220.0"
+  },
+  {
+    "path": "packages/web/node_modules/@opentelemetry/core",
+    "before": null,
+    "after": "2.12.0"
+  },
+  {
+    "path": "packages/web/node_modules/@opentelemetry/instrumentation",
+    "before": null,
+    "after": "0.220.0"
+  },
+  {
+    "path": "packages/web/node_modules/@opentelemetry/resources",
+    "before": null,
+    "after": "2.12.0"
+  },
+  {
+    "path": "packages/web/node_modules/@opentelemetry/sdk-trace-base",
+    "before": null,
+    "after": "2.12.0"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/browser",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/core",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/nextjs",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/node",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/node-core",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/opentelemetry",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/react",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/vercel-edge",
+    "before": null,
+    "after": "10.76.2"
+  },
+  {
+    "path": "packages/web/node_modules/@sentry/webpack-plugin",
+    "before": null,
+    "after": "5.4.1"
+  },
+  {
+    "path": "packages/web/node_modules/eslint-config-next",
+    "before": "16.2.6",
+    "after": "16.4.1"
+  },
+  {
+    "path": "packages/web/node_modules/postcss",
+    "before": null,
+    "after": "8.5.23"
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-18T06:43:36.642310+00:00",
+  "status": "passed_reused_previous_batch_execution",
+  "executedThisBatch": false,
+  "sourceEvidence": {
+    "path": "docs/research/evidence/2026-10-18-rpc-access-guards/project-checks.json",
+    "sha256": "a2c6a37876d89c89eabbdfd3cf1e0b001ff4f004e45c197ed374b734ee3144af"
+  },
+  "sourceStartedAt": "2026-10-18T04:24:38.969365+00:00",
+  "sourceFinishedAt": "2026-10-18T04:26:48.304226+00:00",
+  "commands": {
+    "verify": {
+      "command": "npm run verify",
+      "exitCode": 0,
+      "log": "docs/research/evidence/2026-10-18-rpc-access-guards/verify.log",
+      "sha256": "2f24655feb6d53711bd0fa59fcc4dc3d141afacc96e9ee4dabdc5170a2f0d2b9"
+    },
+    "shared": {
+      "command": "npm test --workspace=packages/shared -- --runInBand",
+      "exitCode": 0,
+      "log": "docs/research/evidence/2026-10-18-rpc-access-guards/shared.log",
+      "sha256": "2650663e10fe0e9edb4ee88adc6ce94beebca9a7a8f914d6049dc7355eba2d26"
+    },
+    "infra": {
+      "command": "npm run test:infra",
+      "exitCode": 0,
+      "log": "docs/research/evidence/2026-10-18-rpc-access-guards/infra.log",
+      "sha256": "d80a40996c8cab65bada72fe2f892a9fc598f9f9147aa4eb80a222a78b10c002"
+    }
+  },
+  "applicationInputsMatched": 707,
+  "applicationInputChanges": [],
+  "logChanges": [],
+  "nextEnvMatchesBatchStartBytes": true,
+  "webSuites": 77,
+  "webTests": 766,
+  "sharedSuites": 4,
+  "sharedTests": 16,
+  "infraTests": 7,
+  "pages": 175,
+  "dependencyAudit": "Dependencies unchanged; prior audit remains 42 findings (34 high, 8 moderate), not rerun.",
+  "limitations": "Hash-verified prior local application execution; no new app suite run or production configuration verification. Existing missing Supabase service/Next configuration warnings remain."
+}

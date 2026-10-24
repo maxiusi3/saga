@@ -1,0 +1,50 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/invitations/__tests__/invitation-recipient.test.tsx -t batched|same-account token refresh keeps
+
+FAIL src/components/invitations/__tests__/invitation-recipient.test.tsx
+  ● batched sign-out and same-account sign-in invalidate old acceptance without retry or navigation
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      293 |   })
+      294 |   expect(calls('accept').length).toBe(1)
+    > 295 |   expect(router.push.mock.calls.length).toBe(0)
+          |                                         ^
+      296 |   expect(calls('status').length).toBe(1)
+      297 |   expect(await screen.findByRole('button', { name: 'Query status' })).toBeEnabled()
+      298 |   expect(screen.queryByRole('button', { name: 'Enter project' })).not.toBeInTheDocument()
+
+      at Object.toBe (src/components/invitations/__tests__/invitation-recipient.test.tsx:295:41)
+
+  ● batched account departure and return invalidate a stale read before it can enable continuation
+
+    expect(element).not.toBeInTheDocument()
+
+    expected document not to contain element, found <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-11 px-6 py-3 text-sm w-full" data-slot="button">Enter project</button> instead
+
+      313 |     old.resolve(response(acceptedStatus))
+      314 |   })
+    > 315 |   expect(screen.queryByRole('button', { name: 'Enter project' })).not.toBeInTheDocument()
+          |                                                                       ^
+      316 |   expect(screen.queryByRole('button', { name: 'Accept invitation' })).not.toBeInTheDocument()
+      317 |   await waitFor(() => expect(calls('status').length).toBe(2))
+      318 |   await act(async () => current.resolve(response({ ...pendingHttp, status: 'declined' })))
+
+      at Object.toBeInTheDocument (src/components/invitations/__tests__/invitation-recipient.test.tsx:315:71)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 38 skipped, 1 passed, 41 total
+Snapshots:   0 total
+Time:        2.088 s
+Ran all test suites within paths "src/components/invitations/__tests__/invitation-recipient.test.tsx".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/components/invitations/__tests__/invitation-recipient.test.tsx -t 'batched|same-account token refresh keeps'

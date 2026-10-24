@@ -25,27 +25,27 @@ describe('/api/admin/cleanup-invitations', () => {
     process.env.ADMIN_CRON_SECRET = originalSecret
   })
 
-  it('rejects POST without x-cron-secret', async () => {
+  it('keeps POST unavailable without x-cron-secret', async () => {
     process.env.ADMIN_CRON_SECRET = 'secret-1'
     const request = new NextRequest('http://localhost/api/admin/cleanup-invitations', { method: 'POST' })
 
     const response = await POST(request)
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(503)
     expect(mockGetSupabaseAdmin).not.toHaveBeenCalled()
   })
 
-  it('rejects GET without x-cron-secret', async () => {
+  it('keeps GET unavailable without x-cron-secret', async () => {
     process.env.ADMIN_CRON_SECRET = 'secret-1'
     const request = new NextRequest('http://localhost/api/admin/cleanup-invitations', { method: 'GET' })
 
     const response = await GET(request)
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(503)
     expect(mockGetSupabaseAdmin).not.toHaveBeenCalled()
   })
 
-  it('rejects mismatched x-cron-secret before Supabase admin access', async () => {
+  it('keeps mismatched cron headers unavailable before Supabase admin access', async () => {
     process.env.ADMIN_CRON_SECRET = 'secret-1'
     const request = new NextRequest('http://localhost/api/admin/cleanup-invitations', {
       method: 'POST',
@@ -54,8 +54,8 @@ describe('/api/admin/cleanup-invitations', () => {
 
     const response = await POST(request)
 
-    expect(response.status).toBe(401)
-    await expect(response.json()).resolves.toEqual({ error: 'Unauthorized' })
+    expect(response.status).toBe(503)
+    await expect(response.json()).resolves.toMatchObject({ success: false, outcome: 'not_attempted' })
     expect(mockGetSupabaseAdmin).not.toHaveBeenCalled()
   })
 
@@ -69,7 +69,7 @@ describe('/api/admin/cleanup-invitations', () => {
     const response = await GET(request)
 
     expect(response.status).toBe(503)
-    await expect(response.json()).resolves.toEqual({ error: 'Admin cron secret is not configured' })
+    await expect(response.json()).resolves.toMatchObject({ success: false, outcome: 'not_attempted' })
     expect(mockGetSupabaseAdmin).not.toHaveBeenCalled()
   })
 })

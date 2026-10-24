@@ -1,0 +1,1041 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.pause
+        at pause (src/hooks/useAudioPlayer.ts:118:13) {
+      type: 'not implemented'
+    }
+
+      116 |
+      117 |       // Clean up audio element
+    > 118 |       audio.pause()
+          |             ^
+      119 |       audio.src = ''
+      120 |       audio.load()
+      121 |     }
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.pause (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:121:5)
+      at HTMLAudioElement.pause (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:160:34)
+      at pause (src/hooks/useAudioPlayer.ts:118:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.load
+        at load (src/hooks/useAudioPlayer.ts:120:13) {
+      type: 'not implemented'
+    }
+
+      118 |       audio.pause()
+      119 |       audio.src = ''
+    > 120 |       audio.load()
+          |             ^
+      121 |     }
+      122 |   }, [initialSrc])
+      123 |
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.load (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:112:5)
+      at HTMLAudioElement.load (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:109:34)
+      at load (src/hooks/useAudioPlayer.ts:120:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.pause
+        at pause (src/hooks/useAudioPlayer.ts:118:13) {
+      type: 'not implemented'
+    }
+
+      116 |
+      117 |       // Clean up audio element
+    > 118 |       audio.pause()
+          |             ^
+      119 |       audio.src = ''
+      120 |       audio.load()
+      121 |     }
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.pause (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:121:5)
+      at HTMLAudioElement.pause (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:160:34)
+      at pause (src/hooks/useAudioPlayer.ts:118:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.load
+        at load (src/hooks/useAudioPlayer.ts:120:13) {
+      type: 'not implemented'
+    }
+
+      118 |       audio.pause()
+      119 |       audio.src = ''
+    > 120 |       audio.load()
+          |             ^
+      121 |     }
+      122 |   }, [initialSrc])
+      123 |
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.load (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:112:5)
+      at HTMLAudioElement.load (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:109:34)
+      at load (src/hooks/useAudioPlayer.ts:120:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.pause
+        at pause (src/hooks/useAudioPlayer.ts:118:13) {
+      type: 'not implemented'
+    }
+
+      116 |
+      117 |       // Clean up audio element
+    > 118 |       audio.pause()
+          |             ^
+      119 |       audio.src = ''
+      120 |       audio.load()
+      121 |     }
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.pause (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:121:5)
+      at HTMLAudioElement.pause (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:160:34)
+      at pause (src/hooks/useAudioPlayer.ts:118:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+  console.error
+    Error: Not implemented: HTMLMediaElement.prototype.load
+        at load (src/hooks/useAudioPlayer.ts:120:13) {
+      type: 'not implemented'
+    }
+
+      118 |       audio.pause()
+      119 |       audio.src = ''
+    > 120 |       audio.load()
+          |             ^
+      121 |     }
+      122 |   }, [initialSrc])
+      123 |
+
+      at VirtualConsole.<anonymous> (../../node_modules/@jest/environment-jsdom-abstract/build/index.js:87:23)
+      at module.exports (../../node_modules/jsdom/lib/jsdom/browser/not-implemented.js:12:26)
+      at HTMLAudioElementImpl.load (../../node_modules/jsdom/lib/jsdom/living/nodes/HTMLMediaElement-impl.js:112:5)
+      at HTMLAudioElement.load (../../node_modules/jsdom/lib/jsdom/living/generated/HTMLMediaElement.js:109:34)
+      at load (src/hooks/useAudioPlayer.ts:120:13)
+      at Object.react_stack_bottom_frame (../../node_modules/react-dom/cjs/react-dom-client.development.js:26001:13)
+      at runWithFiberInDEV (../../node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListUnmount (../../node_modules/react-dom/cjs/react-dom-client.development.js:13316:17)
+      at commitHookPassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:13347:11)
+      at commitPassiveUnmountEffectsInsideOfDeletedTree_begin (../../node_modules/react-dom/cjs/react-dom-client.development.js:16264:13)
+      at recursivelyTraversePassiveUnmountEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:16085:13)
+      at commitPassiveUnmountOnFiber (../../node_modules/react-dom/cjs/react-dom-client.development.js:16127:11)
+      at flushPassiveEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18428:9)
+      at flushPendingEffects (../../node_modules/react-dom/cjs/react-dom-client.development.js:18358:14)
+      at flushSpawnedWork (../../node_modules/react-dom/cjs/react-dom-client.development.js:18323:44)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:17955:9)
+      at performWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:16667:15)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom-client.development.js:18972:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/react-dom/cjs/react-dom-client.development.js:18814:21)
+      at flushSyncWork$1 (../../node_modules/react-dom/cjs/react-dom-client.development.js:16898:12)
+      at ReactDOMRoot.process.env.NODE_ENV.ReactDOMHydrationRoot.unmount.ReactDOMRoot.unmount [as unmount] (../../node_modules/react-dom/cjs/react-dom-client.development.js:27911:11)
+      at Object.unmount (../../node_modules/@testing-library/react/dist/pure.js:163:12)
+      at ../../node_modules/@testing-library/react/dist/pure.js:307:12
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (../../node_modules/react/cjs/react.development.js:814:22)
+      at ../../node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at ../../node_modules/@testing-library/react/dist/pure.js:306:28
+          at Array.forEach (<anonymous>)
+      at cleanup (../../node_modules/@testing-library/react/dist/pure.js:302:22)
+      at Object.<anonymous> (../../node_modules/@testing-library/react/dist/index.js:28:25)
+
+FAIL src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx
+  ● recording review truthfulness › shows draft failure and still saves the original recording without AI content
+
+    TestingLibraryElementError: Unable to find an accessible element with the role "alert"
+
+    Here are the accessible roles:
+
+      button:
+
+      Name "← Back to Mode Selection":
+      [36m<button[39m
+        [33mclass[39m=[32m"mb-6 text-sm text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+        [33mdisabled[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-12 px-8 py-3 text-base bg-primary hover:bg-primary/90 text-primary-foreground"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+        [33mdisabled[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+        [33mdisabled[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+        [33mdisabled[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "October 11th, 2026":
+      [36m<button[39m
+        [33maria-controls[39m=[32m"radix-_r_0_"[39m
+        [33maria-expanded[39m=[32m"false"[39m
+        [33maria-haspopup[39m=[32m"dialog"[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 border-2 border-primary text-primary bg-background hover:bg-gray-50 rounded-lg h-11 px-6 py-3 text-sm w-full justify-start text-left font-normal"[39m
+        [33mdata-slot[39m=[32m"popover-trigger"[39m
+        [33mdata-state[39m=[32m"closed"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "Discard":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 border-2 border-primary text-primary bg-background hover:bg-gray-50 rounded-lg h-11 px-6 py-3 text-sm flex-1"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "Save to Timeline":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-11 px-6 py-3 text-sm flex-1 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      heading:
+
+      Name "Review & Polish":
+      [36m<h2[39m
+        [33mclass[39m=[32m"text-2xl font-serif font-medium text-stone-800 dark:text-stone-100"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      paragraph:
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-stone-500 dark:text-stone-400"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-xs text-stone-500"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-sm text-stone-500 dark:text-stone-400"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-sm text-stone-600 dark:text-stone-400 line-clamp-3 italic"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      slider:
+
+      Name "":
+      [36m<span[39m
+        [33maria-orientation[39m=[32m"horizontal"[39m
+        [33maria-valuemax[39m=[32m"12"[39m
+        [33maria-valuemin[39m=[32m"0"[39m
+        [33maria-valuenow[39m=[32m"0"[39m
+        [33mclass[39m=[32m"border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"[39m
+        [33mdata-disabled[39m=[32m""[39m
+        [33mdata-orientation[39m=[32m"horizontal"[39m
+        [33mdata-radix-collection-item[39m=[32m""[39m
+        [33mdata-slot[39m=[32m"slider-thumb"[39m
+        [33mrole[39m=[32m"slider"[39m
+        [33mstyle[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<span[39m
+        [33maria-orientation[39m=[32m"horizontal"[39m
+        [33maria-valuemax[39m=[32m"1"[39m
+        [33maria-valuemin[39m=[32m"0"[39m
+        [33maria-valuenow[39m=[32m"1"[39m
+        [33mclass[39m=[32m"border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"[39m
+        [33mdata-orientation[39m=[32m"horizontal"[39m
+        [33mdata-radix-collection-item[39m=[32m""[39m
+        [33mdata-slot[39m=[32m"slider-thumb"[39m
+        [33mrole[39m=[32m"slider"[39m
+        [33mstyle[39m=[32m""[39m
+        [33mtabindex[39m=[32m"0"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      textbox:
+
+      Name "":
+      [36m<input[39m
+        [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-stone-50 dark:bg-stone-900"[39m
+        [33mdata-slot[39m=[32m"input"[39m
+        [33mplaceholder[39m=[32m"e.g., The Summer of '89"[39m
+        [33mvalue[39m=[32m""[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      switch:
+
+      Name "":
+      [36m<button[39m
+        [33maria-checked[39m=[32m"false"[39m
+        [33mclass[39m=[32m"peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"[39m
+        [33mdata-slot[39m=[32m"switch"[39m
+        [33mdata-state[39m=[32m"unchecked"[39m
+        [33mrole[39m=[32m"switch"[39m
+        [33mtype[39m=[32m"button"[39m
+        [33mvalue[39m=[32m"on"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen bg-stone-50 dark:bg-stone-950 p-4 md:p-8"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-4xl mx-auto"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"mb-6 text-sm text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2"[39m
+            [36m>[39m
+              [0m← Back to Mode Selection[0m
+            [36m</button>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"max-w-2xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-center space-y-2"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-2xl font-serif font-medium text-stone-800 dark:text-stone-100"[39m
+                [36m>[39m
+                  [0mReview & Polish[0m
+                [36m</h2>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-stone-500 dark:text-stone-400"[39m
+                [36m>[39m
+                  [0mAdd a date to anchor this memory in time.[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6 p-6 space-y-6 bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800"[39m
+                [33mdata-slot[39m=[32m"card"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"space-y-2"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex items-center justify-between"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 text-stone-500"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                    [36m>[39m
+                      [0mPreview[0m
+                    [36m</label>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"flex items-center gap-1.5 text-xs font-medium text-amber-600 dark:text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-full"[39m
+                    [36m>[39m
+                      [36m<svg[39m
+                        [33maria-hidden[39m=[32m"true"[39m
+                        [33mclass[39m=[32m"lucide lucide-wand-sparkles w-3 h-3"[39m
+                        [33mfill[39m=[32m"none"[39m
+                        [33mheight[39m=[32m"24"[39m
+                        [33mstroke[39m=[32m"currentColor"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                        [33mviewBox[39m=[32m"0 0 24 24"[39m
+                        [33mwidth[39m=[32m"24"[39m
+                        [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                      [36m>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"m14 7 3 3"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M5 6v4"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M19 14v4"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M10 2v2"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M7 8H3"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M21 16h-4"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M11 3H9"[39m
+                        [36m/>[39m
+                      [36m</svg>[39m
+                      [0mAuto-Leveling Applied[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"bg-background border rounded-lg p-4 space-y-4 w-full"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"space-y-2"[39m
+                    [36m>[39m
+                      [36m<span[39m
+                        [33maria-disabled[39m=[32m"true"[39m
+                        [33mclass[39m=[32m"relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col w-full"[39m
+                        [33mdata-disabled[39m=[32m""[39m
+                        [33mdata-orientation[39m=[32m"horizontal"[39m
+                        [33mdata-slot[39m=[32m"slider"[39m
+                        [33mdir[39m=[32m"ltr"[39m
+                        [33mstyle[39m=[32m"--radix-slider-thumb-transform: translateX(-50%);"[39m
+                      [36m>[39m
+                        [36m<span[39m
+                          [33mclass[39m=[32m"bg-muted relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5"[39m
+                          [33mdata-disabled[39m=[32m""[39m
+                          [33mdata-orientation[39m=[32m"horizontal"[39m
+                          [33mdata-slot[39m=[32m"slider-track"[39m
+                        [36m>[39m
+                          [36m<span[39m
+                            [33mclass[39m=[32m"bg-primary absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full"[39m
+                            [33mdata-disabled[39m=[32m""[39m
+                            [33mdata-orientation[39m=[32m"horizontal"[39m
+                            [33mdata-slot[39m=[32m"slider-range"[39m
+                            [33mstyle[39m=[32m"left: 0%; right: 100%;"[39m
+                          [36m/>[39m
+                        [36m</span>[39m
+                        [36m<span[39m
+                          [33mstyle[39m=[32m"transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(0% + 0px);"[39m
+                        [36m>[39m
+                          [36m<span[39m
+                            [33maria-orientation[39m=[32m"horizontal"[39m
+                            [33maria-valuemax[39m=[32m"12"[39m
+                            [33maria-valuemin[39m=[32m"...
+
+      263 |     await act(async () => { await finish({ audioBlob: audio, transcript: 'The actual words.', duration: 12 }) })
+      264 |
+    > 265 |     expect(screen.getByRole('alert')).toHaveTextContent(/draft could not be prepared/i)
+          |                   ^
+      266 |     expect(screen.getByText(/original recording/i)).toBeInTheDocument()
+      267 |     expect(screen.queryByText(/auto-leveling applied/i)).not.toBeInTheDocument()
+      268 |     fireEvent.click(screen.getByRole('button', { name: /save to timeline/i }))
+
+      at Object.getElementError (../../node_modules/@testing-library/dom/dist/config.js:37:19)
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.getByRole (src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx:265:19)
+
+  ● recording review truthfulness › does not save old transcript or late AI content into the next recording
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: ObjectContaining {"ai_generated_title": undefined, "ai_summary": undefined, "content": "", "transcript": ""}
+    Received: {"ai_confidence_score": 0.9, "ai_generated_title": "Old title", "ai_summary": "Old summary", "audio_duration": 15, "audio_url": "user-1/projects/test-project-id/stories/temp/audio.webm", "content": "Old summary", "happened_at": 2026-10-11T11:12:06.174Z, "is_public": false, "project_id": "test-project-id", "recording_mode": "deep_dive", "storyteller_id": "user-1", "title": "Story from October 2026", "transcript": "Old transcript"}
+
+    Number of calls: 1
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"min-h-screen bg-stone-50 dark:bg-stone-950 p-4 md:p-8"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"max-w-4xl mx-auto"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mb-6 text-sm text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2"[39m
+              [36m>[39m
+                [0m← Back to Mode Selection[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"max-w-2xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"text-center space-y-2"[39m
+                [36m>[39m
+                  [36m<h2[39m
+                    [33mclass[39m=[32m"text-2xl font-serif font-medium text-stone-800 dark:text-stone-100"[39m
+                  [36m>[39m
+                    [0mReview & Polish[0m
+                  [36m</h2>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"text-stone-500 dark:text-stone-400"[39m
+                  [36m>[39m
+                    [0mAdd a date to anchor this memory in time.[0m
+                  [36m</p>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6 p-6 space-y-6 bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800"[39m
+                  [33mdata-slot[39m=[32m"card"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"space-y-2"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"flex items-center justify-between"[39m
+                    [36m>[39m
+                      [36m<label[39m
+                        [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 text-stone-500"[39m
+                        [33mdata-slot[39m=[32m"label"[39m
+                      [36m>[39m
+                        [0mPreview[0m
+                      [36m</label>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"flex items-center gap-1.5 text-xs font-medium text-amber-600 dark:text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-full"[39m
+                      [36m>[39m
+                        [36m<svg[39m
+                          [33maria-hidden[39m=[32m"true"[39m
+                          [33mclass[39m=[32m"lucide lucide-wand-sparkles w-3 h-3"[39m
+                          [33mfill[39m=[32m"none"[39m
+                          [33mheight[39m=[32m"24"[39m
+                          [33mstroke[39m=[32m"currentColor"[39m
+                          [33mstroke-linecap[39m=[32m"round"[39m
+                          [33mstroke-linejoin[39m=[32m"round"[39m
+                          [33mstroke-width[39m=[32m"2"[39m
+                          [33mviewBox[39m=[32m"0 0 24 24"[39m
+                          [33mwidth[39m=[32m"24"[39m
+                          [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                        [36m>[39m
+                          [36m<path[39m
+                            [33md[39m=[32m"m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"[39m
+                          [36m/>[39m
+                          [36m<path[39m
+                            [33md[39m=[32m"m14 7 3 3"[39m
+                          [36m/>[39m
+                          [36m<path[39m
+                            [33md[39m=[32m"M5 6v4"[39m
+                          [36m/>[39m
+                          [36m<path[39m
+                            [33md[39m=[32m"M19 14v4"[39m
+                          [36m/>[39m
+                          [36m<path[39m
+                            [33md[39m=[32m"M10 2v2"[39m
+                          [36m/>[39m
+                          [36m<path[39m
+                            [33md[39m=[32m"M7 8H3"[39m
+                          [36m/>[39m
+                          [36m<path[39m
+                            [33md[39m=[32m"M21 16h-4"[39m
+                          [36m/>[39m
+                          [36m<path[39m
+                            [33md[39m=[32m"M11 3H9"[39m
+                          [36m/>[39m
+                        [36m</svg>[39m
+                        [0mAuto-Leveling Applied[0m
+                      [36m</div>[39m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"bg-background border rounded-lg p-4 space-y-4 w-full"[39m
+                    [36m>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"space-y-2"[39m
+                      [36m>[39m
+                        [36m<span[39m
+                          [33maria-disabled[39m=[32m"true"[39m
+                          [33mclass[39m=[32m"relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col w-full"[39m
+                          [33mdata-disabled[39m=[32m""[39m
+                          [33mdata-orientation[39m=[32m"horizontal"[39m
+                          [33mdata-slot[39m=[32m"slider"[39m
+                          [33mdir[39m=[32m"ltr"[39m
+                          [33mstyle[39m=[32m"--radix-slider-thumb-transform: translateX(-50%);"[39m
+                        [36m>[39m
+                          [36m<span[39m
+                            [33mclass[39m=[32m"bg-muted relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5"[39m
+                            [33mdata-disabled[39m=[32m""[39m
+                            [33mdata-orientation[39m=[32m"horizontal"[39m
+                            [33mdata-slot[39m=[32m"slider-track"[39m
+                          [36m>[39m
+                            [36m<span[39m
+                              [33mclass[39m=[32m"bg-primary absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full"[39m
+                              [33mdata-disabled[39m=[32m""[39m
+                              [33mdata-orientation[39m=[32m"horizontal"[39m
+                              [33mdata-slot[39m=[32m"slider-range"[39m
+                              [33mstyle[39m=[32m"left: 0%; right: 100%;"[39m
+                            [36m/>[39m
+                          [36m</span>[39m
+                          [36m<span[39m
+                            [33mstyle[39m=[32m"transform: var(--radix-slider-thumb-transform); position: absolute; left: cal...
+
+      296 |     fireEvent.click(screen.getByRole('button', { name: /save to timeline/i }))
+      297 |
+    > 298 |     await waitFor(() => expect(mockCreateStory).toHaveBeenCalledWith(expect.objectContaining({
+          |                                                 ^
+      299 |       transcript: '', content: '', ai_summary: undefined, ai_generated_title: undefined,
+      300 |     })))
+      301 |     expect(mockUploadStoryAudio).toHaveBeenCalledWith(newAudio, 'test-project-id')
+
+      at toHaveBeenCalledWith (src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx:298:49)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● recording review truthfulness › ignores an old failed request while the current draft is still processing
+
+    TestingLibraryElementError: Unable to find an accessible element with the role "status"
+
+    Here are the accessible roles:
+
+      button:
+
+      Name "← Back to Mode Selection":
+      [36m<button[39m
+        [33mclass[39m=[32m"mb-6 text-sm text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+        [33mdisabled[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-12 px-8 py-3 text-base bg-primary hover:bg-primary/90 text-primary-foreground"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+        [33mdisabled[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+        [33mdisabled[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+        [33mdisabled[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "October 11th, 2026":
+      [36m<button[39m
+        [33maria-controls[39m=[32m"radix-_r_4_"[39m
+        [33maria-expanded[39m=[32m"false"[39m
+        [33maria-haspopup[39m=[32m"dialog"[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 border-2 border-primary text-primary bg-background hover:bg-gray-50 rounded-lg h-11 px-6 py-3 text-sm w-full justify-start text-left font-normal"[39m
+        [33mdata-slot[39m=[32m"popover-trigger"[39m
+        [33mdata-state[39m=[32m"closed"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "Discard":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 border-2 border-primary text-primary bg-background hover:bg-gray-50 rounded-lg h-11 px-6 py-3 text-sm flex-1"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "Save to Timeline":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-11 px-6 py-3 text-sm flex-1 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      heading:
+
+      Name "Review & Polish":
+      [36m<h2[39m
+        [33mclass[39m=[32m"text-2xl font-serif font-medium text-stone-800 dark:text-stone-100"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      paragraph:
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-stone-500 dark:text-stone-400"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-xs text-stone-500"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-sm text-stone-500 dark:text-stone-400"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-sm text-stone-600 dark:text-stone-400 line-clamp-3 italic"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      slider:
+
+      Name "":
+      [36m<span[39m
+        [33maria-orientation[39m=[32m"horizontal"[39m
+        [33maria-valuemax[39m=[32m"12"[39m
+        [33maria-valuemin[39m=[32m"0"[39m
+        [33maria-valuenow[39m=[32m"0"[39m
+        [33mclass[39m=[32m"border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"[39m
+        [33mdata-disabled[39m=[32m""[39m
+        [33mdata-orientation[39m=[32m"horizontal"[39m
+        [33mdata-radix-collection-item[39m=[32m""[39m
+        [33mdata-slot[39m=[32m"slider-thumb"[39m
+        [33mrole[39m=[32m"slider"[39m
+        [33mstyle[39m=[32m""[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<span[39m
+        [33maria-orientation[39m=[32m"horizontal"[39m
+        [33maria-valuemax[39m=[32m"1"[39m
+        [33maria-valuemin[39m=[32m"0"[39m
+        [33maria-valuenow[39m=[32m"1"[39m
+        [33mclass[39m=[32m"border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"[39m
+        [33mdata-orientation[39m=[32m"horizontal"[39m
+        [33mdata-radix-collection-item[39m=[32m""[39m
+        [33mdata-slot[39m=[32m"slider-thumb"[39m
+        [33mrole[39m=[32m"slider"[39m
+        [33mstyle[39m=[32m""[39m
+        [33mtabindex[39m=[32m"0"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      textbox:
+
+      Name "":
+      [36m<input[39m
+        [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-stone-50 dark:bg-stone-900"[39m
+        [33mdata-slot[39m=[32m"input"[39m
+        [33mplaceholder[39m=[32m"e.g., The Summer of '89"[39m
+        [33mvalue[39m=[32m""[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      switch:
+
+      Name "":
+      [36m<button[39m
+        [33maria-checked[39m=[32m"false"[39m
+        [33mclass[39m=[32m"peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"[39m
+        [33mdata-slot[39m=[32m"switch"[39m
+        [33mdata-state[39m=[32m"unchecked"[39m
+        [33mrole[39m=[32m"switch"[39m
+        [33mtype[39m=[32m"button"[39m
+        [33mvalue[39m=[32m"on"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen bg-stone-50 dark:bg-stone-950 p-4 md:p-8"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-4xl mx-auto"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"mb-6 text-sm text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2"[39m
+            [36m>[39m
+              [0m← Back to Mode Selection[0m
+            [36m</button>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"max-w-2xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-center space-y-2"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-2xl font-serif font-medium text-stone-800 dark:text-stone-100"[39m
+                [36m>[39m
+                  [0mReview & Polish[0m
+                [36m</h2>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-stone-500 dark:text-stone-400"[39m
+                [36m>[39m
+                  [0mAdd a date to anchor this memory in time.[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6 p-6 space-y-6 bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800"[39m
+                [33mdata-slot[39m=[32m"card"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"space-y-2"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex items-center justify-between"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 text-stone-500"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                    [36m>[39m
+                      [0mPreview[0m
+                    [36m</label>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"flex items-center gap-1.5 text-xs font-medium text-amber-600 dark:text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-full"[39m
+                    [36m>[39m
+                      [36m<svg[39m
+                        [33maria-hidden[39m=[32m"true"[39m
+                        [33mclass[39m=[32m"lucide lucide-wand-sparkles w-3 h-3"[39m
+                        [33mfill[39m=[32m"none"[39m
+                        [33mheight[39m=[32m"24"[39m
+                        [33mstroke[39m=[32m"currentColor"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                        [33mviewBox[39m=[32m"0 0 24 24"[39m
+                        [33mwidth[39m=[32m"24"[39m
+                        [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                      [36m>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"m14 7 3 3"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M5 6v4"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M19 14v4"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M10 2v2"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M7 8H3"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M21 16h-4"[39m
+                        [36m/>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"M11 3H9"[39m
+                        [36m/>[39m
+                      [36m</svg>[39m
+                      [0mAuto-Leveling Applied[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"bg-background border rounded-lg p-4 space-y-4 w-full"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"space-y-2"[39m
+                    [36m>[39m
+                      [36m<span[39m
+                        [33maria-disabled[39m=[32m"true"[39m
+                        [33mclass[39m=[32m"relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col w-full"[39m
+                        [33mdata-disabled[39m=[32m""[39m
+                        [33mdata-orientation[39m=[32m"horizontal"[39m
+                        [33mdata-slot[39m=[32m"slider"[39m
+                        [33mdir[39m=[32m"ltr"[39m
+                        [33mstyle[39m=[32m"--radix-slider-thumb-transform: translateX(-50%);"[39m
+                      [36m>[39m
+                        [36m<span[39m
+                          [33mclass[39m=[32m"bg-muted relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5"[39m
+                          [33mdata-disabled[39m=[32m""[39m
+                          [33mdata-orientation[39m=[32m"horizontal"[39m
+                          [33mdata-slot[39m=[32m"slider-track"[39m
+                        [36m>[39m
+                          [36m<span[39m
+                            [33mclass[39m=[32m"bg-primary absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full"[39m
+                            [33mdata-disabled[39m=[32m""[39m
+                            [33mdata-orientation[39m=[32m"horizontal"[39m
+                            [33mdata-slot[39m=[32m"slider-range"[39m
+                            [33mstyle[39m=[32m"left: 0%; right: 100%;"[39m
+                          [36m/>[39m
+                        [36m</span>[39m
+                        [36m<span[39m
+                          [33mstyle[39m=[32m"transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(0% + 0px);"[39m
+                        [36m>[39m
+                          [36m<span[39m
+                            [33maria-orientation[39m=[32m"horizontal"[39m
+                            [33maria-valuemax[39m=[32m"12"[39m
+                            [33maria-valuemin[39m=[32m"...
+
+      319 |     await act(async () => { rejectOld(new Error('old failure')); await oldProcessing })
+      320 |
+    > 321 |     expect(screen.getByRole('status')).toHaveTextContent(/preparing a draft/i)
+          |                   ^
+      322 |     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+      323 |
+      324 |     await act(async () => {
+
+      at Object.getElementError (../../node_modules/@testing-library/dom/dist/config.js:37:19)
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.getByRole (src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx:321:19)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 5 passed, 8 total
+Snapshots:   0 total
+Time:        3.758 s
+Ran all test suites within paths "src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/components/recording/__tests__/record-page-uses-smart-recorder.test.tsx

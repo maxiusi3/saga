@@ -1,0 +1,159 @@
+{
+  "checkedAt": "2026-10-16T12:47:54.075729+00:00",
+  "status": "initial_verification_passed_review_R1_fix_in_progress",
+  "scope": "Current batch only: fictional local audio, private temporary PostgreSQL, pg-boss, existing FFmpeg; not formal adapter, remote or device acceptance",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3",
+    "ffmpeg": "ffmpeg version 7.1 Copyright (c) 2000-2024 the FFmpeg developers",
+    "ffmpegSha256": "4a4a968b98859588e98500ae25973d80a5ca5eed0724222b9f76360dcb72a001"
+  },
+  "integration": {
+    "knownFailures": {
+      "file": "failure-final.json",
+      "exitCode": 0,
+      "status": "passed",
+      "startedAt": "2026-10-16T12:33:00.996Z",
+      "finishedAt": "2026-10-16T12:33:39.008Z",
+      "scenarios": 42,
+      "assertions": 361,
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "reportSha256": "31bbab24d097b0310549f6979bb69e496c2eb8976f0d20dd44204638c4cc4005"
+    },
+    "fullMerge": {
+      "file": "merge-regression-final.json",
+      "exitCode": 0,
+      "status": "passed",
+      "startedAt": "2026-10-16T12:33:01.388Z",
+      "finishedAt": "2026-10-16T12:34:08.289Z",
+      "scenarios": 52,
+      "assertions": 402,
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "reportSha256": "ca571559a54d58bb11f4b488813a6ab101300a9903eb501b9c4e5498d489a37f"
+    },
+    "existingT05": {
+      "file": "t05-regression-final.json",
+      "exitCode": 0,
+      "status": "passed",
+      "startedAt": "2026-10-16T12:33:01.808Z",
+      "finishedAt": "2026-10-16T12:36:38.186Z",
+      "scenarios": 39,
+      "assertions": 307,
+      "sourceHashMismatches": [],
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      },
+      "reportSha256": "58d64765fb5d2c768765be12acb283123a5db90a540dd642cbf5a781b0dd78ee"
+    }
+  },
+  "focusedUnit": {
+    "suites": 3,
+    "tests": 67,
+    "exitCode": 0,
+    "log": "unit-green-compatible.log"
+  },
+  "project": "project-checks.json",
+  "applicationCounts": {
+    "webSuites": 76,
+    "webTests": 728,
+    "pages": 175,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7
+  },
+  "incrementalSourceSha256": {
+    "experiments/t05-durable-worker/README.md": "b50ecfa1da126b9f5cc168381a7f479c3a262b5f9efea9282f4a9e4d2c95f33e",
+    "experiments/t05-durable-worker/local-recording-merge.mjs": "084c2ef032453922551f8ab685c22968d3f63283a2c7aefb209c99c3467e2010",
+    "experiments/t05-durable-worker/merge-failure-scenarios.mjs": "9fcc7f792dfeddab0c42946ea21203dcf10f22229a3675f482cf6d59cc574bcd",
+    "experiments/t05-durable-worker/merge-scenarios.mjs": "df3dd2a6421fc330b40732ccdef6a48de5efedab3e8b07ddffe817b251764d08",
+    "experiments/t05-durable-worker/store.mjs": "390893bd89d2e5694ad00c3ed96a5993a1316ddbccff7eae3537eb78364d5865",
+    "experiments/t05-durable-worker/verify.mjs": "f48110f0252de7c5b329dd5bc11d4e9db55e286340723ff7b5b834517605f5e3",
+    "packages/web/src/lib/server/__tests__/recording-audio-decoder.test.ts": "5ccc8413a3d86e8c4473ca4125c1bb28061bf677b40ff4827f172a4bfb1a328f",
+    "packages/web/src/lib/server/__tests__/recording-merge-executor.test.ts": "74d9809bf868ac685789f1e281c115d77a8a00a6e106a9c771a9adcf6d0c3146",
+    "packages/web/src/lib/server/__tests__/recording-processing-error.test.ts": "e2a6267c535f9eab24ffa76b7bb598946fe912f7306adf4f5db6153f52e76b31",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "681de1522dbc45b1073680762a61baafca4e38a3e7bcdc325a1f76973363df9a",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-processing-error.ts": "7232456c9931f2bf592e2638b9b685a609956585bc76599557979386671f88d2"
+  },
+  "protectedFiles": {
+    "package.json": {
+      "sha256": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+      "unchanged": true
+    },
+    "package-lock.json": {
+      "sha256": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+      "unchanged": true
+    },
+    "packages/web/package.json": {
+      "sha256": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+      "unchanged": true
+    },
+    "packages/web/next-env.d.ts": {
+      "sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/package.json": {
+      "sha256": "a34f22500fbe32d38ef8e3a430fda81270a5bdb6760923164b161b734b8720d4",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/package-lock.json": {
+      "sha256": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+      "unchanged": true
+    },
+    "packages/web/src/lib/server/processing-jobs.ts": {
+      "sha256": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/runner.mjs": {
+      "sha256": "3e1abb2acd68714812690629d48b4e30d867d73cc9c7278e1d342f45bad53cdc",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/supervisor.mjs": {
+      "sha256": "cda8c9897885e8e7f6b43d0594b172206d7ae6cb0c1af5d891f659b7d2f6f521",
+      "unchanged": true
+    },
+    "experiments/t05-durable-worker/verify-merge-cleanup.mjs": {
+      "sha256": "c1e7b997ea4ecd0ecb8bb6cd453662417b52a03265e0db5eb9880cc6e0cebca5",
+      "unchanged": true
+    }
+  },
+  "review": {
+    "status": "changes_requested",
+    "file": "review-initial.md",
+    "importantFindings": [
+      "R1: generic decoder exits/diagnostics misclassified as permanent input failure"
+    ]
+  },
+  "milestoneCheck": "milestone-check.json",
+  "dependencyAudit": "audit-high.json",
+  "readiness": "readiness.json",
+  "limitations": [
+    "No automatic private-output GC; unknown COMMIT preserved",
+    "No formal Storage/session/asset adapter or production routing",
+    "No real-device G1 matrix or qualified provider calls",
+    "Unchanged external cleanup observer and 300-second synthetic soak not rerun",
+    "Existing build configuration/watchman warnings remain documented"
+  ],
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "deploymentPerformed": false
+}

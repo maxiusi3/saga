@@ -1,0 +1,212 @@
+{
+  "updatedAt": "2026-10-23T10:39:31.298689+08:00",
+  "status": "LOCAL_COMPLETE_REVIEWED",
+  "scope": "Synthetic local PG17 full metadata; explicit historical matrix phases followed by one live RLS/entitlement/invitation/management/ledger composition.",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "branch": "codex/october-upgrade-p0",
+  "results": {
+    "normal": {
+      "scenarios": 72,
+      "behaviorAssertions": 832,
+      "ledgerChecks": 236,
+      "lockObservations": 18,
+      "totalAssertionsIncludingPins": 997
+    },
+    "hostile": {
+      "scenarios": 72,
+      "behaviorAssertions": 832,
+      "ledgerChecks": 236,
+      "lockObservations": 18,
+      "totalAssertionsIncludingPins": 997
+    },
+    "red": {
+      "scenarios": 6,
+      "behaviorAssertions": 8,
+      "ledgerChecks": 0,
+      "lockObservations": 0,
+      "totalAssertionsIncludingPins": 149
+    },
+    "lifecycleCases": 4
+  },
+  "matrixPhases": {
+    "ledger": "Full historical source ledger run on PG17/full metadata fixture before candidate RLS immutable identity trigger; administrative adapter unchanged.",
+    "rls": "Complete frozen RLS characterization and candidate run, using separate synthetic IDs and actual low privilege sessions.",
+    "combined": "Own end-to-end seed with all RLS, entitlement, invitation, management and ledger candidates active in the same database.",
+    "observedReverseOrderFailure": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-49-34.634Z-1143fc6b-a88b-4ad9-a3a3-c70b7920cb02.json",
+      "code": "42501",
+      "ledgerChecksCompleted": 181,
+      "lastCompleted": "source version changed during wait: rejection leaves no binding",
+      "cause": "The next source-project mutation is rejected by the candidate immutable-story-identity trigger."
+    }
+  },
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "17.4",
+    "pg": "8.16.3",
+    "typescript": "5.9.3",
+    "sourceInputs": 53,
+    "commonJSFiles": 49,
+    "pgRuntimeFiles": 743
+  },
+  "evidence": {
+    "normal": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-57-40.064Z-866c69eb-00c2-46b6-9637-5e96f4d4dbd7.json",
+      "sha256": "4bde0ca5cdb2ced8de01cb4f4e4e39d5466cf9ba1837405b75d0fff06c971a0a",
+      "expectedStatus": "passed",
+      "checkCurrentSources": true,
+      "checkCleanup": true
+    },
+    "red": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/red-2026-10-23T01-58-32.869Z-ccb54d4b-eff2-49c8-8767-ed140e3cba27.json",
+      "sha256": "5a6e0138318df1fb05eb701ba2cf1c4f0cb22eb1e66c5d86539c2ce3b44fc52a",
+      "expectedStatus": "passed",
+      "checkCurrentSources": true,
+      "checkCleanup": true
+    },
+    "lifecycle": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/lifecycle-2026-10-23T01-58-56.415Z-ccdd7767-5d65-4dea-89db-4d6656532b4b.json",
+      "sha256": "6dddf31f4cc4808e845b678d85b268b4417249e43bb88c659edb795293b7953d",
+      "expectedStatus": "passed"
+    },
+    "hostile": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-58-56.841Z-d54c7c7a-53a0-4bc6-bea7-7b1f4217e9d2.json",
+      "sha256": "485d9bfad68ee7f4b0f170f0e096a08487f852ecb4fef8bb4acedf5658b808bb",
+      "expectedStatus": "passed",
+      "checkCurrentSources": true,
+      "checkCleanup": true
+    },
+    "signal": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-59-03.168Z-df09e994-6896-4a92-8c92-3cba1ad8fccc.json",
+      "sha256": "fa94c57674836cfa1a5267e084b2b239fb29d70dd071c78756f5a6faac8f32a4",
+      "expectedStatus": "interrupted",
+      "checkCurrentSources": true,
+      "checkCleanup": true
+    },
+    "startFailure": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-59-05.837Z-73b6fb61-1f47-46e2-a2be-71dba358df18.json",
+      "sha256": "0bdc9330369ce07dbf54bbabc06fa19d319767a45c282d4858f4bb88f0f3aeb5",
+      "expectedStatus": "failed",
+      "checkCurrentSources": true,
+      "checkCleanup": true
+    },
+    "connectionFailure": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/run-2026-10-23T01-59-07.996Z-ba519266-6059-4440-8d82-937330943c97.json",
+      "sha256": "567caac3ab99f372360b5f7f48edfac8b2641c572ddf926752c50c31588e8434",
+      "expectedStatus": "failed",
+      "checkCurrentSources": true,
+      "checkCleanup": true
+    },
+    "userSQL": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/user-sql-966bafbd-3f76-46f5-8aeb-d333824d008e.json",
+      "sha256": "e9ddc9afa67cb12e737edd5c235505cf2cfa2fd980cdf45496a9a6eeca363e27",
+      "expectedStatus": "passed",
+      "checkCleanup": true
+    },
+    "preservedInputs": {
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/preserved-inputs-1c2b6ddf-bdb5-46d1-ad04-0e6d3a614ab2.json",
+      "sha256": "08dacda0a0b0a8547cc4792d23fe9c1bb43bd003d3502362d852787ed77c7e1d",
+      "expectedStatus": "passed"
+    },
+    "originalProject": {
+      "path": "docs/research/evidence/2026-10-21-invitation-management/project-verification.json",
+      "sha256": "a2bb06b8dd3c7522b13b6d2042635dc2c0f26f4bf8d559c30808be5ced687618"
+    }
+  },
+  "experimentSources": {
+    "experiments/pg17-rls-source-composition/README.md": "ffceee1e2fd2709abd99c9f0d550769d174842f969f550a1ad43729e6eec6f12",
+    "experiments/pg17-rls-source-composition/compatibility.mjs": "090f25f614deb00ec67ed517d9271fd4190a8ebe22084a2cb7a702c3c0d0ab43",
+    "experiments/pg17-rls-source-composition/fixture.mjs": "636f51fbb2fbf5cb3345f981354965f01170262c2213c618c48299740fe73508",
+    "experiments/pg17-rls-source-composition/input-pins.json": "c730e281df0fde3b9f8069be60bd3fb8fccaa4c8402b1579923eab6993efd7a2",
+    "experiments/pg17-rls-source-composition/inputs.mjs": "cb38568f15cdd841eaf7ea0204dd2318ec7422069323f16317c9c5cf1930eed5",
+    "experiments/pg17-rls-source-composition/pin-inputs.mjs": "17ac9f0d902be26f3483db12c2fc2cdd3be92a8a181c4dcd95c859c5b60cdee1",
+    "experiments/pg17-rls-source-composition/scenarios.mjs": "af1dc140937c09a896366a55e7b8c13ddab853da4c4b339cb8ccc3452da4232b",
+    "experiments/pg17-rls-source-composition/verify-lifecycle.mjs": "6cc7dbb3925fc4839436668fefbf7b0ec0bf0493af394b06a66816e43744e84f",
+    "experiments/pg17-rls-source-composition/verify.mjs": "0089f2e2aefd890822c278245a5a7640f0db2e072ebd159957cc32fc1c5cb910"
+  },
+  "reviews": {
+    "implementation": {
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "openFindings": 0,
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/implementation-review.md",
+      "sha256": "ca382cf72c93c13cc4d0275e8f511c7016fdf702302902d9e3f31ca9a1ab07e5"
+    },
+    "documentation": {
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "openFindings": 0,
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/documentation-fix-1-review.md",
+      "sha256": "36471fa9073fcc53a3d01f6b5d5106f00e4299f80473ec34001499307d76f97e",
+      "initialReview": {
+        "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/documentation-review.md",
+        "sha256": "b9475350b3fa6debb21bf5f22835174d29b223f842493f3e7ed4f8af538d7010",
+        "finding": "D1/P2 closed by scoped fix 1 re-review"
+      }
+    },
+    "wholeBatch": {
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "openFindings": 0,
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/batch-final-review.md",
+      "sha256": "9c7af9e3346d7f0e93af42336ead969d39d311a7aa482f3677416ad01617fb50"
+    },
+    "assistance": {
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "openFindings": 0,
+      "path": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/assistance-review.md",
+      "sha256": "ca1cb5bcf27b27492542fe5a389454c0d31e6d56ba84063653adf59ab177759f"
+    }
+  },
+  "documents": [
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/2026-10-10-integrated-upgrade-plan.md",
+    "docs/README.md",
+    "docs/superpowers/plans/2026-10-11-upgrade-p0-preparation.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+    "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md",
+    "docs/research/2026-10-22-pg17-rls-source-composition.md",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/README.md",
+    "docs/superpowers/plans/2026-10-22-upgrade-pg17-rls-source-composition.md",
+    "docs/superpowers/specs/2026-10-22-pg17-rls-source-composition.md",
+    "docs/research/2026-10-22-user-action-checklist.md",
+    "docs/research/2026-10-22-user-readonly-evidence.sql",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/verification.json",
+    "docs/research/evidence/2026-10-22-pg17-rls-source-composition/milestone-check.json"
+  ],
+  "finalIntegrity": {
+    "report": "docs/research/evidence/2026-10-22-pg17-rls-source-composition/final-integrity-5d5d3a4a-93f7-4918-a7cd-e0065d14974d.json",
+    "status": "see_report",
+    "hashDirection": "The final seal hashes this summary; no reverse hash is stored.",
+    "completionRule": "Local closeout is complete only when the referenced fresh report has status passed and the subsequent read-only rehash matches. No circular hash or post-seal metadata mutation."
+  },
+  "applicationSuitesRerun": false,
+  "originalProjectExecutedAt": "2026-10-21T15:01:19.264Z",
+  "originalProjectResults": {
+    "webSuites": 105,
+    "webTests": 1420,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 7,
+    "staticPages": 180
+  },
+  "deviceVerification": "deferred_by_user",
+  "limitations": [
+    "Synthetic auth.users and request GUC identity; no Auth/JWT/PostgREST validation.",
+    "storage.buckettype is a local enum containing only observed STANDARD; complete enum labels were not captured.",
+    "Seven Storage trigger bindings are deliberately omitted because reviewed function bodies were not captured; no guessed behavior.",
+    "storage.foldername is the disclosed old RLS local SQL shim; Storage HTTP and service role inheritance are not reproduced.",
+    "Storage object ordinal 13 is preserved by creating then dropping an inert text placeholder.",
+    "Owners are local fixture_owner, not production postgres or supabase_storage_admin.",
+    "Synthetic project/story deleted_at and all t02 asset, verification, observation and binding tables are test-only.",
+    "Historical ledger source-project mutation races run before the RLS immutable-story trigger is installed. All final integration checks run with that trigger and candidate RLS active.",
+    "Historical ledger mutation cases precede the RLS immutable-identity trigger; only the final own seed composes all candidates simultaneously.",
+    "READ COMMITTED next-statement denial is not instantaneous revocation of older REPEATABLE READ snapshots.",
+    "Source digest examples are PG17.4-specific; ambient macOS system libraries/kernel are not byte-pinned."
+  ],
+  "P0Complete": false,
+  "originalMilestonePassed": false,
+  "githubPushed": false,
+  "deployed": false
+}

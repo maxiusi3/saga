@@ -1,47 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
+import { getTextAiConfig } from '@/lib/server/text-ai-config'
 
-export async function GET(request: NextRequest) {
-  try {
-    const status = {
-      timestamp: new Date().toISOString(),
-      openrouter_configured: !!process.env.OPENROUTER_API_KEY,
-      services: {
-        transcription: true, // Web Speech API
-        content_generation: false
-      },
-      mode: process.env.OPENROUTER_API_KEY ? 'production' : 'mock',
-      model: 'openai/gpt-oss-20b:free'
-    }
-
-    // If OpenRouter is configured, mark content generation as available
-    if (process.env.OPENROUTER_API_KEY) {
-      status.services.content_generation = true
-    }
-
-    return NextResponse.json(status)
-
-  } catch (error) {
-    console.error('Health check error:', error)
-    
-    return NextResponse.json(
-      {
-        timestamp: new Date().toISOString(),
-        openrouter_configured: !!process.env.OPENROUTER_API_KEY,
-        services: {
-          transcription: false,
-          content_generation: false
-        },
-        mode: 'error',
-        error: 'Health check failed'
-      },
-      { status: 500 }
-    )
-  }
+export async function GET(_request: NextRequest) {
+  const textConfig = getTextAiConfig()
+  const transcriptionConfigured = Boolean(process.env.SILICONFLOW_API_KEY?.trim())
+  const contentConfigured = Boolean(textConfig)
+  // Configuration is observable here; provider reachability and quality require separate probes.
+  return NextResponse.json({
+    timestamp: new Date().toISOString(),
+    services: {
+      transcription: transcriptionConfigured,
+      content_generation: contentConfigured,
+    },
+    mode: transcriptionConfigured || contentConfigured ? 'configured' : 'unavailable',
+  }, { headers: { 'Cache-Control': 'no-store' } })
 }
 
-// Handle OPTIONS request for CORS
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS(_request: NextRequest) {
   return new NextResponse(null, {
     status: 200,
     headers: {

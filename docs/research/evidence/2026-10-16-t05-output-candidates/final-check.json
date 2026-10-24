@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-16T15:12:12.880488+00:00",
+  "status": "passed",
+  "documentLinksChecked": 209,
+  "documentSha256": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "6974d7e2de58dac1fb110fc43470be6dd0871954ab7a51e2fb604070f0c86d41",
+    "docs/2026-10-10-integrated-upgrade-plan.md": "7244799d473ce4bcb894b8fd6692cdba9622fa30fc206a034fc928188e038b70",
+    "docs/README.md": "10746f8e503816441952d8a0a0c1b4922e6fa6952acd0ef0a37ff24c640f4733",
+    "docs/research/2026-10-16-t05-output-candidates.md": "f5fccd9c84da489a293d227148c6b46e49f01a0d9f94140159aaa2b56f480766",
+    "docs/superpowers/plans/2026-10-16-upgrade-t05-output-candidates.md": "96a6da387ed118a75aaa8bbfbd1be6c51faea65355d8d8eff786e9db4c4ff707"
+  },
+  "integrationReports": [
+    "candidates",
+    "merge",
+    "failures",
+    "t05"
+  ],
+  "allReportSourceHashesMatch": true,
+  "ownedResourcesCleaned": true,
+  "protectedAndReviewedFilesMatch": true,
+  "branchAndHeadUnchanged": true,
+  "gitDiffCheckExitCode": 0,
+  "independentReview": "PASS/PASS; zero findings",
+  "milestonesReached": false,
+  "commitOrPushPerformed": false
+}

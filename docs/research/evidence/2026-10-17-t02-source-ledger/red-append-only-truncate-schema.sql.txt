@@ -1,0 +1,102 @@
+-- Disposable synthetic fixture; never apply to a project database.
+CREATE SCHEMA auth;
+CREATE TABLE auth.users(id uuid PRIMARY KEY);
+CREATE TABLE public.projects(
+  id uuid PRIMARY KEY, facilitator_id uuid REFERENCES auth.users(id), deleted_at timestamptz
+);
+CREATE TABLE public.stories(
+  id uuid PRIMARY KEY, project_id uuid NOT NULL REFERENCES public.projects(id),
+  storyteller_id uuid NOT NULL REFERENCES auth.users(id), user_id uuid,
+  title text NOT NULL,
+  audio_url text, mastered_audio_url text, photo_url text, photo_urls text[], images jsonb[],
+  deleted_at timestamptz
+);
+CREATE TABLE public.project_roles(
+  id uuid PRIMARY KEY, project_id uuid NOT NULL REFERENCES public.projects(id),
+  user_id uuid NOT NULL REFERENCES auth.users(id),
+  role text NOT NULL CHECK(role IN ('facilitator','storyteller')),
+  status text NOT NULL CHECK(status IN ('active','inactive','pending')),
+  UNIQUE(project_id,user_id)
+);
+CREATE ROLE saga_anon NOLOGIN;
+CREATE ROLE saga_authenticated NOLOGIN;
+
+CREATE SCHEMA t02;
+REVOKE ALL ON SCHEMA t02 FROM PUBLIC, saga_anon, saga_authenticated;
+CREATE TABLE t02.source_observations (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  project_id uuid NOT NULL REFERENCES public.projects(id),
+  source_table text NOT NULL CHECK (source_table = 'stories'),
+  source_row_id uuid NOT NULL REFERENCES public.stories(id),
+  source_field text NOT NULL CHECK (source_field IN ('audio_url','mastered_audio_url','photo_url','photo_urls','images')),
+  source_path text NOT NULL,
+  digest_algorithm text NOT NULL,
+  source_digest text NOT NULL CHECK (source_digest ~ '^[0-9a-f]{64}$'),
+  source_type text NOT NULL,
+  source_payload text NOT NULL,
+  raw_value jsonb NOT NULL,
+  kind text NOT NULL CHECK (kind IN ('original_audio','derived_audio','original_image','thumbnail')),
+  locator_status text NOT NULL CHECK (locator_status IN ('mapped','missing','ambiguous','unresolved')),
+  bucket text, object_key text, reason text,
+  conflicts_with bigint REFERENCES t02.source_observations(id),
+  observed_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+  UNIQUE(project_id,source_table,source_row_id,source_field,source_path,digest_algorithm,source_digest),
+  UNIQUE(id,project_id),
+  CHECK ((locator_status = 'mapped') = (bucket IS NOT NULL AND object_key IS NOT NULL))
+);
+CREATE TABLE t02.source_reviews (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  observation_id bigint NOT NULL REFERENCES t02.source_observations(id),
+  conclusion text NOT NULL,
+  reviewed_at timestamptz NOT NULL DEFAULT clock_timestamp()
+);
+-- These records stand in for explicitly verified objects; no Storage request is made.
+CREATE TABLE t02.fixture_assets (
+  id uuid PRIMARY KEY, project_id uuid NOT NULL REFERENCES projects(id),
+  story_id uuid NOT NULL REFERENCES stories(id), created_by uuid NOT NULL REFERENCES auth.users(id),
+  kind text NOT NULL, bucket text NOT NULL, object_key text NOT NULL,
+  version integer NOT NULL CHECK (version > 0), object_version text NOT NULL,
+  byte_size bigint NOT NULL CHECK (byte_size > 0), sha256 text NOT NULL CHECK (sha256 ~ '^[0-9a-f]{64}$'),
+  state text NOT NULL CHECK (state IN ('ready','quarantined','deleting','deleted')), deleted_at timestamptz,
+  UNIQUE(id,project_id)
+);
+CREATE TABLE t02.fixture_verifications (
+  id uuid PRIMARY KEY, asset_id uuid NOT NULL REFERENCES t02.fixture_assets(id),
+  project_id uuid NOT NULL, story_id uuid NOT NULL,
+  kind text NOT NULL, bucket text NOT NULL, object_key text NOT NULL,
+  asset_version integer NOT NULL, object_version text NOT NULL,
+  byte_size bigint NOT NULL, sha256 text NOT NULL,
+  evidence_kind text NOT NULL CHECK (evidence_kind = 'synthetic_fixture_only'),
+  verified_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+  UNIQUE(id,asset_id,asset_version,project_id)
+);
+CREATE TABLE t02.source_bindings (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  observation_id bigint NOT NULL UNIQUE,
+  project_id uuid NOT NULL,
+  asset_id uuid NOT NULL,
+  verification_id uuid NOT NULL,
+  asset_version integer NOT NULL,
+  created_by uuid NOT NULL REFERENCES auth.users(id),
+  bound_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+  FOREIGN KEY(observation_id,project_id) REFERENCES t02.source_observations(id,project_id),
+  FOREIGN KEY(asset_id,project_id) REFERENCES t02.fixture_assets(id,project_id),
+  FOREIGN KEY(verification_id,asset_id,asset_version,project_id)
+    REFERENCES t02.fixture_verifications(id,asset_id,asset_version,project_id)
+);
+CREATE FUNCTION t02.reject_history_mutation() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  RAISE EXCEPTION 'source ledger history is append only' USING ERRCODE = '55000';
+END;
+$$;
+CREATE TRIGGER observation_immutable BEFORE UPDATE OR DELETE ON t02.source_observations
+  FOR EACH ROW EXECUTE FUNCTION t02.reject_history_mutation();
+CREATE TRIGGER review_immutable BEFORE UPDATE OR DELETE ON t02.source_reviews
+  FOR EACH ROW EXECUTE FUNCTION t02.reject_history_mutation();
+CREATE TRIGGER verification_immutable BEFORE UPDATE OR DELETE ON t02.fixture_verifications
+  FOR EACH ROW EXECUTE FUNCTION t02.reject_history_mutation();
+CREATE TRIGGER binding_immutable BEFORE UPDATE OR DELETE ON t02.source_bindings
+  FOR EACH ROW EXECUTE FUNCTION t02.reject_history_mutation();
+REVOKE ALL ON ALL TABLES IN SCHEMA t02 FROM PUBLIC, saga_anon, saga_authenticated;
+REVOKE ALL ON ALL SEQUENCES IN SCHEMA t02 FROM PUBLIC, saga_anon, saga_authenticated;
+REVOKE ALL ON ALL FUNCTIONS IN SCHEMA t02 FROM PUBLIC, saga_anon, saga_authenticated;

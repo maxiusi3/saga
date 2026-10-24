@@ -1,0 +1,308 @@
+COMMAND: npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts --testNamePattern malformed output session token|actual URL context change
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts --testNamePattern malformed output session token|actual URL context change
+
+FAIL src/components/auth/__tests__/auth-signin-return.test.tsx
+  ● actual URL context change without rerender invalidates pending session: /en/auth/signin?next=/dashboard/other
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: "/en/dashboard"
+
+      339 |   window.history.replaceState(null, '', location)
+      340 |   await act(async () => pending.resolve(good))
+    > 341 |   expect(mockReplace).not.toHaveBeenCalled()
+          |                           ^
+      342 | })
+      343 | test('actual URL context change without rerender invalidates pending provider navigation', async () => {
+      344 |   const saved = process.env.NEXT_PUBLIC_SUPABASE_URL
+
+      at toHaveBeenCalled (src/components/auth/__tests__/auth-signin-return.test.tsx:341:27)
+
+  ● actual URL context change without rerender invalidates pending session: /en/auth/signin?access_token=new&refresh_token=r
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: "/en/dashboard"
+
+      339 |   window.history.replaceState(null, '', location)
+      340 |   await act(async () => pending.resolve(good))
+    > 341 |   expect(mockReplace).not.toHaveBeenCalled()
+          |                           ^
+      342 | })
+      343 | test('actual URL context change without rerender invalidates pending provider navigation', async () => {
+      344 |   const saved = process.env.NEXT_PUBLIC_SUPABASE_URL
+
+      at toHaveBeenCalled (src/components/auth/__tests__/auth-signin-return.test.tsx:341:27)
+
+  ● actual URL context change without rerender invalidates pending session: /en/auth/signin?next=%2Fen%2Fdashboard#access_token=new&refresh_token=r
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: "/en/dashboard"
+
+      339 |   window.history.replaceState(null, '', location)
+      340 |   await act(async () => pending.resolve(good))
+    > 341 |   expect(mockReplace).not.toHaveBeenCalled()
+          |                           ^
+      342 | })
+      343 | test('actual URL context change without rerender invalidates pending provider navigation', async () => {
+      344 |   const saved = process.env.NEXT_PUBLIC_SUPABASE_URL
+
+      at toHaveBeenCalled (src/components/auth/__tests__/auth-signin-return.test.tsx:341:27)
+
+  ● actual URL context change without rerender invalidates pending session: /fr/auth/signin?next=%2Fen%2Fdashboard
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: "/en/dashboard"
+
+      339 |   window.history.replaceState(null, '', location)
+      340 |   await act(async () => pending.resolve(good))
+    > 341 |   expect(mockReplace).not.toHaveBeenCalled()
+          |                           ^
+      342 | })
+      343 | test('actual URL context change without rerender invalidates pending provider navigation', async () => {
+      344 |   const saved = process.env.NEXT_PUBLIC_SUPABASE_URL
+
+      at toHaveBeenCalled (src/components/auth/__tests__/auth-signin-return.test.tsx:341:27)
+
+  ● actual URL context change without rerender invalidates pending provider navigation
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: "https://synthetic-auth.example.invalid/auth/v1/authorize?provider=google&redirect_to=http%3A%2F%2Flocalhost%2Fen%2Fauth%2Fcallback%3Fnext%3D%252Fen%252Fdashboard"
+
+      352 |     window.history.replaceState(null, '', '/en/auth/signin?next=/dashboard/new-native-context')
+      353 |     await act(async () => pending.resolve({ error: null, data: { url: `https://synthetic-auth.example.invalid/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(callback)}` } }))
+    > 354 |     expect(mockReplace).not.toHaveBeenCalled()
+          |                             ^
+      355 |   } finally {
+      356 |     if (saved === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_URL
+      357 |     else process.env.NEXT_PUBLIC_SUPABASE_URL = saved
+
+      at Object.toHaveBeenCalled (src/components/auth/__tests__/auth-signin-return.test.tsx:354:29)
+
+FAIL src/lib/server/__tests__/auth-callback.test.ts
+  ● malformed output session token " " never publishes a cookie
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard"
+    Received: "http://localhost/en/dashboard"
+
+      58 |   expect(response.headers.get('referrer-policy')).toBe('no-referrer')
+      59 |   const location = response.headers.get('location')!
+    > 60 |   expect(location).toBe(success ? `http://localhost${next}` : `http://localhost/${locale}/auth/signin?error=auth_failed&next=${encodeURIComponent(next)}`)
+         |                    ^
+      61 |   const body = await response.text()
+      62 |   expect(body).toBe('')
+      63 |   for (const secret of [privateError, code, tokenHash, callbackUser.email, '<script', 'synthetic-service-never-used']) expect(location + body).not.toContain(secret)
+
+      at toBe (src/lib/server/__tests__/auth-callback.test.ts:60:20)
+      at safeReply (src/lib/server/__tests__/auth-callback.test.ts:273:9)
+
+  ● malformed output session token "with space" never publishes a cookie
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard"
+    Received: "http://localhost/en/dashboard"
+
+      58 |   expect(response.headers.get('referrer-policy')).toBe('no-referrer')
+      59 |   const location = response.headers.get('location')!
+    > 60 |   expect(location).toBe(success ? `http://localhost${next}` : `http://localhost/${locale}/auth/signin?error=auth_failed&next=${encodeURIComponent(next)}`)
+         |                    ^
+      61 |   const body = await response.text()
+      62 |   expect(body).toBe('')
+      63 |   for (const secret of [privateError, code, tokenHash, callbackUser.email, '<script', 'synthetic-service-never-used']) expect(location + body).not.toContain(secret)
+
+      at toBe (src/lib/server/__tests__/auth-callback.test.ts:60:20)
+      at safeReply (src/lib/server/__tests__/auth-callback.test.ts:273:9)
+
+  ● malformed output session token "has\nnewline" never publishes a cookie
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard"
+    Received: "http://localhost/en/dashboard"
+
+      58 |   expect(response.headers.get('referrer-policy')).toBe('no-referrer')
+      59 |   const location = response.headers.get('location')!
+    > 60 |   expect(location).toBe(success ? `http://localhost${next}` : `http://localhost/${locale}/auth/signin?error=auth_failed&next=${encodeURIComponent(next)}`)
+         |                    ^
+      61 |   const body = await response.text()
+      62 |   expect(body).toBe('')
+      63 |   for (const secret of [privateError, code, tokenHash, callbackUser.email, '<script', 'synthetic-service-never-used']) expect(location + body).not.toContain(secret)
+
+      at toBe (src/lib/server/__tests__/auth-callback.test.ts:60:20)
+      at safeReply (src/lib/server/__tests__/auth-callback.test.ts:273:9)
+
+  ● malformed output session token "bad%token" never publishes a cookie
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "http://localhost/en/auth/signin?error=auth_failed&next=%2Fen%2Fdashboard"
+    Received: "http://localhost/en/dashboard"
+
+      58 |   expect(response.headers.get('referrer-policy')).toBe('no-referrer')
+      59 |   const location = response.headers.get('location')!
+    > 60 |   expect(location).toBe(success ? `http://localhost${next}` : `http://localhost/${locale}/auth/signin?error=auth_failed&next=${encodeURIComponent(next)}`)
+         |                    ^
+      61 |   const body = await response.text()
+      62 |   expect(body).toBe('')
+      63 |   for (const secret of [privateError, code, tokenHash, callbackUser.email, '<script', 'synthetic-service-never-used']) expect(location + body).not.toContain(secret)
+
+      at toBe (src/lib/server/__tests__/auth-callback.test.ts:60:20)
+      at safeReply (src/lib/server/__tests__/auth-callback.test.ts:273:9)
+
+FAIL src/lib/__tests__/auth-return.test.ts
+  ● rejects malformed output session token " " without imposing the URL input length limit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      46 |   const session = { access_token: 'a'.repeat(8000), refresh_token: 'r', token_type: 'bearer', expires_in: 3600, expires_at: 2_000_000_000, user }
+      47 |   expect(hasVerifiedSession({ session, user })).toBe(true)
+    > 48 |   expect(hasVerifiedSession({ session: { ...session, access_token: value }, user })).toBe(false)
+         |                                                                                      ^
+      49 |   expect(hasVerifiedSession({ session: { ...session, refresh_token: value }, user })).toBe(false)
+      50 | })
+      51 |
+
+      at toBe (src/lib/__tests__/auth-return.test.ts:48:86)
+
+  ● rejects malformed output session token "\t" without imposing the URL input length limit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      46 |   const session = { access_token: 'a'.repeat(8000), refresh_token: 'r', token_type: 'bearer', expires_in: 3600, expires_at: 2_000_000_000, user }
+      47 |   expect(hasVerifiedSession({ session, user })).toBe(true)
+    > 48 |   expect(hasVerifiedSession({ session: { ...session, access_token: value }, user })).toBe(false)
+         |                                                                                      ^
+      49 |   expect(hasVerifiedSession({ session: { ...session, refresh_token: value }, user })).toBe(false)
+      50 | })
+      51 |
+
+      at toBe (src/lib/__tests__/auth-return.test.ts:48:86)
+
+  ● rejects malformed output session token "has space" without imposing the URL input length limit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      46 |   const session = { access_token: 'a'.repeat(8000), refresh_token: 'r', token_type: 'bearer', expires_in: 3600, expires_at: 2_000_000_000, user }
+      47 |   expect(hasVerifiedSession({ session, user })).toBe(true)
+    > 48 |   expect(hasVerifiedSession({ session: { ...session, access_token: value }, user })).toBe(false)
+         |                                                                                      ^
+      49 |   expect(hasVerifiedSession({ session: { ...session, refresh_token: value }, user })).toBe(false)
+      50 | })
+      51 |
+
+      at toBe (src/lib/__tests__/auth-return.test.ts:48:86)
+
+  ● rejects malformed output session token "has\nnewline" without imposing the URL input length limit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      46 |   const session = { access_token: 'a'.repeat(8000), refresh_token: 'r', token_type: 'bearer', expires_in: 3600, expires_at: 2_000_000_000, user }
+      47 |   expect(hasVerifiedSession({ session, user })).toBe(true)
+    > 48 |   expect(hasVerifiedSession({ session: { ...session, access_token: value }, user })).toBe(false)
+         |                                                                                      ^
+      49 |   expect(hasVerifiedSession({ session: { ...session, refresh_token: value }, user })).toBe(false)
+      50 | })
+      51 |
+
+      at toBe (src/lib/__tests__/auth-return.test.ts:48:86)
+
+  ● rejects malformed output session token "\u0000" without imposing the URL input length limit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      46 |   const session = { access_token: 'a'.repeat(8000), refresh_token: 'r', token_type: 'bearer', expires_in: 3600, expires_at: 2_000_000_000, user }
+      47 |   expect(hasVerifiedSession({ session, user })).toBe(true)
+    > 48 |   expect(hasVerifiedSession({ session: { ...session, access_token: value }, user })).toBe(false)
+         |                                                                                      ^
+      49 |   expect(hasVerifiedSession({ session: { ...session, refresh_token: value }, user })).toBe(false)
+      50 | })
+      51 |
+
+      at toBe (src/lib/__tests__/auth-return.test.ts:48:86)
+
+  ● rejects malformed output session token "bad%token" without imposing the URL input length limit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      46 |   const session = { access_token: 'a'.repeat(8000), refresh_token: 'r', token_type: 'bearer', expires_in: 3600, expires_at: 2_000_000_000, user }
+      47 |   expect(hasVerifiedSession({ session, user })).toBe(true)
+    > 48 |   expect(hasVerifiedSession({ session: { ...session, access_token: value }, user })).toBe(false)
+         |                                                                                      ^
+      49 |   expect(hasVerifiedSession({ session: { ...session, refresh_token: value }, user })).toBe(false)
+      50 | })
+      51 |
+
+      at toBe (src/lib/__tests__/auth-return.test.ts:48:86)
+
+  ● rejects malformed output session token "<script>" without imposing the URL input length limit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      46 |   const session = { access_token: 'a'.repeat(8000), refresh_token: 'r', token_type: 'bearer', expires_in: 3600, expires_at: 2_000_000_000, user }
+      47 |   expect(hasVerifiedSession({ session, user })).toBe(true)
+    > 48 |   expect(hasVerifiedSession({ session: { ...session, access_token: value }, user })).toBe(false)
+         |                                                                                      ^
+      49 |   expect(hasVerifiedSession({ session: { ...session, refresh_token: value }, user })).toBe(false)
+      50 | })
+      51 |
+
+      at toBe (src/lib/__tests__/auth-return.test.ts:48:86)
+
+Test Suites: 3 failed, 3 total
+Tests:       16 failed, 161 skipped, 177 total
+Snapshots:   0 total
+Time:        2.131 s, estimated 3 s
+Ran all test suites within paths "src/lib/__tests__/auth-return.test.ts", "src/components/auth/__tests__/auth-signin-return.test.tsx", "src/lib/server/__tests__/auth-callback.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts --testNamePattern 'malformed output session token|actual URL context change'
+
+EXIT: 1

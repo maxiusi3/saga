@@ -11,8 +11,9 @@ import { AudioPlayer } from '@/components/audio/AudioPlayer'
 import { useTranslations } from 'next-intl'
 import { useSilenceDetection } from '@/hooks/use-silence-detection'
 import { agentService } from '@/lib/agent-service'
-import { recorderDB } from '@/lib/recorder-db'
-import { storageService } from '@/lib/storage'
+import { createLocalRecordingSession, type LocalRecordingSession } from '@/lib/local-recording-session'
+import { selectRecordingMimeType } from '@/lib/recording-session'
+import { useAuthStore } from '@/stores/auth-store'
 import type { InterventionLevel } from '@saga/shared/types/agents'
 import type { InterviewPhase } from '@/lib/agents/interview-agent'
 
@@ -36,8 +37,19 @@ interface RecordingResult {
   method: 'realtime' | 'traditional'
 }
 
-type RecordingState = 'idle' | 'recording' | 'paused' | 'completed' | 'processing'
+type RecordingState = 'idle' | 'starting' | 'recording' | 'paused' | 'completed' | 'processing'
 type RecordingMethod = 'realtime' | 'traditional' | 'auto'
+
+interface Capture {
+  recorder: MediaRecorder
+  stream: MediaStream
+  local: LocalRecordingSession
+  chunks: Blob[]
+  generation: number
+  cancelled: boolean
+  failed: boolean
+}
+
 
 export function SmartRecorder({
   onRecordingComplete,
@@ -52,6 +64,7 @@ export function SmartRecorder({
   locale = 'en'
 }: SmartRecorderProps) {
   const t = useTranslations('recording')
+  const userId = useAuthStore(state => state.user?.id)
   // States
   const [recordingState, setRecordingState] = useState<RecordingState>('idle')
   const [recordingMethod, setRecordingMethod] = useState<RecordingMethod>('auto')
@@ -70,74 +83,23 @@ export function SmartRecorder({
   // Refs
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const recognitionRef = useRef<any>(null)
-  const audioChunksRef = useRef<Blob[]>([])
   const streamRef = useRef<MediaStream | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const startTimeRef = useRef<number>(0)
-  const pausedTimeRef = useRef<number>(0)
-  const sessionIdRef = useRef<string>('')
-  const chunkIndexRef = useRef<number>(0)
+  const activeStartedAtRef = useRef<number | null>(null)
+  const activeElapsedMsRef = useRef(0)
+  const captureRef = useRef<Capture | null>(null)
+  const generationRef = useRef(0)
+  const startingRef = useRef(false)
+  const resumingRef = useRef(false)
+  const mountedRef = useRef(true)
+  const cancelCaptureRef = useRef<() => void>(() => {})
 
-  const handleChunk = useCallback(async (blob: Blob, index: number) => {
-    const sessionId = sessionIdRef.current
-    if (!sessionId) return
-
-    try {
-      if (navigator.onLine) {
-        // Try to upload to Supabase Storage
-        // We'll use a temporary folder for chunks: temp/{sessionId}/{index}
-        const fileName = `${index}.webm`
-        const result = await storageService.uploadFile(blob, {
-          bucket: 'audio-recordings',
-          folder: `temp/${sessionId}`,
-          fileName,
-          allowedTypes: ['audio/webm', 'audio/webm;codecs=opus']
-        })
-
-        if (!result.success) {
-          console.warn('Chunk upload failed, saving to IndexedDB:', result.error)
-          await recorderDB.saveChunk(sessionId, index, blob)
-        } else {
-          console.log('Chunk uploaded successfully:', index)
-        }
-      } else {
-        console.log('Offline, saving chunk to IndexedDB:', index)
-        await recorderDB.saveChunk(sessionId, index, blob)
-      }
-    } catch (error) {
-      console.error('Error handling chunk:', error)
-      await recorderDB.saveChunk(sessionId, index, blob)
-    }
-  }, [])
-
-  // Sync offline chunks when online
+  // Each captured session owns its queues; overlapping reconnect events share one sync.
   useEffect(() => {
-    const syncChunks = async () => {
-      if (navigator.onLine && sessionIdRef.current) {
-        const chunks = await recorderDB.getChunksBySession(sessionIdRef.current)
-        for (const chunk of chunks) {
-          try {
-            const fileName = `${chunk.index}.webm`
-            const result = await storageService.uploadFile(chunk.blob, {
-              bucket: 'audio-recordings',
-              folder: `temp/${chunk.sessionId}`,
-              fileName,
-              allowedTypes: ['audio/webm', 'audio/webm;codecs=opus']
-            })
-            if (result.success) {
-              await recorderDB.deleteChunk(chunk.id)
-              console.log('Synced offline chunk:', chunk.index)
-            }
-          } catch (e) {
-            console.error('Failed to sync chunk:', e)
-          }
-        }
-      }
-    }
-
+    const syncChunks = () => { void captureRef.current?.local.sync() }
     window.addEventListener('online', syncChunks)
-    const interval = setInterval(syncChunks, 30000) // Try syncing every 30s
+    const interval = setInterval(syncChunks, 30000)
     return () => {
       window.removeEventListener('online', syncChunks)
       clearInterval(interval)
@@ -194,6 +156,7 @@ export function SmartRecorder({
       return null
     }
 
+    const generation = generationRef.current
     const response = await agentService.requestInterviewIntervention({
       projectId,
       storytellerId,
@@ -209,6 +172,7 @@ export function SmartRecorder({
       transcriptEndOffset,
     })
 
+    if (generation !== generationRef.current || !mountedRef.current) return null
     const prompt = response.intervention.shouldIntervene
       ? response.intervention.promptText
       : ''
@@ -216,7 +180,9 @@ export function SmartRecorder({
     if (prompt) {
       setAiPrompt(prompt)
       setPreviousPrompts(prev => [...prev.slice(-4), prompt])
-      setTimeout(() => setAiPrompt(''), 10000)
+      setTimeout(() => {
+        if (generation === generationRef.current && mountedRef.current) setAiPrompt('')
+      }, 10000)
     }
 
     return response
@@ -227,6 +193,7 @@ export function SmartRecorder({
     if (!SpeechRecognition) return null
 
     const recognition = new SpeechRecognition()
+    const recognitionGeneration = generationRef.current
     recognition.continuous = true
     recognition.interimResults = true
     recognition.continuous = true
@@ -244,6 +211,7 @@ export function SmartRecorder({
     recognition.lang = langMap[locale] || locale || 'en-US'
 
     recognition.onresult = (event: any) => {
+      if (recognitionGeneration !== generationRef.current || !isRecordingRef.current) return
       let interimTranscript = ''
       let finalTranscript = ''
 
@@ -267,53 +235,12 @@ export function SmartRecorder({
     }
 
     recognition.onerror = (event: any) => {
+      if (recognitionGeneration !== generationRef.current) return
       console.error('Speech recognition error:', event.error)
       if (event.error === 'network') {
-        toast.error('Network connection issue, switching to traditional recording mode')
-        setNetworkQuality('offline')
-        // Restart with traditional recording
-        stopRecording()
-        setTimeout(() => {
-          setRecordingMethod('traditional')
-          startRecording()
-        }, 1000)
-      }
-    }
-
-    recognition.onend = () => {
-      // Auto-restart recognition if still recording (to handle timeout)
-      if (recordingState === 'recording' && recognitionRef.current) {
-        try {
-          recognition.start()
-        } catch (error) {
-          console.warn('Failed to restart recognition:', error)
-        }
-      }
-    }
-
-    recognition.onerror = (event: any) => {
-      console.error('Speech recognition error:', event.error)
-      if (event.error === 'network') {
-        // Network error, fallback to traditional recording
-        toast.error('Network connection unstable, automatically switching to traditional recording mode')
+        // Transcription can fail without restarting or discarding the microphone capture.
         setRecordingMethod('traditional')
-        stopRecording()
-        setTimeout(() => startRecording(), 1000)
-      }
-    }
-
-    recognition.onend = () => {
-      if (recordingState === 'recording') {
-        // Restart recognition if still recording
-        setTimeout(() => {
-          if (recognitionRef.current && recordingState === 'recording') {
-            try {
-              recognitionRef.current.start()
-            } catch (err) {
-              console.error('Failed to restart recognition:', err)
-            }
-          }
-        }, 100)
+        toast.error('Live transcription is unavailable. Audio recording is continuing.')
       }
     }
 
@@ -416,12 +343,13 @@ export function SmartRecorder({
     resetSilenceTimerRef.current = resetSilenceTimer
   }, [resetSilenceTimer])
 
-  const startTimer = useCallback(() => {
-    startTimeRef.current = Date.now()
-    pausedTimeRef.current = 0
+  const startTimer = useCallback((reset = false) => {
+    if (timerRef.current) clearInterval(timerRef.current)
+    if (reset) activeElapsedMsRef.current = 0
+    activeStartedAtRef.current = Date.now()
 
     timerRef.current = setInterval(() => {
-      const elapsed = Date.now() - startTimeRef.current - pausedTimeRef.current
+      const elapsed = activeElapsedMsRef.current + Date.now() - activeStartedAtRef.current!
       const seconds = Math.floor(elapsed / 1000)
       setDuration(seconds)
 
@@ -433,6 +361,11 @@ export function SmartRecorder({
   }, [maxDuration])
 
   const stopTimer = useCallback(() => {
+    if (activeStartedAtRef.current !== null) {
+      activeElapsedMsRef.current += Date.now() - activeStartedAtRef.current
+      activeStartedAtRef.current = null
+      if (mountedRef.current) setDuration(Math.floor(activeElapsedMsRef.current / 1000))
+    }
     if (timerRef.current) {
       clearInterval(timerRef.current)
       timerRef.current = null
@@ -441,27 +374,47 @@ export function SmartRecorder({
 
   // Wake Lock Implementation
   const wakeLockRef = useRef<any>(null)
+  const wakeLockRequestRef = useRef<Promise<void> | null>(null)
 
   const requestWakeLock = useCallback(async () => {
-    try {
-      if ('wakeLock' in navigator) {
-        wakeLockRef.current = await (navigator as any).wakeLock.request('screen')
+    if (!('wakeLock' in navigator) || wakeLockRef.current) return
+    if (wakeLockRequestRef.current) return wakeLockRequestRef.current
+
+    const generation = generationRef.current
+    const request = (async () => {
+      try {
+        const lock = await (navigator as any).wakeLock.request('screen')
+        if (generation !== generationRef.current || !mountedRef.current || wakeLockRef.current) {
+          await lock.release()
+          return
+        }
+        wakeLockRef.current = lock
         console.log('Wake Lock is active')
 
-        wakeLockRef.current.addEventListener('release', () => {
+        lock.addEventListener('release', () => {
+          if (wakeLockRef.current === lock) wakeLockRef.current = null
           console.log('Wake Lock was released')
         })
+      } catch (err: any) {
+        console.error(`${err.name}, ${err.message}`)
       }
-    } catch (err: any) {
-      console.error(`${err.name}, ${err.message}`)
+    })()
+    wakeLockRequestRef.current = request
+    try {
+      await request
+    } finally {
+      if (wakeLockRequestRef.current === request) wakeLockRequestRef.current = null
     }
   }, [])
 
   const releaseWakeLock = useCallback(async () => {
-    if (wakeLockRef.current) {
-      try {
-        await wakeLockRef.current.release()
+    const lock = wakeLockRef.current
+    if (lock) {
+      if (wakeLockRef.current === lock) {
         wakeLockRef.current = null
+      }
+      try {
+        await lock.release()
         console.log('Wake Lock released manually')
       } catch (err: any) {
         console.error(`${err.name}, ${err.message}`)
@@ -483,79 +436,165 @@ export function SmartRecorder({
     }
   }, [recordingState, requestWakeLock])
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      releaseWakeLock()
+  const endCapture = useCallback((capture: Capture) => {
+    if (capture.recorder.state !== 'inactive') capture.recorder.stop()
+    capture.stream.getTracks().forEach(track => track.stop())
+  }, [])
+
+  cancelCaptureRef.current = () => {
+    generationRef.current += 1
+    startingRef.current = false
+    resumingRef.current = false
+    isRecordingRef.current = false
+    const capture = captureRef.current
+    if (capture) {
+      capture.cancelled = true
+      endCapture(capture)
+      // Page exit is best effort; onstop also waits for the last dataavailable write.
+      void capture.local.interrupt().catch(() => {})
     }
-  }, [releaseWakeLock])
+    // Permission may have resolved while the initial IndexedDB write is still pending.
+    streamRef.current?.getTracks().forEach(track => track.stop())
+    streamRef.current = null
+    if (recognitionRef.current) {
+      recognitionRef.current.onend = null
+      recognitionRef.current.stop()
+      recognitionRef.current = null
+    }
+    stopTimer()
+    void releaseWakeLock()
+  }
+
+  useEffect(() => {
+    mountedRef.current = true
+    setRecordingState('idle')
+    setTranscript('')
+    setInterimTranscript('')
+    setAudioBlob(null)
+    setAudioUrl(null)
+    setAiPrompt('')
+    setPreviousPrompts([])
+    setLastProcessedLength(0)
+    setDuration(0)
+    return () => {
+      mountedRef.current = false
+      cancelCaptureRef.current()
+    }
+  }, [projectId, userId])
+
+  useEffect(() => () => {
+    if (audioUrl) URL.revokeObjectURL(audioUrl)
+  }, [audioUrl])
+
+  useEffect(() => {
+    const leave = () => {
+      cancelCaptureRef.current()
+      setRecordingState('idle')
+    }
+    window.addEventListener('pagehide', leave)
+    return () => window.removeEventListener('pagehide', leave)
+  }, [])
 
   const startRecording = useCallback(async () => {
+    if (startingRef.current || captureRef.current?.recorder.state === 'recording' || captureRef.current?.recorder.state === 'paused') return
+    startingRef.current = true
+    const generation = ++generationRef.current
+    const isCurrent = () => mountedRef.current && generationRef.current === generation
+    let stream: MediaStream | null = null
+    let local: LocalRecordingSession | null = null
+    setRecordingState('starting')
     try {
-      // Request Wake Lock
+      if (!projectId || !userId) throw new Error('A project and signed-in user are required to record')
+      if (typeof MediaRecorder === 'undefined' || typeof MediaRecorder.isTypeSupported !== 'function') {
+        throw new Error('Audio recording is not supported in this browser')
+      }
+      const requestedMime = selectRecordingMimeType(['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg'])
+      if (!requestedMime) throw new Error('No supported audio recording format is available')
       await requestWakeLock()
-
-      // Request microphone permission
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      if (!isCurrent()) return
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      if (!isCurrent()) { stream.getTracks().forEach(track => track.stop()); return }
       streamRef.current = stream
-
-      // Always start MediaRecorder for audio recording
-      //                        
-      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm'
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType,
-        audioBitsPerSecond: 64000 // 64 kbps: keep ~20min < 10MB for reliable STT upload
+      const recorder = new MediaRecorder(stream, { mimeType: requestedMime, audioBitsPerSecond: 64000 })
+      const mimeType = recorder.mimeType
+      if (!mimeType || !['audio/webm', 'audio/mp4', 'audio/ogg'].includes(mimeType.split(';')[0])) {
+        throw new Error('The browser did not provide a supported recording format')
+      }
+      local = await createLocalRecordingSession({
+        id: crypto.randomUUID(), projectId, userId, mimeType, startedAt: new Date().toISOString(),
       })
-      mediaRecorderRef.current = mediaRecorder
-      audioChunksRef.current = []
-
-      // Initialize session
-      sessionIdRef.current = crypto.randomUUID()
-      chunkIndexRef.current = 0
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data)
-          // Handle chunk upload
-          const index = chunkIndexRef.current++
-          handleChunk(event.data, index)
+      if (!isCurrent()) {
+        stream.getTracks().forEach(track => track.stop())
+        await local.interrupt()
+        return
+      }
+      const capture: Capture = { recorder, stream, local, chunks: [], generation, cancelled: false, failed: false }
+      captureRef.current = capture
+      mediaRecorderRef.current = recorder
+      streamRef.current = stream
+      const fail = (error: unknown) => {
+        capture.failed = true
+        endCapture(capture)
+        void capture.local.interrupt().catch(() => {})
+        if (!isCurrent() || capture.cancelled) return
+        stopTimer()
+        isRecordingRef.current = false
+        setRecordingState('idle')
+        const message = error instanceof Error ? error.message : 'Recording was interrupted'
+        onError?.(message)
+        toast.error(message)
+        void releaseWakeLock()
+      }
+      recorder.ondataavailable = event => {
+        if (!event.data.size) return
+        capture.chunks.push(event.data)
+        void capture.local.persist(event.data).catch(fail)
+      }
+      recorder.onerror = () => fail(new Error('Recording was interrupted by the browser'))
+      recorder.onstop = async () => {
+        try {
+          await capture.local.interrupt()
+          if (!isCurrent() || capture.cancelled || capture.failed) return
+          const completedBlob = new Blob(capture.chunks, { type: mimeType })
+          if (!completedBlob.size) throw new Error('The recording contains no audio')
+          setAudioBlob(completedBlob)
+          setAudioUrl(URL.createObjectURL(completedBlob))
+          stopTimer()
+          isRecordingRef.current = false
+          setRecordingState('completed')
+          toast.success(t('success.recorded'))
+        } catch (error) {
+          if (!capture.failed) fail(error)
+        } finally {
+          capture.stream.getTracks().forEach(track => track.stop())
+          if (isCurrent()) void releaseWakeLock()
         }
       }
-
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType })
-        setAudioBlob(audioBlob)
-        setAudioUrl(URL.createObjectURL(audioBlob))
-        releaseWakeLock() // Release lock when recording stops
-      }
-
-      // Start with 60s timeslice
-      mediaRecorder.start(60000)
-      toast.success('Started recording')
-
+      recorder.start(60000)
       setRecordingState('recording')
+      isRecordingRef.current = true
       setTranscript('')
       setInterimTranscript('')
       setDuration(0)
-      startTimer()
+      startTimer(true)
+      toast.success('Started recording')
       void requestInterviewPrompt({
-        phase: 'opening',
-        recentTranscript: '',
-        silenceMs: 0,
-        transcriptStartOffset: 0,
-        transcriptEndOffset: 0,
-      }).catch((error) => {
-        console.warn('[SmartRecorder] Failed to request opening intervention:', error)
-      })
-
+        phase: 'opening', recentTranscript: '', silenceMs: 0,
+        transcriptStartOffset: 0, transcriptEndOffset: 0,
+      }).catch(error => console.warn('[SmartRecorder] Failed to request opening intervention:', error))
     } catch (error) {
-      console.error('Failed to start recording:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Failed to start recording'
-      onError?.(errorMessage)
-      toast.error(errorMessage)
-      releaseWakeLock() // Ensure lock is released on error
+      stream?.getTracks().forEach(track => track.stop())
+      if (local) void local.interrupt().catch(() => {})
+      if (!isCurrent()) return
+      const message = error instanceof Error ? error.message : 'Failed to start recording'
+      setRecordingState('idle')
+      onError?.(message)
+      toast.error(message)
+      void releaseWakeLock()
+    } finally {
+      if (isCurrent()) startingRef.current = false
     }
-  }, [startTimer, onError, requestWakeLock, releaseWakeLock, requestInterviewPrompt])
+  }, [projectId, userId, startTimer, stopTimer, onError, requestWakeLock, releaseWakeLock, requestInterviewPrompt, endCapture, t])
 
   const pauseRecording = useCallback(() => {
     if (recordingState !== 'recording') return
@@ -567,7 +606,6 @@ export function SmartRecorder({
       mediaRecorderRef.current.pause()
     }
 
-    pausedTimeRef.current += Date.now() - startTimeRef.current
     stopTimer()
     setRecordingState('paused')
     toast.success(t('success.paused'))
@@ -575,55 +613,59 @@ export function SmartRecorder({
   }, [recordingState, stopTimer, releaseWakeLock])
 
   const resumeRecording = useCallback(async () => {
-    if (recordingState !== 'paused') return
+    const capture = captureRef.current
+    if (recordingState !== 'paused' || !capture || resumingRef.current) return
+    const generation = generationRef.current
+    resumingRef.current = true
 
-    await requestWakeLock() // Re-acquire lock when resuming
-
-    if (recognitionRef.current) {
-      recognitionRef.current.start()
+    try {
+      await requestWakeLock()
+      if (!mountedRef.current || generation !== generationRef.current) return
+      if (captureRef.current !== capture || capture.cancelled || capture.failed || capture.recorder.state !== 'paused') {
+        void releaseWakeLock()
+        return
+      }
+      capture.recorder.resume()
+      startTimer()
+      setRecordingState('recording')
+      toast.success(t('success.resumed'))
+    } finally {
+      if (generation === generationRef.current) resumingRef.current = false
     }
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'paused') {
-      mediaRecorderRef.current.resume()
-    }
-
-    startTimeRef.current = Date.now()
-    startTimer()
-    setRecordingState('recording')
-    toast.success(t('success.resumed'))
-  }, [recordingState, startTimer, requestWakeLock])
+  }, [recordingState, startTimer, requestWakeLock, releaseWakeLock, t])
 
   const stopRecording = useCallback(() => {
+    isRecordingRef.current = false
     if (recognitionRef.current) {
+      recognitionRef.current.onend = null
       recognitionRef.current.stop()
       recognitionRef.current = null
     }
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop()
-    }
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop())
-      streamRef.current = null
-    }
-
+    const capture = captureRef.current
+    if (!capture || capture.recorder.state === 'inactive') return
+    setRecordingState('processing')
     stopTimer()
-    setRecordingState('completed')
-    toast.success(t('success.recorded'))
-    // releaseWakeLock is called in mediaRecorder.onstop
-  }, [stopTimer])
+    endCapture(capture)
+  }, [stopTimer, endCapture])
 
   const resetRecording = useCallback(() => {
-    stopRecording()
+    cancelCaptureRef.current()
+    captureRef.current = null
+    mediaRecorderRef.current = null
+    streamRef.current = null
     setRecordingState('idle')
     setDuration(0)
     setTranscript('')
     setInterimTranscript('')
     setAudioBlob(null)
+    setAiPrompt('')
+    setPreviousPrompts([])
+    setLastProcessedLength(0)
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl)
       setAudioUrl(null)
     }
-    releaseWakeLock() // Ensure lock is released
-  }, [stopRecording, audioUrl, releaseWakeLock])
+  }, [audioUrl])
 
   const handleComplete = useCallback(() => {
     const result: RecordingResult = {
@@ -752,6 +794,8 @@ export function SmartRecorder({
                 {recordingState === 'idle' && t('status.ready')}
                 {recordingState === 'recording' && t('status.recording')}
                 {recordingState === 'paused' && t('status.paused')}
+                {recordingState === 'starting' && 'Preparing microphone…'}
+                {recordingState === 'processing' && 'Saving recording…'}
               </span>
             </div>
 

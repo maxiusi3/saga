@@ -1,0 +1,23 @@
+{
+  "protected": {
+    "package.json": true,
+    "package-lock.json": true,
+    "packages/web/package.json": true,
+    "packages/web/next-env.d.ts": true,
+    "scripts/inspect-supabase-metadata.cjs": true,
+    "scripts/inspect-supabase-routines.cjs": true,
+    "scripts/supabase-capture-runtime.cjs": true,
+    "packages/web/src/lib/server/recording-audio-decoder.ts": true
+  },
+  "dependencyAudit": {
+    "executedThisBatch": false,
+    "source": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+    "sha256": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866",
+    "priorExitCode": 1,
+    "total": 42,
+    "high": 34,
+    "moderate": 8,
+    "critical": 0,
+    "dependenciesUnchanged": true
+  }
+}

@@ -1,0 +1,94 @@
+Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+Dashboard Layout: Auth state check {
+  user: true,
+  isLoading: false,
+  isAuthenticated: true,
+  initialized: false
+}
+Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+Dashboard Layout: Render decision { isLoading: true, isAuthenticated: false, user: false }
+Dashboard Layout: Showing loading spinner
+Dashboard Layout: Auth state check {
+  user: false,
+  isLoading: true,
+  isAuthenticated: false,
+  initialized: false
+}
+Dashboard Layout: Redirect check { isLoading: true, isAuthenticated: false }
+Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+Dashboard Layout: Auth state check {
+  user: true,
+  isLoading: false,
+  isAuthenticated: true,
+  initialized: false
+}
+Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+Dashboard Layout: Render decision { isLoading: true, isAuthenticated: false, user: false }
+Dashboard Layout: Showing loading spinner
+Dashboard Layout: Auth state check {
+  user: false,
+  isLoading: true,
+  isAuthenticated: false,
+  initialized: false
+}
+Dashboard Layout: Redirect check { isLoading: true, isAuthenticated: false }
+Dashboard Layout: Render decision { isLoading: false, isAuthenticated: true, user: true }
+Dashboard Layout: Auth state check {
+  user: true,
+  isLoading: false,
+  isAuthenticated: true,
+  initialized: false
+}
+Dashboard Layout: Redirect check { isLoading: false, isAuthenticated: true }
+{
+  "qualification": "Actual installed SDK, production browser facade/store/dashboard render, synthetic child lifecycle; mocked display components and Auth fetch, no network or real recording",
+  "before": {
+    "user": "11111111-1111-4111-8111-111111111111",
+    "authenticated": true,
+    "loading": false,
+    "mounts": 1,
+    "unmounts": 0,
+    "childPresent": true
+  },
+  "during": {
+    "user": null,
+    "authenticated": false,
+    "loading": true,
+    "mounts": 1,
+    "unmounts": 1,
+    "childPresent": false
+  },
+  "after": {
+    "user": "11111111-1111-4111-8111-111111111111",
+    "authenticated": true,
+    "loading": false,
+    "mounts": 2,
+    "unmounts": 1,
+    "childPresent": true
+  },
+  "tokenRefresh": {
+    "returnedToken": null,
+    "sdkSessionToken": "synthetic-refreshed-access",
+    "user": "11111111-1111-4111-8111-111111111111",
+    "authenticated": true,
+    "loading": false
+  },
+  "fetchCalls": [
+    {
+      "url": "http://127.0.0.1:54321/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:54321/auth/v1/user",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",
+      "method": "POST"
+    },
+    {
+      "url": "http://127.0.0.1:54321/auth/v1/user",
+      "method": "GET"
+    }
+  ]
+}

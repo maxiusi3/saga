@@ -1,0 +1,5 @@
+{
+  "command": "npm ls --package-lock-only --all --json",
+  "exitCode": 0,
+  "problems": []
+}

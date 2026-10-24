@@ -1,0 +1,1066 @@
+{
+  "schemaVersion": 1,
+  "batch": "2026-10-19-auth-return",
+  "documentedAt": "2026-10-19T19:25:27.266136+08:00",
+  "status": "LOCAL_BATCH_COMPLETE",
+  "implementationStatus": "DONE_WITH_CONCERNS",
+  "statusMeaning": "Local batch implementation, task reviews, final batch review and final integrity passed. RB1 remains an open release blocker; G0/G1 remain false. Original full-project tests were identity-checked and reused, not rerun during this recovery.",
+  "branch": "codex/october-upgrade-p0",
+  "head": "1caa21a72a23d6f5166ed127847ca931374b890a",
+  "reviewBaseline": "batch-start working-tree bytes, not the accumulated dirty HEAD diff",
+  "bindingSpecification": {
+    "path": "docs/superpowers/specs/2026-10-19-auth-return.md",
+    "sha256": "ddb030397f6ba513b6ead1ca11172d662d882fe8697b6e63b4c80a5916f917c6"
+  },
+  "plan": {
+    "path": "docs/superpowers/plans/2026-10-19-upgrade-auth-return.md",
+    "status": "controller-owned mutable task checkboxes"
+  },
+  "task2Brief": {
+    "path": ".superpowers/sdd/2026-10-19-upgrade-auth-return/task-2-brief.md",
+    "sha256": "6dfd513e07d44359f2b421a20fa06608a3304a09ca51dbf915320a99a82268ea"
+  },
+  "scope": {
+    "changedExistingApplicationPaths": [
+      "packages/web/src/app/[locale]/auth/signin/page.tsx",
+      "packages/web/src/app/[locale]/auth/callback/route.ts",
+      "packages/web/src/components/auth/auth-provider.tsx"
+    ],
+    "changedExistingContinuationDocumentPaths": [
+      "docs/HANDOFF-2026-10-13-upgrade.md",
+      "docs/2026-10-10-integrated-upgrade-plan.md",
+      "docs/README.md",
+      "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md",
+      "docs/superpowers/specs/2026-10-13-upgrade-p1-contracts.md"
+    ],
+    "permittedExistingChangeCount": 8,
+    "newSourceTestFixturePaths": [
+      "packages/web/src/lib/auth-return.ts",
+      "packages/web/src/lib/server/auth-callback.ts",
+      "packages/web/src/lib/__tests__/auth-return.test.ts",
+      "packages/web/src/lib/server/__tests__/auth-callback.test.ts",
+      "packages/web/src/lib/server/test-support/auth-callback-fixture.ts",
+      "packages/web/src/components/auth/__tests__/auth-signin-return.test.tsx"
+    ],
+    "supportedLocales": [
+      "en",
+      "zh-CN",
+      "zh-TW",
+      "ja",
+      "ko",
+      "es",
+      "fr",
+      "pt"
+    ],
+    "next": {
+      "decodeCount": 1,
+      "maxLength": 2048,
+      "allowed": [
+        "/dashboard and nonempty ASCII alphanumeric/underscore/hyphen subsegments without query/fragment",
+        "/invite/v1_<32 lowercase hex>",
+        "/accept-invitation?token=v1_<32 lowercase hex> with exactly that query",
+        "the preceding forms with one supported locale prefix"
+      ],
+      "fallback": "current valid locale dashboard; invalid locale uses en",
+      "noTrimOrSecondDecode": true,
+      "missingDuplicateOrInvalidFallsBack": true,
+      "preserveValidExplicitLocale": true,
+      "providerLosingNext": "dashboard; no previous invitation recovery"
+    },
+    "legacyAuthNext": {
+      "action": "best-effort delete only on signin and AuthProvider mount",
+      "read": false,
+      "write": false,
+      "replacementCache": false,
+      "otherStorageOrSessionKeysCleared": false
+    },
+    "browser": {
+      "google": "skipBrowserRedirect true; validate configured authorize URL, single google provider and exact safe callback URL before current-context navigation",
+      "otp": "existing request entry with safe emailRedirectTo",
+      "sessionReturn": "clean explicit input delegates to setSession; complete unexpired session and matching UUID provider user required",
+      "staleResults": "mounted/flow/render snapshot plus actual pathname/search/hash checks; same-context effect attempt reuse",
+      "sharedFactoryAndAuthStoreChanged": false
+    },
+    "callback": {
+      "sdkVersions": {
+        "@supabase/ssr": "0.10.2",
+        "@supabase/supabase-js": "2.105.3",
+        "@supabase/auth-js": "2.105.3"
+      },
+      "inputs": "one code OR one token_hash/type pair; error presence and duplicate/mixed/malformed input reject before client creation",
+      "credentialInputMaxLength": 4096,
+      "otpTypes": [
+        "email",
+        "magiclink",
+        "invite",
+        "signup",
+        "recovery",
+        "email_change"
+      ],
+      "publicConfigurationOnly": true,
+      "authOperationsMax": 1,
+      "selectedEndpointPostMax": 1,
+      "automaticRetryOrFallback": false,
+      "httpRedirectFollow": false,
+      "deadlineMs": 10000,
+      "deadlineCovers": [
+        "auth operation",
+        "fetch",
+        "response body"
+      ],
+      "callerAbort": true,
+      "requestCookieIsolation": "Only exact PKCE verifier values supplied; other cookie names retained for stale-chunk deletion, preventing expired INITIAL_SESSION refresh/fallback. Browser factory/session policy unchanged.",
+      "success": "complete unexpired session and matching provider user; standard HTTP 303 preserving SDK chunks and individual cookie options",
+      "failure": "fixed safe signin redirect with validated next; no new session cookies, explicit deletion cookies only",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer"
+      },
+      "inlineHtmlOrScriptNavigation": false,
+      "outputSessionTokenLimit": "separate syntax validation; not URL input max; 8000 characters exercised"
+    }
+  },
+  "authoritativeFrozenSource": {
+    "manifest": {
+      "path": "docs/research/evidence/2026-10-19-auth-return/final-source-sha256-v2.txt",
+      "sha256": "de95e42addbd8b7a49544851f7b3630d1cda42a3495b1cafc4a4ac576e399bc5"
+    },
+    "sources": [
+      {
+        "path": "packages/web/src/app/[locale]/auth/signin/page.tsx",
+        "sha256": "9f80568c5ac5a2ec34c5a807f6c73b64878ca804bdb8bcdba9e2ee124fa5e14b"
+      },
+      {
+        "path": "packages/web/src/app/[locale]/auth/callback/route.ts",
+        "sha256": "f838b99171a76d5fc8c9d6d6d326ae0b7938bafb9145e39aaf6d75983cba0232"
+      },
+      {
+        "path": "packages/web/src/components/auth/auth-provider.tsx",
+        "sha256": "7e6735667b3fd76990f4dc976e37f09cc8a09840920e9f17da698fdd6b6a0987"
+      },
+      {
+        "path": "packages/web/src/lib/auth-return.ts",
+        "sha256": "6339af4dac4ac49aafcf3e44ae3b0859870e7e00892f73bef04439de1a7e0d6c"
+      },
+      {
+        "path": "packages/web/src/lib/server/auth-callback.ts",
+        "sha256": "b6d0046c0d757c3a58e21be23aa57371ee901d23b27b084871acb8633fadc7b5"
+      },
+      {
+        "path": "packages/web/src/lib/__tests__/auth-return.test.ts",
+        "sha256": "6fd29b11f4a3259dd34f47d96d8f4a4d864340cf1d656a1755c4b4610a68700e"
+      },
+      {
+        "path": "packages/web/src/lib/server/__tests__/auth-callback.test.ts",
+        "sha256": "48760fbbec9c7ad8531e3bc77f27da06691f9710ecd21f029b810e834e955aa8"
+      },
+      {
+        "path": "packages/web/src/lib/server/test-support/auth-callback-fixture.ts",
+        "sha256": "8ae2608bc5bc39e4ba643fe810ab2fc4d96d25ae89d54123645a7f80bcf9840e"
+      },
+      {
+        "path": "packages/web/src/components/auth/__tests__/auth-signin-return.test.tsx",
+        "sha256": "af8b9bc68ede1793263f203b3f38e797200b4067f15f8465138ca06b4225cd0b"
+      }
+    ],
+    "sourceCount": 9,
+    "supersedes": {
+      "path": "docs/research/evidence/2026-10-19-auth-return/final-source-sha256.txt",
+      "sha256": "5e722ec659f68d37cf12d1e49034a00196a260d4e0d0c95bb3edd2d534c427b1"
+    },
+    "note": "Provisional 414-test manifest and outputs remain unchanged; v2 follows 16 covering RED/GREEN self-review fixes."
+  },
+  "checks": {
+    "authoritativeFocused": {
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/final-v2-focused-and-invitation-regressions.txt",
+        "sha256": "c58c38f84222b175c57df25bb3a15fb9a45dbe9696192c8d65e1af9922192f13"
+      },
+      "classification": "authoritative-final-v2",
+      "command": [
+        "npm",
+        "test",
+        "--workspace=@saga/web",
+        "--",
+        "--runInBand",
+        "--runTestsByPath",
+        "src/lib/__tests__/auth-return.test.ts",
+        "src/components/auth/__tests__/auth-signin-return.test.tsx",
+        "src/lib/server/__tests__/auth-callback.test.ts",
+        "src/lib/server/__tests__/invitation-read-routes.test.ts",
+        "src/lib/server/__tests__/invitation-acceptance.test.ts",
+        "src/lib/__tests__/invitation-acceptance-client.test.ts",
+        "src/lib/__tests__/invitation-acceptance-protocol.test.ts",
+        "src/components/invitations/__tests__/invitation-recipient.test.tsx"
+      ],
+      "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts src/lib/server/__tests__/invitation-read-routes.test.ts src/lib/server/__tests__/invitation-acceptance.test.ts src/lib/__tests__/invitation-acceptance-client.test.ts src/lib/__tests__/invitation-acceptance-protocol.test.ts src/components/invitations/__tests__/invitation-recipient.test.tsx",
+      "workingDirectory": ".",
+      "exitCode": 0,
+      "counts": {
+        "suites": {
+          "passed": 8,
+          "total": 8
+        },
+        "tests": {
+          "passed": 430,
+          "total": 430
+        }
+      },
+      "newFocusedTests": 177,
+      "priorInvitationRegressionTests": 253,
+      "skippedTests": 0
+    },
+    "authoritativeTypecheck": {
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/final-v2-typecheck.txt",
+        "sha256": "73239f05a6612b3c62c1a1f0c57dbb0bd2b1cba12fca2be9de3109b638e6b706"
+      },
+      "classification": "authoritative-final-v2",
+      "command": [
+        "npm",
+        "run",
+        "type-check",
+        "--workspace=@saga/web"
+      ],
+      "commandTextAsRecorded": "npm run type-check --workspace=@saga/web",
+      "workingDirectory": ".",
+      "exitCode": 0,
+      "counts": {}
+    },
+    "authoritativeScopedLint": {
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/final-v2-scoped-lint.txt",
+        "sha256": "71af0502abdb2f7f2ed653ea0d522ac2a021e4e4963af8bd78a3e603e0b17f8c"
+      },
+      "classification": "authoritative-final-v2",
+      "command": [
+        "../../node_modules/.bin/eslint",
+        "src/lib/auth-return.ts",
+        "src/lib/server/auth-callback.ts",
+        "src/app/[locale]/auth/callback/route.ts",
+        "src/app/[locale]/auth/signin/page.tsx",
+        "src/components/auth/auth-provider.tsx",
+        "src/lib/__tests__/auth-return.test.ts",
+        "src/lib/server/__tests__/auth-callback.test.ts",
+        "src/lib/server/test-support/auth-callback-fixture.ts",
+        "src/components/auth/__tests__/auth-signin-return.test.tsx"
+      ],
+      "commandTextAsRecorded": "../../node_modules/.bin/eslint src/lib/auth-return.ts src/lib/server/auth-callback.ts src/app/[locale]/auth/callback/route.ts src/app/[locale]/auth/signin/page.tsx src/components/auth/auth-provider.tsx src/lib/__tests__/auth-return.test.ts src/lib/server/__tests__/auth-callback.test.ts src/lib/server/test-support/auth-callback-fixture.ts src/components/auth/__tests__/auth-signin-return.test.tsx",
+      "workingDirectory": "packages/web",
+      "exitCode": 0,
+      "counts": {},
+      "invokedWithArgumentArray": true,
+      "warningCount": 0,
+      "errorCount": 0
+    },
+    "controllerProject": {
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/project-verification-20261019T033925Z.json",
+        "sha256": "b670e34708171dfa19a2b5082fbaa193d13f45dd18f55181deabc2ddc7933f85"
+      },
+      "newRun": true,
+      "runId": "20261019T033925Z",
+      "startedAt": "2026-10-19T03:39:25.439638+00:00",
+      "finishedAt": "2026-10-19T03:41:51.553033+00:00",
+      "commands": [
+        {
+          "label": "verify",
+          "command": [
+            "npm",
+            "run",
+            "verify"
+          ],
+          "startedAt": "2026-10-19T03:39:25.439676+00:00",
+          "finishedAt": "2026-10-19T03:41:46.214733+00:00",
+          "exitCode": 0,
+          "log": {
+            "path": "docs/research/evidence/2026-10-19-auth-return/project-verify-20261019T033925Z.txt",
+            "sha256": "91be789195c5ac469180389da199d7cdbd958c648f30cd59dab9f74af4685ea7"
+          }
+        },
+        {
+          "label": "shared",
+          "command": [
+            "npm",
+            "test",
+            "--workspace=packages/shared",
+            "--",
+            "--runInBand"
+          ],
+          "startedAt": "2026-10-19T03:41:46.216122+00:00",
+          "finishedAt": "2026-10-19T03:41:50.530050+00:00",
+          "exitCode": 0,
+          "log": {
+            "path": "docs/research/evidence/2026-10-19-auth-return/project-shared-20261019T033925Z.txt",
+            "sha256": "e5bbf97604b4aa45dcb933adb4108881982152f132d80e0b923bd45123f90130"
+          }
+        },
+        {
+          "label": "infra",
+          "command": [
+            "npm",
+            "run",
+            "test:infra"
+          ],
+          "startedAt": "2026-10-19T03:41:50.530544+00:00",
+          "finishedAt": "2026-10-19T03:41:51.205135+00:00",
+          "exitCode": 0,
+          "log": {
+            "path": "docs/research/evidence/2026-10-19-auth-return/project-infra-20261019T033925Z.txt",
+            "sha256": "9787df1014c7efdbf8ab44b54b282a68274048a949f529928aef63c6f1e4003e"
+          }
+        }
+      ],
+      "status": "passed",
+      "resultCounts": {
+        "webSuites": 85,
+        "webTests": 1196,
+        "sharedSuites": 4,
+        "sharedTests": 16,
+        "infraTests": 7,
+        "staticPages": 176
+      },
+      "inputCount": 757,
+      "inputChanges": [],
+      "nextEnvRestored": true,
+      "note": "Document changes do not alter these application input fingerprints. Old PG matrices were not rerun."
+    },
+    "historicalRuns": [
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/red-existing-behavior.txt",
+          "sha256": "4fc169e2a9a771259ae47871e51ae2112e51a1fc9f2394a028e8bd05f5511722"
+        },
+        "classification": "executed-original-source-behavioral-red",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx",
+          "src/lib/server/__tests__/auth-callback.test.ts"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts",
+        "workingDirectory": ".",
+        "exitCode": 1,
+        "counts": {
+          "suites": {
+            "failed": 2,
+            "total": 2
+          },
+          "tests": {
+            "failed": 5,
+            "total": 5
+          }
+        },
+        "outerShellExitCode": 0,
+        "testProcessExitCode": 1,
+        "notes": [
+          "Jest/npm failed; the containing shell subsequently displayed the captured log and returned 0.",
+          "Executed five cases demonstrated missing legacy-key deletion, reflected raw signin error, push navigation, full callback URL/error sentinel disclosure, 307 and missing privacy headers.",
+          "Code/token_hash logging was found by original-source inspection; this RED did not execute a code-sentinel disclosure case."
+        ],
+        "testSources": [
+          {
+            "path": "docs/research/evidence/2026-10-19-auth-return/red-existing-signin-test-source.txt",
+            "sha256": "c13d2b7996656288facda17dde7e1d791d0672e0f3b9765dc1f90b40133f400a"
+          },
+          {
+            "path": "docs/research/evidence/2026-10-19-auth-return/red-existing-callback-test-source.txt",
+            "sha256": "505d6a6b3a7880928b4fe14f7593f64322c021c261a579d77cacb78a4bce906c"
+          }
+        ]
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/red-contract-tests.txt",
+          "sha256": "c1c7aeedf97fb21e294b59caad9d6d1df852754d87a70f6d19655ca29638d783"
+        },
+        "classification": "historical-mixed-contract-and-import-failures",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx",
+        "workingDirectory": ".",
+        "exitCode": 1,
+        "counts": {
+          "suites": {
+            "failed": 2,
+            "total": 2
+          },
+          "tests": {
+            "failed": 29,
+            "passed": 1,
+            "total": 30
+          }
+        },
+        "notes": [
+          "Includes missing helper module, so not wholly behavioral RED."
+        ]
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/first-implementation-tests.txt",
+          "sha256": "785ad45e76cfb09e78e3eadd4e5287897db45a930767ac0565b61d5875a3b8b8"
+        },
+        "classification": "historical-test-harness-failure",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx",
+          "src/lib/server/__tests__/auth-callback.test.ts"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts",
+        "workingDirectory": ".",
+        "exitCode": 1,
+        "counts": {
+          "suites": {
+            "failed": 1,
+            "passed": 2,
+            "total": 3
+          },
+          "tests": {
+            "failed": 57,
+            "passed": 77,
+            "total": 134
+          }
+        },
+        "notes": [
+          "Nonconfigurable SDK export spy caused 57 failures; fixed by observing the actual underlying constructor, not replacing auth operations."
+        ]
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/callback-fixture-run-2.txt",
+          "sha256": "51479739401a75f011ee8c357fe41ab140787b7181d6488441dbaada365034fc"
+        },
+        "classification": "historical-green-after-harness-fix",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/server/__tests__/auth-callback.test.ts"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/server/__tests__/auth-callback.test.ts",
+        "workingDirectory": ".",
+        "exitCode": 0,
+        "counts": {
+          "suites": {
+            "passed": 1,
+            "total": 1
+          },
+          "tests": {
+            "passed": 57,
+            "total": 57
+          }
+        }
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/red-opaque-and-long-session.txt",
+          "sha256": "c2b1f8347e8f0bc80c8b07c7997f99ce74f51e54dc2b383392fb8b95a574b884"
+        },
+        "classification": "executed-covering-red",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/server/__tests__/auth-callback.test.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/server/__tests__/auth-callback.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx",
+        "workingDirectory": ".",
+        "exitCode": 1,
+        "counts": {
+          "suites": {
+            "failed": 1,
+            "passed": 1,
+            "total": 2
+          },
+          "tests": {
+            "failed": 2,
+            "passed": 103,
+            "total": 105
+          }
+        },
+        "notes": [
+          "Opaque code input alphabet too narrow; output token incorrectly constrained by URL input length."
+        ]
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/focused-tests-run-3.txt",
+          "sha256": "28f937a891e1211f159442950ca0be159d40cba510fec64e3ab4a94d40ab3728"
+        },
+        "classification": "historical-intermediate-green",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx",
+          "src/lib/server/__tests__/auth-callback.test.ts"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts",
+        "workingDirectory": ".",
+        "exitCode": 0,
+        "counts": {
+          "suites": {
+            "passed": 3,
+            "total": 3
+          },
+          "tests": {
+            "passed": 158,
+            "total": 158
+          }
+        }
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/callback-extra-edge-tests.txt",
+          "sha256": "1c44e768e1b0f81580bc3de6fb97e4211bdfa64b6c4f8f1d2574a0b389a2809c"
+        },
+        "classification": "historical-intermediate-green",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/server/__tests__/auth-callback.test.ts"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/server/__tests__/auth-callback.test.ts",
+        "workingDirectory": ".",
+        "exitCode": 0,
+        "counts": {
+          "suites": {
+            "passed": 1,
+            "total": 1
+          },
+          "tests": {
+            "passed": 74,
+            "total": 74
+          }
+        }
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/focused-and-invitation-regressions-run-1.txt",
+          "sha256": "8f42ec6203f8520a4f566e98e7b37fb1ab06e5717492711b074e40a3e6f31344"
+        },
+        "classification": "historical-intermediate-combined-green",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx",
+          "src/lib/server/__tests__/auth-callback.test.ts",
+          "src/lib/server/__tests__/invitation-read-routes.test.ts",
+          "src/lib/server/__tests__/invitation-acceptance.test.ts",
+          "src/lib/__tests__/invitation-acceptance-client.test.ts",
+          "src/lib/__tests__/invitation-acceptance-protocol.test.ts",
+          "src/components/invitations/__tests__/invitation-recipient.test.tsx"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts src/lib/server/__tests__/invitation-read-routes.test.ts src/lib/server/__tests__/invitation-acceptance.test.ts src/lib/__tests__/invitation-acceptance-client.test.ts src/lib/__tests__/invitation-acceptance-protocol.test.ts src/components/invitations/__tests__/invitation-recipient.test.tsx",
+        "workingDirectory": ".",
+        "exitCode": 0,
+        "counts": {
+          "suites": {
+            "passed": 8,
+            "total": 8
+          },
+          "tests": {
+            "passed": 411,
+            "total": 411
+          }
+        }
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/typecheck-run-1.txt",
+          "sha256": "08ea64c9ffa1d22531651f186df096f79984c3d6e44fb756bc8e39b2a527c016"
+        },
+        "classification": "historical-type-error",
+        "command": [
+          "npm",
+          "run",
+          "type-check",
+          "--workspace=@saga/web"
+        ],
+        "commandTextAsRecorded": "npm run type-check --workspace=@saga/web",
+        "workingDirectory": ".",
+        "exitCode": 2,
+        "counts": {},
+        "notes": [
+          "Callback-input union inference; later fixed."
+        ]
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/scoped-lint-run-1.txt",
+          "sha256": "71af0502abdb2f7f2ed653ea0d522ac2a021e4e4963af8bd78a3e603e0b17f8c"
+        },
+        "classification": "historical-scoped-lint",
+        "command": [
+          "../../node_modules/.bin/eslint",
+          "src/lib/auth-return.ts",
+          "src/lib/server/auth-callback.ts",
+          "src/app/[locale]/auth/callback/route.ts",
+          "src/app/[locale]/auth/signin/page.tsx",
+          "src/components/auth/auth-provider.tsx",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/lib/server/__tests__/auth-callback.test.ts",
+          "src/lib/server/test-support/auth-callback-fixture.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx"
+        ],
+        "commandTextAsRecorded": "../../node_modules/.bin/eslint src/lib/auth-return.ts src/lib/server/auth-callback.ts src/app/[locale]/auth/callback/route.ts src/app/[locale]/auth/signin/page.tsx src/components/auth/auth-provider.tsx src/lib/__tests__/auth-return.test.ts src/lib/server/__tests__/auth-callback.test.ts src/lib/server/test-support/auth-callback-fixture.ts src/components/auth/__tests__/auth-signin-return.test.tsx",
+        "workingDirectory": "packages/web",
+        "exitCode": 0,
+        "counts": {},
+        "invokedWithArgumentArray": true
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/final-focused-and-invitation-regressions.txt",
+          "sha256": "2bbc74b0819cf3f4f0ccee0086e612ac5c61a0ee949fe7965dd75690325e9ca0"
+        },
+        "classification": "superseded-provisional-freeze-green",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx",
+          "src/lib/server/__tests__/auth-callback.test.ts",
+          "src/lib/server/__tests__/invitation-read-routes.test.ts",
+          "src/lib/server/__tests__/invitation-acceptance.test.ts",
+          "src/lib/__tests__/invitation-acceptance-client.test.ts",
+          "src/lib/__tests__/invitation-acceptance-protocol.test.ts",
+          "src/components/invitations/__tests__/invitation-recipient.test.tsx"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts src/lib/server/__tests__/invitation-read-routes.test.ts src/lib/server/__tests__/invitation-acceptance.test.ts src/lib/__tests__/invitation-acceptance-client.test.ts src/lib/__tests__/invitation-acceptance-protocol.test.ts src/components/invitations/__tests__/invitation-recipient.test.tsx",
+        "workingDirectory": ".",
+        "exitCode": 0,
+        "counts": {
+          "suites": {
+            "passed": 8,
+            "total": 8
+          },
+          "tests": {
+            "passed": 414,
+            "total": 414
+          }
+        }
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/final-typecheck.txt",
+          "sha256": "73239f05a6612b3c62c1a1f0c57dbb0bd2b1cba12fca2be9de3109b638e6b706"
+        },
+        "classification": "superseded-provisional-freeze-typecheck",
+        "command": [
+          "npm",
+          "run",
+          "type-check",
+          "--workspace=@saga/web"
+        ],
+        "commandTextAsRecorded": "npm run type-check --workspace=@saga/web",
+        "workingDirectory": ".",
+        "exitCode": 0,
+        "counts": {}
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/final-scoped-lint.txt",
+          "sha256": "71af0502abdb2f7f2ed653ea0d522ac2a021e4e4963af8bd78a3e603e0b17f8c"
+        },
+        "classification": "superseded-provisional-freeze-lint",
+        "command": [
+          "../../node_modules/.bin/eslint",
+          "src/lib/auth-return.ts",
+          "src/lib/server/auth-callback.ts",
+          "src/app/[locale]/auth/callback/route.ts",
+          "src/app/[locale]/auth/signin/page.tsx",
+          "src/components/auth/auth-provider.tsx",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/lib/server/__tests__/auth-callback.test.ts",
+          "src/lib/server/test-support/auth-callback-fixture.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx"
+        ],
+        "commandTextAsRecorded": "../../node_modules/.bin/eslint src/lib/auth-return.ts src/lib/server/auth-callback.ts src/app/[locale]/auth/callback/route.ts src/app/[locale]/auth/signin/page.tsx src/components/auth/auth-provider.tsx src/lib/__tests__/auth-return.test.ts src/lib/server/__tests__/auth-callback.test.ts src/lib/server/test-support/auth-callback-fixture.ts src/components/auth/__tests__/auth-signin-return.test.tsx",
+        "workingDirectory": "packages/web",
+        "exitCode": 0,
+        "counts": {},
+        "invokedWithArgumentArray": true
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/red-native-context-and-session-tokens.txt",
+          "sha256": "8429eee64ed6f887ff79a690247a62d0713b51ca35107fa5134cf78dc6aa44dc"
+        },
+        "classification": "executed-covering-red",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx",
+          "src/lib/server/__tests__/auth-callback.test.ts",
+          "--testNamePattern",
+          "malformed output session token|actual URL context change"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts --testNamePattern malformed output session token|actual URL context change",
+        "workingDirectory": ".",
+        "exitCode": 1,
+        "counts": {
+          "suites": {
+            "failed": 3,
+            "total": 3
+          },
+          "tests": {
+            "failed": 16,
+            "skipped": 161,
+            "total": 177
+          }
+        },
+        "notes": [
+          "16 selected failing tests; 161 filtered by testNamePattern, not a full run."
+        ]
+      },
+      {
+        "artifact": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/green-native-context-and-session-tokens.txt",
+          "sha256": "7dc5d485728e6626787e84eb84347697876e6888d196a79e8699d6f0fbfcb2b0"
+        },
+        "classification": "covering-green-before-final-v2-freeze",
+        "command": [
+          "npm",
+          "test",
+          "--workspace=@saga/web",
+          "--",
+          "--runInBand",
+          "--runTestsByPath",
+          "src/lib/__tests__/auth-return.test.ts",
+          "src/components/auth/__tests__/auth-signin-return.test.tsx",
+          "src/lib/server/__tests__/auth-callback.test.ts",
+          "--testNamePattern",
+          "malformed output session token|actual URL context change"
+        ],
+        "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/lib/__tests__/auth-return.test.ts src/components/auth/__tests__/auth-signin-return.test.tsx src/lib/server/__tests__/auth-callback.test.ts --testNamePattern malformed output session token|actual URL context change",
+        "workingDirectory": ".",
+        "exitCode": 0,
+        "counts": {
+          "suites": {
+            "passed": 3,
+            "total": 3
+          },
+          "tests": {
+            "skipped": 161,
+            "passed": 16,
+            "total": 177
+          }
+        },
+        "notes": [
+          "The same 16 selected tests passed; 161 filtered by testNamePattern. Final v2 ran all 430 without skips."
+        ]
+      }
+    ]
+  },
+  "reviewStatus": {
+    "task1": {
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/task-1-report.md",
+        "sha256": "be232956ff434ca1f71a9520ece54eedbf5e9ac95052dfdf9acf774a7a55c48f"
+      },
+      "review": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/task-1-review.md",
+        "sha256": "7345b61e595fc63e3ecccde8f2b44bdfda756f98c9d3d3c6313082734696c3f7"
+      },
+      "openCritical": 0,
+      "openImportant": 0,
+      "openMinor": 0,
+      "M1": {
+        "status": "ADDRESSED_AND_INDEPENDENTLY_VERIFIED",
+        "description": "Executed original RED full callback URL/error disclosure is distinguished from code/token_hash logging found by source inspection.",
+        "verification": {
+          "path": "docs/research/evidence/2026-10-19-auth-return/task-1-M1-wording-verification.txt",
+          "sha256": "47d1491196f3cfa55e16ab1c718677ec736da7b881bcd31b93e774fa86b8755d"
+        },
+        "preservedPreCorrectionReport": {
+          "path": ".superpowers/sdd/2026-10-19-upgrade-auth-return/task-1-report-before-M1.md",
+          "sha256": "040fb50a9600626d048a3b3de702d5bd09e6c7ff6d41e69744407ddd8516de88"
+        },
+        "applicationSourcesChanged": false
+      },
+      "doesNotClearReleaseBlocker": "RB1"
+    },
+    "task2": {
+      "status": "PASS",
+      "specCompliance": "PASS",
+      "quality": "Approved",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/task-2-review.md",
+        "sha256": "408a04ba5ffe39f1b7da4900d328e6f8e03461a78aff969a314a121846eca4dd"
+      },
+      "newCritical": 0,
+      "newImportant": 0,
+      "newMinor": 0,
+      "carriedForwardConcerns": [
+        "Existing build diagnostics and dependency audit remain unresolved; not new Task 2 defects."
+      ]
+    },
+    "finalBatch": {
+      "status": "PASS",
+      "specCompliance": "PASS",
+      "quality": "Approved as a local candidate",
+      "report": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/batch-final-review.md",
+        "sha256": "fa1b705972f78a2d13432314cb810fb15db17a066621591e8a7570514842501a"
+      },
+      "newCritical": 0,
+      "newImportant": 0,
+      "newMinor": 0,
+      "scope": "This batch relative to batch-start bytes; no production release approval."
+    }
+  },
+  "compatibilityReleaseBlocker": {
+    "id": "RB1",
+    "status": "OPEN",
+    "classification": "observed scoped page compatibility change and release blocker",
+    "scenario": "error=auth_failed plus inherited synthetic implicit access/refresh fragment",
+    "before": {
+      "setSessionCalls": 1,
+      "navigations": 1
+    },
+    "current": {
+      "setSessionCalls": 0,
+      "navigations": 0,
+      "cleanedFragment": true,
+      "fixedSafeError": true
+    },
+    "probe": {
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/implicit-fragment-compatibility-probe.txt",
+        "sha256": "2e20e9404558847211ea6489d58ae608e0c50b833c068c50863a1feadfb9ff6a"
+      },
+      "classification": "actual-before-current-page-probe-with-replaced-sdk-router",
+      "command": [
+        "npm",
+        "test",
+        "--workspace=@saga/web",
+        "--",
+        "--runInBand",
+        "--runTestsByPath",
+        "src/components/auth/__tests__/auth-return-compatibility-probe.test.tsx"
+      ],
+      "commandTextAsRecorded": "npm test --workspace=@saga/web -- --runInBand --runTestsByPath src/components/auth/__tests__/auth-return-compatibility-probe.test.tsx",
+      "workingDirectory": ".",
+      "exitCode": 0,
+      "counts": {
+        "suites": {
+          "passed": 1,
+          "total": 1
+        },
+        "tests": {
+          "passed": 1,
+          "total": 1
+        }
+      }
+    },
+    "probeSource": {
+      "path": "docs/research/evidence/2026-10-19-auth-return/implicit-fragment-compatibility-probe-source.txt",
+      "sha256": "87b9b647ed6e47a48f626d5ed5b1d87aef44f925a8a3c08ab2c0887a467ce4db"
+    },
+    "temporaryTestRemoved": true,
+    "causeAndBoundary": "Unchanged plain supabase-js browser factory defaults to implicit flow/localStorage. Server callback cannot read fragment; fixed error plus inherited credentials is now rejected by signin. Probe proves page behavior, not a real provider/browser redirect chain.",
+    "retainedCapabilityLimit": "Login entry, safe callback request formation and clean explicit signin session-return are tested; end-to-end Google/OTP compatibility is not proven.",
+    "firstNextImplementation": "Actual OAuth/OTP return routing and browser/SSR session integration before trusted source/event, send/release and direct RPC/table ACL."
+  },
+  "evidenceBoundaries": {
+    "component": "Actual signin/AuthProvider mounted with SDK/router/store boundaries replaced.",
+    "transport": "Actual route/adapter and actual SSR/JS SDK against synthetic loopback Auth only.",
+    "notProven": [
+      "real Google/OTP provider returns",
+      "real browser redirect chain",
+      "real JWT verification integration",
+      "PostgREST schema or authorization",
+      "browser localStorage/SSR cookie consistency",
+      "shared factory automatic URL/session behavior",
+      "legacy verify/home/middleware implicit compatibility",
+      "whole-site logs/telemetry",
+      "real account qualification",
+      "production RLS/Storage",
+      "G1 devices"
+    ],
+    "privacyLimit": "Local response headers and best-effort replaceState do not erase upstream logs, previously recorded history or unchanged external SDK behavior."
+  },
+  "preservation": {
+    "baseline": {
+      "path": ".superpowers/sdd/2026-10-19-upgrade-auth-return/baseline.json",
+      "sha256": "f324895e30aaec37bfba8970e7a204261fe52c60e82e369bb427651ac2c4b0a0"
+    },
+    "baselineFileCount": 1696,
+    "task1Audit": {
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-19-auth-return/baseline-preservation-audit.txt",
+        "sha256": "c9a75b2bb8819ea125d85d8539ad66a49e4af14d0d857c47f003e16852d46ccf"
+      },
+      "changedExistingCount": 3,
+      "unchangedCount": 1693,
+      "missingCount": 0,
+      "stage": "before Task 2 documentation edits; independently corroborated in Task 1 review"
+    },
+    "protectedCurrentPackageFiles": [
+      {
+        "path": "package.json",
+        "sha256": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f"
+      },
+      {
+        "path": "packages/web/package.json",
+        "sha256": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea"
+      },
+      {
+        "path": "packages/shared/package.json",
+        "sha256": "618910c86d4acdcf43b40db06f619b42f9172334f3e9b5165ca5d856eb1c87c2"
+      }
+    ],
+    "protectedGroups": [
+      "old invitation sources/protocol/tests/fixtures",
+      "shared browser factory/auth store/session strategy",
+      "old experiments and runtime",
+      "root dependencies/manifests/lockfile",
+      "root migrations",
+      "prior batch evidence"
+    ],
+    "recoveryBeforeDirectory": ".superpowers/sdd/2026-10-19-upgrade-auth-return/before",
+    "finalIntegrity": {
+      "status": "PASS",
+      "path": "docs/research/evidence/2026-10-19-auth-return/final-integrity.json",
+      "note": "Regenerated after actual review reports and final status closure. Mutable checkpoint intentionally has no self/circular SHA reference."
+    }
+  },
+  "warningsAndHistoricalAudit": {
+    "projectWarnings": [
+      "next.config.js eslint option unsupported/unrecognized",
+      "images.domains deprecated",
+      "missing SUPABASE_SERVICE_ROLE_KEY produces existing server configuration diagnostics during build"
+    ],
+    "productionConfigurationVerified": false,
+    "audit": {
+      "newRun": false,
+      "resolved": false,
+      "artifact": {
+        "path": "docs/research/evidence/2026-10-17-rls-rehearsal/audit-high.json",
+        "sha256": "a29ab39fa3ee363802e5dd68f05b62c253ddd24d4088483dd0c60644a019f866"
+      },
+      "historicalCommand": [
+        "npm",
+        "run",
+        "audit:high",
+        "--",
+        "--json"
+      ],
+      "exitCode": 1,
+      "counts": {
+        "total": 42,
+        "high": 34,
+        "moderate": 8,
+        "critical": 0
+      },
+      "note": "Historical result retained; this batch did not change dependencies or rerun audit."
+    }
+  },
+  "gates": {
+    "G0": false,
+    "G1": false,
+    "originalMilestoneReached": false,
+    "requirementsLowered": false,
+    "newLocalBatchIsMilestone": false,
+    "reason": "RB1, production auth/permissions/adapters, migration/rollback, bucket/backup/provider account and real-device evidence remain incomplete.",
+    "assessment": {
+      "path": "docs/research/evidence/2026-10-19-auth-return/milestone-check.json",
+      "sha256": "5f3bc6ac8c917f29601fa4c018697785b33ef01b9f9a7540a85354112ebc62b7"
+    }
+  },
+  "nextWork": [
+    {
+      "order": 1,
+      "kind": "first-next-implementation",
+      "work": "Resolve actual OAuth/OTP return routing and browser/SSR session integration, including known error-plus-implicit-fragment compatibility blocker; qualify real-account flows separately."
+    },
+    {
+      "order": 2,
+      "kind": "implementation-after-auth",
+      "work": "Trusted source/event supply, revocation and persistent deduplication; send/release and direct RPC/table ACL; trusted pending/minimum preview and historical token/member mapping."
+    },
+    {
+      "order": 3,
+      "kind": "original-gates",
+      "work": "Real PostgREST/Auth/RLS/Storage, legacy auth/logging, migration semantics/rollback, bucket/object/backup, provider accounts and G1 device evidence."
+    }
+  ],
+  "actions": {
+    "commit": false,
+    "push": false,
+    "merge": false,
+    "deploy": false,
+    "migrate": false,
+    "remoteAuthOrDatabaseCall": false,
+    "realFamilyDataAccess": false,
+    "mail": false,
+    "paidApiCall": false
+  },
+  "resumeValidation": {
+    "path": "docs/research/evidence/2026-10-19-auth-return/resume-validation.json",
+    "sha256": "e22164cd851acace588aee7ae78780e56e15a6071a250bc9a7f3e68c788f5c86"
+  },
+  "closure": {
+    "task1": "complete",
+    "task2": "complete",
+    "finalBatchReview": "PASS",
+    "finalIntegrity": "PASS",
+    "recoveryDataPreserved": true,
+    "sourceOrTestChangesDuringResume": false,
+    "postReviewChanges": "Only actual approval references, current status, next-step pointers and plan checkboxes."
+  }
+}

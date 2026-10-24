@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand auth-session-lifecycle auth-store auth-verify-session
+
+
+Test Suites: 3 passed, 3 total
+Tests:       31 passed, 31 total
+Snapshots:   0 total
+Time:        3.265 s
+Ran all test suites matching auth-session-lifecycle|auth-store|auth-verify-session.

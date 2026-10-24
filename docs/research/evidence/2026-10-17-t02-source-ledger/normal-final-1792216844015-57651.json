@@ -1,0 +1,548 @@
+{
+  "startedAt": "2026-10-17T06:00:44.015Z",
+  "label": "normal-final",
+  "status": "passed",
+  "scope": "synthetic local PostgreSQL source ledger only; no real Storage or production authorization verification",
+  "sources": {
+    "experiments/t02-source-ledger/schema.sql": "1ee41a18d58a45b07ffef264534f8dca94d02757a0381883606b49b2c67323a4",
+    "experiments/t02-source-ledger/ledger.cjs": "995e447c9dc81bcc4d7307b336758577d437eb05662561f286e535d9669ad79f",
+    "experiments/t02-source-ledger/scenarios.cjs": "3190a0490270ca03c4e4886c3e51c0583b78b2a1c969c9573d269239babfb610",
+    "experiments/t02-source-ledger/verify.cjs": "2f737e882361a1ca2e740f30893ac27c301369fd27677825d124b5f6a3e9c1a5",
+    "experiments/t02-source-ledger/README.md": "f9ca5b865576fcb1b476b1448ed18459b700a3b3e0c77ebf89d227dcb75d97e5",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e"
+  },
+  "checks": [
+    "pinned actual stories.images type",
+    "pinned actual stories.photo_urls type",
+    "pinned actual stories.title type",
+    "pinned actual stories.storyteller_id type",
+    "local client ignores ambient SSL and credentials",
+    "TCP disabled",
+    "actual fixture project_roles.id matches captured type and nullability",
+    "actual fixture project_roles.project_id matches captured type and nullability",
+    "actual fixture project_roles.user_id matches captured type and nullability",
+    "actual fixture project_roles.role matches captured type and nullability",
+    "actual fixture project_roles.status matches captured type and nullability",
+    "actual fixture stories.id matches captured type and nullability",
+    "actual fixture stories.project_id matches captured type and nullability",
+    "actual fixture stories.storyteller_id matches captured type and nullability",
+    "actual fixture stories.user_id matches captured type and nullability",
+    "actual fixture stories.title matches captured type and nullability",
+    "actual fixture stories.audio_url matches captured type and nullability",
+    "actual fixture stories.mastered_audio_url matches captured type and nullability",
+    "actual fixture stories.photo_url matches captured type and nullability",
+    "actual fixture stories.photo_urls matches captured type and nullability",
+    "actual fixture stories.images matches captured type and nullability",
+    "real PostgreSQL source produces all nine positional observations",
+    "duplicate source versions return their original durable observations",
+    "database has exactly nine observations after duplicate collection",
+    "verified exact fixture asset atomically creates a durable binding",
+    "binding was truly committed",
+    "repeated exact binding returns original ID",
+    "mapped source does not create assets or ready state",
+    "all anomalous array positions persist as unresolved",
+    "same basename preserves distinct exact keys",
+    "original media columns unchanged by observe and bind",
+    "changed sibling slot changes entire-field version for unchanged locator",
+    "changed source appends a linked conflict",
+    "old source payload remains immutable",
+    "old review conclusion remains intact",
+    "old bound observation still points at the original asset",
+    "new conflicting version inherits no prior binding",
+    "changed source cannot use an old reviewed observation",
+    "return to original source version reuses original identity",
+    "PostgreSQL canonical jsonb ignores object key insertion order",
+    "digest distinguishes SQL NULL array element from JSON null",
+    "digest retains array order",
+    "digest retains PostgreSQL array bounds beyond JSON projection",
+    "historical jsonb and actual jsonb[] remain distinct typed versions",
+    "fixture type experiment restores the exact source row",
+    "caller cannot supply sourceField to observation collection",
+    "caller cannot supply sourcePath to observation collection",
+    "caller cannot supply sourceDigest to observation collection",
+    "caller cannot supply locator to observation collection",
+    "caller cannot supply projectId to observation collection",
+    "caller cannot supply a binding locator",
+    "database unique source/version constraint prevents duplicate history",
+    "observation update is rejected even for the fixture owner",
+    "review deletion is rejected",
+    "binding update is rejected",
+    "binding deletion is rejected",
+    "binding history cannot be truncated",
+    "saga_anon cannot read source_observations",
+    "saga_anon cannot write source_observations",
+    "saga_anon cannot read source_reviews",
+    "saga_anon cannot write source_reviews",
+    "saga_anon cannot read source_bindings",
+    "saga_anon cannot write source_bindings",
+    "saga_anon cannot read fixture_assets",
+    "saga_anon cannot write fixture_assets",
+    "saga_anon cannot read fixture_verifications",
+    "saga_anon cannot write fixture_verifications",
+    "saga_authenticated cannot read source_observations",
+    "saga_authenticated cannot write source_observations",
+    "saga_authenticated cannot read source_reviews",
+    "saga_authenticated cannot write source_reviews",
+    "saga_authenticated cannot read source_bindings",
+    "saga_authenticated cannot write source_bindings",
+    "saga_authenticated cannot read fixture_assets",
+    "saga_authenticated cannot write fixture_assets",
+    "saga_authenticated cannot read fixture_verifications",
+    "saga_authenticated cannot write fixture_verifications",
+    "same locator in another family has a distinct durable source identity",
+    "same project and source path in another story remain distinct identities",
+    "other family member cannot observe this project",
+    "a second asset cannot replace an existing binding",
+    "database unique observation constraint prevents second-asset binding",
+    "verified asset from another project is rejected",
+    "cross-project failure leaves no partial binding",
+    "asset in same project but another story is rejected",
+    "thumbnail cannot replace an original image",
+    "different exact key is rejected",
+    "different exact bucket is rejected",
+    "missing explicit verification evidence is rejected",
+    "asset not ready is rejected",
+    "asset state deleting is rejected without a timestamp",
+    "asset state deleted is rejected without a timestamp",
+    "stale verification rejects changed version",
+    "stale verification rejects changed object_version",
+    "stale verification rejects changed byte_size",
+    "stale verification rejects changed sha256",
+    "ambiguous source cannot bind",
+    "unresolved source cannot bind",
+    "current project facilitator can bind without a membership row",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "source version changed during wait: server confirms row/transaction lock wait",
+    "source version changed during wait: current READ COMMITTED value is checked after waiting",
+    "source version changed during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "story moved to another project during wait: server confirms row/transaction lock wait",
+    "story moved to another project during wait: current READ COMMITTED value is checked after waiting",
+    "story moved to another project during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "asset version changed during wait: server confirms row/transaction lock wait",
+    "asset version changed during wait: current READ COMMITTED value is checked after waiting",
+    "asset version changed during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "uploader membership revoked during wait: server confirms row/transaction lock wait",
+    "uploader membership revoked during wait: current READ COMMITTED value is checked after waiting",
+    "uploader membership revoked during wait: rejection leaves no binding",
+    "old uploader gains no access after revocation",
+    "captured nullable membership status fails closed",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "facilitator removed during wait: server confirms row/transaction lock wait",
+    "facilitator removed during wait: current READ COMMITTED value is checked after waiting",
+    "facilitator removed during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "project tombstone during wait: server confirms row/transaction lock wait",
+    "project tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "project tombstone during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "source tombstone during wait: server confirms row/transaction lock wait",
+    "source tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "source tombstone during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "asset tombstone during wait: server confirms row/transaction lock wait",
+    "asset tombstone during wait: current READ COMMITTED value is checked after waiting",
+    "asset tombstone during wait: rejection leaves no binding",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "concurrent duplicate observations: server confirms row/transaction lock wait",
+    "concurrent duplicate observations: server confirms row/transaction lock wait",
+    "concurrent source/version collectors return the same durable identities",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "concurrent identical binding: server confirms row/transaction lock wait",
+    "concurrent identical binding: server confirms row/transaction lock wait",
+    "concurrent identical bindings share one durable ID",
+    "concurrent identical bindings create exactly one record",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "concurrent conflicting asset binding: server confirms row/transaction lock wait",
+    "concurrent conflicting asset binding: server confirms row/transaction lock wait",
+    "concurrent differing assets produce one success and one explicit conflict",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "local client ignores ambient SSL and credentials",
+    "project lock held through COMMIT: server confirms row/transaction lock wait",
+    "source lock held through COMMIT: server confirms row/transaction lock wait",
+    "member lock held through COMMIT: server confirms row/transaction lock wait",
+    "asset lock held through COMMIT: server confirms row/transaction lock wait",
+    "protected binding commits before blocked changes",
+    "blocked mutations apply only after commit",
+    "local client ignores ambient SSL and credentials",
+    "real SQL error after INSERT rolls back binding",
+    "rollback leaves no partial binding",
+    "local client ignores ambient SSL and credentials",
+    "connection loss surfaces original failure",
+    "failed ROLLBACK is recorded without claiming it succeeded",
+    "PostgreSQL disconnect rollback removes uncommitted binding",
+    "local client ignores ambient SSL and credentials",
+    "committed but lost acknowledgement reports unknown",
+    "unknown COMMIT never issues compensating rollback",
+    "fresh connection reconciles durable observation and verification identity",
+    "unknown COMMIT preserved exactly one binding",
+    "retry after unknown COMMIT returns original durable binding",
+    "historical reconciliation remains durable after later source and asset versions change",
+    "reconciliation reports a different requested verification as a conflict",
+    "reconciliation distinguishes a known unbound observation",
+    "other family cannot reconcile a binding",
+    "stopping writes leaves observations and assets present",
+    "baseline source media row remains byte-equivalent after all collection/binding"
+  ],
+  "lockEvidence": [
+    {
+      "name": "source version changed during wait",
+      "pid": 57718,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57717
+      ],
+      "blocking_chain": [
+        57717
+      ],
+      "expectedBlocker": 57717
+    },
+    {
+      "name": "story moved to another project during wait",
+      "pid": 57720,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57719
+      ],
+      "blocking_chain": [
+        57719
+      ],
+      "expectedBlocker": 57719
+    },
+    {
+      "name": "asset version changed during wait",
+      "pid": 57722,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57721
+      ],
+      "blocking_chain": [
+        57721
+      ],
+      "expectedBlocker": 57721
+    },
+    {
+      "name": "uploader membership revoked during wait",
+      "pid": 57724,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57723
+      ],
+      "blocking_chain": [
+        57723
+      ],
+      "expectedBlocker": 57723
+    },
+    {
+      "name": "facilitator removed during wait",
+      "pid": 57726,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57725
+      ],
+      "blocking_chain": [
+        57725
+      ],
+      "expectedBlocker": 57725
+    },
+    {
+      "name": "project tombstone during wait",
+      "pid": 57728,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57727
+      ],
+      "blocking_chain": [
+        57727
+      ],
+      "expectedBlocker": 57727
+    },
+    {
+      "name": "source tombstone during wait",
+      "pid": 57730,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57729
+      ],
+      "blocking_chain": [
+        57729
+      ],
+      "expectedBlocker": 57729
+    },
+    {
+      "name": "asset tombstone during wait",
+      "pid": 57732,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57731
+      ],
+      "blocking_chain": [
+        57731
+      ],
+      "expectedBlocker": 57731
+    },
+    {
+      "name": "concurrent duplicate observations",
+      "pid": 57734,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57733
+      ],
+      "blocking_chain": [
+        57733
+      ],
+      "expectedBlocker": 57733
+    },
+    {
+      "name": "concurrent duplicate observations",
+      "pid": 57735,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57734
+      ],
+      "blocking_chain": [
+        57734,
+        57733
+      ],
+      "expectedBlocker": 57733
+    },
+    {
+      "name": "concurrent identical binding",
+      "pid": 57737,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57738
+      ],
+      "blocking_chain": [
+        57738,
+        57736
+      ],
+      "expectedBlocker": 57736
+    },
+    {
+      "name": "concurrent identical binding",
+      "pid": 57738,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57736
+      ],
+      "blocking_chain": [
+        57736
+      ],
+      "expectedBlocker": 57736
+    },
+    {
+      "name": "concurrent conflicting asset binding",
+      "pid": 57740,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57739
+      ],
+      "blocking_chain": [
+        57739
+      ],
+      "expectedBlocker": 57739
+    },
+    {
+      "name": "concurrent conflicting asset binding",
+      "pid": 57741,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57740
+      ],
+      "blocking_chain": [
+        57740,
+        57739
+      ],
+      "expectedBlocker": 57739
+    },
+    {
+      "name": "project lock held through COMMIT",
+      "pid": 57743,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57742
+      ],
+      "blocking_chain": [
+        57742
+      ],
+      "expectedBlocker": 57742
+    },
+    {
+      "name": "source lock held through COMMIT",
+      "pid": 57744,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57742
+      ],
+      "blocking_chain": [
+        57742
+      ],
+      "expectedBlocker": 57742
+    },
+    {
+      "name": "member lock held through COMMIT",
+      "pid": 57745,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57742
+      ],
+      "blocking_chain": [
+        57742
+      ],
+      "expectedBlocker": 57742
+    },
+    {
+      "name": "asset lock held through COMMIT",
+      "pid": 57746,
+      "wait_event_type": "Lock",
+      "blockers": [
+        57742
+      ],
+      "blocking_chain": [
+        57742
+      ],
+      "expectedBlocker": 57742
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pg": "8.16.3",
+    "typescript": "5.9.3"
+  },
+  "snapshot": {
+    "path": "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T02-45-52-407Z.json",
+    "sha256": "bb808a1ce050947d21963ca91ec49c3adfa0ab80fe24f24f653f8c18bc6e6a4f"
+  },
+  "scratch": "/tmp/saga-t02-ledger-4REKyR",
+  "fixture": {
+    "selectedColumns": [
+      {
+        "table_name": "project_roles",
+        "column_name": "id",
+        "data_type": "uuid",
+        "not_null": true
+      },
+      {
+        "table_name": "project_roles",
+        "column_name": "project_id",
+        "data_type": "uuid",
+        "not_null": true
+      },
+      {
+        "table_name": "project_roles",
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "not_null": true
+      },
+      {
+        "table_name": "project_roles",
+        "column_name": "role",
+        "data_type": "text",
+        "not_null": true
+      },
+      {
+        "table_name": "project_roles",
+        "column_name": "status",
+        "data_type": "text",
+        "not_null": false
+      },
+      {
+        "table_name": "stories",
+        "column_name": "id",
+        "data_type": "uuid",
+        "not_null": true
+      },
+      {
+        "table_name": "stories",
+        "column_name": "project_id",
+        "data_type": "uuid",
+        "not_null": true
+      },
+      {
+        "table_name": "stories",
+        "column_name": "storyteller_id",
+        "data_type": "uuid",
+        "not_null": true
+      },
+      {
+        "table_name": "stories",
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "not_null": false
+      },
+      {
+        "table_name": "stories",
+        "column_name": "title",
+        "data_type": "text",
+        "not_null": true
+      },
+      {
+        "table_name": "stories",
+        "column_name": "audio_url",
+        "data_type": "text",
+        "not_null": false
+      },
+      {
+        "table_name": "stories",
+        "column_name": "mastered_audio_url",
+        "data_type": "character varying(255)",
+        "not_null": false
+      },
+      {
+        "table_name": "stories",
+        "column_name": "photo_url",
+        "data_type": "text",
+        "not_null": false
+      },
+      {
+        "table_name": "stories",
+        "column_name": "photo_urls",
+        "data_type": "text[]",
+        "not_null": false
+      },
+      {
+        "table_name": "stories",
+        "column_name": "images",
+        "data_type": "jsonb[]",
+        "not_null": false
+      }
+    ],
+    "syntheticAdditions": "project/story tombstones; experimental asset/verification/ledger tables",
+    "limits": "selected types/nullability and required constraints; no restoration of defaults, all indexes, production RLS or triggers"
+  },
+  "finalCounts": {
+    "observations": 63,
+    "reviews": 1,
+    "bindings": 6,
+    "synthetic_assets": 32
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-17T06:00:46.613Z"
+}

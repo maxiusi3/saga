@@ -1,0 +1,64 @@
+{
+  "startedAt": "2026-10-16T03:09:55.282Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "68cc9934994d07f16b082a921b103933574b48cbdcb22659853583ac176385ba",
+    "experiments/t05-durable-worker/worker.mjs": "87bf8f280aae7b34c588411d2284b1b4fdf78d27d74bbedae41494fe864b915b",
+    "experiments/t05-durable-worker/verify.mjs": "b9cfedd15738b2ae5eef2e4b6cef836cd8bc069859bf5d2cc722906e88c436a4",
+    "experiments/t05-durable-worker/runner.mjs": "cf8f828d976cdb390e03c34bd5f3bf0c0230406cdc4ea6c176df443bd6e3a3b9",
+    "experiments/t05-durable-worker/supervisor.mjs": "1a12929d4289c562f54ef961c23c6a8a0c6a03d2acef3be55f47d75faab933cb",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "1670b8e85207e20f3c57a390e1cfd994bb2eed4981688a3abe427e772324e792",
+    "experiments/t05-durable-worker/README.md": "6f483a115463eafd15b1fe5b7243fff2060a34555e3bf8582112edf6a9379655",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [
+    {
+      "name": "runner shutdown outcome external-kill",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 781,
+      "fault": "external SIGKILL during shutdown before escalation"
+    },
+    {
+      "name": "runner shutdown outcome exit1",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 687,
+      "fault": "runner deliberately exits1 on SIGTERM"
+    }
+  ],
+  "assertions": 6,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "Local asynchronous synthetic tasks and process supervision only; no real audio, provider cancellation/billing, production hosting, real-device recording, backup restore, or load qualification."
+  ],
+  "status": "passed",
+  "processOwnership": {
+    "supervisorPids": [
+      31243,
+      31253
+    ],
+    "runnerPids": [
+      31248,
+      31268
+    ],
+    "remainingGroups": [],
+    "remainingRunnerPids": []
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T03:09:58.448Z"
+}

@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: a failed local start with no live server removes owned scratch without issuing stop
+ok 1 - a failed local start with no live server removes owned scratch without issuing stop
+  ---
+  duration_ms: 34.16667
+  type: 'test'
+  ...
+# Subtest: a failed or timed-out start that left a live server stops it and confirms stopped before removal
+ok 2 - a failed or timed-out start that left a live server stops it and confirms stopped before removal
+  ---
+  duration_ms: 3.303827
+  type: 'test'
+  ...
+# Subtest: local cleanup preserves scratch and removes both listeners on unknown pre-stop status
+ok 3 - local cleanup preserves scratch and removes both listeners on unknown pre-stop status
+  ---
+  duration_ms: 2.291159
+  type: 'test'
+  ...
+# Subtest: local cleanup preserves scratch and removes both listeners on failed stop
+ok 4 - local cleanup preserves scratch and removes both listeners on failed stop
+  ---
+  duration_ms: 14.811015
+  type: 'test'
+  ...
+# Subtest: local cleanup preserves scratch and removes both listeners on still-running post-stop status
+ok 5 - local cleanup preserves scratch and removes both listeners on still-running post-stop status
+  ---
+  duration_ms: 2.89488
+  type: 'test'
+  ...
+# Subtest: a signal during a failed startup still removes both listeners when cleanup cannot prove a stop
+ok 6 - a signal during a failed startup still removes both listeners when cleanup cannot prove a stop
+  ---
+  duration_ms: 2.429317
+  type: 'test'
+  ...
+# Subtest: initdb failure removes owned scratch without attempting server lifecycle commands
+ok 7 - initdb failure removes owned scratch without attempting server lifecycle commands
+  ---
+  duration_ms: 5.541167
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 272.452261

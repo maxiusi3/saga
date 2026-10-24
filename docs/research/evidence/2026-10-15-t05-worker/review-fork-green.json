@@ -1,0 +1,47 @@
+{
+  "startedAt": "2026-10-15T03:25:19.100Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "47885947ee9f9663f678944b8dae9bac1d229836098779eb5d964b6898e5db8a",
+    "experiments/t05-durable-worker/worker.mjs": "94722529965a25892da009547172c6a33e36050691a941459729b1d67cdc9fb1",
+    "experiments/t05-durable-worker/verify.mjs": "f313555965067ed2c5bcc8eb68a0d86bfcd90f8e5015d3afeba305da7ab53fcc",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [
+    {
+      "name": "failed fork terminates and cleans its isolated cluster",
+      "status": "passed",
+      "assertions": 8,
+      "elapsedMs": 2449,
+      "injection": "fork execPath unavailable; error/close without exit",
+      "cleanup": {
+        "ownedChildrenRemaining": 0,
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "errors": []
+      }
+    }
+  ],
+  "assertions": 8,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "No long-running lease heartbeat, production supervisor, real-device recording, backup restore, or production load qualification."
+  ],
+  "status": "passed",
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-15T03:25:23.098Z"
+}

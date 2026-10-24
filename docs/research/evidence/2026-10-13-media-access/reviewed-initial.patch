@@ -1,0 +1,829 @@
+--- before/packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts
++++ after/packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts
+@@ -36,21 +36,21 @@
+     const formData = jest.fn()
+     const request = {
+       headers: new Headers({ 'content-length': String(26 * 1024 * 1024) }),
+       formData,
+     }
+ 
+     const response = await POST(request as any)
+ 
+     expect(response.status).toBe(413)
+     await expect(response.json()).resolves.toEqual({
+-      error: 'Audio file too large. Maximum size is 25MB.',
++      error: 'Audio file too large. Maximum size is 4MB for direct upload.',
+     })
+     expect(formData).not.toHaveBeenCalled()
+   })
+ 
+   it('does not parse form data when authentication fails', async () => {
+     requireAiRequestMock.mockResolvedValueOnce({
+       ok: false,
+       response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+     })
+     const formData = jest.fn()
+--- before/packages/web/src/app/api/ai/transcribe/route.ts
++++ after/packages/web/src/app/api/ai/transcribe/route.ts
+@@ -1,17 +1,20 @@
+ import { NextRequest, NextResponse } from 'next/server';
+ import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard';
+ import { InvalidAIResponseError, parseTranscriptionResponse } from '@/lib/ai-response';
++import { audioMimeType, parseMediaReference } from '@/lib/media-reference';
++import { requireMediaAccess, withMediaHeaders } from '@/lib/server/media-access';
+ 
+ // AUD-03 FIX: Accept either audio file OR storage path to bypass Vercel 4.5MB limit
+ const SILICONFLOW_ENDPOINT = 'https://api.siliconflow.cn/v1/audio/transcriptions';
+ const MAX_TRANSCRIBE_BYTES = 4 * 1024 * 1024; // 4MB to stay under Vercel's 4.5MB limit
++const MAX_STORED_AUDIO_BYTES = 100 * 1024 * 1024;
+ 
+ /**
+  * A simple retry wrapper with exponential backoff.
+  * @param fn The async function to retry.
+  * @param retries The number of retries.
+  * @returns The result of the function.
+  */
+ async function withRetry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
+   try {
+     return await fn();
+@@ -42,51 +45,72 @@
+ }
+ 
+ export async function POST(request: NextRequest) {
+   const guard = await requireAiRequest(request, 'transcribe');
+   if (!guard.ok) return guard.response;
+ 
+   try {
+     const contentLength = Number(request.headers.get('content-length') || 0);
+     if (contentLength > MAX_TRANSCRIBE_BYTES) {
+       return jsonWithRateLimit(
+-        { error: 'Audio file too large. Maximum size is 25MB.' },
++        { error: 'Audio file too large. Maximum size is 4MB for direct upload.' },
+         guard.headers,
+         413,
+       );
+     }
+ 
+-    const formData = await request.formData();
+-    const audioFile = formData.get('audio') as File | null;
+-    const storagePath = formData.get('storagePath') as string | null;
++    let formData: FormData;
++    try { formData = await request.formData(); } catch {
++      return jsonWithRateLimit({ error: 'Invalid audio request' }, guard.headers, 400);
++    }
++    const audioFile = formData.get('audio');
++    const storagePath = formData.get('storagePath');
++    const storageBucket = formData.get('storageBucket') ?? 'audio-recordings';
+     const language = (formData.get('language') as string) || 'zh-CN';
++    if ((audioFile !== null && !(audioFile instanceof File)) ||
++        (storagePath !== null && (typeof storagePath !== 'string' || !storagePath)) ||
++        (audioFile !== null && storagePath !== null) ||
++        (storagePath === null && formData.has('storageBucket'))) {
++      return jsonWithRateLimit({ error: 'Invalid audio source' }, guard.headers, 400);
++    }
+ 
+     // AUD-03 FIX: Support both direct upload (small files) and storage path (large files)
+     let audioBuffer: ArrayBuffer | null = null;
+     let audioSize = 0;
++    let filename = 'audio';
++    let mimeType = 'application/octet-stream';
+ 
+     if (storagePath) {
+-      // Fetch from Supabase Storage
++      const reference = parseMediaReference(storageBucket, storagePath);
++      if (!reference) return jsonWithRateLimit({ error: 'Invalid media reference' }, guard.headers, 400);
++      const access = await requireMediaAccess(reference, guard.user);
++      if (!access.ok) return withMediaHeaders(access.response, guard.headers);
+       try {
+-        const { getSupabaseAdmin } = await import('@/lib/supabase');
+-        const admin = getSupabaseAdmin();
+-        const { data, error } = await admin.storage.from('saga').download(storagePath);
++        const { data, error } = await access.admin.storage.from(reference.bucket).download(reference.path);
+ 
+         if (error || !data) {
+           return jsonWithRateLimit(
+             { error: 'Failed to fetch audio from storage' },
+             guard.headers,
+             404
+           );
+         }
+ 
++        if (data.size > MAX_STORED_AUDIO_BYTES) {
++          return jsonWithRateLimit({ error: 'Stored audio exceeds the 100MB limit' }, guard.headers, 413);
++        }
++        filename = reference.path.split('/').pop()!;
++        mimeType = audioMimeType(data.type, filename);
+         const buffer = await data.arrayBuffer();
++        if (buffer.byteLength > MAX_STORED_AUDIO_BYTES) {
++          return jsonWithRateLimit({ error: 'Stored audio exceeds the 100MB limit' }, guard.headers, 413);
++        }
+         audioBuffer = buffer;
+         audioSize = buffer.byteLength;
+       } catch (err) {
+         console.error('Error fetching from storage:', err);
+         return jsonWithRateLimit(
+           { error: 'Storage fetch error' },
+           guard.headers,
+           500
+         );
+       }
+@@ -94,20 +118,22 @@
+       // Direct upload
+       if (audioFile.size > MAX_TRANSCRIBE_BYTES) {
+         return jsonWithRateLimit(
+           { error: `Audio file too large. Maximum size is ${MAX_TRANSCRIBE_BYTES / 1024 / 1024}MB for direct upload. Please upload to storage first.` },
+           guard.headers,
+           413,
+         );
+       }
+       audioBuffer = await audioFile.arrayBuffer();
+       audioSize = audioFile.size;
++      filename = audioFile.name;
++      mimeType = audioMimeType(audioFile.type, filename);
+     } else {
+       return jsonWithRateLimit(
+         { error: 'No audio file or storage path provided' },
+         guard.headers,
+         400
+       );
+     }
+ 
+     const apiKey = process.env.SILICONFLOW_API_KEY;
+     const model = process.env.SILICONFLOW_MODEL || 'FunAudioLLM/SenseVoiceSmall';
+@@ -124,22 +150,22 @@
+     // Type guard: audioBuffer must be non-null at this point
+     if (!audioBuffer) {
+       return jsonWithRateLimit(
+         { error: 'Audio buffer is empty' },
+         guard.headers,
+         400
+       );
+     }
+ 
+     const outForm = new FormData();
+-    const audioBlob = new Blob([audioBuffer]);
+-    outForm.append('file', audioBlob, 'audio.webm');
++    const audioBlob = new Blob([audioBuffer], { type: mimeType });
++    outForm.append('file', audioBlob, filename);
+     outForm.append('model', model);
+     outForm.append('language', language);
+ 
+     console.log(`Transcribing audio of size ${audioSize} bytes using model ${model}`);
+ 
+     const doRequest = async () => {
+       const response = await fetch(SILICONFLOW_ENDPOINT, {
+         method: 'POST',
+         headers: {
+           Authorization: `Bearer ${apiKey}`,
+--- before/packages/web/src/app/api/media/__tests__/access.test.ts
++++ after/packages/web/src/app/api/media/__tests__/access.test.ts
+@@ -0,0 +1,256 @@
++/** @jest-environment node */
++import { NextRequest, NextResponse } from 'next/server'
++import { POST as sign } from '../signed-url/route'
++import { POST as transcribe } from '../../ai/transcribe/route'
++import { POST as uploadImage } from '../upload-image/route'
++
++const mockAuth = jest.fn()
++let mockDatabaseUnavailable = false
++let mockLookupError = false
++let mockDownloaded: Blob | null
++const mockSign = jest.fn()
++const mockDownload = jest.fn()
++const mockUpload = jest.fn()
++const mockStorageBucket = jest.fn()
++const mockSharp = jest.fn()
++const projects = [
++  { id: 'family-a', facilitator_id: 'organizer-a' },
++  { id: 'family-b', facilitator_id: 'organizer-b' },
++]
++const roles = [
++  { id: 'role-a', project_id: 'family-a', user_id: 'alice', status: 'active' },
++  { id: 'role-b', project_id: 'family-b', user_id: 'alice', status: 'removed' },
++]
++const stories = [
++  { id: 'story-a', project_id: 'family-a' },
++  { id: 'story-b', project_id: 'family-b' },
++]
++
++jest.mock('@/lib/server/auth', () => ({ getAuthenticatedUser: (...args: unknown[]) => mockAuth(...args) }))
++jest.mock('@/lib/supabase', () => ({
++  getSupabaseAdmin: () => {
++    if (mockDatabaseUnavailable) throw new Error('not configured')
++    return {
++      auth: { getUser: async () => ({ data: { user: null } }) },
++      storage: { from: (...args: unknown[]) => mockStorageBucket(...args) },
++      from: (table: string) => {
++        const filters: Record<string, unknown> = {}
++        const query = {
++          select: () => query,
++          eq: (field: string, value: unknown) => { filters[field] = value; return query },
++          maybeSingle: async () => {
++            const rows = table === 'projects' ? projects : table === 'project_roles' ? roles : table === 'stories' ? stories : []
++            return {
++              data: mockLookupError ? null : rows.find(row => Object.entries(filters).every(([key, value]) => (row as Record<string, unknown>)[key] === value)) ?? null,
++              error: mockLookupError ? { message: 'database unavailable' } : null,
++            }
++          },
++        }
++        return query
++      },
++    }
++  },
++}))
++jest.mock('sharp', () => ({ __esModule: true, default: (...args: unknown[]) => mockSharp(...args) }))
++
++const originalFetch = global.fetch
++const originalKey = process.env.SILICONFLOW_API_KEY
++const mockProvider = jest.fn()
++const headers = () => new Headers({ 'Set-Cookie': 'session=refreshed' })
++const request = (body: unknown) => new NextRequest('http://localhost/api/media/signed-url', {
++  method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' },
++})
++const multipart = (values: Record<string, string | Blob>) => {
++  const form = new FormData()
++  for (const [key, value] of Object.entries(values)) {
++    if (value instanceof Blob) form.append(key, value, key === 'audio' ? 'voice.mp3' : 'photo.png')
++    else form.append(key, value)
++  }
++  return new NextRequest('http://localhost/api/media/test', { method: 'POST', body: form })
++}
++const noStorage = () => expect(mockStorageBucket).not.toHaveBeenCalled()
++
++beforeEach(() => {
++  jest.clearAllMocks()
++  mockDatabaseUnavailable = false
++  mockLookupError = false
++  mockAuth.mockResolvedValue({ ok: true, user: { id: 'alice' }, headers: headers() })
++  mockDownloaded = new Blob(['original audio'], { type: 'audio/mpeg' })
++  mockSign.mockResolvedValue({ data: { signedUrl: 'https://storage.example/signed' }, error: null })
++  mockDownload.mockImplementation(async () => ({ data: mockDownloaded, error: mockDownloaded ? null : { message: 'missing' } }))
++  mockUpload.mockImplementation(async (path: string) => ({ data: { path }, error: null }))
++  mockStorageBucket.mockReturnValue({ createSignedUrl: mockSign, download: mockDownload, upload: mockUpload })
++  const sharpChain = { resize: jest.fn(), toFormat: jest.fn(), jpeg: jest.fn(), png: jest.fn(), toBuffer: jest.fn(async () => Buffer.from('thumbnail')) }
++  for (const method of ['resize', 'toFormat', 'jpeg', 'png'] as const) sharpChain[method].mockReturnValue(sharpChain)
++  mockSharp.mockReturnValue(sharpChain)
++  mockProvider.mockResolvedValue(new Response(JSON.stringify({ text: 'Original words' }), { status: 200 }))
++  global.fetch = mockProvider
++  process.env.SILICONFLOW_API_KEY = 'test-only'
++  jest.spyOn(console, 'error').mockImplementation(() => {})
++  jest.spyOn(console, 'log').mockImplementation(() => {})
++})
++afterEach(() => {
++  global.fetch = originalFetch
++  if (originalKey === undefined) delete process.env.SILICONFLOW_API_KEY
++  else process.env.SILICONFLOW_API_KEY = originalKey
++  jest.restoreAllMocks()
++})
++
++describe('private media signing', () => {
++  it.each(['other/projects/family-b/stories/temp/audio.mp3', 'alice/projects/family-b/stories/temp/audio.mp3'])('denies another family or removed uploader: %s', async path => {
++    const response = await sign(request({ bucket: 'audio-recordings', path }))
++    expect(response.status).toBe(403)
++    expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
++    noStorage()
++  })
++  it('signs the exact project key for an active member and preserves auth headers', async () => {
++    const path = 'other/projects/family-a/stories/temp/été memory.mp3'
++    const response = await sign(request({ bucket: 'audio-recordings', path, expiresIn: 9000 }))
++    expect(response.status).toBe(200)
++    expect(mockStorageBucket).toHaveBeenCalledWith('audio-recordings')
++    expect(mockSign).toHaveBeenCalledWith(path, 3600)
++    expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
++    expect(response.headers.get('Cache-Control')).toBe('no-store')
++  })
++  it('preserves separate refreshed session cookie chunks', async () => {
++    const authHeaders = new Headers()
++    authHeaders.append('Set-Cookie', 'session.0=first; Path=/; HttpOnly')
++    authHeaders.append('Set-Cookie', 'session.1=second; Path=/; HttpOnly')
++    mockAuth.mockResolvedValue({ ok: true, user: { id: 'alice' }, headers: authHeaders })
++    const response = await sign(request({ bucket: 'saga', path: 'alice/images/photo.png' }))
++    expect(response.headers.getSetCookie()).toEqual([
++      'session.0=first; Path=/; HttpOnly', 'session.1=second; Path=/; HttpOnly',
++    ])
++  })
++  it.each(['other/images/stories/story-a/photo.png', 'other/images/interactions/story-a/photo.png'])('checks actual story project for legacy image %s', async path => {
++    expect((await sign(request({ bucket: 'saga', path }))).status).toBe(200)
++    expect(mockSign).toHaveBeenCalledWith(path, 3600)
++  })
++  it('does not treat ownership prefix as story permission', async () => {
++    expect((await sign(request({ bucket: 'saga', path: 'alice/images/stories/story-b/photo.png' }))).status).toBe(403)
++    noStorage()
++  })
++  it('allows only the owner of a non-project personal file', async () => {
++    expect((await sign(request({ bucket: 'saga', path: 'alice/images/photo.png' }))).status).toBe(200)
++    mockStorageBucket.mockClear()
++    expect((await sign(request({ bucket: 'saga', path: 'other/images/photo.png' }))).status).toBe(403)
++    noStorage()
++  })
++  it.each([
++    'alice/projects/family-a/../family-b/a.mp3', 'alice/projects/family-a/%2e%2e/a.mp3',
++    'alice/projects/family-a/%252f/a.mp3', '/alice/projects/family-a/a.mp3',
++    'alice/projects//a.mp3', 'alice/projects/family-a/a\\b.mp3',
++    'https://example.com/alice/projects/family-a/a.mp3', 'alice/foo/projects/family-a/a.mp3',
++    'alice/images/stories', 'alice/projects/family-a/a.mp3?token=foo',
++  ])('rejects ambiguous key before storage: %s', async path => {
++    expect((await sign(request({ bucket: 'saga', path }))).status).toBe(400)
++    noStorage()
++  })
++  it.each(['900', 0, -5, null])('rejects invalid expiry %s', async expiresIn => {
++    expect((await sign(request({ bucket: 'saga', path: 'alice/images/photo.png', expiresIn }))).status).toBe(400)
++    noStorage()
++  })
++  it('fails closed on project lookup error', async () => {
++    mockLookupError = true
++    expect((await sign(request({ bucket: 'saga', path: 'alice/projects/family-a/a.mp3' }))).status).toBe(500)
++    noStorage()
++  })
++  it('returns service unavailable instead of signing when admin configuration is absent', async () => {
++    mockDatabaseUnavailable = true
++    expect((await sign(request({ bucket: 'saga', path: 'alice/images/photo.png' }))).status).toBe(503)
++    noStorage()
++  })
++  it('rejects malformed JSON without an unhandled route failure', async () => {
++    const response = await sign(new NextRequest('http://localhost/api/media/signed-url', { method: 'POST', body: '{' }))
++    expect(response.status).toBe(400)
++    noStorage()
++  })
++})
++
++describe('stored audio transcription', () => {
++  it.each([undefined, 'saga'])('uses exact path and explicit/default bucket %s with original MIME/name', async storageBucket => {
++    const storagePath = 'other/projects/family-a/stories/temp/memory.mp3'
++    const response = await transcribe(multipart({ storagePath, ...(storageBucket ? { storageBucket } : {}) }))
++    expect(response.status).toBe(200)
++    expect(mockStorageBucket).toHaveBeenCalledWith(storageBucket ?? 'audio-recordings')
++    expect(mockDownload).toHaveBeenCalledWith(storagePath)
++    const file = mockProvider.mock.calls[0][1].body.get('file') as File
++    expect(file.name).toBe('memory.mp3')
++    expect(file.type).toBe('audio/mpeg')
++    expect(await file.text()).toBe('original audio')
++  })
++  it('rejects a removed uploader before downloading or calling the provider', async () => {
++    const response = await transcribe(multipart({ storagePath: 'alice/projects/family-b/stories/temp/memory.mp3' }))
++    expect(response.status).toBe(403)
++    expect(response.headers.get('X-RateLimit-Limit')).toBe('30')
++    expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
++    noStorage()
++    expect(mockProvider).not.toHaveBeenCalled()
++  })
++  it('does not search another bucket when an authorized object is missing', async () => {
++    mockDownloaded = null
++    expect((await transcribe(multipart({ storagePath: 'alice/projects/family-a/temp/memory.mp3' }))).status).toBe(404)
++    expect(mockStorageBucket.mock.calls).toEqual([['audio-recordings']])
++    expect(mockProvider).not.toHaveBeenCalled()
++  })
++  it.each([
++    { storagePath: '' }, { audio: 'not a file' }, { storagePath: 'alice/temp/a.mp3', storageBucket: 'unknown' },
++    { storagePath: 'alice/temp/a.mp3', audio: new Blob(['a'], { type: 'audio/mpeg' }) },
++  ])('rejects malformed or conflicting inputs %j', async fields => {
++    expect((await transcribe(multipart(fields))).status).toBe(400)
++    noStorage()
++    expect(mockProvider).not.toHaveBeenCalled()
++  })
++  it('retains the actual name and MIME of a direct upload', async () => {
++    expect((await transcribe(multipart({ audio: new Blob(['a'], { type: 'audio/mpeg' }) }))).status).toBe(200)
++    const file = mockProvider.mock.calls[0][1].body.get('file') as File
++    expect(file.name).toBe('voice.mp3')
++    expect(file.type).toBe('audio/mpeg')
++  })
++  it('rejects an oversized stored object without reading its bytes or calling the provider', async () => {
++    Object.defineProperty(mockDownloaded, 'size', { value: 101 * 1024 * 1024 })
++    const read = jest.spyOn(mockDownloaded!, 'arrayBuffer')
++    expect((await transcribe(multipart({ storagePath: 'alice/temp/large.mp3' }))).status).toBe(413)
++    expect(read).not.toHaveBeenCalled()
++    expect(mockProvider).not.toHaveBeenCalled()
++  })
++})
++
++describe('authenticated image upload', () => {
++  it('requires authentication before parsing or processing the image', async () => {
++    mockAuth.mockResolvedValue({ ok: false, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) })
++    const formData = jest.fn()
++    const response = await uploadImage({ formData } as unknown as NextRequest)
++    expect(response.status).toBe(401)
++    expect(formData).not.toHaveBeenCalled()
++    expect(mockSharp).not.toHaveBeenCalled()
++    noStorage()
++  })
++  it.each(['images', 'images/stories/story-a', 'images/interactions/story-a', 'projects/family-a/images'])('preserves original bytes in authenticated folder %s', async folder => {
++    const response = await uploadImage(multipart({ folder, file: new Blob(['original photo'], { type: 'image/png' }) }))
++    expect(response.status).toBe(200)
++    expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
++    expect(response.headers.get('Cache-Control')).toBe('no-store')
++    expect(mockUpload.mock.calls[0][0]).toMatch(new RegExp(`^alice/${folder}/[^/]+\\.png$`))
++    expect(mockUpload.mock.calls[0][1]).toEqual(Buffer.from('original photo'))
++    expect(mockUpload.mock.calls[1][1]).toEqual(Buffer.from('thumbnail'))
++    expect(mockUpload.mock.calls.some(([path]) => path.startsWith('anonymous/'))).toBe(false)
++  })
++  it.each(['images/stories/story-b', 'projects/family-b/images'])('denies another family folder %s before processing', async folder => {
++    expect((await uploadImage(multipart({ folder, file: new Blob(['a'], { type: 'image/png' }) }))).status).toBe(403)
++    expect(mockSharp).not.toHaveBeenCalled()
++    noStorage()
++  })
++  it.each(['images/../projects/family-b', 'images/%2e%2e/family-b', 'other/folder', 'images/stories'])('rejects invalid folder %s', async folder => {
++    expect((await uploadImage(multipart({ folder, file: new Blob(['a'], { type: 'image/png' }) }))).status).toBe(400)
++    noStorage()
++  })
++  it('does not return success if thumbnail upload fails', async () => {
++    mockUpload.mockResolvedValueOnce({ data: { path: 'alice/images/photo.png' }, error: null })
++      .mockResolvedValueOnce({ data: null, error: { message: 'upload failed' } })
++    const response = await uploadImage(multipart({ file: new Blob(['a'], { type: 'image/png' }) }))
++    expect(response.status).toBe(500)
++    expect((await response.json()).success).not.toBe(true)
++    expect(mockSign).not.toHaveBeenCalled()
++  })
++})
+--- before/packages/web/src/app/api/media/signed-url/route.ts
++++ after/packages/web/src/app/api/media/signed-url/route.ts
+@@ -1,34 +1,29 @@
+ import { NextRequest, NextResponse } from 'next/server'
+-import { getSupabaseAdmin } from '@/lib/supabase'
+ import { getAuthenticatedUser } from '@/lib/server/auth'
+-
+-const ALLOWED_BUCKETS = new Set(['saga', 'audio-recordings'])
++import { parseMediaReference } from '@/lib/media-reference'
++import { requireMediaAccess, withMediaHeaders } from '@/lib/server/media-access'
+ 
+ export async function POST(request: NextRequest) {
+   const auth = await getAuthenticatedUser(request)
+   if (!auth.ok) return auth.response
+ 
+-  const body = await request.json()
+-  const bucket = String(body.bucket || '')
+-  const path = String(body.path || '')
+-  const expiresIn = Number(body.expiresIn || 3600)
+-
+-  if (!ALLOWED_BUCKETS.has(bucket)) {
+-    return NextResponse.json({ error: 'Unsupported bucket' }, { status: 400 })
++  const reply = (body: unknown, status = 200) => withMediaHeaders(NextResponse.json(body, { status }), auth.headers)
++  let body
++  try { body = await request.json() } catch { return reply({ error: 'Invalid request' }, 400) }
++  if (!body || typeof body !== 'object' || Array.isArray(body)) return reply({ error: 'Invalid request' }, 400)
++  const reference = parseMediaReference(body.bucket, body.path)
++  const expiresIn = body.expiresIn === undefined ? 3600 : body.expiresIn
++  if (!reference || typeof expiresIn !== 'number' || !Number.isFinite(expiresIn) || expiresIn <= 0) {
++    return reply({ error: 'Invalid media reference or expiry' }, 400)
+   }
+-
+-  if (!path.startsWith(`${auth.user.id}/`) && !path.includes('/projects/')) {
+-    return NextResponse.json({ error: 'Access denied' }, { status: 403 })
++  const access = await requireMediaAccess(reference, auth.user)
++  if (!access.ok) return withMediaHeaders(access.response, auth.headers)
++  try {
++    const { data, error } = await access.admin.storage.from(reference.bucket)
++      .createSignedUrl(reference.path, Math.min(Math.max(Math.floor(expiresIn), 60), 3600))
++    if (error || !data?.signedUrl) return reply({ error: 'Failed to create signed URL' }, 500)
++    return reply({ signedUrl: data.signedUrl })
++  } catch {
++    return reply({ error: 'Failed to create signed URL' }, 500)
+   }
+-
+-  const { data, error } = await getSupabaseAdmin()
+-    .storage
+-    .from(bucket)
+-    .createSignedUrl(path, Math.min(Math.max(expiresIn, 60), 3600))
+-
+-  if (error || !data?.signedUrl) {
+-    return NextResponse.json({ error: 'Failed to create signed URL' }, { status: 500 })
+-  }
+-
+-  return NextResponse.json({ signedUrl: data.signedUrl })
+ }
+--- before/packages/web/src/app/api/media/upload-image/route.ts
++++ after/packages/web/src/app/api/media/upload-image/route.ts
+@@ -1,95 +1,94 @@
+ import { NextRequest, NextResponse } from 'next/server'
+ import sharp from 'sharp'
+-import { getSupabaseAdmin } from '@/lib/supabase'
++import { getAuthenticatedUser } from '@/lib/server/auth'
++import { imageUploadReference } from '@/lib/media-reference'
++import { requireMediaAccess, withMediaHeaders } from '@/lib/server/media-access'
+ 
+ export const runtime = 'nodejs'
+ 
+ export async function POST(request: NextRequest) {
++  const auth = await getAuthenticatedUser(request)
++  if (!auth.ok) return auth.response
++  const reply = (body: unknown, status = 200) => withMediaHeaders(NextResponse.json(body, { status }), auth.headers)
+   try {
+-    const form = await request.formData()
+-    const file = form.get('file') as File | null
+-    const folder = (form.get('folder') as string) || 'images'
++    let form: FormData
++    try { form = await request.formData() } catch { return reply({ error: 'Invalid upload request' }, 400) }
++    const file = form.get('file')
++    const folder = form.get('folder') ?? 'images'
+     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
+     const maxSize = 5 * 1024 * 1024
+ 
+-    if (!file) {
+-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
++    if (!(file instanceof File)) {
++      return reply({ error: 'No image file provided' }, 400)
+     }
+ 
+-    const type = (file as any).type || ''
++    const type = file.type
+     if (!allowedTypes.includes(type)) {
+-      return NextResponse.json({ error: 'Unsupported file type' }, { status: 400 })
++      return reply({ error: 'Unsupported file type' }, 400)
+     }
+ 
+     if (file.size > maxSize) {
+-      return NextResponse.json({ error: 'File too large' }, { status: 400 })
++      return reply({ error: 'File too large' }, 400)
+     }
++
++    const reference = imageUploadReference(auth.user.id, folder)
++    if (!reference) return reply({ error: 'Invalid upload folder' }, 400)
++    const access = await requireMediaAccess(reference, auth.user)
++    if (!access.ok) return withMediaHeaders(access.response, auth.headers)
+ 
+     const arrayBuffer = await file.arrayBuffer()
+     const buffer = Buffer.from(arrayBuffer)
+ 
+     const timestamp = Date.now()
+-    const originalName = file.name || 'image'
+-    const isPng = originalName.toLowerCase().endsWith('.png') || type === 'image/png'
+-    const isGif = originalName.toLowerCase().endsWith('.gif') || type === 'image/gif'
++    const isPng = type === 'image/png'
++    const isGif = type === 'image/gif'
+     const ext = isPng ? 'png' : (isGif ? 'gif' : 'jpg')
+     const baseName = `${timestamp}-${Math.random().toString(36).slice(2)}`
+     const filename = `${baseName}.${ext}`
+     const thumbFilename = `${baseName}-thumb.${isGif ? 'png' : ext}`
+ 
+-    const admin = getSupabaseAdmin()
+-
+-    let originalBuffer: Buffer<ArrayBufferLike> = buffer
+-    if (ext === 'jpg') {
+-      originalBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer()
+-    } else if (ext === 'png') {
+-      originalBuffer = await sharp(buffer).png({ compressionLevel: 9 }).toBuffer()
+-    } else {
+-      originalBuffer = buffer
+-    }
++    const admin = access.admin
+ 
+     const thumbBuffer = await sharp(buffer)
+       .resize({ width: 320, height: 320, fit: 'cover' })
+       .toFormat(isGif ? 'png' : (isPng ? 'png' : 'jpeg'), isGif || isPng ? { compressionLevel: 9 } : { quality: 75 })
+       .toBuffer()
+ 
+-    const { data: userRes } = await admin.auth.getUser()
+-    const userId = userRes?.user?.id || 'anonymous'
+-    const basePath = `${userId}/${folder}`
++    const basePath = reference.path.slice(0, reference.path.lastIndexOf('/'))
+ 
+     const { data: uploadOriginal, error: upErr1 } = await admin.storage
+       .from('saga')
+-      .upload(`${basePath}/${filename}`, originalBuffer, { contentType: type, upsert: false, cacheControl: '3600' })
++      .upload(`${basePath}/${filename}`, buffer, { contentType: type, upsert: false, cacheControl: '3600' })
+     if (upErr1) {
+-      return NextResponse.json({ error: upErr1.message }, { status: 500 })
++      return reply({ error: 'Image upload failed' }, 500)
+     }
+ 
+     const { data: uploadThumb, error: upErr2 } = await admin.storage
+       .from('saga')
+       .upload(`${basePath}/${thumbFilename}`, thumbBuffer, { contentType: isGif ? 'image/png' : (isPng ? 'image/png' : 'image/jpeg'), upsert: false, cacheControl: '3600' })
+     if (upErr2) {
+-      return NextResponse.json({ error: upErr2.message }, { status: 500 })
++      return reply({ error: 'Thumbnail upload failed' }, 500)
+     }
+ 
+     const { data: signedOriginal, error: signedOriginalError } = await admin.storage
+       .from('saga')
+       .createSignedUrl(uploadOriginal.path, 3600)
+     const { data: signedThumb, error: signedThumbError } = await admin.storage
+       .from('saga')
+       .createSignedUrl(uploadThumb.path, 3600)
+ 
+     if (signedOriginalError || signedThumbError || !signedOriginal || !signedThumb) {
+-      return NextResponse.json({ error: 'Failed to create signed image URL' }, { status: 500 })
++      return reply({ error: 'Failed to create signed image URL' }, 500)
+     }
+ 
+-    return NextResponse.json({
++    return reply({
+       success: true,
+       url: signedOriginal.signedUrl,
+       thumbUrl: signedThumb.signedUrl,
+       path: uploadOriginal.path,
+       thumbPath: uploadThumb.path
+     })
+-  } catch (e: any) {
+-    return NextResponse.json({ error: e?.message || 'Upload failed' }, { status: 500 })
++  } catch {
++    return reply({ error: 'Upload failed' }, 500)
+   }
+ }
+--- before/packages/web/src/lib/__tests__/ai-service.test.ts
++++ after/packages/web/src/lib/__tests__/ai-service.test.ts
+@@ -13,20 +13,39 @@
+ 
+   beforeEach(() => {
+     jest.spyOn(AIService, 'checkAvailability').mockResolvedValue(true)
+     getAccessToken.mockResolvedValue('access-token-1')
+     fetchMock.mockReset()
+     global.fetch = fetchMock
+   })
+ 
+   afterEach(() => {
+     jest.restoreAllMocks()
++  })
++
++  it.each([undefined, 'saga'] as const)('sends the explicit or upload-default storage bucket %s', async storageBucket => {
++    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ text: 'Original words' }) })
++    await AIService.transcribeAudio(new Blob(['audio']), {
++      storagePath: 'alice/projects/family-a/stories/temp/memory.mp3', storageBucket, maxRetries: 0,
++    })
++    const form = fetchMock.mock.calls[0][1].body as FormData
++    expect(form.get('storageBucket')).toBe(storageBucket ?? 'audio-recordings')
++    expect(form.get('storagePath')).toBe('alice/projects/family-a/stories/temp/memory.mp3')
++    expect(form.has('audio')).toBe(false)
++  })
++
++  it('preserves a direct File name and does not attach storage-only fields', async () => {
++    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ text: 'Original words' }) })
++    await AIService.transcribeAudio(new File(['audio'], 'original.mp3', { type: 'audio/mpeg' }), { maxRetries: 0 })
++    const form = fetchMock.mock.calls[0][1].body as FormData
++    expect((form.get('audio') as File).name).toBe('original.mp3')
++    expect(form.has('storageBucket')).toBe(false)
+   })
+ 
+   it('sends the Supabase bearer token to protected AI POST endpoints', async () => {
+     fetchMock
+       .mockResolvedValueOnce({
+         ok: true,
+         json: async () => ({ text: 'transcript', confidence: 0.9 }),
+       })
+       .mockResolvedValueOnce({
+         ok: true,
+--- before/packages/web/src/lib/ai-service.ts
++++ after/packages/web/src/lib/ai-service.ts
+@@ -1,12 +1,13 @@
+ import { useAuthStore } from '@/stores/auth-store'
+ import { InvalidAIResponseError, parseGeneratedContent, parseTranscriptionResponse } from './ai-response'
++import type { MediaBucket } from './media-reference'
+ 
+ export interface AIContent {
+   title: string
+   summary: string
+   transcript: string
+   followUpQuestions: string[]
+   confidence?: number
+ }
+ 
+ export interface TranscriptionResult {
+@@ -28,34 +29,35 @@
+     const token = await useAuthStore.getState().getAccessToken()
+     return token ? { Authorization: `Bearer ${token}` } : {}
+   }
+ 
+   /**
+    * Transcribe audio through the configured server-side provider.
+    * AUD-03 FIX: For large files (>4MB), upload to storage first and pass storagePath
+    */
+   static async transcribeAudio(
+     audioBlob: Blob,
+-    options: AIProcessingOptions & { storagePath?: string } = {}
++    options: AIProcessingOptions & { storagePath?: string; storageBucket?: MediaBucket } = {}
+   ): Promise<TranscriptionResult> {
+-    const { onProgress, language = 'en', maxRetries = 3, storagePath } = options
++    const { onProgress, language = 'en', maxRetries = 3, storagePath, storageBucket = 'audio-recordings' } = options
+ 
+     try {
+       onProgress?.('Preparing audio for transcription...', 10)
+ 
+       const formData = new FormData()
+ 
+       // AUD-03 FIX: Send storagePath for large files, blob for small files
+       if (storagePath) {
+         formData.append('storagePath', storagePath)
++        formData.append('storageBucket', storageBucket)
+       } else {
+-        formData.append('audio', audioBlob, 'recording.webm')
++        formData.append('audio', audioBlob, audioBlob instanceof File ? audioBlob.name : 'recording.webm')
+       }
+       formData.append('language', language)
+ 
+       onProgress?.('Sending to transcription service...', 30)
+ 
+       const response = await fetch(`${this.API_BASE_URL}/transcribe`, {
+         method: 'POST',
+         headers: await this.authHeaders(),
+         body: formData,
+       })
+--- before/packages/web/src/lib/media-reference.ts
++++ after/packages/web/src/lib/media-reference.ts
+@@ -0,0 +1,51 @@
++export type MediaBucket = 'saga' | 'audio-recordings'
++export type MediaScope =
++  | { kind: 'private' }
++  | { kind: 'project'; projectId: string }
++  | { kind: 'story'; storyId: string }
++
++export interface MediaReference {
++  bucket: MediaBucket
++  path: string
++  ownerId: string
++  scope: MediaScope
++}
++
++/** Validate an exact Storage key; never decode or normalize an authorization input. */
++export function parseMediaReference(bucket: unknown, path: unknown): MediaReference | null {
++  if (bucket !== 'saga' && bucket !== 'audio-recordings') return null
++  if (typeof path !== 'string' || !path || path !== path.trim() || /[\\%?#:\u0000-\u001f\u007f]/.test(path)) return null
++  const parts = path.split('/')
++  if (parts.length < 2 || parts.some(part => !part || part === '.' || part === '..')) return null
++  if (parts.slice(2).includes('projects')) return null
++
++  let scope: MediaScope = { kind: 'private' }
++  if (parts[1] === 'projects') {
++    if (parts.length < 4) return null
++    scope = { kind: 'project', projectId: parts[2] }
++  } else if (parts[1] === 'images' && (parts[2] === 'stories' || parts[2] === 'interactions')) {
++    if (parts.length < 5) return null
++    scope = { kind: 'story', storyId: parts[3] }
++  }
++  return { bucket, path, ownerId: parts[0], scope }
++}
++
++/** Only destinations used by the current image flows are accepted. */
++export function imageUploadReference(ownerId: string, folder: unknown): MediaReference | null {
++  if (typeof folder !== 'string') return null
++  const parts = folder.split('/')
++  const supported = folder === 'images' ||
++    (parts.length === 3 && parts[0] === 'images' && (parts[1] === 'stories' || parts[1] === 'interactions')) ||
++    (parts.length >= 2 && parts[0] === 'projects')
++  return supported ? parseMediaReference('saga', `${ownerId}/${folder}/upload`) : null
++}
++
++export function audioMimeType(type: string, filename: string): string {
++  if (type && type !== 'application/octet-stream') return type
++  const extension = filename.split('.').pop()?.toLowerCase()
++  const types: Record<string, string> = {
++    mp3: 'audio/mpeg', mp4: 'audio/mp4', m4a: 'audio/mp4', wav: 'audio/wav',
++    webm: 'audio/webm', ogg: 'audio/ogg', oga: 'audio/ogg', aac: 'audio/aac', flac: 'audio/flac',
++  }
++  return types[extension ?? ''] ?? 'application/octet-stream'
++}
+--- before/packages/web/src/lib/server/media-access.ts
++++ after/packages/web/src/lib/server/media-access.ts
+@@ -0,0 +1,54 @@
++import type { User } from '@supabase/supabase-js'
++import { NextResponse } from 'next/server'
++import type { MediaReference } from '@/lib/media-reference'
++import { getSupabaseAdmin } from '@/lib/supabase'
++import { requireProjectAccess } from './project-access'
++
++type MediaAccessResult =
++  | { ok: true; admin: ReturnType<typeof getSupabaseAdmin> }
++  | { ok: false; response: NextResponse }
++
++export function withMediaHeaders(response: NextResponse, headers: HeadersInit): NextResponse {
++  const source = new Headers(headers)
++  source.forEach((value, key) => {
++    if (key !== 'set-cookie') response.headers.set(key, value)
++  })
++  for (const cookie of source.getSetCookie()) response.headers.append('Set-Cookie', cookie)
++  response.headers.set('Cache-Control', 'no-store')
++  return response
++}
++
++/** Project/story permissions take precedence over the uploader prefix, including after removal. */
++export async function requireMediaAccess(reference: MediaReference, user: User): Promise<MediaAccessResult> {
++  let admin: ReturnType<typeof getSupabaseAdmin>
++  try {
++    admin = getSupabaseAdmin()
++  } catch {
++    return { ok: false, response: NextResponse.json({ error: 'Database service not configured' }, { status: 503 }) }
++  }
++  try {
++    if (reference.scope.kind === 'private') {
++      return reference.ownerId === user.id
++        ? { ok: true, admin }
++        : { ok: false, response: NextResponse.json({ error: 'Access denied' }, { status: 403 }) }
++    }
++
++    let projectId: string
++    if (reference.scope.kind === 'story') {
++      const { data: story, error } = await admin.from('stories').select('id, project_id')
++        .eq('id', reference.scope.storyId).maybeSingle()
++      if (error) return { ok: false, response: NextResponse.json({ error: 'Unable to verify media access' }, { status: 500 }) }
++      if (!story) return { ok: false, response: NextResponse.json({ error: 'Story not found' }, { status: 404 }) }
++      if (typeof story.project_id !== 'string' || !story.project_id) {
++        return { ok: false, response: NextResponse.json({ error: 'Unable to verify media access' }, { status: 500 }) }
++      }
++      projectId = story.project_id
++    } else {
++      projectId = reference.scope.projectId
++    }
++    const access = await requireProjectAccess(projectId, user)
++    return access.ok ? { ok: true, admin } : access
++  } catch {
++    return { ok: false, response: NextResponse.json({ error: 'Unable to verify media access' }, { status: 500 }) }
++  }
++}

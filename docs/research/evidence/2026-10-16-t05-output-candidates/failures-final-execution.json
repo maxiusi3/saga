@@ -1,0 +1,24 @@
+{
+  "command": [
+    "node",
+    "experiments/t05-durable-worker/verify.mjs",
+    "--only-merge-failures",
+    "docs/research/evidence/2026-10-16-t05-output-candidates/failures-final.json"
+  ],
+  "startedAt": "2026-10-16T14:41:51.328237+00:00",
+  "finishedAt": "2026-10-16T14:42:35.798974+00:00",
+  "exitCode": 0,
+  "report": "docs/research/evidence/2026-10-16-t05-output-candidates/failures-final.json",
+  "log": "docs/research/evidence/2026-10-16-t05-output-candidates/failures-final.log",
+  "logSha256": "17c9c24d520593625524b907a658d34ef502e679715f3ac279a9e6573f9240fb",
+  "status": "passed",
+  "scenarios": 42,
+  "assertions": 371,
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "error": null
+}

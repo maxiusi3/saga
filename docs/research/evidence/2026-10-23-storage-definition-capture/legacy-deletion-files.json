@@ -1,0 +1,20 @@
+{
+  "scope": "Task 4 legacy deletion block; targeted tests green; awaiting independent review and parent full verification",
+  "files": {
+    "packages/web/src/app/api/media/delete-image/route.ts": "cbcea3eb23053993d008924dd4c199d64baba126309057deb11e7ae9a761c9c0",
+    "packages/web/src/lib/stories.ts": "16d2cc072d29de1612c23417d8e058edb4f415e37b872859f60a5b57b2267003",
+    "packages/web/src/lib/storage.ts": "39a8ae2043ba197b8601b5414ab472a36bfa901e1a744cc4b54ae3a7d469ec54",
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/page.tsx": "712cb395fe39342c78266243224281a3abc1ebece210bfd6d6e52f3d8ec4952c",
+    "packages/web/src/components/interactions/story-interactions.tsx": "6861fac90e3418d9595525fb57a2cfacc04d70f2add8edcd9b5ee6bb5f717d9c",
+    "packages/web/src/app/api/media/__tests__/delete-image-unavailable.test.ts": "cb2a7ea5931821bd7e68f1a7d792fe7003c3b1e738d8d549e6b5bc1f699255ee",
+    "packages/web/src/lib/__tests__/legacy-deletion-unavailable.test.ts": "796839f4cd5e20d3ef1707095e121dc70834d23989026f62553489e556f24713",
+    "packages/web/src/components/interactions/__tests__/story-images-deletion-unavailable.test.tsx": "70ffc65ba44d9ac7a55bc9c3c46c91375e8845bed56a86f1ca1cda67ee299aff"
+  },
+  "targeted_test_suites": 3,
+  "targeted_tests": 18,
+  "red": {
+    "failed": 16,
+    "passed": 2
+  },
+  "red_initial_note": "Initial red run included a jsdom structuredClone setup error; fixed test fixture clone before retained red run and before production edits."
+}

@@ -1,0 +1,1320 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand invitation-sender-client invitation-sender-ui
+
+FAIL src/lib/__tests__/invitation-sender-client.test.ts
+  ● old send/generate/list facades are unavailable before session, RPC, table or HTTP access
+
+    expect(received).toBeInstanceOf(expected)
+
+    Expected constructor: InvitationHttpError
+
+    Received value has no prototype
+    Received value: null
+
+      19 | async function failure(work: Promise<unknown>, outcome: string) {
+      20 |   const error = await work.then(() => null, e => e)
+    > 21 |   expect(error).toBeInstanceOf(InvitationHttpError)
+         |                 ^
+      22 |   expect(error).toMatchObject({ outcome, canQueryStatus: outcome === 'unknown' })
+      23 |   expect(String(error).includes('PRIVATE_UPSTREAM_ERROR')).toBe(false)
+      24 | }
+
+      at toBeInstanceOf (src/lib/__tests__/invitation-sender-client.test.ts:21:17)
+      at Object.<anonymous> (src/lib/__tests__/invitation-sender-client.test.ts:26:3)
+
+  ● facade sends with the current session and retains stable data wrappers
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 10
+    + Received  +  1
+
+    - Object {
+    -   "expires_at": "2030-01-01T00:00:00+00:00",
+    -   "invitation_id": "33333333-3333-4333-8333-333333333333",
+    -   "outcome": "created",
+    -   "project_id": "22222222-2222-4222-8222-222222222222",
+    -   "role": "storyteller",
+    -   "status": "pending",
+    -   "success": true,
+    -   "token": "[REDACTED_SYNTHETIC_INVITATION_TOKEN]",
+    - }
+    + Object {}
+
+      38 |     async () => (await api.invitations.send(fixtureProject, ' [REDACTED_SYNTHETIC_EMAIL] ', 'storyteller', options)).data,
+      39 |     async () => (await api.projects.generateInvitation(fixtureProject, { email: ' [REDACTED_SYNTHETIC_EMAIL] ', role: 'storyteller', ...options })).data,
+    > 40 |   ]) expect(await call()).toEqual(sendHttp)
+         |                           ^
+      41 |   expect(boundary.getSession).toHaveBeenCalledTimes(3)
+      42 |   expect(boundary.getUser).not.toHaveBeenCalled()
+      43 |   expect(boundary.rpc).not.toHaveBeenCalled()
+
+      at Object.toEqual (src/lib/__tests__/invitation-sender-client.test.ts:40:27)
+
+  ● facade release/lookup call HTTP once per operation and preserve data wrappers
+
+    TypeError: _apisupabase.supabaseApi.invitations.release is not a function
+
+      50 | test('facade release/lookup call HTTP once per operation and preserve data wrappers', async () => {
+      51 |   fetchBoundary.mockResolvedValue(Response.json(releaseHttp))
+    > 52 |   expect(await supabaseApi.invitations.release(releaseInput, fixtureProject)).toEqual(releaseHttp)
+         |                                        ^
+      53 |   expect(await api.invitations.release(releaseInput, fixtureProject)).toEqual({ data: releaseHttp })
+      54 |   fetchBoundary.mockResolvedValue(Response.json(lookupHttp))
+      55 |   expect(await supabaseApi.invitations.lookup(lookupInput)).toEqual(lookupHttp)
+
+      at Object.release (src/lib/__tests__/invitation-sender-client.test.ts:52:40)
+
+  ● invalid or unavailable current session sends no HTTP and never leaks provider error
+
+    expect(received).toBeInstanceOf(expected)
+
+    Expected constructor: InvitationHttpError
+
+    Received value has no prototype
+    Received value: null
+
+      19 | async function failure(work: Promise<unknown>, outcome: string) {
+      20 |   const error = await work.then(() => null, e => e)
+    > 21 |   expect(error).toBeInstanceOf(InvitationHttpError)
+         |                 ^
+      22 |   expect(error).toMatchObject({ outcome, canQueryStatus: outcome === 'unknown' })
+      23 |   expect(String(error).includes('PRIVATE_UPSTREAM_ERROR')).toBe(false)
+      24 | }
+
+      at toBeInstanceOf (src/lib/__tests__/invitation-sender-client.test.ts:21:17)
+      at Object.<anonymous> (src/lib/__tests__/invitation-sender-client.test.ts:65:5)
+
+FAIL src/components/invitations/__tests__/invitation-sender-ui.test.tsx (7.441 s)
+  ● actual page cancellation uses global release with Bearer and no project/request ID in body
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "Invitation cancelled"
+    Received: "Invitation deleted"
+
+    Number of calls: 1
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center space-x-4"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mhref[39m=[32m"/en/dashboard/projects/22222222-2222-4222-8222-222222222222"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg size-11"[39m
+                  [33mdata-slot[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-arrow-left h-4 w-4"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m12 19-7-7 7-7"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M19 12H5"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</a>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+                [36m>[39m
+                  [0mProject Invitations[0m
+                [36m</h1>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-muted-foreground"[39m
+                [36m>[39m
+                  [0mManage project member invitations[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6"[39m
+              [33mdata-slot[39m=[32m"card"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"[39m
+                [33mdata-slot[39m=[32m"card-header"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"leading-none font-semibold flex items-center space-x-2"[39m
+                  [33mdata-slot[39m=[32m"card-title"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-user-plus h-5 w-5"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+                    [36m/>[39m
+                    [36m<circle[39m
+                      [33mcx[39m=[32m"9"[39m
+                      [33mcy[39m=[32m"7"[39m
+                      [33mr[39m=[32m"4"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"19"[39m
+                      [33mx2[39m=[32m"19"[39m
+                      [33my1[39m=[32m"8"[39m
+                      [33my2[39m=[32m"14"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"22"[39m
+                      [33mx2[39m=[32m"16"[39m
+                      [33my1[39m=[32m"11"[39m
+                      [33my2[39m=[32m"11"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<span>[39m
+                    [0mSend New Invitation[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"text-muted-foreground text-sm"[39m
+                  [33mdata-slot[39m=[32m"card-description"[39m
+                [36m>[39m
+                  [0mInvite new members to join this project[0m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-4"[39m
+                [33mdata-slot[39m=[32m"card-content"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-1 md:grid-cols-2 gap-4"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"space-y-2"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                      [33mfor[39m=[32m"email"[39m
+                    [36m>[39m
+                      [0mEmail Address[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"[39m
+                      [33mdata-slot[39m=[32m"input"[39m
+                      [33mid[39m=[32m"email"[39m
+                      [33mplaceholder[39m=[32m"Enter email address"[39m
+                      [33mtype[39m=[32m"email"[39m
+                      [3...
+
+      34 | test('actual page cancellation uses global release with Bearer and no project/request ID in body', async () => {
+      35 |   await cancel()
+    > 36 |   await waitFor(() => expect(toast.success).toHaveBeenCalledWith('Invitation cancelled'))
+         |                                             ^
+      37 |   const writes = fetchBoundary.mock.calls.filter(([, init]) => init?.method)
+      38 |   expect(writes).toHaveLength(1)
+      39 |   expect(writes[0][0]).toBe('/api/invitations/release')
+
+      at toHaveBeenCalledWith (src/components/invitations/__tests__/invitation-sender-ui.test.tsx:36:45)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● actual page rejects malformed/mismatched/unknown result 0 without success
+
+    expect(jest.fn()).toHaveBeenCalled()
+
+    Expected number of calls: >= 1
+    Received number of calls:    0
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center space-x-4"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mhref[39m=[32m"/en/dashboard/projects/22222222-2222-4222-8222-222222222222"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg size-11"[39m
+                  [33mdata-slot[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-arrow-left h-4 w-4"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m12 19-7-7 7-7"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M19 12H5"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</a>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+                [36m>[39m
+                  [0mProject Invitations[0m
+                [36m</h1>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-muted-foreground"[39m
+                [36m>[39m
+                  [0mManage project member invitations[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6"[39m
+              [33mdata-slot[39m=[32m"card"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"[39m
+                [33mdata-slot[39m=[32m"card-header"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"leading-none font-semibold flex items-center space-x-2"[39m
+                  [33mdata-slot[39m=[32m"card-title"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-user-plus h-5 w-5"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+                    [36m/>[39m
+                    [36m<circle[39m
+                      [33mcx[39m=[32m"9"[39m
+                      [33mcy[39m=[32m"7"[39m
+                      [33mr[39m=[32m"4"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"19"[39m
+                      [33mx2[39m=[32m"19"[39m
+                      [33my1[39m=[32m"8"[39m
+                      [33my2[39m=[32m"14"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"22"[39m
+                      [33mx2[39m=[32m"16"[39m
+                      [33my1[39m=[32m"11"[39m
+                      [33my2[39m=[32m"11"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<span>[39m
+                    [0mSend New Invitation[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"text-muted-foreground text-sm"[39m
+                  [33mdata-slot[39m=[32m"card-description"[39m
+                [36m>[39m
+                  [0mInvite new members to join this project[0m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-4"[39m
+                [33mdata-slot[39m=[32m"card-content"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-1 md:grid-cols-2 gap-4"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"space-y-2"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                      [33mfor[39m=[32m"email"[39m
+                    [36m>[39m
+                      [0mEmail Address[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"[39m
+                      [33mdata-slot[39m=[32m"input"[39m
+                      [33mid[39m=[32m"email"[39m
+                      [33mplaceholder[39m=[32m"Enter email address"[39m
+                      [33mtype[39m=[32m"email"[39m
+                      [3...
+
+      44 |   fetchBoundary.mockImplementation(async (_path, init) => reply(init?.method ? body : list))
+      45 |   await cancel()
+    > 46 |   await waitFor(() => expect(toast.error).toHaveBeenCalled())
+         |                                           ^
+      47 |   expect(toast.success).not.toHaveBeenCalled()
+      48 |   expect(fetchBoundary.mock.calls.filter(([, init]) => init?.method)).toHaveLength(1)
+      49 | })
+
+      at toHaveBeenCalled (src/components/invitations/__tests__/invitation-sender-ui.test.tsx:46:43)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● actual page rejects malformed/mismatched/unknown result 1 without success
+
+    expect(jest.fn()).toHaveBeenCalled()
+
+    Expected number of calls: >= 1
+    Received number of calls:    0
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center space-x-4"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mhref[39m=[32m"/en/dashboard/projects/22222222-2222-4222-8222-222222222222"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg size-11"[39m
+                  [33mdata-slot[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-arrow-left h-4 w-4"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m12 19-7-7 7-7"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M19 12H5"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</a>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+                [36m>[39m
+                  [0mProject Invitations[0m
+                [36m</h1>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-muted-foreground"[39m
+                [36m>[39m
+                  [0mManage project member invitations[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6"[39m
+              [33mdata-slot[39m=[32m"card"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"[39m
+                [33mdata-slot[39m=[32m"card-header"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"leading-none font-semibold flex items-center space-x-2"[39m
+                  [33mdata-slot[39m=[32m"card-title"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-user-plus h-5 w-5"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+                    [36m/>[39m
+                    [36m<circle[39m
+                      [33mcx[39m=[32m"9"[39m
+                      [33mcy[39m=[32m"7"[39m
+                      [33mr[39m=[32m"4"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"19"[39m
+                      [33mx2[39m=[32m"19"[39m
+                      [33my1[39m=[32m"8"[39m
+                      [33my2[39m=[32m"14"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"22"[39m
+                      [33mx2[39m=[32m"16"[39m
+                      [33my1[39m=[32m"11"[39m
+                      [33my2[39m=[32m"11"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<span>[39m
+                    [0mSend New Invitation[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"text-muted-foreground text-sm"[39m
+                  [33mdata-slot[39m=[32m"card-description"[39m
+                [36m>[39m
+                  [0mInvite new members to join this project[0m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-4"[39m
+                [33mdata-slot[39m=[32m"card-content"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-1 md:grid-cols-2 gap-4"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"space-y-2"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                      [33mfor[39m=[32m"email"[39m
+                    [36m>[39m
+                      [0mEmail Address[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"[39m
+                      [33mdata-slot[39m=[32m"input"[39m
+                      [33mid[39m=[32m"email"[39m
+                      [33mplaceholder[39m=[32m"Enter email address"[39m
+                      [33mtype[39m=[32m"email"[39m
+                      [3...
+
+      44 |   fetchBoundary.mockImplementation(async (_path, init) => reply(init?.method ? body : list))
+      45 |   await cancel()
+    > 46 |   await waitFor(() => expect(toast.error).toHaveBeenCalled())
+         |                                           ^
+      47 |   expect(toast.success).not.toHaveBeenCalled()
+      48 |   expect(fetchBoundary.mock.calls.filter(([, init]) => init?.method)).toHaveLength(1)
+      49 | })
+
+      at toHaveBeenCalled (src/components/invitations/__tests__/invitation-sender-ui.test.tsx:46:43)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● actual page rejects malformed/mismatched/unknown result 2 without success
+
+    expect(jest.fn()).toHaveBeenCalled()
+
+    Expected number of calls: >= 1
+    Received number of calls:    0
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center space-x-4"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mhref[39m=[32m"/en/dashboard/projects/22222222-2222-4222-8222-222222222222"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg size-11"[39m
+                  [33mdata-slot[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-arrow-left h-4 w-4"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m12 19-7-7 7-7"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M19 12H5"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</a>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+                [36m>[39m
+                  [0mProject Invitations[0m
+                [36m</h1>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-muted-foreground"[39m
+                [36m>[39m
+                  [0mManage project member invitations[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6"[39m
+              [33mdata-slot[39m=[32m"card"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"[39m
+                [33mdata-slot[39m=[32m"card-header"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"leading-none font-semibold flex items-center space-x-2"[39m
+                  [33mdata-slot[39m=[32m"card-title"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-user-plus h-5 w-5"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+                    [36m/>[39m
+                    [36m<circle[39m
+                      [33mcx[39m=[32m"9"[39m
+                      [33mcy[39m=[32m"7"[39m
+                      [33mr[39m=[32m"4"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"19"[39m
+                      [33mx2[39m=[32m"19"[39m
+                      [33my1[39m=[32m"8"[39m
+                      [33my2[39m=[32m"14"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"22"[39m
+                      [33mx2[39m=[32m"16"[39m
+                      [33my1[39m=[32m"11"[39m
+                      [33my2[39m=[32m"11"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<span>[39m
+                    [0mSend New Invitation[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"text-muted-foreground text-sm"[39m
+                  [33mdata-slot[39m=[32m"card-description"[39m
+                [36m>[39m
+                  [0mInvite new members to join this project[0m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-4"[39m
+                [33mdata-slot[39m=[32m"card-content"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-1 md:grid-cols-2 gap-4"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"space-y-2"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                      [33mfor[39m=[32m"email"[39m
+                    [36m>[39m
+                      [0mEmail Address[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"[39m
+                      [33mdata-slot[39m=[32m"input"[39m
+                      [33mid[39m=[32m"email"[39m
+                      [33mplaceholder[39m=[32m"Enter email address"[39m
+                      [33mtype[39m=[32m"email"[39m
+                      [3...
+
+      44 |   fetchBoundary.mockImplementation(async (_path, init) => reply(init?.method ? body : list))
+      45 |   await cancel()
+    > 46 |   await waitFor(() => expect(toast.error).toHaveBeenCalled())
+         |                                           ^
+      47 |   expect(toast.success).not.toHaveBeenCalled()
+      48 |   expect(fetchBoundary.mock.calls.filter(([, init]) => init?.method)).toHaveLength(1)
+      49 | })
+
+      at toHaveBeenCalled (src/components/invitations/__tests__/invitation-sender-ui.test.tsx:46:43)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● actual page rejects malformed/mismatched/unknown result 3 without success
+
+    expect(jest.fn()).toHaveBeenCalled()
+
+    Expected number of calls: >= 1
+    Received number of calls:    0
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center space-x-4"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mhref[39m=[32m"/en/dashboard/projects/22222222-2222-4222-8222-222222222222"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg size-11"[39m
+                  [33mdata-slot[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-arrow-left h-4 w-4"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m12 19-7-7 7-7"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M19 12H5"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</a>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+                [36m>[39m
+                  [0mProject Invitations[0m
+                [36m</h1>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-muted-foreground"[39m
+                [36m>[39m
+                  [0mManage project member invitations[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6"[39m
+              [33mdata-slot[39m=[32m"card"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"[39m
+                [33mdata-slot[39m=[32m"card-header"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"leading-none font-semibold flex items-center space-x-2"[39m
+                  [33mdata-slot[39m=[32m"card-title"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-user-plus h-5 w-5"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+                    [36m/>[39m
+                    [36m<circle[39m
+                      [33mcx[39m=[32m"9"[39m
+                      [33mcy[39m=[32m"7"[39m
+                      [33mr[39m=[32m"4"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"19"[39m
+                      [33mx2[39m=[32m"19"[39m
+                      [33my1[39m=[32m"8"[39m
+                      [33my2[39m=[32m"14"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"22"[39m
+                      [33mx2[39m=[32m"16"[39m
+                      [33my1[39m=[32m"11"[39m
+                      [33my2[39m=[32m"11"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<span>[39m
+                    [0mSend New Invitation[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"text-muted-foreground text-sm"[39m
+                  [33mdata-slot[39m=[32m"card-description"[39m
+                [36m>[39m
+                  [0mInvite new members to join this project[0m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-4"[39m
+                [33mdata-slot[39m=[32m"card-content"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-1 md:grid-cols-2 gap-4"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"space-y-2"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                      [33mfor[39m=[32m"email"[39m
+                    [36m>[39m
+                      [0mEmail Address[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"[39m
+                      [33mdata-slot[39m=[32m"input"[39m
+                      [33mid[39m=[32m"email"[39m
+                      [33mplaceholder[39m=[32m"Enter email address"[39m
+                      [33mtype[39m=[32m"email"[39m
+                      [3...
+
+      44 |   fetchBoundary.mockImplementation(async (_path, init) => reply(init?.method ? body : list))
+      45 |   await cancel()
+    > 46 |   await waitFor(() => expect(toast.error).toHaveBeenCalled())
+         |                                           ^
+      47 |   expect(toast.success).not.toHaveBeenCalled()
+      48 |   expect(fetchBoundary.mock.calls.filter(([, init]) => init?.method)).toHaveLength(1)
+      49 | })
+
+      at toHaveBeenCalled (src/components/invitations/__tests__/invitation-sender-ui.test.tsx:46:43)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● page incomplete send does not perform HTTP or claim success even if transport would return 2xx
+
+    expect(jest.fn()).toHaveBeenCalled()
+
+    Expected number of calls: >= 1
+    Received number of calls:    0
+
+    Ignored nodes: comments, script, style
+    [36m<html>[39m
+      [36m<head />[39m
+      [36m<body>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center space-x-4"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mhref[39m=[32m"/en/dashboard/projects/22222222-2222-4222-8222-222222222222"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg size-11"[39m
+                  [33mdata-slot[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-arrow-left h-4 w-4"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m12 19-7-7 7-7"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M19 12H5"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</a>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-foreground"[39m
+                [36m>[39m
+                  [0mProject Invitations[0m
+                [36m</h1>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-muted-foreground"[39m
+                [36m>[39m
+                  [0mManage project member invitations[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6"[39m
+              [33mdata-slot[39m=[32m"card"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"[39m
+                [33mdata-slot[39m=[32m"card-header"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"leading-none font-semibold flex items-center space-x-2"[39m
+                  [33mdata-slot[39m=[32m"card-title"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-user-plus h-5 w-5"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+                    [36m/>[39m
+                    [36m<circle[39m
+                      [33mcx[39m=[32m"9"[39m
+                      [33mcy[39m=[32m"7"[39m
+                      [33mr[39m=[32m"4"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"19"[39m
+                      [33mx2[39m=[32m"19"[39m
+                      [33my1[39m=[32m"8"[39m
+                      [33my2[39m=[32m"14"[39m
+                    [36m/>[39m
+                    [36m<line[39m
+                      [33mx1[39m=[32m"22"[39m
+                      [33mx2[39m=[32m"16"[39m
+                      [33my1[39m=[32m"11"[39m
+                      [33my2[39m=[32m"11"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<span>[39m
+                    [0mSend New Invitation[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"text-muted-foreground text-sm"[39m
+                  [33mdata-slot[39m=[32m"card-description"[39m
+                [36m>[39m
+                  [0mInvite new members to join this project[0m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-4"[39m
+                [33mdata-slot[39m=[32m"card-content"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-1 md:grid-cols-2 gap-4"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"space-y-2"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mclass[39m=[32m"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"[39m
+                      [33mdata-slot[39m=[32m"label"[39m
+                      [33mfor[39m=[32m"email"[39m
+                    [36m>[39m
+                      [0mEmail Address[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"[39m
+                      [33mdata-slot[39m=[32m"input"[39m
+                      [33mid[39m=[32m"email"[39m
+                      [33mplaceholder[39m=[32m"Enter email address"[39m
+                      [33mtype[39m=[32m"email"[39m
+                      [3...
+
+      53 |   fireEvent.change(screen.getByLabelText('Email Address'), { target: { value: '[REDACTED_SYNTHETIC_EMAIL]' } })
+      54 |   fireEvent.click(screen.getByRole('button', { name: 'Send Invitation' }))
+    > 55 |   await waitFor(() => expect(toast.error).toHaveBeenCalled())
+         |                                           ^
+      56 |   expect(toast.success).not.toHaveBeenCalled()
+      57 |   expect(fetchBoundary.mock.calls.filter(([, init]) => init?.method)).toHaveLength(0)
+      58 | })
+
+      at toHaveBeenCalled (src/components/invitations/__tests__/invitation-sender-ui.test.tsx:55:43)
+      at runWithExpensiveErrorDiagnosticsDisabled (../../node_modules/@testing-library/dom/dist/config.js:47:12)
+      at checkCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+      at checkRealTimersCallback (../../node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
+
+  ● component incomplete send also stays unavailable with no HTTP and no success
+
+    TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "sendInvitation"
+
+    Here are the accessible roles:
+
+      heading:
+
+      Name "title":
+      [36m<h3[39m
+        [33mclass[39m=[32m"font-semibold text-foreground flex items-center gap-2"[39m
+      [36m/>[39m
+
+      Name "sendNew":
+      [36m<h4[39m
+        [33mclass[39m=[32m"font-medium text-foreground"[39m
+      [36m/>[39m
+
+      Name "pendingInvitations":
+      [36m<h4[39m
+        [33mclass[39m=[32m"font-medium text-foreground"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      button:
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<button[39m
+        [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-11 px-6 py-3 text-sm"[39m
+        [33mdata-slot[39m=[32m"button"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      textbox:
+
+      Name "":
+      [36m<input[39m
+        [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive flex-1"[39m
+        [33mdata-slot[39m=[32m"input"[39m
+        [33mplaceholder[39m=[32m"emailPlaceholder"[39m
+        [33mtype[39m=[32m"email"[39m
+        [33mvalue[39m=[32m"[REDACTED_SYNTHETIC_EMAIL]"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      combobox:
+
+      Name "":
+      [36m<select[39m
+        [33mclass[39m=[32m"px-3 py-2 border border-border rounded-md bg-background"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      option:
+
+      Name "storyteller":
+      [36m<option[39m
+        [33mvalue[39m=[32m"storyteller"[39m
+      [36m/>[39m
+
+      Name "facilitator":
+      [36m<option[39m
+        [33mvalue[39m=[32m"facilitator"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      paragraph:
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+      [36m/>[39m
+
+      Name "":
+      [36m<p />[39m
+
+      --------------------------------------------------
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"bg-white border border-gray-200 flex flex-col transition-shadow duration-200 shadow-sm hover:shadow-md p-6 gap-6 p-6 undefined"[39m
+          [33mdata-slot[39m=[32m"card"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between"[39m
+            [36m>[39m
+              [36m<h3[39m
+                [33mclass[39m=[32m"font-semibold text-foreground flex items-center gap-2"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-mail h-5 w-5"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"[39m
+                  [36m/>[39m
+                  [36m<rect[39m
+                    [33mheight[39m=[32m"16"[39m
+                    [33mrx[39m=[32m"2"[39m
+                    [33mwidth[39m=[32m"20"[39m
+                    [33mx[39m=[32m"2"[39m
+                    [33my[39m=[32m"4"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mtitle[0m
+              [36m</h3>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 text-primary hover:bg-gray-50 rounded-lg h-9 px-4 py-2 text-sm"[39m
+                [33mdata-slot[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-refresh-cw h-4 w-4"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 3v5h-5"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M8 16H3v5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 p-4 bg-muted/50 rounded-lg"[39m
+            [36m>[39m
+              [36m<h4[39m
+                [33mclass[39m=[32m"font-medium text-foreground"[39m
+              [36m>[39m
+                [0msendNew[0m
+              [36m</h4>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex gap-2"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive flex-1"[39m
+                  [33mdata-slot[39m=[32m"input"[39m
+                  [33mplaceholder[39m=[32m"emailPlaceholder"[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m"[REDACTED_SYNTHETIC_EMAIL]"[39m
+                [36m/>[39m
+                [36m<select[39m
+                  [33mclass[39m=[32m"px-3 py-2 border border-border rounded-md bg-background"[39m
+                [36m>[39m
+                  [36m<option[39m
+                    [33mvalue[39m=[32m"storyteller"[39m
+                  [36m>[39m
+                    [0mstoryteller[0m
+                  [36m</option>[39m
+                  [36m<option[39m
+                    [33mvalue[39m=[32m"facilitator"[39m
+                  [36m>[39m
+                    [0mfacilitator[0m
+                  [36m</option>[39m
+                [36m</select>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-secondary shadow-sm rounded-lg h-11 px-6 py-3 text-sm"[39m
+                  [33mdata-slot[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-send h-4 w-4"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m21.854 2.147-10.94 10.939"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+              [36m>[39m
+                [0mInvitations expire after 72 hours for security.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-3"[39m
+            [36m>[39m
+              [36m<h4[39m
+                [33mclass[39m=[32m"font-medium text-foreground"[39m
+              [36m>[39m
+                [0mpendingInvitations[0m
+              [36m</h4>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-center py-8 text-muted-foreground"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-mail h-12 w-12 mx-auto mb-2 opacity-50"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"[39m
+                  [36m/>[39m
+                  [36m<rect[39m
+                    [33mheight[39m=[32m"16"[39m
+                    [33mrx[39m=[32m"2"[39m
+                    [33mwidth[39m=[32m"20"[39m
+                    [33mx[39m=[32m"2"[39m
+                    [33my[39m=[32m"4"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [36m<p>[39m
+                  [0mNo invitations sent yet[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      62 |   const input = await screen.findByPlaceholderText('emailPlaceholder')
+      63 |   fireEvent.change(input, { target: { value: '[REDACTED_SYNTHETIC_EMAIL]' } })
+    > 64 |   fireEvent.click(screen.getByRole('button', { name: 'sendInvitation' }))
+         |                          ^
+      65 |   await waitFor(() => expect(hotToast.error).toHaveBeenCalled())
+      66 |   expect(hotToast.success).not.toHaveBeenCalled()
+      67 |   expect(fetchBoundary.mock.calls.filter(([, init]) => init?.method)).toHaveLength(0)
+
+      at Object.getElementError (../../node_modules/@testing-library/dom/dist/config.js:37:19)
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.getByRole (src/components/invitations/__tests__/invitation-sender-ui.test.tsx:64:26)
+
+Test Suites: 2 failed, 2 total
+Tests:       11 failed, 11 total
+Snapshots:   0 total
+Time:        9.02 s
+Ran all test suites matching invitation-sender-client|invitation-sender-ui.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand invitation-sender-client invitation-sender-ui

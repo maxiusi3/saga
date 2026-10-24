@@ -1,0 +1,99 @@
+{
+  "startedAt": "2026-10-16T02:46:19.956Z",
+  "scope": "isolated local PostgreSQL + pg-boss + synthetic provider ledger; no production access",
+  "runtime": {
+    "node": "v22.22.2",
+    "postgres": "postgres (PostgreSQL) 14.17 (Homebrew)",
+    "pgBoss": "12.37.1",
+    "pg": "8.16.3"
+  },
+  "sources": {
+    "experiments/t05-durable-worker/package-lock.json": "2e4d2c98a2cc71eaf45572ce519066ad2bfef6f5ef2a838ed2bae4368d71ed85",
+    "experiments/t05-durable-worker/store.mjs": "a0216f0133d2489224da97bbcfee2bfae1d97e8528da65520554a7a530ce9375",
+    "experiments/t05-durable-worker/worker.mjs": "87bf8f280aae7b34c588411d2284b1b4fdf78d27d74bbedae41494fe864b915b",
+    "experiments/t05-durable-worker/verify.mjs": "bff1afb727a31fd9f2d2abbd0ee75380005a4b3fcd86770fcb10871b80b2052d",
+    "experiments/t05-durable-worker/runner.mjs": "62526bc2fdf4e6e61447350bb48a684a4e1ada9982ce4498fe745cc61c864df6",
+    "experiments/t05-durable-worker/supervisor.mjs": "22e0acfedef07ce896a54b9ca2b43847948e83229b56353d610a27da84c4e6b0",
+    "experiments/t05-durable-worker/supervision-scenarios.mjs": "9b77c1a27fb7dfe0e4830e053240aaee5e6161d47ecb6a00e6e2d6651a8adb08",
+    "experiments/t05-durable-worker/README.md": "9a87cddf54cc0000fc1fb2976d63a0f2b6cef096322c369923471bff876541f7",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+  },
+  "scenarios": [
+    {
+      "name": "heartbeat success and stale fencing",
+      "status": "passed",
+      "assertions": 18,
+      "elapsedMs": 25718
+    },
+    {
+      "name": "unknown result reconciliation is fail-closed",
+      "status": "passed",
+      "assertions": 7,
+      "elapsedMs": 6281
+    },
+    {
+      "name": "unknown prepared artifact is reused without provider call",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 7
+    },
+    {
+      "name": "cancelled unknown reconciliation is rejected",
+      "status": "passed",
+      "assertions": 3,
+      "elapsedMs": 8
+    },
+    {
+      "name": "controlled retry claims once and completes",
+      "status": "passed",
+      "assertions": 9,
+      "elapsedMs": 361
+    },
+    {
+      "name": "heartbeat lock contention checks expiry after lock",
+      "status": "passed",
+      "assertions": 6,
+      "elapsedMs": 6169
+    },
+    {
+      "name": "socket-only isolated database",
+      "status": "passed",
+      "assertions": 5,
+      "elapsedMs": 1
+    },
+    {
+      "name": "atomic business and queue creation",
+      "status": "passed",
+      "assertions": 12,
+      "elapsedMs": 350
+    },
+    {
+      "name": "concurrent duplicate envelopes",
+      "status": "passed",
+      "assertions": 11,
+      "elapsedMs": 1037
+    }
+  ],
+  "assertions": 78,
+  "limitations": [
+    "Provider calls are durable simulated ledger entries, not paid API requests or actual billing evidence.",
+    "Cross-day approval advances an explicit logical clock; it is not a 24-hour wall-clock soak test.",
+    "Experimental tables are not the production schema, RLS, Storage, outbox deployment, or a migration proposal.",
+    "Local asynchronous synthetic tasks and process supervision only; no real audio, provider cancellation/billing, production hosting, real-device recording, backup restore, or load qualification."
+  ],
+  "status": "failed",
+  "error": "Error: Worker replacement-leased closed {\"code\":1,\"signal\":null}: Processing job is not ready to be claimed\n\n    at EventEmitter.inspect (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:158:28)\n    at EventEmitter.emit (node:events:519:28)\n    at ChildProcess.<anonymous> (file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/experiments/t05-durable-worker/verify.mjs:144:12)\n    at ChildProcess.emit (node:events:531:35)\n    at maybeClose (node:internal/child_process:1101:16)\n    at Socket.<anonymous> (node:internal/child_process:456:11)\n    at Socket.emit (node:events:519:28)\n    at Pipe.<anonymous> (node:net:346:12)",
+  "processOwnership": {
+    "supervisorPids": [],
+    "runnerPids": [],
+    "remainingGroups": [],
+    "remainingRunnerPids": []
+  },
+  "cleanup": {
+    "ownedChildrenRemaining": 0,
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-16T02:47:08.064Z"
+}
