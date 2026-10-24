@@ -6,12 +6,13 @@
   "p1Complete": true,
   "p2Complete": true,
   "p3Complete": true,
+  "p4Complete": true,
   "gates": {
     "G0": true,
     "G1": true,
     "G2": true,
     "G3": true,
-    "G4": false
+    "G4": true
   },
   "g0": {
     "decisionsAndMeasurementDefinitions": {

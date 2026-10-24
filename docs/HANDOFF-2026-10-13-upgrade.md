@@ -3,7 +3,12 @@
 - 更新时间：2026-10-24（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1、P2/G2 与 P3/G3 里程碑验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1、P2/G2、P3/G3 与 P4/G4 全部五个阶段 `T00–T13` 的工程实施与里程碑验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+
+**10月24日本轮第五阶段收口：P4 家庭纵向试点与决策分析（`T13`）与 G4 里程碑达成（`gates.G4 = true`、`p4Complete = true`）。** 详见[P4/G4 集成验证报告](research/2026-10-24-p4-g4-verification.md)、[P4/G4 实施计划](superpowers/plans/2026-10-24-upgrade-p4-g4-integration.md)、[PG17.4 P4/G4 端到端验证证据](research/evidence/2026-10-24-p4-g4-verification/p4-g4-verify-2026-10-24T15-49-58.079Z-90e4d756-3573-42c3-b750-de9c6ab96db1.json)与[G4 里程碑判定](research/evidence/2026-10-24-p4-g4-verification/milestone-check.json)：
+- **正式 SQL 迁移（`supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql`）**：建立 `public.pilot_households` 台账表，强制区分 `prototype_study`、`ai_eval_holdout`、`longitudinal_pilot` 三类队列与 `free`、`half_price`、`subsidized`、`paid_59` 四档价格，持久化全链路时间戳、未完成原因、家庭修订分钟、运营支持分钟、NPS 与重大数据事故数；启用 RLS 并收回客户端直接写权限。
+- **T13 纵向试点分析与 G4 决策建议引擎（`pilot-cohort-analytics.ts`、`GET /api/admin/pilot-analytics`）**：严格按 7 天首次成果窗、28 天项目完成窗与交付后 14 天回听窗过滤成熟样本，分母为 `0` 时返回 `insufficient_sample`（`proportion: null`）；计算家庭修订与运营支持工时的中位数（P50）/P90、含未完成与退款家庭的全队列单位经济、独立 NPS（$[-100, 100]$）与愿推荐率，并生成带 `requiresOwnerDecision: true` 的可解释 G4 建议。
+- **G0–G4 全部五道质量门工程收口完成**：PG17.4 端到端验证（2 场景 / 22 断言）与全工作区回归测试全部通过。后续工作为负责人主导的外部事项（生产发布前执行一次真实方案 B 备份、按需执行付费供应商真实样本探针、真机与真实家庭试点招募观察，或开启 P5 单项扩展）。
 
 **10月24日本轮第四阶段收口：P3 完整产品交付与履约（`T09 → T10 → T11`，含 `T12` 收口）与 G3 里程碑达成（`gates.G3 = true`、`p3Complete = true`）。** 详见[P3/G3 集成验证报告](research/2026-10-24-p3-g3-verification.md)、[P3/G3 实施计划](superpowers/plans/2026-10-24-upgrade-p3-g3-integration.md)、[PG17.4 P3/G3 端到端验证证据](research/evidence/2026-10-24-p3-g3-verification/p3-g3-verify-2026-10-24T15-30-56.825Z-4c3250e8-2831-41b4-b07b-f64940a753c9.json)与[G3 里程碑判定](research/evidence/2026-10-24-p3-g3-verification/milestone-check.json)：
 - **正式 SQL 迁移（`supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql`）**：建立 4 张 P3 核心表（`publication_snapshots`、`search_index_entries`、`entitlement_sources`、`entitlement_events`）；建立触发器 `trg_prevent_publication_snapshot_mutation`（SQLSTATE `23514`）阻断直接修改或删除已发布快照；建立 `SECURITY DEFINER` 函数 `public.apply_entitlement_event` 实现支付回调幂等去重、乱序 `refund` 先到抑制迟到 `grant`（`grant_suppressed`）与退款成员席位自动撤销；全面启用 RLS 并实时阻断跨家庭成员、被撤权成员及已带 `tombstone_at` 删除墓碑的媒体源。

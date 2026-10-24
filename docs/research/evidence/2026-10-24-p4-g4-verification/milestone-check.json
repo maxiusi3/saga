@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-10-24",
+  "authority": "docs/2026-10-10-integrated-upgrade-plan.md §5 Phase P4, §7.1 G4, §8 T13, §10.2-10.3",
+  "p0Complete": true,
+  "p1Complete": true,
+  "p2Complete": true,
+  "p3Complete": true,
+  "p4Complete": true,
+  "gates": {
+    "G0": true,
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "G4": true
+  },
+  "g4": {
+    "cohortAndPricingSeparationVerified": true,
+    "maturityWindowsEnforced": {
+      "firstOutcomeDays": 7,
+      "projectCompletionDays": 28,
+      "postDeliveryReplayDays": 14,
+      "zeroDenominatorReturnsNull": true
+    },
+    "laborAndUnitEconomicsTraceable": {
+      "familyRevisionTargetMinutes": 10,
+      "opsSupportTargetMinutes": 30,
+      "includesIncompleteAndRefundedHouseholds": true
+    },
+    "unresolvedSevereDataIncidents": 0,
+    "explainableNextStepWithOwnerAuthority": true,
+    "evidence": [
+      "supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql",
+      "packages/web/src/lib/server/pilot-cohort-analytics.ts",
+      "packages/web/src/app/api/admin/pilot-analytics/route.ts",
+      "experiments/pg17-p4-g4-verification/verify.mjs",
+      "docs/research/evidence/2026-10-24-p4-g4-verification/p4-g4-verify-2026-10-24T15-49-58.079Z-90e4d756-3573-42c3-b750-de9c6ab96db1.json"
+    ]
+  },
+  "pushAuthorizedWhenMilestoneMet": true,
+  "pushConditionMet": true,
+  "remoteMutation": false,
+  "deployed": false
+}
