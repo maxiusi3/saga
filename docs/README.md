@@ -4,7 +4,7 @@
 
 ## 当前执行入口
 
-最新：[Storage行为预演与7份未登记根迁移对账](research/2026-10-24-storage-behavior-and-migrations.md)。在本地 PG17.4 重放私有捕获的 6 个 `storage` 函数与 7 个触发器（RED 4/53、GREEN 22/974、生命周期 4 例，规格 PASS/质量 Approved），并完成 7 份未登记根迁移逐项对账、前向幂等收敛顺序与回滚方案。按负责人确认的 §7.1 口径，G0 工程与规格项已全部收口，仅剩 2 项外部/Owner 输入（迁移前备份确认、供应商账户数据设置与合成短样本探针）即可通过 G0。详见[本批验证汇总](research/evidence/2026-10-24-storage-behavior/verification.json)、[里程碑判定](research/evidence/2026-10-24-storage-behavior/milestone-check.json)及[handoff](HANDOFF-2026-10-13-upgrade.md)。
+最新：[Storage行为预演与7份未登记根迁移对账](research/2026-10-24-storage-behavior-and-migrations.md)。在本地 PG17.4 重放私有捕获的 6 个 `storage` 函数与 7 个触发器（RED 4/53、GREEN 22/974、生命周期 4 例，规格 PASS/质量 Approved），完成 7 份未登记根迁移逐项对账，并在本地 PG17.4 完成负责人确认的 **方案 B**（`pg_dump -Fc` + 对象存储冻结清单 + 独立删除墓碑重放 + `pg_restore`）与五步幂等前向收敛 SQL 演练（5 场景/47 断言通过）；供应商样本探针与耗时/账单测算按负责人决策推迟至 P2 `T06` 前（`deferred_by_user`）。**至此 §7.1 的 G0 里程碑与 P0 修复已全部达成（`G0 = true`、`p0Complete = true`），已按授权推送 `codex/october-upgrade-p0` 至 GitHub。** 详见[本批验证汇总](research/evidence/2026-10-24-storage-behavior/verification.json)、[里程碑判定](research/evidence/2026-10-24-storage-behavior/milestone-check.json)及[handoff](HANDOFF-2026-10-13-upgrade.md)。
 
 前批：[P0差距与Storage/旧删除修复](research/2026-10-23-p0-gap-and-storage-audit.md)。六函数/七触发器真实只读采集及静态语义审查完成，旧删除调用本地关闭；Web108/1438、shared4/16、infra7与180页构建通过。范围、审查和限制见[前批汇总](research/evidence/2026-10-23-storage-definition-capture/verification.json)。
 

@@ -1,0 +1,85 @@
+{
+  "startedAt": "2026-10-24T08:51:18.798Z",
+  "status": "passed",
+  "scope": "PG17.4 rehearsal of 7 unregistered root migrations reconciliation, Scheme B pg_dump/pg_restore + Storage manifest + tombstone replay, and rollback safety",
+  "sources": {
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "docs/research/evidence/2026-10-24-storage-behavior/migration-catalog-selection.json": "a4102e5754ac71f29f06715c4e94bfae864eb43cfd3e8413a27d8cb3eda05a77"
+  },
+  "assertions": 47,
+  "actorConnections": [
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "1_pre_reconciliation_drift_red_probes",
+      "status": "passed",
+      "assertions": 11
+    },
+    {
+      "name": "2_scheme_b_pre_migration_backup_and_manifest",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "3_forward_idempotent_reconciliation_sql_twice",
+      "status": "passed",
+      "assertions": 15
+    },
+    {
+      "name": "4_application_rollback_preserves_data_and_security_guards",
+      "status": "passed",
+      "assertions": 5
+    },
+    {
+      "name": "5_scheme_b_isolated_pg_restore_and_tombstone_replay",
+      "status": "passed",
+      "assertions": 4
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 36759,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-HxwWkX/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-HxwWkX",
+  "schemeBBackup": {
+    "dumpFormat": "custom (-Fc)",
+    "dumpSizeBytes": 40475,
+    "dumpSha256": "818bed74414a7dc2297bf7567a4044136f043814ddb1db39a9acb805264c0af6",
+    "frozenObjectCount": 2,
+    "postFreezeTombstoneCount": 1
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-24T08:51:22.537Z"
+}

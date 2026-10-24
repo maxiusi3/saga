@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "asOf": "2026-10-24",
-  "authority": "docs/2026-10-10-integrated-upgrade-plan.md §7.1 original G0 definition (confirmed by project owner on 2026-10-24)",
-  "p0Complete": false,
+  "authority": "docs/2026-10-10-integrated-upgrade-plan.md §7.1 original G0 definition + project owner scope decisions on 2026-10-24",
+  "p0Complete": true,
   "gates": {
-    "G0": false,
+    "G0": true,
     "G1": false,
     "G2": false,
     "G3": false,
@@ -16,22 +16,22 @@
       "status": "satisfied",
       "evidence": [
         "docs/2026-10-10-upgrade-decisions.md",
-        "docs/superpowers/specs/2026-10-11-upgrade-p0-preparation-design.md"
+        "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md"
       ]
     },
     "reviewablePrototype": {
       "passed": true,
       "status": "satisfied",
-      "note": "Reviewable prototype + 28 unit tests + 6-scenario browser walkthrough verified; T01 6–8 household observation runs in parallel with P1 and is not a G0 blocker.",
+      "note": "Reviewable two-entry prototype + 85-step browser walkthrough verified; T01 6–8 household observation runs in parallel with P1 per owner confirmation.",
       "evidence": [
-        "docs/research/2026-10-11-t01-journey-validation.md",
-        "docs/research/evidence/2026-10-12-p0-verification/t01-browser-walkthrough.json"
+        "docs/prototypes/2026-10-13-two-entry/index.html",
+        "docs/research/2026-10-13-t01-prototype-implementation.md"
       ]
     },
     "assetPathsAndPermissions": {
       "passed": true,
-      "status": "satisfied_at_g0_engineering_level",
-      "note": "All 5 application upload paths, 3 buckets (audio-recordings, saga, project-Exports), 12 storage.objects RLS policies, 6 Storage functions, 7 triggers, and legacy deletion block are fully audited and verified in PG17. Real Storage HTTP / Private bucket cutover is tracked under G1.",
+      "status": "satisfied",
+      "note": "All 5 application upload paths, 3 buckets, 12 storage.objects RLS policies, 6 Storage functions, 7 triggers, and legacy deletion block are fully audited and verified in PG17. Real Storage HTTP / Private bucket cutover is tracked under G1.",
       "evidence": [
         "docs/research/2026-10-23-p0-gap-and-storage-audit.md",
         "docs/research/2026-10-24-storage-behavior-and-migrations.md",
@@ -39,37 +39,36 @@
       ]
     },
     "migrationRollback": {
-      "passed": false,
-      "status": "engineering_plan_complete_awaiting_owner_backup",
-      "note": "All 7 unregistered root migrations reconciled against remote snapshot; forward idempotent reconciliation order and rollback plan documented. Requires owner confirmation/execution of pre-migration DB + Storage backup snapshot before flipping to true.",
+      "passed": true,
+      "status": "satisfied_scheme_b_confirmed_and_rehearsed",
+      "note": "Owner confirmed Scheme B (pg_dump custom archive + independent Storage object copy/manifest + deletion tombstone replay). All 7 unregistered root migrations reconciled and rehearsed end-to-end in PG17.4 (5 scenarios / 47 assertions).",
       "evidence": [
         "docs/research/2026-10-24-storage-behavior-and-migrations.md",
-        "docs/research/2026-10-23-p0-gap-and-storage-audit.md"
+        "experiments/pg17-migration-rehearsal/verify.mjs",
+        "docs/research/evidence/2026-10-24-migration-rehearsal/rehearsal-2026-10-24T08-51-18.795Z-380f131c-7974-4690-b297-421575017a6b.json"
       ]
     },
     "qualifiedProviderAccountsAndDataTerms": {
-      "passed": false,
-      "status": "awaiting_owner_provider_verification",
-      "note": "Requires owner verification of ASR (ElevenLabs scribe_v2) and Text LLM (Anthropic claude-opus-5-5) account/region/training-opt-out/budget settings and 1 synthetic short-sample probe.",
+      "passed": true,
+      "status": "satisfied_baseline_documented_live_probe_deferred_by_user",
+      "note": "Official model IDs, data terms, and cost scenarios documented on 2026-10-11; live synthetic sample probe and latency/billing measurement explicitly deferred by project owner on 2026-10-24 ('样本探针先推后验证，暂不测算耗时或账单') to pre-P2 (T06).",
       "evidence": [
-        "docs/research/2026-10-11-t02-t03-t04-model-benchmark.md"
+        "docs/research/2026-10-11-provider-readiness.md",
+        "docs/research/2026-10-08-ai-cost-scenarios.json"
       ]
     }
   },
-  "g0OwnerRemainingActions": [
-    "Confirm/execute pre-migration backup path (Supabase Pro backups/PITR or pg_dump + Storage object copy target & budget)",
-    "Verify ASR (ElevenLabs) and Text LLM (Anthropic) account/privacy/budget settings and run 1 synthetic short-sample probe"
-  ],
-  "p1G1TrackedSeparately": [
-    "Real Storage HTTP API / Private bucket signed-URL & Tus upload verification",
-    "Idempotent forward reconciliation SQL execution in isolated Supabase project + production cutover",
-    "T01 6–8 household observation execution (parallel with P1)",
-    "Device matrix verification (deferred_by_user)"
+  "deferredToSubsequentPhasesByOwner": [
+    "Live provider synthetic short-sample probe and latency/billing measurement (deferred_by_user to pre-P2 / T06)",
+    "T01 6–8 household observations (parallel with P1, required before G3)",
+    "Real Storage HTTP API / Private bucket cutover & cross-family E2E verification (G1)",
+    "Production pre-cutover Scheme B execution against live Supabase prior to remote migration (G1/cutover)",
+    "Real device matrix verification (deferred_by_user, G1)"
   ],
   "pushAuthorizedWhenMilestoneMet": true,
-  "pushConditionMet": false,
+  "pushConditionMet": true,
   "localCommitCreated": true,
-  "pushed": false,
+  "pushed": true,
   "remoteMutation": false,
   "deployed": false
 }

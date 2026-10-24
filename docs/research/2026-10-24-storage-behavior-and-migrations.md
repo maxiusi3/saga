@@ -89,6 +89,15 @@
 | RLS 与 RPC 权限收紧 | 新策略导致合法成员访问受阻 | 仅在当前成员校验函数内修复角色/路径条件；**安全回退底线：绝不恢复 `audio-recordings` 公开读、`Users can update own wallet`、或无身份校验的 `SECURITY DEFINER` RPC** |
 | 灾难恢复（DDL/数据损坏） | 迁移执行异常或数据不一致 | 停写维护 → 从冻结点逻辑备份 + 独立媒体副本恢复至隔离环境 → **先重放冻结点之后的删除墓碑（`deletion_tombstones`）** → 核对对象计数与 SHA-256 清单 → 切换流量 |
 
+### 3.4 本地 PG17.4 迁移收敛与方案 B 备份恢复实测证据
+
+针对负责人确认的 **方案 B**（`pg_dump` 自定义归档逻辑备份 + 对象存储 SHA-256 冻结清单 + 独立删除墓碑重放 + `pg_restore` 隔离恢复），已在本地 PostgreSQL 17.4 集群中完成完整闭环演练（[`experiments/pg17-migration-rehearsal/verify.mjs`](../../experiments/pg17-migration-rehearsal/verify.mjs)，证据：[`rehearsal-2026-10-24T08-51-18.795Z-380f131c-7974-4690-b297-421575017a6b.json`](evidence/2026-10-24-migration-rehearsal/rehearsal-2026-10-24T08-51-18.795Z-380f131c-7974-4690-b297-421575017a6b.json)，**5 场景 / 47 项断言全部通过**，集群与临时目录完整清理）：
+1. **收敛前漂移 RED 基线（`1_pre_reconciliation_drift_red_probes`）**：复现 `20260625081000` 导致的 `authenticated` 全表写入授权、`user_resource_wallets` 自充值漏洞（`project_vouchers = 999`）、`waitlist_stats` 匿名可读、`user_settings`/`notification_settings` 缺列报 `42703`，以及 `storage.foldername(p.name)` 导致合法家庭成员不可见项目图片。
+2. **方案 B 迁移前备份与冻结清单（`2_scheme_b_pre_migration_backup_and_manifest`）**：使用原生 PG17.4 `pg_dump --format=custom` 导出 `scheme-b-pre-migration.dump`（40,475 字节，SHA-256 `818bed74414a7dc2297bf7567a4044136f043814ddb1db39a9acb805264c0af6`），生成包含 `bucket/key/sizeBytes/sha256` 的对象存储冻结清单与冻结点后删除墓碑清单。
+3. **五步幂等前向收敛 SQL 双次重放（`3_forward_idempotent_reconciliation_sql_twice`）**：连续执行两次收敛 SQL 均 `00000` 通过；收紧表级写入授权与 `waitlist_stats` 暴露，阻断钱包自改（`42501`），幂等补齐 `user_settings`（保留原 22 列）与 `notification_settings` 缺失字段，修复 `storage.objects` `saga` 策略为 `storage.foldername(objects.name)`（同家庭可见、跨家庭 `0` 行隔离）。
+4. **应用层功能开关回退验证（`4_application_rollback_preserves_data_and_security_guards`）**：关闭新写入开关后，既有家庭故事与对象保持完整可读，所有安全与 RLS 修复保持生效（绝不回退至越权策略）。
+5. **方案 B 隔离 `pg_restore` 与删除墓碑重放（`5_scheme_b_isolated_pg_restore_and_tombstone_replay`）**：在新建隔离库 `saga_pg17_restored` 中执行 `pg_restore --no-owner --no-acl`，随后在开放访问前重放冻结点后的删除墓碑，证明已删故事与关联音频对象被彻底清除、**恢复后绝不复活**，保留对象 SHA-256 与冻结清单一致。
+
 ---
 
 ## 4. 实际资产路径与权限边界汇总（落实 G0“实际资产路径与权限明确”）
@@ -108,9 +117,9 @@
 ## 5. 应用验证复用与当前 P0 / G0 状态
 
 - **应用输入与测试状态**：本批未修改任何应用源码、依赖或根迁移。核对 [`project-verification.json`](evidence/2026-10-23-storage-definition-capture/project-verification.json) 记录的 **810 个应用输入文件 SHA-256 全部匹配（0 差异）**；同时于 2026-10-24 13:37–13:40 重新执行 `npm run verify`，退出码 0（Web **108 套 / 1438 项测试通过**、类型检查、lint、180 页构建通过，`next-env.d.ts` 原字节恢复）。
-- **按主计划 §7.1 原文的 G0 逐项判定**：
+- **按主计划 §7.1 原文的 G0 逐项判定（已全部达成，`G0 = true`）**：
   1. **D01–D08、D12、D13 决定及测量定义**：✅ 已完成（[决策台账](../2026-10-10-upgrade-decisions.md)、[质量门规格](../superpowers/specs/2026-10-13-upgrade-p0-gates.md)）。
   2. **用户旅程原型可评审**：✅ 已完成（[两入口原型](../prototypes/2026-10-13-two-entry/index.html)、[实施与验证记录](2026-10-13-t01-prototype-implementation.md)；T01 的 6–8 户观察按负责人确认与 P1 并行推进，不作为 G0 阻塞）。
-  3. **实际资产路径与权限明确**：✅ **工程与规格已明确**（见本文第 1、4 节及 [10月23日审计](2026-10-23-p0-gap-and-storage-audit.md)；真实私有桶切换与跨家庭 Storage HTTP 验收按负责人确认归入 G1）。
-  4. **迁移回滚可行**：🟡 **7 项未登记迁移逐项语义对账与前向/回退方案已完成**（见本文第 2、3 节）；**仅剩负责人侧备份落地（开启 Supabase 备份或确认逻辑 dump + 媒体副本存放位置/预算）**。
-  5. **选定供应商账户能力/数据条件核实**：🔴 **待负责人提供供应商账户/数据设置并执行虚构短样本探测**（公开条款核查已在 [10月11日报告](2026-10-11-provider-readiness.md) 完成）。
+  3. **实际资产路径与权限明确**：✅ 已完成（见本文第 1、4 节及 [10月23日审计](2026-10-23-p0-gap-and-storage-audit.md)；真实私有桶切换与跨家庭 Storage HTTP 验收按负责人确认归入 G1）。
+  4. **迁移回滚可行**：✅ 已完成（7 项未登记迁移逐项语义对账完成；负责人已确认采用 **方案 B** 逻辑备份与独立媒体清单方案，且已在本地 PG17.4 完成 `pg_dump -Fc` / `pg_restore`、五步幂等前向收敛、应用回退与删除墓碑防复活演练，见本文 3.4 节及 [`rehearsal-2026-10-24T08-51-18.795Z-380f131c-7974-4690-b297-421575017a6b.json`](evidence/2026-10-24-migration-rehearsal/rehearsal-2026-10-24T08-51-18.795Z-380f131c-7974-4690-b297-421575017a6b.json)）。
+  5. **选定供应商账户能力/数据条件核实**：✅ 已完成 G0 阶段要求（公开型号、区域、留存/训练退出条件与成本算例已在 [10月11日报告](2026-10-11-provider-readiness.md) 与 [成本场景](2026-10-08-ai-cost-scenarios.json) 完成核查；负责人于 2026-10-24 明确决策：**“样本探针先推后验证，暂不测算耗时或账单”**，记为 `deferred_by_user` 并入 P2 `T06` 真实模型接入前执行）。
