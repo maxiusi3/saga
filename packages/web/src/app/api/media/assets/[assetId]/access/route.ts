@@ -29,7 +29,9 @@ export async function GET(
     .select('id, project_id, bucket, object_key, state').eq('id', assetId).maybeSingle()
   if (loadError) return reply({ error: 'Failed to load asset' }, 500, auth.headers)
   if (!asset) return reply({ error: 'Asset not found' }, 404, auth.headers)
-  if (asset.state !== 'ready') return reply({ error: 'Asset is not ready for access' }, 409, auth.headers)
+  if (asset.state !== 'ready' || (asset as { tombstone_at?: string | null }).tombstone_at != null) {
+    return reply({ error: 'Asset is not ready for access' }, 409, auth.headers)
+  }
 
   const access = await requireProjectAccess(asset.project_id, auth.user)
   if (!access.ok) {

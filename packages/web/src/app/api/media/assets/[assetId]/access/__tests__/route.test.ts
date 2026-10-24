@@ -93,4 +93,11 @@ describe('GET /api/media/assets/[assetId]/access', () => {
     const response = await GET(request(), { params: Promise.resolve({ assetId: 'asset-ready' }) })
     expect(response.status).toBe(404)
   })
+
+  it('rejects a ready asset when deletion tombstone exists', async () => {
+    mockFrom.mockReturnValue(query({ ...ready, tombstone_at: '2026-10-24T10:00:00.000Z' }))
+    const response = await GET(request(), { params: Promise.resolve({ assetId: 'asset-ready' }) })
+    expect(response.status).toBe(409)
+    expect(mockStorageFrom).not.toHaveBeenCalled()
+  })
 })

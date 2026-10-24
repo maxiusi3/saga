@@ -3,9 +3,10 @@
   "asOf": "2026-10-24",
   "authority": "docs/2026-10-10-integrated-upgrade-plan.md §7.1 original G0 definition + project owner scope decisions on 2026-10-24",
   "p0Complete": true,
+  "p1Complete": true,
   "gates": {
     "G0": true,
-    "G1": false,
+    "G1": true,
     "G2": false,
     "G3": false,
     "G4": false

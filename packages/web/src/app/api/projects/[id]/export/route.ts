@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import JSZip from 'jszip'
-import { addVerifiedMediaAssetsToZip } from '@/lib/server/media-export'
+import { addVerifiedMediaAssetsToZip, buildOfflineExportHtml } from '@/lib/server/media-export'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function POST(
@@ -92,7 +92,7 @@ export async function POST(
       }
       const { data: assets, error: assetsError } = await mediaAdmin
         .from('media_assets')
-        .select('id, kind, original_filename, mime_type, byte_size, sha256, state, version, bucket, object_key')
+        .select('id, story_id, kind, original_filename, mime_type, byte_size, sha256, state, version, bucket, object_key')
         .eq('project_id', projectId)
         .order('created_at', { ascending: true })
 
@@ -100,12 +100,41 @@ export async function POST(
         return NextResponse.json({ error: 'Failed to load media assets for export' }, { status: 500 })
       }
 
+      const { data: tombstones } = await mediaAdmin
+        .from('deletion_requests')
+        .select('subject_id, tombstone_at')
+        .eq('project_id', projectId)
+        .not('tombstone_at', 'is', null)
+
+      const tombstonedSubjects = new Set(
+        (tombstones || [])
+          .filter((row: { subject_id?: string; tombstone_at?: string | null }) => Boolean(row?.tombstone_at))
+          .map((row: { subject_id: string }) => row.subject_id),
+      )
+
+      const exportableAssets = (assets || [])
+        .filter((asset: { state?: string }) => asset.state !== 'deleted')
+        .map((asset: any) => ({
+          ...asset,
+          tombstoned:
+            tombstonedSubjects.has(asset.id) ||
+            (typeof asset.story_id === 'string' && tombstonedSubjects.has(asset.story_id)),
+        }))
+
       try {
-        await addVerifiedMediaAssetsToZip(zip, assets || [], async asset => {
+        const manifest = await addVerifiedMediaAssetsToZip(zip, exportableAssets, async asset => {
           const { data, error } = await mediaAdmin.storage.from(asset.bucket).download(asset.object_key)
           if (error || !data) throw new Error(`Media asset unavailable: ${asset.id}`)
           return Buffer.from(await data.arrayBuffer())
         })
+        const offlineHtml = buildOfflineExportHtml({
+          projectName: project.name,
+          projectDescription: project.description,
+          exportedAt: new Date().toISOString(),
+          stories: (stories || []).filter((story: { id: string }) => !tombstonedSubjects.has(story.id)),
+          manifest,
+        })
+        zip.file('index.html', offlineHtml)
       } catch (error) {
         console.error('Media asset export verification failed:', error)
         return NextResponse.json({ error: 'Media assets are incomplete and cannot be exported' }, { status: 409 })

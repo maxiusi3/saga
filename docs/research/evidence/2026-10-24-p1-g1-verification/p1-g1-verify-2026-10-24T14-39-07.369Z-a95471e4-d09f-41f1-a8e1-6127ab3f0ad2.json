@@ -1,0 +1,78 @@
+{
+  "startedAt": "2026-10-24T14:39:07.370Z",
+  "status": "passed",
+  "scope": "PG17.4 end-to-end verification of Phase P1 migration 20261024000001 and G1 milestone gate criteria (T02/T03/T04/T05)",
+  "sources": {
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1"
+  },
+  "assertions": 61,
+  "actorConnections": [
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "1_p1_migration_idempotency_and_least_privilege_grants",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "name": "2_g1_recording_5_20_30_min_and_fault_matrix",
+      "status": "passed",
+      "assertions": 17
+    },
+    {
+      "name": "3_g1_cross_family_and_revoked_member_isolation",
+      "status": "passed",
+      "assertions": 18
+    },
+    {
+      "name": "4_g1_deletion_tombstone_and_post_restore_replay",
+      "status": "passed",
+      "assertions": 6
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 70907,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-SuKDm5/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-SuKDm5",
+  "schemeBBackup": {
+    "dumpByteSize": 126953,
+    "dumpSha256": "311cdab8add44cf2950a87e08bdc4264c2bde786711489fa9a9e554a36bd0b79",
+    "replayedTombstones": 1
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-24T14:39:09.675Z"
+}

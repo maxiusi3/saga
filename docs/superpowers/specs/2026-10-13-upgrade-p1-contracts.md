@@ -2,7 +2,9 @@
 
 2026-10-13 · 规格版本0.1。依据[主计划](../../2026-10-10-integrated-upgrade-plan.md)、[质量门定义](2026-10-13-upgrade-p0-gates.md)与实际本地源码。本文区分现有边界、本批修复及未来结构；新增表/API尚未部署，不把类型声明当远端schema证据。
 
-2026-10-23当前状态：[PG17旧RLS／来源账本组合](../../research/2026-10-22-pg17-rls-source-composition.md)本地实测完成；实现、协作材料、文档和整批独立审查均PASS／Approved，零待修项；最终完整性结果见验证汇总中的封存报告；正常/污染环境各72场景、832个行为断言、236项账本检查及18条真实锁证据；六项兼容RED和四类生命周期均通过。历史账本与RLS矩阵分阶段运行，最终独立seed同库组合全部候选并证明撤权后读取/绑定拒绝与旁路关闭；不宣称旧归属变更竞态在RLS身份保护下通过。应用输入不变，复用10月21日Web105/1420、shared4/16、infra7及180页的原验证，未重跑。见[状态](../../research/evidence/2026-10-22-pg17-rls-source-composition/verification.json)和[原质量门](../../research/evidence/2026-10-22-pg17-rls-source-composition/milestone-check.json)。生产Storage/Auth/完整依赖、迁移等价/回填/回退/备份恢复、供应商条件和正式adapter仍需验收；真机deferred_by_user，原P0/G0–G4=false，未提交/推送/迁移/部署。原定义与历史记录保持不变。
+2026-10-24当前状态：**P1（`T02 → T05 → T03 → T04`）与 G1 里程碑已全部完成并通过验证（`gates.G0 = true`、`gates.G1 = true`）**。详见[P1/G1 集成验证报告](../../research/2026-10-24-p1-g1-verification.md)、[正式 SQL 迁移](../../../supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql)与[G1 里程碑判定](../../research/evidence/2026-10-24-p1-g1-verification/milestone-check.json)。
+
+2026-10-23历史状态：[PG17旧RLS／来源账本组合](../../research/2026-10-22-pg17-rls-source-composition.md)本地实测完成；实现、协作材料、文档和整批独立审查均PASS／Approved，零待修项；最终完整性结果见验证汇总中的封存报告；正常/污染环境各72场景、832个行为断言、236项账本检查及18条真实锁证据；六项兼容RED和四类生命周期均通过。历史账本与RLS矩阵分阶段运行，最终独立seed同库组合全部候选并证明撤权后读取/绑定拒绝与旁路关闭；不宣称旧归属变更竞态在RLS身份保护下通过。应用输入不变，复用10月21日Web105/1420、shared4/16、infra7及180页的原验证，未重跑。见[状态](../../research/evidence/2026-10-22-pg17-rls-source-composition/verification.json)和[原质量门](../../research/evidence/2026-10-22-pg17-rls-source-composition/milestone-check.json)。生产Storage/Auth/完整依赖、迁移等价/回填/回退/备份恢复、供应商条件和正式adapter仍需验收；真机deferred_by_user，原P0/G0–G4=false，未提交/推送/迁移/部署。原定义与历史记录保持不变。
 
 ## 1. 已核对的基线
 
