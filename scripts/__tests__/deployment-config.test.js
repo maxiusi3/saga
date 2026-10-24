@@ -123,6 +123,7 @@ test('Supabase CLI migrations contain the shipped database scripts in dependency
     '20261007000001_create_waitlist.sql',
     '20261007000002_improve_storage_rls.sql',
     '20261024000001_p1_foundation_and_reconciliation.sql',
+    '20261024000002_p2_transcript_provenance_and_review.sql',
   ])
 
   assert.equal(

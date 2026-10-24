@@ -1,0 +1,103 @@
+{
+  "startedAt": "2026-10-24T15:01:57.102Z",
+  "status": "passed",
+  "scope": "PG17.4 end-to-end verification of Phase P2 migration 20261024000002, immutable approved revisions, provenance & family review, and G2 200/200 fidelity benchmark",
+  "sources": {
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql": "d7a77d28cd49780b1bbad5d5efea81a0cc241fda48eaca2dd3180f73a49e8992"
+  },
+  "assertions": 51,
+  "actorConnections": [
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "1_p2_migration_idempotency_and_rls_grants",
+      "status": "passed",
+      "assertions": 10
+    },
+    {
+      "name": "2_t06_t07_versioned_transcripts_provenance_and_immutable_approved_revisions",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "3_t08_cross_family_revoked_member_and_deletion_tombstone_isolation",
+      "status": "passed",
+      "assertions": 28
+    },
+    {
+      "name": "4_g2_holdout_200_planted_errors_and_200_negatives_verification",
+      "status": "passed",
+      "assertions": 2
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 74350,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-CuV8xf/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-CuV8xf",
+  "g2Benchmark": {
+    "holdoutFamilyCount": 10,
+    "totalPlantedErrors": 200,
+    "detectedPlantedErrors": 200,
+    "plantedErrorDetectionRate": 1,
+    "detectionWilson95": {
+      "successes": 200,
+      "total": 200,
+      "proportion": 1,
+      "lower95": 0.9812,
+      "upper95": 1
+    },
+    "totalCleanNegatives": 200,
+    "falsePositives": 0,
+    "falsePositiveRate": 0,
+    "falsePositiveWilson95": {
+      "successes": 0,
+      "total": 200,
+      "proportion": 0,
+      "lower95": 0,
+      "upper95": 0.0188
+    },
+    "unresolvedSevereInApprovedCount": 0,
+    "audioSeekSpotCheckPassed": 100,
+    "audioSeekSpotCheckTotal": 100,
+    "e0HardCasesPassed": 10,
+    "e0HardCasesTotal": 10,
+    "g2GatePassed": true
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-10-24T15:02:00.211Z"
+}

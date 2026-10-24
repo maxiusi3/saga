@@ -126,3 +126,32 @@ export interface StoryElement {
   created_at: string
   updated_at: string
 }
+
+export const PROVENANCE_VERIFICATION_STATUSES = [
+  'verified',
+  'unverified_rejected',
+  'family_supplement',
+  'disputed',
+  'pending_review',
+  'invalidated',
+] as const
+export type ProvenanceVerificationStatus = (typeof PROVENANCE_VERIFICATION_STATUSES)[number]
+
+export const MEMORY_ATTRIBUTION_KINDS = [
+  'storyteller_memory',
+  'external_corroborated',
+  'family_supplement',
+  'disputed_memory',
+] as const
+export type MemoryAttributionKind = (typeof MEMORY_ATTRIBUTION_KINDS)[number]
+
+export const REVIEW_DECISION_KINDS = [
+  'unreviewed',
+  'accepted',
+  'modified',
+  'disputed',
+  'skipped',
+  'rejected',
+] as const
+export type ReviewDecisionKind = (typeof REVIEW_DECISION_KINDS)[number]
+

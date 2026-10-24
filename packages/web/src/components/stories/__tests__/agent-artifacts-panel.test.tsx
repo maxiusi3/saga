@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { AgentArtifactsPanel } from '../AgentArtifactsPanel'
 
 describe('AgentArtifactsPanel', () => {
@@ -74,5 +74,81 @@ describe('AgentArtifactsPanel', () => {
     )
 
     expect(container).toBeEmptyDOMElement()
+  })
+
+  it('orders names/relations/dates first, supports audio seek playback, and preserves disputed memories', () => {
+    const onSeekAudio = jest.fn()
+    const onReviewDecision = jest.fn()
+
+    render(
+      <AgentArtifactsPanel
+        standaloneStory={null}
+        elements={[]}
+        artifacts={[]}
+        onSeekAudio={onSeekAudio}
+        onReviewDecision={onReviewDecision}
+        assertions={[
+          {
+            id: 'assert-event',
+            projectId: 'proj-1',
+            storyId: 'story-1',
+            transcriptVersionId: 'tv-1',
+            segmentId: 'seg-2',
+            assertionType: 'event',
+            subject: 'Rebuilt cedar boat',
+            claimText: 'We rebuilt the cedar boat after the storm.',
+            sourceQuote: 'rebuilt the cedar boat',
+            startMs: 65000,
+            endMs: 90000,
+            datePrecision: 'exact',
+            memoryAttribution: 'storyteller_memory',
+            verificationStatus: 'verified',
+            reviewDecision: 'unreviewed',
+            isSevereFabrication: false,
+            rejectionReason: null,
+            disputedAlternativeText: null,
+            disputedBy: null,
+            reviewedBy: null,
+            reviewerNote: null,
+          },
+          {
+            id: 'assert-person',
+            projectId: 'proj-1',
+            storyId: 'story-1',
+            transcriptVersionId: 'tv-1',
+            segmentId: 'seg-1',
+            assertionType: 'person',
+            subject: 'Uncle Arthur',
+            claimText: 'Uncle Arthur led the harbor repair in 1968.',
+            sourceQuote: 'my maternal uncle Uncle Arthur',
+            startMs: 5000,
+            endMs: 25000,
+            datePrecision: 'exact',
+            memoryAttribution: 'disputed_memory',
+            verificationStatus: 'disputed',
+            reviewDecision: 'disputed',
+            isSevereFabrication: false,
+            rejectionReason: null,
+            disputedAlternativeText: 'Aunt Clara remembers it was autumn 1969.',
+            disputedBy: 'Aunt Clara',
+            reviewedBy: 'Aunt Clara',
+            reviewerNote: null,
+          },
+        ]}
+      />,
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Fact & Provenance Check (Names, Relations & Dates First)' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText(/Preserved Family Alternative \(Aunt Clara\):/)).toBeInTheDocument()
+
+    const listenBtn = screen.getByRole('button', { name: 'Listen [00:05 - 00:25]' })
+    fireEvent.click(listenBtn)
+    expect(onSeekAudio).toHaveBeenCalledWith(5000, 25000, 'seg-1')
+
+    const disputeButtons = screen.getAllByRole('button', { name: 'Keep Dispute' })
+    fireEvent.click(disputeButtons[0])
+    expect(onReviewDecision).toHaveBeenCalledWith('assert-person', 'dispute')
   })
 })

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-10-24",
+  "authority": "docs/2026-10-10-integrated-upgrade-plan.md §5 Phase P2, §7.3 G2, §9.2 Holdout & Statistical Acceptance",
+  "p0Complete": true,
+  "p1Complete": true,
+  "p2Complete": true,
+  "gates": {
+    "G0": true,
+    "G1": true,
+    "G2": true,
+    "G3": false,
+    "G4": false
+  },
+  "g2": {
+    "plantedErrorDetectionRate": {
+      "passed": true,
+      "detected": 200,
+      "total": 200,
+      "proportion": 1.0,
+      "wilson95Lower": 0.9812,
+      "wilson95Upper": 1.0,
+      "requirement": "Point estimate >= 95%, Wilson 95% lower bound >= 90% across 200 planted errors (40 per category across 10 holdout families)"
+    },
+    "cleanNegativeFalsePositiveRate": {
+      "passed": true,
+      "falsePositives": 0,
+      "total": 200,
+      "proportion": 0.0,
+      "wilson95Lower": 0.0,
+      "wilson95Upper": 0.0188,
+      "requirement": "Point estimate <= 10%, Wilson 95% upper bound <= 15% across 200 clean negative paragraphs"
+    },
+    "unresolvedSevereFabricationsInApproved": {
+      "passed": true,
+      "count": 0,
+      "requirement": "0 unresolved severe fabrications in approved revisions; enforced by approveStoryRevision and DB trigger trg_prevent_approved_story_revision_overwrite"
+    },
+    "audioTimestampSeekSpotCheck": {
+      "passed": true,
+      "succeeded": 100,
+      "total": 100,
+      "requirement": "100/100 random paragraph audio timestamp seek checks resolve to valid [startMs, endMs] ranges"
+    },
+    "e0SmokeAndAblation": {
+      "passed": true,
+      "e0HardCasesPassed": 10,
+      "e0HardCasesTotal": 10,
+      "withVerifierUnflaggedSevere": 0,
+      "withoutVerifierUnflaggedSevere": 200
+    },
+    "evidence": [
+      "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql",
+      "packages/web/src/lib/server/ai-capability-gateway.ts",
+      "packages/web/src/lib/server/provenance-editor.ts",
+      "packages/web/src/lib/eval/g2-fidelity-benchmark.ts",
+      "packages/web/src/app/api/stories/[storyId]/review/route.ts",
+      "packages/web/src/components/stories/AgentArtifactsPanel.tsx",
+      "experiments/pg17-p2-g2-verification/verify.mjs",
+      "docs/research/evidence/2026-10-24-p2-g2-verification/p2-g2-verify-2026-10-24T15-01-57.090Z-1c19bf5b-ee6b-448b-beb1-fbae0ee5008c.json"
+    ]
+  },
+  "pushAuthorizedWhenMilestoneMet": true,
+  "pushConditionMet": true,
+  "remoteMutation": false,
+  "deployed": false
+}

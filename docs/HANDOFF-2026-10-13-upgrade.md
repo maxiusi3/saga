@@ -3,7 +3,15 @@
 - 更新时间：2026-10-24（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0 与 P1/G1 里程碑验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1 与 P2/G2 里程碑验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+
+**10月24日本轮第三阶段收口：P2 忠实 AI 与审阅（`T06 → T07 → T08`）与 G2 里程碑达成（`gates.G2 = true`、`p2Complete = true`）。** 详见[P2/G2 集成验证报告](research/2026-10-24-p2-g2-verification.md)、[P2/G2 实施计划](superpowers/plans/2026-10-24-upgrade-p2-g2-integration.md)、[PG17.4 P2/G2 端到端验证证据](research/evidence/2026-10-24-p2-g2-verification/p2-g2-verify-2026-10-24T15-01-57.090Z-1c19bf5b-ee6b-448b-beb1-fbae0ee5008c.json)与[G2 里程碑判定](research/evidence/2026-10-24-p2-g2-verification/milestone-check.json)：
+- **正式 SQL 迁移（`supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql`）**：建立 4 张 P2 核心表（`transcript_versions`、`transcript_segments`、`story_assertions`、`story_revisions`）；建立触发器 `trg_prevent_approved_story_revision_overwrite`（SQLSTATE `23514`）阻断直接覆写或删除已确认修订；全面启用 RLS、收回 `anon`/`authenticated` 直接 DML 权限，并在读取策略中实时阻断跨家庭成员、被撤权成员及已带 `tombstone_at` 删除墓碑的媒体源。
+- **P2 忠实 AI、出处整编与家庭审阅实现（受 `MEDIA_ASSETS_ENABLED === 'true'` 保护）**：
+  - **T06（AI 能力网关与版本化转写分段）**：新增 `ai-capability-gateway.ts`，统一门控同意状态（`hasActiveConsent`）、零留存不训练数据条款及禁止模拟回退（`ai_simulated_output_forbidden`），生成不可变 `transcript_versions` 与毫秒级 `transcript_segments`，并对短寒暄/笑声免除强制追问。
+  - **T07（带出处约束的故事整编器与失效传播）**：新增 `provenance-editor.ts` 与扩展 `story-content-hash.ts`，自动核查人名/称谓、年代/时间、地点、事件细节及否定/不确定性语义与绑定 `segmentIds` 的一致性；支持跨句推理并拦截无据扩写；当用户修正底层转写片段时，自动把引用被改分段的断言与已确认修订降级为 `stale_by_transcript_change`；已确认版本冻结不可直接覆写。
+  - **T08（家庭审阅 API 与 UI）**：新增 `GET/POST /api/stories/[storyId]/review` 并升级 `AgentArtifactsPanel.tsx`，支持重点核对列表（人名/年份/地点/事件）、点击段落一键回听原声时间段（`onSeekAudio`）以及多成员争议记忆并列保留（`disputed` + `alternativeVariants`）。
+- **G2 里程碑四项准出与 E0 基准全部通过（下一阶段进入 P3 简单家庭路径与成书交付：`T09 → T10 → T11` → G3）**：PG17.4 端到端验证（4 场景 / 51 断言）通过；10 户留出集 200 处植入错误检出率 **100.0%**（Wilson 95% 下界 **98.12%** $\ge 90\%$）、200 段干净负样本误报率 **0.0%**（Wilson 95% 上界 **1.88%** $\le 15\%$）、已确认文稿未标记严重虚构 **0 处**、100/100 原声回听定位通过、10/10 E0 困难样本通过。
 
 **10月24日本轮第二阶段收口：P1 可靠资料底座（`T02 → T05 → T03 → T04`）与 G1 里程碑达成（`gates.G1 = true`、`p1Complete = true`）。** 详见[P1/G1 集成验证报告](research/2026-10-24-p1-g1-verification.md)、[P1/G1 实施计划](superpowers/plans/2026-10-24-upgrade-p1-g1-integration.md)、[PG17.4 P1/G1 端到端验证证据](research/evidence/2026-10-24-p1-g1-verification/p1-g1-verify-2026-10-24T14-39-07.369Z-a95471e4-d09f-41f1-a8e1-6127ab3f0ad2.json)与[G1 里程碑判定](research/evidence/2026-10-24-p1-g1-verification/milestone-check.json)：
 - **正式 SQL 迁移（`supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql`）**：Part 1 幂等收敛 7 份未登记根迁移漂移，建立最小权限 `SECURITY DEFINER` 辅助函数 `public.is_project_facilitator` 与 `public.is_active_project_member` 并修复 `storage.objects` `saga` 桶策略；Part 2 建立 9 张 P1 核心表（`media_assets`、`legacy_media_references`、`consent_records`、`deletion_requests`、`deletion_targets`、`processing_jobs`、`processing_attempts`、`recording_sessions`、`recording_chunks`）；Part 3 全面启用 RLS、收回 `anon`/`authenticated` 直接 DML 权限，并在 `media_assets` 读取策略中实时阻断已带删除墓碑（`tombstone_at`）的资产。
