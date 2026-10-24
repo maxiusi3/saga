@@ -75,3 +75,32 @@ export interface ExportManifest {
     }>
   }
 }
+
+export interface HostingRetentionSchedule {
+  hostingMonths: number
+  exportedAt: string
+  retentionExpiresAt: string
+  reminder90dAt: string
+  reminder30dAt: string
+  offlineIndependentCopyIncluded: boolean
+}
+
+export interface BookletChapterSection {
+  chapterNumber: number
+  title: string
+  storyIds: string[]
+  summary: string
+}
+
+export interface FrozenPublicationSnapshot {
+  snapshotId: string
+  projectId: string
+  snapshotVersion: number
+  createdBy: string
+  createdAt: string
+  storyRevisionIds: string[]
+  chapters: BookletChapterSection[]
+  pdfSha256: string
+  archiveManifestSha256: string
+  hostingRetention: HostingRetentionSchedule
+}

@@ -5,11 +5,12 @@
   "p0Complete": true,
   "p1Complete": true,
   "p2Complete": true,
+  "p3Complete": true,
   "gates": {
     "G0": true,
     "G1": true,
     "G2": true,
-    "G3": false,
+    "G3": true,
     "G4": false
   },
   "g0": {

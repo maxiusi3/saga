@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-10-24",
+  "authority": "docs/2026-10-10-integrated-upgrade-plan.md §5 Phase P3, §7.1 G3, §8 T09-T12",
+  "p0Complete": true,
+  "p1Complete": true,
+  "p2Complete": true,
+  "p3Complete": true,
+  "gates": {
+    "G0": true,
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "G4": false
+  },
+  "g3": {
+    "completeArchivalExportAndPdfBooklet": {
+      "passed": true,
+      "offlineHtmlCspSelfContained": true,
+      "pdf14BookletVerified": true,
+      "immutablePublicationSnapshotTrigger": true,
+      "hostingRetentionMonths": 12,
+      "reminderDaysBeforeExpiry": [90, 30]
+    },
+    "permissionFilteredProvenanceSearch": {
+      "passed": true,
+      "permissionCheckedBeforeRecall": true,
+      "audioTimestampCitationsVerified": true,
+      "zeroFabricationOnMissingRecords": true,
+      "atomicIndexSwitchVerified": true,
+      "tombstoneAndRevocationIsolationVerified": true
+    },
+    "idempotentPaymentWebhooksAndRefunds": {
+      "passed": true,
+      "packageId": "digital_project_59",
+      "amountCents": 5900,
+      "duplicateWebhookNoDoubleGrant": true,
+      "outOfOrderRefundSuppressesLateGrant": true,
+      "cancelAndFailedHandled": true,
+      "cohortUnitEconomicsCoversIncompleteAndRefunded": true
+    },
+    "schemeBBackupRestoreAndDeletionDrill": {
+      "passed": true,
+      "pgDumpCustomArchiveVerified": true,
+      "pgRestoreAndTombstoneReplayNoResurrection": true
+    },
+    "evidence": [
+      "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql",
+      "packages/web/src/lib/server/archival-export-service.ts",
+      "packages/web/src/lib/server/provenance-search.ts",
+      "packages/web/src/lib/server/entitlement-fulfillment.ts",
+      "packages/web/src/lib/payments/catalog.ts",
+      "packages/web/src/app/api/projects/[id]/export/route.ts",
+      "packages/web/src/app/api/projects/[id]/search/route.ts",
+      "packages/web/src/app/api/payments/webhook/route.ts",
+      "experiments/pg17-p3-g3-verification/verify.mjs",
+      "docs/research/evidence/2026-10-24-p3-g3-verification/p3-g3-verify-2026-10-24T15-30-56.825Z-4c3250e8-2831-41b4-b07b-f64940a753c9.json"
+    ]
+  },
+  "pushAuthorizedWhenMilestoneMet": true,
+  "pushConditionMet": true,
+  "remoteMutation": false,
+  "deployed": false
+}

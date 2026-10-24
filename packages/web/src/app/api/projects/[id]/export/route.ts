@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import JSZip from 'jszip'
-import { addVerifiedMediaAssetsToZip, buildOfflineExportHtml } from '@/lib/server/media-export'
+import { assembleCompleteArchivalPackage } from '@/lib/server/archival-export-service'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function POST(
@@ -122,19 +122,20 @@ export async function POST(
         }))
 
       try {
-        const manifest = await addVerifiedMediaAssetsToZip(zip, exportableAssets, async asset => {
-          const { data, error } = await mediaAdmin.storage.from(asset.bucket).download(asset.object_key)
-          if (error || !data) throw new Error(`Media asset unavailable: ${asset.id}`)
-          return Buffer.from(await data.arrayBuffer())
-        })
-        const offlineHtml = buildOfflineExportHtml({
+        await assembleCompleteArchivalPackage(zip, {
+          projectId,
           projectName: project.name,
           projectDescription: project.description,
+          createdBy: user.id,
           exportedAt: new Date().toISOString(),
+          assets: exportableAssets,
           stories: (stories || []).filter((story: { id: string }) => !tombstonedSubjects.has(story.id)),
-          manifest,
+          readObject: async asset => {
+            const { data, error } = await mediaAdmin.storage.from(asset.bucket).download(asset.object_key)
+            if (error || !data) throw new Error(`Media asset unavailable: ${asset.id}`)
+            return Buffer.from(await data.arrayBuffer())
+          },
         })
-        zip.file('index.html', offlineHtml)
       } catch (error) {
         console.error('Media asset export verification failed:', error)
         return NextResponse.json({ error: 'Media assets are incomplete and cannot be exported' }, { status: 409 })

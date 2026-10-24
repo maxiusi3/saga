@@ -3,7 +3,15 @@
 - 更新时间：2026-10-24（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1 与 P2/G2 里程碑验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1、P2/G2 与 P3/G3 里程碑验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+
+**10月24日本轮第四阶段收口：P3 完整产品交付与履约（`T09 → T10 → T11`，含 `T12` 收口）与 G3 里程碑达成（`gates.G3 = true`、`p3Complete = true`）。** 详见[P3/G3 集成验证报告](research/2026-10-24-p3-g3-verification.md)、[P3/G3 实施计划](superpowers/plans/2026-10-24-upgrade-p3-g3-integration.md)、[PG17.4 P3/G3 端到端验证证据](research/evidence/2026-10-24-p3-g3-verification/p3-g3-verify-2026-10-24T15-30-56.825Z-4c3250e8-2831-41b4-b07b-f64940a753c9.json)与[G3 里程碑判定](research/evidence/2026-10-24-p3-g3-verification/milestone-check.json)：
+- **正式 SQL 迁移（`supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql`）**：建立 4 张 P3 核心表（`publication_snapshots`、`search_index_entries`、`entitlement_sources`、`entitlement_events`）；建立触发器 `trg_prevent_publication_snapshot_mutation`（SQLSTATE `23514`）阻断直接修改或删除已发布快照；建立 `SECURITY DEFINER` 函数 `public.apply_entitlement_event` 实现支付回调幂等去重、乱序 `refund` 先到抑制迟到 `grant`（`grant_suppressed`）与退款成员席位自动撤销；全面启用 RLS 并实时阻断跨家庭成员、被撤权成员及已带 `tombstone_at` 删除墓碑的媒体源。
+- **P3 完整档案包、权限检索与支付履约实现（受 `MEDIA_ASSETS_ENABLED === 'true'` 保护）**：
+  - **T09（完整档案包导出、阅读手册 PDF 1.4 与固定出版快照）**：新增 `archival-export-service.ts` 并升级 `POST /api/projects/[id]/export`，生成零外部依赖的标准 PDF 1.4 阅读册（`biography-booklet.pdf`）、离线自包含 `index.html`、`chapters.json`、`manifest.json` 与 `publication-snapshot.json`（含 12 个月托管期限与到期前 90/30 天提醒时间表 D11/D12）。
+  - **T10（权限先过滤的带出处检索与版本索引切换）**：新增 `provenance-search.ts` 与 `GET /api/projects/[id]/search`，先验证有效成员资格与删除墓碑，再检索人名/年份/地点/全文；返回精确到毫秒 `[startMs, endMs]` 的原声引用，无匹配记录时明确说明无资料（零编造），并支持索引版本原子切换（`switchActiveSearchIndexVersion`）。
+  - **T11（US\$59 单一商品/权益/幂等乱序支付回调与队列单位经济）**：更新 `catalog.ts` 新增 D09/D10 标准商品 `digital_project_59`（US\$59.00，1 位讲述者、120 分钟音频、20 张照片、12 个月托管），新增 `entitlement-fulfillment.ts` 与 `POST /api/payments/webhook` 处理重复/乱序回调、退款撤权及含未完成/退款家庭的全队列单位经济核算（`computeCohortUnitEconomics`）。
+- **G3 里程碑准出全部通过（下一阶段进入 P4 家庭纵向试点与决策分析：`T13` → G4）**：PG17.4 端到端验证（4 场景 / 51 断言）通过，覆盖多设备离线导出与 PDF 校验、检索权限与墓碑隔离、支付重复/乱序回调抑制，以及方案 B `pg_dump -Fc` + `pg_restore` + 墓碑防复活演练。
 
 **10月24日本轮第三阶段收口：P2 忠实 AI 与审阅（`T06 → T07 → T08`）与 G2 里程碑达成（`gates.G2 = true`、`p2Complete = true`）。** 详见[P2/G2 集成验证报告](research/2026-10-24-p2-g2-verification.md)、[P2/G2 实施计划](superpowers/plans/2026-10-24-upgrade-p2-g2-integration.md)、[PG17.4 P2/G2 端到端验证证据](research/evidence/2026-10-24-p2-g2-verification/p2-g2-verify-2026-10-24T15-01-57.090Z-1c19bf5b-ee6b-448b-beb1-fbae0ee5008c.json)与[G2 里程碑判定](research/evidence/2026-10-24-p2-g2-verification/milestone-check.json)：
 - **正式 SQL 迁移（`supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql`）**：建立 4 张 P2 核心表（`transcript_versions`、`transcript_segments`、`story_assertions`、`story_revisions`）；建立触发器 `trg_prevent_approved_story_revision_overwrite`（SQLSTATE `23514`）阻断直接覆写或删除已确认修订；全面启用 RLS、收回 `anon`/`authenticated` 直接 DML 权限，并在读取策略中实时阻断跨家庭成员、被撤权成员及已带 `tombstone_at` 删除墓碑的媒体源。

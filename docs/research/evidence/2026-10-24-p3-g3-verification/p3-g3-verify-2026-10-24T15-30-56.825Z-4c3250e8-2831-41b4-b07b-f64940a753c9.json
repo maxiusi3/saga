@@ -1,0 +1,69 @@
+{
+  "startedAt": "2026-10-24T15:30:56.828Z",
+  "status": "passed",
+  "scope": "PG17.4 end-to-end verification of Phase P3 migration 20261024000003, T09 complete archival export & PDF booklet, T10 permission-filtered provenance search, T11 US$59 idempotent payment webhooks & refunds, and G3 backup/restore rehearsal",
+  "sources": {
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql": "d7a77d28cd49780b1bbad5d5efea81a0cc241fda48eaca2dd3180f73a49e8992",
+    "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql": "7480f7d06542275ec9d14cb26757e23030d6fef4a6dd8d5e8d1925d3ce3afe78"
+  },
+  "assertions": 51,
+  "actorConnections": [
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "1_p3_migration_idempotency_rls_and_immutable_snapshots",
+      "status": "passed",
+      "assertions": 10
+    },
+    {
+      "name": "2_t09_complete_archival_package_pdf_booklet_and_device_matrix",
+      "status": "passed",
+      "assertions": 8
+    },
+    {
+      "name": "3_t10_provenance_search_permission_filtering_index_switch_and_tombstones",
+      "status": "passed",
+      "assertions": 11
+    },
+    {
+      "name": "4_t11_g3_payment_webhooks_refund_revocation_and_scheme_b_restore",
+      "status": "passed",
+      "assertions": 14
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 77635,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-71Lfav/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-71Lfav",
+  "completedAt": "2026-10-24T15:31:00.110Z"
+}
