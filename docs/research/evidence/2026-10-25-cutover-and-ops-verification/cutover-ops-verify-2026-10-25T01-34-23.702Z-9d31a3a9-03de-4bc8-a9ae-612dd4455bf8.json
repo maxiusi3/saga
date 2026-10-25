@@ -1,0 +1,84 @@
+{
+  "startedAt": "2026-10-25T01:34:23.704Z",
+  "status": "passed",
+  "scope": "PG17.4 end-to-end verification of full P1-P4 migration chain (20261024000001..20261024000004), §5.4 legacy audio backfill & shadow-read equivalence, §5.4 safe rollback read-preservation, and §11 operational monitoring SQL queries with zero-PII enforcement",
+  "sources": {
+    "docs/research/evidence/2026-10-17-remote-metadata/snapshot-2026-10-17T06-13-03-052Z.json": "8b2a4647b017305183e67b2b932be02080a789dba4fc48b23b2f23a97991e66e",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql": "d7a77d28cd49780b1bbad5d5efea81a0cc241fda48eaca2dd3180f73a49e8992",
+    "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql": "7480f7d06542275ec9d14cb26757e23030d6fef4a6dd8d5e8d1925d3ce3afe78",
+    "supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql": "4f57e7fed1bf9d7c7f061cddb7e9951f28a4502521d7839d7f9ebf262bc0150f"
+  },
+  "assertions": 23,
+  "actorConnections": [
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "cutover-1-shadow-read-backfill-equivalence",
+      "title": "§5.4 Legacy stories.audio_url backfill to media_assets + legacy_media_references and 100% shadow-read equivalence",
+      "status": "passed",
+      "assertions": 3,
+      "details": {
+        "total_legacy_stories": 2,
+        "shadow_matched_stories": 2,
+        "shadow_mismatched_stories": 0
+      }
+    },
+    {
+      "id": "cutover-2-safe-rollback-read-preservation",
+      "title": "§5.4 Safe rollback stops active processing jobs while preserving verified assets, transcripts, revisions, and RLS isolation",
+      "status": "passed",
+      "assertions": 6,
+      "details": {
+        "activeJobsAfterRollback": 0,
+        "ownerVisibleAssets": 2,
+        "outsiderVisibleAssets": 0
+      }
+    },
+    {
+      "id": "cutover-3-operational-monitoring-sql-and-zero-pii",
+      "title": "§11 Operational monitoring SQL detects stalled leases, overdue >7d deletions, and AI budget caps with zero family PII",
+      "status": "passed",
+      "assertions": 6,
+      "details": {
+        "stalled_leased_jobs": 1,
+        "overdue_deletion_requests": 1,
+        "settled_ai_spend_usd": 7.4,
+        "reserved_ai_spend_usd": 1.1
+      }
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 8664,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-dnXQaf/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-dnXQaf",
+  "completedAt": "2026-10-25T01:34:25.034Z"
+}

@@ -6,8 +6,9 @@
 - 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1、P2/G2、P3/G3、P4/G4 全部五个阶段 `T00–T13` 及生产切流/运维告警/供应商合成探针就绪工具的实现与验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-**10月25日本轮补充收口：生产切流影子读取对账、§11 运维告警与外部供应商合成探针就绪工具（`cutover-readiness.ts`、`GET /api/admin/cutover-readiness`）及通用中途断点接手模板落地**：
-- **影子读取等价对账（§5.4 `verifyShadowReadEquivalence`）**：在“新增结构 → 回填 → 影子读取比较 → 小批切换 → 观察 → 关闭旧写入”流程中，自动逐条核对旧 `stories` 音频/图片地址与新 `media_assets` 的映射完整性、就绪状态与删除墓碑一致性。
+**10月25日本轮补充收口：生产切流演练、双入口采集与带出处检索项目中心 UI（`TwoEntryProjectHub.tsx`）、§5.4 影子读取对账、§11 持续运营告警与外部供应商合成探针就绪工具（`cutover-readiness.ts`、`GET /api/admin/cutover-readiness`）及通用中途断点接手模板落地**。详见[切流与运营演练报告](research/2026-10-25-cutover-and-ops-verification.md)与[PG17.4 切流与运营验证证据](research/evidence/2026-10-25-cutover-and-ops-verification/cutover-ops-verify-2026-10-25T01-34-23.702Z-9d31a3a9-03de-4bc8-a9ae-612dd4455bf8.json)：
+- **双入口采集 + 带出处检索 + 离线导出项目中心 UI（`TwoEntryProjectHub.tsx`）**：将项目家庭工作台收敛为“上传已有录音”（Entry 1）与“录制新故事/邀请长辈”（Entry 2）两条清晰主路径，集成 T10 带出处检索（点击毫秒时间戳一键回听原声、无资料零编造）与 T09 完整档案包/PDF 1.4 导出触发器。
+- **影子读取等价对账与安全回退 PG17.4 演练（§5.4 `verifyShadowReadEquivalence` + `experiments/pg17-cutover-and-ops-verification/verify.mjs`）**：在真实 PG17.4 上串联 `20261024000001..20261024000004` 四份正式迁移（3 场景 / 23 断言全部通过），验证旧 `stories.audio_url` 回填至 `media_assets` + `legacy_media_references` 后 100% 影子读取匹配（`0` 未映射），以及安全回退停止在途任务且完整保留只读数据与 RLS 隔离。
 - **§11 持续运营告警（`evaluateOperationalAlerts`）**：在绝不记录家庭隐私正文（`containsPrivateFamilyText: false`）的前提下，监控上传失败率飙升、持久任务积压、单项目 AI 成本超上限、删除请求超 7 天 SLA 未清理及导出校验失败五类告警。
 - **合成短样本供应商探针契约核查（`evaluateSyntheticProviderProbes`）**：使用纯虚构短样本校验 `ElevenLabs Scribe v2`、`Anthropic Opus` 与 `Voyage` 的训练退出、零留存与密钥配置状态。
 
