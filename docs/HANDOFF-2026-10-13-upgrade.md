@@ -3,7 +3,13 @@
 - 更新时间：2026-10-24（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1、P2/G2、P3/G3 与 P4/G4 全部五个阶段 `T00–T13` 的工程实施与里程碑验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1、P2/G2、P3/G3、P4/G4 全部五个阶段 `T00–T13` 及生产切流/运维告警/供应商合成探针就绪工具的实现与验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+- **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
+
+**10月25日本轮补充收口：生产切流影子读取对账、§11 运维告警与外部供应商合成探针就绪工具（`cutover-readiness.ts`、`GET /api/admin/cutover-readiness`）及通用中途断点接手模板落地**：
+- **影子读取等价对账（§5.4 `verifyShadowReadEquivalence`）**：在“新增结构 → 回填 → 影子读取比较 → 小批切换 → 观察 → 关闭旧写入”流程中，自动逐条核对旧 `stories` 音频/图片地址与新 `media_assets` 的映射完整性、就绪状态与删除墓碑一致性。
+- **§11 持续运营告警（`evaluateOperationalAlerts`）**：在绝不记录家庭隐私正文（`containsPrivateFamilyText: false`）的前提下，监控上传失败率飙升、持久任务积压、单项目 AI 成本超上限、删除请求超 7 天 SLA 未清理及导出校验失败五类告警。
+- **合成短样本供应商探针契约核查（`evaluateSyntheticProviderProbes`）**：使用纯虚构短样本校验 `ElevenLabs Scribe v2`、`Anthropic Opus` 与 `Voyage` 的训练退出、零留存与密钥配置状态。
 
 **10月24日本轮第五阶段收口：P4 家庭纵向试点与决策分析（`T13`）与 G4 里程碑达成（`gates.G4 = true`、`p4Complete = true`）。** 详见[P4/G4 集成验证报告](research/2026-10-24-p4-g4-verification.md)、[P4/G4 实施计划](superpowers/plans/2026-10-24-upgrade-p4-g4-integration.md)、[PG17.4 P4/G4 端到端验证证据](research/evidence/2026-10-24-p4-g4-verification/p4-g4-verify-2026-10-24T15-49-58.079Z-90e4d756-3573-42c3-b750-de9c6ab96db1.json)与[G4 里程碑判定](research/evidence/2026-10-24-p4-g4-verification/milestone-check.json)：
 - **正式 SQL 迁移（`supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql`）**：建立 `public.pilot_households` 台账表，强制区分 `prototype_study`、`ai_eval_holdout`、`longitudinal_pilot` 三类队列与 `free`、`half_price`、`subsidized`、`paid_59` 四档价格，持久化全链路时间戳、未完成原因、家庭修订分钟、运营支持分钟、NPS 与重大数据事故数；启用 RLS 并收回客户端直接写权限。
