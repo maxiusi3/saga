@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Local synchronous archive assembly observations; not full operational/production readiness or rollout-wide instrumentation coverage",
+  "baselineCommit": "a605fbf1e8666d038ed8f49603217a8b8cbec2ca",
+  "commands": [
+    {
+      "command": "node experiments/pg17-export-observations/verify.mjs",
+      "exitCode": 0,
+      "scenarios": 12,
+      "assertions": 464,
+      "log": "pg-root-final.txt",
+      "exitRecord": "pg-root-final.exit",
+      "report": "pg-verify-2026-10-29T08-57-09.995Z-95ac81bd-68bd-4a3c-b5ce-8a670d5e44ef.json"
+    },
+    {
+      "command": "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra",
+      "exitCode": 0,
+      "log": "full-verification-final.txt",
+      "exitRecord": "full-verification-final.exit",
+      "web": {
+        "suites": 132,
+        "tests": 1754
+      },
+      "shared": {
+        "suites": 4,
+        "tests": 16
+      },
+      "infra": {
+        "tests": 7
+      },
+      "builtPages": 184
+    },
+    {
+      "command": "npm test --workspace=packages/web -- --runInBand --testPathPatterns=\"(api/projects/.*export/__tests__|server/__tests__/media-export|archive-observations|operational-snapshot|cutover-readiness|archival-export-service)\"",
+      "exitCode": 0,
+      "suites": 7,
+      "tests": 159,
+      "log": "export-green.txt"
+    },
+    {
+      "command": "npm run type-check",
+      "exitCode": 0,
+      "log": "type-check-green.txt"
+    },
+    {
+      "command": "npm run lint",
+      "exitCode": 0,
+      "log": "lint-green.txt"
+    }
+  ],
+  "pg": {
+    "index": "pg-verification.json",
+    "normalScenarios": 12,
+    "normalAssertions": 464,
+    "contaminatedScenarios": 12,
+    "contaminatedAssertions": 464,
+    "rootReplayScenarios": 12,
+    "rootReplayAssertions": 464,
+    "cleanup": "cleanup-check.json"
+  },
+  "regressions": {
+    "expectedRedLogs": [
+      "adapter-red.txt",
+      "export-red.txt",
+      "pg-missing-rpc-red.txt",
+      "pg-infra-red.txt"
+    ],
+    "pgRedReport": "pg-red-without-migration-2026-10-29T08-26-52.133Z-be1f5bf7-3e90-45be-942b-8b039abcba52.json",
+    "runnerDevelopmentFailures": 0,
+    "unresolvedFinalFailures": 0
+  },
+  "reviews": {
+    "specification": {
+      "status": "passed",
+      "reviewer": "/root/export_spec_review",
+      "record": "spec-review.md",
+      "independentJest": {
+        "suites": 7,
+        "tests": 159
+      }
+    },
+    "quality": {
+      "status": "passed",
+      "reviewer": "/root/export_quality_review",
+      "record": "quality-review.md",
+      "independentJest": {
+        "suites": 5,
+        "tests": 153
+      }
+    },
+    "closeoutConsistency": {
+      "status": "passed",
+      "reviewer": "/root/export_quality_review",
+      "verified": {
+        "sourceHashes": 15,
+        "protectedBaselineFiles": 1398,
+        "documentHashes": 4,
+        "evidenceHashes": 46,
+        "rawLogFiles": 15,
+        "newLocalLinks": 21,
+        "stagedPaths": 66,
+        "liveCleanupChecks": 15
+      },
+      "findings": []
+    }
+  },
+  "integrity": {
+    "sourceFiles": 15,
+    "protectedBaselineFiles": 1398,
+    "protectedInputsUnchanged": true,
+    "nextEnvRestored": true,
+    "rawLogFiles": 15,
+    "stagedDiffCheck": "passed",
+    "unstagedDiffCheck": "passed"
+  },
+  "limitations": [
+    "no full migration-chain/PostgREST qualification",
+    "mocked adapter/route HTTP transport; no real Storage qualification",
+    "no production-ledger scale timing or provider billing completeness",
+    "verified means server assembly, not final authorization or HTTP/client delivery",
+    "windowComplete means ledger age only, not rolling-deployment instrumentation coverage",
+    "upload/browser-direct-transfer events and real alert responder/delivery unavailable",
+    "provider policy blocked regardless configured keys",
+    "G0-G4 have no new complete qualification",
+    "existing Next config and missing SUPABASE_SERVICE_ROLE_KEY build warnings; audit not rerun"
+  ],
+  "readiness": {
+    "httpStatus": 503,
+    "status": "not_ready",
+    "coverage": "partial",
+    "localSliceComplete": true,
+    "milestoneDecision": "milestone-check.json"
+  },
+  "recordedAt": "2026-10-29T09:25:37.221758+00:00",
+  "documentationHashes": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "ca4f54a56fc4f3d58d0325e6f75f1375c34c3b47fc878fc7cb1e72de9018fb24",
+    "docs/README.md": "87cfca292fd502329f3b016083191734c02e85e4a55e3783375588bdc6eb28e3",
+    "docs/research/2026-10-29-export-observations.md": "0d9fd369141dde0444c59a934395695764fd20fa6d724b28eff3528dfed87740",
+    "docs/superpowers/plans/2026-10-29-upgrade-export-observations.md": "a13a971690acea3d8e9f51090253fb75c0926eaca1378045d1d1f44882d5b384"
+  },
+  "evidenceHashes": {
+    "README.md": "cca0dd1c4dbdd727da3092d7c8930345b868dbf12cd6b9b74c4714b7306de75b",
+    "adapter-green.txt": "be49fd15e49a3ee1be9c077aa181f4bfa5e046fd96d71986a31dc49e999f9134",
+    "adapter-green.txt.gz": "37a1f708c0ca7dd0a3b7a29b086452ea28fc6495d29e23259fff087be40781d6",
+    "adapter-red.txt": "c78a4254291722f5d10efbf45229da70cb7934a28170483049b30e209babf300",
+    "adapter-red.txt.gz": "7808e3dda540a080654e47ac269228b4e949b60c3d0a2abf95da1bde38d0680c",
+    "cleanup-check.json": "a0dcd09db8d515b751158399a0da4a8132af31fddbd5fe003d6e3387a517dd0f",
+    "export-green.txt": "011047e1f0c0a521d501f45bc78a8ecbfde42edf10906185b998cc810a1d4bba",
+    "export-green.txt.gz": "27dd9cc29105e7f5a2aec7a50ca0e8e8ee15fe6dd4bee6cddf07a1552e8dfa3c",
+    "export-red.txt": "58d7941d4e3408cf40261783c28584a3656f76dec9efadc28b4b81969154df1b",
+    "export-red.txt.gz": "b8216e419e8d8cd4f8f0ba7bbbb10f9c6bd82eac6b547cf52e72e42ab5a3a10d",
+    "full-verification-final.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "full-verification-final.txt": "3988d4efdab4d63c02c3228090780d6813b16cb0ee6da593c180baa467017ca9",
+    "full-verification-final.txt.gz": "68d136278795d76e6f378d75f852f96f7773d3445e93e094c56284fd1670de45",
+    "lint-green.txt": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "lint-green.txt.gz": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+    "milestone-check.json": "7dc139a3dd6389fcf0d5370904dbe1de3db90609993c6f2dfd9cd0fb731baeaa",
+    "pg-first-implementation-run.txt": "a000c17ecc944ab0cff2f5bdaed288b19033265490bede79534df46c7b5088ad",
+    "pg-first-implementation-run.txt.gz": "774b0d83fec523de5005ca2976edc803fedd57f4b09c134c87277376427bd98b",
+    "pg-infra-green.txt": "cfd23f3dd7f5691ff5ff59000b772a1aa9c337f58abcec6acb0152ecb707dcc7",
+    "pg-infra-green.txt.gz": "abf72defd2b50cb6a2e860f8140cdb2588d34fd0b3485927f13da29143b4ebe7",
+    "pg-infra-red.txt": "0af5edacc08b75d131af98aa5ca8dfeb55a4fc40582b4141b503dc53f16348cb",
+    "pg-infra-red.txt.gz": "813f2e32e220eb8d365bc866466b7ace495059f3743f7036ab02899acdccacf6",
+    "pg-missing-rpc-red.txt": "e54311172cd93d419d2f01ad3f274c61d49b45f04948803350e2b8d9e98b6fb1",
+    "pg-missing-rpc-red.txt.gz": "b2d30a1be999283b8195ce3f6debb496da3a048147224e29da799601d280922f",
+    "pg-normal-green.txt": "386a7cb8411d66442355ea989a83114dc20bdf740c68331e8bdefd3144735cae",
+    "pg-normal-green.txt.gz": "9f2ca050ebe7bcca809f4b22f5a5b03bcabbe69090a66a12834facf3e69e1bd3",
+    "pg-polluted-green.txt": "d5ac0eba9ccef4b3f6e6102f61a9a6fe2b704748dfac4c1ec939492fe2123775",
+    "pg-polluted-green.txt.gz": "bef800a7325d0cb8560906532c6030bdcb2a410a2c858b3589f4445ed67d8f95",
+    "pg-red-without-migration-2026-10-29T08-26-52.133Z-be1f5bf7-3e90-45be-942b-8b039abcba52.json": "32975727585100919f3f466a766648f7900893f32098ea7d0e3333e18b1691e9",
+    "pg-root-final.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "pg-root-final.txt": "ee1efdd5378b7a49f3d726c01d7337e3b658e4f8fa3ad65208afd855cf905b05",
+    "pg-root-final.txt.gz": "2211f5d626ca1f67f5587e6e656589f5130cb2a5631d68a09867494e1fc24c83",
+    "pg-verification.json": "8021a1119d43bbe61e98db252e60114cc172c4de94af72cf1b5712ea7cca6a54",
+    "pg-verify-2026-10-29T08-28-50.737Z-a0058aaa-a556-4e75-ae96-6ef270c2830f.json": "efe6ae317e167ed63cbbbaae6f1c648fbf078a43a0d484fb36413c08214ff2a2",
+    "pg-verify-2026-10-29T08-34-58.145Z-0d37835e-9071-4f1f-b0eb-8a4ee02f0cfe.json": "5e94e562f697b87b98b76fc653aae0a3969cd4abaa16156a335d6dd3d60b42dd",
+    "pg-verify-2026-10-29T08-34-59.969Z-6f0eea20-961c-431b-90c6-99eec07e9dd3.json": "e4dd1187f0160c7443c441d7b94c0f2db26ade3f4e8e9fa2f9f61b867ea59a90",
+    "pg-verify-2026-10-29T08-57-09.995Z-95ac81bd-68bd-4a3c-b5ce-8a670d5e44ef.json": "4a81ea9c25c844819fb69f947f72d8b4867a7d7f103dd58b8fb470f61e5b4a68",
+    "protected-inputs.json": "f1815c61c422123ee7c4396749c76abbbb5013fc7faea7459fb18742fbeede00",
+    "quality-review.md": "75b5c60ca449f9a363939917cea66010bf46b4d330c103f480384259067f7929",
+    "raw-log-archive.json": "b3df31ff5e7d8cd558978999fdb13965c38b6914c7a04ee12d6d1ac02c7e1c27",
+    "source-hashes.json": "e90da93863b647026edd57c79e56c188f099d1dcd4202cd90f0f6cf01c8a1c41",
+    "spec-review.md": "982e23982c367b5887853114f63b9d53d1794428760dc57bc00e54450d747398",
+    "type-check-adapter.txt": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "type-check-adapter.txt.gz": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+    "type-check-green.txt": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "type-check-green.txt.gz": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581"
+  }
+}

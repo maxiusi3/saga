@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "logs": [
+    {
+      "readableLog": "adapter-green.txt",
+      "gzipLog": "adapter-green.txt.gz",
+      "rawSha256": "be49fd15e49a3ee1be9c077aa181f4bfa5e046fd96d71986a31dc49e999f9134",
+      "rawBytes": 342,
+      "readableSha256": "be49fd15e49a3ee1be9c077aa181f4bfa5e046fd96d71986a31dc49e999f9134",
+      "gzipSha256": "37a1f708c0ca7dd0a3b7a29b086452ea28fc6495d29e23259fff087be40781d6",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "adapter-red.txt",
+      "gzipLog": "adapter-red.txt.gz",
+      "rawSha256": "c78a4254291722f5d10efbf45229da70cb7934a28170483049b30e209babf300",
+      "rawBytes": 11897,
+      "readableSha256": "c78a4254291722f5d10efbf45229da70cb7934a28170483049b30e209babf300",
+      "gzipSha256": "7808e3dda540a080654e47ac269228b4e949b60c3d0a2abf95da1bde38d0680c",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "export-green.txt",
+      "gzipLog": "export-green.txt.gz",
+      "rawSha256": "011047e1f0c0a521d501f45bc78a8ecbfde42edf10906185b998cc810a1d4bba",
+      "rawBytes": 532,
+      "readableSha256": "011047e1f0c0a521d501f45bc78a8ecbfde42edf10906185b998cc810a1d4bba",
+      "gzipSha256": "27dd9cc29105e7f5a2aec7a50ca0e8e8ee15fe6dd4bee6cddf07a1552e8dfa3c",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "export-red.txt",
+      "gzipLog": "export-red.txt.gz",
+      "rawSha256": "58d7941d4e3408cf40261783c28584a3656f76dec9efadc28b4b81969154df1b",
+      "rawBytes": 13386,
+      "readableSha256": "58d7941d4e3408cf40261783c28584a3656f76dec9efadc28b4b81969154df1b",
+      "gzipSha256": "b8216e419e8d8cd4f8f0ba7bbbb10f9c6bd82eac6b547cf52e72e42ab5a3a10d",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "full-verification-final.txt",
+      "gzipLog": "full-verification-final.txt.gz",
+      "rawSha256": "c6e4b27cd0aca2d11b15fe300e29c977f98c2607396ba6a796ca43520dd9e703",
+      "rawBytes": 15937,
+      "readableSha256": "3988d4efdab4d63c02c3228090780d6813b16cb0ee6da593c180baa467017ca9",
+      "gzipSha256": "68d136278795d76e6f378d75f852f96f7773d3445e93e094c56284fd1670de45",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "lint-green.txt",
+      "gzipLog": "lint-green.txt.gz",
+      "rawSha256": "934cfc6206ee43b729de270720d94d9a7e4732081bd2d362f355253669ba8b2a",
+      "rawBytes": 182,
+      "readableSha256": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+      "gzipSha256": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "pg-root-final.txt",
+      "gzipLog": "pg-root-final.txt.gz",
+      "rawSha256": "ee1efdd5378b7a49f3d726c01d7337e3b658e4f8fa3ad65208afd855cf905b05",
+      "rawBytes": 403,
+      "readableSha256": "ee1efdd5378b7a49f3d726c01d7337e3b658e4f8fa3ad65208afd855cf905b05",
+      "gzipSha256": "2211f5d626ca1f67f5587e6e656589f5130cb2a5631d68a09867494e1fc24c83",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "type-check-adapter.txt",
+      "gzipLog": "type-check-adapter.txt.gz",
+      "rawSha256": "6096d610ac3f63cdd32e2b1e498d6cd9874b0341e7193944ee329b9e7650d1b6",
+      "rawBytes": 172,
+      "readableSha256": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+      "gzipSha256": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "type-check-green.txt",
+      "gzipLog": "type-check-green.txt.gz",
+      "rawSha256": "6096d610ac3f63cdd32e2b1e498d6cd9874b0341e7193944ee329b9e7650d1b6",
+      "rawBytes": 172,
+      "readableSha256": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+      "gzipSha256": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+      "readableTransformation": "Remove CR, trailing horizontal whitespace and extra final blank lines only"
+    },
+    {
+      "readableLog": "pg-first-implementation-run.txt",
+      "gzipLog": "pg-first-implementation-run.txt.gz",
+      "rawSha256": "a000c17ecc944ab0cff2f5bdaed288b19033265490bede79534df46c7b5088ad",
+      "rawBytes": 403,
+      "readableSha256": "a000c17ecc944ab0cff2f5bdaed288b19033265490bede79534df46c7b5088ad",
+      "gzipSha256": "774b0d83fec523de5005ca2976edc803fedd57f4b09c134c87277376427bd98b",
+      "readableTransformation": "none; original PG task bytes preserved"
+    },
+    {
+      "readableLog": "pg-infra-green.txt",
+      "gzipLog": "pg-infra-green.txt.gz",
+      "rawSha256": "cfd23f3dd7f5691ff5ff59000b772a1aa9c337f58abcec6acb0152ecb707dcc7",
+      "rawBytes": 1844,
+      "readableSha256": "cfd23f3dd7f5691ff5ff59000b772a1aa9c337f58abcec6acb0152ecb707dcc7",
+      "gzipSha256": "abf72defd2b50cb6a2e860f8140cdb2588d34fd0b3485927f13da29143b4ebe7",
+      "readableTransformation": "none; original PG task bytes preserved"
+    },
+    {
+      "readableLog": "pg-infra-red.txt",
+      "gzipLog": "pg-infra-red.txt.gz",
+      "rawSha256": "0f49a03af36b32f07d1faa51abfd864b0b8013e1993203562b939e4643a50212",
+      "rawBytes": 4745,
+      "readableSha256": "0af5edacc08b75d131af98aa5ca8dfeb55a4fc40582b4141b503dc53f16348cb",
+      "gzipSha256": "813f2e32e220eb8d365bc866466b7ace495059f3743f7036ab02899acdccacf6",
+      "readableTransformation": "Remove trailing horizontal whitespace only; original PG gzip bytes preserved"
+    },
+    {
+      "readableLog": "pg-missing-rpc-red.txt",
+      "gzipLog": "pg-missing-rpc-red.txt.gz",
+      "rawSha256": "e54311172cd93d419d2f01ad3f274c61d49b45f04948803350e2b8d9e98b6fb1",
+      "rawBytes": 572,
+      "readableSha256": "e54311172cd93d419d2f01ad3f274c61d49b45f04948803350e2b8d9e98b6fb1",
+      "gzipSha256": "b2d30a1be999283b8195ce3f6debb496da3a048147224e29da799601d280922f",
+      "readableTransformation": "none; original PG task bytes preserved"
+    },
+    {
+      "readableLog": "pg-normal-green.txt",
+      "gzipLog": "pg-normal-green.txt.gz",
+      "rawSha256": "386a7cb8411d66442355ea989a83114dc20bdf740c68331e8bdefd3144735cae",
+      "rawBytes": 403,
+      "readableSha256": "386a7cb8411d66442355ea989a83114dc20bdf740c68331e8bdefd3144735cae",
+      "gzipSha256": "9f2ca050ebe7bcca809f4b22f5a5b03bcabbe69090a66a12834facf3e69e1bd3",
+      "readableTransformation": "none; original PG task bytes preserved"
+    },
+    {
+      "readableLog": "pg-polluted-green.txt",
+      "gzipLog": "pg-polluted-green.txt.gz",
+      "rawSha256": "d5ac0eba9ccef4b3f6e6102f61a9a6fe2b704748dfac4c1ec939492fe2123775",
+      "rawBytes": 403,
+      "readableSha256": "d5ac0eba9ccef4b3f6e6102f61a9a6fe2b704748dfac4c1ec939492fe2123775",
+      "gzipSha256": "bef800a7325d0cb8560906532c6030bdcb2a410a2c858b3589f4445ed67d8f95",
+      "readableTransformation": "none; original PG task bytes preserved"
+    }
+  ]
+}

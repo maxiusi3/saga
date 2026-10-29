@@ -89,10 +89,15 @@ describe('GET /api/admin/cutover-readiness', () => {
   it('exposes actual partial observations and alerts without approving cutover or alert delivery', async () => {
     process.env.OPERATIONAL_PROJECT_COST_CAP_CENTS = '500'
     const snapshot = {
-      schemaVersion: 1, observedAt: '2026-10-29T05:00:00.000Z',
+      schemaVersion: 2, observedAt: '2026-10-29T05:00:00.000Z',
       processing: { stalledJobsCount: 2, maxRunnableBacklogAgeSeconds: 1800, invalidJobCount: 0 },
       costs: { maxProjectKnownExposureCents: 751, unknownAttemptCostsCount: 0 },
       deletions: { overdueRequestsCount: 1, invalidRequestCount: 0 },
+      exports: {
+        scope: 'synchronous_archive_assembly', windowMinutes: 60,
+        coverageStartedAt: '2026-10-29T04:30:00.000Z', windowComplete: false,
+        integrityFailuresCount: 1, unsettledAttemptsCount: 1, invalidAttemptsCount: 0,
+      },
     }
     mockLoadSnapshot.mockResolvedValue({ ok: true, snapshot })
     const req = request({ 'x-cron-secret': 'synthetic-ops-secret' })
@@ -106,9 +111,9 @@ describe('GET /api/admin/cutover-readiness', () => {
       operationalHealth: { status: 'critical', coverage: 'partial', source: 'database_ledger', snapshot },
       alertDelivery: { status: 'unavailable', reason: 'responder_and_delivery_not_verified' },
     })
-    expect(body.operationalHealth.unavailableMetrics).toEqual(['uploads', 'exports'])
+    expect(body.operationalHealth.unavailableMetrics).toEqual(['uploads', 'export_observation_window', 'export_outcome_completeness'])
     expect(body.operationalHealth.alerts.map((alert: { code: string }) => alert.code)).toEqual([
-      'job_backlog_stalled', 'project_cost_anomaly', 'deletion_sla_breach',
+      'job_backlog_stalled', 'project_cost_anomaly', 'deletion_sla_breach', 'export_integrity_failure',
     ])
     expect(body.providerProbes.every((probe: { status: string }) => probe.status === 'blocked_by_policy')).toBe(true)
   })

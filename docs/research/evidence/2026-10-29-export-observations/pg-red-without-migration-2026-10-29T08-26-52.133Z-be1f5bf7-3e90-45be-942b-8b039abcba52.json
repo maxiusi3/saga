@@ -1,0 +1,85 @@
+{
+  "startedAt": "2026-10-29T08:26:52.135Z",
+  "status": "failed",
+  "mode": "red-without-migration",
+  "scope": "Synthetic local PG17.4 export ledger/RPC/aggregate verification; not a full migration-chain, PostgREST, delivery or production qualification",
+  "sources": {
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-export-observations/verify.mjs": "f6646cf7fe363af472b558b7e72bf62ec4c24c9d3f4e5097972b8c1f9a444656",
+    "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab"
+  },
+  "assertions": 12,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": true
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "New v2 RPC exists; initial missing RPC is product RED",
+      "status": "failed",
+      "code": "ASSERT_FAILED",
+      "label": "new v2 RPC must exist (42883 is expected missing-feature RED)"
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 22179,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-QvjeR5/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-QvjeR5",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users(id)",
+      "public.projects(id)",
+      "public.stories(id)"
+    ],
+    "exactP1Tables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts"
+    ],
+    "excluded": "Other P1 DDL/indexes/policies/routines and later migrations; no full migration-chain claim"
+  },
+  "rpcProbeSqlstate": "42883",
+  "failure": {
+    "code": "ASSERT_FAILED",
+    "label": "new v2 RPC must exist (42883 is expected missing-feature RED)"
+  },
+  "failureKind": "expected_product_red_missing_rpc",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "socketRemoved": true,
+    "parentDirectoryRemoved": true,
+    "serverPidGone": true
+  },
+  "completedAt": "2026-10-29T08:26:53.699Z"
+}

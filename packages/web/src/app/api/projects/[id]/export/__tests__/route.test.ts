@@ -10,6 +10,12 @@ const mockAccess = jest.fn()
 const mockFrom = jest.fn()
 const mockDownload = jest.fn()
 const mockStorageFrom = jest.fn()
+const mockBegin = jest.fn()
+const mockFinish = jest.fn()
+jest.mock('@/lib/server/archive-observations', () => ({
+  beginArchiveAssemblyAttempt: (...args: unknown[]) => mockBegin(...args),
+  finishArchiveAssemblyAttempt: (...args: unknown[]) => mockFinish(...args),
+}))
 jest.mock('@/lib/server/auth', () => ({ getAuthenticatedUser: (...args: unknown[]) => mockAuth(...args) }))
 jest.mock('@/lib/server/project-access', () => ({ requireProjectAccess: (...args: unknown[]) => mockAccess(...args) }))
 jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => ({ from: (...args: unknown[]) => mockFrom(...args), storage: { from: (...args: unknown[]) => mockStorageFrom(...args) } }) }))
@@ -39,7 +45,7 @@ function query(data: unknown, error: unknown = null, count = Array.isArray(data)
   chain.single = chain.maybeSingle = jest.fn(async () => result)
   return chain
 }
-const run = () => POST(new NextRequest(`http://localhost/api/projects/${project.id}/export`, { method: 'POST' }), { params: Promise.resolve({ id: project.id }) })
+const run = (signal?: AbortSignal) => POST(new NextRequest(`http://localhost/api/projects/${project.id}/export`, { method: 'POST', signal }), { params: Promise.resolve({ id: project.id }) })
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -47,6 +53,8 @@ beforeEach(() => {
   process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://private.example'
   mockAuth.mockResolvedValue({ ok: true, user: { id: 'alice' }, headers: new Headers({ 'Set-Cookie': 'session=refreshed' }) })
   mockAccess.mockResolvedValue({ ok: true })
+  mockBegin.mockReset().mockResolvedValue(true)
+  mockFinish.mockReset().mockResolvedValue(true)
   stories = [{ ...story }]; assets = [{ ...asset }]; tombstones = []; errors = {}; queries = {}
   versions = [{ id: 'version-1', project_id: project.id, story_id: story.id, asset_id: asset.id }]
   mockFrom.mockImplementation(table => {
@@ -68,15 +76,18 @@ describe('bounded synchronous archival export', () => {
     delete process.env.MEDIA_ASSETS_ENABLED
     expect((await run()).status).toBe(503)
     expect(mockFrom).not.toHaveBeenCalled()
+    expect(mockBegin).not.toHaveBeenCalled()
   })
 
   it('obeys central authentication and membership denial before data access', async () => {
     mockAuth.mockResolvedValueOnce({ ok: false, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) })
     expect((await run()).status).toBe(401)
     expect(mockFrom).not.toHaveBeenCalled()
+    expect(mockBegin).not.toHaveBeenCalled()
     mockAccess.mockResolvedValueOnce({ ok: false, response: NextResponse.json({ error: 'Access denied' }, { status: 403 }) })
     expect((await run()).status).toBe(403)
     expect(mockFrom).not.toHaveBeenCalled()
+    expect(mockBegin).not.toHaveBeenCalled()
   })
 
   it('emits only a complete verified assembler archive with auth headers', async () => {
@@ -93,6 +104,12 @@ describe('bounded synchronous archival export', () => {
     expect(zip.file('project-info.json')).toBeNull()
     expect(await zip.file(`media/${asset.id}/recording.webm`)!.async('nodebuffer')).toEqual(bytes)
     expect(mockFrom).not.toHaveBeenCalledWith('project_roles')
+    expect(mockBegin).toHaveBeenCalledWith(expect.stringMatching(/^[a-f0-9-]{36}$/), expect.any(AbortSignal))
+    const attemptId = mockBegin.mock.calls[0][0]
+    expect(attemptId).not.toBe(project.id)
+    expect(mockFinish).toHaveBeenCalledWith(attemptId, 'verified')
+    expect(mockBegin.mock.invocationCallOrder[0]).toBeLessThan(mockDownload.mock.invocationCallOrder[0])
+    expect(mockFinish.mock.invocationCallOrder[0]).toBeLessThan(mockAccess.mock.invocationCallOrder[1])
   })
 
   it.each(['projects', 'stories', 'media_assets', 'deletion_requests', 'transcript_versions'])('fails closed on required %s errors', async table => {
@@ -100,6 +117,7 @@ describe('bounded synchronous archival export', () => {
     const response = await run()
     expect(response.status).toBe(500)
     expect(mockDownload).not.toHaveBeenCalled()
+    expect(mockBegin).not.toHaveBeenCalled()
     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
     expect(await response.text()).not.toContain('private storage locator')
   })
@@ -158,6 +176,83 @@ describe('bounded synchronous archival export', () => {
     expect(response.status).toBe(409)
     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
     expect(await response.text()).not.toContain(asset.object_key)
+    expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'integrity_failed')
+  })
+
+  it('does not read Storage if the durable start is missing or ambiguous', async () => {
+    mockBegin.mockResolvedValue(false)
+    const response = await run()
+    expect(response.status).toBe(503)
+    expect(mockDownload).not.toHaveBeenCalled()
+    expect(mockFinish).not.toHaveBeenCalled()
+    expect(response.headers.get('Cache-Control')).toBe('no-store')
+  })
+
+  it.each(['verified', 'integrity_failed'])('does not return ZIP or a confirmed outcome when %s persistence is unknown', async outcome => {
+    if (outcome === 'integrity_failed') assets[0].sha256 = 'a'.repeat(64)
+    mockFinish.mockResolvedValue(false)
+    const response = await run()
+    expect(response.status).toBe(503)
+    expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+    expect(mockFinish).toHaveBeenCalledTimes(1)
+    expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], outcome)
+  })
+
+  it('records an ordinary Storage error as failed, not as corrupt media based on its message', async () => {
+    mockDownload.mockReturnValue({ asStream: async () => { throw new Error('Media asset failed export verification: private locator') } })
+    const response = await run()
+    expect(response.status).toBe(409)
+    expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'failed')
+    expect(await response.text()).not.toContain('private locator')
+  })
+
+  it('records a compression failure without claiming an integrity mismatch or delivering bytes', async () => {
+    jest.spyOn(JSZip.prototype, 'generateAsync').mockRejectedValue(new Error('private compression failure'))
+    const response = await run()
+    expect(response.status).toBe(500)
+    expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'failed')
+    expect(await response.text()).not.toContain('private compression failure')
+  })
+
+  it('records an overlong individual object as an integrity failure before the total byte ceiling', async () => {
+    assets[0].byte_size = bytes.length - 1
+    expect((await run()).status).toBe(409)
+    expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'integrity_failed')
+  })
+
+  it('cancels a pending reader and persists cancellation independently of the HTTP signal', async () => {
+    const caller = new AbortController()
+    let started!: () => void
+    const reading = new Promise<void>(resolve => { started = resolve })
+    const cancel = jest.fn()
+    mockDownload.mockReturnValue({ asStream: async () => ({ data: new ReadableStream({ pull() { started() }, cancel }), error: null }) })
+    const pending = run(caller.signal)
+    await reading
+    caller.abort()
+    const response = await pending
+    expect(response.status).toBe(409)
+    expect(cancel).toHaveBeenCalled()
+    expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'cancelled')
+  })
+
+  it.each(['deleted', 'revoked', 'cancelled'])('rechecks privacy and cancellation after a delayed event finish: %s', async outcome => {
+    const caller = new AbortController()
+    let finish!: (confirmed: boolean) => void
+    let started!: () => void
+    const writing = new Promise<void>(resolve => { started = resolve })
+    mockFinish.mockImplementation(() => { started(); return new Promise<boolean>(resolve => { finish = resolve }) })
+    const pending = run(caller.signal)
+    await writing
+    if (outcome === 'deleted') tombstones.push({ subject_id: story.id, tombstone_at: '2026-10-29' })
+    if (outcome === 'revoked') mockAccess.mockResolvedValue({ ok: false, response: NextResponse.json({ error: 'Access denied' }, { status: 403 }) })
+    if (outcome === 'cancelled') caller.abort()
+    finish(true)
+    const response = await pending
+    expect(response.status).toBe(outcome === 'revoked' ? 403 : 409)
+    expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+    // Verified means assembly, not delivery: no attempt to rewrite its immutable terminal state.
+    expect(mockFinish).toHaveBeenCalledTimes(1)
+    expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'verified')
   })
 
   it('fails closed on truncated database results rather than declaring a partial package complete', async () => {
@@ -235,6 +330,7 @@ describe('bounded synchronous archival export', () => {
     expect(response.status).toBe(413)
     expect(cancel).toHaveBeenCalledTimes(1)
     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+    expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'limit_exceeded')
   })
 
   it('cannot use an exact locator attached to another story as proof of legacy representation', async () => {

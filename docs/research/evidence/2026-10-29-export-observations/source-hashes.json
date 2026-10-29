@@ -1,0 +1,17 @@
+{
+  "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+  "experiments/pg17-export-observations/verify.mjs": "b16349393625ac80f153437255eff45f95c3e52922e1f8f5154c003476451c21",
+  "experiments/pg17-export-observations/README.md": "90b7c875bcc3bb21682acbde221da122a6341662b1484d67c489354588549ba7",
+  "scripts/__tests__/deployment-config.test.js": "21050abd25c7f1aaa6350bb9826ab1510e6bb7a228e2076ca37dc4a18f27488a",
+  "packages/web/src/lib/server/operational-rpc.ts": "4492bab9728c4ffb93d5508777bae339cb015ecb9ba140409283ca0548e90a86",
+  "packages/web/src/lib/server/archive-observations.ts": "762a586bb6db574b7d85c9ed3626e1d7a64e214ac6e50b7d2574b3f63c814656",
+  "packages/web/src/lib/server/__tests__/archive-observations.test.ts": "d642fb584359a706865d1bc0e8c82fd890ed37edc332b5d0fc21de756ca732eb",
+  "packages/web/src/lib/server/operational-snapshot.ts": "989f8d06e90a1f7d9d4c7eb5ec48d91b8afa5fb6767a1e28176c686ac1e0806b",
+  "packages/web/src/lib/server/__tests__/operational-snapshot.test.ts": "bc72561467358da6be3457f8f042d598cf2b480183ce88abfbfadb7193b9bbf5",
+  "packages/web/src/lib/server/cutover-readiness.ts": "5dd770148650dc57cc029c5611601e916090cbe16143ec33ce6f7d4e1633469a",
+  "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts": "69376cd11509865ed58b6235d1598e265b70ad0d895e80f03c8a16941dc7e204",
+  "packages/web/src/lib/server/media-export.ts": "c39f67b3aab648a1978afaeb2411d38c80f753fbfc6f5c1a00fed181332106ed",
+  "packages/web/src/lib/server/__tests__/media-export.test.ts": "4b0b497ebdaa19d25bf675c7388cc1bd98ecc99d8298beca416e02080f229817",
+  "packages/web/src/app/api/projects/[id]/export/route.ts": "33bb6a853cc75771a29cde6778609acd76ca263ed7dc9b1ec636f6045c37e214",
+  "packages/web/src/app/api/projects/[id]/export/__tests__/route.test.ts": "2ecb71d7f9a7c7f6b83d0a86e06c788b8b9a3f708ff861cb2de8f92f389fc607"
+}

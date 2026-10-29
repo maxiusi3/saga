@@ -1,0 +1,272 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(api/projects/.*export/__tests__|server/__tests__/media-export)
+
+FAIL src/app/api/projects/[id]/export/__tests__/route.test.ts (20.797 s)
+  ● bounded synchronous archival export › emits only a complete verified assembler archive with auth headers
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: StringMatching /^[a-f0-9-]{36}$/, Any<AbortSignal>
+
+    Number of calls: 0
+
+      105 |     expect(await zip.file(`media/${asset.id}/recording.webm`)!.async('nodebuffer')).toEqual(bytes)
+      106 |     expect(mockFrom).not.toHaveBeenCalledWith('project_roles')
+    > 107 |     expect(mockBegin).toHaveBeenCalledWith(expect.stringMatching(/^[a-f0-9-]{36}$/), expect.any(AbortSignal))
+          |                       ^
+      108 |     const attemptId = mockBegin.mock.calls[0][0]
+      109 |     expect(attemptId).not.toBe(project.id)
+      110 |     expect(mockFinish).toHaveBeenCalledWith(attemptId, 'verified')
+
+      at Object.toHaveBeenCalledWith (src/app/api/projects/[id]/export/__tests__/route.test.ts:107:23)
+
+  ● bounded synchronous archival export › rejects corrupt downloads instead of sending a partial ZIP
+
+    TypeError: Cannot read properties of undefined (reading '0')
+
+      177 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+      178 |     expect(await response.text()).not.toContain(asset.object_key)
+    > 179 |     expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'integrity_failed')
+          |                                                                    ^
+      180 |   })
+      181 |
+      182 |   it('does not read Storage if the durable start is missing or ambiguous', async () => {
+
+      at Object.<anonymous> (src/app/api/projects/[id]/export/__tests__/route.test.ts:179:68)
+
+  ● bounded synchronous archival export › does not read Storage if the durable start is missing or ambiguous
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 200
+
+      183 |     mockBegin.mockResolvedValue(false)
+      184 |     const response = await run()
+    > 185 |     expect(response.status).toBe(503)
+          |                             ^
+      186 |     expect(mockDownload).not.toHaveBeenCalled()
+      187 |     expect(mockFinish).not.toHaveBeenCalled()
+      188 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at Object.toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:185:29)
+
+  ● bounded synchronous archival export › does not return ZIP or a confirmed outcome when verified persistence is unknown
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 200
+
+      193 |     mockFinish.mockResolvedValue(false)
+      194 |     const response = await run()
+    > 195 |     expect(response.status).toBe(503)
+          |                             ^
+      196 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+      197 |     expect(mockFinish).toHaveBeenCalledTimes(1)
+      198 |     expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], outcome)
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:195:29)
+
+  ● bounded synchronous archival export › does not return ZIP or a confirmed outcome when integrity_failed persistence is unknown
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 409
+
+      193 |     mockFinish.mockResolvedValue(false)
+      194 |     const response = await run()
+    > 195 |     expect(response.status).toBe(503)
+          |                             ^
+      196 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+      197 |     expect(mockFinish).toHaveBeenCalledTimes(1)
+      198 |     expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], outcome)
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:195:29)
+
+  ● bounded synchronous archival export › records an ordinary Storage error as failed, not as corrupt media based on its message
+
+    TypeError: Cannot read properties of undefined (reading '0')
+
+      203 |     const response = await run()
+      204 |     expect(response.status).toBe(409)
+    > 205 |     expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'failed')
+          |                                                                    ^
+      206 |     expect(await response.text()).not.toContain('private locator')
+      207 |   })
+      208 |
+
+      at Object.<anonymous> (src/app/api/projects/[id]/export/__tests__/route.test.ts:205:68)
+
+  ● bounded synchronous archival export › records a compression failure without claiming an integrity mismatch or delivering bytes
+
+    TypeError: Cannot read properties of undefined (reading '0')
+
+      211 |     const response = await run()
+      212 |     expect(response.status).toBe(500)
+    > 213 |     expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'failed')
+          |                                                                    ^
+      214 |     expect(await response.text()).not.toContain('private compression failure')
+      215 |   })
+      216 |
+
+      at Object.<anonymous> (src/app/api/projects/[id]/export/__tests__/route.test.ts:213:68)
+
+  ● bounded synchronous archival export › records an overlong individual object as an integrity failure before the total byte ceiling
+
+    TypeError: Cannot read properties of undefined (reading '0')
+
+      218 |     assets[0].byte_size = bytes.length - 1
+      219 |     expect((await run()).status).toBe(409)
+    > 220 |     expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'integrity_failed')
+          |                                                                    ^
+      221 |   })
+      222 |
+      223 |   it('cancels a pending reader and persists cancellation independently of the HTTP signal', async () => {
+
+      at Object.<anonymous> (src/app/api/projects/[id]/export/__tests__/route.test.ts:220:68)
+
+  ● bounded synchronous archival export › cancels a pending reader and persists cancellation independently of the HTTP signal
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+      221 |   })
+      222 |
+    > 223 |   it('cancels a pending reader and persists cancellation independently of the HTTP signal', async () => {
+          |   ^
+      224 |     const caller = new AbortController()
+      225 |     let started!: () => void
+      226 |     const reading = new Promise<void>(resolve => { started = resolve })
+
+      at it (src/app/api/projects/[id]/export/__tests__/route.test.ts:223:3)
+      at Object.describe (src/app/api/projects/[id]/export/__tests__/route.test.ts:74:1)
+
+  ● bounded synchronous archival export › rechecks privacy and cancellation after a delayed event finish: deleted
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+      236 |   })
+      237 |
+    > 238 |   it.each(['deleted', 'revoked', 'cancelled'])('rechecks privacy and cancellation after a delayed event finish: %s', async outcome => {
+          |                                              ^
+      239 |     const caller = new AbortController()
+      240 |     let finish!: (confirmed: boolean) => void
+      241 |     let started!: () => void
+
+      at eachBind (node_modules/jest-each/build/index.js:54:13)
+      at src/app/api/projects/[id]/export/__tests__/route.test.ts:238:46
+      at Object.describe (src/app/api/projects/[id]/export/__tests__/route.test.ts:74:1)
+
+  ● bounded synchronous archival export › rechecks privacy and cancellation after a delayed event finish: revoked
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+      236 |   })
+      237 |
+    > 238 |   it.each(['deleted', 'revoked', 'cancelled'])('rechecks privacy and cancellation after a delayed event finish: %s', async outcome => {
+          |                                              ^
+      239 |     const caller = new AbortController()
+      240 |     let finish!: (confirmed: boolean) => void
+      241 |     let started!: () => void
+
+      at eachBind (node_modules/jest-each/build/index.js:54:13)
+      at src/app/api/projects/[id]/export/__tests__/route.test.ts:238:46
+      at Object.describe (src/app/api/projects/[id]/export/__tests__/route.test.ts:74:1)
+
+  ● bounded synchronous archival export › rechecks privacy and cancellation after a delayed event finish: cancelled
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+      236 |   })
+      237 |
+    > 238 |   it.each(['deleted', 'revoked', 'cancelled'])('rechecks privacy and cancellation after a delayed event finish: %s', async outcome => {
+          |                                              ^
+      239 |     const caller = new AbortController()
+      240 |     let finish!: (confirmed: boolean) => void
+      241 |     let started!: () => void
+
+      at eachBind (node_modules/jest-each/build/index.js:54:13)
+      at src/app/api/projects/[id]/export/__tests__/route.test.ts:238:46
+      at Object.describe (src/app/api/projects/[id]/export/__tests__/route.test.ts:74:1)
+
+  ● bounded synchronous archival export › cancels an unexpectedly oversized stream without returning a partial archive
+
+    TypeError: Cannot read properties of undefined (reading '0')
+
+      331 |     expect(cancel).toHaveBeenCalledTimes(1)
+      332 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+    > 333 |     expect(mockFinish).toHaveBeenCalledWith(mockBegin.mock.calls[0][0], 'limit_exceeded')
+          |                                                                    ^
+      334 |   })
+      335 |
+      336 |   it('cannot use an exact locator attached to another story as proof of legacy representation', async () => {
+
+      at Object.<anonymous> (src/app/api/projects/[id]/export/__tests__/route.test.ts:333:68)
+
+FAIL src/lib/server/__tests__/media-export.test.ts
+  ● verified media export › marks only actual size/hash mismatches as typed integrity failures
+
+    expect(received).rejects.toMatchObject(expected)
+
+    - Expected  - 4
+    + Received  + 1
+
+    - Object {
+    -   "message": "Media asset failed export verification",
+    -   "name": "MediaExportIntegrityError",
+    - }
+    + [Error: Media asset failed export verification: asset-1]
+
+      44 |   ])('marks only actual size/hash mismatches as typed integrity failures', async asset => {
+      45 |     await expect(addVerifiedMediaAssetsToZip(new JSZip(), [asset], async () => Buffer.from('hello world')))
+    > 46 |       .rejects.toMatchObject({ name: 'MediaExportIntegrityError', message: 'Media asset failed export verification' })
+         |                ^
+      47 |   })
+      48 |
+      49 |   it('does not emit a partial archive when a later asset is incomplete', async () => {
+
+      at Object.toMatchObject (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at toMatchObject (src/lib/server/__tests__/media-export.test.ts:46:16)
+
+  ● verified media export › marks only actual size/hash mismatches as typed integrity failures
+
+    expect(received).rejects.toMatchObject(expected)
+
+    - Expected  - 4
+    + Received  + 1
+
+    - Object {
+    -   "message": "Media asset failed export verification",
+    -   "name": "MediaExportIntegrityError",
+    - }
+    + [Error: Media asset failed export verification: asset-1]
+
+      44 |   ])('marks only actual size/hash mismatches as typed integrity failures', async asset => {
+      45 |     await expect(addVerifiedMediaAssetsToZip(new JSZip(), [asset], async () => Buffer.from('hello world')))
+    > 46 |       .rejects.toMatchObject({ name: 'MediaExportIntegrityError', message: 'Media asset failed export verification' })
+         |                ^
+      47 |   })
+      48 |
+      49 |   it('does not emit a partial archive when a later asset is incomplete', async () => {
+
+      at Object.toMatchObject (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at toMatchObject (src/lib/server/__tests__/media-export.test.ts:46:16)
+
+Test Suites: 2 failed, 2 total
+Tests:       15 failed, 44 passed, 59 total
+Snapshots:   0 total
+Time:        21.234 s
+Ran all test suites matching (api/projects/.*export/__tests__|server/__tests__/media-export).
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand '--testPathPatterns=(api/projects/.*export/__tests__|server/__tests__/media-export)'

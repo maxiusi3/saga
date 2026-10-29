@@ -9,6 +9,14 @@ export interface ExportableMediaAsset extends ExportAssetRow {
   tombstoned?: boolean
 }
 
+export class MediaExportIntegrityError extends Error {
+  constructor() {
+    super('Media asset failed export verification')
+    this.name = 'MediaExportIntegrityError'
+    Object.setPrototypeOf(this, MediaExportIntegrityError.prototype)
+  }
+}
+
 export interface OfflineExportStoryItem {
   id: string
   title?: string | null
@@ -144,7 +152,7 @@ export async function addVerifiedMediaAssetsToZip(
     const bytes = await readObject(asset)
     const hash = createHash('sha256').update(bytes).digest('hex')
     if (bytes.length !== asset.byte_size || hash !== asset.sha256) {
-      throw new Error(`Media asset failed export verification: ${asset.id}`)
+      throw new MediaExportIntegrityError()
     }
     files.push({ path: `media/${asset.id}/${safeExportFilename(asset.original_filename)}`, bytes })
   }

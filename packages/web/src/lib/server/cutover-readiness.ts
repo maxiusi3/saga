@@ -148,7 +148,7 @@ export interface OperationalAlertItem {
 export interface OperationalHealthReport {
   status: 'healthy' | 'degraded' | 'critical' | 'unavailable'
   coverage: 'complete' | 'partial'
-  unavailableMetrics: Array<'uploads' | 'processing' | 'project_cost' | 'project_cost_completeness' | 'deletions' | 'exports'>
+  unavailableMetrics: Array<'uploads' | 'processing' | 'project_cost' | 'project_cost_completeness' | 'deletions' | 'exports' | 'export_observation_window' | 'export_outcome_completeness'>
   containsPrivateFamilyText: false
   alerts: OperationalAlertItem[]
 }

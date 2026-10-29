@@ -3,10 +3,21 @@
 - 更新时间：2026-10-29（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`287b32c5a`（上一批双入口接线检查点；本批继续数据库运营指标，不声称原计划 G0–G4 已全部验收）
+- 本轮接手基线 HEAD：`a605fbf1e`（上一批数据库运营指标检查点；本批继续导出组装观测，不声称原计划 G0–G4 已全部验收）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 10 月 29 日数据库运营指标接入（当前状态，以本节为准）
+## 10 月 29 日同步导出组装观测（当前状态，以本节为准）
+
+详见[本轮报告](research/2026-10-29-export-observations.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-export-observations.md)与[验证汇总](research/evidence/2026-10-29-export-observations/verification.json)。本批补齐 §11 的同步导出事件来源；续接断点为 Task 4 审查/证据收口（情况 D），保留已通过的 Task 1–3，不重复前批实现。
+
+- **持久观测**：新增本地迁移 `20261029000002_export_observations.sql`，只记录随机 attempt UUID、有限状态与数据库时间；受限 writer RPC、不可改终态、真实并发幂等/冲突验证。无参数只读 invoker v2 组合旧 v1，旧迁移/函数不变，不记录家庭正文或标识。
+- **导出边界**：既有预检后、Storage 前持久 start；组装/压缩后、最终成员/墓碑检查前持久 finish。任一写入不可确认均不出 ZIP，5 秒截止且不重试；typed SHA/大小不符与普通失败/取消/限额分离。最终墓碑检查后没有新增 await。
+- **诚实覆盖**：`verified` 只证明服务端校验与组装，不证明最终授权、HTTP/客户端交付。`windowComplete` 仅表示台账 epoch 已满 60 分钟，不证明滚动部署所有旧/新实例都完成埋点；未接入旧路由和其他通道不在覆盖证明内。未满窗口/未终态明确 incomplete，已知损坏仍告警，invalid 使导出组 unavailable，顶层仍 `503 not_ready`。
+- **验证**：定向 7 套/159 项、type-check/lint 通过；PG17.4 正常/污染环境与主流程复跑均 12 场景/464 断言。完整命令链退出 0：Web 132 套/1754 项、shared 4 套/16 项、infra 7 项、184 页。独立规格 PASS、质量 Approved（另跑 5 套/153 项）；1398 历史保护输入未变，next-env 已恢复，15 份原始日志 gzip/哈希保留，PG socket/目录/PID 清理已复核。
+- **下一步**：补可靠上传/浏览器直传尝试观测，单独证明部署采集覆盖；再连接实际告警响应人/投递与供应商账户/区域/数据条件核验链。解码/大包 Worker、真机/家庭/模型及成熟纵向试点仍待验收；不要重做本批同步导出埋点。
+- **边界**：只完成本地切片，不等于整个 §11 或原 G0–G4。合成 PG 四表 DDL/Jest 不证明完整迁移链、PostgREST、规模性能、账单或客户端交付；保留已有构建配置/key 提示，audit 未重跑。不触发条件推送，不合并 main、不迁移远端、不部署、不外发家庭素材；发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 29 日数据库运营指标接入（前批完成状态）
 
 详见[本轮报告](research/2026-10-29-operational-snapshot.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-operational-snapshot.md)与[验证汇总](research/evidence/2026-10-29-operational-snapshot/verification.json)。本批承接双入口交接的 §11 数据库观测切片，不重复前批接线；中断点为 Task 2 的 RED 测试（情况 B），并同步完成新迁移清单（情况 C）。
 

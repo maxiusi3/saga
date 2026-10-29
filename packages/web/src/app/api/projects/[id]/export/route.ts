@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import JSZip from 'jszip'
+import { randomUUID } from 'crypto'
 import { assembleCompleteArchivalPackage, type ArchivalStoryInput } from '@/lib/server/archival-export-service'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
 import { getSupabaseAdmin } from '@/lib/supabase'
 import { planLegacyStoryMedia } from '@/lib/legacy-story-media'
-import type { ExportableMediaAsset } from '@/lib/server/media-export'
+import { MediaExportIntegrityError, type ExportableMediaAsset } from '@/lib/server/media-export'
+import { beginArchiveAssemblyAttempt, finishArchiveAssemblyAttempt, type ArchiveAssemblyOutcome } from '@/lib/server/archive-observations'
 
 export const runtime = 'nodejs'
 
@@ -139,9 +141,17 @@ export async function POST(
       }
     }
 
+    if (request.signal.aborted) return reply({ error: 'Export cancelled' }, 409, auth.headers)
+    const attemptId = randomUUID()
+    if (!await beginArchiveAssemblyAttempt(attemptId, request.signal)) {
+      return reply({ error: 'Export observation is unavailable' }, 503, auth.headers)
+    }
     const zip = new JSZip()
     let downloadedBytes = 0
     let exceededLimit = false
+    let zipBuffer: Buffer | undefined
+    let outcome: ArchiveAssemblyOutcome = 'failed'
+    let failureStatus = 409
     try {
       await assembleCompleteArchivalPackage(zip, {
         projectId, projectName: project.name, projectDescription: project.description,
@@ -153,12 +163,16 @@ export async function POST(
           const { data: stream, error } = await admin.storage.from(asset.bucket).download(asset.object_key).asStream()
           if (error || !stream) throw new Error('Archive source unavailable')
           const reader = stream.getReader()
+          const cancelRead = () => { void reader.cancel().catch(() => {}) }
+          request.signal.addEventListener('abort', cancelRead, { once: true })
+          if (request.signal.aborted) cancelRead()
           const chunks: Buffer[] = []
           let objectBytes = 0
           try {
             while (true) {
               if (request.signal.aborted) throw new Error('Export cancelled')
               const { done, value } = await reader.read()
+              if (request.signal.aborted) throw new Error('Export cancelled')
               if (done) break
               downloadedBytes += value.byteLength
               objectBytes += value.byteLength
@@ -166,21 +180,38 @@ export async function POST(
                 exceededLimit = true
                 throw new Error('Archive byte limit exceeded')
               }
-              if (objectBytes > (asset.byte_size ?? 0)) throw new Error('Archive source size mismatch')
+              if (objectBytes > (asset.byte_size ?? 0)) throw new MediaExportIntegrityError()
               chunks.push(Buffer.from(value))
             }
           } finally {
+            request.signal.removeEventListener('abort', cancelRead)
             await reader.cancel().catch(() => {})
             reader.releaseLock()
           }
           return Buffer.concat(chunks)
         },
       })
-    } catch {
-      return reply({ error: exceededLimit ? 'Archive exceeds synchronous limits' : 'Media assets are incomplete and cannot be exported' }, exceededLimit ? 413 : 409, auth.headers)
+      failureStatus = 500
+      zipBuffer = await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE', compressionOptions: { level: 6 } })
+      if (request.signal.aborted) throw new Error('Export cancelled')
+      outcome = 'verified'
+    } catch (error) {
+      outcome = error instanceof MediaExportIntegrityError ? 'integrity_failed'
+        : exceededLimit ? 'limit_exceeded' : request.signal.aborted ? 'cancelled' : 'failed'
+      if (outcome === 'limit_exceeded') failureStatus = 413
+      if (outcome === 'cancelled') failureStatus = 409
     }
 
-    const zipBuffer = await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE', compressionOptions: { level: 6 } })
+    // Persist assembly, not delivery. This await must precede the final privacy checks.
+    if (!await finishArchiveAssemblyAttempt(attemptId, outcome)) {
+      return reply({ error: 'Export observation is unavailable' }, 503, auth.headers)
+    }
+    if (!zipBuffer || outcome !== 'verified') {
+      const error = failureStatus === 413 ? 'Archive exceeds synchronous limits'
+        : failureStatus === 500 ? 'Archival export is unavailable' : 'Media assets are incomplete and cannot be exported'
+      return reply({ error }, failureStatus, auth.headers)
+    }
+    if (request.signal.aborted) return reply({ error: 'Export cancelled' }, 409, auth.headers)
     const latestAccess = await requireProjectAccess(projectId, auth.user)
     if (!latestAccess.ok) return reply(await latestAccess.response.json(), latestAccess.response.status, auth.headers)
 
@@ -193,6 +224,7 @@ export async function POST(
       if (latest.error || !Array.isArray(latest.data)) return reply({ error: 'Failed to verify deletion status' }, 500, auth.headers)
       if ((latest.data as TombstoneRow[]).some(row => subjects.includes(row.subject_id))) return reply({ error: 'Archive changed during export; please retry' }, 409, auth.headers)
     }
+    if (request.signal.aborted) return reply({ error: 'Export cancelled' }, 409, auth.headers)
     const filename = `${String(project.name).replace(/[^a-zA-Z0-9]/g, '_').slice(0, 80)}_export_${new Date().toISOString().slice(0, 10)}.zip`
     const headers = new Headers(auth.headers)
     headers.set('Cache-Control', 'no-store')

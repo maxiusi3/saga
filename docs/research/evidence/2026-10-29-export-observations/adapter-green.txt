@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(archive-observations|operational-snapshot|cutover-readiness)
+
+
+Test Suites: 4 passed, 4 total
+Tests:       98 passed, 98 total
+Snapshots:   0 total
+Time:        2.012 s
+Ran all test suites matching (archive-observations|operational-snapshot|cutover-readiness).

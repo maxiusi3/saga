@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-29T08:36:56.765Z",
+  "baselineCommit": "a605fbf1e",
+  "scope": "Task 1 synthetic local PG17.4 export ledger and infra verification only; no full migration-chain, remote database, PostgREST, delivery, provider, build or G0-G4 qualification",
+  "status": "passed",
+  "finalSources": {
+    "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+    "experiments/pg17-export-observations/verify.mjs": "b16349393625ac80f153437255eff45f95c3e52922e1f8f5154c003476451c21",
+    "experiments/pg17-export-observations/README.md": "90b7c875bcc3bb21682acbde221da122a6341662b1484d67c489354588549ba7",
+    "scripts/__tests__/deployment-config.test.js": "21050abd25c7f1aaa6350bb9826ab1510e6bb7a228e2076ca37dc4a18f27488a"
+  },
+  "frozenBaseline": {
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": {
+      "sha256": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+      "baselineCommit": "a605fbf1e",
+      "unchanged": true
+    },
+    "supabase/migrations/20261029000001_operational_snapshot.sql": {
+      "sha256": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+      "baselineCommit": "a605fbf1e",
+      "unchanged": true
+    },
+    "experiments/pg17-routines/runtime.mjs": {
+      "sha256": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+      "baselineCommit": "a605fbf1e",
+      "unchanged": true
+    },
+    "experiments/pg17-routines/runtime-pins.json": {
+      "sha256": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+      "baselineCommit": "a605fbf1e",
+      "unchanged": true
+    }
+  },
+  "runs": [
+    {
+      "id": "initial-product-red",
+      "classification": "expected_product_red_missing_rpc",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "rawLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-missing-rpc-red.txt",
+        "sha256": "e54311172cd93d419d2f01ad3f274c61d49b45f04948803350e2b8d9e98b6fb1"
+      },
+      "gzipLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-missing-rpc-red.txt.gz",
+        "sha256": "b2d30a1be999283b8195ce3f6debb496da3a048147224e29da799601d280922f"
+      },
+      "report": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-red-without-migration-2026-10-29T08-26-52.133Z-be1f5bf7-3e90-45be-942b-8b039abcba52.json",
+        "sha256": "32975727585100919f3f466a766648f7900893f32098ea7d0e3333e18b1691e9",
+        "status": "failed",
+        "scenarios": 1,
+        "assertions": 12,
+        "runtimeVersion": "postgres (PostgreSQL) 17.4",
+        "sources": {
+          "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+          "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+          "experiments/pg17-export-observations/verify.mjs": "f6646cf7fe363af472b558b7e72bf62ec4c24c9d3f4e5097972b8c1f9a444656",
+          "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab"
+        },
+        "cleanupVerified": true
+      },
+      "command": "node experiments/pg17-export-observations/verify.mjs --without-migration",
+      "scrubbedEnvironmentKeys": []
+    },
+    {
+      "id": "initial-infra-red",
+      "classification": "expected_product_red_missing_migration",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "gzipLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-infra-red.txt.gz",
+        "sha256": "813f2e32e220eb8d365bc866466b7ace495059f3743f7036ab02899acdccacf6"
+      },
+      "tests": {
+        "total": 7,
+        "passed": 6,
+        "failed": 1
+      },
+      "command": "node --test scripts/__tests__/deployment-config.test.js",
+      "originalRawLog": {
+        "sha256": "0f49a03af36b32f07d1faa51abfd864b0b8013e1993203562b939e4643a50212",
+        "bytes": 4745,
+        "recoverFrom": "decompress gzipLog without any text transformations"
+      },
+      "readableLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-infra-red.txt",
+        "sha256": "0af5edacc08b75d131af98aa5ca8dfeb55a4fc40582b4141b503dc53f16348cb",
+        "transformation": "Remove trailing horizontal whitespace only; original bytes remain in unchanged gzipLog"
+      }
+    },
+    {
+      "id": "first-implementation-green",
+      "classification": "historical_green_before_fixture_strengthening",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "rawLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-first-implementation-run.txt",
+        "sha256": "a000c17ecc944ab0cff2f5bdaed288b19033265490bede79534df46c7b5088ad"
+      },
+      "gzipLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-first-implementation-run.txt.gz",
+        "sha256": "774b0d83fec523de5005ca2976edc803fedd57f4b09c134c87277376427bd98b"
+      },
+      "report": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-verify-2026-10-29T08-28-50.737Z-a0058aaa-a556-4e75-ae96-6ef270c2830f.json",
+        "sha256": "efe6ae317e167ed63cbbbaae6f1c648fbf078a43a0d484fb36413c08214ff2a2",
+        "status": "passed",
+        "scenarios": 12,
+        "assertions": 453,
+        "runtimeVersion": "postgres (PostgreSQL) 17.4",
+        "sources": {
+          "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+          "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+          "experiments/pg17-export-observations/verify.mjs": "f6646cf7fe363af472b558b7e72bf62ec4c24c9d3f4e5097972b8c1f9a444656",
+          "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+          "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056"
+        },
+        "cleanupVerified": true
+      },
+      "command": "node experiments/pg17-export-observations/verify.mjs",
+      "scrubbedEnvironmentKeys": []
+    },
+    {
+      "id": "final-normal-green",
+      "classification": "final_green",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "rawLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-normal-green.txt",
+        "sha256": "386a7cb8411d66442355ea989a83114dc20bdf740c68331e8bdefd3144735cae"
+      },
+      "gzipLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-normal-green.txt.gz",
+        "sha256": "9f2ca050ebe7bcca809f4b22f5a5b03bcabbe69090a66a12834facf3e69e1bd3"
+      },
+      "report": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-verify-2026-10-29T08-34-58.145Z-0d37835e-9071-4f1f-b0eb-8a4ee02f0cfe.json",
+        "sha256": "5e94e562f697b87b98b76fc653aae0a3969cd4abaa16156a335d6dd3d60b42dd",
+        "status": "passed",
+        "scenarios": 12,
+        "assertions": 464,
+        "runtimeVersion": "postgres (PostgreSQL) 17.4",
+        "sources": {
+          "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+          "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+          "experiments/pg17-export-observations/verify.mjs": "b16349393625ac80f153437255eff45f95c3e52922e1f8f5154c003476451c21",
+          "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+          "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056"
+        },
+        "cleanupVerified": true
+      },
+      "command": "node experiments/pg17-export-observations/verify.mjs",
+      "scrubbedEnvironmentKeys": []
+    },
+    {
+      "id": "final-polluted-green",
+      "classification": "final_green",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "rawLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-polluted-green.txt",
+        "sha256": "d5ac0eba9ccef4b3f6e6102f61a9a6fe2b704748dfac4c1ec939492fe2123775"
+      },
+      "gzipLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-polluted-green.txt.gz",
+        "sha256": "bef800a7325d0cb8560906532c6030bdcb2a410a2c858b3589f4445ed67d8f95"
+      },
+      "report": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-verify-2026-10-29T08-34-59.969Z-6f0eea20-961c-431b-90c6-99eec07e9dd3.json",
+        "sha256": "e4dd1187f0160c7443c441d7b94c0f2db26ade3f4e8e9fa2f9f61b867ea59a90",
+        "status": "passed",
+        "scenarios": 12,
+        "assertions": 464,
+        "runtimeVersion": "postgres (PostgreSQL) 17.4",
+        "sources": {
+          "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+          "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+          "experiments/pg17-export-observations/verify.mjs": "b16349393625ac80f153437255eff45f95c3e52922e1f8f5154c003476451c21",
+          "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+          "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056"
+        },
+        "cleanupVerified": true
+      },
+      "command": "node experiments/pg17-export-observations/verify.mjs",
+      "scrubbedEnvironmentKeys": [
+        "DATABASE_URL",
+        "PGDATABASE",
+        "PGHOST",
+        "PGOPTIONS",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGSERVICE",
+        "PGSERVICEFILE",
+        "PGSSLMODE",
+        "PGUSER"
+      ],
+      "syntheticPollution": {
+        "keys": [
+          "DATABASE_URL",
+          "PGDATABASE",
+          "PGHOST",
+          "PGOPTIONS",
+          "PGPASSWORD",
+          "PGPORT",
+          "PGSERVICE",
+          "PGSERVICEFILE",
+          "PGSSLMODE",
+          "PGUSER"
+        ],
+        "connectionTargets": "synthetic loopback port 1, never contacted; scrubbed before runtime start"
+      }
+    },
+    {
+      "id": "final-infra-green",
+      "classification": "final_green",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "rawLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-infra-green.txt",
+        "sha256": "cfd23f3dd7f5691ff5ff59000b772a1aa9c337f58abcec6acb0152ecb707dcc7"
+      },
+      "gzipLog": {
+        "path": "docs/research/evidence/2026-10-29-export-observations/pg-infra-green.txt.gz",
+        "sha256": "abf72defd2b50cb6a2e860f8140cdb2588d34fd0b3485927f13da29143b4ebe7"
+      },
+      "tests": {
+        "total": 7,
+        "passed": 7,
+        "failed": 0
+      },
+      "command": "npm run test:infra"
+    }
+  ],
+  "runnerFailures": [],
+  "historicalNote": "Original missing-RPC and infra RED artifacts preceded SQL implementation. The first implementation passed; fixture strengthening added nonempty P1 privacy/compatibility coverage and MAINTAIN privilege assertions, then final normal and polluted runs passed against identical source hashes. No runner development failure is presented as product RED."
+}

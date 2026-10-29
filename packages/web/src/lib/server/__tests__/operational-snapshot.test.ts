@@ -9,10 +9,15 @@ jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => mockAdmin() }))
 
 const now = '2026-10-29T05:00:00.000Z'
 const snapshot = () => ({
-  schemaVersion: 1, observedAt: now,
+  schemaVersion: 2, observedAt: now,
   processing: { stalledJobsCount: 2, maxRunnableBacklogAgeSeconds: 1800, invalidJobCount: 0 },
   costs: { maxProjectKnownExposureCents: 751, unknownAttemptCostsCount: 0 },
   deletions: { overdueRequestsCount: 1, invalidRequestCount: 0 },
+  exports: {
+    scope: 'synchronous_archive_assembly', windowMinutes: 60,
+    coverageStartedAt: '2026-10-29T03:00:00.000Z', windowComplete: true,
+    integrityFailuresCount: 0, unsettledAttemptsCount: 0, invalidAttemptsCount: 0,
+  },
 })
 
 beforeEach(() => {
@@ -29,14 +34,14 @@ it('reads one current aggregate RPC with cancellation and no retry', async () =>
   const result = await loadOperationalSnapshot()
   expect(result).toEqual({ ok: true, snapshot: snapshot() })
   expect(mockRpc).toHaveBeenCalledTimes(1)
-  expect(mockRpc).toHaveBeenCalledWith('read_operational_snapshot')
+  expect(mockRpc).toHaveBeenCalledWith('read_operational_snapshot_v2')
   expect(mockAbort).toHaveBeenCalledWith(expect.any(AbortSignal))
   expect(mockRetry).toHaveBeenCalledWith(false)
   expect(jest.getTimerCount()).toBe(0)
 })
 
 it.each([
-  null, [], {}, { ...snapshot(), schemaVersion: 2 },
+  null, [], {}, { ...snapshot(), schemaVersion: 1 },
   { ...snapshot(), familyText: 'private transcript' },
   { ...snapshot(), processing: { ...snapshot().processing, objectKey: 'private' } },
   { ...snapshot(), observedAt: 'invalid' },
@@ -113,12 +118,48 @@ it('propagates caller cancellation and drops a late result', async () => {
   expect(jest.getTimerCount()).toBe(0)
 })
 
-it('evaluates actual available metrics without manufacturing upload/export evidence', () => {
+it('evaluates actual available metrics without manufacturing upload evidence', () => {
   const health = operationalHealthFromSnapshot({ ok: true, snapshot: snapshot() }, '500')
   expect(health).toMatchObject({ status: 'critical', coverage: 'partial', source: 'database_ledger', observedAt: now })
   expect(health.alerts.map(item => item.code)).toEqual(['job_backlog_stalled', 'project_cost_anomaly', 'deletion_sla_breach'])
-  expect(health.unavailableMetrics).toEqual(expect.arrayContaining(['uploads', 'exports']))
+  expect(health.unavailableMetrics).toEqual(['uploads'])
   expect(health.snapshot).toEqual(snapshot())
+})
+
+it.each([
+  null, {}, { ...snapshot().exports, objectKey: 'private' },
+  { ...snapshot().exports, scope: 'client_download' }, { ...snapshot().exports, windowMinutes: 15 },
+  { ...snapshot().exports, integrityFailuresCount: -1 }, { ...snapshot().exports, unsettledAttemptsCount: null },
+  { ...snapshot().exports, invalidAttemptsCount: Infinity }, { ...snapshot().exports, coverageStartedAt: null },
+  { ...snapshot().exports, coverageStartedAt: '2026-10-29T05:00:00.000001Z' },
+  { ...snapshot().exports, coverageStartedAt: '2026-10-29T04:30:00Z', windowComplete: true },
+  { ...snapshot().exports, windowComplete: false }, { ...snapshot().exports, windowComplete: 'true' },
+])('rejects invalid or misleading export observations %j', async exports => {
+  mockRetry.mockResolvedValue({ data: { ...snapshot(), exports }, error: null })
+  expect(await loadOperationalSnapshot()).toEqual({ ok: false, reason: 'invalid_snapshot' })
+})
+
+it.each([
+  ['2026-10-29T04:00:00.000000Z', true],
+  ['2026-10-29T04:00:00.000001Z', false],
+] as const)('checks the coverage boundary without losing PostgreSQL microseconds: %s', async (coverageStartedAt, windowComplete) => {
+  mockRetry.mockResolvedValue({ data: { ...snapshot(), exports: { ...snapshot().exports, coverageStartedAt, windowComplete } }, error: null })
+  expect(await loadOperationalSnapshot()).toMatchObject({ ok: true, snapshot: { exports: { windowComplete } } })
+})
+
+it('alerts on recorded integrity failures even with a short window or unsettled attempt', () => {
+  const data = snapshot()
+  data.exports = { ...data.exports, integrityFailuresCount: 2, unsettledAttemptsCount: 1, windowComplete: false, coverageStartedAt: now }
+  const health = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
+  expect(health.alerts.map(a => a.code)).toContain('export_integrity_failure')
+  expect(health.unavailableMetrics).toEqual(expect.arrayContaining(['uploads', 'export_observation_window', 'export_outcome_completeness']))
+})
+
+it('suppresses malformed export groups and keeps real zero observations from proving readiness', () => {
+  const data = snapshot(); data.exports.integrityFailuresCount = 1; data.exports.invalidAttemptsCount = 1
+  const health = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
+  expect(health.unavailableMetrics).toContain('exports')
+  expect(health.alerts.map(a => a.code)).not.toContain('export_integrity_failure')
 })
 
 it.each([undefined, '', '500x', '-1', '1.5', 'Infinity', '9007199254740992'])('does not invent a budget cap from %s', budget => {

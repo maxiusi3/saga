@@ -38,6 +38,14 @@ describe('verified media export', () => {
     expect(Object.keys(zip.files)).toEqual([])
   })
 
+  it.each([
+    { ...readyAsset, sha256: 'a'.repeat(64) },
+    { ...readyAsset, byte_size: 12 },
+  ])('marks only actual size/hash mismatches as typed integrity failures', async asset => {
+    await expect(addVerifiedMediaAssetsToZip(new JSZip(), [asset], async () => Buffer.from('hello world')))
+      .rejects.toMatchObject({ name: 'MediaExportIntegrityError', message: 'Media asset failed export verification' })
+  })
+
   it('does not emit a partial archive when a later asset is incomplete', async () => {
     const zip = new JSZip()
     await expect(addVerifiedMediaAssetsToZip(zip, [readyAsset, { ...readyAsset, id: 'asset-2', state: 'quarantined' }], async () => Buffer.from('hello world')))
