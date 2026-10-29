@@ -4,6 +4,12 @@ import { NextRequest } from 'next/server'
 import { GET } from '../route'
 
 const mockGetAuthenticatedUser = jest.fn()
+const mockLoadSnapshot = jest.fn()
+
+jest.mock('@/lib/server/operational-snapshot', () => ({
+  ...jest.requireActual('@/lib/server/operational-snapshot'),
+  loadOperationalSnapshot: (...args: unknown[]) => mockLoadSnapshot(...args),
+}))
 
 jest.mock('@/lib/server/auth', () => ({
   getAuthenticatedUser: (...args: unknown[]) => mockGetAuthenticatedUser(...args),
@@ -14,6 +20,8 @@ describe('GET /api/admin/cutover-readiness', () => {
 
   beforeEach(() => {
     process.env = { ...originalEnv, MEDIA_ASSETS_ENABLED: 'true', ADMIN_CRON_SECRET: 'synthetic-ops-secret' }
+    delete process.env.OPERATIONAL_PROJECT_COST_CAP_CENTS
+    mockLoadSnapshot.mockReset().mockResolvedValue({ ok: false, reason: 'not_configured' })
     mockGetAuthenticatedUser.mockReset().mockResolvedValue({
       ok: true, user: { id: 'ordinary-family-member' }, headers: new Headers(),
     })
@@ -32,6 +40,8 @@ describe('GET /api/admin/cutover-readiness', () => {
     else process.env.MEDIA_ASSETS_ENABLED = flag
     const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
     expect(res.status).toBe(503)
+    expect(res.headers.get('cache-control')).toBe('no-store')
+    expect(mockLoadSnapshot).not.toHaveBeenCalled()
     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
   })
 
@@ -42,6 +52,8 @@ describe('GET /api/admin/cutover-readiness', () => {
   ])('rejects callers without the server-only operations credential: %j', async headers => {
     const res = await GET(request(headers))
     expect(res.status).toBe(401)
+    expect(res.headers.get('cache-control')).toBe('no-store')
+    expect(mockLoadSnapshot).not.toHaveBeenCalled()
     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
     await expect(res.json()).resolves.toEqual({ error: 'Unauthorized' })
   })
@@ -50,6 +62,8 @@ describe('GET /api/admin/cutover-readiness', () => {
     delete process.env.ADMIN_CRON_SECRET
     const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
     expect(res.status).toBe(503)
+    expect(res.headers.get('cache-control')).toBe('no-store')
+    expect(mockLoadSnapshot).not.toHaveBeenCalled()
   })
 
   it('reports missing operational observations instead of fabricated healthy metrics', async () => {
@@ -60,10 +74,52 @@ describe('GET /api/admin/cutover-readiness', () => {
       status: 'not_ready',
       operationalHealth: {
         status: 'unavailable',
-        reason: 'operational_metrics_not_connected',
+        reason: 'not_configured',
+        source: 'unavailable',
+        coverage: 'partial',
+        snapshot: null,
         containsPrivateFamilyText: false,
         alerts: [],
       },
+    })
+    expect(mockLoadSnapshot).toHaveBeenCalledTimes(1)
+    expect(mockLoadSnapshot).toHaveBeenCalledWith(expect.any(AbortSignal))
+  })
+
+  it('exposes actual partial observations and alerts without approving cutover or alert delivery', async () => {
+    process.env.OPERATIONAL_PROJECT_COST_CAP_CENTS = '500'
+    const snapshot = {
+      schemaVersion: 1, observedAt: '2026-10-29T05:00:00.000Z',
+      processing: { stalledJobsCount: 2, maxRunnableBacklogAgeSeconds: 1800, invalidJobCount: 0 },
+      costs: { maxProjectKnownExposureCents: 751, unknownAttemptCostsCount: 0 },
+      deletions: { overdueRequestsCount: 1, invalidRequestCount: 0 },
+    }
+    mockLoadSnapshot.mockResolvedValue({ ok: true, snapshot })
+    const req = request({ 'x-cron-secret': 'synthetic-ops-secret' })
+    const res = await GET(req)
+    const body = await res.json()
+    expect(mockLoadSnapshot).toHaveBeenCalledWith(req.signal)
+    expect(res.status).toBe(503)
+    expect(res.headers.get('cache-control')).toBe('no-store')
+    expect(body).toMatchObject({
+      status: 'not_ready',
+      operationalHealth: { status: 'critical', coverage: 'partial', source: 'database_ledger', snapshot },
+      alertDelivery: { status: 'unavailable', reason: 'responder_and_delivery_not_verified' },
+    })
+    expect(body.operationalHealth.unavailableMetrics).toEqual(['uploads', 'exports'])
+    expect(body.operationalHealth.alerts.map((alert: { code: string }) => alert.code)).toEqual([
+      'job_backlog_stalled', 'project_cost_anomaly', 'deletion_sla_breach',
+    ])
+    expect(body.providerProbes.every((probe: { status: string }) => probe.status === 'blocked_by_policy')).toBe(true)
+  })
+
+  it.each(['database_unavailable', 'invalid_snapshot', 'request_interrupted'])('fails closed on %s', async reason => {
+    mockLoadSnapshot.mockResolvedValue({ ok: false, reason })
+    const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    expect(res.status).toBe(503)
+    expect(res.headers.get('cache-control')).toBe('no-store')
+    await expect(res.json()).resolves.toMatchObject({
+      status: 'not_ready', operationalHealth: { status: 'unavailable', reason, snapshot: null },
     })
   })
 

@@ -1,0 +1,12 @@
+{
+  "packages/web/src/lib/server/operational-snapshot.ts": "8269bc330ad1a804beb3ae1a24690c9ec48c4eca0689e110cfa6ff9c70bd189d",
+  "packages/web/src/lib/server/__tests__/operational-snapshot.test.ts": "b0d8e65df4f416ed93bbe3c5166e8b645945b968ecc1712cf5ac309148ef9375",
+  "packages/web/src/lib/server/cutover-readiness.ts": "611ec0778b59c382f556fbb8d0057393f040e520501a32809cd55498650968db",
+  "packages/web/src/lib/server/__tests__/cutover-readiness.test.ts": "a1b81ed3b6a4a54872c532b8ae6c563cb5a71994437668577c592b754eac3673",
+  "packages/web/src/app/api/admin/cutover-readiness/route.ts": "3d5f73e1d0f16031ca066dd67fce370a972e687a542626fce6dbdde82a63f37f",
+  "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts": "9777970409dc6f8e92ee3e6575c7ffb539f059103980e44a7411cd04ba01b767",
+  "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+  "experiments/pg17-operational-snapshot/verify.mjs": "87151dcdee1e20643a68b3b8a616d8359c08ef0e82b81fd6609177710b9f972e",
+  "experiments/pg17-operational-snapshot/README.md": "cc4fb064c1d0b63f472f45d2595fe4b5624d3e2ef8ff31f9fda9c0f7013db7d9",
+  "scripts/__tests__/deployment-config.test.js": "e42c834c606540957b85a815b3878e0f256ba9cae5cf7de593c989dacdac2420"
+}

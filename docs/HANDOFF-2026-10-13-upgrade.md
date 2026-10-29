@@ -3,10 +3,20 @@
 - 更新时间：2026-10-29（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`5faac79ea`（上一批本地安全修复检查点；本批继续双入口接线，不声称原计划 G0–G4 已全部验收）
+- 本轮接手基线 HEAD：`287b32c5a`（上一批双入口接线检查点；本批继续数据库运营指标，不声称原计划 G0–G4 已全部验收）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 10 月 29 日双入口项目中心接线（当前状态，以本节为准）
+## 10 月 29 日数据库运营指标接入（当前状态，以本节为准）
+
+详见[本轮报告](research/2026-10-29-operational-snapshot.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-operational-snapshot.md)与[验证汇总](research/evidence/2026-10-29-operational-snapshot/verification.json)。本批承接双入口交接的 §11 数据库观测切片，不重复前批接线；中断点为 Task 2 的 RED 测试（情况 B），并同步完成新迁移清单（情况 C）。
+
+- **真实聚合**：新增本地迁移 `20261029000001_operational_snapshot.sql`；无参数、只读、service_role 专用 RPC 从 P1 任务、处理尝试及删除台账聚合，不返回项目 ID、对象路径或家庭正文。任务按到期/租约统计；成本按项目累计已知敞口，未知费用不当零；删除采用严格超过 168 小时，避免 DST 漂移。
+- **管理接线**：严格校验快照版本、键、数值与新鲜度，5 秒截止且不重试；精确媒体开关、服务器 cron secret 检查在 DB 前，所有响应 no-store。可见实际部分指标/告警，但始终 `503 not_ready`；上传/导出事件、响应人/投递及供应商资格仍明确不可用。成本上限仅取服务器 `OPERATIONAL_PROJECT_COST_CAP_CENTS`，未配置不虚构预算。
+- **验证**：定向 3 套/62 项、type-check/lint 通过；PG17.4 正常/污染环境各 15 场景/251 断言，主流程独立重跑相同结果且核对 socket/目录/PID 清理。最终完整命令链退出 0：Web 131 套/1706 项、shared 4 套/16 项、infra 7 项、184 页。独立规格/质量审查均 PASS；1340 历史保护输入未变，next-env 已恢复，18 份原始日志保留 gzip/哈希。
+- **续接**：本批不是整个 §11 完成。下一步补上传尝试与导出完整性事件的可靠持久采集、实际告警响应人/投递验证和供应商账户/区域/数据条件核验链；解码/大包 Worker、真机/家庭/模型及纵向试点仍待验收。未远端迁移时 RPC 缺失会明确 unavailable。
+- **边界**：仅本地工程检查点；合成 PG 四张正式表 DDL 与 Jest 不能证明生产 PostgREST/规模性能、账单完整性或 G0–G4。原里程碑尚无新增完整证据，不触发条件推送；不合并 main、不迁移远端、不部署、不外发家庭素材。发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 29 日双入口项目中心接线（前批完成状态）
 
 详见[本轮报告](research/2026-10-29-two-entry-integration.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-two-entry-integration.md)与[验证汇总](research/evidence/2026-10-29-two-entry-integration/verification.json)。本批完成上一节交接要求的第一个剩余工程项；断点处于情况 B，保留未提交代码和失败证据后续接，没有新 SQL。
 

@@ -1,14 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireCronSecret } from '@/lib/server/cron'
 import { evaluateSyntheticProviderProbes } from '@/lib/server/cutover-readiness'
+import { loadOperationalSnapshot, operationalHealthFromSnapshot } from '@/lib/server/operational-snapshot'
 
 export async function GET(request: NextRequest) {
   if (process.env.MEDIA_ASSETS_ENABLED !== 'true') {
-    return NextResponse.json({ error: 'Cutover readiness endpoint is not enabled' }, { status: 503 })
+    return NextResponse.json(
+      { error: 'Cutover readiness endpoint is not enabled' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } },
+    )
   }
 
   const auth = requireCronSecret(request)
-  if (!auth.ok) return auth.response
+  if (!auth.ok) {
+    auth.response.headers.set('Cache-Control', 'no-store')
+    return auth.response
+  }
+
+  const operationalHealth = operationalHealthFromSnapshot(
+    await loadOperationalSnapshot(request.signal),
+    process.env.OPERATIONAL_PROJECT_COST_CAP_CENTS,
+  )
 
   // API keys do not attest account-specific retention or training terms.
   // Keep probes blocked until verified policy evidence is connected here.
@@ -42,16 +54,14 @@ export async function GET(request: NextRequest) {
     },
   ])
 
-  // The PG rehearsal is not a live metrics source. Missing observations must
-  // never be interpreted as zero failures or used to authorize a cutover.
+  // Partial ledger observations cannot attest complete monitoring or cutover readiness.
   return NextResponse.json(
     {
       status: 'not_ready',
-      operationalHealth: {
+      operationalHealth,
+      alertDelivery: {
         status: 'unavailable',
-        reason: 'operational_metrics_not_connected',
-        containsPrivateFamilyText: false,
-        alerts: [],
+        reason: 'responder_and_delivery_not_verified',
       },
       providerProbes,
     },

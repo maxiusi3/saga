@@ -5,6 +5,18 @@ import {
 } from '@/lib/server/cutover-readiness'
 
 describe('Post-G4 Production Cutover, Shadow-Read Equivalence & §11 Operational Alerts', () => {
+  it('never calls partial or malformed operational observations healthy', () => {
+    const report = evaluateOperationalAlerts({
+      windowMinutes: 60, uploadAttempts: null, uploadFailures: null,
+      stalledProcessingJobsCount: 0, maxJobBacklogAgeSeconds: 0,
+      activeProjectMaxCostCents: 0, projectCostBudgetCapCents: null,
+      overdueDeletionRequestsOver7dCount: 0, failedExportsCount: null,
+    })
+    expect(report.status).toBe('unavailable')
+    expect(report.coverage).toBe('partial')
+    expect(report.unavailableMetrics).toEqual(['uploads', 'project_cost', 'exports'])
+  })
+
   it('verifies shadow-read equivalence between legacy story media URLs and unified media_assets (§5.4)', () => {
     const cleanReport = verifyShadowReadEquivalence({
       projectId: 'proj-cutover-1',

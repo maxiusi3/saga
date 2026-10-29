@@ -1,0 +1,1 @@
+{"status":"passed","scenarios":15,"assertions":251,"cleanup":{"clusterStopped":true,"tempDirectoryRemoved":true,"clientsRemaining":0,"errors":[],"socketRemoved":true,"serverPidGone":true},"output":"/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-29-operational-snapshot/pg-verify-2026-10-29T05-18-22.410Z-9cbaeab7-a4a5-4c06-af33-8288ad42c9e9.json"}

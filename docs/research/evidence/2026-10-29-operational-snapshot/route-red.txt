@@ -1,0 +1,270 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=api/admin/cutover-readiness
+
+FAIL src/app/api/admin/cutover-readiness/__tests__/route.test.ts
+  ● GET /api/admin/cutover-readiness › keeps the route closed for flag undefined
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no-store"
+    Received: null
+
+      41 |     const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+      42 |     expect(res.status).toBe(503)
+    > 43 |     expect(res.headers.get('cache-control')).toBe('no-store')
+         |                                              ^
+      44 |     expect(mockLoadSnapshot).not.toHaveBeenCalled()
+      45 |     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
+      46 |   })
+
+      at toBe (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:43:46)
+
+  ● GET /api/admin/cutover-readiness › keeps the route closed for flag false
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no-store"
+    Received: null
+
+      41 |     const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+      42 |     expect(res.status).toBe(503)
+    > 43 |     expect(res.headers.get('cache-control')).toBe('no-store')
+         |                                              ^
+      44 |     expect(mockLoadSnapshot).not.toHaveBeenCalled()
+      45 |     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
+      46 |   })
+
+      at toBe (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:43:46)
+
+  ● GET /api/admin/cutover-readiness › keeps the route closed for flag TRUE
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no-store"
+    Received: null
+
+      41 |     const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+      42 |     expect(res.status).toBe(503)
+    > 43 |     expect(res.headers.get('cache-control')).toBe('no-store')
+         |                                              ^
+      44 |     expect(mockLoadSnapshot).not.toHaveBeenCalled()
+      45 |     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
+      46 |   })
+
+      at toBe (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:43:46)
+
+  ● GET /api/admin/cutover-readiness › rejects callers without the server-only operations credential: {}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no-store"
+    Received: null
+
+      53 |     const res = await GET(request(headers))
+      54 |     expect(res.status).toBe(401)
+    > 55 |     expect(res.headers.get('cache-control')).toBe('no-store')
+         |                                              ^
+      56 |     expect(mockLoadSnapshot).not.toHaveBeenCalled()
+      57 |     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
+      58 |     await expect(res.json()).resolves.toEqual({ error: 'Unauthorized' })
+
+      at toBe (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:55:46)
+
+  ● GET /api/admin/cutover-readiness › rejects callers without the server-only operations credential: {"authorization":"Bearer ordinary-user-token"}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no-store"
+    Received: null
+
+      53 |     const res = await GET(request(headers))
+      54 |     expect(res.status).toBe(401)
+    > 55 |     expect(res.headers.get('cache-control')).toBe('no-store')
+         |                                              ^
+      56 |     expect(mockLoadSnapshot).not.toHaveBeenCalled()
+      57 |     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
+      58 |     await expect(res.json()).resolves.toEqual({ error: 'Unauthorized' })
+
+      at toBe (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:55:46)
+
+  ● GET /api/admin/cutover-readiness › rejects callers without the server-only operations credential: {"x-cron-secret":"wrong-secret"}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no-store"
+    Received: null
+
+      53 |     const res = await GET(request(headers))
+      54 |     expect(res.status).toBe(401)
+    > 55 |     expect(res.headers.get('cache-control')).toBe('no-store')
+         |                                              ^
+      56 |     expect(mockLoadSnapshot).not.toHaveBeenCalled()
+      57 |     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
+      58 |     await expect(res.json()).resolves.toEqual({ error: 'Unauthorized' })
+
+      at toBe (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:55:46)
+
+  ● GET /api/admin/cutover-readiness › fails closed if the operations credential is not configured
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no-store"
+    Received: null
+
+      63 |     const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+      64 |     expect(res.status).toBe(503)
+    > 65 |     expect(res.headers.get('cache-control')).toBe('no-store')
+         |                                              ^
+      66 |     expect(mockLoadSnapshot).not.toHaveBeenCalled()
+      67 |   })
+      68 |
+
+      at Object.toBe (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:65:46)
+
+  ● GET /api/admin/cutover-readiness › reports missing operational observations instead of fabricated healthy metrics
+
+    expect(received).resolves.toMatchObject(expected)
+
+    - Expected  - 4
+    + Received  + 1
+
+      Object {
+        "operationalHealth": Object {
+          "alerts": Array [],
+          "containsPrivateFamilyText": false,
+    -     "coverage": "partial",
+    -     "reason": "not_configured",
+    -     "snapshot": null,
+    -     "source": "unavailable",
+    +     "reason": "operational_metrics_not_connected",
+          "status": "unavailable",
+        },
+        "status": "not_ready",
+      }
+
+      71 |     expect(res.status).toBe(503)
+      72 |     expect(res.headers.get('cache-control')).toContain('no-store')
+    > 73 |     await expect(res.json()).resolves.toMatchObject({
+         |                                       ^
+      74 |       status: 'not_ready',
+      75 |       operationalHealth: {
+      76 |         status: 'unavailable',
+
+      at Object.toMatchObject (node_modules/@jest/expect/node_modules/expect/build/index.js:2140:20)
+      at Object.toMatchObject (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:73:39)
+
+  ● GET /api/admin/cutover-readiness › exposes actual partial observations and alerts without approving cutover or alert delivery
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: {Symbol(kEvents): Map {}, Symbol(events.maxEventTargetListeners): 0, Symbol(events.maxEventTargetListenersWarned): false, Symbol(kHandlers): Map {}, Symbol(kAborted): false, Symbol(kReason): undefined, Symbol(kComposite): false}
+
+    Number of calls: 0
+
+       99 |     const res = await GET(req)
+      100 |     const body = await res.json()
+    > 101 |     expect(mockLoadSnapshot).toHaveBeenCalledWith(req.signal)
+          |                              ^
+      102 |     expect(res.status).toBe(503)
+      103 |     expect(res.headers.get('cache-control')).toBe('no-store')
+      104 |     expect(body).toMatchObject({
+
+      at Object.toHaveBeenCalledWith (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:101:30)
+
+  ● GET /api/admin/cutover-readiness › fails closed on database_unavailable
+
+    expect(received).resolves.toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+        "operationalHealth": Object {
+    -     "reason": "database_unavailable",
+    -     "snapshot": null,
+    +     "reason": "operational_metrics_not_connected",
+          "status": "unavailable",
+        },
+        "status": "not_ready",
+      }
+
+      119 |     expect(res.status).toBe(503)
+      120 |     expect(res.headers.get('cache-control')).toBe('no-store')
+    > 121 |     await expect(res.json()).resolves.toMatchObject({
+          |                                       ^
+      122 |       status: 'not_ready', operationalHealth: { status: 'unavailable', reason, snapshot: null },
+      123 |     })
+      124 |   })
+
+      at Object.toMatchObject (node_modules/@jest/expect/node_modules/expect/build/index.js:2140:20)
+      at toMatchObject (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:121:39)
+
+  ● GET /api/admin/cutover-readiness › fails closed on invalid_snapshot
+
+    expect(received).resolves.toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+        "operationalHealth": Object {
+    -     "reason": "invalid_snapshot",
+    -     "snapshot": null,
+    +     "reason": "operational_metrics_not_connected",
+          "status": "unavailable",
+        },
+        "status": "not_ready",
+      }
+
+      119 |     expect(res.status).toBe(503)
+      120 |     expect(res.headers.get('cache-control')).toBe('no-store')
+    > 121 |     await expect(res.json()).resolves.toMatchObject({
+          |                                       ^
+      122 |       status: 'not_ready', operationalHealth: { status: 'unavailable', reason, snapshot: null },
+      123 |     })
+      124 |   })
+
+      at Object.toMatchObject (node_modules/@jest/expect/node_modules/expect/build/index.js:2140:20)
+      at toMatchObject (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:121:39)
+
+  ● GET /api/admin/cutover-readiness › fails closed on request_interrupted
+
+    expect(received).resolves.toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 1
+
+      Object {
+        "operationalHealth": Object {
+    -     "reason": "request_interrupted",
+    -     "snapshot": null,
+    +     "reason": "operational_metrics_not_connected",
+          "status": "unavailable",
+        },
+        "status": "not_ready",
+      }
+
+      119 |     expect(res.status).toBe(503)
+      120 |     expect(res.headers.get('cache-control')).toBe('no-store')
+    > 121 |     await expect(res.json()).resolves.toMatchObject({
+          |                                       ^
+      122 |       status: 'not_ready', operationalHealth: { status: 'unavailable', reason, snapshot: null },
+      123 |     })
+      124 |   })
+
+      at Object.toMatchObject (node_modules/@jest/expect/node_modules/expect/build/index.js:2140:20)
+      at toMatchObject (src/app/api/admin/cutover-readiness/__tests__/route.test.ts:121:39)
+
+Test Suites: 1 failed, 1 total
+Tests:       12 failed, 2 passed, 14 total
+Snapshots:   0 total
+Time:        0.669 s, estimated 1 s
+Ran all test suites matching api/admin/cutover-readiness.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --testPathPatterns=api/admin/cutover-readiness

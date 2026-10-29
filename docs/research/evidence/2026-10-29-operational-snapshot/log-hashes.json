@@ -1,0 +1,128 @@
+{
+  "adapter-green.txt": {
+    "raw": "raw/adapter-green.txt.gz",
+    "originalSha256": "6605477b5da5666286576b2a71eb48e4e605c1668808c0bc3239ed690c211efc",
+    "gzipSha256": "655e365403d7fbfdf062117f60f04d6c32df8f406ba9f7084b6affcc18d47677",
+    "displaySha256": "6605477b5da5666286576b2a71eb48e4e605c1668808c0bc3239ed690c211efc",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "type-check-final-targeted.txt": {
+    "raw": "raw/type-check-final-targeted.txt.gz",
+    "originalSha256": "6096d610ac3f63cdd32e2b1e498d6cd9874b0341e7193944ee329b9e7650d1b6",
+    "gzipSha256": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+    "displaySha256": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "lint-final-targeted.txt": {
+    "raw": "raw/lint-final-targeted.txt.gz",
+    "originalSha256": "934cfc6206ee43b729de270720d94d9a7e4732081bd2d362f355253669ba8b2a",
+    "gzipSha256": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+    "displaySha256": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "lint-initial.txt": {
+    "raw": "raw/lint-initial.txt.gz",
+    "originalSha256": "934cfc6206ee43b729de270720d94d9a7e4732081bd2d362f355253669ba8b2a",
+    "gzipSha256": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+    "displaySha256": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "route-green.txt": {
+    "raw": "raw/route-green.txt.gz",
+    "originalSha256": "8fd995e209f1bfc947dbda187b14e22507c54376c96e590009c74c22f5cd055a",
+    "gzipSha256": "97dd5e79006d8442a18fafb252dff93c7c788da89d3c86b4463451e7a02b7964",
+    "displaySha256": "8fd995e209f1bfc947dbda187b14e22507c54376c96e590009c74c22f5cd055a",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "lint-green.txt": {
+    "raw": "raw/lint-green.txt.gz",
+    "originalSha256": "934cfc6206ee43b729de270720d94d9a7e4732081bd2d362f355253669ba8b2a",
+    "gzipSha256": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+    "displaySha256": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "timestamp-green.txt": {
+    "raw": "raw/timestamp-green.txt.gz",
+    "originalSha256": "63e76d6df1e5aa25fb7bb51a1e65dba53baad5eb9152de6bd06718dc7ec2ea8a",
+    "gzipSha256": "fbab066a611a57f69e5537bfa93aa29cfea2c2f4fa44da3614e211d58a0e9bb2",
+    "displaySha256": "63e76d6df1e5aa25fb7bb51a1e65dba53baad5eb9152de6bd06718dc7ec2ea8a",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "pg-root-final.txt": {
+    "raw": "raw/pg-root-final.txt.gz",
+    "originalSha256": "a4833d6cd4d2868573b729f804f69739762d88024c5472b102ae7f290af13287",
+    "gzipSha256": "86068ee57db3fa53cb942194e44ceb83334a8054c3d44be6932b49fc52981dc9",
+    "displaySha256": "a4833d6cd4d2868573b729f804f69739762d88024c5472b102ae7f290af13287",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "type-check-green.txt": {
+    "raw": "raw/type-check-green.txt.gz",
+    "originalSha256": "6096d610ac3f63cdd32e2b1e498d6cd9874b0341e7193944ee329b9e7650d1b6",
+    "gzipSha256": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+    "displaySha256": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "type-check-initial.txt": {
+    "raw": "raw/type-check-initial.txt.gz",
+    "originalSha256": "6096d610ac3f63cdd32e2b1e498d6cd9874b0341e7193944ee329b9e7650d1b6",
+    "gzipSha256": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+    "displaySha256": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "full-verification-final.txt": {
+    "raw": "raw/full-verification-final.txt.gz",
+    "originalSha256": "27fc4bfe2686579889985d6fb82eae3700df3c72495ddabc6e2c6f179763008d",
+    "gzipSha256": "f64b76153fdd5c8da3749eaca688fc9095c319272c9143a3d175397acf92600b",
+    "displaySha256": "3d20dadd7e815ac45428f5262cee5d835afb1ccf18ebc3fc0f7c57b791f6e138",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "adapter-red.txt": {
+    "raw": "raw/adapter-red.txt.gz",
+    "originalSha256": "9ea264142eebe7a8131e02eb76aed732db9052d4c4ff6f773a11df09f328ef20",
+    "gzipSha256": "942481d2fe3d5e9f388b84224422ff188fb8c3d372bf10ac982ec3db948e1750",
+    "displaySha256": "9ea264142eebe7a8131e02eb76aed732db9052d4c4ff6f773a11df09f328ef20",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "route-red.txt": {
+    "raw": "raw/route-red.txt.gz",
+    "originalSha256": "b64112acc431308b25d5f64d844387db5cc42547c80d857e129dedd979f8738a",
+    "gzipSha256": "bfca3c70c22897ddbe0e25f502c238a4def33a45d2b9c8bd4eff6d0027ae72ac",
+    "displaySha256": "b64112acc431308b25d5f64d844387db5cc42547c80d857e129dedd979f8738a",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "timestamp-red.txt": {
+    "raw": "raw/timestamp-red.txt.gz",
+    "originalSha256": "80586c3fd98e6c7ca3ddd023cc81a23f5b6c7ed5eb4bee15b3904e269435970b",
+    "gzipSha256": "82196ea15b9044c15c90ecc2f277cc7f907ef5a313a2fd6e297c2c9504d1da86",
+    "displaySha256": "80586c3fd98e6c7ca3ddd023cc81a23f5b6c7ed5eb4bee15b3904e269435970b",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "pg-contaminated.txt": {
+    "raw": "raw/pg-contaminated.txt.gz",
+    "originalSha256": "e980695474d22424e823db60188ec5457b4ff9b4277b150a9e8969809e72682b",
+    "gzipSha256": "c74cd42744c8cf3a1514decb3973f7af70a69cb6e5e856e6bc0e9e9ecacae8b1",
+    "displaySha256": "e980695474d22424e823db60188ec5457b4ff9b4277b150a9e8969809e72682b",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "pg-infra.txt": {
+    "raw": "raw/pg-infra.txt.gz",
+    "originalSha256": "3ad0de767b7cf89bdcb6130edd9649084b83b59e4f81b77addd3e7e738981070",
+    "gzipSha256": "916114296a814534f27887d8425221bcda2c20e221a701eb52617aae36e0604c",
+    "displaySha256": "3ad0de767b7cf89bdcb6130edd9649084b83b59e4f81b77addd3e7e738981070",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "pg-red-without-migration.txt": {
+    "raw": "raw/pg-red-without-migration.txt.gz",
+    "originalSha256": "8515a0c05b95026fc7211f4f9d5f9d6114e738e9d352128a101d1ee5ffd81163",
+    "gzipSha256": "bfba613c96eeb0220509008b0177b870b388a2db51d4d213c412b5b31b6e11f4",
+    "displaySha256": "8515a0c05b95026fc7211f4f9d5f9d6114e738e9d352128a101d1ee5ffd81163",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  },
+  "pg-normal.txt": {
+    "raw": "raw/pg-normal.txt.gz",
+    "originalSha256": "709337666512e960c3aa484cfc8123157f2a70194eb3be60889ec45b83d891e1",
+    "gzipSha256": "c13133e837e5c182ca2aa07bd02ccc4233356842a331ec6efb1d972dc67cff04",
+    "displaySha256": "709337666512e960c3aa484cfc8123157f2a70194eb3be60889ec45b83d891e1",
+    "displayNormalization": "CRLF/CR to LF, strip trailing line whitespace, exactly one final LF; raw gzip is unchanged original bytes"
+  }
+}

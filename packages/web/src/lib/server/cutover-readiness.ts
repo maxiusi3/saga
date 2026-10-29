@@ -122,15 +122,15 @@ export function verifyShadowReadEquivalence(params: {
 }
 
 export interface OperationalMetricsSnapshot {
-  windowMinutes: number
-  uploadAttempts: number
-  uploadFailures: number
-  stalledProcessingJobsCount: number
-  maxJobBacklogAgeSeconds: number
-  activeProjectMaxCostCents: number
-  projectCostBudgetCapCents: number
-  overdueDeletionRequestsOver7dCount: number
-  failedExportsCount: number
+  windowMinutes: number | null
+  uploadAttempts: number | null
+  uploadFailures: number | null
+  stalledProcessingJobsCount: number | null
+  maxJobBacklogAgeSeconds: number | null
+  activeProjectMaxCostCents: number | null
+  projectCostBudgetCapCents: number | null
+  overdueDeletionRequestsOver7dCount: number | null
+  failedExportsCount: number | null
 }
 
 export interface OperationalAlertItem {
@@ -146,9 +146,15 @@ export interface OperationalAlertItem {
 }
 
 export interface OperationalHealthReport {
-  status: 'healthy' | 'degraded' | 'critical'
+  status: 'healthy' | 'degraded' | 'critical' | 'unavailable'
+  coverage: 'complete' | 'partial'
+  unavailableMetrics: Array<'uploads' | 'processing' | 'project_cost' | 'project_cost_completeness' | 'deletions' | 'exports'>
   containsPrivateFamilyText: false
   alerts: OperationalAlertItem[]
+}
+
+function validMetric(value: number | null): value is number {
+  return Number.isSafeInteger(value) && value !== null && value >= 0
 }
 
 /**
@@ -158,57 +164,77 @@ export function evaluateOperationalAlerts(
   snapshot: OperationalMetricsSnapshot,
 ): OperationalHealthReport {
   const alerts: OperationalAlertItem[] = []
+  const unavailableMetrics: OperationalHealthReport['unavailableMetrics'] = []
+  const {
+    windowMinutes, uploadAttempts, uploadFailures, stalledProcessingJobsCount,
+    maxJobBacklogAgeSeconds, activeProjectMaxCostCents, projectCostBudgetCapCents,
+    overdueDeletionRequestsOver7dCount, failedExportsCount,
+  } = snapshot
 
-  const uploadFailureRate =
-    snapshot.uploadAttempts > 0 ? snapshot.uploadFailures / snapshot.uploadAttempts : 0
-  if (snapshot.uploadAttempts >= 5 && uploadFailureRate >= 0.1) {
-    alerts.push({
-      code: 'upload_failure_spike',
-      severity: uploadFailureRate >= 0.25 ? 'critical' : 'warning',
-      responderRole: 'primary_developer_oncall',
-      summary: `Upload failure rate ${(uploadFailureRate * 100).toFixed(1)}% (${snapshot.uploadFailures}/${snapshot.uploadAttempts}) in ${snapshot.windowMinutes}m window`,
-    })
+  if (!validMetric(windowMinutes) || windowMinutes === 0 || !validMetric(uploadAttempts) ||
+      !validMetric(uploadFailures) || uploadFailures > uploadAttempts) {
+    unavailableMetrics.push('uploads')
+  } else {
+    const uploadFailureRate = uploadAttempts > 0 ? uploadFailures / uploadAttempts : 0
+    if (uploadAttempts >= 5 && uploadFailureRate >= 0.1) {
+      alerts.push({
+        code: 'upload_failure_spike',
+        severity: uploadFailureRate >= 0.25 ? 'critical' : 'warning',
+        responderRole: 'primary_developer_oncall',
+        summary: `Upload failure rate ${(uploadFailureRate * 100).toFixed(1)}% (${uploadFailures}/${uploadAttempts}) in ${windowMinutes}m window`,
+      })
+    }
   }
 
-  if (snapshot.stalledProcessingJobsCount > 0 || snapshot.maxJobBacklogAgeSeconds > 900) {
+  if (!validMetric(stalledProcessingJobsCount) || !validMetric(maxJobBacklogAgeSeconds)) {
+    unavailableMetrics.push('processing')
+  } else if (stalledProcessingJobsCount > 0 || maxJobBacklogAgeSeconds > 900) {
     alerts.push({
       code: 'job_backlog_stalled',
-      severity: snapshot.stalledProcessingJobsCount > 3 ? 'critical' : 'warning',
+      severity: stalledProcessingJobsCount > 3 ? 'critical' : 'warning',
       responderRole: 'primary_developer_oncall',
-      summary: `Stalled jobs=${snapshot.stalledProcessingJobsCount}, maxBacklogAge=${snapshot.maxJobBacklogAgeSeconds}s`,
+      summary: `Stalled jobs=${stalledProcessingJobsCount}, maxBacklogAge=${maxJobBacklogAgeSeconds}s`,
     })
   }
 
-  if (snapshot.activeProjectMaxCostCents > snapshot.projectCostBudgetCapCents) {
+  if (!validMetric(activeProjectMaxCostCents) || !validMetric(projectCostBudgetCapCents)) {
+    unavailableMetrics.push('project_cost')
+  } else if (activeProjectMaxCostCents > projectCostBudgetCapCents) {
     alerts.push({
       code: 'project_cost_anomaly',
       severity: 'critical',
       responderRole: 'primary_developer_oncall',
-      summary: `Project AI cost ${snapshot.activeProjectMaxCostCents}c exceeded cap ${snapshot.projectCostBudgetCapCents}c`,
+      summary: `Recorded project AI cost exposure ${activeProjectMaxCostCents}c exceeded cap ${projectCostBudgetCapCents}c`,
     })
   }
 
-  if (snapshot.overdueDeletionRequestsOver7dCount > 0) {
+  if (!validMetric(overdueDeletionRequestsOver7dCount)) {
+    unavailableMetrics.push('deletions')
+  } else if (overdueDeletionRequestsOver7dCount > 0) {
     alerts.push({
       code: 'deletion_sla_breach',
       severity: 'critical',
       responderRole: 'primary_developer_oncall',
-      summary: `${snapshot.overdueDeletionRequestsOver7dCount} deletion request(s) exceeded 7-day active storage purge target`,
+      summary: `${overdueDeletionRequestsOver7dCount} deletion request(s) exceeded 7-day active storage purge target`,
     })
   }
 
-  if (snapshot.failedExportsCount > 0) {
+  if (!validMetric(failedExportsCount)) {
+    unavailableMetrics.push('exports')
+  } else if (failedExportsCount > 0) {
     alerts.push({
       code: 'export_integrity_failure',
       severity: 'critical',
       responderRole: 'primary_developer_oncall',
-      summary: `${snapshot.failedExportsCount} archival export(s) failed SHA-256 or package verification`,
+      summary: `${failedExportsCount} archival export(s) failed SHA-256 or package verification`,
     })
   }
 
   const hasCritical = alerts.some(a => a.severity === 'critical')
   return {
-    status: hasCritical ? 'critical' : alerts.length > 0 ? 'degraded' : 'healthy',
+    status: hasCritical ? 'critical' : alerts.length > 0 ? 'degraded' : unavailableMetrics.length > 0 ? 'unavailable' : 'healthy',
+    coverage: unavailableMetrics.length > 0 ? 'partial' : 'complete',
+    unavailableMetrics,
     containsPrivateFamilyText: false,
     alerts,
   }

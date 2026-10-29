@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Local database operational-observation slice; not full operational/production readiness",
+  "recordedAt": "2026-10-29T06:52:53.689694+00:00",
+  "baselineCommit": "287b32c5a92af0d1e38981b8b0aef8bcf545a907",
+  "commands": [
+    {
+      "command": "node experiments/pg17-operational-snapshot/verify.mjs",
+      "exitCode": 0,
+      "scenarios": 15,
+      "assertions": 251,
+      "log": "pg-root-final.txt",
+      "report": "pg-verify-2026-10-29T05-22-07.433Z-ec9ca16c-deac-42ed-a3c0-67ab0a7bbceb.json"
+    },
+    {
+      "command": "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra",
+      "exitCode": 0,
+      "log": "full-verification-final.txt",
+      "web": {
+        "suites": 131,
+        "tests": 1706
+      },
+      "shared": {
+        "suites": 4,
+        "tests": 16
+      },
+      "infra": {
+        "tests": 7
+      },
+      "builtPages": 184
+    },
+    {
+      "command": "npm test --workspace=packages/web -- --runInBand --testPathPatterns='(operational-snapshot|cutover-readiness)'",
+      "exitCode": 0,
+      "suites": 3,
+      "tests": 62,
+      "log": "timestamp-green.txt"
+    }
+  ],
+  "pg": {
+    "index": "pg-verification.json",
+    "normalScenarios": 15,
+    "normalAssertions": 251,
+    "contaminatedScenarios": 15,
+    "contaminatedAssertions": 251,
+    "rootReplayScenarios": 15,
+    "rootReplayAssertions": 251,
+    "cleanup": "All recorded sockets, parent scratch directories and server PIDs independently absent"
+  },
+  "regressions": {
+    "expectedRedLogs": [
+      "adapter-red.txt",
+      "route-red.txt",
+      "timestamp-red.txt",
+      "pg-red-without-migration.txt"
+    ],
+    "pgRedReports": "See initialRed, dstRegressionRed and reproducibleRed in pg-verification.json; all are intentionally preserved expected failures",
+    "infraRed": "Observed 6/7 failure in tool output before migration file existed; no standalone log archived",
+    "runnerDevelopmentFailures": "pg-development-notes.md",
+    "unresolvedFinalFailures": 0
+  },
+  "reviews": {
+    "specification": {
+      "status": "passed",
+      "reviewer": "/root/ops_spec_review",
+      "record": "spec-review.md"
+    },
+    "quality": {
+      "status": "passed",
+      "reviewer": "/root/ops_quality_review",
+      "record": "quality-review.md"
+    },
+    "closeoutConsistency": {
+      "status": "passed",
+      "reviewer": "/root/ops_quality_review",
+      "verified": {
+        "sourceHashes": 10,
+        "protectedBaselineFiles": 1340,
+        "documentHashes": 4,
+        "evidenceHashes": 54,
+        "rawLogFiles": 18,
+        "newLocalLinks": 16,
+        "stagedPaths": 69
+      },
+      "findings": []
+    }
+  },
+  "integrity": {
+    "sourceFiles": 10,
+    "protectedBaselineFiles": 1340,
+    "protectedInputsUnchanged": true,
+    "nextEnvRestored": true,
+    "rawLogFiles": 18,
+    "stagedDiffCheck": "passed",
+    "unstagedDiffCheck": "passed"
+  },
+  "limitations": [
+    "no full migration-chain/PostgREST qualification",
+    "mocked adapter/route HTTP transport",
+    "no production-ledger scale timing or provider billing completeness",
+    "upload/export events and real alert delivery unavailable",
+    "provider policy blocked regardless configured keys",
+    "G0-G4 have no new complete qualification",
+    "existing Next config and missing SUPABASE_SERVICE_ROLE_KEY build warnings; audit not rerun"
+  ],
+  "readiness": {
+    "httpStatus": 503,
+    "status": "not_ready",
+    "coverage": "partial",
+    "localSliceComplete": true,
+    "milestoneDecision": "milestone-check.json"
+  },
+  "documentationHashes": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "f492f6874f0ba1302e0a06202215fa1e8926456924af5e357ea4c3558dc3f802",
+    "docs/README.md": "c90344735b89ccdbe7249d70406f1563d6b3e0515e3f3e2f61423b688e1e77e1",
+    "docs/research/2026-10-29-operational-snapshot.md": "7a52c5fe081a1da31778dd097ffbe9c5f2d602a49e222a0940442cd84d0c9fb7",
+    "docs/superpowers/plans/2026-10-29-upgrade-operational-snapshot.md": "207799648da7ab9d5ef800db9ed60cb09ee70cec214f2f96274ba6d2f3858c48"
+  },
+  "evidenceHashes": {
+    "README.md": "34b9f1b00bd831b58a661b28dd439528895890ba063d3a264c9c90c0c5ffab46",
+    "adapter-green.txt": "6605477b5da5666286576b2a71eb48e4e605c1668808c0bc3239ed690c211efc",
+    "adapter-red.txt": "9ea264142eebe7a8131e02eb76aed732db9052d4c4ff6f773a11df09f328ef20",
+    "full-verification-final.txt": "3d20dadd7e815ac45428f5262cee5d835afb1ccf18ebc3fc0f7c57b791f6e138",
+    "lint-final-targeted.txt": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "lint-green.txt": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "lint-initial.txt": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "log-hashes.json": "fe7291af6804a4e6a490546225f29c862e3fca0a81df0939ca3cb803d1704c7b",
+    "milestone-check.json": "d277c6d4c9c5f622dcb60a652b46df411434a7a750106c00a8ef4149451ac160",
+    "pg-contaminated.txt": "e980695474d22424e823db60188ec5457b4ff9b4277b150a9e8969809e72682b",
+    "pg-development-notes.md": "d6adfc1433d0ed9620f536d3138053e3a1b6e6027a2af7adca8aff2f44542dde",
+    "pg-infra.txt": "3ad0de767b7cf89bdcb6130edd9649084b83b59e4f81b77addd3e7e738981070",
+    "pg-normal.txt": "709337666512e960c3aa484cfc8123157f2a70194eb3be60889ec45b83d891e1",
+    "pg-red-without-migration-2026-10-29T05-18-26.345Z-19997556-f715-451f-8604-109cd19d6694.json": "cee2168beeaa376c62188218639968815f4821c6a2e11d54eddd07449e5f40d7",
+    "pg-red-without-migration.txt": "8515a0c05b95026fc7211f4f9d5f9d6114e738e9d352128a101d1ee5ffd81163",
+    "pg-root-final.txt": "a4833d6cd4d2868573b729f804f69739762d88024c5472b102ae7f290af13287",
+    "pg-verification.json": "d5d73aebed490054a3852abc49fdfb35204f9fabb00529492393d16a9295c986",
+    "pg-verify-2026-10-29T04-59-15.782Z-312a1600-9e1e-4aee-9a2d-92b12baff65e.json": "46b288e068fb92cd7ace848689cb24de4cbf696dc2ea7a2b34f8c5f5f40b9a9e",
+    "pg-verify-2026-10-29T05-03-01.584Z-00d41e21-aa45-4edb-a8cc-d40b39dde947.json": "9d6af77da0d6edc0b46474e6699ae8d31b3f52ec74b29ce3ba743f9de286873a",
+    "pg-verify-2026-10-29T05-05-15.796Z-0619f31c-9896-402a-8002-18fc2c9f159a.json": "07bf80189d813cae1851739c696962df252b994c643dd11805443eac3ad110c1",
+    "pg-verify-2026-10-29T05-08-16.613Z-076727bb-0210-46ec-8566-b5c2fd8b6f48.json": "02b7f17d356726769e8dfaff63416bbdf3b71aed573fa03322d7f3177062886c",
+    "pg-verify-2026-10-29T05-13-17.003Z-c300a85a-9aaa-4d25-a0c6-d8c28a2a1ca9.json": "22e1986e6cdca1e7e1df87d5b5a2ce5c9b77385389e26b3579307792bbc2d4c4",
+    "pg-verify-2026-10-29T05-18-22.410Z-9cbaeab7-a4a5-4c06-af33-8288ad42c9e9.json": "003526272cbb3a3fbdac59138c930adaa61cb0f3e1ea30a02a59fe9dd854e3ad",
+    "pg-verify-2026-10-29T05-18-24.318Z-b2bcca3a-a7fa-4cce-8b2c-aad7e1f4b834.json": "409cecaceba57c4f1faf2be43d04af15680f2c9b012e86485ba13814044108f0",
+    "pg-verify-2026-10-29T05-22-07.433Z-ec9ca16c-deac-42ed-a3c0-67ab0a7bbceb.json": "5ba94db8d6341f3c646c466ae3bb7bbc133d3cea49ed00ea2f982a72034d1009",
+    "protected-inputs.json": "d653ea983e3729e41f50d2269de30336281cefcdb41a50dcc2a99407a9fbae38",
+    "quality-review.md": "2385c407da7f6a624a70f7a6ff0640a92963f3a2b44e5831396056866d9a1ba1",
+    "raw/adapter-green.txt.gz": "655e365403d7fbfdf062117f60f04d6c32df8f406ba9f7084b6affcc18d47677",
+    "raw/adapter-red.txt.gz": "942481d2fe3d5e9f388b84224422ff188fb8c3d372bf10ac982ec3db948e1750",
+    "raw/full-verification-final.txt.gz": "f64b76153fdd5c8da3749eaca688fc9095c319272c9143a3d175397acf92600b",
+    "raw/lint-final-targeted.txt.gz": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+    "raw/lint-green.txt.gz": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+    "raw/lint-initial.txt.gz": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+    "raw/pg-contaminated.txt.gz": "c74cd42744c8cf3a1514decb3973f7af70a69cb6e5e856e6bc0e9e9ecacae8b1",
+    "raw/pg-infra.txt.gz": "916114296a814534f27887d8425221bcda2c20e221a701eb52617aae36e0604c",
+    "raw/pg-normal.txt.gz": "c13133e837e5c182ca2aa07bd02ccc4233356842a331ec6efb1d972dc67cff04",
+    "raw/pg-red-without-migration.txt.gz": "bfba613c96eeb0220509008b0177b870b388a2db51d4d213c412b5b31b6e11f4",
+    "raw/pg-root-final.txt.gz": "86068ee57db3fa53cb942194e44ceb83334a8054c3d44be6932b49fc52981dc9",
+    "raw/route-green.txt.gz": "97dd5e79006d8442a18fafb252dff93c7c788da89d3c86b4463451e7a02b7964",
+    "raw/route-red.txt.gz": "bfca3c70c22897ddbe0e25f502c238a4def33a45d2b9c8bd4eff6d0027ae72ac",
+    "raw/timestamp-green.txt.gz": "fbab066a611a57f69e5537bfa93aa29cfea2c2f4fa44da3614e211d58a0e9bb2",
+    "raw/timestamp-red.txt.gz": "82196ea15b9044c15c90ecc2f277cc7f907ef5a313a2fd6e297c2c9504d1da86",
+    "raw/type-check-final-targeted.txt.gz": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+    "raw/type-check-green.txt.gz": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+    "raw/type-check-initial.txt.gz": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+    "route-green.txt": "8fd995e209f1bfc947dbda187b14e22507c54376c96e590009c74c22f5cd055a",
+    "route-red.txt": "b64112acc431308b25d5f64d844387db5cc42547c80d857e129dedd979f8738a",
+    "source-hashes.json": "f9dd6c5ed0a6ac8d826e1d0a5c822a6157a408c86d477f3dff936dc8e780fd22",
+    "spec-review.md": "d21a50fac5b040a130a558acaa2a6979586aa1a1a31498afb09de672c3255604",
+    "timestamp-green.txt": "63e76d6df1e5aa25fb7bb51a1e65dba53baad5eb9152de6bd06718dc7ec2ea8a",
+    "timestamp-red.txt": "80586c3fd98e6c7ca3ddd023cc81a23f5b6c7ed5eb4bee15b3904e269435970b",
+    "type-check-final-targeted.txt": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "type-check-green.txt": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "type-check-initial.txt": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572"
+  }
+}

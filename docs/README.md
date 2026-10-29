@@ -4,9 +4,10 @@
 
 ## 当前执行入口
 
-- **最新双入口项目中心接线**：[10 月 29 日报告](research/2026-10-29-two-entry-integration.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-two-entry-integration.md) · [验证汇总](research/evidence/2026-10-29-two-entry-integration/verification.json) · [handoff 当前状态](HANDOFF-2026-10-13-upgrade.md)。真实项目页受 flag 控制挂载上传、录音/邀请导航、检索/回听与有界导出；Web 130/1657、shared 4/16、infra 7、184 页、浏览器 12 项与 PG17 切流 23/P3 51 断言通过。
+- **最新数据库运营指标接入**：[10 月 29 日报告](research/2026-10-29-operational-snapshot.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-operational-snapshot.md) · [验证汇总](research/evidence/2026-10-29-operational-snapshot/verification.json) · [handoff 当前状态](HANDOFF-2026-10-13-upgrade.md)。service_role 只读 RPC 聚合真实任务、已知成本敞口及删除超期；管理端显示部分观测，仍 `503 not_ready`。定向 62 项、PG17 正常/污染各 251 断言；最终 Web 131/1706、shared 4/16、infra 7、184 页通过，独立规格/质量审查 PASS，封存见汇总。
+- **前批双入口项目中心接线**：[报告](research/2026-10-29-two-entry-integration.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-two-entry-integration.md) · [验证汇总](research/evidence/2026-10-29-two-entry-integration/verification.json)。真实项目页受 flag 控制挂载上传、录音/邀请导航、检索/回听与有界导出；该批 Web 130/1657、shared 4/16、infra 7、184 页、浏览器 12 项与 PG17 切流 23/P3 51 断言通过。
 - **前批安全修复**：[报告](research/2026-10-29-takeover-safety-closeout.md) · [证据](research/evidence/2026-10-29-takeover-safety/)。管理接口要求服务器侧 `ADMIN_CRON_SECRET` / `x-cron-secret`；切流在真实观测未连接时返回 `503 not_ready`，未核实供应商条款不标为通过。
-- **当前边界与续接**：上传 `verifying` 不是解码完成；同步导出超限拒绝，尚无大包 Worker。接下来补实际指标采集与供应商核验链、解码/大包及真实验收。合成浏览器/PG 证据不等于真实 Storage、设备、家庭 G3/G4 或完整 G0–G4 通过；本批仅本地检查点，不触发原计划条件推送。
+- **当前边界与续接**：数据库观测不代表完整监控，下一步补上传/导出事件持久采集、告警响应人/投递和供应商核验链。上传 `verifying` 不是解码完成；同步导出超限拒绝，解码/大包 Worker 及真实验收仍待完成。合成浏览器/PG 证据不等于真实 Storage、设备、家庭 G3/G4 或完整 G0–G4 通过；本批仅本地检查点，不触发原计划条件推送。
 
 ## 历史执行记录（原文保留，以最新核验为准）
 

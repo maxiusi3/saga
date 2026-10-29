@@ -1,0 +1,121 @@
+{
+  "scope": "Local synthetic operational SQL only; not full P1 migrations, PostgREST, production, billing completeness or G0-G4 qualification",
+  "runs": {
+    "initialRed": {
+      "file": "pg-verify-2026-10-29T04-59-15.782Z-312a1600-9e1e-4aee-9a2d-92b12baff65e.json",
+      "sha256": "46b288e068fb92cd7ace848689cb24de4cbf696dc2ea7a2b34f8c5f5f40b9a9e",
+      "status": "failed",
+      "scenarios": 1,
+      "assertions": 12,
+      "failure": {
+        "code": "ASSERT_FAILED",
+        "label": "service RPC must exist and execute (42883 before implementation)"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "serverPidGone": true
+      },
+      "scrubbedEnvironmentKeys": []
+    },
+    "dstRegressionRed": {
+      "file": "pg-verify-2026-10-29T05-13-17.003Z-c300a85a-9aaa-4d25-a0c6-d8c28a2a1ca9.json",
+      "sha256": "22e1986e6cdca1e7e1df87d5b5a2ce5c9b77385389e26b3579307792bbc2d4c4",
+      "status": "failed",
+      "scenarios": 13,
+      "assertions": 173,
+      "failure": {
+        "code": "ASSERT_FAILED",
+        "label": "elapsed-time boundary independent of Europe/Berlin DST"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "serverPidGone": true
+      },
+      "scrubbedEnvironmentKeys": []
+    },
+    "normal": {
+      "file": "pg-verify-2026-10-29T05-18-22.410Z-9cbaeab7-a4a5-4c06-af33-8288ad42c9e9.json",
+      "sha256": "003526272cbb3a3fbdac59138c930adaa61cb0f3e1ea30a02a59fe9dd854e3ad",
+      "status": "passed",
+      "scenarios": 15,
+      "assertions": 251,
+      "rpcProbeSqlstate": "00000",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "serverPidGone": true
+      },
+      "scrubbedEnvironmentKeys": []
+    },
+    "contaminated": {
+      "file": "pg-verify-2026-10-29T05-18-24.318Z-b2bcca3a-a7fa-4cce-8b2c-aad7e1f4b834.json",
+      "sha256": "409cecaceba57c4f1faf2be43d04af15680f2c9b012e86485ba13814044108f0",
+      "status": "passed",
+      "scenarios": 15,
+      "assertions": 251,
+      "rpcProbeSqlstate": "00000",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "serverPidGone": true
+      },
+      "scrubbedEnvironmentKeys": [
+        "DATABASE_URL",
+        "PGDATABASE",
+        "PGHOST",
+        "PGOPTIONS",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGSSLMODE",
+        "PGUSER"
+      ]
+    },
+    "reproducibleRed": {
+      "file": "pg-red-without-migration-2026-10-29T05-18-26.345Z-19997556-f715-451f-8604-109cd19d6694.json",
+      "sha256": "cee2168beeaa376c62188218639968815f4821c6a2e11d54eddd07449e5f40d7",
+      "status": "failed",
+      "scenarios": 1,
+      "assertions": 12,
+      "failure": {
+        "code": "ASSERT_FAILED",
+        "label": "service RPC must exist and execute (42883 before implementation)"
+      },
+      "rpcProbeSqlstate": "42883",
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "serverPidGone": true
+      },
+      "scrubbedEnvironmentKeys": []
+    }
+  },
+  "infra": {
+    "tests": 7,
+    "passed": 7,
+    "failed": 0,
+    "log": "pg-infra.txt"
+  },
+  "sources": {
+    "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+    "experiments/pg17-operational-snapshot/verify.mjs": "87151dcdee1e20643a68b3b8a616d8359c08ef0e82b81fd6609177710b9f972e",
+    "experiments/pg17-operational-snapshot/README.md": "cc4fb064c1d0b63f472f45d2595fe4b5624d3e2ef8ff31f9fda9c0f7013db7d9",
+    "scripts/__tests__/deployment-config.test.js": "e42c834c606540957b85a815b3878e0f256ba9cae5cf7de593c989dacdac2420"
+  }
+}

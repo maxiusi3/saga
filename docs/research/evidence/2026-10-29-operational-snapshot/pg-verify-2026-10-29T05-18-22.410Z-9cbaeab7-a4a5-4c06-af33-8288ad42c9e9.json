@@ -1,0 +1,166 @@
+{
+  "startedAt": "2026-10-29T05:18:22.411Z",
+  "status": "passed",
+  "mode": "verify",
+  "scope": "Synthetic local PG17.4 operational SQL aggregates and real role ACLs; not production/PostgREST/provider/billing qualification",
+  "sources": {
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-operational-snapshot/verify.mjs": "87151dcdee1e20643a68b3b8a616d8359c08ef0e82b81fd6609177710b9f972e",
+    "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab"
+  },
+  "assertions": 251,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": true
+    },
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "metadata_reader",
+      "session_user": "metadata_reader",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "RPC exists and returns exact empty aggregate, not platform readiness",
+      "status": "passed",
+      "assertions": 15
+    },
+    {
+      "name": "Actual roles and forged service-role claim cannot bypass function ACL",
+      "status": "passed",
+      "assertions": 13
+    },
+    {
+      "name": "Migration is idempotent and restores least-privilege grants",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "Queued and retry work age starts at later of creation and scheduled eligibility",
+      "status": "passed",
+      "assertions": 26
+    },
+    {
+      "name": "Missing and expired leases and unknown outcomes stall; valid leases and review do not",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "name": "Ledger lifetime per-project costs include failures without double-counting reservations",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "name": "Sub-cent costs round up once after aggregation within each project",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "name": "Missing, negative and NaN required costs are unknown, retaining only valid lower bounds",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "name": "P1 precision rejects infinities; corrupted unconstrained ledger still fails closed",
+      "status": "passed",
+      "assertions": 26
+    },
+    {
+      "name": "Invalid job timestamps fail closed and legitimate future schedules remain valid",
+      "status": "passed",
+      "assertions": 13
+    },
+    {
+      "name": "Deletion overdue window is strictly greater than seven days; completed ignored",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "Invalid open deletion dates are explicit, completed dates do not affect the live metric",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "name": "Seven-day deadline means 168 elapsed hours even when a database timezone crosses DST",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "Legacy constraint drift cannot turn invalid states or missing times into healthy metrics",
+      "status": "passed",
+      "assertions": 27
+    },
+    {
+      "name": "MVCC aggregates are read-only and share the caller statement snapshot",
+      "status": "passed",
+      "assertions": 48
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 77657,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-Yc72u7/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-Yc72u7",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users(id)",
+      "public.projects(id)",
+      "public.stories(id)"
+    ],
+    "exactP1Tables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts"
+    ],
+    "excluded": "Other P1 tables, indexes and project-member policies; no full migration-chain claim"
+  },
+  "rpcProbeSqlstate": "00000",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "socketRemoved": true,
+    "serverPidGone": true
+  },
+  "completedAt": "2026-10-29T05:18:24.124Z"
+}

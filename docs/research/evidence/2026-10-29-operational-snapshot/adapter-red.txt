@@ -1,0 +1,50 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(operational-snapshot|cutover-readiness)
+
+FAIL src/lib/server/__tests__/operational-snapshot.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../operational-snapshot' from 'src/lib/server/__tests__/operational-snapshot.test.ts'
+
+       6 | const mockAbort = jest.fn()
+       7 | const mockRetry = jest.fn()
+    >  8 | jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => mockAdmin() }))
+         |                              ^
+       9 |
+      10 | const now = '2026-10-29T05:00:00.000Z'
+      11 | const snapshot = () => ({
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/index.js:863:11)
+      at Object.<anonymous> (src/lib/server/__tests__/operational-snapshot.test.ts:8:30)
+
+FAIL src/lib/server/__tests__/cutover-readiness.test.ts
+  ● Post-G4 Production Cutover, Shadow-Read Equivalence & §11 Operational Alerts › never calls partial or malformed operational observations healthy
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unavailable"
+    Received: "healthy"
+
+      13 |       overdueDeletionRequestsOver7dCount: 0, failedExportsCount: null,
+      14 |     })
+    > 15 |     expect(report.status).toBe('unavailable')
+         |                           ^
+      16 |     expect(report.coverage).toBe('partial')
+      17 |     expect(report.unavailableMetrics).toEqual(['uploads', 'project_cost', 'exports'])
+      18 |   })
+
+      at Object.toBe (src/lib/server/__tests__/cutover-readiness.test.ts:15:27)
+
+Test Suites: 2 failed, 1 passed, 3 total
+Tests:       1 failed, 13 passed, 14 total
+Snapshots:   0 total
+Time:        4.39 s
+Ran all test suites matching (operational-snapshot|cutover-readiness).
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand '--testPathPatterns=(operational-snapshot|cutover-readiness)'
