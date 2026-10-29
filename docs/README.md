@@ -1,8 +1,13 @@
 # UR Saga 项目文档索引
 
-更新：2026-10-24（Asia/Taipei）。当前决策为负责人“D03=A，其他按照推荐”：**D01–D16全部A，一名主要开发者，高质量优先，约24–34周。** 决策已确认；产品实施和G0–G4验收分别跟踪。
+更新：2026-10-29（Asia/Taipei）。当前决策为负责人“D03=A，其他按照推荐”：**D01–D16全部A，一名主要开发者，高质量优先，约24–34周。** 决策已确认；产品实施和G0–G4验收分别跟踪。
 
 ## 当前执行入口
+
+- **最新断点诊断与安全收尾**：[10 月 29 日报告](research/2026-10-29-takeover-safety-closeout.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-takeover-safety-closeout.md) · [验证证据](research/evidence/2026-10-29-takeover-safety/) · [handoff 当前状态](HANDOFF-2026-10-13-upgrade.md)。接手基线 `5bdb915bc` 无脏文件；修复两个管理接口的普通登录越权及切流“无数据却健康/条款已确认”误报。
+- **当前边界**：管理接口要求服务器侧 `ADMIN_CRON_SECRET` / `x-cron-secret`；切流在真实观测未连接时预期返回 `503 not_ready`。双入口组件尚未挂页。PG 合成夹具通过不等于真实家庭 G4 或完整 G0–G4 通过；历史完成声明以本轮纠偏为准。原计划里程碑证据不足，本轮仅保留本地安全修复检查点，不触发条件推送。
+
+## 历史执行记录（原文保留，以最新核验为准）
 
 - **通用开发中途断点接手提示词模板**：[AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（任意开发步骤中途断开时可直接复制给新 Agent 自动诊断并续接）。
 - **生产切流演练、双入口与检索 UI、影子读取与持续运营告警报告**：[2026-10-25-cutover-and-ops-verification.md](research/2026-10-25-cutover-and-ops-verification.md)（含 `TwoEntryProjectHub.tsx`、`cutover-readiness.ts`、`GET /api/admin/cutover-readiness` 与 PG17.4 四阶段迁移全链路切流演练 3 场景/23 断言）。

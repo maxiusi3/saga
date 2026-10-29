@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-10-29",
+  "timezone": "Asia/Taipei",
+  "status": "passed",
+  "scope": "Local admin-route safety repair and repeatable synthetic PG regression only; not completion of original product quality gates",
+  "baselineCommit": "5bdb915bc3bba4404ea350db9aead0530822a1a8",
+  "baselineWorktreeClean": true,
+  "diagnosis": "Committed P4 and cutover batch, not half-written source; authorization and false readiness defects found in enabled routes",
+  "checks": [
+    {
+      "command": "npm run type-check",
+      "exitCode": 0,
+      "phase": "initial",
+      "log": "type-check.txt"
+    },
+    {
+      "command": "npm run lint",
+      "exitCode": 0,
+      "phase": "initial",
+      "log": "lint.txt"
+    },
+    {
+      "command": "npm test --workspace=packages/web -- --runInBand --testPathPatterns='api/admin/(cutover-readiness|pilot-analytics)/__tests__/route.test'",
+      "exitCode": 1,
+      "expectedFailure": true,
+      "phase": "red",
+      "suites": 2,
+      "tests": 20,
+      "failed": 11,
+      "passed": 9,
+      "log": "admin-routes-red.txt"
+    },
+    {
+      "command": "npm test --workspace=packages/web -- --runInBand --testPathPatterns='(cutover-readiness|pilot-analytics|pilot-cohort-analytics|two-entry-project-hub)'",
+      "exitCode": 0,
+      "phase": "green",
+      "suites": 5,
+      "tests": 27,
+      "log": "targeted-green.txt"
+    },
+    {
+      "command": "node experiments/pg17-cutover-and-ops-verification/verify.mjs",
+      "exitCode": 0,
+      "evidence": "docs/research/evidence/2026-10-29-takeover-safety/cutover-ops-verify-2026-10-29T02-16-43.758Z-8f32fd96-05e0-4419-8004-81975a24085a.json",
+      "status": "passed",
+      "scenarios": 3,
+      "assertions": 23,
+      "cleanupObserved": {
+        "scratchExists": false,
+        "serverPidExists": false
+      },
+      "evidenceScope": "isolated_postgresql_synthetic_fixtures"
+    },
+    {
+      "command": "node experiments/pg17-p4-g4-verification/verify.mjs",
+      "exitCode": 0,
+      "evidence": "docs/research/evidence/2026-10-29-takeover-safety/p4-g4-verify-2026-10-29T02-16-46.352Z-815d7c50-33f4-4be9-9157-edba2d463fca.json",
+      "status": "passed",
+      "scenarios": 2,
+      "assertions": 22,
+      "cleanupObserved": {
+        "scratchExists": false,
+        "serverPidExists": false
+      },
+      "evidenceScope": "isolated_postgresql_synthetic_fixtures"
+    },
+    {
+      "command": "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra",
+      "exitCode": 0,
+      "resultSource": "exec session 78019 completed with exit code 0; raw full output is in the current conversation tool results, not a saved log",
+      "web": {
+        "suites": 126,
+        "tests": 1503
+      },
+      "shared": {
+        "suites": 4,
+        "tests": 16
+      },
+      "infra": {
+        "tests": 7
+      },
+      "build": {
+        "staticPageGenerationCount": 184
+      },
+      "typeCheck": "passed",
+      "lint": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "safeguards": {
+    "nextEnvRestoredByteForByte": true,
+    "frozenExperimentsChanged": false,
+    "migrationsChanged": false,
+    "dependencyFilesChanged": false,
+    "remoteDatabaseOperations": false,
+    "deployed": false,
+    "mainMerged": false,
+    "realFamilyDataSentToPaidApi": false
+  },
+  "codeReview": {
+    "status": "no_blocking_findings",
+    "evidence": "code-review.md",
+    "independent": true
+  },
+  "completion": {
+    "localSafetyRepairValidated": true,
+    "originalPhaseComplete": false,
+    "originalQualityGates": "not_confirmed_by_available_evidence",
+    "realG4HouseholdObservationVerified": false,
+    "remaining": [
+      "TwoEntryProjectHub page/adapter integration",
+      "Live operational metrics and alert delivery",
+      "Provider account data-policy evidence and authorized probes",
+      "Real device, authorized AI, family experience and longitudinal household quality gates"
+    ],
+    "milestonePushConditionMet": false,
+    "pushPerformed": false,
+    "reason": "Original plan milestone requires real acceptance evidence; synthetic PG fixtures and unit tests do not substitute for it"
+  },
+  "warnings": [
+    "Missing SUPABASE_SERVICE_ROLE_KEY during build (build still exited 0)",
+    "Unsupported Next eslint configuration and deprecated images.domains",
+    "Dependency audit not rerun",
+    "Frozen PG runners omit cleanup field; scratch/PID absence was independently checked"
+  ],
+  "sources": {
+    "packages/web/src/app/api/admin/cutover-readiness/route.ts": "3e0df983cacaa891f84057158fc24607f200c34bbc61ddbe86fa8a9ecfc68f90",
+    "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts": "dc78c4e75c1b4959cd0ad6cb38c2438610d1568f09fff4395e35faa1dfc1876d",
+    "packages/web/src/app/api/admin/pilot-analytics/route.ts": "57508779023bd170d5102268ee1b6e603550fbec4552a9df21c2d00fed52203c",
+    "packages/web/src/app/api/admin/pilot-analytics/__tests__/route.test.ts": "dd8d7aa988933843eb3a7f8192fbce00b89941c95c7a6b4a0aed3f0e0e6bd953",
+    "packages/web/src/lib/server/cron.ts": "7c64d183a1c4c89714c530eb901ec44e2b5f7689af22c89804571f799451e10a",
+    "packages/web/src/lib/server/cutover-readiness.ts": "c603e3d3054a55c500e461449ce7d4afaa00273b5e7538d381c66fb1d8ac8a60",
+    "packages/web/src/lib/server/pilot-cohort-analytics.ts": "8b63f9eb0df2e657372310252694ff26265a66ffdc7d028d2c080c71b03c0623",
+    "experiments/pg17-cutover-and-ops-verification/verify.mjs": "78e2a432d38b3a1a1f2162ad900e10091d117c07d591c62001063421649b5921",
+    "experiments/pg17-p4-g4-verification/verify.mjs": "b3f697afe8bcc5fc48f66c0b37f5c331d9d6cbf679132409fd3ce046fa901a6a",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "scripts/__tests__/deployment-config.test.js": "dfd4b63ae75b9633b3a252eda46242b8cca174ffdb9624459c46d868edf34678",
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+  },
+  "artifacts": {
+    "code-review.md": "217ac98765ac6af311421c03e8f686dc5643d6c6b92a8668e85fd5527463a89d",
+    "cutover-ops-verify-2026-10-29T02-16-43.758Z-8f32fd96-05e0-4419-8004-81975a24085a.json": "ed39311213315c48abdcbd40beb97ab08f9aca7f5af5d25dc357f366dabe833b",
+    "p4-g4-verify-2026-10-29T02-16-46.352Z-815d7c50-33f4-4be9-9157-edba2d463fca.json": "f7d4245a4c72949f5176cc70d493e8012a3f79183a4362c6d3ac8160f652a2e7",
+    "pg17-reruns.json": "80309dcbd9b7eb932f566aaa472b6edd1942322acc413558a4732dc4c98fab90",
+    "type-check.txt": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "lint.txt": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "admin-routes-red.txt": "656280a876e3233843d417e741b70518bfad80ebcf58ed5ddd3656eb9bec2372",
+    "targeted-green.txt": "f0814a840eb0f6db5c8f82f900901af9f9d5bbcd21bf267bdfd4d8e654b8bb43",
+    "pg17-cutover.txt": "3cff57c3af4b7b92aa480b27c5206ce906cb200d0cfe20ff2d7ccedf5894e5c2",
+    "pg17-p4.txt": "2e7b33d3dc5bfafbaaa1a7883139aca2760b1a8a14db57d5fb6a635de5d269ef"
+  },
+  "documentationReview": {
+    "status": "no_blocking_findings",
+    "evidence": "code-review.md",
+    "independent": true
+  },
+  "logFormatting": "Trailing blank lines in lint.txt and type-check.txt removed to satisfy git diff --check; execution output otherwise unchanged"
+}

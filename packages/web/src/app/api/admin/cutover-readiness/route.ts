@@ -1,26 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAuthenticatedUser } from '@/lib/server/auth'
-import {
-  evaluateOperationalAlerts,
-  evaluateSyntheticProviderProbes,
-} from '@/lib/server/cutover-readiness'
+import { requireCronSecret } from '@/lib/server/cron'
+import { evaluateSyntheticProviderProbes } from '@/lib/server/cutover-readiness'
 
 export async function GET(request: NextRequest) {
   if (process.env.MEDIA_ASSETS_ENABLED !== 'true') {
     return NextResponse.json({ error: 'Cutover readiness endpoint is not enabled' }, { status: 503 })
   }
 
-  const auth = await getAuthenticatedUser(request)
+  const auth = requireCronSecret(request)
   if (!auth.ok) return auth.response
 
+  // API keys do not attest account-specific retention or training terms.
+  // Keep probes blocked until verified policy evidence is connected here.
   const providerProbes = evaluateSyntheticProviderProbes([
     {
       capability: 'asr_transcribe',
       provider: 'elevenlabs',
       modelId: 'scribe_v2',
       region: 'us',
-      trainingOptOutConfirmed: true,
-      zeroDataRetentionConfirmed: true,
+      trainingOptOutConfirmed: false,
+      zeroDataRetentionConfirmed: false,
       apiKeyConfigured: Boolean(process.env.ELEVENLABS_API_KEY),
     },
     {
@@ -28,8 +27,8 @@ export async function GET(request: NextRequest) {
       provider: 'anthropic',
       modelId: 'claude-opus-4-20250514',
       region: 'us',
-      trainingOptOutConfirmed: true,
-      zeroDataRetentionConfirmed: true,
+      trainingOptOutConfirmed: false,
+      zeroDataRetentionConfirmed: false,
       apiKeyConfigured: Boolean(process.env.ANTHROPIC_API_KEY),
     },
     {
@@ -37,29 +36,25 @@ export async function GET(request: NextRequest) {
       provider: 'voyage',
       modelId: 'voyage-4-large',
       region: 'us',
-      trainingOptOutConfirmed: true,
-      zeroDataRetentionConfirmed: true,
+      trainingOptOutConfirmed: false,
+      zeroDataRetentionConfirmed: false,
       apiKeyConfigured: Boolean(process.env.VOYAGE_API_KEY),
     },
   ])
 
-  const operationalHealth = evaluateOperationalAlerts({
-    windowMinutes: 60,
-    uploadAttempts: 0,
-    uploadFailures: 0,
-    stalledProcessingJobsCount: 0,
-    maxJobBacklogAgeSeconds: 0,
-    activeProjectMaxCostCents: 0,
-    projectCostBudgetCapCents: 500,
-    overdueDeletionRequestsOver7dCount: 0,
-    failedExportsCount: 0,
-  })
-
+  // The PG rehearsal is not a live metrics source. Missing observations must
+  // never be interpreted as zero failures or used to authorize a cutover.
   return NextResponse.json(
     {
-      operationalHealth,
+      status: 'not_ready',
+      operationalHealth: {
+        status: 'unavailable',
+        reason: 'operational_metrics_not_connected',
+        containsPrivateFamilyText: false,
+        alerts: [],
+      },
       providerProbes,
     },
-    { status: 200, headers: auth.headers },
+    { status: 503, headers: { 'Cache-Control': 'no-store' } },
   )
 }

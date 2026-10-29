@@ -1,0 +1,32 @@
+{
+  "asOf": "2026-10-29",
+  "runs": [
+    {
+      "command": "node experiments/pg17-cutover-and-ops-verification/verify.mjs",
+      "exitCode": 0,
+      "evidence": "docs/research/evidence/2026-10-29-takeover-safety/cutover-ops-verify-2026-10-29T02-16-43.758Z-8f32fd96-05e0-4419-8004-81975a24085a.json",
+      "status": "passed",
+      "scenarios": 3,
+      "assertions": 23,
+      "cleanupObserved": {
+        "scratchExists": false,
+        "serverPidExists": false
+      },
+      "evidenceScope": "isolated_postgresql_synthetic_fixtures"
+    },
+    {
+      "command": "node experiments/pg17-p4-g4-verification/verify.mjs",
+      "exitCode": 0,
+      "evidence": "docs/research/evidence/2026-10-29-takeover-safety/p4-g4-verify-2026-10-29T02-16-46.352Z-815d7c50-33f4-4be9-9157-edba2d463fca.json",
+      "status": "passed",
+      "scenarios": 2,
+      "assertions": 22,
+      "cleanupObserved": {
+        "scratchExists": false,
+        "serverPidExists": false
+      },
+      "evidenceScope": "isolated_postgresql_synthetic_fixtures"
+    }
+  ],
+  "note": "Frozen runners overwrite report.cleanup with the undefined return of Harness.cleanup(). Resource absence was checked independently after each run; frozen sources were not edited."
+}

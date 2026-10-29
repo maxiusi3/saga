@@ -1,0 +1,1 @@
+{"status":"passed","evidence":"docs/research/evidence/2026-10-24-p4-g4-verification/p4-g4-verify-2026-10-29T02-16-46.352Z-815d7c50-33f4-4be9-9157-edba2d463fca.json","scenarios":2,"assertions":22}

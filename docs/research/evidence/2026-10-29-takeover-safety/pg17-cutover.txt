@@ -1,0 +1,1 @@
+{"status":"passed","evidence":"docs/research/evidence/2026-10-25-cutover-and-ops-verification/cutover-ops-verify-2026-10-29T02-16-43.758Z-8f32fd96-05e0-4419-8004-81975a24085a.json","scenarios":3,"assertions":23}

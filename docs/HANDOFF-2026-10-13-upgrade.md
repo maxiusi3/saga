@@ -1,10 +1,23 @@
 # Handoff：UR Saga 十月升级继续执行
 
-- 更新时间：2026-10-24（Asia/Taipei）
+- 更新时间：2026-10-29（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 基线 HEAD：`1caa21a72`（当前分支已完成 P0/G0、P1/G1、P2/G2、P3/G3、P4/G4 全部五个阶段 `T00–T13` 及生产切流/运维告警/供应商合成探针就绪工具的实现与验收，并按授权推送到 GitHub `origin/codex/october-upgrade-p0`；未合并 `main`、未执行远端迁移或生产部署）
+- 本轮接手基线 HEAD：`5bdb915bc`（接手时工作树干净，远端同名分支一致；本轮为该提交之后的本地安全修复检查点，不声称原计划 G0–G4 已全部验收）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
+
+## 10 月 29 日断点接手核验（当前状态，以本节为准）
+
+详见[诊断与修复报告](research/2026-10-29-takeover-safety-closeout.md)、[本轮实施清单](superpowers/plans/2026-10-29-upgrade-takeover-safety-closeout.md)与[本轮证据](research/evidence/2026-10-29-takeover-safety/)。现场没有半写代码或新迁移；初始 type-check/lint 通过。最近批次的管理路由只测了开关关闭，遗漏了实际授权和数据缺失分支。
+
+- **安全修复**：`cutover-readiness` 与 `pilot-analytics` 现在只接受服务器侧 `ADMIN_CRON_SECRET` / `x-cron-secret`，普通家庭登录无管理权限；保留媒体功能开关，管理诊断禁止缓存。
+- **诚实就绪度**：切流端点在真实指标源未连接时返回 `503 not_ready` / `operational_metrics_not_connected`；供应商数据条款未核实，保持 `blocked_by_policy`，配置 key 不等于批准。
+- **本轮验证**：定向 5 套/27 项通过；PG17.4 切流 3 场景/23 断言、P4 2 场景/22 断言通过，且独立确认临时目录和 PG 进程已清理。完整 verify、shared、infra 命令链退出 0：Web 126 套/1503 项、shared 4 套/16 项、infra 7 项、184 页构建通过；`git diff --check` 通过，`next-env.d.ts` 已恢复。见[验证汇总](research/evidence/2026-10-29-takeover-safety/verification.json)。构建仍有服务端 Supabase 密钥缺失与 Next 旧配置提示，audit 本轮未重跑。
+- **纠正历史完成口径**：下文旧 `G0–G4 = true` 保留作历史记录，不代表原计划完整质量门通过。PG 使用合成家庭夹具，不能证明真实家庭观察窗、真实供应商资格或真机验收。`TwoEntryProjectHub` 目前尚未挂入生产页面；§11 指标源与告警尚未接通。不得宣布整个 P4/G4 或生产切流已完成。
+- **提交/推送边界**：本轮只做本地安全修复检查点；原计划里程碑的完整证据不足，不触发条件推送。未合并 main、未远端迁移或部署、未向付费 API 发送真实家庭资料。
+- **续接顺序**：先连接已有双入口组件与真实适配器、补指标采集和供应商核验链，再按原计划取得真机/家庭/模型评测及真实纵向试点证据；发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 历史收口记录（保留原文，不作为新的质量门授权）
 
 **10月25日本轮补充收口：生产切流演练、双入口采集与带出处检索项目中心 UI（`TwoEntryProjectHub.tsx`）、§5.4 影子读取对账、§11 持续运营告警与外部供应商合成探针就绪工具（`cutover-readiness.ts`、`GET /api/admin/cutover-readiness`）及通用中途断点接手模板落地**。详见[切流与运营演练报告](research/2026-10-25-cutover-and-ops-verification.md)与[PG17.4 切流与运营验证证据](research/evidence/2026-10-25-cutover-and-ops-verification/cutover-ops-verify-2026-10-25T01-34-23.702Z-9d31a3a9-03de-4bc8-a9ae-612dd4455bf8.json)：
 - **双入口采集 + 带出处检索 + 离线导出项目中心 UI（`TwoEntryProjectHub.tsx`）**：将项目家庭工作台收敛为“上传已有录音”（Entry 1）与“录制新故事/邀请长辈”（Entry 2）两条清晰主路径，集成 T10 带出处检索（点击毫秒时间戳一键回听原声、无资料零编造）与 T09 完整档案包/PDF 1.4 导出触发器。

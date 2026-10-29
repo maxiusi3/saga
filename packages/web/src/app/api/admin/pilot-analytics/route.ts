@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAuthenticatedUser } from '@/lib/server/auth'
+import { requireCronSecret } from '@/lib/server/cron'
 import { getSupabaseAdmin } from '@/lib/supabase'
 import { evaluatePilotCohortMetrics, type PilotHouseholdEntry } from '@/lib/server/pilot-cohort-analytics'
 
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Pilot cohort analytics is not enabled' }, { status: 503 })
   }
 
-  const auth = await getAuthenticatedUser(request)
+  const auth = requireCronSecret(request)
   if (!auth.ok) return auth.response
 
   let admin: ReturnType<typeof getSupabaseAdmin>
@@ -58,5 +58,5 @@ export async function GET(request: NextRequest) {
   }))
 
   const report = evaluatePilotCohortMetrics(entries)
-  return NextResponse.json(report, { status: 200, headers: auth.headers })
+  return NextResponse.json(report, { status: 200, headers: { 'Cache-Control': 'no-store' } })
 }
