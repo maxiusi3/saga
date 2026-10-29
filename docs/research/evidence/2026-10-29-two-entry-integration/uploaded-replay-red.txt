@@ -1,0 +1,35 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=project-hub-client
+
+FAIL src/lib/__tests__/project-hub-client.test.ts
+  ● resumes verification of an uploaded replay without uploading again
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Audio upload is not eligible for retry]
+
+       98 |   mockFetch.mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'uploaded' } }))
+       99 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+    > 100 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      101 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      102 |   expect(mockUpload).not.toHaveBeenCalled()
+      103 |   expect(mockFetch).toHaveBeenCalledTimes(2)
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at Object.expect (src/lib/__tests__/project-hub-client.test.ts:100:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 15 passed, 16 total
+Snapshots:   0 total
+Time:        0.911 s, estimated 1 s
+Ran all test suites matching project-hub-client.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --testPathPatterns=project-hub-client

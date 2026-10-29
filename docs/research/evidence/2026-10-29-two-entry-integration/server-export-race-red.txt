@@ -1,0 +1,51 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/projects/[id]/export/__tests__/route.test.ts
+
+FAIL src/app/api/projects/[id]/export/__tests__/route.test.ts
+  ● bounded synchronous archival export › blocks a deletion accepted while asynchronous ZIP compression is pending
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      197 |
+      198 |     const response = await pendingResponse
+    > 199 |     expect(response.status).toBe(409)
+          |                             ^
+      200 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+      201 |     expect(await response.text()).not.toContain('compressed archive')
+      202 |   })
+
+      at Object.toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:199:29)
+
+  ● bounded synchronous archival export › rechecks membership after compression before releasing private archive bytes
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      218 |
+      219 |     const response = await pendingResponse
+    > 220 |     expect(response.status).toBe(403)
+          |                             ^
+      221 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      222 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+      223 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+
+      at Object.toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:220:29)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 29 passed, 31 total
+Snapshots:   0 total
+Time:        0.873 s, estimated 1 s
+Ran all test suites within paths "src/app/api/projects/[id]/export/__tests__/route.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/app/api/projects/[id]/export/__tests__/route.test.ts

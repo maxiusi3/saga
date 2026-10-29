@@ -1,0 +1,261 @@
+{
+  "asOf": "2026-10-29T04:18:35.017699+00:00",
+  "status": "passed",
+  "scope": "local_two_entry_hub_integration_only",
+  "baseCommit": "5faac79ea",
+  "branch": "codex/october-upgrade-p0",
+  "fullWorkspace": {
+    "command": "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra",
+    "startedAt": "2026-10-29T04:12:48Z",
+    "finishedAt": "2026-10-29T04:17:16Z",
+    "exitCode": 0,
+    "web": {
+      "suites": 130,
+      "tests": 1657
+    },
+    "shared": {
+      "suites": 4,
+      "tests": 16
+    },
+    "infra": {
+      "tests": 7
+    },
+    "builtPages": 184,
+    "log": "full-verify.txt"
+  },
+  "targeted": {
+    "preQualityCombined": {
+      "suites": 12,
+      "tests": 159,
+      "log": "spec-fixes-green.txt"
+    },
+    "sourceFixes": {
+      "searchAndProvenance": 37,
+      "export": 42,
+      "register": 35
+    },
+    "independentQualityRerun": {
+      "suites": 4,
+      "tests": 114
+    }
+  },
+  "reviews": {
+    "spec": "passed",
+    "quality": "approved",
+    "unresolvedFindings": 0,
+    "reports": [
+      "spec-review.md",
+      "quality-review.md"
+    ]
+  },
+  "browser": {
+    "status": "passed",
+    "report": "browser-2026-10-29T04-17-35.202Z-3beda361-0f5f-4df6-a95f-3084171570fd.json",
+    "checks": 12,
+    "widths": [
+      1440,
+      375
+    ],
+    "externalRequests": [],
+    "scope": "Real React hub/client adapter in Chromium with synthetic auth, Link, Storage and local HTTP fixtures; not real device, Supabase or Next server E2E",
+    "screenshotsInspected": true
+  },
+  "pg17": {
+    "runs": [
+      {
+        "command": "node experiments/pg17-cutover-and-ops-verification/verify.mjs",
+        "startedAt": "2026-10-29T03:36:43.572750+00:00",
+        "exitCode": 0,
+        "report": "cutover-ops-verify-2026-10-29T03-36-43.776Z-d63b8a21-6347-42e7-86f8-3728789575dc.json",
+        "status": "passed",
+        "scenarios": 3,
+        "assertions": 23,
+        "cleanupObserved": {
+          "scratchExists": false,
+          "serverPidExists": false
+        }
+      },
+      {
+        "command": "node experiments/pg17-p3-g3-verification/verify.mjs",
+        "startedAt": "2026-10-29T03:36:45.467715+00:00",
+        "exitCode": 0,
+        "report": "p3-g3-verify-2026-10-29T03-36-45.682Z-5df9c0bc-adb9-4054-808e-5e2af97a1de8.json",
+        "status": "passed",
+        "scenarios": 4,
+        "assertions": 51,
+        "cleanupObserved": {
+          "scratchExists": false,
+          "serverPidExists": false
+        }
+      }
+    ],
+    "note": "Frozen runners overwrite report.cleanup with the undefined return of Harness.cleanup(). Independent scratch and PID absence checks replace that missing field. Initial collection wrapper failed with KeyError cleanup after a passing cutover run; its original report/log are preserved. The corrected collection reran cutover and P3 without changing frozen code."
+  },
+  "integrity": {
+    "protectedFilesChecked": 1236,
+    "allProtectedHashesMatch": true,
+    "protectedManifest": "protected-inputs.json",
+    "nextEnvRestored": true,
+    "nextEnvSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "gitDiffCheckExitCode": 0
+  },
+  "sources": {
+    "experiments/two-entry-hub-browser/README.md": "87141eb950348f21a8fae29542e013fea2311c22c9bc9f55ce6dd8d24dffdf59",
+    "experiments/two-entry-hub-browser/boundaries.tsx": "9755e5bbebee5c42f0f9a2c295e5b05a6c62a1aa876b454398ce682961e4c386",
+    "experiments/two-entry-hub-browser/entry.tsx": "88d80f8e12141469bedf06e4343de661eb9ad33be7d401f8e31523c51869b0e1",
+    "experiments/two-entry-hub-browser/typescript-loader.cjs": "51bea0118fcd7f4a8e212b386345a6a225159e87cac136a053d1818ce1d60db8",
+    "experiments/two-entry-hub-browser/verify.mjs": "054b18c9259a7388410a07cf09fa24ccbaf84d057dc27c285cab50296de24b16",
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/ProjectDetailClient.tsx": "749ca296a22e261a6ca7fccf9e610c42aa8f356b6e46ac8024f80e8872fc3736",
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/page.tsx": "0e5052b7ef36cc0365f9d1afd0ddb6363cfc2b6965e10cfbf8159cc2a5735050",
+    "packages/web/src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts": "bba08b3d9aa40d62961d3a05b12d86504100c59a9003224ac19a774c6b3c5264",
+    "packages/web/src/app/api/media/assets/[assetId]/access/route.ts": "a6164f6ce0426e20d95e825785f833ab1d2de7b1684693a17cef1a4bd1aa879b",
+    "packages/web/src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts": "e53bbdbb25fb5a222c4be97dc3ac354ab1abd2a9cf7b9c8688983047eacb7e60",
+    "packages/web/src/app/api/media/assets/[assetId]/complete/route.ts": "6d4784a00b7b14e33c354ad90f45b1404e1d955046855e44c43d3eccc278517f",
+    "packages/web/src/app/api/media/assets/__tests__/route.test.ts": "3b812bc509d4039df282da39d3cbd5a764a998468408d5f9a5c625e450c928c9",
+    "packages/web/src/app/api/media/assets/route.ts": "a0c9c50ce64390b506d7d88d53bf0d08a3901bb18c2ef94bc3e7201ad7f00557",
+    "packages/web/src/app/api/projects/[id]/export/__tests__/route.test.ts": "b883e2d7042e0a28f0aec434c20c4e160626c3979762cf4d0d02d26da6753273",
+    "packages/web/src/app/api/projects/[id]/export/route.ts": "8195a86112018b929b60df2c95741e0823ecf8208f7f7df11e0729e61f462ab8",
+    "packages/web/src/app/api/projects/[id]/search/__tests__/route.test.ts": "1a5dfd03e04943fe033a16028316a4eb2e9b7870d812abbdf218b31ca6386424",
+    "packages/web/src/app/api/projects/[id]/search/route.ts": "660bdfc1e57aedeb11242e21fd2f479d2d7e0811e95e775f3891fc7956a37087",
+    "packages/web/src/components/projects/ConnectedProjectHub.tsx": "f8e055a279dc9eea8950863692ebf66f552bf62675c44f675672dc8a582418d5",
+    "packages/web/src/components/projects/TwoEntryProjectHub.tsx": "df0f50371a32c8b55e807427067260d3b4c564915e23a7216caad59036ede34d",
+    "packages/web/src/components/projects/__tests__/connected-project-hub.test.tsx": "79b0d7d4d89138084569c7b9f40e0afa3776f788c36b26cac1bed3f3f7241df9",
+    "packages/web/src/components/projects/__tests__/project-detail-hub-integration.test.tsx": "bf133370382375334a46cf244f78064f15fb3df8db7d04975264f27a939c2bba",
+    "packages/web/src/components/projects/__tests__/two-entry-project-hub.test.tsx": "cafa52e0036dd96f6faec454516bfb8817f288799e241f8ce1edd0ae5c67e537",
+    "packages/web/src/lib/__tests__/project-hub-client.test.ts": "07a40eab1f1aa759e49f7efc63148c75db0915b580beefef4e05bf79302f2f7d",
+    "packages/web/src/lib/project-hub-client.ts": "2365e84070ac14c96efb6e89e12c28b6596c1c43f3e916c7f23b545008372ecc",
+    "packages/web/src/lib/server/__tests__/provenance-search.test.ts": "f9b732b6879e36caf86b3120b7ffd330bc94ff8587360fe0672b31485b4b0bfa",
+    "packages/web/src/lib/server/provenance-search.ts": "287c3a71d72bcbfda8f682c5dcb495eb2ae7b5de10bc69fadaab1dec5e93b3b9"
+  },
+  "gateStatus": {
+    "localIntegrationBatchComplete": true,
+    "originalGatesNotNewlyEstablished": [
+      "G0",
+      "G1",
+      "G2",
+      "G3",
+      "G4"
+    ],
+    "conditionalPushTriggered": false,
+    "reason": "Local code/fixture verification is not the original real-device/provider/household gate evidence."
+  },
+  "operations": {
+    "localCheckpointPlanned": true,
+    "pushed": false,
+    "mergedMain": false,
+    "remoteMigration": false,
+    "deployed": false,
+    "realFamilyMaterialSentToPaidAPI": false
+  },
+  "limitations": [
+    "Audio remains verifying until a real decoder/Worker confirms it.",
+    "Large asynchronous export Worker, index-write chain and real metrics/provider qualification not implemented here.",
+    "Unresolved legacy citations are suppressed; imports need verified story association before search.",
+    "Known deleted/unresolved source audio blocks the entire archive; unrelated image deletion does not discard independent text.",
+    "Existing signed links last until TTL expires; downloaded copies cannot be remotely recalled.",
+    "No actual Next/Auth/Storage HTTP or physical-device qualification.",
+    "No real household/model evaluation/longitudinal pilot or original gate completion claims.",
+    "Build still warns about missing server Supabase key and deprecated Next configuration; audit not rerun."
+  ],
+  "evidenceSha256": {
+    "README.md": "449e18bc75dac5fc26223074e204cf0dce41191532b37318e2da080d63b2e2d7",
+    "browser-2026-10-29T03-38-42.449Z-313b15a4-a9fd-4b83-8175-da46424875d3.json": "2e362dcd643473ac8b1ccb4ce7224913464c3485e3ffec8114d00f4bde7a1e27",
+    "browser-2026-10-29T03-44-21.401Z-bce25ac0-0544-49d3-bbdb-053fda102e54.json": "70bed1eac6115462d6cfc2c44b6c328e43c90105de8b5fef0b0cd2a06d49915e",
+    "browser-2026-10-29T03-49-40.859Z-dc537032-7afb-4133-8522-fe2b77d21629.json": "0e562ec659e5a09e9be9b2a7d117715ee609081faa4d2a8b4ad336886f173b04",
+    "browser-2026-10-29T04-08-31.242Z-0cf04f65-c186-408c-b3cd-334e54b07f0f.json": "0e562ec659e5a09e9be9b2a7d117715ee609081faa4d2a8b4ad336886f173b04",
+    "browser-2026-10-29T04-17-35.202Z-3beda361-0f5f-4df6-a95f-3084171570fd.json": "0e562ec659e5a09e9be9b2a7d117715ee609081faa4d2a8b4ad336886f173b04",
+    "browser-final.txt": "f082337656f16270d4525f7650363a3832f78dbb245ee559dc6ff017941b5f5b",
+    "browser-layout-red.txt": "6c7c28aef8a6a43ba7f3c7dec89745c11c6cced3c7aae2b0c4ffeac3a960229c",
+    "browser-run.txt": "d88fbec7f2536e6b16e285cec500f2978637171540e7c12a96178b6bd390d04f",
+    "client-green.txt": "e7eca5829830daafe0b271d6657d8af03095a7c305bb05129ca39002eab8bf26",
+    "client-red.txt": "9c8272eb5f9abb07c7dba9b6fd77abd532a368153e26fdafd039490743a12513",
+    "controller-red.txt": "8004d0e6e66744b4df8182eed48487bd93bce3419e1455fcf1347427b9038746",
+    "cutover-ops-verify-2026-10-29T03-34-26.832Z-e73e07b0-7e36-4fea-b4f1-7e77e952ca58.json": "c90fd489707e49f9de0a610ba66466911bb48ae0e083ef766c405ae6f200d3f4",
+    "cutover-ops-verify-2026-10-29T03-36-43.776Z-d63b8a21-6347-42e7-86f8-3728789575dc.json": "62563930a2eda2d1abfc8a8e8f02db668aaa6ceaa7d9f8f96c044184275c3501",
+    "export-source-green.txt": "f470cf7f8227110e48cf94943000cbc0a50a0667c70ac1243256a43f3fe1f2ad",
+    "export-source-red.txt": "e4aad4856455a8b8cfadda5c05bca7cffa39546845735b235a7ac4aa3fb053e3",
+    "frontend-green.txt": "c1cbd430cd9ae864f464bafc5b0770ea1a8680bedf7d6afe633a483b5ccf6a31",
+    "full-verify-result.json": "5369b586eabd212af67a8f5670f6e5f8b18a0e5772672f2a18d72bf692e3827c",
+    "full-verify.txt": "d499b2151f64738537d0120a307cc2f87508a2d7f56d76322a73426d8981a461",
+    "hub-1440-2026-10-29T03-38-42.449Z-313b15a4-a9fd-4b83-8175-da46424875d3.png": "038bc1758ea6bd554e809fbefbc5f49f3c9b4c55515dde81ea371067af3a6b04",
+    "hub-1440-2026-10-29T03-44-21.401Z-bce25ac0-0544-49d3-bbdb-053fda102e54.png": "b5c3bc576f39b0d1ed1afda19418027e8eb982fd5d642e68834f2bc47b662db3",
+    "hub-1440-2026-10-29T03-49-40.859Z-dc537032-7afb-4133-8522-fe2b77d21629.png": "16cfe89bfe6fc608a7dae208491cb01c65c4fe1768f97317d03dc511732f4a12",
+    "hub-1440-2026-10-29T04-08-31.242Z-0cf04f65-c186-408c-b3cd-334e54b07f0f.png": "9d75ecd688b1a27677dc05c5703d1f966739095fcf4ef15924126cd9588204da",
+    "hub-1440-2026-10-29T04-17-35.202Z-3beda361-0f5f-4df6-a95f-3084171570fd.png": "815bdb8c2dcadb8fab0e24109fa6ecfe1b6e8b6ad986ca0020117f24cc74226c",
+    "hub-375-2026-10-29T03-38-42.449Z-313b15a4-a9fd-4b83-8175-da46424875d3.png": "9f902cc34f6fdc0d1e28f2623ad48d711887eaa97764fe059a98002a7403e867",
+    "hub-375-2026-10-29T03-49-40.859Z-dc537032-7afb-4133-8522-fe2b77d21629.png": "729808b108733b78b46d8e8041d16ca46751ebe6f091a1cc0245a21f83e34214",
+    "hub-375-2026-10-29T04-08-31.242Z-0cf04f65-c186-408c-b3cd-334e54b07f0f.png": "729808b108733b78b46d8e8041d16ca46751ebe6f091a1cc0245a21f83e34214",
+    "hub-375-2026-10-29T04-17-35.202Z-3beda361-0f5f-4df6-a95f-3084171570fd.png": "fb29f6a751c5d93ce566e272de8dbaacba662dfb5a52c6edc7d5cfd18d8482d7",
+    "lint-before.txt": "90e4030a523d80694f3fd429039757fdc950b681995c70be89195462ec4c88ad",
+    "log-normalization.json": "ba5e7643ca0d420534257cb1520c98a61e8237f1fdbfb15ff82153c96b2ce035",
+    "p3-g3-verify-2026-10-29T03-36-45.682Z-5df9c0bc-adb9-4054-808e-5e2af97a1de8.json": "9f0d14f9a335addfc51749d639a252a71fdfa3658617ae451f91b312e44ce34d",
+    "page-red.txt": "29309e0b447857bbe6d758f7f646e417e766682cde6cb77888e131efd6c154aa",
+    "pg17-cutover-and-ops-verification.txt": "f1ea085fbf2bab766a265953abeead582089ad7bb58df31e384557c3ea700dd5",
+    "pg17-cutover-first.txt": "dfbf8faa68d3d0e1e599a174ed80ee3961b594bc8513be625cdb090c79d4fff9",
+    "pg17-p3-g3-verification.txt": "b0775d103ed879c5d37cfc51513876ff1b88cb4efb4aed6770b78926bbf3a8be",
+    "pg17-reruns.json": "45643262c71d25d28930c1bd8fc9ba4d983627c5748100c2876d9af8d96bfa44",
+    "pre-quality-full-verify-result.json": "4e64e01a535ed3ebd5b01f73a61b67eb8bc6820543e84469f5a8c6ac52ba4d75",
+    "pre-quality-full-verify.txt": "529280648a977a0addbb6ef20b13b63b7fe0ac2f39f9c4bb97a8bfbed54ef8f2",
+    "pre-review-full-verify-result.json": "b0fe3e838c2ed3eac2b3e065803f40fbf45c8ca943cf4ef3848435d53613c45d",
+    "pre-review-full-verify.txt": "1cae59791ac37e6e21094ed8fdd86bfe3cf381176931168039612eb6189bd4a6",
+    "pre-whitespace-full-verify-result.json": "b31790f55b097586f5e2ab3af189657249735ee22548dbb2b31953701d13acbc",
+    "pre-whitespace-full-verify.txt": "738d7fa21eb3e6a7ec9513c13750031d0b0c3ab59f93a5933e0954b8e54e6cf5",
+    "protected-inputs.json": "79320c2e5bb6cc95cd45d6a10d2f06235b25c5d0dc176cb10fbdbb6bee8f8e46",
+    "quality-review.md": "dd903f3439c62030bab54c0a7fa078dcd6047ab802b979caee85ff2ec5174371",
+    "raw/browser-final.txt.gz": "04b3c7736b49f7ada7cdd6318eba7561ce14008da548d313dfcc08da75642a0d",
+    "raw/browser-layout-red.txt.gz": "ddd7334b98d6cf70143fd81c045c01610feb19248b3bbb34a0e985305027f3e1",
+    "raw/browser-run.txt.gz": "2a2d2a431f75c4f6cf903e9678ee053acaafbbc885b67a2b3735692926aad380",
+    "raw/client-green.txt.gz": "2d731706542aa3d0c66846dbf23e76956ac30fed374891b585690d397c4c0e64",
+    "raw/client-red.txt.gz": "0c22a445a7a7699e07e232a5ac148eebbe90e1982f3208c14759b4a168c526cb",
+    "raw/controller-red.txt.gz": "aa0e3ffca2f5da094e8aa367bde9bd8f716becba454181841ff22f5ebe1f7904",
+    "raw/export-source-green.txt.gz": "e3c2064a425f46acdbfb9bde211c0fda6f90043a492e1fddd3c07bd7c6490c8f",
+    "raw/export-source-red.txt.gz": "eebeac49ff53134c92156343e271103ff9834e1a66605786d5d8fdba5a9f9ad2",
+    "raw/frontend-green.txt.gz": "51e4ba3cf76912415f95672ec24ef03e6fab377bf54bb56c2a2f01040242ccf5",
+    "raw/full-verify.txt.gz": "da47231e1a36eb3b4f81c97bb48565f154f68266b35ae007a5f1955badb13f8a",
+    "raw/lint-before.txt.gz": "5bd8d70ee7dd0e3fa32a1eedb003b150ddb2424c85e00f618f2929a6d8a579e5",
+    "raw/page-red.txt.gz": "8fc0ccdf805f31af22198bdf388c9a70cbe1d02b689968792dee3a0e0fcb5dc8",
+    "raw/pg17-cutover-and-ops-verification.txt.gz": "65eea63ae7bcd120d4936ad5acf6e27a6f3c56ec8018528728268cdf26cb9622",
+    "raw/pg17-cutover-first.txt.gz": "ecc971be24f5466994dbef39d4ffcb83dc66b826df05e7d27e93415490e5bc7b",
+    "raw/pg17-p3-g3-verification.txt.gz": "64d9189ca498d0d7b98d44d793f94d2fd85bb4bb05cfcdbbf654f7bf92680da7",
+    "raw/pre-quality-full-verify.txt.gz": "637ae8919c7dc1e5f9dd94a6890f02d7ff4008b10fd55e4897b995a2c364065c",
+    "raw/pre-review-full-verify.txt.gz": "8792ebf79bba0bdeeafebe91b37fffaf6be431646a0cd5f682967c07653f2894",
+    "raw/pre-whitespace-full-verify.txt.gz": "dff9e37e4533116cc8c6def46393fd94ac75f500d20575ec78e2a2afa6461553",
+    "raw/server-export-race-green.txt.gz": "41d885a817efc4a3122ed70e907f4069ff38ee4a52e131f6912ef09fc492bf34",
+    "raw/server-export-race-red.txt.gz": "41da534fb6b301f94067b8a39a700eec1688acb5f3d8d3ccb2def3876cd0ffe5",
+    "raw/server-green.txt.gz": "1e233d389f2ba4ac6fd59cec9b276ce5dfac7e45ebedf23e7353b3938dfd6db7",
+    "raw/server-lint.txt.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "raw/server-optional-size-green.txt.gz": "b059f4db4e2270cb949e85f2a7761b22089afcfcd9399860793069b17c72db71",
+    "raw/server-optional-size-red.txt.gz": "5f1b4529239298ae361b551afc358b48e9f297a9ef8f77e1be2fb17df0a7a171",
+    "raw/server-red.txt.gz": "6d32a2f0dca5c0bb0008fb6acb30c7e11cfe9a370b345c5bcefd2fe8bd345d98",
+    "raw/server-search-schema-green.txt.gz": "4cb410e5875b34a4d8579c56e562626c8c02eafae78452c3e44e769627ad5650",
+    "raw/server-search-schema-red.txt.gz": "7cc19f8819fd3c82bc463f8338e17ad33997dcdc7dcf9888d4db62b69460f894",
+    "raw/server-search-schema-typecheck.txt.gz": "c9208acb9f86e3b8b354462ee8b4fc294cf6f85cdc5ef7d48578faeb78f5a766",
+    "raw/server-typecheck.txt.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "raw/spec-fixes-green.txt.gz": "452b5a8a23a6a40288c148955bd1aeaa0021928303c92ce28e9714d8fe437959",
+    "raw/spec-fixes-red.txt.gz": "d5984647fd57a882be9a0dd559f8ccedd2eb60ee40b72c635121c47858986ada",
+    "raw/storage-conflict-red.txt.gz": "b5413ccd9a10a62297564a17ce59a569cea24d80665331e9e5c46e9d2c9b59ba",
+    "raw/targeted-green.txt.gz": "682bb7ca85e4790569e0a903445c89411d46b99b772f14c6800a9345abc42c44",
+    "raw/type-check-before.txt.gz": "62265fcc26152d4dd6c4a2701ef76fc707fc628d11f10efd14835e594dabb581",
+    "raw/uploaded-replay-green.txt.gz": "aa1b3ea61820988dab210d9b0f7317e0a9dc0c50441a8ab67b6bfe10b2e3ac45",
+    "raw/uploaded-replay-red.txt.gz": "251c0b9d187a40043f1d4c3bae2481d8035234535e8c1e2339e902929824c0d5",
+    "server-export-race-green.txt": "0ef851e8cd895951cd6653f840e9982734caa7464583b6b5ae88ea36a1fa5cbf",
+    "server-export-race-red.txt": "5087ed2949d334cb74a909642ea8c1a9025b48e783df89c3ecd3eb530aafed0d",
+    "server-green.txt": "3e283acae416e6f168bd5cafb70751a0ccbf86e4015669bb81e256965fea182f",
+    "server-lint.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "server-optional-size-green.txt": "e06bf850577c2a76feff678dda45be414d786fc47f16ef3f903e6ed53c87331d",
+    "server-optional-size-red.txt": "d93a604e843e96ffa11a3e0df673780b7bdcf92a6da00f0865ce41b0159f89b1",
+    "server-red.txt": "056b8131735e137f5a4fe070d71bf523ff47676e8f9719e50aa908bef072b403",
+    "server-search-schema-green.txt": "dce5b37c8d0e7094589625cb58c80c3d27d69390a1510d2c6b0d042167c0c463",
+    "server-search-schema-red.txt": "8627e1af1c342fdfbfcfe5ace0377ac442e87b7e694b6e6e013ea79ceeb288e1",
+    "server-search-schema-typecheck.txt": "a135ff52b5fb429fee1466ede412085022cd312e8579f1f7e0997581650fda3c",
+    "server-typecheck.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "spec-fixes-green.txt": "ec58e4b744eb27941a2922ed99828dc561202d0e10fbf77898bd85efdb0cb75e",
+    "spec-fixes-red.txt": "5731a294c444ff5c05b742258f4e36bdcb839727f9cebaed6b31e8f1e2df7164",
+    "spec-review.md": "af7b83a9453f1e330b91cd7f5e24678817b67c7380a2e34a22774a2a39b96ade",
+    "storage-conflict-red.txt": "f4f192dfc99629c10e6105a295da4bbad8d15f563d35ded3d6c29f01b18ceac2",
+    "targeted-green.txt": "fada85d9181f2c22034db895cfcb5d703b0aa73752b16786fb78f5d4fe69c267",
+    "type-check-before.txt": "25460bc95f977ff78da7c0f72779dd58c3cdc94be8187aaa4c5014dcc858f572",
+    "uploaded-replay-green.txt": "60cc4ba247cf198de99e1ded474924f68dbb249e162d0e2f5ae0fb22d70df178",
+    "uploaded-replay-red.txt": "41554af6e5af7e2b22b964b9f3f18fe164695f5b9414652c611fc94416e6d741"
+  }
+}

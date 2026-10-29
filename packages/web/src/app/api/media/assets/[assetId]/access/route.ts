@@ -17,7 +17,10 @@ export async function GET(
   { params }: { params: Promise<{ assetId: string }> },
 ) {
   const auth = await getAuthenticatedUser(request)
-  if (!auth.ok) return auth.response
+  if (!auth.ok) {
+    auth.response.headers.set('Cache-Control', 'no-store')
+    return auth.response
+  }
   if (process.env.MEDIA_ASSETS_ENABLED !== 'true') return reply({ error: 'Media assets are not enabled' }, 404, auth.headers)
 
   const { assetId } = await params
@@ -25,21 +28,33 @@ export async function GET(
 
   let admin: ReturnType<typeof getSupabaseAdmin>
   try { admin = getSupabaseAdmin() } catch { return reply({ error: 'Database service not configured' }, 503, auth.headers) }
-  const { data: asset, error: loadError } = await admin.from('media_assets')
-    .select('id, project_id, bucket, object_key, state').eq('id', assetId).maybeSingle()
-  if (loadError) return reply({ error: 'Failed to load asset' }, 500, auth.headers)
-  if (!asset) return reply({ error: 'Asset not found' }, 404, auth.headers)
-  if (asset.state !== 'ready' || (asset as { tombstone_at?: string | null }).tombstone_at != null) {
-    return reply({ error: 'Asset is not ready for access' }, 409, auth.headers)
-  }
+  try {
+    const { data: asset, error: loadError } = await admin.from('media_assets')
+      .select('*').eq('id', assetId).maybeSingle()
+    if (loadError) return reply({ error: 'Failed to load asset' }, 500, auth.headers)
+    if (!asset) return reply({ error: 'Asset not found' }, 404, auth.headers)
+    const access = await requireProjectAccess(asset.project_id, auth.user)
+    if (!access.ok) {
+      const body = await access.response.json()
+      return reply(body, access.response.status, auth.headers)
+    }
 
-  const access = await requireProjectAccess(asset.project_id, auth.user)
-  if (!access.ok) {
-    const body = await access.response.json()
-    return reply(body, access.response.status, auth.headers)
-  }
+    if (asset.state !== 'ready' || asset.tombstone_at != null) {
+      return reply({ error: 'Asset is not ready for access' }, 409, auth.headers)
+    }
+    const subjects = [asset.id, asset.story_id].filter((id): id is string => typeof id === 'string')
+    const { data: tombstones, error: tombstoneError } = await admin.from('deletion_requests')
+      .select('subject_id, tombstone_at').eq('project_id', asset.project_id)
+      .in('subject_id', subjects).not('tombstone_at', 'is', null)
+    if (tombstoneError || !Array.isArray(tombstones)) {
+      return reply({ error: 'Failed to verify deletion status' }, 500, auth.headers)
+    }
+    if (tombstones.length) return reply({ error: 'Asset is not ready for access' }, 409, auth.headers)
 
-  const { data, error } = await admin.storage.from(asset.bucket).createSignedUrl(asset.object_key, 3600)
-  if (error || !data?.signedUrl) return reply({ error: 'Asset is unavailable' }, 404, auth.headers)
-  return reply({ signedUrl: data.signedUrl }, 200, auth.headers)
+    const { data, error } = await admin.storage.from(asset.bucket).createSignedUrl(asset.object_key, 300)
+    if (error || !data?.signedUrl) return reply({ error: 'Asset is unavailable' }, 404, auth.headers)
+    return reply({ signedUrl: data.signedUrl }, 200, auth.headers)
+  } catch {
+    return reply({ error: 'Asset access is unavailable' }, 500, auth.headers)
+  }
 }

@@ -1,0 +1,1 @@
+{"status":"passed","evidence":"docs/research/evidence/2026-10-24-p3-g3-verification/p3-g3-verify-2026-10-29T03-36-45.682Z-5df9c0bc-adb9-4054-808e-5e2af97a1de8.json","scenarios":4,"assertions":51}

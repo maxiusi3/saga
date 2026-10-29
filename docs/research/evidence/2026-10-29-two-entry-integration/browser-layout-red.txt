@@ -1,0 +1,1 @@
+{"status":"failed","checks":6,"evidence":"browser-2026-10-29T03-44-21.401Z-bce25ac0-0544-49d3-bbdb-053fda102e54.json","error":"Search action stays inside its form on narrow screens"}

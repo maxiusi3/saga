@@ -21,6 +21,7 @@ const user = { id: 'alice' } as any
 const headers = new Headers({ 'Set-Cookie': 'session=refreshed' })
 const ready = {
   id: 'asset-ready', project_id: 'family-a', created_by: 'alice', bucket: 'saga',
+  story_id: 'story-1',
   object_key: 'alice/projects/family-a/assets/asset-ready/original', state: 'ready',
 }
 
@@ -28,6 +29,9 @@ function query(data: unknown, error: unknown = null) {
   const chain: any = {
     select: jest.fn(() => chain),
     eq: jest.fn(() => chain),
+    not: jest.fn(() => chain),
+    in: jest.fn(() => chain),
+    then: (resolve: any) => Promise.resolve({ data, error }).then(resolve),
     maybeSingle: jest.fn(async () => ({ data, error })),
   }
   return chain
@@ -42,7 +46,7 @@ beforeEach(() => {
   process.env.MEDIA_ASSETS_ENABLED = 'true'
   mockAuth.mockResolvedValue({ ok: true, user, headers })
   mockProjectAccess.mockResolvedValue({ ok: true })
-  mockFrom.mockReturnValue(query(ready))
+  mockFrom.mockImplementation(table => query(table === 'media_assets' ? ready : []))
   mockStorageFrom.mockReturnValue({ createSignedUrl: mockCreateSignedUrl })
   mockCreateSignedUrl.mockResolvedValue({ data: { signedUrl: 'https://storage.example/asset' }, error: null })
 })
@@ -85,7 +89,7 @@ describe('GET /api/media/assets/[assetId]/access', () => {
     expect(response.headers.get('Cache-Control')).toBe('no-store')
     expect(await response.json()).toEqual({ signedUrl: 'https://storage.example/asset' })
     expect(mockStorageFrom).toHaveBeenCalledWith('saga')
-    expect(mockCreateSignedUrl).toHaveBeenCalledWith(ready.object_key, 3600)
+    expect(mockCreateSignedUrl).toHaveBeenCalledWith(ready.object_key, 300)
   })
 
   it('fails closed when storage cannot sign', async () => {
@@ -99,5 +103,26 @@ describe('GET /api/media/assets/[assetId]/access', () => {
     const response = await GET(request(), { params: Promise.resolve({ assetId: 'asset-ready' }) })
     expect(response.status).toBe(409)
     expect(mockStorageFrom).not.toHaveBeenCalled()
+  })
+
+  it('loads optional tombstone evidence without assuming an unshipped asset column', async () => {
+    const assetQuery = query(ready)
+    mockFrom.mockImplementation(table => table === 'media_assets' ? assetQuery : query([]))
+    expect((await GET(request(), { params: Promise.resolve({ assetId: 'asset-ready' }) })).status).toBe(200)
+    expect(assetQuery.select).toHaveBeenCalledWith('*')
+  })
+
+  it.each(['story-1', 'asset-ready'])('blocks signing for deleted subject %s', async subjectId => {
+    mockFrom.mockImplementation(table => query(table === 'media_assets' ? ready : [{ subject_id: subjectId, tombstone_at: '2026-10-29' }]))
+    expect((await GET(request(), { params: Promise.resolve({ assetId: 'asset-ready' }) })).status).toBe(409)
+    expect(mockStorageFrom).not.toHaveBeenCalled()
+  })
+
+  it('fails closed when deletion evidence cannot be loaded', async () => {
+    mockFrom.mockImplementation(table => query(table === 'media_assets' ? ready : null, table === 'deletion_requests' ? { message: 'private failure' } : null))
+    const response = await GET(request(), { params: Promise.resolve({ assetId: 'asset-ready' }) })
+    expect(response.status).toBe(500)
+    expect(mockStorageFrom).not.toHaveBeenCalled()
+    expect(await response.text()).not.toContain('private failure')
   })
 })

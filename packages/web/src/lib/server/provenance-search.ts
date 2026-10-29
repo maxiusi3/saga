@@ -55,6 +55,7 @@ export interface ProvenanceSearchCitation {
   storyTitle: string
   transcriptVersionId: string
   storyRevisionId?: string | null
+  mediaAssetId?: string | null
   segmentId: string
   startMs: number
   endMs: number
@@ -217,6 +218,7 @@ export function executeProvenanceSearch(params: {
         storyTitle: entry.storyTitle,
         transcriptVersionId: entry.transcriptVersionId,
         storyRevisionId: entry.storyRevisionId ?? null,
+        mediaAssetId: entry.mediaAssetId ?? null,
         segmentId: entry.segmentId,
         startMs: entry.startMs,
         endMs: entry.endMs,

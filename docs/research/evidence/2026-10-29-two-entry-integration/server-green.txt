@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/projects/[id]/search/__tests__/route.test.ts src/app/api/projects/[id]/export/__tests__/route.test.ts src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts src/app/api/media/assets/__tests__/route.test.ts src/lib/server/__tests__/provenance-search.test.ts src/lib/server/__tests__/media-export.test.ts src/lib/server/__tests__/archival-export-service.test.ts
+
+
+Test Suites: 8 passed, 8 total
+Tests:       103 passed, 103 total
+Snapshots:   0 total
+Time:        3.738 s
+Ran all test suites within paths "src/app/api/projects/[id]/search/__tests__/route.test.ts", "src/app/api/projects/[id]/export/__tests__/route.test.ts", "src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts", "src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts", "src/app/api/media/assets/__tests__/route.test.ts", "src/lib/server/__tests__/provenance-search.test.ts", "src/lib/server/__tests__/media-export.test.ts", "src/lib/server/__tests__/archival-export-service.test.ts".

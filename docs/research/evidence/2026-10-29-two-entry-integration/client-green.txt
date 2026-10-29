@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(project-hub-client|connected-project-hub|two-entry-project-hub)
+
+
+Test Suites: 3 passed, 3 total
+Tests:       24 passed, 24 total
+Snapshots:   0 total
+Time:        2.002 s
+Ran all test suites matching (project-hub-client|connected-project-hub|two-entry-project-hub).

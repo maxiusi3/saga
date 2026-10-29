@@ -1,0 +1,46 @@
+{
+  "status": "failed",
+  "scope": "Real React hub/client adapter in Chromium with synthetic auth, Link, Storage and local HTTP fixtures; not real device, Supabase or Next server E2E",
+  "checks": [
+    {
+      "width": 1440,
+      "check": "render_without_horizontal_overflow",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "locale_navigation_targets",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "import_bytes_and_pending_verification",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "search_and_metadata_seek",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "zip_download_bytes",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "failed_search_clears_source_and_audio_no_page_errors",
+      "status": "passed"
+    }
+  ],
+  "sources": {},
+  "externalRequests": [],
+  "buildStylesSha256": "03b9102717993b2314f03097a4f68fe11d642f02092b4c5d2714ae412b936163",
+  "browserVersion": "147.0.7727.15",
+  "error": "Search action stays inside its form on narrow screens",
+  "cleanup": {
+    "browserClosed": true,
+    "serverClosed": true,
+    "scratchRemoved": true
+  }
+}

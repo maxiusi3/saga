@@ -4,8 +4,9 @@
 
 ## 当前执行入口
 
-- **最新断点诊断与安全收尾**：[10 月 29 日报告](research/2026-10-29-takeover-safety-closeout.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-takeover-safety-closeout.md) · [验证证据](research/evidence/2026-10-29-takeover-safety/) · [handoff 当前状态](HANDOFF-2026-10-13-upgrade.md)。接手基线 `5bdb915bc` 无脏文件；修复两个管理接口的普通登录越权及切流“无数据却健康/条款已确认”误报。
-- **当前边界**：管理接口要求服务器侧 `ADMIN_CRON_SECRET` / `x-cron-secret`；切流在真实观测未连接时预期返回 `503 not_ready`。双入口组件尚未挂页。PG 合成夹具通过不等于真实家庭 G4 或完整 G0–G4 通过；历史完成声明以本轮纠偏为准。原计划里程碑证据不足，本轮仅保留本地安全修复检查点，不触发条件推送。
+- **最新双入口项目中心接线**：[10 月 29 日报告](research/2026-10-29-two-entry-integration.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-two-entry-integration.md) · [验证汇总](research/evidence/2026-10-29-two-entry-integration/verification.json) · [handoff 当前状态](HANDOFF-2026-10-13-upgrade.md)。真实项目页受 flag 控制挂载上传、录音/邀请导航、检索/回听与有界导出；Web 130/1657、shared 4/16、infra 7、184 页、浏览器 12 项与 PG17 切流 23/P3 51 断言通过。
+- **前批安全修复**：[报告](research/2026-10-29-takeover-safety-closeout.md) · [证据](research/evidence/2026-10-29-takeover-safety/)。管理接口要求服务器侧 `ADMIN_CRON_SECRET` / `x-cron-secret`；切流在真实观测未连接时返回 `503 not_ready`，未核实供应商条款不标为通过。
+- **当前边界与续接**：上传 `verifying` 不是解码完成；同步导出超限拒绝，尚无大包 Worker。接下来补实际指标采集与供应商核验链、解码/大包及真实验收。合成浏览器/PG 证据不等于真实 Storage、设备、家庭 G3/G4 或完整 G0–G4 通过；本批仅本地检查点，不触发原计划条件推送。
 
 ## 历史执行记录（原文保留，以最新核验为准）
 

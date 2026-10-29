@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { ProvenanceSearchCitation } from '@/lib/server/provenance-search'
 
 export interface TwoEntryProjectHubProps {
@@ -44,10 +44,17 @@ export function TwoEntryProjectHub({
     citations: ProvenanceSearchCitation[]
   } | null>(null)
   const [exporting, setExporting] = useState(false)
+  const [searchError, setSearchError] = useState<string | null>(null)
+  const [exportError, setExportError] = useState<string | null>(null)
+  const requestVersion = useRef(0)
+  useEffect(() => () => { requestVersion.current += 1 }, [projectId])
 
   async function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!onSearch) return
+    const version = ++requestVersion.current
+    setSearchError(null)
+    setSearchResult(null)
     setSearching(true)
     try {
       const res = await onSearch({
@@ -56,17 +63,22 @@ export function TwoEntryProjectHub({
         date: dateFilter || undefined,
         place: placeFilter || undefined,
       })
-      setSearchResult(res)
+      if (requestVersion.current === version) setSearchResult(res)
+    } catch {
+      if (requestVersion.current === version) setSearchError('Search is unavailable. Please try again.')
     } finally {
-      setSearching(false)
+      if (requestVersion.current === version) setSearching(false)
     }
   }
 
   async function handleExportClick() {
     if (!onTriggerExport) return
+    setExportError(null)
     setExporting(true)
     try {
       await onTriggerExport()
+    } catch {
+      setExportError('The archive could not be verified or downloaded. Please try again.')
     } finally {
       setExporting(false)
     }
@@ -81,7 +93,7 @@ export function TwoEntryProjectHub({
       <header className="border-b border-stone-200 pb-4">
         <h2 className="text-2xl font-semibold text-stone-900">{projectName}</h2>
         <p className="mt-1 text-base text-stone-600">
-          Choose how your family wants to preserve memories today — every original recording is checksum-verified and downloadable offline.
+          Choose how your family wants to preserve memories today. Uploads remain pending until server verification; AI drafts are separate from your originals.
         </p>
       </header>
 
@@ -102,6 +114,7 @@ export function TwoEntryProjectHub({
           <button
             type="button"
             onClick={onSelectUploadExisting}
+            disabled={!onSelectUploadExisting}
             data-testid="entry-upload-existing-btn"
             className="mt-4 min-h-[48px] w-full rounded-lg bg-stone-900 px-4 py-3 text-base font-medium text-white hover:bg-stone-800"
           >
@@ -124,6 +137,7 @@ export function TwoEntryProjectHub({
           <button
             type="button"
             onClick={onSelectRecordOrInvite}
+            disabled={!onSelectRecordOrInvite}
             data-testid="entry-record-or-invite-btn"
             className="mt-4 min-h-[48px] w-full rounded-lg bg-emerald-800 px-4 py-3 text-base font-medium text-white hover:bg-emerald-700"
           >
@@ -167,7 +181,7 @@ export function TwoEntryProjectHub({
               className="min-h-[44px] rounded-md border border-stone-300 px-3 py-2 text-sm"
             />
           </div>
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <input
               type="text"
               value={placeFilter}
@@ -175,11 +189,11 @@ export function TwoEntryProjectHub({
               placeholder="Place (e.g. Chicago)"
               aria-label="Filter by place"
               data-testid="provenance-search-place-input"
-              className="min-h-[44px] flex-1 rounded-md border border-stone-300 px-3 py-2 text-sm"
+              className="min-h-[44px] min-w-0 flex-1 rounded-md border border-stone-300 px-3 py-2 text-sm"
             />
             <button
               type="submit"
-              disabled={searching}
+              disabled={searching || !onSearch}
               data-testid="provenance-search-submit-btn"
               className="min-h-[44px] rounded-lg bg-stone-900 px-5 py-2 text-sm font-medium text-white hover:bg-stone-800 disabled:opacity-50"
             >
@@ -187,6 +201,7 @@ export function TwoEntryProjectHub({
             </button>
           </div>
         </form>
+        {searchError && <p role="alert" className="mt-3 text-sm text-red-700">{searchError}</p>}
 
         {searchResult && (
           <div className="mt-4 rounded-md bg-stone-50 p-4" data-testid="provenance-search-results">
@@ -207,6 +222,7 @@ export function TwoEntryProjectHub({
                     <button
                       type="button"
                       onClick={() => onSeekAudioCitation?.(citation)}
+                      disabled={!onSeekAudioCitation || !citation.mediaAssetId}
                       data-testid={`seek-citation-${citation.segmentId}`}
                       className="min-h-[40px] rounded bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-900 hover:bg-amber-200"
                     >
@@ -237,12 +253,13 @@ export function TwoEntryProjectHub({
         <button
           type="button"
           onClick={handleExportClick}
-          disabled={exporting}
+          disabled={exporting || !onTriggerExport}
           data-testid="export-complete-archive-btn"
           className="min-h-[48px] rounded-lg border border-stone-900 bg-white px-5 py-2.5 text-base font-medium text-stone-900 hover:bg-stone-100 disabled:opacity-50"
         >
-          {exporting ? 'Preparing Archive...' : 'Download Complete Archive (.zip + .pdf)'}
+          {exporting ? 'Preparing Archive...' : 'Download Verified Archive (.zip with .pdf)'}
         </button>
+        {exportError && <p role="alert" className="w-full text-sm text-red-700">{exportError}</p>}
       </section>
     </div>
   )

@@ -1,0 +1,204 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=projects/\[id\]/export
+
+FAIL src/app/api/projects/[id]/export/__tests__/route.test.ts
+  ● bounded synchronous archival export › fails closed on required transcript_versions errors
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+       99 |     errors[table] = { message: 'private storage locator or SQL detail' }
+      100 |     const response = await run()
+    > 101 |     expect(response.status).toBe(500)
+          |                             ^
+      102 |     expect(mockDownload).not.toHaveBeenCalled()
+      103 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+      104 |     expect(await response.text()).not.toContain('private storage locator')
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:101:29)
+
+  ● bounded synchronous archival export › blocks legacy text when its exact audio source was deleted
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      249 |     assets[0].state = 'deleted'
+      250 |     versions = []
+    > 251 |     expect((await run()).status).toBe(409)
+          |                                  ^
+      252 |     expect(mockDownload).not.toHaveBeenCalled()
+      253 |   })
+      254 |
+
+      at Object.toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:251:34)
+
+  ● bounded synchronous archival export › does not export text derived from tombstone audio
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      259 |     else assets[0].state = state
+      260 |     const response = await run()
+    > 261 |     expect(response.status).toBe(409)
+          |                             ^
+      262 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+      263 |     expect(await response.text()).not.toContain('DELETED_SOURCE_TEXT')
+      264 |     expect(mockDownload).not.toHaveBeenCalled()
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:261:29)
+
+  ● bounded synchronous archival export › does not export text derived from deleted audio
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      259 |     else assets[0].state = state
+      260 |     const response = await run()
+    > 261 |     expect(response.status).toBe(409)
+          |                             ^
+      262 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+      263 |     expect(await response.text()).not.toContain('DELETED_SOURCE_TEXT')
+      264 |     expect(mockDownload).not.toHaveBeenCalled()
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:261:29)
+
+  ● bounded synchronous archival export › does not export text derived from deleting audio
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      259 |     else assets[0].state = state
+      260 |     const response = await run()
+    > 261 |     expect(response.status).toBe(409)
+          |                             ^
+      262 |     expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+      263 |     expect(await response.text()).not.toContain('DELETED_SOURCE_TEXT')
+      264 |     expect(mockDownload).not.toHaveBeenCalled()
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:261:29)
+
+  ● bounded synchronous archival export › uses transcript lineage even when source audio has no legacy story link
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      268 |     assets[0].story_id = null
+      269 |     tombstones.push({ subject_id: asset.id, tombstone_at: '2026-10-29' })
+    > 270 |     expect((await run()).status).toBe(409)
+          |                                  ^
+      271 |     expect(queries.transcript_versions.eq).toHaveBeenCalledWith('project_id', project.id)
+      272 |     expect(queries.transcript_versions.in).toHaveBeenCalledWith('story_id', [story.id])
+      273 |     expect(mockDownload).not.toHaveBeenCalled()
+
+      at Object.toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:270:34)
+
+  ● bounded synchronous archival export › rejects unresolved missing transcript sources
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      279 |     if (condition === 'other-project') versions[0].project_id = 'another-project'
+      280 |     if (condition === 'other-story') assets[0].story_id = 'another-story'
+    > 281 |     expect((await run()).status).toBe(409)
+          |                                  ^
+      282 |     expect(mockDownload).not.toHaveBeenCalled()
+      283 |   })
+      284 |
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:281:34)
+
+  ● bounded synchronous archival export › rejects unresolved null transcript sources
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      279 |     if (condition === 'other-project') versions[0].project_id = 'another-project'
+      280 |     if (condition === 'other-story') assets[0].story_id = 'another-story'
+    > 281 |     expect((await run()).status).toBe(409)
+          |                                  ^
+      282 |     expect(mockDownload).not.toHaveBeenCalled()
+      283 |   })
+      284 |
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:281:34)
+
+  ● bounded synchronous archival export › rejects unresolved other-project transcript sources
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      279 |     if (condition === 'other-project') versions[0].project_id = 'another-project'
+      280 |     if (condition === 'other-story') assets[0].story_id = 'another-story'
+    > 281 |     expect((await run()).status).toBe(409)
+          |                                  ^
+      282 |     expect(mockDownload).not.toHaveBeenCalled()
+      283 |   })
+      284 |
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:281:34)
+
+  ● bounded synchronous archival export › rejects unresolved other-story transcript sources
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      279 |     if (condition === 'other-project') versions[0].project_id = 'another-project'
+      280 |     if (condition === 'other-story') assets[0].story_id = 'another-story'
+    > 281 |     expect((await run()).status).toBe(409)
+          |                                  ^
+      282 |     expect(mockDownload).not.toHaveBeenCalled()
+      283 |   })
+      284 |
+
+      at toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:281:34)
+
+  ● bounded synchronous archival export › fails closed when transcript lineage results are truncated
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      286 |     const defaultFrom = mockFrom.getMockImplementation()!
+      287 |     mockFrom.mockImplementation(table => table === 'transcript_versions' ? query(versions, null, 2) : defaultFrom(table))
+    > 288 |     expect((await run()).status).toBe(500)
+          |                                  ^
+      289 |     expect(mockDownload).not.toHaveBeenCalled()
+      290 |   })
+      291 |
+
+      at Object.toBe (src/app/api/projects/[id]/export/__tests__/route.test.ts:288:34)
+
+Test Suites: 1 failed, 1 total
+Tests:       11 failed, 31 passed, 42 total
+Snapshots:   0 total
+Time:        3.18 s
+Ran all test suites matching projects/\[id\]/export.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand '--testPathPatterns=projects/\[id\]/export'

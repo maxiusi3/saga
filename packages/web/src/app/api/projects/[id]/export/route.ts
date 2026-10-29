@@ -1,298 +1,206 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import JSZip from 'jszip'
-import { assembleCompleteArchivalPackage } from '@/lib/server/archival-export-service'
+import { assembleCompleteArchivalPackage, type ArchivalStoryInput } from '@/lib/server/archival-export-service'
+import { getAuthenticatedUser } from '@/lib/server/auth'
+import { requireProjectAccess } from '@/lib/server/project-access'
 import { getSupabaseAdmin } from '@/lib/supabase'
+import { planLegacyStoryMedia } from '@/lib/legacy-story-media'
+import type { ExportableMediaAsset } from '@/lib/server/media-export'
+
+export const runtime = 'nodejs'
+
+// This route buffers a ZIP in memory. Larger packages require an asynchronous
+// Worker (not implemented); never fall back to a partial synchronous archive.
+const MAX_STORIES = 200
+const MAX_ASSETS = 100
+const MAX_TRANSCRIPT_VERSIONS = 1000
+const MAX_MEDIA_BYTES = 25 * 1024 * 1024
+const MAX_METADATA_BYTES = 2 * 1024 * 1024
+
+type ArchiveStoryRow = Record<string, unknown> & ArchivalStoryInput & { tombstone_at?: string | null }
+interface ArchiveAssetRow extends ExportableMediaAsset { project_id: string; tombstone_at?: string | null }
+interface TombstoneRow { subject_id: string }
+interface TranscriptSourceRow { id: string; project_id: string; story_id: string; asset_id: string | null }
+
+function reply(body: unknown, status: number, headers: Headers) {
+  const response = NextResponse.json(body, { status, headers })
+  response.headers.set('Cache-Control', 'no-store')
+  return response
+}
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const auth = await getAuthenticatedUser(request)
+  if (!auth.ok) {
+    auth.response.headers.set('Cache-Control', 'no-store')
+    return auth.response
+  }
+  if (process.env.MEDIA_ASSETS_ENABLED !== 'true') {
+    return reply({ error: 'Archival export is not enabled' }, 503, auth.headers)
+  }
+
+  const { id: projectId } = await params
+  const access = await requireProjectAccess(projectId, auth.user)
+  if (!access.ok) return reply(await access.response.json(), access.response.status, auth.headers)
+  let admin: ReturnType<typeof getSupabaseAdmin>
+  try { admin = getSupabaseAdmin() } catch {
+    return reply({ error: 'Archival export is not configured' }, 503, auth.headers)
+  }
+
   try {
-    const supabase = createRouteHandlerClient({ cookies })
-    const { id: projectId } = await params
+    const { data: project, error: projectError } = await admin.from('projects')
+      .select('id, name, description, facilitator_id').eq('id', projectId).maybeSingle()
+    if (projectError) return reply({ error: 'Failed to load project' }, 500, auth.headers)
+    if (!project) return reply({ error: 'Project not found' }, 404, auth.headers)
 
-    // 验证用户身份
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+    const storyResult = await admin.from('stories').select('*', { count: 'exact' })
+      .eq('project_id', projectId).order('created_at', { ascending: true }).limit(MAX_STORIES + 1)
+    const assetResult = await admin.from('media_assets').select('*', { count: 'exact' })
+      .eq('project_id', projectId).order('created_at', { ascending: true }).limit(MAX_ASSETS + 1)
+    const deletionResult = await admin.from('deletion_requests')
+      .select('subject_id, tombstone_at', { count: 'exact' }).eq('project_id', projectId).not('tombstone_at', 'is', null)
+    if (storyResult.error || assetResult.error || deletionResult.error ||
+        !Array.isArray(storyResult.data) || !Array.isArray(assetResult.data) || !Array.isArray(deletionResult.data) ||
+        deletionResult.count == null || deletionResult.count !== deletionResult.data.length) {
+      return reply({ error: 'Failed to load complete archive and deletion evidence' }, 500, auth.headers)
+    }
+    if ((storyResult.count ?? storyResult.data.length) > MAX_STORIES || storyResult.data.length > MAX_STORIES ||
+        (assetResult.count ?? assetResult.data.length) > MAX_ASSETS || assetResult.data.length > MAX_ASSETS ||
+        Buffer.byteLength(JSON.stringify([project, storyResult.data, assetResult.data])) > MAX_METADATA_BYTES) {
+      return reply({ error: 'Archive exceeds synchronous limits; larger exports are not available yet' }, 413, auth.headers)
+    }
+    if (storyResult.count == null || storyResult.count !== storyResult.data.length ||
+        assetResult.count == null || assetResult.count !== assetResult.data.length) {
+      return reply({ error: 'Failed to load the complete archive' }, 500, auth.headers)
     }
 
-    // 验证用户是否是项目所有者或有权限访问项目
-    const { data: project, error: projectError } = await supabase
-      .from('projects')
-      .select(`
-        *,
-        project_roles!inner(user_id, role)
-      `)
-      .eq('id', projectId)
-      .or(`owner_id.eq.${user.id},project_roles.user_id.eq.${user.id}`)
-      .single()
-
-    if (projectError || !project) {
-      return NextResponse.json(
-        { error: 'Project not found or access denied' },
-        { status: 404 }
-      )
+    const storyRows = storyResult.data as ArchiveStoryRow[]
+    const assetRows = assetResult.data as ArchiveAssetRow[]
+    const tombstones = new Set<string>((deletionResult.data as TombstoneRow[]).map(row => row.subject_id))
+    for (const story of storyRows) if (story.tombstone_at != null) tombstones.add(story.id)
+    const stories = storyRows.filter(story => !tombstones.has(story.id))
+    const removed = (asset: ArchiveAssetRow) => asset.tombstone_at != null || ['deleted', 'deleting'].includes(asset.state) ||
+      tombstones.has(asset.id) || (!!asset.story_id && tombstones.has(asset.story_id))
+    const assets = assetRows.filter(asset => !removed(asset))
+    if (assets.some(asset => asset.state !== 'ready' || typeof asset.byte_size !== 'number' || !Number.isSafeInteger(asset.byte_size) || asset.byte_size < 0 ||
+        typeof asset.sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(asset.sha256))) {
+      return reply({ error: 'Media assets are incomplete and cannot be exported' }, 409, auth.headers)
+    }
+    if (assets.reduce((total, asset) => total + (asset.byte_size ?? 0), 0) > MAX_MEDIA_BYTES) {
+      return reply({ error: 'Archive exceeds synchronous limits; larger exports are not available yet' }, 413, auth.headers)
     }
 
-    // 获取项目的所有故事
-    const { data: stories, error: storiesError } = await supabase
-      .from('stories')
-      .select(`
-        *,
-        story_interactions (
-          *,
-          user:user_id (
-            email,
-            user_metadata
-          )
-        )
-      `)
-      .eq('project_id', projectId)
-      .order('created_at', { ascending: true })
-
-    if (storiesError) {
-      console.error('Error fetching stories:', storiesError)
-      return NextResponse.json(
-        { error: 'Failed to fetch project stories' },
-        { status: 500 }
-      )
+    const storyIds = stories.map(story => story.id)
+    const sources = storyIds.length ? await admin.from('transcript_versions')
+      .select('id, project_id, story_id, asset_id', { count: 'exact' }).eq('project_id', projectId)
+      .in('story_id', storyIds).limit(MAX_TRANSCRIPT_VERSIONS + 1)
+      : { data: [], error: null, count: 0 }
+    if (sources.error || !Array.isArray(sources.data) || sources.count == null || sources.count !== sources.data.length) {
+      return reply({ error: 'Failed to verify complete transcript lineage' }, 500, auth.headers)
+    }
+    if (sources.count > MAX_TRANSCRIPT_VERSIONS || Buffer.byteLength(JSON.stringify(sources.data)) > MAX_METADATA_BYTES) {
+      return reply({ error: 'Archive lineage exceeds synchronous limits' }, 413, auth.headers)
+    }
+    // stories.transcript/summary do not identify which revision supplied their
+    // text. Fail closed if any established audio source is removed/unresolved;
+    // deleting an unrelated photo must not remove independently sourced text.
+    const unsafeLineage = (sources.data as TranscriptSourceRow[]).some(source => {
+      const original = assetRows.find(asset => asset.id === source.asset_id)
+      return source.project_id !== projectId || !storyIds.includes(source.story_id) ||
+        !original || original.project_id !== projectId || original.kind !== 'original_audio' ||
+        (!!original.story_id && original.story_id !== source.story_id) || removed(original)
+    })
+    const removedLegacyAudio = assetRows.some(asset => asset.kind === 'original_audio' &&
+      !!asset.story_id && storyIds.includes(asset.story_id) && removed(asset))
+    if (unsafeLineage || removedLegacyAudio) {
+      return reply({ error: 'Story sources were removed or could not be verified; export is blocked' }, 409, auth.headers)
     }
 
-    // 获取项目成员信息
-    const { data: members, error: membersError } = await supabase
-      .from('project_roles')
-      .select(`
-        *,
-        user:user_id (
-          email,
-          user_metadata
-        )
-      `)
-      .eq('project_id', projectId)
-
-    if (membersError) {
-      console.error('Error fetching members:', membersError)
+    let verifiedStorageHost: string | undefined
+    try { verifiedStorageHost = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '').host } catch { /* Exact local keys can still be matched. */ }
+    for (const story of stories) {
+      const plan = planLegacyStoryMedia(story, {
+        verifiedStorageHost,
+        verifiedBucketsByField: { audio_url: 'audio-recordings', mastered_audio_url: 'audio-recordings', photo_url: 'saga', photo_urls: 'saga', images: 'saga' },
+      })
+      for (const reference of plan.references) {
+        if (reference.rawValue == null || reference.rawValue === '') continue
+        const matches = reference.locator.status === 'mapped' ? assetRows.filter(asset =>
+          asset.story_id === story.id && asset.bucket === reference.locator.bucket &&
+          asset.object_key === reference.locator.objectKey && asset.kind === reference.kind,
+        ) : []
+        // A basename, unrelated story asset, or signed URL on another host is
+        // not proof of representation. Deleted references are intentionally omitted.
+        if (matches.length !== 1 || (!removed(matches[0]) && !assets.includes(matches[0]))) {
+          return reply({ error: 'Legacy media must be reconciled before a complete export' }, 409, auth.headers)
+        }
+      }
     }
 
-    // 创建ZIP文件
     const zip = new JSZip()
-
-    if (process.env.MEDIA_ASSETS_ENABLED === 'true') {
-      let mediaAdmin: ReturnType<typeof getSupabaseAdmin>
-      try {
-        mediaAdmin = getSupabaseAdmin()
-      } catch {
-        return NextResponse.json({ error: 'Media asset export is not configured' }, { status: 503 })
-      }
-      const { data: assets, error: assetsError } = await mediaAdmin
-        .from('media_assets')
-        .select('id, story_id, kind, original_filename, mime_type, byte_size, sha256, state, version, bucket, object_key')
-        .eq('project_id', projectId)
-        .order('created_at', { ascending: true })
-
-      if (assetsError) {
-        return NextResponse.json({ error: 'Failed to load media assets for export' }, { status: 500 })
-      }
-
-      const { data: tombstones } = await mediaAdmin
-        .from('deletion_requests')
-        .select('subject_id, tombstone_at')
-        .eq('project_id', projectId)
-        .not('tombstone_at', 'is', null)
-
-      const tombstonedSubjects = new Set(
-        (tombstones || [])
-          .filter((row: { subject_id?: string; tombstone_at?: string | null }) => Boolean(row?.tombstone_at))
-          .map((row: { subject_id: string }) => row.subject_id),
-      )
-
-      const exportableAssets = (assets || [])
-        .filter((asset: { state?: string }) => asset.state !== 'deleted')
-        .map((asset: any) => ({
-          ...asset,
-          tombstoned:
-            tombstonedSubjects.has(asset.id) ||
-            (typeof asset.story_id === 'string' && tombstonedSubjects.has(asset.story_id)),
-        }))
-
-      try {
-        await assembleCompleteArchivalPackage(zip, {
-          projectId,
-          projectName: project.name,
-          projectDescription: project.description,
-          createdBy: user.id,
-          exportedAt: new Date().toISOString(),
-          assets: exportableAssets,
-          stories: (stories || []).filter((story: { id: string }) => !tombstonedSubjects.has(story.id)),
-          readObject: async asset => {
-            const { data, error } = await mediaAdmin.storage.from(asset.bucket).download(asset.object_key)
-            if (error || !data) throw new Error(`Media asset unavailable: ${asset.id}`)
-            return Buffer.from(await data.arrayBuffer())
-          },
-        })
-      } catch (error) {
-        console.error('Media asset export verification failed:', error)
-        return NextResponse.json({ error: 'Media assets are incomplete and cannot be exported' }, { status: 409 })
-      }
-    }
-
-    // AUD-04 FIX: Add Beta notice in README
-    const betaNotice = `# UR Saga Data Export (Beta)
-
-This export currently includes:
-- ✅ Project information (JSON)
-- ✅ All stories with transcripts and summaries (JSON + TXT)
-- ✅ Story interactions and comments
-
-Coming soon:
-- 🔜 Audio recordings (.webm/.mp3)
-- 🔜 Photos and media attachments
-- 🔜 Timeline visualizations
-
-Export Date: ${new Date().toISOString()}
-Export Version: 1.0 (Beta)
-`
-
-    zip.file('README.md', betaNotice)
-
-    // 添加项目信息文件
-    const projectInfo = {
-      project: {
-        id: project.id,
-        name: project.name,
-        description: project.description,
-        created_at: project.created_at,
-        updated_at: project.updated_at,
-        owner_id: project.owner_id
-      },
-      members: members || [],
-      export_date: new Date().toISOString(),
-      export_version: '1.0'
-    }
-
-    zip.file('project-info.json', JSON.stringify(projectInfo, null, 2))
-
-    // 添加故事数据
-    const storiesData = {
-      stories: stories || [],
-      total_count: stories?.length || 0
-    }
-
-    zip.file('stories.json', JSON.stringify(storiesData, null, 2))
-
-    // 为每个故事创建单独的文件夹
-    if (stories && stories.length > 0) {
-      const storiesFolder = zip.folder('stories')
-      
-      for (const story of stories) {
-        const storyFolder = storiesFolder?.folder(`story-${story.id}`)
-        
-        // 故事基本信息
-        const storyInfo = {
-          id: story.id,
-          title: story.title,
-          transcript: story.transcript,
-          summary: story.summary,
-          duration: story.duration,
-          created_at: story.created_at,
-          updated_at: story.updated_at,
-          user_id: story.user_id,
-          interactions: story.story_interactions || []
-        }
-
-        storyFolder?.file('story-info.json', JSON.stringify(storyInfo, null, 2))
-
-        // 如果有转录文本，创建单独的文本文件
-        if (story.transcript) {
-          storyFolder?.file('transcript.txt', story.transcript)
-        }
-
-        // 如果有摘要，创建单独的摘要文件
-        if (story.summary) {
-          storyFolder?.file('summary.txt', story.summary)
-        }
-
-        // 创建互动记录文件
-        if (story.story_interactions && story.story_interactions.length > 0) {
-          const interactionsData = {
-            interactions: story.story_interactions,
-            total_count: story.story_interactions.length
+    let downloadedBytes = 0
+    let exceededLimit = false
+    try {
+      await assembleCompleteArchivalPackage(zip, {
+        projectId, projectName: project.name, projectDescription: project.description,
+        createdBy: auth.user.id, exportedAt: new Date().toISOString(), assets,
+        // Never append the raw legacy row, signed locators, or member details.
+        stories: stories.map(story => ({ id: story.id, title: story.title, transcript: story.transcript,
+          summary: story.summary, created_at: story.created_at })),
+        readObject: async asset => {
+          const { data: stream, error } = await admin.storage.from(asset.bucket).download(asset.object_key).asStream()
+          if (error || !stream) throw new Error('Archive source unavailable')
+          const reader = stream.getReader()
+          const chunks: Buffer[] = []
+          let objectBytes = 0
+          try {
+            while (true) {
+              if (request.signal.aborted) throw new Error('Export cancelled')
+              const { done, value } = await reader.read()
+              if (done) break
+              downloadedBytes += value.byteLength
+              objectBytes += value.byteLength
+              if (downloadedBytes > MAX_MEDIA_BYTES) {
+                exceededLimit = true
+                throw new Error('Archive byte limit exceeded')
+              }
+              if (objectBytes > (asset.byte_size ?? 0)) throw new Error('Archive source size mismatch')
+              chunks.push(Buffer.from(value))
+            }
+          } finally {
+            await reader.cancel().catch(() => {})
+            reader.releaseLock()
           }
-          storyFolder?.file('interactions.json', JSON.stringify(interactionsData, null, 2))
-        }
-      }
+          return Buffer.concat(chunks)
+        },
+      })
+    } catch {
+      return reply({ error: exceededLimit ? 'Archive exceeds synchronous limits' : 'Media assets are incomplete and cannot be exported' }, exceededLimit ? 413 : 409, auth.headers)
     }
 
-    // 添加README文件
-    const readmeContent = `# ${project.name} - Data Export
+    const zipBuffer = await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE', compressionOptions: { level: 6 } })
+    const latestAccess = await requireProjectAccess(projectId, auth.user)
+    if (!latestAccess.ok) return reply(await latestAccess.response.json(), latestAccess.response.status, auth.headers)
 
-This archive contains all data from your Saga project "${project.name}".
-
-## Contents
-
-- **project-info.json**: Basic project information and member list
-- **stories.json**: Complete list of all stories with metadata
-- **stories/**: Individual folders for each story containing:
-  - story-info.json: Complete story data including interactions
-  - transcript.txt: Story transcript (if available)
-  - summary.txt: Story summary (if available)
-  - interactions.json: Comments and follow-up questions
-
-## Export Information
-
-- Export Date: ${new Date().toISOString()}
-- Export Version: 1.0
-- Total Stories: ${stories?.length || 0}
-- Project Created: ${project.created_at}
-
-## Data Format
-
-All data is exported in JSON format for easy parsing and import into other systems.
-Text files are provided in UTF-8 encoding.
-
-## Privacy Notice
-
-This export contains personal stories and information. Please handle with care
-and in accordance with your family's privacy preferences.
-
----
-Generated by Saga - AI Family Biography Platform
-`
-
-    zip.file('README.md', readmeContent)
-
-    // 生成ZIP文件
-    const zipBuffer = await zip.generateAsync({ 
-      type: 'nodebuffer',
-      compression: 'DEFLATE',
-      compressionOptions: { level: 6 }
-    })
-
-    // 生成文件名
-    const timestamp = new Date().toISOString().split('T')[0]
-    const filename = `${project.name.replace(/[^a-zA-Z0-9]/g, '_')}_export_${timestamp}.zip`
-
-    // 返回ZIP文件
-    return new NextResponse(new Uint8Array(zipBuffer), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/zip',
-        'Content-Disposition': `attachment; filename="${filename}"`,
-        'Content-Length': zipBuffer.length.toString(),
-      },
-    })
-
-  } catch (error) {
-    console.error('Error in POST /api/projects/[id]/export:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    // Recheck after all streaming and asynchronous compression. No more awaited
+    // work may follow this deletion check before releasing the archive bytes.
+    const subjects = [...stories.map(story => story.id), ...assets.map(asset => asset.id)]
+    if (subjects.length) {
+      const latest = await admin.from('deletion_requests').select('subject_id, tombstone_at')
+        .eq('project_id', projectId).in('subject_id', subjects).not('tombstone_at', 'is', null)
+      if (latest.error || !Array.isArray(latest.data)) return reply({ error: 'Failed to verify deletion status' }, 500, auth.headers)
+      if ((latest.data as TombstoneRow[]).some(row => subjects.includes(row.subject_id))) return reply({ error: 'Archive changed during export; please retry' }, 409, auth.headers)
+    }
+    const filename = `${String(project.name).replace(/[^a-zA-Z0-9]/g, '_').slice(0, 80)}_export_${new Date().toISOString().slice(0, 10)}.zip`
+    const headers = new Headers(auth.headers)
+    headers.set('Cache-Control', 'no-store')
+    headers.set('Content-Type', 'application/zip')
+    headers.set('Content-Disposition', `attachment; filename="${filename}"`)
+    headers.set('Content-Length', String(zipBuffer.length))
+    return new NextResponse(new Uint8Array(zipBuffer), { status: 200, headers })
+  } catch {
+    return reply({ error: 'Archival export is unavailable' }, 500, auth.headers)
   }
 }

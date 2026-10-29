@@ -3,6 +3,24 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { TwoEntryProjectHub } from '../TwoEntryProjectHub'
 
 describe('TwoEntryProjectHub (T01/T09/T10 Two-Entry, Provenance Search & Offline Export UI)', () => {
+  it('disables unavailable actions instead of presenting silent no-op buttons', () => {
+    render(<TwoEntryProjectHub projectId="project-1" projectName="Family archive" />)
+    for (const id of ['entry-upload-existing-btn', 'entry-record-or-invite-btn', 'provenance-search-submit-btn', 'export-complete-archive-btn']) {
+      expect(screen.getByTestId(id)).toBeDisabled()
+    }
+  })
+
+  it('shows recoverable search and export errors without displaying provider details', async () => {
+    render(<TwoEntryProjectHub projectId="project-1" projectName="Family archive"
+      onSearch={jest.fn().mockRejectedValue(new Error('private details'))}
+      onTriggerExport={jest.fn().mockRejectedValue(new Error('private details'))} />)
+    fireEvent.click(screen.getByTestId('provenance-search-submit-btn'))
+    await waitFor(() => expect(screen.getByText('Search is unavailable. Please try again.')).toBeInTheDocument())
+    fireEvent.click(screen.getByTestId('export-complete-archive-btn'))
+    await waitFor(() => expect(screen.getByText('The archive could not be verified or downloaded. Please try again.')).toBeInTheDocument())
+    expect(screen.queryByText('private details')).not.toBeInTheDocument()
+  })
+
   it('renders both primary entries (Upload Existing Audio & Record/Invite) and triggers callbacks', () => {
     const onUpload = jest.fn()
     const onRecord = jest.fn()
@@ -35,6 +53,7 @@ describe('TwoEntryProjectHub (T01/T09/T10 Two-Entry, Provenance Search & Offline
           storyId: 'story-1',
           storyTitle: 'Moving to Chicago in 1968',
           transcriptVersionId: 'tv-1',
+          mediaAssetId: 'asset-1',
           segmentId: 'seg-1968',
           startMs: 0,
           endMs: 4800,

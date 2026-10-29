@@ -1,0 +1,140 @@
+import JSZip from 'jszip'
+import { useAuthStore } from '@/stores/auth-store'
+import { createClientSupabase } from '@/lib/supabase'
+import type { ProvenanceSearchCitation } from '@/lib/server/provenance-search'
+
+export interface ArchiveSearchFilters {
+  query: string
+  person?: string
+  date?: string
+  place?: string
+}
+
+export interface ArchiveSearchResult {
+  status: 'grounded_answer' | 'no_matching_sources'
+  answerText: string
+  citations: ProvenanceSearchCitation[]
+}
+
+function record(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === 'object' && !Array.isArray(value)
+}
+
+async function request(path: string, init: RequestInit = {}): Promise<Response> {
+  const token = await useAuthStore.getState().getAccessToken()
+  init.signal?.throwIfAborted()
+  const headers = new Headers(init.headers)
+  if (token) headers.set('Authorization', `Bearer ${token}`)
+  const response = await fetch(path, {
+    ...init, headers, credentials: 'same-origin', cache: 'no-store', redirect: 'error',
+  })
+  if (!response.ok) throw new Error('Archive request failed')
+  return response
+}
+
+async function json(response: Response): Promise<unknown> {
+  try { return await response.json() } catch { throw new Error('Invalid archive response') }
+}
+
+function citation(value: unknown): value is ProvenanceSearchCitation {
+  if (!record(value)) return false
+  return ['entryId', 'storyId', 'storyTitle', 'transcriptVersionId', 'segmentId', 'quotedText']
+    .every(key => typeof value[key] === 'string') &&
+    Number.isSafeInteger(value.startMs) && Number.isSafeInteger(value.endMs) &&
+    Number(value.startMs) >= 0 && Number(value.endMs) > Number(value.startMs) &&
+    (value.mediaAssetId == null || typeof value.mediaAssetId === 'string')
+}
+
+export async function searchProjectArchive(
+  projectId: string, filters: ArchiveSearchFilters, signal?: AbortSignal,
+): Promise<ArchiveSearchResult> {
+  const query = new URLSearchParams({ q: filters.query })
+  for (const key of ['person', 'date', 'place'] as const) {
+    if (filters[key]) query.set(key, filters[key])
+  }
+  const body = await json(await request(`/api/projects/${encodeURIComponent(projectId)}/search?${query}`, { signal }))
+  if (!record(body) || !['grounded_answer', 'no_matching_sources'].includes(String(body.status)) ||
+    typeof body.answerText !== 'string' || !Array.isArray(body.citations) || !body.citations.every(citation) ||
+    (body.status === 'no_matching_sources' && body.citations.length !== 0)) {
+    throw new Error('Invalid archive response')
+  }
+  return { status: body.status as ArchiveSearchResult['status'], answerText: body.answerText, citations: body.citations }
+}
+
+export async function getCitationAudioUrl(assetId: string, signal?: AbortSignal): Promise<string> {
+  const body = await json(await request(`/api/media/assets/${encodeURIComponent(assetId)}/access`, { signal }))
+  try {
+    if (!record(body) || typeof body.signedUrl !== 'string') throw new Error()
+    const url = new URL(body.signedUrl)
+    const localHttp = url.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)
+    if ((url.protocol !== 'https:' && !localHttp) || url.username || url.password) throw new Error()
+    return url.href
+  } catch { throw new Error('Invalid audio response') }
+}
+
+export async function downloadProjectArchive(projectId: string, signal?: AbortSignal): Promise<Blob> {
+  const response = await request(`/api/projects/${encodeURIComponent(projectId)}/export`, { method: 'POST', signal })
+  if (response.headers.get('content-type')?.split(';')[0] !== 'application/zip') throw new Error('Invalid archive download')
+  const blob = await response.blob()
+  if (blob.size < 4 || blob.size > 32 * 1024 * 1024) throw new Error('Invalid archive download')
+  try {
+    // Check the container without expanding every entry in browser memory.
+    // Original-byte integrity is verified by the server before assembly.
+    await JSZip.loadAsync(await blob.arrayBuffer(), { checkCRC32: false })
+  } catch { throw new Error('Invalid archive download') }
+  signal?.throwIfAborted()
+  return blob
+}
+
+function uploadAsset(body: unknown, projectId: string) {
+  if (!record(body) || !record(body.asset)) throw new Error('Invalid upload response')
+  const asset = body.asset
+  if (typeof asset.id !== 'string' || !/^[A-Za-z0-9_-]{3,128}$/.test(asset.id) ||
+      asset.project_id !== projectId || asset.bucket !== 'audio-recordings' ||
+      typeof asset.object_key !== 'string' || asset.tombstone_at != null ||
+      typeof asset.state !== 'string') throw new Error('Invalid upload response')
+  return { id: asset.id, state: asset.state, bucket: asset.bucket, objectKey: asset.object_key }
+}
+
+function isExistingObjectError(error: unknown): boolean {
+  if (!record(error)) return false
+  const status = String(error.status ?? error.statusCode)
+  if (status === '409') return true
+  // Storage still supports the old 400 duplicate-object response. Other 400s
+  // (invalid key/token, for example) must not be mistaken for a completed PUT.
+  return status === '400' && (error.statusCode === 'Duplicate' ||
+    (typeof error.message === 'string' && /^(?:asset already exists|the resource already exists|duplicate)$/i.test(error.message)))
+}
+
+export async function importProjectAudio(
+  projectId: string, file: File, idempotencyKey: string, signal?: AbortSignal,
+): Promise<{ id: string; state: 'ready' | 'verifying' }> {
+  if (!file.type.startsWith('audio/') || file.size === 0 || file.size > 100 * 1024 * 1024) {
+    throw new Error('Select an audio file between 1 byte and 100 MiB')
+  }
+  const body = await json(await request('/api/media/assets', {
+    method: 'POST', signal, headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ projectId, kind: 'original_audio', mimeType: file.type,
+      originalFilename: file.name, expectedBytes: file.size, idempotencyKey }),
+  }))
+  const asset = uploadAsset(body, projectId)
+  if (asset.state === 'ready' || asset.state === 'verifying') return { id: asset.id, state: asset.state }
+  if (!['pending_upload', 'uploaded'].includes(asset.state)) throw new Error('Audio upload is not eligible for retry')
+  if (asset.state === 'pending_upload') {
+    if (!record(body) || !record(body.upload) || typeof body.upload.token !== 'string' || !body.upload.token) {
+      throw new Error('Invalid upload response')
+    }
+    signal?.throwIfAborted()
+    const result = await createClientSupabase().storage.from(asset.bucket)
+      .uploadToSignedUrl(asset.objectKey, body.upload.token, file, { contentType: file.type })
+    // A previous PUT may have succeeded without its response. Never overwrite it;
+    // an explicit conflict is reconciled by the server's completion verifier.
+    if (result.error && !isExistingObjectError(result.error)) throw new Error('Audio upload failed')
+  }
+  signal?.throwIfAborted()
+  const completed = uploadAsset(await json(await request(`/api/media/assets/${encodeURIComponent(asset.id)}/complete`, {
+    method: 'POST', signal,
+  })), projectId)
+  if (completed.id !== asset.id || !['ready', 'verifying'].includes(completed.state)) throw new Error('Invalid upload response')
+  return { id: completed.id, state: completed.state as 'ready' | 'verifying' }
+}

@@ -1,0 +1,651 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/projects/[id]/search/__tests__/route.test.ts
+
+FAIL src/app/api/projects/[id]/search/__tests__/route.test.ts
+  ● project provenance search boundary › uses central access and resolves real-schema provenance before producing a citation
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+        "endMs": 1200,
+    -   "mediaAssetId": "asset-1",
+    +   "mediaAssetId": null,
+        "startMs": 0,
+    -   "storyTitle": "Family source story",
+    +   "storyTitle": "Story",
+      }
+
+      67 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+      68 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+    > 69 |     expect((await response.json()).citations[0]).toMatchObject({ mediaAssetId: 'asset-1', storyTitle: story.title, startMs: 0, endMs: 1200 })
+         |                                                  ^
+      70 |     expect(mockFrom).not.toHaveBeenCalledWith('projects')
+      71 |     for (const table of ['transcript_versions', 'stories', 'media_assets', 'deletion_requests']) {
+      72 |       expect(queries[table].eq).toHaveBeenCalledWith('project_id', 'proj-1')
+
+      at Object.toMatchObject (src/app/api/projects/[id]/search/__tests__/route.test.ts:69:50)
+
+  ● project provenance search boundary › fails closed on media_assets errors
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      91 |     tableErrors[table] = { message: 'private database detail' }
+      92 |     const response = await run()
+    > 93 |     expect(response.status).toBe(500)
+         |                             ^
+      94 |     expect(await response.text()).not.toContain('private database detail')
+      95 |   })
+      96 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:93:29)
+
+  ● project provenance search boundary › fails closed on transcript_versions errors
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      91 |     tableErrors[table] = { message: 'private database detail' }
+      92 |     const response = await run()
+    > 93 |     expect(response.status).toBe(500)
+         |                             ^
+      94 |     expect(await response.text()).not.toContain('private database detail')
+      95 |   })
+      96 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:93:29)
+
+  ● project provenance search boundary › fails closed on stories errors
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      91 |     tableErrors[table] = { message: 'private database detail' }
+      92 |     const response = await run()
+    > 93 |     expect(response.status).toBe(500)
+         |                             ^
+      94 |     expect(await response.text()).not.toContain('private database detail')
+      95 |   })
+      96 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:93:29)
+
+  ● project provenance search boundary › removes source asset-1 with deletion evidence
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no_matching_sources"
+    Received: "grounded_answer"
+
+      100 |     expect(response.status).toBe(200)
+      101 |     const result = await response.json()
+    > 102 |     expect(result.status).toBe('no_matching_sources')
+          |                           ^
+      103 |     expect(result.citations).toEqual([])
+      104 |     expect(result.answerText).not.toContain(row.searchable_text)
+      105 |   })
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:102:27)
+
+  ● project provenance search boundary › screens optional asset-row tombstones even when the real-schema index remains active
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      107 |   it('screens optional asset-row tombstones even when the real-schema index remains active', async () => {
+      108 |     tableRows.media_assets[0].tombstone_at = '2026-10-29'
+    > 109 |     expect((await (await run()).json()).citations).toEqual([])
+          |                                                    ^
+      110 |   })
+      111 |
+      112 |   it.each(['pending_upload', 'uploaded', 'verifying', 'quarantined', 'deleting', 'deleted'])('does not claim a %s asset is a verified source', async state => {
+
+      at Object.toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:109:52)
+
+  ● project provenance search boundary › does not claim a pending_upload asset is a verified source
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no_matching_sources"
+    Received: "grounded_answer"
+
+      115 |     expect(response.status).toBe(200)
+      116 |     const result = await response.json()
+    > 117 |     expect(result.status).toBe('no_matching_sources')
+          |                           ^
+      118 |     expect(result.citations).toEqual([])
+      119 |   })
+      120 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:117:27)
+
+  ● project provenance search boundary › does not claim a uploaded asset is a verified source
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no_matching_sources"
+    Received: "grounded_answer"
+
+      115 |     expect(response.status).toBe(200)
+      116 |     const result = await response.json()
+    > 117 |     expect(result.status).toBe('no_matching_sources')
+          |                           ^
+      118 |     expect(result.citations).toEqual([])
+      119 |   })
+      120 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:117:27)
+
+  ● project provenance search boundary › does not claim a verifying asset is a verified source
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no_matching_sources"
+    Received: "grounded_answer"
+
+      115 |     expect(response.status).toBe(200)
+      116 |     const result = await response.json()
+    > 117 |     expect(result.status).toBe('no_matching_sources')
+          |                           ^
+      118 |     expect(result.citations).toEqual([])
+      119 |   })
+      120 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:117:27)
+
+  ● project provenance search boundary › does not claim a quarantined asset is a verified source
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no_matching_sources"
+    Received: "grounded_answer"
+
+      115 |     expect(response.status).toBe(200)
+      116 |     const result = await response.json()
+    > 117 |     expect(result.status).toBe('no_matching_sources')
+          |                           ^
+      118 |     expect(result.citations).toEqual([])
+      119 |   })
+      120 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:117:27)
+
+  ● project provenance search boundary › does not claim a deleting asset is a verified source
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no_matching_sources"
+    Received: "grounded_answer"
+
+      115 |     expect(response.status).toBe(200)
+      116 |     const result = await response.json()
+    > 117 |     expect(result.status).toBe('no_matching_sources')
+          |                           ^
+      118 |     expect(result.citations).toEqual([])
+      119 |   })
+      120 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:117:27)
+
+  ● project provenance search boundary › does not claim a deleted asset is a verified source
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no_matching_sources"
+    Received: "grounded_answer"
+
+      115 |     expect(response.status).toBe(200)
+      116 |     const result = await response.json()
+    > 117 |     expect(result.status).toBe('no_matching_sources')
+          |                           ^
+      118 |     expect(result.citations).toEqual([])
+      119 |   })
+      120 |
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:117:27)
+
+  ● project provenance search boundary › suppresses citations when the transcript_versions source row is missing
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      123 |     const response = await run()
+      124 |     expect(response.status).toBe(200)
+    > 125 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      126 |   })
+      127 |
+      128 |   it('never labels an unbound legacy transcript as a verified citation', async () => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:125:47)
+
+  ● project provenance search boundary › suppresses citations when the stories source row is missing
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      123 |     const response = await run()
+      124 |     expect(response.status).toBe(200)
+    > 125 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      126 |   })
+      127 |
+      128 |   it('never labels an unbound legacy transcript as a verified citation', async () => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:125:47)
+
+  ● project provenance search boundary › suppresses citations when the media_assets source row is missing
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      123 |     const response = await run()
+      124 |     expect(response.status).toBe(200)
+    > 125 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      126 |   })
+      127 |
+      128 |   it('never labels an unbound legacy transcript as a verified citation', async () => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:125:47)
+
+  ● project provenance search boundary › never labels an unbound legacy transcript as a verified citation
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "no_matching_sources"
+    Received: "grounded_answer"
+
+      131 |     expect(response.status).toBe(200)
+      132 |     const result = await response.json()
+    > 133 |     expect(result.status).toBe('no_matching_sources')
+          |                           ^
+      134 |     expect(result.citations).toEqual([])
+      135 |   })
+      136 |
+
+      at Object.toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:133:27)
+
+  ● project provenance search boundary › rejects misaligned source evidence transcript_versions.project_id=other-project
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      146 |     const response = await run()
+      147 |     expect(response.status).toBe(200)
+    > 148 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      149 |   })
+      150 |
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:148:47)
+
+  ● project provenance search boundary › rejects misaligned source evidence transcript_versions.story_id=other-story
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      146 |     const response = await run()
+      147 |     expect(response.status).toBe(200)
+    > 148 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      149 |   })
+      150 |
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:148:47)
+
+  ● project provenance search boundary › rejects misaligned source evidence stories.project_id=other-project
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      146 |     const response = await run()
+      147 |     expect(response.status).toBe(200)
+    > 148 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      149 |   })
+      150 |
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:148:47)
+
+  ● project provenance search boundary › rejects misaligned source evidence media_assets.project_id=other-project
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      146 |     const response = await run()
+      147 |     expect(response.status).toBe(200)
+    > 148 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      149 |   })
+      150 |
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:148:47)
+
+  ● project provenance search boundary › rejects misaligned source evidence media_assets.story_id=other-story
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      146 |     const response = await run()
+      147 |     expect(response.status).toBe(200)
+    > 148 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      149 |   })
+      150 |
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:148:47)
+
+  ● project provenance search boundary › rejects misaligned source evidence media_assets.story_id=null
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "endMs": 1200,
+    +     "entryId": "entry-1",
+    +     "matchedDates": Array [],
+    +     "matchedPeople": Array [],
+    +     "matchedPlaces": Array [],
+    +     "mediaAssetId": null,
+    +     "quotedText": "Chicago in 1968",
+    +     "score": 1,
+    +     "segmentId": "segment-1",
+    +     "startMs": 0,
+    +     "storyId": "story-1",
+    +     "storyRevisionId": null,
+    +     "storyTitle": "Story",
+    +     "transcriptVersionId": "transcript-1",
+    +   },
+    + ]
+
+      146 |     const response = await run()
+      147 |     expect(response.status).toBe(200)
+    > 148 |     expect((await response.json()).citations).toEqual([])
+          |                                               ^
+      149 |   })
+      150 |
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+
+      at toEqual (src/app/api/projects/[id]/search/__tests__/route.test.ts:148:47)
+
+  ● project provenance search boundary › fails closed if the database truncates required transcript_versions evidence
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+      152 |     tableCounts[table] = tableRows[table].length + 1
+    > 153 |     expect((await run()).status).toBe(500)
+          |                                  ^
+      154 |   })
+      155 |
+      156 |   it('returns no sources for an empty index without issuing empty source lookups', async () => {
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:153:34)
+
+  ● project provenance search boundary › fails closed if the database truncates required stories evidence
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+      152 |     tableCounts[table] = tableRows[table].length + 1
+    > 153 |     expect((await run()).status).toBe(500)
+          |                                  ^
+      154 |   })
+      155 |
+      156 |   it('returns no sources for an empty index without issuing empty source lookups', async () => {
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:153:34)
+
+  ● project provenance search boundary › fails closed if the database truncates required media_assets evidence
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      151 |   it.each(['deletion_requests', 'transcript_versions', 'stories', 'media_assets'])('fails closed if the database truncates required %s evidence', async table => {
+      152 |     tableCounts[table] = tableRows[table].length + 1
+    > 153 |     expect((await run()).status).toBe(500)
+          |                                  ^
+      154 |   })
+      155 |
+      156 |   it('returns no sources for an empty index without issuing empty source lookups', async () => {
+
+      at toBe (src/app/api/projects/[id]/search/__tests__/route.test.ts:153:34)
+
+Test Suites: 1 failed, 1 total
+Tests:       25 failed, 7 passed, 32 total
+Snapshots:   0 total
+Time:        1.62 s
+Ran all test suites within paths "src/app/api/projects/[id]/search/__tests__/route.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/app/api/projects/[id]/search/__tests__/route.test.ts

@@ -23,7 +23,10 @@ export async function POST(
   { params }: { params: Promise<{ assetId: string }> },
 ) {
   const auth = await getAuthenticatedUser(request)
-  if (!auth.ok) return auth.response
+  if (!auth.ok) {
+    auth.response.headers.set('Cache-Control', 'no-store')
+    return auth.response
+  }
   if (process.env.MEDIA_ASSETS_ENABLED !== 'true') return reply({ error: 'Media assets are not enabled' }, 404, auth.headers)
 
   const { assetId } = await params
@@ -31,64 +34,89 @@ export async function POST(
 
   let admin: ReturnType<typeof getSupabaseAdmin>
   try { admin = getSupabaseAdmin() } catch { return reply({ error: 'Database service not configured' }, 503, auth.headers) }
-  const { data: asset, error: loadError } = await admin.from('media_assets')
-    .select('*').eq('id', assetId).maybeSingle()
-  if (loadError) return reply({ error: 'Failed to load asset' }, 500, auth.headers)
-  if (!asset) return reply({ error: 'Asset not found' }, 404, auth.headers)
-  if (asset.state === 'deleted' || asset.state === 'deleting' || asset.state === 'quarantined') {
-    return reply({ error: 'Asset is not eligible for verification' }, 409, auth.headers)
-  }
+  try {
+    const { data: asset, error: loadError } = await admin.from('media_assets')
+      .select('*').eq('id', assetId).maybeSingle()
+    if (loadError) return reply({ error: 'Failed to load asset' }, 500, auth.headers)
+    if (!asset) return reply({ error: 'Asset not found' }, 404, auth.headers)
+    const access = await requireProjectAccess(asset.project_id, auth.user)
+    if (!access.ok) {
+      const body = await access.response.json()
+      return reply(body, access.response.status, auth.headers)
+    }
 
-  const access = await requireProjectAccess(asset.project_id, auth.user)
-  if (!access.ok) {
-    const body = await access.response.json()
-    return reply(body, access.response.status, auth.headers)
-  }
+    if (asset.tombstone_at != null || !['pending_upload', 'uploaded', 'verifying', 'ready'].includes(asset.state)) {
+      return reply({ error: 'Asset is not eligible for verification' }, 409, auth.headers)
+    }
+    const checkDeletion = async () => {
+      const subjects = [asset.id, asset.story_id].filter((id): id is string => typeof id === 'string')
+      const { data, error } = await admin.from('deletion_requests')
+        .select('subject_id, tombstone_at').eq('project_id', asset.project_id)
+        .in('subject_id', subjects).not('tombstone_at', 'is', null)
+      if (error || !Array.isArray(data)) return reply({ error: 'Failed to verify deletion status' }, 500, auth.headers)
+      return data.length ? reply({ error: 'Asset is not eligible for verification' }, 409, auth.headers) : null
+    }
+    const deleted = await checkDeletion()
+    if (deleted) return deleted
+    if (asset.state === 'ready' || asset.state === 'verifying') {
+      return reply({ asset }, asset.state === 'ready' ? 200 : 202, auth.headers)
+    }
+    const updateAsset = (patch: Record<string, unknown>) => admin.from('media_assets').update(patch)
+      .eq('id', asset.id).eq('state', asset.state).eq('version', asset.version).select('*').single()
 
-  const storage = admin.storage.from(asset.bucket)
-  const { data: info, error: infoError } = await storage.info(asset.object_key)
-  if (infoError || !info) return reply({ error: 'Uploaded object not found' }, 404, auth.headers)
+    const storage = admin.storage.from(asset.bucket)
+    const { data: info, error: infoError } = await storage.info(asset.object_key)
+    if (infoError || !info) return reply({ error: 'Uploaded object not found' }, 404, auth.headers)
 
-  if (typeof info.size === 'number' && typeof asset.byte_size === 'number' && info.size !== asset.byte_size) {
-    const { data: quarantined } = await admin.from('media_assets').update({
-      state: 'quarantined',
-      verification_error: 'integrity_mismatch',
-      byte_size: info.size,
-      verified_at: new Date().toISOString(),
-    }).eq('id', asset.id).eq('state', asset.state).select('*').single()
-    return reply({ error: 'Uploaded object failed verification', asset: quarantined ?? { ...asset, state: 'quarantined' } }, 409, auth.headers)
-  }
+    if (typeof info.size === 'number' && typeof asset.byte_size === 'number' && info.size !== asset.byte_size) {
+      const deletion = await checkDeletion()
+      if (deletion) return deletion
+      const { data: quarantined, error: updateError } = await updateAsset({
+        state: 'quarantined',
+        verification_error: 'integrity_mismatch',
+        byte_size: info.size,
+        verified_at: new Date().toISOString(),
+      })
+      if (updateError || !quarantined) return reply({ error: 'Asset changed while verification was running' }, 409, auth.headers)
+      return reply({ error: 'Uploaded object failed verification', asset: quarantined }, 409, auth.headers)
+    }
 
-  const { data: stream, error: streamError } = await storage.download(asset.object_key).asStream()
-  if (streamError || !stream) return reply({ error: 'Failed to read uploaded object' }, 502, auth.headers)
-  const result = await verifyMediaObjectStream(stream, {
-    expectedBytes: typeof asset.byte_size === 'number' ? asset.byte_size : undefined,
-    expectedSha256: typeof asset.sha256 === 'string' ? asset.sha256 : undefined,
-    contentType: info.contentType,
-    expectedMimeType: asset.mime_type,
-    maxBytes: maxBytesFor(asset.kind),
-  })
-  if (!result.ok) {
-    const { data: quarantined } = await admin.from('media_assets').update({
-      state: 'quarantined',
-      verification_error: result.reason,
+    const { data: stream, error: streamError } = await storage.download(asset.object_key).asStream()
+    if (streamError || !stream) return reply({ error: 'Failed to read uploaded object' }, 502, auth.headers)
+    const result = await verifyMediaObjectStream(stream, {
+      expectedBytes: typeof asset.byte_size === 'number' ? asset.byte_size : undefined,
+      expectedSha256: typeof asset.sha256 === 'string' ? asset.sha256 : undefined,
+      contentType: info.contentType,
+      expectedMimeType: asset.mime_type,
+      maxBytes: maxBytesFor(asset.kind),
+    })
+    const latestDeletion = await checkDeletion()
+    if (latestDeletion) return latestDeletion
+    if (!result.ok) {
+      const { data: quarantined, error: updateError } = await updateAsset({
+        state: 'quarantined',
+        verification_error: result.reason,
+        byte_size: result.byteSize,
+        sha256: result.sha256 ?? null,
+        verified_at: new Date().toISOString(),
+      })
+      if (updateError || !quarantined) return reply({ error: 'Asset changed while verification was running' }, 409, auth.headers)
+      return reply({ error: 'Uploaded object failed verification', asset: quarantined }, result.reason === 'too_large' ? 413 : 409, auth.headers)
+    }
+
+    const nextState = asset.kind === 'original_image' ? 'ready' : 'verifying'
+    const { data: verified, error: updateError } = await updateAsset({
+      state: nextState,
       byte_size: result.byteSize,
-      sha256: result.sha256 ?? null,
+      sha256: result.sha256,
+      original_filename: safeExportFilename(asset.original_filename),
       verified_at: new Date().toISOString(),
-    }).eq('id', asset.id).eq('state', asset.state).select('*').single()
-    return reply({ error: 'Uploaded object failed verification', asset: quarantined ?? { ...asset, state: 'quarantined' } }, result.reason === 'too_large' ? 413 : 409, auth.headers)
+      content_verified_at: asset.kind === 'original_image' ? new Date().toISOString() : null,
+      verification_error: null,
+    })
+    if (updateError || !verified) return reply({ error: 'Asset changed while verification was running' }, 409, auth.headers)
+    return reply({ asset: verified }, nextState === 'ready' ? 200 : 202, auth.headers)
+  } catch {
+    return reply({ error: 'Asset verification is unavailable' }, 500, auth.headers)
   }
-
-  const nextState = asset.kind === 'original_image' ? 'ready' : 'verifying'
-  const { data: verified, error: updateError } = await admin.from('media_assets').update({
-    state: nextState,
-    byte_size: result.byteSize,
-    sha256: result.sha256,
-    original_filename: safeExportFilename(asset.original_filename),
-    verified_at: new Date().toISOString(),
-    content_verified_at: asset.kind === 'original_image' ? new Date().toISOString() : null,
-    verification_error: null,
-  }).eq('id', asset.id).eq('state', asset.state).select('*').single()
-  if (updateError || !verified) return reply({ error: 'Asset changed while verification was running' }, 409, auth.headers)
-  return reply({ asset: verified }, nextState === 'ready' ? 200 : 202, auth.headers)
 }

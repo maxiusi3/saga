@@ -3,10 +3,21 @@
 - 更新时间：2026-10-29（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`5bdb915bc`（接手时工作树干净，远端同名分支一致；本轮为该提交之后的本地安全修复检查点，不声称原计划 G0–G4 已全部验收）
+- 本轮接手基线 HEAD：`5faac79ea`（上一批本地安全修复检查点；本批继续双入口接线，不声称原计划 G0–G4 已全部验收）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 10 月 29 日断点接手核验（当前状态，以本节为准）
+## 10 月 29 日双入口项目中心接线（当前状态，以本节为准）
+
+详见[本轮报告](research/2026-10-29-two-entry-integration.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-two-entry-integration.md)与[验证汇总](research/evidence/2026-10-29-two-entry-integration/verification.json)。本批完成上一节交接要求的第一个剩余工程项；断点处于情况 B，保留未提交代码和失败证据后续接，没有新 SQL。
+
+- **真实页面接线**：`[locale]/dashboard/projects/[id]` 挂载现有双入口 hub；服务端 `MEDIA_ASSETS_ENABLED === 'true'` 精确开启，默认关闭。移除虚构项目回退和私密调试日志，复用已有角色权限、录音/邀请路径。
+- **上传、检索与回听**：登记 → 非覆盖签名上传 → complete，保留 File/幂等键重试；兼容 uploaded 重放和明确的 Storage 新旧重复对象错误，省略大小仍可幂等恢复。`verifying` 只表示待校验，不删原文件、不调用 AI。检索按真实 `transcript_versions.asset_id` 解析，来源未绑定/非 ready 则不展示；metadata 后 seek，新搜索/账号切换清理旧引用。
+- **有界完整导出**：仅既有校验 assembler，200 故事/100 资产/25 MiB 原件/2 MiB 元数据/1000 转写来源上限，超限拒绝、未映射旧媒体 409。源音频被删除/无法确认则整包 409，防止派生文字进入 HTML/PDF；独立照片删除不抹去故事。压缩后复查成员资格与墓碑，客户端验证 ZIP 结构。
+- **本轮验证**：定向 12 套/159 项；最终命令链退出 0，Web 130 套/1657 项、shared 4 套/16 项、infra 7 项、184 页构建通过。Chromium 1440/375px 共 12 项通过，窄屏按钮越界先 RED 后修复，截图已检查。PG17.4 切流 3 场景/23 断言、P3 4 场景/51 断言通过，临时目录/PID 已独立确认清理。`next-env.d.ts` 恢复原字节，历史实验/证据/迁移/依赖未改。
+- **仍未证明的部分**：浏览器使用合成认证/Storage/HTTP，不是 Next 服务端或真实设备验收；音频解码 Worker、大包导出 Worker、实际指标采集/告警、供应商核验链及真机/家庭/模型/纵向试点仍待完成。构建旧配置/缺服务端 key 提示仍在，audit 本轮未重跑。
+- **提交/推送与下一步**：仅本地工程检查点，原计划质量门证据不足，不触发条件推送；不合并 main、不迁移远端、不部署、不外发真实家庭素材。接下来补实际指标采集与供应商核验链，分别推进解码/大包及真实验收；不要重复本批接线。发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 29 日前批断点接手与安全修复（历史状态）
 
 详见[诊断与修复报告](research/2026-10-29-takeover-safety-closeout.md)、[本轮实施清单](superpowers/plans/2026-10-29-upgrade-takeover-safety-closeout.md)与[本轮证据](research/evidence/2026-10-29-takeover-safety/)。现场没有半写代码或新迁移；初始 type-check/lint 通过。最近批次的管理路由只测了开关关闭，遗漏了实际授权和数据缺失分支。
 

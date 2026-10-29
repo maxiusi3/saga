@@ -1,0 +1,83 @@
+{
+  "status": "passed",
+  "scope": "Real React hub/client adapter in Chromium with synthetic auth, Link, Storage and local HTTP fixtures; not real device, Supabase or Next server E2E",
+  "checks": [
+    {
+      "width": 1440,
+      "check": "render_without_horizontal_overflow",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "locale_navigation_targets",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "import_bytes_and_pending_verification",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "search_and_metadata_seek",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "zip_download_bytes",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "check": "failed_search_clears_source_and_audio_no_page_errors",
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "check": "render_without_horizontal_overflow",
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "check": "locale_navigation_targets",
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "check": "import_bytes_and_pending_verification",
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "check": "search_and_metadata_seek",
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "check": "zip_download_bytes",
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "check": "failed_search_clears_source_and_audio_no_page_errors",
+      "status": "passed"
+    }
+  ],
+  "sources": {
+    "packages/web/src/components/projects/ConnectedProjectHub.tsx": "f8e055a279dc9eea8950863692ebf66f552bf62675c44f675672dc8a582418d5",
+    "packages/web/src/components/projects/TwoEntryProjectHub.tsx": "3b84b9d473fbe26a5cfeda1df34e8e06e2681befb7cb2043cb4392dec8e1a62a",
+    "packages/web/src/lib/project-hub-client.ts": "b154299d76eeea65fa2eac5060642b46df2920b1830e6b4141e7a1e6b6a21d4d",
+    "experiments/two-entry-hub-browser/entry.tsx": "88d80f8e12141469bedf06e4343de661eb9ad33be7d401f8e31523c51869b0e1",
+    "experiments/two-entry-hub-browser/boundaries.tsx": "9755e5bbebee5c42f0f9a2c295e5b05a6c62a1aa876b454398ce682961e4c386",
+    "experiments/two-entry-hub-browser/typescript-loader.cjs": "51bea0118fcd7f4a8e212b386345a6a225159e87cac136a053d1818ce1d60db8",
+    "experiments/two-entry-hub-browser/verify.mjs": "3d2d67cd99ee63ee3070934aaf4b766cef2a6fba2d581fe3c8d52378c4b02240"
+  },
+  "externalRequests": [],
+  "buildStylesSha256": "03b9102717993b2314f03097a4f68fe11d642f02092b4c5d2714ae412b936163",
+  "browserVersion": "147.0.7727.15",
+  "cleanup": {
+    "browserClosed": true,
+    "serverClosed": true,
+    "scratchRemoved": true
+  }
+}

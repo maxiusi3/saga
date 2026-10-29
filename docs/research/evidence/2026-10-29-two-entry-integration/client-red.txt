@@ -1,0 +1,273 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(project-hub-client|two-entry-project-hub)
+
+FAIL src/lib/__tests__/project-hub-client.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../project-hub-client' from 'src/lib/__tests__/project-hub-client.test.ts'
+
+      17 |   object_key: 'user/projects/project-123/assets/asset-123/original', state: 'pending_upload',
+      18 | }
+    > 19 |
+         | ^
+      20 | beforeEach(() => {
+      21 |   jest.clearAllMocks()
+      22 |   global.fetch = mockFetch
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/index.js:863:11)
+      at Object.<anonymous> (src/lib/__tests__/project-hub-client.test.ts:19:27)
+
+FAIL src/components/projects/__tests__/two-entry-project-hub.test.tsx
+  ● TwoEntryProjectHub (T01/T09/T10 Two-Entry, Provenance Search & Offline Export UI) › disables unavailable actions instead of presenting silent no-op buttons
+
+    expect(element).toBeDisabled()
+
+    Received element is not disabled:
+      <button class="mt-4 min-h-[48px] w-full rounded-lg bg-stone-900 px-4 py-3 text-base font-medium text-white hover:bg-stone-800" data-testid="entry-upload-existing-btn" type="button" />
+
+       7 |     render(<TwoEntryProjectHub projectId="project-1" projectName="Family archive" />)
+       8 |     for (const id of ['entry-upload-existing-btn', 'entry-record-or-invite-btn', 'provenance-search-submit-btn', 'export-complete-archive-btn']) {
+    >  9 |       expect(screen.getByTestId(id)).toBeDisabled()
+         |                                      ^
+      10 |     }
+      11 |   })
+      12 |
+
+      at Object.toBeDisabled (src/components/projects/__tests__/two-entry-project-hub.test.tsx:9:38)
+
+  ● TwoEntryProjectHub (T01/T09/T10 Two-Entry, Provenance Search & Offline Export UI) › shows recoverable search and export errors without displaying provider details
+
+    Unable to find an element with the text: Search is unavailable. Please try again.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-6 rounded-xl border border-stone-200 bg-white p-6 shadow-sm"[39m
+          [33mdata-project-id[39m=[32m"project-1"[39m
+          [33mdata-testid[39m=[32m"two-entry-project-hub"[39m
+        [36m>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"border-b border-stone-200 pb-4"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-semibold text-stone-900"[39m
+            [36m>[39m
+              [0mFamily archive[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"mt-1 text-base text-stone-600"[39m
+            [36m>[39m
+              [0mChoose how your family wants to preserve memories today — every original recording is checksum-verified and downloadable offline.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Primary story collection entries"[39m
+            [33mclass[39m=[32m"grid gap-4 md:grid-cols-2"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex flex-col justify-between rounded-lg border border-stone-200 bg-stone-50 p-5"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"inline-block rounded bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-900"[39m
+                [36m>[39m
+                  [0mEntry 1 · Existing Recordings[0m
+                [36m</span>[39m
+                [36m<h3[39m
+                  [33mclass[39m=[32m"mt-2 text-lg font-semibold text-stone-900"[39m
+                [36m>[39m
+                  [0mImport & Organize Existing Audio[0m
+                [36m</h3>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"mt-1 text-sm text-stone-600"[39m
+                [36m>[39m
+                  [0mUpload family tapes, voice memos, or interview files. Original audio is preserved intact alongside time-aligned transcripts and provenance verification.[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mt-4 min-h-[48px] w-full rounded-lg bg-stone-900 px-4 py-3 text-base font-medium text-white hover:bg-stone-800"[39m
+                [33mdata-testid[39m=[32m"entry-upload-existing-btn"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mUpload Existing Audio[0m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex flex-col justify-between rounded-lg border border-stone-200 bg-stone-50 p-5"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"inline-block rounded bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-900"[39m
+                [36m>[39m
+                  [0mEntry 2 · Guided Family Recording[0m
+                [36m</span>[39m
+                [36m<h3[39m
+                  [33mclass[39m=[32m"mt-2 text-lg font-semibold text-stone-900"[39m
+                [36m>[39m
+                  [0mRecord Together or Invite a Storyteller[0m
+                [36m</h3>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"mt-1 text-sm text-stone-600"[39m
+                [36m>[39m
+                  [0mRecord directly in the browser with local crash-recovery chunks, or send a one-tap question link to a parent or grandparent.[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mt-4 min-h-[48px] w-full rounded-lg bg-emerald-800 px-4 py-3 text-base font-medium text-white hover:bg-emerald-700"[39m
+                [33mdata-testid[39m=[32m"entry-record-or-invite-btn"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mRecord or Invite Family Member[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</section>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Search family archive with provenance"[39m
+            [33mclass[39m=[32m"rounded-lg border border-stone-200 p-5"[39m
+          [36m>[39m
+            [36m<h3[39m
+              [33mclass[39m=[32m"text-lg font-semibold text-stone-900"[39m
+            [36m>[39m
+              [0mSearch Verified Memories (People, Years, Places)[0m
+            [36m</h3>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"mt-3 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"grid gap-3 sm:grid-cols-4"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33maria-label[39m=[32m"Search query"[39m
+                  [33mclass[39m=[32m"min-h-[44px] rounded-md border border-stone-300 px-3 py-2 text-sm sm:col-span-2"[39m
+                  [33mdata-testid[39m=[32m"provenance-search-query-input"[39m
+                  [33mplaceholder[39m=[32m"Search keywords or questions..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<input[39m
+                  [33maria-label[39m=[32m"Filter by person"[39m
+                  [33mclass[39m=[32m"min-h-[44px] rounded-md border border-stone-300 px-3 py-2 text-sm"[39m
+                  [33mdata-testid[39m=[32m"provenance-search-person-input"[39m
+                  [33mplaceholder[39m=[32m"Person (e.g. Grandma Eleanor)"[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<input[39m
+                  [33maria-label[39m=[32m"Filter by year"[39m
+                  [33mclass[39m=[32m"min-h-[44px] rounded-md border border-stone-300 px-3 py-2 text-sm"[39m
+                  [33mdata-testid[39m=[32m"provenance-search-year-input"[39m
+                  [33mplaceholder[39m=[32m"Year (e.g. 1968)"[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between gap-3"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33maria-label[39m=[32m"Filter by place"[39m
+                  [33mclass[39m=[32m"min-h-[44px] flex-1 rounded-md border border-stone-300 px-3 py-2 text-sm"[39m
+                  [33mdata-testid[39m=[32m"provenance-search-place-input"[39m
+                  [33mplaceholder[39m=[32m"Place (e.g. Chicago)"[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"min-h-[44px] rounded-lg bg-stone-900 px-5 py-2 text-sm font-medium text-white hover:bg-stone-800 disabled:opacity-50"[39m
+                  [33mdata-testid[39m=[32m"provenance-search-submit-btn"[39m
+                  [33mtype[39m=[32m"submit"[39m
+                [36m>[39m
+                  [0mSearch Archive[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</form>[39m
+          [36m</section>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Offline archive and PDF booklet export"[39m
+            [33mclass[39m=[32m"flex flex-wrap items-center justify-between gap-4 rounded-lg border border-stone-200 bg-stone-50 p-5"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h3[39m
+                [33mclass[39m=[32m"text-lg font-semibold text-stone-900"[39m
+              [36m>[39m
+                [0mComplete Offline Archive & Printable Booklet PDF[0m
+              [36m</h3>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"mt-1 text-sm text-stone-600"[39m
+              [36m>[39m
+                [0mIncludes SHA-256 verified original audio & photos, offline browsable [0m
+                [36m<code>[39m
+                  [0mindex.html[0m
+                [36m</code>[39m
+                [0m, and [0m
+                [36m<code>[39m
+                  [0mbiography-booklet.pdf[0m
+                [36m</code>[39m
+                [0m.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"min-h-[48px] rounded-lg border border-stone-900 bg-white px-5 py-2.5 text-base font-medium text-stone-900 hover:bg-stone-100 disabled:opacity-50"[39m
+              [33mdata-testid[39m=[32m"export-complete-archive-btn"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mDownload Complete Archive (.zip + .pdf)[0m
+            [36m</button>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      16 |       onTriggerExport={jest.fn().mockRejectedValue(new Error('private details'))} />)
+      17 |     fireEvent.click(screen.getByTestId('provenance-search-submit-btn'))
+    > 18 |     await waitFor(() => expect(screen.getByText('Search is unavailable. Please try again.')).toBeInTheDocument())
+         |                  ^
+      19 |     fireEvent.click(screen.getByTestId('export-complete-archive-btn'))
+      20 |     await waitFor(() => expect(screen.getByText('The archive could not be verified or downloaded. Please try again.')).toBeInTheDocument())
+      21 |     expect(screen.queryByText('private details')).not.toBeInTheDocument()
+
+      at waitForWrapper (../../node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (src/components/projects/__tests__/two-entry-project-hub.test.tsx:18:18)
+
+  ● TwoEntryProjectHub (T01/T09/T10 Two-Entry, Provenance Search & Offline Export UI) › shows recoverable search and export errors without displaying provider details
+
+    private details
+
+      13 |   it('shows recoverable search and export errors without displaying provider details', async () => {
+      14 |     render(<TwoEntryProjectHub projectId="project-1" projectName="Family archive"
+    > 15 |       onSearch={jest.fn().mockRejectedValue(new Error('private details'))}
+         |                                             ^
+      16 |       onTriggerExport={jest.fn().mockRejectedValue(new Error('private details'))} />)
+      17 |     fireEvent.click(screen.getByTestId('provenance-search-submit-btn'))
+      18 |     await waitFor(() => expect(screen.getByText('Search is unavailable. Please try again.')).toBeInTheDocument())
+
+      at Object.<anonymous> (src/components/projects/__tests__/two-entry-project-hub.test.tsx:15:45)
+
+  ● TwoEntryProjectHub (T01/T09/T10 Two-Entry, Provenance Search & Offline Export UI) › shows recoverable search and export errors without displaying provider details
+
+    private details
+
+      13 |   it('shows recoverable search and export errors without displaying provider details', async () => {
+      14 |     render(<TwoEntryProjectHub projectId="project-1" projectName="Family archive"
+    > 15 |       onSearch={jest.fn().mockRejectedValue(new Error('private details'))}
+         |                                             ^
+      16 |       onTriggerExport={jest.fn().mockRejectedValue(new Error('private details'))} />)
+      17 |     fireEvent.click(screen.getByTestId('provenance-search-submit-btn'))
+      18 |     await waitFor(() => expect(screen.getByText('Search is unavailable. Please try again.')).toBeInTheDocument())
+
+      at Object.<anonymous> (src/components/projects/__tests__/two-entry-project-hub.test.tsx:15:45)
+
+Test Suites: 2 failed, 2 total
+Tests:       2 failed, 2 passed, 4 total
+Snapshots:   0 total
+Time:        4.206 s
+Ran all test suites matching (project-hub-client|two-entry-project-hub).
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand '--testPathPatterns=(project-hub-client|two-entry-project-hub)'

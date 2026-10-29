@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(project-detail-hub-integration|project-hub-client|connected-project-hub|two-entry-project-hub|user-flow-e2e|complete-user-journey)
+
+
+Test Suites: 6 passed, 6 total
+Tests:       47 passed, 47 total
+Snapshots:   0 total
+Time:        5.476 s, estimated 9 s
+Ran all test suites matching (project-detail-hub-integration|project-hub-client|connected-project-hub|two-entry-project-hub|user-flow-e2e|complete-user-journey).

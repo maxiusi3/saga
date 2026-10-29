@@ -1,0 +1,31 @@
+{
+  "runs": [
+    {
+      "command": "node experiments/pg17-cutover-and-ops-verification/verify.mjs",
+      "startedAt": "2026-10-29T03:36:43.572750+00:00",
+      "exitCode": 0,
+      "report": "cutover-ops-verify-2026-10-29T03-36-43.776Z-d63b8a21-6347-42e7-86f8-3728789575dc.json",
+      "status": "passed",
+      "scenarios": 3,
+      "assertions": 23,
+      "cleanupObserved": {
+        "scratchExists": false,
+        "serverPidExists": false
+      }
+    },
+    {
+      "command": "node experiments/pg17-p3-g3-verification/verify.mjs",
+      "startedAt": "2026-10-29T03:36:45.467715+00:00",
+      "exitCode": 0,
+      "report": "p3-g3-verify-2026-10-29T03-36-45.682Z-5df9c0bc-adb9-4054-808e-5e2af97a1de8.json",
+      "status": "passed",
+      "scenarios": 4,
+      "assertions": 51,
+      "cleanupObserved": {
+        "scratchExists": false,
+        "serverPidExists": false
+      }
+    }
+  ],
+  "note": "Frozen runners overwrite report.cleanup with the undefined return of Harness.cleanup(). Independent scratch and PID absence checks replace that missing field. Initial collection wrapper failed with KeyError cleanup after a passing cutover run; its original report/log are preserved. The corrected collection reran cutover and P3 without changing frozen code."
+}

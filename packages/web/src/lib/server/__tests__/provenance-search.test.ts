@@ -69,6 +69,15 @@ describe('T10 Permission-Filtered Provenance Retrieval & Search Service', () => 
     expect(res.citations[0].startMs).toBe(0)
     expect(res.citations[0].endMs).toBe(4800)
     expect(res.citations[0].quotedText).toContain('Grandma Eleanor')
+    expect(res.citations[0]).toHaveProperty('mediaAssetId', 'asset-search-1')
+  })
+
+  it('does not infer a media asset for legacy rows without an asset id', () => {
+    const result = executeProvenanceSearch({
+      actorId: 'user-member-1', projectId: 'proj-search-1', isActiveMember: true,
+      query: 'Chicago', entries: entries.map(entry => ({ ...entry, mediaAssetId: undefined })),
+    })
+    expect(result.citations[0]).toHaveProperty('mediaAssetId', null)
   })
 
   it('never fabricates an answer when no records match or when the source is tombstoned', () => {

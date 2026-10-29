@@ -1,0 +1,32 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(project-hub-client|connected-project-hub|two-entry-project-hub)
+
+FAIL src/components/projects/__tests__/connected-project-hub.test.tsx
+  ● Test suite failed to run
+
+    Cannot find module '../ConnectedProjectHub' from 'src/components/projects/__tests__/connected-project-hub.test.tsx'
+
+      12 | const source = { entryId: 'entry-1', storyId: 'story-1', storyTitle: 'Boat', transcriptVersionId: 'tv-1', mediaAssetId: 'asset-123', segmentId: 'segment-1', startMs: 2000, endMs: 4500, quotedText: 'A boat', matchedPeople: [], matchedDates: [], matchedPlaces: [], score: 1 }
+      13 | let play: jest.SpyInstance
+    > 14 | let pause: jest.SpyInstance
+         |                            ^
+      15 |
+      16 | beforeEach(() => {
+      17 |   jest.resetAllMocks()
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/index.js:863:11)
+      at Object.<anonymous> (src/components/projects/__tests__/connected-project-hub.test.tsx:14:30)
+
+Test Suites: 1 failed, 2 passed, 3 total
+Tests:       18 passed, 18 total
+Snapshots:   0 total
+Time:        2.507 s
+Ran all test suites matching (project-hub-client|connected-project-hub|two-entry-project-hub).
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand '--testPathPatterns=(project-hub-client|connected-project-hub|two-entry-project-hub)'

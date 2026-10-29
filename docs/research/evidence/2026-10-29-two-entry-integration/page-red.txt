@@ -1,0 +1,529 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=project-detail-hub-integration
+
+  console.log
+    User projects loaded: [
+      {
+        id: 'project-123',
+        name: 'Synthetic Family',
+        user_role: 'storyteller',
+        is_owner: false,
+        members: []
+      }
+    ]
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:102:17)
+
+  console.log
+    Project set: {
+      id: 'project-123',
+      name: 'Synthetic Family',
+      user_role: 'storyteller',
+      is_owner: false,
+      members: []
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:126:17)
+
+  console.log
+    Loaded stories for project: []
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:132:19)
+
+  console.log
+    Complete project data: {
+      "id": "project-123",
+      "name": "Synthetic Family",
+      "user_role": "storyteller",
+      "is_owner": false,
+      "members": []
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:274:11)
+
+  console.log
+    User projects loaded: [
+      {
+        id: 'project-123',
+        name: 'Synthetic Family',
+        user_role: 'storyteller',
+        is_owner: false,
+        members: []
+      }
+    ]
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:102:17)
+
+  console.log
+    Project set: {
+      id: 'project-123',
+      name: 'Synthetic Family',
+      user_role: 'storyteller',
+      is_owner: false,
+      members: []
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:126:17)
+
+  console.log
+    Loaded stories for project: []
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:132:19)
+
+  console.log
+    Complete project data: {
+      "id": "project-123",
+      "name": "Synthetic Family",
+      "user_role": "storyteller",
+      "is_owner": false,
+      "members": []
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:274:11)
+
+  console.log
+    User projects loaded: [
+      {
+        id: 'project-123',
+        name: 'Synthetic Family',
+        user_role: 'storyteller',
+        is_owner: false,
+        members: []
+      }
+    ]
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:102:17)
+
+  console.log
+    Project set: {
+      id: 'project-123',
+      name: 'Synthetic Family',
+      user_role: 'storyteller',
+      is_owner: false,
+      members: []
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:126:17)
+
+  console.log
+    Loaded stories for project: []
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:132:19)
+
+  console.log
+    Complete project data: {
+      "id": "project-123",
+      "name": "Synthetic Family",
+      "user_role": "storyteller",
+      "is_owner": false,
+      "members": []
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:274:11)
+
+  console.log
+    User projects loaded: [
+      {
+        id: 'project-123',
+        name: 'Synthetic Family',
+        user_role: 'storyteller',
+        is_owner: false,
+        members: []
+      }
+    ]
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:102:17)
+
+  console.log
+    Project set: {
+      id: 'project-123',
+      name: 'Synthetic Family',
+      user_role: 'storyteller',
+      is_owner: false,
+      members: []
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:126:17)
+
+  console.log
+    Loaded stories for project: []
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:132:19)
+
+  console.log
+    Complete project data: {
+      "id": "project-123",
+      "name": "Synthetic Family",
+      "user_role": "storyteller",
+      "is_owner": false,
+      "members": []
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:274:11)
+
+  console.error
+    Error loading project: Error: private backend details
+        at Object.<anonymous> (/Users/eat/Documents/eatpotato/saga传奇/packages/web/src/components/projects/__tests__/project-detail-hub-integration.test.tsx:43:34)
+        at Promise.finally.completed (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1557:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1497:10)
+        at _callCircusTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1007:40)
+        at _runTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:947:3)
+        at /Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:849:7
+        at _runTestsForDescribeBlock (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:862:11)
+        at run (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:761:3)
+        at runAndTransformResultsToJestFormat (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/jestAdapterInit.js:1918:21)
+        at jestAdapter (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-circus/build/runner.js:101:19)
+        at runTestInternal (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-runner/build/index.js:275:16)
+        at runTest (/Users/eat/Documents/eatpotato/saga传奇/packages/web/node_modules/jest-runner/build/index.js:343:7)
+
+      138 |         }
+      139 |       } catch (error) {
+    > 140 |         console.error('Error loading project:', error)
+          |                 ^
+      141 |         // If projects service fails completely, show mock data
+      142 |         if (projectId === '1') {
+      143 |           setProject({
+
+      at error (src/app/[locale]/dashboard/projects/[id]/page.tsx:140:17)
+
+  console.log
+    Complete project data: {
+      "id": "1",
+      "name": "Grandma's Memoir",
+      "description": "Recording grandma's life stories and family traditions",
+      "facilitator_id": "user-123",
+      "status": "active",
+      "created_at": "2023-12-01T00:00:00Z",
+      "updated_at": "2023-12-01T00:00:00Z",
+      "members": [],
+      "member_count": 3,
+      "story_count": 37,
+      "user_role": "facilitator",
+      "is_owner": true
+    }
+
+      at log (src/app/[locale]/dashboard/projects/[id]/page.tsx:274:11)
+
+FAIL src/components/projects/__tests__/project-detail-hub-integration.test.tsx
+  ● mounts the existing hub on the real project page only for exact true
+
+    Unable to find an element by: [data-testid="connected-hub"]
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-7xl mx-auto"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between mb-8"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-gray-900 mb-2"[39m
+                [36m>[39m
+                  [0mSynthetic Family[0m
+                [36m</h1>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center gap-4"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none transition-colors duration-200 bg-primary text-primary-foreground px-3 py-1 text-xs bg-yellow-100 text-yellow-800"[39m
+                    [33mdata-slot[39m=[32m"badge"[39m
+                  [36m>[39m
+                    [0m0[0m
+                    [0m [0m
+                    [0mdetail.stats.stories[0m
+                  [36m</span>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none transition-colors duration-200 px-3 py-1 text-xs"[39m
+                    [33mdata-slot[39m=[32m"badge"[39m
+                  [36m>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"mr-1"[39m
+                    [36m>[39m
+                      [0m🎙️[0m
+                    [36m</span>[39m
+                    [0mStoryteller[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center gap-3"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-10 rounded-md px-4 text-sm"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-download w-4 h-4 mr-2"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 15V3"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [0mdetail.actions.exportStories[0m
+                [36m</button>[39m
+                [36m<a[39m
+                  [33mhref[39m=[32m"/en/dashboard/projects/project-123/record"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 active:bg-primary/95 hover:shadow-lg transform hover:-translate-y-0.5 h-12 px-6 py-3 text-base"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"lucide lucide-plus w-4 h-4 mr-2"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"24"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"24"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M5 12h14"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M12 5v14"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                    [0mdetail.actions.recordNewStory[0m
+                  [36m</button>[39m
+                [36m</a>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"grid grid-cols-1 lg:grid-cols-4 gap-8"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"lg:col-span-1"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"rounded-xl border bg-card text-card-foreground transition-all duration-200 shadow-sm hover:shadow-md p-6"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"p-6"[39m
+                  [36m>[39m
+                    [36m<h3[39m
+                      [33mclass[39m=[32m"font-semibold text-gray-900 mb-4"[39m
+                    [36m>[39m
+                      [0mdetail.filters.title[0m
+                    [36m</h3>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"mb-6"[39m
+                    [36m>[39m
+                      [36m<label[39m
+                        [33mclass[39m=[32m"text-sm font-medium text-gray-700 mb-2 block"[39m
+                      [36m>[39m
+                        [0mdetail.filters.allStorytellers[0m
+                      [36m</label>[39m
+                      [36m<select[39m
+                        [33mclass[39m=[32m"w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sage-500"[39m
+                      [36m>[39m
+                        [36m<option[39m
+                          [33mvalue[39m=[32m"all"[39m
+                        [36m>[39m
+                          [0mdetail.filters.all...
+
+      34 |   process.env.MEDIA_ASSETS_ENABLED = 'true'
+      35 |   render(<ProjectDetailPage />)
+    > 36 |   await screen.findByTestId('connected-hub')
+         |                ^
+      37 |   expect(mockHub).toHaveBeenCalledWith(expect.objectContaining({ projectId: 'project-123', projectName: 'Synthetic Family', userId: 'user-123', locale: 'en', canRecord: true, canInvite: false }))
+      38 | })
+      39 |
+
+      at waitForWrapper (../../node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+      at Object.findByTestId (src/components/projects/__tests__/project-detail-hub-integration.test.tsx:36:16)
+
+  ● does not replace a failed project lookup with a fictional project
+
+    Unable to find an element with the text: Failed to load project data. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-sage-50 to-sage-100 p-6"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-7xl mx-auto"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between mb-8"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-3xl font-bold text-gray-900 mb-2"[39m
+                [36m>[39m
+                  [0mGrandma's Memoir[0m
+                [36m</h1>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center gap-4"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none transition-colors duration-200 bg-primary text-primary-foreground px-3 py-1 text-xs bg-yellow-100 text-yellow-800"[39m
+                    [33mdata-slot[39m=[32m"badge"[39m
+                  [36m>[39m
+                    [0m0[0m
+                    [0m [0m
+                    [0mdetail.stats.stories[0m
+                  [36m</span>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none transition-colors duration-200 px-3 py-1 text-xs"[39m
+                    [33mdata-slot[39m=[32m"badge"[39m
+                  [36m>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"mr-1"[39m
+                    [36m>[39m
+                      [0m👑[0m
+                    [36m</span>[39m
+                    [0mFacilitator[0m
+                    [0m (roles.owner)[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center gap-3"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-10 rounded-md px-4 text-sm"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-download w-4 h-4 mr-2"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"24"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 15V3"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [0mdetail.actions.exportStories[0m
+                [36m</button>[39m
+                [36m<a[39m
+                  [33mhref[39m=[32m"/en/dashboard/projects/1/settings"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-10 rounded-md px-4 text-sm"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"lucide lucide-users w-4 h-4 mr-2"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"24"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"24"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M16 3.128a4 4 0 0 1 0 7.744"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M22 21v-2a4 4 0 0 0-3-3.87"[39m
+                      [36m/>[39m
+                      [36m<circle[39m
+                        [33mcx[39m=[32m"9"[39m
+                        [33mcy[39m=[32m"7"[39m
+                        [33mr[39m=[32m"4"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                    [0mdetail.actions.manageProject[0m
+                  [36m</button>[39m
+                [36m</a>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"grid grid-cols-1 lg:grid-cols-4 gap-8"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"lg:col-span-1"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"rounded-xl border bg-card text-card-foreground transition-all duration-200 shadow-sm hover:shadow-md p-6"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"p-6"[39m
+                  [36m>[39m
+                    [36m<h3[39m
+                      [33mclass[39m=[32m"font-semibold text-gray-900 mb-4"[39m
+                    [36m>[39m
+                      [0mdetail.filters.title[0m
+                    [36m</h3>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"mb-6"[39m
+                    [36m>[39m
+                      [36m<label[39m
+                        [33mclass[39m=[32m"text-sm font-medium text-gray-700 mb-2 block"[39m
+                      [36m>[39m
+                        [0mdetail.filters.allStorytellers[0m
+                      [36m</label...
+
+      43 |   mockProjects.mockRejectedValue(new Error('private backend details'))
+      44 |   render(<ProjectDetailPage />)
+    > 45 |   await screen.findByText('Failed to load project data')
+         |                ^
+      46 |   expect(mockHub).not.toHaveBeenCalled()
+      47 |   expect(screen.queryByText("Grandma's Memoir")).not.toBeInTheDocument()
+      48 | })
+
+      at waitForWrapper (../../node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at ../../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+      at Object.findByText (src/components/projects/__tests__/project-detail-hub-integration.test.tsx:45:16)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 3 passed, 5 total
+Snapshots:   0 total
+Time:        3.654 s
+Ran all test suites matching project-detail-hub-integration.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --testPathPatterns=project-detail-hub-integration

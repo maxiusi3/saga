@@ -1,0 +1,84 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(project-hub-client|connected-project-hub)
+
+FAIL src/components/projects/__tests__/connected-project-hub.test.tsx
+  ● clears playing audio when a replacement search is empty
+
+    expect(element).not.toBeInTheDocument()
+
+    expected document not to contain element, found <audio aria-label="Cited original audio" class="w-full" controls="" crossorigin="anonymous" preload="metadata" src="https://storage.example/signed" /> instead
+
+       96 |   fireEvent.click(screen.getByTestId('provenance-search-submit-btn'))
+       97 |   await screen.findByText(outcome === 'empty' ? 'No sources' : 'Search is unavailable. Please try again.')
+    >  98 |   expect(screen.queryByLabelText('Cited original audio')).not.toBeInTheDocument()
+          |                                                               ^
+       99 | })
+      100 |
+      101 | it('does not load a pending old audio URL after a new search starts', async () => {
+
+      at toBeInTheDocument (src/components/projects/__tests__/connected-project-hub.test.tsx:98:63)
+
+  ● clears playing audio when a replacement search is failed
+
+    expect(element).not.toBeInTheDocument()
+
+    expected document not to contain element, found <audio aria-label="Cited original audio" class="w-full" controls="" crossorigin="anonymous" preload="metadata" src="https://storage.example/signed" /> instead
+
+       96 |   fireEvent.click(screen.getByTestId('provenance-search-submit-btn'))
+       97 |   await screen.findByText(outcome === 'empty' ? 'No sources' : 'Search is unavailable. Please try again.')
+    >  98 |   expect(screen.queryByLabelText('Cited original audio')).not.toBeInTheDocument()
+          |                                                               ^
+       99 | })
+      100 |
+      101 | it('does not load a pending old audio URL after a new search starts', async () => {
+
+      at toBeInTheDocument (src/components/projects/__tests__/connected-project-hub.test.tsx:98:63)
+
+  ● does not load a pending old audio URL after a new search starts
+
+    expect(element).not.toBeInTheDocument()
+
+    expected document not to contain element, found <audio aria-label="Cited original audio" class="w-full" controls="" crossorigin="anonymous" preload="metadata" src="https://storage.example/old-audio" /> instead
+
+      110 |   await screen.findByText('No sources')
+      111 |   await act(async () => resolve('https://storage.example/old-audio'))
+    > 112 |   expect(screen.queryByLabelText('Cited original audio')).not.toBeInTheDocument()
+          |                                                               ^
+      113 | })
+      114 |
+      115 | it('downloads a verified Blob and releases its browser URL on unmount', async () => {
+
+      at Object.toBeInTheDocument (src/components/projects/__tests__/connected-project-hub.test.tsx:112:63)
+
+FAIL src/lib/__tests__/project-hub-client.test.ts
+  ● rejects truncated ZIPs with a valid-looking signature
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {Symbol(kHandle): {}, Symbol(kLength): 4, Symbol(kType): "application/zip"}
+
+      73 | it('rejects truncated ZIPs with a valid-looking signature', async () => {
+      74 |   mockFetch.mockResolvedValue(new Response(new Uint8Array([80, 75, 3, 4]), { headers: { 'Content-Type': 'application/zip' } }))
+    > 75 |   await expect(downloadProjectArchive('project-123')).rejects.toThrow('Invalid archive download')
+         |         ^
+      76 | })
+      77 |
+      78 | it('registers, uploads to the server-owned target and waits for complete before returning verifying', async () => {
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at Object.expect (src/lib/__tests__/project-hub-client.test.ts:75:9)
+
+Test Suites: 2 failed, 2 total
+Tests:       4 failed, 20 passed, 24 total
+Snapshots:   0 total
+Time:        2.636 s
+Ran all test suites matching (project-hub-client|connected-project-hub).
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand '--testPathPatterns=(project-hub-client|connected-project-hub)'

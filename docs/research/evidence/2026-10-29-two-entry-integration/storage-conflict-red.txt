@@ -1,0 +1,107 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=project-hub-client
+
+FAIL src/lib/__tests__/project-hub-client.test.ts
+  ● reconciles known existing-object responses through complete: {"status":409,"statusCode":"ResourceAlreadyExists"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Audio upload failed]
+
+      116 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      117 |   mockUpload.mockResolvedValueOnce({ error })
+    > 118 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      119 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      120 |   expect(mockFetch.mock.calls[1][0]).toBe('/api/media/assets/asset-123/complete')
+      121 |   expect(mockUpload.mock.calls[0][3]).not.toHaveProperty('upsert', true)
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:118:9)
+
+  ● reconciles known existing-object responses through complete: {"statusCode":"400","message":"Asset Already Exists"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Audio upload failed]
+
+      116 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      117 |   mockUpload.mockResolvedValueOnce({ error })
+    > 118 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      119 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      120 |   expect(mockFetch.mock.calls[1][0]).toBe('/api/media/assets/asset-123/complete')
+      121 |   expect(mockUpload.mock.calls[0][3]).not.toHaveProperty('upsert', true)
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:118:9)
+
+  ● reconciles known existing-object responses through complete: {"status":400,"statusCode":"400","message":"The resource already exists"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Audio upload failed]
+
+      116 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      117 |   mockUpload.mockResolvedValueOnce({ error })
+    > 118 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      119 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      120 |   expect(mockFetch.mock.calls[1][0]).toBe('/api/media/assets/asset-123/complete')
+      121 |   expect(mockUpload.mock.calls[0][3]).not.toHaveProperty('upsert', true)
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:118:9)
+
+  ● reconciles known existing-object responses through complete: {"status":400,"statusCode":"400","message":"Duplicate"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Audio upload failed]
+
+      116 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      117 |   mockUpload.mockResolvedValueOnce({ error })
+    > 118 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      119 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      120 |   expect(mockFetch.mock.calls[1][0]).toBe('/api/media/assets/asset-123/complete')
+      121 |   expect(mockUpload.mock.calls[0][3]).not.toHaveProperty('upsert', true)
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:118:9)
+
+  ● reconciles known existing-object responses through complete: {"status":400,"statusCode":"Duplicate","message":"Upload conflict"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Audio upload failed]
+
+      116 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      117 |   mockUpload.mockResolvedValueOnce({ error })
+    > 118 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      119 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      120 |   expect(mockFetch.mock.calls[1][0]).toBe('/api/media/assets/asset-123/complete')
+      121 |   expect(mockUpload.mock.calls[0][3]).not.toHaveProperty('upsert', true)
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:118:9)
+
+Test Suites: 1 failed, 1 total
+Tests:       5 failed, 20 passed, 25 total
+Snapshots:   0 total
+Time:        0.736 s, estimated 1 s
+Ran all test suites matching project-hub-client.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --testPathPatterns=project-hub-client
