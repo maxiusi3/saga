@@ -1,0 +1,10 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client)
+
+
+Test Suites: 6 passed, 6 total
+Tests:       215 passed, 215 total
+Snapshots:   0 total
+Time:        5.032 s
+Ran all test suites matching (api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client).

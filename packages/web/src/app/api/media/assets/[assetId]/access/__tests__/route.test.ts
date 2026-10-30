@@ -23,6 +23,7 @@ const ready = {
   id: 'asset-ready', project_id: 'family-a', created_by: 'alice', bucket: 'saga',
   story_id: 'story-1',
   object_key: 'alice/projects/family-a/assets/asset-ready/original', state: 'ready',
+  kind: 'original_image', version: 1,
 }
 
 function query(data: unknown, error: unknown = null) {
@@ -54,12 +55,72 @@ beforeEach(() => {
 afterEach(() => delete process.env.MEDIA_ASSETS_ENABLED)
 
 describe('GET /api/media/assets/[assetId]/access', () => {
+  it.each([
+    ['revocation', 403], ['asset deletion', 409], ['story deletion', 409],
+    ['missing asset', 404], ['own tombstone', 409], ['id', 409], ['project_id', 409],
+    ['story_id', 409], ['bucket', 409], ['object_key', 409], ['kind', 409],
+    ['state', 409], ['version', 409], ['asset query error', 500],
+    ['deletion query error', 500], ['permission error', 500],
+  ])('discards a signed URL after %s during signing', async (change, status) => {
+    let current: Record<string, unknown> | null = { ...ready }
+    let tombstones: unknown[] = []
+    let assetError: unknown = null
+    let deletionError: unknown = null
+    let release!: (value: unknown) => void
+    let started!: () => void
+    const waiting = new Promise<void>(resolve => { started = resolve })
+    const signed = new Promise(resolve => { release = resolve })
+    mockFrom.mockImplementation(table => table === 'media_assets'
+      ? query(current && { ...current }, assetError) : query(tombstones, deletionError))
+    mockCreateSignedUrl.mockImplementation(() => { started(); return signed })
+
+    const pending = GET(request(), { params: Promise.resolve({ assetId: ready.id }) })
+    await waiting
+    if (change === 'revocation') mockProjectAccess.mockResolvedValue({ ok: false, response: NextResponse.json({ error: 'Access denied' }, { status: 403 }) })
+    else if (change === 'permission error') mockProjectAccess.mockRejectedValue(new Error('private provider failure'))
+    else if (change === 'asset deletion' || change === 'story deletion') tombstones = [{ subject_id: change === 'asset deletion' ? ready.id : ready.story_id, tombstone_at: '2026-10-30' }]
+    else if (change === 'missing asset') current = null
+    else if (change === 'own tombstone') current = { ...current, tombstone_at: '2026-10-30' }
+    else if (change === 'asset query error') assetError = { message: 'private provider failure' }
+    else if (change === 'deletion query error') deletionError = { message: 'private provider failure' }
+    else current = { ...current, [change]: change === 'version' ? 2 : 'changed' }
+    release({ data: { signedUrl: 'https://storage.example/private-signed-url' }, error: null })
+
+    const response = await pending
+    const body = await response.text()
+    expect(response.status).toBe(status)
+    expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+    expect(response.headers.get('Cache-Control')).toBe('no-store')
+    expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+    expect(mockCreateSignedUrl).toHaveBeenCalledTimes(1)
+  })
+
   it('requires authentication before loading asset or storage', async () => {
     mockAuth.mockResolvedValue({ ok: false, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) })
     const response = await GET(request(), { params: Promise.resolve({ assetId: 'asset-ready' }) })
     expect(response.status).toBe(401)
     expect(mockFrom).not.toHaveBeenCalled()
     expect(mockStorageFrom).not.toHaveBeenCalled()
+  })
+
+  it.each([undefined, 'false', 'TRUE', '1'])('keeps the exact true gate for %j', async flag => {
+    if (flag === undefined) delete process.env.MEDIA_ASSETS_ENABLED
+    else process.env.MEDIA_ASSETS_ENABLED = flag
+    const response = await GET(request(), { params: Promise.resolve({ assetId: ready.id }) })
+    expect(response.status).toBe(404)
+    expect(response.headers.get('Cache-Control')).toBe('no-store')
+    expect(mockFrom).not.toHaveBeenCalled()
+    expect(mockStorageFrom).not.toHaveBeenCalled()
+  })
+
+  it('preserves each refreshed cookie', async () => {
+    const cookies = new Headers()
+    cookies.append('Set-Cookie', 'session-a=refreshed; Path=/')
+    cookies.append('Set-Cookie', 'session-b=refreshed; Path=/')
+    mockAuth.mockResolvedValue({ ok: true, user, headers: cookies })
+    const response = await GET(request(), { params: Promise.resolve({ assetId: ready.id }) })
+    expect(response.status).toBe(200)
+    expect(response.headers.getSetCookie()).toEqual(cookies.getSetCookie())
   })
 
   it.each([

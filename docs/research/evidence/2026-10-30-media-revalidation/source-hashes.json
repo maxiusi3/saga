@@ -1,0 +1,10 @@
+{
+  "packages/web/src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts": "4e4172361a64ec19019c7b469cbeeedaae14701e643c94dc167e9a6d6fc36422",
+  "packages/web/src/app/api/media/assets/[assetId]/access/route.ts": "ca5e3b4abbf8aebca0da93d0a25ce3294dc7ec523f40cbfc7a227c01c1f3d63f",
+  "packages/web/src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts": "6bdd59b2f6db0890bfeeddde3308eb64ff9985d279cef6c780df9cec71baffb1",
+  "packages/web/src/app/api/media/assets/[assetId]/complete/route.ts": "3a2ee34fc952f06da81d4d745d6ab6d85b21719d1ea30af9d9ca91493c01f4fc",
+  "packages/web/src/app/api/media/assets/__tests__/route.test.ts": "6b37f0681585309bad2655d56bc3880b900a927e5e4ea7684d87b5b8d5601c7f",
+  "packages/web/src/app/api/media/assets/route.ts": "651ac81a1ec9e66deb6c8ec2f622c750f10852b657f01552e6aa6b36ac2e07cc",
+  "packages/web/src/lib/server/__tests__/media-asset-guard.test.ts": "85ba70d393184191fa6ec36a47580bca04189f3d694c03e3bd0f496858086b7f",
+  "packages/web/src/lib/server/media-asset-guard.ts": "386ca0af939b1398628680bb3b46b2f15c6b703034c043eb035ffc675f0836e0"
+}

@@ -1,12 +1,23 @@
 # Handoff：UR Saga 十月升级继续执行
 
-- 更新时间：2026-10-29（Asia/Taipei）
+- 更新时间：2026-10-30（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`a605fbf1e`（上一批数据库运营指标检查点；本批继续导出组装观测，不声称原计划 G0–G4 已全部验收）
+- 本轮接手基线 HEAD：`f654e8631`（上一批导出组装观测检查点；本批优先修复媒体异步授权缺口，不声称原计划 G0–G4 已全部验收）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 10 月 29 日同步导出组装观测（当前状态，以本节为准）
+## 10 月 30 日媒体异步重新授权（当前状态，以本节为准）
+
+详见[本轮报告](research/2026-10-30-media-revalidation.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-media-revalidation.md)和[验证汇总](research/evidence/2026-10-30-media-revalidation/verification.json)。引用聊天 `26` 的导出观测已完成，接手时工作树干净；本轮按“P0级任务”先修复已有媒体链路风险，没有重做导出埋点或扩张新功能。
+
+- **边界复查**：三个媒体入口共用当前权限/资产/删除 guard。新登记与幂等上传签名后、回放签名后、无需 Storage 的重放返回前复查；校验的隔离/成功 CAS 前后均复查，拒绝迟到凭据或结果。
+- **兼容性**：CAS 绑定真实身份/state/version；正式资产表没有 `tombstone_at` 列，不添加不存在列的过滤。权威删除依据为台账；原音频 verifying、图片 ready、quarantined 和非覆盖重试保留；刷新 cookie/no-store 不丢失。
+- **验证**：竞态 RED 49/150、畸形身份 RED 9/174；定向 6 套/215 项和独立规格 PASS/质量 Approved。完整 verify/shared/infra 退出 0，Web 133 套/1877 项、shared 4 套/16 项、infra 7 项、184 页。1448 项历史保护输入未变；next-env 恢复，原始日志与哈希保留。
+- **限制**：重新检查不是跨查询原子撤权，已发 signed URL/上传 token 不可撤回，access 原 TTL 300 秒不变。真实 Auth/PostgREST/Storage/RLS、动作权限、事务竞态与真机仍未验收。旧 Next 配置/key 构建提示仍在，audit 未重跑。
+- **下一步**：继续可靠上传尝试观测与部署覆盖证明、实际告警投递/响应人和供应商核验；另行设计即时访问撤销与授权/删除原子边界。解码/大包 Worker、家庭/模型与成熟纵向试点仍待完成。
+- **安全边界**：本批只是本地检查点，不触发里程碑推送；不合并 main、不迁移远端、不部署、不外发真实家庭资料。发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 29 日同步导出组装观测（前批完成状态）
 
 详见[本轮报告](research/2026-10-29-export-observations.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-export-observations.md)与[验证汇总](research/evidence/2026-10-29-export-observations/verification.json)。本批补齐 §11 的同步导出事件来源；续接断点为 Task 4 审查/证据收口（情况 D），保留已通过的 Task 1–3，不重复前批实现。
 

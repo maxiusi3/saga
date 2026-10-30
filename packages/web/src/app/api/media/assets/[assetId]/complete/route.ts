@@ -4,14 +4,13 @@ import { safeExportFilename } from '@/lib/media-assets'
 import { verifyMediaObjectStream } from '@/lib/server/media-asset-verifier'
 import { requireProjectAccess } from '@/lib/server/project-access'
 import { getSupabaseAdmin } from '@/lib/supabase'
+import { requireCurrentMediaAsset } from '@/lib/server/media-asset-guard'
+import { withMediaHeaders } from '@/lib/server/media-access'
 
 export const runtime = 'nodejs'
 
 function reply(body: unknown, status: number, headers: Headers) {
-  const response = NextResponse.json(body, { status })
-  headers.forEach((value, key) => response.headers.set(key, value))
-  response.headers.set('Cache-Control', 'no-store')
-  return response
+  return withMediaHeaders(NextResponse.json(body, { status }), headers)
 }
 
 function maxBytesFor(kind: string): number {
@@ -59,18 +58,28 @@ export async function POST(
     const deleted = await checkDeletion()
     if (deleted) return deleted
     if (asset.state === 'ready' || asset.state === 'verifying') {
+      const current = await requireCurrentMediaAsset(admin, auth.user, asset, ['ready', 'verifying'])
+      if (!current.ok) return withMediaHeaders(current.response, auth.headers)
       return reply({ asset }, asset.state === 'ready' ? 200 : 202, auth.headers)
     }
-    const updateAsset = (patch: Record<string, unknown>) => admin.from('media_assets').update(patch)
-      .eq('id', asset.id).eq('state', asset.state).eq('version', asset.version).select('*').single()
+    const updateAsset = (patch: Record<string, unknown>) => {
+      const update = admin.from('media_assets').update(patch)
+        .eq('id', asset.id).eq('project_id', asset.project_id)
+        .eq('bucket', asset.bucket).eq('object_key', asset.object_key).eq('kind', asset.kind)
+        .eq('state', asset.state).eq('version', asset.version)
+      // Only shipped columns can be CAS predicates. Ledger checks are separate,
+      // not an atomic tombstone exclusion across the two tables.
+      return (asset.story_id == null ? update.is('story_id', null) : update.eq('story_id', asset.story_id))
+        .select('*').single()
+    }
 
     const storage = admin.storage.from(asset.bucket)
     const { data: info, error: infoError } = await storage.info(asset.object_key)
     if (infoError || !info) return reply({ error: 'Uploaded object not found' }, 404, auth.headers)
 
     if (typeof info.size === 'number' && typeof asset.byte_size === 'number' && info.size !== asset.byte_size) {
-      const deletion = await checkDeletion()
-      if (deletion) return deletion
+      const current = await requireCurrentMediaAsset(admin, auth.user, asset, ['pending_upload', 'uploaded'])
+      if (!current.ok) return withMediaHeaders(current.response, auth.headers)
       const { data: quarantined, error: updateError } = await updateAsset({
         state: 'quarantined',
         verification_error: 'integrity_mismatch',
@@ -78,6 +87,8 @@ export async function POST(
         verified_at: new Date().toISOString(),
       })
       if (updateError || !quarantined) return reply({ error: 'Asset changed while verification was running' }, 409, auth.headers)
+      const final = await requireCurrentMediaAsset(admin, auth.user, quarantined, ['quarantined'])
+      if (!final.ok) return withMediaHeaders(final.response, auth.headers)
       return reply({ error: 'Uploaded object failed verification', asset: quarantined }, 409, auth.headers)
     }
 
@@ -90,8 +101,8 @@ export async function POST(
       expectedMimeType: asset.mime_type,
       maxBytes: maxBytesFor(asset.kind),
     })
-    const latestDeletion = await checkDeletion()
-    if (latestDeletion) return latestDeletion
+    const current = await requireCurrentMediaAsset(admin, auth.user, asset, ['pending_upload', 'uploaded'])
+    if (!current.ok) return withMediaHeaders(current.response, auth.headers)
     if (!result.ok) {
       const { data: quarantined, error: updateError } = await updateAsset({
         state: 'quarantined',
@@ -101,6 +112,8 @@ export async function POST(
         verified_at: new Date().toISOString(),
       })
       if (updateError || !quarantined) return reply({ error: 'Asset changed while verification was running' }, 409, auth.headers)
+      const final = await requireCurrentMediaAsset(admin, auth.user, quarantined, ['quarantined'])
+      if (!final.ok) return withMediaHeaders(final.response, auth.headers)
       return reply({ error: 'Uploaded object failed verification', asset: quarantined }, result.reason === 'too_large' ? 413 : 409, auth.headers)
     }
 
@@ -115,6 +128,8 @@ export async function POST(
       verification_error: null,
     })
     if (updateError || !verified) return reply({ error: 'Asset changed while verification was running' }, 409, auth.headers)
+    const final = await requireCurrentMediaAsset(admin, auth.user, verified, [nextState])
+    if (!final.ok) return withMediaHeaders(final.response, auth.headers)
     return reply({ asset: verified }, nextState === 'ready' ? 200 : 202, auth.headers)
   } catch {
     return reply({ error: 'Asset verification is unavailable' }, 500, auth.headers)

@@ -1,0 +1,22 @@
+{
+  "localMediaRevalidationSliceComplete": true,
+  "originalMilestoneNewlyProven": false,
+  "pushConditionSatisfied": false,
+  "remainingEvidence": [
+    "atomic authorization/deletion boundary and previously issued URL revocation",
+    "live Auth/PostgREST/Storage/RLS and action permissions",
+    "reliable persistent upload attempts and deployed collection coverage",
+    "verified alert delivery/responder",
+    "provider account/region/data-policy qualification",
+    "real device/family/model/longitudinal gates",
+    "owner-authorized real Plan B backup/restore"
+  ],
+  "actions": {
+    "localCheckpoint": "only after verified closeout",
+    "push": false,
+    "mainMerge": false,
+    "remoteMigration": false,
+    "productionDeployment": false,
+    "realFamilyDataExternalCalls": false
+  }
+}

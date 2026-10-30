@@ -2,14 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
 import { getSupabaseAdmin } from '@/lib/supabase'
+import { requireCurrentMediaAsset } from '@/lib/server/media-asset-guard'
+import { withMediaHeaders } from '@/lib/server/media-access'
 
 export const runtime = 'nodejs'
 
 function reply(body: unknown, status: number, headers: Headers) {
-  const response = NextResponse.json(body, { status })
-  headers.forEach((value, key) => response.headers.set(key, value))
-  response.headers.set('Cache-Control', 'no-store')
-  return response
+  return withMediaHeaders(NextResponse.json(body, { status }), headers)
 }
 
 export async function GET(
@@ -53,6 +52,8 @@ export async function GET(
 
     const { data, error } = await admin.storage.from(asset.bucket).createSignedUrl(asset.object_key, 300)
     if (error || !data?.signedUrl) return reply({ error: 'Asset is unavailable' }, 404, auth.headers)
+    const current = await requireCurrentMediaAsset(admin, auth.user, asset, ['ready'])
+    if (!current.ok) return withMediaHeaders(current.response, auth.headers)
     return reply({ signedUrl: data.signedUrl }, 200, auth.headers)
   } catch {
     return reply({ error: 'Asset access is unavailable' }, 500, auth.headers)

@@ -1,0 +1,883 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client)
+
+FAIL src/app/api/media/assets/__tests__/route.test.ts
+  ● POST /api/media/assets › new registration during signing › does not release credentials after revocation
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › new registration during signing › does not release credentials after asset deletion
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › new registration during signing › does not release credentials after story deletion
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › new registration during signing › does not release credentials after missing asset
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 404
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › new registration during signing › does not release credentials after identity change
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › new registration during signing › does not release credentials after query failure
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › pending replay during signing › does not release credentials after revocation
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › pending replay during signing › does not release credentials after asset deletion
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › pending replay during signing › does not release credentials after story deletion
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › pending replay during signing › does not release credentials after missing asset
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 404
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › pending replay during signing › does not release credentials after identity change
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › pending replay during signing › does not release credentials after query failure
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      101 |
+      102 |       const response = await pending
+    > 103 |       expect(response.status).toBe(status)
+          |                               ^
+      104 |       expect(await response.text()).not.toMatch(/private-upload|private-token|"asset"|private provider failure/)
+      105 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+      106 |       expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:103:31)
+
+  ● POST /api/media/assets › rechecks permission before replaying a ready asset without storage
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      122 |     release({ ok: true })
+      123 |     const response = await pending
+    > 124 |     expect(response.status).toBe(403)
+          |                             ^
+      125 |     expect(await response.text()).not.toContain('"asset"')
+      126 |     expect(mockStorageFrom).not.toHaveBeenCalled()
+      127 |   })
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:124:29)
+
+  ● POST /api/media/assets › rechecks permission before replaying a verifying asset without storage
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      122 |     release({ ok: true })
+      123 |     const response = await pending
+    > 124 |     expect(response.status).toBe(403)
+          |                             ^
+      125 |     expect(await response.text()).not.toContain('"asset"')
+      126 |     expect(mockStorageFrom).not.toHaveBeenCalled()
+      127 |   })
+
+      at toBe (src/app/api/media/assets/__tests__/route.test.ts:124:29)
+
+FAIL src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts
+  ● POST /api/media/assets/[assetId]/complete › info mismatch async boundary › does not write or publish after revocation
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 4, "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.807Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › info mismatch async boundary › does not write or publish after missing asset
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 4, "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.831Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › info mismatch async boundary › does not write or publish after identity change
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 4, "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.833Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › info mismatch async boundary › does not write or publish after asset query failure
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 4, "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.837Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › info mismatch async boundary › does not write or publish after own tombstone
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 4, "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.838Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › valid stream async boundary › does not write or publish after revocation
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 11, "content_verified_at": null, "original_filename": "unnamed-asset", "sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9", "state": "verifying", "verification_error": null, "verified_at": "2026-10-30T01:37:07.851Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › valid stream async boundary › does not write or publish after missing asset
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 11, "content_verified_at": null, "original_filename": "unnamed-asset", "sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9", "state": "verifying", "verification_error": null, "verified_at": "2026-10-30T01:37:07.858Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › valid stream async boundary › does not write or publish after identity change
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 11, "content_verified_at": null, "original_filename": "unnamed-asset", "sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9", "state": "verifying", "verification_error": null, "verified_at": "2026-10-30T01:37:07.860Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › valid stream async boundary › does not write or publish after asset query failure
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 11, "content_verified_at": null, "original_filename": "unnamed-asset", "sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9", "state": "verifying", "verification_error": null, "verified_at": "2026-10-30T01:37:07.867Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › valid stream async boundary › does not write or publish after own tombstone
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 11, "content_verified_at": null, "original_filename": "unnamed-asset", "sha256": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9", "state": "verifying", "verification_error": null, "verified_at": "2026-10-30T01:37:07.869Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › invalid stream async boundary › does not write or publish after revocation
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 9, "sha256": "5faad966fc8ed5e51da6f1f4a351d6432af30635c3cedaa13cdfa9fa625400d6", "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.871Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › invalid stream async boundary › does not write or publish after missing asset
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 9, "sha256": "5faad966fc8ed5e51da6f1f4a351d6432af30635c3cedaa13cdfa9fa625400d6", "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.875Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › invalid stream async boundary › does not write or publish after identity change
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 9, "sha256": "5faad966fc8ed5e51da6f1f4a351d6432af30635c3cedaa13cdfa9fa625400d6", "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.876Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › invalid stream async boundary › does not write or publish after asset query failure
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 9, "sha256": "5faad966fc8ed5e51da6f1f4a351d6432af30635c3cedaa13cdfa9fa625400d6", "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.879Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › invalid stream async boundary › does not write or publish after own tombstone
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"byte_size": 9, "sha256": "5faad966fc8ed5e51da6f1f4a351d6432af30635c3cedaa13cdfa9fa625400d6", "state": "quarantined", "verification_error": "integrity_mismatch", "verified_at": "2026-10-30T01:37:07.880Z"}
+
+      142 |       release()
+      143 |       const response = await pending
+    > 144 |       expect(store.updates).not.toHaveBeenCalled()
+          |                                 ^
+      145 |       expect(response.status).toBe(status)
+      146 |       expect(await response.text()).not.toMatch(/"asset"|private provider failure/)
+      147 |       expect(response.headers.get('Cache-Control')).toBe('no-store')
+
+      at toHaveBeenCalled (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:144:33)
+
+  ● POST /api/media/assets/[assetId]/complete › withholds a committed ready result after revocation while CAS returns
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      162 |     release()
+      163 |     const response = await pending
+    > 164 |     expect(response.status).toBe(403)
+          |                             ^
+      165 |     expect(await response.text()).not.toContain('"asset"')
+      166 |     expect(store.current!.state).toBe(state)
+      167 |     expect(store.updates).toHaveBeenCalledTimes(1)
+
+      at toBe (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:164:29)
+
+  ● POST /api/media/assets/[assetId]/complete › withholds a committed verifying result after revocation while CAS returns
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 202
+
+      162 |     release()
+      163 |     const response = await pending
+    > 164 |     expect(response.status).toBe(403)
+          |                             ^
+      165 |     expect(await response.text()).not.toContain('"asset"')
+      166 |     expect(store.current!.state).toBe(state)
+      167 |     expect(store.updates).toHaveBeenCalledTimes(1)
+
+      at toBe (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:164:29)
+
+  ● POST /api/media/assets/[assetId]/complete › withholds a committed quarantined result after revocation while CAS returns
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 409
+
+      162 |     release()
+      163 |     const response = await pending
+    > 164 |     expect(response.status).toBe(403)
+          |                             ^
+      165 |     expect(await response.text()).not.toContain('"asset"')
+      166 |     expect(store.current!.state).toBe(state)
+      167 |     expect(store.updates).toHaveBeenCalledTimes(1)
+
+      at toBe (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:164:29)
+
+  ● POST /api/media/assets/[assetId]/complete › rechecks before a no-storage ready replay
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      179 |     release({ ok: true })
+      180 |     const response = await pending
+    > 181 |     expect(response.status).toBe(403)
+          |                             ^
+      182 |     expect(await response.text()).not.toContain('"asset"')
+      183 |     expect(mockStorageFrom).not.toHaveBeenCalled()
+      184 |   })
+
+      at toBe (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:181:29)
+
+  ● POST /api/media/assets/[assetId]/complete › rechecks before a no-storage verifying replay
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 202
+
+      179 |     release({ ok: true })
+      180 |     const response = await pending
+    > 181 |     expect(response.status).toBe(403)
+          |                             ^
+      182 |     expect(await response.text()).not.toContain('"asset"')
+      183 |     expect(mockStorageFrom).not.toHaveBeenCalled()
+      184 |   })
+
+      at toBe (src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts:181:29)
+
+FAIL src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after revocation during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after asset deletion during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after story deletion during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after missing asset during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 404
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after own tombstone during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after project_id during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after story_id during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after bucket during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after object_key during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after kind during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after state during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after version during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after asset query error during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after deletion query error during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+  ● GET /api/media/assets/[assetId]/access › discards a signed URL after permission error during signing
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 200
+
+      89 |     const response = await pending
+      90 |     const body = await response.text()
+    > 91 |     expect(response.status).toBe(status)
+         |                             ^
+      92 |     expect(body).not.toMatch(/private-signed-url|signedUrl|private provider failure/)
+      93 |     expect(response.headers.get('Cache-Control')).toBe('no-store')
+      94 |     expect(response.headers.get('Set-Cookie')).toBe('session=refreshed')
+
+      at toBe (src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts:91:29)
+
+
+Test Suites: 3 failed, 2 passed, 5 total
+Tests:       49 failed, 101 passed, 150 total
+Snapshots:   0 total
+Time:        3.072 s
+Ran all test suites matching (api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client).
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand '--testPathPatterns=(api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client)'

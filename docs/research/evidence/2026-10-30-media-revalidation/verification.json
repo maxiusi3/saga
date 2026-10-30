@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "recordedAt": "2026-10-30T01:54:37.566941+00:00",
+  "scope": "Local asynchronous-boundary media revalidation; not atomic revocation or production/milestone qualification",
+  "baselineCommit": "f654e8631706c1c5b1d70742ed5088be1d10dce0",
+  "commands": [
+    {
+      "command": "npm test --workspace=packages/web -- --runInBand --testPathPatterns='(api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client)'",
+      "exitCode": 0,
+      "suites": 6,
+      "tests": 215,
+      "log": "task1-green.txt"
+    },
+    {
+      "command": "npm run type-check --workspace=packages/web",
+      "exitCode": 0,
+      "log": "task1-type-check.txt"
+    },
+    {
+      "command": "npm run lint --workspace=packages/web",
+      "exitCode": 0,
+      "log": "task1-lint.txt"
+    },
+    {
+      "command": "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra",
+      "exitCode": 0,
+      "log": "full-verification.txt",
+      "exitFile": "full-verification.exit",
+      "web": {
+        "suites": 133,
+        "tests": 1877
+      },
+      "shared": {
+        "suites": 4,
+        "tests": 16
+      },
+      "infra": {
+        "tests": 7
+      },
+      "builtPages": 184
+    }
+  ],
+  "expectedRed": [
+    {
+      "log": "task1-red.txt",
+      "exitCode": 1,
+      "failed": 49,
+      "total": 150
+    },
+    {
+      "log": "task1-guard-red.txt",
+      "exitCode": 1,
+      "failed": 9,
+      "total": 174
+    }
+  ],
+  "reviews": {
+    "specification": {
+      "status": "passed",
+      "record": "task1-review.md",
+      "reviewer": "/root/media_review"
+    },
+    "quality": {
+      "status": "approved",
+      "record": "task1-review.md",
+      "reviewer": "/root/media_review"
+    },
+    "closeout": {
+      "status": "passed",
+      "record": "closeout-review.md",
+      "reviewer": "/root/media_review",
+      "verified": {
+        "sourceFiles": 8,
+        "protectedBaselineFiles": 1448,
+        "rawLogFiles": 6,
+        "evidenceHashesAtReview": 21
+      },
+      "findings": []
+    }
+  },
+  "integrity": {
+    "sourceFiles": 8,
+    "protectedBaselineFiles": 1448,
+    "protectedInputsUnchanged": true,
+    "nextEnvRestored": true,
+    "rawLogFiles": 6,
+    "unstagedDiffCheck": "passed",
+    "stagedDiffCheck": "passed"
+  },
+  "pg": {
+    "runThisBatch": false,
+    "reason": "No SQL changes; frozen historical experiments preserved, not rerun or claimed as current evidence"
+  },
+  "limitations": [
+    "Mocked Auth/DB/Storage boundaries; no live PostgREST/RLS validation",
+    "Separate queries/CAS do not establish atomic revocation",
+    "Already-issued URLs remain valid according to original lifetime; access TTL 300 seconds",
+    "No direct Storage RLS/action permission qualification",
+    "Known Next eslint configuration and missing SUPABASE_SERVICE_ROLE_KEY build messages remain",
+    "Audit not rerun",
+    "No new complete G0-G4 evidence or push condition"
+  ],
+  "milestoneDecision": "milestone-check.json",
+  "evidenceHashes": {
+    "README.md": "a95fa128f7c6f4d5db82f5553d1035785df109bc7c6a4f0a06c51d0a5a1456ba",
+    "closeout-review.md": "0dd6fdd26e50d285305df5a9b409f2022d02f1eede57af932008e9544be13e79",
+    "diagnosis.md": "64ad464003a146d918b723be343d3946d5a995215661bf95250f99d0c313ac54",
+    "full-verification.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "full-verification.txt": "885f90f25eaefbcaf5a8c825a328801c58db7fa3ce136a036d797d3b7518baa8",
+    "implementation-report.md": "42f2ee01399d9385dd1bd9b5cad341fdaddef7ead9ac4078ba96e10ed9903db1",
+    "log-hashes.json": "b5eb6dd47c63ece309c2f75feac1ad3a98ca1e4a7f78948d271e2019ecc0546b",
+    "milestone-check.json": "e7dfa217ff97c2f887334a12fc5001b8426b85b86b2b0233f0e5815b0bd18c46",
+    "protected-inputs.json": "3deb3c5e29fa4ba4a44bcbe8aadeec7c47e0e4e4873c43f3159f290fd04aaf3e",
+    "raw/full-verification.txt.gz": "a3aa05ea71a5262b745dd1d7c7bc44afed0253fc5144fb654c58eb6ad7d34e71",
+    "raw/task1-green.txt.gz": "65f7efbc97c0177bce29ae8768b3cade4b57a9a7ad842865ee8fc256adb30b56",
+    "raw/task1-guard-red.txt.gz": "514e23379077617669d30da72787e2b22bbc5fc2755e58d60767ac1369a61363",
+    "raw/task1-lint.txt.gz": "538b2ee111851ae5b3b0a89524260c5f9632750f7aca7a605ebcfed4559d5cf4",
+    "raw/task1-red.txt.gz": "5a65693a231ea262ba0648e9c9cdc00943e96c8a4e44f3d864f21ba27f5938df",
+    "raw/task1-type-check.txt.gz": "f09213e2d92dd6f03dbdfecbead4e4f9f741d09fa5b0f8f4a850591d4b83daa4",
+    "source-hashes.json": "f9a04f599128100b7a19cb79a41caadd18bb6b1abb1de78a3fd2029f1d472e75",
+    "task1-green.txt": "33e95e6398cdc633822ec1b51f2ba9c2c1036c8761bc2675cd4064ac5752bf09",
+    "task1-guard-red.txt": "52dbc131b109d87a2e1607e8eb4bbd82ad49cea8b0aee7507c2148d07687e722",
+    "task1-lint.txt": "bda1f2d7efbd99da94fcbc3420203dde7a09b777ea01153cd7303a166f6982c1",
+    "task1-red.txt": "3ab31c6ed0788bb7ebeeaf0f5c6503f7c3dd875b4d8e0932375791a538e3ebf5",
+    "task1-review.md": "3c4e28672a9f83d2826591ceefbd3d499202a1b9815d62d518cd8a1ace7f1799",
+    "task1-type-check.txt": "2573d4bdab0814da9a7240d6868c10b9a4426e2656e8e560893c4a3418578e20"
+  },
+  "documentationHashes": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "cb35efec5315d7c31a1bee7f3fab48cce1895dddad017a7f82b051c18aa5ad0e",
+    "docs/README.md": "c7d5ba3fee5d925e4426e6f6c310fa5082977b186ea5f2dbc1a95f94b3cb582e",
+    "docs/research/2026-10-30-media-revalidation.md": "b6ef95147800181c690851d170c0660310541e674d20f39693627a068761c492",
+    "docs/superpowers/plans/2026-10-30-upgrade-media-revalidation.md": "320432c48084384ca6fced864b7c254b0cd66cbd0216f147dcc96192df5f7f4f"
+  }
+}

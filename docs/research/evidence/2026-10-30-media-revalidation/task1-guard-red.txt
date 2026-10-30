@@ -1,0 +1,171 @@
+
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --testPathPatterns=(api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client)
+
+FAIL src/lib/server/__tests__/media-asset-guard.test.ts
+  ● fails closed even if both snapshots contain invalid identity {}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+  ● fails closed even if both snapshots contain invalid identity {}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+  ● fails closed even if both snapshots contain invalid identity {}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+  ● fails closed even if both snapshots contain invalid identity {}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+  ● fails closed even if both snapshots contain invalid identity {}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+  ● fails closed even if both snapshots contain invalid identity {}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+  ● fails closed even if both snapshots contain invalid identity {"version":0}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+  ● fails closed even if both snapshots contain invalid identity {"version":"1"}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+  ● fails closed even if both snapshots contain invalid identity {"story_id":42}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      61 |   const f = fixture(malformed)
+      62 |   const result = await requireCurrentMediaAsset(f.admin, user, malformed, ['ready'])
+    > 63 |   expect(result.ok).toBe(false)
+         |                     ^
+      64 |   expect(f.events).not.toContain('deletion_requests')
+      65 | })
+      66 |
+
+      at toBe (src/lib/server/__tests__/media-asset-guard.test.ts:63:21)
+
+
+Test Suites: 1 failed, 5 passed, 6 total
+Tests:       9 failed, 165 passed, 174 total
+Snapshots:   0 total
+Time:        3.254 s
+Ran all test suites matching (api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client).
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand '--testPathPatterns=(api/media/assets/|media-asset-guard|media-asset-verifier|project-hub-client)'

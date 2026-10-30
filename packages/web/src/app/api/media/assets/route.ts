@@ -4,16 +4,15 @@ import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
 import { getSupabaseAdmin } from '@/lib/supabase'
 import { safeExportFilename } from '@/lib/media-assets'
+import { requireCurrentMediaAsset } from '@/lib/server/media-asset-guard'
+import { withMediaHeaders } from '@/lib/server/media-access'
 
 export const runtime = 'nodejs'
 
 type AssetKind = 'original_audio' | 'original_image'
 
 function response(body: unknown, status: number, headers: Headers) {
-  const result = NextResponse.json(body, { status })
-  headers.forEach((value, key) => result.headers.set(key, value))
-  result.headers.set('Cache-Control', 'no-store')
-  return result
+  return withMediaHeaders(NextResponse.json(body, { status }), headers)
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -127,12 +126,14 @@ export async function POST(request: NextRequest) {
       if (existing.tombstone_at != null || !['pending_upload', 'uploaded', 'verifying', 'ready'].includes(existing.state)) {
         return response({ error: 'Asset is not eligible for upload' }, 409, auth.headers)
       }
-      const deleted = await checkDeletion([existing.id, ...(typeof storyId === 'string' ? [storyId] : [])])
-      if (deleted) return deleted
+      const current = await requireCurrentMediaAsset(admin, auth.user, existing, ['pending_upload', 'uploaded', 'verifying', 'ready'])
+      if (!current.ok) return withMediaHeaders(current.response, auth.headers)
       if (existing.state !== 'pending_upload') return response({ asset: existing }, 200, auth.headers)
       const { data: upload, error } = await admin.storage.from(existing.bucket)
         .createSignedUploadUrl(existing.object_key, { upsert: false })
       if (error || !upload) return response({ error: 'Failed to create upload target' }, 502, auth.headers)
+      const final = await requireCurrentMediaAsset(admin, auth.user, existing, ['pending_upload'])
+      if (!final.ok) return withMediaHeaders(final.response, auth.headers)
       return response({ asset: existing, upload }, 200, auth.headers)
     }
     const findExisting = () => admin.from('media_assets').select('*')
@@ -170,9 +171,13 @@ export async function POST(request: NextRequest) {
     }
     if (insertError || !asset) return response({ error: 'Failed to create asset' }, 500, auth.headers)
 
+    const current = await requireCurrentMediaAsset(admin, auth.user, asset, ['pending_upload'])
+    if (!current.ok) return withMediaHeaders(current.response, auth.headers)
     const { data: upload, error: uploadError } = await admin.storage.from(bucket)
       .createSignedUploadUrl(objectKey, { upsert: false })
     if (uploadError || !upload) return response({ error: 'Failed to create upload target' }, 502, auth.headers)
+    const final = await requireCurrentMediaAsset(admin, auth.user, asset, ['pending_upload'])
+    if (!final.ok) return withMediaHeaders(final.response, auth.headers)
     return response({ asset, upload }, 200, auth.headers)
   } catch {
     return response({ error: 'Asset registration is unavailable' }, 500, auth.headers)
