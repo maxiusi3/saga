@@ -3,10 +3,21 @@
 - 更新时间：2026-10-30（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`f654e8631`（上一批导出组装观测检查点；本批优先修复媒体异步授权缺口，不声称原计划 G0–G4 已全部验收）
+- 本轮接手基线 HEAD：`d13d55ab0`（上一批媒体异步重新授权检查点；接手时本地分支领先已有远端跟踪记录 5 个提交，本批续接上传观测，不声称原计划 G0–G4 已全部验收）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 10 月 30 日媒体异步重新授权（当前状态，以本节为准）
+## 10 月 30 日可靠上传客户端回报观测（当前状态，以本节为准）
+
+详见[本轮报告](research/2026-10-30-upload-observations.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-upload-observations.md)和[证据索引](research/evidence/2026-10-30-upload-observations/README.md)。中断时 Task 1 SQL/PG/infra 及独立审查已完成，Task 2 尚无代码；本轮核对原始哈希后续接 HTTP/客户端/v3 接线，保留 Task 1 与所有旧证据。**本批实施、规格、质量及独立收口均通过，详见 [verification.json](research/evidence/2026-10-30-upload-observations/verification.json)。**
+
+- **本地实现**：项目中心原音频 `pending_upload` 路径先确认 begin，再非覆盖 PUT，再独立限时确认 finish，最后沿用原 complete；未知写入不自动重试，调用者的 File/幂等键保留。台账只存随机 ID、报告绑定 hash、有限状态及数据库时间；原始 token/用户/资产标识不入账。实际 SDK 成功不会因调用者同时取消被改报失败。
+- **观测口径**：v3 范围固定 `project_hub_audio_put_reports`，是不可作为信任依据的客户端诊断，不证明 Storage 接收、hash/解码、保存或最终权限；取消不入失败率分母，未知/异常/不完整数据使上传率不可用。`windowComplete` 只表示台账年龄；始终保留 `upload_collection_coverage` 缺口、partial 覆盖与管理端 `503 not_ready`。
+- **已取得验证**：接手后正常/污染环境 PG17.4 各 14 场景/631 断言，源码 hash 与退出后 socket/目录/PID 清理通过，污染的 13 个环境键已清除。修正后定向 6 套/316 项、独立规格复审 6 套/312 项通过；最终 verify/shared/infra 退出 0，Web 135 套/2065 项、shared 4 套/16 项、infra 7 项、184 页。1471 项历史保护输入未变，next-env 再次恢复原字节；首轮 599/2017 结果单独保留，不冒充最终快照。
+- **收口结论**：Task 1 规格/质量 PASS 已复核；Task 2 唯一规格问题已修复，前后 guard 基础设施故障脱敏为 503，合法权限/状态拒绝保持。规格复审 PASS、质量 Approved（独立 13 套/510 项及 14 项 SDK/迟到结果探针），独立收口 PASS，无待修发现。修正版来源见 `task2-source-freeze-revised.json`；日志按 `log-hashes.json` 找到 `raw/*.log.gz` 原始字节和 `.txt` 阅读版，不依赖被忽略的本地 `.log`。
+- **下一批入口**：直接继续部署采集覆盖证明、实际告警投递/响应人和供应商账户/区域/数据条件核验；不要重做上传诊断或 Task 1 SQL。解码音频/持久大包 Worker、真实设备/家庭/模型和成熟纵向试点分别待完成。
+- **边界与推送**：现有媒体 verifier、跨查询非原子 guard 和 signed URL TTL 边界未变；Next 旧 `eslint` / `images.domains` 配置与缺 `SUPABASE_SERVICE_ROLE_KEY` 提示保留，audit 未重跑。供应商账户/数据条件未核实已足以阻止完整 G0，不把 G1–G4 条件加进 G0；原 G0–G4 未新增完整证明，不触发条件推送。不合并 main、不远端迁移/部署、不外发真实家庭资料；真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 30 日媒体异步重新授权（前批完成状态）
 
 详见[本轮报告](research/2026-10-30-media-revalidation.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-media-revalidation.md)和[验证汇总](research/evidence/2026-10-30-media-revalidation/verification.json)。引用聊天 `26` 的导出观测已完成，接手时工作树干净；本轮按“P0级任务”先修复已有媒体链路风险，没有重做导出埋点或扩张新功能。
 

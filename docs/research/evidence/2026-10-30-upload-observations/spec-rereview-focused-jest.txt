@@ -1,0 +1,9 @@
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts src/lib/server/__tests__/upload-observations.test.ts src/lib/server/__tests__/media-asset-guard.test.ts src/lib/__tests__/project-hub-client.test.ts src/lib/server/__tests__/operational-snapshot.test.ts src/app/api/admin/cutover-readiness/__tests__/route.test.ts
+
+
+Test Suites: 6 passed, 6 total
+Tests:       312 passed, 312 total
+Snapshots:   0 total
+Time:        3.057 s
+Ran all test suites within paths "src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts", "src/lib/server/__tests__/upload-observations.test.ts", "src/lib/server/__tests__/media-asset-guard.test.ts", "src/lib/__tests__/project-hub-client.test.ts", "src/lib/server/__tests__/operational-snapshot.test.ts", "src/app/api/admin/cutover-readiness/__tests__/route.test.ts".

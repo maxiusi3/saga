@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "d13d55ab0a2ab8bb493da404a55f475613c7a372",
+  "scope": "Local synthetic pinned PG17.4 upload reports only; not actual browser, Storage, full-chain or production evidence",
+  "sourcesCurrent": {
+    "supabase/migrations/20261030000001_upload_observations.sql": "68e8d4ec610185db89a2f2fcec0d29fe9e2b86cf5f34988762f8982b565b4c78",
+    "experiments/pg17-upload-observations/verify.mjs": "bdd840144b68686643f63afc8b6fc5c3caa4bd99285476939085cd2dba44e95d",
+    "experiments/pg17-upload-observations/README.md": "43e33d6a1cab7e50a15ed8bdb2a68bf11e185ba3180327ff733406c9447f2720",
+    "scripts/__tests__/deployment-config.test.js": "9a51835e89ee73f4719ce0b12dee4d7df11e4cf82bdaf9f12ca6973a78fb6c27",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+    "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1"
+  },
+  "runs": [
+    {
+      "log": "docs/research/evidence/2026-10-30-upload-observations/sql-red-pg.log",
+      "logSha256": "9bf25b17800a81ab5710489a87adf323a9dcefed8fb92290ecf5722a79b40645",
+      "exitCode": 1,
+      "report": "docs/research/evidence/2026-10-30-upload-observations/pg-red-without-migration-2026-10-30T02-46-44.931Z-2227789d-bd09-47a0-b8ee-d82d7afd0204.json",
+      "reportSha256": "32166544dfed47e4f41dfdc2ca31c7ea9a7e514275e450ea314e1eebbfe2f45d",
+      "status": "failed",
+      "scenarios": 1,
+      "assertions": 12,
+      "rpcProbeSqlstate": "42883",
+      "independentPostExitCleanup": {
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true,
+        "clientsRemaining": 0
+      },
+      "sourcesAtRun": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-upload-observations/verify.mjs": "2924836e4402564f54b7f7784278d2fbdbaf7b6006107a85e6d06f2f353a97fc",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+        "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056"
+      },
+      "scrubbedEnvironmentKeys": []
+    },
+    {
+      "log": "docs/research/evidence/2026-10-30-upload-observations/sql-red-infra.log",
+      "logSha256": "061b0233979fb003a6f440592401cad07ce3061611968b83001dff1f938ec51a",
+      "exitCode": 1
+    },
+    {
+      "log": "docs/research/evidence/2026-10-30-upload-observations/sql-green-pg-1.log",
+      "logSha256": "741fc234154bdcc3bd4b50e21e14637e6b53be173666e00bd22c504827013c6a",
+      "exitCode": 0,
+      "report": "docs/research/evidence/2026-10-30-upload-observations/pg-verify-2026-10-30T02-48-11.267Z-b04c2ce8-11fb-49b3-b0f8-03a985031cbe.json",
+      "reportSha256": "a50a5d425401655d572902666c9d625f087ff7f6babbf368f0c29da2e178de0e",
+      "status": "passed",
+      "scenarios": 14,
+      "assertions": 616,
+      "rpcProbeSqlstate": "00000",
+      "independentPostExitCleanup": {
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true,
+        "clientsRemaining": 0
+      },
+      "sourcesAtRun": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-upload-observations/verify.mjs": "2924836e4402564f54b7f7784278d2fbdbaf7b6006107a85e6d06f2f353a97fc",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+        "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+        "supabase/migrations/20261030000001_upload_observations.sql": "3ca86917e0d14f05996c148ec49055899ec7b34eb4cacc7aafd86865f8230e99"
+      },
+      "scrubbedEnvironmentKeys": []
+    },
+    {
+      "log": "docs/research/evidence/2026-10-30-upload-observations/sql-red-epoch-era.log",
+      "logSha256": "eacd1c0f7c3dc365161e6a9288c6bfd8536a92200fa300c463f210ed63483b18",
+      "exitCode": 1,
+      "report": "docs/research/evidence/2026-10-30-upload-observations/pg-verify-2026-10-30T02-49-15.952Z-3169fc85-2a68-439b-80a6-6a19df53cccb.json",
+      "reportSha256": "f91c59d8e7be66a58e75652c8f51f2cc83193913076843bea8394c71f19059c2",
+      "status": "failed",
+      "scenarios": 11,
+      "assertions": 508,
+      "rpcProbeSqlstate": "00000",
+      "independentPostExitCleanup": {
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true,
+        "clientsRemaining": 0
+      },
+      "sourcesAtRun": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-upload-observations/verify.mjs": "bdd840144b68686643f63afc8b6fc5c3caa4bd99285476939085cd2dba44e95d",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+        "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+        "supabase/migrations/20261030000001_upload_observations.sql": "3ca86917e0d14f05996c148ec49055899ec7b34eb4cacc7aafd86865f8230e99"
+      },
+      "scrubbedEnvironmentKeys": []
+    },
+    {
+      "log": "docs/research/evidence/2026-10-30-upload-observations/sql-green-pg-final.log",
+      "logSha256": "60623a55a6e02b980253a2f310680f9f11ae4b962591b62acc3e55edc5bf6d4d",
+      "exitCode": 0,
+      "report": "docs/research/evidence/2026-10-30-upload-observations/pg-verify-2026-10-30T02-51-02.349Z-7f74a15c-81b5-4d96-ab8f-f9a254639490.json",
+      "reportSha256": "6b96a9715b6a80a03c7bc9737f315e6c878eb26c639cee326db75eb762848dc2",
+      "status": "passed",
+      "scenarios": 14,
+      "assertions": 631,
+      "rpcProbeSqlstate": "00000",
+      "independentPostExitCleanup": {
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true,
+        "clientsRemaining": 0
+      },
+      "sourcesAtRun": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-upload-observations/verify.mjs": "bdd840144b68686643f63afc8b6fc5c3caa4bd99285476939085cd2dba44e95d",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+        "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+        "supabase/migrations/20261030000001_upload_observations.sql": "68e8d4ec610185db89a2f2fcec0d29fe9e2b86cf5f34988762f8982b565b4c78"
+      },
+      "scrubbedEnvironmentKeys": []
+    },
+    {
+      "log": "docs/research/evidence/2026-10-30-upload-observations/sql-green-pg-contaminated.log",
+      "logSha256": "d919a1d8852a354ca85fcabb9dc95f8c3d4d84da729f56d3d9181593a350e991",
+      "exitCode": 0,
+      "report": "docs/research/evidence/2026-10-30-upload-observations/pg-verify-2026-10-30T02-51-04.421Z-ef33373e-4b03-4179-b461-5c360b805958.json",
+      "reportSha256": "333bb868cf71c9e0d9b9ebdd6826feed6148d5ccfca00f901e7d359be5e2667c",
+      "status": "passed",
+      "scenarios": 14,
+      "assertions": 631,
+      "rpcProbeSqlstate": "00000",
+      "independentPostExitCleanup": {
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true,
+        "clientsRemaining": 0
+      },
+      "sourcesAtRun": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-upload-observations/verify.mjs": "bdd840144b68686643f63afc8b6fc5c3caa4bd99285476939085cd2dba44e95d",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+        "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+        "supabase/migrations/20261030000001_upload_observations.sql": "68e8d4ec610185db89a2f2fcec0d29fe9e2b86cf5f34988762f8982b565b4c78"
+      },
+      "scrubbedEnvironmentKeys": [
+        "DATABASE_URL",
+        "PGCONNECT_TIMEOUT",
+        "PGDATABASE",
+        "PGHOST",
+        "PGHOSTADDR",
+        "PGOPTIONS",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGSERVICE",
+        "PGSERVICEFILE",
+        "PGSSLMODE",
+        "PGUSER",
+        "pgSynthetic"
+      ]
+    },
+    {
+      "log": "docs/research/evidence/2026-10-30-upload-observations/sql-green-infra.log",
+      "logSha256": "29fe41eb8e270d095273ff342936e27d365a28941d63bffc889d5b8599742716",
+      "exitCode": 0
+    }
+  ],
+  "verification": "Normal and contaminated final PG runs pass 14 scenarios / 631 assertions; infra passes 7/7. Independent post-exit socket, parent directory and PID checks pass for every PG run."
+}

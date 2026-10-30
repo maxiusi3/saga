@@ -1,0 +1,165 @@
+{
+  "startedAt": "2026-10-30T02:51:02.350Z",
+  "status": "passed",
+  "mode": "verify",
+  "scope": "Synthetic local PG17.4 browser upload report ledger/RPC/aggregate verification; not a full migration-chain, PostgREST, delivery or production qualification",
+  "sources": {
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-upload-observations/verify.mjs": "bdd840144b68686643f63afc8b6fc5c3caa4bd99285476939085cd2dba44e95d",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+    "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+    "supabase/migrations/20261030000001_upload_observations.sql": "68e8d4ec610185db89a2f2fcec0d29fe9e2b86cf5f34988762f8982b565b4c78"
+  },
+  "assertions": 631,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": true
+    },
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "metadata_reader",
+      "session_user": "metadata_reader",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "New v3 RPC exists; missing new RPC is genuine product RED",
+      "status": "passed",
+      "assertions": 22
+    },
+    {
+      "name": "Minimal schema, fixed search paths, read-only v3, unchanged v1 and v2",
+      "status": "passed",
+      "assertions": 7
+    },
+    {
+      "name": "Real login ACLs reject forged role claims and all direct application writes",
+      "status": "passed",
+      "assertions": 106
+    },
+    {
+      "name": "RLS independently hides rows even if SELECT ACL is accidentally granted",
+      "status": "passed",
+      "assertions": 10
+    },
+    {
+      "name": "Database times, all client outcomes, same-binding replay and bound credential checks",
+      "status": "passed",
+      "assertions": 119
+    },
+    {
+      "name": "Structural guards reject deletion, binding mutation and every terminal rewrite",
+      "status": "passed",
+      "assertions": 21
+    },
+    {
+      "name": "True concurrent begins, hash conflicts, same finishes and competing terminals serialize",
+      "status": "passed",
+      "assertions": 24
+    },
+    {
+      "name": "Migration replay preserves coverage and restores least-privilege ACLs",
+      "status": "passed",
+      "assertions": 78
+    },
+    {
+      "name": "Finish-time windows include exact boundary; cancellations and stale starts stay separate",
+      "status": "passed",
+      "assertions": 5
+    },
+    {
+      "name": "Invalid states, hashes and bad timestamps count globally, never as healthy zero",
+      "status": "passed",
+      "assertions": 17
+    },
+    {
+      "name": "Missing, null, nonfinite, future and non-ISO-era coverage cannot claim a valid epoch",
+      "status": "passed",
+      "assertions": 90
+    },
+    {
+      "name": "Timezone and hostile temp shadows cannot change time windows or writer targets",
+      "status": "passed",
+      "assertions": 31
+    },
+    {
+      "name": "Populated v2 exports and v1 remain compatible with nonempty upload observations",
+      "status": "passed",
+      "assertions": 19
+    },
+    {
+      "name": "Read-only v3 has stable MVCC, database statement clock and zero ledger writes",
+      "status": "passed",
+      "assertions": 70
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 59410,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-P8eBE8/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-P8eBE8",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users(id)",
+      "public.projects(id)",
+      "public.stories(id)"
+    ],
+    "exactP1Tables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts"
+    ],
+    "excluded": "Other P1 DDL/indexes/policies/routines and later migrations; no full migration-chain claim"
+  },
+  "rpcProbeSqlstate": "00000",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "socketRemoved": true,
+    "parentDirectoryRemoved": true,
+    "serverPidGone": true
+  },
+  "completedAt": "2026-10-30T02:51:04.226Z"
+}

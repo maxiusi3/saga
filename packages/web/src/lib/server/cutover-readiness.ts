@@ -148,7 +148,8 @@ export interface OperationalAlertItem {
 export interface OperationalHealthReport {
   status: 'healthy' | 'degraded' | 'critical' | 'unavailable'
   coverage: 'complete' | 'partial'
-  unavailableMetrics: Array<'uploads' | 'processing' | 'project_cost' | 'project_cost_completeness' | 'deletions' | 'exports' | 'export_observation_window' | 'export_outcome_completeness'>
+  unavailableMetrics: Array<'uploads' | 'upload_collection_coverage' | 'upload_observation_window' | 'upload_outcome_completeness' |
+    'processing' | 'project_cost' | 'project_cost_completeness' | 'deletions' | 'exports' | 'export_observation_window' | 'export_outcome_completeness'>
   containsPrivateFamilyText: false
   alerts: OperationalAlertItem[]
 }
@@ -181,7 +182,7 @@ export function evaluateOperationalAlerts(
         code: 'upload_failure_spike',
         severity: uploadFailureRate >= 0.25 ? 'critical' : 'warning',
         responderRole: 'primary_developer_oncall',
-        summary: `Upload failure rate ${(uploadFailureRate * 100).toFixed(1)}% (${uploadFailures}/${uploadAttempts}) in ${windowMinutes}m window`,
+        summary: `Client-reported upload failure rate ${(uploadFailureRate * 100).toFixed(1)}% (${uploadFailures}/${uploadAttempts}) in ${windowMinutes}m window`,
       })
     }
   }

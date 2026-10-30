@@ -1,0 +1,194 @@
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/project-hub-client.test.ts src/lib/server/__tests__/operational-snapshot.test.ts
+
+FAIL src/lib/__tests__/project-hub-client.test.ts
+  ● requires exact HTTP 200 for begin receipts
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      325 | it.each(['begin', 'finish'] as const)('requires exact HTTP 200 for %s receipts', async phase => {
+      326 |   const calls = serveUpload({ [phase]: () => Response.json(phase === 'begin' ? beginReceipt : finishReceipt(), { status: 202 }) })
+    > 327 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      328 |   expect(calls).not.toContain('complete')
+      329 | })
+      330 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:327:9)
+
+  ● requires exact HTTP 200 for finish receipts
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      325 | it.each(['begin', 'finish'] as const)('requires exact HTTP 200 for %s receipts', async phase => {
+      326 |   const calls = serveUpload({ [phase]: () => Response.json(phase === 'begin' ? beginReceipt : finishReceipt(), { status: 202 }) })
+    > 327 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      328 |   expect(calls).not.toContain('complete')
+      329 | })
+      330 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:327:9)
+
+  ● reports pre-PUT cancellation even for a custom non-AbortError caller reason
+
+    expect(received).rejects.toMatchObject(expected)
+
+    - Expected  - 3
+    + Received  + 1
+
+    - Object {
+    -   "name": "AbortError",
+    - }
+    + [Error: Audio upload failed]
+
+      333 |   const receipt = { ...beginReceipt, get state() { caller.abort(new Error('custom reason')); return 'started' } }
+      334 |   const calls = serveUpload({ begin: () => ({ ok: true, status: 200, json: async () => receipt }) })
+    > 335 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key', caller.signal)).rejects.toMatchObject({ name: 'AbortError' })
+          |                                                                                                   ^
+      336 |   expect(calls).toEqual(['register', 'begin', 'finish'])
+      337 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_cancelled')
+      338 | })
+
+      at Object.toMatchObject (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at Object.toMatchObject (src/lib/__tests__/project-hub-client.test.ts:335:99)
+
+FAIL src/lib/server/__tests__/operational-snapshot.test.ts
+  ● rejects year-zero exports coverage outside the database wire epoch
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  2
+    + Received  + 38
+
+      Object {
+    -   "ok": false,
+    -   "reason": "invalid_snapshot",
+    +   "ok": true,
+    +   "snapshot": Object {
+    +     "costs": Object {
+    +       "maxProjectKnownExposureCents": 751,
+    +       "unknownAttemptCostsCount": 0,
+    +     },
+    +     "deletions": Object {
+    +       "invalidRequestCount": 0,
+    +       "overdueRequestsCount": 1,
+    +     },
+    +     "exports": Object {
+    +       "coverageStartedAt": "0000-01-01T00:00:00.000Z",
+    +       "integrityFailuresCount": 0,
+    +       "invalidAttemptsCount": 0,
+    +       "scope": "synchronous_archive_assembly",
+    +       "unsettledAttemptsCount": 0,
+    +       "windowComplete": true,
+    +       "windowMinutes": 60,
+    +     },
+    +     "observedAt": "2026-10-29T05:00:00.000Z",
+    +     "processing": Object {
+    +       "invalidJobCount": 0,
+    +       "maxRunnableBacklogAgeSeconds": 1800,
+    +       "stalledJobsCount": 2,
+    +     },
+    +     "schemaVersion": 3,
+    +     "uploads": Object {
+    +       "coverageStartedAt": "2026-10-29T03:00:00.000Z",
+    +       "evaluatedAttemptsCount": 0,
+    +       "invalidAttemptsCount": 0,
+    +       "reportedCancellationsCount": 0,
+    +       "reportedFailuresCount": 0,
+    +       "scope": "project_hub_audio_put_reports",
+    +       "unsettledAttemptsCount": 0,
+    +       "windowComplete": true,
+    +       "windowMinutes": 60,
+    +     },
+    +   },
+      }
+
+      281 |   const data = snapshot(); data[group].coverageStartedAt = '0000-01-01T00:00:00.000Z'
+      282 |   mockRetry.mockResolvedValue({ data, error: null })
+    > 283 |   expect(await loadOperationalSnapshot()).toEqual({ ok: false, reason: 'invalid_snapshot' })
+          |                                           ^
+      284 | })
+      285 |
+
+      at toEqual (src/lib/server/__tests__/operational-snapshot.test.ts:283:43)
+
+  ● rejects year-zero uploads coverage outside the database wire epoch
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  2
+    + Received  + 38
+
+      Object {
+    -   "ok": false,
+    -   "reason": "invalid_snapshot",
+    +   "ok": true,
+    +   "snapshot": Object {
+    +     "costs": Object {
+    +       "maxProjectKnownExposureCents": 751,
+    +       "unknownAttemptCostsCount": 0,
+    +     },
+    +     "deletions": Object {
+    +       "invalidRequestCount": 0,
+    +       "overdueRequestsCount": 1,
+    +     },
+    +     "exports": Object {
+    +       "coverageStartedAt": "2026-10-29T03:00:00.000Z",
+    +       "integrityFailuresCount": 0,
+    +       "invalidAttemptsCount": 0,
+    +       "scope": "synchronous_archive_assembly",
+    +       "unsettledAttemptsCount": 0,
+    +       "windowComplete": true,
+    +       "windowMinutes": 60,
+    +     },
+    +     "observedAt": "2026-10-29T05:00:00.000Z",
+    +     "processing": Object {
+    +       "invalidJobCount": 0,
+    +       "maxRunnableBacklogAgeSeconds": 1800,
+    +       "stalledJobsCount": 2,
+    +     },
+    +     "schemaVersion": 3,
+    +     "uploads": Object {
+    +       "coverageStartedAt": "0000-01-01T00:00:00.000Z",
+    +       "evaluatedAttemptsCount": 0,
+    +       "invalidAttemptsCount": 0,
+    +       "reportedCancellationsCount": 0,
+    +       "reportedFailuresCount": 0,
+    +       "scope": "project_hub_audio_put_reports",
+    +       "unsettledAttemptsCount": 0,
+    +       "windowComplete": true,
+    +       "windowMinutes": 60,
+    +     },
+    +   },
+      }
+
+      281 |   const data = snapshot(); data[group].coverageStartedAt = '0000-01-01T00:00:00.000Z'
+      282 |   mockRetry.mockResolvedValue({ data, error: null })
+    > 283 |   expect(await loadOperationalSnapshot()).toEqual({ ok: false, reason: 'invalid_snapshot' })
+          |                                           ^
+      284 | })
+      285 |
+
+      at toEqual (src/lib/server/__tests__/operational-snapshot.test.ts:283:43)
+
+Test Suites: 2 failed, 2 total
+Tests:       5 failed, 142 passed, 147 total
+Snapshots:   0 total
+Time:        1.057 s
+Ran all test suites within paths "src/lib/__tests__/project-hub-client.test.ts", "src/lib/server/__tests__/operational-snapshot.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/project-hub-client.test.ts src/lib/server/__tests__/operational-snapshot.test.ts

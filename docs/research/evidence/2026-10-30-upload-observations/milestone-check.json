@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "assessedOn": "2026-10-30 Asia/Taipei",
+  "baselineCommit": "d13d55ab0a2ab8bb493da404a55f475613c7a372",
+  "criteria": "docs/2026-10-10-integrated-upgrade-plan.md section 7.1",
+  "localUploadObservationSliceStatus": "complete",
+  "originalMilestoneNewlyProven": false,
+  "p0CompletionProvenByThisBatch": false,
+  "pushConditionSatisfied": false,
+  "gates": {
+    "G0": {
+      "verdict": "not_proven",
+      "established": [
+        "Existing D01-D16 decisions and measurement contracts remain unchanged",
+        "Existing reviewable project-hub prototype and local integration are retained",
+        "Local candidate upload migration passes isolated PG17.4 verification"
+      ],
+      "missing": [
+        "Selected provider account capabilities, region and data-policy qualification are not verified; current admin route keeps probes blocked_by_policy",
+        "No new live authorization or owner-authorized real backup/restore evidence is supplied by browser-report diagnostics"
+      ]
+    },
+    "G1": {
+      "verdict": "not_proven",
+      "missing": [
+        "Real supported-device 5/20/30 minute fault matrix and live Auth/Storage/RLS isolation",
+        "Client PUT reports do not establish verified original audio, decoding, durable save or export delivery"
+      ]
+    },
+    "G2": {
+      "verdict": "not_proven",
+      "missing": [
+        "Qualified real-model evaluation, family-separated labeled error/negative sets and actual source playback evidence"
+      ]
+    },
+    "G3": {
+      "verdict": "not_proven",
+      "missing": [
+        "Supported-device export opening, real delivery/payment/refund/revocation/restore/deletion exercises and 6-8 household experience iteration"
+      ]
+    },
+    "G4": {
+      "verdict": "not_proven",
+      "missing": [
+        "Mature real longitudinal household windows, labor and cohort economics evidence"
+      ]
+    }
+  },
+  "remainingOperationalEvidence": [
+    "Deployed collection coverage for upload and export observations",
+    "Verified alert delivery and assigned responder",
+    "Qualified provider account and data conditions"
+  ],
+  "interpretation": "Not proven is not a claim that every implementation is absent. Earlier synthetic pass labels cannot substitute for the original gate evidence; G1-G4 conditions are not added to G0.",
+  "actions": {
+    "localCheckpoint": "only after verified closeout",
+    "push": false,
+    "mainMerge": false,
+    "remoteMigration": false,
+    "deployment": false,
+    "realFamilyDataExternalCalls": false
+  }
+}

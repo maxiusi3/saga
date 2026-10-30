@@ -1,6 +1,8 @@
 import JSZip from 'jszip'
 import { useAuthStore } from '@/stores/auth-store'
 import { createClientSupabase } from '@/lib/supabase'
+import { isUuid } from '@/lib/invitation-acceptance-protocol'
+import type { BrowserUploadOutcome } from '@/lib/server/upload-observations'
 import type { ProvenanceSearchCitation } from '@/lib/server/provenance-search'
 
 export interface ArchiveSearchFilters {
@@ -106,6 +108,58 @@ function isExistingObjectError(error: unknown): boolean {
     (typeof error.message === 'string' && /^(?:asset already exists|the resource already exists|duplicate)$/i.test(error.message)))
 }
 
+function exactKeys(value: unknown, keys: readonly string[]): value is Record<string, unknown> {
+  return record(value) && Object.keys(value).length === keys.length && keys.every(key => Object.prototype.hasOwnProperty.call(value, key))
+}
+
+/** Bound auth, fetch and body together, even when one ignores AbortSignal. Never replay unknown reports. */
+async function uploadObservation(assetId: string, body: unknown, caller?: AbortSignal): Promise<unknown> {
+  caller?.throwIfAborted()
+  const controller = new AbortController()
+  const abort = () => controller.abort()
+  caller?.addEventListener('abort', abort, { once: true })
+  let onAbort: () => void = () => {}
+  const interrupted = new Promise<never>((_, reject) => {
+    onAbort = () => reject(new Error('Upload observation failed'))
+    controller.signal.addEventListener('abort', onAbort, { once: true })
+  })
+  const timer = setTimeout(abort, 20_000)
+  try {
+    return await Promise.race([
+      request(`/api/media/assets/${encodeURIComponent(assetId)}/upload-attempts`, {
+        method: 'POST', signal: controller.signal, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+      }).then(response => {
+        if (response.status !== 200) throw new Error('Upload observation failed')
+        return json(response)
+      }),
+      interrupted,
+    ])
+  } catch {
+    caller?.throwIfAborted()
+    throw new Error('Upload observation failed')
+  } finally {
+    clearTimeout(timer)
+    caller?.removeEventListener('abort', abort)
+    controller.signal.removeEventListener('abort', onAbort)
+    controller.abort()
+  }
+}
+
+async function beginUploadObservation(assetId: string, signal?: AbortSignal) {
+  const data = await uploadObservation(assetId, { action: 'begin' }, signal)
+  if (!exactKeys(data, ['schemaVersion', 'attemptId', 'reportToken', 'state']) || data.schemaVersion !== 1 ||
+    !isUuid(data.attemptId) || data.state !== 'started' || typeof data.reportToken !== 'string' ||
+    data.reportToken.length !== 43 || !/^[A-Za-z0-9_-]{43}$/.test(data.reportToken)) throw new Error('Upload observation failed')
+  return { attemptId: data.attemptId, reportToken: data.reportToken }
+}
+
+async function finishUploadObservation(assetId: string, attempt: { attemptId: string; reportToken: string }, outcome: BrowserUploadOutcome) {
+  // Independent from caller cancellation: record the actual SDK result before any follow-up.
+  const data = await uploadObservation(assetId, { action: 'finish', ...attempt, outcome })
+  if (!exactKeys(data, ['schemaVersion', 'attemptId', 'state']) || data.schemaVersion !== 1 ||
+    data.attemptId !== attempt.attemptId || data.state !== outcome) throw new Error('Upload observation failed')
+}
+
 export async function importProjectAudio(
   projectId: string, file: File, idempotencyKey: string, signal?: AbortSignal,
 ): Promise<{ id: string; state: 'ready' | 'verifying' }> {
@@ -124,12 +178,23 @@ export async function importProjectAudio(
     if (!record(body) || !record(body.upload) || typeof body.upload.token !== 'string' || !body.upload.token) {
       throw new Error('Invalid upload response')
     }
-    signal?.throwIfAborted()
-    const result = await createClientSupabase().storage.from(asset.bucket)
-      .uploadToSignedUrl(asset.objectKey, body.upload.token, file, { contentType: file.type })
-    // A previous PUT may have succeeded without its response. Never overwrite it;
-    // an explicit conflict is reconciled by the server's completion verifier.
-    if (result.error && !isExistingObjectError(result.error)) throw new Error('Audio upload failed')
+    const attempt = await beginUploadObservation(asset.id, signal)
+    let outcome: BrowserUploadOutcome
+    let failure: Error | undefined
+    try {
+      if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError')
+      const result = await createClientSupabase().storage.from(asset.bucket)
+        .uploadToSignedUrl(asset.objectKey, body.upload.token, file, { contentType: file.type, upsert: false })
+      // A conflict is not a successful new-object PUT. Only the existing server verifier can reconcile it.
+      outcome = !result.error ? 'client_succeeded' : isExistingObjectError(result.error) ? 'client_conflict' : 'client_failed'
+      if (outcome === 'client_failed') failure = new Error('Audio upload failed')
+    } catch (error) {
+      const cancelled = record(error) && error.name === 'AbortError'
+      outcome = cancelled ? 'client_cancelled' : 'client_failed'
+      failure = cancelled ? new DOMException('Cancelled', 'AbortError') : new Error('Audio upload failed')
+    }
+    await finishUploadObservation(asset.id, attempt, outcome)
+    if (failure) throw failure
   }
   signal?.throwIfAborted()
   const completed = uploadAsset(await json(await request(`/api/media/assets/${encodeURIComponent(asset.id)}/complete`, {

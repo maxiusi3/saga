@@ -1,6 +1,7 @@
 import { getSupabaseAdmin } from '@/lib/supabase'
 
-type OperationalRpc = 'read_operational_snapshot_v2' | 'begin_archive_assembly_attempt' | 'finish_archive_assembly_attempt'
+type OperationalRpc = 'read_operational_snapshot_v3' | 'begin_archive_assembly_attempt' | 'finish_archive_assembly_attempt' |
+  'begin_browser_upload_attempt' | 'finish_browser_upload_attempt'
 type RpcResult = { ok: true; data: unknown } | {
   ok: false; reason: 'database_unavailable' | 'not_configured' | 'request_interrupted'
 }

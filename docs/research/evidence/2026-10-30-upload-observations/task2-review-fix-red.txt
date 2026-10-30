@@ -1,0 +1,580 @@
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts
+
+FAIL src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts
+  ● begin guard failures › before RPC › sanitizes asset database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › before RPC › sanitizes deletion database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › before RPC › sanitizes invalid identity failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › before RPC › sanitizes project database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › before RPC › sanitizes thrown access failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › before RPC › preserves only authorization/state status 400
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 400
+
+      267 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+    > 269 |       expect(res.status).toBe(preserved ? status : 503)
+          |                          ^
+      270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:269:26)
+
+  ● begin guard failures › before RPC › preserves only authorization/state status 502
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 502
+
+      267 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+    > 269 |       expect(res.status).toBe(preserved ? status : 503)
+          |                          ^
+      270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:269:26)
+
+  ● begin guard failures › before RPC › preserves only authorization/state status 503
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "error": "Upload observation is unavailable",
+    +   "error": "Guard failure",
+      }
+
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+      269 |       expect(res.status).toBe(preserved ? status : 503)
+    > 270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+          |                                ^
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+      273 |       expect(mockRpc).toHaveBeenCalledTimes(afterRpc ? 1 : 0)
+
+      at toEqual (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:270:32)
+
+  ● begin guard failures › after RPC › sanitizes asset database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › after RPC › sanitizes deletion database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › after RPC › sanitizes invalid identity failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › after RPC › sanitizes project database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › after RPC › sanitizes thrown access failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● begin guard failures › after RPC › preserves only authorization/state status 400
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 400
+
+      267 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+    > 269 |       expect(res.status).toBe(preserved ? status : 503)
+          |                          ^
+      270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:269:26)
+
+  ● begin guard failures › after RPC › preserves only authorization/state status 502
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 502
+
+      267 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+    > 269 |       expect(res.status).toBe(preserved ? status : 503)
+          |                          ^
+      270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:269:26)
+
+  ● begin guard failures › after RPC › preserves only authorization/state status 503
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "error": "Upload observation is unavailable",
+    +   "error": "Guard failure",
+      }
+
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+      269 |       expect(res.status).toBe(preserved ? status : 503)
+    > 270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+          |                                ^
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+      273 |       expect(mockRpc).toHaveBeenCalledTimes(afterRpc ? 1 : 0)
+
+      at toEqual (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:270:32)
+
+  ● finish guard failures › before RPC › sanitizes asset database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › before RPC › sanitizes deletion database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › before RPC › sanitizes invalid identity failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › before RPC › sanitizes project database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › before RPC › sanitizes thrown access failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › before RPC › preserves only authorization/state status 400
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 400
+
+      267 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+    > 269 |       expect(res.status).toBe(preserved ? status : 503)
+          |                          ^
+      270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:269:26)
+
+  ● finish guard failures › before RPC › preserves only authorization/state status 502
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 502
+
+      267 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+    > 269 |       expect(res.status).toBe(preserved ? status : 503)
+          |                          ^
+      270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:269:26)
+
+  ● finish guard failures › before RPC › preserves only authorization/state status 503
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "error": "Upload observation is unavailable",
+    +   "error": "Guard failure",
+      }
+
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+      269 |       expect(res.status).toBe(preserved ? status : 503)
+    > 270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+          |                                ^
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+      273 |       expect(mockRpc).toHaveBeenCalledTimes(afterRpc ? 1 : 0)
+
+      at toEqual (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:270:32)
+
+  ● finish guard failures › after RPC › sanitizes asset database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › after RPC › sanitizes deletion database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › after RPC › sanitizes invalid identity failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › after RPC › sanitizes project database failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › after RPC › sanitizes thrown access failures to 503
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 500
+
+      255 |       })
+      256 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+    > 257 |       expect(res.status).toBe(503)
+          |                          ^
+      258 |       expect(await res.json()).toEqual({ error: 'Upload observation is unavailable' })
+      259 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      260 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:257:26)
+
+  ● finish guard failures › after RPC › preserves only authorization/state status 400
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 400
+
+      267 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+    > 269 |       expect(res.status).toBe(preserved ? status : 503)
+          |                          ^
+      270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:269:26)
+
+  ● finish guard failures › after RPC › preserves only authorization/state status 502
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 503
+    Received: 502
+
+      267 |       const res = await invoke(request(action === 'begin' ? { action } : finish))
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+    > 269 |       expect(res.status).toBe(preserved ? status : 503)
+          |                          ^
+      270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+
+      at toBe (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:269:26)
+
+  ● finish guard failures › after RPC › preserves only authorization/state status 503
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "error": "Upload observation is unavailable",
+    +   "error": "Guard failure",
+      }
+
+      268 |       const preserved = [401, 403, 404, 409].includes(status)
+      269 |       expect(res.status).toBe(preserved ? status : 503)
+    > 270 |       expect(await res.json()).toEqual({ error: preserved ? 'Guard failure' : 'Upload observation is unavailable' })
+          |                                ^
+      271 |       expect(res.headers.get('cache-control')).toBe('no-store')
+      272 |       expect(res.headers.getSetCookie()).toEqual(['session-a=refreshed; Path=/', 'session-b=refreshed; Path=/'])
+      273 |       expect(mockRpc).toHaveBeenCalledTimes(afterRpc ? 1 : 0)
+
+      at toEqual (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:270:32)
+
+Test Suites: 1 failed, 1 total
+Tests:       32 failed, 71 passed, 103 total
+Snapshots:   0 total
+Time:        0.824 s, estimated 1 s
+Ran all test suites within paths "src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts

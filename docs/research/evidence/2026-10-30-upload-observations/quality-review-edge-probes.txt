@@ -1,0 +1,17 @@
+Independent read-only in-memory probes; real frozen client + installed StorageClient; synthetic fetches only.
+source sha256 4518c16d4e7edef3a53d0c7d234d11de4f0a6429c71120ebf5c1be79c31d1196
+PASS installed SDK success => client_succeeded; one non-overwrite PUT; bounded reports
+PASS installed SDK 409 conflict => client_conflict; one non-overwrite PUT; bounded reports
+PASS installed SDK legacy duplicate 400 => client_conflict; one non-overwrite PUT; bounded reports
+PASS installed SDK unrelated 400 => client_failed; one non-overwrite PUT; bounded reports
+PASS installed SDK server 503 => client_failed; one non-overwrite PUT; bounded reports
+PASS installed SDK transport rejection => client_failed; one non-overwrite PUT; bounded reports
+PASS late successful begin auth after 20s cannot dispatch PUT/complete/retry
+PASS late successful begin fetch after 20s cannot dispatch PUT/complete/retry
+PASS late successful begin body after 20s cannot dispatch PUT/complete/retry
+PASS late successful finish auth after 20s cannot dispatch PUT/complete/retry
+PASS late successful finish fetch after 20s cannot dispatch PUT/complete/retry
+PASS late successful finish body after 20s cannot dispatch PUT/complete/retry
+PASS caller cancellation during-put preserves actual SDK success, confirms finish, blocks complete
+PASS caller cancellation during-finish preserves actual SDK success, confirms finish, blocks complete
+TOTAL 14 passed

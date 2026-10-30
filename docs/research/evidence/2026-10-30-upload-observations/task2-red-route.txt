@@ -1,0 +1,31 @@
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts
+
+FAIL src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts
+  ● Test suite failed to run
+
+    Cannot find module '../route' from 'src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts'
+
+      14 | jest.mock('@/lib/server/project-access', () => ({ requireProjectAccess: (...args: unknown[]) => mockAccess(...args) }))
+      15 | jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => mockAdmin() }))
+    > 16 |
+         | ^
+      17 | const asset = {
+      18 |   id: 'asset-123', project_id: 'project-123', kind: 'original_audio', state: 'pending_upload',
+      19 |   story_id: 'story-123', version: 1, bucket: 'audio-recordings', object_key: 'private/object',
+
+      at Resolver._throwModNotFoundError (node_modules/jest-resolve/build/index.js:863:11)
+      at Object.<anonymous> (src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts:16:16)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        1.209 s
+Ran all test suites within paths "src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts

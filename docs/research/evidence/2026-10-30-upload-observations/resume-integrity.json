@@ -1,0 +1,14 @@
+{
+  "baselineCommit": "d13d55ab0a2ab8bb493da404a55f475613c7a372",
+  "task1FrozenSourceHashes": {
+    "scripts/__tests__/deployment-config.test.js": "9a51835e89ee73f4719ce0b12dee4d7df11e4cf82bdaf9f12ca6973a78fb6c27",
+    "supabase/migrations/20261030000001_upload_observations.sql": "68e8d4ec610185db89a2f2fcec0d29fe9e2b86cf5f34988762f8982b565b4c78",
+    "experiments/pg17-upload-observations/verify.mjs": "bdd840144b68686643f63afc8b6fc5c3caa4bd99285476939085cd2dba44e95d",
+    "experiments/pg17-upload-observations/README.md": "43e33d6a1cab7e50a15ed8bdb2a68bf11e185ba3180327ff733406c9447f2720"
+  },
+  "task1IndexedSourcesVerified": 9,
+  "inheritedLogsVerified": 7,
+  "protectedFilesVerified": 1471,
+  "nextEnvMatchesInheritedOriginal": true,
+  "status": "passed"
+}

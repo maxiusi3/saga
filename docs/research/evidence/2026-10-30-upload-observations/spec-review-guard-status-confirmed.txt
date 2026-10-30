@@ -1,0 +1,4 @@
+{"case":"precheck_asset_db","status":500,"body":{"error":"Failed to load asset"},"rpcs":0,"cacheControl":"no-store"}
+{"case":"precheck_tombstone_db","status":500,"body":{"error":"Failed to verify deletion status"},"rpcs":0,"cacheControl":"no-store"}
+{"case":"final_asset_db","status":500,"body":{"error":"Failed to load asset"},"rpcs":1,"cacheControl":"no-store"}
+{"case":"final_tombstone_db","status":500,"body":{"error":"Failed to verify deletion status"},"rpcs":1,"cacheControl":"no-store"}

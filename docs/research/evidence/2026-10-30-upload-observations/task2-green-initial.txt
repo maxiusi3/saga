@@ -1,0 +1,40 @@
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/server/__tests__/upload-observations.test.ts src/lib/server/__tests__/operational-snapshot.test.ts src/app/api/admin/cutover-readiness/__tests__/route.test.ts src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts src/lib/__tests__/project-hub-client.test.ts
+
+FAIL src/lib/__tests__/project-hub-client.test.ts
+  ● reports cancellation when begin confirms but abort happens before PUT
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "register",
+        "begin",
+    -   "finish",
+      ]
+
+      255 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key', caller.signal)).rejects.toMatchObject({ name: 'AbortError' })
+      256 |   expect(mockUpload).not.toHaveBeenCalled()
+    > 257 |   expect(calls).toEqual(['register', 'begin', 'finish'])
+          |                 ^
+      258 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_cancelled')
+      259 | })
+      260 |
+
+      at Object.toEqual (src/lib/__tests__/project-hub-client.test.ts:257:17)
+
+
+Test Suites: 1 failed, 4 passed, 5 total
+Tests:       1 failed, 231 passed, 232 total
+Snapshots:   0 total
+Time:        2.073 s, estimated 12 s
+Ran all test suites within paths "src/lib/server/__tests__/upload-observations.test.ts", "src/lib/server/__tests__/operational-snapshot.test.ts", "src/app/api/admin/cutover-readiness/__tests__/route.test.ts", "src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts", "src/lib/__tests__/project-hub-client.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/server/__tests__/upload-observations.test.ts src/lib/server/__tests__/operational-snapshot.test.ts src/app/api/admin/cutover-readiness/__tests__/route.test.ts src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts src/lib/__tests__/project-hub-client.test.ts

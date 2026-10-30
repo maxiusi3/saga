@@ -1,0 +1,2 @@
+{"status":"failed","scenarios":1,"assertions":12,"failureKind":"expected_product_red_missing_rpc","failure":{"code":"ASSERT_FAILED","label":"new v3 RPC must exist (42883 is expected missing-feature RED)"},"cleanup":{"clusterStopped":true,"tempDirectoryRemoved":true,"clientsRemaining":0,"errors":[],"socketRemoved":true,"parentDirectoryRemoved":true,"serverPidGone":true},"output":"/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-30-upload-observations/pg-red-without-migration-2026-10-30T02-46-44.931Z-2227789d-bd09-47a0-b8ee-d82d7afd0204.json"}
+EXIT_CODE=1

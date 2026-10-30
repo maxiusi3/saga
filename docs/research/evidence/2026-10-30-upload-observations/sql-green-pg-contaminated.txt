@@ -1,0 +1,2 @@
+{"status":"passed","scenarios":14,"assertions":631,"cleanup":{"clusterStopped":true,"tempDirectoryRemoved":true,"clientsRemaining":0,"errors":[],"socketRemoved":true,"parentDirectoryRemoved":true,"serverPidGone":true},"output":"/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-10-30-upload-observations/pg-verify-2026-10-30T02-51-04.421Z-ef33373e-4b03-4179-b461-5c360b805958.json"}
+EXIT_CODE=0

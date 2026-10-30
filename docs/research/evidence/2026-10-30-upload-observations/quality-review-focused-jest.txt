@@ -1,0 +1,9 @@
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts src/lib/server/__tests__/upload-observations.test.ts src/lib/__tests__/project-hub-client.test.ts src/lib/server/__tests__/operational-snapshot.test.ts src/app/api/admin/cutover-readiness/__tests__/route.test.ts src/lib/server/__tests__/cutover-readiness.test.ts src/lib/server/__tests__/media-asset-guard.test.ts src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts src/app/api/media/assets/__tests__/route.test.ts src/app/api/projects/[id]/export/__tests__/route.test.ts src/lib/server/__tests__/archival-export-service.test.ts src/components/projects/__tests__/connected-project-hub.test.tsx src/components/projects/__tests__/two-entry-project-hub.test.tsx
+
+
+Test Suites: 13 passed, 13 total
+Tests:       510 passed, 510 total
+Snapshots:   0 total
+Time:        5.114 s
+Ran all test suites within paths "src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts", "src/lib/server/__tests__/upload-observations.test.ts", "src/lib/__tests__/project-hub-client.test.ts", "src/lib/server/__tests__/operational-snapshot.test.ts", "src/app/api/admin/cutover-readiness/__tests__/route.test.ts", "src/lib/server/__tests__/cutover-readiness.test.ts", "src/lib/server/__tests__/media-asset-guard.test.ts", "src/app/api/media/assets/[assetId]/complete/__tests__/route.test.ts", "src/app/api/media/assets/__tests__/route.test.ts", "src/app/api/projects/[id]/export/__tests__/route.test.ts", "src/lib/server/__tests__/archival-export-service.test.ts", "src/components/projects/__tests__/connected-project-hub.test.tsx", "src/components/projects/__tests__/two-entry-project-hub.test.tsx".

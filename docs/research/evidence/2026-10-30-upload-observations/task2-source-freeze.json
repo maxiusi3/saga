@@ -1,0 +1,13 @@
+{
+  "packages/web/src/lib/server/upload-observations.ts": "a4f5a2b1b3bfac92373445449548a57d82563e7808c44371a6fd48f64e56c483",
+  "packages/web/src/lib/server/__tests__/upload-observations.test.ts": "361d42b449985e7c48fce8f64af78cc9093bbbd586f1542224d0acd8c2ced176",
+  "packages/web/src/app/api/media/assets/[assetId]/upload-attempts/route.ts": "a81f2a9bd493aa2c126d941e9c83f4d0bb204f4a8faf350ef3a569e116b8bfc5",
+  "packages/web/src/app/api/media/assets/[assetId]/upload-attempts/__tests__/route.test.ts": "6ac4e12b9db2db3a0d3cc3d2071b1710491ca900494d7d3281cb8b4618f37d78",
+  "packages/web/src/lib/server/operational-rpc.ts": "1986e83fcb3f511aadfaa00b1cdb89a2870df7b0bec2b07e37a17d929306f8ef",
+  "packages/web/src/lib/server/operational-snapshot.ts": "0a5750db5e664a8aed6143dc161bb784b1d6066be33678a07b5c59cff8eee57d",
+  "packages/web/src/lib/server/__tests__/operational-snapshot.test.ts": "97479f5fc2b8e66e79965b70024863bb345485c149e934dc335a967826c6617b",
+  "packages/web/src/lib/server/cutover-readiness.ts": "135c90537a887fa7624ab794014c79003e19491d493ed34968077074fa15bb17",
+  "packages/web/src/lib/project-hub-client.ts": "4518c16d4e7edef3a53d0c7d234d11de4f0a6429c71120ebf5c1be79c31d1196",
+  "packages/web/src/lib/__tests__/project-hub-client.test.ts": "7660693182808a94d125837905322592f5120d7090a9f94c9da50e4cdae5c3f2",
+  "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts": "a1fddf0ea961c1c25954bc85be2fcf0b57d51bf628d4a9cecfca17b374af20a6"
+}

@@ -1,0 +1,768 @@
+> @saga/web@1.0.0 test
+> jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/project-hub-client.test.ts
+
+FAIL src/lib/__tests__/project-hub-client.test.ts (10.843 s)
+  ● registers, uploads to the server-owned target and waits for complete before returning verifying
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Invalid upload response]
+
+      86 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      87 |   const file = new File(['audio'], 'family.webm', { type: 'audio/webm' })
+    > 88 |   await expect(importProjectAudio('project-123', file, 'upload-key')).resolves.toEqual({ id: asset.id, state: 'verifying' })
+         |         ^
+      89 |   expect(mockBucket).toHaveBeenCalledWith('audio-recordings')
+      90 |   expect(mockUpload).toHaveBeenCalledWith(asset.object_key, 'synthetic-upload-token', file, { contentType: 'audio/webm', upsert: false })
+      91 |   expect(JSON.parse(mockFetch.mock.calls[0][1].body)).toMatchObject({ projectId: 'project-123', idempotencyKey: 'upload-key', expectedBytes: 5 })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at Object.expect (src/lib/__tests__/project-hub-client.test.ts:88:9)
+
+  ● reconciles known existing-object responses through complete: {"statusCode":"409"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Invalid upload response]
+
+      124 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      125 |   mockUpload.mockResolvedValueOnce({ error })
+    > 126 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      127 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      128 |   expect(mockFetch.mock.calls[3][0]).toBe('/api/media/assets/asset-123/complete')
+      129 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_conflict')
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:126:9)
+
+  ● reconciles known existing-object responses through complete: {"status":409,"statusCode":"ResourceAlreadyExists"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Invalid upload response]
+
+      124 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      125 |   mockUpload.mockResolvedValueOnce({ error })
+    > 126 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      127 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      128 |   expect(mockFetch.mock.calls[3][0]).toBe('/api/media/assets/asset-123/complete')
+      129 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_conflict')
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:126:9)
+
+  ● reconciles known existing-object responses through complete: {"statusCode":"400","message":"Asset Already Exists"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Invalid upload response]
+
+      124 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      125 |   mockUpload.mockResolvedValueOnce({ error })
+    > 126 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      127 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      128 |   expect(mockFetch.mock.calls[3][0]).toBe('/api/media/assets/asset-123/complete')
+      129 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_conflict')
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:126:9)
+
+  ● reconciles known existing-object responses through complete: {"status":400,"statusCode":"400","message":"The resource already exists"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Invalid upload response]
+
+      124 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      125 |   mockUpload.mockResolvedValueOnce({ error })
+    > 126 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      127 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      128 |   expect(mockFetch.mock.calls[3][0]).toBe('/api/media/assets/asset-123/complete')
+      129 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_conflict')
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:126:9)
+
+  ● reconciles known existing-object responses through complete: {"status":400,"statusCode":"400","message":"Duplicate"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Invalid upload response]
+
+      124 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      125 |   mockUpload.mockResolvedValueOnce({ error })
+    > 126 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      127 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      128 |   expect(mockFetch.mock.calls[3][0]).toBe('/api/media/assets/asset-123/complete')
+      129 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_conflict')
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:126:9)
+
+  ● reconciles known existing-object responses through complete: {"status":400,"statusCode":"Duplicate","message":"Upload conflict"}
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: Invalid upload response]
+
+      124 |     .mockResolvedValueOnce(Response.json({ asset: { ...asset, state: 'verifying' } }, { status: 202 }))
+      125 |   mockUpload.mockResolvedValueOnce({ error })
+    > 126 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+          |         ^
+      127 |     .resolves.toEqual({ id: asset.id, state: 'verifying' })
+      128 |   expect(mockFetch.mock.calls[3][0]).toBe('/api/media/assets/asset-123/complete')
+      129 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_conflict')
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:126:9)
+
+  ● does not reconcile an unrelated 400: Invalid key
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 3
+    Received number of calls: 1
+
+      138 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+      139 |     .rejects.toThrow('Audio upload failed')
+    > 140 |   expect(mockFetch).toHaveBeenCalledTimes(3)
+          |                     ^
+      141 | })
+      142 |
+      143 | it('does not upload to a mismatched project target', async () => {
+
+      at toHaveBeenCalledTimes (src/lib/__tests__/project-hub-client.test.ts:140:21)
+
+  ● does not reconcile an unrelated 400: Invalid Compact JWS
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 3
+    Received number of calls: 1
+
+      138 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+      139 |     .rejects.toThrow('Audio upload failed')
+    > 140 |   expect(mockFetch).toHaveBeenCalledTimes(3)
+          |                     ^
+      141 | })
+      142 |
+      143 | it('does not upload to a mismatched project target', async () => {
+
+      at toHaveBeenCalledTimes (src/lib/__tests__/project-hub-client.test.ts:140:21)
+
+  ● does not reconcile an unrelated 400: Unexpected request
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 3
+    Received number of calls: 1
+
+      138 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+      139 |     .rejects.toThrow('Audio upload failed')
+    > 140 |   expect(mockFetch).toHaveBeenCalledTimes(3)
+          |                     ^
+      141 | })
+      142 |
+      143 | it('does not upload to a mismatched project target', async () => {
+
+      at toHaveBeenCalledTimes (src/lib/__tests__/project-hub-client.test.ts:140:21)
+
+  ● never reports success when upload or verification fails
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 3
+    Received number of calls: 1
+
+      155 |   await expect(importProjectAudio('project-123', new File(['audio'], 'family.webm', { type: 'audio/webm' }), 'upload-key'))
+      156 |     .rejects.toThrow('Audio upload failed')
+    > 157 |   expect(mockFetch).toHaveBeenCalledTimes(3)
+          |                     ^
+      158 | })
+      159 |
+      160 | it('rejects invalid audio before network access', async () => {
+
+      at Object.toHaveBeenCalledTimes (src/lib/__tests__/project-hub-client.test.ts:157:21)
+
+  ● orders real register, begin, non-overwrite PUT, independent finish, complete
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 0
+
+      Array [
+        "register",
+    -   "begin",
+        "put",
+    -   "finish",
+        "complete",
+      ]
+
+      192 |   const caller = new AbortController()
+      193 |   await importProjectAudio('project-123', audioFile(), 'same-key', caller.signal)
+    > 194 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish', 'complete'])
+          |                 ^
+      195 |   const reports = mockFetch.mock.calls.filter(([url]) => url.endsWith('/upload-attempts'))
+      196 |   expect(JSON.parse(reports[0][1].body)).toEqual({ action: 'begin' })
+      197 |   expect(JSON.parse(reports[1][1].body)).toEqual({ action: 'finish', attemptId, reportToken, outcome: 'client_succeeded' })
+
+      at Object.toEqual (src/lib/__tests__/project-hub-client.test.ts:194:17)
+
+  ● does not PUT after an unknown begin receipt null
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt []
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt {}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt {"schemaVersion":2,"attemptId":"11111111-1111-4111-8111-111111111111","reportToken":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","state":"started"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt {"schemaVersion":1,"attemptId":"11111111-1111-4111-8111-111111111111","reportToken":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","state":"client_succeeded"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt {"schemaVersion":1,"attemptId":"not-uuid","reportToken":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","state":"started"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt {"schemaVersion":1,"attemptId":"11111111-1111-4111-8111-111111111111","reportToken":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","state":"started"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt {"schemaVersion":1,"attemptId":"11111111-1111-4111-8111-111111111111","reportToken":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n","state":"started"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt {"schemaVersion":1,"attemptId":"11111111-1111-4111-8111-111111111111","reportToken":"===========================================","state":"started"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● does not PUT after an unknown begin receipt {"schemaVersion":1,"attemptId":"11111111-1111-4111-8111-111111111111","reportToken":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","state":"started","extra":"private"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      209 | ])('does not PUT after an unknown begin receipt %j', async body => {
+      210 |   const calls = serveUpload({ begin: () => Response.json(body) })
+    > 211 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      212 |   expect(calls).toEqual(['register', 'begin'])
+      213 |   expect(mockUpload).not.toHaveBeenCalled()
+      214 | })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:211:9)
+
+  ● never completes after an unknown finish receipt null
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      219 | ])('never completes after an unknown finish receipt %j', async body => {
+      220 |   const calls = serveUpload({ finish: () => Response.json(body) })
+    > 221 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      222 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+      223 | })
+      224 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:221:9)
+
+  ● never completes after an unknown finish receipt []
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      219 | ])('never completes after an unknown finish receipt %j', async body => {
+      220 |   const calls = serveUpload({ finish: () => Response.json(body) })
+    > 221 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      222 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+      223 | })
+      224 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:221:9)
+
+  ● never completes after an unknown finish receipt {}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      219 | ])('never completes after an unknown finish receipt %j', async body => {
+      220 |   const calls = serveUpload({ finish: () => Response.json(body) })
+    > 221 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      222 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+      223 | })
+      224 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:221:9)
+
+  ● never completes after an unknown finish receipt {"schemaVersion":1,"attemptId":"22222222-2222-4222-8222-222222222222","state":"client_succeeded"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      219 | ])('never completes after an unknown finish receipt %j', async body => {
+      220 |   const calls = serveUpload({ finish: () => Response.json(body) })
+    > 221 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      222 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+      223 | })
+      224 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:221:9)
+
+  ● never completes after an unknown finish receipt {"schemaVersion":2,"attemptId":"11111111-1111-4111-8111-111111111111","state":"client_succeeded"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      219 | ])('never completes after an unknown finish receipt %j', async body => {
+      220 |   const calls = serveUpload({ finish: () => Response.json(body) })
+    > 221 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      222 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+      223 | })
+      224 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:221:9)
+
+  ● never completes after an unknown finish receipt {"schemaVersion":1,"attemptId":"11111111-1111-4111-8111-111111111111","state":"started"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      219 | ])('never completes after an unknown finish receipt %j', async body => {
+      220 |   const calls = serveUpload({ finish: () => Response.json(body) })
+    > 221 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      222 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+      223 | })
+      224 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:221:9)
+
+  ● never completes after an unknown finish receipt {"schemaVersion":1,"attemptId":"11111111-1111-4111-8111-111111111111","state":"client_failed"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      219 | ])('never completes after an unknown finish receipt %j', async body => {
+      220 |   const calls = serveUpload({ finish: () => Response.json(body) })
+    > 221 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      222 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+      223 | })
+      224 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:221:9)
+
+  ● never completes after an unknown finish receipt {"schemaVersion":1,"attemptId":"11111111-1111-4111-8111-111111111111","state":"client_succeeded","reportToken":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      219 | ])('never completes after an unknown finish receipt %j', async body => {
+      220 |   const calls = serveUpload({ finish: () => Response.json(body) })
+    > 221 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      222 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+      223 | })
+      224 |
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:221:9)
+
+  ● does not retry begin HTTP errors or malformed JSON
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      226 |   for (const response of [Response.json({}, { status: 503 }), new Response('{')]) {
+      227 |     const calls = serveUpload({ [phase]: () => response })
+    > 228 |     await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |           ^
+      229 |     expect(calls.filter(call => call === phase)).toHaveLength(1)
+      230 |     expect(calls).not.toContain('complete')
+      231 |   }
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:228:11)
+
+  ● does not retry finish HTTP errors or malformed JSON
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      226 |   for (const response of [Response.json({}, { status: 503 }), new Response('{')]) {
+      227 |     const calls = serveUpload({ [phase]: () => response })
+    > 228 |     await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow('Upload observation failed')
+          |           ^
+      229 |     expect(calls.filter(call => call === phase)).toHaveLength(1)
+      230 |     expect(calls).not.toContain('complete')
+      231 |   }
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at expect (src/lib/__tests__/project-hub-client.test.ts:228:11)
+
+  ● reports a thrown SDK client_failed before rejecting
+
+    expect(received).rejects.toThrow(expected)
+
+    Expected substring: "Audio upload failed"
+    Received message:   "private failure"
+
+          236 |   mockUpload.mockImplementation(async () => {
+          237 |     calls.push('put')
+        > 238 |     throw outcome === 'client_cancelled' ? new DOMException('Cancelled', 'AbortError') : new Error('private failure')
+              |                                                                                          ^
+          239 |   })
+          240 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow(outcome === 'client_cancelled' ? 'Cancelled' : 'Audio upload failed')
+          241 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+
+      at Object.<anonymous> (src/lib/__tests__/project-hub-client.test.ts:238:90)
+      at uploadToSignedUrl (src/lib/project-hub-client.ts:129:8)
+      at src/lib/__tests__/project-hub-client.test.ts:240:3
+      at Object.toThrow (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at toThrow (src/lib/__tests__/project-hub-client.test.ts:240:84)
+
+  ● reports a thrown SDK client_cancelled before rejecting
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 0
+
+      Array [
+        "register",
+    -   "begin",
+        "put",
+    -   "finish",
+      ]
+
+      239 |   })
+      240 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key')).rejects.toThrow(outcome === 'client_cancelled' ? 'Cancelled' : 'Audio upload failed')
+    > 241 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+          |                 ^
+      242 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe(outcome)
+      243 | })
+      244 |
+
+      at toEqual (src/lib/__tests__/project-hub-client.test.ts:241:17)
+
+  ● gives unknown reporting precedence over a known SDK failure
+
+    expect(received).rejects.toThrow(expected)
+
+    Expected substring: "Upload observation failed"
+    Received message:   "Audio upload failed"
+
+          130 |     // A previous PUT may have succeeded without its response. Never overwrite it;
+          131 |     // an explicit conflict is reconciled by the server's completion verifier.
+        > 132 |     if (result.error && !isExistingObjectError(result.error)) throw new Error('Audio upload failed')
+              |                                                                     ^
+          133 |   }
+          134 |   signal?.throwIfAborted()
+          135 |   const completed = uploadAsset(await json(await request(`/api/media/assets/${encodeURIComponent(asset.id)}/complete`, {
+
+      at importProjectAudio (src/lib/project-hub-client.ts:132:69)
+      at Object.<anonymous> (src/lib/__tests__/project-hub-client.test.ts:248:3)
+      at Object.toThrow (node_modules/@jest/expect/node_modules/expect/build/index.js:2155:20)
+      at Object.toThrow (src/lib/__tests__/project-hub-client.test.ts:248:84)
+
+  ● reports cancellation when begin confirms but abort happens before PUT
+
+    expect(received).rejects.toMatchObject()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      253 |   const caller = new AbortController()
+      254 |   const calls = serveUpload({ begin: () => ({ ok: true, json: async () => { caller.abort(); return beginReceipt } }) })
+    > 255 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key', caller.signal)).rejects.toMatchObject({ name: 'AbortError' })
+          |         ^
+      256 |   expect(mockUpload).not.toHaveBeenCalled()
+      257 |   expect(calls).toEqual(['register', 'begin', 'finish'])
+      258 |   expect(JSON.parse(mockFetch.mock.calls[2][1].body).outcome).toBe('client_cancelled')
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at Object.expect (src/lib/__tests__/project-hub-client.test.ts:255:9)
+
+  ● reports actual success if caller cancels a non-cancellable SDK PUT and then stops
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 0
+
+      Array [
+        "register",
+    -   "begin",
+        "put",
+    -   "finish",
+      ]
+
+      264 |   mockUpload.mockImplementation(async () => { calls.push('put'); caller.abort(); return { error: null } })
+      265 |   await expect(importProjectAudio('project-123', audioFile(), 'same-key', caller.signal)).rejects.toMatchObject({ name: 'AbortError' })
+    > 266 |   expect(calls).toEqual(['register', 'begin', 'put', 'finish'])
+          |                 ^
+      267 |   const [, init] = mockFetch.mock.calls[2]
+      268 |   expect(JSON.parse(init.body).outcome).toBe('client_succeeded')
+      269 | })
+
+      at Object.toEqual (src/lib/__tests__/project-hub-client.test.ts:266:17)
+
+  ● retains the file and idempotency key for an explicit retry after unknown finish
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: {"id": "asset-123", "state": "verifying"}
+
+      272 |   const file = audioFile()
+      273 |   const calls = serveUpload({ finish: () => Response.json({}, { status: 503 }) })
+    > 274 |   await expect(importProjectAudio('project-123', file, 'same-key')).rejects.toThrow('Upload observation failed')
+          |         ^
+      275 |   expect(calls).not.toContain('complete')
+      276 |   serveUpload()
+      277 |   await expect(importProjectAudio('project-123', file, 'same-key')).resolves.toEqual({ id: asset.id, state: 'verifying' })
+
+      at expect (node_modules/@jest/expect/node_modules/expect/build/index.js:2116:15)
+      at Object.expect (src/lib/__tests__/project-hub-client.test.ts:274:9)
+
+  ● bounds the whole begin operation including auth/fetch/body that ignore abort
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+      281 | })
+      282 |
+    > 283 | it.each(['begin', 'finish'] as const)('bounds the whole %s operation including auth/fetch/body that ignore abort', async phase => {
+          |                            ^
+      284 |   jest.useFakeTimers()
+      285 |   try {
+      286 |     for (const stall of ['auth', 'fetch', 'body']) {
+
+      at eachBind (node_modules/jest-each/build/index.js:54:13)
+      at Object.<anonymous> (src/lib/__tests__/project-hub-client.test.ts:283:28)
+
+  ● bounds the whole finish operation including auth/fetch/body that ignore abort
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected value: not "complete"
+    Received array:     ["register", "put", "complete"]
+
+      296 |       const result = importProjectAudio('project-123', audioFile(), 'same-key').catch(error => error)
+      297 |       await jest.advanceTimersByTimeAsync(19999)
+    > 298 |       expect(calls).not.toContain('complete')
+          |                         ^
+      299 |       await jest.advanceTimersByTimeAsync(1)
+      300 |       expect(await result).toMatchObject({ message: 'Upload observation failed' })
+      301 |       expect(calls.filter(call => call === phase).length).toBe(stall === 'auth' ? 0 : 1)
+
+      at toContain (src/lib/__tests__/project-hub-client.test.ts:298:25)
+
+  ● interrupts a begin fetch that ignores cancellation without dispatching PUT
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+      309 | })
+      310 |
+    > 311 | it('interrupts a begin fetch that ignores cancellation without dispatching PUT', async () => {
+          | ^
+      312 |   const caller = new AbortController()
+      313 |   let started!: () => void
+      314 |   const waiting = new Promise<void>(resolve => { started = resolve })
+
+      at Object.it (src/lib/__tests__/project-hub-client.test.ts:311:1)
+
+Test Suites: 1 failed, 1 total
+Tests:       41 failed, 14 passed, 55 total
+Snapshots:   0 total
+Time:        11.437 s
+Ran all test suites within paths "src/lib/__tests__/project-hub-client.test.ts".
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error workspace @saga/web@1.0.0
+npm error location /Users/eat/Documents/eatpotato/saga传奇/packages/web
+npm error command failed
+npm error command sh -c jest --passWithNoTests --runInBand --runTestsByPath src/lib/__tests__/project-hub-client.test.ts
