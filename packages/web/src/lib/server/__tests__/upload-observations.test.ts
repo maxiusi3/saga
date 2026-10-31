@@ -93,3 +93,22 @@ it('sanitizes database errors, exceptions and missing configuration', async () =
   mockAdmin.mockImplementation(() => { throw new Error('secret') })
   expect(await beginBrowserUploadAttempt(id, binding)).toBeNull()
 })
+
+it('uses v2 build attribution RPC when OPERATIONAL_COLLECTOR_BUILD_HASH is configured and fails closed when malformed', async () => {
+  const buildHash = 'c'.repeat(64)
+  process.env.OPERATIONAL_COLLECTOR_BUILD_HASH = buildHash
+  try {
+    expect(await beginBrowserUploadAttempt(id, binding)).toEqual(receipt())
+    expect(mockRpc).toHaveBeenCalledWith('begin_browser_upload_attempt_v2', {
+      p_attempt_id: id,
+      p_binding_hash: binding,
+      p_build_hash: buildHash,
+    })
+    mockAdmin.mockClear()
+    process.env.OPERATIONAL_COLLECTOR_BUILD_HASH = 'INVALID'
+    expect(await beginBrowserUploadAttempt(id, binding)).toBeNull()
+    expect(mockAdmin).not.toHaveBeenCalled()
+  } finally {
+    delete process.env.OPERATIONAL_COLLECTOR_BUILD_HASH
+  }
+})

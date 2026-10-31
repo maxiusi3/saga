@@ -6,7 +6,16 @@
 - 本轮接手基线 HEAD：`d13d55ab0`（上一批媒体异步重新授权检查点；接手时本地分支领先已有远端跟踪记录 5 个提交，本批续接上传观测，不声称原计划 G0–G4 已全部验收）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 10 月 30 日可靠上传客户端回报观测（当前状态，以本节为准）
+## 10 月 31 日部署采集覆盖证明（当前状态，以本节为准）
+
+详见[报告](research/2026-10-30-deployment-collection-coverage.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-deployment-collection-coverage.md)、[证据](research/evidence/2026-10-30-deployment-collection-coverage/README.md)。基线 `2b146ad1b`（上批检查点）。**本地切片完成，不等于真实部署覆盖或 P0/G0–G4 完成；`pushConditionSatisfied: false`。**
+
+- 新增迁移 `20261030000002`（切流封存、构建归属、`read_operational_snapshot_v4`）与服务端 v4 解析/`OPERATIONAL_COLLECTOR_BUILD_HASH`；`windowComplete` 仍只是台账年龄，`upload_collection_coverage` 始终保留，管理端 `503 not_ready`。
+- 验证：PG17.4 正常/污染各 12 场景/717 断言；Web 136 套/2103 项、shared 4/16、infra 7、构建通过；规格 PASS、质量 Approved（重要项已先 RED 后修）。1471 项保护输入未变，`next-env.d.ts` 已恢复。
+- 未做：真实封存与生产设置哈希、其他上传通道、告警投递/响应人、供应商核验、真机/家庭；已知小项见报告。
+- **下一批入口**：告警实际投递与响应人；供应商账户/区域/数据条件核验；需要真实账户/负责人确认的部分列最小缺失证据，不用假数据。不合并 main、不远端迁移/部署、不推送。
+
+## 10 月 30 日可靠上传客户端回报观测（前批完成状态）
 
 详见[本轮报告](research/2026-10-30-upload-observations.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-upload-observations.md)和[证据索引](research/evidence/2026-10-30-upload-observations/README.md)。中断时 Task 1 SQL/PG/infra 及独立审查已完成，Task 2 尚无代码；本轮核对原始哈希后续接 HTTP/客户端/v3 接线，保留 Task 1 与所有旧证据。**本批实施、规格、质量及独立收口均通过，详见 [verification.json](research/evidence/2026-10-30-upload-observations/verification.json)。**
 

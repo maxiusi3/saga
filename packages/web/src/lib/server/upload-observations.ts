@@ -1,5 +1,6 @@
 import { isUuid } from '@/lib/invitation-acceptance-protocol'
 import { callOperationalRpc, hasExactKeys } from './operational-rpc'
+import { readCollectorBuildHash } from './deployment-collection-coverage'
 
 const outcomes = ['client_succeeded', 'client_failed', 'client_conflict', 'client_cancelled'] as const
 export type BrowserUploadOutcome = typeof outcomes[number]
@@ -21,9 +22,15 @@ function confirmed(data: unknown, attemptId: string, state: BrowserUploadReceipt
 
 export async function beginBrowserUploadAttempt(attemptId: string, bindingHash: string, signal?: AbortSignal): Promise<BrowserUploadReceipt | null> {
   if (!validBinding(attemptId, bindingHash)) return null
-  const result = await callOperationalRpc('begin_browser_upload_attempt', {
-    p_attempt_id: attemptId, p_binding_hash: bindingHash,
-  }, signal)
+  const build = readCollectorBuildHash()
+  if (build.configured && !build.valid) return null
+  const result = build.configured
+    ? await callOperationalRpc('begin_browser_upload_attempt_v2', {
+      p_attempt_id: attemptId, p_binding_hash: bindingHash, p_build_hash: build.buildHash,
+    }, signal)
+    : await callOperationalRpc('begin_browser_upload_attempt', {
+      p_attempt_id: attemptId, p_binding_hash: bindingHash,
+    }, signal)
   return result.ok ? confirmed(result.data, attemptId, 'started') : null
 }
 

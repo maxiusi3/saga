@@ -1,5 +1,6 @@
 import { isUuid } from '@/lib/invitation-acceptance-protocol'
 import { callOperationalRpc, hasExactKeys } from './operational-rpc'
+import { readCollectorBuildHash } from './deployment-collection-coverage'
 
 const outcomes = ['verified', 'integrity_failed', 'failed', 'cancelled', 'limit_exceeded'] as const
 export type ArchiveAssemblyOutcome = typeof outcomes[number]
@@ -11,7 +12,11 @@ function confirmed(data: unknown, id: string, state: string): boolean {
 
 export async function beginArchiveAssemblyAttempt(id: string, signal?: AbortSignal): Promise<boolean> {
   if (!isUuid(id)) return false
-  const result = await callOperationalRpc('begin_archive_assembly_attempt', { p_attempt_id: id }, signal)
+  const build = readCollectorBuildHash()
+  if (build.configured && !build.valid) return false
+  const result = build.configured
+    ? await callOperationalRpc('begin_archive_assembly_attempt_v2', { p_attempt_id: id, p_build_hash: build.buildHash }, signal)
+    : await callOperationalRpc('begin_archive_assembly_attempt', { p_attempt_id: id }, signal)
   return result.ok && confirmed(result.data, id, 'started')
 }
 

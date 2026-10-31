@@ -1,0 +1,7 @@
+{
+  "localDeploymentCollectionCoverageSliceStatus": "complete",
+  "originalMilestoneNewlyProven": false,
+  "p0CompletionProvenByThisBatch": false,
+  "pushConditionSatisfied": false,
+  "reason": "No real deployment cutover was sealed, no fleet retirement or non-project-hub upload channel coverage proven, provider account/region/data terms, alert responder/delivery, devices/households still unverified. upload_collection_coverage stays unavailable; admin remains 503 not_ready."
+}

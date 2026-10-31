@@ -19,7 +19,7 @@ describe('GET /api/admin/cutover-readiness', () => {
   const originalEnv = process.env
 
   beforeEach(() => {
-    process.env = { ...originalEnv, MEDIA_ASSETS_ENABLED: 'true', ADMIN_CRON_SECRET: 'synthetic-ops-secret' }
+    process.env = { ...originalEnv, MEDIA_ASSETS_ENABLED: 'true', ADMIN_CRON_SECRET: 'synthetic-ops-secret', OPERATIONAL_COLLECTOR_BUILD_HASH: 'a'.repeat(64) }
     delete process.env.OPERATIONAL_PROJECT_COST_CAP_CENTS
     mockLoadSnapshot.mockReset().mockResolvedValue({ ok: false, reason: 'not_configured' })
     mockGetAuthenticatedUser.mockReset().mockResolvedValue({
@@ -89,7 +89,7 @@ describe('GET /api/admin/cutover-readiness', () => {
   it('exposes actual partial observations and alerts without approving cutover or alert delivery', async () => {
     process.env.OPERATIONAL_PROJECT_COST_CAP_CENTS = '500'
     const snapshot = {
-      schemaVersion: 3, observedAt: '2026-10-29T05:00:00.000Z',
+      schemaVersion: 4, observedAt: '2026-10-29T05:00:00.000Z',
       processing: { stalledJobsCount: 2, maxRunnableBacklogAgeSeconds: 1800, invalidJobCount: 0 },
       costs: { maxProjectKnownExposureCents: 751, unknownAttemptCostsCount: 0 },
       deletions: { overdueRequestsCount: 1, invalidRequestCount: 0 },
@@ -104,6 +104,20 @@ describe('GET /api/admin/cutover-readiness', () => {
         evaluatedAttemptsCount: 10, reportedFailuresCount: 2, reportedCancellationsCount: 100,
         unsettledAttemptsCount: 0, invalidAttemptsCount: 0,
       },
+      collectionCoverage: {
+        exports: {
+          scope: 'synchronous_archive_assembly', windowMinutes: 60,
+          releaseHash: 'a'.repeat(64), cutoverAt: '2026-10-29T04:30:00.000Z', cutoverWindowComplete: false,
+          matchingBuildAttemptsCount: 2, unattributedAttemptsCount: 0,
+          staleBuildAttemptsCount: 0, invalidBuildAttemptsCount: 0, buildCoverageComplete: false,
+        },
+        uploads: {
+          scope: 'project_hub_audio_put_reports', windowMinutes: 60,
+          releaseHash: 'a'.repeat(64), cutoverAt: '2026-10-29T03:00:00.000Z', cutoverWindowComplete: true,
+          matchingBuildAttemptsCount: 110, unattributedAttemptsCount: 0,
+          staleBuildAttemptsCount: 0, invalidBuildAttemptsCount: 0, buildCoverageComplete: true,
+        },
+      },
     }
     mockLoadSnapshot.mockResolvedValue({ ok: true, snapshot })
     const req = request({ 'x-cron-secret': 'synthetic-ops-secret' })
@@ -117,7 +131,9 @@ describe('GET /api/admin/cutover-readiness', () => {
       operationalHealth: { status: 'critical', coverage: 'partial', source: 'database_ledger', snapshot },
       alertDelivery: { status: 'unavailable', reason: 'responder_and_delivery_not_verified' },
     })
-    expect(body.operationalHealth.unavailableMetrics).toEqual(['export_observation_window', 'export_outcome_completeness', 'upload_collection_coverage'])
+    expect(body.operationalHealth.unavailableMetrics).toEqual([
+      'export_observation_window', 'export_outcome_completeness', 'export_collection_coverage', 'upload_collection_coverage',
+    ])
     expect(body.operationalHealth.alerts.map((alert: { code: string }) => alert.code)).toEqual([
       'upload_failure_spike', 'job_backlog_stalled', 'project_cost_anomaly', 'deletion_sla_breach', 'export_integrity_failure',
     ])

@@ -1,0 +1,14 @@
+{
+  "checked": 1471,
+  "mismatches": [],
+  "priorSourceMismatches": [
+    "scripts/__tests__/deployment-config.test.js",
+    "packages/web/src/lib/server/upload-observations.ts",
+    "packages/web/src/lib/server/__tests__/upload-observations.test.ts",
+    "packages/web/src/lib/server/operational-rpc.ts",
+    "packages/web/src/lib/server/operational-snapshot.ts",
+    "packages/web/src/lib/server/__tests__/operational-snapshot.test.ts",
+    "packages/web/src/lib/server/cutover-readiness.ts",
+    "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts"
+  ]
+}

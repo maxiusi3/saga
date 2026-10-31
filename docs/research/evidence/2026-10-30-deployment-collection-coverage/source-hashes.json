@@ -1,0 +1,21 @@
+{
+  "baseline": "2b146ad1b",
+  "files": {
+    "supabase/migrations/20261030000002_deployment_collection_coverage.sql": "23bb279edc8b9f6d44617f75d3eb532607c70d699578072701e4b436c20f32de",
+    "experiments/pg17-deployment-collection-coverage/verify.mjs": "3ece00d434928e0208e9178a1c80075de8367afdb1459e558e3d694eccb68d12",
+    "experiments/pg17-deployment-collection-coverage/README.md": "1746904ecb3045e8ad0fecce4cce05830db569d3fc4c575ed09cfdab47b12ece",
+    "scripts/__tests__/deployment-config.test.js": "47288fd544019d2e5aa693ae0ea470c3c2b47c20ef2bac040abef8993a387db7",
+    "docs/superpowers/plans/2026-10-30-upgrade-deployment-collection-coverage.md": "1a6ac5ceeb1f5ed29f9062dd72b813970aa07174194ddbcdc2f15c5c0a4c2271",
+    "packages/web/src/lib/server/__tests__/deployment-collection-coverage.test.ts": "d493738491108c76992976a8e02249491fd4b417e8a8e0a5b05cccd752f73d98",
+    "packages/web/src/lib/server/deployment-collection-coverage.ts": "fe6a39f6945638e5841612b0bb09cafce09b3694d16b3fe67bb8fb8a1e0b79b3",
+    "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts": "c426ba0bb64f6f05bc88ecf9e57ff4d9444dbfc9db42e123889fd258ed94f632",
+    "packages/web/src/lib/server/__tests__/archive-observations.test.ts": "e2a3a8d49520f447266f580437b8d2da7588c01ed32bc4f839e6b5db535f9a17",
+    "packages/web/src/lib/server/__tests__/operational-snapshot.test.ts": "ae0b3678ceea578c046549cdf27bd7352ee7858c7d4675b49d2a3a27b40baf66",
+    "packages/web/src/lib/server/__tests__/upload-observations.test.ts": "e8a225d7472793aa140a351af025afa69968064f5a5135c7f3dccb624a5f50b2",
+    "packages/web/src/lib/server/archive-observations.ts": "d1a1062c1abcdac8bdfd481cf8e2f6076dc0249c73a182eda3a4283b647b48c6",
+    "packages/web/src/lib/server/cutover-readiness.ts": "6137f8c5149556d48a1db9942f55399bc2e5f4d0a0e32c656f665325e64ee9a5",
+    "packages/web/src/lib/server/operational-rpc.ts": "c86ae750524c81a57e7efe53a00399da600018049d249a8822b1e9ddfc11b31b",
+    "packages/web/src/lib/server/operational-snapshot.ts": "bbd2c6560a6029e37a847d26dc02c601298dbabfb94a09f2ce04304efe1feac1",
+    "packages/web/src/lib/server/upload-observations.ts": "91731900d9ccac2588767b504258057b8fbe320cc29425b3754f04e3ae6adb75"
+  }
+}

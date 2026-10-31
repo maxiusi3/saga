@@ -1,0 +1,58 @@
+{
+  "full-verify.log": {
+    "rawSha256": "6d678ac5598207b22fdacdd3f3406e4769118aa693f009758f63836ab447b0d9",
+    "gz": "raw/full-verify.log.gz"
+  },
+  "infra-green.log": {
+    "rawSha256": "80fa2a908dcbd196f0e905228f2502d38feb89fdb5765d418fae0a4167bcac7b",
+    "gz": "raw/infra-green.log.gz"
+  },
+  "infra-red.log": {
+    "rawSha256": "5ceafe2c79637e5ea5e56bfc8418fdc0e6cbac48972209aa49236cf92cd4691d",
+    "gz": "raw/infra-red.log.gz"
+  },
+  "review-fix-green.log": {
+    "rawSha256": "37dd1b7ddd48ac43d3697fdfd55d748a423e566e75caf86743d4f9338bfe8484",
+    "gz": "raw/review-fix-green.log.gz"
+  },
+  "review-fix-red.log": {
+    "rawSha256": "617ff448a97e8f391f1add6ce6a0e45ccae960bb16115752eca7720e997d6127",
+    "gz": "raw/review-fix-red.log.gz"
+  },
+  "sql-green-contaminated.log": {
+    "rawSha256": "5d45609722dffe2718d2afabb0946d16151554b5c44de1fec789c55d3906d19a",
+    "gz": "raw/sql-green-contaminated.log.gz"
+  },
+  "sql-green-normal.log": {
+    "rawSha256": "99da8be1f15d88199e61572fb4dc9596cff71db6db5df9d55911e9d6b1619a05",
+    "gz": "raw/sql-green-normal.log.gz"
+  },
+  "sql-red-missing-migration.log": {
+    "rawSha256": "b2dc2496c90add431473988d27dbec5fc9168cdc236252f96ba2703da0382a77",
+    "gz": "raw/sql-red-missing-migration.log.gz"
+  },
+  "sql-red-without-migration.log": {
+    "rawSha256": "0f7bfe250416d3fdeac3503b19f09241c2fc7f4d722099bf726a857119a14e18",
+    "gz": "raw/sql-red-without-migration.log.gz"
+  },
+  "sql-verify-normal.log": {
+    "rawSha256": "def8139c51dab8476957427366b7f4b17889859edab7f2393ea99b647a44ded9",
+    "gz": "raw/sql-verify-normal.log.gz"
+  },
+  "task2-adjacent-typecheck-lint.log": {
+    "rawSha256": "853b35747d8c27a7e1200a0398af189466b5889c45f65c49ecf5a0b8f04c76fc",
+    "gz": "raw/task2-adjacent-typecheck-lint.log.gz"
+  },
+  "task2-final-focused.log": {
+    "rawSha256": "d8be8492ae198df15e8929ccae1a3a79e0323c67a235718f201778a060676785",
+    "gz": "raw/task2-final-focused.log.gz"
+  },
+  "task2-green.log": {
+    "rawSha256": "b8bc20d963d1112f8c1be9e484c1b4ec08336a16b47d6e8c57fe1bb2c9ee9520",
+    "gz": "raw/task2-green.log.gz"
+  },
+  "task2-red.log": {
+    "rawSha256": "55db41ac164b430184ad673438997e45a08c9f83ede305654cf3f92c8ce841d9",
+    "gz": "raw/task2-red.log.gz"
+  }
+}

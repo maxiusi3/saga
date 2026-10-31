@@ -89,3 +89,21 @@ it('sanitizes errors, missing configuration and receipt failure without a table 
   expect(await beginArchiveAssemblyAttempt(id)).toBe(false)
   expect(jest.getTimerCount()).toBe(0)
 })
+
+it('uses v2 build attribution RPC when OPERATIONAL_COLLECTOR_BUILD_HASH is configured and fails closed when malformed', async () => {
+  const buildHash = 'b'.repeat(64)
+  process.env.OPERATIONAL_COLLECTOR_BUILD_HASH = buildHash
+  try {
+    expect(await beginArchiveAssemblyAttempt(id)).toBe(true)
+    expect(mockRpc).toHaveBeenCalledWith('begin_archive_assembly_attempt_v2', {
+      p_attempt_id: id,
+      p_build_hash: buildHash,
+    })
+    mockAdmin.mockClear()
+    process.env.OPERATIONAL_COLLECTOR_BUILD_HASH = 'invalid-build-hash'
+    expect(await beginArchiveAssemblyAttempt(id)).toBe(false)
+    expect(mockAdmin).not.toHaveBeenCalled()
+  } finally {
+    delete process.env.OPERATIONAL_COLLECTOR_BUILD_HASH
+  }
+})

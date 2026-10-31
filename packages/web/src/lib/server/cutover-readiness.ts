@@ -149,7 +149,8 @@ export interface OperationalHealthReport {
   status: 'healthy' | 'degraded' | 'critical' | 'unavailable'
   coverage: 'complete' | 'partial'
   unavailableMetrics: Array<'uploads' | 'upload_collection_coverage' | 'upload_observation_window' | 'upload_outcome_completeness' |
-    'processing' | 'project_cost' | 'project_cost_completeness' | 'deletions' | 'exports' | 'export_observation_window' | 'export_outcome_completeness'>
+    'processing' | 'project_cost' | 'project_cost_completeness' | 'deletions' | 'exports' | 'export_observation_window' | 'export_outcome_completeness' |
+    'export_collection_coverage'>
   containsPrivateFamilyText: false
   alerts: OperationalAlertItem[]
 }

@@ -8,8 +8,9 @@ const mockRetry = jest.fn()
 jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => mockAdmin() }))
 
 const now = '2026-10-29T05:00:00.000Z'
+const releaseHash = 'a'.repeat(64)
 const snapshot = () => ({
-  schemaVersion: 3 as const, observedAt: now,
+  schemaVersion: 4 as const, observedAt: now,
   processing: { stalledJobsCount: 2, maxRunnableBacklogAgeSeconds: 1800, invalidJobCount: 0 },
   costs: { maxProjectKnownExposureCents: 751, unknownAttemptCostsCount: 0 },
   deletions: { overdueRequestsCount: 1, invalidRequestCount: 0 },
@@ -24,30 +25,48 @@ const snapshot = () => ({
     evaluatedAttemptsCount: 0, reportedFailuresCount: 0, reportedCancellationsCount: 0,
     unsettledAttemptsCount: 0, invalidAttemptsCount: 0,
   },
+  collectionCoverage: {
+    exports: {
+      scope: 'synchronous_archive_assembly' as const, windowMinutes: 60 as const,
+      releaseHash, cutoverAt: '2026-10-29T03:00:00.000Z', cutoverWindowComplete: true,
+      matchingBuildAttemptsCount: 0, unattributedAttemptsCount: 0,
+      staleBuildAttemptsCount: 0, invalidBuildAttemptsCount: 0, buildCoverageComplete: true,
+    },
+    uploads: {
+      scope: 'project_hub_audio_put_reports' as const, windowMinutes: 60 as const,
+      releaseHash, cutoverAt: '2026-10-29T03:00:00.000Z', cutoverWindowComplete: true,
+      matchingBuildAttemptsCount: 0, unattributedAttemptsCount: 0,
+      staleBuildAttemptsCount: 0, invalidBuildAttemptsCount: 0, buildCoverageComplete: true,
+    },
+  },
 })
 
 beforeEach(() => {
   jest.useFakeTimers().setSystemTime(new Date(now))
   jest.resetAllMocks()
+  process.env.OPERATIONAL_COLLECTOR_BUILD_HASH = releaseHash
   mockAdmin.mockReturnValue({ rpc: mockRpc })
   mockRpc.mockReturnValue({ abortSignal: mockAbort })
   mockAbort.mockReturnValue({ retry: mockRetry })
   mockRetry.mockResolvedValue({ data: snapshot(), error: null })
 })
-afterEach(() => jest.useRealTimers())
+afterEach(() => {
+  delete process.env.OPERATIONAL_COLLECTOR_BUILD_HASH
+  jest.useRealTimers()
+})
 
-it('reads one current aggregate RPC with cancellation and no retry', async () => {
+it('reads one current v4 aggregate RPC with cancellation and no retry', async () => {
   const result = await loadOperationalSnapshot()
   expect(result).toEqual({ ok: true, snapshot: snapshot() })
   expect(mockRpc).toHaveBeenCalledTimes(1)
-  expect(mockRpc).toHaveBeenCalledWith('read_operational_snapshot_v3')
+  expect(mockRpc).toHaveBeenCalledWith('read_operational_snapshot_v4')
   expect(mockAbort).toHaveBeenCalledWith(expect.any(AbortSignal))
   expect(mockRetry).toHaveBeenCalledWith(false)
   expect(jest.getTimerCount()).toBe(0)
 })
 
 it.each([
-  null, [], {}, { ...snapshot(), schemaVersion: 1 },
+  null, [], {}, { ...snapshot(), schemaVersion: 1 }, { ...snapshot(), schemaVersion: 3 },
   { ...snapshot(), familyText: 'private transcript' },
   { ...snapshot(), processing: { ...snapshot().processing, objectKey: 'private' } },
   { ...snapshot(), observedAt: 'invalid' },
@@ -149,22 +168,38 @@ it.each([
   ['2026-10-29T04:00:00.000000Z', true],
   ['2026-10-29T04:00:00.000001Z', false],
 ] as const)('checks the coverage boundary without losing PostgreSQL microseconds: %s', async (coverageStartedAt, windowComplete) => {
-  mockRetry.mockResolvedValue({ data: { ...snapshot(), exports: { ...snapshot().exports, coverageStartedAt, windowComplete } }, error: null })
+  const base = snapshot()
+  mockRetry.mockResolvedValue({
+    data: {
+      ...base,
+      exports: { ...base.exports, coverageStartedAt, windowComplete },
+      collectionCoverage: {
+        ...base.collectionCoverage,
+        exports: { ...base.collectionCoverage.exports, buildCoverageComplete: windowComplete },
+      },
+    },
+    error: null,
+  })
   expect(await loadOperationalSnapshot()).toMatchObject({ ok: true, snapshot: { exports: { windowComplete } } })
 })
 
-it('alerts on recorded integrity failures even with a short window or unsettled attempt', () => {
+it('alerts on recorded integrity failures even with a short window, unsettled attempt or incomplete build coverage', () => {
   const data = snapshot()
   data.exports = { ...data.exports, integrityFailuresCount: 2, unsettledAttemptsCount: 1, windowComplete: false, coverageStartedAt: now }
+  data.collectionCoverage.exports = { ...data.collectionCoverage.exports, matchingBuildAttemptsCount: 3, buildCoverageComplete: false }
   const health = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
   expect(health.alerts.map(a => a.code)).toContain('export_integrity_failure')
-  expect(health.unavailableMetrics).toEqual(expect.arrayContaining(['upload_collection_coverage', 'export_observation_window', 'export_outcome_completeness']))
+  expect(health.unavailableMetrics).toEqual(expect.arrayContaining([
+    'upload_collection_coverage', 'export_observation_window', 'export_outcome_completeness', 'export_collection_coverage',
+  ]))
 })
 
 it('suppresses malformed export groups and keeps real zero observations from proving readiness', () => {
   const data = snapshot(); data.exports.integrityFailuresCount = 1; data.exports.invalidAttemptsCount = 1
+  data.collectionCoverage.exports.buildCoverageComplete = false
   const health = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
   expect(health.unavailableMetrics).toContain('exports')
+  expect(health.unavailableMetrics).toContain('export_collection_coverage')
   expect(health.alerts.map(a => a.code)).not.toContain('export_integrity_failure')
 })
 
@@ -200,7 +235,6 @@ it('keeps real empty database observations distinct from full operational readin
   })
 })
 
-
 it.each([
   null, {}, { ...snapshot().uploads, rawToken: 'private' },
   { ...snapshot().uploads, scope: 'storage_verified' }, { ...snapshot().uploads, windowMinutes: 15 },
@@ -227,20 +261,35 @@ it.each([
   ['2026-10-29T04:00:00.000000Z', true],
   ['2026-10-29T04:00:00.000001Z', false],
 ] as const)('preserves upload coverage microsecond boundary %s', async (coverageStartedAt, windowComplete) => {
-  mockRetry.mockResolvedValue({ data: { ...snapshot(), uploads: { ...snapshot().uploads, coverageStartedAt, windowComplete } }, error: null })
+  const base = snapshot()
+  mockRetry.mockResolvedValue({
+    data: {
+      ...base,
+      uploads: { ...base.uploads, coverageStartedAt, windowComplete },
+      collectionCoverage: {
+        ...base.collectionCoverage,
+        uploads: { ...base.collectionCoverage.uploads, buildCoverageComplete: windowComplete },
+      },
+    },
+    error: null,
+  })
   expect(await loadOperationalSnapshot()).toMatchObject({ ok: true, snapshot: { uploads: { windowComplete } } })
 })
 
-it('rejects old v2 rather than falling back to another RPC', async () => {
-  const { uploads: _uploads, ...v2 } = snapshot()
-  mockRetry.mockResolvedValue({ data: { ...v2, schemaVersion: 2 }, error: null })
+it('rejects old v2 and v3 snapshots rather than falling back to another RPC', async () => {
+  const { collectionCoverage: _cov, ...v3 } = snapshot()
+  mockRetry.mockResolvedValueOnce({ data: { ...v3, schemaVersion: 3 }, error: null })
   expect(await loadOperationalSnapshot()).toEqual({ ok: false, reason: 'invalid_snapshot' })
-  expect(mockRpc).toHaveBeenCalledTimes(1)
+  const { uploads: _uploads, ...v2 } = v3
+  mockRetry.mockResolvedValueOnce({ data: { ...v2, schemaVersion: 2 }, error: null })
+  expect(await loadOperationalSnapshot()).toEqual({ ok: false, reason: 'invalid_snapshot' })
+  expect(mockRpc).toHaveBeenCalledTimes(2)
 })
 
 it.each([[20, 2, 'warning'], [8, 2, 'critical']] as const)('alerts on a complete client-reported %s/%s window with explicit provenance', (evaluated, failures, severity) => {
   const data = snapshot()
   Object.assign(data.uploads, { evaluatedAttemptsCount: evaluated, reportedFailuresCount: failures, reportedCancellationsCount: 100 })
+  data.collectionCoverage.uploads.matchingBuildAttemptsCount = evaluated + 100
   const health = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
   expect(health.alerts).toContainEqual(expect.objectContaining({
     code: 'upload_failure_spike', severity, summary: expect.stringMatching(/^Client-reported upload failure rate/),
@@ -256,6 +305,7 @@ it.each([
 ])('suppresses partial upload denominators %j', patch => {
   const data = snapshot()
   Object.assign(data.uploads, { evaluatedAttemptsCount: 5, reportedFailuresCount: 5 }, patch)
+  data.collectionCoverage.uploads.buildCoverageComplete = false
   const health = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
   expect(health.unavailableMetrics).toContain('uploads')
   expect(health.unavailableMetrics).toContain('upload_collection_coverage')
@@ -270,10 +320,12 @@ it('recomputes health after coverage/cost/export gaps instead of appending them 
   data.costs = { maxProjectKnownExposureCents: 0, unknownAttemptCostsCount: 1 }
   data.deletions.overdueRequestsCount = 0
   Object.assign(data.exports, { windowComplete: false, coverageStartedAt: now, unsettledAttemptsCount: 1 })
+  Object.assign(data.collectionCoverage.exports, { matchingBuildAttemptsCount: 1, buildCoverageComplete: false })
   const health = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
   expect(health).toMatchObject({ status: 'unavailable', coverage: 'partial', alerts: [] })
   expect(health.unavailableMetrics).toEqual(expect.arrayContaining([
-    'project_cost_completeness', 'export_observation_window', 'export_outcome_completeness', 'upload_collection_coverage',
+    'project_cost_completeness', 'export_observation_window', 'export_outcome_completeness',
+    'export_collection_coverage', 'upload_collection_coverage',
   ]))
 })
 
@@ -281,4 +333,112 @@ it.each(['exports', 'uploads'] as const)('rejects year-zero %s coverage outside 
   const data = snapshot(); data[group].coverageStartedAt = '0000-01-01T00:00:00.000Z'
   mockRetry.mockResolvedValue({ data, error: null })
   expect(await loadOperationalSnapshot()).toEqual({ ok: false, reason: 'invalid_snapshot' })
+})
+
+describe('v4 deployment collection coverage validation and health evaluation', () => {
+  it.each([
+    null,
+    {},
+    { ...snapshot().collectionCoverage, extra: true },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, scope: 'wrong' } },
+    { ...snapshot().collectionCoverage, uploads: { ...snapshot().collectionCoverage.uploads, windowMinutes: 30 } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, releaseHash: 'UPPERCASE' } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, releaseHash: null, cutoverAt: '2026-10-29T03:00:00.000Z', cutoverWindowComplete: false, buildCoverageComplete: false } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, releaseHash: null, cutoverAt: null, cutoverWindowComplete: true, buildCoverageComplete: false } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, releaseHash: null, cutoverAt: null, cutoverWindowComplete: false, matchingBuildAttemptsCount: 1, buildCoverageComplete: false } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, cutoverAt: '2026-10-29T04:30:00.000Z', cutoverWindowComplete: true } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, cutoverAt: '2026-10-29T05:00:00.000001Z', cutoverWindowComplete: false, buildCoverageComplete: false } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, unattributedAttemptsCount: 1, buildCoverageComplete: true } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, staleBuildAttemptsCount: 1, buildCoverageComplete: true } },
+    { ...snapshot().collectionCoverage, exports: { ...snapshot().collectionCoverage.exports, invalidBuildAttemptsCount: 1, buildCoverageComplete: true } },
+    { ...snapshot().collectionCoverage, uploads: { ...snapshot().collectionCoverage.uploads, matchingBuildAttemptsCount: 1 } },
+  ])('rejects malformed or contradictory collectionCoverage payload %j', async collectionCoverage => {
+    mockRetry.mockResolvedValue({ data: { ...snapshot(), collectionCoverage }, error: null })
+    expect(await loadOperationalSnapshot()).toEqual({ ok: false, reason: 'invalid_snapshot' })
+  })
+
+  it.each([
+    ['2026-10-29T04:00:00.000000Z', true],
+    ['2026-10-29T04:00:00.000001Z', false],
+  ] as const)('preserves microsecond cutoverWindowComplete boundary: %s', async (cutoverAt, cutoverWindowComplete) => {
+    const base = snapshot()
+    mockRetry.mockResolvedValue({
+      data: {
+        ...base,
+        collectionCoverage: {
+          ...base.collectionCoverage,
+          exports: {
+            ...base.collectionCoverage.exports,
+            cutoverAt,
+            cutoverWindowComplete,
+            buildCoverageComplete: cutoverWindowComplete,
+          },
+        },
+      },
+      error: null,
+    })
+    const res = await loadOperationalSnapshot()
+    expect(res).toMatchObject({
+      ok: true,
+      snapshot: {
+        collectionCoverage: {
+          exports: { cutoverWindowComplete, buildCoverageComplete: cutoverWindowComplete },
+        },
+      },
+    })
+  })
+
+  it('distinguishes mature ledger windowComplete from unsealed or incomplete deployment collection coverage', () => {
+    const data = snapshot()
+    data.collectionCoverage.exports = {
+      ...data.collectionCoverage.exports,
+      releaseHash: null, cutoverAt: null, cutoverWindowComplete: false, buildCoverageComplete: false,
+    }
+    data.collectionCoverage.uploads = {
+      ...data.collectionCoverage.uploads,
+      releaseHash: null, cutoverAt: null, cutoverWindowComplete: false,
+      unattributedAttemptsCount: 10, buildCoverageComplete: false,
+    }
+    Object.assign(data.uploads, { evaluatedAttemptsCount: 10, reportedFailuresCount: 5 })
+    const health = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
+    expect(data.exports.windowComplete).toBe(true)
+    expect(data.uploads.windowComplete).toBe(true)
+    expect(health.unavailableMetrics).toContain('export_collection_coverage')
+    expect(health.unavailableMetrics).toContain('upload_collection_coverage')
+    expect(health.unavailableMetrics).toContain('uploads')
+    expect(health.unavailableMetrics).not.toContain('export_observation_window')
+    expect(health.unavailableMetrics).not.toContain('upload_observation_window')
+    expect(health.alerts.map(a => a.code)).not.toContain('upload_failure_spike')
+  })
+
+  it('marks collection coverage incomplete when runtime OPERATIONAL_COLLECTOR_BUILD_HASH mismatches sealed releaseHash or is malformed', () => {
+    const data = snapshot()
+    Object.assign(data.uploads, { evaluatedAttemptsCount: 10, reportedFailuresCount: 5 })
+    data.collectionCoverage.uploads.matchingBuildAttemptsCount = 10
+
+    process.env.OPERATIONAL_COLLECTOR_BUILD_HASH = 'b'.repeat(64)
+    const mismatched = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
+    expect(mismatched.unavailableMetrics).toEqual(expect.arrayContaining([
+      'export_collection_coverage', 'upload_collection_coverage', 'uploads',
+    ]))
+    expect(mismatched.alerts.map(a => a.code)).not.toContain('upload_failure_spike')
+
+    process.env.OPERATIONAL_COLLECTOR_BUILD_HASH = 'invalid-hash'
+    const malformed = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
+    expect(malformed.unavailableMetrics).toEqual(expect.arrayContaining([
+      'export_collection_coverage', 'upload_collection_coverage', 'uploads',
+    ]))
+
+    process.env.OPERATIONAL_COLLECTOR_BUILD_HASH = releaseHash
+    const matched = operationalHealthFromSnapshot({ ok: true, snapshot: data }, '500')
+    expect(matched.unavailableMetrics).not.toContain('export_collection_coverage')
+    expect(matched.unavailableMetrics).toContain('upload_collection_coverage')
+    expect(matched.alerts.map(a => a.code)).toContain('upload_failure_spike')
+  })
+})
+
+it('does not let a reader without a collector build identity claim sealed-release coverage', () => {
+  delete process.env.OPERATIONAL_COLLECTOR_BUILD_HASH
+  const health = operationalHealthFromSnapshot({ ok: true, snapshot: snapshot() }, '500')
+  expect(health.unavailableMetrics).toEqual(expect.arrayContaining(['export_collection_coverage', 'upload_collection_coverage']))
 })
