@@ -1,0 +1,18 @@
+{
+  "localG1RecorderConnectionRecoverySliceStatus": "complete",
+  "g1MilestoneSatisfied": false,
+  "originalMilestoneNewlyProven": false,
+  "p0CompletionProvenByThisBatch": false,
+  "pushConditionSatisfied": false,
+  "pushPerformed": false,
+  "priorP0G0Push": "Authorized historical milestone through 1921766c2; not extended to this local G1 batch. Both preceding G1 checkpoints are local only.",
+  "realDeviceMatrixRuns": 0,
+  "reason": "Local native IndexedDB connection contracts and injected close notifications pass. Actual device/version-specific recordings, interruptions, decoding/listening, physical quota and cloud/permission/export qualification remain absent. No new explicit milestone push authorization.",
+  "manualPrerequisites": [
+    "HANDOFF-PROMPT section A #6 devices and trial inputs",
+    "#1 deployed environment and #2 remote migration authorization before cloud-phase acceptance"
+  ],
+  "mergeMainAuthorized": false,
+  "remoteMigrationAuthorized": false,
+  "productionDeploymentAuthorized": false
+}

@@ -1,0 +1,127 @@
+{
+  "batch": "g1-recorder-connection-lifecycle-recovery",
+  "baselineCommit": "f59e8f8634cb3c10aa87092a4e615a90ca335ef8",
+  "localSliceStatus": "complete",
+  "scope": {
+    "production": [
+      "packages/web/src/lib/recorder-db.ts:getDB"
+    ],
+    "tests": [
+      "scripts/browser-tests/recorder-recovery.test.cjs"
+    ],
+    "schemaChanged": false,
+    "sqlChanged": false,
+    "pgExperimentsRun": false,
+    "newDependencies": false,
+    "automaticOperationRetry": false,
+    "automaticRecordingContinuation": false
+  },
+  "tdd": {
+    "red": {
+      "execution": "connection-red.json",
+      "failingSubcases": 5,
+      "failingNodeTestsIncludingParent": 6,
+      "originalPassingSubcases": 23,
+      "exitCode": 1,
+      "productionMatchesBaseline": true
+    },
+    "green": {
+      "execution": "connection-green.json",
+      "subcases": 28,
+      "nodeTestsIncludingParent": 29,
+      "exitCode": 0
+    },
+    "sameTestHashBetweenRedAndGreen": true,
+    "originalAssertionsPreserved": true
+  },
+  "browser": {
+    "execution": "connection-green.json",
+    "engine": "Chromium 147.0.7727.15",
+    "idbVersion": "8.0.3",
+    "cases": 28,
+    "nodeTestsIncludingParent": 29,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "nativeIndexedDB": true,
+    "syntheticBytesOnly": true,
+    "openFailureInjection": "First native open requests version 1 against existing version 2",
+    "upgradeInjection": "Separate same-page native connection requests version 3; one case aborts the upgrade",
+    "abnormalCloseInjection": "Ordinary native close followed by explicit synthetic close event; not actual browser termination",
+    "actualLongRecordingOrDeviceQualification": false,
+    "multiTabProductQualification": false,
+    "separateFromInfraAndWebSuites": true
+  },
+  "focusedJest": {
+    "execution": "focused-jest.json",
+    "suites": 4,
+    "tests": 68,
+    "exitCode": 0
+  },
+  "fullChain": {
+    "execution": "full-chain.json",
+    "command": [
+      "bash",
+      "-c",
+      "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra"
+    ],
+    "exitCode": 0,
+    "web": {
+      "suites": 139,
+      "tests": 2196
+    },
+    "shared": {
+      "suites": 4,
+      "tests": 16
+    },
+    "infra": {
+      "tests": 14
+    },
+    "nextVersion": "16.4.1",
+    "nextBuildPages": 184,
+    "typeCheckPassed": true,
+    "lintPassed": true,
+    "sourcesMatchFinalAfterNextEnvRestore": true
+  },
+  "reviews": {
+    "spec": {
+      "status": "PASS",
+      "reviewer": "/root/g1_connection_spec",
+      "receipt": "spec-review.md",
+      "independentBrowserAndFocusedJestRerun": true
+    },
+    "quality": {
+      "status": "Approved",
+      "reviewer": "/root/g1_connection_quality",
+      "receipt": "quality-review.md",
+      "startedAfterSpecPass": true,
+      "independentBrowserAndFocusedJestRerun": true
+    },
+    "outstandingFindings": 0,
+    "receiptProvenance": "Parent-recorded completed independent subagent responses, not primary execution logs."
+  },
+  "protection": {
+    "historicalInputs": 1471,
+    "previousBatchEvidenceFiles": 60,
+    "mismatches": 0,
+    "missing": 0,
+    "report": "protected-inputs-check.json",
+    "nextEnv": "next-env-check.json"
+  },
+  "auditRerun": false,
+  "buildWarnings": [
+    "Unsupported legacy Next eslint configuration",
+    "Deprecated images.domains",
+    "Optional Google client, Stripe, analytics and Sentry configuration missing"
+  ],
+  "limits": [
+    "No real-device/version-specific 5/20/30-minute microphone recording or decode/listening qualification.",
+    "Synthetic close notification is not real browser/process termination; no multi-tab product or physical-quota qualification.",
+    "No new cloud-phase, cross-family server authorization or original-export acceptance.",
+    "No remote migration, main merge, production deployment, paid call or family-media transfer."
+  ],
+  "checkpointPolicy": "Local commit only on existing branch; evidence sealed in that checkpoint without self-referential commit hash.",
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "pushPerformed": false
+}

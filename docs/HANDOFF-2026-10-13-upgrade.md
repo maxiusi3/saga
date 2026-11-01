@@ -3,10 +3,21 @@
 - 更新时间：2026-11-01（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`686599f61`（上一批 G1 本地事务/恢复检查点；接手时工作树/暂存区干净，领先远端跟踪基线 `1921766c2` 1 个本地提交。本批继续 G1 写入边界与清理回滚，不声称 G1 真机通过）
+- 本轮接手基线 HEAD：`f59e8f863`（上一批 G1 写入防护检查点；接手时工作树/暂存区干净，领先远端跟踪基线 `1921766c2` 2 个本地提交。本批继续 G1 连接失效与显式恢复，不声称 G1 真机通过）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 11 月 1 日 G1 录音草稿写入边界与清理回滚（当前状态，以本节为准）
+## 11 月 1 日 G1 录音草稿连接失效与显式恢复（当前状态，以本节为准）
+
+详见[报告](research/2026-11-01-g1-recorder-connection-recovery.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-connection-recovery.md)、[证据](research/evidence/2026-11-01-g1-recorder-connection-recovery/README.md)。基线 `f59e8f863`。**本地切片完成，规格 PASS 后质量 Approved，无待修发现；只创建新本地 checkpoint，不推送。** 前两批事务恢复/写入防护不重做。
+
+- 仅修改 `getDB` 生命周期：打开失败、versionchange 或异常关闭通知使本代缓存失效，下一次显式操作重开；并发打开仍共享 Promise，旧连接迟到事件不得逐出替代连接。versionchange 主动关闭本句柄，不阻塞外部连接；较高未知版本仍 VersionError fail-closed，原数据不删不降级。
+- 不自动重试/重放写入，不自动继续录音，不改 schema、DB_VERSION、事务 helper、业务队列、云端确认或授权。
+- 新增 5 项行为 RED、保留旧 23 案例；GREEN Chromium 28 子案例 / Node 29 项、定向 Jest 4/68。完整链退出 0：Web 139/2196、shared 4/16、infra 14、184 页。两位审查员分别独立复跑浏览器和定向 Jest，均通过。
+- 1471 历史输入与前两批 60 个本地证据文件未变，next-env 原字节已恢复。audit 未重跑，旧 Next/可选配置警告保留。原生版本请求/升级回滚是受控注入；close 两例为原生 close 后人工事件通知，不是真实强杀、配额或多标签页产品验收。
+- **下一批入口**：按[真机模板](research/2026-10-15-t04-g1-device-runbook.md)取得 §A #6 的设备版本、真实 5/20/30 分钟虚构口述、故障时点及解码核听；输入未就绪可另选尚未覆盖的独立本地切片，不重复三批 IndexedDB 修复。云端验收仍受 #1 部署/#2 迁移授权保护。
+- `g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。不推送、不合并 main、不远端迁移/repair、不部署、不付费调用、不外发家庭资料。
+
+## 11 月 1 日 G1 录音草稿写入边界与清理回滚（前批完成状态）
 
 详见[报告](research/2026-11-01-g1-recorder-write-guards.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-write-guards.md)、[证据](research/evidence/2026-11-01-g1-recorder-write-guards/README.md)。基线 `686599f61`。**本地切片完成，规格 PASS、质量 Approved；仅新本地 checkpoint，不推送。** 上一批 `686599f61` 与 P0/G0 已完成工作不重做。
 

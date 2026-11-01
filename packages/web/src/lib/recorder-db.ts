@@ -47,7 +47,11 @@ let dbPromise: Promise<IDBPDatabase<RecorderDB>> | null = null
 
 function getDB() {
     if (!dbPromise) {
-        dbPromise = openDB<RecorderDB>(DB_NAME, DB_VERSION, {
+        const forgetConnection = () => {
+            // Late events from an old handle must not evict its replacement.
+            if (dbPromise === opening) dbPromise = null
+        }
+        const opening = openDB<RecorderDB>(DB_NAME, DB_VERSION, {
             upgrade(db) {
                 if (!db.objectStoreNames.contains('chunks')) {
                     const store = db.createObjectStore('chunks', { keyPath: 'id' })
@@ -60,7 +64,15 @@ function getDB() {
                     store.createIndex('by-state', 'state')
                 }
             },
+            blocking(_currentVersion, _blockedVersion, event) {
+                (event.target as IDBDatabase).close()
+                forgetConnection()
+            },
+            terminated: forgetConnection,
         })
+        dbPromise = opening
+        // Reject this operation as-is; only a later explicit call opens again.
+        void opening.catch(forgetConnection)
     }
     return dbPromise
 }

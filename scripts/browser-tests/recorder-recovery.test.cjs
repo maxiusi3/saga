@@ -57,6 +57,22 @@ test('G1 local recorder persistence contracts (synthetic bytes only)', { timeout
           const blob = new Blob([`synthetic-chunk-${index};`], { type: 'audio/webm' })
           return recorderDB.saveChunk(id, index, blob, { sha256: await hash(blob) })
         }
+        window.trackRecorderOpens = () => {
+          const originalOpen = IDBFactory.prototype.open
+          const connections = []
+          const requests = []
+          IDBFactory.prototype.open = function (...args) {
+            const request = originalOpen.apply(this, args)
+            requests.push(request)
+            request.addEventListener('success', () => connections.push(request.result), { once: true })
+            return request
+          }
+          return {
+            connections, requests,
+            openNative: version => originalOpen.call(indexedDB, 'saga-recorder-db', version),
+            restore: () => { IDBFactory.prototype.open = originalOpen },
+          }
+        }
         // Queue a competing native transaction before idb resumes the production get.
         // In the fixed adapter it must wait for the whole update, not just its read.
         window.interleave = async kind => {
@@ -459,6 +475,115 @@ test('G1 local recorder persistence contracts (synthetic bytes only)', { timeout
       })
       assert.deepEqual(result, { count: 2, cloud: null, statuses: ['uploaded', 'pending'] })
     }))
+
+    await t.test('a failed open rejects all shared callers but a later explicit call can recover without reload', () => isolated(async (page, context) => {
+      await page.evaluate(async () => { await seed(); await append(0) })
+      await page.close()
+      page = await openPage(context)
+      const result = await page.evaluate(async () => {
+        const originalOpen = IDBFactory.prototype.open
+        let calls = 0
+        IDBFactory.prototype.open = function (name, version) {
+          calls += 1
+          // A real failed IDBOpenDBRequest; only the first requested version is altered.
+          return originalOpen.call(this, name, calls === 1 ? 1 : version)
+        }
+        try {
+          const first = await Promise.allSettled([
+            recorderDB.getSession('capture'), recorderDB.getChunksBySession('capture'),
+            recorderDB.updateSession('capture', { state: 'interrupted' }),
+          ])
+          await new Promise(resolve => setTimeout(resolve, 0))
+          const attemptsBeforeExplicitRetry = calls
+          let recovered, retryFailure
+          try {
+            const [recording, session] = await Promise.all([
+              loadLocalRecording('capture', 'project-a', 'user-a'), recorderDB.getSession('capture'),
+            ])
+            recovered = { text: await recording.blob.text(), state: session.state, cloud: session.cloudConfirmedAssetId }
+          } catch (error) { retryFailure = error.name }
+          return { failures: first.map(item => item.status === 'rejected' ? item.reason.name : 'unexpected-success'),
+            attemptsBeforeExplicitRetry, calls, recovered, retryFailure }
+        } finally { IDBFactory.prototype.open = originalOpen }
+      })
+      assert.deepEqual(result, { failures: ['VersionError', 'VersionError', 'VersionError'], attemptsBeforeExplicitRetry: 1,
+        calls: 2, recovered: { text: 'synthetic-chunk-0;', state: 'recording', cloud: null }, retryFailure: undefined })
+    }))
+
+    for (const abortUpgrade of [false, true]) {
+      await t.test(`versionchange releases the old connection and ${abortUpgrade ? 'an aborted upgrade permits recovery' : 'a newer schema stays fail-closed'}`, () => isolated(async page => {
+        const result = await page.evaluate(async abort => {
+          const tracker = trackRecorderOpens()
+          try {
+            await seed()
+            await append(0)
+            const original = tracker.connections[0]
+            let blocked = false
+            const outcome = await new Promise(resolve => {
+              const request = tracker.openNative(3)
+              request.onblocked = () => {
+                blocked = true
+                // Finish the baseline failure without leaving a blocked fixture hanging.
+                original.close()
+              }
+              request.onupgradeneeded = () => { if (abort) request.transaction.abort() }
+              request.onerror = () => resolve(request.error.name)
+              request.onsuccess = () => { request.result.close(); resolve('upgraded') }
+            })
+            let recovered, failure
+            try { recovered = await (await loadLocalRecording('capture', 'project-a', 'user-a')).blob.text() }
+            catch (error) { failure = error.name }
+            // Read with the actual schema version to prove the old client never erased it.
+            const preserved = await new Promise((resolve, reject) => {
+              const request = tracker.openNative(abort ? 2 : 3)
+              request.onerror = () => reject(request.error)
+              request.onsuccess = () => {
+                const db = request.result
+                const tx = db.transaction(['sessions', 'chunks'])
+                const session = tx.objectStore('sessions').get('capture')
+                const chunk = tx.objectStore('chunks').get('capture-0')
+                tx.onabort = () => { db.close(); reject(tx.error) }
+                tx.oncomplete = async () => {
+                  db.close()
+                  resolve({ version: db.version, text: await chunk.result.blob.text(), state: session.result.state })
+                }
+              }
+            })
+            return { blocked, outcome, recovered, failure, preserved, adapterOpens: tracker.requests.length }
+          } finally { tracker.restore() }
+        }, abortUpgrade)
+        assert.deepEqual(result, { blocked: false, outcome: abortUpgrade ? 'AbortError' : 'upgraded',
+          recovered: abortUpgrade ? 'synthetic-chunk-0;' : undefined, failure: abortUpgrade ? undefined : 'VersionError',
+          preserved: { version: abortUpgrade ? 2 : 3, text: 'synthetic-chunk-0;', state: 'recording' }, adapterOpens: 2 })
+      }))
+    }
+
+    for (const lateOldNotification of [false, true]) {
+      await t.test(lateOldNotification ? 'a late close notification cannot evict a newer connection' : 'an abnormal-close notification allows the next explicit recovery read to reopen', () => isolated(async page => {
+        const result = await page.evaluate(async notifyAgain => {
+          const tracker = trackRecorderOpens()
+          try {
+            await seed()
+            await append(0)
+            const original = tracker.connections[0]
+            original.close()
+            // Ordinary close() does not emit this signal: simulate the abnormal-close event.
+            original.dispatchEvent(new Event('close'))
+            const attemptsBeforeExplicitRead = tracker.requests.length
+            let text, failure
+            try {
+              text = await (await loadLocalRecording('capture', 'project-a', 'user-a')).blob.text()
+              if (notifyAgain) {
+                original.dispatchEvent(new Event('close'))
+                await recorderDB.getSession('capture')
+              }
+            } catch (error) { failure = error.name }
+            return { attemptsBeforeExplicitRead, adapterOpens: tracker.requests.length, text, failure }
+          } finally { tracker.restore() }
+        }, lateOldNotification)
+        assert.deepEqual(result, { attemptsBeforeExplicitRead: 1, adapterOpens: 2, text: 'synthetic-chunk-0;', failure: undefined })
+      }))
+    }
   } finally {
     if (browser) await browser.close()
     await new Promise(resolve => server.close(resolve))

@@ -1,0 +1,34 @@
+{
+  "connection-red.log": {
+    "rawSha256": "e00682a313f8e3d76aaa59b59fb7b2b1001448e0dd1b2c629f1036c15dde01c7",
+    "rawBytes": 15984,
+    "gz": "raw/connection-red.log.gz",
+    "gzSha256": "22e2a6e8b8c76d8c0d0fcdeeb3efe32226f42b65bd4fda78a9440e875fe17c94",
+    "exitCode": 1,
+    "execution": "connection-red.json"
+  },
+  "connection-green.log": {
+    "rawSha256": "31404c170f772e4c36ed1e11ec8c0ebca58a2b79f113c6cd62b967d0bfecaf7f",
+    "rawBytes": 7306,
+    "gz": "raw/connection-green.log.gz",
+    "gzSha256": "3cdb76fd3349f1d9b36031fe090e1c6b85fbe7d049df7e97205dc8b6333d022e",
+    "exitCode": 0,
+    "execution": "connection-green.json"
+  },
+  "focused-jest.log": {
+    "rawSha256": "35e5bc5dfa682b027245abcc8127e4fdc792e63a3fd739c3a0f663fa596fc677",
+    "rawBytes": 681,
+    "gz": "raw/focused-jest.log.gz",
+    "gzSha256": "3c49b57252a135420095a37315d5803aa222ee928a36b3135d76bfedf5285a91",
+    "exitCode": 0,
+    "execution": "focused-jest.json"
+  },
+  "full-chain.log": {
+    "rawSha256": "6ad119c3ee089ce5ea16a2a62c3f6e1508a7af6eda01243b9fb5ec8e1c688034",
+    "rawBytes": 19016,
+    "gz": "raw/full-chain.log.gz",
+    "gzSha256": "b185b62dae0f6b5b5714b5155960b91c27ae325440d0c5451bb32078304de41f",
+    "exitCode": 0,
+    "execution": "full-chain.json"
+  }
+}

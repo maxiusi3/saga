@@ -1,0 +1,12 @@
+{
+  "baselineCommit": "f59e8f8634cb3c10aa87092a4e615a90ca335ef8",
+  "branch": "codex/october-upgrade-p0",
+  "worktreeAndIndexCleanBeforeBatch": true,
+  "remoteTrackingBaseline": "1921766c299575735a404a4746e2484f2dd4a5d3",
+  "aheadOfRemoteTracking": 2,
+  "historicalInputsChecked": 1471,
+  "historicalManifestSha256": "0575178f36c8f22c99e9a6944a5fa74acefb55019c3c274410b85b8a5a1c7251",
+  "historicalMismatches": [],
+  "priorEvidenceFilesProtected": 60,
+  "scope": "G1 local recorder IndexedDB connection lifecycle; no remote or device qualification."
+}

@@ -1,0 +1,21 @@
+{
+  "docs/HANDOFF-2026-10-13-upgrade.md": "2137f3b39a2049031682d6803c45712764600ccc1b511e7e77b4b1c2e6a5a1c9",
+  "docs/README.md": "426a054c0aa08d03a8256abdb0604aed3261a90b813f093896fa15c96500d633",
+  "docs/research/2026-11-01-g1-recorder-connection-recovery.md": "c157e22f21f51dff3928478dd1c4940e7b33bab6aa75f3386301b7b6baca5e5b",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/README.md": "23de79fd8271d411d43f5f419131568f5a3168810637dfd626008dd269a1f0b8",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/connection-green.json": "0bd751e20148547f54541697893fa1ae3d106d20e448048345ea80385d3d78bc",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/connection-red.json": "fc14e2bd01b6443cd80158ddc69b712cee119a2314f81381ef9f923e72cf2a2c",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/focused-jest.json": "5a91477e5977a01d759afbc2e5cac6c2562b5a50340a59e8068bcc301268ec83",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/full-chain.json": "25a36925ba617b7a02f6de2cfdbeedaf334ae0ec62e707343fd90143f5aeaed1",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/log-hashes.json": "6af328e345c82d21a7d543b61a3a8845333b4783d2201b4ce461125ff4d23565",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/milestone-check.json": "99e444c0ffb7685cf3538ab2a335be9c5052566c8996d44233ada312b6c78159",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/next-env-check.json": "3efd39023a7903e7486ae6f45c5bcf3ddced34213300a42b3e2998cde3f2a4ce",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/prior-evidence-hashes.json": "75c5ff890aa86b91787d43d835ceaa468316c74209106fcf506fa98a12ab8394",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/protected-inputs-check.json": "08d959b23cdbaab45075ea05302b89a2403c63bba4ad4f1a82347419c34fb2aa",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/quality-review.md": "99d17f51ee04a4058c5c7b6eb22af79a965a4461a0f61d74289d1777aea6f920",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/source-hashes.json": "a170934c810288e1c82e6ca019fa61d9835353486f9540511d0b300ed07c57fd",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/spec-review.md": "ca555b5f6bceb3973faedec2bc1b26f675f8c7a868e1cb338e1104685966457b",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/takeover-check.json": "d5741eb74ff00ef76e5753fe074820ad8181af0fa9c9f3f84df26bd7d036681f",
+  "docs/research/evidence/2026-11-01-g1-recorder-connection-recovery/verification.json": "4d02d22fa5c6183c706eaf6eb8a2c1fbbe3ef115e1f51bf09737725a5864bccc",
+  "docs/superpowers/plans/2026-11-01-upgrade-g1-recorder-connection-recovery.md": "98c04fdd287be5a1189e11b0876bce4dde991dfd190c1881b4bb3052c062daef"
+}
