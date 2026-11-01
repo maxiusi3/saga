@@ -1,0 +1,14 @@
+{
+  "baselineCommit": "1921766c299575735a404a4746e2484f2dd4a5d3",
+  "branch": "codex/october-upgrade-p0",
+  "initialWorkingTreeClean": true,
+  "initialIndexClean": true,
+  "initialUntrackedFiles": [],
+  "worktreeCount": 1,
+  "observedRemoteBranchCommit": "1921766c299575735a404a4746e2484f2dd4a5d3",
+  "remoteCheckCommand": "git ls-remote --exit-code origin refs/heads/codex/october-upgrade-p0",
+  "classification": "E",
+  "priorSchemeBSourceHashesMatched": 6,
+  "historicalP0TestsRerunForTakeover": false,
+  "note": "Prior scheme-b evidence contains summary statements, not independent raw logs or review transcripts; preserved unchanged, not reconstructed."
+}

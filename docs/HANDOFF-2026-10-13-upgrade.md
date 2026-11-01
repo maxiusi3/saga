@@ -3,10 +3,20 @@
 - 更新时间：2026-11-01（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`7ada8e1d4`（飞书告警投递适配检查点；接手时本地分支领先已有远端跟踪记录 10 个提交，本批续接方案 B 备份恢复演练与验证工具，不声称原计划 G0–G4 已全部验收）
+- 本轮接手基线 HEAD：`1921766c2`（P0/G0 推送同步后的交接检查点；接手时工作树/暂存区干净，远端分支经只读核对一致。本批推进 G1 本地录音持久化故障恢复契约，不声称 G1 真机通过）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 11 月 1 日方案 B 逻辑备份恢复演练与验证工具（当前状态，以本节为准）
+## 11 月 1 日 G1 本地录音持久化故障恢复契约（当前状态，以本节为准）
+
+详见[报告](research/2026-11-01-g1-recorder-recovery.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-recovery.md)、[证据](research/evidence/2026-11-01-g1-recorder-recovery/README.md)。基线 `1921766c2`。**本地切片完成，规格 PASS、质量 Approved；本批仅本地 checkpoint，不推送。前批 P0/G0 推送已完成，不将授权延伸到本批。**
+
+- 修复 `recorder-db.ts`：会话读/补丁/写回共用一笔 readwrite 事务，避免末块落盘水位回退、并发补丁丢失和清理后复活；块写入与会话更新提前观察事务完成、异常主动 abort，拒绝部分提交与未处理 promise 拒绝。
+- 新增 `node --test scripts/browser-tests/recorder-recovery.test.cjs`：原生 Chromium IndexedDB 11 子案例（Node 12 项含父容器），有明确 5 项行为 RED；30/120/180 个合成字节块覆盖离线写入、真实刷新/关页重开、hash/顺序、局部身份范围和损坏拒绝。**不是 5/20/30 分钟真实录音，不是真机/解码/锁屏/来电/真实配额验收。**
+- 本轮完整链退出 0：Web 139 套 / 2196 项、shared 4/16、infra 14、184 页；定向 Jest 4/68。1471 历史输入未变，前批方案 B 六项源码 hash 一致；构建新增 root-params import 已核对生成器后恢复 next-env 原字节。audit 未重跑，旧 Next 与可选配置警告保留。
+- **下一批入口**：本批已完成并随本地 checkpoint 封存，不重做修复/验证整理。按旧 G1 真机模板落实 §A #6 的具体设备、5/20/30 分钟虚构口述和故障记录，或另选独立本地子切片。需要真实云端阶段仍受 #1 部署/#2 远端迁移保护；不要重做本批 IndexedDB 修复或 P0 工具。
+- `g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。不合并 main、不远端迁移/repair、不生产部署、不外发家庭素材、不产生未经授权的付费调用。
+
+## 11 月 1 日方案 B 逻辑备份恢复演练与验证工具（前批完成状态）
 
 详见[报告](research/2026-11-01-scheme-b-backup.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-scheme-b-backup.md)、[证据](research/evidence/2026-11-01-scheme-b-backup/README.md)。基线 `7ada8e1d4`。**负责人正式授权：“确认推送”，已成功推送到远端分支 `origin/codex/october-upgrade-p0`（最新 HEAD 为 `a5efc505a`），P0/G0 阶段本地交付与实测凭据闭环，`pushConditionSatisfied: true`（限推送 codex/october-upgrade-p0 分支）。**
 

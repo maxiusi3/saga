@@ -1,0 +1,50 @@
+{
+  "full-chain.log": {
+    "rawSha256": "ad609f16cb6af9d5e2bb9c6aa5ac519fc05f65d14931d5d170e473cab108a999",
+    "rawBytes": 18984,
+    "gz": "raw/full-chain.log.gz",
+    "gzSha256": "0b8d68e772492b18f6f2d7a6272cdacfdbd1fb7581cdc525ef47e07e92a68463",
+    "exitCode": 0,
+    "execution": "full-chain.json"
+  },
+  "task1-green.log": {
+    "rawSha256": "43711a75240ccd6e3a4c2b7ae0dbcda2dcbca07335114ac55042b4d5f609a49e",
+    "rawBytes": 1730,
+    "gz": "raw/task1-green.log.gz",
+    "gzSha256": "727c5994ff45ecce64bdd91fbfc8002184c1d4f007769c5d7ff6e419dbd3e5de",
+    "exitCode": 0,
+    "execution": "task1-green.json"
+  },
+  "task1-quota-red.log": {
+    "rawSha256": "e5283e8c441e0650cd4145c84b556bb81881f85193a45e417ee490d1868cb11a",
+    "rawBytes": 8592,
+    "gz": "raw/task1-quota-red.log.gz",
+    "gzSha256": "1f876ee490f2fc30bd8a3a052f8b50431821dd981b4297d964914a5c0a400eba",
+    "exitCode": 1,
+    "execution": "task1-quota-red.json"
+  },
+  "task1-red.log": {
+    "rawSha256": "935bec6c3cb6560b7794a9671bfb95debf73905ee2d5f17f81ef7015abaf2fb6",
+    "rawBytes": 7004,
+    "gz": "raw/task1-red.log.gz",
+    "gzSha256": "020d86baf2a164ce7440b00cd189b1f4872606e1a70170ef1e20ebc58b2cf017",
+    "exitCode": 1,
+    "execution": "task1-red.json"
+  },
+  "task2-browser-green.log": {
+    "rawSha256": "e18b80daadb0e42ca2056d9f21bd74946397543aeb464bc80c9a77ab2c2cbd05",
+    "rawBytes": 3213,
+    "gz": "raw/task2-browser-green.log.gz",
+    "gzSha256": "01b96f359ea8c80f9260919045e1bea3147b941f59c6f697117fc3c76950d21c",
+    "exitCode": 0,
+    "execution": "task2-browser-green.json"
+  },
+  "task2-jest-green.log": {
+    "rawSha256": "8b1e5c7149bfdff33777bce4c5098f8e79ea655e7bfb3aaa247d298510504d36",
+    "rawBytes": 681,
+    "gz": "raw/task2-jest-green.log.gz",
+    "gzSha256": "c10bff3db3149a9bba1c4048e3fba9a04313affb11eaa308614c779cff9f1aa1",
+    "exitCode": 0,
+    "execution": "task2-jest-green.json"
+  }
+}

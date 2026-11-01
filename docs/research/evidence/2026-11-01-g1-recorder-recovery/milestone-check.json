@@ -1,0 +1,18 @@
+{
+  "localG1RecorderRecoverySliceStatus": "complete",
+  "g1MilestoneSatisfied": false,
+  "originalMilestoneNewlyProven": false,
+  "p0CompletionProvenByThisBatch": false,
+  "pushConditionSatisfied": false,
+  "pushPerformed": false,
+  "priorP0G0Push": "Inherited authorized milestone at baseline 1921766c2; not requalified or extended by this local batch.",
+  "realDeviceMatrixRuns": 0,
+  "reason": "Native desktop Chromium IndexedDB contracts with synthetic bytes are complete. Device/version-specific 5/20/30-minute microphone recordings, interruptions, decoding/listening, real quota and cloud/permission/export acceptance are still missing. No new push authorization.",
+  "manualPrerequisites": [
+    "HANDOFF-PROMPT section A #6 devices and trial scheduling",
+    "#1 deployed environment and #2 remote migration authorization before cloud-phase acceptance"
+  ],
+  "mergeMainAuthorized": false,
+  "remoteMigrationAuthorized": false,
+  "productionDeploymentAuthorized": false
+}

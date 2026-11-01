@@ -1,0 +1,23 @@
+{
+  "docs/HANDOFF-2026-10-13-upgrade.md": "2f0115469e578641f384317e25c6205d340cf4477af95c1652ee5d426256dda8",
+  "docs/README.md": "6591159b75bd7c8dfea0467d2a80f814b94266119be68fa45cc554d605087432",
+  "docs/research/2026-11-01-g1-recorder-recovery.md": "5f75f0d3023d18b4360ca53539312341e58c784d72f123e0e072ae9b5148b419",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/README.md": "14e093b528b82614b82d0d540432e57d7d5e6b522f54e986b9fe0644ca19042f",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/full-chain.json": "cbc9efccc0f6745986e929d211c0548ead511357d0646b973efa6d148f5f7a8e",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/log-hashes.json": "3114f9b2d32aa4eba5f7bbce2328b1cc742a0e7080eb4a02828e55588b778086",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/milestone-check.json": "e23e31224a103522b13ad427d85b37bd175d4cc529ee8e93d9298b959c4ea415",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/next-env-check.json": "90c6fc19ae07497cc5bc9a96977ec2296e61a905e8a77cb2f897cc4ac8825501",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/protected-inputs-before.json": "5afc59cea921dd0993ad87321c6b606d1a7cfc29266b44067b41f5a8670f693a",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/protected-inputs-check.json": "5afc59cea921dd0993ad87321c6b606d1a7cfc29266b44067b41f5a8670f693a",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/quality-review.md": "b0fe7f94ba5584c7fb17f5b5c01a93e7781c62564c7dfc3f444e459750afabaf",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/source-hashes.json": "0b43f602f79ba193a92328881ff2b8061b294dcf3d158419ce92f0f2f5b3eee0",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/spec-review.md": "a120bde8c846fd80179d1ae73917c743c67445b8a3e9c216ea5334b50fb718f1",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/takeover-check.json": "904d989a4b02cd591f3fec0fc9bcbfb2db90385c3283872b915472415fe29d0f",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/task1-green.json": "7043a497bc3ab8d8cb4f426303ab2637142522fedbe597a91d9575d8d654f587",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/task1-quota-red.json": "0f49af24597519b4388a30ab3bdcca4fbd2f8a225a906bcbff2fea1dbe73bee7",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/task1-red.json": "95898875d8f7a91773f2dd14650e4a3b43f548d6fdf47b6efbcd2e61fa326839",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/task2-browser-green.json": "99726ebe1cc759ee6a2ef3aa29d28e3b5d5dddba7873f0bc38d4609bdc8b4fca",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/task2-jest-green.json": "657ce2649517693532d15e0dfd90d655fabac10fd236af0170ae0d3678e33a76",
+  "docs/research/evidence/2026-11-01-g1-recorder-recovery/verification.json": "6ea7b5f492ec4919057fba3d1dc22749cb9d96b02d951b9d00b696fbaa225651",
+  "docs/superpowers/plans/2026-11-01-upgrade-g1-recorder-recovery.md": "1393dda7b896ba4346aa4bfbf6db3d364cb1ebcc1ffc6e973990d66e986e563f"
+}

@@ -1,0 +1,39 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "scripts/browser-tests/recorder-recovery.test.cjs"
+  ],
+  "startedAtUnix": 1793521951.3486059,
+  "durationSeconds": 3.23,
+  "exitCode": 1,
+  "sourcesBefore": {
+    "packages/web/src/lib/recorder-db.ts": "157d12dce74291f4b0a2c989a99b2bd32b3873060a6d908e7e62606107b1b88a",
+    "packages/web/src/lib/recording-recovery.ts": "fb64419857a64a75ef191922bfb2e83281c834cb6b8ad71460cec28033713b23",
+    "packages/web/src/lib/local-recording-session.ts": "8e93ab394dc527af824f271b9107f292eac7838550725729604a9ec0d28c0358",
+    "packages/web/src/lib/recording-session.ts": "8d6e32654998bf3cc0cbe2fcc01f00c408806860f38caa648cac71f79e407a6e",
+    "packages/web/src/components/recording/SmartRecorder.tsx": "c436e575fb9dbe2aec05d41813e8400fa8f441c9e53f9b58b87653ebe492ab58",
+    "packages/web/src/components/recording/RecordingRecoveryPanel.tsx": "17556a76fc51fbf0e0fa26835841c681bf7980f206ae0fc6cf01619a0d7664c8",
+    "scripts/browser-tests/recorder-recovery.test.cjs": "815f0020fd6fdd3d64602002e9f6b43ddf4dad3f18ade8014e9803cebdb02ef8",
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+  },
+  "sourcesAfter": {
+    "packages/web/src/lib/recorder-db.ts": "157d12dce74291f4b0a2c989a99b2bd32b3873060a6d908e7e62606107b1b88a",
+    "packages/web/src/lib/recording-recovery.ts": "fb64419857a64a75ef191922bfb2e83281c834cb6b8ad71460cec28033713b23",
+    "packages/web/src/lib/local-recording-session.ts": "8e93ab394dc527af824f271b9107f292eac7838550725729604a9ec0d28c0358",
+    "packages/web/src/lib/recording-session.ts": "8d6e32654998bf3cc0cbe2fcc01f00c408806860f38caa648cac71f79e407a6e",
+    "packages/web/src/components/recording/SmartRecorder.tsx": "c436e575fb9dbe2aec05d41813e8400fa8f441c9e53f9b58b87653ebe492ab58",
+    "packages/web/src/components/recording/RecordingRecoveryPanel.tsx": "17556a76fc51fbf0e0fa26835841c681bf7980f206ae0fc6cf01619a0d7664c8",
+    "scripts/browser-tests/recorder-recovery.test.cjs": "815f0020fd6fdd3d64602002e9f6b43ddf4dad3f18ade8014e9803cebdb02ef8",
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+  },
+  "rawSha256": "e5283e8c441e0650cd4145c84b556bb81881f85193a45e417ee490d1868cb11a",
+  "rawBytes": 8592,
+  "archive": "raw/task1-quota-red.log.gz"
+}

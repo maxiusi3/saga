@@ -65,6 +65,28 @@ function getDB() {
     return dbPromise
 }
 
+async function commitRecorderWrite<T>(
+    tx: { done: Promise<void>; abort(): void },
+    write: () => Promise<T>,
+): Promise<T> {
+    // Observe aborts immediately, even when an earlier request rejects first.
+    const completion = tx.done.then(
+        () => ({ ok: true as const }),
+        error => ({ ok: false as const, error }),
+    )
+    try {
+        const result = await write()
+        const status = await completion
+        if (!status.ok) throw status.error
+        return result
+    } catch (error) {
+        // Synchronous put errors do not automatically roll back earlier requests.
+        try { tx.abort() } catch { /* The transaction may already have ended. */ }
+        await completion
+        throw error
+    }
+}
+
 export const recorderDB = {
     async saveSession(session: Omit<RecorderSessionRecord, 'updatedAt'> & { updatedAt?: number }) {
         const db = await getDB()
@@ -80,11 +102,15 @@ export const recorderDB = {
 
     async updateSession(sessionId: string, patch: Partial<Omit<RecorderSessionRecord, 'id'>>) {
         const db = await getDB()
-        const current = await db.get('sessions', sessionId)
-        if (!current) return undefined
-        const next: RecorderSessionRecord = { ...current, ...patch, id: current.id, updatedAt: Date.now() }
-        await db.put('sessions', next)
-        return next
+        // Keep the read/patch atomic with concurrent chunk writes and session cleanup.
+        const tx = db.transaction('sessions', 'readwrite')
+        return commitRecorderWrite(tx, async () => {
+            const current = await tx.store.get(sessionId)
+            if (!current) return undefined
+            const next: RecorderSessionRecord = { ...current, ...patch, id: current.id, updatedAt: Date.now() }
+            await tx.store.put(next)
+            return next
+        })
     },
 
     async getSessionsByProject(projectId: string) {
@@ -118,13 +144,14 @@ export const recorderDB = {
             timestamp,
         }
         const tx = db.transaction(['chunks', 'sessions'], 'readwrite')
-        await tx.objectStore('chunks').put(record)
-        const session = await tx.objectStore('sessions').get(sessionId)
-        if (session) {
-            await tx.objectStore('sessions').put({ ...session, lastPersistedIndex: Math.max(session.lastPersistedIndex, index), updatedAt: timestamp })
-        }
-        await tx.done
-        return record
+        return commitRecorderWrite(tx, async () => {
+            await tx.objectStore('chunks').put(record)
+            const session = await tx.objectStore('sessions').get(sessionId)
+            if (session) {
+                await tx.objectStore('sessions').put({ ...session, lastPersistedIndex: Math.max(session.lastPersistedIndex, index), updatedAt: timestamp })
+            }
+            return record
+        })
     },
 
     async markChunkUploaded(sessionId: string, index: number) {
