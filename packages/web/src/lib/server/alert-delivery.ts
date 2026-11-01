@@ -240,10 +240,21 @@ export async function dispatchOperationalAlert(
 
   const dispatchPromise = (async (): Promise<AlertDispatchResult> => {
     try {
+      const isFeishu = webhookUrl.includes('open.feishu.cn')
+      const body = isFeishu
+        ? JSON.stringify({
+            msg_type: 'text',
+            content: {
+              text: `[saga 运营告警] 级别: ${payload.severity} | 代码: ${payload.code}\n摘要: ${payload.summary}\n时间: ${payload.timestamp}\n指纹: ${payload.fingerprint.slice(0, 16)}`,
+            },
+            ...payload,
+          })
+        : JSON.stringify(payload)
+
       const res = await fetchFn(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body,
         signal: controller.signal,
       })
 

@@ -252,6 +252,27 @@ describe('Operational Alert Delivery & Responder Verification (§11)', () => {
       expect(fetchMock).toHaveBeenCalledTimes(1) // not called again
     })
 
+    it('formats body with msg_type and content for Feishu webhook endpoints', async () => {
+      fetchMock.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        body: { cancel: jest.fn().mockResolvedValue(undefined) },
+      })
+      const ledger = new AlertSuppressionLedger({ windowMs: 600_000, maxEntries: 100 })
+      const res = await dispatchOperationalAlert(alert, {
+        webhookUrl: 'https://open.feishu.cn/open-apis/bot/v2/hook/4b47faed-9c07-4d1e-b8d1-d24d8a03b73c',
+        responderConfirmed: true,
+        suppressionLedger: ledger,
+        fetchImpl: fetchMock as any,
+      })
+      expect(res.ok).toBe(true)
+      const call = fetchMock.mock.calls[0]
+      const sentBody = JSON.parse(call[1].body)
+      expect(sentBody.msg_type).toBe('text')
+      expect(sentBody.content.text).toContain('saga')
+      expect(sentBody.code).toBe('upload_failure_spike')
+    })
+
     it('deduplicates concurrent in-flight dispatches for the same alert to prevent alert storm', async () => {
       let finishRequest!: (value: any) => void
       fetchMock.mockImplementationOnce(() => new Promise((resolve) => {
