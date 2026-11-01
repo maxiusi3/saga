@@ -1,21 +1,21 @@
 # 转交提示词（2026-11-01）与人工阻塞事项清单
 
-## A. 需要负责人人工完成的阻塞事项（均不阻塞本地开发）
+## A. 需要负责人人工完成的阻塞事项（最新状态与指引）
 
 “放行”口径：下列事项只登记、不停工；接手 Agent 继续做所有可本地独立完成的工作。**放行不等于授权**——不因此推送、合并 main、远端迁移、部署、外发真实家庭资料或产生付费调用；不得用假数据把任一项填成已验收。
 
-| # | 事项 | 需要你提供/执行 | 解锁什么 | 本地可否继续 |
-|---|---|---|---|---|
-| 1 | 真实部署切流封存 | 在预发/生产设置 `OPERATIONAL_COLLECTOR_BUILD_HASH`（64 位小写 SHA-256）、执行远端迁移 `20261030000002` 及更早未应用迁移、调用 `seal_deployment_collection_coverage`、等待 ≥60 分钟 | 导出采集覆盖真实证明；上传仍因其他通道缺口保留 `upload_collection_coverage` | 可（已有本地实现与测试） |
-| 2 | 远端迁移授权 | 明确新指令：是否允许 `supabase db push`/repair，及目标项目 | 所有 SQL 在真实库生效 | 可 |
-| 3 | 告警响应人与投递通道 | 指定响应人/值班、通道（邮件/IM/Webhook）、接收测试告警的确认 | 实际告警投递证明 | 可做投递适配器本地设计与 mock 验证，不得标为已验收 |
-| 4 | 供应商账户/区域/数据条款 | ElevenLabs、Anthropic、Voyage 的账户、区域、保留期、训练退出（opt-out）书面确认；是否允许受控付费调用 | 解除 `blocked_by_policy`，完整 G0 | 可（保持 dry-run） |
-| 5 | 真实 Auth/PostgREST/Storage/RLS 环境 | 一个非生产测试项目及服务端 key（`SUPABASE_SERVICE_ROLE_KEY` 等） | 真实权限、事务竞态、PostgREST 暴露验证 | 可（合成环境） |
-| 6 | 真机与家庭试点（G1/G3/G4） | 设备、受试家庭、知情同意、观察窗口排期 | 原 §7.1 G1–G4 | 可（不计入验收） |
-| 7 | 方案 B 真实备份恢复 | 明确指令后执行 `pg_dump -Fc`、对象存储 SHA-256 冻结清单、墓碑重放、`pg_restore` | 恢复验收 | 可（合成演练） |
-| 8 | 其他上传通道范围决策 | 确认哪些通道（图片、录音分片、其他）纳入采集覆盖 | 完整 `upload_collection_coverage` | 可 |
-| 9 | 依赖审计 | 是否授权重跑 `npm audit` 并处理结果 | 安全结论 | 可（明确标“未重跑”） |
-| 10 | 推送与合并 | 综合计划 §7.1 逐项真实证据满足后，才执行 `git push origin codex/october-upgrade-p0`；main 合并/生产部署另需明确指令 | 远端同步 | 当前 `pushConditionSatisfied: false` |
+| # | 事项 | 最新状态 | 需要你提供/执行 | 解锁什么 | 本地可否继续 |
+|---|---|---|---|---|---|
+| 1 | 真实部署切流封存 | **未部署（待发版）** | 在预发/生产设置 `OPERATIONAL_COLLECTOR_BUILD_HASH`（64 位小写 SHA-256）、执行远端迁移 `20261030000002` 及更早未应用迁移、调用 `seal_deployment_collection_coverage`、等待 ≥60 分钟 | 导出采集覆盖真实证明；上传仍因其他通道缺口保留 `upload_collection_coverage` | 可（已有本地实现与测试） |
+| 2 | 远端迁移授权 | **未授权（保护远端库）** | 明确新指令：是否允许 `supabase db push`/repair，及目标项目 | 所有 SQL 在真实库生效 | 可（本地隔离环境已验证） |
+| 3 | 告警响应人与投递通道 | **已完成基础接入与验证** | 飞书 Webhook 机器人及关键字 `saga` 已联通并测试成功；正式上线前确认生产值班响应人姓名/排期 | 实际告警投递证明 | 可（本地适配器与抑制台账已全部合入） |
+| 4 | 供应商账户/区域/数据条款 | **进行中（待提供 Claude Key）** | 负责人确认采用第三方 API 代理接入 Claude，Base URL 与 API Key 准备中；ElevenLabs 与 Voyage 暂缓注册，已在代码中 fail-closed 隔离 | 解除 `blocked_by_policy`，完整 G0 | 可（系统保持 dry-run/安全隔离） |
+| 5 | 真实 Auth/PostgREST/Storage/RLS 环境 | **项目与架构已对账** | 已确认项目 `encdblxyxztvfxotfuyh` 处于 Free Plan 与两个 Public 桶；若需本地直连真实线上环境测试，提供 `NEXT_PUBLIC_SUPABASE_ANON_KEY` 与 `SUPABASE_SERVICE_ROLE_KEY` | 真实权限、事务竞态、PostgREST 暴露验证 | 可（当前使用合成环境与本地模拟） |
+| 6 | 真机与家庭试点（G1/G3/G4） | **未进行（待后续试点阶段）** | 设备、受试家庭、知情同意、观察窗口排期 | 原 §7.1 G1–G4 | 可（不计入当前本地切片验收） |
+| 7 | 方案 B 真实备份恢复 | **本地引擎与 CLI 工具已就绪** | 已完成 `scheme-b-backup.ts`、`scripts/verify-scheme-b-backup.cjs` 与切流接入；由于项目处于 Free Plan，方案 B 为唯一灾备手段。若需在云端真库执行，需提供数据库连接串并授权运行 `pg_dump -Fc` | 真实灾备恢复验收 | 可（本地合成与文件验算已全部通过） |
+| 8 | 其他上传通道范围决策 | **已完成决策** | 负责人已决策选择 A（优先聚焦主音频上传链路） | 明确 `upload_collection_coverage` 边界 | 可（继续按主链路收口） |
+| 9 | 依赖审计 | **已完成决策** | 负责人已决策选择 A（保持现有依赖稳定，暂不升级依赖） | 明确安全审计结论 | 可（明确标“审计未重跑”） |
+| 10 | 推送与合并 | **未满足条件（禁止推送）** | 综合计划 §7.1 逐项真实证据满足后，才执行 `git push origin codex/october-upgrade-p0`；main 合并/生产部署另需明确指令 | 远端同步 | 当前 `pushConditionSatisfied: false` |
 
 ---
 
@@ -30,17 +30,17 @@
 ## 当前交接基准（2026-11-01，接手时必须重新核对）
 
 - 分支：`codex/october-upgrade-p0`
-- 最新本地提交：即将创建的检查点 `feat(ops): add provider account, region, and data terms verification chain`；其前一提交 `07016d8fc`（告警投递与响应人核验）。
+- 最新本地提交：`ecd0360c7 feat(ops): add scheme b backup verification tool, manifest hash binding, and tombstone replay`；其前两提交为 `7ada8e1d4`（飞书告警适配）与 `0f24cfcec`（供应商合规核验链）。
 - 写此提示词时工作树和暂存区均干净（除本提示词文件若尚未提交）。
-- 本地领先已有远端跟踪记录 9 个提交；未刷新远端，不能据此断言 GitHub 当前状态。
+- 本地领先已有远端跟踪记录 11 个提交；未刷新远端，不能据此断言 GitHub 当前状态。
 - handoff 中的 `07016d8fc`/`e2be895dd`/`2b146ad1b`/`d13d55ab0` 是更早批次基线，不是当前 HEAD，不要误判为提交丢失。
-- 已完成并收口的批次：同步导出观测、媒体异步重新授权、可靠上传客户端回报观测、部署采集覆盖证明（本地切片）、运营告警投递与响应人核验（本地切片）、**供应商账户/区域/数据条件核验链（本地切片）**。
-- 本批封存验证（历史结果，非你本轮执行）：Web 138 套/2168 项、shared 4 套/16 项、infra 7 项、184 页构建通过；规格 PASS（初审 Fail-Open 漏洞修复）、质量 Approved；1471 项历史保护输入未变；`next-env.d.ts` 已恢复为 sha256 `7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651`。
-- 证据：`docs/research/evidence/2026-11-01-provider-policy-verification/`（`verification.json`、`milestone-check.json`、`source-hashes.json`、`log-hashes.json`）；报告 `docs/research/2026-11-01-provider-policy-verification.md`；实施清单 `docs/superpowers/plans/2026-11-01-upgrade-provider-policy-verification.md`。
-- 历史证据目录：`docs/research/evidence/2026-11-01-alert-delivery/`、`docs/research/evidence/2026-10-30-deployment-collection-coverage/`。
+- 已完成并收口的批次：同步导出观测、媒体异步重新授权、可靠上传客户端回报观测、部署采集覆盖证明（本地切片）、运营告警投递与响应人核验（本地切片）、供应商账户/区域/数据条件核验链（本地切片）、**方案 B 逻辑备份恢复演练与验证工具（本地切片）**。
+- 本批封存验证（历史结果，非你本轮执行）：Web 139 套/2196 项、shared 4 套/16 项、infra 14 项、184 页构建通过；规格 PASS、质量 Approved（6 项边界/DoS 强化点全部修复）；1471 项历史保护输入未变；`next-env.d.ts` 已恢复为 sha256 `7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651`。
+- 证据：`docs/research/evidence/2026-11-01-scheme-b-backup/`（`verification.json`、`milestone-check.json`、`source-hashes.json`、`protected-inputs-check.json`、`README.md`）；报告 `docs/research/2026-11-01-scheme-b-backup.md`；实施清单 `docs/superpowers/plans/2026-11-01-upgrade-scheme-b-backup.md`。
+- 历史证据目录：`docs/research/evidence/2026-11-01-provider-policy-verification/`、`docs/research/evidence/2026-11-01-alert-delivery/`、`docs/research/evidence/2026-10-30-deployment-collection-coverage/`。
 
-升级计划进度坐标：P0 修复链（媒体访问、观测、重新授权、部署覆盖、告警投递、供应商合规核验）已完成多个本地批次；**原 G0–G4 均无完整真实证据**。当前证据：
-- `localProviderPolicyVerificationSliceStatus: "complete"`
+升级计划进度坐标：P0 修复链（媒体访问、观测、重新授权、部署覆盖、告警投递、供应商合规核验、方案 B 备份工具）已完成多个本地批次；**原 G0–G4 均无完整真实证据**。当前证据：
+- `localSchemeBBackupVerificationSliceStatus: "complete"`
 - `originalMilestoneNewlyProven: false`
 - `p0CompletionProvenByThisBatch: false`
 - `pushConditionSatisfied: false`
@@ -72,17 +72,17 @@ git worktree list
 ## 第二步：对齐当前计划与证据（聚焦读取）
 
 1. `CLAUDE.md`
-2. `docs/HANDOFF-2026-10-13-upgrade.md`（页首“部署采集覆盖证明”当前状态与下一批入口）
+2. `docs/HANDOFF-2026-10-13-upgrade.md`（页首“方案 B 逻辑备份恢复演练与验证工具”当前状态与下一批入口）
 3. `docs/README.md`（“当前执行入口”）
 4. `docs/HANDOFF-PROMPT-2026-11-01.md` §A
-5. `docs/superpowers/plans/2026-10-30-upgrade-deployment-collection-coverage.md`（已完成批次，不要从 Task 1 重来）
+5. `docs/superpowers/plans/2026-11-01-upgrade-scheme-b-backup.md`（已完成批次，不要从 Task 1 重来）
 6. 上述证据目录的 `verification.json`、`milestone-check.json`、`README.md`
 7. `docs/2026-10-10-integrated-upgrade-plan.md` 按需读 §5.4、§7.1、§11
 
 注意：
 - 不要仅凭日期/mtime 选计划；以 handoff 明确引用、Git 变更与证据关系为准。
 - 历史“G0–G4 全通过”不是当前验收。
-- 历史 RED、早期失败日志（如 `sql-verify-normal.log` 的 2201B 失败、`task2-adjacent-typecheck-lint.log` 的类型错误）已被后续修正关闭，不是未修问题。
+- 历史 RED、早期失败日志（如 `task1-red.log`、`review-red.log`）已被后续修正关闭，不是未修问题。
 - 原始 `.log` 被忽略属正常；通过 `log-hashes.json` 找 `raw/*.log.gz` 验证。
 
 ## 第三步：判定断点（情况可组合）
@@ -94,14 +94,12 @@ git worktree list
 - E 工作树干净、上批已收口（默认）：直接选下一批。
 
 ### 情况 E 的不要重做清单
-上传 begin/finish 账本与接线、v3 解析、媒体异步重新授权、同步导出观测、部署采集覆盖本地切片（迁移 `20261030000002`、`read_operational_snapshot_v4`、`OPERATIONAL_COLLECTOR_BUILD_HASH`、v4 解析）、运营告警投递适配器与响应人核验（`alert-delivery.ts`、LRU 抑制台账、单发 Webhook、SSRF 阻断、TOCTOU 防风暴并发队列、切流端点 `alert_delivery` 接线）、**供应商账户/区域/数据条件核验链（`provider-policy-verification.ts`、Fail-Closed 条款判定、ZDR/≤7天 SLA 严格整数校验、ISO 8601 UTC 日历防滚动、多模型 `${provider}::${modelId}` 联合键顺序无关索引、切流端点 `loadVerifiedProviderProbeTargets` 接入）**。
+上传 begin/finish 账本与接线、v3 解析、媒体异步重新授权、同步导出观测、部署采集覆盖本地切片（迁移 `20261030000002`、`read_operational_snapshot_v4`、`OPERATIONAL_COLLECTOR_BUILD_HASH`、v4 解析）、运营告警投递适配器与响应人核验（`alert-delivery.ts`、飞书消息格式适配、LRU 抑制台账、单发 Webhook、SSRF 阻断、TOCTOU 防风暴并发队列、切流端点 `alert_delivery` 接线）、供应商账户/区域/数据条件核验链（`provider-policy-verification.ts`、Fail-Closed 条款判定、ZDR/≤7天 SLA 严格整数校验、ISO 8601 UTC 日历防滚动、多模型联合键索引）、**方案 B 逻辑备份恢复演练与验证工具（`scheme-b-backup.ts`、`PGDMP` 12 字节魔数、确定性 SHA-256、对象清单 schema、防复活墓碑重放引擎、切流端点 `schemeBBackup` 接入、`scripts/verify-scheme-b-backup.cjs` CLI 与 infra 测试）**。
 
 ### 下一批可选任务（选一个可独立验收的本地切片）
-1. **真机与真实录音故障矩阵规范（G1）**：设备/时长/网络中断/恢复矩阵契约与测试用例。
-2. **方案 B 备份恢复演练与验证工具（P0/G0 收口）**：逻辑备份与墓碑重放自动化演练。
+1. **真机与真实录音故障矩阵规范（G1）**：设备/时长/网络中断/恢复矩阵契约与测试用例（覆盖 5/20/30 分钟音频、网络断开、页面刷新、锁屏与 IndexedDB 草稿防丢）。
+2. **本批遗留运维小项（低风险，可顺带或单独）**：并发不同哈希封存的 `23514` 回退保护（用 `GREATEST(statement_timestamp(), 旧值 + 1 微秒)` 或定义明确重试）；遗留 v1 开始的尝试经 v2 重放的运维结案说明；v4 构建表全表扫描的窗口/保留策略设计；导出侧 v4 精确计数。
 3. **真实部署/生产环境事项**：见 §A 阻塞事项清单，本地放行继续开发，生产配置前保持 fail-closed。
-4. **本批遗留运维小项（低风险，可顺带或单独）**：并发不同哈希封存的 `23514` 回退保护（用 `GREATEST(statement_timestamp(), 旧值 + 1 微秒)` 或定义明确重试）；遗留 v1 开始的尝试经 v2 重放的运维结案说明；v4 构建表全表扫描的窗口/保留策略设计；导出侧 v4 精确计数（让导出也能使用 `exact` 校验）。
-5. 其余按综合计划后续项（解码音频/持久大包 Worker 等）仅在上述不可行时再选，且一次只做一个主要工程任务。
 
 ## 第四步：工程与安全边界
 
