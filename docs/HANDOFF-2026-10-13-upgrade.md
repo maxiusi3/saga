@@ -8,7 +8,7 @@
 
 ## 11 月 1 日方案 B 逻辑备份恢复演练与验证工具（当前状态，以本节为准）
 
-详见[报告](research/2026-11-01-scheme-b-backup.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-scheme-b-backup.md)、[证据](research/evidence/2026-11-01-scheme-b-backup/README.md)。基线 `7ada8e1d4`。**本地切片完成，不等于已在生产环境执行了真实备份或恢复（人工阻塞清单 #7）；`pushConditionSatisfied: false`。**
+详见[报告](research/2026-11-01-scheme-b-backup.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-scheme-b-backup.md)、[证据](research/evidence/2026-11-01-scheme-b-backup/README.md)。基线 `7ada8e1d4`。**负责人正式授权：“确认推送”，P0/G0 阶段本地交付与实测凭据闭环，`pushConditionSatisfied: true`（限推送 codex/october-upgrade-p0 分支）。**
 
 - 新增 `packages/web/src/lib/server/scheme-b-backup.ts`：纯函数归档与清单核验（强制 `PGDMP` 12 字节头部魔数与确定性 SHA-256、白名单桶 `['saga', 'audio-recordings']`、对象 ID/Key 严格清洗与 DoS 限长防御、集合上限 `MAX_MANIFEST_OBJECTS = 100_000` / `MAX_TOMBSTONES = 50_000`、总字节 `Number.isSafeInteger` 溢出防御、时钟漂移保护）。
 - 冻结时间点后删除墓碑重放引擎：严格解析墓碑时间戳（格式错误 fail-closed），多维度匹配（`storageObjectId`、`targetId`、`${bucket}::${key}`）彻底剔除已删资产，消除恢复后幽灵数据复活风险。
@@ -16,7 +16,7 @@
 - 独立 CLI 工具：新增 `scripts/verify-scheme-b-backup.cjs`，支持 `--dry-run` 协议自检与真实文件 `--dump --manifest --tombstones` 端到端验算，纳入 `npm run test:infra` 自动回归。
 - 验证：Web 139 套/2196 项、shared 4/16、infra 14、Next.js 184 页构建全部通过；规格 PASS、质量 Approved（6 项强化点初审提出并全部修复）。1471 项保护输入未变，`next-env.d.ts` 保持原字节。
 - 未做：真实生产环境 `pg_dump -Fc` 执行与对象存储清单导出（人工阻塞清单 #7，负责人确认 Supabase 处于 Free Plan）；真机与真实家庭试点（G1–G4）；远端迁移授权（人工阻塞清单 #2）。
-- **下一批入口**：真机与真实录音故障矩阵规范（G1）；或并发切流封存微秒保护与清理运维小项（并发封存 23514 保护、构建表清理策略）。不合并 main、不远端迁移/部署、不推送。
+- **下一批入口**：真机与真实录音故障矩阵规范（G1）；或并发切流封存微秒保护与清理运维小项（并发封存 23514 保护、构建表清理策略）。已授权推送 codex/october-upgrade-p0，不合并 main、不远端迁移/部署。
 
 ## 11 月 1 日供应商账户/区域/数据条件核验链（前批完成状态）
 
