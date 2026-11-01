@@ -160,19 +160,21 @@ test('G1 local recorder persistence contracts (synthetic bytes only)', { timeout
       const result = await page.evaluate(async () => {
         await seed()
         await append(0)
-        const originalPut = IDBObjectStore.prototype.put
+        const originals = { put: IDBObjectStore.prototype.put, add: IDBObjectStore.prototype.add }
         let injected = false
-        IDBObjectStore.prototype.put = function (...args) {
-          const request = originalPut.apply(this, args)
-          if (!injected && this.name === 'chunks') {
-            injected = true
-            request.addEventListener('success', () => this.transaction.abort(), { once: true })
+        for (const method of ['put', 'add']) {
+          IDBObjectStore.prototype[method] = function (...args) {
+            const request = originals[method].apply(this, args)
+            if (!injected && this.name === 'chunks') {
+              injected = true
+              request.addEventListener('success', () => this.transaction.abort(), { once: true })
+            }
+            return request
           }
-          return request
         }
         let failure
         try { await append(1) } catch (error) { failure = error.name }
-        finally { IDBObjectStore.prototype.put = originalPut }
+        finally { Object.assign(IDBObjectStore.prototype, originals) }
         const recovered = await loadLocalRecording('capture', 'project-a', 'user-a')
         return { injected, failure: Boolean(failure), watermark: recovered.session.lastPersistedIndex,
           count: recovered.chunkCount, bytes: await recovered.blob.text(), cloud: recovered.session.cloudConfirmedAssetId }
@@ -281,8 +283,13 @@ test('G1 local recorder persistence contracts (synthetic bytes only)', { timeout
           await append(1)
           if (mode === 'missing-chunk') await recorderDB.deleteChunk('capture-0')
           else {
-            const chunks = await recorderDB.getChunksBySession('capture')
-            await recorderDB.saveChunk('capture', 0, chunks[0].blob, { sha256: '0'.repeat(64) })
+            // Corruption is external to the adapter; normal writes must not overwrite a chunk.
+            const { openDB } = await import('/idb.js')
+            const db = await openDB('saga-recorder-db', 2)
+            try {
+              const chunk = await db.get('chunks', 'capture-0')
+              await db.put('chunks', { ...chunk, sha256: '0'.repeat(64) })
+            } finally { db.close() }
           }
         }, damage)
         await page.close()
@@ -297,6 +304,161 @@ test('G1 local recorder persistence contracts (synthetic bytes only)', { timeout
         assert.deepEqual(result, { failure: 'damaged', exists: true, chunks: damage === 'missing-chunk' ? 1 : 2 })
       }))
     }
+
+    for (const sameBytes of [true, false]) {
+      await t.test(`duplicate chunk index rejects ${sameBytes ? 'identical' : 'different'} bytes without replacing the original`, () => isolated(async page => {
+        const result = await page.evaluate(async identical => {
+          await seed()
+          await append(0)
+          await recorderDB.markChunkUploaded('capture', 0)
+          const before = (await recorderDB.getChunksBySession('capture'))[0]
+          const sessionBefore = await recorderDB.getSession('capture')
+          const blob = identical ? before.blob : new Blob(['conflicting recording bytes'])
+          let failure
+          try { await recorderDB.saveChunk('capture', 0, blob, { sha256: await hash(blob) }) }
+          catch (error) { failure = error.name }
+          const after = (await recorderDB.getChunksBySession('capture'))[0]
+          return { failure, unchanged: JSON.stringify(before) === JSON.stringify(after),
+            sameBytes: await before.blob.text() === await after.blob.text(),
+            sameSession: JSON.stringify(sessionBefore) === JSON.stringify(await recorderDB.getSession('capture')),
+            count: (await recorderDB.getChunksBySession('capture')).length }
+        }, sameBytes)
+        assert.deepEqual(result, { failure: 'ConstraintError', unchanged: true, sameBytes: true, sameSession: true, count: 1 })
+      }))
+    }
+
+    for (const [label, patch] of [
+      ['confirmed', { state: 'confirmed' }],
+      ['unknown state', { state: 'invalid-state' }],
+      ['cloud confirmation marker', { cloudConfirmedAssetId: 'synthetic-asset' }],
+    ]) {
+      await t.test(`new chunks cannot mutate a session with ${label}`, () => isolated(async page => {
+        const result = await page.evaluate(async sessionPatch => {
+          await seed()
+          await append(0)
+          await recorderDB.updateSession('capture', sessionPatch)
+          const before = await recorderDB.getSession('capture')
+          let rejected = false
+          try { await append(1) } catch { rejected = true }
+          return { rejected, unchanged: JSON.stringify(before) === JSON.stringify(await recorderDB.getSession('capture')),
+            count: (await recorderDB.getChunksBySession('capture')).length }
+        }, patch)
+        assert.deepEqual(result, { rejected: true, unchanged: true, count: 1 })
+      }))
+    }
+
+    for (const cleared of [false, true]) {
+      await t.test(`a ${cleared ? 'cleared' : 'missing'} session cannot acquire orphaned late chunks`, () => isolated(async page => {
+        const result = await page.evaluate(async clearFirst => {
+          if (clearFirst) { await seed(); await append(0); await recorderDB.clearSession('capture') }
+          let rejected = false
+          try { await append(1) } catch { rejected = true }
+          return { rejected, session: await recorderDB.getSession('capture'),
+            count: (await recorderDB.getChunksBySession('capture')).length }
+        }, cleared)
+        assert.deepEqual(result, { rejected: true, session: undefined, count: 0 })
+      }))
+    }
+
+    await t.test('concurrent duplicate writers have one winner and preserve its exact bytes', () => isolated(async page => {
+      const result = await page.evaluate(async () => {
+        await seed()
+        const blobs = [new Blob(['first contender']), new Blob(['second contender'])]
+        const hashes = await Promise.all(blobs.map(hash))
+        const results = await Promise.allSettled(blobs.map((blob, index) => recorderDB.saveChunk('capture', 0, blob, { sha256: hashes[index] })))
+        const chunks = await recorderDB.getChunksBySession('capture')
+        const winner = results.findIndex(item => item.status === 'fulfilled')
+        return { successes: results.filter(item => item.status === 'fulfilled').length,
+          failures: results.filter(item => item.status === 'rejected').length,
+          count: chunks.length, winnerBytes: await chunks[0].blob.text() === await blobs[winner].text(),
+          winnerHash: chunks[0].sha256 === hashes[winner], watermark: (await recorderDB.getSession('capture')).lastPersistedIndex }
+      })
+      assert.deepEqual(result, { successes: 1, failures: 1, count: 1, winnerBytes: true, winnerHash: true, watermark: 0 })
+    }))
+
+    await t.test('aborted upload marking preserves pending bytes with no unhandled rejection', () => isolated(async page => {
+      const result = await page.evaluate(async () => {
+        await seed()
+        await append(0)
+        const originalGet = IDBObjectStore.prototype.get
+        let injected = false
+        IDBObjectStore.prototype.get = function (...args) {
+          const request = originalGet.apply(this, args)
+          if (!injected && this.name === 'chunks') {
+            injected = true
+            request.addEventListener('success', () => this.transaction.abort(), { once: true })
+          }
+          return request
+        }
+        let rejected = false
+        try { await recorderDB.markChunkUploaded('capture', 0) } catch { rejected = true }
+        finally { IDBObjectStore.prototype.get = originalGet }
+        const chunks = await recorderDB.getChunksBySession('capture')
+        return { injected, rejected, status: chunks[0].uploadStatus, text: await chunks[0].blob.text() }
+      })
+      assert.deepEqual(result, { injected: true, rejected: true, status: 'pending', text: 'synthetic-chunk-0;' })
+    }))
+
+    for (const mode of ['abort', 'synchronous-error']) {
+      await t.test(`clearSession ${mode} rolls back every deletion and leaves other drafts intact`, () => isolated(async page => {
+        const result = await page.evaluate(async failureMode => {
+          await seed()
+          await append(0)
+          await append(1)
+          await seed('other')
+          await append(0, 'other')
+          const originalCursorDelete = IDBCursor.prototype.delete
+          const originalStoreDelete = IDBObjectStore.prototype.delete
+          let injected = false
+          if (failureMode === 'abort') {
+            IDBCursor.prototype.delete = function (...args) {
+              const request = originalCursorDelete.apply(this, args)
+              if (!injected) {
+                injected = true
+                const tx = (this.source.objectStore ?? this.source).transaction
+                request.addEventListener('success', () => tx.abort(), { once: true })
+              }
+              return request
+            }
+          } else {
+            IDBObjectStore.prototype.delete = function (...args) {
+              if (!injected && this.name === 'sessions') {
+                injected = true
+                throw new DOMException('Injected cleanup failure', 'UnknownError')
+              }
+              return originalStoreDelete.apply(this, args)
+            }
+          }
+          let rejected = false
+          try { await recorderDB.clearSession('capture') } catch { rejected = true }
+          finally {
+            IDBCursor.prototype.delete = originalCursorDelete
+            IDBObjectStore.prototype.delete = originalStoreDelete
+          }
+          const chunks = await recorderDB.getChunksBySession('capture')
+          const other = await loadLocalRecording('other', 'project-a', 'user-a')
+          return { injected, rejected, sessionPresent: Boolean(await recorderDB.getSession('capture')),
+            texts: await Promise.all(chunks.map(chunk => chunk.blob.text())), otherText: await other.blob.text() }
+        }, mode)
+        assert.deepEqual(result, { injected: true, rejected: true, sessionPresent: true,
+          texts: ['synthetic-chunk-0;', 'synthetic-chunk-1;'], otherText: 'synthetic-chunk-0;' })
+      }))
+    }
+
+    await t.test('an interrupted capture still accepts its final new chunk without claiming cloud confirmation', () => isolated(async page => {
+      const result = await page.evaluate(async () => {
+        await seed()
+        await append(0)
+        await recorderDB.updateSession('capture', { state: 'interrupted' })
+        await append(1)
+        await recorderDB.markChunkUploaded('capture', 0)
+        await recorderDB.markChunkUploaded('capture', 0)
+        const recording = await loadLocalRecording('capture', 'project-a', 'user-a')
+        return { count: recording.chunkCount, cloud: recording.session.cloudConfirmedAssetId,
+          statuses: (await recorderDB.getChunksBySession('capture')).map(chunk => chunk.uploadStatus) }
+      })
+      assert.deepEqual(result, { count: 2, cloud: null, statuses: ['uploaded', 'pending'] })
+    }))
   } finally {
     if (browser) await browser.close()
     await new Promise(resolve => server.close(resolve))

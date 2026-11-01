@@ -1,0 +1,47 @@
+{
+  "write-guards-red.log": {
+    "rawSha256": "c4c6a4626f7527c77f5dde58916881659853c07b9a1602bb1f23e02fdb5a159c",
+    "rawBytes": 20543,
+    "gz": "raw/write-guards-red.log.gz",
+    "gzSha256": "05bfc9b205e4ec5c7a0eb6bdc8ebb881bf2cd9939f99eb5bfce32194882689c1",
+    "exitCode": 1,
+    "execution": "write-guards-red.json",
+    "status": "completed"
+  },
+  "write-guards-green.log": {
+    "rawSha256": "04346528d4ffdd7fc9b556bc6050e65130c26c9e564fdf5b3d6cdaa3c0d77b8b",
+    "rawBytes": 6040,
+    "gz": "raw/write-guards-green.log.gz",
+    "gzSha256": "75ecca94158eef6af5f718eca733eb3638f68ec0bb8c57455c65e9a29c016bff",
+    "exitCode": 0,
+    "execution": "write-guards-green.json",
+    "status": "completed"
+  },
+  "focused-jest.log": {
+    "rawSha256": "4b9f1142a6d330a0d1e86d473eec0bf64082e93a1e339f31c10b9cf67c35edc4",
+    "rawBytes": 681,
+    "gz": "raw/focused-jest.log.gz",
+    "gzSha256": "87d631a48f28acf6133f1f90db952616a457ed5550f099a71a732481987204d0",
+    "exitCode": 0,
+    "execution": "focused-jest.json",
+    "status": "completed"
+  },
+  "full-chain.log": {
+    "rawSha256": "a9fbffd649c30057d7104751e222c8c38c940484b0ac155de371a54236c53031",
+    "rawBytes": 568,
+    "gz": "raw/full-chain-interrupted.log.gz",
+    "gzSha256": "ef19cdaa7d50d88c6246cabed1c0ca057a1bc1692335f0af1b5653825d82f25e",
+    "exitCode": null,
+    "execution": "full-chain-interrupted.json",
+    "status": "interrupted"
+  },
+  "full-chain-resumed.log": {
+    "rawSha256": "c48df47454759ae9ebf38ddddd55387d64dc1bc43d45295233fb24c2f9842257",
+    "rawBytes": 18996,
+    "gz": "raw/full-chain-resumed.log.gz",
+    "gzSha256": "be8de87cef9f2d9a69de83cbd729b4f4d35c9de584336aad13a1f4bf94edc0c5",
+    "exitCode": 0,
+    "execution": "full-chain-resumed.json",
+    "status": "completed"
+  }
+}

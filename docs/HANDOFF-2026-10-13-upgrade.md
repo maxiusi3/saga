@@ -3,10 +3,21 @@
 - 更新时间：2026-11-01（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`1921766c2`（P0/G0 推送同步后的交接检查点；接手时工作树/暂存区干净，远端分支经只读核对一致。本批推进 G1 本地录音持久化故障恢复契约，不声称 G1 真机通过）
+- 本轮接手基线 HEAD：`686599f61`（上一批 G1 本地事务/恢复检查点；接手时工作树/暂存区干净，领先远端跟踪基线 `1921766c2` 1 个本地提交。本批继续 G1 写入边界与清理回滚，不声称 G1 真机通过）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 11 月 1 日 G1 本地录音持久化故障恢复契约（当前状态，以本节为准）
+## 11 月 1 日 G1 录音草稿写入边界与清理回滚（当前状态，以本节为准）
+
+详见[报告](research/2026-11-01-g1-recorder-write-guards.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-write-guards.md)、[证据](research/evidence/2026-11-01-g1-recorder-write-guards/README.md)。基线 `686599f61`。**本地切片完成，规格 PASS、质量 Approved；仅新本地 checkpoint，不推送。** 上一批 `686599f61` 与 P0/G0 已完成工作不重做。
+
+- `saveChunk` 同事务检查 recording/interrupted 且无云端确认标记，再通过原生 `add` 拒绝同序号覆盖；同字节重复也拒绝而非幂等成功。missing/cleared/confirmed/未知状态/已有确认标记均拒绝，不留孤立块；interrupted 仍可接末块。
+- `markChunkUploaded`、`clearSession` 复用既有事务完成 helper；abort 与同步异常整体回滚，原件和其他草稿保留，无未处理事务拒绝。只保证这些 API 的局部契约，不改变 `saveSession`、显式删除/重插语义，不是全库不可变或权限沙箱。
+- 新增 11 项行为 RED，保留旧 11 案例及新增正例，修复后 Chromium 23 子案例 / Node 24 项通过；定向 Jest 4/68。续跑全链退出 0：Web 139/2196、shared 4/16、infra 14、184 页。首轮全链/规格审查中断无结论，部分日志及空回执单独保留，不计 PASS。
+- 1471 历史输入和前批 31 个本地证据文件未变，next-env 已核对生成差异并恢复原字节。audit 未重跑；旧 Next 与可选配置警告保留。两位审查员分别独立复跑浏览器与定向 Jest；最终来源/日志/文档/暂存完整性见新证据。
+- **下一批入口**：按[既有真机模板](research/2026-10-15-t04-g1-device-runbook.md)取得 §A #6 的设备版本、真实 5/20/30 分钟虚构口述、故障时点和解码核听证据；输入未就绪可选择尚未覆盖的独立本地子切片，不重复本批写入防护或前批恢复修复。真实云端验收仍受 #1 部署/#2 迁移授权保护。
+- `g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。合成字节/注入 abort 不是真机、长录音或物理配额证据；不推送、不合并 main、不远端迁移/repair、不部署、不付费调用、不外发家庭素材。
+
+## 11 月 1 日 G1 本地录音持久化故障恢复契约（前批完成状态）
 
 详见[报告](research/2026-11-01-g1-recorder-recovery.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-recovery.md)、[证据](research/evidence/2026-11-01-g1-recorder-recovery/README.md)。基线 `1921766c2`。**本地切片完成，规格 PASS、质量 Approved；本批仅本地 checkpoint，不推送。前批 P0/G0 推送已完成，不将授权延伸到本批。**
 

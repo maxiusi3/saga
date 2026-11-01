@@ -1,0 +1,7 @@
+{
+  "originalSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+  "buildGeneratedSha256": "1862ac4bbbc5192d4bf562161df66ea547ed3e67173100656ab606ae9797db2b",
+  "restoredSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+  "buildDiff": "diff --git a/packages/web/next-env.d.ts b/packages/web/next-env.d.ts\nindex 9edff1c7c..ce4e94a6b 100644\n--- a/packages/web/next-env.d.ts\n+++ b/packages/web/next-env.d.ts\n@@ -1,6 +1,7 @@\n /// <reference types=\"next\" />\n /// <reference types=\"next/image-types/global\" />\n import \"./.next/types/routes.d.ts\";\n+import \"./.next/types/root-params.d.ts\";\n \n // NOTE: This file should not be edited\n // see https://nextjs.org/docs/app/api-reference/config/typescript for more information.\n",
+  "restoration": "Restored saved original bytes only after exact known Next-generated root-params import comparison; no checkout."
+}

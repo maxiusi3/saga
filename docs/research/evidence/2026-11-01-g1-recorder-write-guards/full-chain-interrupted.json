@@ -1,0 +1,19 @@
+{
+  "status": "interrupted",
+  "exitCode": null,
+  "command": [
+    "bash",
+    "-c",
+    "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra"
+  ],
+  "lastObservedStage": "Web jest --runInBand started; no test summary or process exit code captured.",
+  "rawSha256": "a9fbffd649c30057d7104751e222c8c38c940484b0ac155de371a54236c53031",
+  "rawBytes": 568,
+  "archive": "raw/full-chain-interrupted.log.gz",
+  "originalLog": "full-chain.log",
+  "incompleteReceipt": "raw/full-chain.pending-json",
+  "incompleteReceiptSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "processAtResume": "Unified exec session 1347 no longer exists; no matching validation processes or log holders.",
+  "resumeSourceComparison": "Current 11 source inputs match completed write-guards-green.json and focused-jest.json snapshots.",
+  "reviewStatus": "Prior spec agent had no final conclusion and is no longer active; new independent spec review required."
+}

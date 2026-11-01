@@ -145,11 +145,13 @@ export const recorderDB = {
         }
         const tx = db.transaction(['chunks', 'sessions'], 'readwrite')
         return commitRecorderWrite(tx, async () => {
-            await tx.objectStore('chunks').put(record)
             const session = await tx.objectStore('sessions').get(sessionId)
-            if (session) {
-                await tx.objectStore('sessions').put({ ...session, lastPersistedIndex: Math.max(session.lastPersistedIndex, index), updatedAt: timestamp })
+            if (!session || !['recording', 'interrupted'].includes(session.state) || session.cloudConfirmedAssetId !== null) {
+                throw new Error('Recording session is not writable')
             }
+            // A repeated sequence number must never replace already persisted audio.
+            await tx.objectStore('chunks').add(record)
+            await tx.objectStore('sessions').put({ ...session, lastPersistedIndex: Math.max(session.lastPersistedIndex, index), updatedAt: timestamp })
             return record
         })
     },
@@ -158,12 +160,13 @@ export const recorderDB = {
         const db = await getDB()
         const id = `${sessionId}-${index}`
         const tx = db.transaction('chunks', 'readwrite')
-        const chunk = await tx.store.get(id)
-        if (!chunk) throw new Error('chunk must be persisted before upload')
-        const next = { ...chunk, uploadStatus: 'uploaded' as const }
-        await tx.store.put(next)
-        await tx.done
-        return next
+        return commitRecorderWrite(tx, async () => {
+            const chunk = await tx.store.get(id)
+            if (!chunk) throw new Error('chunk must be persisted before upload')
+            const next = { ...chunk, uploadStatus: 'uploaded' as const }
+            await tx.store.put(next)
+            return next
+        })
     },
 
     async getChunksBySession(sessionId: string) {
@@ -188,15 +191,16 @@ export const recorderDB = {
     async clearSession(sessionId: string) {
         const db = await getDB()
         const tx = db.transaction(['chunks', 'sessions'], 'readwrite')
-        const index = tx.objectStore('chunks').index('by-session')
-        let cursor = await index.openCursor(sessionId)
+        return commitRecorderWrite(tx, async () => {
+            const index = tx.objectStore('chunks').index('by-session')
+            let cursor = await index.openCursor(sessionId)
 
-        while (cursor) {
-            await cursor.delete()
-            cursor = await cursor.continue()
-        }
-        await tx.objectStore('sessions').delete(sessionId)
-        await tx.done
+            while (cursor) {
+                await cursor.delete()
+                cursor = await cursor.continue()
+            }
+            await tx.objectStore('sessions').delete(sessionId)
+        })
     }
 }
 

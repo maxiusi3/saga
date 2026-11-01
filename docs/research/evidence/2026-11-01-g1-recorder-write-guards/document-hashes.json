@@ -1,0 +1,23 @@
+{
+  "docs/HANDOFF-2026-10-13-upgrade.md": "91d55d49939e8b28ae5726439e636c1d8118938e268d8a960b933b14f8851e0b",
+  "docs/README.md": "16b94a9f028bb96d9ab5d988073c6b89fc5db2b153cc4123fe67fd5190f2b9d9",
+  "docs/research/2026-11-01-g1-recorder-write-guards.md": "58b46f465560c1564b0401cfdee4edcd7b8e6eefeda42ab50ccfcfe7c5621d97",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/README.md": "022d356e4f41d390721dccf5b7463e9bb413e71adddf2b060dea48e30b4d7a8c",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/focused-jest.json": "31c8ffece23b3a2078c8ea497ead7173678e750732508c42b390713f8c1d2d30",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/full-chain-interrupted.json": "f2aa98ef9774853528e8b612b8420b4b281938b20df1ce807cb8fb86cb2a5477",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/full-chain-resumed.json": "ec1d9d3433c235fcb2b8bcf405e96959b100bb1bda855f3978516a17a5754310",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/log-hashes.json": "9a690a1ace311cfaffd794724db3baae267c127261cea4f760a9b9b1e451710d",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/milestone-check.json": "fd42dd0fb8612d31ab4437e5b6bc3c472720fb682ad3849ece7184dcdd6ac6d1",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/next-env-check.json": "91ee049ffc729cbae44fc462414506a983bb94dfda421a3718194f2a20d2e49f",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/prior-evidence-hashes.json": "63555d4fbffd02b57fe374a976f8a9892b505a96559b738b6f16a9e5eaf473de",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/protected-inputs-check.json": "e5bde43695279216b8323e195f0094849d296e30d011e81f2b09292cdd8ea834",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/protected-inputs-final.json": "7c25fced9bbb967c8a0dab941b49c8005cea90621f347ac04432986faee97183",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/quality-review.md": "703907f827924ff4b14d1465f733768de4497a731847e1a1fe900ab32e311ee0",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/raw/full-chain.pending-json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/source-hashes.json": "81a19f1b7052eb92cef0c480308e122227b079592a140e3453509f0d53ce365f",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/spec-review.md": "ba7c102d77b00d9bdb506759191adc823f14033b9c7464725afe5820d0dc9204",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/verification.json": "837930715d85f77be86810622c685da00a35f7c06d1da5d59811cc993b70026e",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/write-guards-green.json": "8965484e93f0cc00da1a8d134f165fcca4118a9bafcd7116fe81ffea9cbe84ed",
+  "docs/research/evidence/2026-11-01-g1-recorder-write-guards/write-guards-red.json": "73f51b25fbf686df6dfee36380722d249086e151a786f02995c795c52297b817",
+  "docs/superpowers/plans/2026-11-01-upgrade-g1-recorder-write-guards.md": "bf92cbe16c5b4ce06e4f276b6e4f66ee75189ef181eaef2cc44c09039b1efbe4"
+}

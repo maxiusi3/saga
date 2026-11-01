@@ -1,0 +1,136 @@
+{
+  "batch": "g1-recorder-write-guards-and-cleanup-rollback",
+  "baselineCommit": "686599f61a85be2ea75eb3519d352c6404aa60db",
+  "localSliceStatus": "complete",
+  "scope": {
+    "production": [
+      "packages/web/src/lib/recorder-db.ts"
+    ],
+    "tests": [
+      "scripts/browser-tests/recorder-recovery.test.cjs"
+    ],
+    "sqlChanged": false,
+    "pgExperimentsRun": false,
+    "newDependencies": false,
+    "apiLocalContractNotDatabaseImmutability": true,
+    "saveSessionSemanticsChanged": false,
+    "deleteChunkSemanticsChanged": false
+  },
+  "tdd": {
+    "red": {
+      "execution": "write-guards-red.json",
+      "failingSubcases": 11,
+      "failingNodeTestsIncludingParent": 12,
+      "exitCode": 1,
+      "productionMatchesBaseline": true
+    },
+    "green": {
+      "execution": "write-guards-green.json",
+      "subcases": 23,
+      "nodeTestsIncludingParent": 24,
+      "exitCode": 0
+    },
+    "sameTestHashBetweenRedAndGreen": true,
+    "retainedOriginalCases": 11,
+    "newPositiveInterruptedCase": 1
+  },
+  "browser": {
+    "execution": "write-guards-green.json",
+    "engine": "Chromium 147.0.7727.15",
+    "cases": 23,
+    "nodeTestsIncludingParent": 24,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "nativeIndexedDB": true,
+    "syntheticBytesOnly": true,
+    "chunkCountModels": [
+      30,
+      120,
+      180
+    ],
+    "actualLongRecordingOrDeviceQualification": false,
+    "separateFromInfraAndWebSuites": true
+  },
+  "focusedJest": {
+    "execution": "focused-jest.json",
+    "suites": 4,
+    "tests": 68,
+    "exitCode": 0
+  },
+  "interruptedRun": {
+    "execution": "full-chain-interrupted.json",
+    "status": "interrupted",
+    "exitCode": null,
+    "countsAsPass": false,
+    "emptyPendingReceiptPreserved": "raw/full-chain.pending-json",
+    "originalSpecReviewHasNoConclusion": true
+  },
+  "fullChain": {
+    "execution": "full-chain-resumed.json",
+    "command": [
+      "bash",
+      "-c",
+      "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra"
+    ],
+    "exitCode": 0,
+    "web": {
+      "suites": 139,
+      "tests": 2196
+    },
+    "shared": {
+      "suites": 4,
+      "tests": 16
+    },
+    "infra": {
+      "tests": 14
+    },
+    "nextVersion": "16.4.1",
+    "nextBuildPages": 184,
+    "typeCheckPassed": true,
+    "lintPassed": true,
+    "sourcesMatchFinalAfterNextEnvRestore": true
+  },
+  "reviews": {
+    "spec": {
+      "status": "PASS",
+      "reviewer": "/root/g1_write_spec_resume",
+      "receipt": "spec-review.md",
+      "independentBrowserAndFocusedJestRerun": true
+    },
+    "quality": {
+      "status": "Approved",
+      "reviewer": "/root/g1_write_quality",
+      "receipt": "quality-review.md",
+      "startedAfterSpecPass": true,
+      "independentBrowserAndFocusedJestRerun": true
+    },
+    "outstandingFindings": 0,
+    "receiptProvenance": "Parent-recorded completed independent subagent responses, not primary execution logs."
+  },
+  "protection": {
+    "historicalInputs": 1471,
+    "previousBatchEvidenceFiles": 31,
+    "mismatches": 0,
+    "missing": 0,
+    "report": "protected-inputs-final.json",
+    "nextEnv": "next-env-check.json"
+  },
+  "auditRerun": false,
+  "buildWarnings": [
+    "Unsupported legacy Next eslint configuration",
+    "Deprecated images.domains",
+    "Optional Google client, Stripe, analytics and Sentry configuration missing"
+  ],
+  "limits": [
+    "Local API guards do not change saveSession semantics or prevent native IDB mutation / explicit deleteChunk followed by reinsertion.",
+    "No real-device/version-specific 5/20/30-minute microphone recordings or decode/listening qualification.",
+    "No lock-screen, call interruption, process kill, system data eviction or actual disk exhaustion.",
+    "No new cloud-phase, cross-family server authorization or original-export acceptance.",
+    "No SQL/remote migration, main merge, production deployment, paid call or family-media transfer."
+  ],
+  "checkpointPolicy": "Local commit only on existing branch; this report is sealed in that checkpoint. No self-referential commit hash.",
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "pushPerformed": false
+}
