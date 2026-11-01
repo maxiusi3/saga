@@ -263,6 +263,68 @@ describe('GET /api/admin/cutover-readiness', () => {
     expect(elProbe.policyCompliant).toBe(false)
   })
 
+  it('exposes schemeBBackup status as unverified by default and verified when valid ledger provided', async () => {
+    // Default without ledger
+    delete process.env.SCHEME_B_BACKUP_LEDGER_JSON
+    const resDefault = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const bodyDefault = await resDefault.json()
+    expect(bodyDefault.schemeBBackup).toEqual({
+      status: 'unverified',
+      verified: false,
+      reason: 'scheme_b_backup_not_rehearsed_or_verified',
+    })
+
+    // Configured valid ledger
+    process.env.SCHEME_B_BACKUP_LEDGER_JSON = JSON.stringify({
+      dumpSha256: 'a'.repeat(64),
+      verifiedAt: '2026-10-24T08:50:00.000Z',
+      survivingObjectsCount: 42,
+      tombstonesReplayed: 1,
+      driftDetected: false,
+    })
+    const resVerified = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const bodyVerified = await resVerified.json()
+    expect(bodyVerified.schemeBBackup).toEqual({
+      status: 'verified',
+      verified: true,
+      dumpSha256: 'a'.repeat(64),
+      verifiedAt: '2026-10-24T08:50:00.000Z',
+      survivingObjectsCount: 42,
+      tombstonesReplayed: 1,
+    })
+    // Overall endpoint still fails closed as not_ready
+    expect(resVerified.status).toBe(503)
+    expect(bodyVerified.status).toBe('not_ready')
+  })
+
+  it('fails closed when SCHEME_B_BACKUP_LEDGER_JSON is malformed JSON without crashing', async () => {
+    process.env.SCHEME_B_BACKUP_LEDGER_JSON = '{"invalid_json'
+    const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const body = await res.json()
+    expect(res.status).toBe(503)
+    expect(body.status).toBe('not_ready')
+    expect(body.schemeBBackup).toEqual({
+      status: 'unverified',
+      verified: false,
+      reason: 'invalid_backup_ledger',
+    })
+  })
+
+  it('reports storage_or_database_drift_detected when backup ledger detects drift', async () => {
+    process.env.SCHEME_B_BACKUP_LEDGER_JSON = JSON.stringify({
+      dumpSha256: 'a'.repeat(64),
+      verifiedAt: '2026-10-24T08:50:00.000Z',
+      survivingObjectsCount: 42,
+      tombstonesReplayed: 1,
+      driftDetected: true,
+    })
+    const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const body = await res.json()
+    expect(res.status).toBe(503)
+    expect(body.schemeBBackup.status).toBe('unverified')
+    expect(body.schemeBBackup.reason).toBe('storage_or_database_drift_detected')
+  })
+
   it('does not let the operations secret bypass the media feature switch', async () => {
     delete process.env.MEDIA_ASSETS_ENABLED
     const req = request({ 'x-cron-secret': 'synthetic-ops-secret' })

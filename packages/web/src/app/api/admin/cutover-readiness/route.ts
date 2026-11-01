@@ -4,6 +4,7 @@ import { requireCronSecret } from '@/lib/server/cron'
 import { evaluateSyntheticProviderProbes } from '@/lib/server/cutover-readiness'
 import { loadOperationalSnapshot, operationalHealthFromSnapshot } from '@/lib/server/operational-snapshot'
 import { loadVerifiedProviderProbeTargets } from '@/lib/server/provider-policy-verification'
+import { evaluateSchemeBBackupStatus } from '@/lib/server/scheme-b-backup'
 
 export async function GET(request: NextRequest) {
   if (process.env.MEDIA_ASSETS_ENABLED !== 'true') {
@@ -35,6 +36,7 @@ export async function GET(request: NextRequest) {
       operationalHealth,
       alertDelivery: evaluateAlertDeliveryStatus(),
       providerProbes,
+      schemeBBackup: evaluateSchemeBBackupStatus(),
     },
     { status: 503, headers: { 'Cache-Control': 'no-store' } },
   )

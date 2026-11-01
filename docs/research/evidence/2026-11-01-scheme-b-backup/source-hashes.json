@@ -1,0 +1,8 @@
+{
+  "packages/web/src/lib/server/scheme-b-backup.ts": "d2f478818a220e8beaf273a00f4025ddf472112359cc0227e25abeea4ffccc19",
+  "packages/web/src/lib/server/__tests__/scheme-b-backup.test.ts": "5b9cd4b09589e473969856262dca54fc4fcb67a7803e66e7551078332323afe4",
+  "packages/web/src/app/api/admin/cutover-readiness/route.ts": "0fffebac04423b8c80746f6d89d0dc725c833ca8a72a3935ef855d350942a772",
+  "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts": "88433fa2a196ffff97018510e85c7c01fc88639f070aeb6e33e4112d1633151f",
+  "scripts/verify-scheme-b-backup.cjs": "6590da42e89d68a67f2680f8d9980e22b6c567e07ffc0efc780c2ed105dfb005",
+  "scripts/__tests__/verify-scheme-b-backup.test.js": "82580cfde8af620e752e86f923492168e7f761feb010a927c91120f4247ded58"
+}

@@ -1,0 +1,20 @@
+{
+  "batch": "scheme-b-backup-verification-tool-and-engine",
+  "baselineCommit": "7ada8e1d4",
+  "localSliceStatus": "complete",
+  "jest": {
+    "task1Red": "1 failed: module missing (packages/web/src/lib/server/scheme-b-backup)",
+    "task1Green": "17 passed in packages/web/src/lib/server/__tests__/scheme-b-backup.test.ts",
+    "routeIntegration": "19 passed in packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts",
+    "reviewHardened": "45 passed across scheme-b-backup and cutover-readiness route tests",
+    "infra": "14 passed in scripts/__tests__/*.test.js including disk-backed CLI verification"
+  },
+  "fullChain": "npm run verify && shared && test:infra exit 0: Web 139 suites / 2196 tests, shared 4/16, infra 14, 184 pages build ok",
+  "reviews": {
+    "spec": "PASS (PGDMP magic bytes, 12-byte header, Storage Manifest schema, dump SHA-256 binding, post-freeze tombstone replay, fail-closed cutover readiness)",
+    "quality": "Approved on re-review (MIN_PG_DUMP_HEADER_BYTES = 12, mandatory expectedDumpSha256, MAX_OBJECT_ID_LENGTH = 128, control chars & path traversal sanitization, bounded collections, integer overflow guards, fail-closed tombstone timestamps)"
+  },
+  "protectedInputs": "1471 prior protected inputs unchanged (protected-inputs-check.json).",
+  "nextEnv": "restored, sha256 7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+  "auditRerun": false
+}
