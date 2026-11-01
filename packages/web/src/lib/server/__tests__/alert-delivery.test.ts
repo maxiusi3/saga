@@ -260,7 +260,7 @@ describe('Operational Alert Delivery & Responder Verification (§11)', () => {
       })
       const ledger = new AlertSuppressionLedger({ windowMs: 600_000, maxEntries: 100 })
       const res = await dispatchOperationalAlert(alert, {
-        webhookUrl: 'https://open.feishu.cn/open-apis/bot/v2/hook/4b47faed-9c07-4d1e-b8d1-d24d8a03b73c',
+        webhookUrl: 'https://open.feishu.cn/open-apis/bot/v2/hook/00000000-0000-0000-0000-000000000000',
         responderConfirmed: true,
         suppressionLedger: ledger,
         fetchImpl: fetchMock as any,
