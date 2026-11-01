@@ -9,7 +9,7 @@
 | 1 | 真实部署切流封存 | **未部署（待发版）** | 在预发/生产设置 `OPERATIONAL_COLLECTOR_BUILD_HASH`（64 位小写 SHA-256）、执行远端迁移 `20261030000002` 及更早未应用迁移、调用 `seal_deployment_collection_coverage`、等待 ≥60 分钟 | 导出采集覆盖真实证明；上传仍因其他通道缺口保留 `upload_collection_coverage` | 可（已有本地实现与测试） |
 | 2 | 远端迁移授权 | **未授权（保护远端库）** | 明确新指令：是否允许 `supabase db push`/repair，及目标项目 | 所有 SQL 在真实库生效 | 可（本地隔离环境已验证） |
 | 3 | 告警响应人与投递通道 | **已完成基础接入与验证** | 飞书 Webhook 机器人及关键字 `saga` 已联通并测试成功；正式上线前确认生产值班响应人姓名/排期 | 实际告警投递证明 | 可（本地适配器与抑制台账已全部合入） |
-| 4 | 供应商账户/区域/数据条款 | **进行中（待提供 Claude Key）** | 负责人确认采用第三方 API 代理接入 Claude，Base URL 与 API Key 准备中；ElevenLabs 与 Voyage 暂缓注册，已在代码中 fail-closed 隔离 | 解除 `blocked_by_policy`，完整 G0 | 可（系统保持 dry-run/安全隔离） |
+| 4 | 供应商账户/区域/数据条款 | **Claude 代理已接入并实测通过（2026-11-01）** | 负责人已提供第三方 Claude 代理（`https://cc116.energy.中国`）及 API Key，实测模型端点返回 HTTP 200，密钥已存入 `.env.local`；ElevenLabs 与 Voyage 暂缓注册，已在代码中 fail-closed 隔离 | 解除 Anthropic 缺 Key 状态，开发环境具备真实调用能力 | 可（生产商业正式合规条款待后续签署） |
 | 5 | 真实 Auth/PostgREST/Storage/RLS 环境 | **已接入并验证成功（2026-11-01）** | 负责人已提供 `encdblxyxztvfxotfuyh` 的 anon key 与 service_role key，本地只读探测验证 GoTrue Auth v2.197.0 与 Storage 桶列表正常，密钥已安全存入 `.env.local`（已 gitignore，未入库） | 真实环境只读探测与本地联调 | 可 |
 | 6 | 真机与家庭试点（G1/G3/G4） | **未进行（待后续试点阶段）** | 设备、受试家庭、知情同意、观察窗口排期 | 原 §7.1 G1–G4 | 可（不计入当前本地切片验收） |
 | 7 | 方案 B 真实备份恢复 | **本地引擎与 CLI 工具已就绪** | 已完成 `scheme-b-backup.ts`、`scripts/verify-scheme-b-backup.cjs` 与切流接入；由于项目处于 Free Plan，方案 B 为唯一灾备手段。若需在云端真库执行，需提供数据库连接串并授权运行 `pg_dump -Fc` | 真实灾备恢复验收 | 可（本地合成与文件验算已全部通过） |
