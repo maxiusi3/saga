@@ -15,7 +15,7 @@
 | 7 | 方案 B 真实备份恢复 | **本地引擎与 CLI 工具已就绪** | 已完成 `scheme-b-backup.ts`、`scripts/verify-scheme-b-backup.cjs` 与切流接入；由于项目处于 Free Plan，方案 B 为唯一灾备手段。若需在云端真库执行，需提供数据库连接串并授权运行 `pg_dump -Fc` | 真实灾备恢复验收 | 可（本地合成与文件验算已全部通过） |
 | 8 | 其他上传通道范围决策 | **已完成决策** | 负责人已决策选择 A（优先聚焦主音频上传链路） | 明确 `upload_collection_coverage` 边界 | 可（继续按主链路收口） |
 | 9 | 依赖审计 | **已完成决策** | 负责人已决策选择 A（保持现有依赖稳定，暂不升级依赖） | 明确安全审计结论 | 可（明确标“审计未重跑”） |
-| 10 | 推送与合并 | **已由负责人正式授权推送分支（2026-11-01）** | 负责人明确授权：“确认推送”。P0/G0 阶段真实依赖与证据链已满足，执行 `git push origin codex/october-upgrade-p0`。main 合并与生产部署另需未来明确指令 | 远端代码库检查点安全同步 | 当前 `pushConditionSatisfied: true`（限 codex/october-upgrade-p0 分支） |
+| 10 | 推送与合并 | **已由负责人正式授权并成功推送到 GitHub（2026-11-01）** | 负责人明确授权：“确认推送”。已成功推送到 `origin/codex/october-upgrade-p0`（最新同步 commit 为 `a5efc505a`）。main 合并与生产部署仍受严格保护，需未来明确指令 | 远端代码库检查点已安全同步 | 已完成 |
 
 ---
 
@@ -30,9 +30,9 @@
 ## 当前交接基准（2026-11-01，接手时必须重新核对）
 
 - 分支：`codex/october-upgrade-p0`
-- 最新本地提交：`ecd0360c7 feat(ops): add scheme b backup verification tool, manifest hash binding, and tombstone replay`；其前两提交为 `7ada8e1d4`（飞书告警适配）与 `0f24cfcec`（供应商合规核验链）。
+- 最新本地与远端同步提交：`a5efc505a fix(tests): sanitize feishu test mock webhook url to standard zero uuid`（包含里程碑归档 `bac331763` 与前序全部工程/文档提交）。
 - 写此提示词时工作树和暂存区均干净（除本提示词文件若尚未提交）。
-- 本地领先已有远端跟踪记录 11 个提交；未刷新远端，不能据此断言 GitHub 当前状态。
+- 本地与远端分支 `origin/codex/october-upgrade-p0` 完全一致（已成功 push 并确认 `up to date`）。
 - handoff 中的 `07016d8fc`/`e2be895dd`/`2b146ad1b`/`d13d55ab0` 是更早批次基线，不是当前 HEAD，不要误判为提交丢失。
 - 已完成并收口的批次：同步导出观测、媒体异步重新授权、可靠上传客户端回报观测、部署采集覆盖证明（本地切片）、运营告警投递与响应人核验（本地切片）、供应商账户/区域/数据条件核验链（本地切片）、**方案 B 逻辑备份恢复演练与验证工具（本地切片）**。
 - 本批封存验证（历史结果，非你本轮执行）：Web 139 套/2196 项、shared 4 套/16 项、infra 14 项、184 页构建通过；规格 PASS、质量 Approved（6 项边界/DoS 强化点全部修复）；1471 项历史保护输入未变；`next-env.d.ts` 已恢复为 sha256 `7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651`。
@@ -45,7 +45,7 @@
 - `p0CompletionProvenByThisBatch: true`
 - `pushConditionSatisfied: true`（经负责人正式授权推送到 `codex/october-upgrade-p0`；main 合并与生产部署仍受保护）
 
-因此本轮执行 `git push origin codex/october-upgrade-p0` 完成远端同步。
+已成功执行 `git push origin codex/october-upgrade-p0` 完成远端同步。
 
 ## 阻塞事项处理方式（重要）
 
