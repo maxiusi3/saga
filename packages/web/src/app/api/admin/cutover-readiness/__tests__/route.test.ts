@@ -195,6 +195,74 @@ describe('GET /api/admin/cutover-readiness', () => {
     })
   })
 
+  it('evaluates verified provider evidence from environment while keeping endpoint not_ready', async () => {
+    process.env.PROVIDER_POLICY_EVIDENCE_JSON = JSON.stringify([
+      {
+        provider: 'elevenlabs',
+        accountOrOrgId: 'org-saga-verified-enterprise',
+        modelId: 'scribe_v2',
+        allowedRegions: ['us'],
+        trainingOptOutConfirmed: true,
+        zeroDataRetentionConfirmed: true,
+        maxRetentionDaysAllowed: 0,
+        evidenceDate: new Date().toISOString(),
+        evidenceReference: 'DPA-2026-ELEVENLABS-VERIFIED',
+      },
+    ])
+    // ElevenLabs has verified policy but missing API key
+    delete process.env.ELEVENLABS_API_KEY
+
+    const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const body = await res.json()
+    expect(res.status).toBe(503)
+    expect(body.status).toBe('not_ready')
+
+    const elProbe = body.providerProbes.find((p: { provider: string }) => p.provider === 'elevenlabs')
+    expect(elProbe).toMatchObject({
+      provider: 'elevenlabs',
+      policyCompliant: true,
+      readyForLiveProbe: false,
+      status: 'missing_api_key',
+    })
+
+    // Now configure the API key
+    process.env.ELEVENLABS_API_KEY = 'sk-verified-live-key'
+    const resWithKey = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const bodyWithKey = await resWithKey.json()
+    const elProbeReady = bodyWithKey.providerProbes.find((p: { provider: string }) => p.provider === 'elevenlabs')
+    expect(elProbeReady).toMatchObject({
+      provider: 'elevenlabs',
+      policyCompliant: true,
+      readyForLiveProbe: true,
+      status: 'ready_for_live_probe',
+    })
+    // Overall endpoint still fails closed as not_ready
+    expect(resWithKey.status).toBe(503)
+    expect(bodyWithKey.status).toBe('not_ready')
+  })
+
+  it('fails closed when provider evidence is malformed or expired in environment', async () => {
+    process.env.PROVIDER_POLICY_EVIDENCE_JSON = JSON.stringify([
+      {
+        provider: 'elevenlabs',
+        accountOrOrgId: 'org-saga-expired',
+        modelId: 'scribe_v2',
+        allowedRegions: ['us'],
+        trainingOptOutConfirmed: true,
+        zeroDataRetentionConfirmed: true,
+        maxRetentionDaysAllowed: 0,
+        evidenceDate: '2025-01-01T00:00:00.000Z', // Expired > 90 days
+        evidenceReference: 'DPA-2025-EXPIRED',
+      },
+    ])
+    process.env.ELEVENLABS_API_KEY = 'sk-key'
+    const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const body = await res.json()
+    const elProbe = body.providerProbes.find((p: { provider: string }) => p.provider === 'elevenlabs')
+    expect(elProbe.status).toBe('blocked_by_policy')
+    expect(elProbe.policyCompliant).toBe(false)
+  })
+
   it('does not let the operations secret bypass the media feature switch', async () => {
     delete process.env.MEDIA_ASSETS_ENABLED
     const req = request({ 'x-cron-secret': 'synthetic-ops-secret' })

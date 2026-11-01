@@ -1,0 +1,21 @@
+{
+  "batch": "provider-account-region-and-data-terms-verification-chain",
+  "baselineCommit": "07016d8fc",
+  "localSliceStatus": "complete",
+  "jest": {
+    "task1Red": "1 failed (task1-red.log): module missing",
+    "task2Green": "2 suites / 40 passed (task2-green.log)",
+    "adjacent": "6 suites / 198 passed, typecheck 0, lint 0 (task2-adjacent-typecheck-lint.log)",
+    "reviewRed": "1 failed / 4 tests failed (review-red.log): Defect 1 (retention SLA bypass) & Defect 2 (model order dependency)",
+    "reviewGreen": "2 suites / 45 passed (review-green.log)",
+    "reviewAdjacent": "6 suites / 203 passed, typecheck 0, lint 0 (review-adjacent-typecheck-lint.log)"
+  },
+  "fullChain": "npm run verify && shared && test:infra exit 0: Web 138 suites / 2168 tests, shared 4/16, infra 7, 184 pages build ok (full-verify.log)",
+  "reviews": {
+    "spec": "PASS on re-review (all 7 hard constraints verified, Defect 1 retention SLA fail-open vulnerability fully closed)",
+    "quality": "Approved on re-review (Defect 1 SLA bypass, Defect 2 composite key order dependency, ISO 8601 calendar date rollover, DoS string guards resolved)"
+  },
+  "protectedInputs": "1471 prior protected inputs unchanged (protected-inputs-check.json).",
+  "nextEnv": "restored, sha256 7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+  "auditRerun": false
+}

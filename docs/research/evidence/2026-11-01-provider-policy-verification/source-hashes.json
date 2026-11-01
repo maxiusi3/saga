@@ -1,0 +1,10 @@
+{
+  "baseline": "07016d8fc",
+  "files": {
+    "packages/web/src/lib/server/provider-policy-verification.ts": "76705818a0e0e06798c60ba697b9c3af172494392b3b8c4507960c20b9a86754",
+    "packages/web/src/lib/server/__tests__/provider-policy-verification.test.ts": "0a291ab36882f8308d158125b1729e45f11cacdc45b6ffe2a148dbf641db795f",
+    "packages/web/src/app/api/admin/cutover-readiness/route.ts": "2a28d59935d69f82a924539e09f6c0c94bee1de51bc24e771941e9f4bb888891",
+    "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts": "4236577e97b6504500308f47257b41a9b3894c96fe5febd5d257b9a265564d29",
+    "docs/superpowers/plans/2026-11-01-upgrade-provider-policy-verification.md": "2e5a18c94878147f344dc4b8267f5c7f9518b7c1c64dfaaab359b254da45db18"
+  }
+}

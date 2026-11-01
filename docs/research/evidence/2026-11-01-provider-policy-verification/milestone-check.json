@@ -1,0 +1,7 @@
+{
+  "localProviderPolicyVerificationSliceStatus": "complete",
+  "originalMilestoneNewlyProven": false,
+  "p0CompletionProvenByThisBatch": false,
+  "pushConditionSatisfied": false,
+  "reason": "This batch implements the local fail-closed provider account, region, and data terms verification chain. Real external commercial contracts, written opt-out agreements, and live paid probes remain unperformed (blocked item #4); live deployment cutover seal, real devices, and households remain unproven. upload_collection_coverage stays partial; admin endpoint remains HTTP 503 not_ready."
+}

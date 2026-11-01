@@ -30,17 +30,17 @@
 ## 当前交接基准（2026-11-01，接手时必须重新核对）
 
 - 分支：`codex/october-upgrade-p0`
-- 最新本地提交：即将创建的检查点 `feat(ops): add alert delivery adapter, suppression ledger, and responder verification`；其前一提交 `e2be895dd`（部署采集覆盖）。
+- 最新本地提交：即将创建的检查点 `feat(ops): add provider account, region, and data terms verification chain`；其前一提交 `07016d8fc`（告警投递与响应人核验）。
 - 写此提示词时工作树和暂存区均干净（除本提示词文件若尚未提交）。
-- 本地领先已有远端跟踪记录 8 个提交；未刷新远端，不能据此断言 GitHub 当前状态。
-- handoff 中的 `e2be895dd`/`2b146ad1b`/`d13d55ab0` 是更早批次基线，不是当前 HEAD，不要误判为提交丢失。
-- 已完成并收口的批次：同步导出观测、媒体异步重新授权、可靠上传客户端回报观测、部署采集覆盖证明（本地切片）、**运营告警投递与响应人核验（本地切片）**。
-- 本批封存验证（历史结果，非你本轮执行）：Web 137 套/2139 项、shared 4 套/16 项、infra 7 项、184 页构建通过；规格 PASS、质量 Approved（7 项发现先 RED 后修）；1471 项历史保护输入未变；`next-env.d.ts` 已恢复为 sha256 `7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651`。
-- 证据：`docs/research/evidence/2026-11-01-alert-delivery/`（`verification.json`、`milestone-check.json`、`source-hashes.json`、`log-hashes.json`）；报告 `docs/research/2026-11-01-alert-delivery.md`；实施清单 `docs/superpowers/plans/2026-11-01-upgrade-alert-delivery.md`。
-- 历史证据目录：`docs/research/evidence/2026-10-30-deployment-collection-coverage/`。
+- 本地领先已有远端跟踪记录 9 个提交；未刷新远端，不能据此断言 GitHub 当前状态。
+- handoff 中的 `07016d8fc`/`e2be895dd`/`2b146ad1b`/`d13d55ab0` 是更早批次基线，不是当前 HEAD，不要误判为提交丢失。
+- 已完成并收口的批次：同步导出观测、媒体异步重新授权、可靠上传客户端回报观测、部署采集覆盖证明（本地切片）、运营告警投递与响应人核验（本地切片）、**供应商账户/区域/数据条件核验链（本地切片）**。
+- 本批封存验证（历史结果，非你本轮执行）：Web 138 套/2168 项、shared 4 套/16 项、infra 7 项、184 页构建通过；规格 PASS（初审 Fail-Open 漏洞修复）、质量 Approved；1471 项历史保护输入未变；`next-env.d.ts` 已恢复为 sha256 `7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651`。
+- 证据：`docs/research/evidence/2026-11-01-provider-policy-verification/`（`verification.json`、`milestone-check.json`、`source-hashes.json`、`log-hashes.json`）；报告 `docs/research/2026-11-01-provider-policy-verification.md`；实施清单 `docs/superpowers/plans/2026-11-01-upgrade-provider-policy-verification.md`。
+- 历史证据目录：`docs/research/evidence/2026-11-01-alert-delivery/`、`docs/research/evidence/2026-10-30-deployment-collection-coverage/`。
 
-升级计划进度坐标：P0 修复链（媒体访问、观测、重新授权、部署覆盖、告警投递）已完成多个本地批次；**原 G0–G4 均无完整真实证据**。当前证据：
-- `localAlertDeliverySliceStatus: "complete"`
+升级计划进度坐标：P0 修复链（媒体访问、观测、重新授权、部署覆盖、告警投递、供应商合规核验）已完成多个本地批次；**原 G0–G4 均无完整真实证据**。当前证据：
+- `localProviderPolicyVerificationSliceStatus: "complete"`
 - `originalMilestoneNewlyProven: false`
 - `p0CompletionProvenByThisBatch: false`
 - `pushConditionSatisfied: false`
@@ -94,13 +94,14 @@ git worktree list
 - E 工作树干净、上批已收口（默认）：直接选下一批。
 
 ### 情况 E 的不要重做清单
-上传 begin/finish 账本与接线、v3 解析、媒体异步重新授权、同步导出观测、部署采集覆盖本地切片（迁移 `20261030000002`、`read_operational_snapshot_v4`、`OPERATIONAL_COLLECTOR_BUILD_HASH`、v4 解析）、**运营告警投递适配器与响应人核验（`alert-delivery.ts`、LRU 抑制台账、单发 Webhook、SSRF 阻断、TOCTOU 防风暴并发队列、切流端点 `alert_delivery` 接线）**。
+上传 begin/finish 账本与接线、v3 解析、媒体异步重新授权、同步导出观测、部署采集覆盖本地切片（迁移 `20261030000002`、`read_operational_snapshot_v4`、`OPERATIONAL_COLLECTOR_BUILD_HASH`、v4 解析）、运营告警投递适配器与响应人核验（`alert-delivery.ts`、LRU 抑制台账、单发 Webhook、SSRF 阻断、TOCTOU 防风暴并发队列、切流端点 `alert_delivery` 接线）、**供应商账户/区域/数据条件核验链（`provider-policy-verification.ts`、Fail-Closed 条款判定、ZDR/≤7天 SLA 严格整数校验、ISO 8601 UTC 日历防滚动、多模型 `${provider}::${modelId}` 联合键顺序无关索引、切流端点 `loadVerifiedProviderProbeTargets` 接入）**。
 
 ### 下一批可选任务（选一个可独立验收的本地切片）
-1. **供应商账户/区域/数据条件核验链**（推荐优先）：核验清单数据结构、dry-run 契约检查、零留存/训练退出条款检验、`blocked_by_policy` 保持；真实书面条款缺失，不放行。
-2. **真实部署/生产环境事项**：见 §A 阻塞事项清单，本地放行继续开发，生产配置前保持 fail-closed。
-3. **本批遗留小项（低风险，可顺带或单独）**：并发不同哈希封存的 `23514` 回退保护（用 `GREATEST(statement_timestamp(), 旧值 + 1 微秒)` 或定义明确重试）；遗留 v1 开始的尝试经 v2 重放的运维结案说明；v4 构建表全表扫描的窗口/保留策略设计；导出侧 v4 精确计数（让导出也能使用 `exact` 校验）。
-4. 其余按综合计划后续项（解码音频/持久大包 Worker 等）仅在上述不可行时再选，且一次只做一个主要工程任务。
+1. **真机与真实录音故障矩阵规范（G1）**：设备/时长/网络中断/恢复矩阵契约与测试用例。
+2. **方案 B 备份恢复演练与验证工具（P0/G0 收口）**：逻辑备份与墓碑重放自动化演练。
+3. **真实部署/生产环境事项**：见 §A 阻塞事项清单，本地放行继续开发，生产配置前保持 fail-closed。
+4. **本批遗留运维小项（低风险，可顺带或单独）**：并发不同哈希封存的 `23514` 回退保护（用 `GREATEST(statement_timestamp(), 旧值 + 1 微秒)` 或定义明确重试）；遗留 v1 开始的尝试经 v2 重放的运维结案说明；v4 构建表全表扫描的窗口/保留策略设计；导出侧 v4 精确计数（让导出也能使用 `exact` 校验）。
+5. 其余按综合计划后续项（解码音频/持久大包 Worker 等）仅在上述不可行时再选，且一次只做一个主要工程任务。
 
 ## 第四步：工程与安全边界
 

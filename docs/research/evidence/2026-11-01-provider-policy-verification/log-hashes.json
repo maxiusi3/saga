@@ -1,0 +1,30 @@
+{
+  "full-verify.log": {
+    "rawSha256": "5a900ba8bf07a2b5df27a1d46329986b17cc9761f4818a77f8c73e2f64e8422e",
+    "gz": "raw/full-verify.log.gz"
+  },
+  "review-adjacent-typecheck-lint.log": {
+    "rawSha256": "b82b0e69e3c56d005ec1fbd82900e6fd4af1b21db6cedf6cd761507a0e46a83a",
+    "gz": "raw/review-adjacent-typecheck-lint.log.gz"
+  },
+  "review-green.log": {
+    "rawSha256": "ac0d441e3cfaa7a7d7b5e0ab37e349d9e27d7c4a84d9118d6b14b45546444b5e",
+    "gz": "raw/review-green.log.gz"
+  },
+  "review-red.log": {
+    "rawSha256": "f8c7be912007abedb81e4d97eb6f284cfa9e7fce971d120d306274a04582fcf8",
+    "gz": "raw/review-red.log.gz"
+  },
+  "task1-red.log": {
+    "rawSha256": "8c286f54b5004fbd1cdde91591df5a37dc9ece66500018c22406fc31b70e6aff",
+    "gz": "raw/task1-red.log.gz"
+  },
+  "task2-adjacent-typecheck-lint.log": {
+    "rawSha256": "b82b0e69e3c56d005ec1fbd82900e6fd4af1b21db6cedf6cd761507a0e46a83a",
+    "gz": "raw/task2-adjacent-typecheck-lint.log.gz"
+  },
+  "task2-green.log": {
+    "rawSha256": "99a9176c1c3ea313b77d35d279aa4080f46c7a3792c0639ca3bdf8df4938576a",
+    "gz": "raw/task2-green.log.gz"
+  }
+}

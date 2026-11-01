@@ -3,6 +3,7 @@ import { evaluateAlertDeliveryStatus } from '@/lib/server/alert-delivery'
 import { requireCronSecret } from '@/lib/server/cron'
 import { evaluateSyntheticProviderProbes } from '@/lib/server/cutover-readiness'
 import { loadOperationalSnapshot, operationalHealthFromSnapshot } from '@/lib/server/operational-snapshot'
+import { loadVerifiedProviderProbeTargets } from '@/lib/server/provider-policy-verification'
 
 export async function GET(request: NextRequest) {
   if (process.env.MEDIA_ASSETS_ENABLED !== 'true') {
@@ -24,36 +25,8 @@ export async function GET(request: NextRequest) {
   )
 
   // API keys do not attest account-specific retention or training terms.
-  // Keep probes blocked until verified policy evidence is connected here.
-  const providerProbes = evaluateSyntheticProviderProbes([
-    {
-      capability: 'asr_transcribe',
-      provider: 'elevenlabs',
-      modelId: 'scribe_v2',
-      region: 'us',
-      trainingOptOutConfirmed: false,
-      zeroDataRetentionConfirmed: false,
-      apiKeyConfigured: Boolean(process.env.ELEVENLABS_API_KEY),
-    },
-    {
-      capability: 'story_extract_edit',
-      provider: 'anthropic',
-      modelId: 'claude-opus-4-20250514',
-      region: 'us',
-      trainingOptOutConfirmed: false,
-      zeroDataRetentionConfirmed: false,
-      apiKeyConfigured: Boolean(process.env.ANTHROPIC_API_KEY),
-    },
-    {
-      capability: 'semantic_retrieval',
-      provider: 'voyage',
-      modelId: 'voyage-4-large',
-      region: 'us',
-      trainingOptOutConfirmed: false,
-      zeroDataRetentionConfirmed: false,
-      apiKeyConfigured: Boolean(process.env.VOYAGE_API_KEY),
-    },
-  ])
+  // Evaluate probes against verified policy evidence ledger; fails closed by default.
+  const providerProbes = evaluateSyntheticProviderProbes(loadVerifiedProviderProbeTargets())
 
   // Partial ledger observations cannot attest complete monitoring or cutover readiness.
   return NextResponse.json(
