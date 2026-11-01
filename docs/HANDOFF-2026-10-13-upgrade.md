@@ -1,12 +1,22 @@
 # Handoff：UR Saga 十月升级继续执行
 
-- 更新时间：2026-10-30（Asia/Taipei）
+- 更新时间：2026-11-01（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`d13d55ab0`（上一批媒体异步重新授权检查点；接手时本地分支领先已有远端跟踪记录 5 个提交，本批续接上传观测，不声称原计划 G0–G4 已全部验收）
+- 本轮接手基线 HEAD：`e2be895dd`（部署采集覆盖证明检查点；接手时本地分支领先已有远端跟踪记录 7 个提交，本批续接运营告警投递与响应人核验，不声称原计划 G0–G4 已全部验收）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 10 月 31 日部署采集覆盖证明（当前状态，以本节为准）
+## 11 月 1 日运营告警投递与响应人核验（当前状态，以本节为准）
+
+详见[报告](research/2026-11-01-alert-delivery.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-alert-delivery.md)、[证据](research/evidence/2026-11-01-alert-delivery/README.md)。基线 `e2be895dd`（部署采集覆盖检查点）。**本地切片完成，不等于外部告警通道打通或 P0/G0–G4 完成；`pushConditionSatisfied: false`。**
+
+- 新增 `packages/web/src/lib/server/alert-delivery.ts`：纯函数载荷构建（严格脱敏、无家庭正文、无用户标识）、有界 LRU 内存抑制台账（窗口内重复告警静默）、fail-closed 状态判定、受控单发 Webhook 投递（严防 SSRF、阻断私网/回环/云元数据/IPv6 变种/纯明文 HTTP、防并发 TOCTOU 告警风暴、超时中止与响应体主动释放）。
+- 接线：`/api/admin/cutover-readiness` 动态接入 `evaluateAlertDeliveryStatus()`，在未配置真实 Webhook 或未核验响应人时 fail-closed 保持 `unavailable`（原因 `responder_and_delivery_not_verified`）。切流端点仍保持 `503 not_ready`（因 `upload_collection_coverage` partial 且供应商探针 `blocked_by_policy`）。
+- 验证：Web 137 套/2139 项、shared 4/16、infra 7、Next.js 184 页构建全部通过；规格 PASS、质量 Approved（7 项发现先 RED 后修复）。1471 项保护输入未变，`next-env.d.ts` 保持原字节。
+- 未做：真实生产环境 Webhook URL 绑定与真实应急响应人在线确认（放行本地开发，但生产配置前保持 fail-closed）；供应商账户/区域/数据条件核验链；真机与真实家庭试点。
+- **下一批入口**：供应商账户/区域/数据条件核验链；生产 Webhook 与响应人线上确认（需真实账户/负责人提供，本地保持 fail-closed）。不合并 main、不远端迁移/部署、不推送。
+
+## 10 月 31 日部署采集覆盖证明（前批完成状态）
 
 详见[报告](research/2026-10-30-deployment-collection-coverage.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-deployment-collection-coverage.md)、[证据](research/evidence/2026-10-30-deployment-collection-coverage/README.md)。基线 `2b146ad1b`（上批检查点）。**本地切片完成，不等于真实部署覆盖或 P0/G0–G4 完成；`pushConditionSatisfied: false`。**
 

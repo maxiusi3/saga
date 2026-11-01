@@ -168,6 +168,33 @@ describe('GET /api/admin/cutover-readiness', () => {
     expect(JSON.stringify(body)).not.toContain('synthetic-elevenlabs-key')
   })
 
+  it('does not let verified alert delivery approve overall cutover while collection or provider gaps remain', async () => {
+    process.env.OPERATIONAL_ALERT_WEBHOOK_URL = 'https://alerts.internal.example/webhook'
+    process.env.OPERATIONAL_ALERT_RESPONDER_CONFIRMED = 'true'
+    const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const body = await res.json()
+    expect(res.status).toBe(503)
+    expect(body.status).toBe('not_ready')
+    expect(body.alertDelivery).toEqual({
+      status: 'verified',
+      channel: 'https://alerts.internal.example/webhook',
+      responderRole: 'primary_developer_oncall',
+    })
+  })
+
+  it('keeps alert delivery unavailable when webhook is configured but responder confirmation is missing', async () => {
+    process.env.OPERATIONAL_ALERT_WEBHOOK_URL = 'https://alerts.internal.example/webhook'
+    delete process.env.OPERATIONAL_ALERT_RESPONDER_CONFIRMED
+    const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    const body = await res.json()
+    expect(res.status).toBe(503)
+    expect(body.status).toBe('not_ready')
+    expect(body.alertDelivery).toEqual({
+      status: 'unavailable',
+      reason: 'responder_and_delivery_not_verified',
+    })
+  })
+
   it('does not let the operations secret bypass the media feature switch', async () => {
     delete process.env.MEDIA_ASSETS_ENABLED
     const req = request({ 'x-cron-secret': 'synthetic-ops-secret' })

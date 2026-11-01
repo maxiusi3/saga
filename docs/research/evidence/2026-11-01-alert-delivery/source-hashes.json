@@ -1,0 +1,10 @@
+{
+  "baseline": "e2be895dd",
+  "files": {
+    "packages/web/src/lib/server/alert-delivery.ts": "5a080db5604fb39fa182212715fc790ea348d70394f8e776f83d473143c4694e",
+    "packages/web/src/lib/server/__tests__/alert-delivery.test.ts": "27a616dc9a532288c4901c9f48fbf4f4653c2fab6def9d22e9fd11b57a1d6e26",
+    "packages/web/src/app/api/admin/cutover-readiness/route.ts": "d6747611dc363edf164f9467b12167fe504ae11aa702cdb64587bfed6e8d0c79",
+    "packages/web/src/app/api/admin/cutover-readiness/__tests__/route.test.ts": "ca968ec63d4124601150aab31116a89d1d175ebf336b82de0cfd1a1cb80a7dca",
+    "docs/superpowers/plans/2026-11-01-upgrade-alert-delivery.md": "0d5a6143847161d0408e757d083ae394a0ad2e3389b55c7b4f0c8884b05ad775"
+  }
+}

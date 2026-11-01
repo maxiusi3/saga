@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { evaluateAlertDeliveryStatus } from '@/lib/server/alert-delivery'
 import { requireCronSecret } from '@/lib/server/cron'
 import { evaluateSyntheticProviderProbes } from '@/lib/server/cutover-readiness'
 import { loadOperationalSnapshot, operationalHealthFromSnapshot } from '@/lib/server/operational-snapshot'
@@ -59,10 +60,7 @@ export async function GET(request: NextRequest) {
     {
       status: 'not_ready',
       operationalHealth,
-      alertDelivery: {
-        status: 'unavailable',
-        reason: 'responder_and_delivery_not_verified',
-      },
+      alertDelivery: evaluateAlertDeliveryStatus(),
       providerProbes,
     },
     { status: 503, headers: { 'Cache-Control': 'no-store' } },
