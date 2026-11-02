@@ -1,0 +1,135 @@
+{
+  "batch": "g1-recovery-read-consistency",
+  "baselineCommit": "8d4fc6dc540a74ad260ba9689db57b410e0eb059",
+  "localSliceStatus": "complete",
+  "scope": {
+    "production": [
+      "packages/web/src/lib/recording-recovery.ts"
+    ],
+    "tests": [
+      "packages/web/src/lib/__tests__/recording-recovery.test.ts",
+      "scripts/browser-tests/recorder-recovery.test.cjs"
+    ],
+    "gapRegister": "docs/research/2026-11-02-g1-gap-register.md",
+    "schemaChanged": false,
+    "sqlChanged": false,
+    "pgExperimentsRun": false,
+    "newDependencies": false,
+    "automaticOperationRetry": false,
+    "atomicReadSnapshot": false
+  },
+  "tdd": {
+    "browserRed": {
+      "execution": "browser-red.json",
+      "failingSubcases": 3,
+      "failingNodeTestsIncludingParent": 4,
+      "originalPassingSubcases": 28,
+      "exitCode": 1
+    },
+    "unitRed": {
+      "execution": "unit-red.json",
+      "tests": 27,
+      "passing": 24,
+      "failing": 3,
+      "exitCode": 1,
+      "postHashGuardPositiveAlsoPassedBeforeFix": true
+    },
+    "green": {
+      "execution": "browser-green.json",
+      "subcases": 31,
+      "nodeTestsIncludingParent": 32,
+      "exitCode": 0
+    },
+    "productionMatchesBaselineAtRed": true,
+    "sameTestHashesBetweenRedAndGreen": true,
+    "originalAssertionsPreserved": true
+  },
+  "browser": {
+    "execution": "browser-green.json",
+    "engine": "Chromium 147.0.7727.15",
+    "cases": 31,
+    "nodeTestsIncludingParent": 32,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "nativeIndexedDB": true,
+    "syntheticBytesOnly": true,
+    "readRaceInjection": "Queue native readwrite transaction in initial session get success event before production continuation; append, first chunk or clear.",
+    "actualLongRecordingOrDeviceQualification": false,
+    "multiTabProductQualification": false,
+    "separateFromInfraAndWebSuites": true
+  },
+  "focusedJest": {
+    "execution": "focused-jest.json",
+    "suites": 4,
+    "tests": 72,
+    "exitCode": 0
+  },
+  "fullChain": {
+    "execution": "full-chain.json",
+    "command": [
+      "sh",
+      "-c",
+      "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra"
+    ],
+    "exitCode": 0,
+    "web": {
+      "suites": 139,
+      "tests": 2200
+    },
+    "shared": {
+      "suites": 4,
+      "tests": 16
+    },
+    "infra": {
+      "tests": 14
+    },
+    "nextVersion": "16.4.1",
+    "nextBuildPages": 184,
+    "typeCheckPassed": true,
+    "lintPassed": true,
+    "sourcesMatchFinalAfterNextEnvRestore": true
+  },
+  "reviews": {
+    "spec": {
+      "status": "PASS",
+      "reviewer": "/root/g1_read_spec",
+      "receipt": "spec-review.md",
+      "initialStatus": "FAIL",
+      "initialReceipt": "spec-review-initial.md",
+      "finding": "Gap register omitted AI truthful-failure acceptance row; corrected in G1-08 and independently re-reviewed."
+    },
+    "quality": {
+      "status": "Approved",
+      "reviewer": "/root/g1_read_quality",
+      "receipt": "quality-review.md",
+      "startedAfterSpecPass": true
+    },
+    "outstandingFindings": 0,
+    "receiptProvenance": "Parent-recorded completed independent subagent responses; independent commands, if any, listed in each receipt, not primary execution logs."
+  },
+  "protection": {
+    "historicalInputs": 1471,
+    "previousBatchEvidenceFiles": 85,
+    "mismatches": 0,
+    "missing": 0,
+    "report": "protected-inputs-check.json",
+    "nextEnv": "next-env-check.json"
+  },
+  "auditRerun": false,
+  "buildWarnings": [
+    "Unsupported legacy Next eslint configuration",
+    "Deprecated images.domains",
+    "Optional Google client, Stripe, analytics and Sentry configuration missing"
+  ],
+  "limits": [
+    "Optimistic metadata checks, not atomic read snapshot or authorization; no guarantee after final check.",
+    "No new real-device/version-specific 5/20/30-minute microphone recording, decoding/listening, lock/call/process kill or physical quota qualification.",
+    "No new cloud-phase, cross-family API/Storage/Worker authorization or second-device original-export acceptance.",
+    "No remote migration, main merge, production deployment, paid call or family-media transfer."
+  ],
+  "checkpointPolicy": "Local commit only; no self-referential commit hash in checkpoint evidence.",
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "pushPerformed": false
+}

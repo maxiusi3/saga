@@ -1,0 +1,45 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--workspace=packages/web",
+    "--",
+    "--runInBand",
+    "--runTestsByPath",
+    "src/lib/__tests__/recording-recovery.test.ts"
+  ],
+  "startedAtUnix": 1793605121.826786,
+  "durationSeconds": 3.83,
+  "exitCode": 1,
+  "sourcesBefore": {
+    "packages/web/src/lib/__tests__/recording-recovery.test.ts": "2a3ccc71a6295432c8ea8d238bcb72afa3a7ad42ab746b4e2ca0e82ee661e291",
+    "packages/web/src/lib/recorder-db.ts": "f74180bc29c3fb55c922d5943f3ce9d6bb2d58b6a978e792fd817191f3d94dfe",
+    "packages/web/src/lib/recording-recovery.ts": "fb64419857a64a75ef191922bfb2e83281c834cb6b8ad71460cec28033713b23",
+    "packages/web/src/lib/local-recording-session.ts": "8e93ab394dc527af824f271b9107f292eac7838550725729604a9ec0d28c0358",
+    "packages/web/src/lib/recording-session.ts": "8d6e32654998bf3cc0cbe2fcc01f00c408806860f38caa648cac71f79e407a6e",
+    "packages/web/src/components/recording/SmartRecorder.tsx": "c436e575fb9dbe2aec05d41813e8400fa8f441c9e53f9b58b87653ebe492ab58",
+    "packages/web/src/components/recording/RecordingRecoveryPanel.tsx": "17556a76fc51fbf0e0fa26835841c681bf7980f206ae0fc6cf01619a0d7664c8",
+    "scripts/browser-tests/recorder-recovery.test.cjs": "89ae97c46e3be5aec57a56474465c35bea813d8d6b3af1c8505c685cc4bcf881",
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+  },
+  "sourcesAfter": {
+    "packages/web/src/lib/__tests__/recording-recovery.test.ts": "2a3ccc71a6295432c8ea8d238bcb72afa3a7ad42ab746b4e2ca0e82ee661e291",
+    "packages/web/src/lib/recorder-db.ts": "f74180bc29c3fb55c922d5943f3ce9d6bb2d58b6a978e792fd817191f3d94dfe",
+    "packages/web/src/lib/recording-recovery.ts": "fb64419857a64a75ef191922bfb2e83281c834cb6b8ad71460cec28033713b23",
+    "packages/web/src/lib/local-recording-session.ts": "8e93ab394dc527af824f271b9107f292eac7838550725729604a9ec0d28c0358",
+    "packages/web/src/lib/recording-session.ts": "8d6e32654998bf3cc0cbe2fcc01f00c408806860f38caa648cac71f79e407a6e",
+    "packages/web/src/components/recording/SmartRecorder.tsx": "c436e575fb9dbe2aec05d41813e8400fa8f441c9e53f9b58b87653ebe492ab58",
+    "packages/web/src/components/recording/RecordingRecoveryPanel.tsx": "17556a76fc51fbf0e0fa26835841c681bf7980f206ae0fc6cf01619a0d7664c8",
+    "scripts/browser-tests/recorder-recovery.test.cjs": "89ae97c46e3be5aec57a56474465c35bea813d8d6b3af1c8505c685cc4bcf881",
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/web/next-env.d.ts": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+  },
+  "rawSha256": "d122cdefbc6c105c9ffebaabb2160cf78bae4e961db8dc5de1b143742ca3bb0e",
+  "rawBytes": 3282,
+  "archive": "raw/unit-red.log.gz"
+}

@@ -100,3 +100,33 @@ it('refuses a same-length chunk overwrite signaled by the session timestamp', as
     .mockResolvedValue({ ...session, updatedAt: 11 })
   await expect(loadLocalRecording('draft', 'project', 'user')).rejects.toMatchObject({ code: 'changed' })
 })
+
+it.each(['append', 'first-chunk', 'clear'])('classifies concurrent %s during chunk acquisition as changed, not damaged', async mode => {
+  if (mode === 'first-chunk') {
+    jest.mocked(recorderDB.getSession).mockResolvedValue({ ...session, lastPersistedIndex: -1 })
+  }
+  const stored = chunks.slice()
+  jest.mocked(recorderDB.getChunksBySession).mockImplementation(async () => {
+    if (mode === 'clear') {
+      jest.mocked(recorderDB.getSession).mockResolvedValue(undefined)
+      return []
+    }
+    jest.mocked(recorderDB.getSession).mockResolvedValue({ ...session, lastPersistedIndex: mode === 'append' ? 2 : 1 })
+    return mode === 'append' ? [...chunks, { ...chunks[1], id: 'draft-2', index: 2 }] : chunks
+  })
+  await expect(loadLocalRecording('draft', 'project', 'user')).rejects.toMatchObject({ code: 'changed' })
+  expect(chunks).toEqual(stored)
+})
+
+it('still detects a session change that occurs during hash verification', async () => {
+  const originalDigest = crypto.subtle.digest.bind(crypto.subtle)
+  const digest = jest.spyOn(crypto.subtle, 'digest').mockImplementation(async (algorithm, data) => {
+    const result = await originalDigest(algorithm, data)
+    jest.mocked(recorderDB.getSession).mockResolvedValue({ ...session, updatedAt: 2 })
+    return result
+  })
+  try {
+    await expect(loadLocalRecording('draft', 'project', 'user')).rejects.toMatchObject({ code: 'changed' })
+    expect(digest).toHaveBeenCalled()
+  } finally { digest.mockRestore() }
+})

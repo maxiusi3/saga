@@ -1,0 +1,12 @@
+{
+  "phase": "final_pre_commit",
+  "source": "docs/research/evidence/2026-10-30-upload-observations/protected-inputs.json",
+  "sourceSha256": "0575178f36c8f22c99e9a6944a5fa74acefb55019c3c274410b85b8a5a1c7251",
+  "checked": 1471,
+  "archivedLogsRead": 0,
+  "missing": [],
+  "mismatches": [],
+  "previousBatchEvidenceManifest": "prior-evidence-hashes.json",
+  "previousBatchEvidenceFilesChecked": 85,
+  "previousBatchEvidenceMismatches": []
+}

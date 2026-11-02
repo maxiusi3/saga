@@ -1,0 +1,10 @@
+{
+  "baselineCommit": "8d4fc6dc540a74ad260ba9689db57b410e0eb059",
+  "branch": "codex/october-upgrade-p0",
+  "initiallyClean": true,
+  "aheadOfRemoteTracking": 3,
+  "historicalInputsChecked": 1471,
+  "historicalManifestSha256": "0575178f36c8f22c99e9a6944a5fa74acefb55019c3c274410b85b8a5a1c7251",
+  "historicalMismatches": [],
+  "priorEvidenceFilesProtected": 85
+}

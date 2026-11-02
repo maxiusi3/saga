@@ -1,0 +1,20 @@
+{
+  "localG1RecoveryReadConsistencySliceStatus": "complete",
+  "g1MilestoneSatisfied": false,
+  "originalMilestoneNewlyProven": false,
+  "p0CompletionProvenByThisBatch": false,
+  "pushConditionSatisfied": false,
+  "pushPerformed": false,
+  "priorP0G0Push": "Authorized historical milestone through 1921766c2; not extended to any of four local G1 batches.",
+  "realDeviceMatrixRuns": 0,
+  "gapRegister": "docs/research/2026-11-02-g1-gap-register.md",
+  "reason": "Local recovery classification contracts pass. End-to-end client seal/worker/confirmation wiring, device/version-specific real recordings and interruptions, decoding/listening, deployed permission negatives and second-device offline export still lack complete acceptance evidence. No new explicit push authorization.",
+  "humanPrerequisites": [
+    "Device models, OS/browser versions, support scope and test window",
+    "Physical device interruptions and listening; second-device offline opening",
+    "Dedicated test environment/accounts and explicit remote actions/paid-call authorization only when needed"
+  ],
+  "mergeMainAuthorized": false,
+  "remoteMigrationAuthorized": false,
+  "productionDeploymentAuthorized": false
+}

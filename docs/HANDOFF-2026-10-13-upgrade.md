@@ -1,12 +1,23 @@
 # Handoff：UR Saga 十月升级继续执行
 
-- 更新时间：2026-11-01（Asia/Taipei）
+- 更新时间：2026-11-02（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`f59e8f863`（上一批 G1 写入防护检查点；接手时工作树/暂存区干净，领先远端跟踪基线 `1921766c2` 2 个本地提交。本批继续 G1 连接失效与显式恢复，不声称 G1 真机通过）
+- 本轮接手基线 HEAD：`8d4fc6dc5`（上一批 G1 连接恢复检查点；接手时工作树/暂存区干净，领先远端跟踪基线 `1921766c2` 3 个本地提交。本批继续恢复读取一致性并列出 G1 gap，不声称 G1 真机通过）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 11 月 1 日 G1 录音草稿连接失效与显式恢复（当前状态，以本节为准）
+## 11 月 2 日 G1 恢复读取一致性与 Gap 清单（当前状态，以本节为准）
+
+详见[报告](research/2026-11-02-g1-recovery-read-consistency.md)、[G1 gap 与人工操作清单](research/2026-11-02-g1-gap-register.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-recovery-read-consistency.md)、[证据](research/evidence/2026-11-02-g1-recovery-read-consistency/README.md)。基线 `8d4fc6dc5`；前三批 G1 检查点不改写、不重做。
+
+- 只修改恢复加载器：取块后、损坏/空草稿分类前重读会话，保留 hash 验证后终检；合法追加、首次落块、并发清理均报 `changed`，真实损坏仍拒绝。所有原身份/状态/确认/MIME/时间/水位比较保留；不自动重试、不写库、不改 schema/云端/UI。乐观检查不等于原子快照或权限保证。
+- 3 个新浏览器行为 RED 和 3 个 Jest RED 已冻结；GREEN Chromium 31 子案例 / Node 32、定向 4/72。完整链 exit 0：Web 139/2200、shared 4/16、infra 14、184 页；next-env 原字节恢复。audit 未重跑，旧 Next/可选配置警告保留。
+- 规格初审指出 gap 文档遗漏 AI 真实失败矩阵，补 G1-08 后规格复审 PASS，随后独立质量 Approved，无待修发现；两位审查员均独立复跑浏览器/定向 Jest。1471 历史输入与前三批 85 证据文件未变，来源/日志/文档/暂存完整性封存。**本地切片完成，只新建本地检查点，不推送。**
+- **下一批入口**：优先推进 G1-01 录音端 → 封口 → Worker → ready → 客户端确认/清理的契约审计与最小本地接线。服务端接口/合并函数已经存在，但整链尚无完成证据；不能把剩余工作全部归为人工真机测试。G1-02–09 分列环境、设备、长录音故障、解码核听、权限/删除、离线导出、AI 失败与整门验收。
+- **需要负责人**：提供设备型号/版本/排期；亲手进行真机锁屏/来电/抢占/专用进程退出、核听、第二台设备离线打开。脚本、hash/解码、负例与记录由 Agent 负责。云端测试需 §A #1/#2 明确环境与授权；G1 可用虚构口述开始，不要求先招募 G3/G4 家庭研究。
+- `g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。本批随新本地 checkpoint 封存；不推送、不 main 合并、不远端迁移/repair、不部署、不付费调用、不外发家庭资料。
+
+## 11 月 1 日 G1 录音草稿连接失效与显式恢复（前批完成状态）
 
 详见[报告](research/2026-11-01-g1-recorder-connection-recovery.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-connection-recovery.md)、[证据](research/evidence/2026-11-01-g1-recorder-connection-recovery/README.md)。基线 `f59e8f863`。**本地切片完成，规格 PASS 后质量 Approved，无待修发现；只创建新本地 checkpoint，不推送。** 前两批事务恢复/写入防护不重做。
 

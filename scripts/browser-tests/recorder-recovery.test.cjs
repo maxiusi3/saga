@@ -584,6 +584,57 @@ test('G1 local recorder persistence contracts (synthetic bytes only)', { timeout
         assert.deepEqual(result, { attemptsBeforeExplicitRead: 1, adapterOpens: 2, text: 'synthetic-chunk-0;', failure: undefined })
       }))
     }
+    for (const mode of ['append', 'first-chunk', 'clear']) {
+      await t.test(`recovery reports changed, not corruption, for concurrent ${mode} between session and chunk reads`, () => isolated(async page => {
+        const result = await page.evaluate(async mutation => {
+          await seed()
+          if (mutation !== 'first-chunk') await append(0)
+          const nextIndex = mutation === 'first-chunk' ? 0 : 1
+          const blob = new Blob([`synthetic-chunk-${nextIndex};`], { type: 'audio/webm' })
+          const nextChunk = { id: `capture-${nextIndex}`, sessionId: 'capture', index: nextIndex, blob,
+            byteSize: blob.size, sha256: await hash(blob), persistedAt: '2026-11-02T00:00:00.000Z',
+            uploadStatus: 'pending', timestamp: Date.now() }
+          const originalGet = IDBObjectStore.prototype.get
+          let injected = false, mutationDone
+          IDBObjectStore.prototype.get = function (key) {
+            const request = originalGet.call(this, key)
+            if (!injected && this.name === 'sessions' && key === 'capture') {
+              injected = true
+              request.addEventListener('success', () => {
+                const tx = this.transaction.db.transaction(['sessions', 'chunks'], 'readwrite')
+                mutationDone = new Promise((resolve, reject) => {
+                  tx.oncomplete = resolve
+                  tx.onabort = () => reject(tx.error)
+                })
+                if (mutation === 'clear') {
+                  tx.objectStore('sessions').delete('capture')
+                  tx.objectStore('chunks').delete('capture-0')
+                } else {
+                  tx.objectStore('chunks').add(nextChunk)
+                  tx.objectStore('sessions').put({ ...request.result, lastPersistedIndex: nextIndex,
+                    updatedAt: request.result.updatedAt + 1 })
+                }
+              }, { once: true })
+            }
+            return request
+          }
+          let failure
+          try {
+            try { await loadLocalRecording('capture', 'project-a', 'user-a') }
+            catch (error) { failure = error.code ?? error.name }
+            await mutationDone
+          } finally { IDBObjectStore.prototype.get = originalGet }
+          const remaining = await recorderDB.getChunksBySession('capture')
+          let recovered
+          if (mutation !== 'clear') recovered = await (await loadLocalRecording('capture', 'project-a', 'user-a')).blob.text()
+          return { injected, failure, remaining: remaining.length, recovered,
+            present: Boolean(await recorderDB.getSession('capture')) }
+        }, mode)
+        assert.deepEqual(result, { injected: true, failure: 'changed', remaining: mode === 'clear' ? 0 : mode === 'append' ? 2 : 1,
+          recovered: mode === 'clear' ? undefined : mode === 'append' ? 'synthetic-chunk-0;synthetic-chunk-1;' : 'synthetic-chunk-0;',
+          present: mode !== 'clear' })
+      }))
+    }
   } finally {
     if (browser) await browser.close()
     await new Promise(resolve => server.close(resolve))

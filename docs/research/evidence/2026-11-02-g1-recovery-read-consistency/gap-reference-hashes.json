@@ -1,0 +1,17 @@
+{
+  "docs/2026-10-10-integrated-upgrade-plan.md": "ff17e23d073c26e1b4d0279e1e1341e9859095d901f05adf665d45afb9bf2173",
+  "docs/superpowers/specs/2026-10-13-upgrade-p0-gates.md": "18ff0680510bb4689d36723dd5516bbc37bb43b320c1b554d54d1e859bb6caaf",
+  "docs/research/2026-10-15-t04-g1-device-runbook.md": "0a3e53bc62201fdd93df8901a5da946dc3fd32d42a52e9143779f9f2f4a51bc5",
+  "docs/HANDOFF-PROMPT-2026-11-01.md": "fe388dc36e13ed94ce33e6bbda5d43fcdc57643d2ad42a6a949f7d11b6aaaf45",
+  "packages/web/src/app/[locale]/dashboard/projects/[id]/record/page.tsx": "e4d6e71757c880aa91767422bffab2dd9f08436d6339fde163e9cffc675e5584",
+  "packages/web/src/app/api/recordings/sessions/[sessionId]/seal/route.ts": "a5a8cf13045976dfa59837a496fab8d818b51d7578ceb4f3a9353b88e39d4fb0",
+  "packages/web/src/lib/server/recording-session-service.ts": "7f8de766296baa1073751166077051b008de875c4ae2989a2f3971fd4687263b",
+  "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+  "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+  "packages/web/src/lib/server/media-export.ts": "c39f67b3aab648a1978afaeb2411d38c80f753fbfc6f5c1a00fed181332106ed",
+  "packages/web/src/app/api/projects/[id]/export/route.ts": "33bb6a853cc75771a29cde6778609acd76ca263ed7dc9b1ec636f6045c37e214",
+  "packages/web/src/lib/server/deletion-service.ts": "ca978f09a1d41a0cf4a40e7d0d03699babe2502cff48eb53799914b25c7b93ba",
+  "packages/web/src/lib/__tests__/ai-service.test.ts": "6e64d2bafad82376478997a4d305ed545a2bbcb0366d0026d58d1a5ed36f75ff",
+  "packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts": "edeb71fb5577d058cf19943b30cc141ab936e7dd122b4ebc57c353fc19e88de0",
+  "packages/web/src/app/api/ai/generate-content/__tests__/route.test.ts": "608dd4969046b2928b9e16ea9f38dac8f1dba588a723b47554f5e709ba2f6b6c"
+}

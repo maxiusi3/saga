@@ -15,6 +15,15 @@ function isRecoverable(session: RecorderSessionRecord, projectId: string, userId
     session.cloudConfirmedAssetId === null
 }
 
+async function assertSessionUnchanged(session: RecorderSessionRecord, projectId: string, userId: string) {
+  const current = await recorderDB.getSession(session.id)
+  if (!current || !isRecoverable(current, projectId, userId) || current.id !== session.id ||
+    current.lastPersistedIndex !== session.lastPersistedIndex || current.mimeType !== session.mimeType ||
+    current.startedAt !== session.startedAt || current.state !== session.state || current.updatedAt !== session.updatedAt) {
+    throw new RecordingRecoveryError('changed')
+  }
+}
+
 export async function listLocalRecordings(projectId: string, userId: string): Promise<RecorderSessionRecord[]> {
   if (!projectId || !userId) return []
   return (await recorderDB.getRecoverableSessions(projectId, userId))
@@ -33,6 +42,8 @@ export async function loadLocalRecording(sessionId: string, projectId: string, u
     throw new RecordingRecoveryError('unavailable')
   }
   const chunks = [...await recorderDB.getChunksBySession(sessionId)].sort((a, b) => a.index - b.index)
+  // Separate reads can straddle an append or cleanup; do not mislabel that as corruption.
+  await assertSessionUnchanged(session, projectId, userId)
   if (!chunks.length && session.lastPersistedIndex === -1) throw new RecordingRecoveryError('empty')
   if (!Number.isSafeInteger(session.lastPersistedIndex) || session.lastPersistedIndex < 0 ||
     chunks.length !== session.lastPersistedIndex + 1) throw new RecordingRecoveryError('damaged')
@@ -50,11 +61,6 @@ export async function loadLocalRecording(sessionId: string, projectId: string, u
 
   // Another tab may still be persisting this capture. Ask for a fresh selection instead of
   // presenting a snapshot whose session metadata no longer describes its bytes.
-  const current = await recorderDB.getSession(sessionId)
-  if (!current || !isRecoverable(current, projectId, userId) || current.id !== sessionId ||
-    current.lastPersistedIndex !== session.lastPersistedIndex || current.mimeType !== session.mimeType ||
-    current.startedAt !== session.startedAt || current.state !== session.state || current.updatedAt !== session.updatedAt) {
-    throw new RecordingRecoveryError('changed')
-  }
+  await assertSessionUnchanged(session, projectId, userId)
   return { session, blob: new Blob(chunks.map(chunk => chunk.blob), { type: session.mimeType }), chunkCount: chunks.length }
 }
