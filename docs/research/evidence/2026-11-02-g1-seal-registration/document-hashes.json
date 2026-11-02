@@ -1,0 +1,21 @@
+{
+  "docs/HANDOFF-2026-10-13-upgrade.md": "fcc01c5722678053021bfcf6aa23d397472cbfe20255ee60b4d8890fcb45a66c",
+  "docs/README.md": "b95ee4b0145b7615ad86c8c44721548d0e6a41f50c54a297da51ca0d9c369b88",
+  "docs/research/2026-11-02-g1-seal-registration.md": "b7dc52e29dc1ba2eb46a54c4dfa96cf6782bdd5842130ab4c5594450b11d3fe6",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/README.md": "ae451336c4d681205632ea8463cd09d5a35eab4f7e7411c09ce2b798b6adc50e",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/full-chain.json": "f1c9e19f30d408c91a23973702afa8137c8d079cb914068cac2db48fcb01ddec",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/log-hashes.json": "6455af27f850803b1099f10c6adda599798b99bc44e3f6e04d0d529c5941ac86",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/milestone-check.json": "e57bdeabf45076cae21b9cb432c872c45e4458421592bb41fd69422ab5471f57",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/next-env-check.json": "7f42103156ade662c88dd96869a6f19779833f61d1ec1f441d0d87758943a84a",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/prior-evidence-hashes.json": "cdfe5b2cff6875c54cb508ad7178bda95f1c73efdb21667f5b9684b6aad6a195",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/protected-inputs-check.json": "cc46b76edb309f709b430eb9034e12c8c048a9419e20c6d801eeebac45689629",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/quality-review.md": "497c3d65adc738e2633922fdc99cd196e99b3256f599549ae5b3cb633c99ae1c",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/seal-green.json": "d2dfc873339bc168be8cc6ff325ebfaf100ed1dd414219bf237a196bd3b59cfe",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/seal-red-behavior.json": "313aed583912462ae50ce71868d82d98136a5d43bb512a6ce6c778399a1910cf",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/seal-red.json": "9801930101b6be1bbaf204207adb9266d729ad15f3b55fc3e1e18c57b4a74c09",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/source-hashes.json": "03b70ec423c07bdeb949ea87fed382485dd285f75b6e74beb25a16ce00a4c9e5",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/spec-review.md": "4a8a252805be8df99f140c042006810c587dcda12836a49fc7fbe44e143918c4",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/takeover-check.json": "2683db0fc5a8bcee0e385a643a45c1a93ffc10ecfa2a120b53f98c31e3c3f501",
+  "docs/research/evidence/2026-11-02-g1-seal-registration/verification.json": "1770e0bac21a07599763c837937d628255c0ea472bf63537d491a60d9f22fd8d",
+  "docs/superpowers/plans/2026-11-02-upgrade-g1-seal-registration.md": "f59b5e8570d25df9d42905c3ba2702ddfe3f3e99cf683b04ea79313a95a23000"
+}

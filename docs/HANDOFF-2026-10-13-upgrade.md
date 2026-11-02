@@ -3,10 +3,21 @@
 - 更新时间：2026-11-02（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`8d4fc6dc5`（上一批 G1 连接恢复检查点；接手时工作树/暂存区干净，领先远端跟踪基线 `1921766c2` 3 个本地提交。本批继续恢复读取一致性并列出 G1 gap，不声称 G1 真机通过）
+- 本轮接手基线 HEAD：`665484289`（上一批 G1 恢复读取检查点；接手时工作树/暂存区干净，领先远端跟踪基线 `1921766c2` 4 个本地提交。本批按负责人批准推进 G1-01，先完成可靠封口登记，不声称整链或 G1 真机通过）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 11 月 2 日 G1 恢复读取一致性与 Gap 清单（当前状态，以本节为准）
+## 11 月 2 日 G1-01 稳定封口身份与可恢复登记（当前状态，以本节为准）
+
+详见[报告](research/2026-11-02-g1-seal-registration.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-seal-registration.md)、[证据](research/evidence/2026-11-02-g1-seal-registration/README.md)。原 [9 项 gap 清单](research/2026-11-02-g1-gap-register.md)保留为上一批基线；本节更新第 1 项进度，其他 gap 不因此关闭。
+
+- 修复原服务随机 asset ID 导致 HTTP 重试 key 不稳定的问题：默认 UUIDv8 身份绑定 actor/project/session，清单变化不另建资产而报冲突；显式 ID 调用兼容。新增登记 helper，使用精确输入比对、insert/23505 重查和 verifying 缺任务补写；提交成功但响应失败可显式重试，不覆盖/删除既有行。
+- 角色不再硬编码为 storyteller：检查真实 active storyteller、本人故事/项目和删除状态；任务发布前与回执前重新授权，复用现有资产 guard。错误查询不是空结果，异常固定错误/no-store/cookie 保留。封口回执**始终不授予清理许可**；裸 ready 不冒充最终确认。
+- 初始新测试语法失败独立保留；修正后真实 RED 44 fail/13 pass，GREEN 4 套/97 项。完整链 exit 0：Web 139/2251、shared 4/16、infra 14、184 页；next-env 已核对生成差异并恢复。audit 未重跑，旧配置警告保留。独立规格 PASS 后质量 Approved，两位分别复跑 4/97，无待修发现；1471 历史输入及前四批 115 证据文件未变，来源/日志/文档/限定暂存载荷随本批检查点封存。**本地登记切片完成，不重做实现或验证整理；提交身份和干净状态以 Git 为准。**
+- **G1-01 仍 partial**：两笔写入可恢复但不原子；客户端清单未成为可信账本，Worker 未运行、客户端 seal/确认/清理未接。旧随机 ID 资产不自动认领/改写；状态化 fake 不是 PG/云端并发验收。
+- **下一批入口**：统一本地 `temp/<session>` 与服务端 `projects/<project>/sessions/<session>/<index>` 的上传契约，建立可信且不可变的 session/chunk 封口输入，再接 Worker 领取/核验/发布/持久确认，最后接录音页与安全清理。不得跳过可信输入层直接消费候选任务。本地工作暂不需要负责人手工操作；云端阶段仍需 §A #1/#2 环境与授权，真机输入按 gap 清单准备。
+- `g1Item01Complete: false`、`g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。只新建本地 checkpoint；不推送、不 main 合并、不远端迁移/repair、不部署、不付费调用、不外发家庭资料。
+
+## 11 月 2 日 G1 恢复读取一致性与 Gap 清单（前批完成状态）
 
 详见[报告](research/2026-11-02-g1-recovery-read-consistency.md)、[G1 gap 与人工操作清单](research/2026-11-02-g1-gap-register.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-recovery-read-consistency.md)、[证据](research/evidence/2026-11-02-g1-recovery-read-consistency/README.md)。基线 `8d4fc6dc5`；前三批 G1 检查点不改写、不重做。
 

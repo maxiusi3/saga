@@ -35,6 +35,26 @@ describe('T04 & T05 recording session seal and durable merge service', () => {
     },
   ]
 
+  it('keeps HTTP retry identity stable without caller-supplied asset or job ids', () => {
+    const input = { projectId: 'proj-alpha', sessionId: 'sess-1', actorId: 'storyteller-1',
+      actorRole: 'storyteller', actorActive: true, mimeType: 'audio/webm', chunks }
+    const first = prepareRecordingSessionSeal(input)
+    const second = prepareRecordingSessionSeal({ ...input, chunks: [...chunks].reverse() })
+    expect(first.assetRecord.id).toMatch(/^[a-f0-9]{8}-[a-f0-9]{4}-8[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/)
+    expect(first.assetRecord.id).toBe(second.assetRecord.id)
+    expect(first.task.idempotencyKey).toBe(second.task.idempotencyKey)
+    expect(first.jobSnapshot.id).not.toBe(second.jobSnapshot.id)
+    expect(prepareRecordingSessionSeal({ ...input, actorId: 'storyteller-2' }).assetRecord.id).not.toBe(first.assetRecord.id)
+    const altered = prepareRecordingSessionSeal({ ...input, chunks: [{ ...chunks[0], sha256: 'c'.repeat(64) }, chunks[1]] })
+    expect(altered.assetRecord.id).toBe(first.assetRecord.id)
+    expect(altered.task.idempotencyKey).not.toBe(first.task.idempotencyKey)
+    for (const [projectId, sessionId] of [['proj-beta', 'sess-1'], ['proj-alpha', 'sess-2']]) {
+      const other = prepareRecordingSessionSeal({ ...input, projectId, sessionId,
+        chunks: chunks.map(chunk => ({ ...chunk, objectKey: `projects/${projectId}/sessions/${sessionId}/${chunk.index}` })) })
+      expect(other.assetRecord.id).not.toBe(first.assetRecord.id)
+    }
+  })
+
   it('seals an ordered chunk manifest, enforces byte quota, and produces deterministic idempotency keys', () => {
     const first = prepareRecordingSessionSeal({
       assetId: 'asset-rec-1',

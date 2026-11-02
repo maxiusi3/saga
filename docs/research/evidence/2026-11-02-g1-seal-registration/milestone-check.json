@@ -1,0 +1,19 @@
+{
+  "localSealRegistrationSliceStatus": "complete",
+  "g1Item01Status": "partial",
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "pushPerformed": false,
+  "remaining": [
+    "Trusted session/chunk ledger and unified upload namespace",
+    "Immutable durable seal manifest and actual DB concurrency qualification",
+    "Worker host, claim, bytes/decode verification and atomic ready/succeeded publication",
+    "Client seal/status/confirmation/cleanup and idempotent story save",
+    "Authorized environment and real-device/cloud acceptance"
+  ],
+  "manualInputRequiredForThisLocalSlice": false,
+  "mergeMainAuthorized": false,
+  "remoteMigrationAuthorized": false,
+  "productionDeploymentAuthorized": false
+}

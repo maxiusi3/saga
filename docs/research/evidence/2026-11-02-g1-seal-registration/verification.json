@@ -1,0 +1,98 @@
+{
+  "batch": "g1-seal-registration",
+  "baselineCommit": "665484289e4dc15896073572fd730923f701c7b1",
+  "localSliceStatus": "complete",
+  "scope": {
+    "production": [
+      "packages/web/src/lib/server/recording-session-service.ts",
+      "packages/web/src/app/api/recordings/sessions/[sessionId]/seal/route.ts",
+      "packages/web/src/lib/server/recording-seal-registration.ts"
+    ],
+    "sqlChanged": false,
+    "newDependencies": false,
+    "atomicRegistration": false,
+    "frontendWired": false,
+    "workerHostWired": false,
+    "trustedChunkLedgerWired": false,
+    "cleanupAuthorizedBySeal": false
+  },
+  "tdd": {
+    "initialInvalidHarness": {
+      "execution": "seal-red.json",
+      "exitCode": 1,
+      "countsAsRouteBehavioralRed": false
+    },
+    "behavioralRed": {
+      "execution": "seal-red-behavior.json",
+      "suites": 2,
+      "tests": 57,
+      "failed": 44,
+      "passed": 13,
+      "exitCode": 1,
+      "productionMatchesBaseline": true
+    },
+    "green": {
+      "execution": "seal-green.json",
+      "suites": 4,
+      "tests": 97,
+      "exitCode": 0
+    },
+    "sameBehavioralRedAndGreenTests": true
+  },
+  "fullChain": {
+    "execution": "full-chain.json",
+    "exitCode": 0,
+    "web": {
+      "suites": 139,
+      "tests": 2251
+    },
+    "shared": {
+      "suites": 4,
+      "tests": 16
+    },
+    "infraTests": 14,
+    "nextBuildPages": 184,
+    "typeCheckPassed": true,
+    "lintPassed": true
+  },
+  "reviews": {
+    "spec": {
+      "status": "PASS",
+      "reviewer": "/root/g1_seal_spec",
+      "receipt": "spec-review.md"
+    },
+    "quality": {
+      "status": "Approved",
+      "reviewer": "/root/g1_seal_quality",
+      "receipt": "quality-review.md",
+      "startedAfterSpecPass": true
+    },
+    "outstandingFindings": 0,
+    "provenance": "Parent-recorded actual completed independent review responses; rerun commands and scope listed in receipts."
+  },
+  "protection": {
+    "historicalInputs": 1471,
+    "previousEvidenceFiles": 115,
+    "mismatches": 0,
+    "nextEnvRestored": true
+  },
+  "limits": [
+    "Stateful HTTP fake models exact query filters and existing uniqueness, not a PostgreSQL/Storage/Worker integration experiment.",
+    "Two inserts are recoverable, not atomic; partial verifying asset may remain after failure or revoked access.",
+    "Revalidation is not cross-query atomic revocation. Worker claim/publication must independently authorize.",
+    "Client manifest remains untrusted declaration; upload namespaces and durable manifest are not integrated.",
+    "Legacy random-ID assets are not auto-adopted, rewritten or deleted.",
+    "No real-device or 5/20/30-minute recording/cloud/permission/export qualification."
+  ],
+  "auditRerun": false,
+  "pgExperimentsRun": false,
+  "buildWarnings": [
+    "Legacy Next eslint configuration unsupported",
+    "images.domains deprecated",
+    "Optional Google, Stripe, analytics, Sentry configuration absent"
+  ],
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "pushPerformed": false
+}
