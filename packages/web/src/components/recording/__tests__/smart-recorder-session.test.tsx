@@ -149,7 +149,10 @@ it('saves the login-bound session before capture, with the actual MP4 MIME', asy
   expect(mockSaveSession.mock.invocationCallOrder[0]).toBeLessThan(recorder.start.mock.invocationCallOrder[0])
   await act(async () => { recorder.emit(blob('abc', recorder.mimeType)) })
   await waitFor(() => expect([...mockChunks.values()][0]?.uploadStatus).toBe('uploaded'))
-  expect(mockUpload).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ fileName: '0.m4a', allowedTypes: ['audio/mp4'] }))
+  expect(mockUpload).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
+    folder: `projects/project-1/sessions/${session.id}`, fileName: '0',
+    expectedUserId: 'user-1', allowedTypes: ['audio/mp4'],
+  }))
 })
 
 it.each(['missing-user', 'unsupported'] as const)('refuses capture when %s', async reason => {

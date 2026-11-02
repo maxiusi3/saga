@@ -1,0 +1,110 @@
+{
+  "checked": [
+    {
+      "file": "docs/research/2026-11-02-g1-durable-manifest.md",
+      "link": "../superpowers/plans/2026-11-02-upgrade-g1-durable-manifest.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/2026-11-02-g1-durable-manifest.md",
+      "link": "evidence/2026-11-02-g1-durable-manifest/README.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/2026-11-02-g1-durable-manifest.md",
+      "link": "evidence/2026-11-02-g1-durable-manifest/verification.json",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/2026-11-02-g1-durable-manifest.md",
+      "link": "evidence/2026-11-02-g1-durable-manifest/final-integrity.json",
+      "generatedDuringPackaging": true
+    },
+    {
+      "file": "docs/research/2026-11-02-g1-durable-manifest.md",
+      "link": "2026-11-02-g1-gap-register.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/HANDOFF-2026-10-13-upgrade.md",
+      "link": "research/2026-11-02-g1-durable-manifest.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/HANDOFF-2026-10-13-upgrade.md",
+      "link": "superpowers/plans/2026-11-02-upgrade-g1-durable-manifest.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/HANDOFF-2026-10-13-upgrade.md",
+      "link": "research/evidence/2026-11-02-g1-durable-manifest/README.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/HANDOFF-2026-10-13-upgrade.md",
+      "link": "research/2026-11-02-g1-gap-register.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/README.md",
+      "link": "research/2026-11-02-g1-durable-manifest.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/README.md",
+      "link": "superpowers/plans/2026-11-02-upgrade-g1-durable-manifest.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/README.md",
+      "link": "research/evidence/2026-11-02-g1-durable-manifest/README.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/README.md",
+      "link": "research/2026-11-02-g1-seal-registration.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/README.md",
+      "link": "superpowers/plans/2026-11-02-upgrade-g1-seal-registration.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/README.md",
+      "link": "research/evidence/2026-11-02-g1-seal-registration/README.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/evidence/2026-11-02-g1-durable-manifest/README.md",
+      "link": "verification.json",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/evidence/2026-11-02-g1-durable-manifest/README.md",
+      "link": "milestone-check.json",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/evidence/2026-11-02-g1-durable-manifest/README.md",
+      "link": "spec-review.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/evidence/2026-11-02-g1-durable-manifest/README.md",
+      "link": "quality-review.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/evidence/2026-11-02-g1-durable-manifest/README.md",
+      "link": "../../2026-11-02-g1-durable-manifest.md",
+      "generatedDuringPackaging": false
+    },
+    {
+      "file": "docs/research/evidence/2026-11-02-g1-durable-manifest/README.md",
+      "link": "../../../superpowers/plans/2026-11-02-upgrade-g1-durable-manifest.md",
+      "generatedDuringPackaging": false
+    }
+  ],
+  "broken": []
+}

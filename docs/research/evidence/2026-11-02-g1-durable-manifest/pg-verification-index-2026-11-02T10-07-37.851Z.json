@@ -1,0 +1,220 @@
+{
+  "createdAt": "2026-11-02T10:07:37.850Z",
+  "scope": "Task1 PG-only receipts and final owned sources; parent owns final batch index",
+  "commands": {
+    "red": "node experiments/pg17-recording-manifest/verify.mjs --without-migration",
+    "normal": "node experiments/pg17-recording-manifest/verify.mjs",
+    "polluted": "PGHOST=127.0.0.1 PGPORT=1 PGDATABASE=synthetic_do_not_use PGUSER=synthetic PGPASSWORD=synthetic PGSSLMODE=require PGOPTIONS='-c search_path=synthetic_do_not_use' PGSERVICE=synthetic_do_not_use PGSERVICEFILE=/tmp/synthetic-no-pg-service DATABASE_URL=postgresql://synthetic:synthetic@127.0.0.1:1/synthetic_do_not_use node experiments/pg17-recording-manifest/verify.mjs",
+    "infraInventory": "node --test scripts/__tests__/deployment-config.test.js (7/7 passed exit0; terminal only, parent full infra chain will retain log)"
+  },
+  "sources": {
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "experiments/pg17-recording-manifest/verify.mjs": "183080491b015df724e2ed4faf38dfc3e3ab0b2568084fcf96fab00dcb1c5190",
+    "experiments/pg17-recording-manifest/README.md": "47cb476e1e2f759c0d2dc5fdbae3e597d2df8e5e259b7fb09f5c7861388392eb",
+    "scripts/__tests__/deployment-config.test.js": "7bc593a54b8f74e25b056146d42b1c146fc94e25c5c5f56a1cce93e24e3377c4"
+  },
+  "runs": [
+    {
+      "logPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-coherence-red-20261102T100451Z.log",
+      "logSha256": "4c2ee8b18ea24f9f29b5d9ded002b7ef108445694e9550614322041bc6d637ba",
+      "gzipPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-coherence-red-20261102T100451Z.log.gz",
+      "gzipSha256": "ca3884e8a18c7c9b5253e88d4ac5e6bb58802274acdd5dafb60963f59a7f4a3b",
+      "gzipDecodesToRaw": true,
+      "reportPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/pg-verify-2026-11-02T10-04-51.502Z-309adf50-62bd-451f-9ae5-52466ce40f54.json",
+      "reportSha256": "baff0d9fe22876834637fce672744d95d7207cbbf6e68f7fc1df846b2a0e894e",
+      "mode": "verify",
+      "status": "failed",
+      "assertions": 593,
+      "scenarios": 10,
+      "sqlstate": "00000",
+      "exitCode": 1,
+      "scrubbedEnvironmentKeys": [],
+      "sourceHashes": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-recording-manifest/verify.mjs": "183080491b015df724e2ed4faf38dfc3e3ab0b2568084fcf96fab00dcb1c5190",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261102000001_recording_seal_manifest.sql": "524ef9d4943e442c2a312cda19656b384718ea6552752df781bc62c9c1f36946"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true
+      },
+      "independentCleanup": {
+        "socketRemoved": true,
+        "directoryRemoved": true,
+        "serverPidGone": true
+      }
+    },
+    {
+      "logPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-final-normal-20261102T100559Z.log",
+      "logSha256": "b36551185e4172393e43de878458668953f67ea2ab48489115edd47f38d5337f",
+      "gzipPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-final-normal-20261102T100559Z.log.gz",
+      "gzipSha256": "85b46ebab7b944e387ba8406ea50a25d886413d67101e340111a5011a753e45f",
+      "gzipDecodesToRaw": true,
+      "reportPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/pg-verify-2026-11-02T10-05-59.937Z-01dc33b5-bf9e-4c4e-b4f7-ebd7cc158289.json",
+      "reportSha256": "56c93f977c2a457688c0b7c8e599d9e2b3c8ad6b0fdec838cd889b62ee1394bd",
+      "mode": "verify",
+      "status": "passed",
+      "assertions": 645,
+      "scenarios": 15,
+      "sqlstate": "00000",
+      "exitCode": 0,
+      "scrubbedEnvironmentKeys": [],
+      "sourceHashes": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-recording-manifest/verify.mjs": "183080491b015df724e2ed4faf38dfc3e3ab0b2568084fcf96fab00dcb1c5190",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true
+      },
+      "independentCleanup": {
+        "socketRemoved": true,
+        "directoryRemoved": true,
+        "serverPidGone": true
+      }
+    },
+    {
+      "logPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-final-polluted-20261102T100608Z.log",
+      "logSha256": "085bb7941dcc169b3d9d99c8b1e018080c68a9df73b1a1b20c5b8fcbe2bd75d5",
+      "gzipPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-final-polluted-20261102T100608Z.log.gz",
+      "gzipSha256": "a928653563ba2c494ef4a6b8f9e224f07f15d84de51f628d5f4d000f3f2389a8",
+      "gzipDecodesToRaw": true,
+      "reportPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/pg-verify-2026-11-02T10-06-08.783Z-947b2e0e-6584-4956-87e1-dbb84292a142.json",
+      "reportSha256": "0330442b9418121f1851ecad0147efc31fc464ff9a054839f69a3be84caa03a3",
+      "mode": "verify",
+      "status": "passed",
+      "assertions": 645,
+      "scenarios": 15,
+      "sqlstate": "00000",
+      "exitCode": 0,
+      "scrubbedEnvironmentKeys": [
+        "DATABASE_URL",
+        "PGDATABASE",
+        "PGHOST",
+        "PGOPTIONS",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGSERVICE",
+        "PGSERVICEFILE",
+        "PGSSLMODE",
+        "PGUSER"
+      ],
+      "sourceHashes": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-recording-manifest/verify.mjs": "183080491b015df724e2ed4faf38dfc3e3ab0b2568084fcf96fab00dcb1c5190",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true
+      },
+      "independentCleanup": {
+        "socketRemoved": true,
+        "directoryRemoved": true,
+        "serverPidGone": true
+      }
+    },
+    {
+      "logPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-green-20261102T100341Z.log",
+      "logSha256": "f2578caebc183d502726b4e8e4a2555b29af386dc59c3dcdbac99cc3cfbfb902",
+      "gzipPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-green-20261102T100341Z.log.gz",
+      "gzipSha256": "86c8c3f1593f370eddfeaa3804792c4900d9f3f1c1024044f793fa8eaa5907b1",
+      "gzipDecodesToRaw": true,
+      "reportPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/pg-verify-2026-11-02T10-03-41.226Z-4a3597b6-3db0-4d56-8698-3dcd35756054.json",
+      "reportSha256": "af27c6be1b652955231b0192e898289acacaf597e901d4721676813d65d9c61c",
+      "mode": "verify",
+      "status": "passed",
+      "assertions": 623,
+      "scenarios": 15,
+      "sqlstate": "00000",
+      "exitCode": 0,
+      "scrubbedEnvironmentKeys": [],
+      "sourceHashes": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-recording-manifest/verify.mjs": "759261e7a1606a0ddcde550bebe2688484cb4cdaeef5d6de0486d341d1db5e8a",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+        "supabase/migrations/20261102000001_recording_seal_manifest.sql": "524ef9d4943e442c2a312cda19656b384718ea6552752df781bc62c9c1f36946"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true
+      },
+      "independentCleanup": {
+        "socketRemoved": true,
+        "directoryRemoved": true,
+        "serverPidGone": true
+      }
+    },
+    {
+      "logPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-red-20261102T100133Z.log",
+      "logSha256": "fecde642084966d1c2cdcef2eec63c684aff49c887b5deb0a49e3327ade51922",
+      "gzipPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/raw/pg-red-20261102T100133Z.log.gz",
+      "gzipSha256": "3da2c30a8f4a5c3bfbe0f44254f425b32e6008c537633c635637872315129ec6",
+      "gzipDecodesToRaw": true,
+      "reportPath": "docs/research/evidence/2026-11-02-g1-durable-manifest/pg-red-without-migration-2026-11-02T10-01-34.082Z-109e802f-b1bc-4977-8fd3-4aed85ff6964.json",
+      "reportSha256": "a3361615a53ddbc7b81bfe70372951d7000a8c0fe0bd0d0cda28f88a0d585895",
+      "mode": "red-without-migration",
+      "status": "failed",
+      "assertions": 16,
+      "scenarios": 1,
+      "sqlstate": "42883",
+      "exitCode": 1,
+      "scrubbedEnvironmentKeys": [],
+      "sourceHashes": {
+        "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+        "experiments/pg17-recording-manifest/verify.mjs": "759261e7a1606a0ddcde550bebe2688484cb4cdaeef5d6de0486d341d1db5e8a",
+        "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+        "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67"
+      },
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketRemoved": true,
+        "parentDirectoryRemoved": true,
+        "serverPidGone": true
+      },
+      "independentCleanup": {
+        "socketRemoved": true,
+        "directoryRemoved": true,
+        "serverPidGone": true
+      }
+    }
+  ],
+  "limitations": [
+    "Synthetic exact extracted foundation DDL with synthetic prerequisites, not full migration chain",
+    "All actors actual login NOSUPERUSER/NOBYPASSRLS; no remote keys/database, Storage/readback/decode/real audio/ready/cleanup authorization",
+    "Only manifest atomic, asset/job registration remains separate",
+    "Existing project/role/story rows stabilized, not atomic deletion with all writers",
+    "Trusted database owner can alter fixtures; no protection against malicious owner DDL"
+  ]
+}

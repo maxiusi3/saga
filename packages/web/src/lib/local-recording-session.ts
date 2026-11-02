@@ -2,6 +2,7 @@ import { recorderDB } from './recorder-db'
 import { createRecordingSession, type CreateRecordingSessionInput } from './recording-session'
 import { storageService } from './storage'
 import { useAuthStore } from '@/stores/auth-store'
+import { recordingChunkLocation } from './recording-chunk-location'
 
 /** One capture's queues; network latency never holds up the next local write. */
 export async function createLocalRecordingSession(input: CreateRecordingSessionInput) {
@@ -35,14 +36,14 @@ export async function createLocalRecordingSession(input: CreateRecordingSessionI
           if (!canUpload()) return
           const chunks = await recorderDB.getChunksBySession(record.id)
           const baseType = record.mimeType.split(';')[0]
-          const extension = baseType === 'audio/mp4' ? 'm4a' : baseType === 'audio/ogg' ? 'ogg' : 'webm'
           for (const chunk of chunks) {
             if (chunk.uploadStatus === 'uploaded') continue
             if (!canUpload()) return
+            const location = recordingChunkLocation({ userId: record.userId, projectId: record.projectId, sessionId: record.id, index: chunk.index })
             const result = await storageService.uploadFile(chunk.blob, {
               bucket: 'audio-recordings',
-              folder: `temp/${record.id}`,
-              fileName: `${chunk.index}.${extension}`,
+              folder: location.folder,
+              fileName: location.fileName,
               allowedTypes: [baseType],
               expectedUserId: record.userId,
             })

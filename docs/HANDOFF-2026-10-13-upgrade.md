@@ -3,10 +3,21 @@
 - 更新时间：2026-11-02（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`665484289`（上一批 G1 恢复读取检查点；接手时工作树/暂存区干净，领先远端跟踪基线 `1921766c2` 4 个本地提交。本批按负责人批准推进 G1-01，先完成可靠封口登记，不声称整链或 G1 真机通过）
+- 本轮接手基线 HEAD：`1ca1e06dd`（上一批可靠封口登记检查点，领先远端跟踪基线 `1921766c2` 5 个本地提交；本批从完整验证中断处续接，21 项源码与中断前已测版本一致。提交身份与最终干净状态以 Git 为准）
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 11 月 2 日 G1-01 稳定封口身份与可恢复登记（当前状态，以本节为准）
+## 11 月 2 日 G1-01 持久封口清单与统一上传路径（当前状态，以本节为准）
+
+详见[报告](research/2026-11-02-g1-durable-manifest.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-durable-manifest.md)、[证据](research/evidence/2026-11-02-g1-durable-manifest/README.md)。前五批及 [9 项 gap 清单](research/2026-11-02-g1-gap-register.md)保持原证据，本节只更新 G1-01 输入层进度。
+
+- 本地候选 RPC 原子固定本人会话与完整块清单，精确重放不写入，冲突/旧记录/损坏状态拒绝；限制 service_role 直接写账本，保留专用 RPC 和既有读取策略。固定逻辑路径与含用户前缀的真实 Storage 路径；只切换新录音上传，不搬移旧 temp 对象或重写旧 uploaded 标记。
+- seal HTTP 必须先得到严格验证的持久清单回执，再进入既有可恢复资产/任务登记；RPC 缺失/失败/超时/取消都拒绝继续，无无账本回退、自动重试或本地清理授权。**清单只证明身份与输入持久绑定，不证明对象存在、字节/hash 或解码正确。**
+- 定向 8/165 的源码已重核；续接完整链 exit 0：Web 142/2295、shared 4/16、infra 14、184 页。PG17.4 普通/污染环境重新各 15 场景/645 断言通过并确认清理。原完整链空回执及日志保留但不计 PASS；next-env 原字节已恢复，audit 未重跑。独立规格 PASS 后独立质量 Approved，无待修发现；两位核验源码与证据，未重跑测试。1471 历史输入及前五批 140 证据文件未变；文档和限定暂存载荷随本地检查点封存，提交身份以 Git 为准。
+- **下一批入口**：Worker 从固定物理清单读取实际 Storage 对象，验证字节/hash/全流解码，接持久领取及原子发布；之后再接录音页 seal/status、幂等故事保存、持久确认与安全清理。后续 Worker 状态/删除变更须专用授权 RPC，不恢复广泛直接写权限。旧对象/草稿对账另行设计。
+- **G1-01 仍 partial，G1 仍未通过**：只有清单事务原子，资产/任务登记仍是后续可恢复两写；不是云端、完整迁移链或真机验收。当前本地工作无需负责人手工操作；远端环境与迁移/部署需单独授权，真机/核听/第二设备离线操作按 gap 清单排期。
+- `g1Item01Complete: false`、`g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。本批仅新本地 checkpoint；不推送、不合并 main、不远端迁移/repair、不部署、不付费调用、不外发家庭素材。
+
+## 11 月 2 日 G1-01 稳定封口身份与可恢复登记（前批状态）
 
 详见[报告](research/2026-11-02-g1-seal-registration.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-seal-registration.md)、[证据](research/evidence/2026-11-02-g1-seal-registration/README.md)。原 [9 项 gap 清单](research/2026-11-02-g1-gap-register.md)保留为上一批基线；本节更新第 1 项进度，其他 gap 不因此关闭。
 

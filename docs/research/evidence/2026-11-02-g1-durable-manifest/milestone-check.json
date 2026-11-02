@@ -1,0 +1,7 @@
+{
+  "localSliceComplete": true,
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "nextEntry": "Worker pinned-manifest reader, Storage byte/hash/decode checks, durable claim and atomic publication; then client confirmation and cleanup"
+}

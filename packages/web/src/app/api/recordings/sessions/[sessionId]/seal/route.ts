@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
 import { prepareRecordingSessionSeal, DEFAULT_MAX_RECORDING_INPUT_BYTES } from '@/lib/server/recording-session-service'
 import { registerRecordingSeal, RecordingSealRegistrationError } from '@/lib/server/recording-seal-registration'
+import { persistRecordingManifest } from '@/lib/server/recording-manifest-ledger'
 import { requireCurrentMediaAsset } from '@/lib/server/media-asset-guard'
 import { withMediaHeaders } from '@/lib/server/media-access'
 import { getSupabaseAdmin } from '@/lib/supabase'
@@ -91,6 +92,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       const status = error instanceof Error && error.message.startsWith('recording_quota_exceeded') ? 413 : 400
       return reply({ error: 'Invalid recording manifest or recording quota exceeded' }, status, auth.headers)
     }
+    await persistRecordingManifest(admin, sealed, request.signal)
+    // The RPC may outlive a permission change; do not publish jobs on its receipt alone.
+    await checkScope(sealed.assetRecord.id)
     const revalidate = async (asset: Record<string, unknown>) => {
       await checkScope(sealed.assetRecord.id)
       const current = await requireCurrentMediaAsset(admin, auth.user, asset, ['verifying', 'ready'])

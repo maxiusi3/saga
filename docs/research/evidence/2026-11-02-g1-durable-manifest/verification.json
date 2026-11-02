@@ -1,0 +1,51 @@
+{
+  "baselineCommit": "1ca1e06dd3ed81115ae29527892929194ba7e406",
+  "branch": "codex/october-upgrade-p0",
+  "scope": "Durable immutable declared seal input and canonical upload namespace only",
+  "focused": {
+    "suites": 8,
+    "tests": 165,
+    "source": "web-green-4.json",
+    "sourceHashesRevalidated": true
+  },
+  "fullChain": {
+    "source": "full-chain-resume.json",
+    "exitCode": 0,
+    "webSuites": 142,
+    "webTests": 2295,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 14,
+    "buildPages": 184
+  },
+  "pg17": {
+    "normal": {
+      "scenarios": 15,
+      "assertions": 645,
+      "exitCode": 0
+    },
+    "polluted": {
+      "scenarios": 15,
+      "assertions": 645,
+      "exitCode": 0
+    },
+    "resumedExecutions": true,
+    "cleanupVerified": true
+  },
+  "reviews": {
+    "specification": "PASS",
+    "quality": "Approved",
+    "order": "specification_then_quality"
+  },
+  "historicalInputsVerified": 1471,
+  "priorEvidenceVerified": 140,
+  "nextEnvRestored": true,
+  "auditRerun": false,
+  "incompleteOriginalFullChainAccepted": false,
+  "limitations": [
+    "Synthetic PG fixture, not full migration chain or live PostgREST",
+    "No Storage readback, real-byte/hash/decode verification or Worker execution",
+    "No frontend final confirmation, idempotent story-save integration or safe cleanup",
+    "No cloud, real-device, remote migration, deployment or push"
+  ]
+}

@@ -5,9 +5,10 @@ import { POST } from '../route'
 const mockAuth = jest.fn()
 const mockProjectAccess = jest.fn()
 const mockFrom = jest.fn()
+const mockRpc = jest.fn()
 jest.mock('@/lib/server/auth', () => ({ getAuthenticatedUser: (...args: unknown[]) => mockAuth(...args) }))
 jest.mock('@/lib/server/project-access', () => ({ requireProjectAccess: (...args: unknown[]) => mockProjectAccess(...args) }))
-jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => ({ from: (...args: unknown[]) => mockFrom(...args) }) }))
+jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => ({ from: (...args: unknown[]) => mockFrom(...args), rpc: (...args: unknown[]) => mockRpc(...args) }) }))
 
 type Row = Record<string, unknown>
 const chunks = [{ index: 0, chunkId: 'chunk-0', bucket: 'audio-recordings',
@@ -78,6 +79,14 @@ beforeEach(() => {
   fail = undefined
   afterJobInsert = undefined
   mockFrom.mockImplementation(query)
+  mockRpc.mockImplementation((_name, args) => {
+    const chain = { abortSignal: () => chain, retry: () => chain,
+      then: (resolve: (value: unknown) => unknown) => Promise.resolve({ error: null, data: {
+        schemaVersion: 1, sessionId: 'session-alpha-1', state: 'sealing', manifestSha256: 'b'.repeat(64),
+        manifest: args.p_manifest, canClearLocalDrafts: false,
+      } }).then(resolve) }
+    return chain
+  })
 })
 afterEach(() => {
   if (originalFlag === undefined) delete process.env.MEDIA_ASSETS_ENABLED
@@ -96,6 +105,71 @@ it('registers once and replays the actual filtered asset/job without duplicate r
   expect(rows.processing_jobs).toHaveLength(1)
   expect(second.headers.get('cache-control')).toBe('no-store')
   expect(second.headers.getSetCookie()).toEqual(headers.getSetCookie())
+})
+
+it('requires a durable manifest receipt before the first asset/job write', async () => {
+  let sawLedger = false
+  const original = mockRpc.getMockImplementation()!
+  mockRpc.mockImplementation((...args) => {
+    expect(rows.media_assets).toHaveLength(0)
+    expect(rows.processing_jobs).toHaveLength(0)
+    sawLedger = true
+    return original(...args)
+  })
+  expect((await seal()).status).toBe(202)
+  expect(sawLedger).toBe(true)
+  expect(mockRpc).toHaveBeenCalledWith('seal_recording_manifest', { p_manifest: expect.objectContaining({
+    userId: 'alice', sessionId: 'session-alpha-1', chunks: [expect.objectContaining({
+      storageObjectKey: 'alice/projects/proj-1/sessions/session-alpha-1/0',
+    })],
+  }) })
+})
+
+it.each(['42883', 'XX000', '23514', '42501'])('does not register assets/jobs if the manifest ledger fails with %s', async code => {
+  mockRpc.mockImplementation(() => {
+    const chain = { abortSignal: () => chain, retry: () => chain,
+      then: (resolve: (value: unknown) => unknown) => Promise.resolve({ data: null, error: { code, message: 'private' } }).then(resolve) }
+    return chain
+  })
+  const result = await seal()
+  expect(result.status).toBe(code === '23514' ? 409 : code === '42501' ? 403 : 503)
+  expect(rows.media_assets).toHaveLength(0)
+  expect(rows.processing_jobs).toHaveLength(0)
+  expect(await result.text()).not.toContain('private')
+  expect(result.headers.get('cache-control')).toBe('no-store')
+})
+
+it('revalidates role after the durable write and before creating an asset or job', async () => {
+  const original = mockRpc.getMockImplementation()!
+  mockRpc.mockImplementation((...args) => {
+    rows.project_roles[0].status = 'removed'
+    return original(...args)
+  })
+  expect((await seal()).status).toBe(403)
+  expect(rows.media_assets).toHaveLength(0)
+  expect(rows.processing_jobs).toHaveLength(0)
+})
+
+it('revalidates deletion after the durable write and keeps all local cleanup unauthorized', async () => {
+  const original = mockRpc.getMockImplementation()!
+  mockRpc.mockImplementation((...args) => {
+    rows.deletion_requests.push({ project_id: 'proj-1', subject_id: 'session-alpha-1', tombstone_at: '2026-11-02T00:00:00Z' })
+    return original(...args)
+  })
+  expect((await seal()).status).toBe(409)
+  expect(rows.media_assets).toHaveLength(0)
+  expect(rows.processing_jobs).toHaveLength(0)
+})
+
+it('does not turn a malformed durable receipt into an asset/job registration', async () => {
+  mockRpc.mockImplementation(() => {
+    const chain = { abortSignal: () => chain, retry: () => chain,
+      then: (resolve: (value: unknown) => unknown) => Promise.resolve({ data: { state: 'sealing' }, error: null }).then(resolve) }
+    return chain
+  })
+  expect((await seal()).status).toBe(503)
+  expect(rows.media_assets).toHaveLength(0)
+  expect(rows.processing_jobs).toHaveLength(0)
 })
 
 it('concurrent identical seals converge on one asset and one job using insert conflicts', async () => {

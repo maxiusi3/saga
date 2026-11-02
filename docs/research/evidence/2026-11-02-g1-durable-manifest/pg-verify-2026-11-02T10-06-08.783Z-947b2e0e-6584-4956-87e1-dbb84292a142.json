@@ -1,0 +1,202 @@
+{
+  "startedAt": "2026-11-02T10:06:08.785Z",
+  "status": "passed",
+  "mode": "verify",
+  "scope": "Synthetic isolated PG17.4 manifest identity/durability only; no full migration chain, PostgREST, Storage readback, real audio, decode, ready or cleanup authorization",
+  "sources": {
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "experiments/pg17-recording-manifest/verify.mjs": "183080491b015df724e2ed4faf38dfc3e3ab0b2568084fcf96fab00dcb1c5190",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+  },
+  "sourceSnapshots": {
+    "experiments/pg17-recording-manifest/verify.mjs": {
+      "path": "raw/pg-verify-2026-11-02T10-06-08.783Z-947b2e0e-6584-4956-87e1-dbb84292a142-runner.mjs.gz",
+      "sha256": "419ed2fd9b750bb964466820c374b91425306b06fbb3f97a8a76cdb80f2e6335",
+      "decodedSha256": "183080491b015df724e2ed4faf38dfc3e3ab0b2568084fcf96fab00dcb1c5190"
+    },
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": {
+      "path": "raw/pg-verify-2026-11-02T10-06-08.783Z-947b2e0e-6584-4956-87e1-dbb84292a142-migration.sql.gz",
+      "sha256": "4dcb580892a569fff4a5c873f2141fd590ee9c76cc94585d91a69d934dfbfb04",
+      "decodedSha256": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+    }
+  },
+  "assertions": 645,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "metadata_reader",
+      "session_user": "metadata_reader",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Missing service RPC is genuine pre-implementation RED",
+      "status": "passed",
+      "assertions": 5
+    },
+    {
+      "name": "Exact replay preserves rows, timestamps and complete input; JSON key order does not change identity",
+      "status": "passed",
+      "assertions": 19
+    },
+    {
+      "name": "Malformed roots, identity fields and MIME values cannot bypass strict canonical schema",
+      "status": "passed",
+      "assertions": 205
+    },
+    {
+      "name": "Malformed chunks, duplicate identity, noncontiguous order and all unsafe namespace substitutions reject",
+      "status": "passed",
+      "assertions": 188
+    },
+    {
+      "name": "Byte and chunk quotas accept exact boundary and reject one beyond without writes",
+      "status": "passed",
+      "assertions": 16
+    },
+    {
+      "name": "Only service role can call RPC; PUBLIC and forged JWT roles cannot confer capabilities",
+      "status": "passed",
+      "assertions": 54
+    },
+    {
+      "name": "Current project, active storyteller and optional story ownership are mandatory on create and replay",
+      "status": "passed",
+      "assertions": 34
+    },
+    {
+      "name": "Session, story and asset tombstones deny both new sealing and exact replay",
+      "status": "passed",
+      "assertions": 16
+    },
+    {
+      "name": "Legacy seal_input-null rows are preserved and refused in every prior state",
+      "status": "passed",
+      "assertions": 14
+    },
+    {
+      "name": "Corrupt sealed session fields and chunk rows never earn a replay receipt or repair writes",
+      "status": "passed",
+      "assertions": 44
+    },
+    {
+      "name": "Identical concurrent seals converge and competing changed input has one durable winner",
+      "status": "passed",
+      "assertions": 15
+    },
+    {
+      "name": "Late chunk insertion error rolls back the session and all preceding chunks",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "Existing permission rows are locked during sealing; revocation after commit defeats replay",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "Hostile temp shadows cannot redirect security-definer reads or writes",
+      "status": "passed",
+      "assertions": 5
+    },
+    {
+      "name": "Migration replay preserves data, receipts, read policies and restricted grants",
+      "status": "passed",
+      "assertions": 4
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [
+      "DATABASE_URL",
+      "PGDATABASE",
+      "PGHOST",
+      "PGOPTIONS",
+      "PGPASSWORD",
+      "PGPORT",
+      "PGSERVICE",
+      "PGSERVICEFILE",
+      "PGSSLMODE",
+      "PGUSER"
+    ],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 36554,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-Hktnz0/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-Hktnz0",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users",
+      "auth.uid()",
+      "projects",
+      "project_roles",
+      "project_members",
+      "stories"
+    ],
+    "exactP1Tables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "recording_sessions",
+      "recording_chunks"
+    ],
+    "exactP1Functions": [
+      "is_project_facilitator",
+      "is_active_project_member"
+    ],
+    "exactP1Policies": [
+      "recording_sessions_select_owner_or_member"
+    ],
+    "excluded": "Other foundation DDL, indexes, policies and other migrations; not a complete migration-chain rehearsal"
+  },
+  "rpcProbeSqlstate": "00000",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "socketRemoved": true,
+    "parentDirectoryRemoved": true,
+    "serverPidGone": true
+  },
+  "completedAt": "2026-11-02T10:06:40.271Z"
+}
