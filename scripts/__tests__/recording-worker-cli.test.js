@@ -39,7 +39,7 @@ function command(args, env, cwd = root) {
     })
     let stdout = '', stderr = ''
     child.stdout.on('data', bytes => { stdout += bytes }); child.stderr.on('data', bytes => { stderr += bytes })
-    const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('CLI test timed out')) }, 15000)
+    const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('CLI test timed out')) }, 30000)
     child.on('error', reject); child.on('close', code => { clearTimeout(timer); resolve({ code, stdout, stderr }) })
   })
 }

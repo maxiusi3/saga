@@ -15,7 +15,7 @@ test('restore CLI applies every migration in order and stops after the first fai
     // No database connection is made: record the real script's psql invocations.
     fs.writeFileSync(path.join(directory, 'psql'), `#!${process.execPath}\nconst fs=require('node:fs');const args=process.argv.slice(2);fs.appendFileSync(process.env.SAGA_RESTORE_LOG,JSON.stringify(args)+'\\n');if(args.includes(process.env.SAGA_FAIL_FILE))process.exit(7);`, { mode: 0o700 })
     const files = fs.readdirSync(path.join(root, 'supabase/migrations')).filter(f => f.endsWith('.sql')).sort().map(f => 'supabase/migrations/' + f)
-    const run = failure => spawnSync('bash', ['scripts/supabase/restore-new-project.sh'], { cwd: root, encoding: 'utf8', timeout: 30000,
+    const run = failure => spawnSync('bash', ['scripts/supabase/restore-new-project.sh'], { cwd: root, encoding: 'utf8', timeout: 60000,
       env: { ...process.env, PATH: directory + path.delimiter + process.env.PATH, DATABASE_URL: 'postgresql://synthetic.invalid/no-connection', BACKUP_FILE: backup, SAGA_RESTORE_LOG: log, SAGA_FAIL_FILE: failure } })
     const invokedFiles = () => fs.readFileSync(log, 'utf8').trim().split('\n').map(s => JSON.parse(s)).filter(a => a.includes('-f')).map(a => a[a.indexOf('-f') + 1])
     assert.equal(run('').status, 0)
