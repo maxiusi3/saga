@@ -1,0 +1,7 @@
+{
+  "sourceDirectory": ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow",
+  "sha256": {
+    "verify-task-3-db.cjs": "4d7f2a9554157ad90aa0a93878ed9b6f2eceaf99d7cb4da2cf7e3671d3ff7c34",
+    "task-3-native-flow-fixture.js": "e7383400e5fe61426da4343a1e9a02e7750badd7f184111da029d50851b7c053"
+  }
+}

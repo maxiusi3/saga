@@ -1,0 +1,11 @@
+{
+  "supabase/migrations/20261106000002_media_deletion_capture.sql": "1aabf50fc1427504b9826737ff774b733dce63a36101d4c4ce5db23927db175d",
+  "packages/web/src/lib/server/media-deletion-capture.ts": "6b5510ddf2f92f70035bdeeebf672380738a78e3fb1dc7d62629494b4dbe869a",
+  "packages/web/src/app/api/media/delete-request/route.ts": "7c1864d7f36e00333e96911a97c1a5cd4e74b97e0cfb503df2cd1cfe0dab72e3",
+  "packages/web/src/lib/server/__tests__/media-deletion-capture.test.ts": "600c0f83bf49ebfb8d0cc3e5d7680d4b8c4424ef2add24132dab83969deb1cb9",
+  "packages/web/src/app/api/media/delete-request/__tests__/route.test.ts": "8e018d36cd2efd7c03988f2b7e5382bbf4a96a6023b444455d6a6ca0a4094269",
+  "experiments/pg17-deletion-capture/fixture.mjs": "fd83eb5e509d6f6667db50652201106f846bae0ad3d593377cdd4eddf96185b6",
+  "experiments/pg17-deletion-capture/verify.mjs": "9e5dee4a8e6e2b54abfae8c1628bd78a351db767b14710ded13e400ec8f2beea",
+  "experiments/pg17-deletion-capture/scenarios.mjs": "bf117744fcf63161ce95f3946da0aee6a1c669e1ede4a29706721197f2ed2526",
+  "experiments/pg17-deletion-capture/README.md": "47cbc02ae85f3fe6bfaffecd185421b94e7b77085b459667959b1236b6fa74a0"
+}

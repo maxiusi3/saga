@@ -8,22 +8,24 @@ import {
   getNotificationDisplayInfo,
   formatNotificationTime
 } from '@saga/shared'
-import { useNotifications } from '@/hooks/useNotifications'
 import { useTranslations } from 'next-intl'
 
 interface NotificationItemProps {
   notification: SagaNotification
   onClick?: () => void
   showActions?: boolean
+  markAsRead: (id: string) => Promise<void>
+  deleteNotification: (id: string) => Promise<void>
 }
 
 export function NotificationItem({ 
   notification, 
   onClick, 
-  showActions = true 
+  showActions = true,
+  markAsRead,
+  deleteNotification
 }: NotificationItemProps) {
   const t = useTranslations('notifications-page.item')
-  const { markAsRead, deleteNotification } = useNotifications()
   const displayInfo = getNotificationDisplayInfo(notification.notification_type)
 
   const handleMarkAsRead = async (e: React.MouseEvent) => {
@@ -45,7 +47,7 @@ export function NotificationItem({
 
   return (
     <div
-      className={`p-4 hover:bg-muted/50 cursor-pointer transition-colors ${
+      className={`relative p-4 hover:bg-muted/50 cursor-pointer transition-colors ${
         !notification.is_read ? 'bg-primary/5 border-l-2 border-l-primary' : ''
       }`}
       onClick={handleClick}
@@ -70,7 +72,7 @@ export function NotificationItem({
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <p className={`text-sm ${!notification.is_read ? 'font-semibold' : 'font-medium'} text-foreground`}>
                 {notification.title}
               </p>
@@ -103,13 +105,13 @@ export function NotificationItem({
 
             {/* Actions */}
             {showActions && (
-              <div className="flex items-center space-x-1 ml-2">
+              <div className="flex flex-shrink-0 items-center space-x-1 ml-2">
                 {!notification.is_read && (
                   <FurbridgeButton
                     variant="ghost"
                     size="sm"
                     onClick={handleMarkAsRead}
-                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-6 w-6 p-0"
                     title={t('markAsRead')}
                   >
                     <Check className="h-3 w-3" />
@@ -120,7 +122,7 @@ export function NotificationItem({
                   variant="ghost"
                   size="sm"
                   onClick={handleDelete}
-                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity hover:text-destructive"
+                  className="h-6 w-6 p-0 hover:text-destructive"
                   title={t('delete')}
                 >
                   <Trash2 className="h-3 w-3" />

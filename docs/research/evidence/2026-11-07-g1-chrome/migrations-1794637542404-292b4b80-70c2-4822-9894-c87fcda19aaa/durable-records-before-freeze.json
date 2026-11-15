@@ -1,0 +1,463 @@
+{
+  "story_ai_edit_requests": [
+    {
+      "status": "completed",
+      "actor_id": "22222222-2222-4222-8222-222222222222",
+      "story_id": "207c7c35-e322-4948-b261-d5cc94840bae",
+      "created_at": "2026-11-14T14:25:50.64225+08:00",
+      "request_id": "b79af572-e6b3-44fb-9264-1fdb8aef5180",
+      "lease_token": "4a28eb6f-1459-417e-9e6c-775a9f79be71",
+      "revision_id": "3236803b-765d-45e3-bdd6-9bd2b17f5a35",
+      "source_hash": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "completed_at": "2026-11-14T14:25:50.6555+08:00",
+      "failure_code": null,
+      "configuration": {
+        "editor": {
+          "model": "claude-opus-5-5",
+          "region": "us",
+          "provider": "anthropic"
+        },
+        "reviewer": {
+          "model": "gpt-6-astra",
+          "region": "us",
+          "provider": "openai"
+        }
+      },
+      "result_sha256": "e76ddd74fb885b388872293aac28ff211f4e38484cf213838077433138a0e6e6",
+      "transcript_id": "8521b1d8-6c72-456e-b5ba-2f259f98a870",
+      "policy_version": "g2-ai-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "request_sha256": "c830316af1cb4ea5e7c622ae0827fb8b9bc12104c727410e9d983c7841ac9dd2",
+      "expected_version": 0,
+      "editor_consent_id": "de7c6938-1022-4a20-8731-72662ff2abfb",
+      "result_revision_id": "6972ce67-b029-44fe-b1cc-1837626294b4",
+      "source_fingerprint": "694c1ad90ba9f5b87c9e729ce8c330d5f5a977ff6c9a37ed4f9e32ac2720e4b7",
+      "reviewer_consent_id": "bd64c06d-8e3f-4e80-b367-bd3a32a790e3"
+    },
+    {
+      "status": "reviewing",
+      "actor_id": "22222222-2222-4222-8222-222222222222",
+      "story_id": "987587fe-8784-4ef4-9664-61a4794a2fd5",
+      "created_at": "2026-11-14T14:25:50.680726+08:00",
+      "request_id": "971d7ca6-5d85-47c1-af65-a5d865555927",
+      "lease_token": "f052487e-25d0-4279-94ce-4594069eed30",
+      "revision_id": "abc3e37b-827b-45cf-bf69-939428fa9632",
+      "source_hash": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "completed_at": null,
+      "failure_code": null,
+      "configuration": {
+        "editor": {
+          "model": "claude-opus-5-5",
+          "region": "us",
+          "provider": "anthropic"
+        },
+        "reviewer": {
+          "model": "gpt-6-astra",
+          "region": "us",
+          "provider": "openai"
+        }
+      },
+      "result_sha256": null,
+      "transcript_id": "dc255582-739f-4284-ab0f-77ba1da94a6a",
+      "policy_version": "g2-ai-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "request_sha256": "bcda3d5540e12d19bbe6922c6693f447b0c528d3a6e2541da3315d09e3f303bd",
+      "expected_version": 0,
+      "editor_consent_id": "73bfc6ee-c38b-490b-b08c-834337f7c244",
+      "result_revision_id": null,
+      "source_fingerprint": "6ec2a1508c1a4f2e827804810f3fc573a9446a60d846fddff545f0adb5d66346",
+      "reviewer_consent_id": "6c0ef957-a887-4fb3-8c81-cb07a15e03c4"
+    }
+  ],
+  "story_revisions": [
+    {
+      "id": "3236803b-765d-45e3-bdd6-9bd2b17f5a35",
+      "body": "Synthetic caption",
+      "title": "Delete after freeze",
+      "status": "invalidated",
+      "summary": "Synthetic caption",
+      "story_id": "207c7c35-e322-4948-b261-d5cc94840bae",
+      "created_at": "2026-11-14T14:25:50.612842+08:00",
+      "created_by": "22222222-2222-4222-8222-222222222222",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "updated_at": "2026-11-14T14:25:50.6555+08:00",
+      "approved_at": null,
+      "approved_by": null,
+      "source_hash": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "edit_version": 0,
+      "content_sha256": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "revision_number": 1,
+      "provenance_links": [],
+      "provenance_snapshot": {
+        "source_fingerprint": "694c1ad90ba9f5b87c9e729ce8c330d5f5a977ff6c9a37ed4f9e32ac2720e4b7"
+      },
+      "transcript_version_id": "8521b1d8-6c72-456e-b5ba-2f259f98a870"
+    },
+    {
+      "id": "6972ce67-b029-44fe-b1cc-1837626294b4",
+      "body": "Synthetic caption",
+      "title": "Delete after freeze",
+      "status": "draft",
+      "summary": "Synthetic caption",
+      "story_id": "207c7c35-e322-4948-b261-d5cc94840bae",
+      "created_at": "2026-11-14T14:25:50.655424+08:00",
+      "created_by": "22222222-2222-4222-8222-222222222222",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "updated_at": "2026-11-14T14:25:50.655424+08:00",
+      "approved_at": null,
+      "approved_by": null,
+      "source_hash": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "edit_version": 0,
+      "content_sha256": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "revision_number": 2,
+      "provenance_links": [],
+      "provenance_snapshot": {
+        "ai": {
+          "models": {
+            "editor": {
+              "model": "claude-opus-5-5",
+              "region": "us",
+              "provider": "anthropic",
+              "responseId": "synthetic-backup-editor"
+            },
+            "reviewer": {
+              "model": "gpt-6-astra",
+              "region": "us",
+              "provider": "openai",
+              "responseId": "synthetic-backup-reviewer"
+            }
+          },
+          "processor": "paragraph-editor-v1",
+          "request_id": "b79af572-e6b3-44fb-9264-1fdb8aef5180",
+          "policy_version": "g2-ai-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "source_fingerprint": "694c1ad90ba9f5b87c9e729ce8c330d5f5a977ff6c9a37ed4f9e32ac2720e4b7"
+      },
+      "transcript_version_id": "8521b1d8-6c72-456e-b5ba-2f259f98a870"
+    },
+    {
+      "id": "abc3e37b-827b-45cf-bf69-939428fa9632",
+      "body": "Synthetic caption",
+      "title": "Keep after restore",
+      "status": "draft",
+      "summary": "Synthetic caption",
+      "story_id": "987587fe-8784-4ef4-9664-61a4794a2fd5",
+      "created_at": "2026-11-14T14:25:50.667998+08:00",
+      "created_by": "22222222-2222-4222-8222-222222222222",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "updated_at": "2026-11-14T14:25:50.667998+08:00",
+      "approved_at": null,
+      "approved_by": null,
+      "source_hash": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "edit_version": 0,
+      "content_sha256": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "revision_number": 1,
+      "provenance_links": [],
+      "provenance_snapshot": {
+        "source_fingerprint": "6ec2a1508c1a4f2e827804810f3fc573a9446a60d846fddff545f0adb5d66346"
+      },
+      "transcript_version_id": "dc255582-739f-4284-ab0f-77ba1da94a6a"
+    }
+  ],
+  "story_assertions": [
+    {
+      "id": "01dc9904-213c-4c30-8368-3d45a949e4f2",
+      "end_ms": null,
+      "ordinal": 0,
+      "subject": "storyteller",
+      "start_ms": null,
+      "story_id": "987587fe-8784-4ef4-9664-61a4794a2fd5",
+      "claim_text": "Synthetic caption",
+      "created_at": "2026-11-14T14:25:50.667998+08:00",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "segment_id": "1873894b-5931-4929-a705-cee423d16e55",
+      "updated_at": "2026-11-14T14:25:50.667998+08:00",
+      "ai_evidence": null,
+      "disputed_by": null,
+      "reviewed_by": null,
+      "revision_id": "abc3e37b-827b-45cf-bf69-939428fa9632",
+      "alternatives": [],
+      "source_quote": "Synthetic caption",
+      "reviewer_note": null,
+      "assertion_type": "quote",
+      "date_precision": "not_applicable",
+      "review_decision": "unreviewed",
+      "supplemented_by": null,
+      "memory_attribution": "storyteller_memory",
+      "verification_status": "pending_review",
+      "is_severe_fabrication": false,
+      "transcript_version_id": "dc255582-739f-4284-ab0f-77ba1da94a6a",
+      "disputed_alternative_text": null
+    },
+    {
+      "id": "af4ad849-d209-4d5c-8c40-6f108f0b8f5d",
+      "end_ms": null,
+      "ordinal": 0,
+      "subject": "storyteller",
+      "start_ms": null,
+      "story_id": "207c7c35-e322-4948-b261-d5cc94840bae",
+      "claim_text": "Synthetic caption",
+      "created_at": "2026-11-14T14:25:50.612842+08:00",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "segment_id": "00efad14-3e68-42d1-b6b4-d3c8ac5d348e",
+      "updated_at": "2026-11-14T14:25:50.612842+08:00",
+      "ai_evidence": null,
+      "disputed_by": null,
+      "reviewed_by": null,
+      "revision_id": "3236803b-765d-45e3-bdd6-9bd2b17f5a35",
+      "alternatives": [],
+      "source_quote": "Synthetic caption",
+      "reviewer_note": null,
+      "assertion_type": "quote",
+      "date_precision": "not_applicable",
+      "review_decision": "unreviewed",
+      "supplemented_by": null,
+      "memory_attribution": "storyteller_memory",
+      "verification_status": "pending_review",
+      "is_severe_fabrication": false,
+      "transcript_version_id": "8521b1d8-6c72-456e-b5ba-2f259f98a870",
+      "disputed_alternative_text": null
+    },
+    {
+      "id": "f1bfa5d4-1ab8-4363-85f7-9308a7ba1f84",
+      "end_ms": null,
+      "ordinal": 0,
+      "subject": "storyteller",
+      "start_ms": null,
+      "story_id": "207c7c35-e322-4948-b261-d5cc94840bae",
+      "claim_text": "Synthetic caption",
+      "created_at": "2026-11-14T14:25:50.655424+08:00",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "segment_id": "00efad14-3e68-42d1-b6b4-d3c8ac5d348e",
+      "updated_at": "2026-11-14T14:25:50.655424+08:00",
+      "ai_evidence": {
+        "risks": [],
+        "models": {
+          "editor": {
+            "model": "claude-opus-5-5",
+            "region": "us",
+            "provider": "anthropic",
+            "responseId": "synthetic-backup-editor"
+          },
+          "reviewer": {
+            "model": "gpt-6-astra",
+            "region": "us",
+            "provider": "openai",
+            "responseId": "synthetic-backup-reviewer"
+          }
+        },
+        "severity": "none",
+        "supported": true,
+        "request_id": "b79af572-e6b3-44fb-9264-1fdb8aef5180",
+        "claim_sha256": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+        "policy_version": "g2-ai-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "source_fingerprint": "694c1ad90ba9f5b87c9e729ce8c330d5f5a977ff6c9a37ed4f9e32ac2720e4b7"
+      },
+      "disputed_by": null,
+      "reviewed_by": null,
+      "revision_id": "6972ce67-b029-44fe-b1cc-1837626294b4",
+      "alternatives": [],
+      "source_quote": "Synthetic caption",
+      "reviewer_note": null,
+      "assertion_type": "event",
+      "date_precision": "not_applicable",
+      "review_decision": "unreviewed",
+      "supplemented_by": null,
+      "memory_attribution": "storyteller_memory",
+      "verification_status": "pending_review",
+      "is_severe_fabrication": false,
+      "transcript_version_id": "8521b1d8-6c72-456e-b5ba-2f259f98a870",
+      "disputed_alternative_text": null
+    }
+  ],
+  "transcript_versions": [
+    {
+      "id": "8521b1d8-6c72-456e-b5ba-2f259f98a870",
+      "model": "imported-text",
+      "version": 1,
+      "asset_id": null,
+      "language": "und",
+      "provider": "legacy",
+      "story_id": "207c7c35-e322-4948-b261-d5cc94840bae",
+      "full_text": "Synthetic caption",
+      "created_at": "2026-11-14T14:25:50.612842+08:00",
+      "created_by": "22222222-2222-4222-8222-222222222222",
+      "is_current": true,
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "content_sha256": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "alignment_status": "legacy_unaligned"
+    },
+    {
+      "id": "dc255582-739f-4284-ab0f-77ba1da94a6a",
+      "model": "imported-text",
+      "version": 1,
+      "asset_id": null,
+      "language": "und",
+      "provider": "legacy",
+      "story_id": "987587fe-8784-4ef4-9664-61a4794a2fd5",
+      "full_text": "Synthetic caption",
+      "created_at": "2026-11-14T14:25:50.667998+08:00",
+      "created_by": "22222222-2222-4222-8222-222222222222",
+      "is_current": true,
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "content_sha256": "462ab6afc420fed0f7b4849cf6d7177369116eadaf4ac409929996ed425f5550",
+      "alignment_status": "legacy_unaligned"
+    }
+  ],
+  "transcript_segments": [
+    {
+      "id": "00efad14-3e68-42d1-b6b4-d3c8ac5d348e",
+      "text": "Synthetic caption",
+      "end_ms": null,
+      "start_ms": null,
+      "confidence": null,
+      "created_at": "2026-11-14T14:25:50.612842+08:00",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "segment_index": 0,
+      "speaker_label": "storyteller",
+      "is_human_corrected": false,
+      "transcript_version_id": "8521b1d8-6c72-456e-b5ba-2f259f98a870"
+    },
+    {
+      "id": "1873894b-5931-4929-a705-cee423d16e55",
+      "text": "Synthetic caption",
+      "end_ms": null,
+      "start_ms": null,
+      "confidence": null,
+      "created_at": "2026-11-14T14:25:50.667998+08:00",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "segment_index": 0,
+      "speaker_label": "storyteller",
+      "is_human_corrected": false,
+      "transcript_version_id": "dc255582-739f-4284-ab0f-77ba1da94a6a"
+    }
+  ],
+  "consent_records": [
+    {
+      "id": "6c0ef957-a887-4fb3-8c81-cb07a15e03c4",
+      "region": "us",
+      "purpose": "cloud_ai",
+      "provider": "openai",
+      "granted_at": "2026-11-14T14:25:50.678104+08:00",
+      "grantor_id": "22222222-2222-4222-8222-222222222222",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "subject_id": "987587fe-8784-4ef4-9664-61a4794a2fd5",
+      "withdrawn_at": null,
+      "policy_version": "g2-ai-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "id": "73bfc6ee-c38b-490b-b08c-834337f7c244",
+      "region": "us",
+      "purpose": "cloud_ai",
+      "provider": "anthropic",
+      "granted_at": "2026-11-14T14:25:50.678104+08:00",
+      "grantor_id": "22222222-2222-4222-8222-222222222222",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "subject_id": "987587fe-8784-4ef4-9664-61a4794a2fd5",
+      "withdrawn_at": null,
+      "policy_version": "g2-ai-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "id": "bd64c06d-8e3f-4e80-b367-bd3a32a790e3",
+      "region": "us",
+      "purpose": "cloud_ai",
+      "provider": "openai",
+      "granted_at": "2026-11-14T14:25:50.635958+08:00",
+      "grantor_id": "22222222-2222-4222-8222-222222222222",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "subject_id": "207c7c35-e322-4948-b261-d5cc94840bae",
+      "withdrawn_at": null,
+      "policy_version": "g2-ai-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "id": "de7c6938-1022-4a20-8731-72662ff2abfb",
+      "region": "us",
+      "purpose": "cloud_ai",
+      "provider": "anthropic",
+      "granted_at": "2026-11-14T14:25:50.635958+08:00",
+      "grantor_id": "22222222-2222-4222-8222-222222222222",
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "subject_id": "207c7c35-e322-4948-b261-d5cc94840bae",
+      "withdrawn_at": null,
+      "policy_version": "g2-ai-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ],
+  "hosting_reminders": [
+    {
+      "id": "00ddffad-61eb-4131-a5e1-dd3e7ac86093",
+      "sent_at": "2026-11-14T14:25:50.696662+08:00",
+      "order_id": "b1bcb18f-90af-4dc1-b3bb-34872f5398db",
+      "created_at": "2026-11-14T14:25:50.696662+08:00",
+      "expires_at": "2026-12-29T14:25:50.692658+08:00",
+      "project_id": "6d7596b3-a58e-46ea-9be1-352842db5227",
+      "days_before": 90,
+      "email_state": "sent",
+      "email_token": "07df6208-60a1-41c5-8d9f-4b53408efa19",
+      "recipient_id": "42a3f5ea-be8c-4012-81b2-2f93cab3bebe",
+      "email_receipt": "synthetic_backup_receipt",
+      "email_sent_at": "2026-11-14T14:25:50.707529+08:00",
+      "email_attempts": 1,
+      "notification_id": "44253c22-c020-4f39-be34-a653202ad7b8",
+      "email_lease_until": null,
+      "email_outbound_at": "2026-11-14T14:25:50.705884+08:00"
+    },
+    {
+      "id": "be557d5c-3831-4570-bb2c-308bc58f3417",
+      "sent_at": "2026-11-14T14:25:50.712785+08:00",
+      "order_id": "882b4f5b-a438-4cef-b0cd-d66332b07158",
+      "created_at": "2026-11-14T14:25:50.712785+08:00",
+      "expires_at": "2026-12-29T14:25:50.710062+08:00",
+      "project_id": "ef5dc28d-7d75-4048-9110-31260f813ecc",
+      "days_before": 90,
+      "email_state": "unknown",
+      "email_token": "6baef73d-0255-4aa3-bbf9-1f82124b8908",
+      "recipient_id": "42a3f5ea-be8c-4012-81b2-2f93cab3bebe",
+      "email_receipt": null,
+      "email_sent_at": null,
+      "email_attempts": 1,
+      "notification_id": "c8a872d5-cce2-46f1-a954-d53c5034d39c",
+      "email_lease_until": null,
+      "email_outbound_at": "2026-11-14T14:25:50.717502+08:00"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "44253c22-c020-4f39-be34-a653202ad7b8",
+      "data": {
+        "days_before": 90,
+        "hosting_order_id": "b1bcb18f-90af-4dc1-b3bb-34872f5398db",
+        "hosting_expires_at": "2026-12-29T06:25:50.692658+00:00",
+        "hosting_project_id": "6d7596b3-a58e-46ea-9be1-352842db5227",
+        "hosting_reminder_id": "00ddffad-61eb-4131-a5e1-dd3e7ac86093"
+      },
+      "type": "hosting_expiry",
+      "title": "Your project hosting period ends soon",
+      "is_read": false,
+      "message": "Your hosting period ends on 2026-12-29. Review your project and download your archive before that date.",
+      "read_at": null,
+      "sender_id": null,
+      "action_url": "/dashboard/projects/6d7596b3-a58e-46ea-9be1-352842db5227",
+      "created_at": "2026-11-14T14:25:50.694168+08:00",
+      "updated_at": "2026-11-14T14:25:50.694168+08:00",
+      "recipient_id": "42a3f5ea-be8c-4012-81b2-2f93cab3bebe"
+    },
+    {
+      "id": "c8a872d5-cce2-46f1-a954-d53c5034d39c",
+      "data": {
+        "days_before": 90,
+        "hosting_order_id": "882b4f5b-a438-4cef-b0cd-d66332b07158",
+        "hosting_expires_at": "2026-12-29T06:25:50.710062+00:00",
+        "hosting_project_id": "ef5dc28d-7d75-4048-9110-31260f813ecc",
+        "hosting_reminder_id": "be557d5c-3831-4570-bb2c-308bc58f3417"
+      },
+      "type": "hosting_expiry",
+      "title": "Your project hosting period ends soon",
+      "is_read": false,
+      "message": "Your hosting period ends on 2026-12-29. Review your project and download your archive before that date.",
+      "read_at": null,
+      "sender_id": null,
+      "action_url": "/dashboard/projects/ef5dc28d-7d75-4048-9110-31260f813ecc",
+      "created_at": "2026-11-14T14:25:50.710991+08:00",
+      "updated_at": "2026-11-14T14:25:50.710991+08:00",
+      "recipient_id": "42a3f5ea-be8c-4012-81b2-2f93cab3bebe"
+    }
+  ]
+}

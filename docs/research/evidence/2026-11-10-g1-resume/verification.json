@@ -1,0 +1,174 @@
+{
+  "checkedAt": "2026-11-10T11:46:42.109065+08:00",
+  "timezone": "Asia/Taipei",
+  "status": "passed",
+  "scope": "Resume interrupted G1 closeout; restore local runtime and rerun verification, no product implementation changes",
+  "g1LocalWebAcceptance": "passed",
+  "referencedChat": "01a1b62d-ff7b-7913-a44b-2f5a850d2890",
+  "sourceVerification": {
+    "priorManifest": "docs/research/evidence/2026-11-09-g1-story-deletion/source-manifest.json",
+    "priorManifestSha256": "13876b54deb03a50c0d17525713b5ec034b93282c320ab8364fd78a0c7ef6474",
+    "files": 1159,
+    "initialDrift": [],
+    "productSourceDrift": [],
+    "finalDocumentationChanges": [
+      "docs/HANDOFF-2026-10-13-upgrade.md",
+      "docs/README.md",
+      "docs/research/2026-11-02-g1-gap-register.md"
+    ],
+    "priorReceipt": "docs/research/evidence/2026-11-09-g1-story-deletion/verification.json",
+    "priorReceiptSha256": "41b3cbbe594c880eda71656548c0248e9b145168aca267563c72fbd05cad90b9",
+    "priorRecordsVerified": 11,
+    "priorLogsVerified": 22,
+    "priorSourceArchive": "docs/research/evidence/2026-11-09-g1-story-deletion/source.tar.gz",
+    "priorSourceArchiveSha256": "8c74b46747984baa8945a611caee50058c33d6515ca63ed853126afff3e4b1fe",
+    "priorSourceArchiveUnchanged": true
+  },
+  "initialEnvironmentFailures": [
+    {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794281730302-df797b24-d723-4570-8ffd-260563010da6/results.json",
+      "sha256": "7dbe4bc96385dd1605a166154b94c6d5551f600e7d51331da7572e06f054d093",
+      "status": "failed",
+      "assertions": 0,
+      "migrations": 0,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "error": {
+        "message": "spawnSync /tmp/saga-g1-runtime/install/bin/postgres ENOENT",
+        "code": "ENOENT"
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794281730302-16e579f4-25cd-41f9-8291-3d1a9eab8fa0/results.json",
+      "sha256": "7dbe4bc96385dd1605a166154b94c6d5551f600e7d51331da7572e06f054d093",
+      "status": "failed",
+      "assertions": 0,
+      "migrations": 0,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "error": {
+        "message": "spawnSync /tmp/saga-g1-runtime/install/bin/postgres ENOENT",
+        "code": "ENOENT"
+      }
+    }
+  ],
+  "runtimeRecovery": {
+    "command": "sh experiments/g1-local/prepare-runtime.sh",
+    "exitCode": 0,
+    "runtime": "/tmp/saga-g1-runtime/install/bin",
+    "version": "PostgreSQL 17.4",
+    "reason": "missing temporary runtime",
+    "sourceTarballSha256": "c4605b73fea11963406699f949b966e5d173a7ee0ccaef8938dec0ca8a995fe7"
+  },
+  "records": {
+    "chrome-rerun": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794282070095-dbd8fe19-1be7-4ad8-a090-0cd140c854ea/results.json",
+      "sha256": "c54c3f8dbd85f427d3c6d1cd9c73b3d21c4f0404d7621110256fa696c791e845",
+      "status": "passed",
+      "assertions": 241,
+      "migrations": 32,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "sourceDrift": [],
+      "sourcesVerified": 96,
+      "postgres": "postgres (PostgreSQL) 17.4",
+      "browser": "156.0.8078.80",
+      "beforeScreenshot": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794282070095-dbd8fe19-1be7-4ad8-a090-0cd140c854ea/chrome-story-before.png",
+      "afterScreenshot": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794282070095-dbd8fe19-1be7-4ad8-a090-0cd140c854ea/chrome-story-after.png"
+    },
+    "backup-rerun": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794282070095-4d85953d-d1ef-4c68-98be-091e08bc252d/results.json",
+      "sha256": "7267cc51cdba4a39c71e86fcab6d0ec44d6c96e3c9b0e39b2dff399d32f7a8a9",
+      "status": "passed",
+      "assertions": 493,
+      "migrations": 32,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "sourceDrift": [],
+      "sourcesVerified": 69,
+      "postgres": "postgres (PostgreSQL) 17.4",
+      "browser": "156.0.8078.80",
+      "checks": [
+        "full migrated schema serves two actual recordings",
+        "real pg_dump custom archive",
+        "real pg_restore to separate database",
+        "all object bytes restored and hashed",
+        "post-freeze capture and targets replayed exactly",
+        "restored story and intent prose purged",
+        "selected chunk/candidate omitted from restored store",
+        "deleted playback denied by actual route",
+        "unrelated restored audio plays in Chrome"
+      ]
+    }
+  },
+  "gate": {
+    "command": "npm run verify",
+    "exitCode": 0,
+    "typeCheck": "passed",
+    "lint": "passed",
+    "webSuites": 166,
+    "webTests": 3421,
+    "buildPages": 184,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "sharedExitCode": 0,
+    "infraTests": 25,
+    "infraExitCode": 0,
+    "existingBuildWarnings": [
+      "unsupported eslint Next config",
+      "deprecated images.domains",
+      "optional environment variables not configured"
+    ]
+  },
+  "manualGates": {
+    "status": "waived_by_user",
+    "checklist": "docs/research/2026-11-09-g1-manual-follow-up.md",
+    "blocksLocalProgress": false,
+    "unexecutedMarkedTested": false
+  },
+  "boundaries": {
+    "physicalDeletionComplete": false,
+    "hostedStorageQualified": false,
+    "mobileExecuted": false,
+    "longRecordingsRerunThisTurn": false,
+    "independentCodeReviewRerunThisTurn": false,
+    "authPostgrestStorageHttp": "declared local synthetic boundaries"
+  },
+  "logs": {
+    "backup-rerun.log": "20b3a875121a4e0aafee48d9e89f83ed6ab7bc05d793c5f30ceb5cc324bb2fb1",
+    "backup.log": "c6ece4bc71f3f031624d42ae86ed0cdd2e8948c9d96e8eadc36a203a46acf1bb",
+    "chrome-rerun.log": "babc17b042b41f966c353978384a4ccf517b879c6e3c095da152587c20a5aa4a",
+    "chrome.log": "14376c763f037911a13156ff011b4718c598f432288883e8d2dd78739861392e",
+    "infra.log": "50905df2193b87121e6496d99026a801bf531ceb976c6a82ff2759f74155f7a9",
+    "prepare-runtime.log": "a20c2b1a5eaac7f2805ef8c0801c9bcaf48a472f2aba32bd2bfc7b039d61b421",
+    "shared.log": "f10860af8fdad77b1a53d63fa44adbf9d87051ef13fdb1deba2ee5ae470822e0",
+    "verify.log": "ba20a0c154ffc4136bc797869c1d6091176914888d94a15b703f1fcfd458d65c"
+  },
+  "git": {
+    "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+    "branch": "codex/october-upgrade-p0",
+    "stagedFiles": [],
+    "diffCheckPassed": true,
+    "nextEnvRestored": true,
+    "productCodeChangedThisTurn": false,
+    "committed": false,
+    "pushed": false,
+    "remoteMigrationOrDeployment": false
+  }
+}

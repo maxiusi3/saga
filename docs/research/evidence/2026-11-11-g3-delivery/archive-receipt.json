@@ -1,0 +1,31 @@
+{
+  "status": "focused_checks_passed",
+  "files": {
+    "packages/shared/src/types/export.ts": "c20f5702c6d161bc2126882079f551a7a4278a8cfc24adab543084d482f433d8",
+    "packages/web/src/lib/server/archival-export-service.ts": "723e01bf472ed3487ae0b96d4fa86dc50f2b92618159bfe52b3ea707f9a8428d",
+    "packages/web/src/lib/server/publication-source-service.ts": "ab8fee3fae2ed5d3845b55dbd7447a0ad1c42f8cfd5dbca7e56b0e9141ebc519",
+    "packages/web/src/lib/server/publication-delivery-service.ts": "413cea5c198b0235773150edcf3000ad1185b95501a40efc1f8223939b491255",
+    "packages/web/src/lib/server/publication-delivery-worker.ts": "f38462fc1d3c55f73701b584a0be1682edf7e78457f8c4cc30f723b387398d6b",
+    "packages/web/src/lib/server/__tests__/archival-export-service.test.ts": "b79d98bf5582249f27e4df6e4978351b5621334d60072db1fb89733a857d0e50",
+    "packages/web/src/lib/server/__tests__/publication-delivery-worker.test.ts": "447f9551f89270213e25bc9355c7889205d219c63a45f116d2afb0c832fe5d95",
+    "packages/web/src/app/api/projects/[id]/export/route.ts": "a01f69817dbf773fdb74cb44c86072774fefe9949a5a39d68008ed4ffeaf18e5",
+    "packages/web/src/app/api/projects/[id]/export/__tests__/route.test.ts": "38ac7ff5fc91dc40ac7f70e16d32525fcf5cfd3ae70c6fe3f3ddb41cf25aacb2",
+    "packages/web/src/app/api/projects/[id]/export/jobs/[jobId]/route.ts": "77e6b55a0104b80708e3c833fdbac90ab98fa7bf89d4d8cdc93e2fbd4a1f5e6d",
+    "packages/web/src/app/api/projects/[id]/export/jobs/[jobId]/download/route.ts": "a4062263ebe4536c954b21b592474b1c692771739ea5bd5d84e27befb85930ef",
+    "supabase/migrations/20261111000001_publication_delivery.sql": "b79cd6d7302ce86f271a29f172945e7bdeb977424997d2739908259fd689b763",
+    "experiments/pg17-g3-delivery/archive-scenarios.mjs": "62dd49b54c4338d752bcc3fc66e6ed976d456b31d07778e24c99a72028061917"
+  },
+  "unitTests": 84,
+  "nativeAssertions": 258,
+  "nativeEvidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-11-g3-delivery/migrations-1794372833197-d25f6552-83ee-4ecc-8d9e-f4535005ac07",
+  "pdfPages": 28,
+  "sourceDrift": [],
+  "boundaries": [
+    "Native PG17 actual bootstrap/migrations and SDK over controlled local PostgREST/Storage transport",
+    "Dedicated private persistent shared spool; external worker required; no hosted or Vercel qualification",
+    "Snapshot hostingRetention null; purchased hosting dates remain payment_project_rights authority",
+    "Byte release is authorized before streaming; already received offline copies cannot be revoked",
+    "Non-supported Unicode fails explicitly; supported bundled Noto font glyph set only",
+    "Parent owns full verify, Chrome, supervisor CLI and backup rehearsal"
+  ]
+}

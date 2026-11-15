@@ -1,5 +1,8 @@
 /** @jest-environment node */
 import { createHash } from 'crypto'
+import {mkdtempSync,rmSync} from 'fs'
+import {tmpdir} from 'os'
+import {join} from 'path'
 import { ReadableStream } from 'node:stream/web'
 import JSZip from 'jszip'
 import { NextRequest, NextResponse } from 'next/server'
@@ -9,6 +12,7 @@ const mockAuth = jest.fn()
 const mockAccess = jest.fn()
 const mockFrom = jest.fn()
 const mockDownload = jest.fn()
+const mockRpc = jest.fn()
 const mockStorageFrom = jest.fn()
 const mockBegin = jest.fn()
 const mockFinish = jest.fn()
@@ -18,7 +22,7 @@ jest.mock('@/lib/server/archive-observations', () => ({
 }))
 jest.mock('@/lib/server/auth', () => ({ getAuthenticatedUser: (...args: unknown[]) => mockAuth(...args) }))
 jest.mock('@/lib/server/project-access', () => ({ requireProjectAccess: (...args: unknown[]) => mockAccess(...args) }))
-jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => ({ from: (...args: unknown[]) => mockFrom(...args), storage: { from: (...args: unknown[]) => mockStorageFrom(...args) } }) }))
+jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => ({ rpc:(...args:unknown[])=>mockRpc(...args), from: (...args: unknown[]) => mockFrom(...args), storage: { from: (...args: unknown[]) => mockStorageFrom(...args) } }) }))
 // The legacy route must not be used to bypass the central authentication result.
 jest.mock('@supabase/auth-helpers-nextjs', () => ({ createRouteHandlerClient: () => ({ auth: { getUser: async () => ({ data: { user: { id: 'alice' } }, error: null }) }, from: (...args: unknown[]) => mockFrom(...args) }) }))
 
@@ -34,6 +38,7 @@ const asset = {
 let stories: any[]
 let assets: any[]
 let versions: any[]
+let revisions: any[]
 let tombstones: any[]
 let errors: Record<string, unknown>
 let queries: Record<string, any>
@@ -41,7 +46,7 @@ let queries: Record<string, any>
 function query(data: unknown, error: unknown = null, count = Array.isArray(data) ? data.length : null) {
   const result = { data, error, count }
   const chain: any = { then: (resolve: any) => Promise.resolve(result).then(resolve) }
-  for (const method of ['select', 'eq', 'not', 'in', 'or', 'order', 'limit']) chain[method] = jest.fn(() => chain)
+  for (const method of ['select', 'eq', 'not', 'in', 'or', 'order', 'limit', 'range']) chain[method] = jest.fn(() => chain)
   chain.single = chain.maybeSingle = jest.fn(async () => result)
   return chain
 }
@@ -53,12 +58,14 @@ beforeEach(() => {
   process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://private.example'
   mockAuth.mockResolvedValue({ ok: true, user: { id: 'alice' }, headers: new Headers({ 'Set-Cookie': 'session=refreshed' }) })
   mockAccess.mockResolvedValue({ ok: true })
+  mockRpc.mockImplementation(async(_name,args)=>({data:{id:'abababab-abab-4bab-abab-abababababab',project_id:project.id,actor_id:'alice',snapshot_version:1,status:'queued',created_at:'2026-11-11T00:00:00.000Z'},error:null}))
   mockBegin.mockReset().mockResolvedValue(true)
   mockFinish.mockReset().mockResolvedValue(true)
   stories = [{ ...story }]; assets = [{ ...asset }]; tombstones = []; errors = {}; queries = {}
+  revisions=[]
   versions = [{ id: 'version-1', project_id: project.id, story_id: story.id, asset_id: asset.id }]
   mockFrom.mockImplementation(table => {
-    const data = table === 'projects' ? project : table === 'stories' ? stories : table === 'media_assets' ? assets : table === 'transcript_versions' ? versions : table === 'deletion_requests' ? tombstones : []
+    const data = table === 'projects' ? project : table === 'stories' ? stories : table === 'media_assets' ? assets : table === 'transcript_versions' ? versions : table === 'story_revisions' ? revisions : table === 'deletion_requests' ? tombstones : []
     const chain = query(data, errors[table] ?? null)
     queries[table] = chain
     return chain
@@ -69,7 +76,7 @@ beforeEach(() => {
   }))
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
-afterEach(() => { delete process.env.MEDIA_ASSETS_ENABLED; delete process.env.NEXT_PUBLIC_SUPABASE_URL; jest.restoreAllMocks() })
+afterEach(() => { if(process.env.ARCHIVE_SPOOL_DIR){rmSync(process.env.ARCHIVE_SPOOL_DIR,{recursive:true,force:true});delete process.env.ARCHIVE_SPOOL_DIR} delete process.env.MEDIA_ASSETS_ENABLED; delete process.env.NEXT_PUBLIC_SUPABASE_URL; jest.restoreAllMocks() })
 
 describe('bounded synchronous archival export', () => {
   it('requires the feature flag before reading any data or emitting a legacy archive', async () => {
@@ -147,12 +154,13 @@ describe('bounded synchronous archival export', () => {
     expect(mockDownload).not.toHaveBeenCalled()
   })
 
-  it.each(['assets', 'stories', 'bytes', 'text'])('returns 413 for oversized %s before any download', async size => {
-    if (size === 'assets') assets = Array.from({ length: 101 }, (_, i) => ({ ...asset, id: `asset-${i}` }))
-    if (size === 'stories') stories = Array.from({ length: 201 }, (_, i) => ({ ...story, id: `story-${i}` }))
+  it.each(['assets', 'stories', 'bytes', 'text'])('queues oversized %s before any download', async size => {
+    process.env.ARCHIVE_SPOOL_DIR=mkdtempSync(join(tmpdir(),'archive-test-'))
+    if (size === 'assets') assets = [asset,...Array.from({ length: 100 }, (_, i) => ({ ...asset, id: `asset-${i}` }))]
+    if (size === 'stories') stories = [story,...Array.from({ length: 200 }, (_, i) => ({ ...story, id: `story-${i}` }))]
     if (size === 'bytes') assets[0].byte_size = 25 * 1024 * 1024 + 1
     if (size === 'text') stories[0].transcript = 'x'.repeat(2 * 1024 * 1024 + 1)
-    expect((await run()).status).toBe(413)
+    expect((await run()).status).toBe(202)
     expect(mockDownload).not.toHaveBeenCalled()
   })
 
@@ -396,4 +404,110 @@ describe('bounded synchronous archival export', () => {
     expect(JSON.parse(await zip.file('manifest.json')!.async('string')).assets).toHaveLength(1)
     expect(mockDownload).toHaveBeenCalledTimes(1)
   })
+})
+
+
+describe('published candidate archival lineage', () => {
+  const candidate = { id: '77777777-7777-4777-8777-777777777777', job_id: '88888888-8888-4888-8888-888888888888',
+    project_id: project.id, asset_id: asset.id, session_id: '99999999-9999-4999-8999-999999999999',
+    manifest_sha256: 'a'.repeat(64), worker_id: 'worker-1', attempt_no: 1, bucket: 'recording-candidates',
+    object_key: 'jobs/88888888-8888-4888-8888-888888888888/attempts/1/77777777-7777-4777-8777-777777777777',
+    state: 'prepared', byte_size: bytes.length, sha256: asset.sha256, mime_type: asset.mime_type, duration_ms: 1000,
+    created_at: '2026-11-04T00:00:00.000001Z', prepared_at: '2026-11-04T00:00:00.000002Z' }
+  function setup(row: unknown = candidate) {
+    assets[0] = { ...asset, bucket: candidate.bucket, object_key: candidate.object_key, duration_ms: candidate.duration_ms }
+    const previous = mockFrom.getMockImplementation()!
+    mockFrom.mockImplementation(table => table === 'recording_output_candidates' ? query(row) : previous(table))
+  }
+  it('exports candidate bytes after immutable lineage and hash verification', async () => {
+    setup(); const response = await run()
+    expect(response.status).toBe(200)
+    expect(mockStorageFrom).toHaveBeenCalledWith('recording-candidates')
+    expect(mockDownload).toHaveBeenCalledWith(candidate.object_key)
+    expect(queries.deletion_requests.in).toHaveBeenCalledWith('subject_id', expect.arrayContaining([project.id, story.id, asset.id, candidate.session_id]))
+    const zip = await JSZip.loadAsync(await response.arrayBuffer())
+    expect(await zip.file(`media/${asset.id}/recording.webm`)!.async('nodebuffer')).toEqual(bytes)
+  })
+  it('exports a newly saved recording whose story uses the guarded playback route', async () => {
+    setup()
+    stories[0].audio_url = `/api/media/assets/${asset.id}/play`
+    const response = await run()
+    expect(response.status).toBe(200)
+    const zip = await JSZip.loadAsync(await response.arrayBuffer())
+    expect(await zip.file(`media/${asset.id}/recording.webm`)!.async('nodebuffer')).toEqual(bytes)
+    expect(await zip.file('index.html')!.async('string')).not.toContain('/api/media/')
+  })
+  it.each(['missing-asset', 'other-story', 'other-project', 'wrong-kind', 'absolute', 'query', 'fragment'])
+  ('rejects a forged guarded playback reference: %s', async fault => {
+    setup()
+    stories[0].audio_url = `/api/media/assets/${asset.id}/play`
+    if (fault === 'missing-asset') stories[0].audio_url = '/api/media/assets/66666666-6666-4666-8666-666666666666/play'
+    if (fault === 'other-story') assets[0].story_id = '66666666-6666-4666-8666-666666666666'
+    if (fault === 'other-project') assets[0].project_id = '66666666-6666-4666-8666-666666666666'
+    if (fault === 'wrong-kind') assets[0].kind = 'derived_audio'
+    if (fault === 'absolute') stories[0].audio_url = `https://other.example${stories[0].audio_url}`
+    if (fault === 'query') stories[0].audio_url += '?source=elsewhere'
+    if (fault === 'fragment') stories[0].audio_url += '#elsewhere'
+    const response = await run()
+    expect(response.status).toBeGreaterThanOrEqual(400)
+    expect(mockDownload).not.toHaveBeenCalled()
+  })
+  it.each([null, { ...candidate, state: 'reserved' }, { ...candidate, sha256: 'f'.repeat(64) }, { ...candidate, session_id: 'SECRET' }])
+  ('fails closed on invalid lineage rather than silently omitting the asset %#', async row => {
+    setup(row); const response = await run()
+    expect(response.status).toBe(500); expect(mockDownload).not.toHaveBeenCalled()
+    expect(await response.text()).not.toContain('SECRET')
+  })
+  it.each(['ready', 'deleting', 'deleted'])('treats valid %s removed candidates as removed while protecting sourced text', async state => {
+    setup(); assets[0].state = state
+    tombstones.push({ subject_id: candidate.session_id, tombstone_at: '2026-11-04' })
+    expect((await run()).status).toBe(409); expect(mockDownload).not.toHaveBeenCalled()
+  })
+  it.each(['deleting', 'deleted'])('can omit a valid %s candidate with no surviving story provenance', async state => {
+    setup(); assets[0].state = state; assets[0].story_id = null; versions = []
+    expect((await run()).status).toBe(200); expect(mockDownload).not.toHaveBeenCalled()
+  })
+  it('blocks a project tombstone before downloads even with no stories or assets', async () => {
+    stories = []; assets = []; versions = []
+    tombstones.push({ subject_id: project.id, tombstone_at: '2026-11-04' })
+    expect((await run()).status).toBe(409); expect(mockBegin).not.toHaveBeenCalled()
+  })
+  it.each(['session', 'project'])('withholds archive when %s deletion commits during download', async subject => {
+    setup()
+    mockDownload.mockImplementation(() => ({ asStream: async () => {
+      tombstones = [{ subject_id: subject === 'session' ? candidate.session_id : project.id, tombstone_at: '2026-11-04' }]
+      return { data: new ReadableStream({ start(controller) { controller.enqueue(new Uint8Array(bytes)); controller.close() } }), error: null }
+    } }))
+    const response = await run()
+    expect(response.status).toBe(409); expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+  })
+  it('checks a project tombstone after assembly even for an empty archive', async () => {
+    stories = []; assets = []; versions = []
+    mockFinish.mockImplementation(async () => { tombstones = [{ subject_id: project.id, tombstone_at: '2026-11-04' }]; return true })
+    const response = await run()
+    expect(response.status).toBe(409); expect(response.headers.get('Content-Type')).not.toBe('application/zip')
+  })
+})
+
+
+describe('approved G2 publication selection',()=>{
+ it('renders the approved revision, excludes the newer draft and labels source prose',async()=>{
+  revisions=[{id:'approved',story_id:story.id,status:'approved',approved_at:'2026-11-11',source_hash:'a'.repeat(64),transcript_version_id:'version-1',revision_number:1,title:'Approved title',body:'APPROVED_FAMILY_RENDITION',summary:'Approved summary',provenance_snapshot:{assertions:[]}},
+   {id:'draft',story_id:story.id,status:'draft',revision_number:2,body:'UNAPPROVED_DRAFT_SECRET'}]
+  versions[0].full_text='ORIGINAL_RAW_SOURCE'
+  const response=await run();expect(response.status).toBe(200)
+  const zip=await JSZip.loadAsync(await response.arrayBuffer()),html=await zip.file('index.html')!.async('string')
+  expect(html).toContain('APPROVED_FAMILY_RENDITION');expect(html).toContain('Original transcript');expect(html).toContain('ORIGINAL_RAW_SOURCE')
+  for(const file of Object.values(zip.files).filter(file=>!file.dir))expect(await file.async('string')).not.toContain('UNAPPROVED_DRAFT_SECRET')
+ })
+ it('blocks reviewed stories that have no approved revision',async()=>{
+  revisions=[{id:'draft',story_id:story.id,status:'draft',revision_number:1,body:'DRAFT'}]
+  expect((await run()).status).toBe(409);expect(mockDownload).not.toHaveBeenCalled()
+ })
+ it('labels imported text with no audio as source-only and rejects unknown null lineage',async()=>{
+  assets=[];versions=[{id:'version-1',project_id:project.id,story_id:story.id,asset_id:null,provider:'legacy',model:'imported-text',alignment_status:'legacy_unaligned',full_text:story.transcript}]
+  const response=await run();expect(response.status).toBe(200)
+  const zip=await JSZip.loadAsync(await response.arrayBuffer());expect(await zip.file('index.html')!.async('string')).toContain('Source only - unapproved')
+  versions[0].provider='unknown';expect((await run()).status).toBe(409)
+ })
 })

@@ -269,7 +269,7 @@ describe('End-to-End User Flow Tests', () => {
       expect(mockPush).toHaveBeenCalledWith('/en/dashboard/projects/new-project-id')
     })
 
-    it('should handle insufficient resources gracefully', async () => {
+    it('keeps project details when the server cannot verify an unused purchase', async () => {
       const user = userEvent.setup()
       
       mockUseResourceWallet.mockReturnValue({
@@ -284,6 +284,7 @@ describe('End-to-End User Flow Tests', () => {
         hasResources: jest.fn().mockReturnValue(false),
         refetch: jest.fn()
       })
+      mockProjectService.createProjectWithRole.mockRejectedValueOnce(new Error('Purchase a project first; historical wallet credits do not verify payment'))
       
       const ProjectNewPage = (await import('../app/dashboard/projects/new/page')).default
       
@@ -292,9 +293,10 @@ describe('End-to-End User Flow Tests', () => {
       await user.type(screen.getByLabelText(/form\.projectName/i), 'Test Project')
       await user.click(screen.getByRole('button', { name: /form\.createProject/i }))
 
-      await waitFor(() => {
-        expect(mockPush).toHaveBeenCalledWith('/en/dashboard/purchase')
-      })
+      await screen.findByRole('alert')
+      expect(screen.getByRole('link', { name: 'View purchases and project rights' })).toHaveAttribute('href', '/en/dashboard/purchase')
+      expect(screen.getByLabelText(/form\.projectName/i)).toHaveValue('Test Project')
+      expect(mockPush).not.toHaveBeenCalled()
     })
   })
 

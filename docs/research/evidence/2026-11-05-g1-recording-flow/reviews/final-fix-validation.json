@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "commands": [
+    {
+      "command": "node experiments/pg17-recording-flow/verify.mjs --before-final-fix",
+      "exitCode": 1,
+      "expected": "RED",
+      "assertions": 826,
+      "resultPath": "docs/research/evidence/2026-11-05-g1-recording-flow/native-before-final-fix-1793929111642-b22a4d0e-9647-4d33-9432-9654848bc4fd/results.json"
+    },
+    {
+      "command": "node experiments/pg17-recording-flow/verify.mjs",
+      "exitCode": 0,
+      "expected": "GREEN",
+      "assertions": 1091,
+      "resultPath": "docs/research/evidence/2026-11-05-g1-recording-flow/native-1793929246225-f153d6c1-189c-460b-b827-6fb505ec038d/results.json"
+    },
+    {
+      "command": "npm test --workspace=packages/web -- --runInBand src/lib/server/__tests__/recording-story-save.test.ts src/lib/server/__tests__/recording-session-status.test.ts",
+      "exitCode": 0,
+      "suites": 2,
+      "tests": 207
+    },
+    {
+      "command": "./node_modules/.bin/eslint --config eslint.config.cjs experiments/pg17-recording-flow/fixture.mjs experiments/pg17-recording-flow/verify.mjs experiments/pg17-recording-flow/confirmation-regressions.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "patchVerifiedAgainstPreservedBytes": true,
+  "commonRedGreenSourceHashesEqual": true,
+  "currentGreenSourceHashesEqual": true,
+  "fileHashes": {
+    "supabase/migrations/20261106000001_recording_story_save.sql": "20ba20cdda0ec79c997cf1a0eafc38e7d7c022ad95b6146e7658d4208b8d5569",
+    "experiments/pg17-recording-flow/fixture.mjs": "b579bef2d0532e0e517d9b1dc37979c7448e90c39305e1b725cd615c0e201571",
+    "experiments/pg17-recording-flow/verify.mjs": "3437b3daa303eb5a8b5f1663108f3cdd80dff8a29635ef1d0611c2f8e6d90aad",
+    "experiments/pg17-recording-flow/README.md": "44bb9b56308103b5baaa6f013665a7a5ba77c918f768f3f16067ae15bd96b100",
+    "experiments/pg17-recording-flow/confirmation-regressions.mjs": "d49526fc2fa796348ac3b8a69b5cf2f1504b850e8111f91d6273f87a2c387703"
+  },
+  "artifactHashes": {
+    ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/final-fix-red-01.log": "48b1aca2b846c364a43dd86f32019533fd43dcf836c93dd63d25056eeb14f8b6",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/native-before-final-fix-1793929111642-b22a4d0e-9647-4d33-9432-9654848bc4fd/results.json": "b7f7475ae076603888d066b696d4c9f650c1c285c361494ca226eda678942785",
+    ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/final-fix-green-01.log": "ac889b3d4548bbd41a85e848c62b7a7b15ea42bf40312bd8a4dad050ed34f564",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/native-1793929246225-f153d6c1-189c-460b-b827-6fb505ec038d/results.json": "6ecf8308b60d770cc28bbbb1a87d400a5eb8eb2a8dedee68eebdfb55dcf7e58d",
+    ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/final-fix-jest-01.log": "09350c51696af858d8d066608356c56df141d5cca6033fbb5cc713323d7f539e",
+    ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/final-fix-eslint-01.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/final-fix.patch": "1f665b4f2e8bfef013f3adb3dbb1776be00b3c4ddd0c6743e423bfc793c869a9",
+    ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/final-fix-hashes.json": "f67d4401d6f5de1c5e12a1f015cb25e25f19fd6ac1b42c3b879ab87787be411e",
+    ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/final-fix-before/manifest.json": "6bd803e28b1e77fd31528594cffb7f78ba54b951312c5d8add454a7d3b5a88bf"
+  },
+  "red": {
+    "cases": 88,
+    "rejectedWith409": 53,
+    "rejectedWith503": 35,
+    "noReceipt": 88,
+    "unchangedRows": 53,
+    "changedRows": 35
+  },
+  "green": {
+    "cases": 88,
+    "rejectedWith409": 88,
+    "rejectedWith503": 0,
+    "noReceipt": 88,
+    "unchangedRows": 88,
+    "changedRows": 0
+  }
+}

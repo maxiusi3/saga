@@ -31,7 +31,8 @@ beforeEach(() => {
 
 it('pins normalized merge input and the derived physical Storage key in one non-retrying RPC', async () => {
   const bundle = input()
-  await persistRecordingManifest(admin, bundle)
+  const hash = await persistRecordingManifest(admin, bundle)
+  expect(hash).toMatch(/^[a-f0-9]{64}$/)
   expect(rpc).toHaveBeenCalledTimes(1)
   expect(rpc).toHaveBeenCalledWith('seal_recording_manifest', { p_manifest: {
     schemaVersion: 1, projectId: 'project-1', sessionId: 'session-1', userId: 'user-1', storyId: null,

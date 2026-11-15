@@ -32,6 +32,9 @@ interface StoryCardProps {
   onComment?: () => void
   onLike?: () => void
   onMore?: () => void
+  onDelete?: () => void
+  deleting?: boolean
+  deleteLabel?: string
   className?: string
   variant?: 'default' | 'compact' | 'featured'
 }
@@ -61,6 +64,9 @@ export function StoryCard({
   onComment,
   onLike,
   onMore,
+  onDelete,
+  deleting = false,
+  deleteLabel,
   className,
   variant = 'default'
 }: StoryCardProps) {
@@ -144,6 +150,11 @@ export function StoryCard({
               </div>
             )}
           </div>
+          {onDelete && <EnhancedButton
+            type="button" variant="outline" size="sm" className="ml-3 min-h-11 shrink-0"
+            disabled={deleting} aria-busy={deleting}
+            onClick={event => { event.stopPropagation(); onDelete() }}
+          >{deleteLabel}</EnhancedButton>}
         </div>
       </EnhancedCardHeader>
 

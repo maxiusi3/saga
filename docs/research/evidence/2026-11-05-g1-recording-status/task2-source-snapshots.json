@@ -1,0 +1,30 @@
+{
+  "packages/web/src/lib/server/recording-session-status.ts": {
+    "sha256": "7aee7e9b61dedb652f518b8d495d20dd02ff9319a47b6023620801ad6e89b41d",
+    "bytes": 2334
+  },
+  "packages/web/src/lib/server/recording-status-validation.ts": {
+    "sha256": "5c4ae82b3d5648113a5afd4fcbe1a839cde00df0e0f2b3df4fcdc8534ee2fae7",
+    "bytes": 16084
+  },
+  "packages/web/src/lib/server/recording-job-input.ts": {
+    "sha256": "0fe100b20eb886bddbd52eb27cb0eb1b2764188e615536012b5c34f6e97ed42d",
+    "bytes": 14128
+  },
+  "packages/web/src/lib/server/__tests__/recording-session-status.test.ts": {
+    "sha256": "848de8ae3fd4e2569d50e67a2bc5b9016e8c0eb5b1dbe1ed2e6709029ef2e78b",
+    "bytes": 19149
+  },
+  "packages/web/src/lib/server/__tests__/fixtures/recording-status-fixture.ts": {
+    "sha256": "d6683359da387fc5ee9394317f683dc004b1c3cefbdcf94af236dc15cd4197ca",
+    "bytes": 6877
+  },
+  "packages/web/src/app/api/recordings/sessions/[sessionId]/status/route.ts": {
+    "sha256": "a12f0e0d3a0e6a079d9ad11b13e341701db5ed906b858d98e4f09a665133c4c3",
+    "bytes": 1916
+  },
+  "packages/web/src/app/api/recordings/sessions/[sessionId]/status/__tests__/route.test.ts": {
+    "sha256": "26f3c12cc27ea1b9e7e9f2007ced7526fa83db7c3691971a360a5acc66483eef",
+    "bytes": 6519
+  }
+}

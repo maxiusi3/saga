@@ -7,6 +7,7 @@ export interface UploadOptions {
   maxSize?: number // in bytes
   allowedTypes?: string[]
   expectedUserId?: string
+  isCurrent?: () => boolean
 }
 
 export interface UploadResult {
@@ -33,6 +34,7 @@ export class StorageService {
         folder = 'uploads',
         fileName,
         expectedUserId,
+        isCurrent,
         maxSize = 50 * 1024 * 1024, // 50MB default
         allowedTypes = [
           'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/m4a', 'audio/aac',
@@ -85,6 +87,7 @@ export class StorageService {
       const finalFileName = fileName || `${timestamp}-${Math.random().toString(36).substring(2)}.${extension}`
       const filePath = `${user.id}/${folder}/${finalFileName}`
 
+      if (isCurrent && !isCurrent()) return { success: false, error: 'Recording scope changed' }
       // Upload file
       const { data, error } = await this.supabase.storage
         .from(bucket)

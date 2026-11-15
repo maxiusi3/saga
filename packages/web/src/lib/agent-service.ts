@@ -17,6 +17,7 @@ export interface CreateInterviewSessionRequest {
 }
 
 export interface RequestInterviewInterventionRequest {
+  recordingSessionId?: string | null
   projectId: string
   interviewSessionId: string
   storytellerId: string

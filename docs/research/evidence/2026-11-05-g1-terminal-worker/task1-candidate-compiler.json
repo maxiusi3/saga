@@ -1,0 +1,9 @@
+{
+  "command": [
+    "node",
+    "--input-type=module",
+    "-e",
+    "import assert from 'node:assert/strict';\nimport { mkdtemp, readFile, rm } from 'node:fs/promises';\nimport { tmpdir } from 'node:os';\nimport { join } from 'node:path';\nimport { compileCandidateModules } from './experiments/pg17-recording-candidates/application-compiler.mjs';\nconst scratch = await mkdtemp(join(tmpdir(), 'saga-terminal-candidate-compatibility-'));\ntry {\n  const modules = await compileCandidateModules({ scratch, eq: assert.equal }, path => readFile(path, 'utf8'));\n  assert.equal(typeof modules.prepareLeasedRecordingJobCandidate, 'function');\n  assert.equal(typeof modules.prepareRecordingJobCandidateOutcome, 'function');\n  console.log('Historical candidate compiler dependency graph remains executable.');\n} finally { await rm(scratch, { recursive: true, force: true }); }\n"
+  ],
+  "exitCode": 0
+}

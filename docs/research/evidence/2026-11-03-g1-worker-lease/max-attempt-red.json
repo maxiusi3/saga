@@ -1,0 +1,43 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--workspace=packages/web",
+    "--",
+    "--runInBand",
+    "--runTestsByPath",
+    "src/lib/server/__tests__/recording-job-lease.test.ts"
+  ],
+  "startedAt": "2026-11-03T11:02:29.006566+00:00",
+  "durationSeconds": 4.159,
+  "exitCode": 1,
+  "sourcesBefore": {
+    "packages/web/src/lib/server/recording-job-input.ts": "3698e02cdf2e883e7c5a4db513df803e86f39a7ccdd8eb5427f16044593dbdf8",
+    "packages/web/src/lib/server/recording-job-verifier.ts": "f04df71008087d0404f6e7bab15e6c8a3de20d6b0e3a0a5f6a41a6c7cda60b32",
+    "packages/web/src/lib/server/recording-job-lease.ts": "31cda28045c520ff7f0e9870ea89203061b43d91a8f70fe01dc9550e24c6a4ab",
+    "packages/web/src/lib/server/recording-job-worker.ts": "f6ae4750ede3d1513e531cdb88c1318cb22c049d795d34b90b27f52b8df96406",
+    "packages/web/src/lib/server/__tests__/recording-job-input.test.ts": "8615fcfe38ba2902d5033044d68ed83ebbf02ea98b82f4735ec7d589f346b18f",
+    "packages/web/src/lib/server/__tests__/recording-job-verifier.test.ts": "df5970f41ef2aa85ab2b42136ef5a08fefc2a1f9e71551f3b55d59d05b80228c",
+    "packages/web/src/lib/server/__tests__/recording-job-lease.test.ts": "cfc19e62107dbe993a71bd7756ec2179c44e317a5f3b8f4b6904e80509d83e6b",
+    "packages/web/src/lib/server/__tests__/recording-job-worker.test.ts": "ac331441825cb3ed292ba957c9d23e47d0938cbcc2744469e1868b58975bded9",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "experiments/pg17-recording-worker/verify.mjs": "485cb8d83840671fdc2cde8c592c19ef071b3d1b85c02914bbf0f45c666c5b4e",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f"
+  },
+  "sourcesAfter": {
+    "packages/web/src/lib/server/recording-job-input.ts": "3698e02cdf2e883e7c5a4db513df803e86f39a7ccdd8eb5427f16044593dbdf8",
+    "packages/web/src/lib/server/recording-job-verifier.ts": "f04df71008087d0404f6e7bab15e6c8a3de20d6b0e3a0a5f6a41a6c7cda60b32",
+    "packages/web/src/lib/server/recording-job-lease.ts": "31cda28045c520ff7f0e9870ea89203061b43d91a8f70fe01dc9550e24c6a4ab",
+    "packages/web/src/lib/server/recording-job-worker.ts": "f6ae4750ede3d1513e531cdb88c1318cb22c049d795d34b90b27f52b8df96406",
+    "packages/web/src/lib/server/__tests__/recording-job-input.test.ts": "8615fcfe38ba2902d5033044d68ed83ebbf02ea98b82f4735ec7d589f346b18f",
+    "packages/web/src/lib/server/__tests__/recording-job-verifier.test.ts": "df5970f41ef2aa85ab2b42136ef5a08fefc2a1f9e71551f3b55d59d05b80228c",
+    "packages/web/src/lib/server/__tests__/recording-job-lease.test.ts": "cfc19e62107dbe993a71bd7756ec2179c44e317a5f3b8f4b6904e80509d83e6b",
+    "packages/web/src/lib/server/__tests__/recording-job-worker.test.ts": "ac331441825cb3ed292ba957c9d23e47d0938cbcc2744469e1868b58975bded9",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "experiments/pg17-recording-worker/verify.mjs": "485cb8d83840671fdc2cde8c592c19ef071b3d1b85c02914bbf0f45c666c5b4e",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f"
+  },
+  "archive": "raw/max-attempt-red.log.gz",
+  "rawSha256": "92635a0c18da16d1953e2d1e514721dc90bbaa7fa560d1674ed1c8b0cb969dd5",
+  "archiveSha256": "e202374c10f8f9ce86ee75d7c89b9df1d74530c73632f297d9de9da6508d667f"
+}

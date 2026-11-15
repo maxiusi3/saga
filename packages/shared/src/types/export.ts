@@ -102,5 +102,16 @@ export interface FrozenPublicationSnapshot {
   chapters: BookletChapterSection[]
   pdfSha256: string
   archiveManifestSha256: string
-  hostingRetention: HostingRetentionSchedule
+  hostingRetention: HostingRetentionSchedule | null
+}
+
+export interface PublicationDeliveryStatus {
+  jobId: string
+  snapshotId: string
+  snapshotVersion: number
+  status: 'queued' | 'running' | 'ready' | 'failed' | 'revoked'
+  attempt: number
+  errorCode: string | null
+  statusUrl: string
+  downloadUrl: string
 }

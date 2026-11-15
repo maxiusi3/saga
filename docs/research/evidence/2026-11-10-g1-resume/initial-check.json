@@ -1,0 +1,11 @@
+{
+  "sourceManifestFiles": 1159,
+  "sourceDifferences": [],
+  "recordsAndPriorEvidenceVerified": 11,
+  "logsVerified": 22,
+  "archiveHashMatched": true,
+  "priorReceiptSha256": "41b3cbbe594c880eda71656548c0248e9b145168aca267563c72fbd05cad90b9",
+  "branch": "codex/october-upgrade-p0",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "stagedFiles": []
+}

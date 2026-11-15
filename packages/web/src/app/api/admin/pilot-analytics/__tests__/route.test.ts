@@ -5,9 +5,7 @@ import { GET } from '../route'
 
 const mockGetAuthenticatedUser = jest.fn()
 const mockGetSupabaseAdmin = jest.fn()
-const mockOrder = jest.fn()
-const mockSelect = jest.fn(() => ({ order: mockOrder }))
-const mockFrom = jest.fn(() => ({ select: mockSelect }))
+const mockRpc = jest.fn()
 
 jest.mock('@/lib/server/auth', () => ({
   getAuthenticatedUser: (...args: unknown[]) => mockGetAuthenticatedUser(...args),
@@ -25,8 +23,8 @@ describe('GET /api/admin/pilot-analytics', () => {
     mockGetAuthenticatedUser.mockResolvedValue({
       ok: true, user: { id: 'ordinary-family-member' }, headers: new Headers(),
     })
-    mockGetSupabaseAdmin.mockReset().mockReturnValue({ from: mockFrom })
-    mockOrder.mockReset().mockResolvedValue({ data: [], error: null })
+    mockGetSupabaseAdmin.mockReset().mockReturnValue({ rpc: mockRpc })
+    mockRpc.mockReset().mockResolvedValue({ data: { entries: [], batch: { closedAt: null, erasedHouseholds: 0 }, legacyUnclassifiedCount: 0 }, error: null })
   })
 
   afterEach(() => {
@@ -34,7 +32,7 @@ describe('GET /api/admin/pilot-analytics', () => {
   })
 
   function request(headers: Record<string, string> = {}) {
-    return new NextRequest('http://localhost:3000/api/admin/pilot-analytics', { headers })
+    return new NextRequest('http://localhost:3000/api/admin/pilot-analytics?cohort=pilot-test', { headers })
   }
 
   it.each([undefined, 'false', 'TRUE'])('keeps the route closed for flag %s', async flag => {
@@ -68,10 +66,32 @@ describe('GET /api/admin/pilot-analytics', () => {
     expect(res.status).toBe(200)
     expect(res.headers.get('cache-control')).toContain('no-store')
     expect(mockGetAuthenticatedUser).not.toHaveBeenCalled()
-    expect(mockFrom).toHaveBeenCalledWith('pilot_households')
-    expect(mockOrder).toHaveBeenCalledWith('enrolled_at', { ascending: true })
+    expect(mockRpc).toHaveBeenCalledWith('read_pilot_cohort', { p_cohort: 'pilot-test', p_kind: 'observed' })
     const body = await res.json()
     expect(body).toHaveProperty('recommendation.requiresOwnerDecision', true)
+  })
+
+  it('requires a single explicit cohort before querying', async () => {
+    const res = await GET(new NextRequest('http://localhost:3000/api/admin/pilot-analytics', { headers: { 'x-cron-secret': 'synthetic-ops-secret' } }))
+    expect(res.status).toBe(400)
+    expect(mockRpc).not.toHaveBeenCalled()
+  })
+
+  it('renders a static protected HTML report with no executable script', async () => {
+    const res = await GET(new NextRequest('http://localhost:3000/api/admin/pilot-analytics?cohort=pilot-test&kind=synthetic&format=html', { headers: { 'x-cron-secret': 'synthetic-ops-secret' } }))
+    expect(res.status).toBe(200)
+    expect(res.headers.get('content-security-policy')).toContain("default-src 'none'")
+    const html = await res.text()
+    expect(html).toContain('合成演练数据')
+    expect(html).toContain('暂无样本')
+    expect(html).not.toContain('<script')
+    expect(html).not.toContain('synthetic-ops-secret')
+  })
+
+  it('rejects malformed persisted evidence instead of producing a partial report', async () => {
+    mockRpc.mockResolvedValue({ data: { entries: [{ revision: 1, recordedAt: 'invalid' }], batch: {} }, error: null })
+    const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
+    expect(res.status).toBe(500)
   })
 
   it('reports unavailable database configuration without exposing its error', async () => {
@@ -82,7 +102,7 @@ describe('GET /api/admin/pilot-analytics', () => {
   })
 
   it('reports a ledger query error without exposing private data', async () => {
-    mockOrder.mockResolvedValue({ data: null, error: { message: 'private cohort details' } })
+    mockRpc.mockResolvedValue({ data: null, error: { message: 'private cohort details' } })
     const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
     expect(res.status).toBe(500)
     expect(await res.text()).not.toContain('private cohort details')

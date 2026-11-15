@@ -14,6 +14,12 @@ function readJson(relativePath) {
   return JSON.parse(read(relativePath))
 }
 
+test('trusted invitation RPC schema is exposed while entitlement tables stay private', () => {
+  const schemas = JSON.parse(read('supabase/config.toml').match(/^schemas = (\[.*\])$/m)[1])
+  assert.ok(schemas.includes('invitation_candidate'))
+  assert.ok(!schemas.includes('entitlement_candidate'))
+})
+
 function workflow() {
   return yaml.load(read('.github/workflows/deploy.yml'))
 }
@@ -131,6 +137,26 @@ test('Supabase CLI migrations contain the shipped database scripts in dependency
     '20261030000001_upload_observations.sql',
     '20261030000002_deployment_collection_coverage.sql',
     '20261102000001_recording_seal_manifest.sql',
+    '20261103000001_recording_worker_leases.sql',
+    '20261103000002_recording_output_candidates.sql',
+    '20261104000001_recording_job_finalization.sql',
+    '20261105000001_recording_session_snapshot.sql',
+    '20261106000001_recording_story_save.sql',
+    '20261106000002_media_deletion_capture.sql',
+    '20261106000003_recording_seal_deletion_fence.sql',
+    '20261106000004_media_deletion_leases.sql',
+    '20261107000001_legacy_compatibility_acl.sql',
+    '20261109000001_media_deletion_execution.sql',
+    '20261109000002_story_content_deletion.sql',
+    '20261110000001_story_review_workflow.sql',
+    '20261111000001_publication_delivery.sql',
+    '20261111000002_authoritative_search.sql',
+    '20261111000003_payment_orders.sql',
+    '20261111000004_pilot_observation_ledger.sql',
+    '20261113000001_processing_recovery.sql',
+    '20261113000002_story_ai_edit.sql',
+    '20261113000003_semantic_sources.sql',
+    '20261113000004_hosting_reminders.sql',
   ])
 
   assert.equal(
@@ -281,9 +307,8 @@ test('Supabase restore tooling bootstraps the current app schema before migratio
 
   assert.match(restoreScript, /psql "\$DATABASE_URL" -v ON_ERROR_STOP=0 -f "\$BACKUP_FILE"/)
   assert.match(restoreScript, /supabase\/bootstrap\/20260624000000_app_base_schema\.sql/)
-  assert.match(restoreScript, /supabase\/migrations\/20260611000000_agent_phase1\.sql/)
-  assert.match(restoreScript, /supabase\/migrations\/20260612000000_agent_phase2_public_archive\.sql/)
-  assert.match(restoreScript, /supabase\/migrations\/20260621000000_storage_policies\.sql/)
+  assert.match(restoreScript, /for migration in supabase\/migrations\/\*\.sql; do/)
+  assert.match(restoreScript, /psql "\$DATABASE_URL" -v ON_ERROR_STOP=1 -f "\$migration"/)
 
   for (const text of [
     'db_cluster-08-08-2025@05-34-47.backup',

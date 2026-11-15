@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "experiments/g1-local/verify-migrations.mjs",
+    "--g2-review",
+    "--chrome"
+  ],
+  "startedAt": "2026-11-11T10:41:31.372974+08:00",
+  "completedAt": "2026-11-11T10:42:07.988014+08:00",
+  "exitCode": 0
+}

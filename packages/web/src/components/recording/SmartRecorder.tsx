@@ -31,6 +31,7 @@ interface SmartRecorderProps {
 }
 
 interface RecordingResult {
+  sessionId?: string
   audioBlob?: Blob
   transcript: string
   duration: number
@@ -161,6 +162,7 @@ export function SmartRecorder({
       projectId,
       storytellerId,
       interviewSessionId,
+      recordingSessionId: captureRef.current?.local.id ?? null,
       interventionLevel,
       phase,
       currentPrompt: promptText,
@@ -450,8 +452,7 @@ export function SmartRecorder({
     if (capture) {
       capture.cancelled = true
       endCapture(capture)
-      // Page exit is best effort; onstop also waits for the last dataavailable write.
-      void capture.local.interrupt().catch(() => {})
+      // onstop owns interruption after the final dataavailable write; keep the capture lock until then.
     }
     // Permission may have resolved while the initial IndexedDB write is still pending.
     streamRef.current?.getTracks().forEach(track => track.stop())
@@ -521,7 +522,7 @@ export function SmartRecorder({
         throw new Error('The browser did not provide a supported recording format')
       }
       local = await createLocalRecordingSession({
-        id: crypto.randomUUID(), projectId, userId, mimeType, startedAt: new Date().toISOString(),
+        id: crypto.randomUUID(), projectId, userId, mimeType, startedAt: new Date().toISOString(), isCurrent,
       })
       if (!isCurrent()) {
         stream.getTracks().forEach(track => track.stop())
@@ -535,7 +536,6 @@ export function SmartRecorder({
       const fail = (error: unknown) => {
         capture.failed = true
         endCapture(capture)
-        void capture.local.interrupt().catch(() => {})
         if (!isCurrent() || capture.cancelled) return
         stopTimer()
         isRecordingRef.current = false
@@ -669,6 +669,7 @@ export function SmartRecorder({
 
   const handleComplete = useCallback(() => {
     const result: RecordingResult = {
+      sessionId: captureRef.current?.local.id,
       audioBlob: audioBlob || undefined,
       transcript: transcript.trim(),
       duration,

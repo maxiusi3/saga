@@ -8,7 +8,7 @@ import { StoryPrompt, getNextPrompt } from '@saga/shared'
 import type { InterventionLevel } from '@saga/shared/types/agents'
 import { RecorderHub } from '@/components/recording/RecorderHub'
 import { SmartRecorder } from '@/components/recording/SmartRecorder'
-import { RecordingRecoveryPanel } from '@/components/recording/RecordingRecoveryPanel'
+import { RecordingRecoveryPanel, type RecoveredRecording } from '@/components/recording/RecordingRecoveryPanel'
 import { ReviewStage, type DraftStatus } from '@/components/recording/ReviewStage'
 import { ResonanceCard } from '@/components/recording/ResonanceCard'
 import { Button } from '@/components/ui/button'
@@ -20,14 +20,21 @@ import { storyService } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { aiService, AIContent as AIContentType } from '@/lib/ai-service'
 import { agentService } from '@/lib/agent-service'
-import { uploadStoryAudio } from '@/lib/storage'
+import { saveLocalRecording, clearSavedLocalRecording, type RecordingSaveProgress } from '@/lib/recording-save-flow'
+import type { RecordingSaveMetadata, RecordingSaveReceipt } from '@/lib/recording-save-contract'
 
 type RecordingMode = 'deep_dive' | 'chat'
 type Stage = 'hub' | 'recording' | 'review' | 'textFallback' | 'submission'
 
 export default function ProjectRecordPage() {
+  const params = useParams()
+  const { user } = useAuthStore()
+  return <ScopedProjectRecordPage key={JSON.stringify([params.id,user?.id])} />
+}
+
+function ScopedProjectRecordPage() {
   const t = useTranslations('recording')
-  const ts = useTranslations('stories')
+  const tf = useTranslations('recording.saveFlow')
   const params = useParams()
   const router = useRouter()
   const locale = useLocale()
@@ -46,6 +53,7 @@ export default function ProjectRecordPage() {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [recordingDuration, setRecordingDuration] = useState(0)
+  const [recoveredDraft, setRecoveredDraft] = useState(false)
   const [transcript, setTranscript] = useState('')
   const [textStoryTitle, setTextStoryTitle] = useState('')
   const [textStoryContent, setTextStoryContent] = useState('')
@@ -59,6 +67,14 @@ export default function ProjectRecordPage() {
   // Submission State
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showResonance, setShowResonance] = useState(false)
+  const [localSessionId,setLocalSessionId] = useState<string|null>(null)
+  const [saveMetadata,setSaveMetadata] = useState<RecordingSaveMetadata|null>(null)
+  const [saveProgress,setSaveProgress] = useState<RecordingSaveProgress|null>(null)
+  const [savePending,setSavePending] = useState(false)
+  const [saveError,setSaveError] = useState<string|null>(null)
+  const [saveReceipt,setSaveReceipt] = useState<RecordingSaveReceipt|null>(null)
+  const [localCleared,setLocalCleared] = useState(false)
+  const saveOperationRef = useRef<AbortController|null>(null)
   const [savedStoryId, setSavedStoryId] = useState<string | null>(null)
   const [resonanceData, setResonanceData] = useState({ era: '1980s', count: 0 })
 
@@ -77,6 +93,7 @@ export default function ProjectRecordPage() {
   useEffect(() => () => {
     interviewSessionRequestVersionRef.current += 1
     aiRequestVersionRef.current += 1
+    saveOperationRef.current?.abort()
   }, [])
 
   useEffect(() => () => {
@@ -84,6 +101,16 @@ export default function ProjectRecordPage() {
   }, [audioUrl])
 
   const resetRecording = () => {
+    saveOperationRef.current?.abort()
+    saveOperationRef.current=null
+    setIsSubmitting(false)
+    setLocalSessionId(null)
+    setSaveMetadata(null)
+    setSaveProgress(null)
+    setSavePending(false)
+    setSaveError(null)
+    setSaveReceipt(null)
+    setLocalCleared(false)
     aiRequestVersionRef.current += 1
     setAiContent(null)
     setDraftStatus('idle')
@@ -91,6 +118,7 @@ export default function ProjectRecordPage() {
     setAudioBlob(null)
     setAudioUrl(null)
     setRecordingDuration(0)
+    setRecoveredDraft(false)
     setSavedStoryId(null)
   }
 
@@ -141,10 +169,11 @@ export default function ProjectRecordPage() {
       normalized.includes('not allowed')
   }
 
-  const handleRecordingComplete = async (result: { audioBlob?: Blob, transcript?: string, duration: number }) => {
+  const handleRecordingComplete = async (result: { sessionId?: string, audioBlob?: Blob, transcript?: string, duration: number }) => {
     const requestVersion = ++aiRequestVersionRef.current
     setAiContent(null)
     setDraftStatus('idle')
+    setLocalSessionId(result.sessionId ?? null)
     setAudioBlob(result.audioBlob ?? null)
     setAudioUrl(result.audioBlob ? URL.createObjectURL(result.audioBlob) : null)
     setRecordingDuration(result.duration)
@@ -171,61 +200,59 @@ export default function ProjectRecordPage() {
     }
   }
 
+  const handleRecoveredRecording = (recording: RecoveredRecording) => {
+    resetRecording()
+    setRecoveredDraft(true)
+    const metadata=recording.session.saveIntent?.metadata
+    setLocalSessionId(recording.session.id)
+    setAudioBlob(recording.blob)
+    setAudioUrl(URL.createObjectURL(recording.blob))
+    setTranscript(metadata?.transcript ?? '')
+    setMode(metadata?.recordingMode ?? 'chat')
+    setSaveMetadata(metadata ?? null)
+    setStage('review')
+  }
+
+  const saveOptions = (controller: AbortController) => ({
+    identity:{actorId:user!.id,projectId,sessionId:localSessionId!}, signal:controller.signal,
+    isCurrent:()=>saveOperationRef.current === controller && !controller.signal.aborted,
+    onProgress:setSaveProgress, onIntent:setSaveMetadata,
+  })
   const handleSaveStory = async (data: { title: string, happenedAt: Date, isPublic: boolean }) => {
-    if (!audioBlob || !user?.id) return
-
+    if (!audioBlob || !user?.id || saveOperationRef.current || saveReceipt) return
+    if (!localSessionId) { setSaveError('unavailable'); return }
+    const controller=new AbortController()
+    saveOperationRef.current=controller
+    const options=saveOptions(controller)
     setIsSubmitting(true)
+    setSaveError(null)
+    setSavePending(false)
     try {
-      // 1. Upload Audio
-      let uploadedAudioUrl = null
-      const uploadRes = await uploadStoryAudio(audioBlob, projectId)
-      if (uploadRes.success) {
-        uploadedAudioUrl = uploadRes.url
-      } else {
-        throw new Error('Audio upload failed')
-      }
-
-      // 2. Create Story
-      const storyData = {
-        project_id: projectId,
-        storyteller_id: user.id,
-        title: data.title,
-        content: aiContent?.summary || '',
-        audio_url: uploadedAudioUrl,
-        audio_duration: recordingDuration,
-        transcript: transcript,
-        happened_at: data.happenedAt,
-        recording_mode: mode,
-        ai_generated_title: aiContent?.title,
-        ai_summary: aiContent?.summary,
-        ai_confidence_score: aiContent?.confidence,
-        is_public: data.isPublic
-      }
-
-      const story = await storyService.createStory(storyData)
-      if (!story) throw new Error('Failed to create story')
-
-      setSavedStoryId(story.id)
-      void agentService.processStoryWithEditorAgent({ storyId: story.id }).catch(error => {
-        console.warn('[record/page] editor agent processing failed:', error)
-      })
-
-      // AUD-05 FIX: 移除随机数共鸣，待对接真实公共库统计
-      // TODO: Query public_contributions/public_event_clusters for real resonance count
-      // const era = data.happenedAt.getFullYear().toString().slice(0, 3) + '0s'
-      // setResonanceData({
-      //   era,
-      //   count: 0 // Will be populated from real public archive query
-      // })
-      // setShowResonance(true)
-      toast.success('Story saved to timeline!')
-
+      const result=await saveLocalRecording({...options,metadata:saveMetadata ?? {
+        title:data.title,content:aiContent?.summary ?? '',transcript,happenedAt:data.happenedAt.toISOString(),recordingMode:mode,isPublic:data.isPublic,
+      }})
+      if (!options.isCurrent()) return
+      if (result.state === 'pending') setSavePending(true)
+      else { setSaveReceipt(result.receipt); setSavedStoryId(result.receipt.storyId) }
     } catch (error) {
-      console.error('Save failed:', error)
-      toast.error('Failed to save story')
+      if (options.isCurrent()) setSaveError(error instanceof Error && error.message === 'recording_lock_unavailable' ? 'unsupported' :
+        error instanceof Error && error.message === 'recording_busy' ? 'busy' : 'unavailable')
     } finally {
-      setIsSubmitting(false)
+      if (options.isCurrent()) { saveOperationRef.current=null; setIsSubmitting(false) }
     }
+  }
+  const handleClearLocal = async () => {
+    if (!saveReceipt || !localSessionId || !user?.id || saveOperationRef.current) return
+    const controller=new AbortController()
+    saveOperationRef.current=controller
+    const options=saveOptions(controller)
+    setIsSubmitting(true)
+    setSaveError(null)
+    try {
+      await clearSavedLocalRecording(options,saveReceipt)
+      if (options.isCurrent()) setLocalCleared(true)
+    } catch { if (options.isCurrent()) setSaveError('cleanupError') }
+    finally { if (options.isCurrent()) { saveOperationRef.current=null; setIsSubmitting(false) } }
   }
 
   const handleSaveTextStory = async () => {
@@ -296,7 +323,7 @@ export default function ProjectRecordPage() {
         {/* Stage: HUB */}
         {stage === 'hub' && (
           <div className="space-y-6">
-            <RecordingRecoveryPanel projectId={projectId} userId={user?.id} />
+            <RecordingRecoveryPanel projectId={projectId} userId={user?.id} onContinue={handleRecoveredRecording} />
             <RecorderHub
               onModeSelect={handleModeSelect}
               interventionLevel={interventionLevel}
@@ -318,6 +345,7 @@ export default function ProjectRecordPage() {
               locale={locale}
               maxDuration={30 * 60}
               onRecordingComplete={(res) => handleRecordingComplete({
+                sessionId: res.sessionId,
                 audioBlob: res.audioBlob,
                 transcript: res.transcript,
                 duration: res.duration
@@ -390,15 +418,30 @@ export default function ProjectRecordPage() {
 
         {/* Stage: REVIEW */}
         {stage === 'review' && audioUrl && (
+          <div className="space-y-6">
           <ReviewStage
+            key={localSessionId}
             audioUrl={audioUrl}
             duration={recordingDuration}
+            recovered={recoveredDraft}
             transcript={transcript}
             onSave={handleSaveStory}
             onDiscard={handleReturnToHub}
             isProcessing={isSubmitting}
             draftStatus={draftStatus}
+            saveMetadata={saveMetadata}
+            saved={!!saveReceipt}
+            retrySave={savePending || !!saveError}
           />
+          {(saveProgress || saveError || saveReceipt) && <Card className="max-w-2xl mx-auto p-6 space-y-4">
+            {saveError ? <p role="alert">{tf(saveError)}</p> : <p role="status">{tf(localCleared ? 'cleared' : saveReceipt ? 'saved' : savePending ? 'pending' : saveProgress ?? 'checking')}</p>}
+            {saveReceipt && <>
+              <a className="font-medium underline underline-offset-4" href={withLocale(`/dashboard/projects/${projectId}/stories/${saveReceipt.storyId}`)}>{tf('openStory')}</a>
+              <audio controls preload="none" src={saveReceipt.playbackUrl} aria-label={tf('playback')} className="w-full" onError={()=>setSaveError('playbackError')} />
+              {!localCleared && <Button type="button" variant="outline" disabled={isSubmitting} onClick={()=>void handleClearLocal()}>{tf('clearLocal')}</Button>}
+            </>}
+          </Card>}
+          </div>
         )}
 
         {/* Resonance Overlay */}

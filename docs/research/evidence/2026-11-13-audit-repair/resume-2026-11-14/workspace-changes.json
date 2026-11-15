@@ -1,0 +1,18 @@
+{
+  "changed": [
+    "docs/2026-10-10-integrated-upgrade-plan.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/README.md",
+    "docs/deployment/supabase-new-project-restore.md",
+    "docs/superpowers/plans/2026-11-13-upgrade-audit-repair.md",
+    "experiments/g1-local/backup-rehearsal.mjs",
+    "experiments/pg17-hosting-reminders/http.mjs",
+    "experiments/pg17-processing-recovery/scenarios.mjs",
+    "packages/web/src/components/notifications/NotificationItem.tsx"
+  ],
+  "added": [
+    "docs/research/2026-11-14-audit-repair.md",
+    "experiments/g1-local/durable-records-backup.mjs"
+  ],
+  "deleted": []
+}

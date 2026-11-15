@@ -1,0 +1,120 @@
+{
+  "completedAt": "2026-11-08T18:34:27.432031+00:00",
+  "timezone": "Asia/Taipei",
+  "status": "passed",
+  "scope": "Online media deletion execution; Storage API namespace reconciliation with persistent physical uncertainty",
+  "onlineMediaDeletionWebAccepted": true,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "manualGates": {
+    "status": "waived_by_user",
+    "authorizationDate": "2026-11-09",
+    "checklist": "docs/research/2026-11-09-g1-manual-follow-up.md",
+    "blocksLocalProgress": false
+  },
+  "records": {
+    "nativeAndChrome": {
+      "path": "docs/research/evidence/2026-11-09-g1-deletion-execution/native-1794162300864-2c7e9820-df17-463e-b4f6-756313df1f3c/results.json",
+      "sha256": "97e3864cf1e38cb1542bbae144a13a669d5a51458abb5308e4abe3642bc19d22",
+      "assertions": 184,
+      "status": "passed",
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "migrationsAndBackup": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794162170300-ae2193f2-0207-41c3-8c28-73f05212e305/results.json",
+      "sha256": "17e1004f932b7cfed0a4181d1c76dd3ed5ef6abe6253a77a6710df54e78b2acf",
+      "assertions": 491,
+      "status": "passed",
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  },
+  "gate": {
+    "verifyExitCode": 0,
+    "webSuites": 164,
+    "webTests": 3398,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 25,
+    "infraExitCode": 0,
+    "buildPages": 184,
+    "infraInitialFailure": "migration inventory omitted new file; corrected and rerun"
+  },
+  "boundaries": {
+    "physicalDeletionComplete": false,
+    "hostedStorageQualified": false,
+    "providerOnlyOrphansDiscoverable": false,
+    "knownPhysicalUnknownsRemainSticky": true,
+    "wholeStoryTextErasureImplemented": false,
+    "legacyProjectDeleteButtonConnected": false,
+    "browserUI": "local test operation page, actual production routes/worker"
+  },
+  "remainingEngineering": [
+    "whole-story product deletion entry and database content/derived-data purge consistent with immutable capture replay"
+  ],
+  "priorEvidenceVerified": [
+    {
+      "name": "interruptedChrome",
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/interrupted-browser-1794066185867-ac613c97-6cd1-485a-8cd7-7f831171d8cb/results.json",
+      "sha256": "8dc8a182dee3ff4ad0cfff54b723d9754434eff10d32112d20a7d40df6c99f88"
+    },
+    {
+      "name": "aiChrome",
+      "path": "docs/research/evidence/2026-11-07-g1-fixes/ai-1794066594425-a6982664-d810-45ac-be23-4a0decc4a326/results.json",
+      "sha256": "30019bd7520497dde375105b0ed961a6e6c2cee851804f9bd1a4b449784bbb53"
+    },
+    {
+      "name": "audio",
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/audio-1794066593597-a7048455-bb94-4fc9-9796-7091b3d41b8b/results.json",
+      "sha256": "0f71bff8acd1d3721a9283b675b7497d8320f4b9d70a02d4416fea0f46575c7e"
+    },
+    {
+      "name": "envelope",
+      "path": "docs/research/evidence/2026-11-07-g1-fixes/envelope-1794066595672-83b3e6e2-5bb2-474d-8c5f-31cac325d242/results.json",
+      "sha256": "f4cf7bff0ac46fc505e3916e261c030150b7f28c05434d339909c3a90b5868bb"
+    },
+    {
+      "name": "migrationsAndBackup",
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794066887638-762c32a5-09e5-475c-8886-854591e60253/results.json",
+      "sha256": "996f3dc05d7d624f05f71cf7f9b284ccfab3dadd8ec0e17b2c556dbe256429b6"
+    }
+  ],
+  "priorLogHashesVerified": 16,
+  "priorSourceArchiveUnchanged": true,
+  "sourceArchive": {
+    "path": "source.tar.gz",
+    "sha256": "32584e2e7ff122e2d1519b33e5ef0c6d338bce8e170109c15ab9334ceefda8a9",
+    "manifest": "source-manifest.json",
+    "files": 968,
+    "roundTripPassed": true
+  },
+  "logs": {
+    "final/verify.log": "ed581fa8000b36b8a98dca0de77d95dbbe883984f285849122b4b48165d020d3",
+    "final/migrations.log": "12574d0547b146ba6437efa6613796be159f09cf75ae4728da625665e95117c4",
+    "final/infra-before-inventory-update.log": "3c0629eb6c35f83bc78b0444b01babe5c9a46bb3554e375a67954856b17dc171",
+    "final/backup.log": "1354f21df4447b47c88558d0524f818963fef6c2bf67b83d7dd36a96c982ca19",
+    "final/shared.log": "d7c80778b7f7137b8080f8f824bd9c2deb29f9d67c8be1c8aa2d032fd72aa485",
+    "final/infra.log": "389acaa4cb171148aae16591d75b7f3be8acc4196c090ca9226d4071bb53e617"
+  },
+  "review": "review.md",
+  "git": {
+    "branch": "codex/october-upgrade-p0",
+    "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+    "stagedFiles": [],
+    "diffCheckPassed": true,
+    "committed": false,
+    "pushed": false,
+    "remoteMigrationOrDeployment": false
+  }
+}

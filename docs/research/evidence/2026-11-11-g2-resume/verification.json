@@ -1,0 +1,485 @@
+{
+  "checkedAt": "2026-11-11T10:48:25.735876+08:00",
+  "timezone": "Asia/Taipei",
+  "status": "passed",
+  "scope": "Complete interrupted G2 evidence closeout; rerun G2 Chrome and repository gate without source changes",
+  "referencedChat": "01a1c384-9f34-7c61-8472-f2d2bf823a76",
+  "localG2EngineeringAcceptance": "passed",
+  "sourceVerification": {
+    "files": 1204,
+    "initialManifest": {
+      "path": "docs/research/evidence/2026-11-11-g2-resume/source-manifest.before.json",
+      "sha256": "5a619b8a223f88bd657d3a474e42ed173cb4f6b4c89c49d456b418324dbf3624"
+    },
+    "currentManifest": {
+      "path": "docs/research/evidence/2026-11-10-g2-review/source-manifest.json",
+      "sha256": "5a619b8a223f88bd657d3a474e42ed173cb4f6b4c89c49d456b418324dbf3624"
+    },
+    "drift": [],
+    "archive": {
+      "path": "docs/research/evidence/2026-11-10-g2-review/source.tar.gz",
+      "sha256": "96481be535f702859572847b8fa694ed4a6146a0f2a348a98faeba33f7f26b68"
+    },
+    "archiveMembersVerified": 1204
+  },
+  "currentG2Chrome": {
+    "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/results.json",
+    "sha256": "26483702c7775f2c8d24ce9a85dd4a554b6a02e7b7f05a4a0d4417d741927495",
+    "status": "passed",
+    "assertions": 543,
+    "migrations": 33,
+    "sourcesVerified": 65,
+    "sourceDrift": [],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    },
+    "runtime": {
+      "node": "v22.22.2",
+      "pg": "8.16.3",
+      "scrubbedEnvironmentKeys": [],
+      "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+      "postgres": "postgres (PostgreSQL) 17.4",
+      "binarySha256": {
+        "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+        "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+        "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+        "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+        "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+      }
+    },
+    "log": {
+      "path": "docs/research/evidence/2026-11-11-g2-resume/chrome.log",
+      "sha256": "ba0f6678237911f895c2f9c19684f8cd93ba217b30a645b807debbdc7755cd0d"
+    },
+    "storyReviewChrome": {
+      "status": "passed",
+      "browser": "157.0.8103.39",
+      "boundary": "Production StoryReviewPanel mounted by the actual story detail page, production review and protected playback handlers, Supabase SDK and complete native PG17 schema. Local synthetic Auth/PostgREST/Storage transport, generated tone WAV and explicitly synthetic timed transcript. Actual installed Google Chrome; no live ASR or real household semantics measured.",
+      "checks": [
+        "actual source audio seek and time progression",
+        "modified and rejected body persisted",
+        "two-member disputes",
+        "approved reload and history",
+        "outsider denied",
+        "correction new version",
+        "narrow viewport",
+        "source-change and deletion rejected"
+      ]
+    },
+    "transcriptionChrome": {
+      "status": "passed",
+      "browser": "157.0.8103.39",
+      "boundary": "Production StoryReviewPanel and StoryTranscriptionControl, production GET/POST transcription/review/play routes, Supabase SDK, complete native PG17 schema, and installed Google Chrome. Auth identities, loopback PostgREST/Storage/provider transport, tone WAV, and timed provider response are controlled synthetic substitutes. No paid/live ASR, real speech accuracy, or semantic audio alignment claim.",
+      "checks": [
+        "outsider, revoked member, missing consent, invalid policy: zero provider requests",
+        "explicit Chrome consent and submit",
+        "actual adapter multipart bytes and config",
+        "durable aligned transcript and unknown confidence",
+        "completed request replay makes zero extra calls",
+        "reload and timed audio seek",
+        "consent withdrawn during provider response rejects ingestion",
+        "invalid provider response creates no draft",
+        "pending identity survives reload",
+        "same and new IDs cannot repeat unknown outbound request"
+      ],
+      "cleanup": {
+        "globalsRestored": true,
+        "errors": []
+      }
+    },
+    "screenshots": [
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-review-before-approval.png",
+        "sha256": "8a45e61c40b7e175ad0a694641d8b11c7848296817c849d983e4b7b4724ac8c2"
+      },
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-review-mobile.png",
+        "sha256": "d668ce90c157dd2031ba4f8eaf3bc65201b2be8d9506e4651033ef914c83692d"
+      },
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-transcription-after.png",
+        "sha256": "4f2258e0f672943265a937b1924f22b3da17c6ac55d7d4f723d2cc9c1530f4c4"
+      },
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-transcription-before.png",
+        "sha256": "ccd812f9c26cffde22a5ed0c5590234a188c1febb5b2956e3b3abffc4e0a5509"
+      },
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-transcription-error.png",
+        "sha256": "44b6fd0ba44447c62731b3e04d83ba998113ace7836afcb661cf949bd5b60655"
+      }
+    ]
+  },
+  "chromeComparison": {
+    "path": "docs/research/evidence/2026-11-11-g2-resume/chrome-comparison.json",
+    "sha256": "e0a7496b9a037c064a8747227d6266749aa8f773a66cad98dc17ad1bf57ff28e"
+  },
+  "priorEvidenceSourceVerified": {
+    "g2Chrome": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/results.json",
+      "sha256": "0f4904ee851159d1d171a92a9ce28132394509fa8b54c5cb6a701a8be6b2facb",
+      "status": "passed",
+      "assertions": 542,
+      "migrations": 33,
+      "sourcesVerified": 65,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "runtime": {
+        "node": "v22.22.2",
+        "pg": "8.16.3",
+        "scrubbedEnvironmentKeys": [],
+        "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+        "postgres": "postgres (PostgreSQL) 17.4",
+        "binarySha256": {
+          "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+          "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+          "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+          "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+          "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+        }
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-11-10-g2-review/chrome-final.log",
+        "sha256": "1d852c19dd1c91efe89100238461b675e425debf4deab48848f03945c0ff4196"
+      },
+      "storyReviewChrome": {
+        "status": "passed",
+        "browser": "156.0.8078.80",
+        "boundary": "Production StoryReviewPanel mounted by the actual story detail page, production review and protected playback handlers, Supabase SDK and complete native PG17 schema. Local synthetic Auth/PostgREST/Storage transport, generated tone WAV and explicitly synthetic timed transcript. Actual installed Google Chrome; no live ASR or real household semantics measured.",
+        "checks": [
+          "actual source audio seek and time progression",
+          "modified and rejected body persisted",
+          "two-member disputes",
+          "approved reload and history",
+          "outsider denied",
+          "correction new version",
+          "narrow viewport",
+          "source-change and deletion rejected"
+        ]
+      },
+      "transcriptionChrome": {
+        "status": "passed",
+        "browser": "156.0.8078.80",
+        "boundary": "Production StoryReviewPanel and StoryTranscriptionControl, production GET/POST transcription/review/play routes, Supabase SDK, complete native PG17 schema, and installed Google Chrome. Auth identities, loopback PostgREST/Storage/provider transport, tone WAV, and timed provider response are controlled synthetic substitutes. No paid/live ASR, real speech accuracy, or semantic audio alignment claim.",
+        "checks": [
+          "outsider, revoked member, missing consent, invalid policy: zero provider requests",
+          "explicit Chrome consent and submit",
+          "actual adapter multipart bytes and config",
+          "durable aligned transcript and unknown confidence",
+          "completed request replay makes zero extra calls",
+          "reload and timed audio seek",
+          "consent withdrawn during provider response rejects ingestion",
+          "invalid provider response creates no draft",
+          "pending identity survives reload",
+          "same and new IDs cannot repeat unknown outbound request"
+        ],
+        "cleanup": {
+          "globalsRestored": true,
+          "errors": []
+        }
+      },
+      "screenshots": [
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-review-before-approval.png",
+          "sha256": "b684fab062cd01e488a535e95839814940790cc12ad940f83f4d03414e1cebdc"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-review-mobile.png",
+          "sha256": "690f870d403461d510675a69bf08242cbcac9fc2ebafd4f6d2fcda62e66ce540"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-transcription-after.png",
+          "sha256": "0bf50de5e7b179c30eca8d10220d290ac12d0583b5b81bad71947424060e81a0"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-transcription-before.png",
+          "sha256": "ccd812f9c26cffde22a5ed0c5590234a188c1febb5b2956e3b3abffc4e0a5509"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-transcription-error.png",
+          "sha256": "44b6fd0ba44447c62731b3e04d83ba998113ace7836afcb661cf949bd5b60655"
+        }
+      ],
+      "executedDate": "2026-11-10",
+      "rerunDuringResume": false
+    },
+    "g1DeletionChrome": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838649-f58999b9-b8d8-47a3-930b-d18d60d58077/results.json",
+      "sha256": "c0b5ae3f8675838dfc4e76a7fc6b095f33b748b164fd8b7db01ca4eb71ac281f",
+      "status": "passed",
+      "assertions": 244,
+      "migrations": 33,
+      "sourcesVerified": 97,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "runtime": {
+        "node": "v22.22.2",
+        "pg": "8.16.3",
+        "scrubbedEnvironmentKeys": [],
+        "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+        "postgres": "postgres (PostgreSQL) 17.4",
+        "binarySha256": {
+          "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+          "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+          "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+          "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+          "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+        }
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-11-10-g2-review/g1-deletion-final.log",
+        "sha256": "76f8a0549737ce7707fcc375e1649a47391d878c606beded756b2ef8b6caf932"
+      },
+      "storyDeletionChrome": {
+        "status": "passed",
+        "browser": "156.0.8078.80",
+        "boundary": "Production ProjectDetailClient, StoryCard, StoryService, deletion route, project list route, SQL and media worker. Synthetic local Auth, project/chapters transport and Supabase HTTP substitutes; actual installed Google Chrome and disk files."
+      },
+      "screenshots": [
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838649-f58999b9-b8d8-47a3-930b-d18d60d58077/chrome-story-after.png",
+          "sha256": "81184df620dd127dcbc7af994d4a9c54503f35e6cc74f719da93b5315b95a05c"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838649-f58999b9-b8d8-47a3-930b-d18d60d58077/chrome-story-before.png",
+          "sha256": "f8f070c277731bd76f7f9c8c236023a14f0641454b43eaeb351c16f6b62a8c62"
+        }
+      ],
+      "executedDate": "2026-11-10",
+      "rerunDuringResume": false
+    },
+    "backup": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316840198-3317b356-5941-4d4f-8305-e21ac2ad00ec/results.json",
+      "sha256": "03873348392b1fb27b70512eb9553d26e6335ae0911a31d3a844a97137a77405",
+      "status": "passed",
+      "assertions": 493,
+      "migrations": 33,
+      "sourcesVerified": 70,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "runtime": {
+        "node": "v22.22.2",
+        "pg": "8.16.3",
+        "scrubbedEnvironmentKeys": [],
+        "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+        "postgres": "postgres (PostgreSQL) 17.4",
+        "binarySha256": {
+          "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+          "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+          "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+          "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+          "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+        }
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-11-10-g2-review/backup-final.log",
+        "sha256": "7474e055105155a08d38876390db46d03330abe4537626386a866be88adc9481"
+      },
+      "backup": {
+        "status": "passed",
+        "browser": "156.0.8078.80",
+        "boundary": "Real PG17 custom dump/restored database, real captured Chrome audio bytes, local object backup/restore and post-freeze durable tombstones. Quiesced local writers. Offline maintenance replay, not the production physical deletion executor or hosted Storage.",
+        "checks": [
+          "full migrated schema serves two actual recordings",
+          "real pg_dump custom archive",
+          "real pg_restore to separate database",
+          "all object bytes restored and hashed",
+          "post-freeze capture and targets replayed exactly",
+          "restored story and intent prose purged",
+          "selected chunk/candidate omitted from restored store",
+          "deleted playback denied by actual route",
+          "unrelated restored audio plays in Chrome"
+        ]
+      },
+      "screenshots": [
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316840198-3317b356-5941-4d4f-8305-e21ac2ad00ec/restored-chrome.png",
+          "sha256": "4c52dce0d774a19127d8bb5eb9419f99da93233ddcbda3cd859889a12068fad9"
+        }
+      ],
+      "executedDate": "2026-11-10",
+      "rerunDuringResume": false
+    },
+    "independentNative": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316650288-21b78eb9-7c35-4c4e-87c2-b1919f1a8cc1/results.json",
+      "sha256": "54168913a11e1e7f36a65423b6facc08a682aa33421b552c7d9d7723172527c6",
+      "status": "passed",
+      "assertions": 486,
+      "migrations": 33,
+      "sourcesVerified": 36,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "runtime": {
+        "node": "v22.22.2",
+        "pg": "8.16.3",
+        "scrubbedEnvironmentKeys": [],
+        "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+        "postgres": "postgres (PostgreSQL) 17.4",
+        "binarySha256": {
+          "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+          "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+          "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+          "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+          "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+        }
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-11-10-g2-review/supplement-origin-independent-green.log",
+        "sha256": "5f553a7e1e51435f516ac03e29ccede71b67d2d4755199c033dda9912e99e466"
+      },
+      "screenshots": [],
+      "executedDate": "2026-11-10",
+      "rerunDuringResume": false
+    }
+  },
+  "gate": {
+    "typeCheck": "passed",
+    "lint": "passed",
+    "webSuites": 173,
+    "webTests": 3567,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 25,
+    "buildPages": 184,
+    "existingBuildWarnings": [
+      "unsupported Next eslint config",
+      "deprecated images.domains",
+      "optional environment variables not configured"
+    ],
+    "executions": {
+      "verify": {
+        "command": [
+          "npm",
+          "run",
+          "verify"
+        ],
+        "startedAt": "2026-11-11T10:41:31.484328+08:00",
+        "completedAt": "2026-11-11T10:45:03.820660+08:00",
+        "exitCode": 0,
+        "receipt": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/verify-execution.json",
+          "sha256": "a4cb62bca5cbfb3157d7880554737ea0df00d4fcaec1cc83ff2f185de24eeb27"
+        },
+        "log": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/verify.log",
+          "sha256": "6b8b44a73fded65ab89d9a9216c8bb6d2dce896eae3354298f47ee35c61a3e23"
+        }
+      },
+      "chrome": {
+        "command": [
+          "node",
+          "experiments/g1-local/verify-migrations.mjs",
+          "--g2-review",
+          "--chrome"
+        ],
+        "startedAt": "2026-11-11T10:41:31.372974+08:00",
+        "completedAt": "2026-11-11T10:42:07.988014+08:00",
+        "exitCode": 0,
+        "receipt": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/chrome-execution.json",
+          "sha256": "84962cd7b9da4b786fb300cc92e6f43702977340aef22aa86cd6f09ecf39fd33"
+        },
+        "log": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/chrome.log",
+          "sha256": "ba0f6678237911f895c2f9c19684f8cd93ba217b30a645b807debbdc7755cd0d"
+        }
+      },
+      "shared": {
+        "command": [
+          "npm",
+          "test",
+          "--workspace=packages/shared",
+          "--",
+          "--runInBand"
+        ],
+        "startedAt": "2026-11-11T10:41:33.742650+08:00",
+        "completedAt": "2026-11-11T10:41:42.437115+08:00",
+        "exitCode": 0,
+        "receipt": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/shared-execution.json",
+          "sha256": "ffa50fa3a159b2c868dd9fd8a4b2fb0d410bd03fdfb02521e38fbb5994540df2"
+        },
+        "log": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/shared.log",
+          "sha256": "1313ff09e41eaf69403c3c8b761874c0dca3c5263508ce26bb96ad70b4540891"
+        }
+      },
+      "infra": {
+        "command": [
+          "npm",
+          "run",
+          "test:infra"
+        ],
+        "startedAt": "2026-11-11T10:41:33.743428+08:00",
+        "completedAt": "2026-11-11T10:41:47.500726+08:00",
+        "exitCode": 0,
+        "receipt": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/infra-execution.json",
+          "sha256": "b104c0de5096e4472c2a121eb340446a108a271c15395bf7d8c9095213d9d705"
+        },
+        "log": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/infra.log",
+          "sha256": "e6d98ad5fa9bd86316ab2693ca757ebde3b841c46026e0fa2803003f49eb4b4e"
+        }
+      }
+    }
+  },
+  "manualGates": {
+    "status": "waived_by_user",
+    "checklist": {
+      "path": "docs/research/2026-11-10-g2-manual-follow-up.md",
+      "sha256": "7b8e3d5b8c3d7a3a1772d5a559f97a46590375ec52cf87fa5c3976f54fbe45f4"
+    },
+    "blocksLocalProgress": false,
+    "unexecutedMarkedTested": false
+  },
+  "boundaries": {
+    "realHouseholdQualityMeasured": false,
+    "liveProviderQualityMeasured": false,
+    "realSpeechSemanticAlignmentMeasured": false,
+    "hostedSupabaseQualified": false,
+    "mobileHardwareTested": false,
+    "physicalDeletionComplete": false,
+    "providerHttp": "controlled loopback substitute; actual production adapter multipart requests",
+    "liveProviderRequests": 0,
+    "loopbackProviderRequests": 3,
+    "fullHostedNextAppLoginTested": false,
+    "pendingAsrReconciliationUiImplemented": false,
+    "independentReviewsRerunDuringResume": false,
+    "g1DeletionAndBackupRerunDuringResume": false
+  },
+  "git": {
+    "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+    "branch": "codex/october-upgrade-p0",
+    "stagedFiles": [],
+    "diffCheckPassed": true,
+    "sourceCodeChangedDuringResume": false,
+    "nextEnvRestored": true,
+    "committed": false,
+    "pushed": false,
+    "remoteMigrationOrDeployment": false
+  }
+}

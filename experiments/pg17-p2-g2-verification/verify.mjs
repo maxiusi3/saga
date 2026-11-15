@@ -12,7 +12,9 @@ const output = join(evidenceDir, `p2-g2-verify-${new Date().toISOString().replac
 const report = {
   startedAt: new Date().toISOString(),
   status: 'running',
-  scope: 'PG17.4 end-to-end verification of Phase P2 migration 20261024000002, immutable approved revisions, provenance & family review, and G2 200/200 fidelity benchmark',
+  scope: 'Historical P2 migration regression and Wilson arithmetic illustration only. Does not exercise the current G2 workflow, a model, households, or audio playback.',
+  evidenceKind: 'historical_synthetic_regression',
+  g2GatePassed: false,
   sources: {},
   assertions: 0,
   actorConnections: [],
@@ -426,10 +428,9 @@ try {
   })
 
   // ---------------------------------------------------------------------------
-  // Scenario 4: G2 Holdout Evaluation (200 Planted Errors + 200 Clean Negatives across 10 Families)
+  // Scenario 4: arithmetic illustration with declared constants, not a quality measurement.
   // ---------------------------------------------------------------------------
-  await h.scenario('4_g2_holdout_200_planted_errors_and_200_negatives_verification', async () => {
-    const holdoutFamilyCount = 10
+  await h.scenario('4_wilson_arithmetic_illustration_not_g2_evaluation', async () => {
     const totalPlantedErrors = 200
     const detectedPlantedErrors = 200
     const totalCleanNegatives = 200
@@ -437,25 +438,22 @@ try {
     const detectionWilson95 = computeWilsonInterval(detectedPlantedErrors, totalPlantedErrors)
     const falsePositiveWilson95 = computeWilsonInterval(falsePositives, totalCleanNegatives)
 
-    h.eq(detectionWilson95.proportion >= 0.95, true, 'G2 planted error detection rate >= 95% (200/200 = 100%)')
-    h.eq(falsePositiveWilson95.proportion <= 0.10, true, 'G2 false positive rate <= 10% (0/200 = 0%)')
+    h.eq(detectionWilson95.proportion, 1, 'arithmetic only: declared 200/200 equals 1')
+    h.eq(falsePositiveWilson95.proportion, 0, 'arithmetic only: declared 0/200 equals 0')
 
     report.g2Benchmark = {
-      holdoutFamilyCount,
-      totalPlantedErrors,
-      detectedPlantedErrors,
-      plantedErrorDetectionRate: detectionWilson95.proportion,
-      detectionWilson95,
-      totalCleanNegatives,
-      falsePositives,
-      falsePositiveRate: falsePositiveWilson95.proportion,
-      falsePositiveWilson95,
-      unresolvedSevereInApprovedCount: 0,
-      audioSeekSpotCheckPassed: 100,
-      audioSeekSpotCheckTotal: 100,
-      e0HardCasesPassed: 10,
-      e0HardCasesTotal: 10,
-      g2GatePassed: true,
+      evidenceKind: 'unmeasured_arithmetic_illustration',
+      realFamilyCount: 0,
+      realModelQualityMeasured: false,
+      actualAudioPlaybackMeasured: false,
+      plantedErrorDetectionRate: null,
+      falsePositiveRate: null,
+      unresolvedSevereInApprovedCount: null,
+      audioSeekSpotCheckPassed: null,
+      e0HardCasesPassed: null,
+      g2GatePassed: false,
+      arithmeticExample: { declaredSuccesses: detectedPlantedErrors, declaredTotal: totalPlantedErrors, detectionWilson95,
+        declaredFalsePositives: falsePositives, declaredNegatives: totalCleanNegatives, falsePositiveWilson95 },
     }
   })
 

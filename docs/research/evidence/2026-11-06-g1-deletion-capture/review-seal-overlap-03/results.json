@@ -1,0 +1,923 @@
+{
+  "status": "reproduced",
+  "assertions": 38,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [],
+  "sources": {
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-deletion-capture/fixture.mjs": "7ba4cd9f04ab2cc682644f358fc5d711cdf5ac01067b2c476a4fcac87b888f24",
+    "experiments/pg17-recording-flow/fixture.mjs": "b579bef2d0532e0e517d9b1dc37979c7448e90c39305e1b725cd615c0e201571",
+    "experiments/pg17-recording-worker/fixture.mjs": "83d9d5b5886d973a21c306f5e8a859d6ec45f1e7e8618e290fa85e013ba4d688",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "a5c788235068de9d7c31ed46cb0da9cf710e4759185e4bcb8d5d139bebf82f20",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af",
+    "supabase/migrations/20261106000001_recording_story_save.sql": "20ba20cdda0ec79c997cf1a0eafc38e7d7c022ad95b6146e7658d4208b8d5569",
+    "supabase/migrations/20261106000002_media_deletion_capture.sql": "8c4873a4cf980bb6912508d387ac2a6d509cf5c27894298a8277e7f7d0f52b32",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "36cb0471d7751a1e937074aaff7c05506ae97fd10d9800df49ea4142595ab97f",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1"
+  },
+  "waits": [
+    {
+      "label": "seal has passed tombstone check and waits at SELECT session FOR UPDATE",
+      "pid": 55256,
+      "wait_event_type": "Lock",
+      "wait_event": "relation",
+      "blockers": [
+        55258
+      ],
+      "locks": [
+        {
+          "relation": null,
+          "locktype": "advisory",
+          "mode": "ExclusiveLock",
+          "granted": true
+        },
+        {
+          "relation": "deletion_capture_subject",
+          "locktype": "relation",
+          "mode": "AccessShareLock",
+          "granted": true
+        },
+        {
+          "relation": "deletion_requests",
+          "locktype": "relation",
+          "mode": "AccessShareLock",
+          "granted": true
+        },
+        {
+          "relation": "deletion_requests_pkey",
+          "locktype": "relation",
+          "mode": "AccessShareLock",
+          "granted": true
+        },
+        {
+          "relation": "project_roles",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "project_roles_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "project_roles_project_id_user_id_key",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "projects",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "projects_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "recording_sessions",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": false
+        },
+        {
+          "relation": "stories",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "stories_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "users",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "users_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": null,
+          "locktype": "transactionid",
+          "mode": "ExclusiveLock",
+          "granted": true
+        },
+        {
+          "relation": null,
+          "locktype": "virtualxid",
+          "mode": "ExclusiveLock",
+          "granted": true
+        }
+      ]
+    },
+    {
+      "label": "capture queues compatible source population lock behind seal",
+      "pid": 55257,
+      "wait_event_type": "Lock",
+      "wait_event": "relation",
+      "blockers": [
+        55258
+      ],
+      "locks": [
+        {
+          "relation": "deletion_requests",
+          "locktype": "relation",
+          "mode": "ExclusiveLock",
+          "granted": true
+        },
+        {
+          "relation": "media_assets",
+          "locktype": "relation",
+          "mode": "ShareRowExclusiveLock",
+          "granted": true
+        },
+        {
+          "relation": "project_roles",
+          "locktype": "relation",
+          "mode": "ShareLock",
+          "granted": true
+        },
+        {
+          "relation": "projects",
+          "locktype": "relation",
+          "mode": "ShareLock",
+          "granted": true
+        },
+        {
+          "relation": "recording_sessions",
+          "locktype": "relation",
+          "mode": "ShareRowExclusiveLock",
+          "granted": false
+        },
+        {
+          "relation": "stories",
+          "locktype": "relation",
+          "mode": "ShareRowExclusiveLock",
+          "granted": true
+        },
+        {
+          "relation": "users",
+          "locktype": "relation",
+          "mode": "ShareLock",
+          "granted": true
+        },
+        {
+          "relation": null,
+          "locktype": "virtualxid",
+          "mode": "ExclusiveLock",
+          "granted": true
+        }
+      ]
+    },
+    {
+      "label": "seal insert waits behind capture after both compatible population locks granted",
+      "pid": 55256,
+      "wait_event_type": "Lock",
+      "wait_event": "relation",
+      "blockers": [
+        55257
+      ],
+      "locks": [
+        {
+          "relation": null,
+          "locktype": "advisory",
+          "mode": "ExclusiveLock",
+          "granted": true
+        },
+        {
+          "relation": "deletion_capture_subject",
+          "locktype": "relation",
+          "mode": "AccessShareLock",
+          "granted": true
+        },
+        {
+          "relation": "deletion_requests",
+          "locktype": "relation",
+          "mode": "AccessShareLock",
+          "granted": true
+        },
+        {
+          "relation": "deletion_requests_pkey",
+          "locktype": "relation",
+          "mode": "AccessShareLock",
+          "granted": true
+        },
+        {
+          "relation": "project_roles",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "project_roles_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "project_roles_project_id_user_id_key",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "projects",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "projects_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "recording_sessions",
+          "locktype": "relation",
+          "mode": "RowExclusiveLock",
+          "granted": false
+        },
+        {
+          "relation": "recording_sessions",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "recording_sessions_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "stories",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "stories_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "users",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": "users_pkey",
+          "locktype": "relation",
+          "mode": "RowShareLock",
+          "granted": true
+        },
+        {
+          "relation": null,
+          "locktype": "transactionid",
+          "mode": "ExclusiveLock",
+          "granted": true
+        },
+        {
+          "relation": null,
+          "locktype": "virtualxid",
+          "mode": "ExclusiveLock",
+          "granted": true
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    "released scheduling gate; no routine/trigger modifications",
+    "capture committed",
+    "seal returned after capture commit"
+  ],
+  "productionSqlModified": false,
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 55245,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-mkPMy6/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-mkPMy6",
+  "fixture": {
+    "actualStorySchema": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "supabase/migrations/20261104000001_recording_job_finalization.sql",
+      "supabase/migrations/20261105000001_recording_session_snapshot.sql",
+      "supabase/migrations/20261106000001_recording_story_save.sql",
+      "supabase/migrations/20261106000002_media_deletion_capture.sql"
+    ],
+    "syntheticPrerequisites": [
+      "auth",
+      "projects",
+      "project_roles",
+      "project_members",
+      "storage"
+    ],
+    "actualRequestReadPolicy": "CREATE POLICY \"deletion_requests_select_active_member\" ON public.deletion_requests\n  FOR SELECT TO authenticated\n  USING (public.is_active_project_member(project_id, auth.uid()));",
+    "actualDeletionTargetsDdl": "CREATE TABLE IF NOT EXISTS public.deletion_targets (\n  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),\n  deletion_request_id uuid NOT NULL REFERENCES public.deletion_requests(id) ON DELETE CASCADE,\n  target_id text NOT NULL,\n  kind text NOT NULL CHECK (kind IN ('media_asset', 'storage_object', 'story', 'derived_artifact')),\n  bucket text,\n  object_key text,\n  state text NOT NULL DEFAULT 'pending'\n    CHECK (state IN ('pending', 'processing', 'failed', 'deleted', 'not_found')),\n  error_code text,\n  updated_at timestamptz NOT NULL DEFAULT now(),\n  UNIQUE (deletion_request_id, target_id)\n);"
+  },
+  "manifest": {
+    "schemaVersion": 1,
+    "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "sessionId": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+    "userId": "11111111-1111-4111-8111-111111111111",
+    "storyId": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+    "assetId": "ead55ca9-85e7-88e5-a721-68847d3c9963",
+    "mimeType": "audio/webm",
+    "chunks": [
+      {
+        "index": 0,
+        "chunkId": "chunk-0",
+        "bucket": "audio-recordings",
+        "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+        "byteSize": 37,
+        "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+        "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0"
+      }
+    ]
+  },
+  "syntheticBytesBase64": "c3ludGhldGljLWV4aXN0aW5nLXVwbG9hZC1iZWZvcmUtc2VhbA==",
+  "before": {
+    "projects": [
+      {
+        "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "facilitator_id": "22222222-2222-4222-8222-222222222222"
+      }
+    ],
+    "project_roles": [
+      {
+        "id": "19ed1f6e-1e6b-48cd-b767-dfeb3673296a",
+        "role": "storyteller",
+        "status": "active",
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ],
+    "stories": [
+      {
+        "id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "title": "Synthetic recording",
+        "images": null,
+        "status": "processing",
+        "content": "",
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "duration": null,
+        "ai_prompt": null,
+        "audio_url": null,
+        "file_size": null,
+        "is_public": false,
+        "photo_url": null,
+        "prompt_id": null,
+        "ai_summary": null,
+        "chapter_id": null,
+        "created_at": "2026-11-06T03:41:13.296023+00:00",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "transcript": "",
+        "updated_at": "2026-11-06T03:41:13.296023+00:00",
+        "happened_at": "2026-11-06T00:00:00+00:00",
+        "stt_metadata": null,
+        "audio_duration": null,
+        "recording_mode": "chat",
+        "storyteller_id": "11111111-1111-4111-8111-111111111111",
+        "parent_story_id": null,
+        "ai_generated_title": null,
+        "ai_confidence_score": null,
+        "ai_follow_up_questions": null
+      }
+    ],
+    "media_assets": [],
+    "recording_sessions": [],
+    "recording_chunks": [],
+    "processing_jobs": [],
+    "processing_attempts": [],
+    "recording_output_candidates": [],
+    "recording_story_intents": [
+      {
+        "actor_id": "11111111-1111-4111-8111-111111111111",
+        "metadata": {
+          "title": "Synthetic recording",
+          "content": "",
+          "isPublic": false,
+          "happenedAt": "2026-11-06T00:00:00.000Z",
+          "transcript": "",
+          "recordingMode": "chat"
+        },
+        "story_id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "created_at": "2026-11-06T03:41:13.296023+00:00",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+        "confirmed_at": null
+      }
+    ],
+    "deletion_requests": [],
+    "deletion_targets": [],
+    "storage.objects": [
+      {
+        "id": "4617cdb6-d04d-4a94-bd53-e49a5ab61c7f",
+        "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+        "metadata": {
+          "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+          "byteSize": 37,
+          "synthetic": true
+        },
+        "bucket_id": "audio-recordings"
+      }
+    ],
+    "synthetic_files": {}
+  },
+  "capture": {
+    "code": "00000",
+    "value": {
+      "id": "30a5de2b-38ed-4596-a60c-72f6c4a137bb",
+      "state": "requested",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "subjectId": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+      "subjectType": "story",
+      "targetCount": 1,
+      "tombstoneAt": "2026-11-06T03:41:13.34664+00:00",
+      "physicalDeletionComplete": false
+    }
+  },
+  "captureBeforeCommit": {
+    "requests": [
+      {
+        "id": "30a5de2b-38ed-4596-a60c-72f6c4a137bb",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subject_id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "requested_by": "22222222-2222-4222-8222-222222222222",
+        "state": "requested",
+        "tombstone_at": "2026-11-06T03:41:13.346Z",
+        "attempt": 0,
+        "requested_at": "2026-11-06T03:41:13.346Z",
+        "processing_at": null,
+        "completed_at": null,
+        "error_code": null,
+        "capture_version": 1,
+        "subject_type": "story",
+        "capture_target_count": 1,
+        "capture_targets_sha256": "0989a63abeb45766c63efe5398b30f55e79dc61919a4cd2543864705f96bd93c"
+      }
+    ],
+    "targets": [
+      {
+        "id": "080b6498-4dca-4ee4-ac51-97e36b1d0cc1",
+        "deletion_request_id": "30a5de2b-38ed-4596-a60c-72f6c4a137bb",
+        "target_id": "story:c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "kind": "story",
+        "bucket": null,
+        "object_key": null,
+        "state": "pending",
+        "error_code": null,
+        "updated_at": "2026-11-06T03:41:13.346Z"
+      }
+    ],
+    "sessions": [],
+    "chunks": []
+  },
+  "seal": {
+    "code": "00000",
+    "value": {
+      "state": "sealing",
+      "manifest": {
+        "chunks": [
+          {
+            "index": 0,
+            "bucket": "audio-recordings",
+            "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+            "chunkId": "chunk-0",
+            "byteSize": 37,
+            "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+            "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0"
+          }
+        ],
+        "userId": "11111111-1111-4111-8111-111111111111",
+        "assetId": "ead55ca9-85e7-88e5-a721-68847d3c9963",
+        "storyId": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "mimeType": "audio/webm",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "sessionId": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+        "schemaVersion": 1
+      },
+      "sessionId": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+      "schemaVersion": 1,
+      "manifestSha256": "b15c30de3e395be0806fc0dec0566fc48f1e7d95f6310a1aa0ac628dd0a4028e",
+      "canClearLocalDrafts": false
+    }
+  },
+  "after": {
+    "projects": [
+      {
+        "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "facilitator_id": "22222222-2222-4222-8222-222222222222"
+      }
+    ],
+    "project_roles": [
+      {
+        "id": "19ed1f6e-1e6b-48cd-b767-dfeb3673296a",
+        "role": "storyteller",
+        "status": "active",
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ],
+    "stories": [
+      {
+        "id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "title": "Synthetic recording",
+        "images": null,
+        "status": "processing",
+        "content": "",
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "duration": null,
+        "ai_prompt": null,
+        "audio_url": null,
+        "file_size": null,
+        "is_public": false,
+        "photo_url": null,
+        "prompt_id": null,
+        "ai_summary": null,
+        "chapter_id": null,
+        "created_at": "2026-11-06T03:41:13.296023+00:00",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "transcript": "",
+        "updated_at": "2026-11-06T03:41:13.296023+00:00",
+        "happened_at": "2026-11-06T00:00:00+00:00",
+        "stt_metadata": null,
+        "audio_duration": null,
+        "recording_mode": "chat",
+        "storyteller_id": "11111111-1111-4111-8111-111111111111",
+        "parent_story_id": null,
+        "ai_generated_title": null,
+        "ai_confidence_score": null,
+        "ai_follow_up_questions": null
+      }
+    ],
+    "media_assets": [],
+    "recording_sessions": [
+      {
+        "id": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+        "state": "sealing",
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "story_id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "mime_type": "audio/webm",
+        "sealed_at": "2026-11-06T03:41:13.325063+00:00",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "seal_input": {
+          "chunks": [
+            {
+              "index": 0,
+              "bucket": "audio-recordings",
+              "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+              "chunkId": "chunk-0",
+              "byteSize": 37,
+              "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+              "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0"
+            }
+          ],
+          "userId": "11111111-1111-4111-8111-111111111111",
+          "assetId": "ead55ca9-85e7-88e5-a721-68847d3c9963",
+          "storyId": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+          "mimeType": "audio/webm",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sessionId": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+          "schemaVersion": 1
+        },
+        "started_at": "2026-11-06T03:41:13.325063+00:00",
+        "confirmed_at": null,
+        "merge_job_id": null,
+        "total_chunks": 1,
+        "manifest_sha256": "b15c30de3e395be0806fc0dec0566fc48f1e7d95f6310a1aa0ac628dd0a4028e",
+        "total_input_bytes": 37,
+        "confirmed_asset_id": null
+      }
+    ],
+    "recording_chunks": [
+      {
+        "id": "d810f360-ddbc-40bd-9a04-7039bf80f12c",
+        "bucket": "audio-recordings",
+        "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+        "byte_size": 37,
+        "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+        "chunk_index": 0,
+        "persisted_at": "2026-11-06T03:41:13.324372+00:00",
+        "seal_chunk_id": "chunk-0"
+      }
+    ],
+    "processing_jobs": [],
+    "processing_attempts": [],
+    "recording_output_candidates": [],
+    "recording_story_intents": [
+      {
+        "actor_id": "11111111-1111-4111-8111-111111111111",
+        "metadata": {
+          "title": "Synthetic recording",
+          "content": "",
+          "isPublic": false,
+          "happenedAt": "2026-11-06T00:00:00.000Z",
+          "transcript": "",
+          "recordingMode": "chat"
+        },
+        "story_id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "created_at": "2026-11-06T03:41:13.296023+00:00",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+        "confirmed_at": null
+      }
+    ],
+    "deletion_requests": [
+      {
+        "id": "30a5de2b-38ed-4596-a60c-72f6c4a137bb",
+        "state": "requested",
+        "attempt": 0,
+        "error_code": null,
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subject_id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "completed_at": null,
+        "requested_at": "2026-11-06T03:41:13.34664+00:00",
+        "requested_by": "22222222-2222-4222-8222-222222222222",
+        "subject_type": "story",
+        "tombstone_at": "2026-11-06T03:41:13.34664+00:00",
+        "processing_at": null,
+        "capture_version": 1,
+        "capture_target_count": 1,
+        "capture_targets_sha256": "0989a63abeb45766c63efe5398b30f55e79dc61919a4cd2543864705f96bd93c"
+      }
+    ],
+    "deletion_targets": [
+      {
+        "id": "080b6498-4dca-4ee4-ac51-97e36b1d0cc1",
+        "kind": "story",
+        "state": "pending",
+        "bucket": null,
+        "target_id": "story:c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "error_code": null,
+        "object_key": null,
+        "updated_at": "2026-11-06T03:41:13.34664+00:00",
+        "deletion_request_id": "30a5de2b-38ed-4596-a60c-72f6c4a137bb"
+      }
+    ],
+    "storage.objects": [
+      {
+        "id": "4617cdb6-d04d-4a94-bd53-e49a5ab61c7f",
+        "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+        "metadata": {
+          "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+          "byteSize": 37,
+          "synthetic": true
+        },
+        "bucket_id": "audio-recordings"
+      }
+    ],
+    "synthetic_files": {}
+  },
+  "replay": {
+    "id": "30a5de2b-38ed-4596-a60c-72f6c4a137bb",
+    "state": "requested",
+    "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "subjectId": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+    "subjectType": "story",
+    "targetCount": 1,
+    "tombstoneAt": "2026-11-06T03:41:13.34664+00:00",
+    "physicalDeletionComplete": false
+  },
+  "afterReplay": {
+    "projects": [
+      {
+        "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "facilitator_id": "22222222-2222-4222-8222-222222222222"
+      }
+    ],
+    "project_roles": [
+      {
+        "id": "19ed1f6e-1e6b-48cd-b767-dfeb3673296a",
+        "role": "storyteller",
+        "status": "active",
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ],
+    "stories": [
+      {
+        "id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "title": "Synthetic recording",
+        "images": null,
+        "status": "processing",
+        "content": "",
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "duration": null,
+        "ai_prompt": null,
+        "audio_url": null,
+        "file_size": null,
+        "is_public": false,
+        "photo_url": null,
+        "prompt_id": null,
+        "ai_summary": null,
+        "chapter_id": null,
+        "created_at": "2026-11-06T03:41:13.296023+00:00",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "transcript": "",
+        "updated_at": "2026-11-06T03:41:13.296023+00:00",
+        "happened_at": "2026-11-06T00:00:00+00:00",
+        "stt_metadata": null,
+        "audio_duration": null,
+        "recording_mode": "chat",
+        "storyteller_id": "11111111-1111-4111-8111-111111111111",
+        "parent_story_id": null,
+        "ai_generated_title": null,
+        "ai_confidence_score": null,
+        "ai_follow_up_questions": null
+      }
+    ],
+    "media_assets": [],
+    "recording_sessions": [
+      {
+        "id": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+        "state": "sealing",
+        "user_id": "11111111-1111-4111-8111-111111111111",
+        "story_id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "mime_type": "audio/webm",
+        "sealed_at": "2026-11-06T03:41:13.325063+00:00",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "seal_input": {
+          "chunks": [
+            {
+              "index": 0,
+              "bucket": "audio-recordings",
+              "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+              "chunkId": "chunk-0",
+              "byteSize": 37,
+              "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+              "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0"
+            }
+          ],
+          "userId": "11111111-1111-4111-8111-111111111111",
+          "assetId": "ead55ca9-85e7-88e5-a721-68847d3c9963",
+          "storyId": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+          "mimeType": "audio/webm",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sessionId": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+          "schemaVersion": 1
+        },
+        "started_at": "2026-11-06T03:41:13.325063+00:00",
+        "confirmed_at": null,
+        "merge_job_id": null,
+        "total_chunks": 1,
+        "manifest_sha256": "b15c30de3e395be0806fc0dec0566fc48f1e7d95f6310a1aa0ac628dd0a4028e",
+        "total_input_bytes": 37,
+        "confirmed_asset_id": null
+      }
+    ],
+    "recording_chunks": [
+      {
+        "id": "d810f360-ddbc-40bd-9a04-7039bf80f12c",
+        "bucket": "audio-recordings",
+        "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+        "byte_size": 37,
+        "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+        "chunk_index": 0,
+        "persisted_at": "2026-11-06T03:41:13.324372+00:00",
+        "seal_chunk_id": "chunk-0"
+      }
+    ],
+    "processing_jobs": [],
+    "processing_attempts": [],
+    "recording_output_candidates": [],
+    "recording_story_intents": [
+      {
+        "actor_id": "11111111-1111-4111-8111-111111111111",
+        "metadata": {
+          "title": "Synthetic recording",
+          "content": "",
+          "isPublic": false,
+          "happenedAt": "2026-11-06T00:00:00.000Z",
+          "transcript": "",
+          "recordingMode": "chat"
+        },
+        "story_id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "created_at": "2026-11-06T03:41:13.296023+00:00",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "2964a26c-6f19-4a63-a745-2f4186b0944a",
+        "confirmed_at": null
+      }
+    ],
+    "deletion_requests": [
+      {
+        "id": "30a5de2b-38ed-4596-a60c-72f6c4a137bb",
+        "state": "requested",
+        "attempt": 0,
+        "error_code": null,
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subject_id": "c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "completed_at": null,
+        "requested_at": "2026-11-06T03:41:13.34664+00:00",
+        "requested_by": "22222222-2222-4222-8222-222222222222",
+        "subject_type": "story",
+        "tombstone_at": "2026-11-06T03:41:13.34664+00:00",
+        "processing_at": null,
+        "capture_version": 1,
+        "capture_target_count": 1,
+        "capture_targets_sha256": "0989a63abeb45766c63efe5398b30f55e79dc61919a4cd2543864705f96bd93c"
+      }
+    ],
+    "deletion_targets": [
+      {
+        "id": "080b6498-4dca-4ee4-ac51-97e36b1d0cc1",
+        "kind": "story",
+        "state": "pending",
+        "bucket": null,
+        "target_id": "story:c2cdf332-6267-4e39-998b-b32f5a20485a",
+        "error_code": null,
+        "object_key": null,
+        "updated_at": "2026-11-06T03:41:13.34664+00:00",
+        "deletion_request_id": "30a5de2b-38ed-4596-a60c-72f6c4a137bb"
+      }
+    ],
+    "storage.objects": [
+      {
+        "id": "4617cdb6-d04d-4a94-bd53-e49a5ab61c7f",
+        "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0",
+        "metadata": {
+          "sha256": "b10c64009d301e1ff5726f46615170fd534c7f8668d5a32dff7539805e2033a5",
+          "byteSize": 37,
+          "synthetic": true
+        },
+        "bucket_id": "audio-recordings"
+      }
+    ],
+    "synthetic_files": {}
+  },
+  "uncapturedCoordinates": [
+    {
+      "bucket": "audio-recordings",
+      "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2964a26c-6f19-4a63-a745-2f4186b0944a/0"
+    }
+  ],
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "currentSourceMismatch": []
+}

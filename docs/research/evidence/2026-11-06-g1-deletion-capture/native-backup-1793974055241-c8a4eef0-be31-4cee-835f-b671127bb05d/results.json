@@ -1,0 +1,1706 @@
+{
+  "status": "passed",
+  "assertions": 82,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "actual published capture supplies durable candidate addresses to a mixed manifest",
+      "status": "passed",
+      "assertions": 13
+    },
+    {
+      "name": "actual TypeScript, CJS and CLI file mode agree on captured candidate exclusion",
+      "status": "passed",
+      "assertions": 10
+    },
+    {
+      "name": "candidate corruption is rejected identically and pre-freeze ledger behavior is unchanged",
+      "status": "passed",
+      "assertions": 31
+    }
+  ],
+  "sources": {
+    "experiments/pg17-deletion-capture/verify-backup.mjs": "bdd8fc7e185cc382678e8079191f1a7dc00fac8dc043307e32bc0df35f52cb86",
+    "experiments/pg17-deletion-capture/fixture.mjs": "bb49328176ceaf6bce2a7b913b276bc664cde843cc734c67262549ed985a01ea",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "experiments/pg17-recording-flow/fixture.mjs": "b579bef2d0532e0e517d9b1dc37979c7448e90c39305e1b725cd615c0e201571",
+    "experiments/pg17-recording-worker/fixture.mjs": "83d9d5b5886d973a21c306f5e8a859d6ec45f1e7e8618e290fa85e013ba4d688",
+    "experiments/pg17-recording-candidates/fixture.mjs": "1c09ea252da2ee57980e12553a4e3769d26d5e3e1b0d5ea6d34faaf3a7e9ecab",
+    "experiments/pg17-recording-finalization/fixture.mjs": "40bffce6db05362159aee2db5e69fa3d018d215b9fd6d1a1ed75fe901b1c1481",
+    "experiments/pg17-recording-status/fixture.mjs": "08d04babdb7ffbdcfef4b365a8599e82d25ca40d6807a6a3bcea71e16adee6fb",
+    "scripts/verify-scheme-b-backup.cjs": "fb6f89202c1f0db4dbc19cfb73819518854b53417c4461e09d0b9db89bd79cbf",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "a5c788235068de9d7c31ed46cb0da9cf710e4759185e4bcb8d5d139bebf82f20",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af",
+    "supabase/migrations/20261106000001_recording_story_save.sql": "20ba20cdda0ec79c997cf1a0eafc38e7d7c022ad95b6146e7658d4208b8d5569",
+    "supabase/migrations/20261106000002_media_deletion_capture.sql": "8c4873a4cf980bb6912508d387ac2a6d509cf5c27894298a8277e7f7d0f52b32",
+    "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql": "cb1d15de2782ed2c0fde5c69b1ee2684b8a5a941e46623c6092a4003c1784628",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "36cb0471d7751a1e937074aaff7c05506ae97fd10d9800df49ea4142595ab97f",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "packages/web/src/lib/server/scheme-b-backup.ts": "1c5edc5e4de767a2bbb587ed77cdb2f4a3dfa1b4bfcad6041eb23e17619ba01c"
+  },
+  "artifacts": {
+    "synthetic-header.dump": {
+      "sha256": "0e3664bb142140e3c72b86ede363b15476199894797e65575c238e7e11dd4cc8",
+      "byteSize": 55
+    },
+    "manifest.json": {
+      "sha256": "9f6893c65c86d8cf43aee0dbee4cce2e0eb0b93c991fbc333d0b01307b5e4dca",
+      "byteSize": 1440
+    },
+    "capture.json": {
+      "sha256": "f13b8b0b9cd68e51454dcdc61e58c09ba09ebfac3966ddb8b06e64f7e08400d3",
+      "byteSize": 56898
+    },
+    "tombstones.json": {
+      "sha256": "73fca58ae94c9dfdd3bd8571f04122263c56a00306c6f845c65d69b9f33b9c8f",
+      "byteSize": 931
+    },
+    "compatibility.json": {
+      "sha256": "d3013911f6897e454d6a488ff4739743d9989fb40656ae1b4e6847da0ca3d615",
+      "byteSize": 4954
+    },
+    "after-replay.json": {
+      "sha256": "04e30dc7772d00adf361d335e159ab23685aa54a1e2de74eb7627b623400f70f",
+      "byteSize": 22099
+    },
+    "validation-parity.json": {
+      "sha256": "97d1e1da81f660e329e08cd6971cb7640c83ff88e04a4f2ca72d84b54a1d111e",
+      "byteSize": 2880
+    }
+  },
+  "command": "node experiments/pg17-deletion-capture/verify-backup.mjs",
+  "qualification": {
+    "scope": "candidate manifest and computed restore-set compatibility",
+    "dump": "synthetic PGDMP header and payload, not a restorable custom archive",
+    "objects": "local synthetic files only; byte/hash fields computed by fixture, not verified by backup validators",
+    "pgRestoreExecuted": false,
+    "storageDownloadsVerified": false,
+    "backupLedgerQualified": false,
+    "physicalDeletionComplete": false,
+    "referenceSafeGcQualified": false,
+    "fullMigrationChainQualified": false,
+    "cloudOrDeviceQualified": false,
+    "g1MilestoneSatisfied": false,
+    "pushReady": false
+  },
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 71463,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-B7ihHj/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-B7ihHj",
+  "fixture": {
+    "actualStorySchema": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "supabase/migrations/20261104000001_recording_job_finalization.sql",
+      "supabase/migrations/20261105000001_recording_session_snapshot.sql",
+      "supabase/migrations/20261106000001_recording_story_save.sql",
+      "supabase/migrations/20261106000002_media_deletion_capture.sql",
+      "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql"
+    ],
+    "syntheticPrerequisites": [
+      "auth",
+      "projects",
+      "project_roles",
+      "project_members",
+      "storage"
+    ],
+    "actualRequestReadPolicy": "CREATE POLICY \"deletion_requests_select_active_member\" ON public.deletion_requests\n  FOR SELECT TO authenticated\n  USING (public.is_active_project_member(project_id, auth.uid()));",
+    "actualDeletionTargetsDdl": "CREATE TABLE IF NOT EXISTS public.deletion_targets (\n  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),\n  deletion_request_id uuid NOT NULL REFERENCES public.deletion_requests(id) ON DELETE CASCADE,\n  target_id text NOT NULL,\n  kind text NOT NULL CHECK (kind IN ('media_asset', 'storage_object', 'story', 'derived_artifact')),\n  bucket text,\n  object_key text,\n  state text NOT NULL DEFAULT 'pending'\n    CHECK (state IN ('pending', 'processing', 'failed', 'deleted', 'not_found')),\n  error_code text,\n  updated_at timestamptz NOT NULL DEFAULT now(),\n  UNIQUE (deletion_request_id, target_id)\n);"
+  },
+  "capture": {
+    "receipt": {
+      "id": "7e8f33ca-116f-46a2-b400-533c34514cad",
+      "state": "requested",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "subjectId": "1d02458b-e93a-445a-b090-79c248a3f570",
+      "subjectType": "story",
+      "targetCount": 4,
+      "tombstoneAt": "2026-11-06T14:07:38.701887+00:00",
+      "physicalDeletionComplete": false
+    },
+    "request": {
+      "id": "7e8f33ca-116f-46a2-b400-533c34514cad",
+      "state": "requested",
+      "attempt": 0,
+      "error_code": null,
+      "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "subject_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+      "completed_at": null,
+      "requested_at": "2026-11-06T14:07:38.701887+00:00",
+      "requested_by": "22222222-2222-4222-8222-222222222222",
+      "subject_type": "story",
+      "tombstone_at": "2026-11-06T14:07:38.701887+00:00",
+      "processing_at": null,
+      "capture_version": 1,
+      "capture_target_count": 4,
+      "capture_targets_sha256": "cb9a970671a3060b42d7647df0988bedff776fe07891ea0d5eb0e35f7f027de4"
+    },
+    "targets": [
+      {
+        "id": "0b9765d4-7ce9-40af-842c-4c4432986b8c",
+        "kind": "media_asset",
+        "state": "pending",
+        "bucket": null,
+        "target_id": "asset:5ef21932-bab3-838a-b84a-8fa036282a55",
+        "error_code": null,
+        "object_key": null,
+        "updated_at": "2026-11-06T14:07:38.701887+00:00",
+        "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+      },
+      {
+        "id": "1d2db8e5-451e-40a5-a561-0ccf2677a9ac",
+        "kind": "story",
+        "state": "pending",
+        "bucket": null,
+        "target_id": "story:1d02458b-e93a-445a-b090-79c248a3f570",
+        "error_code": null,
+        "object_key": null,
+        "updated_at": "2026-11-06T14:07:38.701887+00:00",
+        "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+      },
+      {
+        "id": "5728a846-64fb-4e10-8ea2-bd73efa4d776",
+        "kind": "storage_object",
+        "state": "pending",
+        "bucket": "recording-candidates",
+        "target_id": "storage:recording-candidates:jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+        "error_code": null,
+        "object_key": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+        "updated_at": "2026-11-06T14:07:38.701887+00:00",
+        "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+      },
+      {
+        "id": "a4c8a71d-79df-46ac-bb0c-bff9dd35335b",
+        "kind": "storage_object",
+        "state": "pending",
+        "bucket": "audio-recordings",
+        "target_id": "storage:audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+        "error_code": null,
+        "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+        "updated_at": "2026-11-06T14:07:38.701887+00:00",
+        "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+      }
+    ],
+    "selectedFixture": {
+      "sessionId": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+      "storyId": "1d02458b-e93a-445a-b090-79c248a3f570",
+      "jobId": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+      "assetId": "5ef21932-bab3-838a-b84a-8fa036282a55",
+      "manifestSha256": "22c66ec6fe79d47a7bd5428dd56db1bbc011a686c4f93a2ce0ecf71154ea3bb7",
+      "manifest": {
+        "schemaVersion": 1,
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "sessionId": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+        "userId": "11111111-1111-4111-8111-111111111111",
+        "storyId": "1d02458b-e93a-445a-b090-79c248a3f570",
+        "assetId": "5ef21932-bab3-838a-b84a-8fa036282a55",
+        "mimeType": "audio/webm",
+        "chunks": [
+          {
+            "index": 0,
+            "chunkId": "chunk-0",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+            "byteSize": 24,
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0"
+          }
+        ]
+      },
+      "sealed": {
+        "task": {
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sessionId": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "assetId": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "inputVersion": 1,
+          "jobType": "recording_merge",
+          "processorVersion": "ffmpeg-merge-v1",
+          "parameterVersion": "default",
+          "mimeType": "audio/webm",
+          "chunks": [
+            {
+              "index": 0,
+              "chunkId": "chunk-0",
+              "bucket": "audio-recordings",
+              "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+              "byteSize": 24,
+              "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+            }
+          ],
+          "totalInputBytes": 24,
+          "idempotencyKey": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"5ef21932-bab3-838a-b84a-8fa036282a55\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=56a5e89f-b13e-4e9b-a02c-845427c9b2ee:chunks=15829635932dbb359bac833c0566aeb0d81a585a386e13e5c7a937819850d7c8"
+        },
+        "assetRecord": {
+          "id": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "story_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "bucket": "audio-recordings",
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/5ef21932-bab3-838a-b84a-8fa036282a55/original",
+          "kind": "original_audio",
+          "mime_type": "audio/webm",
+          "byte_size": 24,
+          "state": "verifying",
+          "version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"5ef21932-bab3-838a-b84a-8fa036282a55\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=56a5e89f-b13e-4e9b-a02c-845427c9b2ee:chunks=15829635932dbb359bac833c0566aeb0d81a585a386e13e5c7a937819850d7c8"
+        },
+        "jobSnapshot": {
+          "id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "assetId": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "state": "queued",
+          "inputVersion": 1,
+          "jobType": "recording_merge",
+          "processorVersion": "ffmpeg-merge-v1",
+          "modelConfigVersion": "none",
+          "parameterVersion": "default",
+          "attemptCount": 0,
+          "maxAttempts": 3,
+          "notBefore": null,
+          "leaseOwner": null,
+          "leaseExpiresAt": null,
+          "cancelRequestedAt": null,
+          "deletionRequestedAt": null,
+          "errorCode": null,
+          "resultRef": null
+        }
+      },
+      "bytes": {
+        "type": "Buffer",
+        "data": [
+          115,
+          121,
+          110,
+          116,
+          104,
+          101,
+          116,
+          105,
+          99,
+          45,
+          114,
+          101,
+          99,
+          111,
+          114,
+          100,
+          105,
+          110,
+          103,
+          45,
+          111,
+          110,
+          108,
+          121
+        ]
+      },
+      "attemptCount": 1,
+      "leaseTransitions": [],
+      "candidateId": "319ff0ec-6eb0-4193-af30-c503422a7eb7",
+      "output": {
+        "byteSize": 24,
+        "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+        "mimeType": "audio/webm",
+        "durationMs": 1250
+      }
+    },
+    "retainedFixture": {
+      "sessionId": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+      "storyId": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+      "jobId": "2b8fb16a-c17c-409f-bdfe-13b6e9864336",
+      "assetId": "373c5cda-686f-896e-809a-d2b0557298fd",
+      "manifestSha256": "719c6dc36b27327f83a0f142b316cf9a757ec471a784cf06d330391e859f6d98",
+      "manifest": {
+        "schemaVersion": 1,
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "sessionId": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+        "userId": "11111111-1111-4111-8111-111111111111",
+        "storyId": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+        "assetId": "373c5cda-686f-896e-809a-d2b0557298fd",
+        "mimeType": "audio/webm",
+        "chunks": [
+          {
+            "index": 0,
+            "chunkId": "chunk-0",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+            "byteSize": 24,
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0"
+          }
+        ]
+      },
+      "sealed": {
+        "task": {
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sessionId": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "assetId": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "inputVersion": 1,
+          "jobType": "recording_merge",
+          "processorVersion": "ffmpeg-merge-v1",
+          "parameterVersion": "default",
+          "mimeType": "audio/webm",
+          "chunks": [
+            {
+              "index": 0,
+              "chunkId": "chunk-0",
+              "bucket": "audio-recordings",
+              "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+              "byteSize": 24,
+              "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+            }
+          ],
+          "totalInputBytes": 24,
+          "idempotencyKey": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"373c5cda-686f-896e-809a-d2b0557298fd\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=2462c02b-7bb3-4cc5-88d9-b53ec1333a67:chunks=d99ddf5aa18deb800e50cfc6faa79a908e64aa799b48ff6aa66c95b034c2e648"
+        },
+        "assetRecord": {
+          "id": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "story_id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "bucket": "audio-recordings",
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/373c5cda-686f-896e-809a-d2b0557298fd/original",
+          "kind": "original_audio",
+          "mime_type": "audio/webm",
+          "byte_size": 24,
+          "state": "verifying",
+          "version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"373c5cda-686f-896e-809a-d2b0557298fd\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=2462c02b-7bb3-4cc5-88d9-b53ec1333a67:chunks=d99ddf5aa18deb800e50cfc6faa79a908e64aa799b48ff6aa66c95b034c2e648"
+        },
+        "jobSnapshot": {
+          "id": "2b8fb16a-c17c-409f-bdfe-13b6e9864336",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "assetId": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "state": "queued",
+          "inputVersion": 1,
+          "jobType": "recording_merge",
+          "processorVersion": "ffmpeg-merge-v1",
+          "modelConfigVersion": "none",
+          "parameterVersion": "default",
+          "attemptCount": 0,
+          "maxAttempts": 3,
+          "notBefore": null,
+          "leaseOwner": null,
+          "leaseExpiresAt": null,
+          "cancelRequestedAt": null,
+          "deletionRequestedAt": null,
+          "errorCode": null,
+          "resultRef": null
+        }
+      },
+      "bytes": {
+        "type": "Buffer",
+        "data": [
+          115,
+          121,
+          110,
+          116,
+          104,
+          101,
+          116,
+          105,
+          99,
+          45,
+          114,
+          101,
+          99,
+          111,
+          114,
+          100,
+          105,
+          110,
+          103,
+          45,
+          111,
+          110,
+          108,
+          121
+        ]
+      },
+      "attemptCount": 1,
+      "leaseTransitions": [],
+      "candidateId": "41c07035-6c29-46d8-a019-24c0527c15aa",
+      "output": {
+        "byteSize": 24,
+        "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+        "mimeType": "audio/webm",
+        "durationMs": 1250
+      }
+    },
+    "candidateTarget": {
+      "id": "5728a846-64fb-4e10-8ea2-bd73efa4d776",
+      "kind": "storage_object",
+      "state": "pending",
+      "bucket": "recording-candidates",
+      "target_id": "storage:recording-candidates:jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+      "error_code": null,
+      "object_key": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+      "updated_at": "2026-11-06T14:07:38.701887+00:00",
+      "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+    },
+    "before": {
+      "projects": [
+        {
+          "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "facilitator_id": "22222222-2222-4222-8222-222222222222"
+        }
+      ],
+      "project_roles": [
+        {
+          "id": "96acba47-4ec0-494f-a1d4-b1b74477a77f",
+          "role": "storyteller",
+          "status": "active",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+        }
+      ],
+      "stories": [
+        {
+          "id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "title": "Synthetic recording",
+          "images": null,
+          "status": "processing",
+          "content": "",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "duration": null,
+          "ai_prompt": null,
+          "audio_url": null,
+          "file_size": null,
+          "is_public": false,
+          "photo_url": null,
+          "prompt_id": null,
+          "ai_summary": null,
+          "chapter_id": null,
+          "created_at": "2026-11-06T14:07:38.550136+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "transcript": "",
+          "updated_at": "2026-11-06T14:07:38.550136+00:00",
+          "happened_at": "2026-11-06T00:00:00+00:00",
+          "stt_metadata": null,
+          "audio_duration": null,
+          "recording_mode": "chat",
+          "storyteller_id": "11111111-1111-4111-8111-111111111111",
+          "parent_story_id": null,
+          "ai_generated_title": null,
+          "ai_confidence_score": null,
+          "ai_follow_up_questions": null
+        },
+        {
+          "id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "title": "Synthetic recording",
+          "images": null,
+          "status": "processing",
+          "content": "",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "duration": null,
+          "ai_prompt": null,
+          "audio_url": null,
+          "file_size": null,
+          "is_public": false,
+          "photo_url": null,
+          "prompt_id": null,
+          "ai_summary": null,
+          "chapter_id": null,
+          "created_at": "2026-11-06T14:07:38.626255+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "transcript": "",
+          "updated_at": "2026-11-06T14:07:38.626255+00:00",
+          "happened_at": "2026-11-06T00:00:00+00:00",
+          "stt_metadata": null,
+          "audio_duration": null,
+          "recording_mode": "chat",
+          "storyteller_id": "11111111-1111-4111-8111-111111111111",
+          "parent_story_id": null,
+          "ai_generated_title": null,
+          "ai_confidence_score": null,
+          "ai_follow_up_questions": null
+        }
+      ],
+      "media_assets": [
+        {
+          "id": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "kind": "original_audio",
+          "state": "verifying",
+          "bucket": "audio-recordings",
+          "sha256": null,
+          "version": 1,
+          "story_id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "byte_size": 24,
+          "mime_type": "audio/webm",
+          "created_at": "2026-11-06T14:07:38.647902+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/373c5cda-686f-896e-809a-d2b0557298fd/original",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "updated_at": "2026-11-06T14:07:38.647902+00:00",
+          "duration_ms": null,
+          "verified_at": null,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"373c5cda-686f-896e-809a-d2b0557298fd\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=2462c02b-7bb3-4cc5-88d9-b53ec1333a67:chunks=d99ddf5aa18deb800e50cfc6faa79a908e64aa799b48ff6aa66c95b034c2e648",
+          "parent_asset_id": null,
+          "original_filename": "unnamed-asset",
+          "verification_error": null,
+          "content_verified_at": null
+        },
+        {
+          "id": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "kind": "original_audio",
+          "state": "ready",
+          "bucket": "recording-candidates",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "version": 1,
+          "story_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "byte_size": 24,
+          "mime_type": "audio/webm",
+          "created_at": "2026-11-06T14:07:38.578831+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "object_key": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "updated_at": "2026-11-06T14:07:38.621917+00:00",
+          "duration_ms": 1250,
+          "verified_at": "2026-11-06T14:07:38.621917+00:00",
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"5ef21932-bab3-838a-b84a-8fa036282a55\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=56a5e89f-b13e-4e9b-a02c-845427c9b2ee:chunks=15829635932dbb359bac833c0566aeb0d81a585a386e13e5c7a937819850d7c8",
+          "parent_asset_id": null,
+          "original_filename": "unnamed-asset",
+          "verification_error": null,
+          "content_verified_at": "2026-11-06T14:07:38.621917+00:00"
+        }
+      ],
+      "recording_sessions": [
+        {
+          "id": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "state": "sealing",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "story_id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "mime_type": "audio/webm",
+          "sealed_at": "2026-11-06T14:07:38.639505+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "seal_input": {
+            "chunks": [
+              {
+                "index": 0,
+                "bucket": "audio-recordings",
+                "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+                "chunkId": "chunk-0",
+                "byteSize": 24,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0"
+              }
+            ],
+            "userId": "11111111-1111-4111-8111-111111111111",
+            "assetId": "373c5cda-686f-896e-809a-d2b0557298fd",
+            "storyId": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+            "mimeType": "audio/webm",
+            "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sessionId": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+            "schemaVersion": 1
+          },
+          "started_at": "2026-11-06T14:07:38.639505+00:00",
+          "confirmed_at": null,
+          "merge_job_id": null,
+          "total_chunks": 1,
+          "manifest_sha256": "719c6dc36b27327f83a0f142b316cf9a757ec471a784cf06d330391e859f6d98",
+          "total_input_bytes": 24,
+          "confirmed_asset_id": null
+        },
+        {
+          "id": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "state": "cloud_confirmed",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "story_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "mime_type": "audio/webm",
+          "sealed_at": "2026-11-06T14:07:38.570788+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "seal_input": {
+            "chunks": [
+              {
+                "index": 0,
+                "bucket": "audio-recordings",
+                "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+                "chunkId": "chunk-0",
+                "byteSize": 24,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0"
+              }
+            ],
+            "userId": "11111111-1111-4111-8111-111111111111",
+            "assetId": "5ef21932-bab3-838a-b84a-8fa036282a55",
+            "storyId": "1d02458b-e93a-445a-b090-79c248a3f570",
+            "mimeType": "audio/webm",
+            "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sessionId": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+            "schemaVersion": 1
+          },
+          "started_at": "2026-11-06T14:07:38.570788+00:00",
+          "confirmed_at": "2026-11-06T14:07:38.621917+00:00",
+          "merge_job_id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "total_chunks": 1,
+          "manifest_sha256": "22c66ec6fe79d47a7bd5428dd56db1bbc011a686c4f93a2ce0ecf71154ea3bb7",
+          "total_input_bytes": 24,
+          "confirmed_asset_id": "5ef21932-bab3-838a-b84a-8fa036282a55"
+        }
+      ],
+      "recording_chunks": [
+        {
+          "id": "ebdb15c0-99c2-4244-9635-9fd9611b385a",
+          "bucket": "audio-recordings",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "byte_size": 24,
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "chunk_index": 0,
+          "persisted_at": "2026-11-06T14:07:38.570566+00:00",
+          "seal_chunk_id": "chunk-0"
+        },
+        {
+          "id": "fcd8b63f-6819-4581-a10f-810265bdde0f",
+          "bucket": "audio-recordings",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "byte_size": 24,
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "chunk_index": 0,
+          "persisted_at": "2026-11-06T14:07:38.63935+00:00",
+          "seal_chunk_id": "chunk-0"
+        }
+      ],
+      "processing_jobs": [
+        {
+          "id": "2b8fb16a-c17c-409f-bdfe-13b6e9864336",
+          "state": "running",
+          "asset_id": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "job_type": "recording_merge",
+          "created_at": "2026-11-06T14:07:38.649264+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "error_code": null,
+          "not_before": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "result_ref": null,
+          "updated_at": "2026-11-06T14:07:38.6539+00:00",
+          "lease_owner": "finalization-worker-1",
+          "max_attempts": 3,
+          "attempt_count": 1,
+          "input_version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"373c5cda-686f-896e-809a-d2b0557298fd\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=2462c02b-7bb3-4cc5-88d9-b53ec1333a67:chunks=d99ddf5aa18deb800e50cfc6faa79a908e64aa799b48ff6aa66c95b034c2e648",
+          "lease_expires_at": "2026-11-06T14:09:38.651682+00:00",
+          "parameter_version": "default",
+          "processor_version": "ffmpeg-merge-v1",
+          "cancel_requested_at": null,
+          "model_config_version": "none"
+        },
+        {
+          "id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "state": "succeeded",
+          "asset_id": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "job_type": "recording_merge",
+          "created_at": "2026-11-06T14:07:38.580766+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "error_code": null,
+          "not_before": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "result_ref": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "updated_at": "2026-11-06T14:07:38.621917+00:00",
+          "lease_owner": null,
+          "max_attempts": 3,
+          "attempt_count": 1,
+          "input_version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"5ef21932-bab3-838a-b84a-8fa036282a55\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=56a5e89f-b13e-4e9b-a02c-845427c9b2ee:chunks=15829635932dbb359bac833c0566aeb0d81a585a386e13e5c7a937819850d7c8",
+          "lease_expires_at": null,
+          "parameter_version": "default",
+          "processor_version": "ffmpeg-merge-v1",
+          "cancel_requested_at": null,
+          "model_config_version": "none"
+        }
+      ],
+      "processing_attempts": [
+        {
+          "id": "0c4751ba-46bf-4bb5-b621-3f7e1cb1d997",
+          "job_id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "provider": null,
+          "worker_id": "finalization-worker-1",
+          "attempt_no": 1,
+          "error_code": null,
+          "finished_at": "2026-11-06T14:07:38.621917+00:00",
+          "usage_units": null,
+          "result_state": "succeeded",
+          "dispatched_at": "2026-11-06T14:07:38.59925+00:00",
+          "settled_cost_usd": null,
+          "reserved_cost_usd": null,
+          "provider_request_id": null
+        },
+        {
+          "id": "70829294-cae0-4d48-9cae-d2bdd2c9434b",
+          "job_id": "2b8fb16a-c17c-409f-bdfe-13b6e9864336",
+          "provider": null,
+          "worker_id": "finalization-worker-1",
+          "attempt_no": 1,
+          "error_code": null,
+          "finished_at": null,
+          "usage_units": null,
+          "result_state": "running",
+          "dispatched_at": "2026-11-06T14:07:38.6539+00:00",
+          "settled_cost_usd": null,
+          "reserved_cost_usd": null,
+          "provider_request_id": null
+        }
+      ],
+      "recording_output_candidates": [
+        {
+          "id": "319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "state": "prepared",
+          "bucket": "recording-candidates",
+          "job_id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "asset_id": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "byte_size": 24,
+          "mime_type": "audio/webm",
+          "worker_id": "finalization-worker-1",
+          "attempt_no": 1,
+          "created_at": "2026-11-06T14:07:38.607358+00:00",
+          "object_key": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "duration_ms": 1250,
+          "prepared_at": "2026-11-06T14:07:38.613741+00:00",
+          "manifest_sha256": "22c66ec6fe79d47a7bd5428dd56db1bbc011a686c4f93a2ce0ecf71154ea3bb7"
+        },
+        {
+          "id": "41c07035-6c29-46d8-a019-24c0527c15aa",
+          "state": "reserved",
+          "bucket": "recording-candidates",
+          "job_id": "2b8fb16a-c17c-409f-bdfe-13b6e9864336",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "asset_id": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "byte_size": 24,
+          "mime_type": "audio/webm",
+          "worker_id": "finalization-worker-1",
+          "attempt_no": 1,
+          "created_at": "2026-11-06T14:07:38.656177+00:00",
+          "object_key": "jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "duration_ms": 1250,
+          "prepared_at": null,
+          "manifest_sha256": "719c6dc36b27327f83a0f142b316cf9a757ec471a784cf06d330391e859f6d98"
+        }
+      ],
+      "recording_story_intents": [
+        {
+          "actor_id": "11111111-1111-4111-8111-111111111111",
+          "metadata": {
+            "title": "Synthetic recording",
+            "content": "",
+            "isPublic": false,
+            "happenedAt": "2026-11-06T00:00:00.000Z",
+            "transcript": "",
+            "recordingMode": "chat"
+          },
+          "story_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "created_at": "2026-11-06T14:07:38.550136+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "confirmed_at": null
+        },
+        {
+          "actor_id": "11111111-1111-4111-8111-111111111111",
+          "metadata": {
+            "title": "Synthetic recording",
+            "content": "",
+            "isPublic": false,
+            "happenedAt": "2026-11-06T00:00:00.000Z",
+            "transcript": "",
+            "recordingMode": "chat"
+          },
+          "story_id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "created_at": "2026-11-06T14:07:38.626255+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "confirmed_at": null
+        }
+      ],
+      "deletion_requests": [],
+      "deletion_targets": [],
+      "storage.objects": [
+        {
+          "id": "10a30ac1-818a-4358-a5de-108cf48da883",
+          "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "audio-recordings"
+        },
+        {
+          "id": "2aa0b1d3-3b47-40c2-a079-eacc2292bff4",
+          "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/373c5cda-686f-896e-809a-d2b0557298fd/original",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "audio-recordings"
+        },
+        {
+          "id": "2caacfc1-8531-4166-91d8-fc93ad0ecc23",
+          "name": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg",
+          "metadata": {
+            "sha256": "e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87",
+            "byteSize": 42,
+            "synthetic": true
+          },
+          "bucket_id": "saga"
+        },
+        {
+          "id": "7a944f05-8dad-463f-973d-03fe8e34f8bd",
+          "name": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "recording-candidates"
+        },
+        {
+          "id": "a35e5f2f-a089-4010-8983-e1ef433e003a",
+          "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "audio-recordings"
+        },
+        {
+          "id": "b72fdfa0-4796-490e-9b41-18eeebe21520",
+          "name": "jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "recording-candidates"
+        }
+      ],
+      "synthetic_files": {
+        "audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "recording-candidates:jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/373c5cda-686f-896e-809a-d2b0557298fd/original": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "recording-candidates:jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "saga:projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg": "c3ludGhldGljLWxlZ2FjeS1vYmplY3Qtbm90LWEtZmFtaWx5LXBob3Rv"
+      }
+    },
+    "after": {
+      "projects": [
+        {
+          "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "facilitator_id": "22222222-2222-4222-8222-222222222222"
+        }
+      ],
+      "project_roles": [
+        {
+          "id": "96acba47-4ec0-494f-a1d4-b1b74477a77f",
+          "role": "storyteller",
+          "status": "active",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+        }
+      ],
+      "stories": [
+        {
+          "id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "title": "Synthetic recording",
+          "images": null,
+          "status": "processing",
+          "content": "",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "duration": null,
+          "ai_prompt": null,
+          "audio_url": null,
+          "file_size": null,
+          "is_public": false,
+          "photo_url": null,
+          "prompt_id": null,
+          "ai_summary": null,
+          "chapter_id": null,
+          "created_at": "2026-11-06T14:07:38.550136+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "transcript": "",
+          "updated_at": "2026-11-06T14:07:38.550136+00:00",
+          "happened_at": "2026-11-06T00:00:00+00:00",
+          "stt_metadata": null,
+          "audio_duration": null,
+          "recording_mode": "chat",
+          "storyteller_id": "11111111-1111-4111-8111-111111111111",
+          "parent_story_id": null,
+          "ai_generated_title": null,
+          "ai_confidence_score": null,
+          "ai_follow_up_questions": null
+        },
+        {
+          "id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "title": "Synthetic recording",
+          "images": null,
+          "status": "processing",
+          "content": "",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "duration": null,
+          "ai_prompt": null,
+          "audio_url": null,
+          "file_size": null,
+          "is_public": false,
+          "photo_url": null,
+          "prompt_id": null,
+          "ai_summary": null,
+          "chapter_id": null,
+          "created_at": "2026-11-06T14:07:38.626255+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "transcript": "",
+          "updated_at": "2026-11-06T14:07:38.626255+00:00",
+          "happened_at": "2026-11-06T00:00:00+00:00",
+          "stt_metadata": null,
+          "audio_duration": null,
+          "recording_mode": "chat",
+          "storyteller_id": "11111111-1111-4111-8111-111111111111",
+          "parent_story_id": null,
+          "ai_generated_title": null,
+          "ai_confidence_score": null,
+          "ai_follow_up_questions": null
+        }
+      ],
+      "media_assets": [
+        {
+          "id": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "kind": "original_audio",
+          "state": "verifying",
+          "bucket": "audio-recordings",
+          "sha256": null,
+          "version": 1,
+          "story_id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "byte_size": 24,
+          "mime_type": "audio/webm",
+          "created_at": "2026-11-06T14:07:38.647902+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/373c5cda-686f-896e-809a-d2b0557298fd/original",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "updated_at": "2026-11-06T14:07:38.647902+00:00",
+          "duration_ms": null,
+          "verified_at": null,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"373c5cda-686f-896e-809a-d2b0557298fd\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=2462c02b-7bb3-4cc5-88d9-b53ec1333a67:chunks=d99ddf5aa18deb800e50cfc6faa79a908e64aa799b48ff6aa66c95b034c2e648",
+          "parent_asset_id": null,
+          "original_filename": "unnamed-asset",
+          "verification_error": null,
+          "content_verified_at": null
+        },
+        {
+          "id": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "kind": "original_audio",
+          "state": "deleting",
+          "bucket": "recording-candidates",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "version": 1,
+          "story_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "byte_size": 24,
+          "mime_type": "audio/webm",
+          "created_at": "2026-11-06T14:07:38.578831+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "object_key": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "updated_at": "2026-11-06T14:07:38.701887+00:00",
+          "duration_ms": 1250,
+          "verified_at": "2026-11-06T14:07:38.621917+00:00",
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"5ef21932-bab3-838a-b84a-8fa036282a55\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=56a5e89f-b13e-4e9b-a02c-845427c9b2ee:chunks=15829635932dbb359bac833c0566aeb0d81a585a386e13e5c7a937819850d7c8",
+          "parent_asset_id": null,
+          "original_filename": "unnamed-asset",
+          "verification_error": null,
+          "content_verified_at": "2026-11-06T14:07:38.621917+00:00"
+        }
+      ],
+      "recording_sessions": [
+        {
+          "id": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "state": "sealing",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "story_id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "mime_type": "audio/webm",
+          "sealed_at": "2026-11-06T14:07:38.639505+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "seal_input": {
+            "chunks": [
+              {
+                "index": 0,
+                "bucket": "audio-recordings",
+                "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+                "chunkId": "chunk-0",
+                "byteSize": 24,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0"
+              }
+            ],
+            "userId": "11111111-1111-4111-8111-111111111111",
+            "assetId": "373c5cda-686f-896e-809a-d2b0557298fd",
+            "storyId": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+            "mimeType": "audio/webm",
+            "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sessionId": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+            "schemaVersion": 1
+          },
+          "started_at": "2026-11-06T14:07:38.639505+00:00",
+          "confirmed_at": null,
+          "merge_job_id": null,
+          "total_chunks": 1,
+          "manifest_sha256": "719c6dc36b27327f83a0f142b316cf9a757ec471a784cf06d330391e859f6d98",
+          "total_input_bytes": 24,
+          "confirmed_asset_id": null
+        },
+        {
+          "id": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "state": "cloud_confirmed",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "story_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "mime_type": "audio/webm",
+          "sealed_at": "2026-11-06T14:07:38.570788+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "seal_input": {
+            "chunks": [
+              {
+                "index": 0,
+                "bucket": "audio-recordings",
+                "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+                "chunkId": "chunk-0",
+                "byteSize": 24,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0"
+              }
+            ],
+            "userId": "11111111-1111-4111-8111-111111111111",
+            "assetId": "5ef21932-bab3-838a-b84a-8fa036282a55",
+            "storyId": "1d02458b-e93a-445a-b090-79c248a3f570",
+            "mimeType": "audio/webm",
+            "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sessionId": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+            "schemaVersion": 1
+          },
+          "started_at": "2026-11-06T14:07:38.570788+00:00",
+          "confirmed_at": "2026-11-06T14:07:38.621917+00:00",
+          "merge_job_id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "total_chunks": 1,
+          "manifest_sha256": "22c66ec6fe79d47a7bd5428dd56db1bbc011a686c4f93a2ce0ecf71154ea3bb7",
+          "total_input_bytes": 24,
+          "confirmed_asset_id": "5ef21932-bab3-838a-b84a-8fa036282a55"
+        }
+      ],
+      "recording_chunks": [
+        {
+          "id": "ebdb15c0-99c2-4244-9635-9fd9611b385a",
+          "bucket": "audio-recordings",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "byte_size": 24,
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "chunk_index": 0,
+          "persisted_at": "2026-11-06T14:07:38.570566+00:00",
+          "seal_chunk_id": "chunk-0"
+        },
+        {
+          "id": "fcd8b63f-6819-4581-a10f-810265bdde0f",
+          "bucket": "audio-recordings",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "byte_size": 24,
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "chunk_index": 0,
+          "persisted_at": "2026-11-06T14:07:38.63935+00:00",
+          "seal_chunk_id": "chunk-0"
+        }
+      ],
+      "processing_jobs": [
+        {
+          "id": "2b8fb16a-c17c-409f-bdfe-13b6e9864336",
+          "state": "running",
+          "asset_id": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "job_type": "recording_merge",
+          "created_at": "2026-11-06T14:07:38.649264+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "error_code": null,
+          "not_before": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "result_ref": null,
+          "updated_at": "2026-11-06T14:07:38.6539+00:00",
+          "lease_owner": "finalization-worker-1",
+          "max_attempts": 3,
+          "attempt_count": 1,
+          "input_version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"373c5cda-686f-896e-809a-d2b0557298fd\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=2462c02b-7bb3-4cc5-88d9-b53ec1333a67:chunks=d99ddf5aa18deb800e50cfc6faa79a908e64aa799b48ff6aa66c95b034c2e648",
+          "lease_expires_at": "2026-11-06T14:09:38.651682+00:00",
+          "parameter_version": "default",
+          "processor_version": "ffmpeg-merge-v1",
+          "cancel_requested_at": null,
+          "model_config_version": "none"
+        },
+        {
+          "id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "state": "succeeded",
+          "asset_id": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "job_type": "recording_merge",
+          "created_at": "2026-11-06T14:07:38.580766+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "error_code": null,
+          "not_before": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "result_ref": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "updated_at": "2026-11-06T14:07:38.621917+00:00",
+          "lease_owner": null,
+          "max_attempts": 3,
+          "attempt_count": 1,
+          "input_version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"5ef21932-bab3-838a-b84a-8fa036282a55\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm:session=56a5e89f-b13e-4e9b-a02c-845427c9b2ee:chunks=15829635932dbb359bac833c0566aeb0d81a585a386e13e5c7a937819850d7c8",
+          "lease_expires_at": null,
+          "parameter_version": "default",
+          "processor_version": "ffmpeg-merge-v1",
+          "cancel_requested_at": null,
+          "model_config_version": "none"
+        }
+      ],
+      "processing_attempts": [
+        {
+          "id": "0c4751ba-46bf-4bb5-b621-3f7e1cb1d997",
+          "job_id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "provider": null,
+          "worker_id": "finalization-worker-1",
+          "attempt_no": 1,
+          "error_code": null,
+          "finished_at": "2026-11-06T14:07:38.621917+00:00",
+          "usage_units": null,
+          "result_state": "succeeded",
+          "dispatched_at": "2026-11-06T14:07:38.59925+00:00",
+          "settled_cost_usd": null,
+          "reserved_cost_usd": null,
+          "provider_request_id": null
+        },
+        {
+          "id": "70829294-cae0-4d48-9cae-d2bdd2c9434b",
+          "job_id": "2b8fb16a-c17c-409f-bdfe-13b6e9864336",
+          "provider": null,
+          "worker_id": "finalization-worker-1",
+          "attempt_no": 1,
+          "error_code": null,
+          "finished_at": null,
+          "usage_units": null,
+          "result_state": "running",
+          "dispatched_at": "2026-11-06T14:07:38.6539+00:00",
+          "settled_cost_usd": null,
+          "reserved_cost_usd": null,
+          "provider_request_id": null
+        }
+      ],
+      "recording_output_candidates": [
+        {
+          "id": "319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "state": "prepared",
+          "bucket": "recording-candidates",
+          "job_id": "cebc6acd-4df7-4613-ae37-ad02acb8d6b1",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "asset_id": "5ef21932-bab3-838a-b84a-8fa036282a55",
+          "byte_size": 24,
+          "mime_type": "audio/webm",
+          "worker_id": "finalization-worker-1",
+          "attempt_no": 1,
+          "created_at": "2026-11-06T14:07:38.607358+00:00",
+          "object_key": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "duration_ms": 1250,
+          "prepared_at": "2026-11-06T14:07:38.613741+00:00",
+          "manifest_sha256": "22c66ec6fe79d47a7bd5428dd56db1bbc011a686c4f93a2ce0ecf71154ea3bb7"
+        },
+        {
+          "id": "41c07035-6c29-46d8-a019-24c0527c15aa",
+          "state": "reserved",
+          "bucket": "recording-candidates",
+          "job_id": "2b8fb16a-c17c-409f-bdfe-13b6e9864336",
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+          "asset_id": "373c5cda-686f-896e-809a-d2b0557298fd",
+          "byte_size": 24,
+          "mime_type": "audio/webm",
+          "worker_id": "finalization-worker-1",
+          "attempt_no": 1,
+          "created_at": "2026-11-06T14:07:38.656177+00:00",
+          "object_key": "jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "duration_ms": 1250,
+          "prepared_at": null,
+          "manifest_sha256": "719c6dc36b27327f83a0f142b316cf9a757ec471a784cf06d330391e859f6d98"
+        }
+      ],
+      "recording_story_intents": [
+        {
+          "actor_id": "11111111-1111-4111-8111-111111111111",
+          "metadata": {
+            "title": "Synthetic recording",
+            "content": "",
+            "isPublic": false,
+            "happenedAt": "2026-11-06T00:00:00.000Z",
+            "transcript": "",
+            "recordingMode": "chat"
+          },
+          "story_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "created_at": "2026-11-06T14:07:38.550136+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "56a5e89f-b13e-4e9b-a02c-845427c9b2ee",
+          "confirmed_at": null
+        },
+        {
+          "actor_id": "11111111-1111-4111-8111-111111111111",
+          "metadata": {
+            "title": "Synthetic recording",
+            "content": "",
+            "isPublic": false,
+            "happenedAt": "2026-11-06T00:00:00.000Z",
+            "transcript": "",
+            "recordingMode": "chat"
+          },
+          "story_id": "2620bb6e-d94d-481c-b494-e00809e91ce8",
+          "created_at": "2026-11-06T14:07:38.626255+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "session_id": "2462c02b-7bb3-4cc5-88d9-b53ec1333a67",
+          "confirmed_at": null
+        }
+      ],
+      "deletion_requests": [
+        {
+          "id": "7e8f33ca-116f-46a2-b400-533c34514cad",
+          "state": "requested",
+          "attempt": 0,
+          "error_code": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "subject_id": "1d02458b-e93a-445a-b090-79c248a3f570",
+          "completed_at": null,
+          "requested_at": "2026-11-06T14:07:38.701887+00:00",
+          "requested_by": "22222222-2222-4222-8222-222222222222",
+          "subject_type": "story",
+          "tombstone_at": "2026-11-06T14:07:38.701887+00:00",
+          "processing_at": null,
+          "capture_version": 1,
+          "capture_target_count": 4,
+          "capture_targets_sha256": "cb9a970671a3060b42d7647df0988bedff776fe07891ea0d5eb0e35f7f027de4"
+        }
+      ],
+      "deletion_targets": [
+        {
+          "id": "0b9765d4-7ce9-40af-842c-4c4432986b8c",
+          "kind": "media_asset",
+          "state": "pending",
+          "bucket": null,
+          "target_id": "asset:5ef21932-bab3-838a-b84a-8fa036282a55",
+          "error_code": null,
+          "object_key": null,
+          "updated_at": "2026-11-06T14:07:38.701887+00:00",
+          "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+        },
+        {
+          "id": "1d2db8e5-451e-40a5-a561-0ccf2677a9ac",
+          "kind": "story",
+          "state": "pending",
+          "bucket": null,
+          "target_id": "story:1d02458b-e93a-445a-b090-79c248a3f570",
+          "error_code": null,
+          "object_key": null,
+          "updated_at": "2026-11-06T14:07:38.701887+00:00",
+          "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+        },
+        {
+          "id": "5728a846-64fb-4e10-8ea2-bd73efa4d776",
+          "kind": "storage_object",
+          "state": "pending",
+          "bucket": "recording-candidates",
+          "target_id": "storage:recording-candidates:jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "error_code": null,
+          "object_key": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "updated_at": "2026-11-06T14:07:38.701887+00:00",
+          "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+        },
+        {
+          "id": "a4c8a71d-79df-46ac-bb0c-bff9dd35335b",
+          "kind": "storage_object",
+          "state": "pending",
+          "bucket": "audio-recordings",
+          "target_id": "storage:audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+          "error_code": null,
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+          "updated_at": "2026-11-06T14:07:38.701887+00:00",
+          "deletion_request_id": "7e8f33ca-116f-46a2-b400-533c34514cad"
+        }
+      ],
+      "storage.objects": [
+        {
+          "id": "10a30ac1-818a-4358-a5de-108cf48da883",
+          "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "audio-recordings"
+        },
+        {
+          "id": "2aa0b1d3-3b47-40c2-a079-eacc2292bff4",
+          "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/373c5cda-686f-896e-809a-d2b0557298fd/original",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "audio-recordings"
+        },
+        {
+          "id": "2caacfc1-8531-4166-91d8-fc93ad0ecc23",
+          "name": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg",
+          "metadata": {
+            "sha256": "e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87",
+            "byteSize": 42,
+            "synthetic": true
+          },
+          "bucket_id": "saga"
+        },
+        {
+          "id": "7a944f05-8dad-463f-973d-03fe8e34f8bd",
+          "name": "jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "recording-candidates"
+        },
+        {
+          "id": "a35e5f2f-a089-4010-8983-e1ef433e003a",
+          "name": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "audio-recordings"
+        },
+        {
+          "id": "b72fdfa0-4796-490e-9b41-18eeebe21520",
+          "name": "jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa",
+          "metadata": {
+            "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d",
+            "byteSize": 24,
+            "synthetic": true
+          },
+          "bucket_id": "recording-candidates"
+        }
+      ],
+      "synthetic_files": {
+        "audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/56a5e89f-b13e-4e9b-a02c-845427c9b2ee/0": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "recording-candidates:jobs/cebc6acd-4df7-4613-ae37-ad02acb8d6b1/attempts/1/319ff0ec-6eb0-4193-af30-c503422a7eb7": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/373c5cda-686f-896e-809a-d2b0557298fd/original": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "recording-candidates:jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa": "c3ludGhldGljLXJlY29yZGluZy1vbmx5",
+        "saga:projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg": "c3ludGhldGljLWxlZ2FjeS1vYmplY3Qtbm90LWEtZmFtaWx5LXBob3Rv"
+      }
+    },
+    "selection": "Four-object subset: selected published candidate, unrelated original chunk, unrelated reserved candidate, standalone legacy object. The selected story original chunk is captured but absent from this manifest subset.",
+    "timestampConversion": "Durable UTC microsecond timestamp retained in request; tombstone adapter normalizes to ISO UTC milliseconds required by existing Scheme B contract."
+  },
+  "compatibility": {
+    "tsManifest": {
+      "ok": true,
+      "value": {
+        "valid": true,
+        "objectCount": 4,
+        "totalBytes": 114
+      }
+    },
+    "cjsManifest": {
+      "ok": true,
+      "value": {
+        "valid": true,
+        "objectCount": 4,
+        "totalBytes": 114
+      }
+    },
+    "tsReplay": {
+      "purgedCount": 1,
+      "survivingObjects": [
+        {
+          "id": "retained-original-chunk",
+          "bucket": "audio-recordings",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+          "byteSize": 24,
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+        },
+        {
+          "id": "retained-reserved-candidate",
+          "bucket": "recording-candidates",
+          "key": "jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa",
+          "byteSize": 24,
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+        },
+        {
+          "id": "2caacfc1-8531-4166-91d8-fc93ad0ecc23",
+          "bucket": "saga",
+          "key": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg",
+          "byteSize": 42,
+          "sha256": "e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87"
+        }
+      ],
+      "survivingTotalBytes": 90
+    },
+    "cjsReplay": {
+      "purgedCount": 1,
+      "survivingObjects": [
+        {
+          "id": "retained-original-chunk",
+          "bucket": "audio-recordings",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+          "byteSize": 24,
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+        },
+        {
+          "id": "retained-reserved-candidate",
+          "bucket": "recording-candidates",
+          "key": "jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa",
+          "byteSize": 24,
+          "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+        },
+        {
+          "id": "2caacfc1-8531-4166-91d8-fc93ad0ecc23",
+          "bucket": "saga",
+          "key": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg",
+          "byteSize": 42,
+          "sha256": "e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87"
+        }
+      ],
+      "survivingTotalBytes": 90
+    },
+    "cli": {
+      "command": [
+        "/usr/local/Cellar/node@22/22.22.2/bin/node",
+        "scripts/verify-scheme-b-backup.cjs",
+        "--dump",
+        "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-06-g1-deletion-capture/native-backup-1793974055241-c8a4eef0-be31-4cee-835f-b671127bb05d/synthetic-header.dump",
+        "--manifest",
+        "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-06-g1-deletion-capture/native-backup-1793974055241-c8a4eef0-be31-4cee-835f-b671127bb05d/manifest.json",
+        "--tombstones",
+        "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-06-g1-deletion-capture/native-backup-1793974055241-c8a4eef0-be31-4cee-835f-b671127bb05d/tombstones.json"
+      ],
+      "status": 0,
+      "signal": null,
+      "stdout": "{\n  \"mode\": \"file_verification\",\n  \"status\": \"pass\",\n  \"report\": {\n    \"verified\": true,\n    \"dump\": {\n      \"valid\": true,\n      \"magic\": \"PGDMP\",\n      \"dumpSizeBytes\": 55,\n      \"dumpSha256\": \"0e3664bb142140e3c72b86ede363b15476199894797e65575c238e7e11dd4cc8\"\n    },\n    \"manifest\": {\n      \"valid\": true,\n      \"objectCount\": 4,\n      \"totalBytes\": 114\n    },\n    \"tombstoneReplay\": {\n      \"purgedCount\": 1,\n      \"survivingObjects\": [\n        {\n          \"id\": \"retained-original-chunk\",\n          \"bucket\": \"audio-recordings\",\n          \"key\": \"11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0\",\n          \"byteSize\": 24,\n          \"sha256\": \"b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d\"\n        },\n        {\n          \"id\": \"retained-reserved-candidate\",\n          \"bucket\": \"recording-candidates\",\n          \"key\": \"jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa\",\n          \"byteSize\": 24,\n          \"sha256\": \"b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d\"\n        },\n        {\n          \"id\": \"2caacfc1-8531-4166-91d8-fc93ad0ecc23\",\n          \"bucket\": \"saga\",\n          \"key\": \"projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg\",\n          \"byteSize\": 42,\n          \"sha256\": \"e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87\"\n        }\n      ],\n      \"survivingTotalBytes\": 90\n    }\n  }\n}\n",
+      "stderr": ""
+    }
+  },
+  "validationParity": [
+    {
+      "name": "unknown_bucket",
+      "tsResult": {
+        "ok": false,
+        "error": "DISALLOWED_BUCKET_NAME"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "DISALLOWED_BUCKET_NAME"
+      }
+    },
+    {
+      "name": "path_traversal",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_KEY"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_KEY"
+      }
+    },
+    {
+      "name": "absolute_key",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_KEY"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_KEY"
+      }
+    },
+    {
+      "name": "backslash_key",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_KEY"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_KEY"
+      }
+    },
+    {
+      "name": "control_key",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_KEY"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_KEY"
+      }
+    },
+    {
+      "name": "empty_id",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_OBJECT_ID"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_OBJECT_ID"
+      }
+    },
+    {
+      "name": "malformed_entry",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_OBJECT_ENTRY"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_STORAGE_OBJECT_ENTRY"
+      }
+    },
+    {
+      "name": "invalid_hash",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_SHA256_FORMAT"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_SHA256_FORMAT"
+      }
+    },
+    {
+      "name": "zero_size",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_OBJECT_SIZE"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_OBJECT_SIZE"
+      }
+    },
+    {
+      "name": "fractional_size",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_OBJECT_SIZE"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_OBJECT_SIZE"
+      }
+    },
+    {
+      "name": "unsafe_size",
+      "tsResult": {
+        "ok": false,
+        "error": "INVALID_OBJECT_SIZE"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "INVALID_OBJECT_SIZE"
+      }
+    },
+    {
+      "name": "duplicate_candidate_address",
+      "tsResult": {
+        "ok": false,
+        "error": "DUPLICATE_STORAGE_OBJECT_KEY"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "DUPLICATE_STORAGE_OBJECT_KEY"
+      }
+    },
+    {
+      "name": "total_bytes_overflow",
+      "tsResult": {
+        "ok": false,
+        "error": "TOTAL_BYTES_OVERFLOW"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "TOTAL_BYTES_OVERFLOW"
+      }
+    },
+    {
+      "name": "dump_hash_mismatch",
+      "tsResult": {
+        "ok": false,
+        "error": "DUMP_HASH_MANIFEST_MISMATCH"
+      },
+      "cjsResult": {
+        "ok": false,
+        "error": "DUMP_HASH_MANIFEST_MISMATCH"
+      }
+    }
+  ],
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  }
+}

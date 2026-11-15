@@ -1,0 +1,16 @@
+{
+  "priorSourceManifest": "task2-source-snapshots.json",
+  "currentSourceManifest": "task2-source-snapshots-02.json",
+  "productionSourcesUnchanged": [
+    "packages/web/src/lib/server/recording-session-status.ts",
+    "packages/web/src/lib/server/recording-status-validation.ts",
+    "packages/web/src/lib/server/recording-job-input.ts",
+    "packages/web/src/app/api/recordings/sessions/[sessionId]/status/route.ts"
+  ],
+  "removedSource": "packages/web/src/lib/server/__tests__/fixtures/recording-status-fixture.ts",
+  "movedSource": "packages/web/src/lib/server/test-support/recording-status-fixture.ts",
+  "focusedTests": 225,
+  "discoveredTestSuites": 153,
+  "typeCheckExitCode": 0,
+  "diffCheckExitCode": 0
+}

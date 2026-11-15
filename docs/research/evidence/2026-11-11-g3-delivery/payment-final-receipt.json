@@ -1,0 +1,69 @@
+{
+  "recordedAt": "2026-11-11T05:24:36.381Z",
+  "scope": "G3 T11 implementation and independent search/parent integration review",
+  "authorization": "Local native PG17.4, installed Chrome, synthetic actors and controlled provider transport only; no staging, commits, push, hosted migration or real charge",
+  "production": {
+    "supabase/migrations/20261111000003_payment_orders.sql": "1e5bf48134b943d021ae9cc64b417637504dc2a19eab5908f1367d5234fa327e",
+    "packages/web/src/lib/server/payment-orders.ts": "b21f6c40f8654f908e4315295622721bec9f49a2bb8457e256cc75a5253ab32b",
+    "packages/web/src/lib/server/payment-request-body.ts": "e37e3314bb809ce53f4e52bb0f6a5bc1838264b96465f4585c4ad636c6772680",
+    "packages/web/src/lib/payments/client.ts": "be17746c70f4ef4c2f856c6bb7245af62db41029afc5ec3892ef13bf9f3263f6",
+    "packages/web/src/components/purchase/purchase-panel.tsx": "3d71b205bbb9fabf62e3410b2727b87f933f4517097a8c21830d1f98dd7d92b3",
+    "packages/web/src/components/purchase/purchase-checkout.tsx": "979d3b3bbb033d3165ce9601d5fed7a53fe8a7dfee957edfac5b376022dfe4c6",
+    "packages/web/src/app/[locale]/dashboard/purchase/page.tsx": "05a7a4dac4540f6b357539f78f62729d519942012667bf7f1b4624c5759d132b",
+    "packages/web/src/app/api/payments/create-intent/route.ts": "4939d5172bf408b9463c378e57d77d372a5a90907b1efec60c2f85915501ca7f",
+    "packages/web/src/app/api/payments/status/route.ts": "a75058d74361a3dc1900be1c5e4894bbc9f565645a1b89c3460bae28b003e18b",
+    "packages/web/src/app/api/payments/allocate/route.ts": "406cfc1708445ae798f0b01c3153919eec5759f304a42ec9fad5d8ffc7030720",
+    "packages/web/src/app/api/payments/webhook/route.ts": "9c13a14ff3d9c40dc09f4e822a6e7a75e5076648a088293e953cb33687a9a971"
+  },
+  "promotedSqlProvenance": {
+    "experiments/pg17-invitation-transactions/candidate.sql": "0f5af3964f537387675f662209d2ebd1dce9745d548ab6886bb275b7d560f305",
+    "experiments/pg17-entitlement-events/candidate.sql": "97045cd661e420d4b55f157a8667c0434ea11ea9a741bffcf2294583c5288300",
+    "experiments/pg17-invitation-management/candidate.sql": "e2063af8a44dbbf045ec1c47aae210a7a070629c17c0702093e391b7150c8c9a"
+  },
+  "verification": {
+    "native": {
+      "path": "docs/research/evidence/2026-11-11-g3-delivery/migrations-1794373792564-c86ef743-3b26-4984-b004-8ce5bb30ce9c/results.json",
+      "sha256": "36770a51c157a879bfff9951a9bd1c017a89a8d07b4458fd0a536a5de3afe90f",
+      "status": "passed",
+      "assertions": 383,
+      "sourceDrift": [],
+      "payment": "passed",
+      "paymentHttp": "passed",
+      "paymentChrome": "passed",
+      "deliveryChrome": "passed",
+      "postgres": "postgres (PostgreSQL) 17.4",
+      "stripeSdk": "14.25.0",
+      "chrome": "157.0.8103.39"
+    },
+    "focused": {
+      "suites": 4,
+      "passed": 22
+    },
+    "scopedLint": {
+      "binary": "node_modules/.bin/eslint",
+      "version": "8.57.1",
+      "exitCode": 0
+    },
+    "searchRoutes": {
+      "suites": 2,
+      "passed": 34
+    }
+  },
+  "evidence": {
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-final-review.md": "289a11d20841d8a4443dbc3a692b7cb8b14d1d5f2ec3ee7af2b5d42f7109743d",
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-focused-final.log": "1405f609a9efa6f79a4ab2d2c1073970177b0e216abba848089e415add309045",
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-native-final-5.log": "01fd69a4e95c1086fdf4e935e91ac05735bae0bf020d051211b63353c7502f5d",
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-direct-insert-red.log": "cb8a0f2e6945ef80aafe44393ac5d9e6ccff6537947720586a17996b9da9a2e9",
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-review-search-routes-green.log": "9b49f8a5d86ff8d060fee84bfa2ccb77b672bebb8846f7767a04b8cb6165806c",
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-review-search-unicode.json": "30e2a032f3d810beeced6241cba57d650a6cae031f6c271bca6ccd7a4ec31152",
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-review-search-unicode-green.json": "8017324d6436725035fdd086d72208b0c0a06647f904921d6ba49100802fd02f",
+    "docs/research/evidence/2026-11-11-g3-delivery/payment-review-publication-cli.json": "5c7a82f0debb1facb5b0e23e337d0290dcbea9a40ad5a8b959d1ddb2fd01c751"
+  },
+  "boundaries": [
+    "No Stripe.js/card entry or live provider settlement",
+    "Synthetic local auth/PostgREST/Storage transport; hosted exposure unqualified",
+    "No production deployment or mobile hardware qualification"
+  ],
+  "uncommitted": true
+}

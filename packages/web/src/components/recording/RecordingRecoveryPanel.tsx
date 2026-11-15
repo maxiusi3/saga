@@ -7,15 +7,15 @@ import { Card } from '@/components/ui/card'
 import { listLocalRecordings, loadLocalRecording, RecordingRecoveryError } from '@/lib/recording-recovery'
 import type { RecorderSessionRecord } from '@/lib/recorder-db'
 
-type RecoveredRecording = Awaited<ReturnType<typeof loadLocalRecording>>
+export type RecoveredRecording = Awaited<ReturnType<typeof loadLocalRecording>>
 
 /** A new scope unmounts all old UI and invalidates its asynchronous reads. */
-export function RecordingRecoveryPanel({ projectId, userId }: { projectId: string; userId?: string }) {
+export function RecordingRecoveryPanel({ projectId, userId, onContinue }: { projectId: string; userId?: string; onContinue?: (recording: RecoveredRecording) => void }) {
   if (!projectId || !userId) return null
-  return <ScopedRecoveryPanel key={JSON.stringify([projectId, userId])} projectId={projectId} userId={userId} />
+  return <ScopedRecoveryPanel key={JSON.stringify([projectId, userId])} projectId={projectId} userId={userId} onContinue={onContinue} />
 }
 
-function ScopedRecoveryPanel({ projectId, userId }: { projectId: string; userId: string }) {
+function ScopedRecoveryPanel({ projectId, userId, onContinue }: { projectId: string; userId: string; onContinue?: (recording: RecoveredRecording) => void }) {
   const t = useTranslations('recording.recovery')
   const locale = useLocale()
   const [sessions, setSessions] = useState<RecorderSessionRecord[]>([])
@@ -43,14 +43,17 @@ function ScopedRecoveryPanel({ projectId, userId }: { projectId: string; userId:
 
   useEffect(() => () => { selectionVersion.current += 1 }, [])
 
-  const open = useCallback(async (sessionId: string) => {
+  const open = useCallback(async (sessionId: string, continueSaving = false) => {
     const version = ++selectionVersion.current
     setRecording(null)
     setSelectionError(null)
     setSelectedId(sessionId)
     try {
       const result = await loadLocalRecording(sessionId, projectId, userId)
-      if (selectionVersion.current === version) setRecording(result)
+      if (selectionVersion.current === version) {
+        if (continueSaving && onContinue) onContinue(result)
+        else setRecording(result)
+      }
     } catch (error) {
       if (selectionVersion.current === version) {
         setSelectionError(error instanceof RecordingRecoveryError ? `errors.${error.code}` : 'readError')
@@ -58,7 +61,7 @@ function ScopedRecoveryPanel({ projectId, userId }: { projectId: string; userId:
     } finally {
       if (selectionVersion.current === version) setSelectedId(null)
     }
-  }, [projectId, userId])
+  }, [projectId, userId, onContinue])
 
   if (!loading && !listError && sessions.length === 0) return null
 
@@ -87,6 +90,7 @@ function ScopedRecoveryPanel({ projectId, userId }: { projectId: string; userId:
                   {Number.isFinite(date.getTime()) ? <time dateTime={session.startedAt}>{date.toLocaleString(locale)}</time> : t('unknownDate')}
                 </p>
               </div>
+              {onContinue && <Button type="button" onClick={() => void open(session.id,true)} disabled={!!selectedId}>{t('continueSaving')}</Button>}
               <Button type="button" variant="outline" onClick={() => void open(session.id)} aria-label={`${t('open')} ${label}`}>
                 {t('open')}
               </Button>

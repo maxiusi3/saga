@@ -186,10 +186,26 @@ export class StoryService {
   }
 
   /**
-   * Legacy deletion stays closed until the asset/tombstone transaction is available.
+   * Request whole-story erasure; true means accepted, not physical deletion complete.
    */
-  async deleteStory(_storyId: string): Promise<boolean> {
-    return false
+  async deleteStory(storyId: string, projectId?: string): Promise<boolean> {
+    const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    if (!projectId || !uuid.test(projectId) || !uuid.test(storyId)) return false
+    try {
+      const { data: { session } } = await this.supabase.auth.getSession()
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (session?.access_token) headers.Authorization = `Bearer ${session.access_token}`
+      const response = await fetch(`/api/projects/${projectId}/stories/${storyId}/delete`, {
+        method: 'POST', credentials: 'include', headers, body: JSON.stringify({ requestId: crypto.randomUUID() }),
+      })
+      if (response.status !== 202) return false
+      const { deletionRequest: receipt } = await response.json()
+      return !!receipt && uuid.test(receipt.id) && receipt.projectId === projectId && receipt.subjectId === storyId &&
+        receipt.subjectType === 'story' && receipt.state === 'requested' && receipt.physicalDeletionComplete === false
+    } catch {
+      // A lost response is uncertain. Retrying is safe: SQL replays the same subject capture.
+      return false
+    }
   }
 
   /**

@@ -120,6 +120,7 @@ describe('public-archive-store', () => {
   it('creates or updates public event clusters from wiki output', async () => {
     const result = await createOrUpdatePublicEventCluster({
       status: 'draft',
+      activeContributionIds: ['11111111-1111-4111-8111-111111111111'],
       eventLabel: '1976 Guangzhou market visit memories',
       timeframe: '1976',
       placeScope: 'Guangzhou',
@@ -130,6 +131,7 @@ describe('public-archive-store', () => {
       confidence: 0.8,
     })
     expect(result).toEqual({ id: 'row-1' })
+    expect(insertSingle).toHaveBeenCalledWith({ value: expect.objectContaining({ source_contribution_ids: ['11111111-1111-4111-8111-111111111111'] }) })
     expect(from).toHaveBeenCalledWith('public_event_clusters')
   })
 
@@ -137,6 +139,7 @@ describe('public-archive-store', () => {
     await createOrUpdatePublicEventCluster({
       existingClusterId: 'event-1',
       status: 'draft',
+      activeContributionIds: ['11111111-1111-4111-8111-111111111111'],
       eventLabel: '1976 Guangzhou market visit memories',
       timeframe: '1976',
       placeScope: 'Guangzhou',

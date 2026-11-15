@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { TwoEntryProjectHub } from './TwoEntryProjectHub'
+import { PublicationDeliveryPanel } from './PublicationDeliveryPanel'
 import {
-  searchProjectArchive, getCitationAudioUrl, downloadProjectArchive, importProjectAudio,
+  searchProjectArchive, getSearchCitationAudioUrl, importProjectAudio,
   type ArchiveSearchFilters,
 } from '@/lib/project-hub-client'
 import type { ProvenanceSearchCitation } from '@/lib/server/provenance-search'
@@ -26,9 +27,8 @@ export function ConnectedProjectHub(props: ConnectedProjectHubProps) {
   return <ProjectHubSession key={key} {...props} />
 }
 
-function ProjectHubSession({ projectId, projectName, locale, canUpload, canRecord, canInvite }: ConnectedProjectHubProps) {
+function ProjectHubSession({ projectId, projectName, userId, locale, canUpload, canRecord, canInvite }: ConnectedProjectHubProps) {
   const lifetime = useRef(new AbortController())
-  const downloads = useRef(new Map<string, ReturnType<typeof setTimeout>>())
   const input = useRef<HTMLInputElement>(null)
   const player = useRef<HTMLAudioElement>(null)
   const playbackVersion = useRef(0)
@@ -45,12 +45,9 @@ function ProjectHubSession({ projectId, projectName, locale, canUpload, canRecor
   useEffect(() => {
     const controller = new AbortController()
     lifetime.current = controller
-    const urls = downloads.current
     return () => {
       controller.abort()
       playbackVersion.current += 1
-      for (const [url, timer] of urls) { clearTimeout(timer); URL.revokeObjectURL(url) }
-      urls.clear()
     }
   }, [])
 
@@ -68,24 +65,6 @@ function ProjectHubSession({ projectId, projectName, locale, canUpload, canRecor
     setAudioError(null)
     return searchProjectArchive(projectId, filters, lifetime.current.signal)
   }, [projectId])
-
-  async function download() {
-    const signal = lifetime.current.signal
-    const blob = await downloadProjectArchive(projectId, signal)
-    signal.throwIfAborted()
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `saga-${projectId.replace(/[^A-Za-z0-9_-]/g, '_')}-archive.zip`
-    document.body.appendChild(link)
-    try { link.click() } finally {
-      link.remove()
-      downloads.current.set(url, setTimeout(() => {
-        URL.revokeObjectURL(url)
-        downloads.current.delete(url)
-      }, 1000))
-    }
-  }
 
   async function upload() {
     if (!selection || !canUpload || importInFlight.current) return
@@ -109,14 +88,14 @@ function ProjectHubSession({ projectId, projectName, locale, canUpload, canRecor
   }
 
   async function seek(citation: ProvenanceSearchCitation) {
-    if (!citation.mediaAssetId) return
+    if (citation.sourceKind !== 'original_transcript' || !citation.mediaAssetId || citation.startMs === null || citation.endMs === null) return
     const version = ++playbackVersion.current
     const signal = lifetime.current.signal
     player.current?.pause()
     setPlayback(null)
     setAudioError(null)
     try {
-      const url = await getCitationAudioUrl(citation.mediaAssetId, signal)
+      const url = await getSearchCitationAudioUrl(projectId, citation, signal)
       if (!signal.aborted && version === playbackVersion.current) setPlayback({ url, citation })
     } catch {
       if (!signal.aborted && version === playbackVersion.current) setAudioError('Original audio is unavailable. Search again or try later.')
@@ -130,9 +109,10 @@ function ProjectHubSession({ projectId, projectName, locale, canUpload, canRecor
       onSelectUploadExisting={canUpload ? () => input.current?.click() : undefined}
       onSelectRecordOrInvite={canRecord || canInvite ? () => setShowCaptureChoices(true) : undefined}
       onSearch={search}
-      onTriggerExport={download}
+      showArchiveExport={false}
       onSeekAudioCitation={citation => { void seek(citation) }}
     />
+    <PublicationDeliveryPanel projectId={projectId} actorId={userId} />
     {showCaptureChoices && <nav aria-label="Record or invite" className="flex flex-wrap gap-4 rounded-lg border border-stone-200 bg-white p-4">
       {canRecord && <Link className="rounded px-4 py-3 font-medium underline" href={`${basePath}/record`}>Record a new story</Link>}
       {canInvite && <Link className="rounded px-4 py-3 font-medium underline" href={`${basePath}/invitations`}>Manage family invitations</Link>}
@@ -163,8 +143,9 @@ function ProjectHubSession({ projectId, projectName, locale, canUpload, canRecor
         aria-label="Cited original audio" className="w-full"
         onLoadedMetadata={event => {
           const audio = event.currentTarget
+          if (playback.citation.startMs === null || playback.citation.endMs === null) return
           const start = playback.citation.startMs / 1000
-          if (!Number.isFinite(audio.duration) || start >= audio.duration) {
+          if (!Number.isFinite(audio.duration) || start >= audio.duration || playback.citation.endMs / 1000 > audio.duration) {
             setAudioError('This source time range could not be verified against the audio.')
             return
           }
@@ -174,7 +155,7 @@ function ProjectHubSession({ projectId, projectName, locale, canUpload, canRecor
           })
         }}
         onTimeUpdate={event => {
-          if (event.currentTarget.currentTime >= playback.citation.endMs / 1000) event.currentTarget.pause()
+          if (playback.citation.endMs !== null && event.currentTarget.currentTime >= playback.citation.endMs / 1000) event.currentTarget.pause()
         }}
         onError={() => setAudioError('Original audio is unavailable. Search again or try later.')} />
     </div>}

@@ -13,7 +13,8 @@ const output = join(evidenceDir, `p3-g3-verify-${new Date().toISOString().replac
 const report = {
   startedAt: new Date().toISOString(),
   status: 'running',
-  scope: 'PG17.4 end-to-end verification of Phase P3 migration 20261024000003, T09 complete archival export & PDF booklet, T10 permission-filtered provenance search, T11 US$59 idempotent payment webhooks & refunds, and G3 backup/restore rehearsal',
+  scope: 'Historical synthetic PG17.4 SQL fixture only; no browser/device/PDF rendering, production search or Stripe payment qualification',
+  qualification: { browser: 'unmeasured', devices: 'unmeasured', pdfRendering: 'unmeasured', productionPayment: 'unmeasured' },
   sources: {},
   assertions: 0,
   actorConnections: [],
@@ -325,11 +326,8 @@ try {
     )
     h.eq(outsiderSnap.rows.length, 0, 'Cross-family user cannot read publication_snapshots')
 
-    // Verify 3 device profiles (iPhone_Safari, Android_Chrome, Desktop_Browser) opening the offline export & PDF
-    const deviceProfiles = ['iPhone_Safari', 'Android_Chrome', 'Desktop_Browser']
-    for (const device of deviceProfiles) {
-      h.ok(device.length > 0, `Offline export & PDF 1.4 verified on device profile: ${device}`)
-    }
+    // Device coverage requires actual browser/device work; no placeholder
+    // assertion is counted here. Historical JSON remains unchanged.
   })
 
   await h.scenario('3_t10_provenance_search_permission_filtering_index_switch_and_tombstones', async () => {

@@ -1,0 +1,176 @@
+{
+  "status": "passed",
+  "requests": [
+    {
+      "path": "/api/stories/4a7b85c2-758d-4013-828f-078d958d9d3f/review",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/media/assets/d14dffa1-b247-4c61-b8cd-df7b9b34ba03/play",
+      "method": "GET",
+      "status": 307
+    },
+    {
+      "path": "/api/stories/4a7b85c2-758d-4013-828f-078d958d9d3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/4a7b85c2-758d-4013-828f-078d958d9d3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/4a7b85c2-758d-4013-828f-078d958d9d3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/4a7b85c2-758d-4013-828f-078d958d9d3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/4a7b85c2-758d-4013-828f-078d958d9d3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search?q=Chicago",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search/source",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search?q=%E4%BA%AC%E9%83%BD",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search?q=Mercury",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/export?durable=true",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/export/jobs/3398945a-1cd1-4231-b2a6-ecd1ccf670e5",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/export/jobs/3398945a-1cd1-4231-b2a6-ecd1ccf670e5/download",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/4a7b85c2-758d-4013-828f-078d958d9d3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search?q=Chicago",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search?q=Toronto",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search/source",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/export/jobs/3398945a-1cd1-4231-b2a6-ecd1ccf670e5/download",
+      "method": "GET",
+      "status": 409
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search?q=Toronto",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search/source",
+      "method": "POST",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/export/jobs/3398945a-1cd1-4231-b2a6-ecd1ccf670e5/download",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search?q=Toronto",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search/source",
+      "method": "POST",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/export/jobs/3398945a-1cd1-4231-b2a6-ecd1ccf670e5/download",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/search?q=Toronto",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "actual G2 review decisions and long Unicode approval",
+    "source-backed literal search and original audio playback",
+    "supplement null timing and rejected text exclusion",
+    "durable UI prepare/status and worker completion",
+    "browser protected ZIP download",
+    "offline HTML and original audio playback independent of network",
+    "full paginated Chinese PDF and original audio SHA-256",
+    "correction supersedes source and denies stale playback/download",
+    "family isolation and member revocation",
+    "G1 deletion clears search/publication"
+  ],
+  "source": {
+    "project": "b5e75014-071a-42b2-a2da-598e181362c3",
+    "story": "4a7b85c2-758d-4013-828f-078d958d9d3f",
+    "asset": "d14dffa1-b247-4c61-b8cd-df7b9b34ba03",
+    "transcript": "628031e6-f67b-432f-89b2-54c5ad131894",
+    "sha256": "38d4fe14e5f89f543e875da3c70ad9b1bfc9f3bf6503216e2266891bd9fcd5fe"
+  },
+  "boundary": "Actual StoryReviewPanel, ConnectedProjectHub and PublicationDeliveryPanel; actual routes, Supabase SDK and native PG17.4. Synthetic local authentication and PostgREST/Storage transport, generated tone WAV and explicitly synthetic timed transcript. Installed Chrome. No real ASR, household fidelity, hosted deployment or payment settlement claim.",
+  "browser": "157.0.8103.39",
+  "revision": "41b6cd88-f8d4-4225-b9b0-e45b670488e3",
+  "job": {
+    "jobId": "3398945a-1cd1-4231-b2a6-ecd1ccf670e5",
+    "snapshotId": "3398945a-1cd1-4231-b2a6-ecd1ccf670e5",
+    "snapshotVersion": 1,
+    "status": "queued",
+    "attempt": 0,
+    "errorCode": null,
+    "statusUrl": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/export/jobs/3398945a-1cd1-4231-b2a6-ecd1ccf670e5",
+    "downloadUrl": "/api/projects/b5e75014-071a-42b2-a2da-598e181362c3/export/jobs/3398945a-1cd1-4231-b2a6-ecd1ccf670e5/download"
+  },
+  "offlineAudio": {
+    "src": "file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/docs/research/evidence/2026-11-11-g3-delivery/migrations-1794374099956-aee45ac1-02df-4b2c-a66a-0bc0384c1f54/chrome-delivery/offline/media/d14dffa1-b247-4c61-b8cd-df7b9b34ba03/family-original.wav",
+    "time": 0.334608,
+    "duration": 12,
+    "paused": false
+  },
+  "pdfPages": 6,
+  "archiveBytes": 80511
+}

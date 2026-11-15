@@ -1,0 +1,9 @@
+{
+  "packages/web/src/lib/server/scheme-b-backup.ts": "1c5edc5e4de767a2bbb587ed77cdb2f4a3dfa1b4bfcad6041eb23e17619ba01c",
+  "scripts/verify-scheme-b-backup.cjs": "fb6f89202c1f0db4dbc19cfb73819518854b53417c4461e09d0b9db89bd79cbf",
+  "packages/web/src/lib/server/__tests__/scheme-b-backup.test.ts": "d5864d1ad89dc8aeba352a61fa12f9ead61dc3d46830df5432fe2e728b2d5030",
+  "scripts/__tests__/verify-scheme-b-backup.test.js": "cdb93a4d525da48eee825671c4d05b7bd8bb54502b45d0c1681dfe5c27dfb9ef",
+  "scripts/__tests__/deployment-config.test.js": "b711c425b24f926a906afe31ee46c7e8eeec5e66b10d72899e6f331781318474",
+  "experiments/pg17-deletion-capture/verify-backup.mjs": "bdd8fc7e185cc382678e8079191f1a7dc00fac8dc043307e32bc0df35f52cb86",
+  "experiments/pg17-deletion-capture/BACKUP.md": "3e97cbba88b2075491e05c12eecb098dd78cc9fbdb81f3bf78880b71a96221ea"
+}

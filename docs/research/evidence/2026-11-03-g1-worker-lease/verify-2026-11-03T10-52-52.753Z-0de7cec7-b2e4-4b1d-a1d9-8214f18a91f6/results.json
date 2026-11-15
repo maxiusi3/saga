@@ -1,0 +1,204 @@
+{
+  "startedAt": "2026-11-03T10:52:52.755Z",
+  "mode": "verify",
+  "status": "failed",
+  "assertions": 28,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Exact five-action lease RPC exists (missing-feature RED before migration)",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "Lease migration preserves old attempts and nonlease dispatched_at default",
+      "status": "failed",
+      "code": "ASSERT_FAILED",
+      "label": "existing nonlease callers retain dispatched_at default now()"
+    }
+  ],
+  "sources": {
+    "experiments/pg17-recording-worker/verify.mjs": "34faa29dbd746e890cf19e7a970bf3333162e0649701dcdddab41e257f796702",
+    "experiments/pg17-recording-worker/fixture.mjs": "dcc699709c21e502d06e1871aa45ba1aaf77df0fe029d41ea648996920fb2db8",
+    "experiments/pg17-recording-worker/database.mjs": "8d2d0231012a7d598a7efe863e6f79fbe62d2200cf5d12b1c9550d3d3fbcff1f",
+    "experiments/pg17-recording-worker/worker-child.mjs": "3739fdd114c398abc735e0121649e978fd3d5f7cf98c25877f5a6d3844437102",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "772aeab363c0ef7f6684fe154552b8c25fa33be97b096abf4630f066ee4a5250"
+  },
+  "snapshots": {
+    "experiments/pg17-recording-worker/verify.mjs": {
+      "path": "0-verify.mjs.gz",
+      "sha256": "88e7c7d17bb2993c2ca1f4ef04c721e7d8217b7faf00914ed886bdd8e8350201",
+      "decodedSha256": "34faa29dbd746e890cf19e7a970bf3333162e0649701dcdddab41e257f796702"
+    },
+    "experiments/pg17-recording-worker/fixture.mjs": {
+      "path": "1-fixture.mjs.gz",
+      "sha256": "71fb8456814bef53cade7506b2ef2622608efc92fdb4c1b28b42ec14de493c58",
+      "decodedSha256": "dcc699709c21e502d06e1871aa45ba1aaf77df0fe029d41ea648996920fb2db8"
+    },
+    "experiments/pg17-recording-worker/database.mjs": {
+      "path": "2-database.mjs.gz",
+      "sha256": "3ad63a033033af7e0209e001fbf48ea2070a69eb922b5b3dc1d56c1826817bc6",
+      "decodedSha256": "8d2d0231012a7d598a7efe863e6f79fbe62d2200cf5d12b1c9550d3d3fbcff1f"
+    },
+    "experiments/pg17-recording-worker/worker-child.mjs": {
+      "path": "3-worker-child.mjs.gz",
+      "sha256": "2f303ded7faef556589ed26183f75a5e32c90810c757c11083b772d2519fb201",
+      "decodedSha256": "3739fdd114c398abc735e0121649e978fd3d5f7cf98c25877f5a6d3844437102"
+    },
+    "experiments/pg17-routines/runtime.mjs": {
+      "path": "4-runtime.mjs.gz",
+      "sha256": "0e746071f418db45326164d575bbe723322fa113b66f6b3c4ef4acc85eb26cf4",
+      "decodedSha256": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552"
+    },
+    "experiments/pg17-routines/runtime-pins.json": {
+      "path": "5-runtime-pins.json.gz",
+      "sha256": "f7c53b88a664df9a0acd473f586d818ae3b27b953e61cbb43021bf0bb4c28cc0",
+      "decodedSha256": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67"
+    },
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": {
+      "path": "6-20261024000001_p1_foundation_and_reconciliation.sql.gz",
+      "sha256": "415ff64252c8c6241b44e29237e4f1401e94ccc17404c9be8f2e6be55634a688",
+      "decodedSha256": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1"
+    },
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": {
+      "path": "7-20261102000001_recording_seal_manifest.sql.gz",
+      "sha256": "4dcb580892a569fff4a5c873f2141fd590ee9c76cc94585d91a69d934dfbfb04",
+      "decodedSha256": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+    },
+    "packages/web/src/lib/recording-chunk-location.ts": {
+      "path": "8-recording-chunk-location.ts.gz",
+      "sha256": "2b974abdd276a821fc41488cbc9425c1e9c08168e16c94b59a54fb3758754973",
+      "decodedSha256": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7"
+    },
+    "packages/web/src/lib/server/consent-deletion.ts": {
+      "path": "9-consent-deletion.ts.gz",
+      "sha256": "b416c61e9f38ebddbae7727c16da60f5b87b9bc9a7143a700f13bb971e9c2ccd",
+      "decodedSha256": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33"
+    },
+    "packages/web/src/lib/server/processing-jobs.ts": {
+      "path": "10-processing-jobs.ts.gz",
+      "sha256": "1cab40ebc4544bd4a7c48f9d326eb093144e2793ad8bbd2e41dbe9e4dec973b0",
+      "decodedSha256": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+    },
+    "packages/web/src/lib/server/recording-merge.ts": {
+      "path": "11-recording-merge.ts.gz",
+      "sha256": "c9ef63327afc5c95a74d74a00258ea8a71eca20be13c494a212549579e17666e",
+      "decodedSha256": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8"
+    },
+    "packages/web/src/lib/server/recording-merge-executor.ts": {
+      "path": "12-recording-merge-executor.ts.gz",
+      "sha256": "93f8c32885d23b282f3c175ee04caa23cd9062a99c5355f8c6e88ecedaa53767",
+      "decodedSha256": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b"
+    },
+    "packages/web/src/lib/server/recording-processing-error.ts": {
+      "path": "13-recording-processing-error.ts.gz",
+      "sha256": "e57cf4ae5f90d3c854569dce492271e0ddeac1189ddebbc4a72c57eea51e973e",
+      "decodedSha256": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e"
+    },
+    "packages/web/src/lib/server/recording-audio-decoder.ts": {
+      "path": "14-recording-audio-decoder.ts.gz",
+      "sha256": "2c8e80f2e2dd69c198466ec4ddfc6b15a58c82701e4cc4198644638f017967e2",
+      "decodedSha256": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03"
+    },
+    "packages/web/src/lib/server/recording-session-service.ts": {
+      "path": "15-recording-session-service.ts.gz",
+      "sha256": "aa6cecbf95a32d7eea52932be211f3d6b06cd424446a244ba9eaaf8efa623201",
+      "decodedSha256": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1"
+    },
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": {
+      "path": "16-20261103000001_recording_worker_leases.sql.gz",
+      "sha256": "5fe7be047688ed2747af3a47572ec2e0ea35a87e03a3af182240240b071d5c2f",
+      "decodedSha256": "772aeab363c0ef7f6684fe154552b8c25fa33be97b096abf4630f066ee4a5250"
+    }
+  },
+  "limits": [
+    "Synthetic isolated PG17.4 cluster; selected exact foundation DDL and full seal/lease migrations, not full migration chain or live Supabase."
+  ],
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 31092,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-ZjfHNR/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-ZjfHNR",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users",
+      "auth.uid()",
+      "projects",
+      "project_roles",
+      "project_members",
+      "stories"
+    ],
+    "exactFoundationTables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts",
+      "recording_sessions",
+      "recording_chunks"
+    ],
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql"
+    ],
+    "livePostgrest": false,
+    "liveStorage": false
+  },
+  "rpcInvocationSqlstate": "22023",
+  "rpcProbe": "recording_job_lease(uuid,text,text,integer,integer)",
+  "error": {
+    "code": "ASSERT_FAILED",
+    "label": "existing nonlease callers retain dispatched_at default now()"
+  },
+  "postgresLogSha256": "86ef8afd862048075136b41fcfa1e9814c0c3dfd1986ec259f3ac31b919ad243",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "childrenRemaining": 0
+  },
+  "finishedAt": "2026-11-03T10:52:56.369Z"
+}

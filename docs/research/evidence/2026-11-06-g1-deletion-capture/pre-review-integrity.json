@@ -1,0 +1,24 @@
+{
+  "priorEvidenceFiles": 4680,
+  "priorEvidenceDrift": [],
+  "takeoverFiles": 1344,
+  "authorizedChangedExistingInputs": [
+    "packages/web/src/lib/server/scheme-b-backup.ts",
+    "packages/web/src/lib/server/__tests__/scheme-b-backup.test.ts",
+    "packages/web/src/app/api/media/delete-request/route.ts",
+    "packages/web/src/app/api/media/delete-request/__tests__/route.test.ts",
+    "scripts/verify-scheme-b-backup.cjs",
+    "scripts/__tests__/verify-scheme-b-backup.test.js",
+    "scripts/__tests__/deployment-config.test.js",
+    "docs/README.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/research/2026-11-02-g1-gap-register.md",
+    "docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-capture.md"
+  ],
+  "unexpectedChanges": [],
+  "reviewSourceCount": 27,
+  "headUnchanged": true,
+  "indexUnchanged": true,
+  "stagedEmpty": true,
+  "diffCheckPassed": true
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "targetType": "storage_object",
+    "targetId": "storage:audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/832bdb3a-69bc-4e51-a7b6-08daa1dad192/0",
+    "bucket": "audio-recordings",
+    "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/832bdb3a-69bc-4e51-a7b6-08daa1dad192/0",
+    "tombstonedAt": "2026-11-06T03:27:03.715Z",
+    "reason": "actual_durable_capture_storage_target"
+  },
+  {
+    "targetType": "storage_object",
+    "targetId": "storage:recording-candidates:jobs/b39cdf4e-9431-46d6-b44e-21cc5c60ed03/attempts/1/228186f4-6a02-4be1-bf59-b6e8f744da49",
+    "bucket": "recording-candidates",
+    "key": "jobs/b39cdf4e-9431-46d6-b44e-21cc5c60ed03/attempts/1/228186f4-6a02-4be1-bf59-b6e8f744da49",
+    "tombstonedAt": "2026-11-06T03:27:03.715Z",
+    "reason": "actual_durable_capture_storage_target"
+  }
+]

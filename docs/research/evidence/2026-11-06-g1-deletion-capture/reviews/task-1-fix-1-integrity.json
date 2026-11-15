@@ -1,0 +1,29 @@
+{
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "immediateBaselineHashesMatch": true,
+  "changedOrNewFixFiles": [
+    "supabase/migrations/20261106000002_media_deletion_capture.sql",
+    "experiments/pg17-deletion-capture/fixture.mjs",
+    "experiments/pg17-deletion-capture/verify.mjs",
+    "experiments/pg17-deletion-capture/README.md",
+    "experiments/pg17-deletion-capture/registration-check.mjs",
+    "experiments/pg17-deletion-capture/fix-1-regressions.mjs",
+    "experiments/pg17-deletion-capture/verify-fix-1.mjs",
+    "experiments/pg17-deletion-capture/verify-snapshot-cost.mjs"
+  ],
+  "unchangedOriginalTask1Files": [
+    "packages/web/src/lib/server/media-deletion-capture.ts",
+    "packages/web/src/app/api/media/delete-request/route.ts",
+    "packages/web/src/lib/server/__tests__/media-deletion-capture.test.ts",
+    "packages/web/src/app/api/media/delete-request/__tests__/route.test.ts",
+    "experiments/pg17-deletion-capture/scenarios.mjs"
+  ],
+  "allFrozenSourceHashesMatch": true,
+  "nativeSourceHashesMatch": true,
+  "changedOriginalTakeoverFiles": [
+    "packages/web/src/app/api/media/delete-request/route.ts",
+    "packages/web/src/app/api/media/delete-request/__tests__/route.test.ts"
+  ],
+  "stagedFiles": [],
+  "diffCheckExit": 0
+}

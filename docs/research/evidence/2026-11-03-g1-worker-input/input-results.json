@@ -1,0 +1,1397 @@
+{
+  "timestamp": "2026-11-03T01:44:33.573Z",
+  "platform": "darwin 22.6.0 x64",
+  "limits": [
+    "Synthetic data; actual Supabase JS query client and native Node fetch, but a loopback HTTP fixture replaces PostgREST and Storage.",
+    "Production accepts HTTPS only. The injected Storage fetch translates exactly https://fixture.invalid to the loopback fixture; no real TLS, auth, RLS, PostgreSQL transaction or Storage-service acceptance is claimed.",
+    "A transparent child_process.spawn observer delegates to the original spawn and observes the real FFmpeg PCM/close events to inject deterministic concurrent state changes. It never replaces decoder output.",
+    "No claim, lease, database write, upload, publication, ready transition, cloud call, or local recording-draft cleanup. Optimistic rechecks are not an atomic revocation barrier.",
+    "Native FFmpeg is supplied externally and is not deployment-qualified or OS-sandboxed by this experiment. Successful decode does not prove recording-tail completeness or real-device behavior."
+  ],
+  "checks": [
+    "webm-opus: fixture HTTP assertions",
+    "webm-opus: all requests read-only",
+    "webm-opus: temporary files removed",
+    "webm-opus: native decoder children closed",
+    "webm-opus: decoder invocation count",
+    "webm-opus: database unchanged",
+    "webm-opus: input verified, not ready",
+    "webm-opus: local drafts must remain",
+    "webm-opus: receipt exposes no artifact path",
+    "webm-opus: original total bytes",
+    "webm-opus: original SHA-256",
+    "webm-opus: all immutable source chunks",
+    "webm-opus: full decode near two seconds",
+    "webm-opus: each physical chunk fetched once",
+    "webm-opus: physical source bytes unchanged",
+    "webm-opus: returned only after tombstone recheck",
+    "webm-opus: synthetic input file unchanged",
+    "ogg-opus: fixture HTTP assertions",
+    "ogg-opus: all requests read-only",
+    "ogg-opus: temporary files removed",
+    "ogg-opus: native decoder children closed",
+    "ogg-opus: decoder invocation count",
+    "ogg-opus: database unchanged",
+    "ogg-opus: input verified, not ready",
+    "ogg-opus: local drafts must remain",
+    "ogg-opus: receipt exposes no artifact path",
+    "ogg-opus: original total bytes",
+    "ogg-opus: original SHA-256",
+    "ogg-opus: all immutable source chunks",
+    "ogg-opus: full decode near two seconds",
+    "ogg-opus: each physical chunk fetched once",
+    "ogg-opus: physical source bytes unchanged",
+    "ogg-opus: returned only after tombstone recheck",
+    "ogg-opus: synthetic input file unchanged",
+    "fragmented-mp4-aac: fixture HTTP assertions",
+    "fragmented-mp4-aac: all requests read-only",
+    "fragmented-mp4-aac: temporary files removed",
+    "fragmented-mp4-aac: native decoder children closed",
+    "fragmented-mp4-aac: decoder invocation count",
+    "fragmented-mp4-aac: database unchanged",
+    "fragmented-mp4-aac: input verified, not ready",
+    "fragmented-mp4-aac: local drafts must remain",
+    "fragmented-mp4-aac: receipt exposes no artifact path",
+    "fragmented-mp4-aac: original total bytes",
+    "fragmented-mp4-aac: original SHA-256",
+    "fragmented-mp4-aac: all immutable source chunks",
+    "fragmented-mp4-aac: full decode near two seconds",
+    "fragmented-mp4-aac: each physical chunk fetched once",
+    "fragmented-mp4-aac: physical source bytes unchanged",
+    "fragmented-mp4-aac: returned only after tombstone recheck",
+    "fragmented-mp4-aac: synthetic input file unchanged",
+    "same-size-corrupt-source: fixture HTTP assertions",
+    "same-size-corrupt-source: all requests read-only",
+    "same-size-corrupt-source: temporary files removed",
+    "same-size-corrupt-source: native decoder children closed",
+    "same-size-corrupt-source: decoder invocation count",
+    "same-size-corrupt-source: database unchanged",
+    "same-size-corrupt-source: no success receipt",
+    "same-size-corrupt-source: safe error",
+    "same-size-corrupt-source: no provider detail, path, or credential in error",
+    "missing-source-object: fixture HTTP assertions",
+    "missing-source-object: all requests read-only",
+    "missing-source-object: temporary files removed",
+    "missing-source-object: native decoder children closed",
+    "missing-source-object: decoder invocation count",
+    "missing-source-object: database unchanged",
+    "missing-source-object: no success receipt",
+    "missing-source-object: safe error",
+    "missing-source-object: no provider detail, path, or credential in error",
+    "matching-hash-undecodable-source: fixture HTTP assertions",
+    "matching-hash-undecodable-source: all requests read-only",
+    "matching-hash-undecodable-source: temporary files removed",
+    "matching-hash-undecodable-source: native decoder children closed",
+    "matching-hash-undecodable-source: decoder invocation count",
+    "matching-hash-undecodable-source: database unchanged",
+    "matching-hash-undecodable-source: no success receipt",
+    "matching-hash-undecodable-source: safe error",
+    "matching-hash-undecodable-source: no provider detail, path, or credential in error",
+    "http-partial: fixture HTTP assertions",
+    "http-partial: all requests read-only",
+    "http-partial: temporary files removed",
+    "http-partial: native decoder children closed",
+    "http-partial: decoder invocation count",
+    "http-partial: database unchanged",
+    "http-partial: no success receipt",
+    "http-partial: safe error",
+    "http-partial: no provider detail, path, or credential in error",
+    "http-redirect: fixture HTTP assertions",
+    "http-redirect: all requests read-only",
+    "http-redirect: temporary files removed",
+    "http-redirect: native decoder children closed",
+    "http-redirect: decoder invocation count",
+    "http-redirect: database unchanged",
+    "http-redirect: no success receipt",
+    "http-redirect: safe error",
+    "http-redirect: no provider detail, path, or credential in error",
+    "http-wrong-length: fixture HTTP assertions",
+    "http-wrong-length: all requests read-only",
+    "http-wrong-length: temporary files removed",
+    "http-wrong-length: native decoder children closed",
+    "http-wrong-length: decoder invocation count",
+    "http-wrong-length: database unchanged",
+    "http-wrong-length: no success receipt",
+    "http-wrong-length: safe error",
+    "http-wrong-length: no provider detail, path, or credential in error",
+    "already-revoked-storyteller: fixture HTTP assertions",
+    "already-revoked-storyteller: all requests read-only",
+    "already-revoked-storyteller: temporary files removed",
+    "already-revoked-storyteller: native decoder children closed",
+    "already-revoked-storyteller: decoder invocation count",
+    "already-revoked-storyteller: database unchanged",
+    "already-revoked-storyteller: no success receipt",
+    "already-revoked-storyteller: safe error",
+    "already-revoked-storyteller: no provider detail, path, or credential in error",
+    "role-revoked-during-fetch: fixture HTTP assertions",
+    "role-revoked-during-fetch: all requests read-only",
+    "role-revoked-during-fetch: temporary files removed",
+    "role-revoked-during-fetch: native decoder children closed",
+    "role-revoked-during-fetch: decoder invocation count",
+    "role-revoked-during-fetch: no success receipt",
+    "role-revoked-during-fetch: safe error",
+    "role-revoked-during-fetch: no provider detail, path, or credential in error",
+    "story-owner-drift-during-fetch: fixture HTTP assertions",
+    "story-owner-drift-during-fetch: all requests read-only",
+    "story-owner-drift-during-fetch: temporary files removed",
+    "story-owner-drift-during-fetch: native decoder children closed",
+    "story-owner-drift-during-fetch: decoder invocation count",
+    "story-owner-drift-during-fetch: no success receipt",
+    "story-owner-drift-during-fetch: safe error",
+    "story-owner-drift-during-fetch: no provider detail, path, or credential in error",
+    "tombstone-during-fetch: fixture HTTP assertions",
+    "tombstone-during-fetch: all requests read-only",
+    "tombstone-during-fetch: temporary files removed",
+    "tombstone-during-fetch: native decoder children closed",
+    "tombstone-during-fetch: decoder invocation count",
+    "tombstone-during-fetch: no success receipt",
+    "tombstone-during-fetch: safe error",
+    "tombstone-during-fetch: no provider detail, path, or credential in error",
+    "state-drift-during-native-decode: fixture HTTP assertions",
+    "state-drift-during-native-decode: all requests read-only",
+    "state-drift-during-native-decode: temporary files removed",
+    "state-drift-during-native-decode: native decoder children closed",
+    "state-drift-during-native-decode: decoder invocation count",
+    "state-drift-during-native-decode: no success receipt",
+    "state-drift-during-native-decode: safe error",
+    "state-drift-during-native-decode: no provider detail, path, or credential in error",
+    "tombstone-during-native-decode: fixture HTTP assertions",
+    "tombstone-during-native-decode: all requests read-only",
+    "tombstone-during-native-decode: temporary files removed",
+    "tombstone-during-native-decode: native decoder children closed",
+    "tombstone-during-native-decode: decoder invocation count",
+    "tombstone-during-native-decode: no success receipt",
+    "tombstone-during-native-decode: safe error",
+    "tombstone-during-native-decode: no provider detail, path, or credential in error",
+    "stalled-body-timeout: fixture HTTP assertions",
+    "stalled-body-timeout: all requests read-only",
+    "stalled-body-timeout: temporary files removed",
+    "stalled-body-timeout: native decoder children closed",
+    "stalled-body-timeout: decoder invocation count",
+    "stalled-body-timeout: database unchanged",
+    "stalled-body-timeout: no success receipt",
+    "stalled-body-timeout: safe error",
+    "stalled-body-timeout: no provider detail, path, or credential in error",
+    "stalled-body-timeout: bounded stalled I/O",
+    "stalled-body-timeout: stalled body socket closed",
+    "caller-cancelled-body: fixture HTTP assertions",
+    "caller-cancelled-body: all requests read-only",
+    "caller-cancelled-body: temporary files removed",
+    "caller-cancelled-body: native decoder children closed",
+    "caller-cancelled-body: decoder invocation count",
+    "caller-cancelled-body: database unchanged",
+    "caller-cancelled-body: no success receipt",
+    "caller-cancelled-body: safe error",
+    "caller-cancelled-body: no provider detail, path, or credential in error",
+    "caller-cancelled-body: bounded stalled I/O",
+    "caller-cancelled-body: stalled body socket closed",
+    "caller-cancelled-native-decode: fixture HTTP assertions",
+    "caller-cancelled-native-decode: all requests read-only",
+    "caller-cancelled-native-decode: temporary files removed",
+    "caller-cancelled-native-decode: native decoder children closed",
+    "caller-cancelled-native-decode: decoder invocation count",
+    "caller-cancelled-native-decode: database unchanged",
+    "caller-cancelled-native-decode: no success receipt",
+    "caller-cancelled-native-decode: safe error",
+    "caller-cancelled-native-decode: no provider detail, path, or credential in error",
+    "caller-cancelled-before-load: fixture HTTP assertions",
+    "caller-cancelled-before-load: all requests read-only",
+    "caller-cancelled-before-load: temporary files removed",
+    "caller-cancelled-before-load: native decoder children closed",
+    "caller-cancelled-before-load: decoder invocation count",
+    "caller-cancelled-before-load: database unchanged",
+    "caller-cancelled-before-load: no success receipt",
+    "caller-cancelled-before-load: safe error",
+    "caller-cancelled-before-load: no provider detail, path, or credential in error"
+  ],
+  "cases": [
+    {
+      "name": "webm-opus",
+      "expected": "success",
+      "elapsedMs": 453,
+      "outcome": "input_verified",
+      "error": null,
+      "httpRequests": 357,
+      "databaseReads": 344,
+      "storageReads": 13,
+      "storageBytesSent": 20130,
+      "decoderCalls": 1,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 357,
+      "abandonedResponsesClosed": 0,
+      "completion": {
+        "projectId": "11111111-1111-4111-8111-111111111111",
+        "sessionId": "22222222-2222-4222-8222-222222222222",
+        "assetId": "08e116d6-012f-81a1-84fd-539f88194fd2",
+        "decoded": true,
+        "durationMs": 2000,
+        "outputByteSize": 20130,
+        "outputSha256": "97ab1d896272de1bac576dd9753d04b39c47c160ab7f7cc7213b2680e10be6b5",
+        "chunks": [
+          {
+            "index": 0,
+            "chunkId": "chunk-0",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0",
+            "byteSize": 1549,
+            "sha256": "a4466c2fe3e5bb8c1424f480e54a9e4eadce8851665db7f65da04c28dbf1a1e8"
+          },
+          {
+            "index": 1,
+            "chunkId": "chunk-1",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1",
+            "byteSize": 1549,
+            "sha256": "b9e894552829f19d3a0ec0b913c663ccfa93da0b41027926040aad9fc525a1ba"
+          },
+          {
+            "index": 2,
+            "chunkId": "chunk-2",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2",
+            "byteSize": 1549,
+            "sha256": "d86bdf378c5c7922edc9bf3c42568d26dd61d820e1c8ab955704738837e92b9c"
+          },
+          {
+            "index": 3,
+            "chunkId": "chunk-3",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3",
+            "byteSize": 1549,
+            "sha256": "c5271a525884f643372afa1a02c36c25459c17f59ef10505281eea837d1295f0"
+          },
+          {
+            "index": 4,
+            "chunkId": "chunk-4",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4",
+            "byteSize": 1549,
+            "sha256": "48a68bda40e810ca00a00aaf97c4a9f4872123a2f675374e355403c42549692b"
+          },
+          {
+            "index": 5,
+            "chunkId": "chunk-5",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5",
+            "byteSize": 1549,
+            "sha256": "07b4ecf62867860962aaadeeb9c64241e9f51fcdeae9429b22e4902667730dd9"
+          },
+          {
+            "index": 6,
+            "chunkId": "chunk-6",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6",
+            "byteSize": 1549,
+            "sha256": "0cfc4e3a1dd274cf6ef8dd5a4258d71b147548b4f6e761a452ccf7c2e1ec79a9"
+          },
+          {
+            "index": 7,
+            "chunkId": "chunk-7",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7",
+            "byteSize": 1549,
+            "sha256": "c194d20e19bdd469e3c9d4edd6c124adad274173fcc6d82b9246a7dd406f2abd"
+          },
+          {
+            "index": 8,
+            "chunkId": "chunk-8",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8",
+            "byteSize": 1549,
+            "sha256": "ac6d2e62437847081a6a0f87bdf8589828ccefcfd8c792472b739e8c7ccfd9f7"
+          },
+          {
+            "index": 9,
+            "chunkId": "chunk-9",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9",
+            "byteSize": 1549,
+            "sha256": "a4bc8d3055c20f05c33e7188165953d0bf2ce35bfda1ca50f8257336883effe8"
+          },
+          {
+            "index": 10,
+            "chunkId": "chunk-10",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10",
+            "byteSize": 1549,
+            "sha256": "b7609880ff2ff1bf29d6a82309084c0089692436c94722e00858964f9192382f"
+          },
+          {
+            "index": 11,
+            "chunkId": "chunk-11",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11",
+            "byteSize": 1549,
+            "sha256": "4071b3669aa913b62097d5e2fc3423ef66d9333e66ad813fb43bdb34f0fd1a77"
+          },
+          {
+            "index": 12,
+            "chunkId": "chunk-12",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12",
+            "byteSize": 1542,
+            "sha256": "5de98aaf485940646e1b899bfbe02ee2c1e47e4ad7984c966fd075e50b6062ad"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ogg-opus",
+      "expected": "success",
+      "elapsedMs": 367,
+      "outcome": "input_verified",
+      "error": null,
+      "httpRequests": 357,
+      "databaseReads": 344,
+      "storageReads": 13,
+      "storageBytesSent": 19053,
+      "decoderCalls": 1,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 357,
+      "abandonedResponsesClosed": 0,
+      "completion": {
+        "projectId": "11111111-1111-4111-8111-111111111111",
+        "sessionId": "22222222-2222-4222-8222-222222222222",
+        "assetId": "08e116d6-012f-81a1-84fd-539f88194fd2",
+        "decoded": true,
+        "durationMs": 2000,
+        "outputByteSize": 19053,
+        "outputSha256": "fcd2abfabed44cd3bca27e92db588a1feff58c9cc378ea3629fc9e0fcd38ac11",
+        "chunks": [
+          {
+            "index": 0,
+            "chunkId": "chunk-0",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0",
+            "byteSize": 1466,
+            "sha256": "e52af3ef175701696845625b6b376de688c12ac8c5cd80103be7aeee1bd3a276"
+          },
+          {
+            "index": 1,
+            "chunkId": "chunk-1",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1",
+            "byteSize": 1466,
+            "sha256": "93c9f7a6b4dbb24c8d5e1350966e5d4ab005b3d7ca2e0c0db1e629319658e4de"
+          },
+          {
+            "index": 2,
+            "chunkId": "chunk-2",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2",
+            "byteSize": 1466,
+            "sha256": "27a520ca49c6abf0263cce3f805ccb745936a3c875eaa65e8ae32c7d918d4436"
+          },
+          {
+            "index": 3,
+            "chunkId": "chunk-3",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3",
+            "byteSize": 1466,
+            "sha256": "5322b912ca9b83aea791dcd2e3e67ae8f9e138cd69713fc36631e943f80dcc9d"
+          },
+          {
+            "index": 4,
+            "chunkId": "chunk-4",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4",
+            "byteSize": 1466,
+            "sha256": "1f001fcc89cd3cf3685e3e4dc9d32d25ecf59d130ec28a46949bc83afb36d6e9"
+          },
+          {
+            "index": 5,
+            "chunkId": "chunk-5",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5",
+            "byteSize": 1466,
+            "sha256": "8af1c86471b88432c468821327d8c98f024ef2e8112a67ad386b23e2e15e2421"
+          },
+          {
+            "index": 6,
+            "chunkId": "chunk-6",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6",
+            "byteSize": 1466,
+            "sha256": "235f411d9446ab4920c0f1386b77ec8f5d6f4779e33d1243f44be33afea1fc98"
+          },
+          {
+            "index": 7,
+            "chunkId": "chunk-7",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7",
+            "byteSize": 1466,
+            "sha256": "1e8ae3ee0e9e6d5d4a00625443473c129ae158adb3316dd89d829bc0a1c3e540"
+          },
+          {
+            "index": 8,
+            "chunkId": "chunk-8",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8",
+            "byteSize": 1466,
+            "sha256": "bab83d5fd52eaa4a3a154000d0bb1d5381fbdfa45e36a26091ac47a4e197eda7"
+          },
+          {
+            "index": 9,
+            "chunkId": "chunk-9",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9",
+            "byteSize": 1466,
+            "sha256": "11cdd73ece9115059ba0c6ca5c45ba2c8b3cfb8ae5dabd4f172ccabf7af7c7a4"
+          },
+          {
+            "index": 10,
+            "chunkId": "chunk-10",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10",
+            "byteSize": 1466,
+            "sha256": "b604d14218d36e979fad837a037e3da74bc0ce8975251d135fa4628590a5b331"
+          },
+          {
+            "index": 11,
+            "chunkId": "chunk-11",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11",
+            "byteSize": 1466,
+            "sha256": "e68d6469989b0d0235c180808e9f8963b21906aa67e2f02878b56069abf3172b"
+          },
+          {
+            "index": 12,
+            "chunkId": "chunk-12",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12",
+            "byteSize": 1461,
+            "sha256": "2094f915f353188d70a680c1b614c981a646f738a0ceb0cdd3e116ecd5a5b9d2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "fragmented-mp4-aac",
+      "expected": "success",
+      "elapsedMs": 320,
+      "outcome": "input_verified",
+      "error": null,
+      "httpRequests": 357,
+      "databaseReads": 344,
+      "storageReads": 13,
+      "storageBytesSent": 19290,
+      "decoderCalls": 1,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 357,
+      "abandonedResponsesClosed": 0,
+      "completion": {
+        "projectId": "11111111-1111-4111-8111-111111111111",
+        "sessionId": "22222222-2222-4222-8222-222222222222",
+        "assetId": "08e116d6-012f-81a1-84fd-539f88194fd2",
+        "decoded": true,
+        "durationMs": 2027,
+        "outputByteSize": 19290,
+        "outputSha256": "5f091f7ab72b242dcc43dd24a313c130e9f2b3a4b3f4587aa5ef78d9610d3cee",
+        "chunks": [
+          {
+            "index": 0,
+            "chunkId": "chunk-0",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0",
+            "byteSize": 1484,
+            "sha256": "3274cd5788a46ac66dc8bd8b9cd3b7c6e84ce08b6e31df090945f47fb1d83b31"
+          },
+          {
+            "index": 1,
+            "chunkId": "chunk-1",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1",
+            "byteSize": 1484,
+            "sha256": "f6af604efc6d01a3206e9eaac649a0995e4dee920d6116ee5bf3d332876496a6"
+          },
+          {
+            "index": 2,
+            "chunkId": "chunk-2",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2",
+            "byteSize": 1484,
+            "sha256": "90fc1dcb8db9c4af0cf2b938968b803d6a5f77c2bb762f31326cbf5b9f1a0a71"
+          },
+          {
+            "index": 3,
+            "chunkId": "chunk-3",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3",
+            "byteSize": 1484,
+            "sha256": "36f0fae9d5615eb8ccc0255fae2af1d29d04f64fc338fc3ce9c3cf5aa0a78812"
+          },
+          {
+            "index": 4,
+            "chunkId": "chunk-4",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4",
+            "byteSize": 1484,
+            "sha256": "ba36585e6e498653ec390ee76b9b157adadb9eaee17ff9ed7f9632c571cf1807"
+          },
+          {
+            "index": 5,
+            "chunkId": "chunk-5",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5",
+            "byteSize": 1484,
+            "sha256": "e78e6b9158577e898be1dbac9d4b9f8033843675708e6dc20746dc6acef0b3b1"
+          },
+          {
+            "index": 6,
+            "chunkId": "chunk-6",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6",
+            "byteSize": 1484,
+            "sha256": "3727c35a70a8bdc679c799cb57bcf3be852761245a27423a306a5f54d28e7bc8"
+          },
+          {
+            "index": 7,
+            "chunkId": "chunk-7",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7",
+            "byteSize": 1484,
+            "sha256": "b8b34ae11e1c246571abe6183be645623fad137d906c871b8df55b617b67533e"
+          },
+          {
+            "index": 8,
+            "chunkId": "chunk-8",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8",
+            "byteSize": 1484,
+            "sha256": "ee8ce7ba2227e528c246f072afb60c3c60a1efca166e5f31ea9b9d3d26f1f807"
+          },
+          {
+            "index": 9,
+            "chunkId": "chunk-9",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9",
+            "byteSize": 1484,
+            "sha256": "1c0db622fdf1b529c5dbb0544b43f869d1facc981667e2847b7c63e58379ede0"
+          },
+          {
+            "index": 10,
+            "chunkId": "chunk-10",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10",
+            "byteSize": 1484,
+            "sha256": "0b42def57cd68984f8f55e66d9ca7cccc153ddb53a0b13fcac98d455291ce8cb"
+          },
+          {
+            "index": 11,
+            "chunkId": "chunk-11",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11",
+            "byteSize": 1484,
+            "sha256": "56ad8fe5852e8473dd3d0707199573a6e55ca3e8246bd42549cc11d510ace9f0"
+          },
+          {
+            "index": 12,
+            "chunkId": "chunk-12",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12",
+            "byteSize": 1482,
+            "sha256": "0ef70325d7b90adb37644d0cf7e72340b3058eebc67b7fbc0d3fe96408266ba8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "same-size-corrupt-source",
+      "expected": "recording_source_hash_mismatch",
+      "elapsedMs": 58,
+      "outcome": "rejected",
+      "error": {
+        "name": "RecordingProcessingError",
+        "message": "Recording chunk SHA256 does not match its manifest",
+        "code": "recording_source_hash_mismatch"
+      },
+      "httpRequests": 33,
+      "databaseReads": 32,
+      "storageReads": 1,
+      "storageBytesSent": 1549,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 33,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "missing-source-object",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 60,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 42,
+      "databaseReads": 40,
+      "storageReads": 2,
+      "storageBytesSent": 1549,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 42,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "matching-hash-undecodable-source",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 280,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 341,
+      "databaseReads": 328,
+      "storageReads": 13,
+      "storageBytesSent": 2100,
+      "decoderCalls": 1,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 341,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "http-partial",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 48,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 17,
+      "databaseReads": 16,
+      "storageReads": 1,
+      "storageBytesSent": 548,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 17,
+      "abandonedResponsesClosed": 1,
+      "completion": null
+    },
+    {
+      "name": "http-redirect",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 48,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 17,
+      "databaseReads": 16,
+      "storageReads": 1,
+      "storageBytesSent": 0,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 17,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "http-wrong-length",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 45,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 17,
+      "databaseReads": 16,
+      "storageReads": 1,
+      "storageBytesSent": 548,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 17,
+      "abandonedResponsesClosed": 1,
+      "completion": null
+    },
+    {
+      "name": "already-revoked-storyteller",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 38,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 6,
+      "databaseReads": 6,
+      "storageReads": 0,
+      "storageBytesSent": 0,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 6,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "role-revoked-during-fetch",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 55,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 23,
+      "databaseReads": 22,
+      "storageReads": 1,
+      "storageBytesSent": 1549,
+      "decoderCalls": 0,
+      "mutations": [
+        "storyteller revoked at actual Storage request"
+      ],
+      "tempFilesAfter": [],
+      "closedResponses": 23,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "story-owner-drift-during-fetch",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 53,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 24,
+      "databaseReads": 23,
+      "storageReads": 1,
+      "storageBytesSent": 1549,
+      "decoderCalls": 0,
+      "mutations": [
+        "story owner changed during actual body streaming"
+      ],
+      "tempFilesAfter": [],
+      "closedResponses": 24,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "tombstone-during-fetch",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 49,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 25,
+      "databaseReads": 24,
+      "storageReads": 1,
+      "storageBytesSent": 1549,
+      "decoderCalls": 0,
+      "mutations": [
+        "asset tombstoned during actual body streaming"
+      ],
+      "tempFilesAfter": [],
+      "closedResponses": 25,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "state-drift-during-native-decode",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 291,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 343,
+      "databaseReads": 330,
+      "storageReads": 13,
+      "storageBytesSent": 20130,
+      "decoderCalls": 1,
+      "mutations": [
+        "queued job changed to running after real PCM output"
+      ],
+      "tempFilesAfter": [],
+      "closedResponses": 343,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "tombstone-during-native-decode",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 306,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 349,
+      "databaseReads": 336,
+      "storageReads": 13,
+      "storageBytesSent": 20130,
+      "decoderCalls": 1,
+      "mutations": [
+        "session tombstoned after real PCM output"
+      ],
+      "tempFilesAfter": [],
+      "closedResponses": 349,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "stalled-body-timeout",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 154,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 25,
+      "databaseReads": 24,
+      "storageReads": 1,
+      "storageBytesSent": 1,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 25,
+      "abandonedResponsesClosed": 1,
+      "completion": null
+    },
+    {
+      "name": "caller-cancelled-body",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 98,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 25,
+      "databaseReads": 24,
+      "storageReads": 1,
+      "storageBytesSent": 1,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 25,
+      "abandonedResponsesClosed": 1,
+      "completion": null
+    },
+    {
+      "name": "caller-cancelled-native-decode",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 289,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 341,
+      "databaseReads": 328,
+      "storageReads": 13,
+      "storageBytesSent": 20130,
+      "decoderCalls": 1,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 341,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    },
+    {
+      "name": "caller-cancelled-before-load",
+      "expected": "recording_input_unavailable",
+      "elapsedMs": 31,
+      "outcome": "rejected",
+      "error": {
+        "name": "Error",
+        "message": "recording_input_unavailable",
+        "code": null
+      },
+      "httpRequests": 0,
+      "databaseReads": 0,
+      "storageReads": 0,
+      "storageBytesSent": 0,
+      "decoderCalls": 0,
+      "mutations": [],
+      "tempFilesAfter": [],
+      "closedResponses": 0,
+      "abandonedResponsesClosed": 0,
+      "completion": null
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "webm-opus",
+      "mimeType": "audio/webm;codecs=opus",
+      "byteSize": 20130,
+      "sha256": "97ab1d896272de1bac576dd9753d04b39c47c160ab7f7cc7213b2680e10be6b5",
+      "chunkCount": 13,
+      "manifestSha256": "b8dff53f2e5b25ce2d36195ab0eda2ab31c1a9544d905c6530e6e6de2d76b371",
+      "manifest": {
+        "schemaVersion": 1,
+        "projectId": "11111111-1111-4111-8111-111111111111",
+        "sessionId": "22222222-2222-4222-8222-222222222222",
+        "userId": "33333333-3333-4333-8333-333333333333",
+        "storyId": "44444444-4444-4444-8444-444444444444",
+        "assetId": "08e116d6-012f-81a1-84fd-539f88194fd2",
+        "mimeType": "audio/webm;codecs=opus",
+        "chunks": [
+          {
+            "index": 0,
+            "chunkId": "chunk-0",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0",
+            "byteSize": 1549,
+            "sha256": "a4466c2fe3e5bb8c1424f480e54a9e4eadce8851665db7f65da04c28dbf1a1e8",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0"
+          },
+          {
+            "index": 1,
+            "chunkId": "chunk-1",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1",
+            "byteSize": 1549,
+            "sha256": "b9e894552829f19d3a0ec0b913c663ccfa93da0b41027926040aad9fc525a1ba",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1"
+          },
+          {
+            "index": 2,
+            "chunkId": "chunk-2",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2",
+            "byteSize": 1549,
+            "sha256": "d86bdf378c5c7922edc9bf3c42568d26dd61d820e1c8ab955704738837e92b9c",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2"
+          },
+          {
+            "index": 3,
+            "chunkId": "chunk-3",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3",
+            "byteSize": 1549,
+            "sha256": "c5271a525884f643372afa1a02c36c25459c17f59ef10505281eea837d1295f0",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3"
+          },
+          {
+            "index": 4,
+            "chunkId": "chunk-4",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4",
+            "byteSize": 1549,
+            "sha256": "48a68bda40e810ca00a00aaf97c4a9f4872123a2f675374e355403c42549692b",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4"
+          },
+          {
+            "index": 5,
+            "chunkId": "chunk-5",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5",
+            "byteSize": 1549,
+            "sha256": "07b4ecf62867860962aaadeeb9c64241e9f51fcdeae9429b22e4902667730dd9",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5"
+          },
+          {
+            "index": 6,
+            "chunkId": "chunk-6",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6",
+            "byteSize": 1549,
+            "sha256": "0cfc4e3a1dd274cf6ef8dd5a4258d71b147548b4f6e761a452ccf7c2e1ec79a9",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6"
+          },
+          {
+            "index": 7,
+            "chunkId": "chunk-7",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7",
+            "byteSize": 1549,
+            "sha256": "c194d20e19bdd469e3c9d4edd6c124adad274173fcc6d82b9246a7dd406f2abd",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7"
+          },
+          {
+            "index": 8,
+            "chunkId": "chunk-8",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8",
+            "byteSize": 1549,
+            "sha256": "ac6d2e62437847081a6a0f87bdf8589828ccefcfd8c792472b739e8c7ccfd9f7",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8"
+          },
+          {
+            "index": 9,
+            "chunkId": "chunk-9",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9",
+            "byteSize": 1549,
+            "sha256": "a4bc8d3055c20f05c33e7188165953d0bf2ce35bfda1ca50f8257336883effe8",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9"
+          },
+          {
+            "index": 10,
+            "chunkId": "chunk-10",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10",
+            "byteSize": 1549,
+            "sha256": "b7609880ff2ff1bf29d6a82309084c0089692436c94722e00858964f9192382f",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10"
+          },
+          {
+            "index": 11,
+            "chunkId": "chunk-11",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11",
+            "byteSize": 1549,
+            "sha256": "4071b3669aa913b62097d5e2fc3423ef66d9333e66ad813fb43bdb34f0fd1a77",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11"
+          },
+          {
+            "index": 12,
+            "chunkId": "chunk-12",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12",
+            "byteSize": 1542,
+            "sha256": "5de98aaf485940646e1b899bfbe02ee2c1e47e4ad7984c966fd075e50b6062ad",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ogg-opus",
+      "mimeType": "audio/ogg;codecs=opus",
+      "byteSize": 19053,
+      "sha256": "fcd2abfabed44cd3bca27e92db588a1feff58c9cc378ea3629fc9e0fcd38ac11",
+      "chunkCount": 13,
+      "manifestSha256": "58b20dfc9b69fdf67de1b2bb8134f911b3522cf9f56afa4d18914cd3be5f9442",
+      "manifest": {
+        "schemaVersion": 1,
+        "projectId": "11111111-1111-4111-8111-111111111111",
+        "sessionId": "22222222-2222-4222-8222-222222222222",
+        "userId": "33333333-3333-4333-8333-333333333333",
+        "storyId": "44444444-4444-4444-8444-444444444444",
+        "assetId": "08e116d6-012f-81a1-84fd-539f88194fd2",
+        "mimeType": "audio/ogg;codecs=opus",
+        "chunks": [
+          {
+            "index": 0,
+            "chunkId": "chunk-0",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0",
+            "byteSize": 1466,
+            "sha256": "e52af3ef175701696845625b6b376de688c12ac8c5cd80103be7aeee1bd3a276",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0"
+          },
+          {
+            "index": 1,
+            "chunkId": "chunk-1",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1",
+            "byteSize": 1466,
+            "sha256": "93c9f7a6b4dbb24c8d5e1350966e5d4ab005b3d7ca2e0c0db1e629319658e4de",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1"
+          },
+          {
+            "index": 2,
+            "chunkId": "chunk-2",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2",
+            "byteSize": 1466,
+            "sha256": "27a520ca49c6abf0263cce3f805ccb745936a3c875eaa65e8ae32c7d918d4436",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2"
+          },
+          {
+            "index": 3,
+            "chunkId": "chunk-3",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3",
+            "byteSize": 1466,
+            "sha256": "5322b912ca9b83aea791dcd2e3e67ae8f9e138cd69713fc36631e943f80dcc9d",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3"
+          },
+          {
+            "index": 4,
+            "chunkId": "chunk-4",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4",
+            "byteSize": 1466,
+            "sha256": "1f001fcc89cd3cf3685e3e4dc9d32d25ecf59d130ec28a46949bc83afb36d6e9",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4"
+          },
+          {
+            "index": 5,
+            "chunkId": "chunk-5",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5",
+            "byteSize": 1466,
+            "sha256": "8af1c86471b88432c468821327d8c98f024ef2e8112a67ad386b23e2e15e2421",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5"
+          },
+          {
+            "index": 6,
+            "chunkId": "chunk-6",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6",
+            "byteSize": 1466,
+            "sha256": "235f411d9446ab4920c0f1386b77ec8f5d6f4779e33d1243f44be33afea1fc98",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6"
+          },
+          {
+            "index": 7,
+            "chunkId": "chunk-7",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7",
+            "byteSize": 1466,
+            "sha256": "1e8ae3ee0e9e6d5d4a00625443473c129ae158adb3316dd89d829bc0a1c3e540",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7"
+          },
+          {
+            "index": 8,
+            "chunkId": "chunk-8",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8",
+            "byteSize": 1466,
+            "sha256": "bab83d5fd52eaa4a3a154000d0bb1d5381fbdfa45e36a26091ac47a4e197eda7",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8"
+          },
+          {
+            "index": 9,
+            "chunkId": "chunk-9",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9",
+            "byteSize": 1466,
+            "sha256": "11cdd73ece9115059ba0c6ca5c45ba2c8b3cfb8ae5dabd4f172ccabf7af7c7a4",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9"
+          },
+          {
+            "index": 10,
+            "chunkId": "chunk-10",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10",
+            "byteSize": 1466,
+            "sha256": "b604d14218d36e979fad837a037e3da74bc0ce8975251d135fa4628590a5b331",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10"
+          },
+          {
+            "index": 11,
+            "chunkId": "chunk-11",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11",
+            "byteSize": 1466,
+            "sha256": "e68d6469989b0d0235c180808e9f8963b21906aa67e2f02878b56069abf3172b",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11"
+          },
+          {
+            "index": 12,
+            "chunkId": "chunk-12",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12",
+            "byteSize": 1461,
+            "sha256": "2094f915f353188d70a680c1b614c981a646f738a0ceb0cdd3e116ecd5a5b9d2",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12"
+          }
+        ]
+      }
+    },
+    {
+      "name": "fragmented-mp4-aac",
+      "mimeType": "audio/mp4;codecs=mp4a.40.2",
+      "byteSize": 19290,
+      "sha256": "5f091f7ab72b242dcc43dd24a313c130e9f2b3a4b3f4587aa5ef78d9610d3cee",
+      "chunkCount": 13,
+      "manifestSha256": "ed4e0d2ac372e003dd967df8e0b5cec5b71f1ae5d178bd397af714e3ebbf4d75",
+      "manifest": {
+        "schemaVersion": 1,
+        "projectId": "11111111-1111-4111-8111-111111111111",
+        "sessionId": "22222222-2222-4222-8222-222222222222",
+        "userId": "33333333-3333-4333-8333-333333333333",
+        "storyId": "44444444-4444-4444-8444-444444444444",
+        "assetId": "08e116d6-012f-81a1-84fd-539f88194fd2",
+        "mimeType": "audio/mp4;codecs=mp4a.40.2",
+        "chunks": [
+          {
+            "index": 0,
+            "chunkId": "chunk-0",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0",
+            "byteSize": 1484,
+            "sha256": "3274cd5788a46ac66dc8bd8b9cd3b7c6e84ce08b6e31df090945f47fb1d83b31",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/0"
+          },
+          {
+            "index": 1,
+            "chunkId": "chunk-1",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1",
+            "byteSize": 1484,
+            "sha256": "f6af604efc6d01a3206e9eaac649a0995e4dee920d6116ee5bf3d332876496a6",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/1"
+          },
+          {
+            "index": 2,
+            "chunkId": "chunk-2",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2",
+            "byteSize": 1484,
+            "sha256": "90fc1dcb8db9c4af0cf2b938968b803d6a5f77c2bb762f31326cbf5b9f1a0a71",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/2"
+          },
+          {
+            "index": 3,
+            "chunkId": "chunk-3",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3",
+            "byteSize": 1484,
+            "sha256": "36f0fae9d5615eb8ccc0255fae2af1d29d04f64fc338fc3ce9c3cf5aa0a78812",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/3"
+          },
+          {
+            "index": 4,
+            "chunkId": "chunk-4",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4",
+            "byteSize": 1484,
+            "sha256": "ba36585e6e498653ec390ee76b9b157adadb9eaee17ff9ed7f9632c571cf1807",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/4"
+          },
+          {
+            "index": 5,
+            "chunkId": "chunk-5",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5",
+            "byteSize": 1484,
+            "sha256": "e78e6b9158577e898be1dbac9d4b9f8033843675708e6dc20746dc6acef0b3b1",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/5"
+          },
+          {
+            "index": 6,
+            "chunkId": "chunk-6",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6",
+            "byteSize": 1484,
+            "sha256": "3727c35a70a8bdc679c799cb57bcf3be852761245a27423a306a5f54d28e7bc8",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/6"
+          },
+          {
+            "index": 7,
+            "chunkId": "chunk-7",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7",
+            "byteSize": 1484,
+            "sha256": "b8b34ae11e1c246571abe6183be645623fad137d906c871b8df55b617b67533e",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/7"
+          },
+          {
+            "index": 8,
+            "chunkId": "chunk-8",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8",
+            "byteSize": 1484,
+            "sha256": "ee8ce7ba2227e528c246f072afb60c3c60a1efca166e5f31ea9b9d3d26f1f807",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/8"
+          },
+          {
+            "index": 9,
+            "chunkId": "chunk-9",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9",
+            "byteSize": 1484,
+            "sha256": "1c0db622fdf1b529c5dbb0544b43f869d1facc981667e2847b7c63e58379ede0",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/9"
+          },
+          {
+            "index": 10,
+            "chunkId": "chunk-10",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10",
+            "byteSize": 1484,
+            "sha256": "0b42def57cd68984f8f55e66d9ca7cccc153ddb53a0b13fcac98d455291ce8cb",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/10"
+          },
+          {
+            "index": 11,
+            "chunkId": "chunk-11",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11",
+            "byteSize": 1484,
+            "sha256": "56ad8fe5852e8473dd3d0707199573a6e55ca3e8246bd42549cc11d510ace9f0",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/11"
+          },
+          {
+            "index": 12,
+            "chunkId": "chunk-12",
+            "bucket": "audio-recordings",
+            "objectKey": "projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12",
+            "byteSize": 1482,
+            "sha256": "0ef70325d7b90adb37644d0cf7e72340b3058eebc67b7fbc0d3fe96408266ba8",
+            "storageObjectKey": "33333333-3333-4333-8333-333333333333/projects/11111111-1111-4111-8111-111111111111/sessions/22222222-2222-4222-8222-222222222222/12"
+          }
+        ]
+      }
+    }
+  ],
+  "sourceSha256": {
+    "lib/recording-chunk-location": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "lib/server/consent-deletion": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "lib/server/processing-jobs": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "lib/server/recording-merge": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "lib/server/recording-merge-executor": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "lib/server/recording-processing-error": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "lib/server/recording-audio-decoder": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "lib/server/recording-session-service": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "lib/server/recording-job-input": "a5e77b1d04cad58624e9d44672f33318fa1a38f9eaa7a3abb9872acf6743e68e",
+    "lib/server/recording-job-verifier": "6fe82ff4f79866a6c92022f474681a6c27703e506ea8d2e944ebd95a433ead57",
+    "verification-script": "6a17c6e5fb7eb487dd14b7892cbba9965e8c66eb4214ea91ecb3a898e6c373bf"
+  },
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "runtime": {
+    "node": "v22.22.2",
+    "supabaseJs": "2.105.3",
+    "ffmpegVersion": "ffmpeg version N-92718-g092cb17983-tessus  https://evermeet.cx/ffmpeg/  Copyright (c) 2000-2018 the FFmpeg developers",
+    "ffmpegSha256": "69bddbabda0d4fbedf98fb01b6f964ee1c8346987ef7f6e70055b95339a78b17"
+  },
+  "status": "passed",
+  "cleanup": {
+    "decoderChildrenRemaining": 0,
+    "socketsRemaining": 0,
+    "scratchRemoved": true,
+    "spawnObserverRestored": true
+  },
+  "totals": {
+    "checks": 194,
+    "cases": 19,
+    "fixtures": 3,
+    "httpRequests": 2699,
+    "databaseReads": 2597,
+    "storageReads": 102,
+    "decoderInvocations": 7,
+    "nonGetRequests": 0
+  }
+}

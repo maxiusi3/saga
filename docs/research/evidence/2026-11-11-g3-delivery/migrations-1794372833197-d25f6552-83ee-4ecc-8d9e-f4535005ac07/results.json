@@ -1,0 +1,661 @@
+{
+  "status": "passed",
+  "assertions": 258,
+  "actorConnections": [
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": true
+    }
+  ],
+  "sources": {
+    "experiments/g1-local/verify-migrations.mjs": "febcfdc9e11ece6c09c375370661ce07e2ef87f9cd7f64cd6baf234aea541e61",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "873f2328cb136db24e26c8736e1fe94b6a43082436b9559eca095329ec551a81",
+    "supabase/migrations/20250731012532_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250731015259_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250802015525_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250802015612_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20260611000000_agent_phase1.sql": "77fa360a9174c3af2e27e7b63fefaf3e3cc420ea785d3422f41051731638f2f9",
+    "supabase/migrations/20260612000000_agent_phase2_public_archive.sql": "cb9545b79425861d5ee5ab9a8fc7d71c48358983ab6c9a8f66b467ffa5c62834",
+    "supabase/migrations/20260621000000_storage_policies.sql": "6cfc526f0c3ea4245eb1847748d61d2e8f37db03cd8c10f9cb79f3b16b6188bc",
+    "supabase/migrations/20260625081000_dashboard_support_tables.sql": "526130a7fe84dca1327fd3b8cc7546c3445eadf0d6d29b896499ccfcb73a32de",
+    "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql": "8aa01d232796c63c56e4e6d85bfbf262741d1ff908b2d17c1e95c1332895752b",
+    "supabase/migrations/20261007000001_create_waitlist.sql": "20d2193287988a84de23b9224df8cbd7513fb93439a740da2dc0cce0e0c11a1c",
+    "supabase/migrations/20261007000002_improve_storage_rls.sql": "d0375b2abbeff1b4f8357c5704dc6de37c3ecb64f3fcaae1cfeead949b3e8cff",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql": "d7a77d28cd49780b1bbad5d5efea81a0cc241fda48eaca2dd3180f73a49e8992",
+    "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql": "7480f7d06542275ec9d14cb26757e23030d6fef4a6dd8d5e8d1925d3ce3afe78",
+    "supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql": "4f57e7fed1bf9d7c7f061cddb7e9951f28a4502521d7839d7f9ebf262bc0150f",
+    "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+    "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+    "supabase/migrations/20261030000001_upload_observations.sql": "68e8d4ec610185db89a2f2fcec0d29fe9e2b86cf5f34988762f8982b565b4c78",
+    "supabase/migrations/20261030000002_deployment_collection_coverage.sql": "23bb279edc8b9f6d44617f75d3eb532607c70d699578072701e4b436c20f32de",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af",
+    "supabase/migrations/20261106000001_recording_story_save.sql": "20ba20cdda0ec79c997cf1a0eafc38e7d7c022ad95b6146e7658d4208b8d5569",
+    "supabase/migrations/20261106000002_media_deletion_capture.sql": "8c4873a4cf980bb6912508d387ac2a6d509cf5c27894298a8277e7f7d0f52b32",
+    "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql": "cb1d15de2782ed2c0fde5c69b1ee2684b8a5a941e46623c6092a4003c1784628",
+    "supabase/migrations/20261106000004_media_deletion_leases.sql": "b09325de38514d56789d8bb8d0c43e12223328f9c72a8a055cff9f01e3146063",
+    "supabase/migrations/20261107000001_legacy_compatibility_acl.sql": "0ede8cadbff29f74faa9523113186ac7235c45401a278c20c9d936e4efcc2522",
+    "supabase/migrations/20261109000001_media_deletion_execution.sql": "318c1e1c6dbb191d57baa0729eb3f849162a4f4acb8fbc1627f0a55535f75b28",
+    "supabase/migrations/20261109000002_story_content_deletion.sql": "720cf6c0c934aa8a2ef12a12a8c89f43a543f62d34a33c3fd4080f5f812e3552",
+    "supabase/migrations/20261110000001_story_review_workflow.sql": "b76cb7624050576e57eaaabfc86d436699427f86b5e8a95b05eda39d31e92a48",
+    "supabase/migrations/20261111000001_publication_delivery.sql": "b79cd6d7302ce86f271a29f172945e7bdeb977424997d2739908259fd689b763",
+    "supabase/migrations/20261111000002_authoritative_search.sql": "49be47d0d675fe4785376a0364b34580fb38ab7c7f9a1be088a0dac980b8dcd1",
+    "supabase/migrations/20261111000003_payment_orders.sql": "5bd806e3467bb2d02a00a26f51cb37096d6a8f6751c9bc5da395ae1b45dba851",
+    "experiments/pg17-g3-delivery/archive-scenarios.mjs": "62dd49b54c4338d752bcc3fc66e6ed976d456b31d07778e24c99a72028061917",
+    "packages/web/src/app/api/projects/[id]/export/route.ts": "a01f69817dbf773fdb74cb44c86072774fefe9949a5a39d68008ed4ffeaf18e5",
+    "packages/web/src/lib/server/archival-export-service.ts": "723e01bf472ed3487ae0b96d4fa86dc50f2b92618159bfe52b3ea707f9a8428d",
+    "packages/web/src/lib/server/media-export.ts": "fd184a20aa4f8ae1a03bfda51958736028c9f0647a70336a3f1498f82278aafe",
+    "packages/web/src/lib/media-assets.ts": "bd8d0a6ca204b0a8ae59bd3d5898549390bfa1d244efaf29048c11d8e5846cda",
+    "packages/web/src/lib/server/project-access.ts": "c6dd6eeeef8fd9030dad1ef9fd7664f2b66db2bc3181b36d8e33542fe9aa395e",
+    "packages/web/src/lib/server/publication-source-service.ts": "ab8fee3fae2ed5d3845b55dbd7447a0ad1c42f8cfd5dbca7e56b0e9141ebc519",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/server/recording-asset-lineage.ts": "c803c61daf7394bb211b9ee4d7afa1fa1e8f7781cc79e9dbe44ae90744e6d2f1",
+    "packages/web/src/lib/server/recording-output-candidate.ts": "33c46538e150372327dddfe583f89838b2e6c34626331f0a5436523611163eb8",
+    "packages/web/src/lib/server/publication-delivery-service.ts": "413cea5c198b0235773150edcf3000ad1185b95501a40efc1f8223939b491255",
+    "packages/web/src/lib/server/publication-delivery-worker.ts": "f38462fc1d3c55f73701b584a0be1682edf7e78457f8c4cc30f723b387398d6b",
+    "packages/web/src/lib/server/archive-observations.ts": "d1a1062c1abcdac8bdfd481cf8e2f6076dc0249c73a182eda3a4283b647b48c6",
+    "packages/web/src/lib/invitation-acceptance-protocol.ts": "2d3163a8530ed2df6959f3f8d383875873fcf6d45ae87f3fd4583eb12f4287a6",
+    "packages/web/src/lib/server/operational-rpc.ts": "c86ae750524c81a57e7efe53a00399da600018049d249a8822b1e9ddfc11b31b",
+    "packages/web/src/lib/server/deployment-collection-coverage.ts": "fe6a39f6945638e5841612b0bb09cafce09b3694d16b3fe67bb8fb8a1e0b79b3",
+    "packages/web/src/app/api/projects/[id]/export/jobs/[jobId]/download/route.ts": "a4062263ebe4536c954b21b592474b1c692771739ea5bd5d84e27befb85930ef",
+    "packages/web/src/app/api/projects/[id]/export/jobs/[jobId]/route.ts": "77e6b55a0104b80708e3c833fdbac90ab98fa7bf89d4d8cdc93e2fbd4a1f5e6d"
+  },
+  "migrations": [
+    {
+      "path": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+      "status": "passed",
+      "elapsedMs": 67
+    },
+    {
+      "path": "supabase/migrations/20250731012532_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20250731015259_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20250802015525_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20250802015612_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20260611000000_agent_phase1.sql",
+      "status": "passed",
+      "elapsedMs": 22
+    },
+    {
+      "path": "supabase/migrations/20260612000000_agent_phase2_public_archive.sql",
+      "status": "passed",
+      "elapsedMs": 29
+    },
+    {
+      "path": "supabase/migrations/20260621000000_storage_policies.sql",
+      "status": "passed",
+      "elapsedMs": 3
+    },
+    {
+      "path": "supabase/migrations/20260625081000_dashboard_support_tables.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql",
+      "status": "passed",
+      "elapsedMs": 10
+    },
+    {
+      "path": "supabase/migrations/20261007000001_create_waitlist.sql",
+      "status": "passed",
+      "elapsedMs": 7
+    },
+    {
+      "path": "supabase/migrations/20261007000002_improve_storage_rls.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql",
+      "status": "passed",
+      "elapsedMs": 41
+    },
+    {
+      "path": "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql",
+      "status": "passed",
+      "elapsedMs": 20
+    },
+    {
+      "path": "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql",
+      "status": "passed",
+      "elapsedMs": 25
+    },
+    {
+      "path": "supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql",
+      "status": "passed",
+      "elapsedMs": 6
+    },
+    {
+      "path": "supabase/migrations/20261029000001_operational_snapshot.sql",
+      "status": "passed",
+      "elapsedMs": 2
+    },
+    {
+      "path": "supabase/migrations/20261029000002_export_observations.sql",
+      "status": "passed",
+      "elapsedMs": 6
+    },
+    {
+      "path": "supabase/migrations/20261030000001_upload_observations.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261030000002_deployment_collection_coverage.sql",
+      "status": "passed",
+      "elapsedMs": 10
+    },
+    {
+      "path": "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "status": "passed",
+      "elapsedMs": 2
+    },
+    {
+      "path": "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "status": "passed",
+      "elapsedMs": 3
+    },
+    {
+      "path": "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "status": "passed",
+      "elapsedMs": 6
+    },
+    {
+      "path": "supabase/migrations/20261104000001_recording_job_finalization.sql",
+      "status": "passed",
+      "elapsedMs": 2
+    },
+    {
+      "path": "supabase/migrations/20261105000001_recording_session_snapshot.sql",
+      "status": "passed",
+      "elapsedMs": 1
+    },
+    {
+      "path": "supabase/migrations/20261106000001_recording_story_save.sql",
+      "status": "passed",
+      "elapsedMs": 7
+    },
+    {
+      "path": "supabase/migrations/20261106000002_media_deletion_capture.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql",
+      "status": "passed",
+      "elapsedMs": 3
+    },
+    {
+      "path": "supabase/migrations/20261106000004_media_deletion_leases.sql",
+      "status": "passed",
+      "elapsedMs": 10
+    },
+    {
+      "path": "supabase/migrations/20261107000001_legacy_compatibility_acl.sql",
+      "status": "passed",
+      "elapsedMs": 2
+    },
+    {
+      "path": "supabase/migrations/20261109000001_media_deletion_execution.sql",
+      "status": "passed",
+      "elapsedMs": 22
+    },
+    {
+      "path": "supabase/migrations/20261109000002_story_content_deletion.sql",
+      "status": "passed",
+      "elapsedMs": 18
+    },
+    {
+      "path": "supabase/migrations/20261110000001_story_review_workflow.sql",
+      "status": "passed",
+      "elapsedMs": 22
+    },
+    {
+      "path": "supabase/migrations/20261111000001_publication_delivery.sql",
+      "status": "passed",
+      "elapsedMs": 11
+    },
+    {
+      "path": "supabase/migrations/20261111000002_authoritative_search.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261111000003_payment_orders.sql",
+      "status": "passed",
+      "elapsedMs": 51
+    }
+  ],
+  "boundary": "Actual complete repository bootstrap/migration files on native PG17.4 with real extensions. Minimal synthetic Supabase auth/storage platform schemas; no hosted PostgREST/Auth/Storage qualification.",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "binarySha256": {
+      "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+      "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+      "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+      "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+      "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+    }
+  },
+  "scratch": "/tmp/saga-g1-chain-iTlNDj",
+  "catalog": [
+    {
+      "schemaname": "auth",
+      "tablename": "users"
+    },
+    {
+      "schemaname": "entitlement_candidate",
+      "tablename": "events"
+    },
+    {
+      "schemaname": "entitlement_candidate",
+      "tablename": "sources"
+    },
+    {
+      "schemaname": "invitation_candidate",
+      "tablename": "bindings"
+    },
+    {
+      "schemaname": "invitation_candidate",
+      "tablename": "requests"
+    },
+    {
+      "schemaname": "invitation_candidate",
+      "tablename": "trusted_seat_sources"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "agent_artifacts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "agent_runs"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "archive_assembly_attempts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "archive_attempt_builds"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "archive_observation_coverage"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "browser_upload_attempts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "chapters"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "consent_records"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "deletion_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "deletion_targets"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "deployment_collection_coverage"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "entitlement_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "entitlement_sources"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "interactions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "interview_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "interview_sessions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "invitations"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "legacy_media_references"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_assets"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_attempts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_executions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_fences"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_jobs"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_objects"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "notification_settings"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "notifications"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "payment_order_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "payment_order_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "payment_orders"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "payment_project_rights"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "pilot_households"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "platform_roles"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "privacy_agreements"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "processing_attempts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "processing_jobs"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "profiles"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_members"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_prompt_state"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_roles"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "projects"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "prompts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_archive_audit_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_archive_entries"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_contribution_elements"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_contribution_invitations"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_contributions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_event_clusters"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_event_contributions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "publication_artifact_cleanup"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "publication_delivery_jobs"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "publication_snapshots"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "recording_chunks"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "recording_output_candidates"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "recording_sessions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "recording_story_intents"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "search_index_entries"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "seat_transactions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "stories"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_artifacts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_assertions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_content_purges"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_deletion_context"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_deletion_fences"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_elements"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_review_context"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_review_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_revisions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_transcription_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "subscriptions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "transcript_segments"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "transcript_versions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "upload_attempt_builds"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "upload_observation_coverage"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "user_resource_wallets"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "user_settings"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "waitlist"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "waitlist_signups"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "buckets"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects"
+    }
+  ],
+  "extensions": [
+    {
+      "extname": "pgcrypto",
+      "extversion": "1.3"
+    },
+    {
+      "extname": "plpgsql",
+      "extversion": "1.0"
+    },
+    {
+      "extname": "uuid-ossp",
+      "extversion": "1.1"
+    }
+  ],
+  "archiveWorker": {
+    "outcome": "ready",
+    "jobId": "d894bca9-c1f9-4591-b32f-96438cf9a5eb"
+  },
+  "archive": {
+    "status": "passed",
+    "project": "d8de141c-0187-4a8e-8e78-26395db46991",
+    "story": "9aff0632-d2ad-46e5-91b5-cd13b4d668a8",
+    "snapshotId": "d894bca9-c1f9-4591-b32f-96438cf9a5eb",
+    "secondSnapshotId": "26c73e7f-b548-4617-ae0d-0d89d9962ec7",
+    "pdfPages": 28,
+    "zipBytes": 76942,
+    "evidence": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-11-g3-delivery/migrations-1794372833197-d25f6552-83ee-4ecc-8d9e-f4535005ac07/archive"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "sourceDrift": []
+}

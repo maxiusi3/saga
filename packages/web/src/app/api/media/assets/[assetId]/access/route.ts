@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from '@/lib/server/auth'
 import { requireProjectAccess } from '@/lib/server/project-access'
 import { getSupabaseAdmin } from '@/lib/supabase'
 import { requireCurrentMediaAsset } from '@/lib/server/media-asset-guard'
+import { recordingAssetDeletionSubjects } from '@/lib/server/recording-asset-lineage'
 import { withMediaHeaders } from '@/lib/server/media-access'
 
 export const runtime = 'nodejs'
@@ -41,7 +42,8 @@ export async function GET(
     if (asset.state !== 'ready' || asset.tombstone_at != null) {
       return reply({ error: 'Asset is not ready for access' }, 409, auth.headers)
     }
-    const subjects = [asset.id, asset.story_id].filter((id): id is string => typeof id === 'string')
+    const sessions = await recordingAssetDeletionSubjects(admin, asset)
+    const subjects = [asset.id, asset.story_id, asset.project_id, ...sessions].filter((id): id is string => typeof id === 'string')
     const { data: tombstones, error: tombstoneError } = await admin.from('deletion_requests')
       .select('subject_id, tombstone_at').eq('project_id', asset.project_id)
       .in('subject_id', subjects).not('tombstone_at', 'is', null)

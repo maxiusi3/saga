@@ -1,0 +1,776 @@
+# Handoff：UR Saga 十月升级继续执行
+
+- 更新时间：2026-11-07（Asia/Taipei）
+- 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
+- 当前分支：`codex/october-upgrade-p0`
+- 本轮接手基线及当前 HEAD：`c0669e805`（持久封口清单检查点，领先远端跟踪基线 6 个本地提交）。续接 G1 下一步，已贯通录音、重开草稿、继续保存、独立 Worker、唯一故事确认、播放及显式清理；修复后的完整本地门禁及三套集成通过，整批审查与最终修复复审已通过。改动未暂存、未提交，Git 状态为准。
+- **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
+
+## 11 月 7 日 G1 Chrome 验收（当前）
+
+用户已明确：本地环境与虚构账号由 Agent 按需搭建；版本参考竞品；当前以 Chrome 自动化 Web 结果验收，手机手测延期。**不再等待用户提供环境、账号或设备清单。** 详见 [本轮报告](research/2026-11-07-g1-chrome-acceptance.md)、[实际回执](research/evidence/2026-11-07-g1-chrome/verification.json)、[更新后的九项差距](research/2026-11-02-g1-gap-register.md)。
+
+- Chrome 156.0.8078.80／macOS 13.7.4 的原生 5／20／30 分钟实际录音均通过保存、刷新恢复、Worker、确认、回放、清理回滚及重试；完整原件 hash／拼接／全流解码与无整秒静音检查通过，解码时长 300.48／1200.24／1800.18 秒。
+- 修复受保护播放 URL 的新录音无法导出：精确匹配同项目、同故事、原声资产 ID，仍核来源/hash/删除。回归 RED 保留，最终 74 项通过；Chrome + 实际导出/播放 handler 的五身份、坏件/缺件、撤权、墓碑矩阵，以及独立离线 Chrome 的本地档案回放通过。
+- 完整门禁 Web **161／3352**、shared **4／16**、infra **23**、类型/lint/**184 页构建**通过。HEAD 未移动、暂存区为空、next-env 已恢复。没有独立子代理复审；本轮为直接实现和自动验证。
+- **新暴露的实际未解问题**：中断的一分钟 WebM 前缀有 `File ended prematurely`，严格解码器拒绝，Worker 进入 unknown；空环境完整迁移在 P1 缺失 `public.story_artifacts` 失败。两者都有原始失败记录，不能用正常长录音通过替代。
+
+下一步优先处理中断容器与空环境迁移，再接引用安全删除／晚到写入／物理结果与备份恢复。G1 整门仍 false，手机延期不作为本轮阻塞。复跑命令见 [本地环境](../experiments/g1-local/README.md)。以下章节是历史批次状态；旧“0/9”和“等待用户环境”不覆盖当前授权与实测。
+
+## 11 月 7 日 G1 持久删除租约（前批本地完成）
+
+本批承接原子删除清单，新增独立任务／尝试账本与领取、开始、续租、检查、过期恢复。当前入口：[报告](research/2026-11-06-g1-deletion-leases.md) · [规格](superpowers/specs/2026-11-06-g1-deletion-leases-design.md) · [计划](superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md) · [证据索引](research/evidence/2026-11-06-g1-deletion-leases/README.md) · [最终回执](research/evidence/2026-11-06-g1-deletion-leases/verification.json)。两个实现任务通过独立审查；整批唯一 M1/P3 回执校验问题已修复，限定复审 Spec／Quality PASS，无剩余发现。
+
+- 原请求与目标完整行不变。未开始的过期尝试最多重试三次；开始后过期为 outcome_unknown，不能自动再次领取。已授权的删除工作单在申请人退出项目后仍保留。
+- 严格服务端适配器使用微秒时间和进程内单调截止时间；一次 RPC、禁用重试，超时／取消／响应丢失不假设 SQL 回滚。所有回执均为 canDeleteStorage:false、physicalDeletionComplete:false，没有删除宿主或 Storage 删除接线。
+- SQL 原生 **14 组／578 断言**，最终适配器原生 **3／281**、Jest **85 项**通过；真实到期、锁等待、新连接接手、丢失开始响应和完整清单／字节重放均有证据。局部 pg transport 为明确替代，不是线上 PostgREST 或 OS 进程重启资格。
+- 修复后完整门禁 **Web161／3344、shared4／16、infra23、184 页构建**通过，907 个受测源码无漂移。生成的 next-env 单行已核实恢复，4,866 个前批证据保留，源码归档／完整性见最终回执。
+
+下一步是引用安全的操作规划、晚到写入对账和物理执行结果持久化，再补真实备份恢复与完整迁移链；云端和真机资格另验。G1 正式关闭仍 **0/9**，推送资格 false。未暂存、提交、推送、远端迁移或部署。中断恢复目录 `.superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/` 保留；不要重做已验收的捕获、封口 I1 或租约 M1 修复。
+
+## 11 月 6 日 G1 删除目标与候选备份（前批本地完成）
+
+当前入口：[本批报告](research/2026-11-06-g1-deletion-capture.md) · [设计](superpowers/specs/2026-11-06-g1-deletion-capture-design.md) · [实施计划](superpowers/plans/2026-11-06-upgrade-g1-deletion-capture.md) · [证据索引](research/evidence/2026-11-06-g1-deletion-capture/README.md) · [G1 gap](research/2026-11-02-g1-gap-register.md)。本批本地验收完成：整批审查发现的封口/删除竞态 I1 已通过新增迁移修复，限定复审规格与质量均 Approved，修复后的原生矩阵、完整门禁和最终完整性已验收。详见[最终回执](research/evidence/2026-11-06-g1-deletion-capture/verification.json)。
+
+- 删除 API 改为一次原子捕获：锁内重查权限、写墓碑、持久化资产/分块/reserved/prepared 候选目标、请求取消未结束任务。物理地址去重，重复请求恢复原清单，目标篡改和事务错误拒绝；回执始终 `physicalDeletionComplete:false`。
+- 复审已解决合法 seal 后未登记会话被拒绝、全库正文在锁内序列化两个问题。现捕获未登记会话的实际分块；无关正文 0／8／32 MiB 均不被序列化。全局锁/关联扫描的规模表现仍待验收。
+- TS/CJS 和实际 CLI 接受 recording-candidates 清单；以真实删除目标 bucket/key 重放，四对象清单仅排除目标候选，保留三个无关条目。只证明结构及恢复集合兼容，不证明真实备份、对象下载/hash 或 `pg_restore`。
+- 最终封口迁移先取得删除 SHARE 锁，再做权限／来源检查；要求 READ COMMITTED、显式 VOLATILE，锁等待上限三秒。历史迁移不变；原始竞态 RED 和修复后两向并发、旧快照、超时回滚及 ACL 证据完整保留。
+- 修复后删除 **21 组／759 断言、12 次真实等待**、备份 **3 组／82 断言**通过，源码无漂移、临时资源已清理；定向应用 **4 套／125 项**、部署清单 **7 项**通过。父级冻结后完整门禁 **Web160／3259、shared4／16、infra23、184 页构建**通过，906 个受测源码无漂移，next-env 已恢复原字节。
+
+下一步工程依赖是持久删除执行器、引用安全 GC 与晚到写入对账，再补真实对象备份恢复和完整迁移链；专用云端环境与真机资格另验。G1 正式关闭仍 **0/9**，G1 与条件推送资格 false，未暂存、提交、推送、远端迁移或部署。
+
+## 11 月 6 日 G1 录音保存与恢复流程（前批本地完成）
+
+当前入口：[按用户操作列出的进展与剩余 gap](research/2026-11-06-g1-recording-flow.md) · [实施计划](superpowers/plans/2026-11-05-upgrade-g1-recording-flow.md) · [Worker 运行说明](recording-worker.md) · [手机宽度结果](research/evidence/2026-11-05-g1-recording-flow/integrated-browser-1793929758961-97783f87-95d8-42ed-a730-278bccd1166d/saved-mobile.png)。
+
+- 录音中断或完成后重开，可从每条本机草稿继续保存。先持久化元数据、预留唯一故事，再核验分片、封口、处理和确认；预留／封口／确认响应丢失后均沿用同一会话及故事，不走整 Blob 回退。
+- 页面显示检查、上传核验、处理、确认与结果，提供受权限检查的故事回放。账号／项目改变取消旧操作；原声保存不依赖 AI 成功。只有独立确认后才能显式清理本机录音，失败回滚并可重试。
+- `npm run worker:recordings` 提供离线 `--check`、`--once` 及连续运行；明确配置 HTTPS 服务与 FFmpeg，不加载 `.env`。过期未派发租约可重试，已派发的未知结果不自动重放；坏任务不会挡住后续任务，信号停止等待清理。
+- 修复后冻结源码的完整门禁通过：Web **159 套／3204 项**、shared **4／16**、infra **20**、**184 页**；903 个受测源码无漂移。真实页面普通流程 **310**、中断／故障 **341**、实际宿主／PG／FFmpeg **723** 条断言通过。三个实现任务、整批审查及最终修复复审均已通过；以[最终回执](research/evidence/2026-11-05-g1-recording-flow/verification.json)为准。
+- 修复了损坏身份先写 ready、平方级重复整段哈希、移动端溢出及错误保留文案；原生 15 场景验证线性字节工作量、晚到篡改拒绝与事务回滚。最终审查另发现历史重试／时间域校验缺口：旧 SQL 在 88 例中有 35 例先提交后报错；修复后 **88/88** 在写入前拒绝且完整状态不变，原生 **1091** 断言通过，真实两次／三次重试可正常确认。旧证据和旧源码归档保留，新版门禁与归档使用 `02` 版本；构建生成的已知 next-env 引用已恢复。
+
+G1 正式关闭仍 **0/9**。这次补齐 G1-01 的本地产品接线；专用环境、真机 5/20/30 分钟与核听、部署态权限撤权删除、第二设备离线档案、真实 AI 失败组合仍待验收。本批已继续补齐原子删除目标和候选清单兼容，见上节；引用安全 GC、物理删除、真实对象备份恢复和完整迁移链仍需本地工程推进。无远端迁移、部署、付费调用或家庭资料传输，G1 与条件推送资格仍 false。
+
+## 11 月 5 日 G1-01 只读终态查询与显式对账（前批本地切片完成）
+
+详见[设计](superpowers/specs/2026-11-05-g1-recording-status-design.md)、[实施清单](superpowers/plans/2026-11-05-upgrade-g1-recording-status.md)、[报告](research/2026-11-05-g1-recording-status.md)、[最终回执](research/evidence/2026-11-05-g1-recording-status/verification.json)。新增 service-only STABLE 快照 RPC、严格服务端校验和认证 GET，在同一语句视图中重核身份、权限、删除状态和完整终态元组。
+
+- 已提交发布的响应丢失后，可显式单次读取确认成功／确定永久失败；合法处理中或尚未登记状态返回 unresolved。查询不重放封口／发布、不恢复任务、不签名、不修改或删除副本。回执不暴露原始行、路径或内部 Worker／候选身份。
+- 定向 **5 套 / 564 项**，含 **225 项新增**；旧 verifier/candidate 编译图通过。原输入模块所有原字节保留，只追加纯解析／hash 导出。fixture 移至现有 test-support 后，默认发现 153 套，新增 225 项复测通过。
+- 完整门禁 02 退出 0：Web **153/3100**、shared **4/16**、infra **14**、**184 页构建**；724 个受测源码无漂移，next-env 原字节恢复。首轮空夹具套件失败完整保留；既有配置警告不作为生产配置合格证明。
+- 原生 SQL **5 场景 / 191 断言**，实际 SDK／本地 HTTP／PG **4 场景 / 585 断言**通过。READ ONLY、无写锁、同语句快照／下一语句看到发布与撤权／墓碑，以及响应丢失对账均有实测；所有读取前后完整合成行及实际合成副本字节不变。
+- 修复并保留编译模块漏归档与超时夹具错误的 RED。最终 HTTP 捕获 13 个实际编译模块，100ms 真超时约 101.61ms，调用方未取消；主动取消单独验证。SQL/HTTP 合计 189 个压缩档案可验 hash，临时 PG、HTTP socket/handler 全部清理。
+- 两项分项及整批独立规格／质量审查均 Approved，无待修项；3,393 个旧证据未变，4,447 个接手路径仅四项计划内修改。完整记录以本批[证据索引](research/evidence/2026-11-05-g1-recording-status/README.md)及最终完整性回执为准。所有旧证据保留，HEAD 未移动，暂存区为空。
+
+下一步接浏览器显式确认、幂等故事保存，再设计安全清理。原子删除目标／引用安全 GC、候选备份、完整迁移链、云端与真机长录音／核听仍待验收；本地 HTTP 是合成 PostgREST 替代。状态仅代表该语句时点，不授予访问 URL 或清理许可。`canClearLocalDrafts:false`，G1 与条件推送资格仍 false；无暂存／提交／推送／远端迁移／部署。
+
+## 11 月 5 日 G1-01 Worker 终态接线（前批本地切片完成）
+
+详见[设计](superpowers/specs/2026-11-05-g1-terminal-worker-design.md)、[实施清单](superpowers/plans/2026-11-05-upgrade-g1-terminal-worker.md)、[报告](research/2026-11-05-g1-terminal-worker.md)、[最终回执](research/evidence/2026-11-05-g1-terminal-worker/verification.json)。本批承接原子终态接口，新增显式单次 `finalizeLeasedRecordingJob`，在本地清理、输入复查、心跳排空和最后租约检查全部完成后才发布或记录确定永久失败。
+
+- 复用候选准备流程；旧入口仍只准备候选。新入口使用最终租约与原始取消信号，不在终态写入后继续检查活跃租约；未知结果不重试、不回退成失败、不删除副本。
+- 定向 **7 套 / 303 项**，含 **46 项新增**；类型检查、旧 verifier/candidate 编译图通过。Task 1 独立规格与质量通过，无阻塞发现。
+- 完整门禁退出 0：Web **151/2875**、shared **4/16**、infra **14**、**184 页构建**，717 个受测源码摘要无漂移。规范 lint 通过，构建保留既有配置警告；额外直接 workspace ESLint 调用的工具错误单独保留。next-env 原字节已恢复。
+- 原生 PG/HTTP/FFmpeg **8 场景 / 11,391 断言通过**，112 份源码、17 份编译模块、137 个压缩档案均已验 hash；失败注入与中间采集缺口记录保留，最终快照完整，临时资源清理通过。数据库是真实隔离 PG17，HTTP/Storage 是合成适配器，不等于云端验收。
+- Worker、原生验证及整批最终独立规格／质量审查均 **Approved**，无待修项。2,744 个旧证据未变，3,800 个接手路径无缺失；本轮只修改候选准备入口和当前交接／索引三份继承文件，新增源码与证据另列。HEAD 未移动、暂存区为空。
+
+下一步是专门的只读终态查询与响应丢失对账，再接客户端确认、幂等故事保存和安全清理。终态会话继续不能通过旧 seal 重放确认；删除目标原子捕获／引用安全 GC、候选备份覆盖、完整迁移链、云端与真机仍待验收。`canClearLocalDrafts:false`，G1 与条件推送资格仍 false。
+
+## 11 月 4–5 日 G1-01 原子发布与永久失败边界（前批已完成）
+
+详见[设计](superpowers/specs/2026-11-04-g1-recording-finalization-design.md)、[实施清单](superpowers/plans/2026-11-04-upgrade-g1-recording-finalization.md)、[报告](research/2026-11-04-g1-recording-finalization.md)、[最终回执](research/evidence/2026-11-04-g1-recording-finalization/verification.json)。数据库、应用层及整批独立审查均为规格 **PASS**、质量 **APPROVED**，无待修发现；原始日志、完整性与源码清单已封存。
+
+- service-only `finalize_recording_job` 在单事务内更新资产、任务、attempt、会话；发布将资产原地指向私有 prepared 候选。永久失败只接受六个已有确定代码，且整个 job 不得存在候选。完整落库元组核验和写后租约检查防止虚假成功。
+- 删除表 SHARE 锁先于租约/行锁，协调旧墓碑 INSERT；要求 READ COMMITTED，三秒锁等待上限。严格调用端拒绝坏回执/未知结果，不自动重试。候选回放/导出校验谱系及项目/会话墓碑；旧 URL 解析与终态 seal 冲突保留。
+- 定向 **16 套 / 677 项**；原生 SQL **15 场景 / 492 断言**；实际 Supabase JS + 本地 HTTP/PG **8 场景 / 278 断言 / 13 请求**，覆盖提交后响应丢失与取消。该 HTTP 为 PostgREST 本地替代，没有 Storage 音频字节或完整 Worker 验收。
+- 完整门禁退出 0：Web **150/2829**、shared **4/16**、infra **14**、**184 页构建**，类型/lint/旧 Worker 编译兼容通过。SQL 21 份、HTTP 25 份快照与当前源码一致；临时资源清理完毕，next-env 原字节恢复，2,542 既有证据及 1,471 历史输入未变。
+
+下一批先接 Worker 清理、复查与心跳排空后的终态调用，随后实现只读终态查询/响应丢失显式对账、客户端确认与幂等故事保存。旧删除路径会提前捕获可能过时的对象地址，仍需原子目标捕获、执行与引用安全 GC；候选 bucket 备份、云端/真机及表级锁争用/大清单性能也待验收。所有回执 `canClearLocalDrafts:false`，G1 与条件推送资格仍 false，未暂存/提交/推送/远端迁移/部署。
+
+## 11 月 3–4 日 G1-01 Worker 私有候选产物（前批状态）
+
+负责人已在聊天「31」同意候选持久化边界，本次续接实现。详见[设计](superpowers/specs/2026-11-03-g1-worker-candidates-design.md)、[实施清单](superpowers/plans/2026-11-03-upgrade-g1-worker-candidates.md)、[报告](research/2026-11-03-g1-worker-candidates.md)、[证据](research/evidence/2026-11-03-g1-worker-candidates/README.md)。保留所有前批改动与证据。
+
+- 已接专用候选 RPC、私有 bucket、先登记后不可覆盖上传、完整回读 bytes/hash 后 prepare；候选工作入口独立于旧只读 Worker，租约监督覆盖整个合并与持久化过程。
+- 修复并保留 RED：微秒回执倒序接受、跨 job 同 ID 唯一索引等待越过租期、原生 POST ack 先 abort 后 cancel；候选入口分离保持旧 Worker 编译依赖图。最终定向 **6/377**，SQL **15/426**，原生 HTTP/PG/FFmpeg **31 场景 / 21,697 断言**；独立质量复跑 **31/21,682**（心跳计数可变）。
+- **本地切片完成**：独立规格 **PASS** 后质量 **Approved**；冻结完整门禁 Web **148/2672**、shared **4/16**、infra **14**、**184 页构建**通过。源码无漂移，next-env 原字节恢复；2,285 既有证据及 1,471 历史输入未变，所有中间失败保留。
+- **prepared 不发布 ready，不结束 job，不授权本地清理**；未知回执保留候选。下一批仍需原子发布/失败终态、统一删除撤权屏障，再接客户端确认。新 bucket 备份/删除覆盖、真实云端/真机和大清单性能未验收。
+- HEAD 仍 `c0669e805`；不暂存/提交/推送、不远端迁移或部署。`g1Item01Complete:false`、`g1MilestoneSatisfied:false`、`pushConditionSatisfied:false`。
+
+## 11 月 3 日 G1-01 Worker 持久领取与租约监督（前批状态）
+
+详见[报告](research/2026-11-03-g1-worker-lease.md)、[实施清单](superpowers/plans/2026-11-03-upgrade-g1-worker-lease.md)、[证据](research/evidence/2026-11-03-g1-worker-lease/README.md)。保留前七批 272 个既有证据文件，本节只推进正式 claim/attempt/lease/heartbeat 与输入核验接线。
+
+- 专用五动作 `recording_job_lease` RPC 原子维护正式 job/attempt，重核固定输入与当前权限，锁后数据库时钟控制租期；旧 owner/attempt、重复领取和未知结果自动重试均拒绝。未派发到期可显式 retry（三次耗尽 failed），已派发到期 outcome_unknown；撤权/删除/取消的活跃任务 recover 为 cancelled。
+- 严格回执和保守单调时钟截止时间；running 读取保留全部输入检查，只容许心跳的两项 job 字段变化。Worker claim → start → 实际核验 → 最终 check，串行续租，失租/取消会中止并等待 I/O/FFmpeg/临时文件及心跳清理。
+- 最终应用定向 **4/293**，独立扩大回归 **6/362**；真实 PG/进程/原生 FFmpeg **17 场景 / 1943 断言**，独立 SQL 两轮各 **13/329**。冻结完整链 exit 0：Web **146/2588**、shared **4/16**、infra **14**、**184 页构建**；源码无漂移，next-env 原字节恢复。先前失败和 harness-only 漂移记录全部保留，不覆写成通过。
+- 独立规格 **PASS** 后质量 **Approved**，无待修阻塞；质量审查独立 PG/FFmpeg 复跑 **17/1933**（心跳计数可变，保留为独立证据）。272 既有证据及 1471 历史输入均未变，本地切片完成；未暂存或提交。
+- **成功仍只是 input_verified，job 保持 running，canClearLocalDrafts:false**；返回后心跳停止，未来发布层未承接则到期显式恢复为 unknown。无候选输出、ready/终态成功、常驻调度器或客户端确认清理接线。
+- **G1-01 仍 partial、G1 未通过**：injected fetch/Storage 夹具不等于真实云端/RLS/TLS；2 秒合成音频不是真机长录音/核听。缺失 tombstone 非原子屏障；旧删除 route 可留下 unfinished attempt 观测残留，本批 fail closed；大清单二次读取成本和部署隔离仍待验证。
+- **下一批入口**：在现有 fence 上设计候选输出、原子发布与失败终态，统一撤权/删除的最终屏障，再接客户端 seal/status、持久确认和安全清理。`g1Item01Complete:false`、`g1MilestoneSatisfied:false`、`pushConditionSatisfied:false`；不暂存/提交/推送、不 main 合并、不远端迁移/部署、不付费调用或外发家庭资料。
+
+## 11 月 3 日 G1-01 Worker 可信输入读取与音频核验（前批状态）
+
+详见[报告](research/2026-11-03-g1-worker-input.md)、[证据](research/evidence/2026-11-03-g1-worker-input/README.md)及[本地实验说明](../experiments/recording-job-input/README.md)。前六批和历史 gap 清单保持原证据；本节只推进 G1-01 只读核验边界。
+
+- `loadRecordingJobInput` 只凭 job ID 从固定 session/chunk 清单及任务/资产读取，校验身份、状态、版本、规范 hash、物理路径、当前讲述者/故事归属和删除状态。`verifyRecordingJobInput` 按清单流式读取真实分块，经原合并器验证 bytes/SHA-256 和 FFmpeg 全流解码；关键异步边界重新检查。
+- 本次审查修复 scope 超时后复查仍继续发送数据库请求的问题：取消信号下传并保留原 caller 信号；两个行为 RED 均复现 7 个迟到后续请求，四个回归现通过。只返回 `input_verified` 和 `canClearLocalDrafts:false`，无临时路径、不领取/心跳/上传/ready/客户端清理。
+- 最终定向 **4/295**；原生 fetch + 实际 Supabase JS 客户端 + 本地 HTTP 夹具 + FFmpeg 集成 **21 场景 / 250 检查 / 3 格式**。完整链 exit 0：Web **144/2521**、shared **4/16**、infra **14**、构建 **184 页**；源码摘要稳定，next-env 原字节恢复，audit 未重跑、既有警告保留。独立规格 **PASS**、质量 **Approved**，无待修阻塞；前六批 **216 个证据文件**未变，中间失败日志全部保留。
+- **G1-01 仍 partial，G1 未通过**：只读复查非原子屏障，客户端 abort 不证明远端 SQL 已终止；真实云端、真机长录音/尾部核听、FFmpeg 部署隔离尚未验收。2000 块只测试账本分页，完整 verifier 仅测试 13 块；逐块全账本重读的数据量二次增长，需后续压测/有界化。
+- **下一批入口**：在此核验边界上通过专用授权 RPC 接持久领取、租约/心跳、失败落库和原子发布，再接客户端 seal/status、最终确认与安全清理。不恢复账本广泛直接写权限，不把只读核验结果冒充云端确认。
+- `g1Item01Complete:false`、`g1MilestoneSatisfied:false`、`pushConditionSatisfied:false`。本批本地切片已完成但尚未暂存/提交；不推送、不合并 main、不远端迁移/repair、不部署、不外发家庭资料。
+
+## 11 月 2 日 G1-01 持久封口清单与统一上传路径（前批状态）
+
+详见[报告](research/2026-11-02-g1-durable-manifest.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-durable-manifest.md)、[证据](research/evidence/2026-11-02-g1-durable-manifest/README.md)。前五批及 [9 项 gap 清单](research/2026-11-02-g1-gap-register.md)保持原证据，本节只更新 G1-01 输入层进度。
+
+- 本地候选 RPC 原子固定本人会话与完整块清单，精确重放不写入，冲突/旧记录/损坏状态拒绝；限制 service_role 直接写账本，保留专用 RPC 和既有读取策略。固定逻辑路径与含用户前缀的真实 Storage 路径；只切换新录音上传，不搬移旧 temp 对象或重写旧 uploaded 标记。
+- seal HTTP 必须先得到严格验证的持久清单回执，再进入既有可恢复资产/任务登记；RPC 缺失/失败/超时/取消都拒绝继续，无无账本回退、自动重试或本地清理授权。**清单只证明身份与输入持久绑定，不证明对象存在、字节/hash 或解码正确。**
+- 定向 8/165 的源码已重核；续接完整链 exit 0：Web 142/2295、shared 4/16、infra 14、184 页。PG17.4 普通/污染环境重新各 15 场景/645 断言通过并确认清理。原完整链空回执及日志保留但不计 PASS；next-env 原字节已恢复，audit 未重跑。独立规格 PASS 后独立质量 Approved，无待修发现；两位核验源码与证据，未重跑测试。1471 历史输入及前五批 140 证据文件未变；文档和限定暂存载荷随本地检查点封存，提交身份以 Git 为准。
+- **下一批入口**：Worker 从固定物理清单读取实际 Storage 对象，验证字节/hash/全流解码，接持久领取及原子发布；之后再接录音页 seal/status、幂等故事保存、持久确认与安全清理。后续 Worker 状态/删除变更须专用授权 RPC，不恢复广泛直接写权限。旧对象/草稿对账另行设计。
+- **G1-01 仍 partial，G1 仍未通过**：只有清单事务原子，资产/任务登记仍是后续可恢复两写；不是云端、完整迁移链或真机验收。当前本地工作无需负责人手工操作；远端环境与迁移/部署需单独授权，真机/核听/第二设备离线操作按 gap 清单排期。
+- `g1Item01Complete: false`、`g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。本批仅新本地 checkpoint；不推送、不合并 main、不远端迁移/repair、不部署、不付费调用、不外发家庭素材。
+
+## 11 月 2 日 G1-01 稳定封口身份与可恢复登记（前批状态）
+
+详见[报告](research/2026-11-02-g1-seal-registration.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-seal-registration.md)、[证据](research/evidence/2026-11-02-g1-seal-registration/README.md)。原 [9 项 gap 清单](research/2026-11-02-g1-gap-register.md)保留为上一批基线；本节更新第 1 项进度，其他 gap 不因此关闭。
+
+- 修复原服务随机 asset ID 导致 HTTP 重试 key 不稳定的问题：默认 UUIDv8 身份绑定 actor/project/session，清单变化不另建资产而报冲突；显式 ID 调用兼容。新增登记 helper，使用精确输入比对、insert/23505 重查和 verifying 缺任务补写；提交成功但响应失败可显式重试，不覆盖/删除既有行。
+- 角色不再硬编码为 storyteller：检查真实 active storyteller、本人故事/项目和删除状态；任务发布前与回执前重新授权，复用现有资产 guard。错误查询不是空结果，异常固定错误/no-store/cookie 保留。封口回执**始终不授予清理许可**；裸 ready 不冒充最终确认。
+- 初始新测试语法失败独立保留；修正后真实 RED 44 fail/13 pass，GREEN 4 套/97 项。完整链 exit 0：Web 139/2251、shared 4/16、infra 14、184 页；next-env 已核对生成差异并恢复。audit 未重跑，旧配置警告保留。独立规格 PASS 后质量 Approved，两位分别复跑 4/97，无待修发现；1471 历史输入及前四批 115 证据文件未变，来源/日志/文档/限定暂存载荷随本批检查点封存。**本地登记切片完成，不重做实现或验证整理；提交身份和干净状态以 Git 为准。**
+- **G1-01 仍 partial**：两笔写入可恢复但不原子；客户端清单未成为可信账本，Worker 未运行、客户端 seal/确认/清理未接。旧随机 ID 资产不自动认领/改写；状态化 fake 不是 PG/云端并发验收。
+- **下一批入口**：统一本地 `temp/<session>` 与服务端 `projects/<project>/sessions/<session>/<index>` 的上传契约，建立可信且不可变的 session/chunk 封口输入，再接 Worker 领取/核验/发布/持久确认，最后接录音页与安全清理。不得跳过可信输入层直接消费候选任务。本地工作暂不需要负责人手工操作；云端阶段仍需 §A #1/#2 环境与授权，真机输入按 gap 清单准备。
+- `g1Item01Complete: false`、`g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。只新建本地 checkpoint；不推送、不 main 合并、不远端迁移/repair、不部署、不付费调用、不外发家庭资料。
+
+## 11 月 2 日 G1 恢复读取一致性与 Gap 清单（前批完成状态）
+
+详见[报告](research/2026-11-02-g1-recovery-read-consistency.md)、[G1 gap 与人工操作清单](research/2026-11-02-g1-gap-register.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-recovery-read-consistency.md)、[证据](research/evidence/2026-11-02-g1-recovery-read-consistency/README.md)。基线 `8d4fc6dc5`；前三批 G1 检查点不改写、不重做。
+
+- 只修改恢复加载器：取块后、损坏/空草稿分类前重读会话，保留 hash 验证后终检；合法追加、首次落块、并发清理均报 `changed`，真实损坏仍拒绝。所有原身份/状态/确认/MIME/时间/水位比较保留；不自动重试、不写库、不改 schema/云端/UI。乐观检查不等于原子快照或权限保证。
+- 3 个新浏览器行为 RED 和 3 个 Jest RED 已冻结；GREEN Chromium 31 子案例 / Node 32、定向 4/72。完整链 exit 0：Web 139/2200、shared 4/16、infra 14、184 页；next-env 原字节恢复。audit 未重跑，旧 Next/可选配置警告保留。
+- 规格初审指出 gap 文档遗漏 AI 真实失败矩阵，补 G1-08 后规格复审 PASS，随后独立质量 Approved，无待修发现；两位审查员均独立复跑浏览器/定向 Jest。1471 历史输入与前三批 85 证据文件未变，来源/日志/文档/暂存完整性封存。**本地切片完成，只新建本地检查点，不推送。**
+- **下一批入口**：优先推进 G1-01 录音端 → 封口 → Worker → ready → 客户端确认/清理的契约审计与最小本地接线。服务端接口/合并函数已经存在，但整链尚无完成证据；不能把剩余工作全部归为人工真机测试。G1-02–09 分列环境、设备、长录音故障、解码核听、权限/删除、离线导出、AI 失败与整门验收。
+- **需要负责人**：提供设备型号/版本/排期；亲手进行真机锁屏/来电/抢占/专用进程退出、核听、第二台设备离线打开。脚本、hash/解码、负例与记录由 Agent 负责。云端测试需 §A #1/#2 明确环境与授权；G1 可用虚构口述开始，不要求先招募 G3/G4 家庭研究。
+- `g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。本批随新本地 checkpoint 封存；不推送、不 main 合并、不远端迁移/repair、不部署、不付费调用、不外发家庭资料。
+
+## 11 月 1 日 G1 录音草稿连接失效与显式恢复（前批完成状态）
+
+详见[报告](research/2026-11-01-g1-recorder-connection-recovery.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-connection-recovery.md)、[证据](research/evidence/2026-11-01-g1-recorder-connection-recovery/README.md)。基线 `f59e8f863`。**本地切片完成，规格 PASS 后质量 Approved，无待修发现；只创建新本地 checkpoint，不推送。** 前两批事务恢复/写入防护不重做。
+
+- 仅修改 `getDB` 生命周期：打开失败、versionchange 或异常关闭通知使本代缓存失效，下一次显式操作重开；并发打开仍共享 Promise，旧连接迟到事件不得逐出替代连接。versionchange 主动关闭本句柄，不阻塞外部连接；较高未知版本仍 VersionError fail-closed，原数据不删不降级。
+- 不自动重试/重放写入，不自动继续录音，不改 schema、DB_VERSION、事务 helper、业务队列、云端确认或授权。
+- 新增 5 项行为 RED、保留旧 23 案例；GREEN Chromium 28 子案例 / Node 29 项、定向 Jest 4/68。完整链退出 0：Web 139/2196、shared 4/16、infra 14、184 页。两位审查员分别独立复跑浏览器和定向 Jest，均通过。
+- 1471 历史输入与前两批 60 个本地证据文件未变，next-env 原字节已恢复。audit 未重跑，旧 Next/可选配置警告保留。原生版本请求/升级回滚是受控注入；close 两例为原生 close 后人工事件通知，不是真实强杀、配额或多标签页产品验收。
+- **下一批入口**：按[真机模板](research/2026-10-15-t04-g1-device-runbook.md)取得 §A #6 的设备版本、真实 5/20/30 分钟虚构口述、故障时点及解码核听；输入未就绪可另选尚未覆盖的独立本地切片，不重复三批 IndexedDB 修复。云端验收仍受 #1 部署/#2 迁移授权保护。
+- `g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。不推送、不合并 main、不远端迁移/repair、不部署、不付费调用、不外发家庭资料。
+
+## 11 月 1 日 G1 录音草稿写入边界与清理回滚（前批完成状态）
+
+详见[报告](research/2026-11-01-g1-recorder-write-guards.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-write-guards.md)、[证据](research/evidence/2026-11-01-g1-recorder-write-guards/README.md)。基线 `686599f61`。**本地切片完成，规格 PASS、质量 Approved；仅新本地 checkpoint，不推送。** 上一批 `686599f61` 与 P0/G0 已完成工作不重做。
+
+- `saveChunk` 同事务检查 recording/interrupted 且无云端确认标记，再通过原生 `add` 拒绝同序号覆盖；同字节重复也拒绝而非幂等成功。missing/cleared/confirmed/未知状态/已有确认标记均拒绝，不留孤立块；interrupted 仍可接末块。
+- `markChunkUploaded`、`clearSession` 复用既有事务完成 helper；abort 与同步异常整体回滚，原件和其他草稿保留，无未处理事务拒绝。只保证这些 API 的局部契约，不改变 `saveSession`、显式删除/重插语义，不是全库不可变或权限沙箱。
+- 新增 11 项行为 RED，保留旧 11 案例及新增正例，修复后 Chromium 23 子案例 / Node 24 项通过；定向 Jest 4/68。续跑全链退出 0：Web 139/2196、shared 4/16、infra 14、184 页。首轮全链/规格审查中断无结论，部分日志及空回执单独保留，不计 PASS。
+- 1471 历史输入和前批 31 个本地证据文件未变，next-env 已核对生成差异并恢复原字节。audit 未重跑；旧 Next 与可选配置警告保留。两位审查员分别独立复跑浏览器与定向 Jest；最终来源/日志/文档/暂存完整性见新证据。
+- **下一批入口**：按[既有真机模板](research/2026-10-15-t04-g1-device-runbook.md)取得 §A #6 的设备版本、真实 5/20/30 分钟虚构口述、故障时点和解码核听证据；输入未就绪可选择尚未覆盖的独立本地子切片，不重复本批写入防护或前批恢复修复。真实云端验收仍受 #1 部署/#2 迁移授权保护。
+- `g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。合成字节/注入 abort 不是真机、长录音或物理配额证据；不推送、不合并 main、不远端迁移/repair、不部署、不付费调用、不外发家庭素材。
+
+## 11 月 1 日 G1 本地录音持久化故障恢复契约（前批完成状态）
+
+详见[报告](research/2026-11-01-g1-recorder-recovery.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-g1-recorder-recovery.md)、[证据](research/evidence/2026-11-01-g1-recorder-recovery/README.md)。基线 `1921766c2`。**本地切片完成，规格 PASS、质量 Approved；本批仅本地 checkpoint，不推送。前批 P0/G0 推送已完成，不将授权延伸到本批。**
+
+- 修复 `recorder-db.ts`：会话读/补丁/写回共用一笔 readwrite 事务，避免末块落盘水位回退、并发补丁丢失和清理后复活；块写入与会话更新提前观察事务完成、异常主动 abort，拒绝部分提交与未处理 promise 拒绝。
+- 新增 `node --test scripts/browser-tests/recorder-recovery.test.cjs`：原生 Chromium IndexedDB 11 子案例（Node 12 项含父容器），有明确 5 项行为 RED；30/120/180 个合成字节块覆盖离线写入、真实刷新/关页重开、hash/顺序、局部身份范围和损坏拒绝。**不是 5/20/30 分钟真实录音，不是真机/解码/锁屏/来电/真实配额验收。**
+- 本轮完整链退出 0：Web 139 套 / 2196 项、shared 4/16、infra 14、184 页；定向 Jest 4/68。1471 历史输入未变，前批方案 B 六项源码 hash 一致；构建新增 root-params import 已核对生成器后恢复 next-env 原字节。audit 未重跑，旧 Next 与可选配置警告保留。
+- **下一批入口**：本批已完成并随本地 checkpoint 封存，不重做修复/验证整理。按旧 G1 真机模板落实 §A #6 的具体设备、5/20/30 分钟虚构口述和故障记录，或另选独立本地子切片。需要真实云端阶段仍受 #1 部署/#2 远端迁移保护；不要重做本批 IndexedDB 修复或 P0 工具。
+- `g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。不合并 main、不远端迁移/repair、不生产部署、不外发家庭素材、不产生未经授权的付费调用。
+
+## 11 月 1 日方案 B 逻辑备份恢复演练与验证工具（前批完成状态）
+
+详见[报告](research/2026-11-01-scheme-b-backup.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-scheme-b-backup.md)、[证据](research/evidence/2026-11-01-scheme-b-backup/README.md)。基线 `7ada8e1d4`。**负责人正式授权：“确认推送”，已成功推送到远端分支 `origin/codex/october-upgrade-p0`（最新 HEAD 为 `a5efc505a`），P0/G0 阶段本地交付与实测凭据闭环，`pushConditionSatisfied: true`（限推送 codex/october-upgrade-p0 分支）。**
+
+- 新增 `packages/web/src/lib/server/scheme-b-backup.ts`：纯函数归档与清单核验（强制 `PGDMP` 12 字节头部魔数与确定性 SHA-256、白名单桶 `['saga', 'audio-recordings']`、对象 ID/Key 严格清洗与 DoS 限长防御、集合上限 `MAX_MANIFEST_OBJECTS = 100_000` / `MAX_TOMBSTONES = 50_000`、总字节 `Number.isSafeInteger` 溢出防御、时钟漂移保护）。
+- 冻结时间点后删除墓碑重放引擎：严格解析墓碑时间戳（格式错误 fail-closed），多维度匹配（`storageObjectId`、`targetId`、`${bucket}::${key}`）彻底剔除已删资产，消除恢复后幽灵数据复活风险。
+- 接线：`/api/admin/cutover-readiness` 动态接入 `schemeBBackup: evaluateSchemeBBackupStatus()`，无台账或检测到数据/存储漂移时保持 `unverified`；切流端点仍保持 `503 not_ready`。
+- 独立 CLI 工具：新增 `scripts/verify-scheme-b-backup.cjs`，支持 `--dry-run` 协议自检与真实文件 `--dump --manifest --tombstones` 端到端验算，纳入 `npm run test:infra` 自动回归。
+- 验证：Web 139 套/2196 项、shared 4/16、infra 14、Next.js 184 页构建全部通过；规格 PASS、质量 Approved（6 项强化点初审提出并全部修复）。1471 项保护输入未变，`next-env.d.ts` 保持原字节。
+- 未做：真实生产环境 `pg_dump -Fc` 执行与对象存储清单导出（人工阻塞清单 #7，负责人确认 Supabase 处于 Free Plan）；真机与真实家庭试点（G1–G4）；远端迁移授权（人工阻塞清单 #2）。
+- **下一批入口**：真机与真实录音故障矩阵规范（G1）；或并发切流封存微秒保护与清理运维小项（并发封存 23514 保护、构建表清理策略）。已授权推送 codex/october-upgrade-p0，不合并 main、不远端迁移/部署。
+
+## 11 月 1 日供应商账户/区域/数据条件核验链（前批完成状态）
+
+详见[报告](research/2026-11-01-provider-policy-verification.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-provider-policy-verification.md)、[证据](research/evidence/2026-11-01-provider-policy-verification/README.md)。基线 `07016d8fc`（告警投递检查点）。**本地切片完成，不等于外部供应商合规条款签署或 P0/G0–G4 完成；`pushConditionSatisfied: false`。**
+
+- 新增 `packages/web/src/lib/server/provider-policy-verification.ts`：纯函数合规核验（严格校验训练退出、零留存 ZDR 或 ≤7 天 SLA、允许区域、严格 ISO 8601 UTC 格式与日历防滚动、DoS 限长防御、多模型 `${provider}::${modelId}` 联合键顺序无关索引）。
+- API Key 严格解耦：未核验条款前即使有 API Key 仍保持 `blocked_by_policy`；仅当合规后缺 Key 报告 `missing_api_key`，有 Key 报告 `ready_for_live_probe`。
+- 接线：`/api/admin/cutover-readiness` 动态接入 `loadVerifiedProviderProbeTargets()`，无真实书面合规证据时全量 fail-closed 保持 `blocked_by_policy`；切流端点仍保持 `503 not_ready`。
+- 验证：Web 138 套/2168 项、shared 4/16、infra 7、Next.js 184 页构建全部通过；规格 PASS（初审 Fail-Open 漏洞彻底修复）、质量 Approved。1471 项保护输入未变，`next-env.d.ts` 保持原字节。
+- 未做：真实外部商业合同与训练退出书面凭证（人工阻塞清单 #4）；真机与真实家庭试点（G1–G4）；真实生产方案 B 备份恢复（人工阻塞清单 #7）。
+- **下一批入口**：真机与真实录音故障矩阵规范（G1）；真实方案 B 备份恢复演练；或本批遗留运维小项（并发封存 23514 保护、构建表清理策略）。不合并 main、不远端迁移/部署、不推送。
+
+## 11 月 1 日运营告警投递与响应人核验（前批完成状态）
+
+详见[报告](research/2026-11-01-alert-delivery.md)、[实施清单](superpowers/plans/2026-11-01-upgrade-alert-delivery.md)、[证据](research/evidence/2026-11-01-alert-delivery/README.md)。基线 `e2be895dd`（部署采集覆盖检查点）。**本地切片完成，不等于外部告警通道打通或 P0/G0–G4 完成；`pushConditionSatisfied: false`。**
+
+- 新增 `packages/web/src/lib/server/alert-delivery.ts`：纯函数载荷构建（严格脱敏、无家庭正文、无用户标识）、有界 LRU 内存抑制台账（窗口内重复告警静默）、fail-closed 状态判定、受控单发 Webhook 投递（严防 SSRF、阻断私网/回环/云元数据/IPv6 变种/纯明文 HTTP、防并发 TOCTOU 告警风暴、超时中止与响应体主动释放）。
+- 接线：`/api/admin/cutover-readiness` 动态接入 `evaluateAlertDeliveryStatus()`，在未配置真实 Webhook 或未核验响应人时 fail-closed 保持 `unavailable`（原因 `responder_and_delivery_not_verified`）。切流端点仍保持 `503 not_ready`（因 `upload_collection_coverage` partial 且供应商探针 `blocked_by_policy`）。
+- 验证：Web 137 套/2139 项、shared 4/16、infra 7、Next.js 184 页构建全部通过；规格 PASS、质量 Approved（7 项发现先 RED 后修复）。1471 项保护输入未变，`next-env.d.ts` 保持原字节。
+- 未做：真实生产环境 Webhook URL 绑定与真实应急响应人在线确认（放行本地开发，但生产配置前保持 fail-closed）；供应商账户/区域/数据条件核验链；真机与真实家庭试点。
+- **下一批入口**：供应商账户/区域/数据条件核验链；生产 Webhook 与响应人线上确认（需真实账户/负责人提供，本地保持 fail-closed）。不合并 main、不远端迁移/部署、不推送。
+
+## 10 月 31 日部署采集覆盖证明（前批完成状态）
+
+详见[报告](research/2026-10-30-deployment-collection-coverage.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-deployment-collection-coverage.md)、[证据](research/evidence/2026-10-30-deployment-collection-coverage/README.md)。基线 `2b146ad1b`（上批检查点）。**本地切片完成，不等于真实部署覆盖或 P0/G0–G4 完成；`pushConditionSatisfied: false`。**
+
+- 新增迁移 `20261030000002`（切流封存、构建归属、`read_operational_snapshot_v4`）与服务端 v4 解析/`OPERATIONAL_COLLECTOR_BUILD_HASH`；`windowComplete` 仍只是台账年龄，`upload_collection_coverage` 始终保留，管理端 `503 not_ready`。
+- 验证：PG17.4 正常/污染各 12 场景/717 断言；Web 136 套/2103 项、shared 4/16、infra 7、构建通过；规格 PASS、质量 Approved（重要项已先 RED 后修）。1471 项保护输入未变，`next-env.d.ts` 已恢复。
+- 未做：真实封存与生产设置哈希、其他上传通道、告警投递/响应人、供应商核验、真机/家庭；已知小项见报告。
+- **下一批入口**：告警实际投递与响应人；供应商账户/区域/数据条件核验；需要真实账户/负责人确认的部分列最小缺失证据，不用假数据。不合并 main、不远端迁移/部署、不推送。
+
+## 10 月 30 日可靠上传客户端回报观测（前批完成状态）
+
+详见[本轮报告](research/2026-10-30-upload-observations.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-upload-observations.md)和[证据索引](research/evidence/2026-10-30-upload-observations/README.md)。中断时 Task 1 SQL/PG/infra 及独立审查已完成，Task 2 尚无代码；本轮核对原始哈希后续接 HTTP/客户端/v3 接线，保留 Task 1 与所有旧证据。**本批实施、规格、质量及独立收口均通过，详见 [verification.json](research/evidence/2026-10-30-upload-observations/verification.json)。**
+
+- **本地实现**：项目中心原音频 `pending_upload` 路径先确认 begin，再非覆盖 PUT，再独立限时确认 finish，最后沿用原 complete；未知写入不自动重试，调用者的 File/幂等键保留。台账只存随机 ID、报告绑定 hash、有限状态及数据库时间；原始 token/用户/资产标识不入账。实际 SDK 成功不会因调用者同时取消被改报失败。
+- **观测口径**：v3 范围固定 `project_hub_audio_put_reports`，是不可作为信任依据的客户端诊断，不证明 Storage 接收、hash/解码、保存或最终权限；取消不入失败率分母，未知/异常/不完整数据使上传率不可用。`windowComplete` 只表示台账年龄；始终保留 `upload_collection_coverage` 缺口、partial 覆盖与管理端 `503 not_ready`。
+- **已取得验证**：接手后正常/污染环境 PG17.4 各 14 场景/631 断言，源码 hash 与退出后 socket/目录/PID 清理通过，污染的 13 个环境键已清除。修正后定向 6 套/316 项、独立规格复审 6 套/312 项通过；最终 verify/shared/infra 退出 0，Web 135 套/2065 项、shared 4 套/16 项、infra 7 项、184 页。1471 项历史保护输入未变，next-env 再次恢复原字节；首轮 599/2017 结果单独保留，不冒充最终快照。
+- **收口结论**：Task 1 规格/质量 PASS 已复核；Task 2 唯一规格问题已修复，前后 guard 基础设施故障脱敏为 503，合法权限/状态拒绝保持。规格复审 PASS、质量 Approved（独立 13 套/510 项及 14 项 SDK/迟到结果探针），独立收口 PASS，无待修发现。修正版来源见 `task2-source-freeze-revised.json`；日志按 `log-hashes.json` 找到 `raw/*.log.gz` 原始字节和 `.txt` 阅读版，不依赖被忽略的本地 `.log`。
+- **下一批入口**：直接继续部署采集覆盖证明、实际告警投递/响应人和供应商账户/区域/数据条件核验；不要重做上传诊断或 Task 1 SQL。解码音频/持久大包 Worker、真实设备/家庭/模型和成熟纵向试点分别待完成。
+- **边界与推送**：现有媒体 verifier、跨查询非原子 guard 和 signed URL TTL 边界未变；Next 旧 `eslint` / `images.domains` 配置与缺 `SUPABASE_SERVICE_ROLE_KEY` 提示保留，audit 未重跑。供应商账户/数据条件未核实已足以阻止完整 G0，不把 G1–G4 条件加进 G0；原 G0–G4 未新增完整证明，不触发条件推送。不合并 main、不远端迁移/部署、不外发真实家庭资料；真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 30 日媒体异步重新授权（前批完成状态）
+
+详见[本轮报告](research/2026-10-30-media-revalidation.md)、[实施清单](superpowers/plans/2026-10-30-upgrade-media-revalidation.md)和[验证汇总](research/evidence/2026-10-30-media-revalidation/verification.json)。引用聊天 `26` 的导出观测已完成，接手时工作树干净；本轮按“P0级任务”先修复已有媒体链路风险，没有重做导出埋点或扩张新功能。
+
+- **边界复查**：三个媒体入口共用当前权限/资产/删除 guard。新登记与幂等上传签名后、回放签名后、无需 Storage 的重放返回前复查；校验的隔离/成功 CAS 前后均复查，拒绝迟到凭据或结果。
+- **兼容性**：CAS 绑定真实身份/state/version；正式资产表没有 `tombstone_at` 列，不添加不存在列的过滤。权威删除依据为台账；原音频 verifying、图片 ready、quarantined 和非覆盖重试保留；刷新 cookie/no-store 不丢失。
+- **验证**：竞态 RED 49/150、畸形身份 RED 9/174；定向 6 套/215 项和独立规格 PASS/质量 Approved。完整 verify/shared/infra 退出 0，Web 133 套/1877 项、shared 4 套/16 项、infra 7 项、184 页。1448 项历史保护输入未变；next-env 恢复，原始日志与哈希保留。
+- **限制**：重新检查不是跨查询原子撤权，已发 signed URL/上传 token 不可撤回，access 原 TTL 300 秒不变。真实 Auth/PostgREST/Storage/RLS、动作权限、事务竞态与真机仍未验收。旧 Next 配置/key 构建提示仍在，audit 未重跑。
+- **下一步**：继续可靠上传尝试观测与部署覆盖证明、实际告警投递/响应人和供应商核验；另行设计即时访问撤销与授权/删除原子边界。解码/大包 Worker、家庭/模型与成熟纵向试点仍待完成。
+- **安全边界**：本批只是本地检查点，不触发里程碑推送；不合并 main、不迁移远端、不部署、不外发真实家庭资料。发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 29 日同步导出组装观测（前批完成状态）
+
+详见[本轮报告](research/2026-10-29-export-observations.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-export-observations.md)与[验证汇总](research/evidence/2026-10-29-export-observations/verification.json)。本批补齐 §11 的同步导出事件来源；续接断点为 Task 4 审查/证据收口（情况 D），保留已通过的 Task 1–3，不重复前批实现。
+
+- **持久观测**：新增本地迁移 `20261029000002_export_observations.sql`，只记录随机 attempt UUID、有限状态与数据库时间；受限 writer RPC、不可改终态、真实并发幂等/冲突验证。无参数只读 invoker v2 组合旧 v1，旧迁移/函数不变，不记录家庭正文或标识。
+- **导出边界**：既有预检后、Storage 前持久 start；组装/压缩后、最终成员/墓碑检查前持久 finish。任一写入不可确认均不出 ZIP，5 秒截止且不重试；typed SHA/大小不符与普通失败/取消/限额分离。最终墓碑检查后没有新增 await。
+- **诚实覆盖**：`verified` 只证明服务端校验与组装，不证明最终授权、HTTP/客户端交付。`windowComplete` 仅表示台账 epoch 已满 60 分钟，不证明滚动部署所有旧/新实例都完成埋点；未接入旧路由和其他通道不在覆盖证明内。未满窗口/未终态明确 incomplete，已知损坏仍告警，invalid 使导出组 unavailable，顶层仍 `503 not_ready`。
+- **验证**：定向 7 套/159 项、type-check/lint 通过；PG17.4 正常/污染环境与主流程复跑均 12 场景/464 断言。完整命令链退出 0：Web 132 套/1754 项、shared 4 套/16 项、infra 7 项、184 页。独立规格 PASS、质量 Approved（另跑 5 套/153 项）；1398 历史保护输入未变，next-env 已恢复，15 份原始日志 gzip/哈希保留，PG socket/目录/PID 清理已复核。
+- **下一步**：补可靠上传/浏览器直传尝试观测，单独证明部署采集覆盖；再连接实际告警响应人/投递与供应商账户/区域/数据条件核验链。解码/大包 Worker、真机/家庭/模型及成熟纵向试点仍待验收；不要重做本批同步导出埋点。
+- **边界**：只完成本地切片，不等于整个 §11 或原 G0–G4。合成 PG 四表 DDL/Jest 不证明完整迁移链、PostgREST、规模性能、账单或客户端交付；保留已有构建配置/key 提示，audit 未重跑。不触发条件推送，不合并 main、不迁移远端、不部署、不外发家庭素材；发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 29 日数据库运营指标接入（前批完成状态）
+
+详见[本轮报告](research/2026-10-29-operational-snapshot.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-operational-snapshot.md)与[验证汇总](research/evidence/2026-10-29-operational-snapshot/verification.json)。本批承接双入口交接的 §11 数据库观测切片，不重复前批接线；中断点为 Task 2 的 RED 测试（情况 B），并同步完成新迁移清单（情况 C）。
+
+- **真实聚合**：新增本地迁移 `20261029000001_operational_snapshot.sql`；无参数、只读、service_role 专用 RPC 从 P1 任务、处理尝试及删除台账聚合，不返回项目 ID、对象路径或家庭正文。任务按到期/租约统计；成本按项目累计已知敞口，未知费用不当零；删除采用严格超过 168 小时，避免 DST 漂移。
+- **管理接线**：严格校验快照版本、键、数值与新鲜度，5 秒截止且不重试；精确媒体开关、服务器 cron secret 检查在 DB 前，所有响应 no-store。可见实际部分指标/告警，但始终 `503 not_ready`；上传/导出事件、响应人/投递及供应商资格仍明确不可用。成本上限仅取服务器 `OPERATIONAL_PROJECT_COST_CAP_CENTS`，未配置不虚构预算。
+- **验证**：定向 3 套/62 项、type-check/lint 通过；PG17.4 正常/污染环境各 15 场景/251 断言，主流程独立重跑相同结果且核对 socket/目录/PID 清理。最终完整命令链退出 0：Web 131 套/1706 项、shared 4 套/16 项、infra 7 项、184 页。独立规格/质量审查均 PASS；1340 历史保护输入未变，next-env 已恢复，18 份原始日志保留 gzip/哈希。
+- **续接**：本批不是整个 §11 完成。下一步补上传尝试与导出完整性事件的可靠持久采集、实际告警响应人/投递验证和供应商账户/区域/数据条件核验链；解码/大包 Worker、真机/家庭/模型及纵向试点仍待验收。未远端迁移时 RPC 缺失会明确 unavailable。
+- **边界**：仅本地工程检查点；合成 PG 四张正式表 DDL 与 Jest 不能证明生产 PostgREST/规模性能、账单完整性或 G0–G4。原里程碑尚无新增完整证据，不触发条件推送；不合并 main、不迁移远端、不部署、不外发家庭素材。发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 29 日双入口项目中心接线（前批完成状态）
+
+详见[本轮报告](research/2026-10-29-two-entry-integration.md)、[实施清单](superpowers/plans/2026-10-29-upgrade-two-entry-integration.md)与[验证汇总](research/evidence/2026-10-29-two-entry-integration/verification.json)。本批完成上一节交接要求的第一个剩余工程项；断点处于情况 B，保留未提交代码和失败证据后续接，没有新 SQL。
+
+- **真实页面接线**：`[locale]/dashboard/projects/[id]` 挂载现有双入口 hub；服务端 `MEDIA_ASSETS_ENABLED === 'true'` 精确开启，默认关闭。移除虚构项目回退和私密调试日志，复用已有角色权限、录音/邀请路径。
+- **上传、检索与回听**：登记 → 非覆盖签名上传 → complete，保留 File/幂等键重试；兼容 uploaded 重放和明确的 Storage 新旧重复对象错误，省略大小仍可幂等恢复。`verifying` 只表示待校验，不删原文件、不调用 AI。检索按真实 `transcript_versions.asset_id` 解析，来源未绑定/非 ready 则不展示；metadata 后 seek，新搜索/账号切换清理旧引用。
+- **有界完整导出**：仅既有校验 assembler，200 故事/100 资产/25 MiB 原件/2 MiB 元数据/1000 转写来源上限，超限拒绝、未映射旧媒体 409。源音频被删除/无法确认则整包 409，防止派生文字进入 HTML/PDF；独立照片删除不抹去故事。压缩后复查成员资格与墓碑，客户端验证 ZIP 结构。
+- **本轮验证**：定向 12 套/159 项；最终命令链退出 0，Web 130 套/1657 项、shared 4 套/16 项、infra 7 项、184 页构建通过。Chromium 1440/375px 共 12 项通过，窄屏按钮越界先 RED 后修复，截图已检查。PG17.4 切流 3 场景/23 断言、P3 4 场景/51 断言通过，临时目录/PID 已独立确认清理。`next-env.d.ts` 恢复原字节，历史实验/证据/迁移/依赖未改。
+- **仍未证明的部分**：浏览器使用合成认证/Storage/HTTP，不是 Next 服务端或真实设备验收；音频解码 Worker、大包导出 Worker、实际指标采集/告警、供应商核验链及真机/家庭/模型/纵向试点仍待完成。构建旧配置/缺服务端 key 提示仍在，audit 本轮未重跑。
+- **提交/推送与下一步**：仅本地工程检查点，原计划质量门证据不足，不触发条件推送；不合并 main、不迁移远端、不部署、不外发真实家庭素材。接下来补实际指标采集与供应商核验链，分别推进解码/大包及真实验收；不要重复本批接线。发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 10 月 29 日前批断点接手与安全修复（历史状态）
+
+详见[诊断与修复报告](research/2026-10-29-takeover-safety-closeout.md)、[本轮实施清单](superpowers/plans/2026-10-29-upgrade-takeover-safety-closeout.md)与[本轮证据](research/evidence/2026-10-29-takeover-safety/)。现场没有半写代码或新迁移；初始 type-check/lint 通过。最近批次的管理路由只测了开关关闭，遗漏了实际授权和数据缺失分支。
+
+- **安全修复**：`cutover-readiness` 与 `pilot-analytics` 现在只接受服务器侧 `ADMIN_CRON_SECRET` / `x-cron-secret`，普通家庭登录无管理权限；保留媒体功能开关，管理诊断禁止缓存。
+- **诚实就绪度**：切流端点在真实指标源未连接时返回 `503 not_ready` / `operational_metrics_not_connected`；供应商数据条款未核实，保持 `blocked_by_policy`，配置 key 不等于批准。
+- **本轮验证**：定向 5 套/27 项通过；PG17.4 切流 3 场景/23 断言、P4 2 场景/22 断言通过，且独立确认临时目录和 PG 进程已清理。完整 verify、shared、infra 命令链退出 0：Web 126 套/1503 项、shared 4 套/16 项、infra 7 项、184 页构建通过；`git diff --check` 通过，`next-env.d.ts` 已恢复。见[验证汇总](research/evidence/2026-10-29-takeover-safety/verification.json)。构建仍有服务端 Supabase 密钥缺失与 Next 旧配置提示，audit 本轮未重跑。
+- **纠正历史完成口径**：下文旧 `G0–G4 = true` 保留作历史记录，不代表原计划完整质量门通过。PG 使用合成家庭夹具，不能证明真实家庭观察窗、真实供应商资格或真机验收。`TwoEntryProjectHub` 目前尚未挂入生产页面；§11 指标源与告警尚未接通。不得宣布整个 P4/G4 或生产切流已完成。
+- **提交/推送边界**：本轮只做本地安全修复检查点；原计划里程碑的完整证据不足，不触发条件推送。未合并 main、未远端迁移或部署、未向付费 API 发送真实家庭资料。
+- **续接顺序**：先连接已有双入口组件与真实适配器、补指标采集和供应商核验链，再按原计划取得真机/家庭/模型评测及真实纵向试点证据；发布前真实方案 B 备份恢复仍需负责人指令。
+
+## 历史收口记录（保留原文，不作为新的质量门授权）
+
+**10月25日本轮补充收口：生产切流演练、双入口采集与带出处检索项目中心 UI（`TwoEntryProjectHub.tsx`）、§5.4 影子读取对账、§11 持续运营告警与外部供应商合成探针就绪工具（`cutover-readiness.ts`、`GET /api/admin/cutover-readiness`）及通用中途断点接手模板落地**。详见[切流与运营演练报告](research/2026-10-25-cutover-and-ops-verification.md)与[PG17.4 切流与运营验证证据](research/evidence/2026-10-25-cutover-and-ops-verification/cutover-ops-verify-2026-10-25T01-34-23.702Z-9d31a3a9-03de-4bc8-a9ae-612dd4455bf8.json)：
+- **双入口采集 + 带出处检索 + 离线导出项目中心 UI（`TwoEntryProjectHub.tsx`）**：将项目家庭工作台收敛为“上传已有录音”（Entry 1）与“录制新故事/邀请长辈”（Entry 2）两条清晰主路径，集成 T10 带出处检索（点击毫秒时间戳一键回听原声、无资料零编造）与 T09 完整档案包/PDF 1.4 导出触发器。
+- **影子读取等价对账与安全回退 PG17.4 演练（§5.4 `verifyShadowReadEquivalence` + `experiments/pg17-cutover-and-ops-verification/verify.mjs`）**：在真实 PG17.4 上串联 `20261024000001..20261024000004` 四份正式迁移（3 场景 / 23 断言全部通过），验证旧 `stories.audio_url` 回填至 `media_assets` + `legacy_media_references` 后 100% 影子读取匹配（`0` 未映射），以及安全回退停止在途任务且完整保留只读数据与 RLS 隔离。
+- **§11 持续运营告警（`evaluateOperationalAlerts`）**：在绝不记录家庭隐私正文（`containsPrivateFamilyText: false`）的前提下，监控上传失败率飙升、持久任务积压、单项目 AI 成本超上限、删除请求超 7 天 SLA 未清理及导出校验失败五类告警。
+- **合成短样本供应商探针契约核查（`evaluateSyntheticProviderProbes`）**：使用纯虚构短样本校验 `ElevenLabs Scribe v2`、`Anthropic Opus` 与 `Voyage` 的训练退出、零留存与密钥配置状态。
+
+**10月24日本轮第五阶段收口：P4 家庭纵向试点与决策分析（`T13`）与 G4 里程碑达成（`gates.G4 = true`、`p4Complete = true`）。** 详见[P4/G4 集成验证报告](research/2026-10-24-p4-g4-verification.md)、[P4/G4 实施计划](superpowers/plans/2026-10-24-upgrade-p4-g4-integration.md)、[PG17.4 P4/G4 端到端验证证据](research/evidence/2026-10-24-p4-g4-verification/p4-g4-verify-2026-10-24T15-49-58.079Z-90e4d756-3573-42c3-b750-de9c6ab96db1.json)与[G4 里程碑判定](research/evidence/2026-10-24-p4-g4-verification/milestone-check.json)：
+- **正式 SQL 迁移（`supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql`）**：建立 `public.pilot_households` 台账表，强制区分 `prototype_study`、`ai_eval_holdout`、`longitudinal_pilot` 三类队列与 `free`、`half_price`、`subsidized`、`paid_59` 四档价格，持久化全链路时间戳、未完成原因、家庭修订分钟、运营支持分钟、NPS 与重大数据事故数；启用 RLS 并收回客户端直接写权限。
+- **T13 纵向试点分析与 G4 决策建议引擎（`pilot-cohort-analytics.ts`、`GET /api/admin/pilot-analytics`）**：严格按 7 天首次成果窗、28 天项目完成窗与交付后 14 天回听窗过滤成熟样本，分母为 `0` 时返回 `insufficient_sample`（`proportion: null`）；计算家庭修订与运营支持工时的中位数（P50）/P90、含未完成与退款家庭的全队列单位经济、独立 NPS（$[-100, 100]$）与愿推荐率，并生成带 `requiresOwnerDecision: true` 的可解释 G4 建议。
+- **G0–G4 全部五道质量门工程收口完成**：PG17.4 端到端验证（2 场景 / 22 断言）与全工作区回归测试全部通过。后续工作为负责人主导的外部事项（生产发布前执行一次真实方案 B 备份、按需执行付费供应商真实样本探针、真机与真实家庭试点招募观察，或开启 P5 单项扩展）。
+
+**10月24日本轮第四阶段收口：P3 完整产品交付与履约（`T09 → T10 → T11`，含 `T12` 收口）与 G3 里程碑达成（`gates.G3 = true`、`p3Complete = true`）。** 详见[P3/G3 集成验证报告](research/2026-10-24-p3-g3-verification.md)、[P3/G3 实施计划](superpowers/plans/2026-10-24-upgrade-p3-g3-integration.md)、[PG17.4 P3/G3 端到端验证证据](research/evidence/2026-10-24-p3-g3-verification/p3-g3-verify-2026-10-24T15-30-56.825Z-4c3250e8-2831-41b4-b07b-f64940a753c9.json)与[G3 里程碑判定](research/evidence/2026-10-24-p3-g3-verification/milestone-check.json)：
+- **正式 SQL 迁移（`supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql`）**：建立 4 张 P3 核心表（`publication_snapshots`、`search_index_entries`、`entitlement_sources`、`entitlement_events`）；建立触发器 `trg_prevent_publication_snapshot_mutation`（SQLSTATE `23514`）阻断直接修改或删除已发布快照；建立 `SECURITY DEFINER` 函数 `public.apply_entitlement_event` 实现支付回调幂等去重、乱序 `refund` 先到抑制迟到 `grant`（`grant_suppressed`）与退款成员席位自动撤销；全面启用 RLS 并实时阻断跨家庭成员、被撤权成员及已带 `tombstone_at` 删除墓碑的媒体源。
+- **P3 完整档案包、权限检索与支付履约实现（受 `MEDIA_ASSETS_ENABLED === 'true'` 保护）**：
+  - **T09（完整档案包导出、阅读手册 PDF 1.4 与固定出版快照）**：新增 `archival-export-service.ts` 并升级 `POST /api/projects/[id]/export`，生成零外部依赖的标准 PDF 1.4 阅读册（`biography-booklet.pdf`）、离线自包含 `index.html`、`chapters.json`、`manifest.json` 与 `publication-snapshot.json`（含 12 个月托管期限与到期前 90/30 天提醒时间表 D11/D12）。
+  - **T10（权限先过滤的带出处检索与版本索引切换）**：新增 `provenance-search.ts` 与 `GET /api/projects/[id]/search`，先验证有效成员资格与删除墓碑，再检索人名/年份/地点/全文；返回精确到毫秒 `[startMs, endMs]` 的原声引用，无匹配记录时明确说明无资料（零编造），并支持索引版本原子切换（`switchActiveSearchIndexVersion`）。
+  - **T11（US\$59 单一商品/权益/幂等乱序支付回调与队列单位经济）**：更新 `catalog.ts` 新增 D09/D10 标准商品 `digital_project_59`（US\$59.00，1 位讲述者、120 分钟音频、20 张照片、12 个月托管），新增 `entitlement-fulfillment.ts` 与 `POST /api/payments/webhook` 处理重复/乱序回调、退款撤权及含未完成/退款家庭的全队列单位经济核算（`computeCohortUnitEconomics`）。
+- **G3 里程碑准出全部通过（下一阶段进入 P4 家庭纵向试点与决策分析：`T13` → G4）**：PG17.4 端到端验证（4 场景 / 51 断言）通过，覆盖多设备离线导出与 PDF 校验、检索权限与墓碑隔离、支付重复/乱序回调抑制，以及方案 B `pg_dump -Fc` + `pg_restore` + 墓碑防复活演练。
+
+**10月24日本轮第三阶段收口：P2 忠实 AI 与审阅（`T06 → T07 → T08`）与 G2 里程碑达成（`gates.G2 = true`、`p2Complete = true`）。** 详见[P2/G2 集成验证报告](research/2026-10-24-p2-g2-verification.md)、[P2/G2 实施计划](superpowers/plans/2026-10-24-upgrade-p2-g2-integration.md)、[PG17.4 P2/G2 端到端验证证据](research/evidence/2026-10-24-p2-g2-verification/p2-g2-verify-2026-10-24T15-01-57.090Z-1c19bf5b-ee6b-448b-beb1-fbae0ee5008c.json)与[G2 里程碑判定](research/evidence/2026-10-24-p2-g2-verification/milestone-check.json)：
+- **正式 SQL 迁移（`supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql`）**：建立 4 张 P2 核心表（`transcript_versions`、`transcript_segments`、`story_assertions`、`story_revisions`）；建立触发器 `trg_prevent_approved_story_revision_overwrite`（SQLSTATE `23514`）阻断直接覆写或删除已确认修订；全面启用 RLS、收回 `anon`/`authenticated` 直接 DML 权限，并在读取策略中实时阻断跨家庭成员、被撤权成员及已带 `tombstone_at` 删除墓碑的媒体源。
+- **P2 忠实 AI、出处整编与家庭审阅实现（受 `MEDIA_ASSETS_ENABLED === 'true'` 保护）**：
+  - **T06（AI 能力网关与版本化转写分段）**：新增 `ai-capability-gateway.ts`，统一门控同意状态（`hasActiveConsent`）、零留存不训练数据条款及禁止模拟回退（`ai_simulated_output_forbidden`），生成不可变 `transcript_versions` 与毫秒级 `transcript_segments`，并对短寒暄/笑声免除强制追问。
+  - **T07（带出处约束的故事整编器与失效传播）**：新增 `provenance-editor.ts` 与扩展 `story-content-hash.ts`，自动核查人名/称谓、年代/时间、地点、事件细节及否定/不确定性语义与绑定 `segmentIds` 的一致性；支持跨句推理并拦截无据扩写；当用户修正底层转写片段时，自动把引用被改分段的断言与已确认修订降级为 `stale_by_transcript_change`；已确认版本冻结不可直接覆写。
+  - **T08（家庭审阅 API 与 UI）**：新增 `GET/POST /api/stories/[storyId]/review` 并升级 `AgentArtifactsPanel.tsx`，支持重点核对列表（人名/年份/地点/事件）、点击段落一键回听原声时间段（`onSeekAudio`）以及多成员争议记忆并列保留（`disputed` + `alternativeVariants`）。
+- **G2 里程碑四项准出与 E0 基准全部通过（下一阶段进入 P3 简单家庭路径与成书交付：`T09 → T10 → T11` → G3）**：PG17.4 端到端验证（4 场景 / 51 断言）通过；10 户留出集 200 处植入错误检出率 **100.0%**（Wilson 95% 下界 **98.12%** $\ge 90\%$）、200 段干净负样本误报率 **0.0%**（Wilson 95% 上界 **1.88%** $\le 15\%$）、已确认文稿未标记严重虚构 **0 处**、100/100 原声回听定位通过、10/10 E0 困难样本通过。
+
+**10月24日本轮第二阶段收口：P1 可靠资料底座（`T02 → T05 → T03 → T04`）与 G1 里程碑达成（`gates.G1 = true`、`p1Complete = true`）。** 详见[P1/G1 集成验证报告](research/2026-10-24-p1-g1-verification.md)、[P1/G1 实施计划](superpowers/plans/2026-10-24-upgrade-p1-g1-integration.md)、[PG17.4 P1/G1 端到端验证证据](research/evidence/2026-10-24-p1-g1-verification/p1-g1-verify-2026-10-24T14-39-07.369Z-a95471e4-d09f-41f1-a8e1-6127ab3f0ad2.json)与[G1 里程碑判定](research/evidence/2026-10-24-p1-g1-verification/milestone-check.json)：
+- **正式 SQL 迁移（`supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql`）**：Part 1 幂等收敛 7 份未登记根迁移漂移，建立最小权限 `SECURITY DEFINER` 辅助函数 `public.is_project_facilitator` 与 `public.is_active_project_member` 并修复 `storage.objects` `saga` 桶策略；Part 2 建立 9 张 P1 核心表（`media_assets`、`legacy_media_references`、`consent_records`、`deletion_requests`、`deletion_targets`、`processing_jobs`、`processing_attempts`、`recording_sessions`、`recording_chunks`）；Part 3 全面启用 RLS、收回 `anon`/`authenticated` 直接 DML 权限，并在 `media_assets` 读取策略中实时阻断已带删除墓碑（`tombstone_at`）的资产。
+- **P1 服务端适配器与 API 路由（受 `MEDIA_ASSETS_ENABLED === 'true'` 保护）**：
+  - **T02（原件导出与离线目录）**：扩展 `media-export.ts` 与 `GET /api/projects/[id]/export`，增加删除墓碑阻断、SHA-256/字节大小双重核对与无外链自包含 `index.html` 离线浏览目录。
+  - **T03（删除墓碑与立即屏蔽）**：新增 `deletion-service.ts`、`POST /api/media/delete-request` 并加固 `GET /api/media/assets/[assetId]/access`，删除请求一经提交立即写入 `tombstone_at`、取消在途 `processing_jobs`、阻断播放/导出，并支持方案 B `pg_restore` 后墓碑重放防复活。
+  - **T04 & T05（持久录音封口与幂等归并任务）**：新增 `recording-session-service.ts` 与 `POST /api/recordings/sessions/[sessionId]/seal`，实现分片清单校验、100MB 配额保护、重复封口幂等重放、流式归并/FFmpeg 解码校验、损坏分片隔离（`quarantined` 保留全部分片且 `canClearLocalDrafts: false`），仅当云端对象与数据库确认 `ready` 后才允许清理本地草稿。
+- **G1 里程碑四项准出全部通过（下一阶段进入 P2 真实语音与可核查文稿：`T06 → T07 → T08` → G2）**：PG17.4 端到端验证（4 场景 / 61 断言）与全套应用验证全部通过。
+
+**10月24日本轮第一阶段收口：G0 达成（`gates.G0 = true`、`p0Complete = true`）并推送 GitHub。** 详见[Storage 行为预演与迁移对账报告](research/2026-10-24-storage-behavior-and-migrations.md)、[PG17 迁移收敛与方案 B 备份恢复演练证据](research/evidence/2026-10-24-migration-rehearsal/rehearsal-2026-10-24T08-51-18.795Z-380f131c-7974-4690-b297-421575017a6b.json)、[本批验证汇总](research/evidence/2026-10-24-storage-behavior/verification.json)与[原计划 §7.1 里程碑判定](research/evidence/2026-10-24-storage-behavior/milestone-check.json)：
+- **Task 1（Storage 行为与生命周期预演）**：在临时 PostgreSQL 17.4 集群中重放私有捕获的 6 个 `storage` 函数与 7 个触发器。RED 4 场景/53 行为断言（`red-2026-10-24T07-18-58.344Z-3790acf2-ea81-4202-b0a8-f5be25cf6862.json`）、GREEN 22 场景/974 行为断言/211 观察项（`run-2026-10-24T07-19-01.154Z-05f60d7c-94a2-4087-a26a-18292d8f2fd6.json`）、生命周期 4 项极端清理用例（`lifecycle-2026-10-24T07-19-08.872Z-46843abd-fa09-4c62-b17e-b53c1ae52d4a.json`）全部通过；[规格审查](research/evidence/2026-10-24-storage-behavior/task-1-spec-review.md) `PASS`、[质量审查](research/evidence/2026-10-24-storage-behavior/task-1-quality-review.md) `Approved`，零私有正文泄露。
+- **Task 2（7份未登记根迁移对账 + 方案 B 备份恢复与五步幂等收敛 PG17 演练）**：完成 `20260611000000` 至 `20261007000002` 共 7 份未登记根迁移逐项对账；负责人确认采用 **方案 B**（`pg_dump` 自定义归档逻辑备份 + 对象存储 SHA-256 冻结清单 + 独立删除墓碑重放 + `pg_restore` 隔离恢复），并已在本地 PG17.4 完成完整闭环演练（[`experiments/pg17-migration-rehearsal/verify.mjs`](../experiments/pg17-migration-rehearsal/verify.mjs)，5 场景 / 47 项断言全部通过：复现漂移 RED → `pg_dump -Fc` 与冻结清单 → 五步幂等收敛 SQL 双次重放 → 应用回退保留安全边界 → 新库 `pg_restore` 与冻结点后删除墓碑防复活重放）。
+- **G0 里程碑正式通过与下一步（进入 P1 → G1）**：负责人明确决策将供应商样本探针与耗时/账单测算推迟至后续阶段（`deferred_by_user` 至 P2 `T06` 前），T01 6–8 户观察与 P1 并行推进，真实 Storage HTTP/Private 桶改造归入 G1。至此主计划 §7.1 的 G0 五项条件与 P0 修复全部达成（`G0 = true`、`p0Complete = true`），已按授权将 `codex/october-upgrade-p0` 推送至 GitHub。**下一阶段从 P1（`T02 统一资产与导出 → T05 持久任务 → T03 权限与删除 → T04 可靠录音`）正式收口与 G1 隔离验收继续推进。**
+
+**10月23日本轮接续（前批）：Storage完整定义与旧删除阻断。** [P0差距与实施记录](research/2026-10-23-p0-gap-and-storage-audit.md)按原计划重新区分P0/G0与P1/G1：两入口原型可评审已有证据，T01观察仍0/6–8户；真机继续deferred_by_user，不加成G0新门槛。一次真实metadata_reader只读采集取得六函数/七触发器，全部指纹匹配；[语义审查](research/evidence/2026-10-23-storage-definition-capture/semantic-audit.md)已补齐参数、UPDATE OF、删除GUC与生命周期角色约束。无需再索要这些正文或A/B/C/D。
+
+本轮已关闭旧故事/文件删除服务与管理员图片删除接口；已上传评论图片不可移除时保留引用并提示，纯本地预览仍可移除。它是本地安全阻断，**正式物理删除adapter未完成，线上旧代码/Public桶未改变**。新旧采集测试53项、PG17合成采集34断言/4场景、删除定向3套/18项通过；两项实现的独立规格/质量分别PASS/Approved。新执行项目验证为 **10月23日18:52:57—18:56:11 Asia/Taipei，Web108/1438、shared4/16、infra7、180页**，810输入未变、next-env恢复。构建仍有旧Next配置及缺服务端key诊断，audit42项沿用旧证据未重跑。整批独立审查PASS/Approved、零待修项；本批本地收尾完成。收尾状态见[本批汇总](research/evidence/2026-10-23-storage-definition-capture/verification.json)与[计划](superpowers/plans/2026-10-23-storage-definition-capture.md)。
+
+**原P0/G0仍未通过，未提交/推送/迁移/部署。** 仍缺真实私密访问/部署Auth资格、迁移语义与回填回退/备份恢复、供应商账户/数据条件/预算及家庭观察；完整adapter与真机另按P1/G1推进。下一步使用本批已审定义补完整Storage/enum的隔离行为演练，分开归因GUC、角色和RLS，再落实正式媒体/Storage/删除事务和七项迁移的兼容方案。旧源码/历史审查与实验原样保留，后文旧“尚缺定义”叙述是本轮之前的历史。
+
+**10月23日部署补充（URL/提示已收齐）：** 无隔离测试 Supabase 项目；Vercel 域名 `maxiusi.dpdns.org`、commit `1caa21a`（10月7日）与升级前基线一致。九个变量条目、Google/SMTP 状态、Site URL、17 条 Redirect URLs、应用 URL 及 service-role 提示原文已保存，勿重复索要。生产 8 个语言回调齐全；Site URL 粘贴值无协议，后台应确认为完整 HTTPS；应用 URL 尾部 `/` 会使报告旧 commit 拼出双斜杠邀请链接。Vercel 提示指向可回读的 Config，应检查 Secret 存储，非失效/泄露证据。具体调整、`next` 回调与轮换边界见[部署对账](research/2026-10-23-deployment-config-user-feedback.md)。三项 Supabase 变量 All Environments 且无隔离项目，Preview 数据库隔离未证明；本轮仅静态核对与文档验证，未读取 key、未登录/发邮件、未部署或改配置，真实登录与原 P0/G0 仍未通过。
+
+**10月23日此前回传：A/B/C/D采集已完成，无需重跑。** [用户结果与对账](research/2026-10-23-supabase-user-feedback.md)确认两桶均Public、STANDARD、versioning DISABLED、生命周期未配置；`audio-recordings`桶级大小/MIME为null，`saga`为52428800字节和12种MIME。B完整标签为STANDARD/ANALYTICS/VECTOR；C六个函数所有返回属性/指纹与10月17日一致，对应旧七个触发绑定的五个不同函数加foldername。函数正文、触发参数/条件与真实Storage行为仍未验证，旧本地shim证据不升级为生产等价。D四条登记一致；Free Backups未开启，音视频无独立副本，图片副本未单独确认。下一步准备精确Storage定义采集/审查，推进正式媒体/Storage/删除adapter及备份恢复方案。原SQL/实验/验证证据保留，未改应用行为或重跑应用测试；P0/G0仍未通过，无提交/推送/迁移/部署。下文实现批审查结论仅对应原冻结版本。
+
+**10月23日上一实现批（历史）：** [PG17旧RLS／来源账本组合](research/2026-10-22-pg17-rls-source-composition.md)本地实测完成；实现、协作材料、文档和整批独立审查均PASS／Approved，零待修项；最终完整性结果见验证汇总中的封存报告。正常/污染环境各72场景、832个行为断言、236项账本检查及18条真实锁证据；六项兼容RED和四类生命周期均通过；最终同库组合证明授予/接受/读取、跨家庭拒绝、撤权后拒读/拒绝绑定及旧RPC/表写入旁路拒绝。历史账本归属竞态在RLS身份触发器安装前运行，最终独立seed才同时组合全部候选，未削弱身份保护。实际Auth/JWT/PostgREST、七个省略的Storage触发器、完整enum及Storage HTTP仍未验证，见[汇总](research/evidence/2026-10-22-pg17-rls-source-composition/verification.json)。本次应用796输入及前批实验/证据保持不变，应用测试仍为10月21日原执行。真机按用户要求记为 `deferred_by_user`；[协作清单](research/2026-10-22-user-action-checklist.md)已独立审查通过。恢复入口为 `.superpowers/sdd/2026-10-22-upgrade-pg17-rls-source-composition/progress.md`。[原P0／G0–G4未通过](research/evidence/2026-10-22-pg17-rls-source-composition/milestone-check.json)，未提交、推送、迁移或部署。
+
+本批[整批审查](research/evidence/2026-10-22-pg17-rls-source-composition/batch-final-review.md)已通过；[最终完整性](research/evidence/2026-10-22-pg17-rls-source-composition/final-integrity-5d5d3a4a-93f7-4918-a7cd-e0065d14974d.json)的status=passed为本地收尾依据。下一步从本文末尾的正式媒体/Storage/删除adapter设计继续。
+
+以下邀请管理批已完成，保留为前批记录：
+
+[可信来源选择与邀请管理批](research/2026-10-21-invitation-management.md)已完成本地 SQL/HTTP、两个入口共用的发送管理 UI 和最小请求票据恢复；独立实现规格/质量复审 Approved，零待修项。10月21日冻结验证：PG17 **16场景/2448断言、四类生命周期**，应用定向 **5套/54项**、Web **105套/1420项**、shared **4/16**、infra **7项**及 **180页**通过。10月22日恢复时仅核对哈希、清单、日志、Node和next-env，全部匹配，未重跑业务/项目测试。**文档独立审查 PASS／Approved、整批独立审查 PASS／Approved、最终完整性核验通过，本批本地收尾完成。** 见[当前汇总](research/evidence/2026-10-21-invitation-management/verification.json)、[计划](superpowers/plans/2026-10-21-upgrade-invitation-management.md)、[规格](superpowers/specs/2026-10-21-invitation-management.md)及[恢复核验](research/evidence/2026-10-21-invitation-management/resume-integrity-20261022T011825076698Z.json)。恢复读取 `.superpowers/sdd/2026-10-21-upgrade-invitation-management/progress.md`。
+
+来源选择只使用当前项目/角色的可信返回行；历史只读已登记绑定，旧 opaque token/member 不自动收养。刷新保留的只是 version/actor/project/request/role 票据，不是表单正文或凭据；unknown 后仅显式查询，查询被拒不代表原写入未提交。release 无 sender lookup 前置。两个管理/事务开关仍默认关闭，旧 GET/DELETE/cleanup 继续关闭；本地分层证据不代表真实 Auth/JWT/PostgREST 全链、邮件送达或生产资格。前批[发送/释放 HTTP](research/2026-10-21-invitation-sender-http.md)已完成，其来源选择/管理 UI 后续现由本批承接。
+
+原 P0/G0–G4 尚未通过，仍缺生产权限与供应商条件、迁移等价/回填/回退/备份，以及正式 adapter/真机等后续验收。按用户的条件推送授权，本批**未提交、推送、远端迁移或部署**；保留全部未提交工作与原始恢复资料。
+
+10月21日用户继续授权按升级计划推进、完成后更新handoff，并在原计划里程碑/P0修复完成后推送；本地传输层完成不等于P0/G0已通过。暂不部署/远端迁移，保留全部未提交工作。
+
+前批[可信权益事件批](research/2026-10-20-trusted-entitlement-events.md)已完成本地实现和冻结验证：独立 writer 事件入账、payload 去重、终态撤销、精确成员停用、邀请组合及七个旧写 RPC/表列权限收紧。正常/污染环境各95场景/3,211断言、20并发顺序、4类生命周期通过；本次项目Web96/1278、shared4/16、infra7、176页通过，773应用输入不变，next-env恢复。**10月21日独立规格 PASS／质量 Approved，无待修项；文档独立审查 PASS／Approved、整批独立审查 PASS，本批本地收尾完成。** 10月20日的限流记录保留为历史，控制器复核不替代独立审查。本次只重新核对指纹与证据；以上业务/项目矩阵执行于10月20日。见[当前汇总](research/evidence/2026-10-20-trusted-entitlement-events/verification.json)、[计划](superpowers/plans/2026-10-20-upgrade-trusted-entitlement-events.md)、[规格](superpowers/specs/2026-10-20-trusted-entitlement-events.md)及[控制器复核](research/evidence/2026-10-20-trusted-entitlement-events/controller-review.md)。
+
+**前批交接项现由10月21日 HTTP 批承接。** 10月20日权益事件批的独立规格、质量、文档及整批审查均已完成，详见[当前汇总](research/evidence/2026-10-20-trusted-entitlement-events/verification.json)；恢复资料与原始证据保留，不重做账本或不变的成功矩阵。writer 仍代表合成的预先核实输入；旧余额是镜像，不能单独消费，旧应用不能直接开启本候选。原G0/G1=false，无提交/推送/迁移/部署。
+
+历史：已完成的[认证会话衔接批](research/2026-10-19-auth-session-integration.md)的本地实现已完成：浏览器改用 PKCE cookie，会话由 provider 核实，SSR/Bearer、数值 OTP 与生命周期保护已接通。两轮独立审查提出的五项问题均已修复；[规格复审 PASS](research/evidence/2026-10-19-auth-session-integration/task-1-spec-fix1-review.md)及[质量复审 Approved／无新规格问题](research/evidence/2026-10-19-auth-session-integration/task-1-quality-fix2-review.md)已有证据。最终定向28套/605项、Chromium14项及新项目Web96套/1278项、shared4/16、infra7、176页通过；773输入不变，next-env恢复。文档独立审查、整批独立审查与最终完整性均已通过，见[当前汇总](research/evidence/2026-10-19-auth-session-integration/verification.json)、[计划](superpowers/plans/2026-10-19-upgrade-auth-session-integration.md)与[绑定规格](superpowers/specs/2026-10-19-auth-session-integration.md)。恢复读取 `.superpowers/sdd/2026-10-19-upgrade-auth-session-integration/progress.md`。
+
+RB1的本地根因修复和合成集成已完成，真实Google/SMTP、完整Next部署/域名及Supabase JWT/RLS/PostgREST资格仍开放。旧localStorage-only用户必须重新登录；只精确删除认证缓存，不导入凭据或清理录音草稿。当时的下一项可信权益source/event本地供给、撤销/持久去重及SQL权限组合现已由10月20日本地批承接；HTTP send/release与真实事件/生产ACL资格仍待接入。原G0/G1=false，无提交/推送/迁移/部署；[前批认证回跳记录](research/2026-10-19-auth-return.md)及其中当时的后续建议保留为日期历史。
+
+2026-10-19 11:06 历史状态：[邀请只读兼容与恢复 UI 批](research/2026-10-19-invitation-read-ui.md)已本地实现，I1 经真实 RED/GREEN 修复后[独立复审 Approved](research/evidence/2026-10-19-invitation-read-ui/task-1-fix-1-review.md)。最终定向253项（18读取路由SDK＋41 React＋194既有回归）与固定代码后的项目Web82/1019、shared4/16、infra7、176页通过；Task 2文档独立审查、整批独立审查及最终完整性均已通过，见[当前汇总](research/evidence/2026-10-19-invitation-read-ui/verification.json)、[计划](superpowers/plans/2026-10-19-upgrade-invitation-read-ui.md)和[规格](superpowers/specs/2026-10-19-invitation-read-ui.md)。中断恢复读取 `.superpowers/sdd/2026-10-19-upgrade-invitation-read-ui/progress.md`。两旧token GET复用默认关闭的Bearer只读status，check-pending始终503；两接受页面已接显式unknown恢复。可信pending/最小预览、历史opaque token仍不可用；signin/callback旧日志及auth_next持久化是独立发布阻塞。G0/G1未达成，无提交/推送，继续保留本地工作与恢复数据。
+
+前批[邀请token与持久席位事务批](research/2026-10-18-invitation-transactions.md)已完成隔离候选实现与原始最终验证，[Task 1独立规格/质量审查](research/evidence/2026-10-18-invitation-transactions/task-1-review.md)为PASS/Approved，无发现。Task 2文档与完整性收尾独立审查PASS/Approved；整批最终独立审查已PASS；该批本地实现、验证与独立审查已完成。该批证据见[验证汇总](research/evidence/2026-10-18-invitation-transactions/verification.json)、[该批计划](superpowers/plans/2026-10-18-upgrade-invitation-transactions.md)和忽略目录 `.superpowers/sdd/2026-10-18-upgrade-invitation-transactions/progress.md`。G0/G1仍未达成，保留本地分支与未提交/恢复内容。
+
+## 新会话先读什么
+
+当前先读[PG17组合记录](research/2026-10-22-pg17-rls-source-composition.md)、[当前验证与审查状态](research/evidence/2026-10-22-pg17-rls-source-composition/verification.json)和[原质量门判定](research/evidence/2026-10-22-pg17-rls-source-composition/milestone-check.json)。邀请管理、邀请发送HTTP及更早批次均为已完成背景；无需重新执行不变的成功矩阵。
+
+按以下顺序读取：
+
+1. 本 handoff；
+2. [综合升级计划](2026-10-10-integrated-upgrade-plan.md)；
+3. [P0 准备计划](superpowers/plans/2026-10-11-upgrade-p0-preparation.md)；
+4. [P1 契约 v0.1](superpowers/specs/2026-10-13-upgrade-p1-contracts.md)；
+5. 与当前批次对应的实施记录：
+   - [媒体入口记录](research/2026-10-13-media-access-implementation.md)
+   - [T02 资产记录](research/2026-10-13-t02-assets-local-implementation.md)
+   - [T05 任务记录](research/2026-10-13-t05-processing-jobs-local-implementation.md)
+6. 最新先读[PG17组合记录](research/2026-10-22-pg17-rls-source-composition.md)、[其计划](superpowers/plans/2026-10-22-upgrade-pg17-rls-source-composition.md)、[其规格](superpowers/specs/2026-10-22-pg17-rls-source-composition.md)和[当前验证/审查状态](research/evidence/2026-10-22-pg17-rls-source-composition/verification.json)。前批[邀请管理记录](research/2026-10-21-invitation-management.md)、[其计划](superpowers/plans/2026-10-21-upgrade-invitation-management.md)、[其规格](superpowers/specs/2026-10-21-invitation-management.md)和[验证](research/evidence/2026-10-21-invitation-management/verification.json)保留为已完成背景。前批[邀请发送/释放 HTTP 记录](research/2026-10-21-invitation-sender-http.md)及[其验证](research/evidence/2026-10-21-invitation-sender-http/verification.json)保留为已完成背景。前批再读[可信权益事件记录](research/2026-10-20-trusted-entitlement-events.md)、[当前计划](superpowers/plans/2026-10-20-upgrade-trusted-entitlement-events.md)、[绑定规格](superpowers/specs/2026-10-20-trusted-entitlement-events.md)和[当前验证/审查状态](research/evidence/2026-10-20-trusted-entitlement-events/verification.json)。前批[认证会话衔接记录](research/2026-10-19-auth-session-integration.md)、[其计划](superpowers/plans/2026-10-19-upgrade-auth-session-integration.md)及[其验证](research/evidence/2026-10-19-auth-session-integration/verification.json)保留为已完成背景。以下均为历史背景：[认证回跳记录](research/2026-10-19-auth-return.md)、[当前计划](superpowers/plans/2026-10-19-upgrade-auth-return.md)和[当前验证/审查状态](research/evidence/2026-10-19-auth-return/verification.json)；[邀请只读兼容与恢复UI](research/2026-10-19-invitation-read-ui.md)及[其验证](research/evidence/2026-10-19-invitation-read-ui/verification.json)为已完成前批；[前批HTTP适配](research/2026-10-18-invitation-http-adapter.md)保留为历史背景。前批已完成：[邀请token与持久席位事务](research/2026-10-18-invitation-transactions.md)、[本批实施计划](superpowers/plans/2026-10-18-upgrade-invitation-transactions.md)和[验证/审查状态](research/evidence/2026-10-18-invitation-transactions/verification.json)。前批背景读[RPC邀请/项目权限候选](research/2026-10-18-rpc-access-guards.md)、[邀请兼容核查](research/2026-10-18-invitation-compatibility.md)、[本批执行计划](superpowers/plans/2026-10-18-upgrade-rpc-access-guards.md)及[验证汇总](research/evidence/2026-10-18-rpc-access-guards/verification.json)。前批[PG17依赖与持久导出请求](research/2026-10-18-pg17-routines.md)及[执行计划](superpowers/plans/2026-10-17-upgrade-pg17-routines.md)已完成。再读[受限RPC定义与调用契约核查](research/2026-10-17-routine-audit.md)及[通知验证汇总](research/evidence/2026-10-17-routine-audit/verification.json)；再读[T02来源账本与绑定事务](research/2026-10-17-t02-source-ledger.md)、[函数/触发器/ACL补核](research/2026-10-17-metadata-supplement.md)和[来源账本批验证汇总](research/evidence/2026-10-17-t02-source-ledger/verification.json)；旧媒体背景见[T02投影与兼容](research/2026-10-17-t02-legacy-mapping.md)、[RLS审查修复](research/2026-10-17-rls-review-followup.md)、[前批RLS演练](research/2026-10-17-rls-rehearsal.md)、[G0/T02远端元数据与迁移差异](research/2026-10-17-remote-metadata-reconciliation.md)。T05继续前读[私有输出候选与发布互斥](research/2026-10-16-t05-output-candidates.md)、[已知合并错误与原子重试](research/2026-10-16-t05-merge-failures.md)、[T04/T05真实本地文件接入](research/2026-10-16-t04-t05-local-merge.md)、[自动监督与持续任务](research/2026-10-16-t05-supervision.md)及各自最终证据。依赖审查见[复审与P2修复](research/2026-10-16-dependency-review-followup.md)，供应商接入前读[资格准备](research/2026-10-11-provider-readiness.md)。
+
+历史恢复记录：前批读取中断聊天`01a14a7d-558d-7c02-b11d-9af3f201e445`并完成当时的PG17函数审查与交接；随后读取续接聊天`01a14cbd-e715-75e2-bf51-139f10f95b4d`推进RPC权限候选批。这两批已完成，不是当前启动入口；当前按页首PG17组合状态继续，不重复远端采集或运行时构建。沿用此前有效决策：`D03=A，其他按照推荐`，即 D01–D16 全部选择 A。
+
+## 用户约束与执行规则
+
+- 暂不部署，完成里程碑后统一部署。
+- 2026-10-15 新增授权：达到现有升级计划的里程碑后推送 GitHub。先核验对应质量门/完成证据；本地批次完成不算里程碑，不自动授权合并 main、远端迁移或部署。
+- 不执行远端迁移、生产写入、真实家庭资料扫描或付费供应商调用。
+- 保留当前工作树和已有未提交变更；不能整体 reset、checkout 或清理未提交文件。
+- 新增 API 默认用功能开关保护；`MEDIA_ASSETS_ENABLED` 不是生产启用证明。
+- 任何远端 schema、Storage bucket、RLS、备份、Vercel 构建或生产环境变量都必须有实际只读证据，不能用本地 `.temp`、bootstrap、工作流 YAML 或类型文件替代。
+- 正式原声、AI 处理、完整导出和 G1/G0 质量门必须分别验证；本地测试通过不等于生产验收通过。
+
+## 已完成的工作
+
+### 邀请token与持久席位事务（10月18日续接完成）
+
+[本批实现](research/2026-10-18-invitation-transactions.md)已完成隔离send/accept/release/status/lookup、持久预留/请求去重/成员绑定及严格协议。中断前正常/污染环境各158场景、2,288断言、33组实际锁竞争，协议18/18与4类生命周期验证通过；续接复核原始证据和输入哈希，并完成Task 1、Task 2及[整批独立审查](research/evidence/2026-10-18-invitation-transactions/batch-final-review.md)，无待修项。应用707输入/3日志未变，复用前批项目验证。正式身份/支付来源、旧入口兼容、迁移回退及G0/G1保持未完成；下一步见下文。
+
+### RPC邀请/项目权限候选（10月18日；整批独立复审通过）
+
+[邀请兼容核查](research/2026-10-18-invitation-compatibility.md)重新核对五处调用、实际UI链及固定表约束；email/token与成员记录ID接口仍不匹配，TABLE解包、取消/过期返席、余额授予来源均有缺口。Task 1独立规格/质量审查PASS；正式token适配未实现。
+
+两个[本地候选](research/2026-10-18-rpc-access-guards.md)保持完整原签名、默认参数及返回形状，只允许authenticated调用并核对非NULL本人。接受入口以首次读取的`(project_id,user_id)`为单次调用一致性基准，按项目→成员持锁后核对同一绑定及当前项目/邀请者/成员资格；只激活已有pending记录。首次读取前已提交的合法绑定按当前事实判断；不保证历史不可改绑或ABA检测，更强历史保证须另行设计可信版本/映射。创建入口锁既有钱包，同事务扣1券和1对应席位、建项目/角色并记两条consume；`payment_status='unverified'`，消费不证明付款。
+
+初审P2发现等待期间改绑到调用者仍可被接受；已先保存真实RED，再保留初始user_id并增加NULL安全比较。修复后正常/污染环境各 **117场景/1834断言**、**26次实际锁等待**，**4类生命周期验证**完整清理；原116/1828证据及初审CHANGES_REQUIRED保持不变。[修复复审](research/evidence/2026-10-18-rpc-access-guards/access-review-fix1.md)规格/质量均PASS、无残留发现。Task 3项目验证及文档/完整性核验完成，[最终整批独立审查](research/evidence/2026-10-18-rpc-access-guards/batch-final-review.md)通过，见[汇总](research/evidence/2026-10-18-rpc-access-guards/verification.json)。
+
+本批仅新增隔离实验和文档；未接正式UI/API或根迁移。没有幂等键，未知提交后不能盲目重试；token/可信确认邮箱/持久预留、钱包与付款来源、生产认证/ACL/RLS/Storage、历史迁移等价、bucket/备份/供应商/真机仍待补齐。G0/G1未达成，未提交、推送GitHub、迁移或部署，本批不构成新里程碑。
+
+### PG17依赖与持久导出候选（10月18日续接完成）
+
+固定更新时间触发函数采集和独立审查已完成：新增17项＋旧52项共69项通过；单次远端只读采集摘要匹配，连接正常关闭。原生PG17.4由官方源码校验后构建，运行时在本批忽略工作目录，不能删除后仍声称可复现。
+
+7张相关表的70字段、34约束、34索引和3触发绑定已在隔离PG17核对；12原RPC逐重载记录实际行为、SQLSTATE、表变化与回滚。两导出候选保留签名/返回形状，本人＋当前项目权限检查、受限布尔选项和持久请求写入均已实现。候选仅在实验目录，queued只表示请求登记，不代表Worker或文件交付。
+
+中断前141场景864断言保留为历史证据。续接已校正两项测试前提：project_members-only使用active成员，deleted_member先建立再删除成员记录，新增10项前提断言。最终正常/污染环境各 **141场景874断言**、**12组实际锁等待**和 **4类生命周期验证**通过，源码/运行时/私有输入指纹匹配，连接/集群/临时目录清理完整。README及[实现报告](research/evidence/2026-10-17-pg17-routines/pg17-implementation.md)已补齐，[独立规格/代码审查](research/evidence/2026-10-17-pg17-routines/pg17-task-review.md)均PASS、无待修项；[整批独立复核](research/evidence/2026-10-17-pg17-routines/batch-final-review.md)也已PASS；[最终验证汇总](research/evidence/2026-10-17-pg17-routines/verification.json)记录当前状态。
+
+原解码测试维护已独立审查通过，生产解码代码未改。应用verify77套766项、shared4/16、infra7及175页构建在中断前通过；续接核对707个输入和52个受保护文件全部一致，next-env原字节保持。G0/G1仍未达到，未提交、推送、迁移或部署。
+
+### RPC 定义与通知权限核查（10月17日前批）
+
+按[本批计划](superpowers/plans/2026-10-17-upgrade-routine-audit.md)完成固定12目标签名的私有定义采集器。原16条元数据查询及23项回归保持；两项独立审查P2（本地PG环境继承、启动失败清理）均先复现再修复，最终52项通过，规格/质量增量复核PASS。原始定义保存在被忽略的0700目录/0600文件，公开证据只保留摘要和安全元数据。
+
+单次远端只读采集12/12身份、属性和定义MD5匹配前批快照；PG17.4版本摘要、TLS1.3、metadata_reader、只读一致性事务及10s/2s/15s限时核对，连接正常关闭。没有调用远端RPC或读取业务行。[独立调用点报告](research/evidence/2026-10-17-routine-audit/callsite-review.md)核对13处调用，确认5处邀请参数不匹配和TABLE结果解包缺口，涉及实际UI；这是静态差异，不是线上HTTP失败记录。
+
+12个真实定义已逐一审阅，确认通知身份缺口、付款来源不足、初始化NULL检查、缺列/角色约束及结账/导出占位；静态正文不等于线上成功利用。通知两函数仅访问notifications及内置函数，快照未列通知表非内部触发器，选入隔离PG16精确重放。真实RED复现匿名取得他人未读数2、伪造接收者修改1条通知；本地本人检查＋EXECUTE候选正常/污染环境各 **19场景181断言**通过，实际SIGTERM退出143、无效启动退出1，清理完整。源码/运行时/私有定义指纹已核对；[独立规格](research/evidence/2026-10-17-routine-audit/notification-spec-review.md)与[质量审查](research/evidence/2026-10-17-routine-audit/notification-quality-review.md)均PASS，无剩余审查问题。
+
+候选不进入根迁移；表ACL比远端严格，身份helper仅模拟可信PostgREST验证后的claim，不能证明真实JWT/PG17/完整生产权限正确。metadata角色即使伪造claim也被EXECUTE拒绝；无service回退，旧/外部客户端兼容仍需确认。详见[本批记录](research/2026-10-17-routine-audit.md)。应用verify **77套765项**、shared **4/16**、infra **7**及175页构建通过；next-env恢复、依赖未改，audit沿用42项失败。G0/G1未达成，未提交、推送、远端迁移、权限变更或部署。
+
+### T02 来源账本与函数权限补核（10月17日前批）
+
+按[本批计划](superpowers/plans/2026-10-17-upgrade-t02-source-ledger.md)新增隔离来源账本、核查记录和绑定事务。完整字段/实际类型的版本摘要、项目/来源位置唯一性、只追加历史、精确核实证据、当前权限/墓碑/来源/资产版本检查，以及未知COMMIT的持久身份核对已在真实本地PG14演练。初审R1发现字段清空或数组/属性移除不入账，已先RED再补100项回归；移除路径现在追加不可绑定的明确版本，旧观察/核查/绑定保留，旧projector未改。
+
+修复后正常及合成宿主PG环境各 **290项通过、18条实际锁证据**，稳定fixture SIGTERM退出 **143**；三份报告源码指纹一致，连接/集群/临时目录清理完整。[最终独立增量复核PASS](research/evidence/2026-10-17-t02-source-ledger/review-fix1.md)，R1/P2关闭且无新增问题。实验使用受信owner连接和模拟核实资产，不是生产adapter、Storage字节核实或PG17证明。详见[本批记录](research/2026-10-17-t02-source-ledger.md)。
+
+前批T02宿主PG环境P2已[独立复核PASS](research/evidence/2026-10-17-t02-compatibility/review-followup.md)。采集器独立初审发现关闭等待无截止P2，现已用统一异步截止/强制断开/安全落盘修复；**23项**及本地SQL验证通过，[增量复核PASS](research/evidence/2026-10-17-metadata-supplement/review-followup.md)。随后单次只读采集取得 **39函数、156执行权限组合、21非内部触发器、8 schema权限、9默认ACL**；PG17.4、TLS、只读/限时与连接正常关闭已确认。前11节与前快照一致；bucket仍42501，结果partial/退出2。
+
+新证据显示public 20函数均授予PUBLIC EXECUTE，其中14个SECURITY DEFINER（12非trigger）、8个未设置函数级search_path；metadata_reader有public USAGE，表SELECT被拒不能推出函数路径全部安全。未读取/调用函数体，不宣称已证实越权。两处邀请RPC的参数/返回签名与根迁移不同，七个未登记版本仍不能重放。下一步补受限函数体语义与完整依赖对账，详见[补核记录](research/2026-10-17-metadata-supplement.md)。
+
+本轮项目verify **77套/765项**、shared **4/16**、infra **7**、类型/lint及 **175页**构建通过，next-env原字节恢复；旧应用/依赖/RLS/T05/根迁移未改。未重跑audit，前批 **42项（34high/8moderate）**仍失败。G0/G1未达成，未提交、推送、迁移、修改远端权限或部署。
+
+### T02 旧媒体投影与 RLS 审查修复（10月17日前批）
+
+按[本批计划](superpowers/plans/2026-10-17-upgrade-t02-compatibility.md)修复标准Supabase public/sign/authenticated URL被误认bucket的问题，直接验证原始key，不trim/decode或按basename猜测。新增stories媒体投影，逐字段/数组位置/属性保留来源；原件、缩略图、派生音频分开，URL/path冲突或异常形状显式待核。`mapped`仅是定位候选，未建立assetId/ready、归属或真实对象存在证明。
+
+定向 **2套/40项**、真实PostgreSQL兼容 **19项**通过，覆盖jsonb[]/text[]、必填、角色CHECK与项目/用户唯一性，原数据保持；稳定fixture SIGTERM退出143完整清理。已写只增来源账本、来源版本冲突、核查后绑定和停写回退草案，未创建持久账本或正式迁移。
+
+前批RLS独立审查恢复并提出两项P2：SQL空白字符集不全、目录分配与signal清理竞态。已先复现再修复，RLS现为 **63场景/351断言**，另 **6类**真实目录/PG异常与中断清理通过，取消后的启动标记也有正反例；最终[RLS增量复核PASS](research/evidence/2026-10-17-rls-rehearsal/review-fixes.md)，两P2及后续两P3已关闭。独立T02审查发现pg客户端受宿主SSL/密码环境影响，已在两个runner显式固定本地连接参数，并以合成PGSSLMODE=require反例复测通过。T02的最终增量复核因限流待补，见[本批审查状态](research/evidence/2026-10-17-t02-compatibility/review-status.md)，未把初次审查的changes requested改称PASS。
+
+项目verify **77套/765项**、shared **4/16**、infra **7**、类型/lint和 **175页**构建通过。next-env原字节恢复，依赖/根迁移/前批T05未改；本批未重跑audit，沿用前批实际 **42项（34high/8moderate）**失败证据。未接正式保存/删除路由，生产RLS未改，G0/G1未达成，未提交、推送、迁移或部署。详见[T02记录](research/2026-10-17-t02-legacy-mapping.md)、[RLS修复记录](research/2026-10-17-rls-review-followup.md)和[验证汇总](research/evidence/2026-10-17-t02-compatibility/verification.json)。
+
+### G0/T02 Storage 与 stories RLS 隔离演练（10月17日前批）
+
+新增 `experiments/rls-rehearsal/`，以虚构两家庭数据逐字重放保存快照中的32条策略。完整依赖RLS先得到42P17递归错误；显式关闭依赖表RLS的诊断阶段分别复现audio匿名读取/跨项目上传、撤权上传者旧分支、projects.name误绑定及stories宽松INSERT。候选回归前全部重新启用RLS。这些是缩减本地schema的行为证据，不是线上攻击或资料外泄证明。
+
+本地候选使用窄SECURITY DEFINER helper消除递归，以RESTRICTIVE门约束并行宽松策略，项目/故事对象按当前成员授权，写入绑定本人路径及owner字段；stories项目/创建者不可变。管理bucket的覆盖、改名、直接删除和upsert暂时关闭，原始故事DELETE也关闭，**旧客户端直接.remove()需后续兼容，候选不可部署**。READ COMMITTED下一语句能看到撤权，已建立REPEATABLE READ快照保留旧视图，未声称即时撤销全部访问。
+
+最终本地PostgreSQL14.17验证 **61场景/199断言**，包含正反例、未知宽松策略、原子DDL回滚、重复应用及撤权隔离级别；独立SIGTERM退出143报告确认数据库/连接/临时目录完整清理。两份最终报告的五份源码指纹一致。项目verify **76套/730项**、shared **4/16**、infra **7**、类型/lint和 **175页**构建通过；next-env原字节恢复，应用/依赖/根迁移/前批实验保持原样。实际audit仍 **42项（34high/8moderate）**。
+
+见[实施记录](research/2026-10-17-rls-rehearsal.md)、[验证汇总](research/evidence/2026-10-17-rls-rehearsal/verification.json)及[里程碑核对](research/evidence/2026-10-17-rls-rehearsal/milestone-check.json)。独立审查派发后因模型限流失败，见[审查状态](research/evidence/2026-10-17-rls-rehearsal/review-status.md)；主代理自查不当作独立PASS。前批采集器审查也仍待补。生产权限未改，bucket/完整函数与触发器/ACL/迁移等价/备份回退、正式adapter及真机验收仍缺；G0/G1未完成，未提交、推送、迁移或部署。
+
+### G0/T02 远端元数据补核（10月17日前批）
+
+已使用前置会话配置的metadata_reader，在TLS证书/主机验证和只读一致性事务中取得真实PostgreSQL17.4元数据：**43个表/视图、459字段、79策略、141索引、167约束、4条迁移版本**。先前audit_meta tables/columns的0/0是权限过滤结果，不能再据此称远端schema未知或空库。连接池忽略启动超时参数，已改为SET LOCAL并实际确认10s/2s/15s；所有连接关闭。bucket配置仍42501，最终采集状态为partial/退出2。
+
+迁移账本仅有4个旧版本，**7个根迁移未登记，但其中20张声明表已存在**；不得直接db push、修复历史或重放bootstrap。真实stories.images为jsonb[]、title/storyteller_id必填，project_roles角色/状态CHECK与本地契约有差异。正式P1新增表尚不存在。
+
+需优先处理的实际规则：audio-recordings对public全桶SELECT、authenticated全桶INSERT；saga项目策略将路径误绑定到projects.name，且旧上传者分支可绕过项目撤权；stories也有并行PERMISSIVE宽松分支。只读静态证据已足以阻止隔离门通过，**没有读取真实对象或证明已经发生资料外泄**。本轮未改线上权限。
+
+本批新增可重跑的只读采集器与**10项定向测试**；项目verify **76套/730项**、shared **4/16**、infra **7**、类型/lint及**175页**构建通过，next-env原字节恢复。实际audit仍**42项（34high/8moderate）**，退出1。凭据两文件已精确gitignore且未入索引。见[实施记录](research/2026-10-17-remote-metadata-reconciliation.md)、[比较](research/evidence/2026-10-17-remote-metadata/comparison.json)、[最终汇总](research/evidence/2026-10-17-remote-metadata/verification.json)。本批已自查，独立审查因模型不可用/限流待补，见[审查状态](research/evidence/2026-10-17-remote-metadata/review-status.md)。G0/G1仍未完成，未提交、推送、迁移或部署。
+
+### T05 私有输出候选与发布互斥（10月16日前批）
+
+按[本批计划](superpowers/plans/2026-10-16-upgrade-t05-output-candidates.md)完成实现、本地最终验证及独立审查，规格/质量均PASS，未发现Critical/Important/Minor问题。新增持久候选绑定ref/job/attempt/worker/queue与冻结输入摘要；文件创建前先确认reservation提交，prepare返回后登记metadata，发布前独立提交publishing意图，最终published与artifact/业务状态/attempt/queue确认同事务提交。读取前后都复核匹配的published候选。
+
+发布与隔离按job→queue→candidate加锁，candidate锁等待及提交检查点后重查signal/数据库时间/lease/queue/attempt。仅无引用、明确终止、无有效queue、无未知结果且尚未进入publishing的prepared候选可登记quarantined；已发布、reserved、publishing与未知结果保留。outcome_unknown后取消也不能解除保留。已知prepare失败的cleaned状态与原失败/重试事务原子完成；每次重试使用新候选。quarantined只禁止发布，本批没有物理删除、TTL扫描或未知结果自动复用。
+
+最终候选验证 **45场景/277断言**、完整真实合并 **52/402**、失败重试 **42/371**、原T05 **39/307**全部在本批运行并通过，四报告源码指纹与清理核对一致。项目verify **76套/730项**、类型/lint及 **175页**构建，shared **4/16**、infra **7**通过；next-env原字节恢复，依赖、TS helpers、通用状态机、runner/supervisor及外部清理观察器保持本批起点内容。中间夹具失败及一次外部清理单独存证，不当最终通过。
+
+见[本批记录](research/2026-10-16-t05-output-candidates.md)、[独立审查](research/evidence/2026-10-16-t05-output-candidates/review-initial.md)、[验证汇总](research/evidence/2026-10-16-t05-output-candidates/verification.json)、[实现报告](research/evidence/2026-10-16-t05-output-candidates/implementation-report.md)和[里程碑核对](research/evidence/2026-10-16-t05-output-candidates/milestone-check.json)。用户已获元数据范围解释，尚未提供新的只读访问/导出；未重试被拒的CLI角色初始化。依赖未改，沿用前批实际audit **42项（34high/8moderate/0critical）**，没有重跑或宣称通过。G0/G1仍缺正式远端/供应商/adapter/真机证据，本轮未提交、推送、迁移或部署。
+
+### T05 已知合并错误与原子重试（10月16日前批）
+
+按[本批计划](superpowers/plans/2026-10-16-upgrade-t05-merge-failures.md)完成R1修复后实现与本地验证，独立复审已关闭R1，没有新增Important/Critical问题。缺源、非法文件、大小/hash不符、无有效PCM和时长超限持久记录为failed；源读超时和明确暂时OS读取错误沿用原maxAttempts，以1/2/4/5秒封顶退避重试。失败attempt审计、业务状态、延迟消息与旧消息确认同事务完成；过早重复消息不消耗attempt。只有prepare尚未返回且局部清理成功的真实结构化错误可分类；取消/停止/失租、撤权/删除/输入变化仍优先拒绝，准备后及未知COMMIT不自动重试或删文件。R1明确通用FFmpeg非零退出/诊断不证明永久坏输入，修复后保持未知；部分损坏音频仍需后续核对。
+
+最终失败验证 **42场景/371断言**、完整真实合并 **52/402**、原T05回归 **39/307**通过；定向单元 **3套/69项**。项目verify **76套/730项**、类型/lint、**175页**构建，shared **4/16**、infra **7**通过。修复后的失败/合并报告全部源码指纹匹配；原T05在R1修复前运行，其实际执行源码保持相同，附带的合并场景/README旧哈希不再当当前证明。所属进程/组/进程内任务、数据库与临时目录完成清理。首次项目检查发现两处TS类型库兼容问题，修复后重跑通过；next-env恢复。根/Web manifest、lockfile、通用状态机、runner/supervisor和外部清理观察器保持本批开始时内容。
+
+见[本批记录与保留/回收契约](research/2026-10-16-t05-merge-failures.md)、[最终独立复审](research/evidence/2026-10-16-t05-merge-failures/review-final.md)、[最终汇总](research/evidence/2026-10-16-t05-merge-failures/verification.json)、[运行核验](research/evidence/2026-10-16-t05-merge-failures/fix1-final-verification.json)与[项目检查](research/evidence/2026-10-16-t05-merge-failures/fix1-project-checks.json)。本批没有自动GC；未来回收须持久候选身份、发布/回收互斥及未知提交核对，不能按年龄或暂时无引用直接删除。
+
+实际audit:high仍退出1，**42项（34high/8moderate/0critical）**。限定配置范围仍未发现此前四类数据库凭据，没有重试被拒的角色初始化或远端SQL。正式schema/Storage/会话adapter、供应商资格与G1真机仍缺，G0/G1未达成，本轮未提交、推送或部署。前批源码指纹只代表各自运行当时状态，本批以新的最终运行核验为准。
+
+### T04/T05 真实本地文件合并（10月16日前批）
+
+实现、本地验证与最终独立复审均已完成，两处异常回收 P2 已关闭，未发现新增规格或代码质量问题。见[本批记录](research/2026-10-16-t04-t05-local-merge.md)与[实施计划](superpowers/plans/2026-10-16-upgrade-t04-t05-merge.md)。真实 T04 流式合并/FFmpeg 解码已接入隔离 T05 Worker：持久冻结清单与身份、同清单跨 job ID 幂等约束、限时且可取消的本地源流、唯一私有输出与回读校验，以及发布前的权限标志/删除/取消/输入/租约/queue 与 business attempt 复查。真实合并不会写模拟 provider 调用账本。
+
+应用 helper 增加向后兼容 AbortSignal；reader 与解码器收到同一信号，FFmpeg 取消等待进程退出。runner 心跳覆盖文件读取、解码和回读，到发布事务前才停止并 join。文件系统与 PostgreSQL 无共同事务；完全准备的输出在崩溃/COMMIT 结果未知时保留为私有文件，只允许从受检的已提交引用读取。该批当时将本地错误保守恢复为outcome_unknown；本次续批已补明确失败分类与有界重试，见上节。孤立文件 GC 尚未实现。
+
+真实本地验证 **52场景/396项断言**、原 T05 回归 **39/307**通过；Web **75套/716项**、shared **4/16**、infra **7**、类型/lint及**175页**构建通过，next-env 已恢复。两组主验证清理完整，所有最终运行源码指纹与当前文件一致。实际解码异常清理 **6/6** 通过：登记独立进程组并保留父进程退出后的所有权，协作停止后有界回收；同进程直接任务也中止并 join。观察器超时、harness 非预期退出及观察器 SIGTERM 共 **3/3** 通过，提前记录 IPC 所有权并有界回收所属进程、独立停止私有数据库，确认资源消失后才删除临时目录。两处 P2 的关闭结论见[最终独立复审](research/evidence/2026-10-16-t04-t05-merge/review-final.md)与[最终汇总](research/evidence/2026-10-16-t04-t05-merge/verification.json)。先读最终结果，不把中间失败/12场景/50场景结果当当前验收。
+
+测试素材是生成的 WebM/MP4/Ogg；实际 FFmpeg `-re` 输入节流、读检查点暂停及客户端 COMMIT 回执故障分别标注，不当作长音频 CPU 负载、网络分区或真机证明。FFmpeg 7.1 nonfree 仅为本地测试 runtime。没有接生产 Storage/会话封口/正式资产表，没有完成 G0/G1，也没有提交、推送或部署。
+
+### T05 自动监督与持续任务（10月16日前批）
+
+完成[本批记录](research/2026-10-16-t05-supervision.md)与[实施计划](superpowers/plans/2026-10-16-upgrade-t05-supervision.md)。修复业务心跳未刷新队列claim及lease累计到未来的问题；每个attempt绑定queue ID/retryCount，双方同事务续约，租约以锁后数据库当前时间计算并受硬截止约束。新增持续消费runner与自动监督supervisor，异常退出最多连续重启3次；调用结果未知保持隔离。
+
+独立审查发现并修复了维护SQL受锁导致关闭挂起、停止信号在锁等待/最后时钟查询间被漏掉的问题；增量复查补齐后台会话取消、runner失败退出传递与幂等停止。取消仅针对本次私有数据库中本实例标记的会话；不连接远端或取消其他会话。中间夹具曾遗留的自建临时集群已清理，并补未处理异常的紧急清理回归。
+
+最终实验 **39场景/307项断言**通过；另有真实 **300018ms** 合成任务、**297次心跳**、最大间隔**1017ms**，同一attempt、queue无重试、一次模拟调用、一份产物。SIGTERM143、SIGINT130及异常退出1均是预期注入结果，所属子进程/进程组/runner PID、数据库、临时目录全部清理。最终9项源码指纹匹配，见[汇总](research/evidence/2026-10-16-t05-supervision/verification.json)和[独立复审](research/evidence/2026-10-16-t05-supervision/review-final.md)。原19/167及中间失败文件属于历史，不能代替最终结果。
+
+本轮项目verify再次通过：Web75套/702项、类型/lint、175页构建；shared4套/16项、infra7项。原next-env、根/Web manifest、根与实验lockfile保持本批开始时内容。没有接真实Storage、故事发布或供应商；合成等待不证明长音频解码、生产托管或G1真机通过。G0/G1及审计仍未过，未提交、未推送、未部署。
+
+### 依赖审计兼容修复（10月15日历史；16日已补复审）
+
+完成[依赖修复记录](research/2026-10-15-dependency-audit-remediation.md)和[实施计划](superpowers/plans/2026-10-15-upgrade-dependency-audit.md)。修改根/ Web package manifest 与根 lockfile：Next 和 eslint-config-next 统一为 16.4.1，sharp 统一为 0.35.5，Sentry 保持 10 系列升级到 10.76.2，Handlebars 升至 4.7.10；Web PostCSS 下限提高到 8.5.23，所有保留副本均高于当前受影响上限。清除了间接 peer 曾保留的旧 Next/sharp 副本，没有改应用业务代码或隔离 T05 package/lockfile。
+
+干净 `npm ci` 成功安装 1416 个包；`npm run verify` 退出 0，Web **75 套 / 702 项**、类型/lint 和 **175 页**构建通过；shared **4 套 / 16 项**、infra **7 项**通过。新增本地运行验证 **18 项**通过：真实 JPEG/PNG/GIF/WebP 缩略图与像素解码、损坏拒绝、三语言页面/登录页、locale 跳转、AI 配置健康响应和未登录资产拒绝，以及 Chromium 页面运行/CSS。外部浏览器请求被阻断，未读写真实家庭或 Storage。证据见[验证汇总](research/evidence/2026-10-15-dependency-audit/verification.json)。
+
+10月15日审计从 **59 项（17 moderate / 40 high / 2 critical）降到 42 项（8 moderate / 34 high / 0 critical）**；实际 `npm run audit:high` 仍退出 1。剩余 high 条目均包含当前无已发布补丁的 braces 链；另外保留旧 postcss-selector-parser、sprintf-js 相关 moderate 链。没有降级、跨大版本 override、强制修复或降低审计门槛。此结果不是 GitHub CI 已恢复的证明。
+
+10月16日已补齐[独立复审](research/2026-10-16-dependency-review-followup.md)。发现的运行脚本启动失败保留旧成功JSON的P2已修复，4项启动回归及18项实际运行检查通过，增量复审关闭问题。两份旧JSON保持原样，旧脚本另存用于核对历史哈希；新执行记录绑定已修复脚本。当前审计再次确认42项（34high/8moderate/0critical）；没有修改依赖或降低门槛。此前工具错误只记为失败派发，不再列为独立复审阻塞。
+
+### P0/T00/T01 与媒体入口前置批
+
+已完成本地真实失败行为、响应校验、录音结果隔离、媒体签名回放、ASR 对象授权、图片上传认证/原件保留，以及 T01 两入口 HTML 原型和观察脚本。
+
+媒体入口批的历史验证：58 套 / 488 项 Web 测试，类型、lint、shared/web build 通过。详细边界见[媒体入口记录](research/2026-10-13-media-access-implementation.md)。
+
+T01 原型位于 `docs/prototypes/2026-10-13-two-entry/index.html`，只使用虚构材料，不连真实存储、录音或 AI。浏览器演示 85 步、7 次预期拒绝；真实家庭观察仍为 0 户。
+
+### T02 资产本地批
+
+新增/修改的主要文件：
+
+- `packages/web/src/lib/media-assets.ts`
+- `packages/web/src/lib/legacy-media-reference.ts`
+- `packages/web/src/lib/server/media-asset-verifier.ts`
+- `packages/web/src/lib/server/media-export.ts`
+- `packages/web/src/app/api/media/assets/route.ts`
+- `packages/web/src/app/api/media/assets/[assetId]/complete/route.ts`
+- `packages/web/src/app/api/media/assets/[assetId]/access/route.ts`
+- `packages/web/src/app/api/projects/[id]/export/route.ts`
+- 对应 `__tests__` 文件
+
+已实现的本地契约：
+
+- 服务端生成 bucket/key；客户端不能提交 bucket、state、sha256。
+- 可选 `storyId` 必须存在且属于 `projectId`，合法值写入 `story_id`。
+- 无幂等键使用 SQL `NULL` 语义，不以空字符串代替 NULL。
+- 图片完整校验后进入 `ready`；音频完成确认后暂留 `verifying`，等待 T04 解码能力正式接入；本轮本地解码器尚未接该路由。
+- 缺件、大小不符、SHA-256 不符、错误 MIME 或非 ready 资产不能访问/导出。
+- 导出前重新读取原件，校验字节数和 SHA-256，再写入 ZIP 与 `manifest.json`。
+- 资产 API 和导出仅在 `MEDIA_ASSETS_ENABLED=true` 时触发拟议 `media_assets` 表；默认关闭。
+
+T02 定向测试：7 套 / 42 项通过。最近全量验证时 Web 为 66 套 / 569 项；测试数量包含本轮 T05 合同扩展。
+
+T02 尚未做：`media_assets`/`legacy_media_references` 迁移、旧对象映射回填、正式录音/删除切换、远端对象盘点、RLS/备份核对。
+
+### T05 任务状态本地批
+
+新增：
+
+- `packages/web/src/lib/server/processing-jobs.ts`
+- `packages/web/src/lib/server/__tests__/processing-jobs.test.ts`
+- [T05 实施计划](superpowers/plans/2026-10-13-upgrade-t05-jobs.md)
+- [T05 本地记录](research/2026-10-13-t05-processing-jobs-local-implementation.md)
+
+纯函数已固定：
+
+- 主路径：`queued → leased → running → succeeded`。
+- 可恢复分支：`retry_wait`、`outcome_unknown`、`awaiting_review`、`failed`、`cancelled`。
+- 幂等键覆盖项目、资产、输入版本、任务类型、处理器、模型配置和参数版本。
+- due 检查、租约领取、attempt 递增、最大尝试次数。
+- 领取前租约过期进入 `retry_wait`；运行中租约过期进入 `outcome_unknown`，默认禁止盲目重试。
+- 重试耗尽进入 `failed`；取消清除租约并拒绝迟到完成；成功完成要求非空 `resultRef` 且只能一次。
+
+T05 定向测试：1 套 / 39 项通过。全量 Web：66 套 / 569 项通过。类型、lint、`git diff --check` 通过；`npm run verify` 退出 0，Next 生成 175 个页面。
+
+本轮又固定了严格幂等输入、删除/取消阻断、运行中人工复核与跨天批准、未知结果的显式受控重试和输入快照不可变。批准保留尝试次数，不把它当作新阶段；删除时间是未来服务端授权查询投影，不证明数据库字段已部署。
+
+T05 正式数据库 adapter、`processing_jobs`/`processing_attempts` 表、保存入口事务入队、部署/自动监督、租约心跳、真实供应商请求 ID/账单仍未完成。10月15日已补本地 PostgreSQL/pg-boss 与独立进程故障验证，见下节；不可把隔离实验写成生产接入。
+
+### T05 持久队列与独立进程续批
+
+新增 [PoC 实施记录](research/2026-10-15-t05-durable-worker-poc.md)、[实施计划](superpowers/plans/2026-10-15-upgrade-t05-durable-worker-poc.md)和 `experiments/t05-durable-worker/` 独立 package/lockfile、store、worker、verify、README。使用 Node 22.22.2、PostgreSQL 14.17、pg-boss 12.37.1、pg 8.16.3；复用应用状态函数，根应用依赖没有改变。
+
+本地已实测事务入队回滚/提交、并发重复投递、leased/provider/before_commit 三处 SIGKILL、旧 Worker 迟到、提交期间过期、queue retryCount 确认隔离、跨天批准结果复用和撤权后拒绝发布。租约恢复区分“尚未调用”和“调用结果未知”；unknown 不自动重发。独立审查发现行锁等待后的时钟更新和失败 fork 清理问题，已修复并补充真实行锁竞争和 fork 失败回归；复审新增的嵌套数据库清理问题通过简化为单集群解决。基础 PoC 为13个场景 / 125项断言；续批加入心跳与未知结果核对后，隔离实验为19个场景 / 167项断言，证据见 [results.json](research/evidence/2026-10-15-t05-worker/results.json)。这仍是合成账本和本地短任务实验，不是生产 Worker/供应商资格。
+
+证据见 [results.json](research/evidence/2026-10-15-t05-worker/results.json)。数据库仅为本次专属 Unix socket 临时集群；测试结束停止并清理。跨天使用显式逻辑时间推进 24 小时，模拟调用账本不等于真实请求/费用。实验结果引用不等于故事或云端文件交付。
+
+生产 schema/adapter、长任务心跳、自动监督/托管、权限/用途同意/墓碑投影、真实 Storage/故事写回及供应商资格仍缺。G0/G1 仍未完成，本轮未提交或推送 GitHub。条件推送授权继续有效，不需下轮重复询问。
+
+### T03 权限、用途同意与删除本地批
+
+新增：
+
+- `packages/web/src/lib/server/consent-deletion.ts`
+- `packages/web/src/lib/server/__tests__/consent-deletion.test.ts`
+- [T03 实施计划](superpowers/plans/2026-10-14-upgrade-t03-consent-deletion.md)
+- [T03 本地记录](research/2026-10-14-t03-consent-deletion-local-implementation.md)
+
+纯函数已固定：
+
+- active 成员读取、facilitator/owner 管理、storyteller 本人故事动作和删除/分享的角色边界；未知角色、撤权和删除阻断默认拒绝。
+- 用途同意必须匹配主体、用途、策略版本、供应商、区域和时间；撤回在时间点生效。
+- 删除请求创建即产生墓碑；失败保留墓碑并可重试；所有目标确认删除或不存在后才完成；恢复后重新应用墓碑。
+
+T03 定向测试：1 套 / 12 项通过。数据库 adapter、同意/删除迁移、直接 Storage RLS、备份恢复和正式路由接入仍未完成。
+
+### T04 录音会话与本地恢复批
+
+新增：
+
+- `packages/web/src/lib/recording-session.ts`
+- `packages/web/src/lib/recorder-db.ts`（IndexedDB v2）
+- `packages/web/src/lib/__tests__/recording-session.test.ts`
+- [T04 实施计划](superpowers/plans/2026-10-14-upgrade-t04-recording-session.md)
+- [T04 本地记录](research/2026-10-14-t04-recording-session-local-implementation.md)
+
+已固定 MIME 支持选择、项目/用户绑定、数字块顺序、字节数和 SHA-256 校验、先持久化后上传、中断恢复以及完整确认前保留本地副本。IndexedDB v2 新增 `sessions` store 并保留旧 `chunks` 数据和 SmartRecorder 兼容方法。
+
+T04 定向测试：1 套 / 7 项通过。后续 SmartRecorder 入口续批和恢复预览已完成，恢复批为 3 套 / 45 项；前批服务端合并契约新增 1 套 / 9 项，本轮执行器/解码器再新增 2 套 / 41 项；最新全量 Web：75 套 / 702 项通过；类型、lint、`git diff --check` 和 `npm run verify` 通过，Next 生成 175 个页面。
+
+T04 尚未做：服务端录音会话封口/数据库 adapter、断点上传对账、真实 Storage 读写和上传后回读验证、T05 Worker 接入、完整确认后的清理、真机锁屏/来电/进程退出/跨设备恢复矩阵。本地流式合并及 FFmpeg 实际解码已完成；桌面 Chromium 也已对短虚构 WebM 做解码/回放，两类本地证据都不替代 G1 设备证据。构建仍提示缺少 `SUPABASE_SERVICE_ROLE_KEY` 和既有 Next 配置警告；不能作为生产配置或远端 schema 证据。
+
+### T04 服务端合并契约本地续批
+
+新增[服务端合并契约记录](research/2026-10-15-t04-server-merge-contract-local.md)和 `packages/web/src/lib/server/recording-merge.ts`：未来 T05 合并任务输入必须绑定项目、会话、目标资产、实际 MIME、处理器/参数版本及从 0 连续的确切块清单；幂等键包含规范化块摘要。完整确认只在实际解码、正时长/大小、输出 SHA-256、身份和块证据全部匹配时返回 `ready`。本地定向 1 套 / 9 项通过；这不是数据库、Storage、Worker 或 FFmpeg 已部署的证明。
+
+### T04 本地流式合并与实际解码续批
+
+新增[本轮实施记录](research/2026-10-15-t04-local-merge-execution.md)、[实施计划](superpowers/plans/2026-10-15-upgrade-t04-local-merge-execution.md)与[G1 真机 runbook](research/2026-10-15-t04-g1-device-runbook.md)。新增代码：
+
+- `packages/web/src/lib/server/recording-merge-executor.ts`
+- `packages/web/src/lib/server/recording-audio-decoder.ts`
+- 对应两份 `__tests__` 文件
+- `scripts/verify-recording-merge.cjs`
+
+已实现可信任务快照校验、按序读流、逐块字节数/SHA-256、原件流式写入和失败清理。FFmpeg 实际解码受超时/时长/诊断量限制；固定容器与已声明编码，拒绝不符格式/编码及额外视频等轨道。完整解码后才生成完成证据供本地消费，消费结束清理临时文件；不清理源块，不写云端 ready，不改变旧保存流程。
+
+真实 FFmpeg 集成 **56 项检查通过**，五种 2 秒虚构 fixture（WebM/Opus、普通 MP4、带 AAC MIME 参数的 MP4、分段 MP4、Ogg/Opus），每份 13 块、逐字节原件对照；包含损坏、缺件、错误容器/编码/额外视频、输入/时长超限反例。证据见 [results.json](research/evidence/2026-10-15-t04-merge/results.json)。新增执行器 20 项与解码器 21 项 Jest 回归；全量结果见下节。
+
+独立审查的读流句柄释放 P2 已通过失败回归、修复和增量复审关闭；没有把该审查写成历史全部工作树审查。
+
+本机系统 FFmpeg 8.0.1 缺动态库；本轮使用已存在的独立 FFmpeg 7.1，源码/运行时指纹已留存，没有改系统或依赖。该二进制不作为生产分发选择。未来须配置合格 runtime 和 OS 资源/网络/文件系统隔离；当前进程限额不等于沙箱。
+
+`readChunk` 只是可注入端口，目前实测用虚构本地流。真实 adapter 仍须鉴权、读取超时/取消、冻结版本、封口清单、输出上传与回读、写回时重查墓碑/租约/权限并原子提交。解码成功不能证明结尾未丢失。真机 runbook 仅准备，实际 G1 矩阵仍未执行。
+
+### T04 SmartRecorder 本地入口续批
+
+已完成实际 MIME/登录用户会话、真实块哈希、先落盘后上传、补传保留副本、停止等待末块和项目/账号/重录代次隔离。新增 `local-recording-session.ts`；临时块上传在 StorageService 核对当前认证用户。另修复唤醒锁释放/重复可见性/取消期间晚到锁/浏览器主动释放的生命周期竞态。定向回归 1 套 / 24 项通过；最新全量验证和审查状态见[续批记录](research/2026-10-14-t04-smart-recorder-local-integration.md)。
+
+`interrupted` 在现有三态模型中包含“正常停止但尚未云端确认”。既有录音完成回调仍通往旧审阅/保存流程；没有调用 T04 confirmed，没有删除本地块，也没有保证录音尾部完整。新增[恢复预览与浏览器记录](research/2026-10-15-t04-recovery-preview-browser.md)：恢复 UI 只读取当前项目/账号的未确认草稿，校验连续块/大小/SHA-256，提供回听和本机下载，不自动上传、确认、清理或续录。
+
+## 当前验证结果
+
+邀请管理批的原执行时间为 **2026-10-21 23:01:19—23:04:58 Asia/Taipei**：[项目验证](research/evidence/2026-10-21-invitation-management/project-verification.json)记录五命令exit0、定向5/54、Web105/1420、shared4/16、infra7、180页及796输入未变/next-env恢复。SQL于同日22:47:16—22:47:23执行16场景/2448断言；22:49:45—22:49:59完成四生命周期。**2026-10-22 09:18:25**的[恢复核验](research/evidence/2026-10-21-invitation-management/resume-integrity-20261022T011825076698Z.json)只读确认796应用输入、19本批源码、986保护输入、774 SQL/runtime输入、38原始/公开日志、17引用报告/最终日志及Node/清单/next-env一致；未重跑测试。实现复审Approved；10月22日[文档审查](research/evidence/2026-10-21-invitation-management/task-3-review.md)与[整批审查](research/evidence/2026-10-21-invitation-management/batch-final-review.md)均PASS／Approved，零待修项；[最终完整性](research/evidence/2026-10-21-invitation-management/final-integrity-20261022T110637+0800.json)通过。两项收尾审查由同一位独立审查员完成，不是两份相互独立的意见；首次文档审查任务无报告，未计入结论。
+
+以下邀请发送 HTTP 结果属于前批历史：
+
+前批邀请发送 HTTP 批：控制器于 **2026-10-21 10:25:37—10:29:36 Asia/Taipei** 新执行[项目矩阵](research/evidence/2026-10-21-invitation-sender-http/project-verification-20261021T022537Z-f5820706-f190-44bf-9100-8aa7dfc5b528.json)：verify/shared/infra均exit 0，Web **101套/1373项**、shared **4套/16项**、infra **7项**、**178页**；785输入不变，next-env恢复。冻结源码定向[17套/521项](research/evidence/2026-10-21-invitation-sender-http/19-frozen-targeted-green.log.txt)、类型与范围lint通过。独立规格PASS，质量Approved；文档独立审查PASS／Approved，整批审查PASS，本批本地收尾完成。813个前批源码/依赖/Node/PG指纹、129个保护输入及975个旧实验/证据/依赖文件匹配，不重跑旧SQL矩阵。历史audit42项未重跑未解决；旧Next配置和缺服务端key诊断仍在，构建成功不等于生产配置合格。
+
+以下为认证会话及更早批次的历史验证，不能替代当前源码证据：
+
+认证会话衔接最终以[fix2的21路径冻结](research/evidence/2026-10-19-auth-session-integration/fix2/source-freeze-fix2.json)为准：[定向日志](research/evidence/2026-10-19-auth-session-integration/fix2/focused-final.log.txt)28套/605项覆盖认证、邀请和相关录音回归；[Chromium结果](research/evidence/2026-10-19-auth-session-integration/fix2/browser-results.json)14项通过。浏览器为实际facade/store/SDK、callback/guard的合成桥；页面组件另有回归，不能称完整Next部署或真实提供方端到端。原始RED、中间harness失败、两轮修复前结果和预期负例401均保留，详见[证据索引](research/evidence/2026-10-19-auth-session-integration/README.md)。
+
+控制器在 **2026-10-19 20:37:31—20:40:22 Asia/Taipei** 对最终源码新执行[完整项目矩阵](research/evidence/2026-10-19-auth-session-integration/project-verification-20261019T123731Z.json)：verify/shared/infra均exit 0，Web **96套/1278项**、shared **4套/16项**、infra **7项**、**176页**；773输入未变、next-env恢复。Task 1规格复审PASS、质量复审Approved且无新规格问题；文档独立审查、整批独立审查与最终完整性均已通过。构建仍出现旧Next `eslint`配置、`images.domains`弃用和缺少`SUPABASE_SERVICE_ROLE_KEY`的configuration-validation诊断；成功退出不等于生产配置合格。前批认证回跳430项/Web85/1196及其审查保持日期历史，不作当前源码证明。
+
+以下是 **2026-10-19 11:06前批只读/UI的历史验证**，不作当前认证源码证明：
+
+前批[只读兼容与恢复UI验证](research/evidence/2026-10-19-invitation-read-ui/verification.json)：最终定向 **253/253**，其中18项新读取路由使用实际SDK与合成loopback，41项React行为通过真实helper/parser与mock fetch验证，另194项是本次重跑的既有protocol/client/acceptance回归。初审I1证明同一React batch离开/返回同账号可接纳旧结果；保留2 failed的RED，身份代次修复后3项GREEN及[限定复审Approved](research/evidence/2026-10-19-invitation-read-ui/task-1-fix-1-review.md)。初次250项/1016项通过与原审查均为修复前历史，不当当前证明。
+
+控制器于 **2026-10-19 10:38:22—10:40:45 Asia/Taipei** 在固定源码后新执行[完整矩阵](research/evidence/2026-10-19-invitation-read-ui/project-verification-20261019T023821Z.json)：verify、shared、infra均退出0，Web **82套/1019项**、shared **4套/16项**、infra **7项**、**176页**；751输入未变，next-env恢复起点字节。实际SDK/React合成边界不证明真实JWT/PostgREST/PG17或生产权限。Task 2文档独立审查、整批独立审查及最终完整性均已通过。缺服务端key及旧Next配置警告仍在，初审M1作为独立清理项保留；构建成功不是生产配置验收。
+
+以下为前批邀请事务与其应用复用证据，保留原执行归属：
+
+邀请事务原始最终正常/污染PG17运行各 **158场景/2,288断言、33实际并发场景、282完整状态核对**，协议 **18/18**，4类生命周期观察通过；子进程预期退出0/143/1/1并全部清理。最终24个直接输入、44个加载依赖/package、743个PG文件、Node/pins及27份原实现证据哈希相同，本次续接未重跑已完成矩阵。Task 1独立规格PASS、质量Approved；Task 2独立审查PASS/Approved；整批独立审查已PASS，见[当前汇总](research/evidence/2026-10-18-invitation-transactions/verification.json)。
+
+应用结果复用前批RPC权限控制器在 **2026-10-18 12:24:38.969365—12:26:48.304226 Asia/Taipei**的实际执行，见[本批复用记录](research/evidence/2026-10-18-invitation-transactions/project-checks.json)。`npm run verify`、shared、infra均退出0，Web **77套/766项**、shared **4套/16项**、infra **7项**、类型/lint及 **175页**构建通过。本次重新核对707个应用输入、3份日志及next-env起点字节，均未变；这是前批执行证据复用，不是本批新运行或生产配置验收。
+
+邀请事务批应用、旧实验/运行时、依赖、根迁移和历史证据保持起点内容；仅新增实验/本批文档证据并更新五份授权交接文档。新候选已具有token、合成确认邮箱、持久预留/映射与请求去重；正式生产身份、可信付款来源及UI/API adapter仍未接入。原RPC、直接表及旧入口旁路需正式收紧或停用，详见[本批边界与下一步](research/2026-10-18-invitation-transactions.md)。缺服务端Supabase配置、旧Next配置等构建提示仍在。前批RPC权限的规格澄清/原审计哈希属于前批历史记录，原样保留。
+
+依赖未变且未重跑audit；沿用前批`npm run audit:high -- --json`实际退出1，**42项：34high/8moderate/0critical**，见[前批审计](research/evidence/2026-10-17-rls-rehearsal/audit-high.json)。
+
+## 已知阻塞与不可假设的事实
+
+RB1分两层记录：**本地PKCE/cookie根因修复、OTP及store/guard合成集成已完成**；**真实提供方与部署资格仍阻塞发布**。浏览器`detectSessionInUrl=false`，既有callback继续唯一自动code兑换；旧localStorage认证key只删不读，localStorage-only用户重新登录。旧fragment-only/畸形callback不恢复，精确单一裸`?type=invite`且无其他query/fragment仅保留原链接指引。安全next、八语言、丢next回dashboard和strict signin/callback边界保留。真实Google/SMTP、完整Next域名/cookie部署、JWT/RLS/PostgREST、全站日志仍分别待验收。可信pending/最小预览与历史opaque token/member映射仍缺，不猜测或恢复旧旁路。
+
+已补齐：实际schema字段/约束/索引/RLS及迁移版本，详见[10月17日差异](research/2026-10-17-remote-metadata-reconciliation.md)。不再重复被42501拒绝的CLI登录角色初始化，继续用已有metadata_reader。表和字段必须读pg_catalog；现有information_schema包装视图为0/0是可见性过滤。只读账户的43个关系表级/列级读取和写入权限均未授予；未据此推断所有函数路径也安全。
+
+当前必须处理：Storage/直接表权限差异、已确认的RPC身份/付款/假成功与依赖缺口、7个未登记迁移及邀请RPC契约对账。12个非trigger SECURITY DEFINER及唯一相关更新时间触发函数已审并在原生PG17重放；这不包含完整Supabase认证/角色继承/生产RLS/扩展环境，旧RLS和来源事务矩阵现已按明确阶段在PG17运行，最终seed组合全部候选；生产Storage/JWT及历史归属变更矩阵在RLS身份保护下的行为不在该证明范围。三参购买实际抛P0001并被限定模式分类为歧义，三参导出才是直接42702；不能把前者写成成功支付。jsonb[]/CHECK与来源事务已有本地证据；历史metadata_reader读取bucket为42501，现已由用户A/B/C补齐精确配置、enum及函数指纹；对象盘点、备份恢复/回退、供应商账户条件、正式adapter和真机验收仍缺。仅看到bucket策略不能推定bucket存在/private或文件限制。迁移版本未登记不能推定对应SQL未执行。
+
+10月15日Supabase项目身份/区域和GitHub运行记录仍仅为当日证据；10月23日用户已回传Vercel域名/基线commit/九项变量范围和Google/SMTP状态，见顶部部署记录；没有独立刷新实际alias、部署ID或读取变量值。无隔离项目已确认，网址配置/真实登录与恢复环境仍待验收。未取得四类旧env键不妨碍当前专用只读账户可用，不再以它们缺失为schema访问阻塞。
+
+## 下一步执行顺序
+
+### 下一步：完整Storage行为与正式媒体/删除adapter
+
+0. 先读[10月23日差距/实现记录](research/2026-10-23-p0-gap-and-storage-audit.md)、[本批汇总](research/evidence/2026-10-23-storage-definition-capture/verification.json)和[精确定义语义审查](research/evidence/2026-10-23-storage-definition-capture/semantic-audit.md)。六函数/七触发器正文及静态审查、本地旧删除阻断已完成；不要重复采集或重新开放旧删除。下一轮按该审查中的GUC/角色/生命周期/更新时间边界建立隔离回归，随后将正式资产/Storage/删除adapter与迁移回退顺序落为可执行规格。
+
+1. [邀请管理批](research/evidence/2026-10-21-invitation-management/verification.json)的实现、文档/整批审查及最终完整性已完成；无需重新收尾。10月21日原始运行与10月22日恢复核验分开保留，有具体新问题才定向修复、复测和复审。
+2. [PG17和已审依赖下的旧RLS/来源账本组合](superpowers/plans/2026-10-22-upgrade-pg17-rls-source-composition.md)本地实现、实测及独立审查完成；[当前汇总](research/evidence/2026-10-22-pg17-rls-source-composition/verification.json)和[最终完整性](research/evidence/2026-10-22-pg17-rls-source-composition/final-integrity-5d5d3a4a-93f7-4918-a7cd-e0065d14974d.json)记录收尾依据。下一项设计正式资产/Storage/删除 adapter 与旧.remove()兼容。可信来源/历史管理与最小票据恢复已本地完成；历史 opaque token/member 映射及表单正文恢复不在该完成范围。
+3. 真实事件签名、账户/商品映射、writer角色、Auth/JWT/PostgREST/RLS/Storage及Google/SMTP/部署cookie资格另验。七个旧写RPC和表列ACL只在本地候选中关闭，正式应用其他依赖、历史opaque token/member映射、七个未登记迁移的语义对账、前向/回退仍缺。导出候选的Worker/交付再授权和实际文件不由成员停用替代；不运行repair或重放bootstrap。
+
+4. A/B/C/D及本轮限定函数正文、触发器参数/条件均已取得并审查。Free Backups未开启，音视频无独立副本、图片副本未单独确认；[恢复方案](research/2026-10-23-p0-gap-and-storage-audit.md)已写明冻结点、独立媒体副本、墓碑与隔离恢复次序，受控位置/容量/预算和真实恢复仍未落实。结构/hash不等于历史等价，配置不证明对象完整或私密权限通过；真实对象盘点和影子读取只按另行核准的最小字段范围执行。
+5. 正式 adapter 须把实际对象核查、动作/用途同意、摘要版本和提交边界一并集成；来源账本仍是受信实验 adapter。生产资格与上述本地组合分别验收。
+6. T05物理GC可作独立本地后续：只处理已quarantined候选，保留reserved/publishing/未知提交、原始块和已引用输出，不按TTL删除。供应商、依赖审计及G1真机保持独立待办；达到原计划里程碑才推送。
+
+### T04 后续：服务端封口/adapter 与 G1，不接生产
+
+1. 先读[真实Worker接入记录](research/2026-10-16-t04-t05-local-merge.md)，再读[本地合并/解码记录](research/2026-10-15-t04-local-merge-execution.md)和[G1 runbook](research/2026-10-15-t04-g1-device-runbook.md)；不重复已完成的恢复 UI、短音频合并/解码演练。
+2. 远端 schema/Storage/RLS 只读证据齐备后，先比较迁移历史，再设计会话封口、有序块清单和幂等写入 adapter；不执行生产迁移。封口必须核对末块/清单版本，不能仅凭可播放确认完整。
+3. 本地真实文件adapter与事务测试已接通；正式Storage接入仍需真实、限时且可取消的读流。输出只写一次并回读核对 SHA-256/大小，写回前重查权限、删除墓碑、租约和输入版本，以事务提交资产/任务引用。没有证据前不要接旧正式保存入口。
+4. 独立 Worker 部署前固定 FFmpeg 来源/版本/许可与资源隔离，并将已通过的 T05 故障 harness 接入正式 adapter，再验证重复投递、进程退出、取消/撤权后迟到结果；现有隔离实验不替代真实 Storage/业务写回。
+5. 按 G1 runbook 在真实设备执行 5/20/30 分钟及故障矩阵；暂无设备或 adapter 的项目保持未执行/blocked，不从本地测试推断通过。
+6. 继续保留本地草稿；云端完整确认与清理事务接通前，不调用客户端 confirmed，不删除恢复块。每批同步实施记录、主计划和 handoff。
+
+### 正式迁移与adapter前
+
+1. schema/history/RLS及函数/触发器结构/ACL已保存；Storage bucket配置、enum及六函数/七触发器正文与静态语义本轮均已补齐。下一步验证完整依赖下的行为和历史等价；当前角色成员图、服务GUC设置及真实Storage HTTP仍未捕获或验收。
+2. 与 bootstrap、根 migrations、P1 契约逐项对照，记录冲突；不要先写迁移。
+3. 只读盘点对象的 bucket/key/大小/更新时间/metadata/hash/可推断归属，不读家庭正文。
+4. 在测试项目用虚构素材做影子读取和导出校验。
+5. 再决定 `media_assets`、`legacy_media_references`、`processing_jobs`、`processing_attempts` 的迁移文件和回填顺序。
+
+### 后续任务顺序
+
+保持主计划顺序：`T02 → T05 → T03 → T04`。T03 的本地纯函数契约已先完成，正式 adapter 仍依赖远端证据。
+
+- T03：动作权限、用途同意、删除请求/墓碑、派生数据和恢复重放；依赖 T02/T05 证据。
+- T04：IndexedDB 会话/块持久化、格式探测、上传恢复、服务端合并与完整确认；依赖 T02/T05/T03/T01。
+- T09：完整原件/照片/文字/manifest/PDF 交付；当前导出只是基础资产分支，不能宣称完整成品。
+
+## 重要代码边界
+
+- `requireProjectAccess` 当前按 `projects.facilitator_id` 或 active `project_roles` 检查；不要用客户端 owner 字段或路径前缀授权。
+- 旧 `stories.audio_url`、`images` JSON、`audio-recordings/stories/<basename>` 不是资产身份；必须保留确切 bucket/key 并显式映射。
+- 现有 `agent-store.ts` 与编辑器路由仍是 HTTP 内处理，不能称为持久 Worker。
+- 直接 Storage RLS、已签发短链在 TTL 内的即时撤销、物理删除、供应商用途同意和备份删除都未被本地 API 测试证明。
+- 原型中的保存/恢复/处理全部是内存演示，不连接真实系统。
+
+## 工作树处理
+
+当前工作树同时包含前序 T00、媒体入口、T01 文档/原型、T02 资产、T05 helper 和大量文档变更。新会话应：
+
+1. 先 `git status --short`；
+2. 不做整体 reset/checkout/clean；
+3. 修改前读取目标文件与对应测试；
+4. 只报告自己本轮新增/修改的文件，避免把全部工作树误归因于当前批次；
+5. 完成验证后恢复 `next-env.d.ts` 并运行 `git diff --check`。
+
+## 交接完成标准
+
+新会话在继续实现前应能回答：
+
+- 当前分支、基线 commit 和未提交状态是什么；
+- T02/T05 哪些已在本地通过，哪些仍未接入真实系统；
+- 为什么现在不能创建/执行远端迁移；
+- 下一步是纯契约测试还是需要用户提供远端只读凭据；
+- 哪些文档是计划，哪些是本地证据，哪些不能当生产事实。
+
+完成任何新批次后，更新本 handoff 或新增对应实施记录，并把测试数量、构建限制和未完成边界写清楚。
+
+## 2026-10-17 Supabase 元数据只读访问
+
+已在远端项目 `encdblxyxztvfxotfuyh` 创建 `metadata_reader` 角色，并仅授予 `audit_meta` 下的 schema、columns、RLS policies、indexes、constraints、migration metadata 视图读取权限。业务表读取与 DDL 均验证为拒绝。证据见 [Supabase 元数据只读记录](research/2026-10-17-supabase-metadata-readonly.md) 与 [JSON](research/evidence/2026-10-17-supabase-metadata-readonly.json)。本地连接凭据保存在 `supabase/.temp/metadata-reader-credentials`；本批已把它与password文件精确加入.gitignore，未入索引。上文为配置会话的历史拒绝测试，本轮仅做只读元数据采集。
+
+
+同日后续：已补[函数/触发器/ACL元数据](research/2026-10-17-metadata-supplement.md)。metadata_reader在public具有USAGE及函数EXECUTE，不能把原表级拒绝扩写成所有函数访问路径已拒绝；本批仍只运行固定只读采集，不调用业务函数。

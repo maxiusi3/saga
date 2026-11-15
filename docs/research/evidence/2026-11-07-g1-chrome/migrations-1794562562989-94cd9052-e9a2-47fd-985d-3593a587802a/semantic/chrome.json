@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "browser": "157.0.8103.78",
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/projects/fa6614c4-2522-46d8-b44f-78496fe6d4f4/search?mode=semantic&readiness=1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/fa6614c4-2522-46d8-b44f-78496fe6d4f4/search?q=relocation",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/fa6614c4-2522-46d8-b44f-78496fe6d4f4/search",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/fa6614c4-2522-46d8-b44f-78496fe6d4f4/search/source",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/fa6614c4-2522-46d8-b44f-78496fe6d4f4/search?mode=semantic&readiness=1",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "boundary": "Installed Chrome; production ConnectedProjectHub+semantic consent UI+client+search/source routes, actual Supabase SDK and PG. Synthetic sources/audio/embeddings, no live provider quality claim."
+}

@@ -1,0 +1,13 @@
+{
+  "sources": {
+    "experiments/pg17-deletion-capture/README.md": "5f3b18732631cc789fe3bf13b88dd32df7ff41029afc1627a4fc8d22d8cb59a3",
+    "experiments/pg17-deletion-capture/fixture.mjs": "bb49328176ceaf6bce2a7b913b276bc664cde843cc734c67262549ed985a01ea",
+    "experiments/pg17-deletion-capture/seal-fence-regressions.mjs": "97d7f3c57b44f921ed62c5892899f3bee74b61bde12494df7ba9f77699623c49",
+    "experiments/pg17-deletion-capture/verify-seal-fence.mjs": "9992c74028a0234aadb5c16507f4ad8ed188d8bb1925b6ae712e494ce45fdba0",
+    "experiments/pg17-deletion-capture/verify.mjs": "745e604abf29a0dda0517ca3fd7bf276917ad3b51793c0e5f5de2f434286b2d9",
+    "scripts/__tests__/deployment-config.test.js": "39e7ce9f9c90ae89c7a8e066c13576ffe9c91aad070929dc417399aeff32d505",
+    "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql": "cb1d15de2782ed2c0fde5c69b1ee2684b8a5a941e46623c6092a4003c1784628"
+  },
+  "archive": "final-fix-inputs.tar.gz",
+  "archiveSha256": "e850940516efb2e5da628d6b9ce2dac5461d6db1dd5148a0c58bff9beba6cdb4"
+}

@@ -1,0 +1,38 @@
+--- a/packages/web/src/lib/server/media-deletion-lease.ts
++++ b/packages/web/src/lib/server/media-deletion-lease.ts
+@@ -63,6 +63,7 @@
+     const ttl = utcMicroseconds(row.leaseExpiresAt) - now
+     if (ttl <= BigInt(0) || ttl > BigInt(120000000)) unavailable()
+   } else if ((row.state !== 'retry_wait' && row.state !== 'failed' && row.state !== 'outcome_unknown') ||
++    (row.state === 'failed' && row.attempt !== 3) || (row.state === 'retry_wait' && row.attempt === 3) ||
+     row.workerId !== null || row.leaseExpiresAt !== null) unavailable()
+   return Object.freeze(row) as MediaDeletionLeaseReceipt
+ }
+--- a/packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts
++++ b/packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts
+@@ -72,13 +72,23 @@
+     expect(await checkMediaDeletionJobLease(active(), client())).toMatchObject({ state: 'leased' })
+   })
+ 
+-  it.each(['retry_wait', 'failed', 'outcome_unknown'] as const)('recovers %s with null SQL fields and no local deadline', async state => {
+-    const data = { ...receipt, state, workerId: null, leaseExpiresAt: null }, c = client(data)
++  it.each([
++    ['retry_wait', 1], ['retry_wait', 2], ['failed', 3],
++    ['outcome_unknown', 1], ['outcome_unknown', 2], ['outcome_unknown', 3],
++  ] as const)('recovers %s at attempt %i with null SQL fields and no local deadline', async (state, attempt) => {
++    const data = { ...receipt, state, attempt, workerId: null, leaseExpiresAt: null }, c = client(data)
+     const value: MediaDeletionLeaseReceipt = await recoverMediaDeletionJob(requestId, c)
+     expect(value).toEqual(data); expect(Object.keys(value)).toHaveLength(14); expect(Object.isFrozen(value)).toBe(true)
+     expect(c.rpc).toHaveBeenCalledWith('media_deletion_job_lease', {
+       p_request_id: requestId, p_action: 'recover', p_worker_id: null, p_attempt: null, p_lease_ms: null,
+     })
++  })
++
++  it.each([
++    ['failed', 1], ['failed', 2], ['retry_wait', 3],
++  ] as const)('rejects impossible recovered %s at attempt %i', async (state, attempt) => {
++    const c = client({ ...receipt, state, attempt, workerId: null, leaseExpiresAt: null })
++    await expect(recoverMediaDeletionJob(requestId, c)).rejects.toMatchObject(failure)
+   })
+ 
+   it.each([

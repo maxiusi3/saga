@@ -1,0 +1,3362 @@
+{
+  "startedAt": "2026-11-05T02:49:37.188Z",
+  "command": [
+    "node",
+    "experiments/pg17-recording-terminal-worker/verify.mjs",
+    "bad-source-hash"
+  ],
+  "status": "passed",
+  "assertions": 464,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "bad-source-hash",
+      "status": "passed",
+      "assertions": 423
+    }
+  ],
+  "cases": [
+    {
+      "name": "bad-source-hash",
+      "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+      "elapsedMs": 1202.091867,
+      "before": {
+        "job": {
+          "id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+          "state": "queued",
+          "asset_id": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+          "job_type": "recording_merge",
+          "created_at": "2026-11-05T02:49:41.03066+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "error_code": null,
+          "not_before": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "result_ref": null,
+          "updated_at": "2026-11-05T02:49:41.03066+00:00",
+          "lease_owner": null,
+          "max_attempts": 3,
+          "attempt_count": 0,
+          "input_version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=e06e8e56-ae75-4387-9856-f266e92f7600:chunks=0928604d676541f9044633947e189779aafced07eb4930424e14e3b14974eac7",
+          "lease_expires_at": null,
+          "parameter_version": "default",
+          "processor_version": "ffmpeg-merge-v1",
+          "cancel_requested_at": null,
+          "model_config_version": "none"
+        },
+        "asset": {
+          "id": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+          "kind": "original_audio",
+          "state": "verifying",
+          "bucket": "audio-recordings",
+          "sha256": null,
+          "version": 1,
+          "story_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "byte_size": 20130,
+          "mime_type": "audio/webm;codecs=opus",
+          "created_at": "2026-11-05T02:49:41.028834+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/c77e00ed-55da-83f3-8f8e-fade35ed3fd1/original",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "updated_at": "2026-11-05T02:49:41.028834+00:00",
+          "duration_ms": null,
+          "verified_at": null,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=e06e8e56-ae75-4387-9856-f266e92f7600:chunks=0928604d676541f9044633947e189779aafced07eb4930424e14e3b14974eac7",
+          "parent_asset_id": null,
+          "original_filename": "unnamed-asset",
+          "verification_error": null,
+          "content_verified_at": null
+        },
+        "chunks": [
+          {
+            "id": "6c63df4a-d70b-4e92-8fa3-a8eaa0c14e53",
+            "bucket": "audio-recordings",
+            "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 0,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-0"
+          },
+          {
+            "id": "af7f4b67-0028-49f1-84fd-152d9224b998",
+            "bucket": "audio-recordings",
+            "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 1,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-1"
+          },
+          {
+            "id": "b94568fc-d10c-480a-a13e-d63fe5766478",
+            "bucket": "audio-recordings",
+            "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 2,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-2"
+          }
+        ],
+        "session": {
+          "id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+          "state": "sealing",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "story_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "mime_type": "audio/webm;codecs=opus",
+          "sealed_at": "2026-11-05T02:49:41.015094+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "seal_input": {
+            "chunks": [
+              {
+                "index": 0,
+                "bucket": "audio-recordings",
+                "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+                "chunkId": "chunk-0",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0"
+              },
+              {
+                "index": 1,
+                "bucket": "audio-recordings",
+                "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650",
+                "chunkId": "chunk-1",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1"
+              },
+              {
+                "index": 2,
+                "bucket": "audio-recordings",
+                "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133",
+                "chunkId": "chunk-2",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2"
+              }
+            ],
+            "userId": "11111111-1111-4111-8111-111111111111",
+            "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+            "storyId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "mimeType": "audio/webm;codecs=opus",
+            "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "schemaVersion": 1
+          },
+          "started_at": "2026-11-05T02:49:41.015094+00:00",
+          "confirmed_at": null,
+          "merge_job_id": null,
+          "total_chunks": 3,
+          "manifest_sha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+          "total_input_bytes": 20130,
+          "confirmed_asset_id": null
+        },
+        "attempts": [],
+        "candidates": []
+      },
+      "after": {
+        "job": {
+          "id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+          "state": "failed",
+          "asset_id": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+          "job_type": "recording_merge",
+          "created_at": "2026-11-05T02:49:41.03066+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "error_code": "recording_source_hash_mismatch",
+          "not_before": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "result_ref": null,
+          "updated_at": "2026-11-05T02:49:41.973629+00:00",
+          "lease_owner": null,
+          "max_attempts": 3,
+          "attempt_count": 1,
+          "input_version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=e06e8e56-ae75-4387-9856-f266e92f7600:chunks=0928604d676541f9044633947e189779aafced07eb4930424e14e3b14974eac7",
+          "lease_expires_at": null,
+          "parameter_version": "default",
+          "processor_version": "ffmpeg-merge-v1",
+          "cancel_requested_at": null,
+          "model_config_version": "none"
+        },
+        "asset": {
+          "id": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+          "kind": "original_audio",
+          "state": "quarantined",
+          "bucket": "audio-recordings",
+          "sha256": null,
+          "version": 1,
+          "story_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "byte_size": 20130,
+          "mime_type": "audio/webm;codecs=opus",
+          "created_at": "2026-11-05T02:49:41.028834+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/c77e00ed-55da-83f3-8f8e-fade35ed3fd1/original",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "updated_at": "2026-11-05T02:49:41.973629+00:00",
+          "duration_ms": null,
+          "verified_at": null,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=e06e8e56-ae75-4387-9856-f266e92f7600:chunks=0928604d676541f9044633947e189779aafced07eb4930424e14e3b14974eac7",
+          "parent_asset_id": null,
+          "original_filename": "unnamed-asset",
+          "verification_error": "recording_source_hash_mismatch",
+          "content_verified_at": null
+        },
+        "chunks": [
+          {
+            "id": "6c63df4a-d70b-4e92-8fa3-a8eaa0c14e53",
+            "bucket": "audio-recordings",
+            "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 0,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-0"
+          },
+          {
+            "id": "af7f4b67-0028-49f1-84fd-152d9224b998",
+            "bucket": "audio-recordings",
+            "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 1,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-1"
+          },
+          {
+            "id": "b94568fc-d10c-480a-a13e-d63fe5766478",
+            "bucket": "audio-recordings",
+            "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 2,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-2"
+          }
+        ],
+        "session": {
+          "id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+          "state": "failed",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "story_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "mime_type": "audio/webm;codecs=opus",
+          "sealed_at": "2026-11-05T02:49:41.015094+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "seal_input": {
+            "chunks": [
+              {
+                "index": 0,
+                "bucket": "audio-recordings",
+                "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+                "chunkId": "chunk-0",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0"
+              },
+              {
+                "index": 1,
+                "bucket": "audio-recordings",
+                "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650",
+                "chunkId": "chunk-1",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1"
+              },
+              {
+                "index": 2,
+                "bucket": "audio-recordings",
+                "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133",
+                "chunkId": "chunk-2",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2"
+              }
+            ],
+            "userId": "11111111-1111-4111-8111-111111111111",
+            "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+            "storyId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "mimeType": "audio/webm;codecs=opus",
+            "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "schemaVersion": 1
+          },
+          "started_at": "2026-11-05T02:49:41.015094+00:00",
+          "confirmed_at": null,
+          "merge_job_id": null,
+          "total_chunks": 3,
+          "manifest_sha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+          "total_input_bytes": 20130,
+          "confirmed_asset_id": null
+        },
+        "attempts": [
+          {
+            "id": "03770822-ae11-4b01-a453-6e84d51e0240",
+            "job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+            "provider": null,
+            "worker_id": "native-terminal-worker",
+            "attempt_no": 1,
+            "error_code": "recording_source_hash_mismatch",
+            "finished_at": "2026-11-05T02:49:41.973629+00:00",
+            "usage_units": null,
+            "result_state": "fatal_error",
+            "dispatched_at": "2026-11-05T02:49:41.159198+00:00",
+            "settled_cost_usd": null,
+            "reserved_cost_usd": null,
+            "provider_request_id": null
+          }
+        ],
+        "candidates": []
+      },
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "failed",
+        "bucket": null,
+        "sha256": null,
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "byteSize": null,
+        "mimeType": null,
+        "workerId": "native-terminal-worker",
+        "errorCode": "recording_source_hash_mismatch",
+        "objectKey": null,
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "assetState": "quarantined",
+        "durationMs": null,
+        "finishedAt": "2026-11-05T02:49:41.973629+00:00",
+        "candidateId": null,
+        "sessionState": "failed",
+        "schemaVersion": 1,
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "error": null,
+      "settlements": 1,
+      "cleanup": {
+        "children": 0,
+        "streams": 0,
+        "handles": 0,
+        "removals": 0,
+        "tempEntries": [],
+        "callerAbortListeners": 0
+      },
+      "firstRequest": 0,
+      "requests": 50,
+      "heartbeats": 5,
+      "fetchEvents": [
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/processing_jobs",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/recording_sessions",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/media_assets",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/recording_chunks",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/projects",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/project_roles",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/stories",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/deletion_requests",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/processing_jobs",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/recording_sessions",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/media_assets",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/recording_chunks",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/projects",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/project_roles",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/stories",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/deletion_requests",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/storage/v1/object/audio-recordings/11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+          "redirect": "error",
+          "cache": "no-store",
+          "aborted": false,
+          "settled": true,
+          "bodyCancelCalled": false,
+          "readers": [
+            {
+              "closed": true,
+              "cancelCalled": true,
+              "released": true
+            }
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/processing_jobs",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/recording_sessions",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/media_assets",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/recording_chunks",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/projects",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/project_roles",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/stories",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/deletion_requests",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/processing_jobs",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/recording_sessions",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/media_assets",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/recording_chunks",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/projects",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/project_roles",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/stories",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/deletion_requests",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/recording_job_lease",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        },
+        {
+          "method": "POST",
+          "path": "/rest/v1/rpc/finalize_recording_job",
+          "redirect": "follow",
+          "cache": "default",
+          "aborted": false,
+          "settled": true
+        }
+      ],
+      "retained": [
+        {
+          "kind": "source",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+          "byteSize": 6710,
+          "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4"
+        },
+        {
+          "kind": "source",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+          "byteSize": 6710,
+          "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650"
+        },
+        {
+          "kind": "source",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+          "byteSize": 6710,
+          "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133"
+        }
+      ]
+    }
+  ],
+  "sources": {
+    "experiments/pg17-recording-terminal-worker/verify.mjs": "5495a03c342e15c50a787fc41a431026994331264a521e00f92dab386c066e83",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-recording-worker/fixture.mjs": "83d9d5b5886d973a21c306f5e8a859d6ec45f1e7e8618e290fa85e013ba4d688",
+    "experiments/pg17-recording-candidates/application-compiler.mjs": "caf0229f2afea5527e642d8f1b6cf41f0cef67cd0d44f886a39fa954ab5e5f86",
+    "experiments/pg17-recording-candidates/application-client.mjs": "507b2937dabc37584a145c8f7033368281097646133905cf7687c8a3d843bb8b",
+    "experiments/pg17-recording-finalization/fixture.mjs": "40bffce6db05362159aee2db5e69fa3d018d215b9fd6d1a1ed75fe901b1c1481",
+    "experiments/pg17-recording-candidates/fixture.mjs": "1c09ea252da2ee57980e12553a4e3769d26d5e3e1b0d5ea6d34faaf3a7e9ecab",
+    "experiments/pg17-recording-terminal-worker/http.mjs": "2ddd64949818ffaabc69ec3314883508498b7138693cf9a9f6132f9ee79d0367",
+    "experiments/pg17-recording-terminal-worker/observations.mjs": "158e40fc142249ba03c394527f96813ac1b74fdd41cd0222112cb33e223befc1",
+    "experiments/pg17-recording-terminal-worker/README.md": "11fbe63c74d9ab09eae0ec7e97efc4085c093b46248426f17b9d5211ac88fe5e",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "node_modules/@supabase/supabase-js/package.json": "f56822ef08f16e186ba0a0a73fe561bd08610c7a46e41ea765a318a7afc49316",
+    "node_modules/@supabase/postgrest-js/package.json": "fac4b319f862b6883dfdb3b0a4a6eda35b2f412c1cc927206aa9f1bd3748dc26",
+    "experiments/t05-durable-worker/node_modules/pg-connection-string/index.js": "d8c0ca43dc70daf05a9ff5469c92fd0a3cbcd11cacf68156ebb19ee32d127cfd",
+    "experiments/t05-durable-worker/node_modules/pg-int8/index.js": "f991b0a41119bce0efbb471275dbd02de31a79fe6f87f8f5e5678e373a0f1627",
+    "experiments/t05-durable-worker/node_modules/pg-pool/index.js": "6f304776edaabde2954cbf8c4366fa6d9512bfba0e408e78cc56b3c46c69d058",
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/buffer-reader.js": "fdae5fd80c1ad1015f91a92da667467752eabdf531f19558897e205559e6b714",
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/buffer-writer.js": "78428fc0607cd87c28009159e87ca3704faf7bda000ea44d2ec46a97805cec9d",
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/index.js": "e7a99ac02633393d8c3ef16cd6385b8246100d28c838b02420844068429a46c9",
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/messages.js": "dfd22ad639f3030b41617ff0ee201ece7cdbce4adb7e1aae7978541b1384cd31",
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/parser.js": "6f841aabda7240df44e1b08bbe8e202502ead969576c1ecc17311af48f57f2ef",
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/serializer.js": "0c81a499cd210334e14bc65ee514b2ecf842588e27533f5e9a461f914d0b9623",
+    "experiments/t05-durable-worker/node_modules/pg-types/index.js": "ece6d549270ba55d08126b10c9997324d808ee828ef00dad236e84e54d9d556d",
+    "experiments/t05-durable-worker/node_modules/pg-types/lib/arrayParser.js": "cad20b20e6312125b45f74480eba3ef46b456997da4f53bbec56356d66edd730",
+    "experiments/t05-durable-worker/node_modules/pg-types/lib/binaryParsers.js": "4b0105414068ea96450ef0d420db9449c00c565c5894683955af15bf94075fb9",
+    "experiments/t05-durable-worker/node_modules/pg-types/lib/builtins.js": "09213197e4b44012e4c83669aa80884a189e90c777ddfef1f44c90c412167354",
+    "experiments/t05-durable-worker/node_modules/pg-types/lib/textParsers.js": "bd811a530000508b6b90c1db462078e122f0404769d73f57ad41fe90aca159bd",
+    "experiments/t05-durable-worker/node_modules/pg/lib/client.js": "7e6ba79fe6bc1db15ec66ce67cd0f96b6b27c300ccec45911dc15f5121f709f4",
+    "experiments/t05-durable-worker/node_modules/pg/lib/connection-parameters.js": "db77bac013bfb5faae661d3056f3fbc49f5bae60334f60b149de0c271a9d9725",
+    "experiments/t05-durable-worker/node_modules/pg/lib/connection.js": "2069c662af9de8a708105f304a0e674a9766478da8250b416f5f3ee9ae0f4d99",
+    "experiments/t05-durable-worker/node_modules/pg/lib/crypto/cert-signatures.js": "206ec95c51012b73fe15d549b24db2acab969271e971940a0b79cfdcf830755b",
+    "experiments/t05-durable-worker/node_modules/pg/lib/crypto/sasl.js": "37206f4af85a0bf9973089c06ce54456938c3c74c9d4e65507053b8afd468889",
+    "experiments/t05-durable-worker/node_modules/pg/lib/crypto/utils-webcrypto.js": "a849cfe22d7590d79ddee76c8d7a058e2b67360a0d76683275d34133e5637117",
+    "experiments/t05-durable-worker/node_modules/pg/lib/crypto/utils.js": "a7d537da58f9ebc65dee84789ed5fa4175c6961c5be4a4dbb62b67d99c9c1213",
+    "experiments/t05-durable-worker/node_modules/pg/lib/defaults.js": "8bb1781954cb7695e1e1bf7200aa29327ad0e135c877d1a82878858b123ced31",
+    "experiments/t05-durable-worker/node_modules/pg/lib/index.js": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "experiments/t05-durable-worker/node_modules/pg/lib/query.js": "dea8044d70531cd16e514ecddbe44cdd65b4315a02287958d5ecfd0ebcd70ded",
+    "experiments/t05-durable-worker/node_modules/pg/lib/result.js": "2e9dfbbb89c84cfdb1977a1503f2ddd265ed2f943f8dc3957dc0db193ee81488",
+    "experiments/t05-durable-worker/node_modules/pg/lib/stream.js": "0bd4001775301604ddf7c94152e05f6f30a9354876717bdae2ab636d00eb12ba",
+    "experiments/t05-durable-worker/node_modules/pg/lib/type-overrides.js": "47cb7f7bc6a6e1b1d4dc7c92bacacb436f12e99242b77da8391fd5b71991d2a5",
+    "experiments/t05-durable-worker/node_modules/pg/lib/utils.js": "a109ef3b3a7572e8523b937ae0c100be72d4f36d1d3d4c7032e1ef0abaf92e38",
+    "experiments/t05-durable-worker/node_modules/pg/package.json": "f7b678a8055c234669e8dd272dd624771e29d9f0e3a3353f15c3005ab1a5fd29",
+    "experiments/t05-durable-worker/node_modules/postgres-array/index.js": "807ba580ed423e518672c27b4022a56acb693be04349733ffc1fe6f324fbcee2",
+    "experiments/t05-durable-worker/node_modules/postgres-bytea/index.js": "c078b99e1009c4bcf6e3ab59d9fe808b12caee3461204ae599cdd9cccd990801",
+    "experiments/t05-durable-worker/node_modules/postgres-date/index.js": "9a09e3ec0775237576b1f6ff0fba0ed6171235aeded635a42c174b517e34cb1a",
+    "experiments/t05-durable-worker/node_modules/postgres-interval/index.js": "836fe0a39e52f051d62583d8375d3b270b4cb93dd026b125438a89e5a0258c41",
+    "experiments/t05-durable-worker/node_modules/xtend/mutable.js": "71a38649c77408217483f81f55daee1d6646d6c670e3d034a4482cb3453886e9",
+    "node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js": "8e879ad1a0f0ad11923dc1b7bedd7e522532a298025c3fae52669419d342421a",
+    "node_modules/@supabase/auth-js/dist/main/AuthClient.js": "f9dbb30bd5c6511db0c98a24f1f9b077aa2d080505427c93dea757d97d981568",
+    "node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js": "7a9a0770ea0302835e2f16f352f0fc12d7159d6710d531ac7b895c7b79658272",
+    "node_modules/@supabase/auth-js/dist/main/GoTrueClient.js": "f40a1031c818a9e3cb78f814a88610a52c00598fc1722f535be0cf3de20fd101",
+    "node_modules/@supabase/auth-js/dist/main/index.js": "a43ea0c523b8f4f8b8d59bc3b16b9ec9158cad05de53ffc92238fceb26d8bcfd",
+    "node_modules/@supabase/auth-js/dist/main/lib/base64url.js": "1d97eac773480a5e06ba408f4d746e59b4269a6b8afd22aaad75f5773c7cf9d7",
+    "node_modules/@supabase/auth-js/dist/main/lib/constants.js": "773fef0aeeb99d0945191b43a67f26d7820d1828590a05118562bf157eafe63e",
+    "node_modules/@supabase/auth-js/dist/main/lib/errors.js": "a650dea0fa6181c7f337a24842d186b18e4a456de3301de1921d46096e16cd4a",
+    "node_modules/@supabase/auth-js/dist/main/lib/fetch.js": "8bd9bb74629fdfaf23e25766ad6c233d3b633d51f3b8db8e1d7c5586e253452c",
+    "node_modules/@supabase/auth-js/dist/main/lib/helpers.js": "aaf5f591276f43ef63733a894edc72b32a7511235259cd64f48a8d1c29fe29b9",
+    "node_modules/@supabase/auth-js/dist/main/lib/local-storage.js": "a3c6841d8c4dc24a2c0ac1d238b42a278c7ac05d18a7571db91c3fc140e42d93",
+    "node_modules/@supabase/auth-js/dist/main/lib/locks.js": "3ff934cbce382ab1d32aef323006976d74ef466861cf34feebc7b28d92e84407",
+    "node_modules/@supabase/auth-js/dist/main/lib/polyfills.js": "0b5600e6e4cda1f029ec448d93857062731b850424d3b465fa7dae4e5921ae7e",
+    "node_modules/@supabase/auth-js/dist/main/lib/types.js": "24966642101c9436aba71c1df65f4b54cffaf2c8c62adea41328f884edca8e33",
+    "node_modules/@supabase/auth-js/dist/main/lib/version.js": "e76bc986d545872bd22d5630d4957ad1ae47bc3cd29a3214ec957a8e7ab0249a",
+    "node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js": "839a33e8225db3da724f25bea5d1b127ba30cb4c272cab30dd9700232ada431d",
+    "node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js": "40cb9a8d5f58c798e4b1ea47774ba29e59a9efb455c6edd4d05c8a38c762cd78",
+    "node_modules/@supabase/auth-js/dist/main/lib/webauthn.js": "56a4a126d86809cedabc7d78317e14154640a86ce0f70a3c89786a8ce3cf4cda",
+    "node_modules/@supabase/functions-js/dist/main/FunctionsClient.js": "d7b6eaa5e2dcb116be53e450470bfad704214a3338f14a52c1ac9613535dbc88",
+    "node_modules/@supabase/functions-js/dist/main/helper.js": "323d5529b134ddf92d2bce3ffb1c1707d483325f182fd2665d59564ca6bb933e",
+    "node_modules/@supabase/functions-js/dist/main/index.js": "41f4ff1b0f36c0ccc0a0e0fbd6428f2654dafbe1fd3e3dd89a8736166ac5c4f5",
+    "node_modules/@supabase/functions-js/dist/main/types.js": "c599ec73696bd9a251cc206407bdc5a9b2fbda1b12d97ceb9868b2a060dbb514",
+    "node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js": "aa2e41c564026616b59237f9c00deb7d610502af3d2772304518296343f757bc",
+    "node_modules/@supabase/postgrest-js/dist/index.cjs": "0bb26b706a008bed5869bc6c474fa3398b1070a486d7170335c9ae8a3099b5f1",
+    "node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js": "9654f494ed848c91e4dcba1d1d7c532b2c2afdbb5eb47acd53979eda54affc45",
+    "node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js": "5f1ac85e0529659077ba585491f4184f8dc9b9a1ca8d2ec0ca64643bc79b3241",
+    "node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js": "a2687fc9777849d24b7ec2b45b5191b7a2a06c4b19b4dc2ccb8c25f31679246d",
+    "node_modules/@supabase/realtime-js/dist/main/index.js": "d27ce5c0dfc1947b6cbc6df7defaa6dbcc2503a6e53c4e625c374cb1fad8003d",
+    "node_modules/@supabase/realtime-js/dist/main/lib/constants.js": "b2e12c8872af9e3d67070addabefea35eebbebc0383cce5e4734361741c526a2",
+    "node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js": "fcea2bd55b4f6c749cc0f9daf956b4d0db126d096656ff8149bb517648475efa",
+    "node_modules/@supabase/realtime-js/dist/main/lib/serializer.js": "5f7f25ee4738bdd680f91ce29942dbaa3069fcf01c582c970ccc5ffc1dbd9a10",
+    "node_modules/@supabase/realtime-js/dist/main/lib/transformers.js": "c6050fcfa7e19d3f5b7f0cc3e7e40e899aa753a75e10d268252be968e9fc7062",
+    "node_modules/@supabase/realtime-js/dist/main/lib/version.js": "e76bc986d545872bd22d5630d4957ad1ae47bc3cd29a3214ec957a8e7ab0249a",
+    "node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js": "c5a37c524becf38b5cd3c64fef399d4cda730768506acec02f2e94f66b63311b",
+    "node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js": "07b9e487385763cfa10b923113e76872c0ff1b67b3542b7027261045edf0c875",
+    "node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js": "60df10fb0b0d6efc6af0e2a0085ced65e5cb68f547d6f315dcba3453daeddcca",
+    "node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js": "2cfee5f2abf33a3ab905b92d21be2cd78fa03dbcc1c569ebfdc04c071d54ad1a",
+    "node_modules/@supabase/storage-js/dist/index.cjs": "734da7228470c0a9529db478df91ee20419008214f0444a2cb872792c42d31e1",
+    "node_modules/@supabase/supabase-js/dist/index.cjs": "2cd28b7115f1f4be6cc789940ff2979ba5b2f4cd06bc9c427f5aeef27d33fc84",
+    "node_modules/iceberg-js/dist/index.cjs": "669b152b63f4655c394095a27401b6b78f776dcec68a6f62c692f0ff3cf1c79b",
+    "node_modules/tslib/tslib.js": "8855865a058bc0a6df8f5db45347be041a2d6bbe1654216c51a805648c1b6e8a",
+    "node_modules/typescript/lib/typescript.js": "3ae902c92cc44dace175c0e69e13a4b0899f6983c6121d76b9ab8dd5795e7675",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "36cb0471d7751a1e937074aaff7c05506ae97fd10d9800df49ea4142595ab97f",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "packages/web/src/lib/server/recording-job-input.ts": "3698e02cdf2e883e7c5a4db513df803e86f39a7ccdd8eb5427f16044593dbdf8",
+    "packages/web/src/lib/server/recording-job-verifier.ts": "86d08b98f8572b5b36c077fdaae1794fe4ab3e5a89c1e1fb80f402454538cead",
+    "packages/web/src/lib/server/recording-job-lease.ts": "8ddc4c5cb8bb11231dc15ecb451b6caed595181ce1615d2f75d684f0ae7024da",
+    "packages/web/src/lib/server/recording-job-worker.ts": "0f965112f08d4cb0b3178600b75ea48c53718b875b1be93f21f778f8e41f2f1d",
+    "packages/web/src/lib/server/recording-output-candidate.ts": "33c46538e150372327dddfe583f89838b2e6c34626331f0a5436523611163eb8",
+    "packages/web/src/lib/server/recording-candidate-storage.ts": "ae0a4948e9cd68de1bc24eac92c2186078a68e6b62d15fb5371bf741f5b6668a",
+    "packages/web/src/lib/server/recording-candidate-worker.ts": "61831dfc257c75a75c5e5736c26ade78c510483d367bd98f1094eee109fa5a7d",
+    "packages/web/src/lib/server/recording-job-finalization.ts": "f28f28e8cb04d16d7bdc639d9fabea13e9d3bf5cda09ff95752ca31964b4e89f",
+    "packages/web/src/lib/server/recording-terminal-worker.ts": "12ca08db9c58411088565fc2fdcde76b852f9b5df75fd231c3c6bcc494f02037"
+  },
+  "snapshots": {
+    "experiments/pg17-recording-terminal-worker/verify.mjs": {
+      "path": "0-verify.mjs.gz",
+      "sha256": "90be1a5892be722a5891ef2020ebba93407eebaa9abae198ebc2eaca94fa8c56",
+      "decodedSha256": "5495a03c342e15c50a787fc41a431026994331264a521e00f92dab386c066e83",
+      "byteSize": 20919
+    },
+    "experiments/pg17-routines/runtime.mjs": {
+      "path": "1-runtime.mjs.gz",
+      "sha256": "0e746071f418db45326164d575bbe723322fa113b66f6b3c4ef4acc85eb26cf4",
+      "decodedSha256": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+      "byteSize": 7639
+    },
+    "experiments/pg17-recording-worker/fixture.mjs": {
+      "path": "2-fixture.mjs.gz",
+      "sha256": "4d7d5f013d2faa9b08ec26a84aefecab41958d806259b35c911ab5649cbe6c43",
+      "decodedSha256": "83d9d5b5886d973a21c306f5e8a859d6ec45f1e7e8618e290fa85e013ba4d688",
+      "byteSize": 8219
+    },
+    "experiments/pg17-recording-candidates/application-compiler.mjs": {
+      "path": "3-application-compiler.mjs.gz",
+      "sha256": "634af2900ecd4b9c1705f3f09583706fd81722ea0259cabd7003d1f3dee1b96f",
+      "decodedSha256": "caf0229f2afea5527e642d8f1b6cf41f0cef67cd0d44f886a39fa954ab5e5f86",
+      "byteSize": 1579
+    },
+    "experiments/pg17-recording-candidates/application-client.mjs": {
+      "path": "4-application-client.mjs.gz",
+      "sha256": "ac0b826e2de640795308561924a6dc84b7c86ff5ccf9ea7b0f7baa71cb3851d6",
+      "decodedSha256": "507b2937dabc37584a145c8f7033368281097646133905cf7687c8a3d843bb8b",
+      "byteSize": 2755
+    },
+    "experiments/pg17-recording-finalization/fixture.mjs": {
+      "path": "5-fixture.mjs.gz",
+      "sha256": "ec6f307ee26c7261c1388603f811cbe5104d0f74096effbe872aba9769e80b7b",
+      "decodedSha256": "40bffce6db05362159aee2db5e69fa3d018d215b9fd6d1a1ed75fe901b1c1481",
+      "byteSize": 2700
+    },
+    "experiments/pg17-recording-candidates/fixture.mjs": {
+      "path": "6-fixture.mjs.gz",
+      "sha256": "80c266d034318d09d81384b1d828e500071ea127e166de6a900d2260344d1af7",
+      "decodedSha256": "1c09ea252da2ee57980e12553a4e3769d26d5e3e1b0d5ea6d34faaf3a7e9ecab",
+      "byteSize": 2939
+    },
+    "experiments/pg17-recording-terminal-worker/http.mjs": {
+      "path": "7-http.mjs.gz",
+      "sha256": "395a9d03ae2c52049adb3c8decbd9d3624412bc11be5fbfdbd4c3ddb73821d8b",
+      "decodedSha256": "2ddd64949818ffaabc69ec3314883508498b7138693cf9a9f6132f9ee79d0367",
+      "byteSize": 14288
+    },
+    "experiments/pg17-recording-terminal-worker/observations.mjs": {
+      "path": "8-observations.mjs.gz",
+      "sha256": "c58fca6ead0eecaea9541ba20c8e2b982362187b9908cdeb2501bc607708fc3d",
+      "decodedSha256": "158e40fc142249ba03c394527f96813ac1b74fdd41cd0222112cb33e223befc1",
+      "byteSize": 4604
+    },
+    "experiments/pg17-recording-terminal-worker/README.md": {
+      "path": "9-README.md.gz",
+      "sha256": "84d5c039bf9660b22db84f8e0b141baa469c7fb130af22deb3c2c96a0acb0f13",
+      "decodedSha256": "11fbe63c74d9ab09eae0ec7e97efc4085c093b46248426f17b9d5211ac88fe5e",
+      "byteSize": 2886
+    },
+    "experiments/pg17-routines/runtime-pins.json": {
+      "path": "10-runtime-pins.json.gz",
+      "sha256": "f7c53b88a664df9a0acd473f586d818ae3b27b953e61cbb43021bf0bb4c28cc0",
+      "decodedSha256": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+      "byteSize": 245
+    },
+    "package-lock.json": {
+      "path": "11-package-lock.json.gz",
+      "sha256": "8c2668d7769912a34fcc278818dbcbf3bae168b87fab5c40d058d399f95de276",
+      "decodedSha256": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+      "byteSize": 828088
+    },
+    "node_modules/@supabase/supabase-js/package.json": {
+      "path": "12-package.json.gz",
+      "sha256": "151f78e36dbd417e19d45791f8a23524cc2a279af761f9c05c1abd9b3c5439d3",
+      "decodedSha256": "f56822ef08f16e186ba0a0a73fe561bd08610c7a46e41ea765a318a7afc49316",
+      "byteSize": 4509
+    },
+    "node_modules/@supabase/postgrest-js/package.json": {
+      "path": "13-package.json.gz",
+      "sha256": "86f9cf79e1f9b82238d905b2c6a30ef963cb8575aed1a6a7ac7cd2b9775041a8",
+      "decodedSha256": "fac4b319f862b6883dfdb3b0a4a6eda35b2f412c1cc927206aa9f1bd3748dc26",
+      "byteSize": 2001
+    },
+    "experiments/t05-durable-worker/node_modules/pg-connection-string/index.js": {
+      "path": "14-index.js.gz",
+      "sha256": "b50cc05697766828a979f9cd292ffbfcda89fbd37a66edd8c8a56b3db64402a3",
+      "decodedSha256": "d8c0ca43dc70daf05a9ff5469c92fd0a3cbcd11cacf68156ebb19ee32d127cfd",
+      "byteSize": 7497
+    },
+    "experiments/t05-durable-worker/node_modules/pg-int8/index.js": {
+      "path": "15-index.js.gz",
+      "sha256": "0f45fc53847f2e9c07b8ae33237ba5b1e1df805c7cb927c39e23345ec938443d",
+      "decodedSha256": "f991b0a41119bce0efbb471275dbd02de31a79fe6f87f8f5e5678e373a0f1627",
+      "byteSize": 1572
+    },
+    "experiments/t05-durable-worker/node_modules/pg-pool/index.js": {
+      "path": "16-index.js.gz",
+      "sha256": "8d68fc871a27cc4bba55404a5f2003b71eebd7e5d226b5eb50c08bd4eb96c4ad",
+      "decodedSha256": "6f304776edaabde2954cbf8c4366fa6d9512bfba0e408e78cc56b3c46c69d058",
+      "byteSize": 14460
+    },
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/buffer-reader.js": {
+      "path": "17-buffer-reader.js.gz",
+      "sha256": "53e12b4ca6825fd33c8ed0a61f6bf53e6d58436ddac341c83f3952b3b8f3b17a",
+      "decodedSha256": "fdae5fd80c1ad1015f91a92da667467752eabdf531f19558897e205559e6b714",
+      "byteSize": 1600
+    },
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/buffer-writer.js": {
+      "path": "18-buffer-writer.js.gz",
+      "sha256": "0a37d15b125d098bff576c71a3ae3115a02109cfbd96926f904dc2a979d153e8",
+      "decodedSha256": "78428fc0607cd87c28009159e87ca3704faf7bda000ea44d2ec46a97805cec9d",
+      "byteSize": 4094
+    },
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/index.js": {
+      "path": "19-index.js.gz",
+      "sha256": "ccdf46d40f2716a0251e490daf1444b8a26e64ce2ad88203e17dc0cfd3229d34",
+      "decodedSha256": "e7a99ac02633393d8c3ef16cd6385b8246100d28c838b02420844068429a46c9",
+      "byteSize": 775
+    },
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/messages.js": {
+      "path": "20-messages.js.gz",
+      "sha256": "3b8d59b92afcba1fe32d91a60acbc26adfcd992a7ff4bece98529d9f95d94490",
+      "decodedSha256": "dfd22ad639f3030b41617ff0ee201ece7cdbce4adb7e1aae7978541b1384cd31",
+      "byteSize": 4973
+    },
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/parser.js": {
+      "path": "21-parser.js.gz",
+      "sha256": "25a72b399d393317d8102b2ca1e419956ac48c60ea97e4a359b42830371b3bae",
+      "decodedSha256": "6f841aabda7240df44e1b08bbe8e202502ead969576c1ecc17311af48f57f2ef",
+      "byteSize": 13515
+    },
+    "experiments/t05-durable-worker/node_modules/pg-protocol/dist/serializer.js": {
+      "path": "22-serializer.js.gz",
+      "sha256": "b6ce802be5ae67032671934acfca917bd892412dbd9cc397b1c9ac3da43cf267",
+      "decodedSha256": "0c81a499cd210334e14bc65ee514b2ecf842588e27533f5e9a461f914d0b9623",
+      "byteSize": 7102
+    },
+    "experiments/t05-durable-worker/node_modules/pg-types/index.js": {
+      "path": "23-index.js.gz",
+      "sha256": "e263c70749f115691bbeb64b17fe4bba544fccbf1d2fb5ef5ea474e0b81413e1",
+      "decodedSha256": "ece6d549270ba55d08126b10c9997324d808ee828ef00dad236e84e54d9d556d",
+      "byteSize": 1214
+    },
+    "experiments/t05-durable-worker/node_modules/pg-types/lib/arrayParser.js": {
+      "path": "24-arrayParser.js.gz",
+      "sha256": "e17309d588ee3c907c9c80858fc97bf8f14c41ecea7168650b04b099f5860fa6",
+      "decodedSha256": "cad20b20e6312125b45f74480eba3ef46b456997da4f53bbec56356d66edd730",
+      "byteSize": 208
+    },
+    "experiments/t05-durable-worker/node_modules/pg-types/lib/binaryParsers.js": {
+      "path": "25-binaryParsers.js.gz",
+      "sha256": "ce3f7559ec80770ee40b58a6f598653babc029f7c3cd07e256fdbfff822082ae",
+      "decodedSha256": "4b0105414068ea96450ef0d420db9449c00c565c5894683955af15bf94075fb9",
+      "byteSize": 6063
+    },
+    "experiments/t05-durable-worker/node_modules/pg-types/lib/builtins.js": {
+      "path": "26-builtins.js.gz",
+      "sha256": "d9054a119ce8d4e5d8baaa00403047886c2399c9693f5a2642aec49d1f9bb76f",
+      "decodedSha256": "09213197e4b44012e4c83669aa80884a189e90c777ddfef1f44c90c412167354",
+      "byteSize": 1564
+    },
+    "experiments/t05-durable-worker/node_modules/pg-types/lib/textParsers.js": {
+      "path": "27-textParsers.js.gz",
+      "sha256": "e646ad4a5075c5a5a3d482628e7e0649f7947e7088bfa6000f3eab110bb9e924",
+      "decodedSha256": "bd811a530000508b6b90c1db462078e122f0404769d73f57ad41fe90aca159bd",
+      "byteSize": 5367
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/client.js": {
+      "path": "28-client.js.gz",
+      "sha256": "5a401f614b740c0ea9599842ef98667c42af378eaf2623de3dea2eec10e5050b",
+      "decodedSha256": "7e6ba79fe6bc1db15ec66ce67cd0f96b6b27c300ccec45911dc15f5121f709f4",
+      "byteSize": 18759
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/connection-parameters.js": {
+      "path": "29-connection-parameters.js.gz",
+      "sha256": "425397af1a752ad40c7fcc3ccaa365ddb9f67539e889449ff045d2856d91a9e6",
+      "decodedSha256": "db77bac013bfb5faae661d3056f3fbc49f5bae60334f60b149de0c271a9d9725",
+      "byteSize": 5248
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/connection.js": {
+      "path": "30-connection.js.gz",
+      "sha256": "e721679e30e9bcef6dec263b2f698c1d3c1cc8492df14742a8def521fa7bf812",
+      "decodedSha256": "2069c662af9de8a708105f304a0e674a9766478da8250b416f5f3ee9ae0f4d99",
+      "byteSize": 5175
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/crypto/cert-signatures.js": {
+      "path": "31-cert-signatures.js.gz",
+      "sha256": "f705fdb631ca132f6502a25a77a0f2bfa7a7294181623241bc5534da56adc820",
+      "decodedSha256": "206ec95c51012b73fe15d549b24db2acab969271e971940a0b79cfdcf830755b",
+      "byteSize": 4096
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/crypto/sasl.js": {
+      "path": "32-sasl.js.gz",
+      "sha256": "8c62cb93d2d3cd17f3248f0db647b36dc3187e9fb423765b66b5182dce01a329",
+      "decodedSha256": "37206f4af85a0bf9973089c06ce54456938c3c74c9d4e65507053b8afd468889",
+      "byteSize": 7423
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/crypto/utils-webcrypto.js": {
+      "path": "33-utils-webcrypto.js.gz",
+      "sha256": "3fca0919f8b2772e23a0975152f1f8fcd29702ed0344920824a1cdf427e6dd0d",
+      "decodedSha256": "a849cfe22d7590d79ddee76c8d7a058e2b67360a0d76683275d34133e5637117",
+      "byteSize": 2649
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/crypto/utils.js": {
+      "path": "34-utils.js.gz",
+      "sha256": "77b1922f32b82c108592270832c324937de16b31527f21a1d6bb29f0a5530b72",
+      "decodedSha256": "a7d537da58f9ebc65dee84789ed5fa4175c6961c5be4a4dbb62b67d99c9c1213",
+      "byteSize": 341
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/defaults.js": {
+      "path": "35-defaults.js.gz",
+      "sha256": "b959eaac5a7710fa7de9bcdc9e1d877dbe1b05dbfd53c31452229867a45b9232",
+      "decodedSha256": "8bb1781954cb7695e1e1bf7200aa29327ad0e135c877d1a82878858b123ced31",
+      "byteSize": 2426
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/index.js": {
+      "path": "36-index.js.gz",
+      "sha256": "e4bd465a9ab3cfbe7c67663d39e1f3bc702b0e1ae471d94cced16a2b1696d8f3",
+      "decodedSha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+      "byteSize": 1728
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/query.js": {
+      "path": "37-query.js.gz",
+      "sha256": "92cfe5818b4af5dcd2bf899ad9a2bea8e7643877f5f570e0bc28508385c5818f",
+      "decodedSha256": "dea8044d70531cd16e514ecddbe44cdd65b4315a02287958d5ecfd0ebcd70ded",
+      "byteSize": 7314
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/result.js": {
+      "path": "38-result.js.gz",
+      "sha256": "ea548de9221513ed958aeb9d580c5f28cb9e90017b331259e1e209600a0de82a",
+      "decodedSha256": "2e9dfbbb89c84cfdb1977a1503f2ddd265ed2f943f8dc3957dc0db193ee81488",
+      "byteSize": 2812
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/stream.js": {
+      "path": "39-stream.js.gz",
+      "sha256": "90fdde2a6962bb4782d74f2a36ea9b6f8c047d912b38029d0df9a5380aa72a70",
+      "decodedSha256": "0bd4001775301604ddf7c94152e05f6f30a9354876717bdae2ab636d00eb12ba",
+      "byteSize": 2132
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/type-overrides.js": {
+      "path": "40-type-overrides.js.gz",
+      "sha256": "f24b48c1d2185152573db45605600911561941ef7bc4d314f717c670c43cfd6f",
+      "decodedSha256": "47cb7f7bc6a6e1b1d4dc7c92bacacb436f12e99242b77da8391fd5b71991d2a5",
+      "byteSize": 770
+    },
+    "experiments/t05-durable-worker/node_modules/pg/lib/utils.js": {
+      "path": "41-utils.js.gz",
+      "sha256": "2df0ec98c00db8d8d5a154e95aad470f3065e322b069207a9e3d11693fb3756f",
+      "decodedSha256": "a109ef3b3a7572e8523b937ae0c100be72d4f36d1d3d4c7032e1ef0abaf92e38",
+      "byteSize": 5642
+    },
+    "experiments/t05-durable-worker/node_modules/pg/package.json": {
+      "path": "42-package.json.gz",
+      "sha256": "e0ba60b73a44384ca50ffa934503ace3d9e8ba21abca45f64fab0e14f561462e",
+      "decodedSha256": "f7b678a8055c234669e8dd272dd624771e29d9f0e3a3353f15c3005ab1a5fd29",
+      "byteSize": 1667
+    },
+    "experiments/t05-durable-worker/node_modules/postgres-array/index.js": {
+      "path": "43-index.js.gz",
+      "sha256": "07e753d239e4a3e0ca85b1f4737a09c46190ca1dec0d3bc1c37e349b1a6d3d98",
+      "decodedSha256": "807ba580ed423e518672c27b4022a56acb693be04349733ffc1fe6f324fbcee2",
+      "byteSize": 2320
+    },
+    "experiments/t05-durable-worker/node_modules/postgres-bytea/index.js": {
+      "path": "44-index.js.gz",
+      "sha256": "f9951481c0fb31614f808118c378994913bb91993a59d4b3b7ff9814677ad435",
+      "decodedSha256": "c078b99e1009c4bcf6e3ab59d9fe808b12caee3461204ae599cdd9cccd990801",
+      "byteSize": 863
+    },
+    "experiments/t05-durable-worker/node_modules/postgres-date/index.js": {
+      "path": "45-index.js.gz",
+      "sha256": "3735984fc7d35a547c1f1894502323915e099ef90491bd32c8733534e2255f0a",
+      "decodedSha256": "9a09e3ec0775237576b1f6ff0fba0ed6171235aeded635a42c174b517e34cb1a",
+      "byteSize": 2676
+    },
+    "experiments/t05-durable-worker/node_modules/postgres-interval/index.js": {
+      "path": "46-index.js.gz",
+      "sha256": "45a57f21fc853b9c1e7db728e573c005d26eb1f5eb60c77c4652db2411842c54",
+      "decodedSha256": "836fe0a39e52f051d62583d8375d3b270b4cb93dd026b125438a89e5a0258c41",
+      "byteSize": 3413
+    },
+    "experiments/t05-durable-worker/node_modules/xtend/mutable.js": {
+      "path": "47-mutable.js.gz",
+      "sha256": "4ed46671da57430f97e44975cd723bb90c8d3bff41e719c7d8df973117af581c",
+      "decodedSha256": "71a38649c77408217483f81f55daee1d6646d6c670e3d034a4482cb3453886e9",
+      "byteSize": 369
+    },
+    "node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js": {
+      "path": "48-AuthAdminApi.js.gz",
+      "sha256": "fe8a1b74fbe65f215f83c7735f1b35a9b9db55c90c4536f47e48280135315631",
+      "decodedSha256": "8e879ad1a0f0ad11923dc1b7bedd7e522532a298025c3fae52669419d342421a",
+      "byteSize": 309
+    },
+    "node_modules/@supabase/auth-js/dist/main/AuthClient.js": {
+      "path": "49-AuthClient.js.gz",
+      "sha256": "16efcbb7fb72f5346516f98857efca6042ccb1ffbd2cdd724d21492f60f33c51",
+      "decodedSha256": "f9dbb30bd5c6511db0c98a24f1f9b077aa2d080505427c93dea757d97d981568",
+      "byteSize": 297
+    },
+    "node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js": {
+      "path": "50-GoTrueAdminApi.js.gz",
+      "sha256": "c822e43bc6b9504565f09aa4b8db252c527b79600564befd7d846f70a9752aac",
+      "decodedSha256": "7a9a0770ea0302835e2f16f352f0fc12d7159d6710d531ac7b895c7b79658272",
+      "byteSize": 41566
+    },
+    "node_modules/@supabase/auth-js/dist/main/GoTrueClient.js": {
+      "path": "51-GoTrueClient.js.gz",
+      "sha256": "7ad50675c7853907d46306334a9b7ec54c11c36853118bc5b1541f0c46e83231",
+      "decodedSha256": "f40a1031c818a9e3cb78f814a88610a52c00598fc1722f535be0cf3de20fd101",
+      "byteSize": 238657
+    },
+    "node_modules/@supabase/auth-js/dist/main/index.js": {
+      "path": "52-index.js.gz",
+      "sha256": "1fd1a69cbad87d3e83de647209250cb4d87237bc54fd10244eec7e354eaa34e6",
+      "decodedSha256": "a43ea0c523b8f4f8b8d59bc3b16b9ec9158cad05de53ffc92238fceb26d8bcfd",
+      "byteSize": 1516
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/base64url.js": {
+      "path": "53-base64url.js.gz",
+      "sha256": "4c05c0cf8ea3f0980b3ff4dfd2e924a5c31b5c93a2a53bfdf39af4596a665b00",
+      "decodedSha256": "1d97eac773480a5e06ba408f4d746e59b4269a6b8afd22aaad75f5773c7cf9d7",
+      "byteSize": 9075
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/constants.js": {
+      "path": "54-constants.js.gz",
+      "sha256": "7154aae1f80197d96fd62477d28b348e5e204198ab4499fd77926acfbd06964e",
+      "decodedSha256": "773fef0aeeb99d0945191b43a67f26d7820d1828590a05118562bf157eafe63e",
+      "byteSize": 1556
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/errors.js": {
+      "path": "55-errors.js.gz",
+      "sha256": "9d28a444ac95d8f7c4ba713392242f58fc95b8d0d1e3d6056c20d812ba150bcf",
+      "decodedSha256": "a650dea0fa6181c7f337a24842d186b18e4a456de3301de1921d46096e16cd4a",
+      "byteSize": 9372
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/fetch.js": {
+      "path": "56-fetch.js.gz",
+      "sha256": "5c16e263e0eea75c7664ffe327d7dcc05b0d3f81ef1e24841cf32ea6276b1e18",
+      "decodedSha256": "8bd9bb74629fdfaf23e25766ad6c233d3b633d51f3b8db8e1d7c5586e253452c",
+      "byteSize": 8270
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/helpers.js": {
+      "path": "57-helpers.js.gz",
+      "sha256": "2d501c5e8993b2eb18e62dc54f5ab9da5536dccf51c365b66fa5d91183638d78",
+      "decodedSha256": "aaf5f591276f43ef63733a894edc72b32a7511235259cd64f48a8d1c29fe29b9",
+      "byteSize": 15846
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/local-storage.js": {
+      "path": "58-local-storage.js.gz",
+      "sha256": "aef244fcee6b41787d48bcebd02a0a2814f573f0b3e14c68c9a1296bc4f6002b",
+      "decodedSha256": "a3c6841d8c4dc24a2c0ac1d238b42a278c7ac05d18a7571db91c3fc140e42d93",
+      "byteSize": 573
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/locks.js": {
+      "path": "59-locks.js.gz",
+      "sha256": "fe82b4c21160013457d38e6039e01a02a646fcfaacb77ccf7618523d12a69970",
+      "decodedSha256": "3ff934cbce382ab1d32aef323006976d74ef466861cf34feebc7b28d92e84407",
+      "byteSize": 15802
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/polyfills.js": {
+      "path": "60-polyfills.js.gz",
+      "sha256": "9d83776e5f1f3de7e1d9039a1c95d4037e9e1db152de9c026d59afa8ae744ca3",
+      "decodedSha256": "0b5600e6e4cda1f029ec448d93857062731b850424d3b465fa7dae4e5921ae7e",
+      "byteSize": 862
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/types.js": {
+      "path": "61-types.js.gz",
+      "sha256": "f2404f92b115af4654aa57d2b07cc330a2eb182824fee18da5ffd01c1ea57c78",
+      "decodedSha256": "24966642101c9436aba71c1df65f4b54cffaf2c8c62adea41328f884edca8e33",
+      "byteSize": 655
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/version.js": {
+      "path": "62-version.js.gz",
+      "sha256": "43a2835603b39b74e38355d7cd683ebabc938f40b0a55ee6350e27ec519bba10",
+      "decodedSha256": "e76bc986d545872bd22d5630d4957ad1ae47bc3cd29a3214ec957a8e7ab0249a",
+      "byteSize": 581
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js": {
+      "path": "63-ethereum.js.gz",
+      "sha256": "5d88f8900b6b2df2dad5fc044b035311a3025c21e49c75678625aa278fce51ce",
+      "decodedSha256": "839a33e8225db3da724f25bea5d1b127ba30cb4c272cab30dd9700232ada431d",
+      "byteSize": 3287
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js": {
+      "path": "64-webauthn.errors.js.gz",
+      "sha256": "e9cdbf326183ec0562bc6e45cd7bb68bd18b0b5ec3fe0a9bd01c2aa9decaa0cc",
+      "decodedSha256": "40cb9a8d5f58c798e4b1ea47774ba29e59a9efb455c6edd4d05c8a38c762cd78",
+      "byteSize": 12037
+    },
+    "node_modules/@supabase/auth-js/dist/main/lib/webauthn.js": {
+      "path": "65-webauthn.js.gz",
+      "sha256": "149529750197c9e3f0ef2ccf9cdc2ba51934354ab3d3a4e202efcab6438da4a9",
+      "decodedSha256": "56a4a126d86809cedabc7d78317e14154640a86ce0f70a3c89786a8ce3cf4cda",
+      "byteSize": 35801
+    },
+    "node_modules/@supabase/functions-js/dist/main/FunctionsClient.js": {
+      "path": "66-FunctionsClient.js.gz",
+      "sha256": "d7c31c45da19ef2ca839b6892d21de15763fa23882ab6daa748ff1cb6de93b6f",
+      "decodedSha256": "d7b6eaa5e2dcb116be53e450470bfad704214a3338f14a52c1ac9613535dbc88",
+      "byteSize": 12849
+    },
+    "node_modules/@supabase/functions-js/dist/main/helper.js": {
+      "path": "67-helper.js.gz",
+      "sha256": "7d95335a688f6c9317d05b4095a80d4950be8ecf4e250a88a918e8a2f3680ecd",
+      "decodedSha256": "323d5529b134ddf92d2bce3ffb1c1707d483325f182fd2665d59564ca6bb933e",
+      "byteSize": 341
+    },
+    "node_modules/@supabase/functions-js/dist/main/index.js": {
+      "path": "68-index.js.gz",
+      "sha256": "d22ff33ecb06629464d960a4f308787e4145f3a1e9f8fb5bea44a9d49673a7cf",
+      "decodedSha256": "41f4ff1b0f36c0ccc0a0e0fbd6428f2654dafbe1fd3e3dd89a8736166ac5c4f5",
+      "byteSize": 1161
+    },
+    "node_modules/@supabase/functions-js/dist/main/types.js": {
+      "path": "69-types.js.gz",
+      "sha256": "c0a489d8300d57c9193fd6505e763c5884a914258bdb0050ea08edf73b2f000e",
+      "decodedSha256": "c599ec73696bd9a251cc206407bdc5a9b2fbda1b12d97ceb9868b2a060dbb514",
+      "byteSize": 3169
+    },
+    "node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js": {
+      "path": "70-phoenix.cjs.js.gz",
+      "sha256": "e7417689c3e96997b3cd20b215435b339176fe965e5fbd115039b73dbe0fb418",
+      "decodedSha256": "aa2e41c564026616b59237f9c00deb7d610502af3d2772304518296343f757bc",
+      "byteSize": 55228
+    },
+    "node_modules/@supabase/postgrest-js/dist/index.cjs": {
+      "path": "71-index.cjs.gz",
+      "sha256": "2fe638992d29a3649c75391885eef09364ba0ce529bfaba54fa48e46962a6da2",
+      "decodedSha256": "0bb26b706a008bed5869bc6c474fa3398b1070a486d7170335c9ae8a3099b5f1",
+      "byteSize": 129301
+    },
+    "node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js": {
+      "path": "72-RealtimeChannel.js.gz",
+      "sha256": "910201d3cee3c32c0d874bb462af9510b8d06e8b4f6ee89a9c69dc19beb433ef",
+      "decodedSha256": "9654f494ed848c91e4dcba1d1d7c532b2c2afdbb5eb47acd53979eda54affc45",
+      "byteSize": 29895
+    },
+    "node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js": {
+      "path": "73-RealtimeClient.js.gz",
+      "sha256": "0310b5c26397dc1b119d1e8960af710d563d2417c3bc91537f5b688820e48835",
+      "decodedSha256": "5f1ac85e0529659077ba585491f4184f8dc9b9a1ca8d2ec0ca64643bc79b3241",
+      "byteSize": 25454
+    },
+    "node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js": {
+      "path": "74-RealtimePresence.js.gz",
+      "sha256": "99012846581dd1214f6044ef10ddf30c5b007f45a155328b2c806a386836fba2",
+      "decodedSha256": "a2687fc9777849d24b7ec2b45b5191b7a2a06c4b19b4dc2ccb8c25f31679246d",
+      "byteSize": 1792
+    },
+    "node_modules/@supabase/realtime-js/dist/main/index.js": {
+      "path": "75-index.js.gz",
+      "sha256": "6a78180d8ad4baaf6dbcb01795f708eef139d2e0d9602351e159f2824eccb0d1",
+      "decodedSha256": "d27ce5c0dfc1947b6cbc6df7defaa6dbcc2503a6e53c4e625c374cb1fad8003d",
+      "byteSize": 1803
+    },
+    "node_modules/@supabase/realtime-js/dist/main/lib/constants.js": {
+      "path": "76-constants.js.gz",
+      "sha256": "843798b039f181e0df94705b5404b8edeecafe69b999b093a09fd960b2ddf9e7",
+      "decodedSha256": "b2e12c8872af9e3d67070addabefea35eebbebc0383cce5e4734361741c526a2",
+      "byteSize": 1372
+    },
+    "node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js": {
+      "path": "77-normalizeChannelError.js.gz",
+      "sha256": "78ad9d77afaeea5b97dfb4be8c183f5966c0105f79bac1f950b818bfcb7627a8",
+      "decodedSha256": "fcea2bd55b4f6c749cc0f9daf956b4d0db126d096656ff8149bb517648475efa",
+      "byteSize": 1293
+    },
+    "node_modules/@supabase/realtime-js/dist/main/lib/serializer.js": {
+      "path": "78-serializer.js.gz",
+      "sha256": "9145f512d87aec1572bd4cd82dc666075c90e014bec4d2abc69ad0ffc3cf3a17",
+      "decodedSha256": "5f7f25ee4738bdd680f91ce29942dbaa3069fcf01c582c970ccc5ffc1dbd9a10",
+      "byteSize": 7291
+    },
+    "node_modules/@supabase/realtime-js/dist/main/lib/transformers.js": {
+      "path": "79-transformers.js.gz",
+      "sha256": "2a377d36bc830bcfe9d82fbe7637b3f460480b7f50ebb151433c9ca067aff4a4",
+      "decodedSha256": "c6050fcfa7e19d3f5b7f0cc3e7e40e899aa753a75e10d268252be968e9fc7062",
+      "byteSize": 8974
+    },
+    "node_modules/@supabase/realtime-js/dist/main/lib/version.js": {
+      "path": "80-version.js.gz",
+      "sha256": "43a2835603b39b74e38355d7cd683ebabc938f40b0a55ee6350e27ec519bba10",
+      "decodedSha256": "e76bc986d545872bd22d5630d4957ad1ae47bc3cd29a3214ec957a8e7ab0249a",
+      "byteSize": 581
+    },
+    "node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js": {
+      "path": "81-websocket-factory.js.gz",
+      "sha256": "ea0cf943d236cbe756fc53167104f61a34b34cea7f239fc965964117d79736ad",
+      "decodedSha256": "c5a37c524becf38b5cd3c64fef399d4cda730768506acec02f2e94f66b63311b",
+      "byteSize": 5560
+    },
+    "node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js": {
+      "path": "82-channelAdapter.js.gz",
+      "sha256": "b8d52476ba462258ba90449051286718d1cb02fcc2eb57120cb3208757480797",
+      "decodedSha256": "07b9e487385763cfa10b923113e76872c0ff1b67b3542b7027261045edf0c875",
+      "byteSize": 3156
+    },
+    "node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js": {
+      "path": "83-presenceAdapter.js.gz",
+      "sha256": "31f83f0b80bf3c883fd4d98e505bac63b72fe1944c429f529004b1bbc316290f",
+      "decodedSha256": "60df10fb0b0d6efc6af0e2a0085ced65e5cb68f547d6f315dcba3453daeddcca",
+      "byteSize": 3304
+    },
+    "node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js": {
+      "path": "84-socketAdapter.js.gz",
+      "sha256": "af1b8950765da6228e59e9bbb8f1087d239b042d5b23942914889013f35112b7",
+      "decodedSha256": "2cfee5f2abf33a3ab905b92d21be2cd78fa03dbcc1c569ebfdc04c071d54ad1a",
+      "byteSize": 2980
+    },
+    "node_modules/@supabase/storage-js/dist/index.cjs": {
+      "path": "85-index.cjs.gz",
+      "sha256": "da8d1ffdcb00d0312d7d49c41a7257c23328d15cc7b8cb7459cb55ec066838ac",
+      "decodedSha256": "734da7228470c0a9529db478df91ee20419008214f0444a2cb872792c42d31e1",
+      "byteSize": 103778
+    },
+    "node_modules/@supabase/supabase-js/dist/index.cjs": {
+      "path": "86-index.cjs.gz",
+      "sha256": "c24d5b601fbf607bf4d1687469c09e7f0da2b5e716460a706f5e9c9306f6f3f9",
+      "decodedSha256": "2cd28b7115f1f4be6cc789940ff2979ba5b2f4cd06bc9c427f5aeef27d33fc84",
+      "byteSize": 25800
+    },
+    "node_modules/iceberg-js/dist/index.cjs": {
+      "path": "87-index.cjs.gz",
+      "sha256": "b89517fab1801ecf631c5c1733fd425e085a36dbe242fdac3850399d074de456",
+      "decodedSha256": "669b152b63f4655c394095a27401b6b78f776dcec68a6f62c692f0ff3cf1c79b",
+      "byteSize": 17389
+    },
+    "node_modules/tslib/tslib.js": {
+      "path": "88-tslib.js.gz",
+      "sha256": "4c1e250314e34716195e50eef6b0b61b47a7df784fab2af9ef3b1aa6c7f400bc",
+      "decodedSha256": "8855865a058bc0a6df8f5db45347be041a2d6bbe1654216c51a805648c1b6e8a",
+      "byteSize": 23382
+    },
+    "node_modules/typescript/lib/typescript.js": {
+      "path": "89-typescript.js.gz",
+      "sha256": "e05d86104485b59b5e9f0a4c9480abab2bc4861ddfe97cf995f099ed00d50544",
+      "decodedSha256": "3ae902c92cc44dace175c0e69e13a4b0899f6983c6121d76b9ab8dd5795e7675",
+      "byteSize": 9112572
+    },
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": {
+      "path": "90-20261024000001_p1_foundation_and_reconciliation.sql.gz",
+      "sha256": "415ff64252c8c6241b44e29237e4f1401e94ccc17404c9be8f2e6be55634a688",
+      "decodedSha256": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+      "byteSize": 17859
+    },
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": {
+      "path": "91-20261102000001_recording_seal_manifest.sql.gz",
+      "sha256": "4dcb580892a569fff4a5c873f2141fd590ee9c76cc94585d91a69d934dfbfb04",
+      "decodedSha256": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+      "byteSize": 10608
+    },
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": {
+      "path": "92-20261103000001_recording_worker_leases.sql.gz",
+      "sha256": "080835c0734cba0eeaa7327484390b6e859564c74282d3807cdba09eea51a878",
+      "decodedSha256": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+      "byteSize": 22665
+    },
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": {
+      "path": "93-20261103000002_recording_output_candidates.sql.gz",
+      "sha256": "eb4189cc7be94e2812605fb7b0b92acb1b5454ad0c04df0e9d539c0865b1ec26",
+      "decodedSha256": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+      "byteSize": 11072
+    },
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": {
+      "path": "94-20261104000001_recording_job_finalization.sql.gz",
+      "sha256": "3903389c2bb8b4a4ec19adb6149007fce28ef2c2b1e250fb465d0991464ce4cb",
+      "decodedSha256": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+      "byteSize": 10718
+    },
+    "packages/web/src/lib/recording-chunk-location.ts": {
+      "path": "95-recording-chunk-location.ts.gz",
+      "sha256": "2b974abdd276a821fc41488cbc9425c1e9c08168e16c94b59a54fb3758754973",
+      "decodedSha256": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+      "byteSize": 814
+    },
+    "packages/web/src/lib/server/consent-deletion.ts": {
+      "path": "96-consent-deletion.ts.gz",
+      "sha256": "b416c61e9f38ebddbae7727c16da60f5b87b9bc9a7143a700f13bb971e9c2ccd",
+      "decodedSha256": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+      "byteSize": 6679
+    },
+    "packages/web/src/lib/server/processing-jobs.ts": {
+      "path": "97-processing-jobs.ts.gz",
+      "sha256": "1cab40ebc4544bd4a7c48f9d326eb093144e2793ad8bbd2e41dbe9e4dec973b0",
+      "decodedSha256": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+      "byteSize": 9642
+    },
+    "packages/web/src/lib/server/recording-merge.ts": {
+      "path": "98-recording-merge.ts.gz",
+      "sha256": "c9ef63327afc5c95a74d74a00258ea8a71eca20be13c494a212549579e17666e",
+      "decodedSha256": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+      "byteSize": 6565
+    },
+    "packages/web/src/lib/server/recording-merge-executor.ts": {
+      "path": "99-recording-merge-executor.ts.gz",
+      "sha256": "77adb2ea98a7c1a576b9ed7f29ca1726e0bf2259e2cd335d9afd1a5083895a3e",
+      "decodedSha256": "36cb0471d7751a1e937074aaff7c05506ae97fd10d9800df49ea4142595ab97f",
+      "byteSize": 5699
+    },
+    "packages/web/src/lib/server/recording-processing-error.ts": {
+      "path": "100-recording-processing-error.ts.gz",
+      "sha256": "e57cf4ae5f90d3c854569dce492271e0ddeac1189ddebbc4a72c57eea51e973e",
+      "decodedSha256": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+      "byteSize": 1332
+    },
+    "packages/web/src/lib/server/recording-audio-decoder.ts": {
+      "path": "101-recording-audio-decoder.ts.gz",
+      "sha256": "2c8e80f2e2dd69c198466ec4ddfc6b15a58c82701e4cc4198644638f017967e2",
+      "decodedSha256": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+      "byteSize": 4887
+    },
+    "packages/web/src/lib/server/recording-session-service.ts": {
+      "path": "102-recording-session-service.ts.gz",
+      "sha256": "aa6cecbf95a32d7eea52932be211f3d6b06cd424446a244ba9eaaf8efa623201",
+      "decodedSha256": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+      "byteSize": 8597
+    },
+    "packages/web/src/lib/server/recording-job-input.ts": {
+      "path": "103-recording-job-input.ts.gz",
+      "sha256": "6c1e930f1b918ff1fea0efa16a6ae0d02108cd61ffd1bd1c3644cb4e4440ce92",
+      "decodedSha256": "3698e02cdf2e883e7c5a4db513df803e86f39a7ccdd8eb5427f16044593dbdf8",
+      "byteSize": 13735
+    },
+    "packages/web/src/lib/server/recording-job-verifier.ts": {
+      "path": "104-recording-job-verifier.ts.gz",
+      "sha256": "47dec13553afdd6b0e1a139ab68e1d2a8e820917cf94857ccd6fbd8cda0f903a",
+      "decodedSha256": "86d08b98f8572b5b36c077fdaae1794fe4ab3e5a89c1e1fb80f402454538cead",
+      "byteSize": 7008
+    },
+    "packages/web/src/lib/server/recording-job-lease.ts": {
+      "path": "105-recording-job-lease.ts.gz",
+      "sha256": "536335b2491503b866fbf3d62c38c418971c857224d5e5a70c0ef7320f94ebc9",
+      "decodedSha256": "8ddc4c5cb8bb11231dc15ecb451b6caed595181ce1615d2f75d684f0ae7024da",
+      "byteSize": 7261
+    },
+    "packages/web/src/lib/server/recording-job-worker.ts": {
+      "path": "106-recording-job-worker.ts.gz",
+      "sha256": "35e756def349794b9f53e38845427d3cac6489c199c9810c758efbabcca6ffdb",
+      "decodedSha256": "0f965112f08d4cb0b3178600b75ea48c53718b875b1be93f21f778f8e41f2f1d",
+      "byteSize": 3883
+    },
+    "packages/web/src/lib/server/recording-output-candidate.ts": {
+      "path": "107-recording-output-candidate.ts.gz",
+      "sha256": "551f8980450030c88f1b1ccb08bd5aba60284c7dbd047945cdf77457316ff8a5",
+      "decodedSha256": "33c46538e150372327dddfe583f89838b2e6c34626331f0a5436523611163eb8",
+      "byteSize": 6970
+    },
+    "packages/web/src/lib/server/recording-candidate-storage.ts": {
+      "path": "108-recording-candidate-storage.ts.gz",
+      "sha256": "1648e93d38d7c02a871c03071cee8b406d2de00125cc8a058525bd216e077bc2",
+      "decodedSha256": "ae0a4948e9cd68de1bc24eac92c2186078a68e6b62d15fb5371bf741f5b6668a",
+      "byteSize": 7925
+    },
+    "packages/web/src/lib/server/recording-candidate-worker.ts": {
+      "path": "109-recording-candidate-worker.ts.gz",
+      "sha256": "1e54b719a8bcb66c63428a0f253b09fc6d54fe0fc5bc1982fb812f97c34f0756",
+      "decodedSha256": "61831dfc257c75a75c5e5736c26ade78c510483d367bd98f1094eee109fa5a7d",
+      "byteSize": 2430
+    },
+    "packages/web/src/lib/server/recording-job-finalization.ts": {
+      "path": "110-recording-job-finalization.ts.gz",
+      "sha256": "f856329949cfbdd412eaaba707cf56cc974c8407dd68c03134363a41f7da578a",
+      "decodedSha256": "f28f28e8cb04d16d7bdc639d9fabea13e9d3bf5cda09ff95752ca31964b4e89f",
+      "byteSize": 7973
+    },
+    "packages/web/src/lib/server/recording-terminal-worker.ts": {
+      "path": "111-recording-terminal-worker.ts.gz",
+      "sha256": "f87c75da18a978abd3d8e7b16bf8d65f5c6ba59528dbb9630bac57fc6f5bca90",
+      "decodedSha256": "12ca08db9c58411088565fc2fdcde76b852f9b5df75fd231c3c6bcc494f02037",
+      "byteSize": 1957
+    }
+  },
+  "compiled": {},
+  "artifacts": {
+    "synthetic-source.webm": {
+      "path": "112-synthetic-source.webm.gz",
+      "sha256": "71d24ecaa80143181adad1251ee8291bcedc0c04da1c0f53f87209bfa0e5d75f",
+      "decodedSha256": "97ab1d896272de1bac576dd9753d04b39c47c160ab7f7cc7213b2680e10be6b5",
+      "byteSize": 20130
+    },
+    "postgres.log": {
+      "path": "113-postgres.log.gz",
+      "sha256": "88c9d469881580ac0cea502dff06b4ae331e524be67a46f883c81df98a42babf",
+      "decodedSha256": "f5ec445766f781f23bbaa327c0170ad6eeb5ae2305528f06387476dbcba5dd1b",
+      "byteSize": 467
+    }
+  },
+  "selectedCases": [
+    "bad-source-hash"
+  ],
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "limits": [
+    "Actual Supabase JS, native fetch and streamed disk-backed synthetic Storage bytes use a loopback PostgREST-shaped SQL adapter, not real PostgREST, managed Storage, TLS, deployment or device qualification.",
+    "Full seal/lease/candidate/finalization migrations are intact; foundation tables/helpers and auth/project prerequisites are the existing minimal synthetic fixture, not a full deployment schema replay.",
+    "All UUIDs and audio are synthetic. Worker retains original and candidate bytes; only the owning harness removes its disposable fixture after byte snapshots. No draft clearing, cloud writes, retries, recovery, fallback failure or deletion is authorized.",
+    "Response loss occurs after a confirmed PostgreSQL COMMIT, at the HTTP response boundary; PostgreSQL wire COMMIT acknowledgement loss is not simulated.",
+    "Caller cancellation is injected after the real scoped rm settles; revocation is injected at the final active lease check. Forced worker death and OS-wide process isolation are not qualified by this harness.",
+    "Source snapshots include static ESM helper imports, compiled TypeScript inputs/output, loaded CommonJS dependencies and SQL. Runtime executables are fingerprinted, not copied; dynamically linked operating-system libraries and Node builtin sources are not independently snapshotted."
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 96638,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-6iXz14/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    },
+    "nodeExecutable": "/usr/local/Cellar/node@22/22.22.2/bin/node",
+    "postgresBinaryDirectory": "/Users/eat/Documents/eatpotato/saga传奇/.superpowers/sdd/2026-10-17-upgrade-pg17-routines/runtime/install/bin"
+  },
+  "scratch": "/tmp/saga-pg17-6iXz14",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users",
+      "auth.uid()",
+      "projects",
+      "project_roles",
+      "project_members",
+      "stories",
+      "storage.buckets",
+      "storage.objects",
+      "broad permissive storage RLS/grants"
+    ],
+    "exactFoundationTables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts",
+      "recording_sessions",
+      "recording_chunks"
+    ],
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "supabase/migrations/20261104000001_recording_job_finalization.sql"
+    ],
+    "livePostgrest": false,
+    "liveStorage": false
+  },
+  "audioRuntime": {
+    "executable": "/usr/local/bin/ffmpeg",
+    "sha256": "69bddbabda0d4fbedf98fb01b6f964ee1c8346987ef7f6e70055b95339a78b17",
+    "version": "ffmpeg version N-92718-g092cb17983-tessus  https://evermeet.cx/ffmpeg/  Copyright (c) 2000-2018 the FFmpeg developers",
+    "supabaseJs": "2.105.3",
+    "postgrestJs": "2.105.3"
+  },
+  "audioFixture": {
+    "description": "2s 440Hz WebM/Opus sine wave",
+    "sha256": "97ab1d896272de1bac576dd9753d04b39c47c160ab7f7cc7213b2680e10be6b5",
+    "byteSize": 20130
+  },
+  "resources": [
+    {
+      "case": "bad-source-hash",
+      "at": 4780.876784,
+      "kind": "merged-handle",
+      "closed": true,
+      "closedAt": 5315.918491
+    },
+    {
+      "case": "bad-source-hash",
+      "at": 5316.329043,
+      "kind": "merged-directory-removal",
+      "closed": true,
+      "closedAt": 5319.131312
+    }
+  ],
+  "requests": [
+    {
+      "case": "bad-source-hash",
+      "index": 0,
+      "at": 4483.591348,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "claim",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": null,
+        "p_lease_ms": 1000
+      },
+      "action": "claim",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "leased",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.110661+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.110661+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4537.468095,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 1,
+      "at": 4537.780363,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "start",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "start",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.159198+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.110661+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4573.148106,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 2,
+      "at": 4573.388282,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.199492+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.110661+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4609.900826,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 3,
+      "at": 4610.228878,
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "query": {
+        "select": "*",
+        "id": "eq.c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4633.351809,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 4,
+      "at": 4633.622937,
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "query": {
+        "select": "*",
+        "seal_input": "cs.{\"assetId\":\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\"}",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4648.584361,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 5,
+      "at": 4648.744272,
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "query": {
+        "select": "*",
+        "id": "eq.c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4662.326013,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 6,
+      "at": 4662.48424,
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "query": {
+        "select": "*",
+        "session_id": "eq.e06e8e56-ae75-4387-9856-f266e92f7600",
+        "order": "chunk_index.asc",
+        "offset": "0",
+        "limit": "3"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4681.390067,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 7,
+      "at": 4672.012781,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "heartbeat",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": 1000
+      },
+      "action": "heartbeat",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.302366+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.302366+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4716.773543,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 8,
+      "at": 4682.123699,
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "query": {
+        "select": "*",
+        "id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4705.526765,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 9,
+      "at": 4705.760739,
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "query": {
+        "select": "*",
+        "project_id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "user_id": "eq.11111111-1111-4111-8111-111111111111",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4728.010925,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 10,
+      "at": 4728.149164,
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "query": {
+        "select": "*",
+        "id": "eq.cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4742.298745,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 11,
+      "at": 4742.421937,
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "query": {
+        "select": "subject_id,tombstone_at",
+        "project_id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subject_id": "in.(aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,e06e8e56-ae75-4387-9856-f266e92f7600,c77e00ed-55da-83f3-8f8e-fade35ed3fd1,cccccccc-cccc-4ccc-8ccc-cccccccccccc)",
+        "tombstone_at": "not.is.null",
+        "limit": "1"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4755.095839,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 12,
+      "at": 4756.198149,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.373301+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.302366+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4780.471367,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 13,
+      "at": 4782.726932,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.398995+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.302366+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4805.498212,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 14,
+      "at": 4805.819171,
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "query": {
+        "select": "*",
+        "id": "eq.c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4817.680248,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 15,
+      "at": 4818.618431,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "heartbeat",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": 1000
+      },
+      "action": "heartbeat",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.435715+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.435715+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4843.250417,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 16,
+      "at": 4818.910126,
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "query": {
+        "select": "*",
+        "seal_input": "cs.{\"assetId\":\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\"}",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4829.883902,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 17,
+      "at": 4829.987648,
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "query": {
+        "select": "*",
+        "id": "eq.c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4840.578834,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 18,
+      "at": 4840.893052,
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "query": {
+        "select": "*",
+        "session_id": "eq.e06e8e56-ae75-4387-9856-f266e92f7600",
+        "order": "chunk_index.asc",
+        "offset": "0",
+        "limit": "3"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4851.402386,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 19,
+      "at": 4851.713938,
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "query": {
+        "select": "*",
+        "id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4860.456705,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 20,
+      "at": 4860.744665,
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "query": {
+        "select": "*",
+        "project_id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "user_id": "eq.11111111-1111-4111-8111-111111111111",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4870.139507,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 21,
+      "at": 4870.460226,
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "query": {
+        "select": "*",
+        "id": "eq.cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4880.685675,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 22,
+      "at": 4881.014666,
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "query": {
+        "select": "subject_id,tombstone_at",
+        "project_id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subject_id": "in.(aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,e06e8e56-ae75-4387-9856-f266e92f7600,c77e00ed-55da-83f3-8f8e-fade35ed3fd1,cccccccc-cccc-4ccc-8ccc-cccccccccccc)",
+        "tombstone_at": "not.is.null",
+        "limit": "1"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4891.020833,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 23,
+      "at": 4891.106157,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.505566+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.435715+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4913.930237,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 24,
+      "at": 4914.251437,
+      "method": "GET",
+      "path": "/storage/v1/object/audio-recordings/11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+      "query": {},
+      "kind": "input-read",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "storedSha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+      "sentSha256": "52206feffa3c39cfaf065ba30b812ea3cca135e719df33b8c84b01a484025c64",
+      "sentBytes": 6710,
+      "finishedAt": 4923.685292,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 25,
+      "at": 4923.789085,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.538447+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.435715+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4949.51408,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 26,
+      "at": 4948.726328,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "heartbeat",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": 1000
+      },
+      "action": "heartbeat",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.572399+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.572399+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 4980.97571,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 27,
+      "at": 4949.617347,
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "query": {
+        "select": "*",
+        "id": "eq.c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4960.828962,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 28,
+      "at": 4960.920386,
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "query": {
+        "select": "*",
+        "seal_input": "cs.{\"assetId\":\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\"}",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4977.376781,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 29,
+      "at": 4977.491723,
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "query": {
+        "select": "*",
+        "id": "eq.c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 4989.992292,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 30,
+      "at": 4990.29962,
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "query": {
+        "select": "*",
+        "session_id": "eq.e06e8e56-ae75-4387-9856-f266e92f7600",
+        "order": "chunk_index.asc",
+        "offset": "0",
+        "limit": "3"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5001.14072,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 31,
+      "at": 5001.454588,
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "query": {
+        "select": "*",
+        "id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5011.848094,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 32,
+      "at": 5011.950924,
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "query": {
+        "select": "*",
+        "project_id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "user_id": "eq.11111111-1111-4111-8111-111111111111",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5023.432905,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 33,
+      "at": 5023.525819,
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "query": {
+        "select": "*",
+        "id": "eq.cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5035.943464,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 34,
+      "at": 5036.273867,
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "query": {
+        "select": "subject_id,tombstone_at",
+        "project_id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subject_id": "in.(aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,e06e8e56-ae75-4387-9856-f266e92f7600,c77e00ed-55da-83f3-8f8e-fade35ed3fd1,cccccccc-cccc-4ccc-8ccc-cccccccccccc)",
+        "tombstone_at": "not.is.null",
+        "limit": "1"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5048.84367,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 35,
+      "at": 5048.99805,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.670604+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.572399+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 5081.214854,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 36,
+      "at": 5083.851726,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.729535+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.70828+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 5136.279285,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 37,
+      "at": 5084.389894,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "heartbeat",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": 1000
+      },
+      "action": "heartbeat",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.70828+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.70828+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 5123.944194,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 38,
+      "at": 5136.814533,
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "query": {
+        "select": "*",
+        "id": "eq.c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5158.340909,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 39,
+      "at": 5158.665591,
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "query": {
+        "select": "*",
+        "seal_input": "cs.{\"assetId\":\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\"}",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5175.266,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 40,
+      "at": 5175.623785,
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "query": {
+        "select": "*",
+        "id": "eq.c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5198.605001,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 41,
+      "at": 5198.199873,
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "query": {
+        "select": "*",
+        "session_id": "eq.e06e8e56-ae75-4387-9856-f266e92f7600",
+        "order": "chunk_index.asc",
+        "offset": "0",
+        "limit": "3"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5216.170007,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 42,
+      "at": 5216.287594,
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "query": {
+        "select": "*",
+        "id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5230.36488,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 43,
+      "at": 5220.951063,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "heartbeat",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": 1000
+      },
+      "action": "heartbeat",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.856733+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.856733+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 5268.396836,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 44,
+      "at": 5230.475893,
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "query": {
+        "select": "*",
+        "project_id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "user_id": "eq.11111111-1111-4111-8111-111111111111",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5253.926469,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 45,
+      "at": 5254.039156,
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "query": {
+        "select": "*",
+        "id": "eq.cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "limit": "2"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5273.027558,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 46,
+      "at": 5273.373877,
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "query": {
+        "select": "subject_id,tombstone_at",
+        "project_id": "eq.aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subject_id": "in.(aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,e06e8e56-ae75-4387-9856-f266e92f7600,c77e00ed-55da-83f3-8f8e-fade35ed3fd1,cccccccc-cccc-4ccc-8ccc-cccccccccccc)",
+        "tombstone_at": "not.is.null",
+        "limit": "1"
+      },
+      "kind": "query",
+      "committed": false,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "finishedAt": 5285.368185,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 47,
+      "at": 5285.941423,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.905728+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.856733+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 5316.823589,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 48,
+      "at": 5320.949083,
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "check",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_lease_ms": null
+      },
+      "action": "check",
+      "rpc": "lease",
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "running",
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "workerId": "native-terminal-worker",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-05T02:49:41.940718+00:00",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-05T02:49:42.856733+00:00",
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 5349.401414,
+      "fixtureListenersRemoved": true
+    },
+    {
+      "case": "bad-source-hash",
+      "index": 49,
+      "at": 5349.933793,
+      "method": "POST",
+      "path": "/rest/v1/rpc/finalize_recording_job",
+      "query": {},
+      "kind": "rpc",
+      "committed": true,
+      "finished": true,
+      "aborted": false,
+      "responseFinished": true,
+      "input": {
+        "p_job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "p_action": "fail",
+        "p_worker_id": "native-terminal-worker",
+        "p_attempt": 1,
+        "p_manifest_sha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "p_candidate_id": null,
+        "p_output": null,
+        "p_failure_code": "recording_source_hash_mismatch"
+      },
+      "action": "fail",
+      "rpc": "finalize",
+      "localCleanupBeforeTerminal": {
+        "children": 0,
+        "streams": 0,
+        "handles": 0,
+        "removals": 0,
+        "tempEntries": [],
+        "callerAbortListeners": 1
+      },
+      "before": {
+        "job": {
+          "id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+          "state": "running",
+          "asset_id": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+          "job_type": "recording_merge",
+          "created_at": "2026-11-05T02:49:41.03066+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "error_code": null,
+          "not_before": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "result_ref": null,
+          "updated_at": "2026-11-05T02:49:41.856733+00:00",
+          "lease_owner": "native-terminal-worker",
+          "max_attempts": 3,
+          "attempt_count": 1,
+          "input_version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=e06e8e56-ae75-4387-9856-f266e92f7600:chunks=0928604d676541f9044633947e189779aafced07eb4930424e14e3b14974eac7",
+          "lease_expires_at": "2026-11-05T02:49:42.856733+00:00",
+          "parameter_version": "default",
+          "processor_version": "ffmpeg-merge-v1",
+          "cancel_requested_at": null,
+          "model_config_version": "none"
+        },
+        "asset": {
+          "id": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+          "kind": "original_audio",
+          "state": "verifying",
+          "bucket": "audio-recordings",
+          "sha256": null,
+          "version": 1,
+          "story_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "byte_size": 20130,
+          "mime_type": "audio/webm;codecs=opus",
+          "created_at": "2026-11-05T02:49:41.028834+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/c77e00ed-55da-83f3-8f8e-fade35ed3fd1/original",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "updated_at": "2026-11-05T02:49:41.028834+00:00",
+          "duration_ms": null,
+          "verified_at": null,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=e06e8e56-ae75-4387-9856-f266e92f7600:chunks=0928604d676541f9044633947e189779aafced07eb4930424e14e3b14974eac7",
+          "parent_asset_id": null,
+          "original_filename": "unnamed-asset",
+          "verification_error": null,
+          "content_verified_at": null
+        },
+        "chunks": [
+          {
+            "id": "6c63df4a-d70b-4e92-8fa3-a8eaa0c14e53",
+            "bucket": "audio-recordings",
+            "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 0,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-0"
+          },
+          {
+            "id": "af7f4b67-0028-49f1-84fd-152d9224b998",
+            "bucket": "audio-recordings",
+            "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 1,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-1"
+          },
+          {
+            "id": "b94568fc-d10c-480a-a13e-d63fe5766478",
+            "bucket": "audio-recordings",
+            "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 2,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-2"
+          }
+        ],
+        "session": {
+          "id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+          "state": "sealing",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "story_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "mime_type": "audio/webm;codecs=opus",
+          "sealed_at": "2026-11-05T02:49:41.015094+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "seal_input": {
+            "chunks": [
+              {
+                "index": 0,
+                "bucket": "audio-recordings",
+                "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+                "chunkId": "chunk-0",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0"
+              },
+              {
+                "index": 1,
+                "bucket": "audio-recordings",
+                "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650",
+                "chunkId": "chunk-1",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1"
+              },
+              {
+                "index": 2,
+                "bucket": "audio-recordings",
+                "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133",
+                "chunkId": "chunk-2",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2"
+              }
+            ],
+            "userId": "11111111-1111-4111-8111-111111111111",
+            "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+            "storyId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "mimeType": "audio/webm;codecs=opus",
+            "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "schemaVersion": 1
+          },
+          "started_at": "2026-11-05T02:49:41.015094+00:00",
+          "confirmed_at": null,
+          "merge_job_id": null,
+          "total_chunks": 3,
+          "manifest_sha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+          "total_input_bytes": 20130,
+          "confirmed_asset_id": null
+        },
+        "attempts": [
+          {
+            "id": "03770822-ae11-4b01-a453-6e84d51e0240",
+            "job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+            "provider": null,
+            "worker_id": "native-terminal-worker",
+            "attempt_no": 1,
+            "error_code": null,
+            "finished_at": null,
+            "usage_units": null,
+            "result_state": "running",
+            "dispatched_at": "2026-11-05T02:49:41.159198+00:00",
+            "settled_cost_usd": null,
+            "reserved_cost_usd": null,
+            "provider_request_id": null
+          }
+        ],
+        "candidates": []
+      },
+      "after": {
+        "job": {
+          "id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+          "state": "failed",
+          "asset_id": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+          "job_type": "recording_merge",
+          "created_at": "2026-11-05T02:49:41.03066+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "error_code": "recording_source_hash_mismatch",
+          "not_before": null,
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "result_ref": null,
+          "updated_at": "2026-11-05T02:49:41.973629+00:00",
+          "lease_owner": null,
+          "max_attempts": 3,
+          "attempt_count": 1,
+          "input_version": 1,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=e06e8e56-ae75-4387-9856-f266e92f7600:chunks=0928604d676541f9044633947e189779aafced07eb4930424e14e3b14974eac7",
+          "lease_expires_at": null,
+          "parameter_version": "default",
+          "processor_version": "ffmpeg-merge-v1",
+          "cancel_requested_at": null,
+          "model_config_version": "none"
+        },
+        "asset": {
+          "id": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+          "kind": "original_audio",
+          "state": "quarantined",
+          "bucket": "audio-recordings",
+          "sha256": null,
+          "version": 1,
+          "story_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "byte_size": 20130,
+          "mime_type": "audio/webm;codecs=opus",
+          "created_at": "2026-11-05T02:49:41.028834+00:00",
+          "created_by": "11111111-1111-4111-8111-111111111111",
+          "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/c77e00ed-55da-83f3-8f8e-fade35ed3fd1/original",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "updated_at": "2026-11-05T02:49:41.973629+00:00",
+          "duration_ms": null,
+          "verified_at": null,
+          "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"c77e00ed-55da-83f3-8f8e-fade35ed3fd1\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=e06e8e56-ae75-4387-9856-f266e92f7600:chunks=0928604d676541f9044633947e189779aafced07eb4930424e14e3b14974eac7",
+          "parent_asset_id": null,
+          "original_filename": "unnamed-asset",
+          "verification_error": "recording_source_hash_mismatch",
+          "content_verified_at": null
+        },
+        "chunks": [
+          {
+            "id": "6c63df4a-d70b-4e92-8fa3-a8eaa0c14e53",
+            "bucket": "audio-recordings",
+            "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 0,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-0"
+          },
+          {
+            "id": "af7f4b67-0028-49f1-84fd-152d9224b998",
+            "bucket": "audio-recordings",
+            "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 1,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-1"
+          },
+          {
+            "id": "b94568fc-d10c-480a-a13e-d63fe5766478",
+            "bucket": "audio-recordings",
+            "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133",
+            "byte_size": 6710,
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "session_id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "chunk_index": 2,
+            "persisted_at": "2026-11-05T02:49:41.014594+00:00",
+            "seal_chunk_id": "chunk-2"
+          }
+        ],
+        "session": {
+          "id": "e06e8e56-ae75-4387-9856-f266e92f7600",
+          "state": "failed",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "story_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "mime_type": "audio/webm;codecs=opus",
+          "sealed_at": "2026-11-05T02:49:41.015094+00:00",
+          "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "seal_input": {
+            "chunks": [
+              {
+                "index": 0,
+                "bucket": "audio-recordings",
+                "sha256": "3863579f803d6ad9573b61bbcc172aa681d43756c5cb89ac4512ea175e0204f4",
+                "chunkId": "chunk-0",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/0"
+              },
+              {
+                "index": 1,
+                "bucket": "audio-recordings",
+                "sha256": "c46c16fd7c0da43d53876d447bd1fcb16f889c013af4852491068987fd869650",
+                "chunkId": "chunk-1",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/1"
+              },
+              {
+                "index": 2,
+                "bucket": "audio-recordings",
+                "sha256": "eab5069c2081530fe582ddb970ecfb46511fa9ab52559972a2a35993a25f9133",
+                "chunkId": "chunk-2",
+                "byteSize": 6710,
+                "objectKey": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2",
+                "storageObjectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/e06e8e56-ae75-4387-9856-f266e92f7600/2"
+              }
+            ],
+            "userId": "11111111-1111-4111-8111-111111111111",
+            "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+            "storyId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "mimeType": "audio/webm;codecs=opus",
+            "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+            "schemaVersion": 1
+          },
+          "started_at": "2026-11-05T02:49:41.015094+00:00",
+          "confirmed_at": null,
+          "merge_job_id": null,
+          "total_chunks": 3,
+          "manifest_sha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+          "total_input_bytes": 20130,
+          "confirmed_asset_id": null
+        },
+        "attempts": [
+          {
+            "id": "03770822-ae11-4b01-a453-6e84d51e0240",
+            "job_id": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+            "provider": null,
+            "worker_id": "native-terminal-worker",
+            "attempt_no": 1,
+            "error_code": "recording_source_hash_mismatch",
+            "finished_at": "2026-11-05T02:49:41.973629+00:00",
+            "usage_units": null,
+            "result_state": "fatal_error",
+            "dispatched_at": "2026-11-05T02:49:41.159198+00:00",
+            "settled_cost_usd": null,
+            "reserved_cost_usd": null,
+            "provider_request_id": null
+          }
+        ],
+        "candidates": []
+      },
+      "receipt": {
+        "jobId": "c966c97c-daab-4211-a4fe-2a993fda3f78",
+        "state": "failed",
+        "bucket": null,
+        "sha256": null,
+        "assetId": "c77e00ed-55da-83f3-8f8e-fade35ed3fd1",
+        "attempt": 1,
+        "byteSize": null,
+        "mimeType": null,
+        "workerId": "native-terminal-worker",
+        "errorCode": "recording_source_hash_mismatch",
+        "objectKey": null,
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "sessionId": "e06e8e56-ae75-4387-9856-f266e92f7600",
+        "assetState": "quarantined",
+        "durationMs": null,
+        "finishedAt": "2026-11-05T02:49:41.973629+00:00",
+        "candidateId": null,
+        "sessionState": "failed",
+        "schemaVersion": 1,
+        "manifestSha256": "b8c43963c920572662256dd04c0400032f4390539962b1db3580a1bcf337dc72",
+        "canClearLocalDrafts": false
+      },
+      "finishedAt": 5384.298019,
+      "fixtureListenersRemoved": true
+    }
+  ],
+  "httpCleanup": {
+    "listening": false,
+    "pending": 0,
+    "sockets": 0,
+    "errors": [],
+    "everyHandlerFinished": true,
+    "fixtureListenersRemoved": true
+  },
+  "applicationCleanup": {
+    "observersRestored": true,
+    "leakedBeforeRescue": {
+      "children": 0,
+      "streams": 0,
+      "handles": 0,
+      "removals": 0
+    },
+    "childrenRemaining": 0,
+    "streamsRemaining": 0,
+    "handlesRemaining": 0,
+    "removalsRemaining": 0
+  },
+  "sourcesChangedDuringRun": [],
+  "runtimeChangedDuringRun": [],
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "socketDirectoryRemoved": true,
+    "serverPidGone": true
+  },
+  "finishedAt": "2026-11-05T02:49:42.914Z"
+}

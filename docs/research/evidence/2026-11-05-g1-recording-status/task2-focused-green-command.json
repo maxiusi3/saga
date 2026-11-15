@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "npm",
+    "test",
+    "--workspace=packages/web",
+    "--",
+    "--runInBand",
+    "--runTestsByPath",
+    "src/lib/server/__tests__/recording-session-status.test.ts",
+    "src/app/api/recordings/sessions/[sessionId]/status/__tests__/route.test.ts",
+    "src/lib/server/__tests__/recording-job-input.test.ts",
+    "src/lib/server/__tests__/recording-output-candidate.test.ts",
+    "src/lib/server/__tests__/recording-job-finalization.test.ts"
+  ],
+  "exitCode": 0
+}

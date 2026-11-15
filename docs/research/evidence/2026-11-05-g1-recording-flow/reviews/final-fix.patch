@@ -1,0 +1,346 @@
+diff --git a/supabase/migrations/20261106000001_recording_story_save.sql b/supabase/migrations/20261106000001_recording_story_save.sql
+--- a/supabase/migrations/20261106000001_recording_story_save.sql
++++ b/supabase/migrations/20261106000001_recording_story_save.sql
+@@ -30,6 +30,9 @@
+   v_asset public.media_assets%ROWTYPE;
+   v_job public.processing_jobs%ROWTYPE;
+   v_attempt public.processing_attempts%ROWTYPE;
++  v_history public.processing_attempts%ROWTYPE;
++  v_expected_attempt integer := 1;
++  v_previous_finished timestamptz;
+   v_candidate public.recording_output_candidates%ROWTYPE;
+   v_snapshot jsonb;
+   v_intent_json jsonb := 'null';
+@@ -226,6 +229,18 @@
+       v_session.total_input_bytes IS DISTINCT FROM v_total_bytes THEN
+       RAISE EXCEPTION 'recording_save_unavailable' USING ERRCODE = '23505';
+     END IF;
++    -- The independent application parser accepts finite, four-digit UTC years.
++    -- PostgreSQL also stores infinities and BC/five-digit years; relative time
++    -- comparisons alone cannot establish a serializable successful snapshot.
++    IF EXISTS (SELECT 1 FROM unnest(ARRAY[
++      v_session.started_at,v_session.sealed_at,v_session.confirmed_at,
++      v_asset.created_at,v_asset.updated_at,v_asset.verified_at,v_asset.content_verified_at,
++      v_job.created_at,v_job.updated_at,v_attempt.dispatched_at,v_attempt.finished_at,
++      v_candidate.created_at,v_candidate.prepared_at
++    ]) AS required(value) WHERE required.value IS NULL OR NOT isfinite(required.value) OR
++      required.value < timestamptz '0001-01-01 00:00:00+00' OR required.value >= timestamptz '10000-01-01 00:00:00+00') THEN
++      RAISE EXCEPTION 'recording_save_unavailable' USING ERRCODE = '23505';
++    END IF;
+     IF v_job.state IS DISTINCT FROM 'succeeded' OR v_job.result_ref IS DISTINCT FROM v_asset_id::text OR
+       v_job.project_id IS DISTINCT FROM p_project_id OR v_job.created_by IS DISTINCT FROM p_actor_id OR v_job.asset_id IS DISTINCT FROM v_asset_id OR
+       v_job.job_type IS DISTINCT FROM 'recording_merge' OR v_job.input_version IS DISTINCT FROM 1 OR
+@@ -233,7 +248,6 @@
+       v_job.lease_owner IS NOT NULL OR v_job.lease_expires_at IS NOT NULL OR v_job.not_before IS NOT NULL OR v_job.error_code IS NOT NULL OR v_job.cancel_requested_at IS NOT NULL OR
+       v_job.attempt_count < 1 OR v_job.attempt_count > 3 OR v_job.max_attempts <> 3 OR
+       v_attempt.result_state IS DISTINCT FROM 'succeeded' OR v_attempt.dispatched_at IS NULL OR v_attempt.error_code IS NOT NULL OR
+-      v_attempt.provider IS NOT NULL OR v_attempt.provider_request_id IS NOT NULL OR v_attempt.usage_units IS NOT NULL OR v_attempt.reserved_cost_usd IS NOT NULL OR v_attempt.settled_cost_usd IS NOT NULL OR
+       v_candidate.state IS DISTINCT FROM 'prepared' OR v_candidate.prepared_at IS NULL OR
+       v_candidate.project_id IS DISTINCT FROM p_project_id OR v_candidate.session_id IS DISTINCT FROM p_session_id OR
+       v_candidate.asset_id IS DISTINCT FROM v_asset_id OR v_candidate.job_id IS DISTINCT FROM v_job.id OR
+@@ -264,7 +278,6 @@
+       v_session.seal_input ->> 'projectId' IS DISTINCT FROM p_project_id::text OR
+       v_session.seal_input ->> 'userId' IS DISTINCT FROM p_actor_id::text OR
+       v_session.seal_input ->> 'mimeType' IS DISTINCT FROM v_asset.mime_type OR
+-      v_session.started_at IS NULL OR v_session.sealed_at IS NULL OR NOT isfinite(v_session.started_at) OR NOT isfinite(v_session.sealed_at) OR
+       v_session.started_at > v_session.sealed_at OR v_session.sealed_at > v_attempt.dispatched_at OR
+       v_asset.created_at > v_job.created_at OR v_job.created_at > v_attempt.dispatched_at OR v_attempt.dispatched_at > v_candidate.created_at OR
+       v_asset.parent_asset_id IS NOT NULL OR v_asset.original_filename IS DISTINCT FROM 'unnamed-asset' OR
+@@ -273,12 +286,37 @@
+         WHERE c.id IS NULL OR c.project_id IS DISTINCT FROM p_project_id OR c.seal_chunk_id IS DISTINCT FROM expected.chunk ->> 'chunkId'
+           OR c.chunk_index::text IS DISTINCT FROM expected.chunk ->> 'index' OR c.bucket IS DISTINCT FROM expected.chunk ->> 'bucket'
+           OR c.object_key IS DISTINCT FROM expected.chunk ->> 'storageObjectKey' OR c.byte_size::text IS DISTINCT FROM expected.chunk ->> 'byteSize'
+-          OR c.sha256 IS DISTINCT FROM expected.chunk ->> 'sha256' OR c.persisted_at > v_session.sealed_at) OR
+-      EXISTS (SELECT 1 FROM public.processing_attempts a WHERE a.job_id=v_job.id AND a.attempt_no < v_job.attempt_count AND
+-        (a.attempt_no < 1 OR a.result_state IS DISTINCT FROM 'retryable_error' OR a.error_code IS DISTINCT FROM 'lease_expired_before_dispatch'
+-          OR a.dispatched_at IS NOT NULL OR a.finished_at IS NULL OR a.finished_at < v_session.sealed_at OR a.finished_at > v_attempt.dispatched_at)) THEN
+-      RAISE EXCEPTION 'recording_save_unavailable' USING ERRCODE = '23505';
+-    END IF;
++          OR c.sha256 IS DISTINCT FROM expected.chunk ->> 'sha256' OR c.persisted_at IS NULL OR NOT isfinite(c.persisted_at)
++          OR c.persisted_at < timestamptz '0001-01-01 00:00:00+00' OR c.persisted_at >= timestamptz '10000-01-01 00:00:00+00'
++          OR c.persisted_at > v_session.sealed_at) THEN
++      RAISE EXCEPTION 'recording_save_unavailable' USING ERRCODE = '23505';
++    END IF;
++    -- Validate all locked attempts, not just the latest row. Count plus a valid
++    -- latest attempt does not prove 1..attempt_count (e.g. rows numbered 2,3).
++    -- Preserve microsecond order from job creation through every predecessor
++    -- to the successful dispatch, matching validateAttempts in the application.
++    v_previous_finished := v_job.created_at;
++    FOR v_history IN SELECT a.* FROM public.processing_attempts a WHERE a.job_id=v_job.id ORDER BY a.attempt_no LOOP
++      IF v_history.attempt_no IS DISTINCT FROM v_expected_attempt OR v_history.attempt_no > v_job.attempt_count OR
++        v_history.worker_id IS NULL OR v_history.worker_id !~ '^[A-Za-z0-9_-]{1,128}$' OR
++        v_history.provider IS NOT NULL OR v_history.provider_request_id IS NOT NULL OR v_history.usage_units IS NOT NULL OR
++        v_history.reserved_cost_usd IS NOT NULL OR v_history.settled_cost_usd IS NOT NULL OR
++        v_history.finished_at IS NULL OR NOT isfinite(v_history.finished_at) OR
++        v_history.finished_at < timestamptz '0001-01-01 00:00:00+00' OR v_history.finished_at >= timestamptz '10000-01-01 00:00:00+00' OR
++        v_history.finished_at < v_previous_finished THEN
++        RAISE EXCEPTION 'recording_save_unavailable' USING ERRCODE = '23505';
++      END IF;
++      IF v_history.attempt_no < v_job.attempt_count THEN
++        IF v_history.result_state IS DISTINCT FROM 'retryable_error' OR v_history.error_code IS DISTINCT FROM 'lease_expired_before_dispatch' OR
++          v_history.dispatched_at IS NOT NULL OR v_history.finished_at < v_session.sealed_at OR v_history.finished_at > v_attempt.dispatched_at THEN
++          RAISE EXCEPTION 'recording_save_unavailable' USING ERRCODE = '23505';
++        END IF;
++      ELSIF v_history.dispatched_at < v_previous_finished THEN
++        RAISE EXCEPTION 'recording_save_unavailable' USING ERRCODE = '23505';
++      END IF;
++      v_previous_finished := v_history.finished_at;
++      v_expected_attempt := v_expected_attempt + 1;
++    END LOOP;
+     -- Return the unfiltered, bounded chain to the existing strict application
+     -- validator; its independently verified success is required for cleanup.
+     IF v_intent.confirmed_at IS NULL THEN
+diff --git a/experiments/pg17-recording-flow/fixture.mjs b/experiments/pg17-recording-flow/fixture.mjs
+--- a/experiments/pg17-recording-flow/fixture.mjs
++++ b/experiments/pg17-recording-flow/fixture.mjs
+@@ -49,7 +49,8 @@
+     await h.db.query(await source(path)); h.report.fixture.fullMigrations.push(path)
+   }
+ }
+-export async function fresh(h, service, prepare, publish = true) {
++export async function fresh(h, service, prepare, publish = true, { attemptCount = 1 } = {}) {
++  h.ok(Number.isInteger(attemptCount) && attemptCount >= 1 && attemptCount <= 3, 'fixture attempt count is bounded')
+   const sessionId = randomUUID(), jobId = randomUUID(), bytes = Buffer.from('synthetic-recording-only')
+   const reservation = await save(service, sessionId, 'reserve', METADATA), storyId = reservation.lookup.intent.storyId
+   const chunks = [{ index: 0, chunkId: 'chunk-0', bucket: 'audio-recordings', objectKey: `projects/${PROJECT}/sessions/${sessionId}/0`, byteSize: bytes.length, sha256: digest(bytes) }]
+@@ -62,14 +63,25 @@
+   const j = sealed.jobSnapshot
+   await service.query(`INSERT INTO processing_jobs(id,project_id,asset_id,created_by,input_version,job_type,processor_version,model_config_version,parameter_version,idempotency_key,state,attempt_count,max_attempts)
+     VALUES($1,$2,$3,$4,1,'recording_merge','ffmpeg-merge-v1','none','default',$5,'queued',0,3)`, [j.id,PROJECT,sealed.task.assetId,USER,sealed.task.idempotencyKey])
+-  const f = { sessionId, storyId, jobId, assetId: sealed.task.assetId, manifestSha256: seal.manifestSha256, manifest, sealed, bytes }
++  const f = { sessionId, storyId, jobId, assetId: sealed.task.assetId, manifestSha256: seal.manifestSha256, manifest, sealed, bytes, attemptCount, leaseTransitions: [] }
+   if (publish) {
++    // Let genuine leases expire on the PostgreSQL clock. No fabricated attempt
++    // rows, altered deadlines, or timestamp rewrites construct valid controls.
++    for (let attempt = 1; attempt < attemptCount; attempt++) {
++      const claimed = (await service.query("SELECT recording_job_lease($1,'claim',$2,NULL,1000) AS value", [jobId, `${WORKER}-history-${attempt}`])).rows[0].value
++      h.eq([claimed.state, claimed.attempt], ['leased', attempt], 'historical lease claimed by actual routine')
++      await service.query('SELECT pg_sleep(greatest(0,extract(epoch FROM (lease_expires_at-clock_timestamp())))::double precision) FROM processing_jobs WHERE id=$1', [jobId])
++      const recovered = (await service.query("SELECT recording_job_lease($1,'recover',NULL,NULL,NULL) AS value", [jobId])).rows[0].value
++      h.eq([recovered.state, recovered.attempt], ['retry_wait', attempt], 'actual expired lease recovery permits retry')
++      f.leaseTransitions.push({ claimed, recovered })
++    }
+     await service.query("SELECT recording_job_lease($1,'claim',$2,NULL,120000)", [jobId,WORKER])
+-    await service.query("SELECT recording_job_lease($1,'start',$2,1,NULL)", [jobId,WORKER])
++    await service.query("SELECT recording_job_lease($1,'start',$2,$3,NULL)", [jobId,WORKER,attemptCount])
+     f.candidateId = randomUUID(); f.output = { byteSize: bytes.length, sha256: digest(bytes), mimeType: 'audio/webm', durationMs: 1250 }
+-    await candidateRpc(service, [jobId,'reserve',WORKER,1,f.manifestSha256,f.candidateId,f.output])
+-    await candidateRpc(service, [jobId,'prepare',WORKER,1,f.manifestSha256,f.candidateId,f.output])
+-    await finalize(service, finalArgs(f))
++    await candidateRpc(service, [jobId,'reserve',WORKER,attemptCount,f.manifestSha256,f.candidateId,f.output])
++    await candidateRpc(service, [jobId,'prepare',WORKER,attemptCount,f.manifestSha256,f.candidateId,f.output])
++    const publicationArgs = finalArgs(f); publicationArgs[3] = attemptCount
++    await finalize(service, publicationArgs)
+   }
+   return f
+ }
+diff --git a/experiments/pg17-recording-flow/verify.mjs b/experiments/pg17-recording-flow/verify.mjs
+--- a/experiments/pg17-recording-flow/verify.mjs
++++ b/experiments/pg17-recording-flow/verify.mjs
+@@ -5,15 +5,18 @@
+ import { Harness, root, digest } from '../pg17-routines/runtime.mjs'
+ import { compileModules } from '../pg17-recording-worker/fixture.mjs'
+ import { setup, save, fresh, compileFlow, USER, OTHER, PROJECT, METADATA } from './fixture.mjs'
++import { confirmationRegressions } from './confirmation-regressions.mjs'
+ const red = process.argv.includes('--without-migration')
+ const beforeFix = process.argv.includes('--before-fix-1')
+-const directory = join(root, 'docs/research/evidence/2026-11-05-g1-recording-flow', `native-${red ? 'red-' : ''}${Date.now()}-${randomUUID()}`)
++const beforeFinalFix = process.argv.includes('--before-final-fix')
++if ([red, beforeFix, beforeFinalFix].filter(Boolean).length > 1) throw new Error('Choose at most one historical SQL option')
++const directory = join(root, 'docs/research/evidence/2026-11-05-g1-recording-flow', `native-${red ? 'red-' : beforeFinalFix ? 'before-final-fix-' : ''}${Date.now()}-${randomUUID()}`)
+ const report = { status:'running', assertions:0, actorConnections:[], scenarios:[], sources:{}, command:`node experiments/pg17-recording-flow/verify.mjs ${process.argv.slice(2).join(' ')}`.trim(), g1MilestoneSatisfied:false }
+ const h = new Harness(report)
+ await mkdir(directory, { recursive:true })
+ async function source(path) {
+-  const actual=beforeFix && path==='supabase/migrations/20261106000001_recording_story_save.sql'
+-    ? `.superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/fix-1-before/${path}` : path
++  const actual=(beforeFix || beforeFinalFix) && path==='supabase/migrations/20261106000001_recording_story_save.sql'
++    ? `.superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/${beforeFinalFix ? 'final-fix-before' : 'fix-1-before'}/${path}` : path
+   const bytes=await readFile(join(root,actual));report.sources[actual]=digest(bytes);return bytes.toString()
+ }
+ async function waiting(client) {
+@@ -30,7 +33,7 @@
+   h.eq(result,code,'save rejected with expected SQLSTATE')
+ }
+ try {
+-  for(const path of ['experiments/pg17-recording-flow/fixture.mjs','experiments/pg17-recording-flow/verify.mjs','experiments/pg17-recording-flow/README.md'])await source(path)
++  for(const path of ['experiments/pg17-recording-flow/fixture.mjs','experiments/pg17-recording-flow/verify.mjs','experiments/pg17-recording-flow/confirmation-regressions.mjs','experiments/pg17-recording-flow/README.md'])await source(path)
+   await h.start(); await setup(h,source,!red)
+   const service = await h.actorClient('service_role',USER)
+   await h.scenario('atomic reservation exists and replays one story with immutable metadata', async () => {
+@@ -181,6 +184,7 @@
+     }
+     await h.close(first); await h.close(second)
+   })
++  await confirmationRegressions(h, service, prepareRecordingSessionSeal, flow, applicationAdmin)
+   report.status='passed'
+ } catch(error) { report.status='failed';report.error={code:error.code??'ERROR',label:error.label??error.message,position:error.position,where:error.where,internalQuery:error.internalQuery};process.exitCode=1 }
+ finally { await h.cleanup(); if(report.status!=='passed')process.exitCode=1; await writeFile(join(directory,'results.json'),JSON.stringify(report,null,2)); console.log(JSON.stringify({directory,status:report.status,assertions:report.assertions,error:report.error,cleanup:report.cleanup},null,2)) }
+diff --git a/experiments/pg17-recording-flow/README.md b/experiments/pg17-recording-flow/README.md
+--- a/experiments/pg17-recording-flow/README.md
++++ b/experiments/pg17-recording-flow/README.md
+@@ -1,3 +1,11 @@
+ # Recording story save native checks
+ 
+ `node experiments/pg17-recording-flow/verify.mjs --without-migration` demonstrates missing-RPC RED. Run without arguments for isolated PostgreSQL 17.4 reservation, terminal confirmation, permissions and concurrent deletion checks. `fixture.mjs` exports `setup`, `fresh`, `save`, and synthetic constants for subsequent browser integration. The story table uses the exact bootstrap CREATE TABLE; other platform prerequisites remain synthetic. No remote service, cloud Storage, paid model, family data or G1 device qualification is involved.
++
++`node experiments/pg17-recording-flow/verify.mjs --before-final-fix` runs the current tests and actual compiled application confirmation service against the SQL frozen in `.superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/final-fix-before/`. It reproduces the final-review I1 committed-story/API-rejection defect. This option is separate from `--before-fix-1`, which reproduces the earlier immutable-identity defect; historical SQL options are mutually exclusive. Each run writes a unique `native-.../results.json` under `docs/research/evidence/2026-11-05-g1-recording-flow/` and leaves previous evidence intact.
++
++`confirmation-regressions.mjs` checks each historical worker/provider/request/usage/cost field in real two- and three-attempt chains, exact numbering, chronological history, and successful-chain timestamp domains. `fresh(..., true, { attemptCount: 2 | 3 })` uses actual 1000 ms lease claims, PostgreSQL-clock expiry, recovery, latest dispatch, candidate reservation/preparation and publication routines. It never constructs successful attempt history by inserting rows or rewriting deadlines. All unmodified corruption controls first pass the real application's lookup validator. Valid two-/three-attempt confirmations and replay are checked through the actual service, as is an early-AD UTC timestamp control from an Asia/Taipei SQL connection.
++
++The report records complete baseline/corrupted snapshots, lease transitions, service outcomes, and full PostgreSQL JSON story/intent rows before and after confirmation. It collects every corruption outcome before asserting, so RED records all affected fields. Failed confirmation must return no cleanup receipt and leave both complete rows equal; GREEN must reject with 409 from SQL before DML. Existing canonical-identity, publication-corruption, permission and lock-wait cases remain in the runner.
++
++Native schema constraints stay enabled: zero/negative or duplicate attempt numbers are already forbidden, and candidate timestamps cannot be infinite or reverse preparation order. Candidate BC/five-digit-year checks therefore mutate a finite ordered timestamp pair. The fixture's Storage metadata and auth/project prerequisites remain synthetic; RPC transport is a local adapter backed by an actual unprivileged PostgreSQL service-role connection. These tests establish local SQL/application consistency, not hosted Supabase, real audio decoding, the complete deployed migration chain, or G1 qualification.
+diff --git a/experiments/pg17-recording-flow/confirmation-regressions.mjs b/experiments/pg17-recording-flow/confirmation-regressions.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-recording-flow/confirmation-regressions.mjs
+@@ -0,0 +1,148 @@
++import { isDeepStrictEqual } from 'node:util'
++import { fresh, save, USER, PROJECT } from './fixture.mjs'
++
++// PostgreSQL JSON preserves every column and microsecond. JS Date conversion
++// would make full-row rollback observations lossy.
++async function savedRows(h, f) {
++  return (await h.db.query(`SELECT jsonb_build_object(
++    'story',(SELECT to_jsonb(s) FROM stories s WHERE id=$1),
++    'intent',(SELECT to_jsonb(i) FROM recording_story_intents i WHERE session_id=$2)) AS value`,
++  [f.storyId, f.sessionId])).rows[0].value
++}
++const identity = f => ({ actorId: USER, projectId: PROJECT, sessionId: f.sessionId })
++const confirm = (flow, admin, f) => flow.confirmRecordingStorySave({ ...identity(f), manifestSha256: f.manifestSha256 }, { admin })
++
++export async function confirmationRegressions(h, service, prepare, flow, admin) {
++  const report = h.report.confirmationConsistency = { controls: [], rejections: [], violations: [],
++    schemaConstraintsRetained: ['attempt_no must be positive and unique per job', 'candidate created/prepared timestamps must be finite and prepared_at >= created_at'] }
++  await h.scenario('real two- and three-attempt publication confirms and replays through the actual service', async () => {
++    for (const attemptCount of [2, 3]) {
++      const f = await fresh(h, service, prepare, true, { attemptCount })
++      const baseline = await save(service, f.sessionId)
++      const before = await savedRows(h, f), receipt = await confirm(flow, admin, f), confirmed = await savedRows(h, f)
++      const replay = await confirm(flow, admin, f), afterReplay = await savedRows(h, f)
++      report.controls.push({ attemptCount, leaseTransitions: f.leaseTransitions, baseline, before, receipt, confirmed, replay, afterReplay })
++      h.eq(baseline.snapshot.attempts.map(a => a.attempt_no), Array.from({ length: attemptCount }, (_, i) => i + 1), 'actual routines construct consecutive attempts')
++      h.eq(baseline.snapshot.attempts.map(a => a.result_state), [...Array(attemptCount - 1).fill('retryable_error'), 'succeeded'], 'only expired pre-dispatch leases precede success')
++      h.eq([before.story.status, before.intent.confirmed_at], ['processing', null], 'valid multi-attempt story starts unconfirmed')
++      h.eq([receipt.canClearLocalDrafts, receipt.storyId, confirmed.story.status], [true, f.storyId, 'ready'], 'actual service confirms valid multi-attempt chain')
++      h.ok(confirmed.intent.confirmed_at, 'valid control commits confirmed intent')
++      h.eq(replay, receipt, 'valid multi-attempt cleanup receipt replays identically')
++      h.eq(afterReplay, confirmed, 'valid replay leaves entire story and intent unchanged')
++    }
++  })
++  await h.scenario('finite early AD timestamps and non-UTC caller timezone remain compatible', async () => {
++    const f = await fresh(h, service, prepare)
++    for (const [table, field, key, column] of [
++      ['recording_sessions', 'started_at', 'sessionId', 'id'], ['media_assets', 'created_at', 'assetId', 'id'],
++      ['processing_jobs', 'created_at', 'jobId', 'id'], ['recording_chunks', 'persisted_at', 'sessionId', 'session_id'],
++    ]) await h.db.query(`UPDATE ${table} SET ${field}='0001-01-01 00:00:00.000001+00' WHERE ${column}=$1`, [f[key]])
++    await service.query("SET timezone='Asia/Taipei'")
++    try {
++      const receipt = await confirm(flow, admin, f), confirmed = await savedRows(h, f)
++      const replay = await confirm(flow, admin, f)
++      report.controls.push({ name: 'finite early AD timestamps / Asia-Taipei caller', receipt, replay, confirmed })
++      h.eq(receipt.canClearLocalDrafts, true, 'four-digit early AD timestamp survives strict application round-trip')
++      h.eq(replay, receipt, 'UTC-normalized receipt replays')
++      h.eq(await savedRows(h, f), confirmed, 'early AD replay leaves full rows unchanged')
++    } finally { await service.query("SET timezone='UTC'") }
++  })
++
++  const mutations = []
++  // Exercise each historical position, including the second predecessor in a
++  // three-attempt chain. Zero is deliberately non-null for usage/cost fields.
++  for (const [attemptCount, attemptNo] of [[2, 1], [3, 1], [3, 2]]) {
++    for (const [field, value, label] of [
++      ['worker_id', 'invalid worker!', 'malformed worker'],
++      ['worker_id', '', 'empty worker'],
++      ['worker_id', 'w'.repeat(129), 'overlong worker'],
++      ['provider', 'unexpected-provider', 'provider'],
++      ['provider_request_id', 'unexpected-request', 'provider request'],
++      ['usage_units', 0, 'usage units'],
++      ['reserved_cost_usd', 0, 'reserved cost'],
++      ['settled_cost_usd', 0, 'settled cost'],
++    ]) mutations.push({ name: `${attemptCount} attempts / historical ${attemptNo} / ${label}`, attemptCount,
++      mutate: (h, f) => h.db.query(`UPDATE processing_attempts SET ${field}=$3 WHERE job_id=$1 AND attempt_no=$2`, [f.jobId, attemptNo, value]) })
++  }
++  for (const [name, attemptCount, sql] of [
++    ['numbering 2,3 with attempt_count=2', 2, 'UPDATE processing_attempts SET attempt_no=3 WHERE job_id=$1 AND attempt_no=1'],
++    ['numbering 2,3,4 with attempt_count=3', 3, 'UPDATE processing_attempts SET attempt_no=4 WHERE job_id=$1 AND attempt_no=1'],
++    ['missing historical attempt', 3, 'DELETE FROM processing_attempts WHERE job_id=$1 AND attempt_no=1'],
++    ['missing latest attempt', 2, 'DELETE FROM processing_attempts WHERE job_id=$1 AND attempt_no=2'],
++    ['extra out-of-range attempt', 2, `INSERT INTO processing_attempts(job_id,attempt_no,worker_id,dispatched_at,finished_at,result_state,error_code)
++      SELECT job_id,4,worker_id,dispatched_at,finished_at,result_state,error_code FROM processing_attempts WHERE job_id=$1 AND attempt_no=1`],
++    ['historical finish before job creation', 2, `UPDATE processing_attempts SET finished_at=(SELECT created_at-interval '1 microsecond' FROM processing_jobs WHERE id=$1) WHERE job_id=$1 AND attempt_no=1`],
++    ['three-attempt reversed historical finish times', 3, `UPDATE processing_attempts SET finished_at=(SELECT finished_at+interval '1 microsecond' FROM processing_attempts WHERE job_id=$1 AND attempt_no=2) WHERE job_id=$1 AND attempt_no=1`],
++    ['historical finish after latest dispatch', 2, `UPDATE processing_attempts SET finished_at=(SELECT dispatched_at+interval '1 microsecond' FROM processing_attempts WHERE job_id=$1 AND attempt_no=2) WHERE job_id=$1 AND attempt_no=1`],
++    ['historical finish before seal', 2, `UPDATE processing_attempts SET finished_at=(SELECT s.sealed_at-interval '1 microsecond' FROM recording_sessions s JOIN processing_jobs j ON j.id=$1 AND s.merge_job_id=j.id) WHERE job_id=$1 AND attempt_no=1`],
++    ['historical missing finish', 2, 'UPDATE processing_attempts SET finished_at=NULL WHERE job_id=$1 AND attempt_no=1'],
++    ['historical dispatched', 2, 'UPDATE processing_attempts SET dispatched_at=finished_at WHERE job_id=$1 AND attempt_no=1'],
++    ['historical wrong state', 2, "UPDATE processing_attempts SET result_state='succeeded' WHERE job_id=$1 AND attempt_no=1"],
++    ['historical wrong retry code', 2, "UPDATE processing_attempts SET error_code='other' WHERE job_id=$1 AND attempt_no=1"],
++    ['historical non-finite finish', 2, "UPDATE processing_attempts SET finished_at='-infinity' WHERE job_id=$1 AND attempt_no=1"],
++  ]) mutations.push({ name, attemptCount, mutate: (h, f) => h.db.query(sql, [f.jobId]) })
++
++  // Include every required successful-chain timestamp. Finite BC and five-
++  // digit years also lie outside the application's serialized UTC domain.
++  for (const [table, field, key] of [
++    ['media_assets', 'created_at', 'assetId'], ['media_assets', 'updated_at', 'assetId'],
++    ['media_assets', 'verified_at', 'assetId'], ['media_assets', 'content_verified_at', 'assetId'],
++    ['processing_jobs', 'created_at', 'jobId'], ['processing_jobs', 'updated_at', 'jobId'],
++    ['recording_sessions', 'started_at', 'sessionId'], ['recording_sessions', 'sealed_at', 'sessionId'],
++    ['recording_sessions', 'confirmed_at', 'sessionId'],
++    ['processing_attempts', 'dispatched_at', 'jobId'], ['processing_attempts', 'finished_at', 'jobId'],
++    ['recording_chunks', 'persisted_at', 'sessionId'],
++  ]) {
++    for (const time of ['-infinity', 'infinity', '0001-01-01 00:00:00+00 BC', '10000-01-01 00:00:00+00']) {
++      mutations.push({ name: `${table}.${field} = ${time}`, attemptCount: 1, mutate: async (h, f) => {
++        const column = table === 'processing_attempts' ? 'job_id' : table === 'recording_chunks' ? 'session_id' : 'id'
++        await h.db.query(`UPDATE ${table} SET ${field}=$2::timestamptz WHERE ${column}=$1`, [f[key], time])
++        // Preserve asset <= job so invalid early job creation isn't rejected
++        // merely by the already-existing relative-order predicate.
++        if (table === 'processing_jobs' && field === 'created_at' && ['-infinity', '0001-01-01 00:00:00+00 BC'].includes(time)) {
++          await h.db.query('UPDATE media_assets SET created_at=$2::timestamptz WHERE id=$1', [f.assetId, time])
++        }
++      } })
++    }
++  }
++  // Candidate finite-time/order CHECKs remain enabled. Move the pair together
++  // to exercise the remaining serialization-domain boundary they permit.
++  for (const time of ['0001-01-01 00:00:00+00 BC', '10000-01-01 00:00:00+00']) {
++    mutations.push({ name: `candidate created/prepared pair = ${time}`, attemptCount: 1,
++      mutate: (h, f) => h.db.query('UPDATE recording_output_candidates SET created_at=$2::timestamptz,prepared_at=$2::timestamptz WHERE id=$1', [f.candidateId, time]) })
++  }
++
++  await h.scenario('all history and timestamp corruptions reject before story or intent writes', async () => {
++    for (const { name, attemptCount, mutate } of mutations) {
++      const f = await fresh(h, service, prepare, true, { attemptCount })
++      // Validate every unmodified control via the real service before mutation.
++      // A broken synthetic setup must never count as a successful rejection.
++      const valid = await flow.lookupRecordingStorySave(identity(f), { admin })
++      h.eq(valid.intent.confirmed, false, `${name}: published control passes application validation`)
++      const baseline = await save(service, f.sessionId)
++      await mutate(h, f)
++      const corrupted = await save(service, f.sessionId), before = await savedRows(h, f)
++      let receipt = null, apiStatus = null
++      try { receipt = await confirm(flow, admin, f) } catch (error) { apiStatus = error.status ?? null }
++      const after = await savedRows(h, f)
++      const checks = { noReceipt: receipt === null, fullRowsUnchanged: isDeepStrictEqual(before, after),
++        remainsUnconfirmed: after.story.status === 'processing' && after.story.audio_url === null && after.intent.confirmed_at === null,
++        sqlConflict: apiStatus === 409 }
++      const observation = { name, attemptCount, leaseTransitions: f.leaseTransitions, baseline, corrupted, before, after, receipt, apiStatus, checks }
++      report.rejections.push(observation)
++      // Collect all cases first, including every RED outcome, before asserting.
++      for (const [check, passed] of Object.entries(checks)) if (!passed) report.violations.push({ name, check })
++    }
++    report.summary = { cases: report.rejections.length, rejectedWith409: report.rejections.filter(r => r.apiStatus === 409).length,
++      rejectedWith503: report.rejections.filter(r => r.apiStatus === 503).length,
++      noReceipt: report.rejections.filter(r => r.checks.noReceipt).length,
++      unchangedRows: report.rejections.filter(r => r.checks.fullRowsUnchanged).length,
++      changedRows: report.rejections.filter(r => !r.checks.fullRowsUnchanged).length }
++    h.eq(report.violations, [], 'every corruption rejects with no receipt and exact story/intent equality')
++    for (const observed of report.rejections) {
++      h.eq(observed.receipt, null, `${observed.name}: no cleanup receipt`)
++      h.eq(observed.after, observed.before, `${observed.name}: complete story/intent rows unchanged`)
++      h.eq(observed.apiStatus, 409, `${observed.name}: SQL rejection reaches actual service`)
++    }
++  })
++}

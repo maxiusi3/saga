@@ -78,7 +78,11 @@
       "emoji": "🎭",
       "action": "Enregistrez votre première histoire"
     },
-    "loadMore": "Charger plus d'histoires"
+    "loadMore": "Charger plus d'histoires",
+    "deleteAction": "Supprimer le récit",
+    "deletePending": "Envoi…",
+    "deleteAccepted": "Demande de suppression acceptée.",
+    "deleteUnconfirmed": "La suppression n’a pas pu être confirmée. Actualisez pour vérifier l’état, puis réessayez."
   },
   "status": {
     "new": "Nouveau",

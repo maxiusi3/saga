@@ -1,0 +1,132 @@
+{
+  "startedAt": "2026-11-03T10:50:03.785Z",
+  "mode": "red-without-migration",
+  "status": "failed",
+  "assertions": 16,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Exact five-action lease RPC exists (missing-feature RED before migration)",
+      "status": "failed",
+      "code": "ASSERT_FAILED",
+      "label": "actual service RPC invocation must not be undefined-function 42883"
+    }
+  ],
+  "sources": {
+    "experiments/pg17-recording-worker/verify.mjs": "6fb80984abf584db9562a2afb009ccfaa7cb6dcdd151b068214ff9e6f530436f",
+    "experiments/pg17-recording-worker/fixture.mjs": "dcc699709c21e502d06e1871aa45ba1aaf77df0fe029d41ea648996920fb2db8",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+  },
+  "snapshots": {
+    "experiments/pg17-recording-worker/verify.mjs": {
+      "path": "0-verify.mjs.gz",
+      "sha256": "71872c36fd16f3b979ea963d5d0ce5ee0108ea53c444e7c7900eeda51533b9fe",
+      "decodedSha256": "6fb80984abf584db9562a2afb009ccfaa7cb6dcdd151b068214ff9e6f530436f"
+    },
+    "experiments/pg17-recording-worker/fixture.mjs": {
+      "path": "1-fixture.mjs.gz",
+      "sha256": "71fb8456814bef53cade7506b2ef2622608efc92fdb4c1b28b42ec14de493c58",
+      "decodedSha256": "dcc699709c21e502d06e1871aa45ba1aaf77df0fe029d41ea648996920fb2db8"
+    },
+    "experiments/pg17-routines/runtime.mjs": {
+      "path": "2-runtime.mjs.gz",
+      "sha256": "0e746071f418db45326164d575bbe723322fa113b66f6b3c4ef4acc85eb26cf4",
+      "decodedSha256": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552"
+    },
+    "experiments/pg17-routines/runtime-pins.json": {
+      "path": "3-runtime-pins.json.gz",
+      "sha256": "f7c53b88a664df9a0acd473f586d818ae3b27b953e61cbb43021bf0bb4c28cc0",
+      "decodedSha256": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67"
+    },
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": {
+      "path": "4-20261024000001_p1_foundation_and_reconciliation.sql.gz",
+      "sha256": "415ff64252c8c6241b44e29237e4f1401e94ccc17404c9be8f2e6be55634a688",
+      "decodedSha256": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1"
+    },
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": {
+      "path": "5-20261102000001_recording_seal_manifest.sql.gz",
+      "sha256": "4dcb580892a569fff4a5c873f2141fd590ee9c76cc94585d91a69d934dfbfb04",
+      "decodedSha256": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+    }
+  },
+  "limits": [
+    "Synthetic isolated PG17.4 cluster; selected exact foundation DDL and full seal/lease migrations, not full migration chain or live Supabase."
+  ],
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 3136,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-uffY1K/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-uffY1K",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users",
+      "auth.uid()",
+      "projects",
+      "project_roles",
+      "project_members",
+      "stories"
+    ],
+    "exactFoundationTables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts",
+      "recording_sessions",
+      "recording_chunks"
+    ],
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql"
+    ],
+    "livePostgrest": false,
+    "liveStorage": false
+  },
+  "rpcInvocationSqlstate": "42883",
+  "rpcProbe": null,
+  "error": {
+    "code": "ASSERT_FAILED",
+    "label": "actual service RPC invocation must not be undefined-function 42883"
+  },
+  "postgresLogSha256": "e3d22fbb700f6abf74b06a2e921e7257c6d543f2332fa38f50d3012f926eb15d",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "finishedAt": "2026-11-03T10:50:06.608Z"
+}

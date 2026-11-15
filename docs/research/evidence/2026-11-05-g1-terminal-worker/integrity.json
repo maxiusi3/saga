@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-11-05T03:32:12.869771+00:00",
+  "priorEvidenceUnchanged": 2744,
+  "takeoverFilesCompared": 3800,
+  "inheritedChanges": [
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "packages/web/src/lib/server/recording-candidate-worker.ts",
+    "docs/README.md"
+  ],
+  "unexpectedInheritedChanges": [],
+  "headUnchanged": true,
+  "indexEmpty": true,
+  "nextEnvRestored": true,
+  "diffCheck": "passed",
+  "ownedWhitespaceAndConflictCheck": "passed",
+  "testedSourcesMatch": 717,
+  "nativeSourcesMatch": 112,
+  "nativeArchivesVerified": 137,
+  "nativeCleanup": "passed",
+  "takeoverMaps": {
+    "baseline.json.gz": "66cea4b5d9d78317f96d4d3a916d3a56eee4dee7674132621897e3bdf87baffa",
+    "prior-evidence.json.gz": "1cb5a2bbcf34b499783815b4e41a003220aff73a049aeae56ed960b89b830c31"
+  }
+}

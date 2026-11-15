@@ -1,0 +1,197 @@
+{
+  "status": "passed",
+  "rpc": [
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "begin_hosting_reminder_email",
+    "complete_hosting_reminder_email",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "begin_hosting_reminder_email",
+    "complete_hosting_reminder_email",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "begin_hosting_reminder_email",
+    "complete_hosting_reminder_email",
+    "claim_hosting_reminder_email"
+  ],
+  "provider": [
+    {
+      "path": "/emails",
+      "method": "POST",
+      "key": "hosting-reminder/320151c2-f684-4cfa-8f23-c972eeac6132",
+      "payload": {
+        "from": "sender@example.invalid",
+        "to": [
+          "http-reminder@example.invalid"
+        ],
+        "subject": "Your project hosting period ends soon",
+        "text": "Your project hosting period ends on 2026-12-06 (UTC). Review your project and download your archive before that date.\nhttps://synthetic-app.invalid/en/dashboard/projects/e29dec65-ea13-4722-98d3-20dcbd841d4e"
+      }
+    },
+    {
+      "path": "/emails",
+      "method": "POST",
+      "key": "hosting-reminder/92ecefd8-7a22-4a71-9438-2a2e26cc23c6",
+      "payload": {
+        "from": "sender@example.invalid",
+        "to": [
+          "http-reminder@example.invalid"
+        ],
+        "subject": "Your project hosting period ends soon",
+        "text": "Your project hosting period ends on 2026-12-02 (UTC). Review your project and download your archive before that date.\nhttps://synthetic-app.invalid/en/dashboard/projects/b259baae-1aaa-47d1-9ec0-c1623c461db4"
+      }
+    },
+    {
+      "path": "/emails",
+      "method": "POST",
+      "key": "hosting-reminder/bf43c525-4a77-48fd-b040-eb553eb95f56",
+      "payload": {
+        "from": "sender@example.invalid",
+        "to": [
+          "http-reminder@example.invalid"
+        ],
+        "subject": "Your project hosting period ends soon",
+        "text": "Your project hosting period ends on 2026-12-01 (UTC). Review your project and download your archive before that date.\nhttps://synthetic-app.invalid/en/dashboard/projects/09b38e88-6cc9-43c4-adcc-cf45579e23cc"
+      }
+    }
+  ],
+  "browserErrors": [],
+  "boundary": "Actual worker, notification routes/page/hook/client and Supabase SDK over controlled local HTTP to real PG roles; synthetic verified Auth identity and Resend transport. No real email, inbox receipt or hosted PostgREST claim.",
+  "chrome": "157.0.8103.78",
+  "stylesheet": {
+    "loaded": true,
+    "hiddenProbeOpacity": "0"
+  },
+  "visualActions": [
+    {
+      "label": "desktop default",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop default",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop hover",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop hover",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop keyboard Mark as read",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop keyboard Mark as read",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop keyboard Delete notification",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop keyboard Delete notification",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "touch 360",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "touch 360",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "touch 390",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "touch 390",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    }
+  ],
+  "navigation": "http://127.0.0.1:63634/en/dashboard/projects/e29dec65-ea13-4722-98d3-20dcbd841d4e"
+}

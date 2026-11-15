@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "requests": [
+    {
+      "path": "/api/payments/create-intent",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/payments/status?orderId=a8556b43-c69a-4916-b111-13227e8092d0",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/payments/create-intent",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/payments/status?orderId=a8556b43-c69a-4916-b111-13227e8092d0",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/payments/allocate",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/payments/status?orderId=a8556b43-c69a-4916-b111-13227e8092d0",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/payments/status?orderId=a8556b43-c69a-4916-b111-13227e8092d0",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "boundary": "Actual PurchasePanel, payment client, routes and Stripe SDK. Controlled loopback Stripe events; no Stripe.js/card network loaded or real charge. Installed desktop Chrome.",
+  "browser": "157.0.8103.39"
+}

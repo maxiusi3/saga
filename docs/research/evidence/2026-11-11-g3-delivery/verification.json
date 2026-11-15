@@ -1,0 +1,253 @@
+{
+  "checkedAt": "2026-11-11T13:46:11.322920+08:00",
+  "status": "passed",
+  "g3LocalWebAcceptance": "passed",
+  "scope": "G3 T09-T12 production implementation and local PG17/installed Chrome validation; no live charging or hosted deployment",
+  "records": {
+    "g3": {
+      "path": "docs/research/evidence/2026-11-11-g3-delivery/migrations-1794374099956-aee45ac1-02df-4b2c-a66a-0bc0384c1f54/results.json",
+      "sha256": "e3c95b947afb6b73b2573d34914de50115fc5276560f8f08a6f695bc3a0d90a7",
+      "status": "passed",
+      "assertions": 672,
+      "migrations": 36,
+      "sourcesVerified": 99,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "backup": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794373550000-bf3774a5-5916-49de-855c-d5443cb367d6/results.json",
+      "sha256": "f78451ed6d795abf7775aa1cd91d33fa154a05e5df41ad32495a170022c29f72",
+      "status": "passed",
+      "assertions": 556,
+      "migrations": 36,
+      "sourcesVerified": 82,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "g2": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794374995096-61627978-36c7-4932-97e0-67daa3d2724d/results.json",
+      "sha256": "b38c882198754457ab2ac3a7cd2b63257df99e034f633200e6f29ecda6e1b1d7",
+      "status": "passed",
+      "assertions": 543,
+      "migrations": 36,
+      "sourcesVerified": 68,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "g1": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794374995096-df1adb3a-1f62-4282-850a-ddb33f4e8d04/results.json",
+      "sha256": "7897b9e6f2b692e5371e0eb8d1cf7c47d7633c6e2f90daf7ca49a860b5b351cc",
+      "status": "passed",
+      "assertions": 250,
+      "migrations": 36,
+      "sourcesVerified": 102,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  },
+  "gate": {
+    "command": "npm run verify",
+    "exitCode": 0,
+    "typeCheck": "passed",
+    "lint": "passed",
+    "webSuites": 179,
+    "webTests": 3609,
+    "buildPages": 186,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "sharedExitCode": 0,
+    "infraTests": 28,
+    "infraExitCode": 0,
+    "infraFinalLog": "infra-final-config.log",
+    "existingWarnings": [
+      "unsupported Next eslint configuration",
+      "deprecated images.domains",
+      "optional deployment environment variables missing"
+    ]
+  },
+  "boundary": {
+    "postgres": "17.4",
+    "browser": "157.0.8103.39",
+    "stripeSdk": "14.25.0",
+    "authPostgrestStorage": "declared local synthetic HTTP transport",
+    "stripeTransport": "controlled loopback HTTP, actual SDK raw signature verification",
+    "realStripeJsOrSettlement": false,
+    "hostedQualified": false,
+    "mobileHardwareTested": false,
+    "realHouseholdFidelityMeasured": false,
+    "semanticSearch": "unavailable_unmeasured",
+    "physicalDeletionComplete": false,
+    "largeArchive": {
+      "stories": 501,
+      "wavMiB": 27,
+      "pdfPages": 28
+    },
+    "browserApprovedPdfPages": 6,
+    "offlineOriginalAudioPlayback": true,
+    "snapshotHostingRetention": null,
+    "testHostingAuthority": "payment_project_rights"
+  },
+  "manualGates": {
+    "status": "waived_by_user",
+    "checklist": "docs/research/2026-11-11-g3-manual-follow-up.md",
+    "unexecutedMarkedTested": false
+  },
+  "sourceManifest": {
+    "path": "docs/research/evidence/2026-11-11-g3-delivery/source-manifest.json",
+    "sha256": "841a77ea7f12fa241c662bcba9e50f91481ea8f4304754fdc7ae8ee7c25be6e4",
+    "files": 1265
+  },
+  "sourceArchive": {
+    "path": "docs/research/evidence/2026-11-11-g3-delivery/source.tar.gz",
+    "sha256": "960008782ae3249e7418a5f57f23c3d044b49136045c9da243084e58845f71e4",
+    "members": 1265,
+    "contentsHashVerified": true
+  },
+  "sourceChanges": {
+    "path": "docs/research/evidence/2026-11-11-g3-delivery/source-changes.json",
+    "sha256": "4534c8e0899f50ea2d81c51ce3950ef335a0049f5f5c882b0d3f34c637b27cf8",
+    "changedOrNew": 97
+  },
+  "priorG2ArchiveVerified": {
+    "path": "docs/research/evidence/2026-11-10-g2-review/source.tar.gz",
+    "sha256": "96481be535f702859572847b8fa694ed4a6146a0f2a348a98faeba33f7f26b68"
+  },
+  "historicalG3JsonPreserved": {
+    "docs/research/evidence/2026-10-24-p3-g3-verification/milestone-check.json": "b87126f5913aabab6b9dbbcb0e13cfc1e3b1f724d1cd94167a8e94fa738a06ad",
+    "docs/research/evidence/2026-10-24-p3-g3-verification/p3-g3-verify-2026-10-24T15-30-56.825Z-4c3250e8-2831-41b4-b07b-f64940a753c9.json": "56d966a07f302c7030fb0cfe2f83f528581333fe052b46711796306f63f3d539"
+  },
+  "logs": {
+    "archive-eslint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "archive-first-failure.log": "6d56b67ef7ffc2746f6ab265d050852f199a62bc6c15515db189bdb18954cd28",
+    "archive-focused-final.log": "d84a85a6d15056230d2373fd9beaaf38a7c4494b59e3aa0408308f1d0b6fab0e",
+    "archive-focused.log": "9953cac6e3d6cadc593f0ba117d9d621d4503b65bad01c3f59825769fa224332",
+    "archive-guards.log": "78ff5fbd89b370aa2d4fa7a08cbcca846c4bdb1ddadbb8130e7e7f6d73f055f2",
+    "archive-independent-recheck.log": "cea41a04e483a0c66e4624eb5bbf271c86a0eeda7c6f49f2bedf220b0fd33bc8",
+    "archive-native-final.log": "d75a5bec6c8cd8416e914cb58b1cdf6400f55b2660b9691a7d4566b9a9d83d8f",
+    "archive-native-first.log": "af134fe08a785910ecf0a7d122bd655565574ee34d5b200ee31d0b2ae171e848",
+    "archive-native.log": "39ded553941c260487cfda6698788a7032cf684946b7becebef3a6b83ceed794",
+    "archive-timeout.log": "71d326acdd4d1e0c38297084fe2c10d5594920848b7e73a7094c750cd214101e",
+    "archive-typecheck.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+    "backup-final.log": "f7cbbdf3494562fc676618b0f7dad812b0ec01a2d7b561666837bf131680d2c7",
+    "backup-integration-first.log": "8aae1599c139b88b562dca645c695960759fe6cd5d78c4a89c39323b232b6366",
+    "chrome-delivery-attempt1.log": "de6be42c2034d2f5d86008a680dce7e43840556d07916a83fa323192cf0179b4",
+    "chrome-delivery-attempt2.log": "e7623ed6149fe4983aec79a51944e656fc1fb9cbc2fd6dcf2b44f7b21d226973",
+    "font-download.log": "a4e80613bb0cecd6592fcbdcc23fd834f2e1796ba689c31ddaa1f819a2dbfc04",
+    "g1-deletion-final.log": "1010d3f12e4f1d94d61a449de8eb0a3c1a4120ad36fc6c3aac81bd2df69ef2c5",
+    "g1-deletion-first.log": "10c07857696b5d4f10a8d1d62d34a5ad088e82ca0726d53ecd786fb426f211d6",
+    "g2-regression-final.log": "4c2c762743f46e36735abadb355398aeed4a1b6af378410b33dd9824dcebd1dc",
+    "g2-regression-first.log": "0b81a4eab552b513fa85f02e21f5e5366c9fa3f095b1584b2df6fe6ea007c9f4",
+    "infra-final-config.log": "5eb4b74e34dbc8f0b64c7fef48482cadfd2fd13acbb201c1e3ba1e782197fbde",
+    "infra-final.log": "f5568afe86d8c53ae012422c31858cd2632bb4a87f84e7ce4ec85201e1d03bfa",
+    "infra-integration.log": "417272faccb628790c60f2334789a09021221534458bf9c005033bde8fe8ad86",
+    "integration-ui-green.log": "86cd0dcb48942a8facad7d46f8be2a0204387616f7758de7c49207d6a5a16aee",
+    "integration-ui-red.log": "0638b3745c8f48af09c9525436604b65b402e8ffd4e5a613e30c43c4fc58dc09",
+    "native-chrome-final.log": "be0c1d4fa80992224344423ea22ac66fd1693809b008d9c2911fb45e914621a5",
+    "payment-account-ui-red.log": "4f7f31510110527922d309f0859f448d44f85ea217a511f5d36a5705611dae36",
+    "payment-body-red.log": "fb2d51e618e460cf1355abba039d6128115b968c9dec0d44a0a13ee3896cf084",
+    "payment-direct-insert-red.log": "cb8a0f2e6945ef80aafe44393ac5d9e6ccff6537947720586a17996b9da9a2e9",
+    "payment-focused-final.log": "1405f609a9efa6f79a4ab2d2c1073970177b0e216abba848089e415add309045",
+    "payment-focused.log": "a33d3e4c65c2d76888581dde9045b6d28bc492bbbc06fe094fe4f3e742b2fec5",
+    "payment-lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "payment-lint-local-binary-failed.log": "7e1cce4a8c789f2241b3a7c94d8da32f05fe1f2623903c03289b30749c1c5a4c",
+    "payment-lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "payment-malformed-red.log": "85ec7fc32c46004ffb9971792d16de43cb599e594f04ab501a39c86bb4f11d2a",
+    "payment-native-1.log": "08f935c824854968e7817e9375a1459d4d29d49b4d994727dc6a520141389ed3",
+    "payment-native-2.log": "4b28141cb853394aa06e0f1b0cfaf62fcfcbc62c89e60899a33ca8e52d828202",
+    "payment-native-3.log": "38ba4464522834ef228f5b4f73773f3bec39984fa9d5e8e3ee02ff465ea8791e",
+    "payment-native-4.log": "510835a54e8785f46b1002a6d452cf2fa3f91c03ae115fe2cf98e9f55fde363c",
+    "payment-native-5.log": "5a96d57b2487e88272ea9d688f84157628b8b776bae5ca638782e9c411e7c669",
+    "payment-native-6.log": "73951750f95aa023e181d072a0af5a8830b2c50e45c6fa39ae7de781ae0277f2",
+    "payment-native-7.log": "d040ec06799d35b8e4bf7f8d5d4108e9c0f06c0c685126eda2843fec405226fd",
+    "payment-native-chrome-1.log": "5c8c2240641960d6b441df7463647bdfca8ba89d087a1460d97179d6441d1eba",
+    "payment-native-chrome-2.log": "b8dbc78fbd2d3a80adabc6bd858dc0cede09908eda6ca39ed596ab3ac228417d",
+    "payment-native-final-2.log": "1a515c0be468683493d83554ac0d2609bc63777da0c3b405428236289c04191e",
+    "payment-native-final-3.log": "15b7059b725c6c20e3c8c1eb1c47adb87cabf4cc8d7d11169507396dd7ef6f00",
+    "payment-native-final-4.log": "aeed6cbcf3c03ecff632ba8cd4f135cea861c44add1fa4974d66495dcab73431",
+    "payment-native-final-5.log": "01fd69a4e95c1086fdf4e935e91ac05735bae0bf020d051211b63353c7502f5d",
+    "payment-native-final.log": "c6cfe063c0b7f0cd51c8bb746f4b546dea5244ebd17f1f26696e7445b69ca1fd",
+    "payment-partial-red.log": "676830f6b47b508b332a2e2b638ada1f3294d7022bced61d46a35bf40743b08f",
+    "payment-red.log": "afcae09a746c2a292007040f8c9c6e05daa56ef25669f23d60e3f2c4b7a6b971",
+    "payment-review-search-native.log": "286ac15b7089da7d490286de258a31a4bb27d7346bbe4ff136e8c965d23dbbe2",
+    "payment-review-search-routes-green.log": "9b49f8a5d86ff8d060fee84bfa2ccb77b672bebb8846f7767a04b8cb6165806c",
+    "payment-review-search-routes.log": "7ee180f0aaa1426d6452387ff90bd1a75b82bb901615323087efb1a512cfee66",
+    "payment-review-search-tests.log": "51e469a727e5281090a875a05c7427a622e5bde7f73acb856634ee5fd84402a1",
+    "payment-routes-green.log": "a13f39f19fa1efd78896855370bc8f6c10977f12d10b006c3690b9cea118627b",
+    "payment-typecheck.log": "3e2c07d8513ffc364de79af12683de3a044ccded385df6cc4b34b67ea8b0beda",
+    "pdfkit-install.log": "d3f150052b85ece41a95085976b3c92f2711e923abedf0d3f25fb834897f2460",
+    "pdfkit-types-install.log": "7bc3996dd444ad0037b7a4f0ccc0bf724f302e8a9323a65db89370a99a35bf1b",
+    "publication-cli-green.log": "7f9f8189084d2e5ad396413f0d1f57ea65fcea30cbec34b29d1511f08832da6b",
+    "publication-cli-red.log": "add712dc53382a870290f1f58f7bc2ace2426f8bf84f6756859f191f7ce0e376",
+    "publication-client-green.log": "68314075e5e514f0b4f1a48b833907bd5d87f90e3c98cf11e5494c476d9cc6db",
+    "publication-client-red.log": "644f493c5b83faacde43b277f6175927aa1b53d47b0470c67e32680fc4dbbdc9",
+    "search-green-focused-final.log": "8af3b890540976d860607f693ab2e23b15d98a28a363d3e4486fa0cdebe6ff7c",
+    "search-green-focused.log": "7430d7d073123859dc22586ecfec0f2eea30596971518368fc48331238199f16",
+    "search-green-playback.log": "c1ae63e9da2103d9f3e9bc3ad9f663884c82d66a4d856a1d86ec0ff2716c55fa",
+    "search-green-route.log": "a8bde2302cd4507fd5875e79d9573cdea0ffd7388ee2e778aeaba1cac454ba19",
+    "search-green-unicode-title.log": "dcd8acb888c733613dfae804939ab38c7c82425ebf445d88d5c6516b782a936a",
+    "search-lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "search-lint.log": "7e1cce4a8c789f2241b3a7c94d8da32f05fe1f2623903c03289b30749c1c5a4c",
+    "search-native-debug.log": "5bdd0c24573b8938d94def6363f0842631a12faed48c864053eb718179fa2ec5",
+    "search-native-green-attempt1.log": "95b125037c1addd8eae9a2e43b5a3938e132da73cf4491b550f0caf83e85b143",
+    "search-native-green-attempt2.log": "22e4df7c91620a64e392cd9428dfaaa6c6e27804d0815f72314470e66b458eeb",
+    "search-native-green-final.log": "246bf60c0c335cf526ff069611e29a0e21759ddf22b96b124d375a9b5786a1f4",
+    "search-native-playback-green.log": "5609a74f3d7a63658d13271c3c1c54710d95db739311e1614f1f83dad475d61b",
+    "search-native-red-playback.log": "38571295a09ae80adae920e5f45b44ebd74cfc0ce367fe8c53b45d65bfc91e0a",
+    "search-native-red.log": "4d7554d7d7b1f309a44a5644a713c972846de8e3594b7d5d21ee65df973a26f5",
+    "search-red-authority.log": "927ac395fea1e69b6de10e4c6156d13ea71c77ec1f14d38d8a888e36bcf1e33b",
+    "search-red-client.log": "273efd7357adbc4e6bffdd69c85f7ab84914d888ef3dfe0af3c48a9978e61c21",
+    "search-red-null-timing.log": "5b5d49aa9e4c48c96b6d5321404832210b0ccb4fe0424aaa9f354d5f6049f5af",
+    "search-red-playback-client.log": "cba87ab06226c0ddde4a2dc27068238b00b728e50ac34d63adf8132feb32a91a",
+    "search-red-playback.log": "bc73ee8befb416ac9c1c80a709f9b1663e19b17338bb176b80c331196ba22c04",
+    "search-red-session-fence.log": "3c0d7e9fd419c6fd60939cfdcc803f0d111e007f573e78c1a396aa33c16f6a59",
+    "search-red-unaligned-ui.log": "6a823e64edcce57d4d5f0bbcdac3fb8351d5bd881b40ec2bca83b16ce895426b",
+    "search-red-unicode-title.log": "4448ac5b226352540dff7c57b1f438d2bfcd2cada73637650fc6b1237535638d",
+    "search-type-check.log": "b1385b0989c3ac268a8c79c0768eb065ff713467b4a2bd749df65f67c5df0a7b",
+    "shared-final.log": "e09a619eb7da45dbac76402f100f5f1daa868656e3cd3520838bc2e4420d9c9a",
+    "typecheck-integration.log": "6096d610ac3f63cdd32e2b1e498d6cd9874b0341e7193944ee329b9e7650d1b6",
+    "verify-final.log": "07cc4f307a30bf9e967441e9de66aafe82a2dac845a8874bd01ae14284bc3f65",
+    "verify-first.log": "4e98a28cfd63ff5979b2e322624d220d7e5950b9dc19637f3cdbd5e2f96c28cf",
+    "verify-fix-focused.log": "96f438e8d383078934fd26a1c4a75461db86e9960e78395b2bd4086cc9dfe9ee"
+  },
+  "git": {
+    "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+    "branch": "codex/october-upgrade-p0",
+    "stagedFiles": [],
+    "diffCheckPassed": true,
+    "nextEnvRestored": true,
+    "committed": false,
+    "pushed": false,
+    "remoteMigrationOrDeployment": false
+  },
+  "documentsManifest": {
+    "path": "docs/research/evidence/2026-11-11-g3-delivery/document-manifest.json",
+    "sha256": "6b0f5ade8893038b3bdd53a066433ae9dd305b9de38069878d4652eb26be14b3"
+  },
+  "independentDocumentReview": {
+    "path": "docs/research/evidence/2026-11-11-g3-delivery/document-review.md",
+    "sha256": "cea8b5bda6891f418bd104e619368c786e00bba81c5830e0cd850ddbceef4d39",
+    "status": "passed",
+    "unresolvedFindings": []
+  },
+  "completedAt": "2026-11-11T14:02:00.940273+08:00"
+}

@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-11-06T23:16:12.719581+08:00",
+  "baselineFile": "resume-baseline-01.json",
+  "baselineSha256": "c7e1d76dbe0ec9a4a8866d322da6ba1dd80946ec2bb55bd289f453b31ebf6b5a",
+  "checkedExistingFiles": 6206,
+  "authorizedChangedExistingFiles": [
+    "scripts/__tests__/deployment-config.test.js",
+    "experiments/pg17-deletion-capture/fixture.mjs",
+    "experiments/pg17-deletion-capture/verify.mjs",
+    "experiments/pg17-deletion-capture/README.md",
+    "docs/README.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/research/2026-11-02-g1-gap-register.md",
+    "docs/research/2026-11-06-g1-deletion-capture.md",
+    "docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-capture.md",
+    "docs/research/evidence/2026-11-06-g1-deletion-capture/README.md"
+  ],
+  "unexpectedChanges": [],
+  "allOtherExistingFilesUnchanged": true,
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "headUnchanged": true,
+  "indexUnchanged": true,
+  "stagedEmpty": true,
+  "diffCheckPassed": true
+}

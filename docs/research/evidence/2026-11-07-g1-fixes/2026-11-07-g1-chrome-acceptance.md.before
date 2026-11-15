@@ -1,0 +1,48 @@
+# G1 本地 Chrome 验收
+
+日期：2026-11-07（Asia/Taipei）。承接聊天「35」和用户本轮授权：本地按需搭环境与账号；支持范围参考竞品；当前以 Chrome 自动化 Web 验收为准，手机手测延期。**不再把手机、账号或专用本地环境列为等待用户提供的阻塞。G1 整门仍有实际工程失败，尚未通过。**
+
+## 本轮实现
+
+- 录音测试新增 `--chrome` 与 `--seconds=2..1800`，使用已安装的 Google Chrome 和原生 `getUserMedia`，由本地合成 WAV 提供音源。按真实时间运行，保留生产一分钟分块，不加速时钟。保存耗时较长时，脚本点击页面已有的“继续保存”。
+- 修复新录音无法导出：`recording_story_save` 存入 `/api/media/assets/{id}/play`，旧导出路径将它当成无法解析的 Storage 地址并返回 409。现在只把精确播放路径关联到同项目、同故事、同原声资产；不请求该 URL，仍执行来源、哈希、完整性和删除检查。伪造归属、陌生 ID、绝对 URL、查询串和片段都被拒绝。
+- 新增可重复的本地导出／权限／离线 Chrome 验证、音频完整性分析和完整迁移链探测。命令与运行边界见 [本地环境说明](../../experiments/g1-local/README.md)。
+
+## 验收口径与环境
+
+实际浏览器：**Google Chrome 156.0.8078.80**；宿主：**macOS 13.7.4**。录音使用真实 MediaRecorder、IndexedDB、WebCrypto、Web Locks、录音页、Next route handler、PG17.4 SQL、生产 Worker 和 FFmpeg。Auth 身份查找、PostgREST 和 Storage 是隔离适配器，不能当作 Hosted Supabase 验收。
+
+导出环境创建两组虚构家庭及 owner／active／pending／removed／outsider 五种身份。生产 `requireProjectAccess`、播放保护和导出逻辑读取真实 PostgreSQL 角色记录。没有真实家庭材料、付费 ASR、远端迁移或部署。测试账号信息随每个报告记录；不需要用户提供密码。
+
+竞品依据：Remento 官方 [What devices can be used?](https://help.remento.co/en/articles/8365904-what-devices-can-be-used) 推荐智能手机、平板、Mac／Windows／Chromebook 与现代浏览器，并保持软件更新；[Unsupported browser detected](https://help.remento.co/en/articles/8677424-what-do-i-do-if-i-see-unsupported-browser-detected) 推荐标准浏览窗口、更新系统／浏览器，并可尝试 Chrome。2026-11-07 读取，官方没有固定最低主版本号，不能据此捏造数字。
+
+采用的产品支持目标如下；目标不等于本轮都已实测。
+
+| 组合 | 版本策略 | 本轮状态 |
+|---|---|---|
+| macOS + Chrome | 当前稳定版，记录实测完整版本 | 本次自动化目标，版本见上 |
+| Windows + Chrome | 当前稳定版 | 后续平台复测；无 Windows 实测声明 |
+| macOS + Safari | 系统配套当前稳定版 | 后续平台复测 |
+| iPhone/iPad + Safari | 当前稳定系统配套浏览器 | 用户手测延期，不阻塞当前 Web 验收 |
+| Android + Chrome | 当前稳定系统／Chrome | 用户手测延期，不阻塞当前 Web 验收 |
+
+## 已验证的行为
+
+本轮实际结果、持续录音时长、源码哈希、断言、失败记录和门禁以 [verification.json](evidence/2026-11-07-g1-chrome/verification.json) 为准。
+
+- 完整录音：从页面开始、停止、完成，刷新后打开本地草稿、继续保存，经过真实 Worker 和独立确认，唯一故事可回放。清理事务故意中止时所有本地块保留，显式重试后才删除本地副本。
+- 导出权限：未登录 401，跨家庭／pending／removed 403，owner／active 可导出。原件缺失或哈希损坏 409；真实撤权与会话墓碑阻止新导出及新回放。
+- 离线档案：实际导出 ZIP 的 CRC、每个原件长度及 SHA-256 重算；解包后在独立、断网的 Chrome context 用 `file://` 打开，播放器时间推进且无 HTTP 请求。这满足本轮自动化口径，不宣称已在物理第二设备上测试。
+- 回归：新增受保护播放地址的成功用例及七个伪造地址／归属反例。修复前 1 failed／73 passed，修复后 74 passed。失败样本保留。
+
+## 新发现且未解决的工程项
+
+1. **真实一分钟分块在录制中刷新后不能完成服务端发布。** 中断流程已验证断网保留、账号切换取消旧操作、reserve／seal 响应丢失恢复与处理中不清理；随后 Worker 进入 unavailable／outcome_unknown。原件第一块单独交给 FFmpeg 时 exit 0，但输出 `File ended prematurely`；现有严格解码器拒绝带错误诊断的输入。完整录音的所有块拼接正常。需要在保持原件及清楚标记恢复范围的前提下设计容器封口或恢复产物，不可简单忽略诊断、伪造完整成功或自动重试未知任务。
+2. **空环境的完整迁移链失败。** 在独立编译、含真实 pgcrypto／uuid-ossp 的 PG17.4 上执行原始 bootstrap 和按序全部根迁移，P1 在 `REVOKE ... public.story_artifacts` 失败（42P01）。当前前序代码创建的是 `agent_artifacts`。这证明旧局部 fixture 不能代替空环境迁移演练；需补明确的旧结构兼容／启动顺序后重跑全链。测试没有编辑历史迁移或用替身函数绕过失败。
+3. **既有删除与恢复工程仍未完成。** 持久租约已实现，但引用安全的操作规划、晚到写入对账、实际删除结果落库、候选对象完整备份与恢复墓碑重放仍待推进。
+
+AI 供应商超时、无额度和非法响应组合也仍需专门的集成矩阵；本轮录音页只使用了明确的不可用 AI 端点，不能覆盖其余状态。
+
+## 后续顺序
+
+先解决中断 WebM 与启动迁移两个实际失败，随后推进删除执行／引用安全／备份恢复；重跑 Web 必要矩阵后再评审 G1。手机测试由用户稍后手动执行，独立登记。未提交、推送或改变分支。

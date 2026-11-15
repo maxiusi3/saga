@@ -1,0 +1,187 @@
+{
+  "status": "passed",
+  "browser": "157.0.8103.78",
+  "requests": [
+    {
+      "path": "/api/admin/pilot-analytics?cohort=chrome-g4&kind=synthetic&format=html",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 400
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-analytics?cohort=chrome-g4&kind=synthetic",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-analytics?cohort=chrome-g4&kind=synthetic&format=html",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-analytics?cohort=chrome-g4&kind=synthetic&format=html",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-analytics?cohort=chrome-g4&kind=synthetic",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "path": "/api/admin/pilot-ledger",
+      "method": "POST",
+      "status": 401
+    },
+    {
+      "path": "/api/admin/pilot-analytics?cohort=chrome-g4&kind=observed",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-analytics?cohort=large-g4&kind=synthetic",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-ledger?householdId=afe29f0c-c98b-4038-a5fa-6a43d1287f4b",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/admin/pilot-analytics?cohort=chrome-g4&kind=synthetic",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "actual admin write/read",
+    "20 complete synthetic observations",
+    "idempotency/conflicts",
+    "separate observed report",
+    "static HTML desktop/narrow",
+    "access control",
+    "erasure gating"
+  ],
+  "boundary": "Installed Chrome opens actual static report route; actual admin POST/GET routes and Supabase SDK to native PG17.4. Synthetic authentication transport and synthetic observations with January dates; no elapsed real household study or settled payment."
+}

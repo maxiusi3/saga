@@ -1,0 +1,25 @@
+{
+  "status": "failed",
+  "assertions": 0,
+  "actorConnections": [],
+  "sources": {},
+  "migrations": [],
+  "boundary": "Actual complete repository bootstrap/migration files on native PG17.4 with real extensions. Minimal synthetic Supabase auth/storage platform schemas; no hosted PostgREST/Auth/Storage qualification.",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binaryDirectory": "/tmp/saga-g1-runtime/install/bin"
+  },
+  "error": {
+    "message": "spawnSync /tmp/saga-g1-runtime/install/bin/postgres ENOENT",
+    "code": "ENOENT"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "sourceDrift": []
+}

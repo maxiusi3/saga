@@ -1,0 +1,15 @@
+{
+  "nativeEvidence": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/docs/research/evidence/2026-11-11-g3-delivery/migrations-1794370303638-02ad384d-86f2-48ff-90c4-50dacd170fc5",
+  "assertions": 191,
+  "sources": {
+    "supabase/migrations/20261111000002_authoritative_search.sql": "49be47d0d675fe4785376a0364b34580fb38ab7c7f9a1be088a0dac980b8dcd1",
+    "packages/web/src/lib/server/authoritative-search.ts": "21ba140a3453ce941150d684b513a60ca096d801429ecfba3625bad7736b78b6",
+    "packages/web/src/lib/server/provenance-search.ts": "1b66c8b1e9919546a6d66c2432d03809c9f4a2d95f689f4223d9182e68cfd224",
+    "packages/web/src/app/api/projects/[id]/search/route.ts": "1ccc16c6b506c3a09d81e4c1c71d83cfdfae351de09542ed74da61bb3c99207c",
+    "packages/web/src/app/api/projects/[id]/search/source/route.ts": "6f079da11a016e0605725e1fbd7c56517a4f63ae650af2363cff5d4d173d4af9",
+    "packages/web/src/lib/project-hub-client.ts": "260f1b036672e71cc8bff51cc3aa74ce3e8e3b607b2306096ace0a9a5a75a658",
+    "packages/web/src/components/projects/TwoEntryProjectHub.tsx": "f0c24f501f706daa1d4030ba42cf75a104583b5dbb69d98b8e2968ced326f65d",
+    "packages/web/src/components/projects/ConnectedProjectHub.tsx": "447537c3a7190b0f12fcc6c37d7c47bbca3bf24c1c9be19dc560bb4fe792fbb2",
+    "experiments/pg17-g3-delivery/search-scenarios.mjs": "986a80baf0233cb8fc06b0cff8575419db051301cb40f78877a5ff3e46633498"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "status": "passed",
+  "priorEvidence": 2542,
+  "historicalInputs": 1471,
+  "inheritedChanged": [
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/README.md",
+    "packages/web/src/app/api/media/assets/[assetId]/access/__tests__/route.test.ts",
+    "packages/web/src/app/api/media/assets/[assetId]/access/route.ts",
+    "packages/web/src/app/api/projects/[id]/export/__tests__/route.test.ts",
+    "packages/web/src/app/api/projects/[id]/export/route.ts",
+    "packages/web/src/lib/server/__tests__/media-asset-guard.test.ts",
+    "packages/web/src/lib/server/deletion-service.ts",
+    "packages/web/src/lib/server/media-asset-guard.ts",
+    "packages/web/src/lib/server/media-export.ts",
+    "scripts/__tests__/deployment-config.test.js"
+  ],
+  "commands": [
+    {
+      "receipt": "task2-input-storage-final-01.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-lineage-green-01.json",
+      "exitCode": 1,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-compat-final-01.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-diff-final-01.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-terminal-green-01.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-terminal-red-01.json",
+      "exitCode": 1,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "inherited-focused.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "full-gate.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-focused-final-01.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-typecheck-01.json",
+      "exitCode": 2,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-lineage-red-01.json",
+      "exitCode": 1,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-terminal-red-02.json",
+      "exitCode": 1,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-routes-red-01.json",
+      "exitCode": 1,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-lineage-routes-green-02.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    },
+    {
+      "receipt": "task2-typecheck-final-01.json",
+      "exitCode": 0,
+      "sourceDrift": []
+    }
+  ],
+  "native": [
+    {
+      "receipt": "sql-only-2026-11-04T16-09-35.712Z-735bb65a-b9e3-4f97-a0d4-adbeca0cff51/results.json",
+      "status": "failed",
+      "assertions": 29,
+      "scenarios": 2
+    },
+    {
+      "receipt": "red-without-migration-2026-11-04T16-05-53.358Z-40205405-370d-488b-bdf0-b8c2c7b76c2e/results.json",
+      "status": "failed",
+      "assertions": 16,
+      "scenarios": 1
+    },
+    {
+      "receipt": "http-application-2026-11-04T16-57-11.120Z-0b324a81-c131-4d93-ab8a-e46c007364fc/results.json",
+      "status": "passed",
+      "assertions": 278,
+      "scenarios": 8
+    },
+    {
+      "receipt": "sql-only-2026-11-04T16-13-00.119Z-8ef7b353-2c0b-4d92-a89a-30f9bdf74e79/results.json",
+      "status": "failed",
+      "assertions": 255,
+      "scenarios": 6
+    },
+    {
+      "receipt": "sql-only-2026-11-04T16-14-22.203Z-0b981799-c094-4aab-ba08-ab5dbc0ef943/results.json",
+      "status": "passed",
+      "assertions": 492,
+      "scenarios": 15
+    },
+    {
+      "receipt": "sql-only-2026-11-04T16-11-23.813Z-a5ea7b93-667d-446e-8685-8c64e1812fb1/results.json",
+      "status": "failed",
+      "assertions": 112,
+      "scenarios": 3
+    },
+    {
+      "receipt": "http-red-without-migration-2026-11-04T16-55-49.053Z-5df511d1-e297-4c20-a2eb-9006b46b12af/results.json",
+      "status": "failed",
+      "assertions": 39,
+      "scenarios": 1
+    }
+  ],
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "staged": false,
+  "testedSourcesCurrent": 688,
+  "reviewSourcesCurrent": 20,
+  "ownedWhitespaceAndConflictChecks": 26,
+  "nextEnvRestoredSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+  "nativeFinalSourcesAndTemporaryDirectoryRemovalVerified": true
+}

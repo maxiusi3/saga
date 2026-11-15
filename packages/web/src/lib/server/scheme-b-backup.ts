@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 
 export interface StorageObjectEntry {
   id: string
-  bucket: 'saga' | 'audio-recordings'
+  bucket: 'saga' | 'audio-recordings' | 'recording-candidates'
   key: string
   byteSize: number
   sha256: string
@@ -53,7 +53,7 @@ export type SchemeBBackupStatus =
 
 const ISO_UTC_REGEX = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d:[0-5]\d(\.\d{3})?Z$/
 const HEX_SHA256_REGEX = /^[a-f0-9]{64}$/
-const ALLOWED_BUCKETS = new Set(['saga', 'audio-recordings'])
+const ALLOWED_BUCKETS = new Set(['saga', 'audio-recordings', 'recording-candidates'])
 const CONTROL_CHAR_REGEX = /[\x00-\x1F\x7F]/
 const PG_DUMP_MAGIC = Buffer.from([0x50, 0x47, 0x44, 0x4d, 0x50]) // 'PGDMP'
 const MIN_PG_DUMP_HEADER_BYTES = 12 // 5 bytes magic + 3 bytes version + int_size + off_t_size + format + flags

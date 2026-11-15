@@ -1,0 +1,7 @@
+{
+  "command": "node scripts/publication-worker.cjs --check",
+  "environment": "synthetic URL/key and temporary private spool; code check returns before creating network client",
+  "code": 0,
+  "stdout": "publication_worker_ready\n",
+  "stderr": ""
+}

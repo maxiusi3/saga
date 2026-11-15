@@ -1,0 +1,35 @@
+{
+  "freezeTimestamp": "2026-11-06T03:28:02.059Z",
+  "dumpSha256": "0e3664bb142140e3c72b86ede363b15476199894797e65575c238e7e11dd4cc8",
+  "dumpSizeBytes": 55,
+  "objects": [
+    {
+      "id": "retained-original-chunk",
+      "bucket": "audio-recordings",
+      "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/19d55489-cb86-476c-94b3-fdbf72c355df/0",
+      "byteSize": 24,
+      "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+    },
+    {
+      "id": "published-candidate-manifest-id",
+      "bucket": "recording-candidates",
+      "key": "jobs/5c3b2c5f-768b-4f5a-a97a-d0761ed279d8/attempts/1/c629cb74-a65e-494a-9a96-c3c4039a6b8f",
+      "byteSize": 24,
+      "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+    },
+    {
+      "id": "retained-reserved-candidate",
+      "bucket": "recording-candidates",
+      "key": "jobs/d2083b21-d7c6-4b26-a1a4-4abb557a7b81/attempts/1/76e16058-ab4e-4c1e-8e88-284a903f349b",
+      "byteSize": 24,
+      "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+    },
+    {
+      "id": "d6d5a964-a5c8-401d-a4e5-54eee935e33c",
+      "bucket": "saga",
+      "key": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/2df1f096-1168-4827-b4fe-fa6a10821e90.jpg",
+      "byteSize": 42,
+      "sha256": "e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87"
+    }
+  ]
+}

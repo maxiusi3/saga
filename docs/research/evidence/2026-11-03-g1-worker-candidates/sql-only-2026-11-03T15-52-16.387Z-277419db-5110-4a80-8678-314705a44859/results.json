@@ -1,0 +1,551 @@
+{
+  "startedAt": "2026-11-03T15:52:16.389Z",
+  "mode": "sql-only",
+  "status": "failed",
+  "assertions": 309,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "metadata_reader",
+      "session_user": "metadata_reader",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Incompatible existing buckets and disabled managed RLS fail transactionally without rewriting configuration",
+      "status": "passed",
+      "assertions": 20
+    },
+    {
+      "name": "Exact reserve/prepare RPC exists (real missing-feature RED)",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "Reserve and prepare preserve publication state; exact prepared replay is unchanged",
+      "status": "passed",
+      "assertions": 18
+    },
+    {
+      "name": "Closed arguments, sealed byte and MIME binding, running-only fence",
+      "status": "passed",
+      "assertions": 76
+    },
+    {
+      "name": "Candidate least privilege, no client policies, immutable constraints",
+      "status": "passed",
+      "assertions": 67
+    },
+    {
+      "name": "Restrictive Storage policies defeat broad client policies without blocking other buckets or service",
+      "status": "passed",
+      "assertions": 51
+    },
+    {
+      "name": "Reserve and prepare transaction rollback and injected mutation failure leave no partial state",
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "Real simultaneous reserve duplicate-id/attempt races and exact prepare replay serialize",
+      "status": "passed",
+      "assertions": 21
+    },
+    {
+      "name": "Database clock recheck after job/candidate locks and stale prepared replay rejects expired fence",
+      "status": "passed",
+      "assertions": 16
+    },
+    {
+      "name": "Distinct jobs sharing an uncommitted candidate ID recheck expiry after the unique-index wait",
+      "status": "failed",
+      "code": "ASSERT_FAILED",
+      "label": "expired INSERT rolls back; live rollback allows one reserve; committed duplicate still rejects"
+    }
+  ],
+  "sources": {
+    "experiments/pg17-recording-candidates/verify.mjs": "6716fc548550b411f19e32a9fbb8f32f81cdc3a9d14300802f7a9852f6e01fd2",
+    "experiments/pg17-recording-candidates/fixture.mjs": "1c09ea252da2ee57980e12553a4e3769d26d5e3e1b0d5ea6d34faaf3a7e9ecab",
+    "experiments/pg17-recording-candidates/database.mjs": "fb1e9cb093465f9ea65947a7163babb8115ed01f881c22a812f08212848792fc",
+    "experiments/pg17-recording-candidates/README.md": "2f2e5510d0961394f3ebd982ef5279c56e933292b470c6260653f38dab9e8b28",
+    "experiments/pg17-recording-worker/fixture.mjs": "83d9d5b5886d973a21c306f5e8a859d6ec45f1e7e8618e290fa85e013ba4d688",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "36cb0471d7751a1e937074aaff7c05506ae97fd10d9800df49ea4142595ab97f",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "4766a13097887cbb07bd42c77b119d0513c65f7cef91df4acb6da59aedcf7725"
+  },
+  "snapshots": {
+    "experiments/pg17-recording-candidates/verify.mjs": {
+      "path": "0-verify.mjs.gz",
+      "sha256": "ee724e1ab4a18f551e522f78abc32d3541efcc54344b97ae32cba92bd923a9d0",
+      "decodedSha256": "6716fc548550b411f19e32a9fbb8f32f81cdc3a9d14300802f7a9852f6e01fd2"
+    },
+    "experiments/pg17-recording-candidates/fixture.mjs": {
+      "path": "1-fixture.mjs.gz",
+      "sha256": "80c266d034318d09d81384b1d828e500071ea127e166de6a900d2260344d1af7",
+      "decodedSha256": "1c09ea252da2ee57980e12553a4e3769d26d5e3e1b0d5ea6d34faaf3a7e9ecab"
+    },
+    "experiments/pg17-recording-candidates/database.mjs": {
+      "path": "2-database.mjs.gz",
+      "sha256": "c24e1b02f49eb8a95ef32006154026e93c925440aa57e782a19682827d76a0a4",
+      "decodedSha256": "fb1e9cb093465f9ea65947a7163babb8115ed01f881c22a812f08212848792fc"
+    },
+    "experiments/pg17-recording-candidates/README.md": {
+      "path": "3-README.md.gz",
+      "sha256": "8154fa192a48294377a17e146397c508fba6902d7f9f5fb8b6264f99c24d914e",
+      "decodedSha256": "2f2e5510d0961394f3ebd982ef5279c56e933292b470c6260653f38dab9e8b28"
+    },
+    "experiments/pg17-recording-worker/fixture.mjs": {
+      "path": "4-fixture.mjs.gz",
+      "sha256": "4d7d5f013d2faa9b08ec26a84aefecab41958d806259b35c911ab5649cbe6c43",
+      "decodedSha256": "83d9d5b5886d973a21c306f5e8a859d6ec45f1e7e8618e290fa85e013ba4d688"
+    },
+    "experiments/pg17-routines/runtime.mjs": {
+      "path": "5-runtime.mjs.gz",
+      "sha256": "0e746071f418db45326164d575bbe723322fa113b66f6b3c4ef4acc85eb26cf4",
+      "decodedSha256": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552"
+    },
+    "experiments/pg17-routines/runtime-pins.json": {
+      "path": "6-runtime-pins.json.gz",
+      "sha256": "f7c53b88a664df9a0acd473f586d818ae3b27b953e61cbb43021bf0bb4c28cc0",
+      "decodedSha256": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67"
+    },
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": {
+      "path": "7-20261024000001_p1_foundation_and_reconciliation.sql.gz",
+      "sha256": "415ff64252c8c6241b44e29237e4f1401e94ccc17404c9be8f2e6be55634a688",
+      "decodedSha256": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1"
+    },
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": {
+      "path": "8-20261102000001_recording_seal_manifest.sql.gz",
+      "sha256": "4dcb580892a569fff4a5c873f2141fd590ee9c76cc94585d91a69d934dfbfb04",
+      "decodedSha256": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+    },
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": {
+      "path": "9-20261103000001_recording_worker_leases.sql.gz",
+      "sha256": "080835c0734cba0eeaa7327484390b6e859564c74282d3807cdba09eea51a878",
+      "decodedSha256": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb"
+    },
+    "packages/web/src/lib/recording-chunk-location.ts": {
+      "path": "10-recording-chunk-location.ts.gz",
+      "sha256": "2b974abdd276a821fc41488cbc9425c1e9c08168e16c94b59a54fb3758754973",
+      "decodedSha256": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7"
+    },
+    "packages/web/src/lib/server/consent-deletion.ts": {
+      "path": "11-consent-deletion.ts.gz",
+      "sha256": "b416c61e9f38ebddbae7727c16da60f5b87b9bc9a7143a700f13bb971e9c2ccd",
+      "decodedSha256": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33"
+    },
+    "packages/web/src/lib/server/processing-jobs.ts": {
+      "path": "12-processing-jobs.ts.gz",
+      "sha256": "1cab40ebc4544bd4a7c48f9d326eb093144e2793ad8bbd2e41dbe9e4dec973b0",
+      "decodedSha256": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+    },
+    "packages/web/src/lib/server/recording-merge.ts": {
+      "path": "13-recording-merge.ts.gz",
+      "sha256": "c9ef63327afc5c95a74d74a00258ea8a71eca20be13c494a212549579e17666e",
+      "decodedSha256": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8"
+    },
+    "packages/web/src/lib/server/recording-merge-executor.ts": {
+      "path": "14-recording-merge-executor.ts.gz",
+      "sha256": "77adb2ea98a7c1a576b9ed7f29ca1726e0bf2259e2cd335d9afd1a5083895a3e",
+      "decodedSha256": "36cb0471d7751a1e937074aaff7c05506ae97fd10d9800df49ea4142595ab97f"
+    },
+    "packages/web/src/lib/server/recording-processing-error.ts": {
+      "path": "15-recording-processing-error.ts.gz",
+      "sha256": "e57cf4ae5f90d3c854569dce492271e0ddeac1189ddebbc4a72c57eea51e973e",
+      "decodedSha256": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e"
+    },
+    "packages/web/src/lib/server/recording-audio-decoder.ts": {
+      "path": "16-recording-audio-decoder.ts.gz",
+      "sha256": "2c8e80f2e2dd69c198466ec4ddfc6b15a58c82701e4cc4198644638f017967e2",
+      "decodedSha256": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03"
+    },
+    "packages/web/src/lib/server/recording-session-service.ts": {
+      "path": "17-recording-session-service.ts.gz",
+      "sha256": "aa6cecbf95a32d7eea52932be211f3d6b06cd424446a244ba9eaaf8efa623201",
+      "decodedSha256": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1"
+    },
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": {
+      "path": "18-20261103000002_recording_output_candidates.sql.gz",
+      "sha256": "09c5213a453b704661f43af176de373402bbbc881ecc0da50e86a663dff56c0e",
+      "decodedSha256": "4766a13097887cbb07bd42c77b119d0513c65f7cef91df4acb6da59aedcf7725"
+    }
+  },
+  "limits": [
+    "Real isolated PG17.4 and native Unix socket; synthetic Storage tables, not real Supabase Storage/PostgREST or full migration chain.",
+    "SQL-only run: application upload/readback, native audio, managed ownership, deployment, backup qualification are not exercised."
+  ],
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 24411,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-cvlE6b/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-cvlE6b",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users",
+      "auth.uid()",
+      "projects",
+      "project_roles",
+      "project_members",
+      "stories",
+      "storage.buckets",
+      "storage.objects",
+      "broad permissive storage RLS/grants"
+    ],
+    "exactFoundationTables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts",
+      "recording_sessions",
+      "recording_chunks"
+    ],
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "supabase/migrations/20261103000002_recording_output_candidates.sql"
+    ],
+    "livePostgrest": false,
+    "liveStorage": false
+  },
+  "rpcInvocationSqlstate": "22023",
+  "rpcProbe": "recording_output_candidate(uuid,text,text,integer,text,uuid,jsonb)",
+  "receipts": [
+    {
+      "jobId": "6d271c97-1525-40cf-95c9-016f6b7323f5",
+      "state": "reserved",
+      "bucket": "recording-candidates",
+      "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+      "assetId": "aabf43ac-c80b-8eb1-a2bd-2f6ea16a7be4",
+      "attempt": 1,
+      "byteSize": 27,
+      "mimeType": "audio/webm;codecs=opus",
+      "workerId": "candidate-worker-1",
+      "createdAt": "2026-11-03T15:52:18.74924+00:00",
+      "objectKey": "jobs/6d271c97-1525-40cf-95c9-016f6b7323f5/attempts/1/3dd3ac45-f931-47a9-acdc-a195d351608d",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "sessionId": "f11332e8-3af9-4629-bb4b-7840f51b67e7",
+      "durationMs": 1250,
+      "preparedAt": null,
+      "candidateId": "3dd3ac45-f931-47a9-acdc-a195d351608d",
+      "schemaVersion": 1,
+      "manifestSha256": "a02860725e628304557bb77885f4de98c9cfd66df938525e7337a541d72caf32",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "6d271c97-1525-40cf-95c9-016f6b7323f5",
+      "state": "prepared",
+      "bucket": "recording-candidates",
+      "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+      "assetId": "aabf43ac-c80b-8eb1-a2bd-2f6ea16a7be4",
+      "attempt": 1,
+      "byteSize": 27,
+      "mimeType": "audio/webm;codecs=opus",
+      "workerId": "candidate-worker-1",
+      "createdAt": "2026-11-03T15:52:18.74924+00:00",
+      "objectKey": "jobs/6d271c97-1525-40cf-95c9-016f6b7323f5/attempts/1/3dd3ac45-f931-47a9-acdc-a195d351608d",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "sessionId": "f11332e8-3af9-4629-bb4b-7840f51b67e7",
+      "durationMs": 1250,
+      "preparedAt": "2026-11-03T15:52:18.774534+00:00",
+      "candidateId": "3dd3ac45-f931-47a9-acdc-a195d351608d",
+      "schemaVersion": 1,
+      "manifestSha256": "a02860725e628304557bb77885f4de98c9cfd66df938525e7337a541d72caf32",
+      "canClearLocalDrafts": false
+    }
+  ],
+  "childEvents": [],
+  "lockWaits": [
+    {
+      "table": "processing_jobs",
+      "elapsedMs": 1048.2346670000006
+    },
+    {
+      "table": "recording_output_candidates",
+      "elapsedMs": 1033.425725
+    }
+  ],
+  "uniqueIndexWaits": [
+    {
+      "mode": "expired-rollback",
+      "elapsedMs": 1022.5486219999993,
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        24518
+      ],
+      "code": "00000"
+    }
+  ],
+  "error": {
+    "code": "ASSERT_FAILED",
+    "label": "expired INSERT rolls back; live rollback allows one reserve; committed duplicate still rejects"
+  },
+  "finalDatabase": {
+    "candidates": [
+      {
+        "id": "0bded191-f9e3-49ac-a392-23140eb14c80",
+        "state": "prepared",
+        "bucket": "recording-candidates",
+        "job_id": "2c8e8990-5e59-4cdb-8ad2-cb04da65d7f1",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "883bf332-f577-8a7c-a116-89270fd08558",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:19.833076+08:00",
+        "object_key": "jobs/2c8e8990-5e59-4cdb-8ad2-cb04da65d7f1/attempts/1/0bded191-f9e3-49ac-a392-23140eb14c80",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "009a5cc4-68e0-4666-b96f-883ecc300e43",
+        "duration_ms": 1250,
+        "prepared_at": "2026-11-03T23:52:19.857745+08:00",
+        "manifest_sha256": "27036a9354dd829139f7e7740bdf7b09db733e6b0a56890da276e75a7d5f7db2"
+      },
+      {
+        "id": "1f3e3991-9a49-4dab-8be8-97b1a5664017",
+        "state": "reserved",
+        "bucket": "recording-candidates",
+        "job_id": "8a29d0bc-ee1a-45a1-b367-56262d963cef",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "db455127-74c5-89ca-beee-5639893522b4",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:19.894054+08:00",
+        "object_key": "jobs/8a29d0bc-ee1a-45a1-b367-56262d963cef/attempts/1/1f3e3991-9a49-4dab-8be8-97b1a5664017",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "ba88c3ea-2135-4859-866b-9d397c364c2c",
+        "duration_ms": 1250,
+        "prepared_at": null,
+        "manifest_sha256": "f2f9775ebd581487e5394e4f6d29ddbfe51f3ca4d17e83345bdff14748118393"
+      },
+      {
+        "id": "35e34ad2-7679-46fb-acc9-ed07b9b20acc",
+        "state": "reserved",
+        "bucket": "recording-candidates",
+        "job_id": "16b1a321-2578-41d8-97da-601a390f1dc9",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "7e3a7995-6c57-86ad-ad0c-676da7f1cd09",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:19.782396+08:00",
+        "object_key": "jobs/16b1a321-2578-41d8-97da-601a390f1dc9/attempts/1/35e34ad2-7679-46fb-acc9-ed07b9b20acc",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "d02d2feb-0278-4be3-b83f-e96f67163172",
+        "duration_ms": 1250,
+        "prepared_at": null,
+        "manifest_sha256": "6fcc8d39eb346ffcd870d606c96f9e0f1a0b523f62e74c659b784e9a786ee94a"
+      },
+      {
+        "id": "3dd3ac45-f931-47a9-acdc-a195d351608d",
+        "state": "prepared",
+        "bucket": "recording-candidates",
+        "job_id": "6d271c97-1525-40cf-95c9-016f6b7323f5",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "aabf43ac-c80b-8eb1-a2bd-2f6ea16a7be4",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:18.74924+08:00",
+        "object_key": "jobs/6d271c97-1525-40cf-95c9-016f6b7323f5/attempts/1/3dd3ac45-f931-47a9-acdc-a195d351608d",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "f11332e8-3af9-4629-bb4b-7840f51b67e7",
+        "duration_ms": 1250,
+        "prepared_at": "2026-11-03T23:52:18.774534+08:00",
+        "manifest_sha256": "a02860725e628304557bb77885f4de98c9cfd66df938525e7337a541d72caf32"
+      },
+      {
+        "id": "4df68fb2-7799-4e4f-afc1-2faeb6c47117",
+        "state": "prepared",
+        "bucket": "recording-candidates",
+        "job_id": "6420c327-cda9-4179-97f1-02ea15d16533",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "6f09965b-a0a7-8816-84fb-e7291a80f8ec",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:22.042762+08:00",
+        "object_key": "jobs/6420c327-cda9-4179-97f1-02ea15d16533/attempts/1/4df68fb2-7799-4e4f-afc1-2faeb6c47117",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "a8962071-4332-4135-a826-1e2256c936ee",
+        "duration_ms": 1250,
+        "prepared_at": "2026-11-03T23:52:22.047111+08:00",
+        "manifest_sha256": "4199c4e1f0132075fc3a9fec113567cb07e3c494cc5fc83de98fb6b4f9b91b72"
+      },
+      {
+        "id": "4ec25ab8-aebe-48e7-b316-6aaf9307043a",
+        "state": "reserved",
+        "bucket": "recording-candidates",
+        "job_id": "87be9112-97ee-496d-85dc-f301126b6063",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "2b93d4e5-5411-8e56-b67a-2cee0f1ab2c4",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:23.170904+08:00",
+        "object_key": "jobs/87be9112-97ee-496d-85dc-f301126b6063/attempts/1/4ec25ab8-aebe-48e7-b316-6aaf9307043a",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "b51fb4b3-1b3d-476e-9b56-987034071fe9",
+        "duration_ms": 1250,
+        "prepared_at": null,
+        "manifest_sha256": "6185185c1d0348d98750370154fe6501fe3312c9f481c186cf1657c7236cdbff"
+      },
+      {
+        "id": "7e114d50-b13a-4ccf-b842-8f3b03c5f014",
+        "state": "reserved",
+        "bucket": "recording-candidates",
+        "job_id": "e91f1e11-40bd-4cf9-8f70-e42c0a6cd54e",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "58c72e85-b108-81d6-add5-3c0970c89d1f",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:20.994884+08:00",
+        "object_key": "jobs/e91f1e11-40bd-4cf9-8f70-e42c0a6cd54e/attempts/1/7e114d50-b13a-4ccf-b842-8f3b03c5f014",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "f94e8d21-a031-4497-a20f-be8f34c054b6",
+        "duration_ms": 1250,
+        "prepared_at": null,
+        "manifest_sha256": "246c9a841dac33613c327168fa0631961548b317368c3d5242a3488b4a1b72af"
+      },
+      {
+        "id": "8a40159a-18fe-4a64-af5e-df1f3902a8a7",
+        "state": "reserved",
+        "bucket": "recording-candidates",
+        "job_id": "0e74a430-ed10-468f-ab17-fa7ee45cbda8",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "3fb7466b-92e0-8372-abd4-ae12c61f3484",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:19.617128+08:00",
+        "object_key": "jobs/0e74a430-ed10-468f-ab17-fa7ee45cbda8/attempts/1/8a40159a-18fe-4a64-af5e-df1f3902a8a7",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "e05e7c22-5507-4ec2-8f3f-9885f58d2f89",
+        "duration_ms": 1250,
+        "prepared_at": null,
+        "manifest_sha256": "a5867dc3eabe7740095a85e6e24264ed66e67169cb5671e5e85b77b80089ec0c"
+      },
+      {
+        "id": "e370006b-53e0-4503-8166-1bfd4fb7355d",
+        "state": "reserved",
+        "bucket": "recording-candidates",
+        "job_id": "ff794f09-3584-463c-b1be-3dced4cceca2",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "9607c914-2684-8d0c-a77d-22756d92c39b",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:19.700217+08:00",
+        "object_key": "jobs/ff794f09-3584-463c-b1be-3dced4cceca2/attempts/1/e370006b-53e0-4503-8166-1bfd4fb7355d",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "41187b0c-d1ab-467c-8277-b4017261aca6",
+        "duration_ms": 1250,
+        "prepared_at": null,
+        "manifest_sha256": "35b4e57f674e5031ca214df7fa18fe7b6c4c4cf1752aa30bb2383a90e4f28987"
+      },
+      {
+        "id": "f5c0a1d8-2fa3-4090-99fa-b38cfd86d70e",
+        "state": "reserved",
+        "bucket": "recording-candidates",
+        "job_id": "fb120fc8-2b69-4df9-bc67-19aff268db63",
+        "sha256": "e310bd6e29b3c0b4576ec9942a1389c0d058a8b4477db07b479ccdedf5eec31e",
+        "asset_id": "e9ca6663-df8a-8a58-b219-f3f2af70a1a2",
+        "byte_size": 27,
+        "mime_type": "audio/webm;codecs=opus",
+        "worker_id": "candidate-worker-1",
+        "attempt_no": 1,
+        "created_at": "2026-11-03T23:52:18.92122+08:00",
+        "object_key": "jobs/fb120fc8-2b69-4df9-bc67-19aff268db63/attempts/1/f5c0a1d8-2fa3-4090-99fa-b38cfd86d70e",
+        "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "session_id": "b63ab25a-ff2d-4793-bc8c-bbafe3e32dfe",
+        "duration_ms": 1250,
+        "prepared_at": null,
+        "manifest_sha256": "d7a373c65ea74057d0f62fc005a9115c653d844d8cab802fac10d31858794325"
+      }
+    ],
+    "readyAssets": 0,
+    "succeededJobs": 0,
+    "confirmedSessions": 0
+  },
+  "postgresLog": {
+    "path": "postgres.log.gz",
+    "sha256": "033658b1fb92228ebfa2b98022d2052b58c8ca8cb26533de3dc83cf338c5e77c",
+    "decodedSha256": "ae763faadfcc7ec771d97fccf5eeb13e4b9494dcfd1b79cc97b128c09277383b"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "childrenRemaining": 0,
+    "socketDirectoryRemoved": true,
+    "serverPidGone": true,
+    "childPidsGone": true
+  },
+  "sourcesChangedDuringRun": [],
+  "finishedAt": "2026-11-03T15:52:24.481Z"
+}

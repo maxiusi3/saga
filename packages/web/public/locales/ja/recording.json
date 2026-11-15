@@ -89,5 +89,29 @@
     "detail": {
       "recordFollowUp": "フォローアップを録音"
     }
+  },
+  "saveFlow": {
+    "checking": "Checking local audio…",
+    "uploading": "Uploading and verifying audio…",
+    "processing": "Checking audio processing…",
+    "confirming": "Confirming your story…",
+    "saved": "Story saved. Your local copy is still available.",
+    "saving": "Saving…",
+    "pending": "Audio is waiting for processing. Your local copy is retained. Continue saving to check again.",
+    "unavailable": "Saving could not be confirmed. Your local copy is retained. Continue saving to retry.",
+    "unsupported": "Saving needs a browser with secure session locks. Keep or download this local copy and use an updated browser.",
+    "busy": "This recording is open in another tab. Finish or close that recording, then continue saving.",
+    "cleanupError": "The local copy could not be cleared. It remains available; try again.",
+    "playbackError": "Saved audio is currently unavailable. You can still use the local preview or download.",
+    "cleared": "Local copy cleared. Your saved story is available.",
+    "continueSaving": "Continue saving",
+    "openStory": "Open saved story",
+    "clearLocal": "Clear local copy",
+    "download": "Download local audio",
+    "playback": "Saved recording",
+    "savedAction": "Saved"
+  },
+  "recovery": {
+    "continueSaving": "Continue saving"
   }
 }

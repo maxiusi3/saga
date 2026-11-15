@@ -3,7 +3,7 @@ import JSZip from 'jszip'
 import { buildExportManifest, safeExportFilename, type ExportAssetRow, type ExportManifest } from '@/lib/media-assets'
 
 export interface ExportableMediaAsset extends ExportAssetRow {
-  bucket: 'saga' | 'audio-recordings'
+  bucket: 'saga' | 'audio-recordings' | 'recording-candidates'
   object_key: string
   story_id?: string | null
   tombstoned?: boolean

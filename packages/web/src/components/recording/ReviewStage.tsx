@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -11,6 +11,8 @@ import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { AudioPlayer } from '@/components/audio/AudioPlayer'
+import { useTranslations } from 'next-intl'
+import type { RecordingSaveMetadata } from '@/lib/recording-save-contract'
 import { cn } from '@/lib/utils'
 
 export type DraftStatus = 'idle' | 'processing' | 'ready' | 'failed'
@@ -23,6 +25,10 @@ interface ReviewStageProps {
     onDiscard: () => void
     isProcessing?: boolean
     draftStatus?: DraftStatus
+    saveMetadata?: RecordingSaveMetadata | null
+    saved?: boolean
+    retrySave?: boolean
+    recovered?: boolean
 }
 
 export function ReviewStage({
@@ -32,12 +38,19 @@ export function ReviewStage({
     onSave,
     onDiscard,
     isProcessing = false,
-    draftStatus = 'idle'
+    draftStatus = 'idle',
+    saveMetadata, saved = false, retrySave = false, recovered = false
 }: ReviewStageProps) {
+    const t = useTranslations('recording.saveFlow')
+    const recovery = useTranslations('recording.recovery')
     const [title, setTitle] = useState('')
     const [happenedAt, setHappenedAt] = useState<Date | undefined>(new Date())
 
     const [isPublic, setIsPublic] = useState(false)
+    useEffect(() => {
+        if (saveMetadata) { setTitle(saveMetadata.title); setHappenedAt(new Date(saveMetadata.happenedAt)); setIsPublic(saveMetadata.isPublic) }
+    },[saveMetadata])
+    const locked = isProcessing || !!saveMetadata || saved
 
     const handleSave = () => {
         if (!happenedAt) return
@@ -68,10 +81,10 @@ export function ReviewStage({
                     {duration > 0 ? (
                         <AudioPlayer src={audioUrl} duration={duration} className="w-full" />
                     ) : (
-                        <div className="p-4 text-center text-sm text-red-500 bg-red-50 rounded-lg border border-red-100">
-                            Audio duration invalid. Please try recording again.
-                        </div>
+                        <audio controls src={audioUrl} preload="metadata" aria-label="Original recording" className="w-full" />
                     )}
+                    <a href={audioUrl} download="saga-local-recording" className="text-sm underline underline-offset-4">{t('download')}</a>
+                    {recovered && !saved && <p className="text-sm text-stone-600 dark:text-stone-400">{recovery('notice')}</p>}
                 </div>
 
                 <p
@@ -90,6 +103,7 @@ export function ReviewStage({
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
+                                disabled={locked}
                                 variant={"outline"}
                                 className={cn(
                                     "w-full justify-start text-left font-normal",
@@ -117,8 +131,10 @@ export function ReviewStage({
 
                 {/* Title Input */}
                 <div className="space-y-2">
-                    <Label>Give it a title (optional)</Label>
+                    <Label htmlFor="recording-story-title">Give it a title (optional)</Label>
                     <Input
+                        id="recording-story-title"
+                        disabled={locked}
                         placeholder="e.g., The Summer of '89"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -127,16 +143,18 @@ export function ReviewStage({
                 </div>
 
                 {/* Visibility Toggle */}
-                <div className="flex items-center justify-between p-4 bg-stone-50 dark:bg-stone-800/50 rounded-lg border border-stone-100 dark:border-stone-800">
-                    <div className="space-y-0.5">
+                <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between p-4 bg-stone-50 dark:bg-stone-800/50 rounded-lg border border-stone-100 dark:border-stone-800">
+                    <div className="min-w-0 space-y-0.5">
                         <Label className="text-base font-medium">Visibility</Label>
                         <p className="text-sm text-stone-500 dark:text-stone-400">
                             {isPublic ? 'Public - Visible to everyone' : 'Private - Visible to project members'}
                         </p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex shrink-0 items-center gap-2">
                         <span className={cn("text-xs font-medium", !isPublic && "text-stone-900 dark:text-stone-100")}>Private</span>
                         <Switch
+                            aria-label="Story visibility"
+                            disabled={locked}
                             checked={isPublic}
                             onCheckedChange={setIsPublic}
                         />
@@ -155,7 +173,7 @@ export function ReviewStage({
                 )}
 
                 {/* Actions */}
-                <div className="flex gap-4 pt-4">
+                <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:gap-4">
                     <Button
                         variant="outline"
                         onClick={onDiscard}
@@ -167,9 +185,9 @@ export function ReviewStage({
                     <Button
                         onClick={handleSave}
                         className="flex-1 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200"
-                        disabled={isProcessing || !happenedAt}
+                        disabled={isProcessing || saved || !happenedAt}
                     >
-                        {isProcessing ? 'Saving...' : 'Save to Timeline'}
+                        {isProcessing ? t('saving') : saved ? t('savedAction') : retrySave || saveMetadata ? t('continueSaving') : 'Save to Timeline'}
                     </Button>
                 </div>
             </Card>

@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "rpc": [
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "begin_hosting_reminder_email",
+    "complete_hosting_reminder_email",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "begin_hosting_reminder_email",
+    "complete_hosting_reminder_email",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "begin_hosting_reminder_email",
+    "complete_hosting_reminder_email",
+    "claim_hosting_reminder_email"
+  ],
+  "provider": [
+    {
+      "path": "/emails",
+      "method": "POST",
+      "key": "hosting-reminder/64741a3d-25e6-486e-99e2-524ef41990b8",
+      "payload": {
+        "from": "sender@example.invalid",
+        "to": [
+          "http-reminder@example.invalid"
+        ],
+        "subject": "Your project hosting period ends soon",
+        "text": "Your project hosting period ends on 2026-12-05 (UTC). Review your project and download your archive before that date.\nhttps://synthetic-app.invalid/en/dashboard/projects/11f2f871-18bb-4413-b46b-452d8b702566"
+      }
+    },
+    {
+      "path": "/emails",
+      "method": "POST",
+      "key": "hosting-reminder/2d7145fe-010d-48b8-97d4-36ab157f6c6c",
+      "payload": {
+        "from": "sender@example.invalid",
+        "to": [
+          "http-reminder@example.invalid"
+        ],
+        "subject": "Your project hosting period ends soon",
+        "text": "Your project hosting period ends on 2026-12-01 (UTC). Review your project and download your archive before that date.\nhttps://synthetic-app.invalid/en/dashboard/projects/caea0fc2-a781-42ef-b4ed-c6e935d8bf7a"
+      }
+    },
+    {
+      "path": "/emails",
+      "method": "POST",
+      "key": "hosting-reminder/dcee2fd9-6387-484f-801f-df0b35630377",
+      "payload": {
+        "from": "sender@example.invalid",
+        "to": [
+          "http-reminder@example.invalid"
+        ],
+        "subject": "Your project hosting period ends soon",
+        "text": "Your project hosting period ends on 2026-11-30 (UTC). Review your project and download your archive before that date.\nhttps://synthetic-app.invalid/en/dashboard/projects/61dcdcd7-8aea-4caa-9cdb-6924cd6d020b"
+      }
+    }
+  ],
+  "browserErrors": [],
+  "boundary": "Actual worker, notification routes/page/hook/client and Supabase SDK over controlled local HTTP to real PG roles; synthetic verified Auth identity and Resend transport. No real email, inbox receipt or hosted PostgREST claim.",
+  "chrome": "157.0.8103.78",
+  "navigation": "http://127.0.0.1:62840/en/dashboard/projects/11f2f871-18bb-4413-b46b-452d8b702566"
+}

@@ -42,14 +42,28 @@ describe('TwoEntryProjectHub (T01/T09/T10 Two-Entry, Provenance Search & Offline
     expect(onRecord).toHaveBeenCalledTimes(1)
   })
 
+  it('labels unaligned family supplements without a fabricated play time', async () => {
+    render(<TwoEntryProjectHub projectId="project-1" projectName="Family" onSeekAudioCitation={jest.fn()}
+      onSearch={jest.fn().mockResolvedValue({ status: 'source_matches', answerText: 'One matching excerpt', citations: [{
+        entryId: 'family-1', storyId: 'story-1', storyTitle: 'Family correction', transcriptVersionId: 'tv-1',
+        segmentId: null, mediaAssetId: null, startMs: null, endMs: null, quotedText: 'Toronto in 1978.',
+        sourceKind: 'family_supplement', reviewStatus: 'source_only',
+      }] })} />)
+    fireEvent.click(screen.getByTestId('provenance-search-submit-btn'))
+    await screen.findByText('Toronto in 1978.', { exact: false })
+    expect(screen.queryByRole('button', { name: /Play Audio/ })).not.toBeInTheDocument()
+    expect(screen.getByText(/Family supplement.*Source only/)).toBeInTheDocument()
+  })
+
   it('executes provenance search, displays grounded audio citations, and seeks audio on click', async () => {
     const onSeek = jest.fn()
     const onSearch = jest.fn().mockResolvedValue({
-      status: 'grounded_answer',
+      status: 'source_matches',
       answerText: 'Found 1 verified source segment(s)',
       citations: [
         {
           entryId: 'entry-1',
+          sourceKind: 'original_transcript', reviewStatus: 'approved',
           storyId: 'story-1',
           storyTitle: 'Moving to Chicago in 1968',
           transcriptVersionId: 'tv-1',

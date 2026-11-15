@@ -1,0 +1,33 @@
+{
+  "status": "failed",
+  "assertions": 1,
+  "actorConnections": [],
+  "sources": {},
+  "migrations": [],
+  "boundary": "Actual complete repository bootstrap/migration files on native PG17.4 with real extensions. Minimal synthetic Supabase auth/storage platform schemas; no hosted PostgREST/Auth/Storage qualification.",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "binarySha256": {
+      "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+      "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+      "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+      "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+      "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+    }
+  },
+  "scratch": "/tmp/saga-g1-chain-ivuOho",
+  "error": {
+    "message": "Command failed: /tmp/saga-g1-runtime/install/bin/initdb -D /tmp/saga-g1-chain-ivuOho/data -U rehearsal_admin -A trust --no-locale -E UTF8\n2026-11-13 17:17:14.927 CST [99311] FATAL:  could not create shared memory segment: Operation not permitted\n2026-11-13 17:17:14.927 CST [99311] DETAIL:  Failed system call was shmget(key=174005378, size=56, 03600).\nchild process exited with exit code 1\ninitdb: removing data directory \"/tmp/saga-g1-chain-ivuOho/data\"\n"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "sourceDrift": []
+}

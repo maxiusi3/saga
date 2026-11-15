@@ -15,23 +15,15 @@ import { useLocale, useTranslations } from 'next-intl'
 import { storyService, Story } from '@/lib/stories'
 import { useAuthStore } from '@/stores/auth-store'
 import { StoryInteractions } from '@/components/interactions/story-interactions'
-import { AgentArtifactsPanel } from '@/components/stories/AgentArtifactsPanel'
+import { StoryReviewPanel } from '@/components/stories/StoryReviewPanel'
 import { PublicArchivePanel } from '@/components/stories/PublicArchivePanel'
-import { agentService, type StoryAgentArtifactsResponse } from '@/lib/agent-service'
+import { agentService } from '@/lib/agent-service'
 import { publicArchiveService, type PublicArchiveContributionStatus } from '@/lib/public-archive-service'
 import type { PublicArchiveApprovedEventSummary } from '@saga/shared/types/public-archive'
 // removed unused interactions import
 import { StorageService } from '@/lib/storage'
 import { canUserPerformAction } from '@saga/shared/lib/permissions'
 import { toast } from 'sonner'
-
-function emptyAgentArtifacts(): StoryAgentArtifactsResponse {
-  return {
-    standaloneStory: null,
-    elements: [],
-    artifacts: [],
-  }
-}
 
 export default function StoryDetailPage() {
   const params = useParams()
@@ -60,7 +52,6 @@ export default function StoryDetailPage() {
   const [segmentsCollapsed, setSegmentsCollapsed] = useState<boolean>(false)
   const [commentViewerOpen, setCommentViewerOpen] = useState<boolean>(false)
   const [commentViewerIdx, setCommentViewerIdx] = useState<number>(0)
-  const [agentArtifacts, setAgentArtifacts] = useState<StoryAgentArtifactsResponse | null>(null)
   const [publicContribution, setPublicContribution] = useState<PublicArchiveContributionStatus | null>(null)
   const [approvedPublicEvents, setApprovedPublicEvents] = useState<PublicArchiveApprovedEventSummary[]>([])
   // removed legacy comment images selection state
@@ -99,14 +90,6 @@ export default function StoryDetailPage() {
         setSelectedIndex(0)
 
         try {
-          const artifacts = await agentService.getStoryAgentArtifacts(storyId)
-          setAgentArtifacts(artifacts)
-        } catch (error) {
-          console.warn('[story/page] failed to load editor agent artifacts:', error)
-          setAgentArtifacts(null)
-        }
-
-        try {
           const [contribution, events] = await Promise.all([
             publicArchiveService.getContributionStatus(storyId),
             publicArchiveService.getApprovedEvents(),
@@ -131,20 +114,6 @@ export default function StoryDetailPage() {
     loadStory()
   }, [storyId, user?.id])
 
-  const refreshEditorArtifactsAfterStoryEdit = (targetStoryId: string) => {
-    setAgentArtifacts(emptyAgentArtifacts())
-
-    void agentService.processStoryWithEditorAgent({ storyId: targetStoryId })
-      .then(() => agentService.getStoryAgentArtifacts(targetStoryId))
-      .then(artifacts => {
-        setAgentArtifacts(artifacts)
-      })
-      .catch(error => {
-        console.warn('[story/page] failed to refresh editor agent artifacts after story edit:', error)
-        setAgentArtifacts(emptyAgentArtifacts())
-      })
-  }
-
   const handleSaveTitle = async () => {
     if (!story || !editedTitle.trim()) return
 
@@ -153,7 +122,6 @@ export default function StoryDetailPage() {
       if (success) {
         setStory(prev => prev ? { ...prev, title: editedTitle.trim() } : null)
         setIsEditingTitle(false)
-        refreshEditorArtifactsAfterStoryEdit(story.id)
         toast.success('Title updated successfully')
       } else {
         toast.error('Failed to update title')
@@ -174,7 +142,6 @@ export default function StoryDetailPage() {
       if (success) {
         setStory(prev => prev ? { ...prev, transcript: editedTranscript } : null)
         setIsEditingTranscript(false)
-        refreshEditorArtifactsAfterStoryEdit(story.id)
         toast.success('Transcript updated successfully')
       } else {
         toast.error('Failed to update transcript')
@@ -411,7 +378,6 @@ export default function StoryDetailPage() {
                               const ok = await storyService.updateStory(story.id, { transcript: editedSegContent, images: editingImages as any })
                               if (ok) {
                                 setStory(prev => prev ? { ...prev, transcript: editedSegContent, images: editingImages as any } : prev)
-                                refreshEditorArtifactsAfterStoryEdit(story.id)
                               }
                             } else {
                               const headers: Record<string, string> = { 'Content-Type': 'application/json' }
@@ -438,7 +404,7 @@ export default function StoryDetailPage() {
                     </div>
                   ) : (
                     <div className="prose prose-gray max-w-none">
-                      <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: selectedIndex === 0 ? (story.transcript || '') : (segments[selectedIndex - 1]?.transcript || '') }} />
+                      <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">{selectedIndex === 0 ? (story.transcript || '') : (segments[selectedIndex - 1]?.transcript || '')}</div>
                       {selectedIndex > 0 && Array.isArray(segments[selectedIndex - 1]?.images) && segments[selectedIndex - 1].images.length > 0 && (
                         <div className="mt-3 flex flex-wrap gap-2">
                           {segments[selectedIndex - 1].images.map((img: any, idx: number) => (
@@ -471,11 +437,7 @@ export default function StoryDetailPage() {
             </EnhancedCard>
             {/* Segments moved to sidebar */}
 
-            <AgentArtifactsPanel
-              standaloneStory={agentArtifacts?.standaloneStory ?? null}
-              elements={agentArtifacts?.elements ?? []}
-              artifacts={agentArtifacts?.artifacts ?? []}
-            />
+            {user?.id && <StoryReviewPanel storyId={storyId} actorId={user.id} locale={locale} />}
 
             <PublicArchivePanel
               storyId={storyId}
@@ -483,7 +445,10 @@ export default function StoryDetailPage() {
               isStoryteller={story.storyteller_id === user?.id}
               contribution={publicContribution}
               approvedEvents={approvedPublicEvents}
-              onGeneratePreview={() => publicArchiveService.generatePreview(storyId)}
+              onGeneratePreview={async () => {
+                await agentService.processStoryWithEditorAgent({ storyId })
+                return publicArchiveService.generatePreview(storyId)
+              }}
               onCommit={async (previewId) => {
                 await publicArchiveService.commitContribution(storyId, previewId)
                 setPublicContribution(await publicArchiveService.getContributionStatus(storyId))

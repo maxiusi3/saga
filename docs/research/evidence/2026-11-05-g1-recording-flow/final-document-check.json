@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-11-06T01:54:00.447206+00:00",
+  "localLinksChecked": 54,
+  "brokenLinks": [],
+  "frozenSourcesRechecked": 938,
+  "sourceDrift": [],
+  "files": {
+    "docs/research/2026-11-06-g1-recording-flow.md": "f33cda7efb3fe038f723471a25707d7119c979098ce5c292065d1d62f6ed486d",
+    "docs/research/2026-11-02-g1-gap-register.md": "0db261a4b7eb6ec01c5d0b30e68fceb091e459ea9e28c845d60d04fad489e2a5",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/README.md": "d44818a039990695ac536b9d84cd455551615dcc7b87428c0cdf9eae9e697611",
+    "docs/README.md": "d78c88e693859b27c60bc7d2bbc6c61d1b71e3702fffc221433dbdb7e94e9766",
+    "docs/HANDOFF-2026-10-13-upgrade.md": "8edc7f700f3f40e2383992a2f3630e6ad548cf1032ddea0cf052e361df60e557",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/verification.json": "19f9dfb2f4eaed2983bb0a07ab6b12f7301b7511b614ad703285fc201c6834fa",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/reviews/task-4-final-report.md": "2ea00b6421ed59e97c2ccc9582751ef7c50ccdf3fd8c103639132dac0a05b4c3",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/reviews/final-fix-review.md": "eab76090dc627287ab5e08b2bc6945902ee16c589406d809dcfd3c5c100dd6ce"
+  },
+  "headUnchanged": true,
+  "stagedDiffEmpty": true,
+  "diffCheckPassed": true
+}

@@ -1,0 +1,18 @@
+{
+  "ownedSourceHashes": {
+    "packages/web/src/lib/server/recording-terminal-worker.ts": "12ca08db9c58411088565fc2fdcde76b852f9b5df75fd231c3c6bcc494f02037",
+    "packages/web/src/lib/server/recording-candidate-worker.ts": "61831dfc257c75a75c5e5736c26ade78c510483d367bd98f1094eee109fa5a7d",
+    "packages/web/src/lib/server/__tests__/recording-terminal-worker.test.ts": "968d7c699857df367284534ba741ca7925fb38e41ea74e69803fab5c23dcdb43"
+  },
+  "preservedSourceHashes": {
+    "packages/web/src/lib/server/recording-job-worker.ts": "0f965112f08d4cb0b3178600b75ea48c53718b875b1be93f21f778f8e41f2f1d",
+    "packages/web/src/lib/server/recording-job-verifier.ts": "86d08b98f8572b5b36c077fdaae1794fe4ab3e5a89c1e1fb80f402454538cead",
+    "packages/web/src/lib/server/recording-job-finalization.ts": "f28f28e8cb04d16d7bdc639d9fabea13e9d3bf5cda09ff95752ca31964b4e89f",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b"
+  },
+  "preservedMatchBaseline": true,
+  "candidateBeforeMatchesBaseline": true,
+  "stagedChanges": ""
+}

@@ -1,0 +1,522 @@
+--- a/experiments/pg17-deletion-capture/README.md
++++ b/experiments/pg17-deletion-capture/README.md
+@@ -9,11 +9,11 @@
+ 
+ Every invocation writes a unique `docs/research/evidence/2026-11-06-g1-deletion-capture/native-*` directory, including failures. The local PG17 runtime has TCP disabled, synthetic identities/content, real unprivileged service-role connections, and automatic cluster cleanup. `--without-migration` deliberately reproduces the missing-RPC RED. Existing recording migrations are applied unchanged. `deletion_targets` DDL and the authenticated deletion-request read policy are extracted from the actual foundation migration; the story table comes from the actual bootstrap. Auth/project/storage prerequisites remain explicitly synthetic. This is not the full migration-chain qualification.
+ 
+-`fixture.mjs` exports reusable `setup(h, source, migrate=true)`, `fresh(h, service, prepareRecordingSessionSeal, publish=true)`, `capture(client, { actorId=OTHER, projectId=PROJECT, subjectId, subjectType='story', requestId })`, `snapshot(h)`, `materialize(h, fixture)`, `compileCapture(h, source)` and `applicationAdmin(h, service)`. `fresh` uses the existing published-recording fixture. `capture` calls the actual SQL RPC. A follow-on backup check can consume its actual `deletion_targets` bucket/object_key tuples without hand-writing coordinates. The native report's `publishedCapture` contains the public receipt, complete durable request and target rows, plus full database snapshots.
++`fixture.mjs` exports reusable `setup(h, source, migrate=true, sealFence=true)`, `fresh(h, service, prepareRecordingSessionSeal, publish=true)`, `capture(client, { actorId=OTHER, projectId=PROJECT, subjectId, subjectType='story', requestId })`, `snapshot(h)`, `materialize(h, fixture)`, `compileCapture(h, source)` and `applicationAdmin(h, service)`. `fresh` uses the existing published-recording fixture. `capture` calls the actual SQL RPC. A follow-on backup check can consume its actual `deletion_targets` bucket/object_key tuples without hand-writing coordinates. The native report's `publishedCapture` contains the public receipt, complete durable request and target rows, plus full database snapshots.
+ 
+ The application adapter is compiled from its actual TypeScript source. Only its PostgREST transport is replaced with a real `pg` service-role connection; abort/retry wiring is asserted. This does not exercise a live PostgREST server. Focused Jest covers deadline/cancellation/network failure without fallback writes.
+ 
+-The default native matrix now contains the original 14 scenario groups plus two registration-gap regression groups. Per-group assertion counts include full-row comparisons of all previously existing assets/jobs; they are not independent test-case counts. `observations` retain the full before/after rows, source coordinates and synthetic file bytes; `waits` retain `pg_stat_activity`, actual blocking backend IDs and `pg_locks`. Publication in both orders, reservation overlap, two submissions, request-ID collision and owner/facilitator/subject changes during waits all use independent transactions. Rollback injections cover errors, suppressed request/target/asset/cancellation writes, altered request/target rows, later changes to assets/candidates, and a newly inserted source phantom.
++The default native matrix now contains the original 14 scenario groups, two registration-gap regression groups and five seal-fence regression groups. Per-group assertion counts include full-row comparisons of all previously existing assets/jobs; they are not independent test-case counts. `observations` retain the full before/after rows, source coordinates and synthetic file bytes; `waits` retain `pg_stat_activity`, actual blocking backend IDs and `pg_locks`. Publication in both orders, reservation overlap, two submissions, request-ID collision and owner/facilitator/subject changes during waits all use independent transactions. Rollback injections cover errors, suppressed request/target/asset/cancellation writes, altered request/target rows, later changes to assets/candidates, and a newly inserted source phantom.
+ 
+ The request stores a target count and SHA256 of the complete canonical JSONB target rows ordered by logical target ID. This includes target row ID, request ID, kind, bucket/key, state, error and timestamp. The full rows remain private in `deletion_targets`; adding a JSON snapshot to the existing member-readable request table would expose reserved candidate paths. The first write compares actual full rows with expected full rows after all triggers. Replay validates count and full-row digest. Native authenticated reads exercise the actual request read policy and confirm that targets remain unreadable.
+ 
+@@ -39,3 +39,16 @@
+ The cost runner holds one target constant in size and varies one unrelated story body across exactly 0/8/32 MiB. It times the **unmodified actual RPC**. Separately, a diagnostic copy replaces only `to_jsonb` with a transparent serializer/logger, reporting payload byte counts and whether the unrelated body was serialized. This supplemental instrumentation is not the production behavior oracle. The complete derived SQL and hashes are retained; full before/after database snapshots are archived as gzip JSON with raw/archive hashes. The pre-fix SQL serializes the unrelated body four times; repaired SQL records no such calls and approximately 3.7 KiB of scoped tuple serialization for all three samples. These are local diagnostics, not a throughput benchmark or SLA.
+ 
+ A story-bound sealed session can legitimately name an asset that has not been registered yet. Its actual persisted chunks and story metadata are captured without guessing an asset address or creating an asset/job target. An existing intended asset must match the session's project, story, owner and recording chain. The local service-role SELECT policy on deletion requests models the hosted service role's existing read capability while keeping the test role NOBYPASSRLS, so the actual registration route can read its tombstone.
++
++## Final seal/capture fence regression
++
++```sh
++node experiments/pg17-deletion-capture/verify-seal-fence.mjs --without-seal-fence
++node experiments/pg17-deletion-capture/verify-seal-fence.mjs
++```
++
++The first command deliberately exits nonzero at the no-missed-chunk assertion. It applies the historical seal and capture migrations unchanged but omits the new forward seal replacement. A temporary scheduling transaction holds `recording_sessions` EXCLUSIVE: the old seal passes the tombstone check, waits at SELECT, then its INSERT waits behind capture. Full rows show a story-only capture, late real chunks and an immutable replay that cannot recover their coordinates. Unique `native-seal-fence-*` directories preserve every result, including RED.
++
++The corrected queued-lock test proves capture waits on seal's deletion SHARE fence and captures both committed chunk addresses. The reverse order proves seal waits on capture's EXCLUSIVE fence before advisory/source locks and then rejects the fresh tombstone. Additional native groups establish stale REPEATABLE READ/SERIALIZABLE snapshots before capture and prove rejection without writes; exercise the three-second lock timeout, rollback and lock release; and check real role EXECUTE, VOLATILE/settings and unchanged valid seal/replay. Observations retain all database rows and synthetic bytes; waits retain blocker PIDs and both waiter/blocker lock rows.
++
++Default capture includes these regressions. The default fixture, including backup compatibility, applies `20261106000003_recording_seal_deletion_fence.sql` after capture. `20261102000001_recording_seal_manifest.sql` remains unchanged. This is selected-routine local integration, not complete migration-chain or hosted qualification.
+--- a/experiments/pg17-deletion-capture/fixture.mjs
++++ b/experiments/pg17-deletion-capture/fixture.mjs
+@@ -2,7 +2,8 @@
+ import { FOUNDATION } from '../pg17-recording-worker/fixture.mjs'
+ export { fresh, USER, OTHER, PROJECT }
+ export const MIGRATION = 'supabase/migrations/20261106000002_media_deletion_capture.sql'
+-export async function setup(h, source, migrate = true) {
++export const SEAL_FENCE_MIGRATION = 'supabase/migrations/20261106000003_recording_seal_deletion_fence.sql'
++export async function setup(h, source, migrate = true, sealFence = true) {
+   await setupFlow(h, source)
+   await h.db.query("SET timezone='UTC'")
+   const ddl = (await source(FOUNDATION)).match(/CREATE TABLE IF NOT EXISTS public\.deletion_targets \([\s\S]*?\n\);/)?.[0]
+@@ -18,7 +19,10 @@
+     CREATE POLICY deletion_requests_service_read ON deletion_requests FOR SELECT TO service_role USING (true);`)
+   h.report.fixture.actualRequestReadPolicy=requestPolicy
+   h.report.fixture.actualDeletionTargetsDdl = ddl
+-  if (migrate) { await h.db.query(await source(MIGRATION)); h.report.fixture.fullMigrations.push(MIGRATION) }
++  if (migrate) {
++    await h.db.query(await source(MIGRATION)); h.report.fixture.fullMigrations.push(MIGRATION)
++    if (sealFence) { await h.db.query(await source(SEAL_FENCE_MIGRATION)); h.report.fixture.fullMigrations.push(SEAL_FENCE_MIGRATION) }
++  }
+ }
+ export async function capture(client, { actorId = OTHER, projectId = PROJECT, subjectId, subjectType = 'story', requestId }) {
+   return (await client.query('SELECT public.request_media_deletion($1::uuid,$2::uuid,$3::uuid,$4::text,$5::uuid) AS value', [actorId,projectId,subjectId,subjectType,requestId])).rows[0].value
+--- /dev/null
++++ b/experiments/pg17-deletion-capture/seal-fence-regressions.mjs
+@@ -0,0 +1,200 @@
++import { randomUUID } from 'node:crypto'
++import { writeFile } from 'node:fs/promises'
++import { join } from 'node:path'
++import { setTimeout as delay } from 'node:timers/promises'
++import { digest } from '../pg17-routines/runtime.mjs'
++import { save, METADATA } from '../pg17-recording-flow/fixture.mjs'
++import { capture, snapshot, USER, OTHER, PROJECT } from './fixture.mjs'
++
++const outcome = async fn => {
++  try { return { code: '00000', value: await fn() } }
++  catch (error) { return { code: error.code, message: error.message } }
++}
++const seal = async (client, manifest) => (await client.query(
++  'SELECT public.seal_recording_manifest($1::jsonb) AS value', [JSON.stringify(manifest)],
++)).rows[0].value
++
++// Observe actual PostgreSQL waits, including the lock owner's granted locks.
++async function wait(h, client, label, relation, mode, blocker) {
++  for (let n = 0; n < 500; n++) {
++    const activity = (await h.db.query(`SELECT pid,wait_event_type,wait_event,pg_blocking_pids(pid) AS blockers
++      FROM pg_stat_activity WHERE pid=$1`, [client.processID])).rows[0]
++    const locks = (await h.db.query(`SELECT pid,relation::regclass::text AS relation,locktype,mode,granted
++      FROM pg_locks WHERE pid=ANY($1::int[]) ORDER BY pid,locktype,relation,mode`,
++    [[client.processID, ...activity.blockers]])).rows
++    if (activity.wait_event_type === 'Lock' && activity.blockers.includes(blocker.processID)
++      && locks.some(row => row.pid === client.processID && row.relation === relation && row.mode === mode && !row.granted)) {
++      const observed = { label, ...activity, locks }
++      h.report.sealFence.waits.push(observed)
++      h.ok(true, label)
++      return observed
++    }
++    await delay(3)
++  }
++  throw new Error(`Missing actual lock wait: ${label}`)
++}
++
++async function unsealed(h, service, prepare) {
++  const sessionId = randomUUID(), jobId = randomUUID()
++  const storyId = (await save(service, sessionId, 'reserve', METADATA)).lookup.intent.storyId
++  const bodies = [Buffer.from('synthetic-upload-before-seal-0'), Buffer.from('synthetic-upload-before-seal-1')]
++  const chunks = bodies.map((body, index) => ({ index, chunkId: `chunk-${index}`, bucket: 'audio-recordings',
++    objectKey: `projects/${PROJECT}/sessions/${sessionId}/${index}`, byteSize: body.length, sha256: digest(body) }))
++  const prepared = prepare({ jobId, projectId: PROJECT, sessionId, actorId: USER, actorRole: 'storyteller',
++    actorActive: true, storyId, mimeType: 'audio/webm', chunks })
++  const manifest = { schemaVersion: 1, projectId: PROJECT, sessionId, userId: USER, storyId,
++    assetId: prepared.task.assetId, mimeType: 'audio/webm', chunks: chunks.map(c => ({ ...c, storageObjectKey: `${USER}/${c.objectKey}` })) }
++  h.syntheticFiles ??= new Map()
++  await h.db.query("INSERT INTO storage.buckets(id,name) VALUES('audio-recordings','audio-recordings') ON CONFLICT DO NOTHING")
++  for (const chunk of manifest.chunks) {
++    const body = bodies[chunk.index], key = `${chunk.bucket}:${chunk.storageObjectKey}`, path = join(h.scratch, digest(key))
++    await writeFile(path, body); h.syntheticFiles.set(key, path)
++    await h.db.query('INSERT INTO storage.objects(bucket_id,name,metadata) VALUES($1,$2,$3::jsonb)',
++      [chunk.bucket, chunk.storageObjectKey, JSON.stringify({ synthetic: true, byteSize: body.length, sha256: digest(body) })])
++  }
++  return manifest
++}
++
++async function captureView(client) {
++  const rows = {}
++  for (const table of ['deletion_requests', 'deletion_targets', 'recording_sessions', 'recording_chunks']) {
++    rows[table] = (await client.query(`SELECT to_jsonb(t) AS row FROM ${table} t ORDER BY to_jsonb(t)::text`)).rows.map(r => r.row)
++  }
++  return rows
++}
++
++export async function sealFenceRegressions(h, service, prepare, legacy = false) {
++  const report = h.report.sealFence = { legacy, waits: [], observations: [] }
++  const sealer = await h.actorClient('service_role', USER), deleter = await h.actorClient('service_role', OTHER), gate = await h.client()
++  await h.scenario('queued seal/source race has no escaped chunk after immutable capture', async () => {
++    const manifest = await unsealed(h, service, prepare)
++    const entry = { name: 'queued seal first', manifest, before: await snapshot(h) }; report.observations.push(entry)
++    await gate.query('BEGIN'); await gate.query('LOCK TABLE public.recording_sessions IN EXCLUSIVE MODE')
++    const sealing = outcome(() => seal(sealer, manifest))
++    await wait(h, sealer, 'seal queues actual SELECT session FOR UPDATE', 'recording_sessions', 'RowShareLock', gate)
++    await deleter.query('BEGIN')
++    const deleting = outcome(() => capture(deleter, { subjectId: manifest.storyId, requestId: randomUUID() }))
++    if (legacy) {
++      await wait(h, deleter, 'legacy capture queues compatible source lock', 'recording_sessions', 'ShareRowExclusiveLock', gate)
++      await gate.query('COMMIT')
++      entry.capture = await deleting
++      h.eq(entry.capture.code, '00000', 'capture succeeds on historical SQL')
++      await wait(h, sealer, 'legacy seal INSERT queues behind capture', 'recording_sessions', 'RowExclusiveLock', deleter)
++    } else {
++      await wait(h, deleter, 'capture waits on seal deletion SHARE fence', 'deletion_requests', 'ExclusiveLock', sealer)
++      await gate.query('COMMIT')
++      entry.seal = await sealing
++      h.eq(entry.seal.code, '00000', 'seal commits first')
++      entry.capture = await deleting
++      h.eq(entry.capture.code, '00000', 'capture resumes after seal commits')
++    }
++    entry.captureBeforeCommit = await captureView(deleter)
++    await deleter.query('COMMIT')
++    entry.seal ??= await sealing
++    entry.after = await snapshot(h)
++    entry.replay = await capture(service, { subjectId: manifest.storyId, requestId: randomUUID() })
++    entry.afterReplay = await snapshot(h)
++    entry.uncapturedCoordinates = entry.after.recording_chunks.filter(c => c.session_id === manifest.sessionId)
++      .filter(c => !entry.after.deletion_targets.some(t => t.deletion_request_id === entry.capture.value.id && t.bucket === c.bucket && t.object_key === c.object_key))
++    h.eq(entry.seal.code, '00000', 'actual seal succeeds')
++    h.eq(entry.replay, entry.capture.value, 'immutable capture replay receipt')
++    h.eq(entry.afterReplay, entry.after, 'replay changes no full rows or synthetic bytes')
++    h.eq(entry.after['storage.objects'], entry.before['storage.objects'], 'Storage metadata unchanged')
++    h.eq(entry.after.synthetic_files, entry.before.synthetic_files, 'synthetic bytes unchanged')
++    if (legacy) {
++      h.eq(entry.capture.value.targetCount, 1, 'RED captures only story metadata')
++      h.eq(entry.captureBeforeCommit.recording_sessions.filter(r => r.id === manifest.sessionId), [], 'RED capture sees no session')
++      h.eq(entry.captureBeforeCommit.recording_chunks.filter(r => r.session_id === manifest.sessionId), [], 'RED capture sees no chunk')
++      h.eq(entry.uncapturedCoordinates.length, 2, 'RED preserves concrete missed addresses')
++    }
++    // Same safety assertion in RED and GREEN; legacy mode must exit nonzero here.
++    h.eq(entry.uncapturedCoordinates, [], 'no committed seal chunk may escape immutable deletion capture')
++    h.eq(entry.capture.value.targetCount, 3, 'sealed before asset registration captures story and both actual chunks')
++    h.eq(entry.after.media_assets, entry.before.media_assets, 'seal creates no asset')
++    h.eq(entry.after.processing_jobs, entry.before.processing_jobs, 'seal creates no job')
++  })
++  await h.scenario('capture first makes waiting seal reject without source writes', async () => {
++    const manifest = await unsealed(h, service, prepare)
++    const entry = { name: 'capture first', manifest, before: await snapshot(h) }; report.observations.push(entry)
++    await deleter.query('BEGIN')
++    entry.capture = await capture(deleter, { subjectId: manifest.storyId, requestId: randomUUID() })
++    const sealing = outcome(() => seal(sealer, manifest))
++    const observed = await wait(h, sealer, 'seal waits on capture EXCLUSIVE fence', 'deletion_requests', 'ShareLock', deleter)
++    h.eq(observed.locks.filter(row => row.pid === sealer.processID && (row.locktype === 'advisory'
++      || ['projects', 'project_roles', 'stories', 'recording_sessions', 'recording_chunks', 'auth.users'].includes(row.relation))), [],
++    'waiting seal has no advisory, authority or source-table locks')
++    entry.captureBeforeCommit = await captureView(deleter)
++    await deleter.query('COMMIT'); entry.afterCapture = await snapshot(h)
++    entry.seal = await sealing; entry.after = await snapshot(h)
++    h.eq(entry.seal.code, '23505', 'fresh post-wait tombstone rejects seal')
++    h.eq(entry.after, entry.afterCapture, 'rejected seal changes no full row or byte')
++    h.eq(entry.after.recording_sessions, entry.before.recording_sessions, 'no late session')
++    h.eq(entry.after.recording_chunks, entry.before.recording_chunks, 'no late chunk')
++    entry.replay = await capture(service, { subjectId: manifest.storyId, requestId: randomUUID() }); entry.afterReplay = await snapshot(h)
++    h.eq(entry.replay, entry.capture, 'capture-first replay identical')
++    h.eq(entry.afterReplay, entry.after, 'replay leaves all rows and bytes identical')
++  })
++  await h.scenario('pre-established repeatable read and serializable snapshots fail closed', async () => {
++    for (const isolation of ['REPEATABLE READ', 'SERIALIZABLE']) {
++      const manifest = await unsealed(h, service, prepare)
++      const entry = { name: isolation, manifest, before: await snapshot(h) }; report.observations.push(entry)
++      await sealer.query(`BEGIN ISOLATION LEVEL ${isolation}`)
++      entry.snapshotEstablished = (await sealer.query('SELECT txid_current_snapshot()::text AS snapshot, count(*)::int AS tombstones FROM deletion_requests')).rows[0]
++      entry.capture = await capture(deleter, { subjectId: manifest.storyId, requestId: randomUUID() })
++      entry.afterCapture = await snapshot(h)
++      entry.staleVisibleTombstones = (await sealer.query('SELECT count(*)::int AS count FROM deletion_requests')).rows[0].count
++      h.eq(entry.staleVisibleTombstones, entry.snapshotEstablished.tombstones, 'transaction retains old snapshot after capture commits')
++      entry.seal = await outcome(() => seal(sealer, manifest))
++      h.eq(entry.seal.code, '22023', 'non-RC seal rejected before writes')
++      await sealer.query('ROLLBACK'); entry.after = await snapshot(h)
++      h.eq(entry.after, entry.afterCapture, 'non-RC rejection leaves all rows and bytes unchanged')
++    }
++  })
++  await h.scenario('seal lock timeout rolls back and releases its locks; valid seal and replay survive', async () => {
++    const manifest = await unsealed(h, service, prepare)
++    const entry = { name: 'timeout and replay', manifest, before: await snapshot(h) }; report.observations.push(entry)
++    await gate.query('BEGIN'); await gate.query('LOCK TABLE public.deletion_requests IN EXCLUSIVE MODE')
++    await sealer.query('BEGIN'); const started = performance.now()
++    const pending = outcome(() => seal(sealer, manifest))
++    await wait(h, sealer, 'seal bounded wait on deletion fence', 'deletion_requests', 'ShareLock', gate)
++    entry.timeout = await pending; entry.elapsedMs = performance.now() - started
++    h.eq(entry.timeout.code, '55P03', 'actual lock timeout rejects seal')
++    h.ok(entry.elapsedMs >= 2700 && entry.elapsedMs < 6000, 'three-second lock wait, not outer statement timeout')
++    entry.abortedTransaction = await outcome(() => sealer.query('SELECT 1'))
++    h.eq(entry.abortedTransaction.code, '25P02', 'timeout aborts enclosing transaction')
++    await sealer.query('ROLLBACK'); await gate.query('COMMIT')
++    entry.remainingLocks = (await h.db.query("SELECT locktype,mode,relation::regclass::text AS relation FROM pg_locks WHERE pid=$1 AND (locktype='advisory' OR relation IN ('deletion_requests'::regclass,'recording_sessions'::regclass,'recording_chunks'::regclass))", [sealer.processID])).rows
++    h.eq(entry.remainingLocks, [], 'timeout and rollback leave no fence/source/advisory locks')
++    entry.afterTimeout = await snapshot(h); h.eq(entry.afterTimeout, entry.before, 'timeout leaves all full rows and bytes unchanged')
++    entry.seal = await seal(sealer, manifest); entry.afterSeal = await snapshot(h)
++    h.eq(entry.seal.schemaVersion, 1, 'unchanged seal schema')
++    h.eq(entry.seal.state, 'sealing', 'unchanged seal state')
++    h.eq(entry.seal.manifest, manifest, 'unchanged manifest receipt')
++    h.eq(entry.seal.canClearLocalDrafts, false, 'seal is not confirmation')
++    entry.replay = await seal(sealer, manifest); entry.afterReplay = await snapshot(h)
++    h.eq(entry.replay, entry.seal, 'valid seal replay receipt unchanged')
++    h.eq(entry.afterReplay, entry.afterSeal, 'valid seal replay changes no rows or bytes')
++    const conflict = { ...manifest, chunks: manifest.chunks.map((c, i) => i ? c : { ...c, sha256: 'b'.repeat(64) }) }
++    entry.conflict = await outcome(() => seal(sealer, conflict))
++    h.eq(entry.conflict.code, '23505', 'conflicting valid manifest still rejected')
++    entry.invalid = await outcome(() => seal(sealer, { ...manifest, userId: 'not-a-uuid' }))
++    h.eq(entry.invalid.code, '22023', 'invalid identity still rejected')
++    entry.afterRejectedInputs = await snapshot(h); h.eq(entry.afterRejectedInputs, entry.afterSeal, 'invalid/rebound seal does not mutate')
++  })
++  await h.scenario('replacement seal remains volatile with fixed settings and service-only execute', async () => {
++    report.routine = (await h.db.query(`SELECT provolatile,prosecdef,proconfig,proacl::text FROM pg_proc WHERE oid='public.seal_recording_manifest(jsonb)'::regprocedure`)).rows[0]
++    h.eq(report.routine.provolatile, 'v', 'seal VOLATILE')
++    h.eq(report.routine.prosecdef, true, 'seal SECURITY DEFINER')
++    h.ok(report.routine.proconfig.includes('search_path=pg_catalog, pg_temp'), 'fixed safe search path')
++    h.ok(report.routine.proconfig.includes('lock_timeout=3s'), 'function lock_timeout 3s')
++    report.acl = []
++    for (const role of ['anon', 'authenticated', 'metadata_reader', 'service_role']) {
++      const allowed = (await h.db.query("SELECT has_function_privilege($1,'public.seal_recording_manifest(jsonb)','EXECUTE') AS allowed", [role])).rows[0].allowed
++      h.eq(allowed, role === 'service_role', `${role} execute ACL`)
++      const result = await h.actor(role, USER, 'SELECT public.seal_recording_manifest($1::jsonb)', ['{}'])
++      h.eq(result.sqlstate, role === 'service_role' ? '22023' : '42501', `${role} actual invocation privilege`)
++      report.acl.push({ role, allowed, result })
++    }
++  })
++  await h.close(sealer); await h.close(deleter); await h.close(gate)
++}
+--- /dev/null
++++ b/experiments/pg17-deletion-capture/verify-seal-fence.mjs
+@@ -0,0 +1,34 @@
++import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { join } from 'node:path'
++import { randomUUID } from 'node:crypto'
++import { Harness, root, digest } from '../pg17-routines/runtime.mjs'
++import { compileModules } from '../pg17-recording-worker/fixture.mjs'
++import { setup, USER } from './fixture.mjs'
++import { sealFenceRegressions } from './seal-fence-regressions.mjs'
++const legacy = process.argv.includes('--without-seal-fence')
++const directory = join(root, 'docs/research/evidence/2026-11-06-g1-deletion-capture', `native-seal-fence-${legacy ? 'red-' : ''}${Date.now()}-${randomUUID()}`)
++const report = { status: 'running', assertions: 0, actorConnections: [], scenarios: [], sources: {},
++  command: `node experiments/pg17-deletion-capture/verify-seal-fence.mjs ${process.argv.slice(2).join(' ')}`.trim(),
++  g1MilestoneSatisfied: false, physicalDeletionComplete: false }
++const h = new Harness(report)
++await mkdir(directory, { recursive: true })
++async function source(path) { const bytes = await readFile(join(root, path)); report.sources[path] = digest(bytes); return bytes.toString() }
++try {
++  for (const path of ['experiments/pg17-routines/runtime.mjs', 'experiments/pg17-deletion-capture/fixture.mjs',
++    'experiments/pg17-deletion-capture/verify-seal-fence.mjs', 'experiments/pg17-deletion-capture/seal-fence-regressions.mjs',
++    'experiments/pg17-recording-flow/fixture.mjs', 'experiments/pg17-recording-worker/fixture.mjs']) await source(path)
++  await h.start(); await setup(h, source, true, !legacy)
++  const service = await h.actorClient('service_role', USER), { prepareRecordingSessionSeal } = await compileModules(h, source)
++  await sealFenceRegressions(h, service, prepareRecordingSessionSeal, legacy)
++  report.status = 'passed'
++} catch (error) {
++  report.status = 'failed'; report.error = { code: error.code ?? 'ERROR', label: error.label ?? error.message, where: error.where }
++  process.exitCode = 1
++} finally {
++  await h.cleanup()
++  report.sourceDrift = []
++  for (const [path, hash] of Object.entries(report.sources)) if (digest(await readFile(join(root, path))) !== hash) report.sourceDrift.push(path)
++  if (report.status !== 'passed' || report.sourceDrift.length) process.exitCode = 1
++  await writeFile(join(directory, 'results.json'), JSON.stringify(report, null, 2))
++  console.log(JSON.stringify({ directory, status: report.status, assertions: report.assertions, error: report.error, sourceDrift: report.sourceDrift, cleanup: report.cleanup }, null, 2))
++}
+--- a/experiments/pg17-deletion-capture/verify.mjs
++++ b/experiments/pg17-deletion-capture/verify.mjs
+@@ -6,6 +6,7 @@
+ import { setup, fresh, capture, snapshot, compileCapture, applicationAdmin, USER } from './fixture.mjs'
+ import { scenarios } from './scenarios.mjs'
+ import { fix1Regressions } from './fix-1-regressions.mjs'
++import { sealFenceRegressions } from './seal-fence-regressions.mjs'
+ const red = process.argv.includes('--without-migration')
+ const directory = join(root,'docs/research/evidence/2026-11-06-g1-deletion-capture',`native-${red?'red-':''}${Date.now()}-${randomUUID()}`)
+ const report = {status:'running',assertions:0,actorConnections:[],scenarios:[],sources:{},command:`node experiments/pg17-deletion-capture/verify.mjs ${process.argv.slice(2).join(' ')}`.trim(),g1MilestoneSatisfied:false,physicalDeletionComplete:false}
+@@ -32,6 +33,8 @@
+   await source('experiments/pg17-deletion-capture/fix-1-regressions.mjs')
+   await source('experiments/pg17-deletion-capture/registration-check.mjs')
+   await fix1Regressions(h,service,prepareRecordingSessionSeal,source)
++  await source('experiments/pg17-deletion-capture/seal-fence-regressions.mjs')
++  await sealFenceRegressions(h,service,prepareRecordingSessionSeal)
+   report.status='passed'
+ } catch(error) {report.status='failed'; report.error={code:error.code??'ERROR',label:error.label??error.message,position:error.position,where:error.where,internalQuery:error.internalQuery};process.exitCode=1}
+ finally {await h.cleanup();if(report.status!=='passed')process.exitCode=1;await writeFile(join(directory,'results.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({directory,status:report.status,assertions:report.assertions,error:report.error,cleanup:report.cleanup},null,2))}
+--- a/scripts/__tests__/deployment-config.test.js
++++ b/scripts/__tests__/deployment-config.test.js
+@@ -137,6 +137,7 @@
+     '20261105000001_recording_session_snapshot.sql',
+     '20261106000001_recording_story_save.sql',
+     '20261106000002_media_deletion_capture.sql',
++    '20261106000003_recording_seal_deletion_fence.sql',
+   ])
+ 
+   assert.equal(
+--- /dev/null
++++ b/supabase/migrations/20261106000003_recording_seal_deletion_fence.sql
+@@ -0,0 +1,193 @@
++-- Forward replacement of the historical seal contract; no Storage mutation.
++-- Preserve 20261102000001; only the deletion-capture lock/snapshot boundary changes.
++BEGIN;
++
++CREATE OR REPLACE FUNCTION public.seal_recording_manifest(p_manifest jsonb)
++RETURNS jsonb
++LANGUAGE plpgsql
++VOLATILE
++SECURITY DEFINER
++SET search_path = pg_catalog, pg_temp
++SET lock_timeout = '3s'
++AS $$
++DECLARE
++  v_root_keys constant text[] := ARRAY['schemaVersion', 'projectId', 'sessionId', 'userId', 'storyId', 'assetId', 'mimeType', 'chunks'];
++  v_chunk_keys constant text[] := ARRAY['index', 'chunkId', 'bucket', 'objectKey', 'storageObjectKey', 'byteSize', 'sha256'];
++  v_uuid_pattern constant text := '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
++  v_key text;
++  v_project_id uuid;
++  v_session_id uuid;
++  v_user_id uuid;
++  v_story_id uuid;
++  v_asset_id uuid;
++  v_chunk jsonb;
++  v_index integer := 0;
++  v_count integer;
++  v_total_bytes bigint := 0;
++  v_chunk_ids text[] := ARRAY[]::text[];
++  v_object_key text;
++  v_manifest_sha256 text;
++  v_existing public.recording_sessions%ROWTYPE;
++  v_now timestamptz := statement_timestamp();
++BEGIN
++  -- A pre-established non-RC snapshot can miss a tombstone after waiting.
++  IF current_setting('transaction_isolation') <> 'read committed' THEN
++    RAISE EXCEPTION 'Recording seal requires read committed' USING ERRCODE = '22023';
++  END IF;
++  IF jsonb_typeof(p_manifest) IS DISTINCT FROM 'object' THEN
++    RAISE EXCEPTION 'Invalid recording manifest' USING ERRCODE = '22023';
++  END IF;
++  IF NOT (p_manifest ?& v_root_keys) OR p_manifest - v_root_keys <> '{}'::jsonb
++    OR jsonb_typeof(p_manifest -> 'schemaVersion') IS DISTINCT FROM 'number'
++    OR p_manifest ->> 'schemaVersion' IS DISTINCT FROM '1' THEN
++    RAISE EXCEPTION 'Invalid recording manifest schema' USING ERRCODE = '22023';
++  END IF;
++
++  FOREACH v_key IN ARRAY ARRAY['projectId', 'sessionId', 'userId', 'assetId', 'storyId'] LOOP
++    IF v_key = 'storyId' AND p_manifest -> v_key = 'null'::jsonb THEN
++      CONTINUE;
++    END IF;
++    IF jsonb_typeof(p_manifest -> v_key) IS DISTINCT FROM 'string'
++      OR (p_manifest ->> v_key) !~ v_uuid_pattern THEN
++      RAISE EXCEPTION 'Invalid recording identity' USING ERRCODE = '22023';
++    END IF;
++  END LOOP;
++  IF jsonb_typeof(p_manifest -> 'mimeType') IS DISTINCT FROM 'string'
++    OR (p_manifest ->> 'mimeType') !~ '^audio/(webm|mp4|ogg)(;codecs=(opus|vorbis|mp4a\.40\.2))?$'
++    OR jsonb_typeof(p_manifest -> 'chunks') IS DISTINCT FROM 'array' THEN
++    RAISE EXCEPTION 'Invalid recording media input' USING ERRCODE = '22023';
++  END IF;
++  v_count := jsonb_array_length(p_manifest -> 'chunks');
++  IF v_count < 1 OR v_count > 2000 THEN
++    RAISE EXCEPTION 'Invalid recording chunk count' USING ERRCODE = '22023';
++  END IF;
++
++  v_project_id := (p_manifest ->> 'projectId')::uuid;
++  v_session_id := (p_manifest ->> 'sessionId')::uuid;
++  v_user_id := (p_manifest ->> 'userId')::uuid;
++  v_story_id := (p_manifest ->> 'storyId')::uuid;
++  v_asset_id := (p_manifest ->> 'assetId')::uuid;
++  FOR v_chunk IN SELECT value FROM jsonb_array_elements(p_manifest -> 'chunks') LOOP
++    IF jsonb_typeof(v_chunk) IS DISTINCT FROM 'object' THEN
++      RAISE EXCEPTION 'Invalid recording chunk' USING ERRCODE = '22023';
++    END IF;
++    IF NOT (v_chunk ?& v_chunk_keys) OR v_chunk - v_chunk_keys <> '{}'::jsonb
++      OR jsonb_typeof(v_chunk -> 'index') IS DISTINCT FROM 'number'
++      OR v_chunk ->> 'index' IS DISTINCT FROM v_index::text
++      OR jsonb_typeof(v_chunk -> 'chunkId') IS DISTINCT FROM 'string'
++      OR (v_chunk ->> 'chunkId') !~ '^[A-Za-z0-9_-]{1,128}$'
++      OR (v_chunk ->> 'chunkId') = ANY(v_chunk_ids)
++      OR jsonb_typeof(v_chunk -> 'bucket') IS DISTINCT FROM 'string'
++      OR v_chunk ->> 'bucket' IS DISTINCT FROM 'audio-recordings'
++      OR jsonb_typeof(v_chunk -> 'sha256') IS DISTINCT FROM 'string'
++      OR (v_chunk ->> 'sha256') !~ '^[0-9a-f]{64}$'
++      OR jsonb_typeof(v_chunk -> 'byteSize') IS DISTINCT FROM 'number'
++      OR (v_chunk ->> 'byteSize') !~ '^[1-9][0-9]{0,8}$' THEN
++      RAISE EXCEPTION 'Invalid recording chunk fields' USING ERRCODE = '22023';
++    END IF;
++    v_total_bytes := v_total_bytes + (v_chunk ->> 'byteSize')::bigint;
++    IF v_total_bytes > 104857600 THEN
++      RAISE EXCEPTION 'Recording manifest exceeds input quota' USING ERRCODE = '22023';
++    END IF;
++    v_object_key := 'projects/' || v_project_id::text || '/sessions/' || v_session_id::text || '/' || v_index::text;
++    IF jsonb_typeof(v_chunk -> 'objectKey') IS DISTINCT FROM 'string'
++      OR v_chunk ->> 'objectKey' IS DISTINCT FROM v_object_key
++      OR jsonb_typeof(v_chunk -> 'storageObjectKey') IS DISTINCT FROM 'string'
++      OR v_chunk ->> 'storageObjectKey' IS DISTINCT FROM v_user_id::text || '/' || v_object_key THEN
++      RAISE EXCEPTION 'Invalid recording object location' USING ERRCODE = '22023';
++    END IF;
++    v_chunk_ids := array_append(v_chunk_ids, v_chunk ->> 'chunkId');
++    v_index := v_index + 1;
++  END LOOP;
++
++  -- First lock: coordinate with capture before authority/source reads or writes.
++  -- VOLATILE under READ COMMITTED refreshes the tombstone query after a wait.
++  -- Keep this SHARE fence until the enclosing transaction ends.
++  LOCK TABLE public.deletion_requests IN SHARE MODE;
++
++  -- Serialize absent as well as existing session IDs, including cross-project reuse.
++  PERFORM pg_advisory_xact_lock(hashtextextended('recording-seal:' || v_session_id::text, 0));
++  PERFORM 1 FROM public.projects p WHERE p.id = v_project_id FOR SHARE;
++  IF NOT FOUND THEN
++    RAISE EXCEPTION 'Recording project unavailable' USING ERRCODE = '42501';
++  END IF;
++  PERFORM 1 FROM auth.users u WHERE u.id = v_user_id FOR KEY SHARE;
++  IF NOT FOUND THEN
++    RAISE EXCEPTION 'Recording owner unavailable' USING ERRCODE = '42501';
++  END IF;
++  PERFORM 1 FROM public.project_roles pr
++    WHERE pr.project_id = v_project_id AND pr.user_id = v_user_id
++      AND pr.role = 'storyteller' AND pr.status = 'active' FOR SHARE;
++  IF NOT FOUND THEN
++    RAISE EXCEPTION 'Active storyteller required' USING ERRCODE = '42501';
++  END IF;
++  IF v_story_id IS NOT NULL THEN
++    PERFORM 1 FROM public.stories s
++      WHERE s.id = v_story_id AND s.project_id = v_project_id AND s.storyteller_id = v_user_id FOR SHARE;
++    IF NOT FOUND THEN
++      RAISE EXCEPTION 'Recording story ownership mismatch' USING ERRCODE = '42501';
++    END IF;
++  END IF;
++  -- The fence prevents capture from overtaking this check and source insertion.
++  -- Workers must still reauthorize and check tombstones before using real bytes.
++  IF EXISTS (SELECT 1 FROM public.deletion_requests dr
++    WHERE dr.project_id = v_project_id AND dr.tombstone_at IS NOT NULL
++      AND dr.subject_id = ANY(ARRAY[v_session_id::text, v_story_id::text, v_asset_id::text])) THEN
++    RAISE EXCEPTION 'Recording is being deleted' USING ERRCODE = '23505';
++  END IF;
++
++  v_manifest_sha256 := encode(sha256(convert_to(p_manifest::text, 'UTF8')), 'hex');
++  SELECT rs.* INTO v_existing FROM public.recording_sessions rs WHERE rs.id = v_session_id FOR UPDATE;
++  IF FOUND THEN
++    IF v_existing.seal_input IS DISTINCT FROM p_manifest
++      OR v_existing.project_id IS DISTINCT FROM v_project_id
++      OR v_existing.user_id IS DISTINCT FROM v_user_id
++      OR v_existing.story_id IS DISTINCT FROM v_story_id
++      OR v_existing.mime_type IS DISTINCT FROM p_manifest ->> 'mimeType'
++      OR v_existing.state IS DISTINCT FROM 'sealing'
++      OR v_existing.total_chunks IS DISTINCT FROM v_count
++      OR v_existing.total_input_bytes IS DISTINCT FROM v_total_bytes
++      OR v_existing.manifest_sha256 IS DISTINCT FROM v_manifest_sha256
++      OR v_existing.sealed_at IS NULL OR NOT isfinite(v_existing.sealed_at)
++      OR v_existing.started_at IS NULL OR NOT isfinite(v_existing.started_at)
++      OR v_existing.sealed_at < v_existing.started_at
++      OR v_existing.sealed_at > clock_timestamp()
++      OR v_existing.confirmed_asset_id IS NOT NULL OR v_existing.merge_job_id IS NOT NULL
++      OR v_existing.confirmed_at IS NOT NULL THEN
++      RAISE EXCEPTION 'Recording seal conflicts with existing session' USING ERRCODE = '23505';
++    END IF;
++    PERFORM 1 FROM public.recording_chunks rc WHERE rc.session_id = v_session_id FOR SHARE;
++    IF (SELECT count(*) FROM public.recording_chunks rc WHERE rc.session_id = v_session_id) <> v_count
++      OR EXISTS (
++        SELECT 1 FROM jsonb_array_elements(p_manifest -> 'chunks') AS expected(chunk)
++        LEFT JOIN public.recording_chunks rc ON rc.session_id = v_session_id
++          AND rc.chunk_index = (expected.chunk ->> 'index')::integer
++        WHERE rc.id IS NULL OR rc.project_id IS DISTINCT FROM v_project_id
++          OR rc.seal_chunk_id IS DISTINCT FROM expected.chunk ->> 'chunkId'
++          OR rc.bucket IS DISTINCT FROM expected.chunk ->> 'bucket'
++          OR rc.object_key IS DISTINCT FROM expected.chunk ->> 'storageObjectKey'
++          OR rc.byte_size IS DISTINCT FROM (expected.chunk ->> 'byteSize')::integer
++          OR rc.sha256 IS DISTINCT FROM expected.chunk ->> 'sha256'
++      ) THEN
++      RAISE EXCEPTION 'Recording seal conflicts with existing chunks' USING ERRCODE = '23505';
++    END IF;
++  ELSE
++    INSERT INTO public.recording_sessions(id, project_id, user_id, story_id, mime_type, state,
++      total_chunks, total_input_bytes, manifest_sha256, started_at, sealed_at, seal_input)
++    VALUES (v_session_id, v_project_id, v_user_id, v_story_id, p_manifest ->> 'mimeType', 'sealing',
++      v_count, v_total_bytes, v_manifest_sha256, v_now, v_now, p_manifest);
++    INSERT INTO public.recording_chunks(session_id, project_id, chunk_index, bucket, object_key, byte_size, sha256, seal_chunk_id)
++    SELECT v_session_id, v_project_id, (chunk ->> 'index')::integer, chunk ->> 'bucket', chunk ->> 'storageObjectKey',
++      (chunk ->> 'byteSize')::integer, chunk ->> 'sha256', chunk ->> 'chunkId'
++    FROM jsonb_array_elements(p_manifest -> 'chunks') AS input(chunk);
++  END IF;
++
++  RETURN jsonb_build_object('schemaVersion', 1, 'sessionId', v_session_id::text, 'state', 'sealing',
++    'manifestSha256', v_manifest_sha256, 'manifest', p_manifest, 'canClearLocalDrafts', false);
++END;
++$$;
++
++REVOKE ALL ON FUNCTION public.seal_recording_manifest(jsonb) FROM PUBLIC, anon, authenticated;
++GRANT EXECUTE ON FUNCTION public.seal_recording_manifest(jsonb) TO service_role;
++
++COMMIT;

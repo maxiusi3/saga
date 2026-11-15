@@ -1,0 +1,632 @@
+[
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/project_roles",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_artifact_cleanup",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_delivery_jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/project_roles",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/project_roles",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 409,
+    "error": "23505"
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_artifact_cleanup",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_delivery_jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_delivery_jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 500,
+    "error": "P0002"
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_artifact_cleanup",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/complete_publication_cleanup",
+    "status": 200,
+    "rpc": "complete_publication_cleanup",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/complete_publication_cleanup",
+    "status": 200,
+    "rpc": "complete_publication_cleanup",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 500,
+    "error": "P0002"
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_artifact_cleanup",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_delivery_jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/storage/v1/object/audio-recordings/934f67a8-c356-46fb-bf0a-0de7276acedc/projects/7f3ae6ea-6102-471c-bba2-a2906450949d/long.wav",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_artifact_cleanup",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_delivery_jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_delivery_jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/storage/v1/object/audio-recordings/934f67a8-c356-46fb-bf0a-0de7276acedc/projects/7f3ae6ea-6102-471c-bba2-a2906450949d/long.wav",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_artifact_cleanup",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/complete_publication_cleanup",
+    "status": null,
+    "rpc": "complete_publication_cleanup",
+    "committed": true
+  }
+]

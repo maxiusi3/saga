@@ -1,0 +1,10 @@
+{
+  "supabase/migrations/20261110000001_story_review_workflow.sql": "b76cb7624050576e57eaaabfc86d436699427f86b5e8a95b05eda39d31e92a48",
+  "packages/web/src/lib/story-review-contract.ts": "28ec0773254e56589eabc8dec9a67083636b4df51868332f3dd1428b40887207",
+  "packages/web/src/lib/server/story-review-service.ts": "fc70d1d1bf803012c7322f9c0329b86f2f77948d53fe01645664a6b16f670645",
+  "packages/web/src/lib/server/__tests__/story-review-service.test.ts": "02ffeaa3e5275ddbc92ee980b767c4871deb76e229455f39761b4e3db72313c3",
+  "packages/web/src/app/api/stories/[storyId]/review/route.ts": "e09f7c1c51aad67bb55f4cb59467f56e5a4387114bfbce4a43e68e69d9ad394e",
+  "packages/web/src/app/api/stories/[storyId]/review/__tests__/route.test.ts": "acbdc5ddb52d5fd00b776a89166884ae2d796cb73cadc805804bb7a8ba53177d",
+  "experiments/pg17-g2-review/scenarios.mjs": "039f166bfc85044966f83406c264398f33f0730b882929dbbb540eb8d6544c81",
+  "experiments/g1-local/verify-migrations.mjs": "bcdc7880016794a5ec047516441ee0cefcb0c7d8ae6fe128f39d5c86cbba0218"
+}

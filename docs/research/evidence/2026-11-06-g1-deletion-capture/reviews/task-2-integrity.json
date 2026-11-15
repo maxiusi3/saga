@@ -1,0 +1,70 @@
+{
+  "frozenSourceChecks": {
+    "task-1-fix-1": {
+      "fileCount": 13,
+      "mismatches": []
+    },
+    "task-2": {
+      "fileCount": 7,
+      "mismatches": []
+    }
+  },
+  "commands": {
+    "task2-deployment-list-red-1.json": {
+      "exitCode": 1,
+      "sourceDrift": [],
+      "archiveSha256": "99226acd2bc3e43511f07a1ae414aa99ca590745a91123b4e7906eae4fe0c289",
+      "rawSha256": "c4624647e4074079a9f7b399c372ce6a87f79418c2dd1089771b14c6b4f34a66"
+    },
+    "task2-diff-check-green-1.json": {
+      "exitCode": 0,
+      "sourceDrift": [],
+      "archiveSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "task2-infra-green-1.json": {
+      "exitCode": 0,
+      "sourceDrift": [],
+      "archiveSha256": "d7ffc7a841c34dd85d9282c4efd271481ca03a20b6409c6711b777263b293461",
+      "rawSha256": "6480341610f50ed425bc46f8238e62f24b1161b3126a2f0dd91e217f3a70c2bb"
+    },
+    "task2-infra-red-1.json": {
+      "exitCode": 1,
+      "sourceDrift": [],
+      "archiveSha256": "fb55905c635d88b96720bc4dc9f2bab6bf3333fc661cd29d2d71ee7452a254d6",
+      "rawSha256": "e3b6a9b2752f75be2ca7481b701240bba32844e01d443911668da60f935bcc89"
+    },
+    "task2-jest-green-1.json": {
+      "exitCode": 0,
+      "sourceDrift": [],
+      "archiveSha256": "c81b9254781d1bd56196609aa2467246fb9c4bfb83cb652c4a08f7779aa71fcf",
+      "rawSha256": "c7f0d0de1c41f1fb6cb9745b71f1fe40bc46008846a51a699c3b176d02b662ca"
+    },
+    "task2-jest-red-1.json": {
+      "exitCode": 1,
+      "sourceDrift": [],
+      "archiveSha256": "a979bb9930f7e6503477e978bc355a1c1546b43caa82dc28fae01752f8d2c66c",
+      "rawSha256": "49f06f5882de1ba77105029f46ef7cf8f2459e9049feb89fb6edc7f973ac952c"
+    },
+    "task2-native-green-1.json": {
+      "exitCode": 0,
+      "sourceDrift": [],
+      "archiveSha256": "027f635fdc38213009e063d59c097dc0377f913978740e8a2b5af032aec7b76e",
+      "rawSha256": "8fd444276cf3351aad333c51d8106e4740f630ea7885abac1b0cb801fd28eded"
+    },
+    "task2-native-red-1.json": {
+      "exitCode": 1,
+      "sourceDrift": [],
+      "archiveSha256": "cc17f8ba5409c26a8be59044948bda6cd7b873a9397722fa52373db5d4cca334",
+      "rawSha256": "98f0a521f06dbe1f604d77187e9513d680771eef27863a620b4004764bf0ea2e"
+    },
+    "task2-root-eslint-green-1.json": {
+      "exitCode": 0,
+      "sourceDrift": [],
+      "archiveSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "task2PatchSha256": "97bff4ff82ff6d7fb0bd151a22ce24dbba0540f358f3a0a8cb759aed9b61be2e",
+  "task2HashesSha256": "bd9b4e112ffadb22e9aadff1d67fdec9eb2129cedc866687c2c546c8f3fecce3"
+}

@@ -47,6 +47,36 @@ it('streams numeric chunk order into the exact original and cleans after consump
   expect(await readdir(tempRoot)).toEqual([])
 })
 
+it.each([false, true])('uses only a detached WebM envelope for decoding and retains original evidence (decoder failure %s)', async failDecode => {
+  const bytes = Buffer.from('1a45dfa3874282847765626d1853806701ffffffffffffff1549a966801654ae6b801f43b67501ffffffffffffffe78100a387810000800102031f', 'hex')
+  const input = buildRecordingMergeTaskInput({ projectId: 'p1', sessionId: 's1', assetId: 'a1', inputVersion: 1,
+    processorVersion: 'v1', parameterVersion: 'v1', mimeType: 'audio/webm', chunks: [{
+      index: 0, chunkId: 'c1', bucket: 'audio-recordings', objectKey: 'projects/p1/sessions/s1/0', byteSize: bytes.length, sha256: hash(bytes),
+    }] })
+  let decodePath = '', consumed = false
+  const pending = withVerifiedRecordingMerge(input, { tempRoot, maxInputBytes: 1000,
+    readChunk: async () => (async function* () { yield bytes })(),
+    decodeAudio: async path => {
+      decodePath = path
+      const copy = await readFile(path)
+      expect(copy.length).toBe(bytes.length - 1)
+      expect(copy.subarray(-9)).toEqual(bytes.subarray(-10, -1))
+      if (failDecode) throw new Error('strict decoder diagnostics')
+      return { durationMs: 60 }
+    },
+  }, async artifact => {
+    consumed = true
+    expect(artifact.filePath).not.toBe(decodePath)
+    expect(await readFile(artifact.filePath)).toEqual(bytes)
+    expect(artifact.completion.outputSha256).toBe(hash(bytes))
+    expect(artifact.completion.outputByteSize).toBe(bytes.length)
+  })
+  if (failDecode) await expect(pending).rejects.toThrow('strict decoder diagnostics')
+  else await pending
+  expect(consumed).toBe(!failDecode)
+  expect(await readdir(tempRoot)).toEqual([])
+})
+
 it.each(['short', 'long', 'hash', 'missing', 'stream failure'] as const)('rejects %s source and cleans without consuming', async mode => {
   const { input, dependencies, bodies } = fixture()
   let consumed = false

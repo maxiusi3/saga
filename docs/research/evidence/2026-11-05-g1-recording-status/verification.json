@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "localSliceComplete": true,
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "canClearLocalDrafts": false,
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "checkedAt": "2026-11-05T09:57:48.998683+00:00",
+  "focused": {
+    "suites": 5,
+    "tests": 564,
+    "newTests": 225,
+    "fixtureCorrectionTests": 225
+  },
+  "fullGate": {
+    "receipt": "full-gate-02.json",
+    "sha256": "a5c09535b39488cf1295bf35388ebf62c50df578735036cd031dbd52a9240e2e",
+    "webSuites": 153,
+    "webTests": 3100,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 14,
+    "builtPages": 184,
+    "exitCode": 0
+  },
+  "native": {
+    "sql": {
+      "receipt": "native-sql-2026-11-05T09-26-15.086Z-dbd5ed7b-1d35-4c19-913c-da74fa582bbc/results.json",
+      "sha256": "141807ef2a6062dc1cf2463fd8a7d41167b22e8a8347b1e88825634388660204",
+      "scenarios": 5,
+      "assertions": 191,
+      "sources": 58,
+      "archivesVerified": 65,
+      "cleanup": "passed"
+    },
+    "http": {
+      "receipt": "native-http-2026-11-05T09-33-17.998Z-3ae4565f-fc32-4849-93d1-ab65ad742d37/results.json",
+      "sha256": "f8113f855208e41a7f38c6e1da523a931373cc8febdc55e93439efde713331a3",
+      "scenarios": 4,
+      "assertions": 585,
+      "sources": 110,
+      "archivesVerified": 124,
+      "cleanup": "passed"
+    }
+  },
+  "reviews": {
+    "task-1-review.md": {
+      "receipt": "task-1-review.md",
+      "sha256": "8b67ddc3996413ded992c52295cd68612a3661f9f2364bc73940c6ed8cc3e0a7"
+    },
+    "task-2-review.md": {
+      "receipt": "task-2-review.md",
+      "sha256": "2accc48cb01bf0d456dfc31459c79674a86f4a60d52cbc87ca99943f8a6d983c"
+    },
+    "final-review.md": {
+      "receipt": "final-review.md",
+      "sha256": "ba579f5e2ac40583499c4ab8045314183bfb8479be210a0148f4188310ad3b64"
+    }
+  },
+  "integrity": {
+    "receipt": "integrity.json",
+    "sha256": "e68e83768cb3da46b340d924386e7daf30e56f5aeb2711e60909c930a225b3ca"
+  },
+  "sourceLock": {
+    "receipt": "source-lock.json",
+    "sha256": "e9ff823e85231ad9de2ca766ba78e11bfe7607d36d7e860d032c10d6b7081359"
+  },
+  "remaining": [
+    "browser confirmation and idempotent story save",
+    "safe local draft cleanup",
+    "atomic deletion targets and reference-safe GC",
+    "candidate backup coverage",
+    "full migrations and deployment isolation",
+    "cloud/PostgREST/Storage and real-device G1 qualification"
+  ],
+  "staged": false,
+  "committed": false,
+  "pushed": false,
+  "deployed": false
+}

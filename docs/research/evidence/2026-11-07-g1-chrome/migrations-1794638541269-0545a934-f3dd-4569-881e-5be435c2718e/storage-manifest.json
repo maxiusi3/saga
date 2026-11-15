@@ -1,0 +1,42 @@
+{
+  "freezeTimestamp": "2026-11-14T06:42:31.862Z",
+  "dumpSha256": "21814c2a92b866f652b74a7936cb7a02ee78eff369be949fda917b30edb74f6b",
+  "dumpSizeBytes": 898916,
+  "objects": [
+    {
+      "id": "ec33aff5-4476-4eb8-88cc-63fce0a82821",
+      "bucket": "audio-recordings",
+      "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/a09d9b7f-f31a-4402-b5af-d988de8da6c5/0",
+      "byteSize": 2434217,
+      "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+    },
+    {
+      "id": "2e69e741-62f2-4fb3-91e7-254d08309bb2",
+      "bucket": "recording-candidates",
+      "key": "jobs/757531d5-e82e-4479-bb2d-d6f04c391dbd/attempts/1/fcd6b972-1b43-4b8d-b4a2-26897fca64bb",
+      "byteSize": 2434217,
+      "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+    },
+    {
+      "id": "bab05a5f-781d-48ad-ad8d-db1dfffe4dc4",
+      "bucket": "audio-recordings",
+      "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/91d6429b-e666-4c2e-97be-6940ac179581/0",
+      "byteSize": 2434217,
+      "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+    },
+    {
+      "id": "c7e9c60b-c6b4-4213-98f7-7b441343bbbd",
+      "bucket": "recording-candidates",
+      "key": "jobs/5db1af91-2cfc-4636-9559-87b85be38033/attempts/1/05416d59-078e-4434-999d-171dbf6decda",
+      "byteSize": 2434217,
+      "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+    },
+    {
+      "id": "f9f975c9-851b-4df4-8d7e-253adfaf3c64",
+      "bucket": "saga",
+      "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/sample.txt",
+      "byteSize": 32,
+      "sha256": "e66d6eea1c018972b6d2d02a994d45ad3487ec9e30f883419aee7d7530c9da2b"
+    }
+  ]
+}

@@ -17,7 +17,7 @@ export interface DeletableAssetRecord {
   id: string
   project_id: string
   story_id?: string | null
-  bucket: 'audio-recordings' | 'saga'
+  bucket: 'audio-recordings' | 'saga' | 'recording-candidates'
   object_key: string
   state: MediaAssetState
 }

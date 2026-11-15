@@ -104,9 +104,7 @@ export class ProjectService {
    */
   async createProjectWithRole(projectData: CreateProjectWithRoleData): Promise<Project | null> {
     try {
-      console.log('ProjectService: Creating project with role:', projectData)
-
-      // 调用数据库函数创建项目并消耗资源
+      // The database allocates a verified purchase and serializes uncertain retries.
       const { data, error } = await this.supabase.rpc('create_project_with_role', {
         project_name: projectData.name,
         project_description: projectData.description || '',
@@ -115,7 +113,6 @@ export class ProjectService {
       })
 
       if (error) {
-        console.error('Error creating project with role:', error)
         throw new Error(error.message)
       }
 
@@ -127,13 +124,11 @@ export class ProjectService {
         .single()
 
       if (fetchError) {
-        console.error('Error fetching created project:', fetchError)
         throw new Error('Project created but failed to fetch details')
       }
 
       return project
     } catch (error) {
-      console.error('Error creating project with role:', error)
       throw error
     }
   }

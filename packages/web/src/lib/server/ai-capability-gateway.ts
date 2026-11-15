@@ -42,7 +42,7 @@ export interface TranscriptSegmentRecord {
   startMs: number | null
   endMs: number | null
   text: string
-  confidence: number
+  confidence: number | null
   isHumanCorrected: boolean
 }
 
@@ -179,13 +179,13 @@ export function buildVersionedTranscript(input: {
       previousStartMs = seg.startMs!
     }
 
-    const confidence = typeof seg.confidence === 'number' ? seg.confidence : 1.0
-    if (confidence < 0 || confidence > 1) {
+    const confidence = seg.confidence ?? null
+    if (confidence !== null && (!Number.isFinite(confidence) || confidence < 0 || confidence > 1)) {
       throw new Error(`Invalid segment confidence on segment ${index}`)
     }
 
     return {
-      id: `${transcriptVersionId}-seg-${index}`,
+      id: randomUUID(),
       projectId: input.projectId,
       transcriptVersionId,
       segmentIndex: index,

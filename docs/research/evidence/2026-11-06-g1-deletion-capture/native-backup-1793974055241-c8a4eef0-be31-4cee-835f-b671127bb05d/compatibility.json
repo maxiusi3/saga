@@ -1,0 +1,88 @@
+{
+  "tsManifest": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "objectCount": 4,
+      "totalBytes": 114
+    }
+  },
+  "cjsManifest": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "objectCount": 4,
+      "totalBytes": 114
+    }
+  },
+  "tsReplay": {
+    "purgedCount": 1,
+    "survivingObjects": [
+      {
+        "id": "retained-original-chunk",
+        "bucket": "audio-recordings",
+        "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+        "byteSize": 24,
+        "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+      },
+      {
+        "id": "retained-reserved-candidate",
+        "bucket": "recording-candidates",
+        "key": "jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa",
+        "byteSize": 24,
+        "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+      },
+      {
+        "id": "2caacfc1-8531-4166-91d8-fc93ad0ecc23",
+        "bucket": "saga",
+        "key": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg",
+        "byteSize": 42,
+        "sha256": "e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87"
+      }
+    ],
+    "survivingTotalBytes": 90
+  },
+  "cjsReplay": {
+    "purgedCount": 1,
+    "survivingObjects": [
+      {
+        "id": "retained-original-chunk",
+        "bucket": "audio-recordings",
+        "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0",
+        "byteSize": 24,
+        "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+      },
+      {
+        "id": "retained-reserved-candidate",
+        "bucket": "recording-candidates",
+        "key": "jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa",
+        "byteSize": 24,
+        "sha256": "b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d"
+      },
+      {
+        "id": "2caacfc1-8531-4166-91d8-fc93ad0ecc23",
+        "bucket": "saga",
+        "key": "projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg",
+        "byteSize": 42,
+        "sha256": "e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87"
+      }
+    ],
+    "survivingTotalBytes": 90
+  },
+  "cli": {
+    "command": [
+      "/usr/local/Cellar/node@22/22.22.2/bin/node",
+      "scripts/verify-scheme-b-backup.cjs",
+      "--dump",
+      "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-06-g1-deletion-capture/native-backup-1793974055241-c8a4eef0-be31-4cee-835f-b671127bb05d/synthetic-header.dump",
+      "--manifest",
+      "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-06-g1-deletion-capture/native-backup-1793974055241-c8a4eef0-be31-4cee-835f-b671127bb05d/manifest.json",
+      "--tombstones",
+      "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-06-g1-deletion-capture/native-backup-1793974055241-c8a4eef0-be31-4cee-835f-b671127bb05d/tombstones.json"
+    ],
+    "status": 0,
+    "signal": null,
+    "stdout": "{\n  \"mode\": \"file_verification\",\n  \"status\": \"pass\",\n  \"report\": {\n    \"verified\": true,\n    \"dump\": {\n      \"valid\": true,\n      \"magic\": \"PGDMP\",\n      \"dumpSizeBytes\": 55,\n      \"dumpSha256\": \"0e3664bb142140e3c72b86ede363b15476199894797e65575c238e7e11dd4cc8\"\n    },\n    \"manifest\": {\n      \"valid\": true,\n      \"objectCount\": 4,\n      \"totalBytes\": 114\n    },\n    \"tombstoneReplay\": {\n      \"purgedCount\": 1,\n      \"survivingObjects\": [\n        {\n          \"id\": \"retained-original-chunk\",\n          \"bucket\": \"audio-recordings\",\n          \"key\": \"11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/2462c02b-7bb3-4cc5-88d9-b53ec1333a67/0\",\n          \"byteSize\": 24,\n          \"sha256\": \"b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d\"\n        },\n        {\n          \"id\": \"retained-reserved-candidate\",\n          \"bucket\": \"recording-candidates\",\n          \"key\": \"jobs/2b8fb16a-c17c-409f-bdfe-13b6e9864336/attempts/1/41c07035-6c29-46d8-a019-24c0527c15aa\",\n          \"byteSize\": 24,\n          \"sha256\": \"b3baaea1129e115e3c40dd3ceb317caa5a0476345912579b4620e2d3d92e953d\"\n        },\n        {\n          \"id\": \"2caacfc1-8531-4166-91d8-fc93ad0ecc23\",\n          \"bucket\": \"saga\",\n          \"key\": \"projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/f41c5fc1-852b-40a9-b8dc-d31bd9fa2319.jpg\",\n          \"byteSize\": 42,\n          \"sha256\": \"e0d6db758b4304ba636fb8022164c6bfe898ab6fdb30e9796af8709d6a4bcb87\"\n        }\n      ],\n      \"survivingTotalBytes\": 90\n    }\n  }\n}\n",
+    "stderr": ""
+  }
+}

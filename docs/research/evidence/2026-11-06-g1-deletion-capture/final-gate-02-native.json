@@ -1,0 +1,189 @@
+{
+  "runs": [
+    {
+      "path": "docs/research/evidence/2026-11-06-g1-deletion-capture/native-seal-fence-1793973965719-f972728d-d982-4289-8c72-21012283b37e/results.json",
+      "sha256": "23e134786ed8754dd93622a8d0643eb12650753a9a8e0a4b6f567a39b1f10803",
+      "assertions": 87,
+      "scenarios": [
+        {
+          "name": "queued seal/source race has no escaped chunk after immutable capture",
+          "status": "passed",
+          "assertions": 13
+        },
+        {
+          "name": "capture first makes waiting seal reject without source writes",
+          "status": "passed",
+          "assertions": 8
+        },
+        {
+          "name": "pre-established repeatable read and serializable snapshots fail closed",
+          "status": "passed",
+          "assertions": 6
+        },
+        {
+          "name": "seal lock timeout rolls back and releases its locks; valid seal and replay survive",
+          "status": "passed",
+          "assertions": 15
+        },
+        {
+          "name": "replacement seal remains volatile with fixed settings and service-only execute",
+          "status": "passed",
+          "assertions": 16
+        }
+      ],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-11-06-g1-deletion-capture/native-1793974055239-4b654280-1389-4ffa-ad49-7a3c272b31dd/results.json",
+      "sha256": "8758ae4c131e9b63160581550bdcd9f8a8aa22590b15ac296f2feb27e39018d5",
+      "assertions": 759,
+      "scenarios": [
+        {
+          "name": "actual published recording atomically captures candidate and original chunk",
+          "status": "passed",
+          "assertions": 4
+        },
+        {
+          "name": "actual service accepts full native capture and exact same-ID or subject replay",
+          "status": "passed",
+          "assertions": 41
+        },
+        {
+          "name": "three real sealed chunks plus a separate retained reserved candidate deduplicate published alias",
+          "status": "passed",
+          "assertions": 27
+        },
+        {
+          "name": "pending candidate capture preserves live lease/attempt and requests cancellation without finalizing",
+          "status": "passed",
+          "assertions": 32
+        },
+        {
+          "name": "story scope includes actual legacy assets; asset scope leaves a same-story sibling and other story untouched",
+          "status": "passed",
+          "assertions": 113
+        },
+        {
+          "name": "manager authorization and malformed or legacy identity fail closed",
+          "status": "passed",
+          "assertions": 72
+        },
+        {
+          "name": "unsafe paths, cross-project relationships and foreign physical aliases abort complete capture",
+          "status": "passed",
+          "assertions": 19
+        },
+        {
+          "name": "missing or altered durable target rejects replay, and request IDs cannot cross subjects or actors",
+          "status": "passed",
+          "assertions": 10
+        },
+        {
+          "name": "publication before deletion waits then captures committed candidate key without guessed old path",
+          "status": "passed",
+          "assertions": 7
+        },
+        {
+          "name": "deletion before publication makes waiting actual finalizer fail without mutation",
+          "status": "passed",
+          "assertions": 71
+        },
+        {
+          "name": "candidate reservation before capture waits for source writer and includes new reserved address",
+          "status": "passed",
+          "assertions": 7
+        },
+        {
+          "name": "two concurrent submissions converge; concurrent request-ID collision cannot create second capture",
+          "status": "passed",
+          "assertions": 156
+        },
+        {
+          "name": "current authority and subject ownership are read after actual lock waits",
+          "status": "passed",
+          "assertions": 24
+        },
+        {
+          "name": "target/asset/cancellation failures, suppressed writes and later trigger tampering roll back all tuples",
+          "status": "passed",
+          "assertions": 36
+        },
+        {
+          "name": "I1 actual reserve then seal before registration captures chunks with no invented asset/job",
+          "status": "passed",
+          "assertions": 43
+        },
+        {
+          "name": "I1 existing intended asset with another project/story/chain is rejected",
+          "status": "passed",
+          "assertions": 9
+        },
+        {
+          "name": "queued seal/source race has no escaped chunk after immutable capture",
+          "status": "passed",
+          "assertions": 13
+        },
+        {
+          "name": "capture first makes waiting seal reject without source writes",
+          "status": "passed",
+          "assertions": 8
+        },
+        {
+          "name": "pre-established repeatable read and serializable snapshots fail closed",
+          "status": "passed",
+          "assertions": 6
+        },
+        {
+          "name": "seal lock timeout rolls back and releases its locks; valid seal and replay survive",
+          "status": "passed",
+          "assertions": 15
+        },
+        {
+          "name": "replacement seal remains volatile with fixed settings and service-only execute",
+          "status": "passed",
+          "assertions": 16
+        }
+      ],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-11-06-g1-deletion-capture/native-backup-1793974055241-c8a4eef0-be31-4cee-835f-b671127bb05d/results.json",
+      "sha256": "3823191e3afb9f45f9a9cbfd62e82b8756d43c30549b9fe874f747c8804190db",
+      "assertions": 82,
+      "scenarios": [
+        {
+          "name": "actual published capture supplies durable candidate addresses to a mixed manifest",
+          "status": "passed",
+          "assertions": 13
+        },
+        {
+          "name": "actual TypeScript, CJS and CLI file mode agree on captured candidate exclusion",
+          "status": "passed",
+          "assertions": 10
+        },
+        {
+          "name": "candidate corruption is rejected identically and pre-freeze ledger behavior is unchanged",
+          "status": "passed",
+          "assertions": 31
+        }
+      ],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  ],
+  "sourceDrift": []
+}

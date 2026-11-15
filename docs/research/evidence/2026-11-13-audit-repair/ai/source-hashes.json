@@ -1,0 +1,22 @@
+{
+  "packages/web/src/lib/story-ai-edit-contract.ts": "5df3fa8477011428a1cd2e09bbc314e6d0bdf159135cf96e0382d12fc1d77d9e",
+  "packages/web/src/lib/story-ai-edit-client.ts": "dce65506e7ed62038a8e22725dc32f36feef80d8531fcf6c8970732aa1840b1a",
+  "packages/web/src/lib/server/story-ai-edit.ts": "c83cc37acfcf3c295b1e0c15579c1f2ae6a5608a4a59304c21b7d539c10eb8c8",
+  "packages/web/src/lib/server/story-ai-edit-service.ts": "d367c7d1875306a7af1b180f71048f5c73adf4375010f3211564dd41023435ad",
+  "packages/web/src/app/api/stories/[storyId]/ai-edit/route.ts": "190baa31ef84acc6a0c75d8e611b09a9873d96c13c9923bb8c7d0d5e2ec70227",
+  "packages/web/src/app/api/stories/[storyId]/ai-edit/__tests__/route.test.ts": "54502a1f7e832c4a832a5a56173c98e96380cc542436ad5779ff43a8f0dc397c",
+  "packages/web/src/lib/server/__tests__/story-ai-edit.test.ts": "c61eab27af700524f4e9949d75b7840e8f4c7c493e052c4db52e50c56ece6357",
+  "packages/web/src/components/stories/StoryAiEditControl.tsx": "da6d6475f73e33673e50798b5105926cdcac9f801f9a606f9a875961ffa9b676",
+  "packages/web/src/components/stories/StoryReviewPanel.tsx": "0ce77caaa8c14e5d063fdcd909b5148c7b64ec27d21d933bdc0cea838a59aa4e",
+  "packages/web/src/components/stories/__tests__/story-ai-edit-control.test.tsx": "f21da129f9d47421310c41b6f23c6e1e02b4d8554823e527605fb1bd9818fae9",
+  "packages/web/src/lib/story-review-contract.ts": "5c32cde5ce4c81157a9e62d18f9de3db848fa0c699fcb784d6411f824d0dd2a7",
+  "packages/web/src/lib/server/provider-policy-verification.ts": "f62bbd40c83607201a8afe49e0a95d480208144df34001545bc32c95bd6b9a8b",
+  "packages/web/src/lib/server/__tests__/provider-policy-verification.test.ts": "5b6b6828da92767dee14ea435465ff10fa91c855c50708a3a5b25fb7f3c1bfec",
+  "packages/web/src/lib/server/cutover-readiness.ts": "6dd1e697480011f87a0a56a3d6e52a31a45f05425afe914098cfb3c0e511b852",
+  "supabase/migrations/20261113000002_story_ai_edit.sql": "7314dae125ea99305762f9392d6453bc6c449776f42da93d5183dfbc77341512",
+  "experiments/pg17-story-ai-edit/scenarios.mjs": "faeccfce6afa4835c3affc9332e561e739855d038703ef66add0fda560f274c8",
+  "experiments/pg17-story-ai-edit/chrome.mjs": "f041b2fc5c96a51d5acd2343dd7b3c975590199a0c2e51b691d4cb7b49d6cd69",
+  "docs/story-ai-edit.md": "ef9499f8ae99cd1a3ca5f4f9fc9e7705cb06a111493c2b9f37fbefb8fc470561",
+  "supabase/migrations/20261113000003_semantic_sources.sql": "51d523f0fc304823eacdc546e3e9a3d51ca532bc63186faaf3c63ad0fdc39cc9",
+  "experiments/pg17-story-ai-edit/provenance-scenarios.mjs": "aa5de5605a9e829e3ccfd33b223b2d6ab94b8eba0b5e8d55759ff7bd2fbc528c"
+}

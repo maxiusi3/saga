@@ -155,7 +155,11 @@
     "loadMore": "Carregar Mais Histórias",
     "deleteConfirm": "Tem certeza de que deseja excluir esta história? Esta ação não pode ser desfeita.",
     "deleteSuccess": "História excluída com sucesso",
-    "deleteFailed": "Falha ao excluir história"
+    "deleteFailed": "Falha ao excluir história",
+    "deleteAction": "Excluir história",
+    "deletePending": "Enviando…",
+    "deleteAccepted": "Solicitação de exclusão aceita.",
+    "deleteUnconfirmed": "Não foi possível confirmar a exclusão. Atualize para verificar o estado e tente novamente."
   },
   "status": {
     "new": "Novo",

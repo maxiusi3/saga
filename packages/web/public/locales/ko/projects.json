@@ -152,7 +152,11 @@
       "emoji": "🎭",
       "action": "첫 이야기 녹음하기"
     },
-    "loadMore": "더 많은 이야기 불러오기"
+    "loadMore": "더 많은 이야기 불러오기",
+    "deleteAction": "이야기 삭제",
+    "deletePending": "제출 중…",
+    "deleteAccepted": "삭제 요청이 접수되었습니다.",
+    "deleteUnconfirmed": "삭제 결과를 확인하지 못했습니다. 새로고침으로 상태를 확인한 후 다시 시도하세요."
   },
   "status": {
     "new": "새로운",

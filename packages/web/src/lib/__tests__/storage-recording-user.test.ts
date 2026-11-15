@@ -27,3 +27,13 @@ it('uploads the matching user recording with its explicit temporary object key',
   expect(result).toMatchObject({ success: true, path: 'current-user/temp/session/0.webm' })
   expect(mockUpload).toHaveBeenCalledWith('current-user/temp/session/0.webm', expect.any(Blob), expect.objectContaining({ upsert: false }))
 })
+
+it('stops capture upload if project or capture changes during authoritative auth await', async () => {
+  let current=true
+  mockGetUser.mockImplementation(async () => { current=false; return {data:{user:{id:'current-user'}},error:null} })
+  const result=await new StorageService().uploadFile(new Blob(['abc'],{type:'audio/webm'}),{
+    expectedUserId:'current-user',isCurrent:()=>current,folder:'temp/session',fileName:'0.webm',
+  })
+  expect(result.success).toBe(false)
+  expect(mockUpload).not.toHaveBeenCalled()
+})

@@ -1,0 +1,92 @@
+--- a/experiments/pg17-recording-status/application.mjs
++++ b/experiments/pg17-recording-status/application.mjs
+@@ -83,16 +83,23 @@
+     } else {
+       h.eq(error?.message ?? null, null, 'production strict validator accepts actual native snapshot')
+       h.eq(receipt.state, expected, 'compact receipt classifies persisted outcome')
+-      h.eq(Object.keys(receipt).sort(), ['schemaVersion', 'projectId', 'sessionId', 'assetId', 'jobId', 'manifestSha256', 'observedAt', 'state', 'content', 'errorCode', 'finishedAt', 'canClearLocalDrafts'].sort(), 'exact compact 13-key receipt')
++      h.eq(Object.keys(receipt).sort(), ['schemaVersion', 'projectId', 'sessionId', 'assetId', 'jobId', 'manifestSha256', 'observedAt', 'state', 'content', 'errorCode', 'finishedAt', 'canClearLocalDrafts'].sort(), 'exact compact 12-key receipt')
+       h.eq(receipt.canClearLocalDrafts, false, 'every status retains local drafts')
+       h.ok(!/bucket|objectKey|candidateId|workerId|https?:|SECRET/.test(JSON.stringify(receipt)), 'no private location, raw row or diagnostics escape')
+       if (expected === 'succeeded') h.eq(receipt.content, f.output, 'content uses exact verified candidate metadata')
+       else h.eq([receipt.content, receipt.finishedAt, receipt.errorCode], expected === 'unresolved' ? [null, null, null] : [null, receipt.finishedAt, f.failureCode], 'non-success receipt keeps bounded content/error fields')
+     }
+     if (mode === 'timeout' || mode === 'abort') {
++      ;(h.report.interruptionObservations ??= []).push({ mode, elapsedMs, timeoutMs, callerAborted: controller.signal.aborted,
++        fetchAborted: http.transports.at(-1).aborted, peerClosed: events[0].peerClosed, responseFinished: events[0].responseFinished })
++      if (mode === 'timeout') {
++        h.eq(controller.signal.aborted, false, 'timeout must occur without caller cancellation')
++        h.ok(elapsedMs >= timeoutMs - 10, 'native timeout consumes configured deadline within scheduling tolerance')
++      } else h.eq(controller.signal.aborted, true, 'explicit abort uses caller cancellation')
+       h.ok(elapsedMs < 1500, 'abort/timeout returns within bounded wall clock')
+       h.eq(http.transports.at(-1).aborted, true, 'caller or timeout abort reaches native fetch signal')
+       h.eq(events[0].peerClosed, true, 'native peer observes abort')
++      h.eq(events[0].responseFinished, false, 'peer never finished a normal response before interruption')
+     }
+     h.report.tuples.push({ label: name, before, after, copiesBefore, copiesAfter, receipt, error: error?.message ?? null, elapsedMs, requests: events.length })
+     return { receipt, error }
+--- a/experiments/pg17-recording-status/http.mjs
++++ b/experiments/pg17-recording-status/http.mjs
+@@ -49,7 +49,7 @@
+       await client.query('COMMIT'); transaction = false; event.committed = true
+       if (config.mode === 'publish-response-loss') { h.eq(reading, false, 'lost response follows actual publication'); res.destroy(); return }
+       if (config.mode === 'timeout' || config.mode === 'abort') {
+-        config.checkpoint?.()
++        if (config.mode === 'abort') config.checkpoint?.()
+         if (!disconnected.signal.aborted) await once(disconnected.signal, 'abort')
+         return
+       }
+@@ -90,9 +90,12 @@
+   return { admin, events, transports, configure: config => { current = config },
+     async drain() { await Promise.all([...pending]); h.eq(errors, [], 'native HTTP has no hidden fixture errors') },
+     async close() {
++      // Server.close may finish before already-destroyed sockets emit close.
++      const closedSockets = Promise.all([...sockets].map(socket => once(socket, 'close')))
+       server.closeAllConnections()
+       await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()))
+       await Promise.all([...pending])
++      await closedSockets
+       h.report.httpCleanup = { listening: server.listening, pending: pending.size, sockets: sockets.size, errors,
+         everyHandlerFinished: events.every(event => event.finished), everyTransportSettled: transports.every(event => event.settled) }
+       h.eq(h.report.httpCleanup, { listening: false, pending: 0, sockets: 0, errors: [], everyHandlerFinished: true, everyTransportSettled: true }, 'all HTTP sockets, handlers and native fetch requests close')
+--- a/experiments/pg17-recording-status/verify.mjs
++++ b/experiments/pg17-recording-status/verify.mjs
+@@ -1,4 +1,4 @@
+-import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { mkdir, readFile, realpath, writeFile } from 'node:fs/promises'
+ import { join, relative, isAbsolute } from 'node:path'
+ import { randomUUID } from 'node:crypto'
+ import { createRequire } from 'node:module'
+@@ -63,14 +63,18 @@
+ } finally {
+   if (http) try { await http.close() } catch (error) { report.status = 'failed'; report.httpCleanupError = error.label ?? error.message; process.exitCode = 1 }
+   // Snapshot all actually loaded CommonJS dependencies and generated runtime.
++  report.compiledRuntimeSnapshots = []
++  // Node resolves macOS /tmp symlinks before adding modules to require.cache.
++  const canonicalScratch = h.scratch ? await realpath(h.scratch) : null
+   for (const file of Object.keys(require.cache)) {
+     const path = relative(root, file)
+     if (!path.startsWith('..') && !isAbsolute(path)) await source(path)
+-    else if (h.scratch && file.startsWith(join(h.scratch, 'compiled'))) {
++    else if (canonicalScratch && file.startsWith(`${join(canonicalScratch, 'compiled')}/`)) {
+       const bytes = await readFile(file), compressed = gzipSync(bytes)
+       const name = `runtime-${Object.keys(report.snapshots).length}-${file.split('/').at(-1)}.gz`
+       await writeFile(join(evidence, name), compressed, { flag: 'wx' })
+-      report.snapshots[relative(h.scratch, file)] = { path: name, sha256: digest(compressed), decodedSha256: digest(bytes) }
++      report.snapshots[relative(canonicalScratch, file)] = { path: name, sha256: digest(compressed), decodedSha256: digest(bytes) }
++      report.compiledRuntimeSnapshots.push(relative(canonicalScratch, file))
+     }
+   }
+   if (h.scratch && await exists(join(h.scratch, 'postgres.log'))) {
+@@ -84,6 +88,11 @@
+     try { process.kill(report.runtime.serverPid, 0); report.cleanup.serverPidGone = false }
+     catch (error) { report.cleanup.serverPidGone = error.code === 'ESRCH' }
+   }
++  if (mode !== 'red-without-migration' && (report.compiledRuntimeSnapshots.length === 0 ||
++    report.productionCompilerGraph?.some(name => !report.compiledRuntimeSnapshots.includes(`compiled/${name}.js`)))) {
++    report.status = 'failed'; process.exitCode = 1
++    report.error = { code: 'ASSERT_FAILED', label: 'actual loaded compiled runtime must have retained source snapshots' }
++  }
+   report.sourcesChangedDuringRun = []
+   for (const [path, hash] of Object.entries(report.sources)) if (digest(await readFile(join(root, path))) !== hash) report.sourcesChangedDuringRun.push(path)
+   if (report.sourcesChangedDuringRun.length || !report.cleanup.socketDirectoryRemoved ||

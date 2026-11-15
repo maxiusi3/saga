@@ -187,3 +187,65 @@ describe('GET /api/media/assets/[assetId]/access', () => {
     expect(await response.text()).not.toContain('private failure')
   })
 })
+
+
+describe('published recording candidate access', () => {
+  const uuid = (d: string) => `${d.repeat(8)}-${d.repeat(4)}-4${d.repeat(3)}-8${d.repeat(3)}-${d.repeat(12)}`
+  const lineage = { id: uuid('1'), job_id: uuid('2'), project_id: uuid('3'), asset_id: uuid('4'), session_id: uuid('5'),
+    manifest_sha256: 'a'.repeat(64), worker_id: 'worker-1', attempt_no: 1, bucket: 'recording-candidates',
+    object_key: `jobs/${uuid('2')}/attempts/1/${uuid('1')}`, state: 'prepared', byte_size: 20, sha256: 'b'.repeat(64),
+    mime_type: 'audio/webm', duration_ms: 1000, created_at: '2026-11-04T00:00:00.000001Z', prepared_at: '2026-11-04T00:00:00.000002Z' }
+  const published = { ...ready, id: lineage.asset_id, project_id: lineage.project_id, bucket: lineage.bucket, object_key: lineage.object_key,
+    kind: 'original_audio', byte_size: lineage.byte_size, sha256: lineage.sha256, mime_type: lineage.mime_type, duration_ms: lineage.duration_ms }
+  const access = () => GET(request(), { params: Promise.resolve({ assetId: published.id }) })
+  function setup() {
+    const events: string[] = []
+    let deleted: string | null = null
+    let candidate: unknown = lineage
+    mockFrom.mockImplementation(table => {
+      if (table === 'media_assets') { events.push(table); return query(published) }
+      if (table === 'recording_output_candidates') { events.push(table); return query(candidate) }
+      let subjects: string[] = []
+      const chain = query([])
+      chain.in.mockImplementation((_column: string, ids: string[]) => { subjects = ids; return chain })
+      chain.then = (resolve: (value: unknown) => unknown) => {
+        events.push('deletion_requests')
+        return Promise.resolve({ data: deleted && subjects.includes(deleted) ? [{ subject_id: deleted, tombstone_at: '2026-11-04' }] : [], error: null }).then(resolve)
+      }
+      return chain
+    })
+    return { events, remove: (id: string) => { deleted = id }, candidate: (row: unknown) => { candidate = row } }
+  }
+  it('validates lineage before signing and again before the final deletion read', async () => {
+    const f = setup()
+    expect((await access()).status).toBe(200)
+    expect(mockStorageFrom).toHaveBeenCalledWith('recording-candidates')
+    expect(mockCreateSignedUrl).toHaveBeenCalledWith(lineage.object_key, 300)
+    expect(f.events).toEqual(['media_assets', 'recording_output_candidates', 'deletion_requests', 'media_assets', 'recording_output_candidates', 'deletion_requests'])
+  })
+  it.each(['project', 'session'])('blocks signing when candidate %s is already deleted', async subject => {
+    const f = setup(); f.remove(subject === 'project' ? lineage.project_id : lineage.session_id)
+    expect((await access()).status).toBe(409)
+    expect(mockCreateSignedUrl).not.toHaveBeenCalled()
+  })
+  it.each(['project', 'session'])('discards signed URL when candidate %s is deleted during signing', async subject => {
+    const f = setup()
+    mockCreateSignedUrl.mockImplementation(async () => {
+      f.remove(subject === 'project' ? lineage.project_id : lineage.session_id)
+      return { data: { signedUrl: 'https://storage.example/SECRET' }, error: null }
+    })
+    const response = await access()
+    expect(response.status).toBe(409); expect(await response.text()).not.toMatch(/signedUrl|SECRET/)
+    expect(f.events.at(-1)).toBe('deletion_requests')
+  })
+  it.each([null, { ...lineage, session_id: '../SECRET' }, { ...lineage, sha256: 'c'.repeat(64) }])('rejects missing or corrupt lineage before signing %#', async row => {
+    const f = setup(); f.candidate(row)
+    expect((await access()).status).toBe(500); expect(mockCreateSignedUrl).not.toHaveBeenCalled()
+  })
+  it('discards URL if lineage disappears during signing', async () => {
+    const f = setup()
+    mockCreateSignedUrl.mockImplementation(async () => { f.candidate(null); return { data: { signedUrl: 'SECRET' }, error: null } })
+    const response = await access()
+    expect(response.status).toBe(500); expect(await response.text()).not.toMatch(/signedUrl|SECRET/)
+  })
+})

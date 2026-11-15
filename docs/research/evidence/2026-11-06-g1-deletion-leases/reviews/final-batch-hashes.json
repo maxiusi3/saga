@@ -1,0 +1,98 @@
+{
+  "createdAt": "2026-11-06T17:28:52.513082+00:00",
+  "baseline": "docs/research/evidence/2026-11-06-g1-deletion-leases/baseline.json",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "files": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": {
+      "beforeSha256": "69a6e6ff0c4b89b78425883c39d477309129f846aecb98aa7142258e7f54c946",
+      "afterSha256": "7d4866625b14d8f4275b4ea514a93ff7f5f8b6c0f52c3acdd2ed3b9172ae9675",
+      "changed": true
+    },
+    "docs/README.md": {
+      "beforeSha256": "ede02003c90d87af39a804ad37a1d830bc2f215b05c6e0921d4fffa227f7d496",
+      "afterSha256": "c8ff829e118cd1eb67c97270f830e3f5b97400a021c1f647d183ed7322225312",
+      "changed": true
+    },
+    "docs/research/2026-11-02-g1-gap-register.md": {
+      "beforeSha256": "5d533336dc76753d6eeec226801bc1eca41a3d507f1976a6fdf4910c2d9d1750",
+      "afterSha256": "64e8ebf34746fd1afaacd6335e2551527f11af76bb97eb3623d270635f36d7d4",
+      "changed": true
+    },
+    "docs/research/2026-11-06-g1-deletion-leases.md": {
+      "beforeSha256": null,
+      "afterSha256": "b677ac53247a29997578e8b1b5391d3e2fbdd0e019c13f2c6ebb1a7a66b56705",
+      "changed": true
+    },
+    "docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md": {
+      "beforeSha256": "df2997f81af52a43b067858509152e95a837ce18ca495be4d1ea3217a122093a",
+      "afterSha256": "7d6b916377bfe542a50a62331ac04f161975b49e6e4aea91ed71a1d50942c9d0",
+      "changed": true
+    },
+    "docs/superpowers/specs/2026-11-06-g1-deletion-leases-design.md": {
+      "beforeSha256": "85f6bad0038505a107fc65f30847a0840dbb5f6a3d55774b22fd70a0c5080614",
+      "afterSha256": "01c63cbd47bc0be3237c874dabd36198029d39190e81ef8c5e1dcc656a2cb0fb",
+      "changed": true
+    },
+    "experiments/pg17-deletion-leases/README.md": {
+      "beforeSha256": null,
+      "afterSha256": "b979e3b9e02dd8b002a919f7bb3e14871a87c38f0c4cbd3fb6a0d936baf9a857",
+      "changed": true
+    },
+    "experiments/pg17-deletion-leases/faults.mjs": {
+      "beforeSha256": null,
+      "afterSha256": "39126ccb8aafdb31d8531f4a6c6329e1122f8b41b86c2ddfc4b88d670d3cb65d",
+      "changed": true
+    },
+    "experiments/pg17-deletion-leases/fixture.mjs": {
+      "beforeSha256": null,
+      "afterSha256": "8829f1ef2942539c6f1758a54b08f733bcc77f00e3484c0ad3d6d28278e13bfb",
+      "changed": true
+    },
+    "experiments/pg17-deletion-leases/lifecycle.mjs": {
+      "beforeSha256": null,
+      "afterSha256": "f73fb38382145ce156e9da49d29e024b2adf435c706a69a29dd5183881e178fb",
+      "changed": true
+    },
+    "experiments/pg17-deletion-leases/locks.mjs": {
+      "beforeSha256": null,
+      "afterSha256": "8bd8d468c4767076dc41f93e56a753d9d71d94c7774960d0436cf8092906ff46",
+      "changed": true
+    },
+    "experiments/pg17-deletion-leases/scenarios.mjs": {
+      "beforeSha256": null,
+      "afterSha256": "24735e55ef183cff0707292dc1a8d72ea84687a3d355c70a07e5fc17c23c8057",
+      "changed": true
+    },
+    "experiments/pg17-deletion-leases/verify-adapter.mjs": {
+      "beforeSha256": null,
+      "afterSha256": "0c56b4d96bb272f34e00fe56120e0d6fe99783945ba65ba242e174e8bfe06017",
+      "changed": true
+    },
+    "experiments/pg17-deletion-leases/verify.mjs": {
+      "beforeSha256": null,
+      "afterSha256": "7fa6ac9d13172b5de8076192b151267b31bb993480a576a152911ba0b96913cf",
+      "changed": true
+    },
+    "packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts": {
+      "beforeSha256": null,
+      "afterSha256": "54ccef1ad269ee3f70f6d904d4cda6d93beb1c5bf1a1ae37be1d73c23101620a",
+      "changed": true
+    },
+    "packages/web/src/lib/server/media-deletion-lease.ts": {
+      "beforeSha256": null,
+      "afterSha256": "9d38b746b82142b5d085b12e82b1b426ae8f071d58a3dda0703c0ecc2154e4a5",
+      "changed": true
+    },
+    "scripts/__tests__/deployment-config.test.js": {
+      "beforeSha256": "39e7ce9f9c90ae89c7a8e066c13576ffe9c91aad070929dc417399aeff32d505",
+      "afterSha256": "cfafc6fddf8172d7a292103df30d58a81ce2b59ad46d2b94b141e5fd57c10bd2",
+      "changed": true
+    },
+    "supabase/migrations/20261106000004_media_deletion_leases.sql": {
+      "beforeSha256": null,
+      "afterSha256": "b09325de38514d56789d8bb8d0c43e12223328f9c72a8a055cff9f01e3146063",
+      "changed": true
+    }
+  },
+  "patchSha256": "635e5defb917d8ac52a4ad9b3979b01d09714fd92e601b38d22bab7fc9a0c5c3"
+}

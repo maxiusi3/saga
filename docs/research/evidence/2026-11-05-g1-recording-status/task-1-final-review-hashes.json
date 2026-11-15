@@ -1,0 +1,10 @@
+{
+  "experiments/pg17-recording-status/README.md": "0dff9c55c6361e8eb8f90b8ea210bbd9fa10447a4949808d3457ebd316bd69ea",
+  "experiments/pg17-recording-status/application.mjs": "2e136a58ef7b61a9b4f584376d1a6b04d188f5b494cfd4740fa439ecac934166",
+  "experiments/pg17-recording-status/database.mjs": "43ca60f84e5db9421dd8db3a2e0fdf63267b0259a625dca3d201b1bb2dd11bad",
+  "experiments/pg17-recording-status/fixture.mjs": "08d04babdb7ffbdcfef4b365a8599e82d25ca40d6807a6a3bcea71e16adee6fb",
+  "experiments/pg17-recording-status/http.mjs": "4dd9f926ccf9772a7c346be937a5bff4991b7844e8677c9d4a6443c39eb28463",
+  "experiments/pg17-recording-status/verify.mjs": "f6221b7d1b2781c5aba5ce2a7855c2797f3f9084d08727e8be2e02d6455b0652",
+  "scripts/__tests__/deployment-config.test.js": "035ea556299f752fef904f0bad88fcd6b0aab90550be542274883a227f192098",
+  "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af"
+}

@@ -1,0 +1,31 @@
+{
+  "frozenAt": "2026-11-05T18:01:27.622667+00:00",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "files": {
+    "package.json": "404f7f4fd43823347d4447ca28b0f1316e7c65c28e59434d205ec0c87064aee8",
+    "scripts/recording-worker.cjs": "14bdb5fb964177ae03805270471baad63ba36393cf918c0f325963b6c58b3440",
+    "scripts/__tests__/recording-worker-cli.test.js": "f49c1f82c400cfebfb8515b9223473e1ef2e28bb66966b12dfa329421f9a5caa",
+    "packages/web/src/lib/server/recording-worker-host.ts": "7069c461f32be473bb2a703764abae5a6cd1a36a9656bdcb2806c4b88e097997",
+    "packages/web/src/lib/server/__tests__/recording-worker-host.test.ts": "b8e5ab075797729414f7e117eeda20eb1ff373ec32c63db5b11eb6463e74b533",
+    "docs/recording-worker.md": "95a3ae86b7a9737b8e85c412654d72e2f15c5fe07c6dc4ab3a0af289104b1909"
+  },
+  "report": {
+    ".superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/task-2-report.md": "4f928c80ff7f99b843451611e6026a07d920a89e241d599a1c95538eef17bfce"
+  },
+  "evidence": {
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-cli-controls-red.log": "2fe7c2ab14b4516a87bf8c83fa264bb4c080c338a4ec4c370efee7ae699e2a48",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-cli-green-final.log": "d74596c42e1d325000abcc532941761bc98945b008f13235932009d26182354f",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-cli-green-initial.log": "8d349a81e75bc8d851174823f30371941da6e03c75fc16911c628aa63ad133ed",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-cli-red.log": "5735dace389c5d40292b5396b8acf9d0882c222fc4a10b8067eedff6c1834e5c",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-command-readiness-final.log": "115cc42c16256035c1f9e655915249651362556f31ee3ef452d1ba3f6feb0301",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-diff-check-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-eslint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-eslint-initial.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-host-config-red.log": "aa97cea34e2fd523b69ed60c79ff1f51aad1c13a2836cfa0f3d8677b4c8a5988",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-host-green-initial.log": "f6faeb6e104c6d522a2233f6331046ef0287945a23b8d62c16710ff0a11fb2af",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-host-red.log": "980ce5cb3188207e6fc8fd46fd0cf6fee7b348432ce473e49d866a3cd7269bf6",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-host-terminal-lease-green-final.log": "f028afaf07ca341794eb9ed4b2cfacb3f9a0e03bdd9689b612fbf1fc6f5975f4",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-typecheck-final.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+    "docs/research/evidence/2026-11-05-g1-recording-flow/task-2-typecheck-initial.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b"
+  }
+}

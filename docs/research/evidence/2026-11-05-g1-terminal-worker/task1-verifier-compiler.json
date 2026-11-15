@@ -1,0 +1,7 @@
+{
+  "command": [
+    "node",
+    "scripts/verify-recording-worker-compatibility.mjs"
+  ],
+  "exitCode": 0
+}

@@ -154,10 +154,13 @@ describe('GET /api/admin/cutover-readiness', () => {
   it('does not infer provider data-policy approval from configured API keys', async () => {
     process.env.ELEVENLABS_API_KEY = 'synthetic-elevenlabs-key'
     process.env.ANTHROPIC_API_KEY = 'synthetic-anthropic-key'
+    process.env.OPENAI_API_KEY = 'synthetic-openai-key'
     process.env.VOYAGE_API_KEY = 'synthetic-voyage-key'
     const res = await GET(request({ 'x-cron-secret': 'synthetic-ops-secret' }))
     const body = await res.json()
-    expect(body.providerProbes).toHaveLength(3)
+    expect(body.providerProbes.map((probe: { capability: string }) => probe.capability)).toEqual([
+      'asr_transcribe', 'story_extract_edit', 'story_fact_review', 'semantic_retrieval',
+    ])
     for (const probe of body.providerProbes) {
       expect(probe).toMatchObject({
         mode: 'dry_run_contract_check', policyCompliant: false,
@@ -166,6 +169,7 @@ describe('GET /api/admin/cutover-readiness', () => {
     }
     expect(JSON.stringify(body)).not.toContain('synthetic-ops-secret')
     expect(JSON.stringify(body)).not.toContain('synthetic-elevenlabs-key')
+    expect(JSON.stringify(body)).not.toContain('synthetic-openai-key')
   })
 
   it('does not let verified alert delivery approve overall cutover while collection or provider gaps remain', async () => {

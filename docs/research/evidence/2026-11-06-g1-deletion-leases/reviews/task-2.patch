@@ -1,0 +1,658 @@
+diff --git a/packages/web/src/lib/server/media-deletion-lease.ts b/packages/web/src/lib/server/media-deletion-lease.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/web/src/lib/server/media-deletion-lease.ts
+@@ -0,0 +1,159 @@
++import type { getSupabaseAdmin } from '@/lib/supabase'
++
++type Options = { admin: ReturnType<typeof getSupabaseAdmin>; signal?: AbortSignal; timeoutMs?: number }
++type Action = 'claim' | 'start' | 'heartbeat' | 'check' | 'recover'
++type InactiveState = 'retry_wait' | 'failed' | 'outcome_unknown'
++
++export type MediaDeletionLeaseReceipt = Readonly<{
++  schemaVersion: 1
++  requestId: string; projectId: string; subjectId: string; subjectType: 'media_asset' | 'story'
++  captureTargetsSha256: string; targetCount: number
++  state: 'leased' | 'running' | InactiveState
++  attempt: number; workerId: string | null; leaseExpiresAt: string | null; serverNow: string
++  canDeleteStorage: false; physicalDeletionComplete: false
++}>
++export type MediaDeletionLease = Readonly<Omit<MediaDeletionLeaseReceipt, 'state' | 'workerId' | 'leaseExpiresAt'> & {
++  state: 'leased' | 'running'; workerId: string; leaseExpiresAt: string
++  // A monotonic value valid only in this process; never persist or transfer it.
++  deadline: number
++}>
++type RecoveredReceipt = Readonly<MediaDeletionLeaseReceipt & {
++  state: InactiveState; workerId: null; leaseExpiresAt: null
++}>
++
++const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
++const WORKER = /^[A-Za-z0-9_-]{1,128}$/
++const KEYS = ['schemaVersion', 'requestId', 'projectId', 'subjectId', 'subjectType', 'captureTargetsSha256',
++  'targetCount', 'state', 'attempt', 'workerId', 'leaseExpiresAt', 'serverNow', 'canDeleteStorage', 'physicalDeletionComplete']
++const IDENTITY = ['requestId', 'projectId', 'subjectId', 'subjectType', 'captureTargetsSha256', 'targetCount', 'workerId', 'attempt'] as const
++
++function unavailable(): never { throw new Error('media_deletion_lease_unavailable') }
++function uuid(value: unknown): value is string { return typeof value === 'string' && UUID.test(value) }
++function worker(value: unknown): value is string { return typeof value === 'string' && WORKER.test(value) }
++function duration(value: unknown): value is number {
++  return typeof value === 'number' && Number.isInteger(value) && value >= 1000 && value <= 120000
++}
++function exactObject(value: unknown, keys: readonly string[]): Record<string, unknown> {
++  if (!value || typeof value !== 'object' || Array.isArray(value) || Reflect.ownKeys(value).length !== keys.length ||
++    keys.some(key => !Object.prototype.hasOwnProperty.call(value, key))) unavailable()
++  // Read each field once and detach from caller/transport-owned mutable objects.
++  return Object.fromEntries(keys.map(key => [key, (value as Record<string, unknown>)[key]]))
++}
++function utcMicroseconds(value: unknown): bigint {
++  if (typeof value !== 'string') unavailable()
++  const match = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d{1,6}))?(?:Z|\+00:00)$/.exec(value)
++  if (!match || value.startsWith('0000-')) unavailable()
++  const milliseconds = Date.parse(`${match[1]}Z`)
++  if (!Number.isFinite(milliseconds) || new Date(milliseconds).toISOString().slice(0, 19) !== match[1]) unavailable()
++  // Whole-second Date parsing validates the calendar only. BigInt preserves
++  // microseconds even for historical/future dates outside safe integer epochs.
++  return BigInt(milliseconds) * BigInt(1000) + BigInt((match[2] ?? '').padEnd(6, '0'))
++}
++function parseReceipt(value: unknown): MediaDeletionLeaseReceipt {
++  const row = exactObject(value, KEYS)
++  if (row.schemaVersion !== 1 || row.canDeleteStorage !== false || row.physicalDeletionComplete !== false ||
++    !uuid(row.requestId) || !uuid(row.projectId) || !uuid(row.subjectId) ||
++    (row.subjectType !== 'media_asset' && row.subjectType !== 'story') ||
++    typeof row.captureTargetsSha256 !== 'string' || !/^[0-9a-f]{64}$/.test(row.captureTargetsSha256) ||
++    !Number.isSafeInteger(row.targetCount) || Number(row.targetCount) < 1 ||
++    !Number.isSafeInteger(row.attempt) || Number(row.attempt) < 1 || Number(row.attempt) > 3) unavailable()
++  const now = utcMicroseconds(row.serverNow)
++  if (row.state === 'leased' || row.state === 'running') {
++    if (!worker(row.workerId)) unavailable()
++    const ttl = utcMicroseconds(row.leaseExpiresAt) - now
++    if (ttl <= BigInt(0) || ttl > BigInt(120000000)) unavailable()
++  } else if ((row.state !== 'retry_wait' && row.state !== 'failed' && row.state !== 'outcome_unknown') ||
++    row.workerId !== null || row.leaseExpiresAt !== null) unavailable()
++  return Object.freeze(row) as MediaDeletionLeaseReceipt
++}
++function pinLease(value: MediaDeletionLease): MediaDeletionLease {
++  const row = exactObject(value, [...KEYS, 'deadline'])
++  const { deadline, ...fields } = row
++  const receipt = parseReceipt(fields)
++  if ((receipt.state !== 'leased' && receipt.state !== 'running') || typeof deadline !== 'number' ||
++    !Number.isFinite(deadline) || deadline <= performance.now()) unavailable()
++  return Object.freeze({ ...receipt, deadline }) as MediaDeletionLease
++}
++
++async function request(requestId: string, action: Action, workerId: string | null, attempt: number | null,
++  leaseMs: number | null, options: Options, expected?: MediaDeletionLease): Promise<MediaDeletionLease | RecoveredReceipt> {
++  const started = performance.now()
++  if (typeof window !== 'undefined' || !uuid(requestId) ||
++    (action !== 'recover' && !worker(workerId)) ||
++    ((action === 'claim' || action === 'heartbeat') && !duration(leaseMs))) unavailable()
++  // Options are also pinned: mutating an options object cannot replace the
++  // original caller's cancellation signal while a transport is outstanding.
++  const { admin, signal, timeoutMs = 5000 } = options
++  if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000 || signal?.aborted) unavailable()
++  const stopAt = Math.min(started + timeoutMs, expected?.deadline ?? Infinity)
++  if (stopAt <= started) unavailable()
++  const controller = new AbortController()
++  const abort = () => controller.abort()
++  let rejectAbort = () => {}
++  const interrupted = new Promise<never>((_, reject) => {
++    rejectAbort = () => reject(new Error('media_deletion_lease_unavailable'))
++    controller.signal.addEventListener('abort', rejectAbort, { once: true })
++  })
++  signal?.addEventListener('abort', abort, { once: true })
++  const timer = setTimeout(abort, Math.max(0, stopAt - performance.now()))
++  try {
++    const query = admin.rpc('media_deletion_job_lease', {
++      p_request_id: requestId, p_action: action, p_worker_id: workerId, p_attempt: attempt, p_lease_ms: leaseMs,
++    }).abortSignal(controller.signal).retry(false)
++    const result = await Promise.race([query, interrupted])
++    if (controller.signal.aborted || signal?.aborted || performance.now() >= stopAt || !result || result.error) unavailable()
++    const receipt = parseReceipt(result.data)
++    if (receipt.requestId !== requestId || (expected && IDENTITY.some(key => receipt[key] !== expected[key]))) unavailable()
++    if (action === 'recover') {
++      if (receipt.state === 'leased' || receipt.state === 'running' ||
++        performance.now() >= stopAt || signal?.aborted) unavailable()
++      return receipt as RecoveredReceipt
++    }
++    if ((receipt.state !== 'leased' && receipt.state !== 'running') || receipt.workerId !== workerId ||
++      (attempt !== null && receipt.attempt !== attempt) ||
++      (action === 'claim' && receipt.state !== 'leased') ||
++      ((action === 'start' || action === 'heartbeat') && receipt.state !== 'running') ||
++      (action === 'check' && expected?.state === 'running' && receipt.state !== 'running')) unavailable()
++    const expiry = utcMicroseconds(receipt.leaseExpiresAt)
++    const ttl = expiry - utcMicroseconds(receipt.serverNow)
++    if ((action === 'claim' && ttl > BigInt(leaseMs!) * BigInt(1000)) ||
++      (action === 'heartbeat' && expiry < utcMicroseconds(expected!.leaseExpiresAt))) unavailable()
++    // Start before transport/lock waits. Observation/start cannot extend the
++    // caller's previous local deadline; only a heartbeat may renew it.
++    const deadline = Math.min(started + Number(ttl) / 1000,
++      action === 'heartbeat' ? Infinity : expected?.deadline ?? Infinity)
++    if (deadline <= performance.now() || performance.now() >= stopAt || signal?.aborted) unavailable()
++    return Object.freeze({ ...receipt, deadline }) as MediaDeletionLease
++  } catch { return unavailable() }
++  finally {
++    clearTimeout(timer)
++    signal?.removeEventListener('abort', abort)
++    controller.signal.removeEventListener('abort', rejectAbort)
++    controller.abort()
++  }
++}
++
++export async function claimMediaDeletionJob(requestId: string, workerId: string, leaseMs: number, options: Options): Promise<MediaDeletionLease> {
++  try { return await request(requestId, 'claim', workerId, null, leaseMs, options) as MediaDeletionLease }
++  catch { unavailable() }
++}
++async function activeRequest(lease: MediaDeletionLease, action: 'start' | 'heartbeat' | 'check', leaseMs: number | null, options: Options): Promise<MediaDeletionLease> {
++  try {
++    const pinned = pinLease(lease)
++    if (action === 'heartbeat' && pinned.state !== 'running') unavailable()
++    return await request(pinned.requestId, action, pinned.workerId, pinned.attempt, leaseMs, options, pinned) as MediaDeletionLease
++  } catch { unavailable() }
++}
++export async function startMediaDeletionJob(lease: MediaDeletionLease, options: Options): Promise<MediaDeletionLease> {
++  return activeRequest(lease, 'start', null, options)
++}
++export async function heartbeatMediaDeletionJob(lease: MediaDeletionLease, leaseMs: number, options: Options): Promise<MediaDeletionLease> {
++  return activeRequest(lease, 'heartbeat', leaseMs, options)
++}
++export async function checkMediaDeletionJobLease(lease: MediaDeletionLease, options: Options): Promise<MediaDeletionLease> {
++  return activeRequest(lease, 'check', null, options)
++}
++export async function recoverMediaDeletionJob(requestId: string, options: Options): Promise<RecoveredReceipt> {
++  try { return await request(requestId, 'recover', null, null, null, options) as RecoveredReceipt }
++  catch { unavailable() }
++}
+diff --git a/packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts b/packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts
+@@ -0,0 +1,263 @@
++/** @jest-environment node */
++import {
++  claimMediaDeletionJob, startMediaDeletionJob, heartbeatMediaDeletionJob,
++  checkMediaDeletionJobLease, recoverMediaDeletionJob,
++  type MediaDeletionLease, type MediaDeletionLeaseReceipt,
++} from '../media-deletion-lease'
++import type { getSupabaseAdmin } from '@/lib/supabase'
++
++const requestId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc'
++const projectId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
++const subjectId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'
++const receipt = {
++  schemaVersion: 1, requestId, projectId, subjectId, subjectType: 'story',
++  captureTargetsSha256: 'a'.repeat(64), targetCount: 4,
++  state: 'leased', attempt: 1, workerId: 'worker-1',
++  serverNow: '2026-11-06T00:00:00.123456+00:00', leaseExpiresAt: '2026-11-06T00:01:00.123456+00:00',
++  canDeleteStorage: false, physicalDeletionComplete: false,
++} as const
++const failure = { message: 'media_deletion_lease_unavailable' }
++function client(...values: [] | [unknown]) {
++  const data = values.length ? values[0] : receipt
++  const retry = jest.fn<Promise<unknown>, [boolean]>(() => Promise.resolve({ data, error: null }))
++  const abortSignal = jest.fn((_signal: AbortSignal) => ({ retry }))
++  const rpc = jest.fn((_name: string, _args: Record<string, unknown>) => ({ abortSignal }))
++  return { rpc, retry, abortSignal, admin: { rpc } as unknown as ReturnType<typeof getSupabaseAdmin> }
++}
++function active(overrides: Record<string, unknown> = {}): MediaDeletionLease {
++  return { ...receipt, deadline: performance.now() + 60000, ...overrides } as MediaDeletionLease
++}
++function deferred(c: ReturnType<typeof client>) {
++  let resolve!: (value: unknown) => void
++  c.retry.mockImplementation(() => new Promise(done => { resolve = done }))
++  return (data: unknown) => resolve({ data, error: null })
++}
++afterEach(() => { jest.useRealTimers(); jest.restoreAllMocks() })
++
++describe('durable deletion lease application boundary', () => {
++  it('claims once with all five exact arguments and an immutable 14-key receipt plus local deadline', async () => {
++    const c = client(), started = performance.now()
++    const value: MediaDeletionLease = await claimMediaDeletionJob(requestId, 'worker-1', 60000, c)
++    expect(c.rpc).toHaveBeenCalledTimes(1)
++    expect(c.rpc).toHaveBeenCalledWith('media_deletion_job_lease', {
++      p_request_id: requestId, p_action: 'claim', p_worker_id: 'worker-1', p_attempt: null, p_lease_ms: 60000,
++    })
++    expect(c.abortSignal).toHaveBeenCalledTimes(1)
++    expect(c.abortSignal.mock.calls[0][0]).toBeInstanceOf(AbortSignal)
++    expect(c.retry).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledWith(false)
++    expect(value).toEqual({ ...receipt, deadline: expect.any(Number) })
++    expect(value.deadline).toBeGreaterThanOrEqual(started + 60000)
++    expect(value.deadline).toBeLessThanOrEqual(performance.now() + 60000)
++    expect(Object.isFrozen(value)).toBe(true); expect(Object.keys(value)).toHaveLength(15)
++  })
++
++  it.each(['start', 'heartbeat', 'check'] as const)('forwards exact %s arguments and preserves identity', async action => {
++    const lease = active({ state: action === 'heartbeat' ? 'running' : 'leased' })
++    const data = { ...receipt, state: 'running' }, c = client(data)
++    const value = action === 'start' ? await startMediaDeletionJob(lease, c)
++      : action === 'heartbeat' ? await heartbeatMediaDeletionJob(lease, 1000, c)
++        : await checkMediaDeletionJobLease(lease, c)
++    expect(value).toMatchObject(data); expect(Object.isFrozen(value)).toBe(true)
++    expect(c.rpc).toHaveBeenCalledWith('media_deletion_job_lease', {
++      p_request_id: requestId, p_action: action, p_worker_id: 'worker-1', p_attempt: 1,
++      p_lease_ms: action === 'heartbeat' ? 1000 : null,
++    })
++    expect(c.retry).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledWith(false)
++  })
++
++  it('allows live running start replay and same-state check', async () => {
++    for (const operation of [startMediaDeletionJob, checkMediaDeletionJobLease]) {
++      expect(await operation(active({ state: 'running' }), client({ ...receipt, state: 'running' }))).toMatchObject({ state: 'running' })
++    }
++    expect(await checkMediaDeletionJobLease(active(), client())).toMatchObject({ state: 'leased' })
++  })
++
++  it.each(['retry_wait', 'failed', 'outcome_unknown'] as const)('recovers %s with null SQL fields and no local deadline', async state => {
++    const data = { ...receipt, state, workerId: null, leaseExpiresAt: null }, c = client(data)
++    const value: MediaDeletionLeaseReceipt = await recoverMediaDeletionJob(requestId, c)
++    expect(value).toEqual(data); expect(Object.keys(value)).toHaveLength(14); expect(Object.isFrozen(value)).toBe(true)
++    expect(c.rpc).toHaveBeenCalledWith('media_deletion_job_lease', {
++      p_request_id: requestId, p_action: 'recover', p_worker_id: null, p_attempt: null, p_lease_ms: null,
++    })
++  })
++
++  it.each([
++    { extra: true }, { deadline: 999999 }, { schemaVersion: 2 }, { requestId: projectId },
++    { projectId: projectId.toUpperCase() }, { subjectId: 'private/path' }, { subjectType: 'recording' },
++    { captureTargetsSha256: 'A'.repeat(64) }, { captureTargetsSha256: 'a'.repeat(63) },
++    { targetCount: 0 }, { targetCount: -1 }, { targetCount: 1.1 }, { targetCount: '4' }, { targetCount: Number.MAX_SAFE_INTEGER + 1 },
++    { state: 'completed' }, { state: 'running' }, { state: 'cancelled' },
++    { workerId: null }, { workerId: 'bad worker' }, { workerId: 'worker-2' }, { workerId: 'x'.repeat(129) },
++    { attempt: 0 }, { attempt: 4 }, { attempt: 1.1 }, { attempt: '1' },
++    { canDeleteStorage: true }, { physicalDeletionComplete: true }, { leaseExpiresAt: null },
++    { leaseExpiresAt: 'infinity' }, { serverNow: 'yesterday' },
++    { serverNow: '2026-02-30T00:00:00Z' }, { serverNow: '2026-11-06T24:00:00Z' },
++    { serverNow: '2026-11-06 00:00:00+00' }, { serverNow: '2026-11-06T00:00:00+01:00' },
++    { serverNow: '0001-01-01T00:00:00+00:00 BC' }, { serverNow: '10000-01-01T00:00:00Z' },
++    { serverNow: '2026-11-06T00:00:00.1234567Z' },
++    { leaseExpiresAt: '2026-11-06T00:00:00.123455Z' },
++    { leaseExpiresAt: receipt.serverNow }, { leaseExpiresAt: '2026-11-06T00:01:00.123457Z' },
++  ])('rejects malformed, overlong or overprivileged claim receipt %j', async mutation => {
++    await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, client({ ...receipt, ...mutation }))).rejects.toMatchObject(failure)
++  })
++
++  it('rejects every missing receipt key and all nonobject receipts', async () => {
++    const missing = Object.keys(receipt).map(key => Object.fromEntries(Object.entries(receipt).filter(([k]) => k !== key)))
++    for (const data of [null, undefined, [], 'receipt', 1, {}, ...missing]) {
++      await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, client(data))).rejects.toMatchObject(failure)
++    }
++  })
++
++  it('compares exact UTC microseconds even for dates beyond safe integer epoch microseconds', async () => {
++    jest.spyOn(performance, 'now').mockReturnValue(100)
++    const data = { ...receipt, serverNow: '9999-12-31T00:00:00.123455Z', leaseExpiresAt: '9999-12-31T00:00:00.123456+00:00' }
++    expect((await claimMediaDeletionJob(requestId, 'worker-1', 1000, client(data))).deadline).toBeCloseTo(100.001, 9)
++    await expect(claimMediaDeletionJob(requestId, 'worker-1', 1000, client({ ...data, serverNow: data.leaseExpiresAt, leaseExpiresAt: data.serverNow }))).rejects.toMatchObject(failure)
++  })
++
++  it('accepts canonical historical years without depending on client wall-clock synchronization', async () => {
++    for (const year of ['0001', '0099', '1900']) {
++      const data = { ...receipt, serverNow: `${year}-01-01T00:00:00Z`, leaseExpiresAt: `${year}-01-01T00:01:00Z` }
++      expect(await claimMediaDeletionJob(requestId, 'worker-1', 60000, client(data))).toMatchObject(data)
++    }
++  })
++
++  it.each(['requestId', 'projectId', 'subjectId', 'subjectType', 'captureTargetsSha256', 'targetCount', 'workerId', 'attempt'])('pins %s on every active operation', async key => {
++    const changes: Record<string, unknown> = { requestId: projectId, projectId: subjectId, subjectId: projectId, subjectType: 'media_asset', captureTargetsSha256: 'b'.repeat(64), targetCount: 5, workerId: 'worker-2', attempt: 2 }
++    for (const operation of [startMediaDeletionJob, checkMediaDeletionJobLease, (l: MediaDeletionLease, c: ReturnType<typeof client>) => heartbeatMediaDeletionJob(l, 60000, c)]) {
++      const c = client(), deliver = deferred(c), input = active({ state: 'running' })
++      const pending = operation(input, c)
++      Object.assign(input, { [key]: changes[key] })
++      deliver({ ...receipt, state: 'running', [key]: changes[key] })
++      await expect(pending).rejects.toMatchObject(failure)
++    }
++  })
++
++  it('uses the original cloned lease and options when caller objects are mutated during transport', async () => {
++    const c = client(), deliver = deferred(c), input = active(), controller = new AbortController()
++    const options = { ...c, signal: controller.signal, timeoutMs: 5000 }
++    const pending = startMediaDeletionJob(input, options)
++    Object.assign(input, { requestId: projectId, state: 'failed', deadline: 0, workerId: 'other' })
++    options.timeoutMs = 0; options.signal = new AbortController().signal
++    deliver({ ...receipt, state: 'running' })
++    expect(await pending).toMatchObject({ requestId, state: 'running', workerId: 'worker-1' })
++  })
++
++  it('clones the transport receipt before returning the immutable lease', async () => {
++    const data = { ...receipt }, value = await claimMediaDeletionJob(requestId, 'worker-1', 60000, client(data))
++    data.targetCount = 99 as 4
++    expect(value.targetCount).toBe(4); expect(value).not.toBe(data)
++  })
++
++  it('rejects state regressions, heartbeat before start and active recovery receipts', async () => {
++    await expect(checkMediaDeletionJobLease(active({ state: 'running' }), client())).rejects.toMatchObject(failure)
++    await expect(startMediaDeletionJob(active(), client())).rejects.toMatchObject(failure)
++    const c = client(); await expect(heartbeatMediaDeletionJob(active(), 1000, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    await expect(recoverMediaDeletionJob(requestId, client())).rejects.toMatchObject(failure)
++    for (const mutation of [{ workerId: 'worker-1' }, { leaseExpiresAt: receipt.leaseExpiresAt }, { requestId: projectId }, { deadline: 100 }]) {
++      await expect(recoverMediaDeletionJob(requestId, client({ ...receipt, state: 'retry_wait', workerId: null, leaseExpiresAt: null, ...mutation }))).rejects.toMatchObject(failure)
++    }
++  })
++
++  it('allows shorter heartbeat requests without shortening server expiry and rejects TTL above 120000 ms', async () => {
++    const input = active({ state: 'running' }), data = { ...receipt, state: 'running' }
++    expect(await heartbeatMediaDeletionJob(input, 1000, client(data))).toMatchObject(data)
++    await expect(heartbeatMediaDeletionJob(input, 1000, client({ ...data, leaseExpiresAt: '2026-11-06T00:00:59.123456Z' }))).rejects.toMatchObject(failure)
++    await expect(heartbeatMediaDeletionJob(input, 120000, client({ ...data, leaseExpiresAt: '2026-11-06T00:02:00.123457Z' }))).rejects.toMatchObject(failure)
++  })
++
++  it('rejects bad request/worker/duration/options values before transport', async () => {
++    for (const id of [null, undefined, '', requestId.toUpperCase(), 'x', {}, 1]) {
++      const c = client(); await expect(claimMediaDeletionJob(id as string, 'worker-1', 60000, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++      await expect(recoverMediaDeletionJob(id as string, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++    for (const worker of ['', 'bad worker', 'a'.repeat(129), null, {}, 1]) {
++      const c = client(); await expect(claimMediaDeletionJob(requestId, worker as string, 60000, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++    for (const duration of [0, 999, 120001, 1000.1, NaN, Infinity, '1000', null]) {
++      const c = client(); await expect(claimMediaDeletionJob(requestId, 'worker-1', duration as number, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++      await expect(heartbeatMediaDeletionJob(active({ state: 'running' }), duration as number, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++    for (const timeoutMs of [0, 60001, 1.1, NaN, Infinity, null, '1000']) {
++      const c = client(); await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, { ...c, timeoutMs: timeoutMs as number })).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++  })
++
++  it.each(['start', 'heartbeat', 'check'] as const)('rejects expired or malformed %s input before transport', async action => {
++    const operation = (value: MediaDeletionLease, c: ReturnType<typeof client>) => action === 'start' ? startMediaDeletionJob(value, c)
++      : action === 'heartbeat' ? heartbeatMediaDeletionJob(value, 60000, c) : checkMediaDeletionJobLease(value, c)
++    for (const input of [null, undefined, {}, active({ state: 'running', deadline: 0 }), active({ deadline: NaN }), active({ deadline: Infinity }), active({ extra: true }), active({ state: 'failed' }), active({ physicalDeletionComplete: true })]) {
++      const c = client(); await expect(operation(input as MediaDeletionLease, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++  })
++
++  it('counts transport waiting against the returned local deadline and rejects a reply after local expiry', async () => {
++    let now = 100
++    jest.spyOn(performance, 'now').mockImplementation(() => now)
++    const c = client(), deliver = deferred(c), pending = claimMediaDeletionJob(requestId, 'worker-1', 60000, c)
++    now = 400; deliver(receipt)
++    expect((await pending).deadline).toBe(60100)
++    const late = client(), reply = deferred(late), waiting = claimMediaDeletionJob(requestId, 'worker-1', 60000, late)
++    now = 60400; reply(receipt)
++    await expect(waiting).rejects.toMatchObject(failure)
++  })
++
++  it('bounds a hung transport by the pinned active deadline even if caller mutates it', async () => {
++    jest.useFakeTimers()
++    const c = client(), input = active({ state: 'running', deadline: performance.now() + 5 })
++    c.retry.mockImplementation(() => new Promise(() => {}))
++    const pending = heartbeatMediaDeletionJob(input, 60000, { ...c, timeoutMs: 5000 })
++    const checked = expect(pending).rejects.toMatchObject(failure)
++    Object.assign(input, { deadline: performance.now() + 120000 })
++    await jest.advanceTimersByTimeAsync(5); await checked
++    expect(c.rpc).toHaveBeenCalledTimes(1); expect(c.abortSignal.mock.calls[0][0].aborted).toBe(true)
++  })
++
++  it.each([false, true])('rejects ignored cancellation promptly (caller=%s) with no retry', async caller => {
++    jest.useFakeTimers()
++    const c = client(), controller = new AbortController()
++    c.retry.mockImplementation(() => new Promise(() => {}))
++    const options = { ...c, timeoutMs: 10, signal: controller.signal }
++    const pending = claimMediaDeletionJob(requestId, 'worker-1', 60000, options)
++    const checked = expect(pending).rejects.toMatchObject(failure)
++    options.signal = new AbortController().signal
++    if (caller) controller.abort(); else await jest.advanceTimersByTimeAsync(10)
++    await checked
++    expect(c.rpc).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledTimes(1)
++    expect(c.abortSignal.mock.calls[0][0].aborted).toBe(true)
++  })
++
++  it('rejects pre-abort before transport and expiry after response even when timers have not fired', async () => {
++    const controller = new AbortController(); controller.abort(); const c = client()
++    await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, { ...c, signal: controller.signal })).rejects.toMatchObject(failure)
++    expect(c.rpc).not.toHaveBeenCalled()
++    let now = 0; jest.spyOn(performance, 'now').mockImplementation(() => now)
++    const slow = client(), deliver = deferred(slow), pending = claimMediaDeletionJob(requestId, 'worker-1', 60000, { ...slow, timeoutMs: 5 })
++    now = 5; deliver(receipt); await expect(pending).rejects.toMatchObject(failure)
++  })
++
++  it('also enforces the timeout after validating a recovery receipt', async () => {
++    let now = 0
++    jest.spyOn(performance, 'now').mockImplementation(() => now)
++    const data = { ...receipt, state: 'retry_wait', workerId: null, leaseExpiresAt: null,
++      get serverNow() { now = 5; return receipt.serverNow },
++    }
++    await expect(recoverMediaDeletionJob(requestId, { ...client(data), timeoutMs: 5 })).rejects.toMatchObject(failure)
++  })
++
++  it.each(['42501', '23505', '22023', '55P03', 'XX000'])('hides SQL %s details with a single no-retry call', async code => {
++    const c = client(); c.retry.mockResolvedValue({ error: { code, message: 'private/path' }, data: null })
++    await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, c)).rejects.toMatchObject(failure)
++    expect(c.rpc).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledTimes(1)
++  })
++
++  it('lost claim/start responses fail generically, allow explicit observation, and never auto-retry', async () => {
++    for (const start of [false, true]) {
++      const c = client(); c.retry.mockRejectedValue(new Error('lost private/path response'))
++      await expect(start ? startMediaDeletionJob(active(), c) : claimMediaDeletionJob(requestId, 'worker-1', 60000, c)).rejects.toMatchObject(failure)
++      expect(c.rpc).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledTimes(1)
++    }
++    expect(await checkMediaDeletionJobLease(active(), client({ ...receipt, state: 'running' }))).toMatchObject({ state: 'running' })
++    expect(await recoverMediaDeletionJob(requestId, client({ ...receipt, state: 'outcome_unknown', workerId: null, leaseExpiresAt: null }))).toMatchObject({ state: 'outcome_unknown' })
++  })
++})
+diff --git a/experiments/pg17-deletion-leases/verify-adapter.mjs b/experiments/pg17-deletion-leases/verify-adapter.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/verify-adapter.mjs
+@@ -0,0 +1,201 @@
++import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { join, posix } from 'node:path'
++import { randomUUID } from 'node:crypto'
++import { createRequire } from 'node:module'
++import { Harness, root, digest } from '../pg17-routines/runtime.mjs'
++import { compileModules } from '../pg17-recording-worker/fixture.mjs'
++import { setup, fresh, capture, materialize, lease, snapshot, USER } from './fixture.mjs'
++
++const require = createRequire(import.meta.url), ts = require('typescript')
++const directory = join(root, 'docs/research/evidence/2026-11-06-g1-deletion-leases', `adapter-${Date.now()}-${randomUUID()}`)
++const report = {
++  status: 'running', assertions: 0, actorConnections: [], scenarios: [], sources: {},
++  observations: [], transport: [], replays: [], expiries: [],
++  command: 'node experiments/pg17-deletion-leases/verify-adapter.mjs',
++  transportSubstitution: 'Only Supabase RPC transport is replaced by local pg; actual adapter is compiled unchanged.',
++  livePostgrest: false, g1MilestoneSatisfied: false, canDeleteStorage: false, physicalDeletionComplete: false,
++}
++const h = new Harness(report)
++await mkdir(directory, { recursive: true })
++async function source(path) {
++  const bytes = await readFile(join(root, path)); report.sources[path] = digest(bytes); return bytes.toString()
++}
++async function graph(path, seen = new Set()) {
++  if (seen.has(path)) return
++  seen.add(path)
++  const text = await source(path)
++  for (const [, dependency] of text.matchAll(/(?:from\s*|import\s*\()['"]([^'"]+\.mjs)['"]/g)) {
++    if (dependency.startsWith('.')) await graph(posix.normalize(posix.join(posix.dirname(path), dependency)), seen)
++  }
++}
++function withoutLedger(rows) {
++  return Object.fromEntries(Object.entries(rows).filter(([table]) => !['media_deletion_jobs', 'media_deletion_attempts'].includes(table)))
++}
++
++// This is a transport, not a model of lease behavior: every subscribed request
++// executes the exact five-argument SQL helper on an actual service connection.
++function applicationAdmin(service, loseAction = null) {
++  return { rpc(name, args) {
++    h.eq(name, 'media_deletion_job_lease', 'actual adapter selects lease RPC')
++    h.eq(Object.keys(args).sort(), ['p_request_id', 'p_action', 'p_worker_id', 'p_attempt', 'p_lease_ms'].sort(), 'closed SQL arguments')
++    const entry = { name, args: { ...args }, backendPid: service.processID, calls: 0, abortSignalCalls: 0, retryCalls: 0 }
++    report.transport.push(entry)
++    const query = {
++      abortSignal(signal) {
++        h.ok(signal instanceof AbortSignal, 'actual adapter supplies AbortSignal')
++        entry.abortSignalCalls++; entry.signalInitiallyAborted = signal.aborted
++        signal.addEventListener('abort', () => { entry.signalEventuallyAborted = true }, { once: true })
++        return query
++      },
++      retry(enabled) {
++        h.eq(enabled, false, 'actual adapter disables SDK retries')
++        entry.retryCalls++; entry.retry = enabled; return query
++      },
++      then(resolve, reject) {
++        entry.calls++
++        return lease(service, args.p_request_id, args.p_action, args.p_worker_id, args.p_attempt, args.p_lease_ms)
++          .then(data => {
++            entry.sqlReceipt = data
++            if (args.p_action === loseAction) {
++              entry.responseLostAfterCommit = true
++              throw new Error('synthetic response lost after SQL commit')
++            }
++            return { data, error: null }
++          }, error => {
++            entry.sqlError = { code: error.code, message: error.message }
++            return { data: null, error: { code: error.code, message: error.message } }
++          }).then(resolve, reject)
++      },
++    }
++    return query
++  } }
++}
++async function captured(service, prepare, subjectType = 'story') {
++  const f = await fresh(h, service, prepare)
++  await materialize(h, f)
++  f.args = { requestId: randomUUID(), subjectId: subjectType === 'story' ? f.storyId : f.assetId, subjectType }
++  f.capture = await capture(service, f.args); f.requestId = f.capture.id
++  report.observations.push({ label: 'actual immutable capture', requestId: f.requestId, capture: f.capture, rows: await snapshot(h) })
++  return f
++}
++async function replay(service, f) {
++  const before = await snapshot(h), result = await capture(service, f.args), after = await snapshot(h)
++  h.eq(result, f.capture, 'actual capture replays its original receipt')
++  h.eq(after, before, 'capture replay preserves full ledger, source rows and synthetic bytes')
++  report.replays.push({ requestId: f.requestId, result, before, after })
++}
++async function observed(label, f, fn, { error = false, readOnly = false } = {}) {
++  const before = await snapshot(h), callsBefore = report.transport.length
++  let result, caught
++  try { result = await fn() } catch (exception) { caught = { message: exception.message } }
++  const after = await snapshot(h)
++  report.observations.push({ label, requestId: f.requestId, result, error: caught, callsBefore, callsAfter: report.transport.length, before, after })
++  h.eq(caught, error ? { message: 'media_deletion_lease_unavailable' } : undefined, `${label}: generic failure or successful receipt`)
++  h.eq(withoutLedger(after), withoutLedger(before), `${label}: complete capture, other rows and bytes unchanged`)
++  if (readOnly) h.eq(after, before, `${label}: all rows unchanged`)
++  if (result) {
++    h.ok(Object.isFrozen(result), `${label}: actual adapter freezes receipt`)
++    h.eq([result.canDeleteStorage, result.physicalDeletionComplete], [false, false], `${label}: no destructive capabilities`)
++    const active = ['leased', 'running'].includes(result.state)
++    h.eq(Object.keys(result).length, active ? 15 : 14, `${label}: closed application receipt`)
++    if (active) h.ok(result.deadline > performance.now(), `${label}: local monotonic deadline live`)
++    else h.ok(!Object.hasOwn(result, 'deadline'), `${label}: recovery has no deadline`)
++  }
++  return result
++}
++async function expire(f) {
++  const rows = (await h.db.query(`SELECT clock_timestamp()::text AS before, lease_expires_at::text,
++    pg_sleep(greatest(0,extract(epoch FROM lease_expires_at-clock_timestamp()))::double precision),
++    clock_timestamp()::text AS after, lease_expires_at <= clock_timestamp() AS expired
++    FROM public.media_deletion_jobs WHERE request_id=$1`, [f.requestId])).rows
++  report.expiries.push({ requestId: f.requestId, rows })
++  h.eq(rows.length, 1, 'one durable job waited on'); h.eq(rows[0].expired, true, 'real database clock reaches expiry')
++}
++
++try {
++  await graph('experiments/pg17-deletion-leases/verify-adapter.mjs')
++  await h.start(); await setup(h, source)
++  const compiled = ts.transpileModule(await source('packages/web/src/lib/server/media-deletion-lease.ts'), {
++    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS }, reportDiagnostics: true,
++  })
++  h.eq(compiled.diagnostics.filter(d => d.category === ts.DiagnosticCategory.Error).length, 0, 'actual adapter transpiles without errors')
++  h.ok(!/require\(/.test(compiled.outputText), 'actual adapter has no runtime dependency substitution')
++  const artifact = join(directory, 'adapter.compiled.cjs')
++  await writeFile(artifact, compiled.outputText)
++  report.compiledAdapter = { artifact: 'adapter.compiled.cjs', sha256: digest(compiled.outputText), typescriptVersion: ts.version }
++  const adapter = require(artifact)
++  const { claimMediaDeletionJob: claim, startMediaDeletionJob: start, heartbeatMediaDeletionJob: heartbeat,
++    checkMediaDeletionJobLease: check, recoverMediaDeletionJob: recover } = adapter
++  const { prepareRecordingSessionSeal: prepare } = await compileModules(h, source)
++  const service = await h.actorClient('service_role', USER), options = { admin: applicationAdmin(service) }
++
++  await h.scenario('actual adapter claim/start/replay/heartbeat/check and conservative running recovery', async () => {
++    const f = await captured(service, prepare)
++    const owned = await observed('claim', f, () => claim(f.requestId, 'adapter-worker', 1500, options))
++    h.eq([owned.state, owned.attempt], ['leased', 1], 'first claim')
++    await observed('check leased', f, () => check(owned, options), { readOnly: true })
++    const running = await observed('start', f, () => start(owned, options))
++    h.eq(running.state, 'running', 'start runs')
++    await observed('running start replay', f, () => start(running, options), { readOnly: true })
++    const renewed = await observed('shorter heartbeat', f, () => heartbeat(running, 1000, options))
++    h.eq(renewed.leaseExpiresAt, running.leaseExpiresAt, 'shorter heartbeat preserves server expiry')
++    await observed('check running', f, () => check(renewed, options), { readOnly: true })
++    await observed('premature recovery', f, () => recover(f.requestId, options), { error: true, readOnly: true })
++    await replay(service, f); await expire(f)
++    const recovered = await observed('expired running recovery', f, () => recover(f.requestId, options))
++    h.eq(recovered.state, 'outcome_unknown', 'running cannot be retried')
++    await observed('recovery replay', f, () => recover(f.requestId, options), { readOnly: true })
++    await observed('unknown cannot claim', f, () => claim(f.requestId, 'new-worker', 1000, options), { error: true, readOnly: true })
++    await replay(service, f)
++  })
++
++  await h.scenario('lost undispatched claim survives connection restart and new worker recovers', async () => {
++    const oldService = await h.actorClient('service_role', USER)
++    const f = await captured(oldService, prepare, 'media_asset')
++    await observed('lost claim result', f, () => claim(f.requestId, 'old-process', 1000, { admin: applicationAdmin(oldService, 'claim') }), { error: true })
++    const oldPid = oldService.processID
++    await h.close(oldService); await expire(f)
++    const restarted = await h.actorClient('service_role', USER), restartedOptions = { admin: applicationAdmin(restarted) }
++    h.ok(restarted.processID !== oldPid, 'worker restart uses a new native connection')
++    report.restart = { oldPid, newPid: restarted.processID, requestId: f.requestId }
++    const recovered = await observed('new process recovers undispatched', f, () => recover(f.requestId, restartedOptions))
++    h.eq([recovered.state, recovered.attempt], ['retry_wait', 1], 'undispatched claim becomes retryable')
++    const next = await observed('new worker claims next attempt', f, () => claim(f.requestId, 'new-process', 1000, restartedOptions))
++    h.eq([next.workerId, next.attempt, next.state], ['new-process', 2, 'leased'], 'attempt and worker advance')
++    await observed('new worker checks', f, () => check(next, restartedOptions), { readOnly: true })
++    const ledger = (await snapshot(h)).media_deletion_attempts.filter(row => row.request_id === f.requestId)
++    h.eq(ledger.map(row => [row.attempt_no, row.state, row.worker_id]), [[1, 'expired', 'old-process'], [2, 'leased', 'new-process']], 'whole attempt history survives restart')
++    await replay(restarted, f)
++  })
++
++  await h.scenario('lost start is observable as running and becomes outcome_unknown after expiry', async () => {
++    const f = await captured(service, prepare)
++    const owned = await observed('claim before lost start', f, () => claim(f.requestId, 'lost-start-worker', 1000, options))
++    await observed('start committed response lost', f, () => start(owned, { admin: applicationAdmin(service, 'start') }), { error: true })
++    const checked = await observed('old leased receipt observes running', f, () => check(owned, options), { readOnly: true })
++    h.eq(checked.state, 'running', 'leased to running check reconciles a lost start response')
++    await replay(service, f); await expire(f)
++    const callsBefore = report.transport.length
++    await observed('expired old local receipt rejected before transport', f, () => heartbeat(checked, 1000, options), { error: true, readOnly: true })
++    h.eq(report.transport.length, callsBefore, 'expired local ownership starts no RPC')
++    const recovered = await observed('lost start outcome unknown', f, () => recover(f.requestId, options))
++    h.eq(recovered.state, 'outcome_unknown', 'lost start never returns to retry_wait')
++    await observed('lost start cannot reclaim', f, () => claim(f.requestId, 'other-worker', 1000, options), { error: true, readOnly: true })
++    await replay(service, f)
++  })
++
++  for (const entry of report.transport) {
++    h.eq([entry.calls, entry.abortSignalCalls, entry.retryCalls, entry.retry], [1, 1, 1, false], 'one bounded no-retry RPC per operation')
++    h.eq(entry.signalEventuallyAborted, true, 'operation disposes its transport signal')
++  }
++  report.finalRows = await snapshot(h)
++  report.status = 'passed'
++} catch (error) {
++  report.status = 'failed'; report.error = { code: error.code ?? 'ERROR', label: error.label ?? error.message }
++  process.exitCode = 1
++} finally {
++  await h.cleanup()
++  if (report.status !== 'passed') process.exitCode = 1
++  await writeFile(join(directory, 'results.json'), JSON.stringify(report, null, 2))
++  console.log(JSON.stringify({ directory, status: report.status, assertions: report.assertions, error: report.error, cleanup: report.cleanup }, null, 2))
++}
+diff --git a/experiments/pg17-deletion-leases/README.md b/experiments/pg17-deletion-leases/README.md
+--- a/experiments/pg17-deletion-leases/README.md
++++ b/experiments/pg17-deletion-leases/README.md
+@@ -18,3 +18,16 @@
+ A transaction holding an uncommitted capture uses the local rehearsal administrator so its full snapshot can include private prerequisite tables; contending lease calls and permission tests use independent non-superuser, non-bypass-RLS service/anon/authenticated connections. Fault triggers use explicit `public` names because the production routine fixes its search path to `pg_catalog, pg_temp`.
+ 
+ This validates local durable ownership and conservative recovery only. Every receipt has `canDeleteStorage:false` and `physicalDeletionComplete:false`. No physical deletion, metadata purge, GC, hosted PostgREST, full migration-chain, backup/restore or device qualification is claimed. Reference safety and late-write reconciliation remain prerequisites for any destructive executor.
++
++## Actual application adapter rehearsal
++
++```bash
++node experiments/pg17-deletion-leases/verify-adapter.mjs
++npm test --workspace=packages/web -- --runInBand src/lib/server/__tests__/media-deletion-lease.test.ts
++```
++
++The separate runner compiles the actual `media-deletion-lease.ts` into CommonJS and substitutes only the Supabase RPC transport with the exported local `lease` SQL helper. Each operation asserts one `.abortSignal(...)` and one `.retry(false)` call. The runner fingerprints the transitive fixture graph, SQL and application source, and retains the compiled artifact, transport arguments, server receipts, full before/after rows, capture replay and synthetic file bytes under a unique `adapter-*/` evidence directory. It cleans up its isolated local cluster and synthetic files.
++
++The native scenarios exercise claim, start, idempotent start, heartbeat with a shorter requested duration, checks, recovery and denied reclaim. A deliberately lost claim result remains durably leased, expires using the actual PostgreSQL clock, and is recovered over a new worker connection before attempt 2. A start that commits before its response is lost can be observed as running using the previous leased receipt; after expiry it becomes `outcome_unknown` and cannot be reclaimed. Lost responses are never interpreted as rollback.
++
++The adapter returns immutable closed receipts, adds a process-local monotonic deadline only to active receipts, and never returns Storage coordinates. UTC calendar validation and exact integer microsecond comparisons reject inverted or oversized submillisecond intervals. Inputs and options are copied before transport. Calls using an active receipt are bounded by its pinned existing deadline. Returned active deadlines include transport and lock waiting; only heartbeat may extend the previous local deadline. SDK cancellation is backed by a local rejection race, and every failure is generic with no automatic retry. Jest covers malformed receipts, changing identities, caller mutations, hung transports, aborts, timeout bounds and lost results. This transport substitution does not qualify hosted PostgREST cancellation or production networks.

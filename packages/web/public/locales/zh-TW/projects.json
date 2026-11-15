@@ -155,7 +155,11 @@
     "loadMore": "載入更多故事",
     "deleteConfirm": "您確定要刪除這個故事嗎？此操作無法復原。",
     "deleteSuccess": "故事刪除成功",
-    "deleteFailed": "刪除故事失敗"
+    "deleteFailed": "刪除故事失敗",
+    "deleteAction": "刪除故事",
+    "deletePending": "正在提交…",
+    "deleteAccepted": "刪除請求已受理。",
+    "deleteUnconfirmed": "尚未確認刪除結果。請重新整理查看故事狀態後重試。"
   },
   "status": {
     "new": "新建",

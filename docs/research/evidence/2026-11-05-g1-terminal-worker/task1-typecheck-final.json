@@ -1,0 +1,9 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "type-check"
+  ],
+  "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947",
+  "exitCode": 0
+}

@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-11-11T10:50:07.395773+08:00",
+  "status": "passed",
+  "aggregateSha256": "474856e92646c1a6176a3b1815454f2a39544913b9706f85f615719eda158a3a",
+  "resumeSha256": "7b4538aa9d37c3bc54c07eafab4f8e15eb5820e6a72c0e81bcb32d29c9299c16",
+  "referencesHashVerified": 45,
+  "logHashesVerified": 86,
+  "sourceFilesVerified": 1204,
+  "archiveMembersVerified": 1204,
+  "linksChecked": 73,
+  "brokenLinks": [],
+  "sourceDrift": [],
+  "diffCheckPassed": true,
+  "stagedFiles": [],
+  "nextEnvRestored": true,
+  "headUnchanged": true
+}

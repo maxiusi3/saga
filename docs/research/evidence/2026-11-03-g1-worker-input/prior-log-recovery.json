@@ -1,0 +1,58 @@
+[
+  {
+    "source": "/tmp/saga-g1-worker-input-verifier-red.log",
+    "archive": "raw/prior-verifier-red.log.gz",
+    "rawSha256": "691c39531003791da9db15a082d4299b7911405a04f539d10135b5671fdbcb37",
+    "archiveSha256": "6127d58030508685bc61455c1f4628cc9999c395f12bdf1a6843a5b51850b8e3",
+    "rawBytes": 6344,
+    "provenance": "Recovered from interrupted chat 30; not re-executed in this turn"
+  },
+  {
+    "source": "/tmp/saga-g1-worker-input-verifier-green-1.log",
+    "archive": "raw/prior-verifier-green-1.log.gz",
+    "rawSha256": "6ab1ed409780022d7db777733d7464c2fbe7b4ac587d8f47f6e3f0c42e8d2d86",
+    "archiveSha256": "5cbe72727979c250c99709c051ed0a17107dbfabc45cd08d3f69ea6ca9437745",
+    "rawBytes": 333,
+    "provenance": "Recovered from interrupted chat 30; not re-executed in this turn"
+  },
+  {
+    "source": "/tmp/saga-g1-worker-input-ledger-red.log",
+    "archive": "raw/prior-ledger-red.log.gz",
+    "rawSha256": "49cb681ece08112b1cf6e311a606a2ba3b70a10fac9af1e7a21f26f5b10e4d31",
+    "archiveSha256": "06136ca2577e048e314787f1a59c27d57f4b1bd29fd464ffe5fb21b7c1c9a5ab",
+    "rawBytes": 155135,
+    "provenance": "Recovered from interrupted chat 30; not re-executed in this turn"
+  },
+  {
+    "source": "/tmp/saga-g1-worker-input-ledger-green-final.log",
+    "archive": "raw/prior-ledger-green-final.log.gz",
+    "rawSha256": "981a0d7c33d20702c9fa4abb883713e6aa1b424b1335c86c8810a2b483be142a",
+    "archiveSha256": "d2714c918f252f6adffb93132ccb0e07a15064b1cb3fa0cd44ce82cd93daf43a",
+    "rawBytes": 321,
+    "provenance": "Recovered from interrupted chat 30; not re-executed in this turn"
+  },
+  {
+    "source": "/tmp/saga-g1-worker-input-ledger-pg-golden.log",
+    "archive": "raw/prior-ledger-pg-golden.log.gz",
+    "rawSha256": "af5345ea43b0a38b35955810be5f38e3a8273a40c25d014c59584c3fa96bf2bc",
+    "archiveSha256": "47f3d5d31daf08b26caf608e4f574e55088a61b73eef9b809138fa0f6a9b0bf0",
+    "rawBytes": 931,
+    "provenance": "Recovered from interrupted chat 30; not re-executed in this turn"
+  },
+  {
+    "source": "/tmp/saga-g1-worker-input-ledger-pg-init.log",
+    "archive": "raw/prior-ledger-pg-init.log.gz",
+    "rawSha256": "9cda0502132095eb8e07831192bfd78bffa2440a924febd7d67b0f366871f809",
+    "archiveSha256": "d20ad9cf4f6aef8fbc64d91e7c670fb5b5ab0704e5978a80562a7614040f1811",
+    "rawBytes": 1000,
+    "provenance": "Recovered from interrupted chat 30; not re-executed in this turn"
+  },
+  {
+    "source": "/tmp/saga-g1-worker-input-ledger-evidence.log",
+    "archive": "raw/prior-ledger-evidence.log.gz",
+    "rawSha256": "aa6902c47ae95b9307f3c8d879c0399d847b542df37cffc7e60368f8f7b77ce3",
+    "archiveSha256": "ba41cc302d7d9ced6120ddd6a8c26bd020c8b02e67c23f37f7f19282c971e192",
+    "rawBytes": 2338,
+    "provenance": "Recovered from interrupted chat 30; not re-executed in this turn"
+  }
+]

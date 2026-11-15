@@ -1,0 +1,1499 @@
+{
+  "status": "failed",
+  "assertions": 242,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "sources": {
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "a5c788235068de9d7c31ed46cb0da9cf710e4759185e4bcb8d5d139bebf82f20",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af",
+    "supabase/migrations/20261106000001_recording_story_save.sql": "7f1d3c78ed2175e73d5a8809bb5bd28902fda453727120304f3f75d311d80612",
+    "packages/web/src/app/api/recordings/sessions/[sessionId]/save/route.ts": "aba17daf51b76d208b477c0c7d398a46f0ffc9de13cd89ba6baa8f399f686770",
+    "packages/web/src/lib/server/media-access.ts": "6f781e6a31c04622737cb1a87ef4fedbd427dd4ff5ca176442e16248bb9d9c0f",
+    "packages/web/src/lib/server/project-access.ts": "c6dd6eeeef8fd9030dad1ef9fd7664f2b66db2bc3181b36d8e33542fe9aa395e",
+    "packages/web/src/lib/recording-save-contract.ts": "d91a75dfe466802ea5e86db651752d44c9c04979a0907b384c7978f45fb8f55c",
+    "packages/web/src/lib/server/recording-story-save.ts": "9190f81e532d4c45fc8fb74c228b29232ce6f5fa75b7e6cbf00682f9a4bf817e",
+    "packages/web/src/lib/server/recording-status-validation.ts": "5c4ae82b3d5648113a5afd4fcbe1a839cde00df0e0f2b3df4fcdc8534ee2fae7",
+    "packages/web/src/lib/server/recording-job-input.ts": "0fe100b20eb886bddbd52eb27cb0eb1b2764188e615536012b5c34f6e97ed42d",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "36cb0471d7751a1e937074aaff7c05506ae97fd10d9800df49ea4142595ab97f",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-job-lease.ts": "8ddc4c5cb8bb11231dc15ecb451b6caed595181ce1615d2f75d684f0ae7024da",
+    "packages/web/src/lib/server/recording-output-candidate.ts": "33c46538e150372327dddfe583f89838b2e6c34626331f0a5436523611163eb8",
+    "packages/web/src/app/api/recordings/sessions/[sessionId]/seal/route.ts": "522c241e88d470338d446d37581e9321e59a72eeab50eaf0942ab93fc5362f53",
+    "packages/web/src/lib/server/recording-seal-registration.ts": "020afdf2200790cc637fa0c76bae7f219b3ca4098e014f53fe7a0a73c4c26542",
+    "packages/web/src/lib/server/recording-manifest-ledger.ts": "79b26bf340767f9cb40c82c0939f51d656fa1edb31c63888f14d8931266852da",
+    "packages/web/src/lib/server/media-asset-guard.ts": "b79501912ea13b8fa0644e3997ec4c3bf23a187e1db28c2a359d39b6f489de30",
+    "packages/web/src/lib/server/recording-asset-lineage.ts": "c803c61daf7394bb211b9ee4d7afa1fa1e8f7781cc79e9dbe44ae90744e6d2f1",
+    "packages/web/src/app/api/recordings/sessions/[sessionId]/status/route.ts": "a12f0e0d3a0e6a079d9ad11b13e341701db5ed906b858d98e4f09a665133c4c3",
+    "packages/web/src/lib/server/recording-session-status.ts": "7aee7e9b61dedb652f518b8d495d20dd02ff9319a47b6023620801ad6e89b41d",
+    "packages/web/src/app/api/media/assets/[assetId]/play/route.ts": "51cbf64d48339fb3321120f6663f464ab6b672b7d932daca374841629378b1d4",
+    "packages/web/src/app/api/media/assets/[assetId]/access/route.ts": "fa3f3f9959b1376a320a5c464a5466b702a26ab1aafccd1657dcf3646288a97e",
+    "packages/web/src/lib/server/recording-terminal-worker.ts": "12ca08db9c58411088565fc2fdcde76b852f9b5df75fd231c3c6bcc494f02037",
+    "packages/web/src/lib/server/recording-candidate-worker.ts": "61831dfc257c75a75c5e5736c26ade78c510483d367bd98f1094eee109fa5a7d",
+    "packages/web/src/lib/server/recording-job-verifier.ts": "86d08b98f8572b5b36c077fdaae1794fe4ab3e5a89c1e1fb80f402454538cead",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-job-worker.ts": "0f965112f08d4cb0b3178600b75ea48c53718b875b1be93f21f778f8e41f2f1d",
+    "packages/web/src/lib/server/recording-candidate-storage.ts": "ae0a4948e9cd68de1bc24eac92c2186078a68e6b62d15fb5371bf741f5b6668a",
+    "packages/web/src/lib/server/recording-job-finalization.ts": "f28f28e8cb04d16d7bdc639d9fabea13e9d3bf5cda09ff95752ca31964b4e89f",
+    "experiments/recording-flow-browser/entry.tsx": "7974cc524a84ab6cc232986877ec5d0874d8604619fa63c2e89a0dc32f0a0f2c",
+    "experiments/recording-flow-browser/boundaries.tsx": "cd24deb5f0f1c33b32db2c3f6e787ab31014fdd5f72628080b89e5e41c163e15",
+    "packages/web/public/locales/en/recording.json": "2d95ea301755f809e55058a7a1757f717cbb7e527a94c0430837d63134dab684",
+    "packages/web/public/locales/en/stories.json": "6cc53c38a8f9ce1fe93b47e76c5fe3985d71b7ae390fbc00ec1bd32b61f1e34f",
+    "packages/web/src/lib/recorder-db.ts": "ca1c675c42a6f07e136c3d4548cd9c157a06cf30116407efe05ddb244e5a55fa",
+    "packages/web/src/lib/recording-save-flow.ts": "668f395d8effedc5df1894d4e0edfa7110930a6ab2480ab3563a91439e1569cb",
+    "packages/web/src/lib/recording-save-validation.ts": "a1a706fe5eff085e777df86a49d6345ee3240af03c9ed1dddb80ff44ab88a194",
+    "packages/web/src/app/[locale]/dashboard/projects/[id]/record/page.tsx": "64d649a5f8c40950443b420f32f514dd1c7dc1952a0d0d5d13a64cd23e33dc39",
+    "packages/web/src/lib/recording-session-lock.ts": "f0b29218605118de39a634e968fb8565b77b3bf1bf61456b4186caa1af24a1b5",
+    "packages/web/src/lib/stories.ts": "16d2cc072d29de1612c23417d8e058edb4f415e37b872859f60a5b57b2267003",
+    "packages/web/src/lib/ai-service.ts": "e7ed29f2558d7bb55f8781fa0927f12a9b0d54b7effdbabbce6b297661aa28b5",
+    "packages/web/src/lib/agent-service.ts": "43533e979e699fff386ad7c54f6a062f195e1c6f0f7d2caa0665064e9a3c6cd8",
+    "packages/web/src/components/recording/RecorderHub.tsx": "4ff863ad7497b9f600f0580b0544a430f82bfb625c7464b3d7f6411bd921368f",
+    "packages/web/src/components/recording/SmartRecorder.tsx": "a1c6ba3a7e1674bb01727328977cfb08dab3b9d325d6179ff0bfae3a6bfe0478",
+    "packages/web/src/components/recording/RecordingRecoveryPanel.tsx": "94a9dbb2127d8adf7b60cac8feb935ff3152cce877ab82945ae1211e43db0ddf",
+    "packages/web/src/components/recording/ReviewStage.tsx": "8733924bedb794b293b2ee0a32abad484d2ea859222743579474475076d0824a",
+    "packages/web/src/components/recording/ResonanceCard.tsx": "f075848918af38529ebf081c0bc3ee6e2016335ba71bd9f3fb247a418a20227f",
+    "packages/web/src/components/ui/card.tsx": "3848cfcfb628808eae8cd2553fc9cd1d21579494f942c0153381ce788cb6a310",
+    "packages/web/src/components/ui/input.tsx": "6628e8fde207857b9ba08910d386eeea8213d7d745b4e0ae8b95332b52730db9",
+    "packages/web/src/components/ui/button.tsx": "68fbbc0cd546a00dfa268d0e50cdeb7062b8ac199308effa7e81ed9e259b382c",
+    "packages/web/src/components/ui/label.tsx": "9ec42c8a57e82311118b794318409ee02b2cebfa49ba6cce8457cff6448cd471",
+    "packages/web/src/components/ui/textarea.tsx": "de4e9fb0fd8e8ed10ea2e475ffe202a922ffe77e3f3edb2c517b0781447ad1b4",
+    "packages/web/src/lib/ai-response.ts": "36e4df8bb3d1322c48699468871690c152c0b3b5a38cb8f477477b56858b388f",
+    "packages/web/src/components/recording/InterventionLevelSelector.tsx": "4ef509bb9ec74656cc3e1c597452932c514c528857b81eef637fae8960c78432",
+    "packages/web/src/components/ui/progress.tsx": "d7a031b3723ec13216c9c3de2000af465ad0212c62b36378b70f80dc891b7a9a",
+    "packages/web/src/components/ui/calendar.tsx": "4a6aaff0e12c67432cbf9f3ebc7a69c843a7c8f1beea806b7705be72b8a96d97",
+    "packages/web/src/components/ui/popover.tsx": "2c01314e3f4c492150d0841d74f1dce283b24a574302a8e0b618a990e73698fd",
+    "packages/web/src/components/ui/switch.tsx": "17f2390d98e8ce4d9e90155eac1918266914d6a9ada7c276b5d1c917cef0e969",
+    "packages/web/src/lib/local-recording-session.ts": "f66881276dc7d81a853fd2e9bfb8a5543bc4f1cb0a1e165e0eb3be11affaf4d9",
+    "packages/web/src/lib/utils.ts": "936eb2d964b830c0bc4a94c5b869317899b06fdc2c0cbf0cec1a3e6470f33902",
+    "packages/web/src/lib/recording-recovery.ts": "222cdd6f35ee2f036d6d40d0946a482c5ee7fc726f12a303b41431869f62a5e3",
+    "packages/web/src/lib/recording-session.ts": "8d6e32654998bf3cc0cbe2fcc01f00c408806860f38caa648cac71f79e407a6e",
+    "packages/web/src/components/audio/AudioPlayer.tsx": "65933f815da2353ae61337ac2c21dd30bfdc4040093a92bccd88553c029e6129",
+    "packages/web/src/hooks/use-silence-detection.ts": "d9793bc2877c5abb3cd3b1374d1f0c30fdd3385f6615fb991fd594e960224b59",
+    "packages/shared/dist/index.js": "1242269f2577a7af5a366fa8018a6def91759ef1c479a5d0f89b659464bc063e",
+    "packages/web/src/lib/storage.ts": "6052a4c6374019d0599d555557d082d4bf3af1af3a2bbb67e806113f04822669",
+    "packages/web/src/components/ui/slider.tsx": "55140ef92c201c82d530dede076603611fbfb2cdc899e4d8459b58f6cbb2b235",
+    "packages/web/src/hooks/useAudioPlayer.ts": "e1e3ad50f461dfef70dd1df2dbe8af97bc217411ee1287219c0769db15d76b88",
+    "packages/shared/dist/types/agents.js": "f5b8c65269cf8ca923b04a56125c744d0cc645efcda23180362ff50c95ffe53b",
+    "packages/shared/dist/types/public-archive.js": "c076a5434751c1e008788888656625ec9bdffd559558a44231bd509911647d08",
+    "packages/shared/dist/lib/ai-services.js": "83ecf70e1a3b7a541ad5fb2bca32bf56f7490a114ede4fa3c5348434c4a5c767",
+    "packages/shared/dist/lib/ai-prompts.js": "6be124262e02b2f4a653656979b6f2ad4813f0c42e4426f926f1a8c12033a7db",
+    "packages/shared/dist/lib/permissions.js": "c0e58e412f763d6ae0ee0ae513beb8fa58020590a0f74a2ae61387f064f58052",
+    "packages/shared/dist/lib/notifications.js": "5b9f13eb53bd977ee668c00d1b66f65f5e311fab1a23caa9fbc1828feb587742",
+    "packages/shared/dist/types/index.js": "2ae6eb6f8ec671d694a070aea0c98789f9549af51de6fa0139b8f64650e6feb9",
+    "packages/shared/dist/utils/index.js": "afb86ea459e88f9da97b7fab3d8b4247e85675fbebcc66da9a641a7bd94e14ff",
+    "packages/shared/dist/types/user.js": "cbf70d8edc3fb9dbf4490ef781a59f4fcd2e1f30eb7c8bc86d3291a184a102be",
+    "packages/shared/dist/types/story.js": "4c0c473accdd73328643b5f2b8185a274eae4cc2f807316316ee6dbf0a38ef55",
+    "packages/shared/dist/types/project.js": "27a317db51d92370c2d645e8d138a2df2102f633f1e6e44ad36b5a84c7560e8d",
+    "packages/shared/dist/types/interaction.js": "7a793c0ce9ca85d32509a3d24e63f152f82ac6a0886d67abf1f53c3c72415c23",
+    "packages/shared/dist/types/subscription.js": "52c4f09fac2c2e518e43ebc94ced492881aa9e18097748a43a348d82c5d771a2",
+    "packages/shared/dist/types/resource-wallet.js": "4f3cc8c5f65ebbd5288c9a9b3fc87cca10c74a6aaa94a7410fd53213b1349669",
+    "packages/shared/dist/types/project-role.js": "ca35acfbec4aa01c8d6551b75c0908f20359747f5ee22800b91dc47b6645fcd3",
+    "packages/shared/dist/types/chapter.js": "dae452a1eeca523d033a715540e124afa9a6622be8276787d5228d2539a08a4d",
+    "packages/shared/dist/types/prompt.js": "8388c4b661cbe8c8d99daa95a2a689b353438536840c474b75eb4bb47030c4d2",
+    "packages/shared/dist/types/payment.js": "6621880b9a2e681ac08095526c0ab0467f9bcba6de98dab823b129e26d5f2546",
+    "packages/shared/dist/types/notification.js": "c1327aab5157a5a8edbb4d670aa9a2dda992c68f099adf179ad5ca8c07bdd221",
+    "packages/shared/dist/types/invitation.js": "162fa1e66efd36ff32a72ea864eff653e8794b32af3a168addaf83acdf54e300",
+    "packages/shared/dist/types/recording.js": "eb99330ec4db351495b8e1cf43ef0988218d387d8ca3b77ad08c3ff39172c4b2",
+    "packages/shared/dist/types/export.js": "fea0463cce01ea8102c306130cd505e22317046b9e762972458165e92016e940",
+    "packages/shared/dist/types/api.js": "7a47ffddae7c4f902af82e9af0798bcad144f87b4ffd893ce38b932ff9f0e9d0",
+    "packages/shared/dist/types/story-discovery.js": "9002df0f9456d97fe45ccb25f4214ce99c65f7cd99a9334c8a90603ab7ed2f9c",
+    "packages/shared/dist/types/story-sharing.js": "07082e46b32afdbde6e39ec36930826d9972024d13c9687968cddb8b4ae9122b",
+    "packages/shared/dist/utils/validation.js": "aee63a2ee7434c510546cff8122b2f49e734219395be0a65cd1d0431f52bd24e",
+    "packages/shared/dist/utils/constants.js": "26eadcead16471aab3d2a8077d3922241ca1bebcf59a05f479d7f7dc0b8b341f",
+    "packages/shared/dist/utils/formatting.js": "8418a99084e65a019a63bffe3f7a5a2cdf4a7f02c40c43f620690885805f7796",
+    "package.json": "0586ca2dfa01c7f8c2e4a2d42a3a56179cac53f9f74f5ec3336d2bf4ff913580",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/web/src/lib/supabase.ts": "318ba8fff029f00b75c0c6b565bdf47b3be3cfd0aabb83a145a9de79ed2a3ec1",
+    "packages/shared/package.json": "618910c86d4acdcf43b40db06f619b42f9172334f3e9b5165ca5d856eb1c87c2",
+    "packages/web/src/app/globals.css": "3e5dfd8e1cb05ed9caecc235fdb2cb1195df786a71eb16d4af9d94276b10c14c",
+    "packages/web/tailwind.config.js": "ed3036875fa8ff725544e35b07afba9c418014d6471dfb0ba00ed472477ced4b",
+    "experiments/recording-flow-browser/build.mjs": "d6d8fdd2e3b8c64470d080dbfbac23ef6f7606bcabe810cd0a4100bcdb4cafb7",
+    "experiments/recording-flow-browser/database-http.mjs": "02cf40cf19264d8579fcf735a57aecb866ff7d8679875448a94af2ab946e6c14",
+    "experiments/recording-flow-browser/compile-server.mjs": "633339d9fbb0c5a58500fe3ea0dfb74df1a9c969ec6c8cfc14b146d05a49d07e",
+    "experiments/recording-flow-browser/browser-server.mjs": "fd2b0d0100540310bd495b6e565813f3cec59e41768f6ae9b3299e040ef6289c",
+    "experiments/recording-flow-browser/verify-browser.mjs": "2a6cf71c258f8672b1bc7d21cf4d7820832ad36b4bdd15423ca2ddfbe0962488"
+  },
+  "checks": [
+    "native recording completes and persists before save",
+    "real page reload discovers draft with continue-saving action",
+    "recovered draft saves through actual API, PG, worker and confirmation",
+    "saved original decodes in browser",
+    "native IDB cleanup abort preserves local copy and retry",
+    "explicit local cleanup removes only confirmed local copy"
+  ],
+  "externalRequests": [],
+  "boundary": "Actual recording page, native MediaRecorder and IndexedDB, Next route handlers, Supabase JS, PG17 and FFmpeg. Synthetic Web Audio microphone, session/auth and local PostgREST/Storage adapters; no real device/cloud or long recording qualification.",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 16513,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-1d90cV/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-1d90cV",
+  "fixture": {
+    "actualStorySchema": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "supabase/migrations/20261104000001_recording_job_finalization.sql",
+      "supabase/migrations/20261105000001_recording_session_snapshot.sql",
+      "supabase/migrations/20261106000001_recording_story_save.sql"
+    ],
+    "syntheticPrerequisites": [
+      "auth",
+      "projects",
+      "project_roles",
+      "project_members",
+      "storage"
+    ]
+  },
+  "browser": "147.0.7727.15",
+  "pageErrors": [],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "NotAllowedError, Wake Lock permission request denied",
+    "Failed to load resource: the server responded with a status of 409 (Conflict)"
+  ],
+  "error": {
+    "message": "safe local failure",
+    "code": "ASSERT_FAILED",
+    "label": "mobile no horizontal overflow"
+  },
+  "diagnostic": {
+    "stage": "no pinned save intent"
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/flow.css"
+    },
+    {
+      "method": "GET",
+      "path": "/flow.js"
+    },
+    {
+      "method": "HEAD",
+      "path": "/api/health"
+    },
+    {
+      "method": "POST",
+      "path": "/api/agents/interview/session"
+    },
+    {
+      "method": "POST",
+      "path": "/fixture/storage/audio-recordings/11111111-1111-4111-8111-111111111111%2Fprojects%2Faaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa%2Fsessions%2Fff9bb956-8791-4654-8776-a839ee66255f%2F0"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/flow.css"
+    },
+    {
+      "method": "GET",
+      "path": "/flow.js"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/save"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/save"
+    },
+    {
+      "method": "POST",
+      "path": "/fixture/storage/audio-recordings/11111111-1111-4111-8111-111111111111%2Fprojects%2Faaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa%2Fsessions%2Fff9bb956-8791-4654-8776-a839ee66255f%2F0"
+    },
+    {
+      "method": "GET",
+      "path": "/fixture/storage/audio-recordings/11111111-1111-4111-8111-111111111111%2Fprojects%2Faaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa%2Fsessions%2Fff9bb956-8791-4654-8776-a839ee66255f%2F0"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/seal"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/save"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/status"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/status"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/status"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/save"
+    },
+    {
+      "method": "GET",
+      "path": "/api/media/assets/178f946f-8a40-8f56-882e-71fa5409db03/play"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/save"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/status"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/save"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/save"
+    },
+    {
+      "method": "GET",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/status"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recordings/sessions/ff9bb956-8791-4654-8776-a839ee66255f/save"
+    }
+  ],
+  "dbRequests": [
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_story_save",
+      "status": 200,
+      "rpc": "recording_story_save",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_story_save",
+      "status": 200,
+      "rpc": "recording_story_save",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/seal_recording_manifest",
+      "status": 200,
+      "rpc": "seal_recording_manifest",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/media_assets",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/processing_jobs",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_story_save",
+      "status": 200,
+      "rpc": "recording_story_save",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/read_recording_session_snapshot",
+      "status": 200,
+      "rpc": "read_recording_session_snapshot",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/storage/v1/object/audio-recordings/11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/ff9bb956-8791-4654-8776-a839ee66255f/0",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_output_candidate",
+      "status": 200,
+      "rpc": "recording_output_candidate",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/storage/v1/object/recording-candidates/jobs/2ad7d75e-7c71-4220-8db2-bf252fa2fb0d/attempts/1/2d4cff6a-ac90-4fcd-8150-4d3bf599e88f",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/read_recording_session_snapshot",
+      "status": 200,
+      "rpc": "read_recording_session_snapshot",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/storage/v1/object/recording-candidates/jobs/2ad7d75e-7c71-4220-8db2-bf252fa2fb0d/attempts/1/2d4cff6a-ac90-4fcd-8150-4d3bf599e88f",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_output_candidate",
+      "status": 200,
+      "rpc": "recording_output_candidate",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/processing_jobs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_sessions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_chunks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/stories",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_job_lease",
+      "status": 200,
+      "rpc": "recording_job_lease",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/finalize_recording_job",
+      "status": 200,
+      "rpc": "finalize_recording_job",
+      "committed": true
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/read_recording_session_snapshot",
+      "status": 200,
+      "rpc": "read_recording_session_snapshot",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_story_save",
+      "status": 200,
+      "rpc": "recording_story_save",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_output_candidates",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/storage/v1/object/sign/recording-candidates/jobs/2ad7d75e-7c71-4220-8db2-bf252fa2fb0d/attempts/1/2d4cff6a-ac90-4fcd-8150-4d3bf599e88f",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/media_assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recording_output_candidates",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/deletion_requests",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/storage/v1/object/sign/recording-candidates/jobs/2ad7d75e-7c71-4220-8db2-bf252fa2fb0d/attempts/1/2d4cff6a-ac90-4fcd-8150-4d3bf599e88f",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_story_save",
+      "status": 200,
+      "rpc": "recording_story_save",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/read_recording_session_snapshot",
+      "status": 200,
+      "rpc": "read_recording_session_snapshot",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_story_save",
+      "status": 200,
+      "rpc": "recording_story_save",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_story_save",
+      "status": 200,
+      "rpc": "recording_story_save",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/read_recording_session_snapshot",
+      "status": 200,
+      "rpc": "read_recording_session_snapshot",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recording_story_save",
+      "status": 200,
+      "rpc": "recording_story_save",
+      "committed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/project_roles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/projects",
+      "status": 200
+    }
+  ],
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "sourceDrift": []
+}

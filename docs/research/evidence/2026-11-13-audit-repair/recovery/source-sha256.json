@@ -1,0 +1,22 @@
+{
+  "packages/web/src/lib/server/publication-delivery-worker.ts": "03d2b89db4ecb6d45cc9aa6e01089abce8b38cf1bd611985fcef9ec306dbe8db",
+  "packages/web/src/lib/server/story-transcription.ts": "88359ca6a910b8f96e5edbcff135c753302f2bfd7facd303ec344f29cf57a64a",
+  "packages/web/src/lib/server/story-review-service.ts": "fb1225caf461f47592c965c3364c2e7edc2b85964a1c96984dade52ea28d7e79",
+  "packages/web/src/lib/server/__tests__/publication-delivery-worker.test.ts": "7f8a6833779b1878f4c55c7d2a4e40d1959dc899d4ac72468d714c93eb3367ff",
+  "packages/web/src/lib/server/__tests__/story-transcription-io.test.ts": "6fe2f409c1d378d061818051c5d5155fc0856858411658e6961f56442c9ec88b",
+  "packages/web/src/lib/server/__tests__/story-review-service.test.ts": "aa98cf76f0baae9d207626786a4892438c788669758393dab219371a723e7ca1",
+  "packages/web/src/components/stories/StoryTranscriptionControl.tsx": "991273da93189ecea3b37958600ea08dbb4f4a5b93d65a5386ef2a1d9b3bead7",
+  "packages/web/src/components/stories/__tests__/story-transcription-control.test.tsx": "7f25c462a6bc6d28b3cd7c49a0032bd6414c89e7f2f3f711133c5eab3f584f21",
+  "packages/web/src/lib/story-transcription-client.ts": "baee4c62cd5ea86737a718e6d9c753711af17aab2b6519259336e627de947539",
+  "packages/web/src/app/api/stories/[storyId]/transcribe/route.ts": "47cd4480b5c1cbd86f81bc771f33183ab1ddd45aafdb0361149a2faf1c1e4484",
+  "packages/web/src/app/api/stories/[storyId]/transcribe/__tests__/route.test.ts": "650f24a55d47802c7e3e6b2971449abaf0e9956b93e0076f0be18ddf41530019",
+  "supabase/migrations/20261113000001_processing_recovery.sql": "c3e97220d7ffb13b5b24234391fef2a9265fd7adf0f22baadeeee6fbef5b3d94",
+  "experiments/pg17-processing-recovery/verify.mjs": "0054b542e69203bcc02d16d651f2e4d1d6f69d0fff8779bc7460cbbfa4d290c7",
+  "experiments/pg17-processing-recovery/scenarios.mjs": "89207905351aa234e63ac5cd466e63062f6d0683658ac295c86127ad84be0db7",
+  "experiments/pg17-processing-recovery/adapter-scenarios.mjs": "563b76f61be5fd35d36c6f1dec8294cd31603ae00dfaa2b6207594ee1376d5bd",
+  "experiments/pg17-processing-recovery/publication-scenarios.mjs": "e106082112448bc5d5c58ba0f0dd6abf965c2c46c8d788613fd002ec5b4bfb45",
+  "experiments/pg17-g2-review/scenarios.mjs": "21205436a8c5fa61ed69c1c6e25af37770437b4740ac1799e737c94f958501f2",
+  "experiments/pg17-g2-review/transcription-chrome.mjs": "f85233e8a0431a0692d752d8a433bfbde25be81970db83242597a5d4816b132a",
+  "docs/processing-recovery.md": "2e2fa35560c8fd276e2dd5b6e1e47fec722d61c2026023f56a8dc37a07791c07",
+  "docs/publication-worker.md": "cfa876dc7a0ef5b4b835b22a100feccc05409f567a1074b43866e63b02ec743b"
+}

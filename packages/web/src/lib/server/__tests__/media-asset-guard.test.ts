@@ -42,7 +42,7 @@ it('checks project access, pinned asset, then the asset/story ledger as the last
   expect(mockProjectAccess).toHaveBeenCalledWith(asset.project_id, user)
   expect(f.select).toHaveBeenCalledWith('media_assets', '*')
   expect(f.eq).toHaveBeenCalledWith('deletion_requests', 'project_id', asset.project_id)
-  expect(f.subjects).toHaveBeenCalledWith('subject_id', [asset.id, asset.story_id])
+  expect(f.subjects).toHaveBeenCalledWith('subject_id', [asset.id, asset.story_id, asset.project_id])
 })
 
 it.each(['id', 'project_id', 'story_id', 'bucket', 'object_key', 'kind', 'state', 'version'])('rejects a changed pinned %s', async field => {

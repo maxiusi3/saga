@@ -42,6 +42,20 @@ describe('T10 Permission-Filtered Provenance Retrieval & Search Service', () => 
     segments,
   })
 
+  it('preserves unaligned null timing rather than inventing audio evidence', () => {
+    const unaligned = buildSearchIndexEntries({
+      projectId: 'proj-search-1', storyId: 'story-search-1', storyTitle: 'Unaligned',
+      transcriptVersionId: transcript.id, mediaAssetId: 'asset-search-1', indexVersion: 1,
+      segments: [{ ...segments[0], startMs: null, endMs: null }],
+    })
+    expect(unaligned[0].startMs).toBeNull()
+    expect(unaligned[0].endMs).toBeNull()
+    const result = executeProvenanceSearch({ actorId: 'member', projectId: 'proj-search-1',
+      isActiveMember: true, query: 'Chicago', entries: unaligned })
+    expect(result.citations[0].startMs).toBeNull()
+    expect(result.answerText).not.toMatch(/verified|0\.0s|semantic/i)
+  })
+
   it('rejects cross-family or revoked members before searching', () => {
     expect(() =>
       executeProvenanceSearch({
@@ -63,7 +77,7 @@ describe('T10 Permission-Filtered Provenance Retrieval & Search Service', () => 
       entries,
     })
 
-    expect(res.status).toBe('grounded_answer')
+    expect(res.status).toBe('source_matches')
     expect(res.citations.length).toBeGreaterThanOrEqual(1)
     expect(res.citations[0].segmentId).toBe(segments[0].id)
     expect(res.citations[0].startMs).toBe(0)
@@ -139,7 +153,7 @@ describe('T10 Permission-Filtered Provenance Retrieval & Search Service', () => 
       query: 'Seattle 1969',
       entries: switched,
     })
-    expect(resNew.status).toBe('grounded_answer')
+    expect(resNew.status).toBe('source_matches')
     expect(resNew.activeIndexVersion).toBe(2)
   })
 })

@@ -243,8 +243,8 @@ export function evaluateOperationalAlerts(
 }
 
 export interface ProviderProbeTarget {
-  capability: 'asr_transcribe' | 'story_extract_edit' | 'semantic_retrieval'
-  provider: 'elevenlabs' | 'anthropic' | 'voyage'
+  capability: 'asr_transcribe' | 'story_extract_edit' | 'story_fact_review' | 'semantic_retrieval'
+  provider: 'elevenlabs' | 'anthropic' | 'voyage' | 'openai'
   modelId: string
   region: string
   trainingOptOutConfirmed: boolean

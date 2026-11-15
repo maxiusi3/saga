@@ -1,0 +1,80 @@
+{
+  "status": "passed",
+  "project": "00ea6c88-5f16-466b-8254-b4f80ef2279f",
+  "story": "9ecd2223-bdbf-458b-9283-60e9fda2852e",
+  "asset": "4340945a-8dc8-4d52-b285-06258e160719",
+  "providerCalls": [
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "document",
+      "count": 2
+    },
+    {
+      "path": "/v1/rerank",
+      "inputType": null,
+      "count": 2
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "document",
+      "count": 2
+    },
+    {
+      "path": "/v1/rerank",
+      "inputType": null,
+      "count": 2
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "document",
+      "count": 2
+    },
+    {
+      "path": "/v1/rerank",
+      "inputType": null,
+      "count": 2
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    }
+  ],
+  "sdkRequests": 70,
+  "boundary": "Actual routes and Supabase SDK over controlled PostgREST/Storage and provider HTTP, native PG17. Synthetic vectors establish computation/wiring, not live Voyage retrieval quality."
+}

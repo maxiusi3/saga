@@ -1,0 +1,192 @@
+{
+  "completedAt": "2026-11-07T16:06:08.910939+00:00",
+  "timezone": "Asia/Taipei",
+  "status": "passed",
+  "scope": "Known G1 failures fixed; Chrome fault matrix, full migration chain and local offline backup/restore qualified",
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "records": {
+    "interruptedChrome": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/interrupted-browser-1794066185867-ac613c97-6cd1-485a-8cd7-7f831171d8cb/results.json",
+      "sha256": "8dc8a182dee3ff4ad0cfff54b723d9754434eff10d32112d20a7d40df6c99f88",
+      "status": "passed",
+      "assertions": 606
+    },
+    "aiChrome": {
+      "path": "docs/research/evidence/2026-11-07-g1-fixes/ai-1794066594425-a6982664-d810-45ac-be23-4a0decc4a326/results.json",
+      "sha256": "30019bd7520497dde375105b0ed961a6e6c2cee851804f9bd1a4b449784bbb53",
+      "status": "passed",
+      "assertions": 2197
+    },
+    "audio": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/audio-1794066593597-a7048455-bb94-4fc9-9796-7091b3d41b8b/results.json",
+      "sha256": "0f71bff8acd1d3721a9283b675b7497d8320f4b9d70a02d4416fea0f46575c7e",
+      "status": "passed",
+      "assertions": null
+    },
+    "envelope": {
+      "path": "docs/research/evidence/2026-11-07-g1-fixes/envelope-1794066595672-83b3e6e2-5bb2-474d-8c5f-31cac325d242/results.json",
+      "sha256": "f4cf7bff0ac46fc505e3916e261c030150b7f28c05434d339909c3a90b5868bb",
+      "status": "passed",
+      "assertions": null
+    },
+    "migrationsAndBackup": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794066887638-762c32a5-09e5-475c-8886-854591e60253/results.json",
+      "sha256": "996f3dc05d7d624f05f71cf7f9b284ccfab3dadd8ec0e17b2c556dbe256429b6",
+      "status": "passed",
+      "assertions": 492
+    }
+  },
+  "gate": {
+    "command": "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra",
+    "exitCode": 0,
+    "webSuites": 162,
+    "webTests": 3382,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 24,
+    "buildPages": 184,
+    "log": "raw/saga-g1-fixes-gate-2.log.gz"
+  },
+  "knownBlockersResolved": [
+    "Interrupted Chrome WebM envelope with complete saved packets",
+    "Missing legacy prerequisite tables and full migration chain"
+  ],
+  "chrome": {
+    "version": "156.0.8078.80",
+    "interruptionRequestedSeconds": 65,
+    "recoveredSeconds": 60,
+    "aiCases": 9,
+    "projectAccess": "actual production helper",
+    "physicalMicrophone": false
+  },
+  "migrations": {
+    "bootstrapFiles": 1,
+    "rootMigrationFiles": 29,
+    "preservedHistoricalRows": true,
+    "realExtensions": [
+      {
+        "extname": "pgcrypto",
+        "extversion": "1.3"
+      },
+      {
+        "extname": "plpgsql",
+        "extversion": "1.0"
+      },
+      {
+        "extname": "uuid-ossp",
+        "extversion": "1.1"
+      }
+    ],
+    "realClientAclNegatives": true
+  },
+  "backup": {
+    "actualPgDump": true,
+    "actualPgRestore": true,
+    "objects": 5,
+    "survivingObjects": 3,
+    "tombstoneAloneRejectsReadyAsset": true,
+    "survivorPlaybackInChrome": true,
+    "onlineDeletionWorkerImplemented": false,
+    "lateWriterReconciliationQualified": false,
+    "hostedStorageQualified": false
+  },
+  "remainingEngineering": [
+    "reference-safe online deletion planning",
+    "late-write reconciliation",
+    "persistent physical deletion outcomes"
+  ],
+  "phoneManualTests": {
+    "owner": "user",
+    "deferred": true,
+    "blocksCurrentWebAcceptance": false
+  },
+  "sourceArchive": {
+    "path": "source.tar.gz",
+    "sha256": "6b02c9ceaf6c1e83b8ea21a3a772a646abea24a1d5e8950b7dea71cb50066d17",
+    "manifest": "source-manifest.json",
+    "files": 949
+  },
+  "logs": {
+    "raw/saga-g1-ai-final.log.gz": {
+      "sha256": "55c94d778b846f919a07315a7dbb37c9e9dcfb837ab597470a9e70c4ef9394a4",
+      "rawSha256": "c90e2560776c94ec89e3c1048756c71e17d7dabfecd1b593d6e14e2eaa54bc57"
+    },
+    "raw/saga-g1-audio-final.log.gz": {
+      "sha256": "1dc37ab58c005234d8223c189cc4931ac6c78e87d7d737df1aa22efd76ab9e2a",
+      "rawSha256": "8c449391237539d633a5d0b557b251041af9ec5f0f668022f538349cc7bc3110"
+    },
+    "raw/saga-g1-backup-2.log.gz": {
+      "sha256": "89796c8a1205b050d0c7ac77fdc40531efafd70b90e4cc36d75757354a4e4bfa",
+      "rawSha256": "74cacc77c12315a11a9143348f667f7a1c41724c1128b67b5e445e9f58c65e26"
+    },
+    "raw/saga-g1-backup-3.log.gz": {
+      "sha256": "1a0ecd90603d2456352943808a7d696c2a9288498618ed9b09256aa749c75fd8",
+      "rawSha256": "dfd67565f6e900a342f0f1bd177818432e064d0dad8cf181c45617ec781ab5ec"
+    },
+    "raw/saga-g1-backup-final-2.log.gz": {
+      "sha256": "9616d1b37572bdb4897d1e0176920ef973f517b9cd63f47a79fd5fd55c3c5bef",
+      "rawSha256": "89acc8b829c498a8fcbe1677f19021335552cd7a85cfb4018f76eaea1b8c2b07"
+    },
+    "raw/saga-g1-backup-final.log.gz": {
+      "sha256": "fb9f3da2b064ee64535e7b464e275d9f9a5f65ccd4a49fa55e58fd8eecfeed26",
+      "rawSha256": "ffe6a40716037433933e50a3c846c0878ffaa17ccfe93ac849372782c4bbb02b"
+    },
+    "raw/saga-g1-backup.log.gz": {
+      "sha256": "51931ad3301431c61f795f2555b747ee9eaa8d251b06a6e0ecc0bcc9e723591f",
+      "rawSha256": "330704d7e009a75cfc865994ad7c1a910eacde95dcffe85db18f77d2345b1064"
+    },
+    "raw/saga-g1-chain-fix-2.log.gz": {
+      "sha256": "d39be1c89418cfb8365ce968e750c68897cb47ba55c3bdf4139511584caaa318",
+      "rawSha256": "6041c8f7278222ac9aec7003a6b2d8a374aeb10527d45bf2892d60175f2dbfe0"
+    },
+    "raw/saga-g1-chain-fix.log.gz": {
+      "sha256": "535652b683d6db2f5bcb1fc9a1deb35f9f813f49ed2d963626dbf6dcdef57220",
+      "rawSha256": "90b1771f6d1746acc1a7ccd73aa84c3cdb8525f526797b3acecd31ed5cd200f5"
+    },
+    "raw/saga-g1-chrome-final.log.gz": {
+      "sha256": "0e75480c98536a9434ca33f640b962e3ffa612da7b46e08e5fcac00ee82722ad",
+      "rawSha256": "15e61c32f57a2f425ef25369031c80360c75a711f784f9e183791b7ed9b46f8e"
+    },
+    "raw/saga-g1-envelope-final.log.gz": {
+      "sha256": "8aab7de03a798625434493f27db4d40a917a735d3cb24ee3a783b01ff739227d",
+      "rawSha256": "aea900eece8f5625bff20f5cf08587d19d236fdbcb6cbb81daa5568fba08dd11"
+    },
+    "raw/saga-g1-envelope-green.log.gz": {
+      "sha256": "36d24d4f6660d85f1285199ca4dc84175ce1dceac64404faf58674c0d4a253ee",
+      "rawSha256": "81348f95f576b55a5afca5c4fa8f225378b66cb9d3fcd538a6a83e0952bc0715"
+    },
+    "raw/saga-g1-envelope-red.log.gz": {
+      "sha256": "f61ca417023af93e3d187d8631c3ca39d09578cde8176dabbd80b7c09c92ad09",
+      "rawSha256": "6f005b44422127f1eeea270f3a8e9351e9f38c66f531a81d16b6df60ba26837e"
+    },
+    "raw/saga-g1-fixes-gate-2.log.gz": {
+      "sha256": "60898191ada927904b85d907234f751caa71223c517f180eee7673173afc32b5",
+      "rawSha256": "69fd46657409822dd6c78e63c709ccdf4d1bc4dee06921dd5077c170511fbffd"
+    },
+    "raw/saga-g1-fixes-gate.log.gz": {
+      "sha256": "ad2c633eb7ca105b4b170ca5b1aecef755e17077005eb50cf2b1527c50fa2839",
+      "rawSha256": "6c5ec7289b2c5f8e32a94e94b3915b6fe691e42225f4ef3dab4950ba9d3db9c2"
+    },
+    "raw/saga-g1-webm-proof-final.log.gz": {
+      "sha256": "5555fcafa94973b8e9066cd9d57d28daaa258c4eab3cf289cb74997ceab53523",
+      "rawSha256": "633afa0360e8f6f9791d9af1f18c7ea0f7abebe254ca7bf2557249f98458fd55"
+    }
+  },
+  "priorEvidenceIntegrity": {
+    "legacyFilesChecked": 4866,
+    "previousChromeRunReceiptsChecked": 14,
+    "previousChromeLogsChecked": 17,
+    "drift": []
+  },
+  "nextEnvRestoration": "next-env-restoration.json",
+  "git": {
+    "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+    "branch": "codex/october-upgrade-p0",
+    "stagedFiles": [],
+    "diffCheckPassed": true,
+    "committed": false,
+    "pushed": false
+  },
+  "review": "Direct implementation and verification; no independent subagent review"
+}

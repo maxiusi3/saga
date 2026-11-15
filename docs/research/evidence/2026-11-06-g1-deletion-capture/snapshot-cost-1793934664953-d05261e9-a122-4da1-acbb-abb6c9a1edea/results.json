@@ -1,0 +1,327 @@
+{
+  "status": "passed",
+  "assertions": 64,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "I2 unrelated 0/8/32 MiB content is excluded from capture JSON serialization",
+      "status": "passed",
+      "assertions": 44
+    }
+  ],
+  "sources": {
+    "experiments/pg17-deletion-capture/fixture.mjs": "7ba4cd9f04ab2cc682644f358fc5d711cdf5ac01067b2c476a4fcac87b888f24",
+    "experiments/pg17-deletion-capture/verify-snapshot-cost.mjs": "a244e2593fa149173da2e73d5f84dbfb9df5f333524435ef72100916ce76cebe",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "a5c788235068de9d7c31ed46cb0da9cf710e4759185e4bcb8d5d139bebf82f20",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af",
+    "supabase/migrations/20261106000001_recording_story_save.sql": "20ba20cdda0ec79c997cf1a0eafc38e7d7c022ad95b6146e7658d4208b8d5569",
+    "supabase/migrations/20261106000002_media_deletion_capture.sql": "8c4873a4cf980bb6912508d387ac2a6d509cf5c27894298a8277e7f7d0f52b32"
+  },
+  "samples": [
+    {
+      "unrelatedStoryBodyMiB": 0,
+      "elapsedMs": 22.60179700000026,
+      "targetCount": 1,
+      "receipt": {
+        "id": "6efe6692-433d-466a-bcb2-009a809af4e9",
+        "state": "requested",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subjectId": "8281a997-7ac7-48e8-b024-215cc6e3636f",
+        "subjectType": "story",
+        "targetCount": 1,
+        "tombstoneAt": "2026-11-06T03:11:07.57296+00:00",
+        "physicalDeletionComplete": false
+      },
+      "beforeRows": {
+        "path": "mib-0-before.json.gz",
+        "rawBytes": 3847,
+        "rawSha256": "8dcb94f4a1365ac224f3757a200a4d212db6d65fe4fe9c3d75d9f0f788d9f0d6",
+        "archiveSha256": "d6f38bbe7498ae3815019558069b4af2de53dd0495d58c20e3014ec68c4ec4ef"
+      },
+      "afterRows": {
+        "path": "mib-0-after.json.gz",
+        "rawBytes": 4910,
+        "rawSha256": "e03b37ad22f317358c1f01df95729d02612520f7be7c40917b0dd64fed3b3834",
+        "archiveSha256": "05a685fff0afa6c8216037fcd73249ef322d16929f242288ba08b7c123d02485"
+      },
+      "probeReceipt": {
+        "id": "f93976d4-1640-45b6-8db7-d28d51466a23",
+        "state": "requested",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subjectId": "16af18ce-3565-47eb-99b1-8580c3e01659",
+        "subjectType": "story",
+        "targetCount": 1,
+        "tombstoneAt": "2026-11-06T03:11:07.603234+00:00",
+        "physicalDeletionComplete": false
+      },
+      "serializer": [
+        {
+          "type_name": "auth.users",
+          "calls": 2,
+          "serialized_bytes": "92",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.deletion_requests",
+          "calls": 1,
+          "serialized_bytes": "583",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.deletion_targets",
+          "calls": 1,
+          "serialized_bytes": "311",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.projects",
+          "calls": 2,
+          "serialized_bytes": "208",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.recording_story_intents",
+          "calls": 2,
+          "serialized_bytes": "898",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.stories",
+          "calls": 2,
+          "serialized_bytes": "1634",
+          "unrelated_body_calls": 0
+        }
+      ],
+      "totalSerializedBytes": 3726,
+      "unrelatedBodyCalls": 0
+    },
+    {
+      "unrelatedStoryBodyMiB": 8,
+      "elapsedMs": 11.543538000000353,
+      "targetCount": 1,
+      "receipt": {
+        "id": "066fcf42-4c0b-4325-a534-489e60af2791",
+        "state": "requested",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subjectId": "284f6e3b-052d-40c1-aab9-bb4e409925d7",
+        "subjectType": "story",
+        "targetCount": 1,
+        "tombstoneAt": "2026-11-06T03:11:08.249726+00:00",
+        "physicalDeletionComplete": false
+      },
+      "beforeRows": {
+        "path": "mib-8-before.json.gz",
+        "rawBytes": 8397692,
+        "rawSha256": "577690b00427aa67735d2c4fe95d63a7f1d816728557bdc949a8b2e946494b5c",
+        "archiveSha256": "04d7e1012e2dc053b47dd1c108e431b23d9e4f649dd8d0f97e5e506cf82bb3ca"
+      },
+      "afterRows": {
+        "path": "mib-8-after.json.gz",
+        "rawBytes": 8398754,
+        "rawSha256": "7b13f3c6257410c7e88bb7dc554d4e1838535a4709235a155ddd43143b7d920e",
+        "archiveSha256": "c3412c7760d9961c5f79af6ee069ba687872ffec2e30c315b30d48d8646c3595"
+      },
+      "probeReceipt": {
+        "id": "e9aebd4e-dd3c-47a8-bd70-c6c4f6a94893",
+        "state": "requested",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subjectId": "27b05e4b-e899-416a-a71b-58e6b21fe5f9",
+        "subjectType": "story",
+        "targetCount": 1,
+        "tombstoneAt": "2026-11-06T03:11:08.874318+00:00",
+        "physicalDeletionComplete": false
+      },
+      "serializer": [
+        {
+          "type_name": "auth.users",
+          "calls": 2,
+          "serialized_bytes": "92",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.deletion_requests",
+          "calls": 1,
+          "serialized_bytes": "583",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.deletion_targets",
+          "calls": 1,
+          "serialized_bytes": "311",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.projects",
+          "calls": 2,
+          "serialized_bytes": "208",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.recording_story_intents",
+          "calls": 2,
+          "serialized_bytes": "898",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.stories",
+          "calls": 2,
+          "serialized_bytes": "1634",
+          "unrelated_body_calls": 0
+        }
+      ],
+      "totalSerializedBytes": 3726,
+      "unrelatedBodyCalls": 0
+    },
+    {
+      "unrelatedStoryBodyMiB": 32,
+      "elapsedMs": 10.34318600000006,
+      "targetCount": 1,
+      "receipt": {
+        "id": "7f802ae1-8de6-4be0-a48b-dea8177d815c",
+        "state": "requested",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subjectId": "b2b81c2c-ceac-4fe7-95be-37fd1c1036ee",
+        "subjectType": "story",
+        "targetCount": 1,
+        "tombstoneAt": "2026-11-06T03:11:11.080117+00:00",
+        "physicalDeletionComplete": false
+      },
+      "beforeRows": {
+        "path": "mib-32-before.json.gz",
+        "rawBytes": 33568752,
+        "rawSha256": "06d532556533a9cdb6dadd9c785d4096d2e4aa8ee1fb88bd3edae535c1a7d93e",
+        "archiveSha256": "be1f8c0e04f02dd4ed99059ec415ff5b0a11499e8ef63b899944669ea8043056"
+      },
+      "afterRows": {
+        "path": "mib-32-after.json.gz",
+        "rawBytes": 33569814,
+        "rawSha256": "4404d134b5882329eeece49fd56eb2ea47673378e75078d691b4610603ae18af",
+        "archiveSha256": "9fe49f8fcf8c085557684f99c51a16aabb42320c3f30023c2d0eddeb484a3898"
+      },
+      "probeReceipt": {
+        "id": "6fe6c273-053b-4d4f-b79d-032705ad5fb6",
+        "state": "requested",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "subjectId": "f2653c80-89f3-462d-8910-eb3a15e28ba0",
+        "subjectType": "story",
+        "targetCount": 1,
+        "tombstoneAt": "2026-11-06T03:11:12.420265+00:00",
+        "physicalDeletionComplete": false
+      },
+      "serializer": [
+        {
+          "type_name": "auth.users",
+          "calls": 2,
+          "serialized_bytes": "92",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.deletion_requests",
+          "calls": 1,
+          "serialized_bytes": "583",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.deletion_targets",
+          "calls": 1,
+          "serialized_bytes": "311",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.projects",
+          "calls": 2,
+          "serialized_bytes": "208",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.recording_story_intents",
+          "calls": 2,
+          "serialized_bytes": "896",
+          "unrelated_body_calls": 0
+        },
+        {
+          "type_name": "public.stories",
+          "calls": 2,
+          "serialized_bytes": "1630",
+          "unrelated_body_calls": 0
+        }
+      ],
+      "totalSerializedBytes": 3720,
+      "unrelatedBodyCalls": 0
+    }
+  ],
+  "command": "node experiments/pg17-deletion-capture/verify-snapshot-cost.mjs",
+  "g1MilestoneSatisfied": false,
+  "physicalDeletionComplete": false,
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 42460,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-BJjism/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-BJjism",
+  "fixture": {
+    "actualStorySchema": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "supabase/migrations/20261104000001_recording_job_finalization.sql",
+      "supabase/migrations/20261105000001_recording_session_snapshot.sql",
+      "supabase/migrations/20261106000001_recording_story_save.sql",
+      "supabase/migrations/20261106000002_media_deletion_capture.sql"
+    ],
+    "syntheticPrerequisites": [
+      "auth",
+      "projects",
+      "project_roles",
+      "project_members",
+      "storage"
+    ],
+    "actualRequestReadPolicy": "CREATE POLICY \"deletion_requests_select_active_member\" ON public.deletion_requests\n  FOR SELECT TO authenticated\n  USING (public.is_active_project_member(project_id, auth.uid()));",
+    "actualDeletionTargetsDdl": "CREATE TABLE IF NOT EXISTS public.deletion_targets (\n  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),\n  deletion_request_id uuid NOT NULL REFERENCES public.deletion_requests(id) ON DELETE CASCADE,\n  target_id text NOT NULL,\n  kind text NOT NULL CHECK (kind IN ('media_asset', 'storage_object', 'story', 'derived_artifact')),\n  bucket text,\n  object_key text,\n  state text NOT NULL DEFAULT 'pending'\n    CHECK (state IN ('pending', 'processing', 'failed', 'deleted', 'not_found')),\n  error_code text,\n  updated_at timestamptz NOT NULL DEFAULT now(),\n  UNIQUE (deletion_request_id, target_id)\n);"
+  },
+  "instrumentation": {
+    "actualSqlSha256": "8c4873a4cf980bb6912508d387ac2a6d509cf5c27894298a8277e7f7d0f52b32",
+    "derivedProbeSha256": "fe31601fb79e7404ed5605156dc6a0d9a3303188787380953adfe69cf70e7b6f",
+    "wrapperSha256": "e49b6f1662db9adc3b349dbad18e8b1fa9d4a264a1005ca75d400a29543fe819",
+    "note": "Timings below execute the unmodified actual function. A separate diagnostic copy substitutes only to_jsonb with a transparent serializer/logger to count serialized payload bytes and unrelated-body hits. It is supplemental, not the production behavior oracle."
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "npx",
+    "eslint",
+    "src/lib/server/recording-terminal-worker.ts",
+    "src/lib/server/recording-candidate-worker.ts",
+    "src/lib/server/__tests__/recording-terminal-worker.test.ts"
+  ],
+  "cwd": "/Users/eat/Documents/eatpotato/saga\u4f20\u5947/packages/web",
+  "exitCode": 2
+}

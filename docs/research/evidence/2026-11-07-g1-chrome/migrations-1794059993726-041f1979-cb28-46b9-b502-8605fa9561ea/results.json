@@ -1,0 +1,116 @@
+{
+  "status": "failed",
+  "assertions": 1,
+  "actorConnections": [],
+  "sources": {
+    "experiments/g1-local/verify-migrations.mjs": "1e311c5a7c99fadab5179f4771fa99ffd8f889bb2083db239c2b5586ef774a64",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "a5c788235068de9d7c31ed46cb0da9cf710e4759185e4bcb8d5d139bebf82f20",
+    "supabase/migrations/20250731012532_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250731015259_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250802015525_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250802015612_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20260611000000_agent_phase1.sql": "77fa360a9174c3af2e27e7b63fefaf3e3cc420ea785d3422f41051731638f2f9",
+    "supabase/migrations/20260612000000_agent_phase2_public_archive.sql": "cb9545b79425861d5ee5ab9a8fc7d71c48358983ab6c9a8f66b467ffa5c62834",
+    "supabase/migrations/20260621000000_storage_policies.sql": "6cfc526f0c3ea4245eb1847748d61d2e8f37db03cd8c10f9cb79f3b16b6188bc",
+    "supabase/migrations/20260625081000_dashboard_support_tables.sql": "526130a7fe84dca1327fd3b8cc7546c3445eadf0d6d29b896499ccfcb73a32de",
+    "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql": "8aa01d232796c63c56e4e6d85bfbf262741d1ff908b2d17c1e95c1332895752b",
+    "supabase/migrations/20261007000001_create_waitlist.sql": "20d2193287988a84de23b9224df8cbd7513fb93439a740da2dc0cce0e0c11a1c",
+    "supabase/migrations/20261007000002_improve_storage_rls.sql": "d0375b2abbeff1b4f8357c5704dc6de37c3ecb64f3fcaae1cfeead949b3e8cff",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1"
+  },
+  "migrations": [
+    {
+      "path": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+      "status": "passed",
+      "elapsedMs": 1145
+    },
+    {
+      "path": "supabase/migrations/20250731012532_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 1
+    },
+    {
+      "path": "supabase/migrations/20250731015259_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20250802015525_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20250802015612_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20260611000000_agent_phase1.sql",
+      "status": "passed",
+      "elapsedMs": 28
+    },
+    {
+      "path": "supabase/migrations/20260612000000_agent_phase2_public_archive.sql",
+      "status": "passed",
+      "elapsedMs": 34
+    },
+    {
+      "path": "supabase/migrations/20260621000000_storage_policies.sql",
+      "status": "passed",
+      "elapsedMs": 4
+    },
+    {
+      "path": "supabase/migrations/20260625081000_dashboard_support_tables.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql",
+      "status": "passed",
+      "elapsedMs": 12
+    },
+    {
+      "path": "supabase/migrations/20261007000001_create_waitlist.sql",
+      "status": "passed",
+      "elapsedMs": 9
+    },
+    {
+      "path": "supabase/migrations/20261007000002_improve_storage_rls.sql",
+      "status": "passed",
+      "elapsedMs": 7
+    },
+    {
+      "path": "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql",
+      "status": "failed",
+      "code": "42P01",
+      "message": "relation \"public.story_artifacts\" does not exist"
+    }
+  ],
+  "boundary": "Actual complete repository bootstrap/migration files on native PG17.4 with real extensions. Minimal synthetic Supabase auth/storage platform schemas; no hosted PostgREST/Auth/Storage qualification.",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "binarySha256": {
+      "postgres": "e7893081006e6fe1ddc769451682fafb4ac1ee7b9d019342f32e879e63e553ce",
+      "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+      "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+      "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+      "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+    }
+  },
+  "scratch": "/tmp/saga-g1-chain-AzKODj",
+  "error": {
+    "message": "relation \"public.story_artifacts\" does not exist",
+    "code": "42P01"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "sourceDrift": []
+}

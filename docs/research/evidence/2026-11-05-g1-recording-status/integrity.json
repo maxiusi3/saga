@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-11-05T09:57:48.992153+00:00",
+  "priorEvidenceUnchanged": 3393,
+  "takeoverFilesCompared": 4447,
+  "inheritedChanges": [
+    "packages/web/src/lib/server/recording-job-input.ts",
+    "docs/README.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "scripts/__tests__/deployment-config.test.js"
+  ],
+  "unexpectedInheritedChanges": [],
+  "headUnchanged": true,
+  "indexEmpty": true,
+  "nextEnvRestored": true,
+  "diffCheck": "passed",
+  "ownedWhitespaceAndConflictCheck": "passed",
+  "testedSourcesMatch": 724,
+  "task2ArchivedSourcesMatch": 7,
+  "native": {
+    "sql": {
+      "receipt": "native-sql-2026-11-05T09-26-15.086Z-dbd5ed7b-1d35-4c19-913c-da74fa582bbc/results.json",
+      "sha256": "141807ef2a6062dc1cf2463fd8a7d41167b22e8a8347b1e88825634388660204",
+      "scenarios": 5,
+      "assertions": 191,
+      "sources": 58,
+      "archivesVerified": 65,
+      "cleanup": "passed"
+    },
+    "http": {
+      "receipt": "native-http-2026-11-05T09-33-17.998Z-3ae4565f-fc32-4849-93d1-ab65ad742d37/results.json",
+      "sha256": "f8113f855208e41a7f38c6e1da523a931373cc8febdc55e93439efde713331a3",
+      "scenarios": 4,
+      "assertions": 585,
+      "sources": 110,
+      "archivesVerified": 124,
+      "cleanup": "passed"
+    }
+  },
+  "takeoverMaps": {
+    "baseline.json.gz": "3bb2fa524d9a7e96683236f908f490e5ad7ea8fe9a8780edadf642007dff61f3",
+    "prior-evidence.json.gz": "54944396a1722b975da7110a89f24aa45d8312344bb90ff7bd7b092194e21aa3"
+  }
+}

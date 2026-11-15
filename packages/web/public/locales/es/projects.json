@@ -155,7 +155,11 @@
     "loadMore": "Cargar Más Historias",
     "deleteConfirm": "¿Estás seguro de que quieres eliminar esta historia? Esta acción no se puede deshacer.",
     "deleteSuccess": "Historia eliminada exitosamente",
-    "deleteFailed": "Error al eliminar historia"
+    "deleteFailed": "Error al eliminar historia",
+    "deleteAction": "Eliminar historia",
+    "deletePending": "Enviando…",
+    "deleteAccepted": "Solicitud de eliminación aceptada.",
+    "deleteUnconfirmed": "No se pudo confirmar la eliminación. Actualiza para comprobar el estado e inténtalo de nuevo."
   },
   "status": {
     "new": "Nuevo",

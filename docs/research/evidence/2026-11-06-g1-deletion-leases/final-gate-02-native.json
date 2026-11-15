@@ -1,0 +1,116 @@
+{
+  "runs": [
+    {
+      "path": "docs/research/evidence/2026-11-06-g1-deletion-leases/native-1793981704070-21b57f37-c7a4-496a-9ed9-2e2c45fcb5fc/results.json",
+      "sha256": "5fad8ffd6c1bec279180044957155a01d8a9e04c57816634ac30523a194a37ed",
+      "assertions": 578,
+      "scenarios": [
+        {
+          "name": "actual capture permits durable claim without granting physical deletion",
+          "status": "passed",
+          "assertions": 7
+        },
+        {
+          "name": "all live actions, start replay, monotone heartbeat and explicit recovery fence",
+          "status": "passed",
+          "assertions": 53
+        },
+        {
+          "name": "three actual undispatched expiries retain all attempts and exhaust into failed",
+          "status": "passed",
+          "assertions": 101
+        },
+        {
+          "name": "lost start response persists running and real expiry becomes outcome_unknown",
+          "status": "passed",
+          "assertions": 40
+        },
+        {
+          "name": "strict arguments, missing capture, actual role denial and READ COMMITTED requirement",
+          "status": "passed",
+          "assertions": 95
+        },
+        {
+          "name": "legacy, identity, digest/count and closed target shape corruption cannot create jobs",
+          "status": "passed",
+          "assertions": 53
+        },
+        {
+          "name": "INSERT suppression and alteration plus capture tampering roll back the whole claim",
+          "status": "passed",
+          "assertions": 21
+        },
+        {
+          "name": "UPDATE suppression and alteration abort start heartbeat and recovery",
+          "status": "passed",
+          "assertions": 47
+        },
+        {
+          "name": "complete old attempts and current binding reject malformed history before every operation",
+          "status": "passed",
+          "assertions": 58
+        },
+        {
+          "name": "same-request competing claims serialize but different requests proceed",
+          "status": "passed",
+          "assertions": 22
+        },
+        {
+          "name": "lease waits behind actual capture and sees newly committed capture",
+          "status": "passed",
+          "assertions": 13
+        },
+        {
+          "name": "target SHARE wait and queued capture tampering fail without a job",
+          "status": "passed",
+          "assertions": 17
+        },
+        {
+          "name": "requester membership removal during wait does not revoke persistent deletion work order",
+          "status": "passed",
+          "assertions": 14
+        },
+        {
+          "name": "real three-second lock timeout retains all rows and files",
+          "status": "passed",
+          "assertions": 10
+        }
+      ],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-11-06-g1-deletion-leases/adapter-1793985490922-059af2d5-4041-4b95-b02d-28033c060bee/results.json",
+      "sha256": "de9c80394a61be1dbe6d5576607bc12fffa335507f834069e6e9439ae633fac9",
+      "assertions": 281,
+      "scenarios": [
+        {
+          "name": "actual adapter claim/start/replay/heartbeat/check and conservative running recovery",
+          "status": "passed",
+          "assertions": 109
+        },
+        {
+          "name": "lost undispatched claim survives connection restart and new worker recovers",
+          "status": "passed",
+          "assertions": 48
+        },
+        {
+          "name": "lost start is observable as running and becomes outcome_unknown after expiry",
+          "status": "passed",
+          "assertions": 57
+        }
+      ],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  ],
+  "sourceDrift": []
+}

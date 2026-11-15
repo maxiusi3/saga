@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-11T14:02:00.940273+08:00",
+  "status": "passed",
+  "receiptSha256": "f3bd4faa98ed2439cd642c4a925ce38b6130e95feabdb7d78308e7bd83b3506a",
+  "sourceFiles": 1265,
+  "sourceHashesMatched": true,
+  "documentsMatched": true,
+  "logHashesMatched": true,
+  "historicalJsonUnchanged": true,
+  "reportLinksChecked": 39,
+  "stagedFiles": [],
+  "nextEnvRestored": true,
+  "diffCheckPassed": true
+}

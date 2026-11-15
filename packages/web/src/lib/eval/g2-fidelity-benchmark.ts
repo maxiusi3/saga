@@ -26,6 +26,12 @@ export interface WilsonInterval {
 }
 
 export interface G2HoldoutEvaluationSummary {
+  evidenceKind: 'synthetic_regression'
+  realFamilyCount: 0
+  actualAudioPlaybackMeasured: false
+  realModelQualityMeasured: false
+  syntheticFamilyCount: number
+  /** Historical field name: counts synthetic templates, not recruited families. */
   holdoutFamilyCount: number
   totalPlantedErrors: number
   detectedPlantedErrors: number
@@ -43,13 +49,15 @@ export interface G2HoldoutEvaluationSummary {
     { detected: number; total: number; rate: number }
   >
   ablationWithoutVerification: {
-    detectedPlantedErrors: number
-    plantedErrorDetectionRate: number
-    severeFabricationsLeakedIntoApproved: number
+    measured: false
+    detectedPlantedErrors: null
+    plantedErrorDetectionRate: null
+    severeFabricationsLeakedIntoApproved: null
   }
   e0HardCasesPassed: number
   e0HardCasesTotal: number
-  g2GatePassed: boolean
+  syntheticRegressionPassed: boolean
+  g2GatePassed: false
 }
 
 export function computeWilsonInterval(successes: number, total: number, z = 1.959963984540054): WilsonInterval {
@@ -231,8 +239,8 @@ function buildFamilyTranscript(f: HoldoutFamilyFixture): TranscriptVersionRecord
     assetId: `asset-${f.storyId}`,
     version: 1,
     language: 'en',
-    provider: 'elevenlabs',
-    model: 'scribe_v2',
+    provider: 'synthetic_fixture',
+    model: 'source-excerpt-regression',
     createdBy: `owner-${f.projectId}`,
     rawSegments,
   })
@@ -242,14 +250,15 @@ export function runE0PipelineChecks(): { passed: number; total: number } {
   let passed = 0
   const total = 10
 
-  // 1. Silence & pause segment handling
+  // Synthetic metadata checks only: no audio is played and no ASR is invoked.
+  // 1. Non-contiguous timestamp preservation
   const t1 = buildVersionedTranscript({
     projectId: 'p-e0',
     storyId: 's-e0-1',
     version: 1,
     language: 'en',
-    provider: 'elevenlabs',
-    model: 'scribe_v2',
+    provider: 'synthetic_fixture',
+    model: 'source-excerpt-regression',
     createdBy: 'u-1',
     rawSegments: [
       { speakerLabel: 'storyteller', startMs: 0, endMs: 12000, text: 'We waited in silence by the train station.' },
@@ -258,14 +267,14 @@ export function runE0PipelineChecks(): { passed: number; total: number } {
   })
   if (t1.alignmentStatus === 'aligned' && t1.segments.length === 2) passed++
 
-  // 2. Multi-speaker overlap attribution
+  // 2. Supplied speaker-label preservation (not measured diarization)
   const t2 = buildVersionedTranscript({
     projectId: 'p-e0',
     storyId: 's-e0-2',
     version: 1,
     language: 'en',
-    provider: 'elevenlabs',
-    model: 'scribe_v2',
+    provider: 'synthetic_fixture',
+    model: 'source-excerpt-regression',
     createdBy: 'u-1',
     rawSegments: [
       { speakerLabel: 'storyteller', startMs: 0, endMs: 5000, text: 'It was near the old bridge.' },
@@ -310,8 +319,8 @@ export function runE0PipelineChecks(): { passed: number; total: number } {
         segmentId: f1.segments[0].id,
         assertionType: 'year_date',
         subject: '1968',
-        claimText: 'Around the late 1960s (1968)',
-        sourceQuote: 'in 1968, my maternal uncle Uncle Arthur',
+        claimText: f1.segments[0].text,
+        sourceQuote: f1.segments[0].text,
         startMs: 0,
         endMs: 28000,
         datePrecision: 'decade',
@@ -352,8 +361,8 @@ export function runE0PipelineChecks(): { passed: number; total: number } {
     storyId: 's-e0-short',
     version: 1,
     language: 'en',
-    provider: 'elevenlabs',
-    model: 'scribe_v2',
+    provider: 'synthetic_fixture',
+    model: 'source-excerpt-regression',
     createdBy: 'u-1',
     rawSegments: [
       { speakerLabel: 'storyteller', startMs: 0, endMs: 4000, text: 'Happy birthday grandma! [laughter]' },
@@ -411,7 +420,7 @@ export function runE0PipelineChecks(): { passed: number; total: number } {
   // 10. Approval blocked when severe fabrication is present
   let blocked = false
   try {
-    approveStoryRevision(wrongNameDraft.revision, wrongNameDraft.assertions, 'u-1')
+    approveStoryRevision(wrongNameDraft.revision, wrongNameDraft.assertions, 'u-1', f1)
   } catch {
     blocked = true
   }
@@ -448,12 +457,12 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
   let unresolvedSevereInApprovedCount = 0
   let audioSeekSpotCheckPassed = 0
   let audioSeekSpotCheckTotal = 0
-  let ablationSevereLeaked = 0
 
   for (const family of HOLDOUT_FAMILIES) {
     const transcript = buildFamilyTranscript(family)
 
-    // 20 clean negative assertions per family (10 families * 20 = 200 clean negatives)
+    // Clean negatives are exact source excerpts. Semantic paraphrases are not
+    // represented, so this is not a real-world false-positive estimate.
     const cleanCandidates: CandidateStoryAssertion[] = transcript.segments.map((seg, idx) => {
       const mod = idx % 4
       if (mod === 0) {
@@ -462,8 +471,8 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
           segmentId: seg.id,
           assertionType: 'person',
           subject: family.relativeName,
-          claimText: `${family.relativeName} was present in memory #${idx + 1}`,
-          sourceQuote: `${family.relationWord} ${family.relativeName}`,
+          claimText: seg.text,
+          sourceQuote: seg.text,
           startMs: seg.startMs,
           endMs: seg.endMs,
         }
@@ -474,8 +483,8 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
           segmentId: seg.id,
           assertionType: 'relation',
           subject: family.relationWord,
-          claimText: `${family.relativeName} is the storyteller's ${family.relationWord}`,
-          sourceQuote: `my ${family.relationWord} ${family.relativeName}`,
+          claimText: seg.text,
+          sourceQuote: seg.text,
           startMs: seg.startMs,
           endMs: seg.endMs,
         }
@@ -486,8 +495,8 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
           segmentId: seg.id,
           assertionType: 'year_date',
           subject: String(family.trueYear),
-          claimText: `Occurred in ${family.trueYear}`,
-          sourceQuote: `in ${family.trueYear}, my ${family.relationWord}`,
+          claimText: seg.text,
+          sourceQuote: seg.text,
           startMs: seg.startMs,
           endMs: seg.endMs,
         }
@@ -497,8 +506,8 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
         segmentId: seg.id,
         assertionType: 'event',
         subject: family.eventPhrase,
-        claimText: `We ${family.eventPhrase}`,
-        sourceQuote: family.eventPhrase,
+        claimText: seg.text,
+        sourceQuote: seg.text,
         startMs: seg.startMs,
         endMs: seg.endMs,
       }
@@ -521,7 +530,7 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
       }
     }
 
-    // Spot-check 10 core facts per holdout family for audio seek alignment (10 * 10 = 100 checks)
+    // Legacy counter names retained: compare citation metadata, never playback.
     for (let s = 0; s < 10; s++) {
       audioSeekSpotCheckTotal++
       const item = cleanDraft.assertions[s]
@@ -653,15 +662,14 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
         detectedPlantedErrors++
         categoryBreakdown[cat].detected++
       }
-      if (verified.isSevereFabrication) {
-        ablationSevereLeaked++
-      }
     })
 
     // Verify that attempting to approve plantedDraft without resolving planted errors is blocked
     let approvalSucceeded = false
     try {
-      approveStoryRevision(plantedDraft.revision, plantedDraft.assertions, `owner-${family.projectId}`)
+      approveStoryRevision(plantedDraft.revision, plantedDraft.assertions.map(assertion => ({
+        ...assertion, reviewDecision: 'accepted', reviewedBy: `owner-${family.projectId}`,
+      })), `owner-${family.projectId}`, transcript)
       approvalSucceeded = true
     } catch {
       approvalSucceeded = false
@@ -680,7 +688,7 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
   const falsePositiveRate = Number((falsePositives / totalCleanNegatives).toFixed(4))
   const e0 = runE0PipelineChecks()
 
-  const g2GatePassed =
+  const syntheticRegressionPassed =
     plantedErrorDetectionRate >= 0.95 &&
     falsePositiveRate <= 0.10 &&
     unresolvedSevereInApprovedCount === 0 &&
@@ -688,6 +696,11 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
     e0.passed === e0.total
 
   return {
+    evidenceKind: 'synthetic_regression',
+    realFamilyCount: 0,
+    actualAudioPlaybackMeasured: false,
+    realModelQualityMeasured: false,
+    syntheticFamilyCount: HOLDOUT_FAMILIES.length,
     holdoutFamilyCount: HOLDOUT_FAMILIES.length,
     totalPlantedErrors,
     detectedPlantedErrors,
@@ -702,12 +715,14 @@ export function evaluateG2FidelityBenchmark(): G2HoldoutEvaluationSummary {
     audioSeekSpotCheckTotal,
     categoryBreakdown,
     ablationWithoutVerification: {
-      detectedPlantedErrors: 0,
-      plantedErrorDetectionRate: 0,
-      severeFabricationsLeakedIntoApproved: ablationSevereLeaked,
+      measured: false,
+      detectedPlantedErrors: null,
+      plantedErrorDetectionRate: null,
+      severeFabricationsLeakedIntoApproved: null,
     },
     e0HardCasesPassed: e0.passed,
     e0HardCasesTotal: e0.total,
-    g2GatePassed,
+    syntheticRegressionPassed,
+    g2GatePassed: false,
   }
 }

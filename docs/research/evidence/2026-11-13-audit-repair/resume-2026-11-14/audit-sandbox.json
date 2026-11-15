@@ -1,0 +1,15 @@
+
+> saga-family-biography@1.0.0 audit:high
+> npm audit --workspaces --audit-level=high --json
+
+npm warn audit request to https://registry.npmjs.org/-/npm/v1/security/audits/quick failed, reason: connect EPERM 127.0.0.1:7890 - Local (0.0.0.0:0)
+npm error audit endpoint returned an error
+{
+  "message": "request to https://registry.npmjs.org/-/npm/v1/security/audits/quick failed, reason: connect EPERM 127.0.0.1:7890 - Local (0.0.0.0:0)",
+  "error": {
+    "summary": "",
+    "detail": ""
+  }
+}
+npm error Log files were not written due to an error writing to the directory: /Users/eat/.npm/_logs
+npm error You can rerun the command with `--loglevel=verbose` to see the logs in your terminal

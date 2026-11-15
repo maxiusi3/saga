@@ -1,0 +1,686 @@
+--- /dev/null
++++ b/packages/web/src/app/api/recordings/sessions/[sessionId]/status/__tests__/route.test.ts
+@@ -0,0 +1,89 @@
++/** @jest-environment node */
++import { NextRequest, NextResponse } from 'next/server'
++import { GET } from '../route'
++import { ACTOR, PROJECT, SESSION, ERROR, statusFixture, statusTransport } from '@/lib/server/__tests__/fixtures/recording-status-fixture'
++
++const mockAuth = jest.fn(), mockAdmin = jest.fn()
++jest.mock('@/lib/server/auth', () => ({ getAuthenticatedUser: (...args: unknown[]) => mockAuth(...args) }))
++jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => mockAdmin() }))
++let flag: string | undefined
++const headers = new Headers()
++headers.append('Set-Cookie', 'first=refresh; Path=/; HttpOnly')
++headers.append('Set-Cookie', 'second=refresh; Path=/; HttpOnly')
++const request = (query: string, signal?: AbortSignal) => new NextRequest(`http://localhost/api/recordings/sessions/${SESSION}/status?${query}`, { signal })
++const queryFor = (f: ReturnType<typeof statusFixture>) => `projectId=${PROJECT}&manifestSha256=${f.input.manifestSha256}`
++const get = (req: NextRequest, sessionId = SESSION) => GET(req, { params: Promise.resolve({ sessionId }) })
++function privateHeaders(response: Response) {
++  expect(response.headers.get('cache-control')).toBe('no-store')
++  expect(response.headers.getSetCookie()).toEqual(headers.getSetCookie())
++}
++beforeEach(() => {
++  jest.resetAllMocks(); flag = process.env.MEDIA_ASSETS_ENABLED; process.env.MEDIA_ASSETS_ENABLED = 'true'
++  mockAuth.mockResolvedValue({ ok: true, user: { id: ACTOR }, headers })
++})
++afterEach(() => { if (flag === undefined) delete process.env.MEDIA_ASSETS_ENABLED; else process.env.MEDIA_ASSETS_ENABLED = flag })
++
++it.each(['succeeded', 'failed', 'queued'] as const)('serves only compact %s status with refreshed cookies', async state => {
++  const f = statusFixture(state), t = statusTransport(f.snapshot); mockAdmin.mockReturnValue(t.admin)
++  const response = await get(request(queryFor(f)))
++  expect(response.status).toBe(state === 'queued' ? 202 : 200); privateHeaders(response)
++  const body = await response.json()
++  expect(body).toMatchObject({ state: state === 'queued' ? 'unresolved' : state, canClearLocalDrafts: false })
++  expect(Object.keys(body).sort()).toEqual(['schemaVersion', 'projectId', 'sessionId', 'assetId', 'jobId', 'manifestSha256',
++    'observedAt', 'state', 'content', 'errorCode', 'finishedAt', 'canClearLocalDrafts'].sort())
++  expect(JSON.stringify(body)).not.toMatch(/object_key|objectKey|worker|candidateId|recording-candidates|test-service-key/)
++  expect(t.requests).toHaveLength(1)
++  expect(t.requests[0].url.pathname).toBe('/rest/v1/rpc/read_recording_session_snapshot')
++  expect(JSON.parse(String(t.requests[0].init.body)).p_actor_id).toBe(ACTOR)
++})
++it.each([401, 403, 503])('preserves auth %s response and cookies without calling the reader', async status => {
++  mockAuth.mockResolvedValue({ ok: false, response: NextResponse.json({ error: 'auth_failed' }, { status, headers }) })
++  const response = await get(request(''))
++  expect(response.status).toBe(status); privateHeaders(response)
++  expect(await response.json()).toEqual({ error: 'auth_failed' }); expect(mockAdmin).not.toHaveBeenCalled()
++})
++it.each([undefined, 'false', 'TRUE', '1', ' true '])('requires the literal enabled flag (%s)', async value => {
++  if (value === undefined) delete process.env.MEDIA_ASSETS_ENABLED; else process.env.MEDIA_ASSETS_ENABLED = value
++  const response = await get(request(''))
++  expect(response.status).toBe(404); privateHeaders(response); expect(mockAdmin).not.toHaveBeenCalled()
++})
++it.each(['', 'projectId=x', `projectId=${PROJECT}`, 'manifestSha256=' + 'a'.repeat(64),
++  `projectId=${PROJECT}&manifestSha256=${'A'.repeat(64)}`, `projectId=${PROJECT}&manifestSha256=${'a'.repeat(63)}`,
++  `projectId=x&manifestSha256=${'a'.repeat(64)}`, `projectId=${PROJECT}&manifestSha256=${'a'.repeat(64)}&actorId=${ACTOR}`,
++  `projectId=${PROJECT}&manifestSha256=${'a'.repeat(64)}&extra=`,
++  `projectId=${PROJECT}&projectId=${PROJECT}&manifestSha256=${'a'.repeat(64)}`,
++  `projectId=${PROJECT}&manifestSha256=${'a'.repeat(64)}&manifestSha256=${'a'.repeat(64)}`])
++('rejects missing, duplicate or polluted query %s before database access', async query => {
++  const response = await get(request(query))
++  expect(response.status).toBe(400); privateHeaders(response); expect(mockAdmin).not.toHaveBeenCalled()
++})
++it.each(['bad', '22222222-2222-4222-8222-22222222222Z', ` ${SESSION}`, SESSION.toUpperCase().replace('2', 'A')])
++('rejects invalid session %s', async sessionId => {
++  const response = await get(request(queryFor(statusFixture())), sessionId)
++  expect(response.status).toBe(400); privateHeaders(response); expect(mockAdmin).not.toHaveBeenCalled()
++})
++it('authenticates even when disabled and before interpreting arguments', async () => {
++  process.env.MEDIA_ASSETS_ENABLED = 'false'
++  mockAuth.mockResolvedValue({ ok: false, response: NextResponse.json({ error: 'auth' }, { status: 401, headers }) })
++  const response = await get(request('garbage'))
++  expect(response.status).toBe(401); privateHeaders(response); expect(mockAdmin).not.toHaveBeenCalled()
++})
++it.each(['config', 'malformed', 'lost', 'rpc', 'terminal-fragment'])('returns fixed unavailable for %s failure', async mode => {
++  const f = statusFixture(), t = statusTransport(f.snapshot)
++  if (mode === 'config') mockAdmin.mockImplementation(() => { throw new Error('SECRET service key') })
++  else mockAdmin.mockReturnValue(t.admin)
++  if (mode === 'malformed') t.setResponse(() => new Response('malformed SECRET'))
++  if (mode === 'lost') t.setHook(() => { throw new Error('SECRET token') })
++  if (mode === 'rpc') t.setResponse(() => new Response(JSON.stringify({ message: 'SECRET', code: '42501' }), { status: 403 }))
++  if (mode === 'terminal-fragment') f.job.state = 'running'
++  const response = await get(request(queryFor(f)))
++  expect(response.status).toBe(503); privateHeaders(response); expect(await response.json()).toEqual({ error: ERROR })
++  expect(t.requests.length).toBe(mode === 'config' ? 0 : 1)
++})
++it('passes caller cancellation to the actual reader without a mutation fallback', async () => {
++  const f = statusFixture(), t = statusTransport(f.snapshot), controller = new AbortController()
++  mockAdmin.mockReturnValue(t.admin); t.setHook(() => { controller.abort('SECRET') })
++  const response = await get(request(queryFor(f), controller.signal))
++  expect(response.status).toBe(503); privateHeaders(response); expect(await response.json()).toEqual({ error: ERROR })
++  expect(t.requests).toHaveLength(1); expect(t.requests[0].init.signal?.aborted).toBe(true)
++})
+--- /dev/null
++++ b/packages/web/src/app/api/recordings/sessions/[sessionId]/status/route.ts
+@@ -0,0 +1,34 @@
++import { NextRequest, NextResponse } from 'next/server'
++import { getAuthenticatedUser } from '@/lib/server/auth'
++import { withMediaHeaders } from '@/lib/server/media-access'
++import { readRecordingSessionStatus } from '@/lib/server/recording-session-status'
++import { getSupabaseAdmin } from '@/lib/supabase'
++
++export const runtime = 'nodejs'
++const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
++function reply(body: unknown, status: number, headers: Headers) {
++  return withMediaHeaders(NextResponse.json(body, { status }), headers)
++}
++
++export async function GET(request: NextRequest, { params }: { params: Promise<{ sessionId: string }> }) {
++  const auth = await getAuthenticatedUser(request)
++  if (!auth.ok) {
++    auth.response.headers.set('Cache-Control', 'no-store')
++    return auth.response
++  }
++  if (process.env.MEDIA_ASSETS_ENABLED !== 'true') return reply({ error: 'recording_status_disabled' }, 404, auth.headers)
++  const { sessionId } = await params
++  const query = request.nextUrl.searchParams
++  const projectId = query.get('projectId'), manifestSha256 = query.get('manifestSha256')
++  if (!UUID.test(sessionId) || typeof projectId !== 'string' || !UUID.test(projectId) ||
++    typeof manifestSha256 !== 'string' || !/^[0-9a-f]{64}$/.test(manifestSha256) ||
++    query.getAll('projectId').length !== 1 || query.getAll('manifestSha256').length !== 1 ||
++    [...query.keys()].some(key => key !== 'projectId' && key !== 'manifestSha256')) {
++    return reply({ error: 'invalid_recording_status_arguments' }, 400, auth.headers)
++  }
++  try {
++    const status = await readRecordingSessionStatus({ actorId: auth.user.id, projectId, sessionId, manifestSha256 },
++      { admin: getSupabaseAdmin(), signal: request.signal })
++    return reply(status, status.state === 'unresolved' ? 202 : 200, auth.headers)
++  } catch { return reply({ error: 'recording_status_unavailable' }, 503, auth.headers) }
++}
+--- /dev/null
++++ b/packages/web/src/lib/server/__tests__/recording-session-status.test.ts
+@@ -0,0 +1,250 @@
++/** @jest-environment node */
++import { readRecordingSessionStatus } from '../recording-session-status'
++import { ACTOR, PROJECT, SESSION, JOB, OTHER, TIME, ERROR, manifestHash, statusFixture, statusTransport } from './fixtures/recording-status-fixture'
++
++type Fixture = ReturnType<typeof statusFixture>
++type Row = Record<string, unknown>
++const read = (f: Fixture) => readRecordingSessionStatus(f.input, { admin: statusTransport(f.snapshot).admin })
++
++it.each(['succeeded', 'failed'] as const)('certifies the complete %s tuple into a closed immutable receipt', async state => {
++  const f = statusFixture(state), t = statusTransport(f.snapshot)
++  const before = structuredClone(f.snapshot)
++  const result = await readRecordingSessionStatus(f.input, { admin: t.admin })
++  expect(result).toEqual({ schemaVersion: 1, projectId: PROJECT, sessionId: SESSION, assetId: f.sealed.task.assetId,
++    jobId: JOB, manifestSha256: f.input.manifestSha256, observedAt: TIME[7], state,
++    content: state === 'succeeded' ? { byteSize: 3, sha256: 'b'.repeat(64), mimeType: 'audio/webm', durationMs: 10 } : null,
++    errorCode: state === 'succeeded' ? null : 'recording_source_missing', finishedAt: TIME[6], canClearLocalDrafts: false })
++  expect(Object.isFrozen(result)).toBe(true)
++  if (state === 'succeeded') expect(Object.isFrozen((result as Row).content)).toBe(true)
++  expect(f.snapshot).toEqual(before)
++  expect(t.requests).toHaveLength(1)
++  expect(t.requests[0].url.pathname).toBe('/rest/v1/rpc/read_recording_session_snapshot')
++  expect(JSON.parse(String(t.requests[0].init.body))).toEqual({ p_actor_id: ACTOR, p_project_id: PROJECT,
++    p_session_id: SESSION, p_manifest_sha256: f.input.manifestSha256 })
++  expect(t.requests[0].init.signal).toBeInstanceOf(AbortSignal)
++})
++
++it.each(['sealed-only', 'asset-only', 'queued', 'leased', 'running', 'expired-running', 'reserved', 'prepared', 'outcome_unknown', 'retry_wait', 'max-attempts'])
++('reports valid %s as unresolved without granting retry or cleanup', async mode => {
++  const f = statusFixture(['sealed-only', 'asset-only', 'queued'].includes(mode) ? 'queued' : 'running')
++  if (mode === 'sealed-only') { f.snapshot.asset = null; f.snapshot.jobs = [] }
++  if (mode === 'asset-only') f.snapshot.jobs = []
++  if (mode === 'leased') { f.job.state = 'leased'; f.attempt.result_state = 'leased'; f.attempt.dispatched_at = null }
++  if (mode === 'expired-running') f.job.lease_expires_at = TIME[4]
++  if (mode === 'reserved' || mode === 'prepared' || mode === 'outcome_unknown') {
++    f.snapshot.candidates.push(f.candidate)
++    if (mode === 'reserved') { f.candidate.state = 'reserved'; f.candidate.prepared_at = null }
++  }
++  if (mode === 'outcome_unknown' || mode === 'retry_wait' || mode === 'max-attempts') {
++    const failed = mode === 'max-attempts'
++    Object.assign(f.job, { state: failed ? 'failed' : mode, lease_owner: null, lease_expires_at: null,
++      updated_at: TIME[6], not_before: mode === 'retry_wait' ? TIME[6] : null,
++      error_code: mode === 'outcome_unknown' ? 'lease_expired_after_dispatch_unknown'
++        : failed ? 'lease_expired_before_dispatch_max_attempts' : 'lease_expired_before_dispatch' })
++    Object.assign(f.attempt, { result_state: mode === 'outcome_unknown' ? mode : failed ? 'fatal_error' : 'retryable_error',
++      finished_at: TIME[6], error_code: f.job.error_code, dispatched_at: mode === 'outcome_unknown' ? TIME[3] : null })
++    if (failed) {
++      f.job.attempt_count = 3; f.attempt.attempt_no = 3
++      f.snapshot.attempts.unshift(...[1, 2].map(n => ({ ...f.attempt, id: `88888888-8888-4888-8888-00000000000${n}`,
++        attempt_no: n, result_state: 'retryable_error', finished_at: TIME[n + 2], error_code: 'lease_expired_before_dispatch' })))
++    }
++  }
++  await expect(read(f)).resolves.toMatchObject({ state: 'unresolved', content: null, errorCode: null, finishedAt: null,
++    jobId: f.snapshot.jobs.length ? JOB : null, canClearLocalDrafts: false })
++})
++
++it.each(['recording_source_missing', 'recording_source_not_private_file', 'recording_source_size_mismatch',
++  'recording_source_hash_mismatch', 'recording_decode_invalid_pcm', 'recording_decode_duration_exceeded'])
++('accepts only the complete permanent failure for %s', async code => {
++  const f = statusFixture('failed'); f.job.error_code = code; f.asset.verification_error = code; f.attempt.error_code = code
++  await expect(read(f)).resolves.toMatchObject({ state: 'failed', errorCode: code, content: null })
++})
++
++const corruptions: Array<[string, (f: Fixture) => void]> = [
++  ['schema extra', f => { Object.assign(f.snapshot, { leaked: true }) }],
++  ['schema missing', f => { delete (f.snapshot as unknown as Row).observedAt }],
++  ['schema version', f => { f.snapshot.schemaVersion = 2 }],
++  ...['actorId', 'projectId', 'sessionId', 'manifestSha256'].map(key => [key, (f: Fixture) => {
++    (f.snapshot as unknown as Row)[key] = key === 'manifestSha256' ? 'c'.repeat(64) : OTHER
++  }] as [string, (f: Fixture) => void]),
++  ...[0, 2, '1'].map(value => [`session count ${value}`, (f: Fixture) => { (f.snapshot as unknown as Row).matchingSessionCount = value }] as [string, (f: Fixture) => void]),
++  ['asset absent', f => { f.snapshot.asset = null }], ['job absent', f => { f.snapshot.jobs = [] }],
++  ['duplicate job', f => { f.snapshot.jobs.push({ ...f.job }) }], ['candidate absent', f => { f.snapshot.candidates = [] }],
++  ['candidate duplicated', f => { f.snapshot.candidates.push({ ...f.candidate, id: OTHER }) }],
++  ['attempt absent', f => { f.snapshot.attempts = [] }], ['attempt duplicate', f => { f.snapshot.attempts.push({ ...f.attempt }) }],
++  ['chunks extra', f => { f.snapshot.chunks.push({ ...f.snapshot.chunks[0] }) }], ['chunks missing', f => { f.snapshot.chunks = [] }],
++  ['manifest extra', f => { Object.assign(f.manifest, { secret: true }); rehash(f) }],
++  ['manifest storage', f => { f.manifest.chunks[0].storageObjectKey += '/other'; rehash(f) }],
++  ['manifest hash', f => { f.manifest.chunks[0].sha256 = 'c'.repeat(64) }],
++  ['manifest different asset', f => { f.manifest.assetId = OTHER; rehash(f) }],
++  ['manifest wrong ordinal', f => { f.manifest.chunks[0].index = 1; rehash(f) }],
++  ['manifest quota', f => { f.manifest.chunks[0].byteSize = 104857601; rehash(f) }],
++]
++function rehash(f: Fixture) { f.input.manifestSha256 = f.snapshot.manifestSha256 = String(f.session.manifest_sha256 = manifestHash(f.manifest)) }
++const rowFields: Array<[keyof Pick<Fixture, 'asset' | 'session' | 'job' | 'attempt' | 'candidate'>, string, unknown]> = [
++  ['session', 'id', OTHER], ['session', 'project_id', OTHER], ['session', 'user_id', OTHER], ['session', 'story_id', null],
++  ['session', 'mime_type', 'audio/ogg'], ['session', 'manifest_sha256', 'c'.repeat(64)], ['session', 'total_input_bytes', 4],
++  ['session', 'total_chunks', 2], ['session', 'confirmed_asset_id', OTHER], ['session', 'merge_job_id', OTHER],
++  ['session', 'state', 'sealing'], ['session', 'confirmed_at', TIME[5]], ['session', 'sealed_at', TIME[8]],
++  ['session', 'started_at', TIME[2]], ['session', 'sealed_at', null],
++  ['asset', 'state', 'verifying'], ['asset', 'project_id', OTHER], ['asset', 'created_by', OTHER], ['asset', 'story_id', null],
++  ['asset', 'kind', 'derived_audio'], ['asset', 'version', 2], ['asset', 'idempotency_key', 'bad'], ['asset', 'id', OTHER],
++  ['asset', 'original_filename', 'changed'], ['asset', 'parent_asset_id', OTHER], ['asset', 'verification_error', 'oops'],
++  ['asset', 'bucket', 'audio-recordings'], ['asset', 'object_key', 'wrong/key'], ['asset', 'sha256', 'c'.repeat(64)],
++  ['asset', 'byte_size', 4], ['asset', 'mime_type', 'audio/ogg'], ['asset', 'duration_ms', 11],
++  ['asset', 'verified_at', TIME[5]], ['asset', 'content_verified_at', null], ['asset', 'updated_at', TIME[5]],
++  ['asset', 'created_at', TIME[8]],
++  ['job', 'id', OTHER], ['job', 'asset_id', OTHER], ['job', 'project_id', OTHER], ['job', 'created_by', OTHER],
++  ['job', 'job_type', 'transcribe'], ['job', 'processor_version', 'other'], ['job', 'input_version', 2],
++  ['job', 'parameter_version', 'other'], ['job', 'model_config_version', 'model'], ['job', 'idempotency_key', 'bad'],
++  ['job', 'state', 'running'], ['job', 'max_attempts', 4], ['job', 'attempt_count', 0], ['job', 'attempt_count', 1.5],
++  ['job', 'result_ref', OTHER], ['job', 'lease_owner', 'worker-1'], ['job', 'lease_expires_at', TIME[8]],
++  ['job', 'not_before', TIME[2]], ['job', 'error_code', 'secret'], ['job', 'updated_at', TIME[5]], ['job', 'created_at', TIME[4]],
++  ['attempt', 'id', 'INVALID'], ['attempt', 'job_id', OTHER], ['attempt', 'attempt_no', 2], ['attempt', 'worker_id', '../bad'],
++  ['attempt', 'result_state', 'running'], ['attempt', 'error_code', 'secret'], ['attempt', 'finished_at', TIME[5]],
++  ['attempt', 'dispatched_at', null], ['attempt', 'dispatched_at', TIME[7]],
++  ...['provider', 'provider_request_id', 'usage_units', 'reserved_cost_usd', 'settled_cost_usd']
++    .map(key => ['attempt', key, 'secret'] as ['attempt', string, unknown]),
++  ['candidate', 'job_id', OTHER], ['candidate', 'project_id', OTHER], ['candidate', 'asset_id', OTHER], ['candidate', 'session_id', OTHER],
++  ['candidate', 'manifest_sha256', 'c'.repeat(64)], ['candidate', 'worker_id', 'different'], ['candidate', 'attempt_no', 2],
++  ['candidate', 'state', 'reserved'], ['candidate', 'object_key', 'wrong/key'], ['candidate', 'bucket', 'audio-recordings'],
++  ['candidate', 'byte_size', 4], ['candidate', 'sha256', 'B'.repeat(64)], ['candidate', 'mime_type', 'audio/ogg'],
++  ['candidate', 'duration_ms', 0], ['candidate', 'created_at', TIME[2]], ['candidate', 'prepared_at', TIME[7]],
++]
++corruptions.push(...rowFields.map(([row, key, value]) => [`${row}.${key}`, (f: Fixture) => { f[row][key] = value }] as [string, (f: Fixture) => void]))
++it.each(corruptions)('rejects corrupt published %s', async (_label, corrupt) => {
++  const f = statusFixture(); corrupt(f); await expect(read(f)).rejects.toThrow(ERROR)
++})
++
++it.each(['session', 'asset', 'job', 'attempt', 'candidate', 'chunk'])('rejects optional blockers on %s', async name => {
++  for (const key of ['tombstone_at', 'deletion_requested_at', 'deleted_at', 'cancel_requested_at']) {
++    const f = statusFixture(), row = name === 'chunk' ? f.snapshot.chunks[0] : f[name as 'session']
++    row[key] = TIME[4]; await expect(read(f)).rejects.toThrow(ERROR)
++  }
++})
++it.each(['session', 'asset', 'job', 'attempt', 'candidate', 'chunk'])('rejects invalid UTC/microsecond dates on %s', async name => {
++  const field = { session: 'sealed_at', asset: 'created_at', job: 'created_at', attempt: 'dispatched_at', candidate: 'created_at', chunk: 'persisted_at' }[name]!
++  for (const value of ['2026-02-30T00:00:00Z', '2026-11-05T00:00:00.0000001Z', '2026-11-05T00:00:00+01:00', '2026-11-05', 'infinity', 0]) {
++    const f = statusFixture(), row = name === 'chunk' ? f.snapshot.chunks[0] : f[name as 'session']
++    row[field] = value; await expect(read(f)).rejects.toThrow(ERROR)
++  }
++})
++it('accepts equivalent UTC timestamp representations while retaining microsecond ordering', async () => {
++  const f = statusFixture(); f.session.confirmed_at = TIME[6].replace('Z', '+00:00')
++  await expect(read(f)).resolves.toMatchObject({ state: 'succeeded' })
++  f.attempt.finished_at = TIME[5]
++  await expect(read(f)).rejects.toThrow(ERROR)
++})
++it('rejects terminal evidence beyond the statement observation, including one microsecond', async () => {
++  const f = statusFixture(); f.snapshot.observedAt = TIME[5]
++  await expect(read(f)).rejects.toThrow(ERROR)
++})
++it.each(['observedAt', 'session'])('rejects malformed observation/schema values %s', async mode => {
++  const f = statusFixture(); (f.snapshot as unknown as Row)[mode] = mode === 'session' ? [] : '2026-02-30T00:00:00Z'
++  await expect(read(f)).rejects.toThrow(ERROR)
++})
++
++it('certifies contiguous undispatched retry history in chronological order', async () => {
++  const f = statusFixture(); f.job.attempt_count = 2; f.attempt.attempt_no = 2; f.candidate.attempt_no = 2
++  f.candidate.object_key = String(f.candidate.object_key).replace('/attempts/1/', '/attempts/2/'); f.asset.object_key = f.candidate.object_key
++  f.snapshot.attempts.unshift({ ...f.attempt, id: JOB, attempt_no: 1, dispatched_at: null,
++    result_state: 'retryable_error', finished_at: TIME[2], error_code: 'lease_expired_before_dispatch' })
++  await expect(read(f)).resolves.toMatchObject({ state: 'succeeded' })
++  for (const [field, value] of [['attempt_no', 0], ['job_id', OTHER], ['id', OTHER], ['dispatched_at', TIME[2]],
++    ['finished_at', TIME[4]], ['error_code', 'other'], ['result_state', 'outcome_unknown'], ['provider', 'private']] as const) {
++    const prior = f.snapshot.attempts[0], old = prior[field]; prior[field] = value
++    await expect(read(f)).rejects.toThrow(ERROR); prior[field] = old
++  }
++})
++it.each(['partial-success', 'partial-failure', 'candidate', 'mismatched-code', 'generic-code', 'successful-content', 'wrong-pointer'])
++('does not certify corrupt permanent failure %s', async mode => {
++  const f = statusFixture('failed')
++  if (mode === 'partial-success') f.session.confirmed_asset_id = f.sealed.task.assetId
++  if (mode === 'partial-failure') f.asset.state = 'verifying'
++  if (mode === 'candidate') f.snapshot.candidates.push(f.candidate)
++  if (mode === 'mismatched-code') f.attempt.error_code = 'recording_decode_invalid_pcm'
++  if (mode === 'generic-code') f.job.error_code = f.asset.verification_error = f.attempt.error_code = 'unknown-failure'
++  if (mode === 'successful-content') f.asset.sha256 = 'b'.repeat(64)
++  if (mode === 'wrong-pointer') f.asset.object_key = f.candidate.object_key
++  await expect(read(f)).rejects.toThrow(ERROR)
++})
++it.each(['success-fragment', 'failure-fragment', 'job-no-asset', 'candidate-no-job', 'attempt-no-job', 'bad-running-history', 'bad-running-lease', 'bad-candidate-history'])
++('rejects unresolved corruption %s', async mode => {
++  const f = statusFixture('running')
++  if (mode === 'success-fragment') f.session.confirmed_at = TIME[6]
++  if (mode === 'failure-fragment') f.job.error_code = 'recording_source_missing'
++  if (mode === 'job-no-asset') f.snapshot.asset = null
++  if (mode === 'candidate-no-job') { f.snapshot.jobs = []; f.snapshot.attempts = []; f.snapshot.candidates.push(f.candidate) }
++  if (mode === 'attempt-no-job') f.snapshot.jobs = []
++  if (mode === 'bad-running-history') f.attempt.finished_at = TIME[6]
++  if (mode === 'bad-running-lease') f.job.lease_expires_at = TIME[2]
++  if (mode === 'bad-candidate-history') { f.candidate.worker_id = 'old-worker'; f.snapshot.candidates.push(f.candidate) }
++  await expect(read(f)).rejects.toThrow(ERROR)
++})
++it.each(['session_id', 'project_id', 'chunk_index', 'seal_chunk_id', 'bucket', 'object_key', 'byte_size', 'sha256', 'id'])
++('rejects chunk ledger identity mismatch %s', async field => {
++  const f = statusFixture(); f.snapshot.chunks[0][field] = field === 'chunk_index' || field === 'byte_size' ? 99 : 'wrong'
++  await expect(read(f)).rejects.toThrow(ERROR)
++})
++
++it.each(['actorId', 'projectId', 'sessionId', 'manifestSha256'])('rejects noncanonical %s before I/O', async key => {
++  for (const value of ['UPPER', '', null, ` ${ACTOR}`, 123]) {
++    const f = statusFixture(), t = statusTransport(f.snapshot); (f.input as Row)[key] = value
++    await expect(readRecordingSessionStatus(f.input, { admin: t.admin })).rejects.toThrow(ERROR)
++    expect(t.requests).toHaveLength(0)
++  }
++})
++it.each([0, -1, 60001, 1.5, NaN, Infinity])('rejects invalid timeout %s before I/O', async timeoutMs => {
++  const f = statusFixture(), t = statusTransport(f.snapshot)
++  await expect(readRecordingSessionStatus(f.input, { admin: t.admin, timeoutMs })).rejects.toThrow(ERROR)
++  expect(t.requests).toHaveLength(0)
++})
++it.each(['lost', 'malformed', 'rpc-error', 'missing-data'])('sanitizes %s transport and never retries', async mode => {
++  const f = statusFixture(), t = statusTransport(f.snapshot)
++  if (mode === 'lost') t.setHook(() => { throw new Error('SECRET TOKEN') })
++  if (mode === 'malformed') t.setResponse(() => new Response('not json SECRET'))
++  if (mode === 'rpc-error') t.setResponse(() => new Response(JSON.stringify({ message: 'SECRET', code: 'XX000' }), { status: 503 }))
++  if (mode === 'missing-data') t.setResponse(() => new Response('null'))
++  await expect(readRecordingSessionStatus(f.input, { admin: t.admin })).rejects.toThrow(ERROR)
++  expect(t.requests).toHaveLength(1)
++})
++it('snapshots the caller identity and options before the asynchronous boundary', async () => {
++  const f = statusFixture(), t = statusTransport(f.snapshot), signal = new AbortController()
++  const options = { admin: t.admin, signal: signal.signal, timeoutMs: 1000 }
++  t.setHook(() => { f.input.actorId = OTHER; options.admin = statusTransport(null).admin; options.signal = new AbortController().signal; options.timeoutMs = 0 })
++  await expect(readRecordingSessionStatus(f.input, options)).resolves.toMatchObject({ state: 'succeeded' })
++  expect(t.requests).toHaveLength(1)
++})
++it('honors the original signal even if the options are mutated while awaiting', async () => {
++  const f = statusFixture(), t = statusTransport(f.snapshot), controller = new AbortController()
++  const options = { admin: t.admin, signal: controller.signal }
++  t.setHook(() => { options.signal = new AbortController().signal; controller.abort('SECRET') })
++  await expect(readRecordingSessionStatus(f.input, options)).rejects.toThrow(ERROR)
++})
++it('rejects pre-abort without dispatch, and cancels a stalled request even if transport ignores abort', async () => {
++  const f = statusFixture(), t = statusTransport(f.snapshot), controller = new AbortController(); controller.abort('SECRET')
++  await expect(readRecordingSessionStatus(f.input, { admin: t.admin, signal: controller.signal })).rejects.toThrow(ERROR)
++  expect(t.requests).toHaveLength(0)
++  const mid = new AbortController(); t.setHook(() => new Promise(() => {}))
++  const pending = readRecordingSessionStatus(f.input, { admin: t.admin, signal: mid.signal })
++  const rejected = expect(pending).rejects.toThrow(ERROR)
++  await new Promise(resolve => setImmediate(resolve)); mid.abort('SECRET')
++  await rejected
++  expect(t.requests).toHaveLength(1); expect(t.requests[0].init.signal?.aborted).toBe(true)
++})
++it('bounds and aborts a nonresponding RPC', async () => {
++  const f = statusFixture(), t = statusTransport(f.snapshot); t.setHook(() => new Promise(() => {}))
++  await expect(readRecordingSessionStatus(f.input, { admin: t.admin, timeoutMs: 10 })).rejects.toThrow(ERROR)
++  expect(t.requests).toHaveLength(1); expect(t.requests[0].init.signal?.aborted).toBe(true)
++})
++
++it('accepts chunk transaction timestamps preceding the session statement timestamp', async () => {
++  // seal_recording_manifest uses statement_timestamp for sessions but chunks
++  // retain DEFAULT now() (transaction_timestamp), including explicit transactions.
++  const f = statusFixture(); f.snapshot.chunks[0].persisted_at = '2026-11-04T23:59:59.999999Z'
++  await expect(read(f)).resolves.toMatchObject({ state: 'succeeded' })
++})
++it('rejects asset creation after its registered job was created', async () => {
++  const f = statusFixture(); f.asset.created_at = TIME[4]
++  await expect(read(f)).rejects.toThrow(ERROR)
++})
+--- a/packages/web/src/lib/server/recording-job-input.ts
++++ b/packages/web/src/lib/server/recording-job-input.ts
+@@ -251,3 +251,11 @@
+     unavailable()
+   }
+ }
++
++/** Pure closed-schema parser shared by read-only recording reconciliation. */
++export { parseManifest as parseRecordingJobManifest }
++
++/** Canonical PostgreSQL manifest digest; parsing is required before serialization. */
++export function recordingManifestSha256(value: unknown): string {
++  return createHash('sha256').update(manifestPostgresText(parseManifest(value)), 'utf8').digest('hex')
++}
+--- /dev/null
++++ b/packages/web/src/lib/server/recording-session-status.ts
+@@ -0,0 +1,41 @@
++import type { getSupabaseAdmin } from '@/lib/supabase'
++import { validateRecordingSessionSnapshot, validateRecordingSessionStatusInput,
++  type RecordingSessionStatusInput, type RecordingSessionStatus } from './recording-status-validation'
++
++export type { RecordingSessionStatusInput, RecordingSessionStatus } from './recording-status-validation'
++type Options = { admin: ReturnType<typeof getSupabaseAdmin>; signal?: AbortSignal; timeoutMs?: number }
++function unavailable(): never { throw new Error('recording_status_unavailable') }
++
++/** One bounded snapshot read. A rejection never authorizes replay, recovery or cleanup. */
++export async function readRecordingSessionStatus(input: RecordingSessionStatusInput, options: Options): Promise<RecordingSessionStatus> {
++  let pinned: RecordingSessionStatusInput, admin: Options['admin'], signal: AbortSignal | undefined, timeoutMs: number
++  try {
++    validateRecordingSessionStatusInput(input)
++    pinned = Object.freeze({ ...input })
++    ;({ admin, signal } = options)
++    timeoutMs = options.timeoutMs ?? 5000
++    if (typeof window !== 'undefined' || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000 || signal?.aborted) unavailable()
++  } catch { return unavailable() }
++  const controller = new AbortController()
++  const abort = () => controller.abort()
++  let rejectAbort: () => void = () => {}
++  const interrupted = new Promise<never>((_, reject) => {
++    rejectAbort = () => reject(new Error('recording_status_unavailable'))
++    controller.signal.addEventListener('abort', rejectAbort, { once: true })
++  })
++  signal?.addEventListener('abort', abort, { once: true })
++  const timer = setTimeout(abort, timeoutMs)
++  try {
++    const result = await Promise.race([admin.rpc('read_recording_session_snapshot', {
++      p_actor_id: pinned.actorId, p_project_id: pinned.projectId, p_session_id: pinned.sessionId, p_manifest_sha256: pinned.manifestSha256,
++    }).abortSignal(controller.signal).retry(false), interrupted])
++    if (controller.signal.aborted || signal?.aborted || !result || result.error) unavailable()
++    return validateRecordingSessionSnapshot(result.data, pinned)
++  } catch { return unavailable() }
++  finally {
++    clearTimeout(timer)
++    signal?.removeEventListener('abort', abort)
++    controller.signal.removeEventListener('abort', rejectAbort)
++    abort()
++  }
++}
+--- /dev/null
++++ b/packages/web/src/lib/server/recording-status-validation.ts
+@@ -0,0 +1,243 @@
++import { parseRecordingJobManifest, recordingManifestSha256 } from './recording-job-input'
++import { prepareRecordingSessionSeal } from './recording-session-service'
++import { validateRecordingOutputCandidate, type RecordingCandidateOutput } from './recording-output-candidate'
++
++export type RecordingSessionStatusInput = Readonly<{ actorId: string; projectId: string; sessionId: string; manifestSha256: string }>
++export type RecordingSessionStatus = Readonly<{
++  schemaVersion: 1; projectId: string; sessionId: string; assetId: string; jobId: string | null; manifestSha256: string
++  observedAt: string; state: 'succeeded' | 'failed' | 'unresolved'; content: RecordingCandidateOutput | null
++  errorCode: string | null; finishedAt: string | null; canClearLocalDrafts: false
++}>
++type Row = Record<string, unknown>
++const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
++const HASH = /^[0-9a-f]{64}$/
++const WORKER = /^[A-Za-z0-9_-]{1,128}$/
++const INPUT_KEYS = ['actorId', 'projectId', 'sessionId', 'manifestSha256']
++const SNAPSHOT_KEYS = ['schemaVersion', ...INPUT_KEYS, 'observedAt', 'matchingSessionCount', 'session', 'asset', 'jobs', 'attempts', 'candidates', 'chunks']
++const BLOCKERS = ['tombstone_at', 'deletion_requested_at', 'deleted_at', 'cancel_requested_at']
++const CONTENT_NULLS = ['sha256', 'duration_ms', 'verified_at', 'content_verified_at']
++const PERMANENT_CODES = new Set(['recording_source_missing', 'recording_source_not_private_file', 'recording_source_size_mismatch',
++  'recording_source_hash_mismatch', 'recording_decode_invalid_pcm', 'recording_decode_duration_exceeded'])
++const RETRY_CODE = 'lease_expired_before_dispatch'
++
++function unavailable(): never { throw new Error('recording_status_unavailable') }
++function row(value: unknown): Row {
++  if (!value || typeof value !== 'object' || Array.isArray(value)) unavailable()
++  return value as Row
++}
++function closed(value: unknown, keys: readonly string[]): Row {
++  const object = row(value)
++  if (Object.keys(object).length !== keys.length || keys.some(key => !Object.prototype.hasOwnProperty.call(object, key))) unavailable()
++  return object
++}
++function uuid(value: unknown): value is string { return typeof value === 'string' && UUID.test(value) }
++function equal(value: Row, expected: Row) {
++  if (Object.entries(expected).some(([key, item]) => value[key] !== item)) unavailable()
++}
++function nulls(value: Row, keys: readonly string[]) { if (keys.some(key => value[key] !== null)) unavailable() }
++function noBlockers(value: Row) { if (BLOCKERS.some(key => value[key] != null)) unavailable() }
++function rows(value: unknown, max: number): Row[] {
++  if (!Array.isArray(value) || value.length > max) unavailable()
++  return value.map(item => { const object = row(item); noBlockers(object); return object })
++}
++/** UTC only. Round-trip the calendar and preserve the sub-millisecond fraction. */
++function utc(value: unknown): bigint {
++  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,6})?(Z|\+00:00)$/.test(value)) unavailable()
++  const ms = Date.parse(value)
++  if (!Number.isFinite(ms) || new Date(ms).toISOString().slice(0, 19) !== value.slice(0, 19)) unavailable()
++  const fraction = /\.(\d+)(?:Z|\+00:00)$/.exec(value)?.[1] ?? ''
++  return BigInt(ms) * BigInt(1000) + BigInt(fraction.padEnd(6, '0').slice(3))
++}
++function range(value: unknown, min: bigint, max: bigint): bigint {
++  const time = utc(value)
++  if (time < min || time > max) unavailable()
++  return time
++}
++function times(value: Row, observed: bigint) {
++  const created = utc(value.created_at), updated = range(value.updated_at, created, observed)
++  return { created, updated }
++}
++function sameTime(expected: bigint, ...values: unknown[]) { if (values.some(value => utc(value) !== expected)) unavailable() }
++
++export function validateRecordingSessionStatusInput(value: unknown): asserts value is RecordingSessionStatusInput {
++  const input = closed(value, INPUT_KEYS)
++  if (!uuid(input.actorId) || !uuid(input.projectId) || !uuid(input.sessionId) ||
++    typeof input.manifestSha256 !== 'string' || !HASH.test(input.manifestSha256)) unavailable()
++}
++
++function validateAttempts(attempts: Row[], job: Row, observed: bigint, sealedAt: bigint): Row | null {
++  const count = job.attempt_count
++  if (typeof count !== 'number' || !Number.isInteger(count) || count < 0 || count > 3 || attempts.length !== count) unavailable()
++  const ordered = [...attempts].sort((a, b) => Number(a.attempt_no) - Number(b.attempt_no))
++  const ids = new Set<string>()
++  let previous = utc(job.created_at)
++  for (const [index, attempt] of ordered.entries()) {
++    if (!uuid(attempt.id) || ids.has(attempt.id) || typeof attempt.worker_id !== 'string' || !WORKER.test(attempt.worker_id)) unavailable()
++    ids.add(attempt.id)
++    equal(attempt, { job_id: job.id, attempt_no: index + 1 })
++    nulls(attempt, ['provider', 'provider_request_id', 'usage_units', 'reserved_cost_usd', 'settled_cost_usd'])
++    if (index < count - 1) {
++      equal(attempt, { result_state: 'retryable_error', dispatched_at: null, error_code: RETRY_CODE })
++      previous = range(attempt.finished_at, previous, observed)
++      if (previous < sealedAt) unavailable()
++    } else if (attempt.dispatched_at !== null) {
++      const dispatched = range(attempt.dispatched_at, previous, utc(job.updated_at))
++      if (dispatched < sealedAt) unavailable()
++      if (attempt.finished_at !== null) range(attempt.finished_at, dispatched, observed)
++    } else if (attempt.finished_at !== null) range(attempt.finished_at, previous, observed)
++    else if (previous > utc(job.updated_at)) unavailable()
++  }
++  return ordered.at(-1) ?? null
++}
++
++function validateCandidate(candidate: Row, input: RecordingSessionStatusInput, assetId: string, job: Row,
++  attempt: Row, totalBytes: number, mimeType: string, observed: bigint) {
++  const receipt = {
++    schemaVersion: 1, candidateId: candidate.id, jobId: candidate.job_id, projectId: candidate.project_id,
++    assetId: candidate.asset_id, sessionId: candidate.session_id, manifestSha256: candidate.manifest_sha256,
++    workerId: candidate.worker_id, attempt: candidate.attempt_no, state: candidate.state, bucket: candidate.bucket,
++    objectKey: candidate.object_key, byteSize: candidate.byte_size, sha256: candidate.sha256, mimeType: candidate.mime_type,
++    durationMs: candidate.duration_ms, createdAt: candidate.created_at, preparedAt: candidate.prepared_at, canClearLocalDrafts: false,
++  }
++  validateRecordingOutputCandidate(receipt)
++  equal(candidate, { job_id: job.id, project_id: input.projectId, asset_id: assetId, session_id: input.sessionId,
++    manifest_sha256: input.manifestSha256, worker_id: attempt.worker_id, attempt_no: attempt.attempt_no,
++    byte_size: totalBytes, mime_type: mimeType })
++  range(candidate.created_at, utc(attempt.dispatched_at), observed)
++  if (candidate.prepared_at !== null) range(candidate.prepared_at, utc(candidate.created_at), observed)
++  return receipt
++}
++
++function validateUnresolvedJob(job: Row, attempt: Row | null, candidates: Row[], observed: bigint) {
++  nulls(job, ['result_ref'])
++  if (job.state === 'queued') {
++    equal(job, { attempt_count: 0, error_code: null })
++    nulls(job, ['lease_owner', 'lease_expires_at', 'not_before'])
++    if (attempt !== null || candidates.length) unavailable()
++    return
++  }
++  if (!attempt) unavailable()
++  if (job.state === 'leased' || job.state === 'running') {
++    equal(attempt, { result_state: job.state, worker_id: job.lease_owner })
++    nulls(job, ['not_before', 'error_code']); nulls(attempt, ['error_code', 'finished_at'])
++    const expires = utc(job.lease_expires_at), updated = utc(job.updated_at)
++    // Expiry does not authorize recovery. It is still a coherent unresolved observation.
++    if (expires <= updated || expires > updated + BigInt(120000000)) unavailable()
++    if (job.state === 'leased') {
++      if (attempt.dispatched_at !== null || candidates.length) unavailable()
++    } else if (utc(attempt.dispatched_at) >= expires) unavailable()
++    return
++  }
++  nulls(job, ['lease_owner', 'lease_expires_at'])
++  sameTime(utc(job.updated_at), attempt.finished_at)
++  if (job.state === 'outcome_unknown') {
++    equal(job, { error_code: 'lease_expired_after_dispatch_unknown', not_before: null })
++    equal(attempt, { result_state: 'outcome_unknown', error_code: job.error_code })
++    if (attempt.dispatched_at === null) unavailable()
++    for (const candidate of candidates) {
++      range(candidate.created_at, utc(attempt.dispatched_at), utc(attempt.finished_at))
++      if (candidate.prepared_at !== null) range(candidate.prepared_at, utc(candidate.created_at), utc(attempt.finished_at))
++    }
++  } else if (job.state === 'retry_wait') {
++    equal(job, { error_code: RETRY_CODE }); equal(attempt, { result_state: 'retryable_error', error_code: RETRY_CODE, dispatched_at: null })
++    sameTime(utc(job.updated_at), job.not_before)
++    if (Number(job.attempt_count) >= 3 || candidates.length) unavailable()
++  } else if (job.state === 'failed') {
++    equal(job, { attempt_count: 3, error_code: 'lease_expired_before_dispatch_max_attempts', not_before: null })
++    equal(attempt, { result_state: 'fatal_error', error_code: job.error_code, dispatched_at: null })
++    if (candidates.length) unavailable()
++  } else unavailable()
++  range(attempt.finished_at, utc(job.created_at), observed)
++}
++
++function validateSnapshot(value: unknown, input: RecordingSessionStatusInput): RecordingSessionStatus {
++  validateRecordingSessionStatusInput(input)
++  const snapshot = closed(value, SNAPSHOT_KEYS)
++  equal(snapshot, { schemaVersion: 1, ...input, matchingSessionCount: 1 })
++  const observed = utc(snapshot.observedAt)
++  const session = row(snapshot.session); noBlockers(session)
++  const manifest = parseRecordingJobManifest(session.seal_input)
++  if (recordingManifestSha256(manifest) !== input.manifestSha256) unavailable()
++  equal(manifest, { projectId: input.projectId, sessionId: input.sessionId, userId: input.actorId })
++  const jobs = rows(snapshot.jobs, 1), attempts = rows(snapshot.attempts, 3), candidates = rows(snapshot.candidates, 1)
++  const chunks = rows(snapshot.chunks, 2000), job = jobs[0] ?? null
++  if (job && !uuid(job.id)) unavailable()
++  // Supplying a placeholder job ID avoids generating randomness before registration;
++  // asset identity and content idempotency do not depend on job ID.
++  const sealed = prepareRecordingSessionSeal({ jobId: job ? String(job.id) : input.sessionId,
++    projectId: input.projectId, sessionId: input.sessionId, actorId: input.actorId, actorRole: 'storyteller', actorActive: true,
++    storyId: manifest.storyId, mimeType: manifest.mimeType, chunks: manifest.chunks })
++  if (sealed.task.assetId !== manifest.assetId) unavailable()
++  equal(session, { id: input.sessionId, project_id: input.projectId, user_id: input.actorId, story_id: manifest.storyId,
++    mime_type: manifest.mimeType, manifest_sha256: input.manifestSha256, total_chunks: manifest.chunks.length,
++    total_input_bytes: sealed.task.totalInputBytes })
++  const started = utc(session.started_at), sealedAt = range(session.sealed_at, started, observed)
++  if (chunks.length !== manifest.chunks.length) unavailable()
++  const chunkIds = new Set<string>()
++  chunks.forEach((chunk, index) => {
++    const expected = manifest.chunks[index]
++    if (!uuid(chunk.id) || chunkIds.has(chunk.id)) unavailable()
++    chunkIds.add(chunk.id)
++    equal(chunk, { session_id: input.sessionId, project_id: input.projectId, chunk_index: index, seal_chunk_id: expected.chunkId,
++      bucket: expected.bucket, object_key: expected.storageObjectKey, byte_size: expected.byteSize, sha256: expected.sha256 })
++    // Chunk DEFAULT now() can predate the seal statement in a transaction.
++    if (utc(chunk.persisted_at) > sealedAt) unavailable()
++  })
++  const base = { schemaVersion: 1 as const, projectId: input.projectId, sessionId: input.sessionId, assetId: manifest.assetId,
++    jobId: job ? String(job.id) : null, manifestSha256: input.manifestSha256, observedAt: String(snapshot.observedAt), canClearLocalDrafts: false as const }
++  const unresolved = () => Object.freeze({ ...base, state: 'unresolved' as const, content: null, errorCode: null, finishedAt: null })
++  const unconfirmed = () => { equal(session, { state: 'sealing' }); nulls(session, ['confirmed_asset_id', 'merge_job_id', 'confirmed_at']) }
++  if (snapshot.asset === null) {
++    unconfirmed()
++    if (job || attempts.length || candidates.length) unavailable()
++    return unresolved()
++  }
++  const asset = row(snapshot.asset); noBlockers(asset)
++  const { bucket, object_key, state: _state, ...immutableAsset } = sealed.assetRecord
++  equal(asset, { ...immutableAsset, original_filename: 'unnamed-asset', parent_asset_id: null })
++  const assetTimes = times(asset, observed)
++  if (!job) {
++    unconfirmed(); equal(asset, { bucket, object_key, state: 'verifying', verification_error: null }); nulls(asset, CONTENT_NULLS)
++    if (attempts.length || candidates.length) unavailable()
++    return unresolved()
++  }
++  equal(job, { project_id: input.projectId, asset_id: manifest.assetId, created_by: input.actorId, input_version: 1,
++    job_type: 'recording_merge', processor_version: 'ffmpeg-merge-v1', parameter_version: 'default', model_config_version: 'none',
++    idempotency_key: sealed.task.idempotencyKey, max_attempts: 3, cancel_requested_at: null })
++  const jobTimes = times(job, observed)
++  if (assetTimes.created > jobTimes.created) unavailable()
++  const attempt = validateAttempts(attempts, job, observed, sealedAt)
++  const candidate = candidates[0] && attempt ? validateCandidate(candidates[0], input, manifest.assetId, job, attempt,
++    sealed.task.totalInputBytes, manifest.mimeType, observed) : null
++  if (candidates.length && !candidate) unavailable()
++  if (job.state === 'succeeded' || (job.state === 'failed' && PERMANENT_CODES.has(String(job.error_code)))) {
++    if (!attempt || attempt.dispatched_at === null) unavailable()
++    nulls(job, ['lease_owner', 'lease_expires_at', 'not_before'])
++    sameTime(jobTimes.updated, asset.updated_at, attempt.finished_at)
++    if (job.state === 'succeeded') {
++      if (!candidate || candidate.state !== 'prepared') unavailable()
++      equal(job, { result_ref: manifest.assetId, error_code: null })
++      equal(attempt, { result_state: 'succeeded', error_code: null })
++      equal(asset, { state: 'ready', bucket: candidate.bucket, object_key: candidate.objectKey, sha256: candidate.sha256,
++        duration_ms: candidate.durationMs, verification_error: null })
++      equal(session, { state: 'cloud_confirmed', confirmed_asset_id: manifest.assetId, merge_job_id: job.id })
++      sameTime(jobTimes.updated, asset.verified_at, asset.content_verified_at, session.confirmed_at)
++      if (utc(candidate.preparedAt) > jobTimes.updated) unavailable()
++      return Object.freeze({ ...base, state: 'succeeded', content: Object.freeze({ byteSize: candidate.byteSize, sha256: candidate.sha256,
++        mimeType: candidate.mimeType, durationMs: candidate.durationMs }), errorCode: null, finishedAt: String(job.updated_at) })
++    }
++    if (candidates.length) unavailable()
++    equal(job, { result_ref: null }); equal(attempt, { result_state: 'fatal_error', error_code: job.error_code })
++    equal(asset, { state: 'quarantined', bucket, object_key, verification_error: job.error_code }); nulls(asset, CONTENT_NULLS)
++    equal(session, { state: 'failed' }); nulls(session, ['confirmed_asset_id', 'merge_job_id', 'confirmed_at'])
++    return Object.freeze({ ...base, state: 'failed', content: null, errorCode: String(job.error_code), finishedAt: String(job.updated_at) })
++  }
++  unconfirmed(); equal(asset, { state: 'verifying', bucket, object_key, verification_error: null }); nulls(asset, CONTENT_NULLS)
++  validateUnresolvedJob(job, attempt, candidates, observed)
++  return unresolved()
++}
++
++/** A statement snapshot proves only this observation, never access or local cleanup. */
++export function validateRecordingSessionSnapshot(value: unknown, input: RecordingSessionStatusInput): RecordingSessionStatus {
++  try { return validateSnapshot(value, input) } catch { return unavailable() }
++}

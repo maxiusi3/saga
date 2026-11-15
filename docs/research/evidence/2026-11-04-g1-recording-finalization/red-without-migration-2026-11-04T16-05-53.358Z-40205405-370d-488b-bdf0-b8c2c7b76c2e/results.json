@@ -1,0 +1,180 @@
+{
+  "startedAt": "2026-11-04T16:05:53.360Z",
+  "mode": "red-without-migration",
+  "status": "failed",
+  "assertions": 16,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Native service invocation proves exact finalization RPC exists",
+      "status": "failed",
+      "code": "ASSERT_FAILED",
+      "label": "actual service invocation must not be undefined-function 42883"
+    }
+  ],
+  "sources": {
+    "experiments/pg17-recording-finalization/verify.mjs": "8a21107b5b4fb078b3737997af06eb9e73bb0d10ff16aff64bc99ef1ae174d72",
+    "experiments/pg17-recording-finalization/fixture.mjs": "6190a870eb275b325562fa78eb8c449f0d6d9ea2d6717a15d249331f045e8970",
+    "experiments/pg17-recording-finalization/database.mjs": "b8e2988bfcdf7cb57a69d934ffd9afbd2b1a5c6444a78a985e5e2afaf65613ce",
+    "experiments/pg17-recording-finalization/README.md": "f0763cb8fbbd5777e62686b7c2f98b5122f8cfb0683a6945f45df4be34ac2628",
+    "experiments/pg17-recording-candidates/fixture.mjs": "1c09ea252da2ee57980e12553a4e3769d26d5e3e1b0d5ea6d34faaf3a7e9ecab",
+    "experiments/pg17-recording-worker/fixture.mjs": "83d9d5b5886d973a21c306f5e8a859d6ec45f1e7e8618e290fa85e013ba4d688",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e"
+  },
+  "snapshots": {
+    "experiments/pg17-recording-finalization/verify.mjs": {
+      "path": "0-verify.mjs.gz",
+      "sha256": "0dde91e71da6a6dc4248cc4d7c4311e916044bf12fdc43ed25fe397b28b92603",
+      "decodedSha256": "8a21107b5b4fb078b3737997af06eb9e73bb0d10ff16aff64bc99ef1ae174d72"
+    },
+    "experiments/pg17-recording-finalization/fixture.mjs": {
+      "path": "1-fixture.mjs.gz",
+      "sha256": "e9f7e15c88c927555c56a201f1151dceadfcccd9ffa616b9f2094890223b3bea",
+      "decodedSha256": "6190a870eb275b325562fa78eb8c449f0d6d9ea2d6717a15d249331f045e8970"
+    },
+    "experiments/pg17-recording-finalization/database.mjs": {
+      "path": "2-database.mjs.gz",
+      "sha256": "13214ac737bb07be01e7e54f7d0c4619dd90c6619d6c573b074a694675c77b03",
+      "decodedSha256": "b8e2988bfcdf7cb57a69d934ffd9afbd2b1a5c6444a78a985e5e2afaf65613ce"
+    },
+    "experiments/pg17-recording-finalization/README.md": {
+      "path": "3-README.md.gz",
+      "sha256": "b15870175874080e47dc735e81a163493900fde6f70391f4f73c959497ef58d1",
+      "decodedSha256": "f0763cb8fbbd5777e62686b7c2f98b5122f8cfb0683a6945f45df4be34ac2628"
+    },
+    "experiments/pg17-recording-candidates/fixture.mjs": {
+      "path": "4-fixture.mjs.gz",
+      "sha256": "80c266d034318d09d81384b1d828e500071ea127e166de6a900d2260344d1af7",
+      "decodedSha256": "1c09ea252da2ee57980e12553a4e3769d26d5e3e1b0d5ea6d34faaf3a7e9ecab"
+    },
+    "experiments/pg17-recording-worker/fixture.mjs": {
+      "path": "5-fixture.mjs.gz",
+      "sha256": "4d7d5f013d2faa9b08ec26a84aefecab41958d806259b35c911ab5649cbe6c43",
+      "decodedSha256": "83d9d5b5886d973a21c306f5e8a859d6ec45f1e7e8618e290fa85e013ba4d688"
+    },
+    "experiments/pg17-routines/runtime.mjs": {
+      "path": "6-runtime.mjs.gz",
+      "sha256": "0e746071f418db45326164d575bbe723322fa113b66f6b3c4ef4acc85eb26cf4",
+      "decodedSha256": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552"
+    },
+    "experiments/pg17-routines/runtime-pins.json": {
+      "path": "7-runtime-pins.json.gz",
+      "sha256": "f7c53b88a664df9a0acd473f586d818ae3b27b953e61cbb43021bf0bb4c28cc0",
+      "decodedSha256": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67"
+    },
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": {
+      "path": "8-20261024000001_p1_foundation_and_reconciliation.sql.gz",
+      "sha256": "415ff64252c8c6241b44e29237e4f1401e94ccc17404c9be8f2e6be55634a688",
+      "decodedSha256": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1"
+    },
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": {
+      "path": "9-20261102000001_recording_seal_manifest.sql.gz",
+      "sha256": "4dcb580892a569fff4a5c873f2141fd590ee9c76cc94585d91a69d934dfbfb04",
+      "decodedSha256": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+    },
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": {
+      "path": "10-20261103000001_recording_worker_leases.sql.gz",
+      "sha256": "080835c0734cba0eeaa7327484390b6e859564c74282d3807cdba09eea51a878",
+      "decodedSha256": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb"
+    },
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": {
+      "path": "11-20261103000002_recording_output_candidates.sql.gz",
+      "sha256": "eb4189cc7be94e2812605fb7b0b92acb1b5454ad0c04df0e9d539c0865b1ec26",
+      "decodedSha256": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e"
+    }
+  },
+  "tuples": [],
+  "limits": [
+    "Native isolated PostgreSQL 17.4 over Unix socket. Synthetic prerequisites and Storage schema; not cloud Storage, PostgREST, full migration replay, worker wiring or G1 qualification."
+  ],
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 87695,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-RzTRyD/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-RzTRyD",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users",
+      "auth.uid()",
+      "projects",
+      "project_roles",
+      "project_members",
+      "stories",
+      "storage.buckets",
+      "storage.objects",
+      "broad permissive storage RLS/grants"
+    ],
+    "exactFoundationTables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts",
+      "recording_sessions",
+      "recording_chunks"
+    ],
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "supabase/migrations/20261103000002_recording_output_candidates.sql"
+    ],
+    "livePostgrest": false,
+    "liveStorage": false
+  },
+  "rpcInvocationSqlstate": "42883",
+  "rpcProbe": null,
+  "error": {
+    "code": "ASSERT_FAILED",
+    "label": "actual service invocation must not be undefined-function 42883"
+  },
+  "postgresLog": {
+    "path": "postgres.log.gz",
+    "sha256": "f663ecf254d4a4310886c455923fbf4004e8584b7a99fe0d0d1d09a85d40c78a",
+    "decodedSha256": "63dd393a9f99d39de2fb60568449de977e3c06b7fa34cb75725402b4f8a50c1a"
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "socketDirectoryRemoved": true,
+    "serverPidGone": true
+  },
+  "sourcesChangedDuringRun": [],
+  "finishedAt": "2026-11-04T16:05:55.443Z"
+}

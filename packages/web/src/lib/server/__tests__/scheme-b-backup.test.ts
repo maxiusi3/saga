@@ -21,6 +21,72 @@ describe('Scheme B Backup Verification Engine (P0/G0)', () => {
   const sha256Hex = (buf: Buffer | string) =>
     createHash('sha256').update(buf).digest('hex')
 
+  describe('recording candidate manifest compatibility', () => {
+    // Synthetic unit coordinates. The native runner uses actual durable capture rows.
+    const dump = createMockDump('SYNTHETIC_HEADER_ONLY_NOT_A_RESTORABLE_DUMP')
+    const manifest: SchemeBStorageManifest = {
+      freezeTimestamp: '2026-11-06T00:00:00.000Z',
+      dumpSha256: sha256Hex(dump),
+      dumpSizeBytes: dump.length,
+      objects: [
+        { id: 'original-chunk', bucket: 'audio-recordings', key: 'user/sessions/keep/0', byteSize: 11, sha256: '1'.repeat(64) },
+        { id: 'published-candidate', bucket: 'recording-candidates', key: 'project/job/remove.webm', byteSize: 22, sha256: '2'.repeat(64) },
+        { id: 'retained-candidate', bucket: 'recording-candidates', key: 'project/job/keep.webm', byteSize: 33, sha256: '3'.repeat(64) },
+        { id: 'legacy-object', bucket: 'saga', key: 'project/photo.jpg', byteSize: 44, sha256: '4'.repeat(64) },
+      ],
+    }
+    const tombstones: SchemeBTombstoneRecord[] = [{
+      targetType: 'storage_object',
+      targetId: 'durable-target-id-different-from-manifest-id',
+      bucket: 'recording-candidates',
+      key: 'project/job/remove.webm',
+      tombstonedAt: '2026-11-06T00:00:01.000Z',
+      reason: 'synthetic_candidate_capture',
+    }]
+
+    it('accepts a mixed four-object manifest and removes only the candidate named by bucket/key', () => {
+      expect(verifyStorageManifest(manifest, manifest.dumpSha256)).toEqual({
+        valid: true, objectCount: 4, totalBytes: 110,
+      })
+      const before = JSON.stringify({ manifest, tombstones })
+      expect(replayTombstonesAndComputeSurvivingSet(manifest, tombstones)).toEqual({
+        purgedCount: 1,
+        survivingObjects: [manifest.objects[0], manifest.objects[2], manifest.objects[3]],
+        survivingTotalBytes: 88,
+      })
+      expect(JSON.stringify({ manifest, tombstones })).toBe(before)
+    })
+
+    it.each([
+      [{ bucket: 'unknown-candidates' }, 'DISALLOWED_BUCKET_NAME'],
+      [{ key: '../escape' }, 'INVALID_STORAGE_KEY'],
+      [{ key: '/absolute' }, 'INVALID_STORAGE_KEY'],
+      [{ key: 'bad\\key' }, 'INVALID_STORAGE_KEY'],
+      [{ key: 'bad\0key' }, 'INVALID_STORAGE_KEY'],
+      [{ id: '' }, 'INVALID_OBJECT_ID'],
+      [{ sha256: 'bad-hash' }, 'INVALID_SHA256_FORMAT'],
+      [{ byteSize: 0 }, 'INVALID_OBJECT_SIZE'],
+      [{ byteSize: 1.5 }, 'INVALID_OBJECT_SIZE'],
+      [{ byteSize: Number.MAX_SAFE_INTEGER + 1 }, 'INVALID_OBJECT_SIZE'],
+    ])('retains validation for candidate entry %j', (override, error) => {
+      expect(() => verifyStorageManifest({
+        ...manifest, objects: [{ ...manifest.objects[1], ...override }],
+      }, manifest.dumpSha256)).toThrow(error)
+    })
+
+    it('rejects a duplicate candidate physical address with a different logical id', () => {
+      expect(() => verifyStorageManifest({
+        ...manifest, objects: [...manifest.objects, { ...manifest.objects[1], id: 'alias' }],
+      }, manifest.dumpSha256)).toThrow('DUPLICATE_STORAGE_OBJECT_KEY')
+    })
+
+    it('retains the candidate when its tombstone precedes the freeze', () => {
+      expect(replayTombstonesAndComputeSurvivingSet(manifest, [{
+        ...tombstones[0], tombstonedAt: '2026-11-05T23:59:59.000Z',
+      }])).toEqual({ purgedCount: 0, survivingObjects: manifest.objects, survivingTotalBytes: 110 })
+    })
+  })
+
   describe('verifyPgDumpCustomArchive', () => {
     it('successfully verifies a valid pg_dump custom archive buffer', () => {
       const dumpBuf = createMockDump()

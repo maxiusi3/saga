@@ -1,0 +1,151 @@
+{
+  "createdAt": "2026-11-06T17:21:24.696380+00:00",
+  "status": "DONE",
+  "sourceState": "FROZEN",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "beforeSnapshot": ".superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/final-fix-before",
+  "before": {
+    "packages/web/src/lib/server/media-deletion-lease.ts": "03db82114edcc0aa3cfc903977c482993385862d210c42a6d452cfd42e90e844",
+    "packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts": "347cc570f87bf365e9990263f40bd98910c964136ea9b88d928eb5e82d461614"
+  },
+  "after": {
+    "packages/web/src/lib/server/media-deletion-lease.ts": "9d38b746b82142b5d085b12e82b1b426ae8f071d58a3dda0703c0ecc2154e4a5",
+    "packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts": "54ccef1ad269ee3f70f6d904d4cda6d93beb1c5bf1a1ae37be1d73c23101620a"
+  },
+  "patch": ".superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/final-fix.patch",
+  "patchSha256": "9ae9f4921770c29c594fe9b0a89522d66d6f17d7782878a08bba5cdae2042b95",
+  "patchReverseCheck": {
+    "record": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-patch-check-01.json",
+    "exitCode": 0,
+    "temporaryReverseApplyExitCode": 0,
+    "reconstructedBefore": {
+      "packages/web/src/lib/server/media-deletion-lease.ts": "03db82114edcc0aa3cfc903977c482993385862d210c42a6d452cfd42e90e844",
+      "packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts": "347cc570f87bf365e9990263f40bd98910c964136ea9b88d928eb5e82d461614"
+    },
+    "temporaryDirectoryRemoved": true
+  },
+  "commands": [
+    {
+      "record": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-jest-red-01.json",
+      "sha256": "0b9b5b68b262feef1f82d2a501488df5d09cf3ecce686bc28e3ddeb0ca40939d",
+      "command": [
+        "npm",
+        "test",
+        "--workspace=packages/web",
+        "--",
+        "--runInBand",
+        "src/lib/server/__tests__/media-deletion-lease.test.ts",
+        "-t",
+        "rejects impossible recovered"
+      ],
+      "exitCode": 1,
+      "archive": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-jest-red-01.log.gz",
+      "archiveSha256": "2aea804bbbc6587ff57db0489a1e9712d5835547b3fa697df3ae61294906d525",
+      "rawSha256": "42a85e3d370bb428367d32da3375bedd9956f7069654aa142190fecd975937e7",
+      "sourceDrift": []
+    },
+    {
+      "record": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-jest-final-01.json",
+      "sha256": "cf19579703d16d4f983226f17a341e96c04b9b39f749695337cb2d4076d23df3",
+      "command": [
+        "npm",
+        "test",
+        "--workspace=packages/web",
+        "--",
+        "--runInBand",
+        "src/lib/server/__tests__/media-deletion-lease.test.ts"
+      ],
+      "exitCode": 0,
+      "archive": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-jest-final-01.log.gz",
+      "archiveSha256": "ebdaae0b6078c79caed5e68294b6b950892d954aee84fe9776428e9293a6ade9",
+      "rawSha256": "fb46ae20a1d598bf2183ca2a215efa93e2f968d5fb2ccfd1d385e0f75c64ed13",
+      "sourceDrift": []
+    },
+    {
+      "record": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-native-adapter-01.json",
+      "sha256": "24ec68d2d1c1862a727671ccc582ea81257a6927d3c6b9fd7903f0c6953ccfbf",
+      "command": [
+        "node",
+        "experiments/pg17-deletion-leases/verify-adapter.mjs"
+      ],
+      "exitCode": 0,
+      "archive": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-native-adapter-01.log.gz",
+      "archiveSha256": "19a4f133593d357dacb142a68948b29b8615fc392e0ecdb9059a52a9d1b5a92f",
+      "rawSha256": "422cadff90c92fea871872eec67e7d7d30ac06c6cc894f885a3c9e092c61586a",
+      "sourceDrift": []
+    },
+    {
+      "record": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-eslint-01.json",
+      "sha256": "1c44371c5de16261ca94a438ba9172e02b5c30e6fb7eebd8f4eebe2c36ccbd78",
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "--config",
+        "eslint.config.cjs",
+        "packages/web/src/lib/server/media-deletion-lease.ts",
+        "packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts"
+      ],
+      "exitCode": 0,
+      "archive": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-eslint-01.log.gz",
+      "archiveSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceDrift": []
+    },
+    {
+      "record": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-patch-check-01.json",
+      "sha256": "1ef7bf835a4e4335193b3ca054c9c12951f91382127729da766beccbbd792219",
+      "command": [
+        "git",
+        "apply",
+        "--reverse",
+        "--check",
+        ".superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/final-fix.patch"
+      ],
+      "exitCode": 0,
+      "archive": "docs/research/evidence/2026-11-06-g1-deletion-leases/final-fix-patch-check-01.log.gz",
+      "archiveSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceDrift": []
+    }
+  ],
+  "native": {
+    "results": "docs/research/evidence/2026-11-06-g1-deletion-leases/adapter-1793985490922-059af2d5-4041-4b95-b02d-28033c060bee/results.json",
+    "sha256": "de9c80394a61be1dbe6d5576607bc12fffa335507f834069e6e9439ae633fac9",
+    "status": "passed",
+    "groups": 3,
+    "assertions": 281,
+    "sourceCount": 29,
+    "sourceDrift": [],
+    "adapterSha256": "9d38b746b82142b5d085b12e82b1b426ae8f071d58a3dda0703c0ecc2154e4a5",
+    "compiledAdapter": "docs/research/evidence/2026-11-06-g1-deletion-leases/adapter-1793985490922-059af2d5-4041-4b95-b02d-28033c060bee/adapter.compiled.cjs",
+    "compiledAdapterSha256": "5fd7ee62f2e4ee3420b3ab0096a341569d43debc72fab0f4bdc9170bde762e77",
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    }
+  },
+  "preservation": {
+    "baseline": ".superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/pre-final-fix-evidence.json",
+    "baselineSha256": "9143134fd70fb72d9b1f16449a61da3ba6543b3e4c949bf33391f4d81bca7110",
+    "checkedFiles": 72,
+    "changed": []
+  },
+  "diffCheckExitCode": 0,
+  "stagedPaths": [],
+  "report": ".superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/final-fix-report.md",
+  "reportSha256": "2a2efc3369ebfd85c58586ddccb4a93ae020c44ec82f26d6896557d13b7f7fdd",
+  "parentOwns": [
+    "full repository gate including type-check",
+    "scoped M1 re-review",
+    "final acceptance"
+  ],
+  "g1MilestoneSatisfied": false,
+  "canDeleteStorage": false,
+  "physicalDeletionComplete": false,
+  "cloudQualified": false,
+  "deviceQualified": false,
+  "fullChainQualified": false,
+  "backupQualified": false
+}

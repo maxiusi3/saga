@@ -1,3 +1,4 @@
+/** @jest-environment node */
 import { createHash } from 'crypto'
 import JSZip from 'jszip'
 import {
@@ -83,5 +84,24 @@ describe('T09 Archival Export Service, Reading Booklet PDF & Frozen Publication 
     expect(zip.file('chapters.json')).not.toBeNull()
     expect(zip.file('publication-snapshot.json')).not.toBeNull()
     expect(zip.file('manifest.json')).not.toBeNull()
+  })
+})
+
+
+describe('complete Unicode publication', () => {
+  const input = {projectId:'p',projectName:'祖母的傳記',snapshotVersion:1,exportedAt:'2026-11-11T00:00:00Z',manifest:{version:1,assets:[]},stories:[{id:'s',title:'家族記憶',transcript:('完整的故事。 '.repeat(3000))+'最後一句。'}]}
+  it('paginates long Chinese prose and embeds a Unicode mapping', async () => {
+    const pdf = await buildReadingBookletPdf(input as any)
+    const source = pdf.toString('latin1')
+    expect((source.match(/\/Type \/Page\b/g) || []).length).toBeGreaterThan(2)
+    expect(source).toContain('/ToUnicode')
+    expect(source).toContain('/FontFile')
+  })
+  it('fails explicitly for unsupported characters instead of replacing prose', async () => {
+    await expect(Promise.resolve().then(() => buildReadingBookletPdf({...input,stories:[{id:'s',transcript:'Unsupported \u{10FFFF}'}]} as any))).rejects.toThrow(/unsupported/i)
+  })
+  it('does not infer purchased hosting from an export timestamp', () => {
+    const snapshot = buildFrozenPublicationSnapshot({...input,createdBy:'u',pdfBytes:Buffer.from('pdf')} as any)
+    expect(snapshot.hostingRetention).toBeNull()
   })
 })

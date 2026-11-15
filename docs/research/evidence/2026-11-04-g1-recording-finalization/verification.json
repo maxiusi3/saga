@@ -1,0 +1,125 @@
+{
+  "completedAt": "2026-11-04T17:30:11.582465+00:00",
+  "status": "passed",
+  "localSliceComplete": true,
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "branch": "codex/october-upgrade-p0",
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "canClearLocalDrafts": false,
+  "fullGate": {
+    "receipt": "full-gate.json",
+    "sha256": "110c02dacf646d1060a2068211fb6a0e653ea326f024af35f599eff0077259fb",
+    "exitCode": 0,
+    "sourceDrift": [],
+    "webSuites": 150,
+    "webTests": 2829,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 14,
+    "productionPages": 184,
+    "typeCheck": "passed",
+    "lint": "passed"
+  },
+  "focusedApplication": {
+    "suites": 16,
+    "tests": 677,
+    "receipts": [
+      "task2-focused-final-01.json",
+      "task2-input-storage-final-01.json"
+    ]
+  },
+  "workerCompilerCompatibility": {
+    "status": "passed",
+    "receipt": "task2-compat-final-01.json"
+  },
+  "native": [
+    {
+      "receipt": "sql-only-2026-11-04T16-14-22.203Z-0b981799-c094-4aab-ba08-ab5dbc0ef943/results.json",
+      "sha256": "c247da472f2eb5e0b077932e855adb991fdc1a3c6903aed01aa3b13063d5da59",
+      "status": "passed",
+      "scenarios": 15,
+      "assertions": 492,
+      "sourceSnapshots": 21,
+      "currentSourceHashesMatch": true,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketDirectoryRemoved": true,
+        "serverPidGone": true
+      },
+      "httpCleanup": null
+    },
+    {
+      "receipt": "http-application-2026-11-04T16-57-11.120Z-0b324a81-c131-4d93-ab8a-e46c007364fc/results.json",
+      "sha256": "a6cea46c28a6458f2c6fca4e0ffc7f00d612d9405e624832517c38be15538363",
+      "status": "passed",
+      "scenarios": 8,
+      "assertions": 278,
+      "sourceSnapshots": 25,
+      "currentSourceHashesMatch": true,
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": [],
+        "socketDirectoryRemoved": true,
+        "serverPidGone": true
+      },
+      "httpCleanup": {
+        "listening": false,
+        "pending": 0,
+        "sockets": 0,
+        "errors": [],
+        "everyHandlerFinished": true,
+        "everyTransportSettled": true
+      }
+    }
+  ],
+  "reviews": {
+    "task-1-review.md": {
+      "sha256": "fbf3b90d936a943c797d9fd6a91411507edd8bfdc9ad939bdf30ec2132a4b108",
+      "specification": "PASS",
+      "quality": "APPROVED"
+    },
+    "task-2-review.md": {
+      "sha256": "f3796fcc83d409f9107eb2a8d494377f667d4c16349a212dbb847b5f78b4e1dc",
+      "specification": "PASS",
+      "quality": "APPROVED"
+    },
+    "final-review.md": {
+      "sha256": "cb44c2f484f2c83d9565535152dd2f1f2d1606f6da94264b0e15d0bc4c6880fa",
+      "specification": "PASS",
+      "quality": "APPROVED"
+    }
+  },
+  "integrity": {
+    "receipt": "integrity.json",
+    "sha256": "22a3d3730edebdaac44e988c6409c56ee608e5f36cd3d3fba3eb1c73b54a82b2"
+  },
+  "sourceLock": {
+    "receipt": "source-lock.json",
+    "sha256": "b0d95563edba6a947c58f950d17acd439b572aff07e6e8cf079f178158d741d8"
+  },
+  "git": {
+    "headUnchanged": true,
+    "staged": false,
+    "committed": false,
+    "pushed": false
+  },
+  "remoteMigration": false,
+  "deployment": false,
+  "paidCalls": false,
+  "familyDataTransmitted": false,
+  "limitations": [
+    "Worker terminal orchestration after cleanup and heartbeat drain is not wired.",
+    "No terminal status reconciliation, browser acknowledgement or local draft cleanup.",
+    "Physical deletion target capture, execution, reference-safe GC and candidate backup coverage remain open.",
+    "HTTP is a local PostgREST-shaped substitute; no Storage audio bytes are verified by this matrix.",
+    "No full migration-chain, cloud, device, long-recording, contention or large-manifest qualification.",
+    "Existing build configuration warnings remain; dependency audit was not rerun."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "case": "SQL left(title,500) admits 300 Unicode scalar characters but response validator counts 600 UTF-16 code units",
+  "characters": 300,
+  "codeUnits": 600,
+  "observed": {
+    "status": 500,
+    "message": "Source search response could not be verified"
+  },
+  "sources": {
+    "packages/web/src/lib/server/authoritative-search.ts": "21ba140a3453ce941150d684b513a60ca096d801429ecfba3625bad7736b78b6"
+  }
+}

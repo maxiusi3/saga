@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-11-11T19:01:21.274878+08:00",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "status": "passed_local_engineering",
+  "localEngineeringProgressPercent": 100,
+  "progressBasis": "T00-T13 estimated effort midpoint82.5days; G4/T13 midpoint6.5days. Authorized local engineering scope only; no real study or release completion.",
+  "realG4Passed": false,
+  "observedHouseholdsMeasured": 0,
+  "humanAcceptance": "waived_by_user_not_measured",
+  "g4": {
+    "report": "migrations-1794393601976-9c739a2a-e278-417c-9844-51b44c57f10e/results.json",
+    "sha256": "cf4e9823ebb0efe727197d659f8caac04c98d99965bc57f14609a467e6e80d6f",
+    "assertions": 667,
+    "migrationFiles": 37,
+    "browser": "Chrome157.0.8103.39",
+    "backup": "passed"
+  },
+  "g3Regression": {
+    "report": "../2026-11-11-g3-delivery/migrations-1794392704988-d1a36f28-3f5b-4055-960e-136bc3716461/results.json",
+    "sha256": "79d640377af5335c0f825a2d523e6a6e1507af2f9cb82dfa02b17e5f87e4022e",
+    "assertions": 672
+  },
+  "tests": {
+    "webSuites": 181,
+    "webTests": 3717,
+    "g4Suites": 4,
+    "g4Tests": 120,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 28,
+    "staticPages": 187,
+    "typeCheck": "passed",
+    "lint": "passed",
+    "build": "passed"
+  },
+  "review": {
+    "spec": "PASS",
+    "quality": "Approved",
+    "remainingFindings": 0,
+    "path": "review.md"
+  },
+  "source": {
+    "files": 1274,
+    "changedFromG3": 16,
+    "manifestSha256": "fec15230d270edfa15ef3235f46fad876be16005915d5b2b83acf85472c07dde",
+    "archiveSha256": "3079af8ddb6ee38a681800d638a53e889f44718f126c646e35f9e8db2bf7e996",
+    "archiveMembersIndividuallyVerified": true,
+    "excludedGeneratedFiles": [
+      "packages/web/next-env.d.ts",
+      "packages/web/public/deployment-trigger.txt"
+    ],
+    "credentialFilesExcluded": true
+  },
+  "logs": {
+    "backup.log": "a5bcf6b476e624fefac5d647a7b66790aac2ac1857dec9287b509927e6f7bc2d",
+    "final-all.log": "ceb54dc60cfa0920bd3314eea8d15bb911123d643e6d755630c9fe832fce0e01",
+    "final-native.log": "3fa8af979fbe1a06f3dcabedd763cf778f11afa51a387c740a2aee7bc5689254",
+    "g3-regression.log": "9f4fbec684b0b72f64e1cc9bec3aad9da488d198b081cd536447528bd851c0c9",
+    "infra-final.log": "608d00f0526e773a402f0049e5c6e9c50db5397b563430fdbb1a170b77fec4d9",
+    "infra.log": "e59897f54dba1e723aaa15f1365cb070eb8a15eba6c32dec0096ce541e912d34",
+    "ledger-red.log": "2dabc11ecea3428122afacc1d67b03c7684735b184b2ed28b5736985a6acd324",
+    "shared.log": "3f04a14a928884878c638619c43497add9e4f8e1d3b267a49ac22c395b125578",
+    "targeted-final.log": "4d7e5d583b45e78963809148ffc66616dedfdfd75482155a76ecc126215a1aeb",
+    "verify.log": "7d47239c385d034ef0285549b7ec415649e8f84539432eecbbd559df4b471d72"
+  },
+  "stagedFiles": [],
+  "nextEnvRestored": true,
+  "limitations": [
+    "Operator-attested evidence references; external receipts/interviews are not verified by software",
+    "No real20-30household study or observed settlement",
+    "Local synthetic Auth/PostgREST/Storage transport does not qualify hosted deployment",
+    "No deploy, remote migrations, commit or push"
+  ]
+}

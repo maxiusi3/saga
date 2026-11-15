@@ -1,6 +1,7 @@
 # UR Saga 综合升级实施计划
 
-创建：2026-10-10 · 更新：2026-10-24（Asia/Taipei） · 状态：**G0、G1、G2、G3、G4 全部五个里程碑与 P0–P4 工程交付已全部达成（`G0–G4 = true`）并推送 GitHub**；下一阶段为受控生产切流演练、真实家庭纵向试点运行与 P5 扩展选择
+> 2026-11-14 当前更新：11 月 13 日审计发现的归档、转写、依赖安全及 AI 编辑复核、语义检索、到期提醒六项缺口已按本地工程范围修复并通过完整集成验收，见 [逐项关闭报告](research/2026-11-14-audit-repair.md) 和 [handoff](HANDOFF-2026-10-13-upgrade.md)。撤回此前“T00–T13 本地工程100%”的估算；以逐项实现和验证回执判断完成度。真实模型质量、设备／支付／托管及20–30户纵向试点仍未通过，已有人工放行不等于实测成功。
+创建：2026-10-10 · 更新：2026-11-14（Asia/Taipei）。本计划保留需求与历史实施记录；当前执行状态以 [handoff](HANDOFF-2026-10-13-upgrade.md) 为准。旧 `G0–G4=true` 含合成或占位证据，不作为真实设备、供应商、家庭试点或生产放行证明。以下 10 月收口段落为历史声明，不能覆盖 11 月逐项复核结果。
 
 10月24日本轮第五阶段收口：[P4 家庭纵向试点与决策分析（`T13`）及 G4 里程碑验收](research/2026-10-24-p4-g4-verification.md)：完成 SQL 迁移 `20261024000004_p4_pilot_cohort_and_g4_analytics.sql`（建立 `public.pilot_households` 纵向试点台账表、强制三类样本与四档价格隔离及 RLS）、T13 纵向试点分析与 G4 决策建议引擎（`pilot-cohort-analytics.ts`、`GET /api/admin/pilot-analytics`，实现 7d/28d/14d 成熟观察窗过滤、零分母 `insufficient_sample` 保护、家庭修订与运营支持分钟中位数/P90、含未完成与退款家庭的队列单位经济、NPS 与愿推荐率独立核算，以及由负责人拍板的可解释下一步建议），并在本地 PG17.4 完成 P4/G4 端到端验证（[`p4-g4-verify-2026-10-24T15-49-58.079Z-90e4d756-3573-42c3-b750-de9c6ab96db1.json`](research/evidence/2026-10-24-p4-g4-verification/p4-g4-verify-2026-10-24T15-49-58.079Z-90e4d756-3573-42c3-b750-de9c6ab96db1.json)，2 场景/22 断言通过）。至此主计划 §7.1 的 **G0、G1、G2、G3、G4 全部五道质量门与 P0–P4 工程任务（`T00–T13`）全部完成**。详见[G4 里程碑判定](research/evidence/2026-10-24-p4-g4-verification/milestone-check.json)。
 

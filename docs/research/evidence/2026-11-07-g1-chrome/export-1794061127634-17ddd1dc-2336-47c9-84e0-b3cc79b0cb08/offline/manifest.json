@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "assetId": "56488485-e3dc-8bdb-925a-8d06515c683a",
+      "kind": "original_audio",
+      "filename": "unnamed-asset",
+      "mimeType": "audio/webm;codecs=opus",
+      "byteSize": 2434217,
+      "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449",
+      "state": "ready",
+      "assetVersion": 1
+    }
+  ]
+}

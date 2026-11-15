@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "assetId": "f2bb3295-da53-45a2-a775-e3dbe584f5b6",
+      "kind": "original_audio",
+      "filename": "family-original.wav",
+      "mimeType": "audio/wav",
+      "byteSize": 384044,
+      "sha256": "38d4fe14e5f89f543e875da3c70ad9b1bfc9f3bf6503216e2266891bd9fcd5fe",
+      "state": "ready",
+      "assetVersion": 1
+    }
+  ]
+}

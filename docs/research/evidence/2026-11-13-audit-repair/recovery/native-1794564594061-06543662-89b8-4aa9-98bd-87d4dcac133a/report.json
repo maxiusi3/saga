@@ -1,0 +1,563 @@
+{
+  "status": "passed",
+  "assertions": 681,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": true
+    },
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "sources": {
+    "experiments/pg17-processing-recovery/verify.mjs": "0054b542e69203bcc02d16d651f2e4d1d6f69d0fff8779bc7460cbbfa4d290c7",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "873f2328cb136db24e26c8736e1fe94b6a43082436b9559eca095329ec551a81",
+    "supabase/migrations/20250731012532_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250731015259_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250802015525_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250802015612_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20260611000000_agent_phase1.sql": "77fa360a9174c3af2e27e7b63fefaf3e3cc420ea785d3422f41051731638f2f9",
+    "supabase/migrations/20260612000000_agent_phase2_public_archive.sql": "cb9545b79425861d5ee5ab9a8fc7d71c48358983ab6c9a8f66b467ffa5c62834",
+    "supabase/migrations/20260621000000_storage_policies.sql": "6cfc526f0c3ea4245eb1847748d61d2e8f37db03cd8c10f9cb79f3b16b6188bc",
+    "supabase/migrations/20260625081000_dashboard_support_tables.sql": "526130a7fe84dca1327fd3b8cc7546c3445eadf0d6d29b896499ccfcb73a32de",
+    "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql": "8aa01d232796c63c56e4e6d85bfbf262741d1ff908b2d17c1e95c1332895752b",
+    "supabase/migrations/20261007000001_create_waitlist.sql": "20d2193287988a84de23b9224df8cbd7513fb93439a740da2dc0cce0e0c11a1c",
+    "supabase/migrations/20261007000002_improve_storage_rls.sql": "d0375b2abbeff1b4f8357c5704dc6de37c3ecb64f3fcaae1cfeead949b3e8cff",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql": "d7a77d28cd49780b1bbad5d5efea81a0cc241fda48eaca2dd3180f73a49e8992",
+    "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql": "7480f7d06542275ec9d14cb26757e23030d6fef4a6dd8d5e8d1925d3ce3afe78",
+    "supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql": "4f57e7fed1bf9d7c7f061cddb7e9951f28a4502521d7839d7f9ebf262bc0150f",
+    "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+    "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+    "supabase/migrations/20261030000001_upload_observations.sql": "68e8d4ec610185db89a2f2fcec0d29fe9e2b86cf5f34988762f8982b565b4c78",
+    "supabase/migrations/20261030000002_deployment_collection_coverage.sql": "23bb279edc8b9f6d44617f75d3eb532607c70d699578072701e4b436c20f32de",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af",
+    "supabase/migrations/20261106000001_recording_story_save.sql": "20ba20cdda0ec79c997cf1a0eafc38e7d7c022ad95b6146e7658d4208b8d5569",
+    "supabase/migrations/20261106000002_media_deletion_capture.sql": "8c4873a4cf980bb6912508d387ac2a6d509cf5c27894298a8277e7f7d0f52b32",
+    "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql": "cb1d15de2782ed2c0fde5c69b1ee2684b8a5a941e46623c6092a4003c1784628",
+    "supabase/migrations/20261106000004_media_deletion_leases.sql": "b09325de38514d56789d8bb8d0c43e12223328f9c72a8a055cff9f01e3146063",
+    "supabase/migrations/20261107000001_legacy_compatibility_acl.sql": "0ede8cadbff29f74faa9523113186ac7235c45401a278c20c9d936e4efcc2522",
+    "supabase/migrations/20261109000001_media_deletion_execution.sql": "318c1e1c6dbb191d57baa0729eb3f849162a4f4acb8fbc1627f0a55535f75b28",
+    "supabase/migrations/20261109000002_story_content_deletion.sql": "720cf6c0c934aa8a2ef12a12a8c89f43a543f62d34a33c3fd4080f5f812e3552",
+    "supabase/migrations/20261110000001_story_review_workflow.sql": "b76cb7624050576e57eaaabfc86d436699427f86b5e8a95b05eda39d31e92a48",
+    "supabase/migrations/20261111000001_publication_delivery.sql": "b79cd6d7302ce86f271a29f172945e7bdeb977424997d2739908259fd689b763",
+    "supabase/migrations/20261111000002_authoritative_search.sql": "49be47d0d675fe4785376a0364b34580fb38ab7c7f9a1be088a0dac980b8dcd1",
+    "supabase/migrations/20261111000003_payment_orders.sql": "1e5bf48134b943d021ae9cc64b417637504dc2a19eab5908f1367d5234fa327e",
+    "supabase/migrations/20261111000004_pilot_observation_ledger.sql": "65b0668f2b1b76b95f25f14689ae8b6f716d5d68f2bd1fb5d9111db2e0505ed5",
+    "supabase/migrations/20261113000001_processing_recovery.sql": "a141b0b20597982c2f37e1642345cfd8dcd69ee6440d386d2fd07927326afcda",
+    "experiments/pg17-processing-recovery/scenarios.mjs": "fba49ea2c3d2b747cd349ffbcf165ddf5d48e48b81d91b751f37f880c802f892",
+    "experiments/pg17-processing-recovery/adapter-scenarios.mjs": "563b76f61be5fd35d36c6f1dec8294cd31603ae00dfaa2b6207594ee1376d5bd",
+    "packages/web/src/lib/server/story-transcription.ts": "88359ca6a910b8f96e5edbcff135c753302f2bfd7facd303ec344f29cf57a64a",
+    "packages/web/src/lib/story-review-contract.ts": "5c32cde5ce4c81157a9e62d18f9de3db848fa0c699fcb784d6411f824d0dd2a7",
+    "packages/web/src/lib/server/ai-capability-gateway.ts": "c36d79f6bc472101f6ec75b3c771c3116486e08c39dcf4fc28b38e544257d3c5",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/provider-policy-verification.ts": "f62bbd40c83607201a8afe49e0a95d480208144df34001545bc32c95bd6b9a8b",
+    "packages/web/src/lib/server/cutover-readiness.ts": "6dd1e697480011f87a0a56a3d6e52a31a45f05425afe914098cfb3c0e511b852",
+    "packages/web/src/lib/server/story-review-service.ts": "fb1225caf461f47592c965c3364c2e7edc2b85964a1c96984dade52ea28d7e79",
+    "experiments/pg17-processing-recovery/publication-scenarios.mjs": "d8ad74a966e41c5ebe789aea15702df5d7344c09dc10fb1638781259f2981832",
+    "packages/web/src/lib/server/publication-delivery-worker.ts": "db1f158df5f8f6c0bc612ec1968988e13ce40b70fe443174f105ed57a0000721",
+    "packages/web/src/lib/media-assets.ts": "bd8d0a6ca204b0a8ae59bd3d5898549390bfa1d244efaf29048c11d8e5846cda",
+    "packages/web/src/lib/server/archival-export-service.ts": "723e01bf472ed3487ae0b96d4fa86dc50f2b92618159bfe52b3ea707f9a8428d",
+    "packages/web/src/lib/server/media-export.ts": "fd184a20aa4f8ae1a03bfda51958736028c9f0647a70336a3f1498f82278aafe",
+    "packages/web/src/lib/server/publication-source-service.ts": "ab8fee3fae2ed5d3845b55dbd7447a0ad1c42f8cfd5dbca7e56b0e9141ebc519",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/server/recording-asset-lineage.ts": "c803c61daf7394bb211b9ee4d7afa1fa1e8f7781cc79e9dbe44ae90744e6d2f1",
+    "packages/web/src/lib/server/recording-output-candidate.ts": "33c46538e150372327dddfe583f89838b2e6c34626331f0a5436523611163eb8",
+    "packages/web/src/lib/server/publication-delivery-service.ts": "413cea5c198b0235773150edcf3000ad1185b95501a40efc1f8223939b491255",
+    "experiments/pg17-g2-review/transcription-chrome.mjs": "f85233e8a0431a0692d752d8a433bfbde25be81970db83242597a5d4816b132a",
+    "packages/web/src/app/api/stories/[storyId]/transcribe/route.ts": "47cd4480b5c1cbd86f81bc771f33183ab1ddd45aafdb0361149a2faf1c1e4484",
+    "packages/web/src/app/api/stories/[storyId]/review/route.ts": "e09f7c1c51aad67bb55f4cb59467f56e5a4387114bfbce4a43e68e69d9ad394e",
+    "packages/web/src/app/api/media/assets/[assetId]/play/route.ts": "51cbf64d48339fb3321120f6663f464ab6b672b7d932daca374841629378b1d4",
+    "packages/web/src/app/api/media/assets/[assetId]/access/route.ts": "fa3f3f9959b1376a320a5c464a5466b702a26ab1aafccd1657dcf3646288a97e",
+    "packages/web/src/lib/server/project-access.ts": "c6dd6eeeef8fd9030dad1ef9fd7664f2b66db2bc3181b36d8e33542fe9aa395e",
+    "packages/web/src/lib/server/media-asset-guard.ts": "b79501912ea13b8fa0644e3997ec4c3bf23a187e1db28c2a359d39b6f489de30",
+    "packages/web/src/lib/server/media-access.ts": "6f781e6a31c04622737cb1a87ef4fedbd427dd4ff5ca176442e16248bb9d9c0f",
+    "packages/web/src/lib/recording-save-contract.ts": "d91a75dfe466802ea5e86db651752d44c9c04979a0907b384c7978f45fb8f55c",
+    "experiments/pg17-g2-review/entry.tsx": "8a1cd6e363bcb9c1561f34133697577fc35842ef7e9a5bce0dd201dcd39bba0c",
+    "packages/web/src/components/stories/StoryReviewPanel.tsx": "0ce77caaa8c14e5d063fdcd909b5148c7b64ec27d21d933bdc0cea838a59aa4e",
+    "packages/web/src/components/stories/StoryTranscriptionControl.tsx": "991273da93189ecea3b37958600ea08dbb4f4a5b93d65a5386ef2a1d9b3bead7",
+    "packages/web/src/components/stories/StoryAiEditControl.tsx": "da6d6475f73e33673e50798b5105926cdcac9f801f9a606f9a875961ffa9b676",
+    "packages/web/src/components/stories/story-review-copy.ts": "6a39bcdea3bdc4d11ec09c6b37c7c84a1e520b4cb23c336c7925c9de1032bc5e",
+    "packages/web/src/lib/story-review-client.ts": "e98b002461755cd753806902c8c1bac01dd2157738efcdc1ecc13b347eb14741",
+    "packages/web/src/lib/story-transcription-client.ts": "baee4c62cd5ea86737a718e6d9c753711af17aab2b6519259336e627de947539",
+    "packages/web/src/lib/story-ai-edit-client.ts": "dce65506e7ed62038a8e22725dc32f36feef80d8531fcf6c8970732aa1840b1a",
+    "packages/web/src/lib/story-ai-edit-contract.ts": "6dfeb8c0e694788b5010d4af099e3ba91c54c2c0f53ede7ee2e72aaca5cc3c1b",
+    "experiments/pg17-g2-review/boundaries.tsx": "e7e57d722b5872b15c62b343adfbeac8d8b267d3cf81f53878cbe4b715af29e1",
+    "package.json": "18fa75d725efaba543f92b36bb5400a0b10b50e5e34fc7a83df0911d983d7b56",
+    "packages/web/package.json": "2e14e3d60a547d64945c6b21f6365adb76fb64bb85eb99e4582dcf68ec7afa21",
+    "packages/web/src/app/globals.css": "3e5dfd8e1cb05ed9caecc235fdb2cb1195df786a71eb16d4af9d94276b10c14c",
+    "packages/web/tailwind.config.js": "ed3036875fa8ff725544e35b07afba9c418014d6471dfb0ba00ed472477ced4b"
+  },
+  "migrations": [
+    {
+      "path": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20250731012532_remote_history_placeholder.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20250731015259_remote_history_placeholder.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20250802015525_remote_history_placeholder.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20250802015612_remote_history_placeholder.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20260611000000_agent_phase1.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20260612000000_agent_phase2_public_archive.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20260621000000_storage_policies.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20260625081000_dashboard_support_tables.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261007000001_create_waitlist.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261007000002_improve_storage_rls.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261029000001_operational_snapshot.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261029000002_export_observations.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261030000001_upload_observations.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261030000002_deployment_collection_coverage.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261104000001_recording_job_finalization.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261105000001_recording_session_snapshot.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261106000001_recording_story_save.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261106000002_media_deletion_capture.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261106000004_media_deletion_leases.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261107000001_legacy_compatibility_acl.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261109000001_media_deletion_execution.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261109000002_story_content_deletion.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261110000001_story_review_workflow.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261111000001_publication_delivery.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261111000002_authoritative_search.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261111000003_payment_orders.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261111000004_pilot_observation_ledger.sql",
+      "status": "passed"
+    },
+    {
+      "path": "supabase/migrations/20261113000001_processing_recovery.sql",
+      "status": "passed"
+    }
+  ],
+  "boundary": "Actual complete repository bootstrap/migration files on native PG17.4 with real extensions. Minimal synthetic Supabase auth/storage platform schemas; no hosted PostgREST/Auth/Storage qualification.",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "binarySha256": {
+      "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+      "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+      "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+      "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+      "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+    }
+  },
+  "scratch": "/tmp/saga-g1-chain-wCnqtO",
+  "processingRecovery": {
+    "status": "passed",
+    "boundary": "Real native PG17 durable state, concurrent connections, synthetic families. No paid provider call."
+  },
+  "recoveryAdapter": {
+    "status": "passed",
+    "providerCalls": 4,
+    "checks": [
+      "storage503-release-retry",
+      "reservation-ack-loss-expiry",
+      "outbound-permit-ack-loss-no-resend",
+      "provider503-no-resend",
+      "concurrent-SDK-single-send",
+      "completed-idempotent-replay"
+    ],
+    "boundary": "Actual production TS, Supabase SDK, native PG17 and loopback HTTP multipart provider with synthetic credentials/audio. No remote traffic or provider-quality claim."
+  },
+  "publicationRecovery": {
+    "status": "passed",
+    "checks": [
+      "lost",
+      "unknown",
+      "cleanup",
+      "precommit"
+    ],
+    "boundary": "Production assembly/PDF/ZIP worker and Supabase SDK against native PG17 with actual committed finish responses dropped by controlled local transport; physical filesystem cleanup failure. No remote services."
+  },
+  "transcriptionChrome": {
+    "status": "passed",
+    "checks": [
+      "outsider, revoked member, missing consent, invalid policy: zero provider requests",
+      "explicit Chrome consent and submit",
+      "actual adapter multipart bytes and config",
+      "durable aligned transcript and unknown confidence",
+      "completed request replay makes zero extra calls",
+      "reload and timed audio seek",
+      "consent withdrawn during provider response rejects ingestion",
+      "invalid provider response creates no draft",
+      "pending identity survives reload",
+      "same and new IDs cannot repeat unknown outbound request",
+      "Storage503 before outbound remains retryable",
+      "reload and explicit renewed consent retry same request",
+      "exactly one provider send after safe retry"
+    ],
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 503
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/review",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/review",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/media/assets/dcff8094-a93a-44dc-86b3-6421c6a84eed/play",
+        "status": 307
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/review",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/media/assets/dcff8094-a93a-44dc-86b3-6421c6a84eed/play",
+        "status": 307
+      },
+      {
+        "method": "GET",
+        "path": "/api/media/assets/dcff8094-a93a-44dc-86b3-6421c6a84eed/play",
+        "status": 307
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/d7d113b1-f1da-4736-ac5f-3d227bbe1a30/transcribe",
+        "status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/ccab3640-eda7-4578-9e72-7956b8f7ea98/review",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/ccab3640-eda7-4578-9e72-7956b8f7ea98/transcribe",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/ccab3640-eda7-4578-9e72-7956b8f7ea98/transcribe",
+        "status": 502
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/ccab3640-eda7-4578-9e72-7956b8f7ea98/transcribe",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/ccab3640-eda7-4578-9e72-7956b8f7ea98/transcribe",
+        "status": 409
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/ccab3640-eda7-4578-9e72-7956b8f7ea98/transcribe",
+        "status": 409
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/ccab3640-eda7-4578-9e72-7956b8f7ea98/review",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/ccab3640-eda7-4578-9e72-7956b8f7ea98/transcribe",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/review",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/transcribe",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/transcribe",
+        "status": 503
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/transcribe",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/review",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/transcribe",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/transcribe",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/review",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/stories/a4896588-e577-4f74-a848-587b09719516/transcribe",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/media/assets/15a5e165-dd32-4585-8d9d-a5eb42c8c640/play",
+        "status": 307
+      }
+    ],
+    "providerRequests": [
+      {
+        "mode": "success",
+        "path": "/v1/speech-to-text?enable_logging=false",
+        "bytes": 192044,
+        "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+        "model": "scribe_v2"
+      },
+      {
+        "mode": "withdraw",
+        "path": "/v1/speech-to-text?enable_logging=false",
+        "bytes": 192044,
+        "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+        "model": "scribe_v2"
+      },
+      {
+        "mode": "invalid",
+        "path": "/v1/speech-to-text?enable_logging=false",
+        "bytes": 192044,
+        "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+        "model": "scribe_v2"
+      },
+      {
+        "mode": "success",
+        "path": "/v1/speech-to-text?enable_logging=false",
+        "bytes": 192044,
+        "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+        "model": "scribe_v2"
+      }
+    ],
+    "errors": [],
+    "boundary": "Production StoryReviewPanel and StoryTranscriptionControl, production GET/POST transcription/review/play routes, Supabase SDK, complete native PG17 schema, and installed Google Chrome. Auth identities, loopback PostgREST/Storage/provider transport, tone WAV, and timed provider response are controlled synthetic substitutes. No paid/live ASR, real speech accuracy, or semantic audio alignment claim.",
+    "stories": [
+      {
+        "story": "d7d113b1-f1da-4736-ac5f-3d227bbe1a30",
+        "asset": "dcff8094-a93a-44dc-86b3-6421c6a84eed"
+      },
+      {
+        "story": "ccab3640-eda7-4578-9e72-7956b8f7ea98",
+        "asset": "930b40fa-cc05-4119-8c28-6b4d3349bf28"
+      },
+      {
+        "story": "a4896588-e577-4f74-a848-587b09719516",
+        "asset": "15a5e165-dd32-4585-8d9d-a5eb42c8c640"
+      }
+    ],
+    "source": {
+      "bytes": 192044,
+      "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+      "durationMs": 6000,
+      "mimeType": "audio/wav"
+    },
+    "browser": "157.0.8103.78",
+    "cleanup": {
+      "globalsRestored": true,
+      "errors": []
+    }
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  }
+}

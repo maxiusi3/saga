@@ -32,9 +32,9 @@ echo "==> Applying Saga base schema bootstrap"
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "supabase/bootstrap/20260624000000_app_base_schema.sql"
 
 echo "==> Applying Saga application migrations"
-psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "supabase/migrations/20260611000000_agent_phase1.sql"
-psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "supabase/migrations/20260612000000_agent_phase2_public_archive.sql"
-psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "supabase/migrations/20260621000000_storage_policies.sql"
+for migration in supabase/migrations/*.sql; do
+  psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$migration"
+done
 
 echo "==> Verifying required tables and RPC"
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 <<'SQL'
@@ -66,6 +66,23 @@ select routine_schema, routine_name
 from information_schema.routines
 where routine_schema = 'public'
   and routine_name in ('create_project_with_role', 'handle_new_user');
+
+-- Fail if the payment/source graph or durable publication storage is missing.
+do $$
+declare relation text;
+begin
+  foreach relation in array array[
+    'invitation_candidate.trusted_seat_sources', 'invitation_candidate.bindings',
+    'invitation_candidate.requests', 'entitlement_candidate.sources', 'entitlement_candidate.events',
+    'public.payment_orders', 'public.payment_order_requests', 'public.payment_order_events',
+    'public.payment_project_rights', 'public.publication_snapshots',
+    'public.publication_delivery_jobs', 'public.publication_artifact_cleanup',
+    'public.story_ai_edit_requests', 'public.story_transcription_requests',
+    'public.hosting_reminders'
+  ] loop
+    if to_regclass(relation) is null then raise exception 'Required relation missing: %', relation; end if;
+  end loop;
+end $$;
 SQL
 
 echo "==> Restore complete"

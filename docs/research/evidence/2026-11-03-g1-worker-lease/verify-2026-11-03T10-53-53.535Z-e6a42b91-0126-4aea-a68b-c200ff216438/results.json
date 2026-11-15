@@ -1,0 +1,603 @@
+{
+  "startedAt": "2026-11-03T10:53:53.538Z",
+  "mode": "verify",
+  "status": "failed",
+  "assertions": 258,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "metadata_reader",
+      "session_user": "metadata_reader",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Exact five-action lease RPC exists (missing-feature RED before migration)",
+      "status": "passed",
+      "assertions": 3
+    },
+    {
+      "name": "Lease migration preserves old attempts and nonlease dispatched_at default",
+      "status": "passed",
+      "assertions": 2
+    },
+    {
+      "name": "Closed RPC args, identity, least privilege and original ledger write restrictions",
+      "status": "passed",
+      "assertions": 48
+    },
+    {
+      "name": "Claim/start/check/heartbeat durable rows, duplicate refusal, atomic rollback and injected failure",
+      "status": "passed",
+      "assertions": 40
+    },
+    {
+      "name": "Two independent processes race the same job and persist a single attempt",
+      "status": "passed",
+      "assertions": 7
+    },
+    {
+      "name": "Heartbeat evaluates database time after actual locks and cannot resurrect expired fence",
+      "status": "passed",
+      "assertions": 9
+    },
+    {
+      "name": "SIGKILL after leased and running checkpoints yields retry versus outcome_unknown",
+      "status": "passed",
+      "assertions": 47
+    },
+    {
+      "name": "Three real undispatched expiries exhaust budget and preserve all attempts",
+      "status": "passed",
+      "assertions": 24
+    },
+    {
+      "name": "Permissions, tombstones and cancellation reject late operations and explicit recovery cancels",
+      "status": "failed",
+      "code": "42883"
+    }
+  ],
+  "sources": {
+    "experiments/pg17-recording-worker/verify.mjs": "34faa29dbd746e890cf19e7a970bf3333162e0649701dcdddab41e257f796702",
+    "experiments/pg17-recording-worker/fixture.mjs": "dcc699709c21e502d06e1871aa45ba1aaf77df0fe029d41ea648996920fb2db8",
+    "experiments/pg17-recording-worker/database.mjs": "8d2d0231012a7d598a7efe863e6f79fbe62d2200cf5d12b1c9550d3d3fbcff1f",
+    "experiments/pg17-recording-worker/worker-child.mjs": "3739fdd114c398abc735e0121649e978fd3d5f7cf98c25877f5a6d3844437102",
+    "experiments/pg17-routines/runtime.mjs": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552",
+    "experiments/pg17-routines/runtime-pins.json": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "7082e897ed12176b6f8487a02a9d29057e9e18f6ecb514c9d1089cc8e5768daa"
+  },
+  "snapshots": {
+    "experiments/pg17-recording-worker/verify.mjs": {
+      "path": "0-verify.mjs.gz",
+      "sha256": "88e7c7d17bb2993c2ca1f4ef04c721e7d8217b7faf00914ed886bdd8e8350201",
+      "decodedSha256": "34faa29dbd746e890cf19e7a970bf3333162e0649701dcdddab41e257f796702"
+    },
+    "experiments/pg17-recording-worker/fixture.mjs": {
+      "path": "1-fixture.mjs.gz",
+      "sha256": "71fb8456814bef53cade7506b2ef2622608efc92fdb4c1b28b42ec14de493c58",
+      "decodedSha256": "dcc699709c21e502d06e1871aa45ba1aaf77df0fe029d41ea648996920fb2db8"
+    },
+    "experiments/pg17-recording-worker/database.mjs": {
+      "path": "2-database.mjs.gz",
+      "sha256": "3ad63a033033af7e0209e001fbf48ea2070a69eb922b5b3dc1d56c1826817bc6",
+      "decodedSha256": "8d2d0231012a7d598a7efe863e6f79fbe62d2200cf5d12b1c9550d3d3fbcff1f"
+    },
+    "experiments/pg17-recording-worker/worker-child.mjs": {
+      "path": "3-worker-child.mjs.gz",
+      "sha256": "2f303ded7faef556589ed26183f75a5e32c90810c757c11083b772d2519fb201",
+      "decodedSha256": "3739fdd114c398abc735e0121649e978fd3d5f7cf98c25877f5a6d3844437102"
+    },
+    "experiments/pg17-routines/runtime.mjs": {
+      "path": "4-runtime.mjs.gz",
+      "sha256": "0e746071f418db45326164d575bbe723322fa113b66f6b3c4ef4acc85eb26cf4",
+      "decodedSha256": "326448f3651c389b702e207bc1598dfb8b38297f59f48d4d45b56fb64109d552"
+    },
+    "experiments/pg17-routines/runtime-pins.json": {
+      "path": "5-runtime-pins.json.gz",
+      "sha256": "f7c53b88a664df9a0acd473f586d818ae3b27b953e61cbb43021bf0bb4c28cc0",
+      "decodedSha256": "55832ba949594fb7b0de5c512203f92d14b63c69dcd87e2cc3b8eab528ea2f67"
+    },
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": {
+      "path": "6-20261024000001_p1_foundation_and_reconciliation.sql.gz",
+      "sha256": "415ff64252c8c6241b44e29237e4f1401e94ccc17404c9be8f2e6be55634a688",
+      "decodedSha256": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1"
+    },
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": {
+      "path": "7-20261102000001_recording_seal_manifest.sql.gz",
+      "sha256": "4dcb580892a569fff4a5c873f2141fd590ee9c76cc94585d91a69d934dfbfb04",
+      "decodedSha256": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+    },
+    "packages/web/src/lib/recording-chunk-location.ts": {
+      "path": "8-recording-chunk-location.ts.gz",
+      "sha256": "2b974abdd276a821fc41488cbc9425c1e9c08168e16c94b59a54fb3758754973",
+      "decodedSha256": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7"
+    },
+    "packages/web/src/lib/server/consent-deletion.ts": {
+      "path": "9-consent-deletion.ts.gz",
+      "sha256": "b416c61e9f38ebddbae7727c16da60f5b87b9bc9a7143a700f13bb971e9c2ccd",
+      "decodedSha256": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33"
+    },
+    "packages/web/src/lib/server/processing-jobs.ts": {
+      "path": "10-processing-jobs.ts.gz",
+      "sha256": "1cab40ebc4544bd4a7c48f9d326eb093144e2793ad8bbd2e41dbe9e4dec973b0",
+      "decodedSha256": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1"
+    },
+    "packages/web/src/lib/server/recording-merge.ts": {
+      "path": "11-recording-merge.ts.gz",
+      "sha256": "c9ef63327afc5c95a74d74a00258ea8a71eca20be13c494a212549579e17666e",
+      "decodedSha256": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8"
+    },
+    "packages/web/src/lib/server/recording-merge-executor.ts": {
+      "path": "12-recording-merge-executor.ts.gz",
+      "sha256": "93f8c32885d23b282f3c175ee04caa23cd9062a99c5355f8c6e88ecedaa53767",
+      "decodedSha256": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b"
+    },
+    "packages/web/src/lib/server/recording-processing-error.ts": {
+      "path": "13-recording-processing-error.ts.gz",
+      "sha256": "e57cf4ae5f90d3c854569dce492271e0ddeac1189ddebbc4a72c57eea51e973e",
+      "decodedSha256": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e"
+    },
+    "packages/web/src/lib/server/recording-audio-decoder.ts": {
+      "path": "14-recording-audio-decoder.ts.gz",
+      "sha256": "2c8e80f2e2dd69c198466ec4ddfc6b15a58c82701e4cc4198644638f017967e2",
+      "decodedSha256": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03"
+    },
+    "packages/web/src/lib/server/recording-session-service.ts": {
+      "path": "15-recording-session-service.ts.gz",
+      "sha256": "aa6cecbf95a32d7eea52932be211f3d6b06cd424446a244ba9eaaf8efa623201",
+      "decodedSha256": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1"
+    },
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": {
+      "path": "16-20261103000001_recording_worker_leases.sql.gz",
+      "sha256": "ccb730979a2a793e63bcd3dee9c7751124105e31098940f859c24211a211e9ba",
+      "decodedSha256": "7082e897ed12176b6f8487a02a9d29057e9e18f6ecb514c9d1089cc8e5768daa"
+    }
+  },
+  "limits": [
+    "Synthetic isolated PG17.4 cluster; selected exact foundation DDL and full seal/lease migrations, not full migration chain or live Supabase."
+  ],
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 52637,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-kyeDOi/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-kyeDOi",
+  "fixture": {
+    "syntheticPrerequisites": [
+      "auth.users",
+      "auth.uid()",
+      "projects",
+      "project_roles",
+      "project_members",
+      "stories"
+    ],
+    "exactFoundationTables": [
+      "media_assets",
+      "deletion_requests",
+      "processing_jobs",
+      "processing_attempts",
+      "recording_sessions",
+      "recording_chunks"
+    ],
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql"
+    ],
+    "livePostgrest": false,
+    "liveStorage": false
+  },
+  "rpcInvocationSqlstate": "22023",
+  "rpcProbe": "recording_job_lease(uuid,text,text,integer,integer)",
+  "receipts": [
+    {
+      "jobId": "a14fc310-76c2-4b79-98e2-ea7a4bbc36e9",
+      "state": "leased",
+      "assetId": "03e6d763-239f-801d-9e8e-b0272fec1ef2",
+      "attempt": 1,
+      "workerId": "synthetic_worker-A_1",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:53:56.356391+00:00",
+      "sessionId": "52d0837b-f564-428d-8557-c7b1e19166fa",
+      "schemaVersion": 1,
+      "leaseExpiresAt": "2026-11-03T10:54:01.356391+00:00",
+      "manifestSha256": "253e7efd9bea9954207a115354cb03c334f387f628e2bda145bae997e6c2e4a6",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "a14fc310-76c2-4b79-98e2-ea7a4bbc36e9",
+      "state": "leased",
+      "assetId": "03e6d763-239f-801d-9e8e-b0272fec1ef2",
+      "attempt": 1,
+      "workerId": "synthetic_worker-A_1",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:53:56.382861+00:00",
+      "sessionId": "52d0837b-f564-428d-8557-c7b1e19166fa",
+      "schemaVersion": 1,
+      "leaseExpiresAt": "2026-11-03T10:54:01.382861+00:00",
+      "manifestSha256": "253e7efd9bea9954207a115354cb03c334f387f628e2bda145bae997e6c2e4a6",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "a14fc310-76c2-4b79-98e2-ea7a4bbc36e9",
+      "state": "running",
+      "assetId": "03e6d763-239f-801d-9e8e-b0272fec1ef2",
+      "attempt": 1,
+      "workerId": "synthetic_worker-A_1",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:53:56.411647+00:00",
+      "sessionId": "52d0837b-f564-428d-8557-c7b1e19166fa",
+      "schemaVersion": 1,
+      "leaseExpiresAt": "2026-11-03T10:54:01.382861+00:00",
+      "manifestSha256": "253e7efd9bea9954207a115354cb03c334f387f628e2bda145bae997e6c2e4a6",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "a14fc310-76c2-4b79-98e2-ea7a4bbc36e9",
+      "state": "running",
+      "assetId": "03e6d763-239f-801d-9e8e-b0272fec1ef2",
+      "attempt": 1,
+      "workerId": "synthetic_worker-A_1",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:53:56.453959+00:00",
+      "sessionId": "52d0837b-f564-428d-8557-c7b1e19166fa",
+      "schemaVersion": 1,
+      "leaseExpiresAt": "2026-11-03T10:54:01.453959+00:00",
+      "manifestSha256": "253e7efd9bea9954207a115354cb03c334f387f628e2bda145bae997e6c2e4a6",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "90cc8a41-be1f-4b32-9d09-94fce9ba36be",
+      "state": "retry_wait",
+      "assetId": "16630285-a314-876c-9c18-06d556268639",
+      "attempt": 1,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:01.424692+00:00",
+      "sessionId": "8f8d3273-7388-4a30-a54b-63cee05988ef",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "225e563a6f04b3b917262ec1f0f5bd281228255ebb55239067898babd6c889bb",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "c20e1677-6d8c-460b-9234-27a6a47daf89",
+      "state": "outcome_unknown",
+      "assetId": "17ba1d63-759c-858b-9f72-400bb0ef6bec",
+      "attempt": 1,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:03.001718+00:00",
+      "sessionId": "abee13f3-dde8-4d3a-a6ed-343a4ea93a2b",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "1cf6248539f9e2110302306b0420b23c7b37798c191c60026d4b38dbc45ac881",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "6bbea02b-cd73-42d9-ae05-c083ff53e037",
+      "state": "retry_wait",
+      "assetId": "8b52b5c5-2c9e-82eb-85b9-8dae4b281470",
+      "attempt": 1,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:04.102751+00:00",
+      "sessionId": "d690a9ec-9b94-4440-8870-565344d96f48",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "f3716b04839278022bfd5d66fac6c41c50793b675aebcb51f9446b5954b1429d",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "6bbea02b-cd73-42d9-ae05-c083ff53e037",
+      "state": "retry_wait",
+      "assetId": "8b52b5c5-2c9e-82eb-85b9-8dae4b281470",
+      "attempt": 2,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:05.188775+00:00",
+      "sessionId": "d690a9ec-9b94-4440-8870-565344d96f48",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "f3716b04839278022bfd5d66fac6c41c50793b675aebcb51f9446b5954b1429d",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "6bbea02b-cd73-42d9-ae05-c083ff53e037",
+      "state": "failed",
+      "assetId": "8b52b5c5-2c9e-82eb-85b9-8dae4b281470",
+      "attempt": 3,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:06.273783+00:00",
+      "sessionId": "d690a9ec-9b94-4440-8870-565344d96f48",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "f3716b04839278022bfd5d66fac6c41c50793b675aebcb51f9446b5954b1429d",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "06c0c61a-1836-4e7a-b044-9c1d2a161cce",
+      "state": "cancelled",
+      "assetId": "2e1efc94-220e-8505-b8f5-8ba2bbd4d6f2",
+      "attempt": 1,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:06.301081+00:00",
+      "sessionId": "062487fb-bd22-480b-a1cf-e78af2fce50e",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "1c82bfb9a4fb24259f2f0917b1c2167506e7b42dddfa7ce406329f7f028ab345",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "2093f1c0-7c6b-4800-9ca0-4799d58a7b07",
+      "state": "cancelled",
+      "assetId": "ad8754c2-e45f-873d-81b0-04ceaffdf24b",
+      "attempt": 1,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:06.324237+00:00",
+      "sessionId": "89910d33-3a2d-4fe3-af1e-16a4b803b7c2",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "daf01c1f56180603955cd0f08ebd23bf577f6468dd30aefe193dbd8fab7a44f9",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "c8752ba6-6252-49f1-a55a-80e0fcd9f38b",
+      "state": "cancelled",
+      "assetId": "d908602d-3ff9-88f8-86f1-c505e0632e21",
+      "attempt": 1,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:06.351767+00:00",
+      "sessionId": "d47c4156-e6d3-4e05-bcbc-3b7cd642aa63",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "e00308359f228d17ffd936031c814696621b1e9398fb036765ada039e7b9d31d",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "08b23425-9dc1-43ea-838d-c1450364b98c",
+      "state": "cancelled",
+      "assetId": "3fa4b0df-e021-865c-8299-56dca0bf6a62",
+      "attempt": 1,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:06.372185+00:00",
+      "sessionId": "7dc8f976-ebed-492f-a319-50b83c50f29f",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "17d105afd409e6258ddcccba7f277261e412a3e1d0a5ac0b523a348494b3a4ec",
+      "canClearLocalDrafts": false
+    },
+    {
+      "jobId": "bd406a02-d0fc-4656-bac8-7b731ebddf96",
+      "state": "cancelled",
+      "assetId": "558f2539-5802-8812-872c-f9e5ffba275b",
+      "attempt": 1,
+      "workerId": null,
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "serverNow": "2026-11-03T10:54:06.392754+00:00",
+      "sessionId": "96a2e124-b224-4963-b772-ab1d6b17d2fe",
+      "schemaVersion": 1,
+      "leaseExpiresAt": null,
+      "manifestSha256": "c9ff79b0a413cd416165dd7fe590a9583cace2c729b2271c75d07dca6cffd7ec",
+      "canClearLocalDrafts": false
+    }
+  ],
+  "childEvents": [
+    {
+      "type": "ready",
+      "pid": 52722,
+      "backendPid": 52739
+    },
+    {
+      "type": "ready",
+      "pid": 52740,
+      "backendPid": 52743
+    },
+    {
+      "type": "checkpoint",
+      "pid": 52722,
+      "backendPid": 52739,
+      "receipt": {
+        "jobId": "65f26cff-2ccf-470a-b246-6a90751719b0",
+        "state": "leased",
+        "assetId": "a7c949d3-41d3-83dd-a1ac-751c3556370b",
+        "attempt": 1,
+        "workerId": "process-A",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-03T10:53:57.339037+00:00",
+        "sessionId": "e55f565f-4d26-4170-b93b-1f8e99ce46e3",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-03T10:54:02.339037+00:00",
+        "manifestSha256": "1175f4b80027d99661292169cbfec4474deb7bb1b8a32fa6ec922ee3dcb6a478",
+        "canClearLocalDrafts": false
+      }
+    },
+    {
+      "type": "rejected",
+      "pid": 52740,
+      "code": "23505"
+    },
+    {
+      "type": "exit",
+      "pid": 52722,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "type": "exit",
+      "pid": 52740,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "type": "ready",
+      "pid": 52772,
+      "backendPid": 52773
+    },
+    {
+      "type": "checkpoint",
+      "pid": 52772,
+      "backendPid": 52773,
+      "receipt": {
+        "jobId": "90cc8a41-be1f-4b32-9d09-94fce9ba36be",
+        "state": "leased",
+        "assetId": "16630285-a314-876c-9c18-06d556268639",
+        "attempt": 1,
+        "workerId": "killed-leased",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-03T10:54:00.330603+00:00",
+        "sessionId": "8f8d3273-7388-4a30-a54b-63cee05988ef",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-03T10:54:01.330603+00:00",
+        "manifestSha256": "225e563a6f04b3b917262ec1f0f5bd281228255ebb55239067898babd6c889bb",
+        "canClearLocalDrafts": false
+      }
+    },
+    {
+      "type": "exit",
+      "pid": 52772,
+      "code": null,
+      "signal": "SIGKILL"
+    },
+    {
+      "type": "ready",
+      "pid": 52783,
+      "backendPid": 52784
+    },
+    {
+      "type": "checkpoint",
+      "pid": 52783,
+      "backendPid": 52784,
+      "receipt": {
+        "jobId": "c20e1677-6d8c-460b-9234-27a6a47daf89",
+        "state": "running",
+        "assetId": "17ba1d63-759c-858b-9f72-400bb0ef6bec",
+        "attempt": 1,
+        "workerId": "killed-running",
+        "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "serverNow": "2026-11-03T10:54:01.922481+00:00",
+        "sessionId": "abee13f3-dde8-4d3a-a6ed-343a4ea93a2b",
+        "schemaVersion": 1,
+        "leaseExpiresAt": "2026-11-03T10:54:02.907181+00:00",
+        "manifestSha256": "1cf6248539f9e2110302306b0420b23c7b37798c191c60026d4b38dbc45ac881",
+        "canClearLocalDrafts": false
+      }
+    },
+    {
+      "type": "exit",
+      "pid": 52783,
+      "code": null,
+      "signal": "SIGKILL"
+    }
+  ],
+  "lockWaits": [
+    {
+      "jobId": "b2b208e9-aa0e-4fad-8f5b-4f876e2180d9",
+      "expired": false,
+      "elapsedMs": 1231.6939929999999,
+      "code": "00000"
+    },
+    {
+      "jobId": "d6f1e3a4-00ab-4db9-aeeb-9cdf28c1393c",
+      "expired": true,
+      "elapsedMs": 1237.0436090000003,
+      "code": "23505"
+    }
+  ],
+  "realExpiryWaits": [
+    {
+      "jobId": "90cc8a41-be1f-4b32-9d09-94fce9ba36be",
+      "requestedMs": 980.14,
+      "elapsedMs": 1065.29889
+    },
+    {
+      "jobId": "c20e1677-6d8c-460b-9234-27a6a47daf89",
+      "requestedMs": 973.152,
+      "elapsedMs": 1056.0571259999997
+    },
+    {
+      "jobId": "6bbea02b-cd73-42d9-ae05-c083ff53e037",
+      "requestedMs": 998.093,
+      "elapsedMs": 1080.1825950000002
+    },
+    {
+      "jobId": "6bbea02b-cd73-42d9-ae05-c083ff53e037",
+      "requestedMs": 998.413,
+      "elapsedMs": 1080.2966259999994
+    },
+    {
+      "jobId": "6bbea02b-cd73-42d9-ae05-c083ff53e037",
+      "requestedMs": 998.428,
+      "elapsedMs": 1080.9591290000008
+    }
+  ],
+  "error": {
+    "code": "42883",
+    "label": "operator does not exist: text = uuid"
+  },
+  "postgresLogSha256": "fe1e33eed54a92646ed0bceae10207337a3be62cd9e0251c466e74bee601cd02",
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": [],
+    "childrenRemaining": 0
+  },
+  "finishedAt": "2026-11-03T10:54:06.683Z"
+}

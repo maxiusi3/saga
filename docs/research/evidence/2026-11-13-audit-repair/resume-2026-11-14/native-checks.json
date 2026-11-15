@@ -1,0 +1,62 @@
+{
+  "g4": {
+    "report": "docs/research/evidence/2026-11-11-g4-pilot/migrations-1794640377905-47873813-7c3c-4b60-9669-1ebde5a78b14/results.json",
+    "status": "passed",
+    "assertions": 188,
+    "migrationFiles": 41,
+    "sourceCount": 53,
+    "sourceDrift": [],
+    "currentSourceDrift": [],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    }
+  },
+  "combined": {
+    "report": "docs/research/evidence/2026-11-11-g3-delivery/migrations-1794640344909-f2282e03-2097-4bfe-a27f-397dc03fba5a/results.json",
+    "status": "passed",
+    "assertions": 2479,
+    "migrationFiles": 41,
+    "sourceCount": 189,
+    "sourceDrift": [],
+    "currentSourceDrift": [],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    }
+  },
+  "backup": {
+    "report": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794639820529-32be6d09-7343-4882-81f2-ab998ebdd963/results.json",
+    "status": "passed",
+    "assertions": 597,
+    "migrationFiles": 41,
+    "sourceCount": 88,
+    "sourceDrift": [],
+    "currentSourceDrift": [],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    }
+  },
+  "reminders": {
+    "report": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794638890086-aeff217c-cc20-4989-8732-c7df971c1bda/results.json",
+    "status": "passed",
+    "assertions": 228,
+    "migrationFiles": 41,
+    "sourceCount": 70,
+    "sourceDrift": [],
+    "currentSourceDrift": [],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    }
+  }
+}

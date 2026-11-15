@@ -1,0 +1,312 @@
+/** @jest-environment node */
+import { finalizeLeasedRecordingJob } from '../recording-terminal-worker'
+import { prepareLeasedRecordingJobCandidate } from '../recording-candidate-worker'
+import { claimRecordingJob, startRecordingJob, heartbeatRecordingJob, checkRecordingJobLease, type RecordingJobLease } from '../recording-job-lease'
+import { withVerifiedRecordingJobInput } from '../recording-job-verifier'
+import { reserveRecordingOutputCandidate, prepareRecordingOutputCandidate, type RecordingOutputCandidate } from '../recording-output-candidate'
+import { uploadAndVerifyRecordingCandidate } from '../recording-candidate-storage'
+import * as finalization from '../recording-job-finalization'
+import { RecordingProcessingError, type RecordingProcessingErrorCode } from '../recording-processing-error'
+
+// Keep the production supervisor, finalizer and candidate validator. Only their
+// external/owned-work boundaries are controlled so pending cleanup is observable.
+jest.mock('../recording-job-lease', () => ({ claimRecordingJob: jest.fn(), startRecordingJob: jest.fn(),
+  heartbeatRecordingJob: jest.fn(), checkRecordingJobLease: jest.fn() }))
+jest.mock('../recording-job-verifier', () => ({ withVerifiedRecordingJobInput: jest.fn() }))
+jest.mock('../recording-output-candidate', () => ({ ...jest.requireActual('../recording-output-candidate'),
+  reserveRecordingOutputCandidate: jest.fn(), prepareRecordingOutputCandidate: jest.fn() }))
+jest.mock('../recording-candidate-storage', () => ({ uploadAndVerifyRecordingCandidate: jest.fn() }))
+// Copy the actual exports to configurable properties for call-through spies;
+// Next's compiled module getters themselves cannot be replaced by jest.spyOn.
+jest.mock('../recording-job-finalization', () => ({ __esModule: true, ...jest.requireActual('../recording-job-finalization') }))
+
+const unavailable = new Error('recording_worker_unavailable')
+const uuid = (d: string) => `${d.repeat(8)}-${d.repeat(4)}-4${d.repeat(3)}-8${d.repeat(3)}-${d.repeat(12)}`
+function deferred<T = void>() {
+  let resolve!: (value: T | PromiseLike<T>) => void
+  let reject!: (error: unknown) => void
+  const promise = new Promise<T>((yes, no) => { resolve = yes; reject = no })
+  return { promise, resolve, reject }
+}
+const flush = () => jest.advanceTimersByTimeAsync(0)
+const permanentCodes: RecordingProcessingErrorCode[] = ['recording_source_missing', 'recording_source_not_private_file',
+  'recording_source_size_mismatch', 'recording_source_hash_mismatch', 'recording_decode_invalid_pcm', 'recording_decode_duration_exceeded']
+
+beforeEach(() => { jest.resetAllMocks(); jest.useFakeTimers() })
+afterEach(() => { jest.restoreAllMocks(); jest.useRealTimers() })
+
+function fixture() {
+  const events: string[] = []
+  const lease: RecordingJobLease = { schemaVersion: 1, jobId: uuid('1'), projectId: uuid('2'), assetId: uuid('3'), sessionId: uuid('4'),
+    manifestSha256: 'a'.repeat(64), state: 'leased', attempt: 1, workerId: 'worker-1', canClearLocalDrafts: false,
+    leaseExpiresAt: '2026-11-05T00:00:01.000000Z', serverNow: '2026-11-05T00:00:00.000000Z', deadline: performance.now() + 1000 }
+  const output = { byteSize: 10, sha256: 'b'.repeat(64), mimeType: 'audio/webm', durationMs: 2000 }
+  const candidate: RecordingOutputCandidate = Object.freeze({ schemaVersion: 1, jobId: lease.jobId, projectId: lease.projectId,
+    assetId: lease.assetId, sessionId: lease.sessionId, manifestSha256: lease.manifestSha256, workerId: lease.workerId, attempt: 1,
+    candidateId: uuid('5'), state: 'prepared', bucket: 'recording-candidates', objectKey: `jobs/${lease.jobId}/attempts/1/${uuid('5')}`,
+    ...output, createdAt: '2026-11-05T00:00:00.000001Z', preparedAt: '2026-11-05T00:00:00.000500Z', canClearLocalDrafts: false })
+  const reserved: RecordingOutputCandidate = Object.freeze({ ...candidate, state: 'reserved', preparedAt: null })
+  const receipt = { schemaVersion: 1, jobId: lease.jobId, projectId: lease.projectId, assetId: lease.assetId, sessionId: lease.sessionId,
+    manifestSha256: lease.manifestSha256, workerId: lease.workerId, attempt: 1, state: 'succeeded', assetState: 'ready', sessionState: 'cloud_confirmed',
+    candidateId: candidate.candidateId, bucket: candidate.bucket, objectKey: candidate.objectKey, ...output, errorCode: null,
+    finishedAt: '2026-11-05T00:00:00.001000Z', canClearLocalDrafts: false }
+  const failed = (code: RecordingProcessingErrorCode) => ({ ...receipt, state: 'failed', assetState: 'quarantined', sessionState: 'failed',
+    candidateId: null, bucket: null, objectKey: null, byteSize: null, sha256: null, mimeType: null, durationMs: null, errorCode: code })
+  const query = { abortSignal: jest.fn(), retry: jest.fn() }
+  query.abortSignal.mockReturnValue(query)
+  query.retry.mockResolvedValue({ data: receipt, error: null })
+  const rpc = jest.fn(() => { events.push('finalize'); return query })
+  const options: Parameters<typeof finalizeLeasedRecordingJob>[1] = {
+    admin: { rpc } as unknown as Parameters<typeof finalizeLeasedRecordingJob>[1]['admin'],
+    storageUrl: 'https://storage.invalid', serviceRoleKey: 'synthetic-key', ffmpeg: { executable: '/test/ffmpeg', timeoutMs: 1000, maxDurationMs: 1000 },
+    workerId: 'worker-1', leaseMs: 1000, heartbeatMs: 100, rpcTimeoutMs: 200,
+  }
+  jest.mocked(claimRecordingJob).mockImplementation(async () => { events.push('claim'); return lease })
+  jest.mocked(startRecordingJob).mockImplementation(async current => { events.push('start'); return { ...current, state: 'running' } })
+  jest.mocked(heartbeatRecordingJob).mockImplementation(async current => {
+    events.push('heartbeat'); return { ...current, deadline: performance.now() + 1000 }
+  })
+  jest.mocked(checkRecordingJobLease).mockImplementation(async current => { events.push('check'); return current })
+  const hooks = { beforeConsumer: async () => {}, afterConsumer: async () => {}, cleanup: async () => {}, afterCleanup: async () => {} }
+  const revalidate = jest.fn(async () => {})
+  jest.mocked(withVerifiedRecordingJobInput).mockImplementation(async (_job, _options, consume) => {
+    events.push('merge')
+    let result
+    try {
+      await hooks.beforeConsumer()
+      result = await consume({ filePath: '/internal/only', mimeType: output.mimeType,
+        completion: { outputByteSize: output.byteSize, outputSha256: output.sha256, durationMs: output.durationMs } as
+          Parameters<Parameters<typeof withVerifiedRecordingJobInput>[2]>[0]['completion'] }, { revalidate })
+      events.push('input-revalidation'); await hooks.afterConsumer()
+    } finally {
+      events.push('cleanup-start'); await hooks.cleanup(); events.push('cleanup-done')
+    }
+    events.push('final-input-revalidation'); await hooks.afterCleanup()
+    return result
+  })
+  jest.mocked(reserveRecordingOutputCandidate).mockImplementation(async () => { events.push('reserve'); return reserved })
+  jest.mocked(uploadAndVerifyRecordingCandidate).mockImplementation(async (_artifact, _candidate, input) => {
+    events.push('upload-readback'); await input.revalidate?.(input.signal)
+  })
+  jest.mocked(prepareRecordingOutputCandidate).mockImplementation(async () => { events.push('prepare'); return candidate })
+  const publish = jest.spyOn(finalization, 'publishRecordingJob')
+  const fail = jest.spyOn(finalization, 'failRecordingJob')
+  return { events, lease, candidate, reserved, output, receipt, failed, query, rpc, options, hooks, revalidate, publish, fail }
+}
+
+it('publishes only after cleanup, final revalidation, heartbeat drain and check with the latest lease', async () => {
+  const f = fixture(); const cleanup = deferred(); const heartbeat = deferred<RecordingJobLease>(); const check = deferred<RecordingJobLease>()
+  f.hooks.cleanup = () => cleanup.promise
+  const renewed = { ...f.lease, state: 'running' as const, deadline: performance.now() + 2000, leaseExpiresAt: '2026-11-05T00:00:02.000000Z' }
+  const checked = { ...renewed, serverNow: '2026-11-05T00:00:00.000900Z' }
+  jest.mocked(heartbeatRecordingJob).mockImplementation(() => { f.events.push('heartbeat-start'); return heartbeat.promise })
+  jest.mocked(checkRecordingJobLease).mockImplementation(() => { f.events.push('check-start'); return check.promise })
+  const pending = finalizeLeasedRecordingJob(f.lease.jobId, f.options)
+  await flush()
+  expect(f.events).toContain('cleanup-start'); expect(f.rpc).not.toHaveBeenCalled()
+  await jest.advanceTimersByTimeAsync(100)
+  expect(heartbeatRecordingJob).toHaveBeenCalledTimes(1); expect(f.rpc).not.toHaveBeenCalled()
+  cleanup.resolve(); await flush()
+  expect(f.events).toContain('final-input-revalidation'); expect(checkRecordingJobLease).not.toHaveBeenCalled(); expect(f.rpc).not.toHaveBeenCalled()
+  heartbeat.resolve(renewed); await flush()
+  expect(checkRecordingJobLease).toHaveBeenCalledWith(renewed, expect.anything()); expect(f.rpc).not.toHaveBeenCalled()
+  check.resolve(checked)
+  expect(await pending).toEqual(f.receipt)
+  expect(f.publish).toHaveBeenCalledWith(checked, f.candidate, expect.objectContaining({ admin: f.options.admin, timeoutMs: 200 }))
+  expect(f.events).toEqual(['claim', 'start', 'merge', 'reserve', 'upload-readback', 'prepare', 'input-revalidation', 'cleanup-start',
+    'heartbeat-start', 'cleanup-done', 'final-input-revalidation', 'check-start', 'finalize'])
+  expect(f.fail).not.toHaveBeenCalled(); expect(f.query.retry).toHaveBeenCalledWith(false)
+  const result = await pending
+  expect(result.canClearLocalDrafts).toBe(false); expect(result).not.toHaveProperty('lease'); expect(Object.isFrozen(result)).toBe(true)
+  expect(jest.mocked(withVerifiedRecordingJobInput).mock.calls[0][1].signal?.aborted).toBe(true)
+  await jest.advanceTimersByTimeAsync(3000)
+  expect(heartbeatRecordingJob).toHaveBeenCalledTimes(1); expect(checkRecordingJobLease).toHaveBeenCalledTimes(1); expect(jest.getTimerCount()).toBe(0)
+})
+
+it.each(permanentCodes)('finalizes branded pre-consumer %s after cleanup and check without registering a candidate', async code => {
+  const f = fixture(); const cleanup = deferred(); const error = new RecordingProcessingError(code, 'SECRET /private/source')
+  f.hooks.beforeConsumer = async () => { throw error }; f.hooks.cleanup = () => cleanup.promise
+  f.query.retry.mockResolvedValue({ data: f.failed(code), error: null })
+  const pending = finalizeLeasedRecordingJob(f.lease.jobId, f.options)
+  await flush(); expect(f.rpc).not.toHaveBeenCalled(); expect(checkRecordingJobLease).not.toHaveBeenCalled()
+  cleanup.resolve()
+  expect(await pending).toEqual(f.failed(code))
+  expect(f.events).toEqual(['claim', 'start', 'merge', 'cleanup-start', 'cleanup-done', 'check', 'finalize'])
+  expect(f.fail).toHaveBeenCalledWith(expect.objectContaining({ state: 'running' }), error, expect.objectContaining({ timeoutMs: 200 }))
+  expect(f.rpc).toHaveBeenCalledTimes(1)
+  expect(f.rpc.mock.calls[0]).toEqual(['finalize_recording_job', expect.objectContaining({ p_action: 'fail', p_failure_code: code,
+    p_candidate_id: null, p_output: null })])
+  expect(reserveRecordingOutputCandidate).not.toHaveBeenCalled(); expect(prepareRecordingOutputCandidate).not.toHaveBeenCalled()
+  expect(uploadAndVerifyRecordingCandidate).not.toHaveBeenCalled(); expect(f.publish).not.toHaveBeenCalled()
+})
+
+it.each([
+  new RecordingProcessingError('recording_source_read_timeout', 'SECRET timeout'),
+  new RecordingProcessingError('recording_source_read_temporary', 'SECRET temporary'), new Error('recording_source_missing SECRET'),
+  { code: 'recording_source_missing', disposition: 'permanent' },
+  Object.assign(Object.create(RecordingProcessingError.prototype), { code: 'recording_source_missing', disposition: 'permanent' }),
+  new Error('recording_input_unavailable'), 'SECRET', null,
+])('does not classify transient, forged, generic or ambiguous processing rejection %# as permanent', async error => {
+  const f = fixture(); f.hooks.beforeConsumer = async () => { throw error }
+  await expect(finalizeLeasedRecordingJob(f.lease.jobId, f.options)).rejects.toEqual(unavailable)
+  expect(f.events).toContain('cleanup-done'); expect(f.rpc).not.toHaveBeenCalled(); expect(f.fail).not.toHaveBeenCalled()
+  expect(checkRecordingJobLease).not.toHaveBeenCalled(); expect(reserveRecordingOutputCandidate).not.toHaveBeenCalled()
+})
+
+it.each(['reserve', 'upload', 'prepare', 'input-revalidation', 'cleanup', 'final-input-revalidation'])
+('never finalizes a branded permanent error raised in %s after the consumer begins', async phase => {
+  const f = fixture(); const error = new RecordingProcessingError('recording_source_hash_mismatch', 'SECRET candidate may exist')
+  if (phase === 'reserve') jest.mocked(reserveRecordingOutputCandidate).mockRejectedValue(error)
+  else if (phase === 'upload') jest.mocked(uploadAndVerifyRecordingCandidate).mockRejectedValue(error)
+  else if (phase === 'prepare') jest.mocked(prepareRecordingOutputCandidate).mockRejectedValue(error)
+  else f.hooks[phase === 'input-revalidation' ? 'afterConsumer' : phase === 'cleanup' ? 'cleanup' : 'afterCleanup'] = async () => { throw error }
+  await expect(finalizeLeasedRecordingJob(f.lease.jobId, f.options)).rejects.toEqual(unavailable)
+  expect(f.rpc).not.toHaveBeenCalled(); expect(f.fail).not.toHaveBeenCalled(); expect(checkRecordingJobLease).not.toHaveBeenCalled()
+})
+
+it.each(['reserve', 'upload', 'prepare'])('retains an unknown %s result without another write or replay', async phase => {
+  const f = fixture()
+  jest.mocked(phase === 'reserve' ? reserveRecordingOutputCandidate : phase === 'upload' ? uploadAndVerifyRecordingCandidate : prepareRecordingOutputCandidate)
+    .mockRejectedValue(new Error('SECRET response lost after commit'))
+  await expect(finalizeLeasedRecordingJob(f.lease.jobId, f.options)).rejects.toEqual(unavailable)
+  expect(reserveRecordingOutputCandidate).toHaveBeenCalledTimes(1)
+  expect(uploadAndVerifyRecordingCandidate).toHaveBeenCalledTimes(phase === 'reserve' ? 0 : 1)
+  expect(prepareRecordingOutputCandidate).toHaveBeenCalledTimes(phase === 'prepare' ? 1 : 0)
+  expect(f.events).toContain('cleanup-done'); expect(f.rpc).not.toHaveBeenCalled()
+})
+
+it.each(['claim', 'start', 'check'])('does not finalize after an uncertain %s response', async phase => {
+  const f = fixture()
+  jest.mocked(phase === 'claim' ? claimRecordingJob : phase === 'start' ? startRecordingJob : checkRecordingJobLease)
+    .mockRejectedValue(new Error('SECRET revoked/deleted or response lost'))
+  await expect(finalizeLeasedRecordingJob(f.lease.jobId, f.options)).rejects.toEqual(unavailable)
+  expect(f.rpc).not.toHaveBeenCalled(); expect(f.fail).not.toHaveBeenCalled()
+  expect(claimRecordingJob).toHaveBeenCalledTimes(1)
+})
+
+it.each(['prepared', 'permanent'])('drains but rejects a failed heartbeat after %s processing', async outcome => {
+  const f = fixture(); const cleanup = deferred(); const heartbeat = deferred<RecordingJobLease>()
+  if (outcome === 'permanent') f.hooks.beforeConsumer = async () => { throw new RecordingProcessingError('recording_source_missing', 'SECRET') }
+  f.hooks.cleanup = () => cleanup.promise
+  jest.mocked(heartbeatRecordingJob).mockImplementation(() => heartbeat.promise)
+  const pending = finalizeLeasedRecordingJob(f.lease.jobId, f.options); const rejected = expect(pending).rejects.toEqual(unavailable)
+  await jest.advanceTimersByTimeAsync(100); cleanup.resolve(); await flush()
+  expect(f.rpc).not.toHaveBeenCalled(); expect(checkRecordingJobLease).not.toHaveBeenCalled()
+  heartbeat.reject(new Error('SECRET heartbeat lost')); await rejected
+  expect(f.rpc).not.toHaveBeenCalled(); expect(checkRecordingJobLease).not.toHaveBeenCalled(); expect(jest.getTimerCount()).toBe(0)
+})
+
+it('checks a renewed lease after draining a heartbeat on the permanent-failure path', async () => {
+  const f = fixture(); const cleanup = deferred(); const heartbeat = deferred<RecordingJobLease>()
+  const code = 'recording_source_missing'
+  f.hooks.beforeConsumer = async () => { throw new RecordingProcessingError(code, 'SECRET') }; f.hooks.cleanup = () => cleanup.promise
+  f.query.retry.mockResolvedValue({ data: f.failed(code), error: null })
+  jest.mocked(heartbeatRecordingJob).mockImplementation(() => heartbeat.promise)
+  const renewed = { ...f.lease, state: 'running' as const, deadline: performance.now() + 2000 }
+  const pending = finalizeLeasedRecordingJob(f.lease.jobId, f.options)
+  await jest.advanceTimersByTimeAsync(100); cleanup.resolve(); await flush()
+  expect(f.fail).not.toHaveBeenCalled(); expect(checkRecordingJobLease).not.toHaveBeenCalled()
+  heartbeat.resolve(renewed); await pending
+  expect(checkRecordingJobLease).toHaveBeenCalledWith(renewed, expect.anything())
+  expect(f.fail).toHaveBeenCalledWith(renewed, expect.any(RecordingProcessingError), expect.anything())
+})
+
+it.each(['before', 'cleanup', 'check', 'finalization'])('honors original caller cancellation during %s', async phase => {
+  const f = fixture(); const controller = new AbortController(); const gate = deferred()
+  f.options.signal = controller.signal
+  if (phase === 'before') controller.abort()
+  if (phase === 'cleanup') f.hooks.cleanup = () => gate.promise
+  if (phase === 'check') jest.mocked(checkRecordingJobLease).mockImplementation(async current => { await gate.promise; return current })
+  if (phase === 'finalization') f.query.retry.mockImplementation(() => gate.promise)
+  let settled = false
+  const pending = finalizeLeasedRecordingJob(f.lease.jobId, f.options); const rejected = expect(pending).rejects.toEqual(unavailable)
+  void pending.then(() => { settled = true }, () => { settled = true })
+  await flush(); controller.abort(); await flush()
+  if (phase === 'cleanup' || phase === 'check') expect(settled).toBe(false)
+  gate.resolve(); await rejected
+  expect(f.rpc).toHaveBeenCalledTimes(phase === 'finalization' ? 1 : 0); expect(f.fail).not.toHaveBeenCalled()
+  if (phase === 'before') expect(claimRecordingJob).not.toHaveBeenCalled()
+  expect(jest.getTimerCount()).toBe(0)
+})
+
+it('waits for local cleanup when the conservative deadline expires before a heartbeat', async () => {
+  const f = fixture(); const cleanup = deferred()
+  jest.mocked(startRecordingJob).mockResolvedValue({ ...f.lease, state: 'running', deadline: performance.now() + 40 })
+  f.hooks.cleanup = () => cleanup.promise
+  let settled = false
+  const pending = finalizeLeasedRecordingJob(f.lease.jobId, f.options); const rejected = expect(pending).rejects.toEqual(unavailable)
+  void pending.then(() => { settled = true }, () => { settled = true })
+  await jest.advanceTimersByTimeAsync(50)
+  expect(settled).toBe(false); expect(heartbeatRecordingJob).not.toHaveBeenCalled(); expect(f.rpc).not.toHaveBeenCalled()
+  cleanup.resolve(); await rejected
+  expect(f.events).toContain('cleanup-done'); expect(checkRecordingJobLease).not.toHaveBeenCalled()
+})
+
+it('rejects an expired final lease without terminal dispatch', async () => {
+  const f = fixture()
+  jest.mocked(checkRecordingJobLease).mockImplementation(async current => ({ ...current, deadline: performance.now() }))
+  await expect(finalizeLeasedRecordingJob(f.lease.jobId, f.options)).rejects.toEqual(unavailable)
+  expect(f.rpc).not.toHaveBeenCalled()
+})
+
+it.each(['published', 'failed'])('normalizes a lost %s response after one terminal request without fallback', async outcome => {
+  const f = fixture()
+  if (outcome === 'failed') f.hooks.beforeConsumer = async () => { throw new RecordingProcessingError('recording_source_missing', 'SECRET') }
+  f.query.retry.mockRejectedValue(new Error('SECRET terminal transaction committed, response lost'))
+  await expect(finalizeLeasedRecordingJob(f.lease.jobId, f.options)).rejects.toEqual(unavailable)
+  expect(f.rpc).toHaveBeenCalledTimes(1); expect(f.query.retry).toHaveBeenCalledWith(false)
+  expect(f.publish).toHaveBeenCalledTimes(outcome === 'published' ? 1 : 0); expect(f.fail).toHaveBeenCalledTimes(outcome === 'failed' ? 1 : 0)
+  await jest.advanceTimersByTimeAsync(2000)
+  expect(heartbeatRecordingJob).not.toHaveBeenCalled(); expect(checkRecordingJobLease).toHaveBeenCalledTimes(1)
+})
+
+it.each(['malformed', 'sql rejection', 'timeout', 'lease deadline'])('normalizes finalization %s without retry or fallback failure', async phase => {
+  const f = fixture()
+  if (phase === 'malformed') f.query.retry.mockResolvedValue({ data: { ...f.receipt, canClearLocalDrafts: true }, error: null })
+  else if (phase === 'sql rejection') f.query.retry.mockResolvedValue({ data: null, error: { message: 'SECRET candidate exists or revoked' } })
+  else f.query.retry.mockImplementation(() => new Promise(() => {}))
+  if (phase === 'lease deadline') jest.mocked(checkRecordingJobLease).mockImplementation(async current => ({ ...current, deadline: performance.now() + 20 }))
+  const pending = finalizeLeasedRecordingJob(f.lease.jobId, f.options); const rejected = expect(pending).rejects.toEqual(unavailable)
+  await jest.advanceTimersByTimeAsync(200); await rejected
+  expect(f.rpc).toHaveBeenCalledTimes(1); expect(f.fail).not.toHaveBeenCalled(); expect(jest.getTimerCount()).toBe(0)
+})
+
+it('snapshots identity, admin, caller signal, storage settings and nested FFmpeg options before the claim await', async () => {
+  const f = fixture(); const claim = deferred<RecordingJobLease>(); const controller = new AbortController(); const replacement = new AbortController()
+  f.options.signal = controller.signal
+  const original = { ...f.options, ffmpeg: { ...f.options.ffmpeg } }
+  const alienRpc = jest.fn()
+  jest.mocked(claimRecordingJob).mockImplementation(() => claim.promise)
+  const pending = finalizeLeasedRecordingJob(f.lease.jobId, f.options)
+  Object.assign(f.options, { admin: { rpc: alienRpc }, workerId: 'other-worker', signal: replacement.signal,
+    storageUrl: 'https://other.invalid', serviceRoleKey: 'other-key', rpcTimeoutMs: 1, leaseMs: 120000, heartbeatMs: 1 })
+  Object.assign(f.options.ffmpeg, { executable: '/other/ffmpeg', timeoutMs: 1, maxDurationMs: 1 })
+  replacement.abort(); claim.resolve(f.lease)
+  expect(await pending).toEqual(f.receipt)
+  expect(claimRecordingJob).toHaveBeenCalledWith(f.lease.jobId, original.workerId, 1000, expect.objectContaining({ admin: original.admin, timeoutMs: 200 }))
+  expect(withVerifiedRecordingJobInput).toHaveBeenCalledWith(f.lease.jobId, expect.objectContaining({ admin: original.admin,
+    storageUrl: original.storageUrl, serviceRoleKey: original.serviceRoleKey, ffmpeg: original.ffmpeg }), expect.any(Function))
+  expect(uploadAndVerifyRecordingCandidate).toHaveBeenCalledWith(expect.anything(), f.reserved, expect.objectContaining({ admin: original.admin, storageUrl: original.storageUrl }))
+  expect(f.publish).toHaveBeenCalledWith(expect.anything(), f.candidate, { admin: original.admin, signal: controller.signal, timeoutMs: 200 })
+  expect(alienRpc).not.toHaveBeenCalled(); expect(original.signal?.aborted).toBe(false)
+})
+
+it('uses the same default effective RPC timeout for supervision and terminal finalization', async () => {
+  const f = fixture(); delete f.options.rpcTimeoutMs
+  await finalizeLeasedRecordingJob(f.lease.jobId, f.options)
+  expect(claimRecordingJob).toHaveBeenCalledWith(f.lease.jobId, 'worker-1', 1000, expect.objectContaining({ timeoutMs: 333 }))
+  expect(f.publish).toHaveBeenCalledWith(expect.anything(), f.candidate, expect.objectContaining({ timeoutMs: 333 }))
+})
+
+it('keeps prepare-only success shape and performs no terminal action', async () => {
+  const f = fixture(); const result = await prepareLeasedRecordingJobCandidate(f.lease.jobId, f.options)
+  expect(result).toEqual({ status: 'candidate_prepared', jobId: f.lease.jobId, candidate: f.candidate,
+    canClearLocalDrafts: false, lease: { ...f.lease, state: 'running' } })
+  expect(f.rpc).not.toHaveBeenCalled(); expect(f.fail).not.toHaveBeenCalled(); expect(f.publish).not.toHaveBeenCalled()
+})
+
+it('keeps prepare-only permanent failure as unavailable without a final lease check or terminal action', async () => {
+  const f = fixture(); f.hooks.beforeConsumer = async () => { throw new RecordingProcessingError('recording_source_missing', 'SECRET') }
+  await expect(prepareLeasedRecordingJobCandidate(f.lease.jobId, f.options)).rejects.toEqual(unavailable)
+  expect(f.events).toContain('cleanup-done'); expect(checkRecordingJobLease).not.toHaveBeenCalled(); expect(f.rpc).not.toHaveBeenCalled()
+})

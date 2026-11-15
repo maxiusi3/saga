@@ -1,0 +1,124 @@
+{
+  "status": "passed_local_engineering",
+  "recordedAt": "2026-11-14T15:41:31.844623+08:00",
+  "branch": "codex/october-upgrade-p0",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "closures": {
+    "Q1": "closed_local_engineering",
+    "Q2": "closed_local_engineering",
+    "Q3": "closed_local_engineering",
+    "S1": "closed_local_engineering",
+    "S2": "closed_local_engineering",
+    "S3": "closed_local_engineering"
+  },
+  "verify": {
+    "exitCode": 0,
+    "webSuites": 188,
+    "webTests": 3798,
+    "typecheck": "passed",
+    "lint": "passed",
+    "buildPages": 187,
+    "log": "verify-final.log"
+  },
+  "shared": {
+    "exitCode": 0,
+    "suites": 4,
+    "tests": 16
+  },
+  "infra": {
+    "exitCode": 0,
+    "tests": 30
+  },
+  "audit": {
+    "exitCode": 0,
+    "vulnerabilities": {
+      "info": 0,
+      "low": 3,
+      "moderate": 26,
+      "high": 0,
+      "critical": 0,
+      "total": 29
+    },
+    "result": "audit-high-result.json"
+  },
+  "native": {
+    "g4": {
+      "report": "docs/research/evidence/2026-11-11-g4-pilot/migrations-1794640377905-47873813-7c3c-4b60-9669-1ebde5a78b14/results.json",
+      "status": "passed",
+      "assertions": 188,
+      "migrationFiles": 41,
+      "sourceCount": 53,
+      "sourceDrift": [],
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "combined": {
+      "report": "docs/research/evidence/2026-11-11-g3-delivery/migrations-1794640344909-f2282e03-2097-4bfe-a27f-397dc03fba5a/results.json",
+      "status": "passed",
+      "assertions": 2479,
+      "migrationFiles": 41,
+      "sourceCount": 189,
+      "sourceDrift": [],
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "backup": {
+      "report": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794639820529-32be6d09-7343-4882-81f2-ab998ebdd963/results.json",
+      "status": "passed",
+      "assertions": 597,
+      "migrationFiles": 41,
+      "sourceCount": 88,
+      "sourceDrift": [],
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "reminders": {
+      "report": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794638890086-aeff217c-cc20-4989-8732-c7df971c1bda/results.json",
+      "status": "passed",
+      "assertions": 228,
+      "migrationFiles": 41,
+      "sourceCount": 70,
+      "sourceDrift": [],
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  },
+  "independentReview": {
+    "status": "no_open_P1_P2_in_repair_scope",
+    "report": "final-review.md"
+  },
+  "sourceManifest": {
+    "path": "source-manifest.json",
+    "files": 1609
+  },
+  "gitDiffCheckExitCode": 0,
+  "stagedChanges": false,
+  "nextEnvOriginalBytesPreserved": true,
+  "committed": false,
+  "pushed": false,
+  "remoteMigrated": false,
+  "deployed": false,
+  "boundary": "Synthetic Auth/Storage/provider/payment/email boundaries; native PG17.4 and installed Chrome. Real provider/human/device/payment/hosted-platform gates remain unpassed. Narrow page header/filter overflow remains outside repaired notification-row scope.",
+  "liveProviderCalls": false,
+  "realNotificationsSent": false
+}

@@ -44,8 +44,8 @@ export interface SearchIndexEntry {
   entityDates: string[]
   entityPlaces: string[]
   searchableText: string
-  startMs: number
-  endMs: number
+  startMs: number | null
+  endMs: number | null
   createdAt: string
 }
 
@@ -56,18 +56,25 @@ export interface ProvenanceSearchCitation {
   transcriptVersionId: string
   storyRevisionId?: string | null
   mediaAssetId?: string | null
-  segmentId: string
-  startMs: number
-  endMs: number
+  segmentId: string | null
+  startMs: number | null
+  endMs: number | null
   quotedText: string
   matchedPeople: string[]
   matchedDates: string[]
   matchedPlaces: string[]
   score: number
+  sourceKind?: 'original_transcript' | 'family_supplement' | 'disputed_memory' | 'dispute_alternative'
+  reviewStatus?: 'source_only' | 'approved'
+  sourceHash?: string
+  sourceFingerprint?: string
+  attributedTo?: string | null
+  excerptStart?: number
+  excerptEnd?: number
 }
 
 export interface ProvenanceSearchResult {
-  status: 'grounded_answer' | 'no_matching_sources'
+  status: 'source_matches' | 'no_matching_sources'
   query: string
   answerText: string
   citations: ProvenanceSearchCitation[]
@@ -88,6 +95,7 @@ export interface BuildSearchIndexInput {
   now?: string
 }
 
+// Legacy in-memory fixtures only. Production search projects authority in search_project_sources.
 export function buildSearchIndexEntries(input: BuildSearchIndexInput): SearchIndexEntry[] {
   const now = input.now ?? new Date().toISOString()
   const isActive = input.isActiveIndex ?? true
@@ -109,8 +117,8 @@ export function buildSearchIndexEntries(input: BuildSearchIndexInput): SearchInd
       entityDates: facts.years,
       entityPlaces: facts.places,
       searchableText: seg.text,
-      startMs: seg.startMs ?? 0,
-      endMs: seg.endMs ?? Math.max((seg.startMs ?? 0) + 1000, 1000),
+      startMs: seg.startMs,
+      endMs: seg.endMs,
       createdAt: now,
     }
   })
@@ -227,11 +235,13 @@ export function executeProvenanceSearch(params: {
         matchedDates,
         matchedPlaces,
         score: Math.max(score, 1),
+        sourceKind: 'original_transcript',
+        reviewStatus: 'source_only',
       })
     }
   }
 
-  citations.sort((a, b) => b.score - a.score || a.startMs - b.startMs)
+  citations.sort((a, b) => b.score - a.score || (a.startMs ?? Number.MAX_SAFE_INTEGER) - (b.startMs ?? Number.MAX_SAFE_INTEGER))
 
   if (citations.length === 0) {
     return {
@@ -248,14 +258,14 @@ export function executeProvenanceSearch(params: {
     .slice(0, 3)
     .map(
       c =>
-        `[${c.storyTitle} @ ${(c.startMs / 1000).toFixed(1)}s–${(c.endMs / 1000).toFixed(1)}s]: "${c.quotedText}"`,
+        `[${c.storyTitle}]: "${c.quotedText}"`,
     )
     .join(' | ')
 
   return {
-    status: 'grounded_answer',
+    status: 'source_matches',
     query: params.query,
-    answerText: `Found ${citations.length} verified source segment(s): ${topQuotes}`,
+    answerText: `Found ${citations.length} matching source excerpt(s): ${topQuotes}`,
     citations,
     activeIndexVersion,
     filteredByPermissionCount: authorizedEntries.length,

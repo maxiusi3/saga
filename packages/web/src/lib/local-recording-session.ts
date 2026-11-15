@@ -1,3 +1,4 @@
+import { acquireRecordingSessionLock } from './recording-session-lock'
 import { recorderDB } from './recorder-db'
 import { createRecordingSession, type CreateRecordingSessionInput } from './recording-session'
 import { storageService } from './storage'
@@ -5,9 +6,10 @@ import { useAuthStore } from '@/stores/auth-store'
 import { recordingChunkLocation } from './recording-chunk-location'
 
 /** One capture's queues; network latency never holds up the next local write. */
-export async function createLocalRecordingSession(input: CreateRecordingSessionInput) {
+export async function createLocalRecordingSession(input: CreateRecordingSessionInput & { isCurrent?: () => boolean }) {
   const { chunks: _chunks, persistedOrder: _order, ...record } = createRecordingSession(input)
-  await recorderDB.saveSession(record)
+  const release = await acquireRecordingSessionLock(record.id,false)
+  try { await recorderDB.saveSession(record) } catch (error) { release(); throw error }
   let writes: Promise<unknown> = Promise.resolve()
   let syncing: Promise<void> | null = null
   let syncRequested = false
@@ -22,7 +24,7 @@ export async function createLocalRecordingSession(input: CreateRecordingSessionI
   }
 
   function canUpload() {
-    return navigator.onLine && useAuthStore.getState().user?.id === record.userId && !persistenceError
+    return navigator.onLine && useAuthStore.getState().user?.id === record.userId && !persistenceError && (input.isCurrent?.() ?? true)
   }
 
   function sync(): Promise<void> {
@@ -46,9 +48,10 @@ export async function createLocalRecordingSession(input: CreateRecordingSessionI
               fileName: location.fileName,
               allowedTypes: [baseType],
               expectedUserId: record.userId,
+              isCurrent: canUpload,
             })
             // A timeout/duplicate response is not confirmation. Retain the pending copy.
-            if (!result.success) return
+            if (!result.success || !canUpload()) return
             await recorderDB.markChunkUploaded(record.id, chunk.index)
           }
         } while (syncRequested)
@@ -81,11 +84,13 @@ export async function createLocalRecordingSession(input: CreateRecordingSessionI
     },
     sync,
     async interrupt(): Promise<void> {
-      await enqueue(async () => {
-        const session = await recorderDB.updateSession(record.id, { state: 'interrupted' })
-        if (!session) throw new Error('Recording session is missing from local storage')
-      })
-      if (persistenceError) throw persistenceError
+      try {
+        await enqueue(async () => {
+          const session = await recorderDB.updateSession(record.id, { state: 'interrupted' })
+          if (!session) throw new Error('Recording session is missing from local storage')
+        })
+        if (persistenceError) throw persistenceError
+      } finally { release() }
     },
   }
 }

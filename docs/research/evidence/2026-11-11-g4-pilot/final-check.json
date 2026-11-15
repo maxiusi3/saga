@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-11-11T19:08:34.426674+08:00",
+  "status": "passed",
+  "receiptSha256": "4c38a600638b298ff115bd05ffcfbf11e39134a803c46c658a623d456b62498e",
+  "sourceFiles": 1274,
+  "sourceHashesMatched": true,
+  "documentHashesMatched": true,
+  "logHashesMatched": true,
+  "reportLinksChecked": 24,
+  "stagedFiles": [],
+  "headUnchanged": true,
+  "nextEnvRestored": true,
+  "diffCheckPassed": true,
+  "documentReview": "PASS"
+}

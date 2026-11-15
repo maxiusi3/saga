@@ -5,6 +5,7 @@ export type SagaNotificationType =
   | 'story_response'
   | 'project_invitation'
   | 'member_joined'
+  | 'hosting_expiry'
 
 export interface SagaNotification {
   id: string
@@ -59,6 +60,8 @@ export interface SagaNotificationSummary {
  */
 export function getNotificationDisplayInfo(type: SagaNotificationType) {
   switch (type) {
+    case 'hosting_expiry':
+      return { icon: '📅', color: 'text-primary', bgColor: 'bg-primary/10', label: 'Hosting expiry' }
     case 'new_story':
       return {
         icon: '📖',

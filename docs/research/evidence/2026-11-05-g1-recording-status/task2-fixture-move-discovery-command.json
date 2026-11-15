@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "npm",
+    "test",
+    "--workspace=packages/web",
+    "--",
+    "--runInBand",
+    "--listTests",
+    "--json"
+  ],
+  "exitCode": 0
+}

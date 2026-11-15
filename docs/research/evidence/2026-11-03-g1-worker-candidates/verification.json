@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "completedAt": "2026-11-03T16:30:13.433023+00:00",
+  "status": "local_slice_complete",
+  "scope": "G1-01 private recording candidate persistence; not atomic publication",
+  "baselineHead": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "branch": "codex/october-upgrade-p0",
+  "verificationMethod": "Executed command/native receipts and logs from this implementation are preserved. Final closure rechecks their hashes, counts, cleanup and current source equality; it does not relabel archived tests as freshly rerun.",
+  "focused": {
+    "receipt": "final-focused.json",
+    "receiptSha256": "739a934015f2656d2dbd99ceeb9a68967caade07a47b38470e365e0874984e9c",
+    "exitCode": 0,
+    "counts": {
+      "suites": 6,
+      "tests": 377
+    },
+    "sourcesUnchangedDuringRun": true,
+    "currentSourcesMatch": true,
+    "logHashesVerified": true
+  },
+  "fullGate": {
+    "receipt": "full-chain-1.json",
+    "receiptSha256": "7c5e66abf31ceb396ee602cfb97efc753aaadf12f53100dfb4e5b0d547a48817",
+    "exitCode": 0,
+    "counts": {
+      "webSuites": 148,
+      "webTests": 2672,
+      "sharedSuites": 4,
+      "sharedTests": 16,
+      "infraTests": 14,
+      "buildPages": 184
+    },
+    "sourcesUnchangedDuringRun": true,
+    "currentSourcesMatch": true,
+    "logHashesVerified": true,
+    "checks": [
+      "original-worker-compiler-compatibility",
+      "type-check",
+      "lint",
+      "web-tests",
+      "production-build",
+      "shared-tests",
+      "infra-tests"
+    ]
+  },
+  "sql": {
+    "receipt": "sql-only-2026-11-03T15-55-07.116Z-1afb59c0-b2e6-4405-87b8-fba18c58733a/results.json",
+    "receiptSha256": "0086a7fc5a851744866be013ac41c0c5796769372c1f34932ae232526884e84b",
+    "status": "passed",
+    "scenarios": 15,
+    "assertions": 426,
+    "sourcesUnchangedDuringRun": true,
+    "currentSourcesMatch": true,
+    "isolatedResourcesCleaned": true,
+    "publicationCounters": {
+      "readyAssets": 0,
+      "succeededJobs": 0,
+      "confirmedSessions": 0
+    }
+  },
+  "native": {
+    "receipt": "full-application-2026-11-03T16-05-05.641Z-ceb9582e-5e2b-48b5-9d6a-db757f7e8f3e/results.json",
+    "receiptSha256": "a6d554363de7e57340a9dab5f154d7faa44fc84ef1694c44fbefd759fa52a97a",
+    "status": "passed",
+    "scenarios": 31,
+    "assertions": 21697,
+    "sourcesUnchangedDuringRun": true,
+    "currentSourcesMatch": true,
+    "isolatedResourcesCleaned": true,
+    "publicationCounters": {
+      "readyAssets": 0,
+      "succeededJobs": 0,
+      "confirmedSessions": 0
+    },
+    "applicationCleanup": {
+      "observersRestored": true,
+      "nativeChildrenRemaining": 0,
+      "streamsRemaining": 0,
+      "handlesRemaining": 0
+    },
+    "nativeHttpCleanup": {
+      "listening": false,
+      "socketsRemaining": 0,
+      "handlersRemaining": 0,
+      "fixtureErrors": 0
+    }
+  },
+  "independentNative": {
+    "receipt": "full-application-2026-11-03T16-20-01.520Z-a67f6bf2-8b36-4ed2-807a-e858052a3cda/results.json",
+    "receiptSha256": "a1a36f9ece3b9c67e7375948f3e622e3b06531e07d97664a4955db33e52c5ded",
+    "status": "passed",
+    "scenarios": 31,
+    "assertions": 21682,
+    "sourcesUnchangedDuringRun": true,
+    "currentSourcesMatch": true,
+    "isolatedResourcesCleaned": true,
+    "publicationCounters": {
+      "readyAssets": 0,
+      "succeededJobs": 0,
+      "confirmedSessions": 0
+    },
+    "applicationCleanup": {
+      "observersRestored": true,
+      "nativeChildrenRemaining": 0,
+      "streamsRemaining": 0,
+      "handlesRemaining": 0
+    },
+    "nativeHttpCleanup": {
+      "listening": false,
+      "socketsRemaining": 0,
+      "handlersRemaining": 0,
+      "fixtureErrors": 0
+    }
+  },
+  "assertionCountQualification": "Native assertions vary with actual heartbeats and requests; both passing runs cover the same 31 scenarios.",
+  "reviews": [
+    {
+      "order": 1,
+      "kind": "specification",
+      "reviewer": "candidate_spec",
+      "decision": "PASS",
+      "outstandingActionableFindings": 0,
+      "report": "specification-review.md",
+      "reportSha256": "0bff1bc7645f5599e22a0cc55518a3343b3e5b959ace26aaf10ec8212df694f7"
+    },
+    {
+      "order": 2,
+      "kind": "quality",
+      "reviewer": "candidate_quality",
+      "decision": "Approved",
+      "outstandingActionableFindings": 0,
+      "report": "quality-review.md",
+      "reportSha256": "d87f9bfbc0b85f3b8d5c12e117f36442107089bb395dd52519e362a0c87656b7"
+    }
+  ],
+  "preservation": {
+    "priorEvidenceFiles": 2285,
+    "historicalInputs": 1471,
+    "allHashesMatch": true,
+    "intermediateFailuresRetained": true,
+    "initialTypeCheckFailureRecorded": "type-check-initial-failure.md",
+    "nextEnvOriginalBytesRestored": true,
+    "nextEnvReceipt": "next-env-check.json",
+    "gitDiffCheck": "passed"
+  },
+  "regressionsFixed": [
+    "PostgreSQL microsecond timestamp ordering",
+    "Cross-job candidate UUID unique-index wait after lease expiry",
+    "Native successful upload acknowledgement cancellation before abort",
+    "Old read-only worker compiler dependency compatibility"
+  ],
+  "resultBoundary": {
+    "result": "candidate_prepared",
+    "job": "running",
+    "asset": "verifying",
+    "session": "sealing",
+    "canClearLocalDrafts": false,
+    "readyPublished": false,
+    "terminalSuccessWritten": false,
+    "terminalFailureWiringImplemented": false,
+    "schedulerImplemented": false,
+    "automaticRetry": false,
+    "unknownOutcomesRetainRemoteData": true
+  },
+  "actions": {
+    "staged": false,
+    "committed": false,
+    "pushed": false,
+    "mergedMain": false,
+    "remoteMigration": false,
+    "deployed": false,
+    "paidApiUsed": false,
+    "familyDataTransmitted": false,
+    "inheritedDirtyWorkPreserved": true
+  },
+  "residuals": [
+    "Native HTTP uses synthetic disk-backed Storage and a strict PostgREST-shaped SQL adapter, not actual PostgREST, cloud Storage or TLS.",
+    "The two-second synthetic WebM/Opus fixture is not device, long-audio or listening qualification.",
+    "SIGKILL cleanup is owned by the isolated test parent; it is not graceful production cleanup or automatic recovery.",
+    "Managed-schema ownership, full remote migration chain and deployment/FFmpeg isolation remain unqualified.",
+    "New-bucket backup and deletion coverage remain unqualified; candidate identity survives parent deletion and no garbage collector is added.",
+    "Large-manifest repeated-read cost remains unqualified.",
+    "Missing tombstones are not an atomic publication barrier; Storage and PostgreSQL are not one transaction and abort does not prove remote rollback.",
+    "Audit was not rerun; existing optional-configuration warnings remain."
+  ],
+  "nextSteps": [
+    "Atomic publication and failure terminal states",
+    "Unified deletion and revocation barrier",
+    "Client seal/status, durable confirmation and safe local cleanup"
+  ],
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false
+}

@@ -155,7 +155,11 @@
     "loadMore": "加载更多故事",
     "deleteConfirm": "您确定要删除这个故事吗？此操作无法撤销。",
     "deleteSuccess": "故事删除成功",
-    "deleteFailed": "删除故事失败"
+    "deleteFailed": "删除故事失败",
+    "deleteAction": "删除故事",
+    "deletePending": "正在提交…",
+    "deleteAccepted": "删除请求已受理。",
+    "deleteUnconfirmed": "尚未确认删除结果。请刷新查看故事状态后重试。"
   },
   "status": {
     "new": "新建",

@@ -23,7 +23,7 @@ describe('provider-policy-verification', () => {
   const validAnthropicEvidence: ProviderPolicyEvidence = {
     provider: 'anthropic',
     accountOrOrgId: 'org-saga-anthropic-zdr',
-    modelId: 'claude-opus-4-20250514',
+    modelId: 'claude-opus-5-5',
     allowedRegions: ['us'],
     trainingOptOutConfirmed: true,
     zeroDataRetentionConfirmed: true,
@@ -272,7 +272,7 @@ describe('provider-policy-verification', () => {
         now: BASE_TIME,
       })
 
-      expect(targets).toHaveLength(3)
+      expect(targets).toHaveLength(4)
       for (const target of targets) {
         expect(target.trainingOptOutConfirmed).toBe(false)
         expect(target.zeroDataRetentionConfirmed).toBe(false)
@@ -290,7 +290,7 @@ describe('provider-policy-verification', () => {
         now: BASE_TIME,
       })
 
-      expect(targets).toHaveLength(3)
+      expect(targets).toHaveLength(4)
       for (const target of targets) {
         expect(target.trainingOptOutConfirmed).toBe(false)
         expect(target.zeroDataRetentionConfirmed).toBe(false)

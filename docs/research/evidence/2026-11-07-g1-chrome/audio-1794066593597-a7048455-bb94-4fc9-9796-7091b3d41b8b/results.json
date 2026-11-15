@@ -1,0 +1,134 @@
+{
+  "status": "passed",
+  "inputs": [
+    {
+      "path": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-07-g1-chrome/integrated-browser-1794059710258-2f76707e-5601-44f0-9829-05ded2ec89fb/results.json",
+      "resultSha256": "243b2f5a420560ba73d32ef2c36dd870b8a3dc409dfa7367a5c3a3a6daf8df95",
+      "requestedSeconds": 300,
+      "elapsedRecordingMs": 300004,
+      "chunkCount": 6,
+      "totalBytes": 2434217,
+      "originalSha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449",
+      "durationSeconds": 300.48,
+      "interrupted": false,
+      "expectedPersistedSeconds": 300,
+      "envelope": {
+        "bytes": 2434217,
+        "sha256": "db79140761d9b0e37652057af19c73425604998f8a23aea0bb71fa355c6d0247",
+        "removedContainerHeaderBytes": 0,
+        "audioBlocks": 5008
+      },
+      "decodedPcmSha256": "6537bce42273ec177363b24481e44c0d1ef5e8a68e2abe9e5817e1a5880ad368",
+      "measuredSeconds": 300,
+      "minSecondRms": 0.013821693614617572,
+      "maxSecondRms": 0.1654406691484507,
+      "silentSeconds": [],
+      "prefixDiagnostic": {
+        "exitCode": 0,
+        "sourceSha256": "0c9c6f8d33724c5aded12399061f61151bcd4467e724b38951472359ac85be3e",
+        "diagnostics": "[matroska,webm @ 0x7f97cc00cbc0] File ended prematurely at pos. 486178 (0x76b22)\n",
+        "rawDecoderAccepts": false
+      }
+    },
+    {
+      "path": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-07-g1-chrome/integrated-browser-1794059620040-7b72da01-571f-4974-95a6-7f54da20b2f8/results.json",
+      "resultSha256": "939ff63973c4da4f34c2a13e0c17ef7802840f5fc02c710539909050f5333f94",
+      "requestedSeconds": 1200,
+      "elapsedRecordingMs": 1200008,
+      "chunkCount": 20,
+      "totalBytes": 9722783,
+      "originalSha256": "10005bee1044bb801d5cf32ffedd94c6db5486d5f6235217d31d515387eddb95",
+      "durationSeconds": 1200.24,
+      "interrupted": false,
+      "expectedPersistedSeconds": 1200,
+      "envelope": {
+        "bytes": 9722783,
+        "sha256": "adba1b7d2ebcfac4a2a7dbf58739440146fc6013968d903ab9ce704f27eb1d16",
+        "removedContainerHeaderBytes": 0,
+        "audioBlocks": 20004
+      },
+      "decodedPcmSha256": "feb0687fdd873d5506160257347221a4114df0967e04751784c79fc41b29a2c1",
+      "measuredSeconds": 1200,
+      "minSecondRms": 0.013821693614617572,
+      "maxSecondRms": 0.1654406691484507,
+      "silentSeconds": [],
+      "prefixDiagnostic": {
+        "exitCode": 0,
+        "sourceSha256": "41b6ed07d08e1b846439076270aa99308aa6849d36f75b3c24c78841fd8a30c7",
+        "diagnostics": "[matroska,webm @ 0x7f9156710780] File ended prematurely at pos. 486178 (0x76b22)\n",
+        "rawDecoderAccepts": false
+      }
+    },
+    {
+      "path": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-07-g1-chrome/integrated-browser-1794059561107-a5ddc481-a071-4761-b3b5-099b597a82fb/results.json",
+      "resultSha256": "01de4c1f29f4bf1b927f2a986a892c26477acc6755b0823f0b7d995dfde10aee",
+      "requestedSeconds": 1800,
+      "elapsedRecordingMs": 1800008,
+      "chunkCount": 30,
+      "totalBytes": 14582637,
+      "originalSha256": "7fbd1ad99858996f79fbfd314b19e1304d990ede147fd01b87d5fd1a1f609e6b",
+      "durationSeconds": 1800.18,
+      "interrupted": false,
+      "expectedPersistedSeconds": 1800,
+      "envelope": {
+        "bytes": 14582637,
+        "sha256": "f775309b118070a03401659ebc16b5bf5f59b0573716872afa616c552743f2c4",
+        "removedContainerHeaderBytes": 0,
+        "audioBlocks": 30003
+      },
+      "decodedPcmSha256": "b911be0377b5f35163e5a574b28e28e62c082cceff4038d622ad995d40ced6c5",
+      "measuredSeconds": 1800,
+      "minSecondRms": 0.01113783258891181,
+      "maxSecondRms": 0.16581956561104855,
+      "silentSeconds": [],
+      "prefixDiagnostic": {
+        "exitCode": 0,
+        "sourceSha256": "5c9d9f103fab0639c6c3e3cbe8995042d6e2c53234c672bcec264e43fe531187",
+        "diagnostics": "[matroska,webm @ 0x7fa633504840] File ended prematurely at pos. 486178 (0x76b22)\n",
+        "rawDecoderAccepts": false
+      }
+    },
+    {
+      "path": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-07-g1-chrome/interrupted-browser-1794066185867-ac613c97-6cd1-485a-8cd7-7f831171d8cb/results.json",
+      "resultSha256": "8dc8a182dee3ff4ad0cfff54b723d9754434eff10d32112d20a7d40df6c99f88",
+      "requestedSeconds": 65,
+      "elapsedRecordingMs": 65013,
+      "chunkCount": 1,
+      "totalBytes": 486178,
+      "originalSha256": "63f498f387e7ca5aac66e91b9bdd4bd47f9e22e584529460228f26514afa575b",
+      "durationSeconds": 60,
+      "interrupted": true,
+      "expectedPersistedSeconds": 60,
+      "envelope": {
+        "bytes": 486177,
+        "sha256": "a2db536e65d1bf28df90936df492215ad4c0aab67b4c2ec14a95e8e505d084c3",
+        "removedContainerHeaderBytes": 1,
+        "audioBlocks": 1000
+      },
+      "decodedPcmSha256": "0e2a89bf919052d78292a6c98f1a2d3f43c2225cc7bb772e1a66ee7ee786762c",
+      "measuredSeconds": 60,
+      "minSecondRms": 0.013233403318156665,
+      "maxSecondRms": 0.1657024145166613,
+      "silentSeconds": [],
+      "prefixDiagnostic": {
+        "exitCode": 0,
+        "sourceSha256": "63f498f387e7ca5aac66e91b9bdd4bd47f9e22e584529460228f26514afa575b",
+        "diagnostics": "[matroska,webm @ 0x7fac595064c0] File ended prematurely at pos. 486178 (0x76b22)\n",
+        "rawDecoderAccepts": false
+      }
+    }
+  ],
+  "checks": [
+    "all saved object hashes",
+    "contiguous chunks equal published bytes",
+    "strict FFmpeg decode after bounded envelope closure",
+    "persisted range duration within five seconds",
+    "no one-second tone gaps"
+  ],
+  "boundary": "Synthetic alternating tone recorded in real time through native Chrome getUserMedia/MediaRecorder. Byte identity, full decode, duration and signal continuity; no human speech intelligibility or physical microphone qualification.",
+  "sources": {
+    "packages/web/src/lib/server/recording-webm-envelope.ts": "a6e49a85f0abd264618c59f8b5f32f9264cd742355e68e35225cab63a495c77b"
+  },
+  "ffmpeg": "ffmpeg version 6.1.1-tessus  https://evermeet.cx/ffmpeg/  Copyright (c) 2000-2023 the FFmpeg developers",
+  "sourceSha256": "ef5e58a66a1c5e35f50b3d1b884c1eb2706f60368a7e023bc6bdc4ef6ada5025"
+}

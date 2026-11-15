@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "localRecordingWorkflowPassed": true,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "gate": {
+    "record": "final-gate-02.json",
+    "exitCode": 0,
+    "webSuites": 159,
+    "webTests": 3204,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 20,
+    "builtPages": 184,
+    "sourceDrift": [],
+    "measuredSources": 903
+  },
+  "native": "candidate-validation-02.json",
+  "sourceLock": "source-lock-02.json",
+  "measuredSources": 938,
+  "integrity": "integrity-final-02.json",
+  "scopedReviews": [
+    "reviews/task-1-fix-1-review.md",
+    "reviews/task-2-review.md",
+    "reviews/task-3-fix-1-review.md"
+  ],
+  "finalReview": "reviews/final-fix-review.md",
+  "boundaries": [
+    "synthetic microphone/session/project-access/PostgREST/Storage adapters",
+    "no cloud or physical-device qualification",
+    "no long recording or real content completeness claim"
+  ],
+  "prohibitedActionsPerformed": [],
+  "completedAt": "2026-11-06T01:53:17.828605+00:00",
+  "initialFinalReview": "reviews/final-review.md",
+  "confirmationConsistency": {
+    "assertions": 1091,
+    "corruptions": 88,
+    "rejectedBeforeWrite": 88,
+    "changedRows": 0,
+    "legitimateRetryControlsPassed": true,
+    "redCommittedMismatches": 35,
+    "record": "native-1793929246225-f153d6c1-189c-460b-b827-6fb505ec038d/results.json"
+  },
+  "preservedPreFixEvidence": "pre-final-fix-evidence.json",
+  "remainingEngineering": [
+    "atomic deletion target capture and reference-safe GC",
+    "recording candidate backup/deletion coverage",
+    "complete migration-chain rehearsal"
+  ]
+}

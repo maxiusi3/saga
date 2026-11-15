@@ -155,7 +155,11 @@
     "loadMore": "Load More Stories",
     "deleteConfirm": "Are you sure you want to delete this story? This action cannot be undone.",
     "deleteSuccess": "Story deleted successfully",
-    "deleteFailed": "Failed to delete story"
+    "deleteFailed": "Failed to delete story",
+    "deleteAction": "Delete story",
+    "deletePending": "Submitting…",
+    "deleteAccepted": "Deletion request accepted.",
+    "deleteUnconfirmed": "Deletion could not be confirmed. Refresh to check the story, then retry."
   },
   "status": {
     "new": "New",

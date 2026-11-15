@@ -1,0 +1,17 @@
+{
+  "id": "a67cb656-4e54-44d9-91b5-8afacc3d990b",
+  "state": "requested",
+  "attempt": 0,
+  "error_code": null,
+  "project_id": "3fec9724-44e2-4251-bb92-a028e44eb290",
+  "subject_id": "3fec9724-44e2-4251-bb92-a028e44eb290",
+  "completed_at": null,
+  "requested_at": "2026-11-14T15:03:50.974598+08:00",
+  "requested_by": "ba51cea9-fad3-4763-846e-12d3e2c0986c",
+  "subject_type": null,
+  "tombstone_at": "2026-11-14T15:03:50.974723+08:00",
+  "processing_at": null,
+  "capture_version": null,
+  "capture_target_count": null,
+  "capture_targets_sha256": null
+}

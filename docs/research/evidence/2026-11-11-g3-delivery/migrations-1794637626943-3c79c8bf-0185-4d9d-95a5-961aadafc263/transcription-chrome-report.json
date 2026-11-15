@@ -1,0 +1,252 @@
+{
+  "status": "passed",
+  "checks": [
+    "outsider, revoked member, missing consent, invalid policy: zero provider requests",
+    "explicit Chrome consent and submit",
+    "actual adapter multipart bytes and config",
+    "durable aligned transcript and unknown confidence",
+    "completed request replay makes zero extra calls",
+    "reload and timed audio seek",
+    "consent withdrawn during provider response rejects ingestion",
+    "invalid provider response creates no draft",
+    "pending identity survives reload",
+    "same and new IDs cannot repeat unknown outbound request",
+    "Storage503 before outbound remains retryable",
+    "reload and explicit renewed consent retry same request",
+    "exactly one provider send after safe retry"
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/review",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/review",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/media/assets/cad6a420-caa4-4904-a814-b59038c3442e/play",
+      "status": 307
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/review",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/media/assets/cad6a420-caa4-4904-a814-b59038c3442e/play",
+      "status": 307
+    },
+    {
+      "method": "GET",
+      "path": "/api/media/assets/cad6a420-caa4-4904-a814-b59038c3442e/play",
+      "status": 307
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/0952c89f-4dcf-43d7-8875-9e2f8f154d3f/transcribe",
+      "status": 403
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/1dc9400e-3a49-476d-817f-00d329dd2d83/review",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/1dc9400e-3a49-476d-817f-00d329dd2d83/transcribe",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/1dc9400e-3a49-476d-817f-00d329dd2d83/transcribe",
+      "status": 502
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/1dc9400e-3a49-476d-817f-00d329dd2d83/transcribe",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/1dc9400e-3a49-476d-817f-00d329dd2d83/transcribe",
+      "status": 409
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/1dc9400e-3a49-476d-817f-00d329dd2d83/transcribe",
+      "status": 409
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/1dc9400e-3a49-476d-817f-00d329dd2d83/review",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/1dc9400e-3a49-476d-817f-00d329dd2d83/transcribe",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/review",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/transcribe",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/transcribe",
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/transcribe",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/review",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/transcribe",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/transcribe",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/review",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/stories/432af277-2e01-4b63-b834-314df24ad5e2/transcribe",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/media/assets/750a9d58-c07b-47ec-88b2-f6fc488585b7/play",
+      "status": 307
+    }
+  ],
+  "providerRequests": [
+    {
+      "mode": "success",
+      "path": "/v1/speech-to-text?enable_logging=false",
+      "bytes": 192044,
+      "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+      "model": "scribe_v2"
+    },
+    {
+      "mode": "withdraw",
+      "path": "/v1/speech-to-text?enable_logging=false",
+      "bytes": 192044,
+      "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+      "model": "scribe_v2"
+    },
+    {
+      "mode": "invalid",
+      "path": "/v1/speech-to-text?enable_logging=false",
+      "bytes": 192044,
+      "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+      "model": "scribe_v2"
+    },
+    {
+      "mode": "success",
+      "path": "/v1/speech-to-text?enable_logging=false",
+      "bytes": 192044,
+      "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+      "model": "scribe_v2"
+    }
+  ],
+  "errors": [],
+  "boundary": "Production StoryReviewPanel and StoryTranscriptionControl, production GET/POST transcription/review/play routes, Supabase SDK, complete native PG17 schema, and installed Google Chrome. Auth identities, loopback PostgREST/Storage/provider transport, tone WAV, and timed provider response are controlled synthetic substitutes. No paid/live ASR, real speech accuracy, or semantic audio alignment claim.",
+  "stories": [
+    {
+      "story": "0952c89f-4dcf-43d7-8875-9e2f8f154d3f",
+      "asset": "cad6a420-caa4-4904-a814-b59038c3442e"
+    },
+    {
+      "story": "1dc9400e-3a49-476d-817f-00d329dd2d83",
+      "asset": "a0267728-ca43-4b29-954f-a75d16de0b98"
+    },
+    {
+      "story": "432af277-2e01-4b63-b834-314df24ad5e2",
+      "asset": "750a9d58-c07b-47ec-88b2-f6fc488585b7"
+    }
+  ],
+  "source": {
+    "bytes": 192044,
+    "sha256": "f11f59195c729c975c6b6f9d03de8b387527dbb36f0df309af8db03d8951e44f",
+    "durationMs": 6000,
+    "mimeType": "audio/wav"
+  },
+  "browser": "157.0.8103.78",
+  "cleanup": {
+    "globalsRestored": true,
+    "errors": []
+  }
+}

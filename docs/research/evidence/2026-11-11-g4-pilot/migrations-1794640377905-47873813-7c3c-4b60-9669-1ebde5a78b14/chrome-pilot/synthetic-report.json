@@ -1,0 +1,2243 @@
+{
+  "npsScore": 100,
+  "npsResponseCount": 20,
+  "npsMissingCount": 0,
+  "wouldRecommendRate": {
+    "numerator": 20,
+    "denominator": 20,
+    "proportion": 1,
+    "status": "measured"
+  },
+  "recommendResponseCount": 20,
+  "recommendMissingCount": 0,
+  "totalReferrals": 20,
+  "incompleteReasonsBreakdown": {},
+  "qualityTotals": {
+    "reviewedClaims": 2000,
+    "incorrectClaims": 0,
+    "invalidSourceClaims": 0,
+    "seededErrors": 200,
+    "detectedSeededErrors": 200,
+    "negativeClaims": 200,
+    "falsePositiveClaims": 0,
+    "unresolvedSevereErrors": 0
+  },
+  "qualityMetrics": {
+    "reviewedClaimErrorRate": {
+      "numerator": 0,
+      "denominator": 2000,
+      "proportion": 0,
+      "status": "measured"
+    },
+    "invalidSourceRate": {
+      "numerator": 0,
+      "denominator": 2000,
+      "proportion": 0,
+      "status": "measured"
+    },
+    "seededErrorDetectionRate": {
+      "numerator": 200,
+      "denominator": 200,
+      "proportion": 1,
+      "status": "measured"
+    },
+    "falsePositiveRate": {
+      "numerator": 0,
+      "denominator": 200,
+      "proportion": 0,
+      "status": "measured"
+    }
+  },
+  "incorrectClaimsPer100": 0,
+  "invalidSourceClaimsPer100": 0,
+  "qualityAcceptable": true,
+  "evaluatedAt": "2026-11-14T07:13:03.380Z",
+  "observationKind": "synthetic",
+  "cohortKey": "chrome-g4",
+  "cohortClosedAt": "2026-11-14T07:13:03.334523+00:00",
+  "cohortSeparationVerified": true,
+  "countsByCohort": {
+    "prototype_study": 0,
+    "ai_eval_holdout": 0,
+    "longitudinal_pilot": 20
+  },
+  "countsByPricingTier": {
+    "free": 0,
+    "half_price": 0,
+    "subsidized": 0,
+    "paid_59": 20
+  },
+  "countsByObservationKind": {
+    "observed": 0,
+    "synthetic": 20,
+    "unclassified": 0
+  },
+  "selectedLongitudinalHouseholds": 20,
+  "uniqueLongitudinalHouseholds": 20,
+  "paid59Households": 20,
+  "erasedHouseholds": 0,
+  "maturity": {
+    "enrolled28d": {
+      "eligible": 20,
+      "mature": 20,
+      "pending": 0
+    },
+    "invited7d": {
+      "eligible": 20,
+      "mature": 20,
+      "pending": 0
+    },
+    "delivered14d": {
+      "eligible": 20,
+      "mature": 20,
+      "pending": 0
+    }
+  },
+  "blockingReasons": [],
+  "effectiveActivationAll": {
+    "numerator": 20,
+    "denominator": 20,
+    "proportion": 1,
+    "status": "measured"
+  },
+  "effectiveActivationSelfServe": {
+    "numerator": 10,
+    "denominator": 10,
+    "proportion": 1,
+    "status": "measured"
+  },
+  "effectiveActivationAssisted": {
+    "numerator": 10,
+    "denominator": 10,
+    "proportion": 1,
+    "status": "measured"
+  },
+  "firstOutcomeWithin7d": {
+    "numerator": 20,
+    "denominator": 20,
+    "proportion": 1,
+    "status": "measured"
+  },
+  "completionWithin28dStartedPaid": {
+    "numerator": 20,
+    "denominator": 20,
+    "proportion": 1,
+    "status": "measured"
+  },
+  "completionWithin28dAllPaid": {
+    "numerator": 20,
+    "denominator": 20,
+    "proportion": 1,
+    "status": "measured"
+  },
+  "replayWithin14dPostDelivery": {
+    "numerator": 20,
+    "denominator": 20,
+    "proportion": 1,
+    "status": "measured"
+  },
+  "selfReportedReplayWithin14dPostDelivery": {
+    "numerator": 0,
+    "denominator": 20,
+    "proportion": 0,
+    "status": "measured"
+  },
+  "familyRevisionLabor": {
+    "sampleSize": 20,
+    "medianMinutes": 8,
+    "p90Minutes": 8,
+    "targetMinutes": null,
+    "targetStatistic": null,
+    "withinTarget": null
+  },
+  "familyRevisionPerStoryLabor": {
+    "sampleSize": 20,
+    "medianMinutes": 8,
+    "p90Minutes": 8,
+    "targetMinutes": 10,
+    "targetStatistic": "median",
+    "withinTarget": true
+  },
+  "opsSupportLabor": {
+    "sampleSize": 20,
+    "medianMinutes": 20,
+    "p90Minutes": 20,
+    "targetMinutes": 30,
+    "targetStatistic": "median",
+    "withinTarget": true
+  },
+  "unitEconomicsPaidCohort": {
+    "complete": true,
+    "status": "complete",
+    "incompleteCostHouseholds": 0,
+    "totalHouseholds": 20,
+    "paidHouseholds": 20,
+    "completedHouseholds": 20,
+    "incompleteHouseholds": 0,
+    "refundedHouseholds": 0,
+    "grossRevenueCents": 118000,
+    "refundedCents": 0,
+    "netRevenueCents": 118000,
+    "paymentProcessingFeeCents": 4000,
+    "aiAndStorageCostCents": 5000,
+    "laborCostCents": 20000,
+    "acquisitionCostCents": 4000,
+    "fulfillmentCostCents": 2000,
+    "hostingReserveCents": 3000,
+    "fixedCostAllocationCents": 10000,
+    "totalVariableCostCents": 38000,
+    "totalCostCents": 48000,
+    "totalContributionCents": 70000,
+    "contributionBeforeAcquisitionCents": 74000,
+    "contributionAfterAcquisitionCents": 70000,
+    "contributionPerPaidHouseholdCents": 3500,
+    "contributionPerCompletedHouseholdCents": 3500,
+    "costDisclosure": {
+      "hourlyRate": "explicit_per_household",
+      "acquisition": "included",
+      "fulfillment": "included",
+      "hostingReserve": "included",
+      "fixedAllocation": "included",
+      "familyRevision": "reported_minutes_not_monetized"
+    }
+  },
+  "unitEconomicsAllCohort": {
+    "complete": true,
+    "status": "complete",
+    "incompleteCostHouseholds": 0,
+    "totalHouseholds": 20,
+    "paidHouseholds": 20,
+    "completedHouseholds": 20,
+    "incompleteHouseholds": 0,
+    "refundedHouseholds": 0,
+    "grossRevenueCents": 118000,
+    "refundedCents": 0,
+    "netRevenueCents": 118000,
+    "paymentProcessingFeeCents": 4000,
+    "aiAndStorageCostCents": 5000,
+    "laborCostCents": 20000,
+    "acquisitionCostCents": 4000,
+    "fulfillmentCostCents": 2000,
+    "hostingReserveCents": 3000,
+    "fixedCostAllocationCents": 10000,
+    "totalVariableCostCents": 38000,
+    "totalCostCents": 48000,
+    "totalContributionCents": 70000,
+    "contributionBeforeAcquisitionCents": 74000,
+    "contributionAfterAcquisitionCents": 70000,
+    "contributionPerPaidHouseholdCents": 3500,
+    "contributionPerCompletedHouseholdCents": 3500,
+    "costDisclosure": {
+      "hourlyRate": "explicit_per_household",
+      "acquisition": "included",
+      "fulfillment": "included",
+      "hostingReserve": "included",
+      "fixedAllocation": "included",
+      "familyRevision": "reported_minutes_not_monetized"
+    }
+  },
+  "perPricingTier": {
+    "free": {
+      "npsScore": null,
+      "npsResponseCount": 0,
+      "npsMissingCount": 0,
+      "wouldRecommendRate": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "recommendResponseCount": 0,
+      "recommendMissingCount": 0,
+      "totalReferrals": 0,
+      "incompleteReasonsBreakdown": {},
+      "qualityTotals": {
+        "reviewedClaims": 0,
+        "incorrectClaims": 0,
+        "invalidSourceClaims": 0,
+        "seededErrors": 0,
+        "detectedSeededErrors": 0,
+        "negativeClaims": 0,
+        "falsePositiveClaims": 0,
+        "unresolvedSevereErrors": 0
+      },
+      "qualityMetrics": {
+        "reviewedClaimErrorRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "invalidSourceRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "seededErrorDetectionRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "falsePositiveRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        }
+      },
+      "incorrectClaimsPer100": null,
+      "invalidSourceClaimsPer100": null,
+      "qualityAcceptable": false,
+      "households": 0,
+      "paidHouseholds": 0,
+      "maturity": {
+        "enrolled28d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        },
+        "invited7d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        },
+        "delivered14d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        }
+      },
+      "effectiveActivationAll": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "effectiveActivationSelfServe": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "effectiveActivationAssisted": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "firstOutcomeWithin7d": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "completionWithin28dStartedPaid": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "completionWithin28dAllPaid": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "replayWithin14dPostDelivery": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "selfReportedReplayWithin14dPostDelivery": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "familyRevisionLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": null,
+        "targetStatistic": null,
+        "withinTarget": null
+      },
+      "familyRevisionPerStoryLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": 10,
+        "targetStatistic": "median",
+        "withinTarget": null
+      },
+      "opsSupportLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": 30,
+        "targetStatistic": "median",
+        "withinTarget": null
+      },
+      "unitEconomics": {
+        "complete": true,
+        "status": "complete",
+        "incompleteCostHouseholds": 0,
+        "totalHouseholds": 0,
+        "paidHouseholds": 0,
+        "completedHouseholds": 0,
+        "incompleteHouseholds": 0,
+        "refundedHouseholds": 0,
+        "grossRevenueCents": 0,
+        "refundedCents": 0,
+        "netRevenueCents": 0,
+        "paymentProcessingFeeCents": 0,
+        "aiAndStorageCostCents": 0,
+        "laborCostCents": 0,
+        "acquisitionCostCents": 0,
+        "fulfillmentCostCents": 0,
+        "hostingReserveCents": 0,
+        "fixedCostAllocationCents": 0,
+        "totalVariableCostCents": 0,
+        "totalCostCents": 0,
+        "totalContributionCents": 0,
+        "contributionBeforeAcquisitionCents": 0,
+        "contributionAfterAcquisitionCents": 0,
+        "contributionPerPaidHouseholdCents": null,
+        "contributionPerCompletedHouseholdCents": null,
+        "costDisclosure": {
+          "hourlyRate": "explicit_per_household",
+          "acquisition": "included",
+          "fulfillment": "included",
+          "hostingReserve": "included",
+          "fixedAllocation": "included",
+          "familyRevision": "reported_minutes_not_monetized"
+        }
+      }
+    },
+    "half_price": {
+      "npsScore": null,
+      "npsResponseCount": 0,
+      "npsMissingCount": 0,
+      "wouldRecommendRate": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "recommendResponseCount": 0,
+      "recommendMissingCount": 0,
+      "totalReferrals": 0,
+      "incompleteReasonsBreakdown": {},
+      "qualityTotals": {
+        "reviewedClaims": 0,
+        "incorrectClaims": 0,
+        "invalidSourceClaims": 0,
+        "seededErrors": 0,
+        "detectedSeededErrors": 0,
+        "negativeClaims": 0,
+        "falsePositiveClaims": 0,
+        "unresolvedSevereErrors": 0
+      },
+      "qualityMetrics": {
+        "reviewedClaimErrorRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "invalidSourceRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "seededErrorDetectionRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "falsePositiveRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        }
+      },
+      "incorrectClaimsPer100": null,
+      "invalidSourceClaimsPer100": null,
+      "qualityAcceptable": false,
+      "households": 0,
+      "paidHouseholds": 0,
+      "maturity": {
+        "enrolled28d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        },
+        "invited7d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        },
+        "delivered14d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        }
+      },
+      "effectiveActivationAll": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "effectiveActivationSelfServe": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "effectiveActivationAssisted": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "firstOutcomeWithin7d": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "completionWithin28dStartedPaid": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "completionWithin28dAllPaid": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "replayWithin14dPostDelivery": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "selfReportedReplayWithin14dPostDelivery": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "familyRevisionLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": null,
+        "targetStatistic": null,
+        "withinTarget": null
+      },
+      "familyRevisionPerStoryLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": 10,
+        "targetStatistic": "median",
+        "withinTarget": null
+      },
+      "opsSupportLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": 30,
+        "targetStatistic": "median",
+        "withinTarget": null
+      },
+      "unitEconomics": {
+        "complete": true,
+        "status": "complete",
+        "incompleteCostHouseholds": 0,
+        "totalHouseholds": 0,
+        "paidHouseholds": 0,
+        "completedHouseholds": 0,
+        "incompleteHouseholds": 0,
+        "refundedHouseholds": 0,
+        "grossRevenueCents": 0,
+        "refundedCents": 0,
+        "netRevenueCents": 0,
+        "paymentProcessingFeeCents": 0,
+        "aiAndStorageCostCents": 0,
+        "laborCostCents": 0,
+        "acquisitionCostCents": 0,
+        "fulfillmentCostCents": 0,
+        "hostingReserveCents": 0,
+        "fixedCostAllocationCents": 0,
+        "totalVariableCostCents": 0,
+        "totalCostCents": 0,
+        "totalContributionCents": 0,
+        "contributionBeforeAcquisitionCents": 0,
+        "contributionAfterAcquisitionCents": 0,
+        "contributionPerPaidHouseholdCents": null,
+        "contributionPerCompletedHouseholdCents": null,
+        "costDisclosure": {
+          "hourlyRate": "explicit_per_household",
+          "acquisition": "included",
+          "fulfillment": "included",
+          "hostingReserve": "included",
+          "fixedAllocation": "included",
+          "familyRevision": "reported_minutes_not_monetized"
+        }
+      }
+    },
+    "subsidized": {
+      "npsScore": null,
+      "npsResponseCount": 0,
+      "npsMissingCount": 0,
+      "wouldRecommendRate": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "recommendResponseCount": 0,
+      "recommendMissingCount": 0,
+      "totalReferrals": 0,
+      "incompleteReasonsBreakdown": {},
+      "qualityTotals": {
+        "reviewedClaims": 0,
+        "incorrectClaims": 0,
+        "invalidSourceClaims": 0,
+        "seededErrors": 0,
+        "detectedSeededErrors": 0,
+        "negativeClaims": 0,
+        "falsePositiveClaims": 0,
+        "unresolvedSevereErrors": 0
+      },
+      "qualityMetrics": {
+        "reviewedClaimErrorRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "invalidSourceRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "seededErrorDetectionRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "falsePositiveRate": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        }
+      },
+      "incorrectClaimsPer100": null,
+      "invalidSourceClaimsPer100": null,
+      "qualityAcceptable": false,
+      "households": 0,
+      "paidHouseholds": 0,
+      "maturity": {
+        "enrolled28d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        },
+        "invited7d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        },
+        "delivered14d": {
+          "eligible": 0,
+          "mature": 0,
+          "pending": 0
+        }
+      },
+      "effectiveActivationAll": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "effectiveActivationSelfServe": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "effectiveActivationAssisted": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "firstOutcomeWithin7d": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "completionWithin28dStartedPaid": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "completionWithin28dAllPaid": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "replayWithin14dPostDelivery": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "selfReportedReplayWithin14dPostDelivery": {
+        "numerator": 0,
+        "denominator": 0,
+        "proportion": null,
+        "status": "insufficient_sample"
+      },
+      "familyRevisionLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": null,
+        "targetStatistic": null,
+        "withinTarget": null
+      },
+      "familyRevisionPerStoryLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": 10,
+        "targetStatistic": "median",
+        "withinTarget": null
+      },
+      "opsSupportLabor": {
+        "sampleSize": 0,
+        "medianMinutes": null,
+        "p90Minutes": null,
+        "targetMinutes": 30,
+        "targetStatistic": "median",
+        "withinTarget": null
+      },
+      "unitEconomics": {
+        "complete": true,
+        "status": "complete",
+        "incompleteCostHouseholds": 0,
+        "totalHouseholds": 0,
+        "paidHouseholds": 0,
+        "completedHouseholds": 0,
+        "incompleteHouseholds": 0,
+        "refundedHouseholds": 0,
+        "grossRevenueCents": 0,
+        "refundedCents": 0,
+        "netRevenueCents": 0,
+        "paymentProcessingFeeCents": 0,
+        "aiAndStorageCostCents": 0,
+        "laborCostCents": 0,
+        "acquisitionCostCents": 0,
+        "fulfillmentCostCents": 0,
+        "hostingReserveCents": 0,
+        "fixedCostAllocationCents": 0,
+        "totalVariableCostCents": 0,
+        "totalCostCents": 0,
+        "totalContributionCents": 0,
+        "contributionBeforeAcquisitionCents": 0,
+        "contributionAfterAcquisitionCents": 0,
+        "contributionPerPaidHouseholdCents": null,
+        "contributionPerCompletedHouseholdCents": null,
+        "costDisclosure": {
+          "hourlyRate": "explicit_per_household",
+          "acquisition": "included",
+          "fulfillment": "included",
+          "hostingReserve": "included",
+          "fixedAllocation": "included",
+          "familyRevision": "reported_minutes_not_monetized"
+        }
+      }
+    },
+    "paid_59": {
+      "npsScore": 100,
+      "npsResponseCount": 20,
+      "npsMissingCount": 0,
+      "wouldRecommendRate": {
+        "numerator": 20,
+        "denominator": 20,
+        "proportion": 1,
+        "status": "measured"
+      },
+      "recommendResponseCount": 20,
+      "recommendMissingCount": 0,
+      "totalReferrals": 20,
+      "incompleteReasonsBreakdown": {},
+      "qualityTotals": {
+        "reviewedClaims": 2000,
+        "incorrectClaims": 0,
+        "invalidSourceClaims": 0,
+        "seededErrors": 200,
+        "detectedSeededErrors": 200,
+        "negativeClaims": 200,
+        "falsePositiveClaims": 0,
+        "unresolvedSevereErrors": 0
+      },
+      "qualityMetrics": {
+        "reviewedClaimErrorRate": {
+          "numerator": 0,
+          "denominator": 2000,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "invalidSourceRate": {
+          "numerator": 0,
+          "denominator": 2000,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "seededErrorDetectionRate": {
+          "numerator": 200,
+          "denominator": 200,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "falsePositiveRate": {
+          "numerator": 0,
+          "denominator": 200,
+          "proportion": 0,
+          "status": "measured"
+        }
+      },
+      "incorrectClaimsPer100": 0,
+      "invalidSourceClaimsPer100": 0,
+      "qualityAcceptable": true,
+      "households": 20,
+      "paidHouseholds": 20,
+      "maturity": {
+        "enrolled28d": {
+          "eligible": 20,
+          "mature": 20,
+          "pending": 0
+        },
+        "invited7d": {
+          "eligible": 20,
+          "mature": 20,
+          "pending": 0
+        },
+        "delivered14d": {
+          "eligible": 20,
+          "mature": 20,
+          "pending": 0
+        }
+      },
+      "effectiveActivationAll": {
+        "numerator": 20,
+        "denominator": 20,
+        "proportion": 1,
+        "status": "measured"
+      },
+      "effectiveActivationSelfServe": {
+        "numerator": 10,
+        "denominator": 10,
+        "proportion": 1,
+        "status": "measured"
+      },
+      "effectiveActivationAssisted": {
+        "numerator": 10,
+        "denominator": 10,
+        "proportion": 1,
+        "status": "measured"
+      },
+      "firstOutcomeWithin7d": {
+        "numerator": 20,
+        "denominator": 20,
+        "proportion": 1,
+        "status": "measured"
+      },
+      "completionWithin28dStartedPaid": {
+        "numerator": 20,
+        "denominator": 20,
+        "proportion": 1,
+        "status": "measured"
+      },
+      "completionWithin28dAllPaid": {
+        "numerator": 20,
+        "denominator": 20,
+        "proportion": 1,
+        "status": "measured"
+      },
+      "replayWithin14dPostDelivery": {
+        "numerator": 20,
+        "denominator": 20,
+        "proportion": 1,
+        "status": "measured"
+      },
+      "selfReportedReplayWithin14dPostDelivery": {
+        "numerator": 0,
+        "denominator": 20,
+        "proportion": 0,
+        "status": "measured"
+      },
+      "familyRevisionLabor": {
+        "sampleSize": 20,
+        "medianMinutes": 8,
+        "p90Minutes": 8,
+        "targetMinutes": null,
+        "targetStatistic": null,
+        "withinTarget": null
+      },
+      "familyRevisionPerStoryLabor": {
+        "sampleSize": 20,
+        "medianMinutes": 8,
+        "p90Minutes": 8,
+        "targetMinutes": 10,
+        "targetStatistic": "median",
+        "withinTarget": true
+      },
+      "opsSupportLabor": {
+        "sampleSize": 20,
+        "medianMinutes": 20,
+        "p90Minutes": 20,
+        "targetMinutes": 30,
+        "targetStatistic": "median",
+        "withinTarget": true
+      },
+      "unitEconomics": {
+        "complete": true,
+        "status": "complete",
+        "incompleteCostHouseholds": 0,
+        "totalHouseholds": 20,
+        "paidHouseholds": 20,
+        "completedHouseholds": 20,
+        "incompleteHouseholds": 0,
+        "refundedHouseholds": 0,
+        "grossRevenueCents": 118000,
+        "refundedCents": 0,
+        "netRevenueCents": 118000,
+        "paymentProcessingFeeCents": 4000,
+        "aiAndStorageCostCents": 5000,
+        "laborCostCents": 20000,
+        "acquisitionCostCents": 4000,
+        "fulfillmentCostCents": 2000,
+        "hostingReserveCents": 3000,
+        "fixedCostAllocationCents": 10000,
+        "totalVariableCostCents": 38000,
+        "totalCostCents": 48000,
+        "totalContributionCents": 70000,
+        "contributionBeforeAcquisitionCents": 74000,
+        "contributionAfterAcquisitionCents": 70000,
+        "contributionPerPaidHouseholdCents": 3500,
+        "contributionPerCompletedHouseholdCents": 3500,
+        "costDisclosure": {
+          "hourlyRate": "explicit_per_household",
+          "acquisition": "included",
+          "fulfillment": "included",
+          "hostingReserve": "included",
+          "fixedAllocation": "included",
+          "familyRevision": "reported_minutes_not_monetized"
+        }
+      }
+    }
+  },
+  "dimensions": {
+    "productVersion": {
+      "g4": {
+        "npsScore": 100,
+        "npsResponseCount": 20,
+        "npsMissingCount": 0,
+        "wouldRecommendRate": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "recommendResponseCount": 20,
+        "recommendMissingCount": 0,
+        "totalReferrals": 20,
+        "incompleteReasonsBreakdown": {},
+        "qualityTotals": {
+          "reviewedClaims": 2000,
+          "incorrectClaims": 0,
+          "invalidSourceClaims": 0,
+          "seededErrors": 200,
+          "detectedSeededErrors": 200,
+          "negativeClaims": 200,
+          "falsePositiveClaims": 0,
+          "unresolvedSevereErrors": 0
+        },
+        "qualityMetrics": {
+          "reviewedClaimErrorRate": {
+            "numerator": 0,
+            "denominator": 2000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "invalidSourceRate": {
+            "numerator": 0,
+            "denominator": 2000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "seededErrorDetectionRate": {
+            "numerator": 200,
+            "denominator": 200,
+            "proportion": 1,
+            "status": "measured"
+          },
+          "falsePositiveRate": {
+            "numerator": 0,
+            "denominator": 200,
+            "proportion": 0,
+            "status": "measured"
+          }
+        },
+        "incorrectClaimsPer100": 0,
+        "invalidSourceClaimsPer100": 0,
+        "qualityAcceptable": true,
+        "households": 20,
+        "paidHouseholds": 20,
+        "maturity": {
+          "enrolled28d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          },
+          "invited7d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          },
+          "delivered14d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          }
+        },
+        "effectiveActivationAll": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationSelfServe": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationAssisted": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "firstOutcomeWithin7d": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dStartedPaid": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dAllPaid": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "replayWithin14dPostDelivery": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "selfReportedReplayWithin14dPostDelivery": {
+          "numerator": 0,
+          "denominator": 20,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "familyRevisionLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": null,
+          "targetStatistic": null,
+          "withinTarget": null
+        },
+        "familyRevisionPerStoryLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": 10,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "opsSupportLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 20,
+          "p90Minutes": 20,
+          "targetMinutes": 30,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "unitEconomics": {
+          "complete": true,
+          "status": "complete",
+          "incompleteCostHouseholds": 0,
+          "totalHouseholds": 20,
+          "paidHouseholds": 20,
+          "completedHouseholds": 20,
+          "incompleteHouseholds": 0,
+          "refundedHouseholds": 0,
+          "grossRevenueCents": 118000,
+          "refundedCents": 0,
+          "netRevenueCents": 118000,
+          "paymentProcessingFeeCents": 4000,
+          "aiAndStorageCostCents": 5000,
+          "laborCostCents": 20000,
+          "acquisitionCostCents": 4000,
+          "fulfillmentCostCents": 2000,
+          "hostingReserveCents": 3000,
+          "fixedCostAllocationCents": 10000,
+          "totalVariableCostCents": 38000,
+          "totalCostCents": 48000,
+          "totalContributionCents": 70000,
+          "contributionBeforeAcquisitionCents": 74000,
+          "contributionAfterAcquisitionCents": 70000,
+          "contributionPerPaidHouseholdCents": 3500,
+          "contributionPerCompletedHouseholdCents": 3500,
+          "costDisclosure": {
+            "hourlyRate": "explicit_per_household",
+            "acquisition": "included",
+            "fulfillment": "included",
+            "hostingReserve": "included",
+            "fixedAllocation": "included",
+            "familyRevision": "reported_minutes_not_monetized"
+          }
+        }
+      }
+    },
+    "acquisitionChannel": {
+      "direct_invite": {
+        "npsScore": 100,
+        "npsResponseCount": 20,
+        "npsMissingCount": 0,
+        "wouldRecommendRate": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "recommendResponseCount": 20,
+        "recommendMissingCount": 0,
+        "totalReferrals": 20,
+        "incompleteReasonsBreakdown": {},
+        "qualityTotals": {
+          "reviewedClaims": 2000,
+          "incorrectClaims": 0,
+          "invalidSourceClaims": 0,
+          "seededErrors": 200,
+          "detectedSeededErrors": 200,
+          "negativeClaims": 200,
+          "falsePositiveClaims": 0,
+          "unresolvedSevereErrors": 0
+        },
+        "qualityMetrics": {
+          "reviewedClaimErrorRate": {
+            "numerator": 0,
+            "denominator": 2000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "invalidSourceRate": {
+            "numerator": 0,
+            "denominator": 2000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "seededErrorDetectionRate": {
+            "numerator": 200,
+            "denominator": 200,
+            "proportion": 1,
+            "status": "measured"
+          },
+          "falsePositiveRate": {
+            "numerator": 0,
+            "denominator": 200,
+            "proportion": 0,
+            "status": "measured"
+          }
+        },
+        "incorrectClaimsPer100": 0,
+        "invalidSourceClaimsPer100": 0,
+        "qualityAcceptable": true,
+        "households": 20,
+        "paidHouseholds": 20,
+        "maturity": {
+          "enrolled28d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          },
+          "invited7d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          },
+          "delivered14d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          }
+        },
+        "effectiveActivationAll": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationSelfServe": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationAssisted": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "firstOutcomeWithin7d": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dStartedPaid": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dAllPaid": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "replayWithin14dPostDelivery": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "selfReportedReplayWithin14dPostDelivery": {
+          "numerator": 0,
+          "denominator": 20,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "familyRevisionLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": null,
+          "targetStatistic": null,
+          "withinTarget": null
+        },
+        "familyRevisionPerStoryLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": 10,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "opsSupportLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 20,
+          "p90Minutes": 20,
+          "targetMinutes": 30,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "unitEconomics": {
+          "complete": true,
+          "status": "complete",
+          "incompleteCostHouseholds": 0,
+          "totalHouseholds": 20,
+          "paidHouseholds": 20,
+          "completedHouseholds": 20,
+          "incompleteHouseholds": 0,
+          "refundedHouseholds": 0,
+          "grossRevenueCents": 118000,
+          "refundedCents": 0,
+          "netRevenueCents": 118000,
+          "paymentProcessingFeeCents": 4000,
+          "aiAndStorageCostCents": 5000,
+          "laborCostCents": 20000,
+          "acquisitionCostCents": 4000,
+          "fulfillmentCostCents": 2000,
+          "hostingReserveCents": 3000,
+          "fixedCostAllocationCents": 10000,
+          "totalVariableCostCents": 38000,
+          "totalCostCents": 48000,
+          "totalContributionCents": 70000,
+          "contributionBeforeAcquisitionCents": 74000,
+          "contributionAfterAcquisitionCents": 70000,
+          "contributionPerPaidHouseholdCents": 3500,
+          "contributionPerCompletedHouseholdCents": 3500,
+          "costDisclosure": {
+            "hourlyRate": "explicit_per_household",
+            "acquisition": "included",
+            "fulfillment": "included",
+            "hostingReserve": "included",
+            "fixedAllocation": "included",
+            "familyRevision": "reported_minutes_not_monetized"
+          }
+        }
+      }
+    },
+    "country": {
+      "US": {
+        "npsScore": 100,
+        "npsResponseCount": 20,
+        "npsMissingCount": 0,
+        "wouldRecommendRate": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "recommendResponseCount": 20,
+        "recommendMissingCount": 0,
+        "totalReferrals": 20,
+        "incompleteReasonsBreakdown": {},
+        "qualityTotals": {
+          "reviewedClaims": 2000,
+          "incorrectClaims": 0,
+          "invalidSourceClaims": 0,
+          "seededErrors": 200,
+          "detectedSeededErrors": 200,
+          "negativeClaims": 200,
+          "falsePositiveClaims": 0,
+          "unresolvedSevereErrors": 0
+        },
+        "qualityMetrics": {
+          "reviewedClaimErrorRate": {
+            "numerator": 0,
+            "denominator": 2000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "invalidSourceRate": {
+            "numerator": 0,
+            "denominator": 2000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "seededErrorDetectionRate": {
+            "numerator": 200,
+            "denominator": 200,
+            "proportion": 1,
+            "status": "measured"
+          },
+          "falsePositiveRate": {
+            "numerator": 0,
+            "denominator": 200,
+            "proportion": 0,
+            "status": "measured"
+          }
+        },
+        "incorrectClaimsPer100": 0,
+        "invalidSourceClaimsPer100": 0,
+        "qualityAcceptable": true,
+        "households": 20,
+        "paidHouseholds": 20,
+        "maturity": {
+          "enrolled28d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          },
+          "invited7d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          },
+          "delivered14d": {
+            "eligible": 20,
+            "mature": 20,
+            "pending": 0
+          }
+        },
+        "effectiveActivationAll": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationSelfServe": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationAssisted": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "firstOutcomeWithin7d": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dStartedPaid": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dAllPaid": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "replayWithin14dPostDelivery": {
+          "numerator": 20,
+          "denominator": 20,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "selfReportedReplayWithin14dPostDelivery": {
+          "numerator": 0,
+          "denominator": 20,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "familyRevisionLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": null,
+          "targetStatistic": null,
+          "withinTarget": null
+        },
+        "familyRevisionPerStoryLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": 10,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "opsSupportLabor": {
+          "sampleSize": 20,
+          "medianMinutes": 20,
+          "p90Minutes": 20,
+          "targetMinutes": 30,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "unitEconomics": {
+          "complete": true,
+          "status": "complete",
+          "incompleteCostHouseholds": 0,
+          "totalHouseholds": 20,
+          "paidHouseholds": 20,
+          "completedHouseholds": 20,
+          "incompleteHouseholds": 0,
+          "refundedHouseholds": 0,
+          "grossRevenueCents": 118000,
+          "refundedCents": 0,
+          "netRevenueCents": 118000,
+          "paymentProcessingFeeCents": 4000,
+          "aiAndStorageCostCents": 5000,
+          "laborCostCents": 20000,
+          "acquisitionCostCents": 4000,
+          "fulfillmentCostCents": 2000,
+          "hostingReserveCents": 3000,
+          "fixedCostAllocationCents": 10000,
+          "totalVariableCostCents": 38000,
+          "totalCostCents": 48000,
+          "totalContributionCents": 70000,
+          "contributionBeforeAcquisitionCents": 74000,
+          "contributionAfterAcquisitionCents": 70000,
+          "contributionPerPaidHouseholdCents": 3500,
+          "contributionPerCompletedHouseholdCents": 3500,
+          "costDisclosure": {
+            "hourlyRate": "explicit_per_household",
+            "acquisition": "included",
+            "fulfillment": "included",
+            "hostingReserve": "included",
+            "fixedAllocation": "included",
+            "familyRevision": "reported_minutes_not_monetized"
+          }
+        }
+      }
+    },
+    "supportMode": {
+      "self_serve": {
+        "npsScore": 100,
+        "npsResponseCount": 10,
+        "npsMissingCount": 0,
+        "wouldRecommendRate": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "recommendResponseCount": 10,
+        "recommendMissingCount": 0,
+        "totalReferrals": 10,
+        "incompleteReasonsBreakdown": {},
+        "qualityTotals": {
+          "reviewedClaims": 1000,
+          "incorrectClaims": 0,
+          "invalidSourceClaims": 0,
+          "seededErrors": 100,
+          "detectedSeededErrors": 100,
+          "negativeClaims": 100,
+          "falsePositiveClaims": 0,
+          "unresolvedSevereErrors": 0
+        },
+        "qualityMetrics": {
+          "reviewedClaimErrorRate": {
+            "numerator": 0,
+            "denominator": 1000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "invalidSourceRate": {
+            "numerator": 0,
+            "denominator": 1000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "seededErrorDetectionRate": {
+            "numerator": 100,
+            "denominator": 100,
+            "proportion": 1,
+            "status": "measured"
+          },
+          "falsePositiveRate": {
+            "numerator": 0,
+            "denominator": 100,
+            "proportion": 0,
+            "status": "measured"
+          }
+        },
+        "incorrectClaimsPer100": 0,
+        "invalidSourceClaimsPer100": 0,
+        "qualityAcceptable": false,
+        "households": 10,
+        "paidHouseholds": 10,
+        "maturity": {
+          "enrolled28d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          },
+          "invited7d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          },
+          "delivered14d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          }
+        },
+        "effectiveActivationAll": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationSelfServe": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationAssisted": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "firstOutcomeWithin7d": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dStartedPaid": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dAllPaid": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "replayWithin14dPostDelivery": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "selfReportedReplayWithin14dPostDelivery": {
+          "numerator": 0,
+          "denominator": 10,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "familyRevisionLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": null,
+          "targetStatistic": null,
+          "withinTarget": null
+        },
+        "familyRevisionPerStoryLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": 10,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "opsSupportLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 20,
+          "p90Minutes": 20,
+          "targetMinutes": 30,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "unitEconomics": {
+          "complete": true,
+          "status": "complete",
+          "incompleteCostHouseholds": 0,
+          "totalHouseholds": 10,
+          "paidHouseholds": 10,
+          "completedHouseholds": 10,
+          "incompleteHouseholds": 0,
+          "refundedHouseholds": 0,
+          "grossRevenueCents": 59000,
+          "refundedCents": 0,
+          "netRevenueCents": 59000,
+          "paymentProcessingFeeCents": 2000,
+          "aiAndStorageCostCents": 2500,
+          "laborCostCents": 10000,
+          "acquisitionCostCents": 2000,
+          "fulfillmentCostCents": 1000,
+          "hostingReserveCents": 1500,
+          "fixedCostAllocationCents": 5000,
+          "totalVariableCostCents": 19000,
+          "totalCostCents": 24000,
+          "totalContributionCents": 35000,
+          "contributionBeforeAcquisitionCents": 37000,
+          "contributionAfterAcquisitionCents": 35000,
+          "contributionPerPaidHouseholdCents": 3500,
+          "contributionPerCompletedHouseholdCents": 3500,
+          "costDisclosure": {
+            "hourlyRate": "explicit_per_household",
+            "acquisition": "included",
+            "fulfillment": "included",
+            "hostingReserve": "included",
+            "fixedAllocation": "included",
+            "familyRevision": "reported_minutes_not_monetized"
+          }
+        }
+      },
+      "family_assisted": {
+        "npsScore": 100,
+        "npsResponseCount": 10,
+        "npsMissingCount": 0,
+        "wouldRecommendRate": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "recommendResponseCount": 10,
+        "recommendMissingCount": 0,
+        "totalReferrals": 10,
+        "incompleteReasonsBreakdown": {},
+        "qualityTotals": {
+          "reviewedClaims": 1000,
+          "incorrectClaims": 0,
+          "invalidSourceClaims": 0,
+          "seededErrors": 100,
+          "detectedSeededErrors": 100,
+          "negativeClaims": 100,
+          "falsePositiveClaims": 0,
+          "unresolvedSevereErrors": 0
+        },
+        "qualityMetrics": {
+          "reviewedClaimErrorRate": {
+            "numerator": 0,
+            "denominator": 1000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "invalidSourceRate": {
+            "numerator": 0,
+            "denominator": 1000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "seededErrorDetectionRate": {
+            "numerator": 100,
+            "denominator": 100,
+            "proportion": 1,
+            "status": "measured"
+          },
+          "falsePositiveRate": {
+            "numerator": 0,
+            "denominator": 100,
+            "proportion": 0,
+            "status": "measured"
+          }
+        },
+        "incorrectClaimsPer100": 0,
+        "invalidSourceClaimsPer100": 0,
+        "qualityAcceptable": false,
+        "households": 10,
+        "paidHouseholds": 10,
+        "maturity": {
+          "enrolled28d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          },
+          "invited7d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          },
+          "delivered14d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          }
+        },
+        "effectiveActivationAll": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationSelfServe": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "effectiveActivationAssisted": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "firstOutcomeWithin7d": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dStartedPaid": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dAllPaid": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "replayWithin14dPostDelivery": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "selfReportedReplayWithin14dPostDelivery": {
+          "numerator": 0,
+          "denominator": 10,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "familyRevisionLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": null,
+          "targetStatistic": null,
+          "withinTarget": null
+        },
+        "familyRevisionPerStoryLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": 10,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "opsSupportLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 20,
+          "p90Minutes": 20,
+          "targetMinutes": 30,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "unitEconomics": {
+          "complete": true,
+          "status": "complete",
+          "incompleteCostHouseholds": 0,
+          "totalHouseholds": 10,
+          "paidHouseholds": 10,
+          "completedHouseholds": 10,
+          "incompleteHouseholds": 0,
+          "refundedHouseholds": 0,
+          "grossRevenueCents": 59000,
+          "refundedCents": 0,
+          "netRevenueCents": 59000,
+          "paymentProcessingFeeCents": 2000,
+          "aiAndStorageCostCents": 2500,
+          "laborCostCents": 10000,
+          "acquisitionCostCents": 2000,
+          "fulfillmentCostCents": 1000,
+          "hostingReserveCents": 1500,
+          "fixedCostAllocationCents": 5000,
+          "totalVariableCostCents": 19000,
+          "totalCostCents": 24000,
+          "totalContributionCents": 35000,
+          "contributionBeforeAcquisitionCents": 37000,
+          "contributionAfterAcquisitionCents": 35000,
+          "contributionPerPaidHouseholdCents": 3500,
+          "contributionPerCompletedHouseholdCents": 3500,
+          "costDisclosure": {
+            "hourlyRate": "explicit_per_household",
+            "acquisition": "included",
+            "fulfillment": "included",
+            "hostingReserve": "included",
+            "fixedAllocation": "included",
+            "familyRevision": "reported_minutes_not_monetized"
+          }
+        }
+      }
+    },
+    "materialEntryMode": {
+      "existing_audio": {
+        "npsScore": 100,
+        "npsResponseCount": 10,
+        "npsMissingCount": 0,
+        "wouldRecommendRate": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "recommendResponseCount": 10,
+        "recommendMissingCount": 0,
+        "totalReferrals": 10,
+        "incompleteReasonsBreakdown": {},
+        "qualityTotals": {
+          "reviewedClaims": 1000,
+          "incorrectClaims": 0,
+          "invalidSourceClaims": 0,
+          "seededErrors": 100,
+          "detectedSeededErrors": 100,
+          "negativeClaims": 100,
+          "falsePositiveClaims": 0,
+          "unresolvedSevereErrors": 0
+        },
+        "qualityMetrics": {
+          "reviewedClaimErrorRate": {
+            "numerator": 0,
+            "denominator": 1000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "invalidSourceRate": {
+            "numerator": 0,
+            "denominator": 1000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "seededErrorDetectionRate": {
+            "numerator": 100,
+            "denominator": 100,
+            "proportion": 1,
+            "status": "measured"
+          },
+          "falsePositiveRate": {
+            "numerator": 0,
+            "denominator": 100,
+            "proportion": 0,
+            "status": "measured"
+          }
+        },
+        "incorrectClaimsPer100": 0,
+        "invalidSourceClaimsPer100": 0,
+        "qualityAcceptable": false,
+        "households": 10,
+        "paidHouseholds": 10,
+        "maturity": {
+          "enrolled28d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          },
+          "invited7d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          },
+          "delivered14d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          }
+        },
+        "effectiveActivationAll": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationSelfServe": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationAssisted": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "firstOutcomeWithin7d": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dStartedPaid": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dAllPaid": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "replayWithin14dPostDelivery": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "selfReportedReplayWithin14dPostDelivery": {
+          "numerator": 0,
+          "denominator": 10,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "familyRevisionLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": null,
+          "targetStatistic": null,
+          "withinTarget": null
+        },
+        "familyRevisionPerStoryLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": 10,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "opsSupportLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 20,
+          "p90Minutes": 20,
+          "targetMinutes": 30,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "unitEconomics": {
+          "complete": true,
+          "status": "complete",
+          "incompleteCostHouseholds": 0,
+          "totalHouseholds": 10,
+          "paidHouseholds": 10,
+          "completedHouseholds": 10,
+          "incompleteHouseholds": 0,
+          "refundedHouseholds": 0,
+          "grossRevenueCents": 59000,
+          "refundedCents": 0,
+          "netRevenueCents": 59000,
+          "paymentProcessingFeeCents": 2000,
+          "aiAndStorageCostCents": 2500,
+          "laborCostCents": 10000,
+          "acquisitionCostCents": 2000,
+          "fulfillmentCostCents": 1000,
+          "hostingReserveCents": 1500,
+          "fixedCostAllocationCents": 5000,
+          "totalVariableCostCents": 19000,
+          "totalCostCents": 24000,
+          "totalContributionCents": 35000,
+          "contributionBeforeAcquisitionCents": 37000,
+          "contributionAfterAcquisitionCents": 35000,
+          "contributionPerPaidHouseholdCents": 3500,
+          "contributionPerCompletedHouseholdCents": 3500,
+          "costDisclosure": {
+            "hourlyRate": "explicit_per_household",
+            "acquisition": "included",
+            "fulfillment": "included",
+            "hostingReserve": "included",
+            "fixedAllocation": "included",
+            "familyRevision": "reported_minutes_not_monetized"
+          }
+        }
+      },
+      "new_recording": {
+        "npsScore": 100,
+        "npsResponseCount": 10,
+        "npsMissingCount": 0,
+        "wouldRecommendRate": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "recommendResponseCount": 10,
+        "recommendMissingCount": 0,
+        "totalReferrals": 10,
+        "incompleteReasonsBreakdown": {},
+        "qualityTotals": {
+          "reviewedClaims": 1000,
+          "incorrectClaims": 0,
+          "invalidSourceClaims": 0,
+          "seededErrors": 100,
+          "detectedSeededErrors": 100,
+          "negativeClaims": 100,
+          "falsePositiveClaims": 0,
+          "unresolvedSevereErrors": 0
+        },
+        "qualityMetrics": {
+          "reviewedClaimErrorRate": {
+            "numerator": 0,
+            "denominator": 1000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "invalidSourceRate": {
+            "numerator": 0,
+            "denominator": 1000,
+            "proportion": 0,
+            "status": "measured"
+          },
+          "seededErrorDetectionRate": {
+            "numerator": 100,
+            "denominator": 100,
+            "proportion": 1,
+            "status": "measured"
+          },
+          "falsePositiveRate": {
+            "numerator": 0,
+            "denominator": 100,
+            "proportion": 0,
+            "status": "measured"
+          }
+        },
+        "incorrectClaimsPer100": 0,
+        "invalidSourceClaimsPer100": 0,
+        "qualityAcceptable": false,
+        "households": 10,
+        "paidHouseholds": 10,
+        "maturity": {
+          "enrolled28d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          },
+          "invited7d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          },
+          "delivered14d": {
+            "eligible": 10,
+            "mature": 10,
+            "pending": 0
+          }
+        },
+        "effectiveActivationAll": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "effectiveActivationSelfServe": {
+          "numerator": 0,
+          "denominator": 0,
+          "proportion": null,
+          "status": "insufficient_sample"
+        },
+        "effectiveActivationAssisted": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "firstOutcomeWithin7d": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dStartedPaid": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "completionWithin28dAllPaid": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "replayWithin14dPostDelivery": {
+          "numerator": 10,
+          "denominator": 10,
+          "proportion": 1,
+          "status": "measured"
+        },
+        "selfReportedReplayWithin14dPostDelivery": {
+          "numerator": 0,
+          "denominator": 10,
+          "proportion": 0,
+          "status": "measured"
+        },
+        "familyRevisionLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": null,
+          "targetStatistic": null,
+          "withinTarget": null
+        },
+        "familyRevisionPerStoryLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 8,
+          "p90Minutes": 8,
+          "targetMinutes": 10,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "opsSupportLabor": {
+          "sampleSize": 10,
+          "medianMinutes": 20,
+          "p90Minutes": 20,
+          "targetMinutes": 30,
+          "targetStatistic": "median",
+          "withinTarget": true
+        },
+        "unitEconomics": {
+          "complete": true,
+          "status": "complete",
+          "incompleteCostHouseholds": 0,
+          "totalHouseholds": 10,
+          "paidHouseholds": 10,
+          "completedHouseholds": 10,
+          "incompleteHouseholds": 0,
+          "refundedHouseholds": 0,
+          "grossRevenueCents": 59000,
+          "refundedCents": 0,
+          "netRevenueCents": 59000,
+          "paymentProcessingFeeCents": 2000,
+          "aiAndStorageCostCents": 2500,
+          "laborCostCents": 10000,
+          "acquisitionCostCents": 2000,
+          "fulfillmentCostCents": 1000,
+          "hostingReserveCents": 1500,
+          "fixedCostAllocationCents": 5000,
+          "totalVariableCostCents": 19000,
+          "totalCostCents": 24000,
+          "totalContributionCents": 35000,
+          "contributionBeforeAcquisitionCents": 37000,
+          "contributionAfterAcquisitionCents": 35000,
+          "contributionPerPaidHouseholdCents": 3500,
+          "contributionPerCompletedHouseholdCents": 3500,
+          "costDisclosure": {
+            "hourlyRate": "explicit_per_household",
+            "acquisition": "included",
+            "fulfillment": "included",
+            "hostingReserve": "included",
+            "fixedAllocation": "included",
+            "familyRevision": "reported_minutes_not_monetized"
+          }
+        }
+      }
+    }
+  },
+  "severeDataIncidentsTotal": 0,
+  "g4GateReady": false,
+  "simulationReady": true,
+  "recommendation": {
+    "code": "expand_channel",
+    "rationale": "Synthetic scenario only; not observed market evidence. At least 12 verified US$59 paid households, first outcomes >=80%, started-paid and all-paid completion >=70%, measured quality targets, labor targets and positive full-batch contribution support testing one expanded channel.",
+    "requiresOwnerDecision": true
+  },
+  "legacyUnclassifiedCount": 0,
+  "collectionMethod": "operator_verified_evidence_ledger"
+}

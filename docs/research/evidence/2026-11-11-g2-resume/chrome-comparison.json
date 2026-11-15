@@ -1,0 +1,9 @@
+{
+  "sameSourceHashes": true,
+  "sameReviewAndTranscriptionChecks": true,
+  "priorAssertions": 542,
+  "currentAssertions": 543,
+  "priorBrowser": "156.0.8078.80",
+  "currentBrowser": "157.0.8103.39",
+  "note": "Harness assertions include role checks for each HTTP database connection; total assertions are not a fixed count of product cases."
+}

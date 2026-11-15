@@ -2,7 +2,7 @@
 
 import JSZip from 'jszip'
 import {
-  searchProjectArchive, getCitationAudioUrl, downloadProjectArchive, importProjectAudio,
+  searchProjectArchive, getCitationAudioUrl, getSearchCitationAudioUrl, downloadProjectArchive, importProjectAudio,
 } from '../project-hub-client'
 
 const mockToken = jest.fn()
@@ -55,8 +55,32 @@ it.each([401, 403, 503])('does not convert HTTP %s into a successful result', as
 })
 
 it('rejects malformed citations instead of offering invalid playback', async () => {
-  mockFetch.mockResolvedValue(Response.json({ status: 'grounded_answer', answerText: 'bad', citations: [{ startMs: -1, endMs: 2 }] }))
+  mockFetch.mockResolvedValue(Response.json({ status: 'source_matches', answerText: 'bad', citations: [{ startMs: -1, endMs: 2 }] }))
   await expect(searchProjectArchive('project-123', { query: 'boat' })).rejects.toThrow('Invalid archive response')
+})
+
+it('accepts an honestly labelled unaligned source and rejects fabricated supplement timing', async () => {
+  const source = { entryId: 'e', storyId: 's', storyTitle: 'Family', transcriptVersionId: 't',
+    segmentId: null, storyRevisionId: null, mediaAssetId: null, startMs: null, endMs: null,
+    quotedText: 'Toronto in 1978.', sourceKind: 'family_supplement', reviewStatus: 'source_only',
+    sourceHash: 'a'.repeat(64), sourceFingerprint: 'b'.repeat(64) }
+  mockFetch.mockResolvedValueOnce(Response.json({ status: 'source_matches', answerText: 'One excerpt', citations: [source] }))
+  await expect(searchProjectArchive('project-123', { query: 'Toronto' })).resolves.toMatchObject({ citations: [{ startMs: null, endMs: null }] })
+  mockFetch.mockResolvedValueOnce(Response.json({ status: 'source_matches', answerText: 'One excerpt', citations: [{ ...source, startMs: 0, endMs: 1000, mediaAssetId: 'a' }] }))
+  await expect(searchProjectArchive('project-123', { query: 'Toronto' })).rejects.toThrow('Invalid archive response')
+})
+
+it('exchanges only the cited source identity through the current-search playback boundary', async () => {
+  const citation = { entryId: 'segment:s', storyId: 'story', storyTitle: 'Private title', storyRevisionId: null,
+    transcriptVersionId: 'transcript', segmentId: 's', mediaAssetId: 'asset', startMs: 0, endMs: 1200,
+    sourceHash: 'a'.repeat(64), sourceFingerprint: 'b'.repeat(64), sourceKind: 'original_transcript' as const,
+    quotedText: 'Private quote', matchedPeople: [], matchedDates: [], matchedPlaces: [], score: 1 }
+  mockFetch.mockResolvedValueOnce(Response.json({ signedUrl: 'https://storage.example/source' }))
+  await expect(getSearchCitationAudioUrl('project', citation)).resolves.toBe('https://storage.example/source')
+  expect(mockFetch.mock.calls[0][0]).toBe('/api/projects/project/search/source')
+  const sent = JSON.parse(mockFetch.mock.calls[0][1].body)
+  expect(sent).toMatchObject({ sourceHash: citation.sourceHash, sourceFingerprint: citation.sourceFingerprint, segmentId: 's', startMs: 0 })
+  expect(sent).not.toHaveProperty('quotedText'); expect(sent).not.toHaveProperty('storyTitle')
 })
 
 it('rejects executable audio URLs', async () => {

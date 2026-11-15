@@ -1,0 +1,82 @@
+[
+  {
+    "path": "experiments/g1-local/backup-rehearsal.mjs",
+    "kind": "modified",
+    "sha256": "b4e5f4dc821496b4aa5d4270da3ce906aa6a53fec35bc25b5868dfe1aadf9e73"
+  },
+  {
+    "path": "experiments/g1-local/verify-migrations.mjs",
+    "kind": "modified",
+    "sha256": "6160b32d31053a6f94ed2505af7fdcb61e853d0f66c178ae7262567efd464170"
+  },
+  {
+    "path": "experiments/pg17-g4-pilot/chrome.mjs",
+    "kind": "added",
+    "sha256": "701d9a2df3e6c8ed5d1fd47858d833cb0bcad390d2f884f2018a21a1f3a349e0"
+  },
+  {
+    "path": "experiments/pg17-g4-pilot/scenarios.mjs",
+    "kind": "added",
+    "sha256": "72c6d6532b00a68db7ab9761e731b47c679f923b27ba9653a95f25db41efbc8f"
+  },
+  {
+    "path": "packages/web/src/app/api/admin/pilot-analytics/__tests__/route.test.ts",
+    "kind": "modified",
+    "sha256": "e76cccecd14d1a84e0c9bec06ec6443ddc9b7b7ce72df5e2b7afa0bb0b334605"
+  },
+  {
+    "path": "packages/web/src/app/api/admin/pilot-analytics/route.ts",
+    "kind": "modified",
+    "sha256": "b4e219ec7b026c133c8908e6c034bb075ab163d2dfbda08636d627871c246d03"
+  },
+  {
+    "path": "packages/web/src/app/api/admin/pilot-ledger/__tests__/route.test.ts",
+    "kind": "added",
+    "sha256": "135a6405841efead03f56bcaf3b9c1f4fc97a959ae76fc07fbda9adac7519d21"
+  },
+  {
+    "path": "packages/web/src/app/api/admin/pilot-ledger/route.ts",
+    "kind": "added",
+    "sha256": "67dac14afd3df54908406afe4ec737cd783fad3678eb6d4639e2835c95e949ed"
+  },
+  {
+    "path": "packages/web/src/lib/server/__tests__/pilot-cohort-analytics.test.ts",
+    "kind": "modified",
+    "sha256": "abfa626a590700c2e821e1280673698fb0a59efc06aa0df45ceca5fd5741e85b"
+  },
+  {
+    "path": "packages/web/src/lib/server/__tests__/pilot-ledger.test.ts",
+    "kind": "added",
+    "sha256": "9bbe362f019c5629bb7c770b21311efd0f0657d6e51697c7f866a229b6694312"
+  },
+  {
+    "path": "packages/web/src/lib/server/pilot-cohort-analytics.ts",
+    "kind": "modified",
+    "sha256": "e563369dd8307bcff35d92fc16582fb4f1f4b2bf0d5b975dad993da2dc214416"
+  },
+  {
+    "path": "packages/web/src/lib/server/pilot-ledger.ts",
+    "kind": "added",
+    "sha256": "e76d6e4baabb6bc444960eb9a593bfdc7663d51df19c726272b67a8cebcbb04b"
+  },
+  {
+    "path": "packages/web/src/lib/server/pilot-report-html.ts",
+    "kind": "added",
+    "sha256": "64545a07f6b2922450022493eb710f6d367e9060f492c6625ab2630586fd153f"
+  },
+  {
+    "path": "scripts/__tests__/deployment-config.test.js",
+    "kind": "modified",
+    "sha256": "68c3d2be7895946b111cdbdefabfbf7acfa662eeb992fcc743b99f4d1757fc6b"
+  },
+  {
+    "path": "scripts/pilot-cohort.mjs",
+    "kind": "added",
+    "sha256": "dda1d73745b58bc8ac0c72aa5f8b973bea13f0b3fce070d282ef5bc620d28cf8"
+  },
+  {
+    "path": "supabase/migrations/20261111000004_pilot_observation_ledger.sql",
+    "kind": "added",
+    "sha256": "65b0668f2b1b76b95f25f14689ae8b6f716d5d68f2bd1fb5d9111db2e0505ed5"
+  }
+]

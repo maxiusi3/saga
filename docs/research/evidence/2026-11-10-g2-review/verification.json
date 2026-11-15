@@ -1,0 +1,606 @@
+{
+  "checkedAt": "2026-11-11T10:48:25.735876+08:00",
+  "timezone": "Asia/Taipei",
+  "status": "passed",
+  "scope": "G2 persisted family review and guarded transcription; local engineering and Chrome acceptance only",
+  "implementationDate": "2026-11-10",
+  "closeoutDate": "2026-11-11",
+  "localG2EngineeringAcceptance": "passed",
+  "realG2QualityGateMeasured": false,
+  "resumeReceipt": {
+    "path": "docs/research/evidence/2026-11-11-g2-resume/verification.json",
+    "sha256": "7b4538aa9d37c3bc54c07eafab4f8e15eb5820e6a72c0e81bcb32d29c9299c16"
+  },
+  "originalFinalRecords": {
+    "g2Chrome": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/results.json",
+      "sha256": "0f4904ee851159d1d171a92a9ce28132394509fa8b54c5cb6a701a8be6b2facb",
+      "status": "passed",
+      "assertions": 542,
+      "migrations": 33,
+      "sourcesVerified": 65,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "runtime": {
+        "node": "v22.22.2",
+        "pg": "8.16.3",
+        "scrubbedEnvironmentKeys": [],
+        "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+        "postgres": "postgres (PostgreSQL) 17.4",
+        "binarySha256": {
+          "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+          "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+          "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+          "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+          "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+        }
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-11-10-g2-review/chrome-final.log",
+        "sha256": "1d852c19dd1c91efe89100238461b675e425debf4deab48848f03945c0ff4196"
+      },
+      "storyReviewChrome": {
+        "status": "passed",
+        "browser": "156.0.8078.80",
+        "boundary": "Production StoryReviewPanel mounted by the actual story detail page, production review and protected playback handlers, Supabase SDK and complete native PG17 schema. Local synthetic Auth/PostgREST/Storage transport, generated tone WAV and explicitly synthetic timed transcript. Actual installed Google Chrome; no live ASR or real household semantics measured.",
+        "checks": [
+          "actual source audio seek and time progression",
+          "modified and rejected body persisted",
+          "two-member disputes",
+          "approved reload and history",
+          "outsider denied",
+          "correction new version",
+          "narrow viewport",
+          "source-change and deletion rejected"
+        ]
+      },
+      "transcriptionChrome": {
+        "status": "passed",
+        "browser": "156.0.8078.80",
+        "boundary": "Production StoryReviewPanel and StoryTranscriptionControl, production GET/POST transcription/review/play routes, Supabase SDK, complete native PG17 schema, and installed Google Chrome. Auth identities, loopback PostgREST/Storage/provider transport, tone WAV, and timed provider response are controlled synthetic substitutes. No paid/live ASR, real speech accuracy, or semantic audio alignment claim.",
+        "checks": [
+          "outsider, revoked member, missing consent, invalid policy: zero provider requests",
+          "explicit Chrome consent and submit",
+          "actual adapter multipart bytes and config",
+          "durable aligned transcript and unknown confidence",
+          "completed request replay makes zero extra calls",
+          "reload and timed audio seek",
+          "consent withdrawn during provider response rejects ingestion",
+          "invalid provider response creates no draft",
+          "pending identity survives reload",
+          "same and new IDs cannot repeat unknown outbound request"
+        ],
+        "cleanup": {
+          "globalsRestored": true,
+          "errors": []
+        }
+      },
+      "screenshots": [
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-review-before-approval.png",
+          "sha256": "b684fab062cd01e488a535e95839814940790cc12ad940f83f4d03414e1cebdc"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-review-mobile.png",
+          "sha256": "690f870d403461d510675a69bf08242cbcac9fc2ebafd4f6d2fcda62e66ce540"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-transcription-after.png",
+          "sha256": "0bf50de5e7b179c30eca8d10220d290ac12d0583b5b81bad71947424060e81a0"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-transcription-before.png",
+          "sha256": "ccd812f9c26cffde22a5ed0c5590234a188c1febb5b2956e3b3abffc4e0a5509"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838639-b41c4b83-d654-4278-8413-6817d79b18ca/chrome-transcription-error.png",
+          "sha256": "44b6fd0ba44447c62731b3e04d83ba998113ace7836afcb661cf949bd5b60655"
+        }
+      ],
+      "executedDate": "2026-11-10",
+      "rerunDuringResume": false
+    },
+    "g1DeletionChrome": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838649-f58999b9-b8d8-47a3-930b-d18d60d58077/results.json",
+      "sha256": "c0b5ae3f8675838dfc4e76a7fc6b095f33b748b164fd8b7db01ca4eb71ac281f",
+      "status": "passed",
+      "assertions": 244,
+      "migrations": 33,
+      "sourcesVerified": 97,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "runtime": {
+        "node": "v22.22.2",
+        "pg": "8.16.3",
+        "scrubbedEnvironmentKeys": [],
+        "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+        "postgres": "postgres (PostgreSQL) 17.4",
+        "binarySha256": {
+          "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+          "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+          "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+          "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+          "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+        }
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-11-10-g2-review/g1-deletion-final.log",
+        "sha256": "76f8a0549737ce7707fcc375e1649a47391d878c606beded756b2ef8b6caf932"
+      },
+      "storyDeletionChrome": {
+        "status": "passed",
+        "browser": "156.0.8078.80",
+        "boundary": "Production ProjectDetailClient, StoryCard, StoryService, deletion route, project list route, SQL and media worker. Synthetic local Auth, project/chapters transport and Supabase HTTP substitutes; actual installed Google Chrome and disk files."
+      },
+      "screenshots": [
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838649-f58999b9-b8d8-47a3-930b-d18d60d58077/chrome-story-after.png",
+          "sha256": "81184df620dd127dcbc7af994d4a9c54503f35e6cc74f719da93b5315b95a05c"
+        },
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316838649-f58999b9-b8d8-47a3-930b-d18d60d58077/chrome-story-before.png",
+          "sha256": "f8f070c277731bd76f7f9c8c236023a14f0641454b43eaeb351c16f6b62a8c62"
+        }
+      ],
+      "executedDate": "2026-11-10",
+      "rerunDuringResume": false
+    },
+    "backup": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316840198-3317b356-5941-4d4f-8305-e21ac2ad00ec/results.json",
+      "sha256": "03873348392b1fb27b70512eb9553d26e6335ae0911a31d3a844a97137a77405",
+      "status": "passed",
+      "assertions": 493,
+      "migrations": 33,
+      "sourcesVerified": 70,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "runtime": {
+        "node": "v22.22.2",
+        "pg": "8.16.3",
+        "scrubbedEnvironmentKeys": [],
+        "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+        "postgres": "postgres (PostgreSQL) 17.4",
+        "binarySha256": {
+          "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+          "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+          "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+          "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+          "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+        }
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-11-10-g2-review/backup-final.log",
+        "sha256": "7474e055105155a08d38876390db46d03330abe4537626386a866be88adc9481"
+      },
+      "backup": {
+        "status": "passed",
+        "browser": "156.0.8078.80",
+        "boundary": "Real PG17 custom dump/restored database, real captured Chrome audio bytes, local object backup/restore and post-freeze durable tombstones. Quiesced local writers. Offline maintenance replay, not the production physical deletion executor or hosted Storage.",
+        "checks": [
+          "full migrated schema serves two actual recordings",
+          "real pg_dump custom archive",
+          "real pg_restore to separate database",
+          "all object bytes restored and hashed",
+          "post-freeze capture and targets replayed exactly",
+          "restored story and intent prose purged",
+          "selected chunk/candidate omitted from restored store",
+          "deleted playback denied by actual route",
+          "unrelated restored audio plays in Chrome"
+        ]
+      },
+      "screenshots": [
+        {
+          "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316840198-3317b356-5941-4d4f-8305-e21ac2ad00ec/restored-chrome.png",
+          "sha256": "4c52dce0d774a19127d8bb5eb9419f99da93233ddcbda3cd859889a12068fad9"
+        }
+      ],
+      "executedDate": "2026-11-10",
+      "rerunDuringResume": false
+    },
+    "independentNative": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794316650288-21b78eb9-7c35-4c4e-87c2-b1919f1a8cc1/results.json",
+      "sha256": "54168913a11e1e7f36a65423b6facc08a682aa33421b552c7d9d7723172527c6",
+      "status": "passed",
+      "assertions": 486,
+      "migrations": 33,
+      "sourcesVerified": 36,
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      },
+      "runtime": {
+        "node": "v22.22.2",
+        "pg": "8.16.3",
+        "scrubbedEnvironmentKeys": [],
+        "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+        "postgres": "postgres (PostgreSQL) 17.4",
+        "binarySha256": {
+          "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+          "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+          "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+          "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+          "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+        }
+      },
+      "log": {
+        "path": "docs/research/evidence/2026-11-10-g2-review/supplement-origin-independent-green.log",
+        "sha256": "5f553a7e1e51435f516ac03e29ccede71b67d2d4755199c033dda9912e99e466"
+      },
+      "screenshots": [],
+      "executedDate": "2026-11-10",
+      "rerunDuringResume": false
+    }
+  },
+  "currentG2Chrome": {
+    "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/results.json",
+    "sha256": "26483702c7775f2c8d24ce9a85dd4a554b6a02e7b7f05a4a0d4417d741927495",
+    "status": "passed",
+    "assertions": 543,
+    "migrations": 33,
+    "sourcesVerified": 65,
+    "sourceDrift": [],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    },
+    "runtime": {
+      "node": "v22.22.2",
+      "pg": "8.16.3",
+      "scrubbedEnvironmentKeys": [],
+      "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+      "postgres": "postgres (PostgreSQL) 17.4",
+      "binarySha256": {
+        "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+        "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+        "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+        "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+        "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+      }
+    },
+    "log": {
+      "path": "docs/research/evidence/2026-11-11-g2-resume/chrome.log",
+      "sha256": "ba0f6678237911f895c2f9c19684f8cd93ba217b30a645b807debbdc7755cd0d"
+    },
+    "storyReviewChrome": {
+      "status": "passed",
+      "browser": "157.0.8103.39",
+      "boundary": "Production StoryReviewPanel mounted by the actual story detail page, production review and protected playback handlers, Supabase SDK and complete native PG17 schema. Local synthetic Auth/PostgREST/Storage transport, generated tone WAV and explicitly synthetic timed transcript. Actual installed Google Chrome; no live ASR or real household semantics measured.",
+      "checks": [
+        "actual source audio seek and time progression",
+        "modified and rejected body persisted",
+        "two-member disputes",
+        "approved reload and history",
+        "outsider denied",
+        "correction new version",
+        "narrow viewport",
+        "source-change and deletion rejected"
+      ]
+    },
+    "transcriptionChrome": {
+      "status": "passed",
+      "browser": "157.0.8103.39",
+      "boundary": "Production StoryReviewPanel and StoryTranscriptionControl, production GET/POST transcription/review/play routes, Supabase SDK, complete native PG17 schema, and installed Google Chrome. Auth identities, loopback PostgREST/Storage/provider transport, tone WAV, and timed provider response are controlled synthetic substitutes. No paid/live ASR, real speech accuracy, or semantic audio alignment claim.",
+      "checks": [
+        "outsider, revoked member, missing consent, invalid policy: zero provider requests",
+        "explicit Chrome consent and submit",
+        "actual adapter multipart bytes and config",
+        "durable aligned transcript and unknown confidence",
+        "completed request replay makes zero extra calls",
+        "reload and timed audio seek",
+        "consent withdrawn during provider response rejects ingestion",
+        "invalid provider response creates no draft",
+        "pending identity survives reload",
+        "same and new IDs cannot repeat unknown outbound request"
+      ],
+      "cleanup": {
+        "globalsRestored": true,
+        "errors": []
+      }
+    },
+    "screenshots": [
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-review-before-approval.png",
+        "sha256": "8a45e61c40b7e175ad0a694641d8b11c7848296817c849d983e4b7b4724ac8c2"
+      },
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-review-mobile.png",
+        "sha256": "d668ce90c157dd2031ba4f8eaf3bc65201b2be8d9506e4651033ef914c83692d"
+      },
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-transcription-after.png",
+        "sha256": "4f2258e0f672943265a937b1924f22b3da17c6ac55d7d4f723d2cc9c1530f4c4"
+      },
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-transcription-before.png",
+        "sha256": "ccd812f9c26cffde22a5ed0c5590234a188c1febb5b2956e3b3abffc4e0a5509"
+      },
+      {
+        "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794364891571-cedd9673-da19-4b76-a02e-646ce1b04c65/chrome-transcription-error.png",
+        "sha256": "44b6fd0ba44447c62731b3e04d83ba998113ace7836afcb661cf949bd5b60655"
+      }
+    ]
+  },
+  "gate": {
+    "typeCheck": "passed",
+    "lint": "passed",
+    "webSuites": 173,
+    "webTests": 3567,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 25,
+    "buildPages": 184,
+    "existingBuildWarnings": [
+      "unsupported Next eslint config",
+      "deprecated images.domains",
+      "optional environment variables not configured"
+    ],
+    "executions": {
+      "verify": {
+        "command": [
+          "npm",
+          "run",
+          "verify"
+        ],
+        "startedAt": "2026-11-11T10:41:31.484328+08:00",
+        "completedAt": "2026-11-11T10:45:03.820660+08:00",
+        "exitCode": 0,
+        "receipt": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/verify-execution.json",
+          "sha256": "a4cb62bca5cbfb3157d7880554737ea0df00d4fcaec1cc83ff2f185de24eeb27"
+        },
+        "log": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/verify.log",
+          "sha256": "6b8b44a73fded65ab89d9a9216c8bb6d2dce896eae3354298f47ee35c61a3e23"
+        }
+      },
+      "chrome": {
+        "command": [
+          "node",
+          "experiments/g1-local/verify-migrations.mjs",
+          "--g2-review",
+          "--chrome"
+        ],
+        "startedAt": "2026-11-11T10:41:31.372974+08:00",
+        "completedAt": "2026-11-11T10:42:07.988014+08:00",
+        "exitCode": 0,
+        "receipt": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/chrome-execution.json",
+          "sha256": "84962cd7b9da4b786fb300cc92e6f43702977340aef22aa86cd6f09ecf39fd33"
+        },
+        "log": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/chrome.log",
+          "sha256": "ba0f6678237911f895c2f9c19684f8cd93ba217b30a645b807debbdc7755cd0d"
+        }
+      },
+      "shared": {
+        "command": [
+          "npm",
+          "test",
+          "--workspace=packages/shared",
+          "--",
+          "--runInBand"
+        ],
+        "startedAt": "2026-11-11T10:41:33.742650+08:00",
+        "completedAt": "2026-11-11T10:41:42.437115+08:00",
+        "exitCode": 0,
+        "receipt": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/shared-execution.json",
+          "sha256": "ffa50fa3a159b2c868dd9fd8a4b2fb0d410bd03fdfb02521e38fbb5994540df2"
+        },
+        "log": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/shared.log",
+          "sha256": "1313ff09e41eaf69403c3c8b761874c0dca3c5263508ce26bb96ad70b4540891"
+        }
+      },
+      "infra": {
+        "command": [
+          "npm",
+          "run",
+          "test:infra"
+        ],
+        "startedAt": "2026-11-11T10:41:33.743428+08:00",
+        "completedAt": "2026-11-11T10:41:47.500726+08:00",
+        "exitCode": 0,
+        "receipt": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/infra-execution.json",
+          "sha256": "b104c0de5096e4472c2a121eb340446a108a271c15395bf7d8c9095213d9d705"
+        },
+        "log": {
+          "path": "docs/research/evidence/2026-11-11-g2-resume/infra.log",
+          "sha256": "e6d98ad5fa9bd86316ab2693ca757ebde3b841c46026e0fa2803003f49eb4b4e"
+        }
+      }
+    }
+  },
+  "reviewEvidence": [
+    {
+      "path": "docs/research/evidence/2026-11-10-g2-review/spec-review.md",
+      "sha256": "02d164f3865be7dead020deaec0616f5c170a9fad78e25f7ed31162b65c307f1"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-10-g2-review/quality-review.md",
+      "sha256": "1a005408dc90d8a341c8adb78fa7eedffda35d0f55acbe2f4426a1a945a592d8"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-10-g2-review/helper-independent-review.md",
+      "sha256": "08026b4e3f48f6521f6578c5cb17cec866327ac5880d312c8182994244e7f6c3"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-10-g2-review/helper-independent-recheck.json",
+      "sha256": "57f8283f9244ebf0ce54a2fb91ac2b93edd686c771a9f79ab5a47a7bf94bb9c1"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-10-g2-review/helper-independent-final-tests.log",
+      "sha256": "678cd562ea316a59cb4896aa040374a01776158ca57165433e20da0264270dfa"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-10-g2-review/persistence-sources.json",
+      "sha256": "6ad577f6ee7906ef217a78f4bafffc0f0eaf5061cab42fc60e3c43eb36107379"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-10-g2-review/supplement-origin-independent-green-results.json",
+      "sha256": "29568f7e6e2195c9ced60d795e1e76e1fce0733deeb5df8a8e125c55de3cad0a"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-10-g2-review/supplement-origin-independent-probe.mjs",
+      "sha256": "0f45055625dee49ac9fea3680024a1c973f0c2613d53b8e48b62366cc01a690b"
+    }
+  ],
+  "sourceManifest": {
+    "path": "docs/research/evidence/2026-11-10-g2-review/source-manifest.json",
+    "sha256": "5a619b8a223f88bd657d3a474e42ed173cb4f6b4c89c49d456b418324dbf3624"
+  },
+  "sourceArchive": {
+    "path": "docs/research/evidence/2026-11-10-g2-review/source.tar.gz",
+    "sha256": "96481be535f702859572847b8fa694ed4a6146a0f2a348a98faeba33f7f26b68",
+    "members": 1204,
+    "contentsHashVerified": true
+  },
+  "documentsManifest": {
+    "path": "docs/research/evidence/2026-11-11-g2-resume/document-manifest.json",
+    "sha256": "9742d155c7885f585e65616e4c41637422394d1e122d744e8bda4148f601095e"
+  },
+  "manualGates": {
+    "status": "waived_by_user",
+    "checklist": {
+      "path": "docs/research/2026-11-10-g2-manual-follow-up.md",
+      "sha256": "7b8e3d5b8c3d7a3a1772d5a559f97a46590375ec52cf87fa5c3976f54fbe45f4"
+    },
+    "blocksLocalProgress": false,
+    "unexecutedMarkedTested": false
+  },
+  "boundaries": {
+    "realHouseholdQualityMeasured": false,
+    "liveProviderQualityMeasured": false,
+    "realSpeechSemanticAlignmentMeasured": false,
+    "hostedSupabaseQualified": false,
+    "mobileHardwareTested": false,
+    "physicalDeletionComplete": false,
+    "providerHttp": "controlled loopback substitute; actual production adapter multipart requests",
+    "liveProviderRequests": 0,
+    "loopbackProviderRequests": 3,
+    "fullHostedNextAppLoginTested": false,
+    "pendingAsrReconciliationUiImplemented": false,
+    "independentReviewsRerunDuringResume": false,
+    "g1DeletionAndBackupRerunDuringResume": false
+  },
+  "logs": {
+    "docs/research/evidence/2026-11-10-g2-review/audit-diff-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-10-g2-review/audit-source-iteration-1.log": "ce2edea8565fdcc634b4fe1c94c868635398621b890b3f476c54264d0e4bb89f",
+    "docs/research/evidence/2026-11-10-g2-review/audit-source-red.log": "bcc384536db69e4a33eafb525c134cc1be77059e49a4ea03e29cdbd3e92e726c",
+    "docs/research/evidence/2026-11-10-g2-review/audit-typecheck.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+    "docs/research/evidence/2026-11-10-g2-review/backup-final.log": "7474e055105155a08d38876390db46d03330abe4537626386a866be88adc9481",
+    "docs/research/evidence/2026-11-10-g2-review/capture-race-iteration-1.log": "bcd4b9e79e07f1f61c0a05fa4da19510ba953829df60c88a1f5cf0a8fc24a64a",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-final.log": "1d852c19dd1c91efe89100238461b675e425debf4deab48848f03945c0ff4196",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-first.log": "4005c8d5a7a4b3a8358d9b6ded4b57f5a08e18eddc39248ad0b1766641fecd62",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-full-first.log": "83bb39d2bf4fbd10c571002ba79cc4907be925f4f8b97b6dd7eb3dfdcb92096a",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-label-diagnostic.log": "2bd53ba4cd03c90ddaca68928ba3e7fca668a22c599e6a7cc81babb32056d03b",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-label-fixed.log": "31e8c5a304534ab89850af9e7ac017b481ba0610e9781d5592555be1d9fde04a",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-range-corrected.log": "5427ef6d4a76122c49aa7b9def3c43afc09c18f0828c45946104d3dce5d9d2c5",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-range-second.log": "d607a19133e1c13e34be71152ea746b10fd2cf61142ca31d0989338d7f54dcfd",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-second.log": "697ab39f6c7885bfe8ad2145b2decf0c7203b13de384e4832311cf96e90b52c8",
+    "docs/research/evidence/2026-11-10-g2-review/chrome-seek-diagnostic.log": "298f1a10abda858cc25da4fb7dc97493e5b2be077e2db0ff5689076309d6e5db",
+    "docs/research/evidence/2026-11-10-g2-review/client-actor-red.log": "f6f97bb90d34558c48462263c88334fb92d61d1e96c287f0ffa8c20bcafb33e9",
+    "docs/research/evidence/2026-11-10-g2-review/draft-preview-red.log": "40d1783eed6115757a88453e1bc7f146725a3943cdf9656b9c6c311686c427cd",
+    "docs/research/evidence/2026-11-10-g2-review/g1-deletion-final.log": "76f8a0549737ce7707fcc375e1649a47391d878c606beded756b2ef8b6caf932",
+    "docs/research/evidence/2026-11-10-g2-review/helper-independent-final-tests.log": "678cd562ea316a59cb4896aa040374a01776158ca57165433e20da0264270dfa",
+    "docs/research/evidence/2026-11-10-g2-review/helper-independent-tests.log": "cdc476f65959f0f81afb64ef16dc7065e3c1684f6fd36305492fc1d6a2bb5c40",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-final-green.log": "08c166159a203e9e3fe7db3131e2a36bb203ab3f7a3f3d334ec4f9ef710f842d",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-final-lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-green.log": "19a9ac9506a8348f729ec3b4c17a48a116cc2cb95d0248d5cfbd93de58df1fce",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-independent-green.log": "ea8e0f12515dfd109df1a31501b68b9f070490d98c06a06b07bcd9cc56af0e4c",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-independent-lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-independent-red.log": "f9b8f83156a0684af5805d2dec05546353023c5741d9bc4b1f2674000db29d6e",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-legacy-label-red.log": "a7f79e4055d6d093621c818b38d15d0e13b6fc106bf56ed876b3123d7bdc7c95",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-red.log": "ef0e11596956036cbd1af91e34557c478769b331b48492dcff84ecd0d9d1da85",
+    "docs/research/evidence/2026-11-10-g2-review/helpers-supplement-author-red.log": "25a7024a18eaeea20bc880b10292808761f5f26e2c1605c6a171f4da74587ab8",
+    "docs/research/evidence/2026-11-10-g2-review/infra-final.log": "ea9092c3e4ed4f5a29a7f58cc3e84292820f2b4a9831cf93f13d648a65cdd336",
+    "docs/research/evidence/2026-11-10-g2-review/infra.log": "a3c60afebe382583c994dac724ffd473a231be76a312c69de25bdc29c42b3e24",
+    "docs/research/evidence/2026-11-10-g2-review/input-bounds-red.log": "1d511cce6d65adf785127c99cee69eb61db02a48491602352b6d076795e6fb78",
+    "docs/research/evidence/2026-11-10-g2-review/legacy-classification.log": "ab91555dce68d9b897054fb8ee98f542bb3a5a54a6f372bb1aca0a80f0db6196",
+    "docs/research/evidence/2026-11-10-g2-review/persistence-lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-10-g2-review/persistence-lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/research/evidence/2026-11-10-g2-review/persistence-native-final.log": "89deb10fad8ad7fe4e87ae4d378f30ef52248e4624670a68ad10653806cca231",
+    "docs/research/evidence/2026-11-10-g2-review/persistence-tests-final.log": "17fa2fdba1c28c0e0ba8c59861d28e57bd140d629b55d305f54672c705a66781",
+    "docs/research/evidence/2026-11-10-g2-review/persistence-tests-green.log": "6bf47a7c752f2991664823ea8457794cc881db68af4f900de8399ef997441d6f",
+    "docs/research/evidence/2026-11-10-g2-review/persistence-types-final.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+    "docs/research/evidence/2026-11-10-g2-review/persistence-types.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+    "docs/research/evidence/2026-11-10-g2-review/request-ack-red.log": "5f59a5fed0a66b9fcba439cf4cff62e4a4fafebc428b76c1e8467ec14a719492",
+    "docs/research/evidence/2026-11-10-g2-review/reservation-iteration-1.log": "7922e1a65cfab9916ba2793b5f78ad7d17f54bd2e3be7c6dfd2a9295999d50b3",
+    "docs/research/evidence/2026-11-10-g2-review/reservation-iteration-2.log": "bee6494082391cff3a76e06cdf615a6dc5919e2ce0604c738965037a56de1941",
+    "docs/research/evidence/2026-11-10-g2-review/reservation-red.log": "546f0d4140dcef7607742f9e6bab1a2bd50cf3859f183f2d8ab612dd945daa8a",
+    "docs/research/evidence/2026-11-10-g2-review/reservation-service-green.log": "8dfd95507af8e0a73dfcb7eabff43be46fc0e4b3e941f76c450831dc62b20bc5",
+    "docs/research/evidence/2026-11-10-g2-review/reservation-service-red.log": "7463faf6b04ca1afb530853638fb17234fb9c6207022ead271107187aa9ee454",
+    "docs/research/evidence/2026-11-10-g2-review/route-green.log": "c7fe9c94ad4aeb4259fde7e259d634b71a26440ff1308d4f361ba0530a3f61f1",
+    "docs/research/evidence/2026-11-10-g2-review/route-red.log": "84aa7312ffb93e5434343b5c999571067e676c1be1ea92524535ce49a229af73",
+    "docs/research/evidence/2026-11-10-g2-review/shared.log": "a788d27c79078ffede86b6498e18fc0f8eb8423d9ce6ec6763a94fe03ca74734",
+    "docs/research/evidence/2026-11-10-g2-review/source-grounding-red.log": "fce5557f0390adf9112afa18756ce3d3abc827b35d7dd3942952921348631607",
+    "docs/research/evidence/2026-11-10-g2-review/source-immutability-iteration-1.log": "0a09621580d942187e177c2c5647ea4221edf82f739fa74cb5446fde17211767",
+    "docs/research/evidence/2026-11-10-g2-review/source-immutability-red.log": "ca6b44c92983769fd4b58db2a156f15573d21bef03ba7e2b17b39ed1cd85a262",
+    "docs/research/evidence/2026-11-10-g2-review/spec-independent-native-final.log": "9b33cdc5d4931ac1a77bab22b5bd889d5710ef170d3d4f4d98fd01180241ca24",
+    "docs/research/evidence/2026-11-10-g2-review/sql-final-candidate.log": "5819531aa436b5bcd5900a4e95cb356b0fd6d3137fade26966e2fea887ca64dd",
+    "docs/research/evidence/2026-11-10-g2-review/sql-iteration-1.log": "27730349a2ecbfd03d4f0976c3d56941d771d801c47a72683eaad19a6e472580",
+    "docs/research/evidence/2026-11-10-g2-review/sql-iteration-2.log": "b3897c2b30a436134fce573975755ff6a56650d1f7b2befe5a7baeb4b2e83ebb",
+    "docs/research/evidence/2026-11-10-g2-review/sql-red.log": "21320d9b2e5d4d91f2dc2dfe908ecab41ed6fe0aa92a0533b850dde3d2317c02",
+    "docs/research/evidence/2026-11-10-g2-review/supplement-author-green.log": "89deb10fad8ad7fe4e87ae4d378f30ef52248e4624670a68ad10653806cca231",
+    "docs/research/evidence/2026-11-10-g2-review/supplement-author-red.log": "efeb3b9c6afac4552614b5634acbe2adeb088b5f475d3a45862d2e135d4400a6",
+    "docs/research/evidence/2026-11-10-g2-review/supplement-dispute-independent-red.log": "9474e5c5d811034b88aabe8e610c3260f2e934f18e1d476880d6204e461cd3f7",
+    "docs/research/evidence/2026-11-10-g2-review/supplement-origin-independent-green.log": "5f553a7e1e51435f516ac03e29ccede71b67d2d4755199c033dda9912e99e466",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-current.log": "3fe1826ebec77575f14e6909b95d0c4f9db69efb98846301adb22824bfdc4908",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-fence-red.log": "e5b5ddc55627859b001c01962c27b2c1902e1e0d9c76e7d6fb9a0c44091394cc",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-green.log": "7b3763c799e1f67f59e7d68583f3ff55cdc82a239191556e028d005d84947365",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-io-red.log": "8879620b914273c56d45698bfb26b5bb0a754b3d61f51aadcc179cb2bf33fcdd",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-parser-green.log": "2c3fe6e338ecc100ff03964f22d35b11a9567088a735c82c684d6dee3ea475fa",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-red-behavior.log": "a96a2a78f21b6ab9cc887db8b1ab6bf1409693a53afd9eea57bae39e40f1894d",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-red.log": "03540ee17d4f328313da772e048f1738eadf6ad9ddbe43f9e7b1301167fe9b4a",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-route-red.log": "703a80053b77f2cc412dd62c1349ca3040f2185caa037fca8182b599a9680d08",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-typecheck-green.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-typecheck.log": "829f5d4590527abc9059fe50d5ce581a62c85074c58e44f8251053c974e3584e",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-ui-red.log": "fc92e174928c200f2e3d8086dd88522789f1d972ef2930e99a1dd1709bf5e6f3",
+    "docs/research/evidence/2026-11-10-g2-review/transcription-validation-red.log": "045a7620ef17177ec97f748d43b24c8386ec27f97e4fdebf5c7205b4d2ca746a",
+    "docs/research/evidence/2026-11-10-g2-review/type-first.log": "6330f467e47e06803ac361f32c5d25fc6ba471f4176b1f705931589622c5c59b",
+    "docs/research/evidence/2026-11-10-g2-review/ui-concurrency-final.log": "2cad761b2757e8201f2e93e51c0d3230531992dca0440b562cf9c3ca53be7b38",
+    "docs/research/evidence/2026-11-10-g2-review/ui-first.log": "f9caf231cef897a68344a6af22ed99b49b494ccb676bbaf2d099faa6bdb75c41",
+    "docs/research/evidence/2026-11-10-g2-review/ui-green.log": "067a8151be096aee3676419d58327d0d638d9893dba6f36897d4be3d3f791ae6",
+    "docs/research/evidence/2026-11-10-g2-review/ui-lint.log": "7e1cce4a8c789f2241b3a7c94d8da32f05fe1f2623903c03289b30749c1c5a4c",
+    "docs/research/evidence/2026-11-10-g2-review/ui-red.log": "666400938810e585bc6b93bbb69652bd61c3a25e3d1a0d0159b092c22c5d91a2",
+    "docs/research/evidence/2026-11-10-g2-review/ui-reviewed.log": "4bedc19fdb733664493af31b7a43de184cf47547906014e492e93bfc6a8adaa6",
+    "docs/research/evidence/2026-11-10-g2-review/verify-final.log": "69623c914e60defe7a05c94654569305e485719b41620dde1394cb74c1aaacd3",
+    "docs/research/evidence/2026-11-10-g2-review/verify.log": "146227a7ae97e2a188c1d03a935abaa7375e157a81f10c6c6caab44314a698df",
+    "docs/research/evidence/2026-11-11-g2-resume/chrome.log": "ba0f6678237911f895c2f9c19684f8cd93ba217b30a645b807debbdc7755cd0d",
+    "docs/research/evidence/2026-11-11-g2-resume/infra.log": "e6d98ad5fa9bd86316ab2693ca757ebde3b841c46026e0fa2803003f49eb4b4e",
+    "docs/research/evidence/2026-11-11-g2-resume/shared.log": "1313ff09e41eaf69403c3c8b761874c0dca3c5263508ce26bb96ad70b4540891",
+    "docs/research/evidence/2026-11-11-g2-resume/verify.log": "6b8b44a73fded65ab89d9a9216c8bb6d2dce896eae3354298f47ee35c61a3e23"
+  },
+  "git": {
+    "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+    "branch": "codex/october-upgrade-p0",
+    "stagedFiles": [],
+    "diffCheckPassed": true,
+    "sourceCodeChangedDuringResume": false,
+    "nextEnvRestored": true,
+    "committed": false,
+    "pushed": false,
+    "remoteMigrationOrDeployment": false
+  }
+}

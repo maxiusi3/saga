@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-06T17:29:14.377397+00:00",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "headUnchanged": true,
+  "indexUnchanged": true,
+  "stagedEmpty": true,
+  "diffCheckPassed": true,
+  "measuredSources": 922,
+  "sourceDrift": [],
+  "priorEvidenceFiles": 4866,
+  "priorEvidenceDrift": [],
+  "takeoverFiles": 1365,
+  "authorizedChanges": [
+    "scripts/__tests__/deployment-config.test.js",
+    "docs/README.md",
+    "docs/HANDOFF-2026-10-13-upgrade.md",
+    "docs/research/2026-11-02-g1-gap-register.md",
+    "docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md",
+    "docs/superpowers/specs/2026-11-06-g1-deletion-leases-design.md"
+  ],
+  "unexpectedChanges": []
+}

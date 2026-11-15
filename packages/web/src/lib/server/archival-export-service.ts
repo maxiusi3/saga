@@ -1,5 +1,8 @@
 import { createHash, randomUUID } from 'crypto'
 import JSZip from 'jszip'
+import PDFDocument from 'pdfkit'
+import { existsSync } from 'fs'
+import { resolve,isAbsolute } from 'path'
 import type { BookletChapterSection, FrozenPublicationSnapshot, HostingRetentionSchedule } from '@saga/shared/types/export'
 import {
   addVerifiedMediaAssetsToZip,
@@ -10,6 +13,11 @@ import {
 import type { ExportManifest } from '@/lib/media-assets'
 
 export interface ArchivalStoryInput extends OfflineExportStoryItem {
+  rawTranscript?: string | null
+  rendition?: 'approved' | 'source_only'
+  sourceTranscriptId?: string | null
+  assertions?: unknown[]
+  sourceTranscripts?: unknown[]
   revisionId?: string | null
   revisionVersion?: number | null
   chapterTitle?: string | null
@@ -42,16 +50,6 @@ export interface BuildPublicationSnapshotInput {
   chapters?: readonly BookletChapterSection[]
   manifest: ExportManifest
   pdfBytes: Buffer
-}
-
-function sanitizePdfText(input: string | null | undefined): string {
-  return String(input ?? '')
-    .replace(/[\r\n]+/g, ' ')
-    .replace(/[^\x20-\x7E]/g, '?')
-    .replace(/\\/g, '\\\\')
-    .replace(/\(/g, '\\(')
-    .replace(/\)/g, '\\)')
-    .trim()
 }
 
 export function computeHostingRetentionSchedule(
@@ -116,92 +114,78 @@ export function buildDefaultChapters(stories: readonly ArchivalStoryInput[]): Bo
   return chapters
 }
 
-/**
- * Generates a standards-compliant, self-contained PDF 1.4 reading booklet
- * with zero external font/network dependencies so any device can open it offline.
- */
-export function buildReadingBookletPdf(input: BuildReadingBookletPdfInput): Buffer {
-  const chapters = input.chapters && input.chapters.length > 0
-    ? input.chapters
-    : buildDefaultChapters(input.stories)
+export class UnsupportedArchiveTextError extends Error { constructor(point:number){super(`Unsupported archive Unicode character U+${point.toString(16).toUpperCase()}`)} }
 
-  const lines: string[] = [
-    `UR SAGA FAMILY BIOGRAPHY BOOKLET`,
-    `Project: ${sanitizePdfText(input.projectName || 'Family Biography')}`,
-    `Snapshot Version: v${input.snapshotVersion} | Exported: ${sanitizePdfText(input.exportedAt)}`,
-    `Verified Original Media Assets: ${input.manifest.assets.length}`,
-    `------------------------------------------------------------------------`,
-    `CHAPTER OUTLINE (${chapters.length})`,
-  ]
+/** The bundled font is subset and embedded, so readers need no network/fonts. */
+export function archiveFontPath(): string {
+  const configured=process.env.ARCHIVE_FONT_PATH
+  if(configured) {if(!isAbsolute(configured) || !existsSync(configured)) throw new Error('Archive Unicode font configuration is unavailable');return configured}
+  const paths = [resolve(process.cwd(), 'assets/fonts/NotoSansCJKsc-Regular.otf'), resolve(process.cwd(), 'packages/web/assets/fonts/NotoSansCJKsc-Regular.otf')]
+  const path = paths.find(existsSync)
+  if (!path) throw new Error('Archive Unicode font is unavailable')
+  return path
+}
 
-  for (const ch of chapters) {
-    lines.push(`  ${sanitizePdfText(ch.title)} (${ch.storyIds.length} stories)`)
-    if (ch.summary) {
-      lines.push(`    Summary: ${sanitizePdfText(ch.summary).slice(0, 90)}`)
+export function createReadingBookletPdfStream(input: BuildReadingBookletPdfInput): PDFKit.PDFDocument {
+  const font = archiveFontPath()
+  const doc = new PDFDocument({font, size:'A4', margin:54, pdfVersion:'1.4', info:{Title:input.projectName, Author:'UR Saga', CreationDate:new Date(input.exportedAt), ModDate:new Date(input.exportedAt)}})
+  // PDFKit uses fontkit for embedded fonts. Validate every code point before
+  // emitting text: a missing glyph must fail, never become an invisible .notdef.
+  const embedded = (doc as unknown as {_font:{font:{hasGlyphForCodePoint:(point:number)=>boolean}}})._font.font
+  const text = (value: string | null | undefined, size = 11) => {
+    const content = String(value ?? '').replace(/\r\n?/g, '\n')
+    for (const char of content) if (!'\n\t'.includes(char) && !embedded.hasGlyphForCodePoint(char.codePointAt(0)!)) {
+      doc.destroy()
+      throw new UnsupportedArchiveTextError(char.codePointAt(0)!)
     }
+    doc.fontSize(size).text(content, {lineGap:4, paragraphGap:8}).moveDown(0.45)
   }
-
-  lines.push(`------------------------------------------------------------------------`)
-  lines.push(`STORIES & PROVENANCE RECORD (${input.stories.length})`)
-
-  for (const story of input.stories) {
-    lines.push(`* Story [${sanitizePdfText(story.id)}]: ${sanitizePdfText(story.title || 'Untitled')}`)
-    if (story.revisionId) {
-      lines.push(`  Approved Revision: ${sanitizePdfText(story.revisionId)} (v${story.revisionVersion ?? 1})`)
-    }
-    if (story.summary) {
-      lines.push(`  Summary: ${sanitizePdfText(story.summary).slice(0, 100)}`)
-    }
-    if (story.transcript) {
-      lines.push(`  Excerpt: ${sanitizePdfText(story.transcript).slice(0, 110)}`)
-    }
-    if (story.provenanceNotes && story.provenanceNotes.length > 0) {
-      for (const note of story.provenanceNotes) {
-        lines.push(`  [Provenance] ${sanitizePdfText(note).slice(0, 100)}`)
+  let page=1
+  doc.on('pageAdded', () => { page++ })
+  text('UR SAGA / FAMILY BIOGRAPHY', 10)
+  text(input.projectName, 24)
+  text(input.projectDescription, 12)
+  text(`Publication v${input.snapshotVersion} | ${input.exportedAt.slice(0,10)}`, 9)
+  text('Approved biography and separately labelled original transcripts', 10)
+  const chapters = input.chapters?.length ? input.chapters : buildDefaultChapters(input.stories)
+  text('Contents',18)
+  for (const chapter of chapters) text(chapter.title,12)
+  for (const chapter of chapters) {
+    doc.addPage(); text(chapter.title,19)
+    for (const story of input.stories.filter(item=>chapter.storyIds.includes(item.id))) {
+      text(story.title || 'Untitled story',16)
+      text(story.revisionId ? `Approved rendition / revision ${story.revisionVersion ?? 1}` : 'Source only - not an approved biography',9)
+      if(story.summary) {text('Summary',10);text(story.summary)}
+      text(story.transcript)
+      for (const note of story.provenanceNotes ?? []) text(`Provenance: ${note}`,9)
+      for (const alternative of story.disputedVariants ?? []) text(`Alternative memory / ${alternative.memberName}: ${alternative.statement}`,10)
+      if (story.rawTranscript != null && story.revisionId) {
+        text('Original transcript (source record, separate from approved rendition)',12)
+        text(story.rawTranscript,10)
       }
     }
-    if (story.disputedVariants && story.disputedVariants.length > 0) {
-      for (const v of story.disputedVariants) {
-        lines.push(`  [Disputed Memory - ${sanitizePdfText(v.memberName)}]: ${sanitizePdfText(v.statement).slice(0, 90)}`)
-      }
-    }
   }
-
-  lines.push(`------------------------------------------------------------------------`)
-  lines.push(`MEDIA ASSET SHA-256 CHECKSUM LEDGER`)
+  doc.addPage(); text('Verified media and provenance',18)
   for (const asset of input.manifest.assets) {
-    lines.push(`- ${sanitizePdfText(asset.filename)} (${asset.mimeType}, ${asset.byteSize}B) SHA256:${asset.sha256.slice(0, 24)}...`)
+    text(`${asset.filename} | ${asset.mimeType} | ${asset.byteSize} bytes`,10)
+    text(`SHA-256 ${asset.sha256}`,8)
   }
+  text(`End of complete publication / ${page} pages`,9)
+  doc.end()
+  return doc
+}
 
-  const contentLines = ['BT', '/F1 10 Tf', '50 760 Td', '13 TL']
-  for (const line of lines.slice(0, 52)) {
-    contentLines.push(`(${line}) Tj T*`)
-  }
-  contentLines.push('ET')
-  const streamBody = contentLines.join('\n')
+export async function buildReadingBookletPdf(input: BuildReadingBookletPdfInput): Promise<Buffer> {
+  const chunks:Buffer[]=[]
+  for await (const chunk of createReadingBookletPdfStream(input)) chunks.push(Buffer.from(chunk))
+  return Buffer.concat(chunks)
+}
 
-  const objects: string[] = [
-    `1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n`,
-    `2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n`,
-    `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`,
-    `4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n`,
-    `5 0 obj\n<< /Length ${Buffer.byteLength(streamBody, 'utf8')} >>\nstream\n${streamBody}\nendstream\nendobj\n`,
-  ]
-
-  let pdf = '%PDF-1.4\n'
-  const offsets: number[] = [0]
-  for (const obj of objects) {
-    offsets.push(Buffer.byteLength(pdf, 'utf8'))
-    pdf += obj
-  }
-  const xrefOffset = Buffer.byteLength(pdf, 'utf8')
-  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`
-  for (let i = 1; i <= objects.length; i += 1) {
-    pdf += `${String(offsets[i]).padStart(10, '0')} 00000 n \n`
-  }
-  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`
-
-  return Buffer.from(pdf, 'utf8')
+export function buildPublicationOfflineHtml(input: {projectName:string;projectDescription?:string|null;exportedAt:string;stories:readonly ArchivalStoryInput[];manifest:ExportManifest}): string {
+  return buildOfflineExportHtml({...input, stories:input.stories.flatMap(story=>[
+    {...story,title:`${story.title || 'Untitled'} (${story.revisionId ? 'Approved rendition' : 'Source only - unapproved'})`},
+    ...(story.revisionId && story.rawTranscript != null ? [{id:`${story.id}-source`,title:'Original transcript (source record)',transcript:story.rawTranscript}] : []),
+  ])})
 }
 
 export function buildFrozenPublicationSnapshot(
@@ -228,7 +212,7 @@ export function buildFrozenPublicationSnapshot(
     chapters,
     pdfSha256,
     archiveManifestSha256,
-    hostingRetention: computeHostingRetentionSchedule(exportedAt, input.hostingMonths ?? 12),
+    hostingRetention: input.hostingMonths ? computeHostingRetentionSchedule(exportedAt, input.hostingMonths) : null,
   }
 }
 
@@ -239,6 +223,7 @@ export async function assembleCompleteArchivalPackage(
     projectName: string
     projectDescription?: string | null
     createdBy: string
+    snapshotId?: string
     snapshotVersion?: number
     exportedAt?: string
     assets: ExportableMediaAsset[]
@@ -256,7 +241,7 @@ export async function assembleCompleteArchivalPackage(
 
   const manifest = await addVerifiedMediaAssetsToZip(zip, params.assets, params.readObject)
   const chapters = buildDefaultChapters(params.stories)
-  const pdfBytes = buildReadingBookletPdf({
+  const pdfBytes = await buildReadingBookletPdf({
     projectId: params.projectId,
     projectName: params.projectName,
     projectDescription: params.projectDescription,
@@ -267,6 +252,7 @@ export async function assembleCompleteArchivalPackage(
     manifest,
   })
   const snapshot = buildFrozenPublicationSnapshot({
+    snapshotId: params.snapshotId,
     projectId: params.projectId,
     snapshotVersion,
     createdBy: params.createdBy,
@@ -276,7 +262,7 @@ export async function assembleCompleteArchivalPackage(
     manifest,
     pdfBytes,
   })
-  const offlineHtml = buildOfflineExportHtml({
+  const offlineHtml = buildPublicationOfflineHtml({
     projectName: params.projectName,
     projectDescription: params.projectDescription,
     exportedAt,
@@ -286,6 +272,7 @@ export async function assembleCompleteArchivalPackage(
 
   zip.file('index.html', offlineHtml)
   zip.file('biography-booklet.pdf', pdfBytes)
+  zip.file('sources-and-revisions.json', JSON.stringify(params.stories, null, 2))
   zip.file('chapters.json', JSON.stringify(chapters, null, 2))
   zip.file('publication-snapshot.json', JSON.stringify(snapshot, null, 2))
 

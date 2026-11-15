@@ -1,0 +1,1828 @@
+diff --git a/docs/HANDOFF-2026-10-13-upgrade.md b/docs/HANDOFF-2026-10-13-upgrade.md
+--- a/docs/HANDOFF-2026-10-13-upgrade.md
++++ b/docs/HANDOFF-2026-10-13-upgrade.md
+@@ -1,19 +1,30 @@
+ # Handoff：UR Saga 十月升级继续执行
+ 
+-- 更新时间：2026-11-06（Asia/Taipei）
++- 更新时间：2026-11-07（Asia/Taipei）
+ - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
+ - 当前分支：`codex/october-upgrade-p0`
+ - 本轮接手基线及当前 HEAD：`c0669e805`（持久封口清单检查点，领先远端跟踪基线 6 个本地提交）。续接 G1 下一步，已贯通录音、重开草稿、继续保存、独立 Worker、唯一故事确认、播放及显式清理；修复后的完整本地门禁及三套集成通过，整批审查与最终修复复审已通过。改动未暂存、未提交，Git 状态为准。
+ - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
+ 
+-## 11 月 6 日 G1 删除目标与候选备份（当前）
++## 11 月 7 日 G1 持久删除租约（本批本地完成）
++
++本批承接原子删除清单，新增独立任务／尝试账本与领取、开始、续租、检查、过期恢复。当前入口：[报告](research/2026-11-06-g1-deletion-leases.md) · [规格](superpowers/specs/2026-11-06-g1-deletion-leases-design.md) · [计划](superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md) · [证据索引](research/evidence/2026-11-06-g1-deletion-leases/README.md) · [最终回执](research/evidence/2026-11-06-g1-deletion-leases/verification.json)。两个实现任务通过独立审查；整批唯一 M1/P3 回执校验问题已修复，限定复审 Spec／Quality PASS，无剩余发现。
++
++- 原请求与目标完整行不变。未开始的过期尝试最多重试三次；开始后过期为 outcome_unknown，不能自动再次领取。已授权的删除工作单在申请人退出项目后仍保留。
++- 严格服务端适配器使用微秒时间和进程内单调截止时间；一次 RPC、禁用重试，超时／取消／响应丢失不假设 SQL 回滚。所有回执均为 canDeleteStorage:false、physicalDeletionComplete:false，没有删除宿主或 Storage 删除接线。
++- SQL 原生 **14 组／578 断言**，最终适配器原生 **3／281**、Jest **85 项**通过；真实到期、锁等待、新连接接手、丢失开始响应和完整清单／字节重放均有证据。局部 pg transport 为明确替代，不是线上 PostgREST 或 OS 进程重启资格。
++- 修复后完整门禁 **Web161／3344、shared4／16、infra23、184 页构建**通过，907 个受测源码无漂移。生成的 next-env 单行已核实恢复，4,866 个前批证据保留，源码归档／完整性见最终回执。
++
++下一步是引用安全的操作规划、晚到写入对账和物理执行结果持久化，再补真实备份恢复与完整迁移链；云端和真机资格另验。G1 正式关闭仍 **0/9**，推送资格 false。未暂存、提交、推送、远端迁移或部署。中断恢复目录 `.superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/` 保留；不要重做已验收的捕获、封口 I1 或租约 M1 修复。
++
++## 11 月 6 日 G1 删除目标与候选备份（前批本地完成）
+ 
+ 当前入口：[本批报告](research/2026-11-06-g1-deletion-capture.md) · [设计](superpowers/specs/2026-11-06-g1-deletion-capture-design.md) · [实施计划](superpowers/plans/2026-11-06-upgrade-g1-deletion-capture.md) · [证据索引](research/evidence/2026-11-06-g1-deletion-capture/README.md) · [G1 gap](research/2026-11-02-g1-gap-register.md)。本批本地验收完成：整批审查发现的封口/删除竞态 I1 已通过新增迁移修复，限定复审规格与质量均 Approved，修复后的原生矩阵、完整门禁和最终完整性已验收。详见[最终回执](research/evidence/2026-11-06-g1-deletion-capture/verification.json)。
+ 
+ - 删除 API 改为一次原子捕获：锁内重查权限、写墓碑、持久化资产/分块/reserved/prepared 候选目标、请求取消未结束任务。物理地址去重，重复请求恢复原清单，目标篡改和事务错误拒绝；回执始终 `physicalDeletionComplete:false`。
+ - 复审已解决合法 seal 后未登记会话被拒绝、全库正文在锁内序列化两个问题。现捕获未登记会话的实际分块；无关正文 0／8／32 MiB 均不被序列化。全局锁/关联扫描的规模表现仍待验收。
+ - TS/CJS 和实际 CLI 接受 recording-candidates 清单；以真实删除目标 bucket/key 重放，四对象清单仅排除目标候选，保留三个无关条目。只证明结构及恢复集合兼容，不证明真实备份、对象下载/hash 或 `pg_restore`。
+ - 最终封口迁移先取得删除 SHARE 锁，再做权限／来源检查；要求 READ COMMITTED、显式 VOLATILE，锁等待上限三秒。历史迁移不变；原始竞态 RED 和修复后两向并发、旧快照、超时回滚及 ACL 证据完整保留。
+ - 修复后删除 **21 组／759 断言、12 次真实等待**、备份 **3 组／82 断言**通过，源码无漂移、临时资源已清理；定向应用 **4 套／125 项**、部署清单 **7 项**通过。父级冻结后完整门禁 **Web160／3259、shared4／16、infra23、184 页构建**通过，906 个受测源码无漂移，next-env 已恢复原字节。
+ 
+ 下一步工程依赖是持久删除执行器、引用安全 GC 与晚到写入对账，再补真实对象备份恢复和完整迁移链；专用云端环境与真机资格另验。G1 正式关闭仍 **0/9**，G1 与条件推送资格 false，未暂存、提交、推送、远端迁移或部署。
+diff --git a/docs/README.md b/docs/README.md
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -1,17 +1,19 @@
+ # UR Saga 项目文档索引
+ 
+-更新：2026-11-06（Asia/Taipei）。当前决策为负责人“D03=A，其他按照推荐”：**D01–D16全部A，一名主要开发者，高质量优先，约24–34周。** 决策已确认；产品实施和G0–G4验收分别跟踪。
++更新：2026-11-07（Asia/Taipei）。当前决策为负责人“D03=A，其他按照推荐”：**D01–D16全部A，一名主要开发者，高质量优先，约24–34周。** 决策已确认；产品实施和G0–G4验收分别跟踪。
+ 
+ ## 当前执行入口
+ 
+-- **当前 G1 删除目标与候选备份兼容**：[本批报告](research/2026-11-06-g1-deletion-capture.md) · [证据](research/evidence/2026-11-06-g1-deletion-capture/README.md) · [当前 gap](research/2026-11-02-g1-gap-register.md)。原子持久捕获墓碑、资产/分块/候选目标和取消请求；合法未登记会话可删除，重复请求稳定，事务错误回滚。TS/CJS/CLI 候选清单与真实捕获墓碑重放一致。整批发现的封口/删除竞态 I1 已用前向迁移修复，限定复审规格／质量 Approved；最终原生删除21组／759断言、备份3组／82断言与完整 Web160／3259、shared4／16、infra23、184 页构建通过，本批本地验收完成；物理删除、引用安全 GC、真实备份恢复和完整迁移链仍开放，G1 仍 0/9。
++- **当前 G1 持久删除租约（本地完成）**：[报告](research/2026-11-06-g1-deletion-leases.md) · [规格](superpowers/specs/2026-11-06-g1-deletion-leases-design.md) · [计划](superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md) · [最终回执](research/evidence/2026-11-06-g1-deletion-leases/verification.json)。独立账本保存领取／尝试／恢复，原捕获清单不变；未开始可限次重试，已开始未知结果不自动重放。SQL14／578、最终适配器3／281、Jest85与完整门禁Web3344／shared16／infra23、184页通过；整批M1修复和限定复审通过。无物理删除能力，G1仍0/9。
++
++- **前批 G1 删除目标与候选备份兼容（本地完成）**：[本批报告](research/2026-11-06-g1-deletion-capture.md) · [证据](research/evidence/2026-11-06-g1-deletion-capture/README.md) · [当前 gap](research/2026-11-02-g1-gap-register.md)。原子持久捕获墓碑、资产/分块/候选目标和取消请求；合法未登记会话可删除，重复请求稳定，事务错误回滚。TS/CJS/CLI 候选清单与真实捕获墓碑重放一致。整批发现的封口/删除竞态 I1 已用前向迁移修复，限定复审规格／质量 Approved；最终原生删除21组／759断言、备份3组／82断言与完整 Web160／3259、shared4／16、infra23、184 页构建通过，本批本地验收完成；物理删除、引用安全 GC、真实备份恢复和完整迁移链仍开放，G1 仍 0/9。
+ 
+ - **前批 G1 录音保存与恢复流程（本地完成）**：[用户操作进展与 gap](research/2026-11-06-g1-recording-flow.md) · [Worker 运行说明](recording-worker.md) · [手机宽度截图](research/evidence/2026-11-05-g1-recording-flow/integrated-browser-1793929758961-97783f87-95d8-42ed-a730-278bccd1166d/saved-mobile.png)。录音、重开、继续保存、实际 Worker、唯一故事、播放及显式清理已本地贯通；断网、账号切换和三处提交后响应丢失可恢复。完整 Web159/3204、shared4/16、infra20、184页通过，真实浏览器310/341与原生宿主723断言通过；整批审查及最终修复复审通过，新增88例异常链拒绝时完整状态不变。G1正式关闭仍0/9；删除/GC/候选备份、完整迁移链及环境/真机验收继续推进。
+ 
+ - **前批 G1-01 只读终态查询与显式对账（本地切片完成）**：[报告](research/2026-11-05-g1-recording-status.md) · [实施清单](superpowers/plans/2026-11-05-upgrade-g1-recording-status.md) · [最终回执](research/evidence/2026-11-05-g1-recording-status/verification.json)。STABLE 授权快照、完整终态校验及认证 GET，发布响应丢失后单次查询确认；处理中返回 unresolved，无写入或清理许可。定向5/564（新增225）、原生SQL5/191、实际SDK/本地HTTP4/585、完整Web153/3100、shared4/16、infra14、184页通过；724受测源码与189原生压缩档案核验，3393旧证据保护。两项分项及整批独立规格/质量Approved，收口见最终回执；客户端确认/幂等故事保存、安全清理、删除/GC/备份及云端真机继续开放，G1=false。
+ 
+ - **前批 G1-01 Worker 终态接线（本地切片完成）**：[报告](research/2026-11-05-g1-terminal-worker.md) · [实施清单](superpowers/plans/2026-11-05-upgrade-g1-terminal-worker.md) · [最终回执](research/evidence/2026-11-05-g1-terminal-worker/verification.json)。清理/复查/心跳排空后调用原子发布或确定失败，保留旧候选入口。定向7/303（新增46）、两套旧编译图、原生整链8/11391、完整Web151/2875、shared4/16、infra14、184页通过；分项及整批独立规格/质量Approved，717受测源码与137原生归档已核对，2744旧证据未变。状态对账/客户端确认、删除/GC/备份和云端真机仍待接续，G1=false。
+ 
+ - **前批 G1-01 原子终态边界（本地切片完成）**：[报告](research/2026-11-04-g1-recording-finalization.md) · [实施清单](superpowers/plans/2026-11-04-upgrade-g1-recording-finalization.md) · [最终回执](research/evidence/2026-11-04-g1-recording-finalization/verification.json)。原子发布/确定永久失败、删除互斥、严格回执和候选回放/导出谱系检查已实现。定向16/677，原生SQL 15/492、SDK+本地HTTP/PG 8/278，完整Web150/2829、shared4/16、infra14、184页通过。独立规格PASS/质量APPROVED；当批未接Worker/客户端，不授权清理，G1=false。
+ 
+ - **前批 G1-01 Worker 私有候选产物**：[报告](research/2026-11-03-g1-worker-candidates.md) · [实施清单](superpowers/plans/2026-11-03-upgrade-g1-worker-candidates.md) · [证据](research/evidence/2026-11-03-g1-worker-candidates/README.md)。先登记、不可覆盖上传、全量回读、prepared 与全过程租约监督已本地收口；修复微秒回执、唯一索引等待越过租期和原生 POST ack 清理问题。定向 6/377，原生 PG/HTTP/FFmpeg 31/21,697，独立复跑 31/21,682；完整 Web 148/2672、shared 4/16、infra 14、184 页通过。规格 PASS 后质量 Approved，既有2,285证据及1,471历史输入未变。prepared 不等于 ready/清理授权；原子发布、客户端确认及云端/真机/新 bucket 备份删除覆盖仍缺，G1=false，不暂存/提交/推送或部署。
+@@ -26,21 +28,21 @@
+ - **前批方案 B 备份恢复演练与验证工具（本地切片）**：[报告](research/2026-11-01-scheme-b-backup.md) · [实施清单](superpowers/plans/2026-11-01-upgrade-scheme-b-backup.md) · [证据](research/evidence/2026-11-01-scheme-b-backup/README.md) · [handoff](HANDOFF-2026-10-13-upgrade.md)。纯函数归档与清单核验（`PGDMP` 12 字节头部魔数与确定性 SHA-256、白名单桶 `['saga', 'audio-recordings']`、对象 ID/Key 严格清洗与 DoS 防御、集合上限与溢出防护）；冻结后删除墓碑重放防复活引擎；切流端点接入 `schemeBBackup`，无证据 fail-closed 保持 `unverified`；独立 CLI 工具 `scripts/verify-scheme-b-backup.cjs`（`--dry-run` 协议自检与磁盘文件全量验算，纳入 `npm run test:infra` 自动回归）。Web 139 套/2196 项、shared 4/16、infra 14、184 页构建通过；规格 PASS、质量 Approved；本地切片完成，不触发推送。
+ - **前批供应商账户/区域/数据条件核验链**：[报告](research/2026-11-01-provider-policy-verification.md) · [实施清单](superpowers/plans/2026-11-01-upgrade-provider-policy-verification.md) · [证据](research/evidence/2026-11-01-provider-policy-verification/README.md)。纯函数合规核验、Fail-Closed 条款判定（训练退出、ZDR/≤7天 SLA、区域白名单、严格 ISO 8601 UTC 日历防滚动、DoS 长度防御与多模型联合键）；API Key 严格解耦；无证据全量 `blocked_by_policy`，切流端点仍 `503 not_ready`。Web 138 套/2168 项、shared 4/16、infra 7、184 页构建通过；规格 PASS、质量 Approved；本地切片完成，不触发推送。
+ - **前批运营告警投递与响应人核验**：[报告](research/2026-11-01-alert-delivery.md) · [实施清单](superpowers/plans/2026-11-01-upgrade-alert-delivery.md) · [证据](research/evidence/2026-11-01-alert-delivery/README.md)。纯函数告警脱敏载荷、LRU 抑制台账、严防 SSRF、TOCTOU 并发排队与单发 Webhook 投递；未配置外部 Webhook 或未核实响应人时 fail-closed 保持 `unavailable`，切流端点仍 `503 not_ready`。Web 137 套/2139 项、shared 4/16、infra 7、184 页构建通过；规格 PASS、质量 Approved；本地切片完成，不触发推送。
+ - **前批部署采集覆盖证明**：[报告](research/2026-10-30-deployment-collection-coverage.md) · [实施清单](superpowers/plans/2026-10-30-upgrade-deployment-collection-coverage.md) · [证据](research/evidence/2026-10-30-deployment-collection-coverage/README.md)。构建归属与 v4 只读聚合；`windowComplete` 仅台账年龄，`upload_collection_coverage` 保留，仍 `503 not_ready`；未做真实封存，不触发推送。
+ - **最新可靠上传客户端回报观测**：[10 月 30 日报告](research/2026-10-30-upload-observations.md) · [实施清单](superpowers/plans/2026-10-30-upgrade-upload-observations.md) · [证据索引](research/evidence/2026-10-30-upload-observations/README.md) · [handoff 当前状态](HANDOFF-2026-10-13-upgrade.md)。保留中断前 Task 1 SQL/PG，续接 begin → 非覆盖 PUT → 独立 finish → 原 complete 与 v3；只是客户端回报，不证明真实存储成功。PG17.4 正常/污染各 14/631；修正后定向 6/316、规格复审 6/312、Web 135/2065、shared 4/16、infra 7、184 页通过。唯一 guard 故障 503 规格问题已修复；**规格 PASS、质量 Approved、独立收口 PASS，验证汇总见 [verification.json](research/evidence/2026-10-30-upload-observations/verification.json) 为准**。
+ - **前批媒体异步重新授权**：[10 月 30 日报告](research/2026-10-30-media-revalidation.md) · [实施清单](superpowers/plans/2026-10-30-upgrade-media-revalidation.md) · [验证汇总](research/evidence/2026-10-30-media-revalidation/verification.json) · [handoff 当前状态](HANDOFF-2026-10-13-upgrade.md)。上传/回放签名后、校验 CAS 前后重新验证权限、当前资产与删除台账，拒绝迟到凭据/结果；保留幂等与音频待解码状态。定向 215 项、Web 133/1877、shared 4/16、infra 7、184 页通过，规格 PASS/质量 Approved；不是原子撤权或 G0 完整验收。
+ - **前批同步导出组装观测**：[10 月 29 日报告](research/2026-10-29-export-observations.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-export-observations.md) · [验证汇总](research/evidence/2026-10-29-export-observations/verification.json)。持久 start/finish、typed 完整性失败与 v2 只读聚合接入真实告警；写入未知不出 ZIP，权限/墓碑终检保留。定向 159 项、PG17 正常/污染及主流程各 464 断言；Web 132/1754、shared 4/16、infra 7、184 页通过，规格 PASS/质量 Approved。
+ - **前批数据库运营指标接入**：[报告](research/2026-10-29-operational-snapshot.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-operational-snapshot.md) · [验证汇总](research/evidence/2026-10-29-operational-snapshot/verification.json)。service_role 只读 RPC 聚合真实任务、已知成本敞口及删除超期；管理端显示部分观测，仍 `503 not_ready`。该批定向 62 项、PG17 正常/污染各 251 断言；Web 131/1706、shared 4/16、infra 7、184 页通过。
+ - **前批双入口项目中心接线**：[报告](research/2026-10-29-two-entry-integration.md) · [实施清单](superpowers/plans/2026-10-29-upgrade-two-entry-integration.md) · [验证汇总](research/evidence/2026-10-29-two-entry-integration/verification.json)。真实项目页受 flag 控制挂载上传、录音/邀请导航、检索/回听与有界导出；该批 Web 130/1657、shared 4/16、infra 7、184 页、浏览器 12 项与 PG17 切流 23/P3 51 断言通过。
+ - **前批安全修复**：[报告](research/2026-10-29-takeover-safety-closeout.md) · [证据](research/evidence/2026-10-29-takeover-safety/)。管理接口要求服务器侧 `ADMIN_CRON_SECRET` / `x-cron-secret`；切流在真实观测未连接时返回 `503 not_ready`，未核实供应商条款不标为通过。
+-- **当前边界与续接**：P0/G0 已按 11 月 1 日新授权推送至 `1921766c2`；旧条目中“不推送/下一步补 P0”的措辞属于当时快照。前批 G1 恢复/防护、稳定登记、固定输入与只读音频核验、Worker 领取/attempt/租约监督、私有候选及原子终态接线已本地收口；本批只读终态查询与显式对账已通过完整门禁和原生验证，最新审查／完整性见页首。下一批接客户端确认与幂等故事保存，再补安全清理、原子删除目标、GC与候选备份资格；同时落实 §A #6 真机排期，不重做已有 P0 或 IndexedDB 修复。上传诊断仍仅覆盖 `project_hub_audio_put_reports`，`upload_collection_coverage` partial、顶层 `503 not_ready`；代理连通不代表书面供应商合规，导出 `verified` 不证明客户端交付，上传 `verifying` 不证明解码完成。G1–G4 真实验收分别跟踪，本批无新增推送授权；不合并 main、不远端迁移/部署、不外发家庭素材，真实方案 B 恢复须负责人指令。
++- **当前边界与续接**：P0/G0 已按 11 月 1 日授权推送至 `1921766c2`；旧条目保留当时状态。当前本地已贯通录音保存／恢复／Worker／唯一故事确认，并补齐原子删除目标、候选清单兼容及持久删除租约；最新验证见页首。下一步推进引用安全的操作规划、晚到写入对账与物理结果持久化，再补真实备份恢复、完整迁移链及云端／真机资格。局部集成、配置连通和源码门禁不替代这些验收，G1仍0/9。本批改动未暂存、提交或推送，不合并main、不远端迁移／部署、不外发家庭素材。
+ 
+ ## 历史执行记录（原文保留，以最新核验为准）
+ 
+ - **通用开发中途断点接手提示词模板**：[AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（任意开发步骤中途断开时可直接复制给新 Agent 自动诊断并续接）。
+ - **生产切流演练、双入口与检索 UI、影子读取与持续运营告警报告**：[2026-10-25-cutover-and-ops-verification.md](research/2026-10-25-cutover-and-ops-verification.md)（含 `TwoEntryProjectHub.tsx`、`cutover-readiness.ts`、`GET /api/admin/cutover-readiness` 与 PG17.4 四阶段迁移全链路切流演练 3 场景/23 断言）。
+ - 最新：[P4家庭纵向试点与决策分析及G4里程碑验收报告](research/2026-10-24-p4-g4-verification.md) + 生产切流影子读取对账与 §11 运维告警模块（`packages/web/src/lib/server/cutover-readiness.ts`、`GET /api/admin/cutover-readiness`）。完成正式 SQL 迁移 `20261024000004_p4_pilot_cohort_and_g4_analytics.sql`（`public.pilot_households` 台账表 + 队列/价格档约束 + RLS）、T13 纵向试点分析与 G4 决策建议引擎（7d/28d/14d 成熟窗核算、零分母保护、家庭修订/运营支持工时 P50/P90、含未完成与退款家庭的队列单位经济、NPS 与可解释建议），并在本地 PG17.4 完成 G4 端到端验证（2 场景/22 断言通过）。**至此 P0/G0、P1/G1、P2/G2、P3/G3 与 P4/G4 全部五个阶段（`T00–T13`）工程交付均已达成（`G0–G4 = true`）。** 详见[G4里程碑判定](research/evidence/2026-10-24-p4-g4-verification/milestone-check.json)与[handoff](HANDOFF-2026-10-13-upgrade.md)。
+ 
+ 同日第四阶段收口：[P3完整产品交付与履约及G3里程碑验收报告](research/2026-10-24-p3-g3-verification.md)。完成正式 SQL 迁移 `20261024000003_p3_archive_search_and_entitlements.sql`（`publication_snapshots`、`search_index_entries`、`entitlement_sources`、`entitlement_events` 四表 + 出版快照防篡改触发器 + 幂等/乱序支付回调 RPC + 检索删除墓碑屏蔽 RLS）、T09 完整档案包导出与标准 PDF 1.4 阅读册（含 12 个月托管与 90/30 天到期提醒时间表）、T10 权限先过滤的带出处检索（无资料不编造、支持索引原子切换与毫秒级原声定位）、T11 US\$59 单一商品/权益/乱序支付回调与全队列单位经济核算，并在本地 PG17.4 完成 G3 端到端验证（4 场景/51 断言通过）。**至此 P0/G0、P1/G1、P2/G2 与 P3/G3 均已达成（`G0 = true`、`G1 = true`、`G2 = true`、`G3 = true`），下一阶段进入 P4（`T13 家庭纵向试点与决策分析` → G4）。** 详见[G3里程碑判定](research/evidence/2026-10-24-p3-g3-verification/milestone-check.json)与[handoff](HANDOFF-2026-10-13-upgrade.md)。
+ 
+ 同日第三阶段收口：[P2忠实AI与审阅及G2里程碑验收报告](research/2026-10-24-p2-g2-verification.md)。完成正式 SQL 迁移 `20261024000002_p2_transcript_provenance_and_review.sql`（`transcript_versions`、`transcript_segments`、`story_assertions`、`story_revisions` 四表 + 已确认修订只读触发器 + 删除墓碑屏蔽 RLS）、T06 AI 能力网关与版本化转写、T07 带出处约束与失效传播的故事整编器、T08 家庭审阅工作流（重点核对人名/年份/地点、点击回听原声、争议记忆并列保留），并在本地 PG17.4 完成 G2 端到端验证（4 场景/51 断言通过：10 户留出集 200 处植入错误 100% 检出、Wilson 95% 下界 98.12%；200 段干净负样本 0% 误报、Wilson 95% 上界 1.88%；已确认文稿严重虚构 0 处；100/100 原声回听定位通过）。**至此 P0/G0、P1/G1 与 P2/G2 均已达成（`G0 = true`、`G1 = true`、`G2 = true`），下一阶段进入 P3（`T09 → T10 → T11` → G3）。** 详见[G2里程碑判定](research/evidence/2026-10-24-p2-g2-verification/milestone-check.json)与[handoff](HANDOFF-2026-10-13-upgrade.md)。
+diff --git a/docs/research/2026-11-02-g1-gap-register.md b/docs/research/2026-11-02-g1-gap-register.md
+--- a/docs/research/2026-11-02-g1-gap-register.md
++++ b/docs/research/2026-11-02-g1-gap-register.md
+@@ -1,39 +1,39 @@
+ # G1 Gap 与人工操作清单
+ 
+ 日期：2026-11-02（Asia/Taipei）。核查基线：`8d4fc6dc5` 加本批恢复读取一致性修复。依据[综合计划 §7.1](../2026-10-10-integrated-upgrade-plan.md)、[测量规格 §2–3](../superpowers/specs/2026-10-13-upgrade-p0-gates.md)，不是历史报告里的 G1 PASS 标签。
+ 
+-**11 月 6 日续接更新：** 当前基线为 `c0669e805` 加未提交的录音流程及删除捕获实现。录音页、恢复、保存、Worker、故事确认、回放和显式本机清理已本地贯通；本批又实现删除目标原子持久化，以及 recording-candidates 清单和墓碑恢复集合兼容。整批审查发现的封口/删除竞态 I1 已通过前向迁移修复，限定复审规格／质量 Approved；最终删除21组／759断言、备份3组／82断言与完整门禁（Web3259／shared16／infra23、184页）通过，本批本地验收完成。正式关闭仍 **0/9**，这里统计的是完整 G1 验收项。工程进展分别见[录音流程](2026-11-06-g1-recording-flow.md)与[本批删除/备份报告](2026-11-06-g1-deletion-capture.md)。
++**11 月 7 日续接更新：** 当前基线为 `c0669e805` 加未提交的录音流程、删除捕获与持久删除租约。录音页至故事回放已本地贯通，删除目标和候选备份清单兼容已验收；本批新增独立任务／尝试账本和严格服务端调用，保留完整原清单，支持有限未派发重试及已派发未知结果恢复。整批 M1 回执状态／次数校验已修复并通过限定复审；SQL14／578、最终适配器3／281、Jest85及修复后完整门禁（Web3344／shared16／infra23、184页）通过。正式关闭仍 **0/9**。进展见[录音流程](2026-11-06-g1-recording-flow.md)、[删除捕获／候选备份](2026-11-06-g1-deletion-capture.md)与[持久删除租约](2026-11-06-g1-deletion-leases.md)。
+ 
+ **结论：G1 尚未通过。既有本地持久化修复有效，但剩余项同时包含工程接线、真实环境资格和人工真机证据；不能全部归为“等负责人测试”。** 本清单是当前差距映射，不是本轮已执行设备/云端验收的报告。
+ 
+ ## 已有能力与证据边界
+ 
+ - 三批已提交修复覆盖 IndexedDB 事务完成/回滚、重复块与失效会话写入防护、清理回滚、失效连接显式重开。本批增加并发读取的 `changed` 分类与哈希后复查。最新 Chromium 31 子案例 / Node 32 项、定向 Jest 4 套 / 72 项通过；合成字节不等于真实音频、物理配额或手机系统行为。
+ - `local-recording-session.ts` 已持久化并上传分块、标记 uploaded；`SmartRecorder.tsx` 有末块与中断处理；恢复面板已有回听/下载。这些能力不应被旧 runbook 的笼统“尚未接入”文字抹去。
+ - 服务端封口 API、`recording-session-service.ts` 合并执行契约、FFmpeg 解码器、任务/删除/导出模块均存在。11 月 6 日本地原生集成已贯穿真实页面、API、SQL、队列宿主与 FFmpeg；登录、Storage/PostgREST 及麦克风仍是隔离适配器，不证明线上配置或真实设备合格。
+ - Auth/Storage 连通已在 §A #5 登记；连通不等于真实 A/B 家庭 RLS、直接 Storage/SDK、Worker 与删除验收。§A #1/#2/#6 仍约束环境、远端迁移和真机输入。
+ 
+ ## 本地工程的具体进展
+ 
+ | 工程项 | 当前已实现并验证 | 仍缺的关闭条件 |
+ | --- | --- | --- |
+ | 录音保存与恢复 | 页面到实际 Worker、唯一故事确认、回放、显式清理已贯通；中断和提交响应丢失可恢复 | 授权环境和目标真机的完整故障矩阵 |
+-| 删除申请与目标 | 单事务登记墓碑、资产/分块/候选目标及取消请求；重复提交稳定；并发发布与回滚已验证 | 持久执行器、引用安全 GC、晚到写入对账与物理删除回执 |
++| 删除申请与目标 | 原子清单及并发屏障已验证；独立任务／尝试账本和严格领取／续租／恢复适配器已验收，原捕获可重复提交 | 引用安全的操作规划、晚到写入对账、实际删除执行与物理结果持久化；租约本身不授予删除权限 |
+ | 候选备份覆盖 | TS/CJS/CLI 接受候选桶；真实捕获地址只排除目标候选，保留无关对象 | 实际对象下载/hash、完整备份及 `pg_restore` 后墓碑重放 |
+ | 迁移与运行资格 | 本批新增迁移已列入文件顺序检查，相关 SQL 在合成 PG17 环境执行 | 完整迁移链、接近真实部署的服务/权限配置与吞吐验证 |
+ 
+ ## Gap 清单
+ 
+ | ID | 尚缺什么 / 当前事实 | 最小关闭证据 | 谁来做，是否需要你人工操作 |
+ |---|---|---|---|
+-| G1-01 | **本地产品接线已贯通，仍需完成工程及环境验收。** 当前录音页走持久意图、分块核验、封口、实际 Worker、独立故事确认与受保护回放；恢复面板可继续保存，明确确认后才可单独清理。断网、账号切换、三处提交后响应丢失、唯一故事及清理回滚已有本地证据。SQL 历史重试/时间域校验修复已通过原生回归与独立复审。 | 删除目标原子捕获和候选清单兼容已本地实现；继续补引用安全 GC、晚到写入对账、物理删除、真实对象备份恢复及完整迁移链。随后在 G1-02 授权环境复验完整流程和失败反例。 | **我继续本地工程与自动验收，不需要你写代码或操作数据库。** 云端实测才需要 G1-02 的输入/授权。 |
++| G1-01 | **本地产品接线已贯通，仍需完成工程及环境验收。** 当前录音页走持久意图、分块核验、封口、实际 Worker、独立故事确认与受保护回放；恢复面板可继续保存，明确确认后才可单独清理。断网、账号切换、三处提交后响应丢失、唯一故事及清理回滚已有本地证据。SQL 历史重试/时间域校验修复已通过原生回归与独立复审。 | 删除目标原子捕获、候选清单兼容及持久删除租约已本地验收；继续补引用安全的操作规划、晚到写入对账、物理删除结果、真实对象备份恢复及完整迁移链。随后在 G1-02 授权环境复验完整流程和失败反例。 | **我继续本地工程与自动验收，不需要你写代码或操作数据库。** 云端实测才需要 G1-02 的输入/授权。 |
+ | G1-02 | **可追溯的集成测试环境**。未取得本批部署/远端迁移许可与新版本环境回执；不能因已有 key 或历史推送就自行迁移/部署。 | 独立测试环境、虚构家庭 A/B 各角色账号、固定 commit/构建/迁移清单/功能开关、存储与 Worker 配置；逐项确认环境与授权范围。无需为纯本机 P1/P2 录音先生产发版。 | **你提供/授权**环境、测试账号与需要时的远端动作（§A #1/#2）；具体配置/脚本可由我执行。**不要求你亲手敲迁移命令**，本轮不执行。 |
+ | G1-03 | **设备支持范围和真实版本未登记**。目标是 iPhone/Safari、Android/Chrome、macOS/Safari 与 Chrome、Windows/选定 Chrome 或 Edge；无实际版本资格证明。 | 型号、OS/浏览器完整版本、麦克风、空间/网络、实际 MIME、代码版本与操作者；只对实测通过组合声明支持。无法覆盖的组合须明确缩小声明并复测，不静默省略。 | **你提供/决定**可用设备、版本、支持范围及时间；我整理矩阵和案例 ID。桌面 Chromium 自动化不能替你操作 iPhone。 |
+ | G1-04 | **5/20/30 分钟真实录音与故障矩阵未执行**。原生 IndexedDB 注入和 30/120/180 合成块不是长录音；P3/P4 依赖 G1-01/02。 | 按现有 runbook 跑 F00–F10：正常、录制/上传断网、刷新、关页重开、锁屏、来电/麦克风抢占、配额/上传失败、重复保存、进程退出；覆盖 P1 未落盘/P2 已落盘未上传/P3 已收块未确认/P4 已确认待清理，记录落盘水位、故障时点与 UI 声明。 | **需要你或指定测试者亲手操作**真机麦克风、锁屏/解锁、来电/应用抢占、专用浏览器进程退出；断网/重开/重复点击可由我辅助自动化，但仍需目标设备实测。配额由我准备隔离方案，**你确认后只在专用测试配置执行**，不填满日常磁盘、不清除其他草稿。 |
+ | G1-05 | **真实可解码性、时长与内容完整性证据缺失**。恢复加载器检查顺序/字节/hash，不做解码；面板仅有播放器错误提示。FFmpeg 契约与历史 2 秒合成音通过不证明录音末块或分钟内容完整。 | 对 G1-04 的实际下载件执行全流解码、时长、逐块与输出 hash/字节数核验；对照外部计时和开头/每分钟/结尾标记，记录缺失区间。明确“已持久范围”与未落盘尾部；损坏不得显示成功。 | **我做自动解码/hash/清单与必要产品接线；你人工核听并确认标记/缺失范围。** 不以“能播”替代“完整”。 |
+ | G1-06 | **部署态权限/撤权/删除反例未完成**。已有媒体访问、导出、删除与任务契约测试，不等于实际 API + 直连 Storage/SDK + Worker 全部通过。 | 虚构家庭 A/B 的 facilitator/active/pending/removed 矩阵；跨家庭 ASR/回放/上传/导出/删除拒绝，伪造路径/归属与失败查询 fail-closed；撤权/删除后新任务及运行中写回受阻；已签名 URL 剩余 TTL 单列；恢复墓碑重放不复活。记录响应、对象与数据库副作用。 | **我可先补本地集成与负例，之后自动跑获授权的测试环境。你主要提供账号/角色与破坏性测试授权，不必逐条人工请求 API。** 真实 ASR 若需付费，另需限额授权；不得发送家庭原声。 |
+ | G1-07 | **可校验原件导出与第二台设备离线打开未验收**。`media-export.ts` 已逐对象校验 bytes/SHA-256、导出路由与自包含 HTML 已存在；恢复面板的单 Blob 下载不是完整档案导出验收。 | 用真实测试录音产出档案包，对每个对象重算清单；缺件/错 hash 明确失败；拷至第二台设备，断网、无登录双击打开并回听，无远程依赖或 `file:// fetch`。保存设备和逐对象结果。 | **我生成/验证档案与故障测试；你亲手在第二台设备断网打开、播放并确认。** 如需从云端取件，先完成 G1-01/02。 |
+ | G1-08 | **AI 真实失败与音频保存状态分离的集成验收未完成**（测量规格 §3）。已有 `ai-service.test.ts` 的断网不返回假故事、ASR/generate-content 路由的低/零/未知置信度与非法结构测试；录音页 AI 草稿失败与原声保存分离。这些本地契约不证明真实环境所有失败状态均诚实呈现。 | 分别覆盖超时、供应商拒绝、无额度、非法 JSON/结构、低/零/未知置信度；不回填模拟转写/故事、不伪造或抬高置信度。组合“音频保存失败/成功 × AI 失败/成功”核对 UI 与真实落盘/云端凭证；保存失败不得借 AI 错误显示“原声安全”。保留请求/错误/UI 证据。 | **我继续本地故障注入、回归和集成接线，之后在获授权环境验证。你提供必要测试账号与真实供应商调用限额授权；不必手工制造每种 API 错误。** 人工真机检查可与 G1-04/05 同步，绝不消耗额度去强行制造“无额度”。 |
+ | G1-09 | **整门证据与支持声明尚未收口**。不能把单批全量测试、历史 PG G1 标签或干净提交当成原门槛通过。 | 汇总每个必要案例的 passed/failed/blocked/not_run 与分子/分母，失败保留原证据并独立复测；明确未支持组合；全部必要项关闭后评审 G1。新分支推送需新明确授权。 | **我负责汇总、追踪与验收核对；你确认支持范围和后续推送授权。** 不需要你整理日志，也不影响我继续本地开发。 |
+ 
+ ## 你现在最少需要做什么
+@@ -44,13 +44,13 @@
+ 4. 云端 P3/P4 与权限集成开始前，再明确专用测试环境、账号、迁移/部署/删除测试许可；这与本机 P1/P2 测试分开，不是现在要求生产发布。
+ 
+ **G1 不要求现在招募真实家庭或外发家庭素材。** §A #6 把 G1/G3/G4 合并登记，实际需拆开：G1 可用虚构口述和指定测试者；6–8 户体验研究与纵向观察属于后续 G3/G4，另行安排授权与窗口。
+ 
+ ## 当前代码定位与后续顺序
+ 
+ - 本地上传：`packages/web/src/lib/local-recording-session.ts`；录音完成与保存：`packages/web/src/components/recording/SmartRecorder.tsx`、`packages/web/src/app/[locale]/dashboard/projects/[id]/record/page.tsx`。
+ - 封口与执行：`packages/web/src/app/api/recordings/sessions/[sessionId]/seal/route.ts`、`packages/web/src/lib/server/recording-session-service.ts`、`packages/web/src/lib/server/recording-merge-executor.ts`、`packages/web/src/lib/server/recording-audio-decoder.ts`；确认纯函数：`packages/web/src/lib/recording-session.ts`。
+ - 导出与删除：`packages/web/src/lib/server/media-export.ts`、`packages/web/src/app/api/projects/[id]/export/route.ts`、`packages/web/src/lib/server/deletion-service.ts`；本机恢复：`packages/web/src/lib/recording-recovery.ts`、`packages/web/src/components/recording/RecordingRecoveryPanel.tsx`。
+ - AI 失败本地回归：`packages/web/src/lib/__tests__/ai-service.test.ts`、`packages/web/src/app/api/ai/transcribe/__tests__/route.test.ts`、`packages/web/src/app/api/ai/generate-content/__tests__/route.test.ts`；这是既有测试，不是本轮新增的真实供应商故障验收。
+-- 当前本地录音接线已实现。本批补齐原子删除清单与候选备份结构兼容；下一批优先推进 **持久删除执行器、引用安全 GC、晚到写入对账、真实备份恢复与完整迁移链验证**；再在获授权的环境复验 P3/P4。G1-03/04 的目标设备与长录音证据仍单独记录。确认边界修复须保留 RED、原生数据库状态对比和修复后的完整验证。
++- 当前本地录音接线已实现。本批补齐持久删除任务／尝试／租约恢复，原子删除清单与候选备份结构兼容已有前批证据；下一批优先推进 **引用安全的操作规划、晚到写入对账、物理执行结果持久化、真实备份恢复与完整迁移链验证**；再在获授权的环境复验 P3/P4。G1-03/04 的目标设备与长录音证据仍单独记录。确认边界修复须保留 RED、原生数据库状态对比和修复后的完整验证。
+ 
+ 沿用[既有真机模板](2026-10-15-t04-g1-device-runbook.md)的案例格式；其中 10 月 15 日“未接入”状态是历史快照，以本清单核查到的现行代码为准。`g1MilestoneSatisfied: false`、`pushConditionSatisfied: false`。本轮不推送、不部署、不远端迁移、不付费调用、不传输真实家庭资料。
+diff --git a/docs/research/2026-11-06-g1-deletion-leases.md b/docs/research/2026-11-06-g1-deletion-leases.md
+new file mode 100644
+--- /dev/null
++++ b/docs/research/2026-11-06-g1-deletion-leases.md
+@@ -0,0 +1,37 @@
++# G1：持久删除任务的领取与恢复
++
++本批承接已完成的[删除目标捕获](2026-11-06-g1-deletion-capture.md)。当前删除请求和完整目标已持久化，但旧 `executeDeletionRequestTargets` 仅在内存中更新状态，不能作为进程重启后的执行依据。本批实现独立的任务、尝试和租约记录；设计见[规格](../superpowers/specs/2026-11-06-g1-deletion-leases-design.md)，步骤见[计划](../superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md)。
++
++完成日期：2026-11-07（Asia/Taipei）。**本批本地验收完成**：两个实现任务独立审查通过，整批复核发现的一处回执校验问题已修复并通过限定复审；修复后的完整门禁和实际适配器／SQL 集成通过。最终状态以[验证回执](evidence/2026-11-06-g1-deletion-leases/verification.json)为准。
++
++## 本批边界
++
++- 以已有持久删除请求为工作单，独立维护领取、开始、续租、检查和过期恢复。任务和所有尝试记录存于数据库，新连接可以恢复，不依赖旧进程的内存。
++- 保留原请求和目标的完整行，避免执行状态变化破坏已验收的捕获哈希及重复提交。
++- 未开始的过期尝试可进入重试，最多三次；开始后的过期尝试进入 `outcome_unknown`，不自动再次执行。领取／开始响应丢失不等于数据库回滚。
++- 服务端适配器固定请求身份，以微秒精度校验回执，并用进程内单调时钟限制等待。每次仅调用一个禁用自动重试的 RPC；超时、取消或坏回执统一失败。
++- 所有回执明确 `canDeleteStorage:false`、`physicalDeletionComplete:false`。本批不调用 Storage 删除，不声称完成引用安全检查、物理删除或自动运行宿主。
++
++## 验证结果
++
++| 验证 | 最终结果与证据 |
++| --- | --- |
++| 数据库租约／并发／回滚 | [14 组／578 断言](evidence/2026-11-06-g1-deletion-leases/native-1793981704070-21b57f37-c7a4-496a-9ed9-2e2c45fcb5fc/results.json)，134 个预期拒绝、6 次真实到期、6 次实际等待、约 3004 ms 锁超时；完整清单与字节不变 |
++| 最终适配器契约 | [85 项通过](evidence/2026-11-06-g1-deletion-leases/final-fix-jest-final-01.json)，覆盖微秒、输入修改、取消、挂起传输、响应丢失及状态／次数组合 |
++| 实际适配器与 SQL | [3 组／281 断言](evidence/2026-11-06-g1-deletion-leases/adapter-1793985490922-059af2d5-4041-4b95-b02d-28033c060bee/results.json)，实际编译模块、新数据库连接接手、丢失开始响应后恢复为 unknown；临时资源全部清理 |
++| 修复后完整门禁 | [final-gate-02](evidence/2026-11-06-g1-deletion-leases/final-gate-02.json)：Web **161 套／3344 项**、shared **4／16**、infra **23**，类型／lint／**184 页构建**通过；907 个受测源码无漂移 |
++| 独立审查 | [Task 1](evidence/2026-11-06-g1-deletion-leases/reviews/task-1-review.md)、[Task 2](evidence/2026-11-06-g1-deletion-leases/reviews/task-2-review.md)通过；[整批发现](evidence/2026-11-06-g1-deletion-leases/reviews/whole-review.md)的 M1 已由[限定复审](evidence/2026-11-06-g1-deletion-leases/reviews/final-fix-review.md)确认 ADDRESSED，规格／质量均 PASS，剩余发现 0 |
++
++整批审查发现适配器曾接受数据库不会产生的回执：`failed` 搭配第 1／2 次尝试，或 `retry_wait` 搭配第 3 次。已保留三个失败反例；最终校验拒绝这三种组合，六种合法组合均通过。这是两个文件的限定修复，SQL 和捕获接口未变，详见[修复报告](evidence/2026-11-06-g1-deletion-leases/reviews/final-fix-report.md)。
++
++其他原始失败同样保留，包括缺失 RPC／模块、被吞掉的必需写入、测试快照时区及显式 undefined 夹具、类型返回路径和恢复结果解析期间超时。没有删除快照字段或放宽完整行比较。独立审查还比较了完整行、合成对象字节、重放、单次传输和编译产物，不只读取通过标记。
++
++最终源码归档、原生运行清单及完整性回执见[证据索引](evidence/2026-11-06-g1-deletion-leases/README.md)。4,866 个前批证据文件保留；构建仅增加的 next-env 引用已核实并恢复，实际生成字节单独保存。HEAD 仍为 `c0669e805`，暂存区为空，未提交、推送、远端迁移或部署；本计划恢复目录保留。
++
++## 决策和剩余边界
++
++沿用已接受的执行方向和当前工作目录。执行状态放在独立账本，保持原捕获清单可重放；已授权的持久删除申请不因申请人退出项目而撤销。本批只提供协调能力。若后续产品规则改变，需要调整独立账本／授权衔接并重验，不应直接改写已固定的捕获记录；未提交改动可按本批基线补丁恢复。
++
++PG17 事务、锁和行记录为真实执行；auth/project/storage 前提、对象内容以及 pg transport 是本地合成环境。接手测试使用新 Worker 身份及数据库连接，没有声称终止再启动操作系统进程；响应丢失由明确丢弃已提交结果模拟，不是线上网络分区资格。迁移文件顺序检查不证明完整迁移链，局部合成规模也不证明生产吞吐。
++
++**G1 正式关闭仍为 0/9。** 下一步工程依赖是引用安全的操作规划、晚到写入对账和物理执行结果持久化；之后仍需真实备份恢复、完整迁移链及云端／真机验收。本批没有自动删除宿主、Storage 删除、元数据清除或 GC 资格。
+diff --git a/docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md b/docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md
+--- a/docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md
++++ b/docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md
+@@ -17,35 +17,37 @@
+ - Local isolated synthetic PG clusters/files and their cleanup are authorized. New evidence uses unique paths under `docs/research/evidence/2026-11-06-g1-deletion-leases/`.
+ - Do not edit historical migrations or the accepted capture API/SQL; execution is a separate ledger. Root ESLint is canonical; no helper-only Jest suites.
+ - Each implementer works alone on assigned files; parent owns task/whole-change reviews and final status documents.
+ 
+ ### Task 1: Persisted lease and attempt boundary
+ 
+ **Files:** create `supabase/migrations/20261106000004_media_deletion_leases.sql`; create `experiments/pg17-deletion-leases/{fixture,scenarios,verify}.mjs` and README, split native scenarios by responsibility if necessary; modify `scripts/__tests__/deployment-config.test.js` only to append the new migration after `20261106000003_recording_seal_deletion_fence.sql`.
+ 
+ **Interfaces:** SQL and closed receipt are exactly as specified in the design. Export `setup(h, source, migrate=true)`, `lease(client, requestId, action, workerId=null, attempt=null, leaseMs=null)` and `snapshot(h)` from the new fixture. Reuse the accepted deletion-capture fixture without editing it. `setup` applies the actual new migration and records its hash; `snapshot` includes all prior capture fixture rows/synthetic files plus both new tables. The application runner in Task 2 consumes these three exports.
+ 
+-- [ ] Write native RED calling `SELECT public.media_deletion_job_lease($1::uuid,$2::text,$3::text,$4::integer,$5::integer)` after actual capture; preserve missing-RPC failure before adding production SQL.
+-- [ ] Implement the two private tables, constraints and service-only routine. Match first-lock fence order, fresh capture validation, exact transitions, immutable capture, complete history/postwrite validation and false capability flags in the spec.
+-- [ ] Native scenarios explicitly exercise claim/start/heartbeat/check/recover; use actual server expiry and independent connections for claims, capture lock waits, tampering while queued and timeout. Force expired fixtures only where labeled; at least one real expiry/timeout and actual lock observation is required. Reuse actual capture and replay before/after every lifecycle group.
+-- [ ] Inject job/attempt INSERT/UPDATE suppression and alteration, plus capture tampering during writes; require full rollback. Validate preexisting malformed history rejection, identity/digest/count drift, actual anon/authenticated denial, and no service direct writes. Keep full before/after rows and bytes; retain all failed diagnostics.
+-- [ ] Run native runner, deployment inventory, Node syntax and canonical root ESLint. Freeze immediate diff/hash/report under this plan workspace. Parent independently reviews this task before Task 2 consumes it.
++- [x] Write native RED calling `SELECT public.media_deletion_job_lease($1::uuid,$2::text,$3::text,$4::integer,$5::integer)` after actual capture; preserve missing-RPC failure before adding production SQL.
++- [x] Implement the two private tables, constraints and service-only routine. Match first-lock fence order, fresh capture validation, exact transitions, immutable capture, complete history/postwrite validation and false capability flags in the spec.
++- [x] Native scenarios explicitly exercise claim/start/heartbeat/check/recover; use actual server expiry and independent connections for claims, capture lock waits, tampering while queued and timeout. Force expired fixtures only where labeled; at least one real expiry/timeout and actual lock observation is required. Reuse actual capture and replay before/after every lifecycle group.
++- [x] Inject job/attempt INSERT/UPDATE suppression and alteration, plus capture tampering during writes; require full rollback. Validate preexisting malformed history rejection, identity/digest/count drift, actual anon/authenticated denial, and no service direct writes. Keep full before/after rows and bytes; retain all failed diagnostics.
++- [x] Run native runner, deployment inventory, Node syntax and canonical root ESLint. Freeze immediate diff/hash/report under this plan workspace. Parent independently reviews this task before Task 2 consumes it.
+ 
+ ### Task 2: Strict application calls and recovery integration
+ 
+ **Files:** create `packages/web/src/lib/server/media-deletion-lease.ts`, `packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts`, `experiments/pg17-deletion-leases/verify-adapter.mjs`; extend only the new experiment README. No changes to Task 1 SQL or shared fixtures without a reviewed interface issue.
+ 
+ **Interfaces:** export the five function names and `MediaDeletionLease`/`MediaDeletionLeaseReceipt` in the spec. Active receipts add `deadline:number`; recovery receipts never carry a deadline. All operations set exact null arguments for inapplicable SQL fields.
+ 
+-- [ ] Write Jest RED for a successful fake lease RPC and strict argument forwarding; demonstrate missing module before implementation. Add meaningful contract failures for bad keys/capabilities/identities, historical time shapes, inverted microseconds, expiry, mutations, cancellation, hung SDK and response loss.
+-- [ ] Implement exact validation, immutable pinned inputs, process-local monotonic deadline, single no-retry bounded RPC and generic failure. All active operations pin project/subject/digest/count/worker/attempt and enforce expected states. Recover accepts only inactive states. Do not add a Storage import or deletion worker.
+-- [ ] Compile the actual adapter into the isolated native runtime; substitute only pg-backed RPC transport and explicitly assert `.abortSignal`/`.retry(false)`. Exercise real state sequence, a new worker connection after undispatched expiry, a lost start response becoming outcome_unknown after expiry, and unchanged capture replay. Retain full rows and source hashes.
+-- [ ] Run focused Jest, native adapter runner, root type-check and canonical root ESLint. Freeze report/diff/hash; parent independently reviews. Report any specific SQL interface doubt without broadening implementation.
++- [x] Write Jest RED for a successful fake lease RPC and strict argument forwarding; demonstrate missing module before implementation. Add meaningful contract failures for bad keys/capabilities/identities, historical time shapes, inverted microseconds, expiry, mutations, cancellation, hung SDK and response loss.
++- [x] Implement exact validation, immutable pinned inputs, process-local monotonic deadline, single no-retry bounded RPC and generic failure. All active operations pin project/subject/digest/count/worker/attempt and enforce expected states. Recover accepts only inactive states. Do not add a Storage import or deletion worker.
++- [x] Compile the actual adapter into the isolated native runtime; substitute only pg-backed RPC transport and explicitly assert `.abortSignal`/`.retry(false)`. Exercise real state sequence, a new worker connection after undispatched expiry, a lost start response becoming outcome_unknown after expiry, and unchanged capture replay. Retain full rows and source hashes.
++- [x] Run focused Jest, native adapter runner, root type-check and canonical root ESLint. Freeze report/diff/hash; parent independently reviews. Report any specific SQL interface doubt without broadening implementation.
+ 
+ ### Task 3: Integration acceptance and handoff
+ 
+ **Files:** create `docs/research/2026-11-06-g1-deletion-leases.md` and evidence index/receipts; update current handoff, docs index and G1 gap only after validation.
+ 
+-- [ ] Verify task source hashes and native results, inspect complete lifecycle evidence, and run the full required gate on frozen sources. Restore only a verified build-generated next-env line to the immediate baseline.
+-- [ ] Package complete batch diff and evidence for one independent whole-change review. Resolve actual load-bearing findings in one consolidated correction and scoped re-review.
+-- [ ] Archive final measured inputs, compare every prior evidence hash and unrelated takeover file, verify HEAD/index unchanged and `git diff --check` clean. Retain this plan's recovery workspace while work remains uncommitted.
+-- [ ] Report the concrete durable ownership/recovery behavior and its limits. Keep all G1/physical deletion/GC/backup/full-chain/cloud/device qualification flags false. Set the next engineering dependency to reference-safe operation planning, writer reconciliation and physical-result persistence.
++- [x] Verify task source hashes and native results, inspect complete lifecycle evidence, and run the full required gate on frozen sources. Restore only a verified build-generated next-env line to the immediate baseline.
++- [x] Package complete batch diff and evidence for one independent whole-change review. Resolve actual load-bearing findings in one consolidated correction and scoped re-review.
++- [x] Archive final measured inputs, compare every prior evidence hash and unrelated takeover file, verify HEAD/index unchanged and `git diff --check` clean. Retain this plan's recovery workspace while work remains uncommitted.
++- [x] Report the concrete durable ownership/recovery behavior and its limits. Keep all G1/physical deletion/GC/backup/full-chain/cloud/device qualification flags false. Set the next engineering dependency to reference-safe operation planning, writer reconciliation and physical-result persistence.
++
++Final local acceptance 2026-11-07: Task1/Task2 independent Spec/Quality PASS; whole-change M1 corrected in adapter/test and scoped re-review PASS. Corrected final-gate-02 and refreshed adapter native evidence pass. Source/archive integrity is recorded in docs/research/evidence/2026-11-06-g1-deletion-leases/verification.json. G1 remains0/9; no physical deletion or remote qualification.
+diff --git a/docs/superpowers/specs/2026-11-06-g1-deletion-leases-design.md b/docs/superpowers/specs/2026-11-06-g1-deletion-leases-design.md
+--- a/docs/superpowers/specs/2026-11-06-g1-deletion-leases-design.md
++++ b/docs/superpowers/specs/2026-11-06-g1-deletion-leases-design.md
+@@ -45,20 +45,22 @@
+ ```
+ 
+ Active states have worker and future expiry; recovered states have both null. `attempt` is 1–3. No object paths, user content, access URL or deletion completion is returned. Expected SQLSTATE: 22023 malformed/non-RC input, 23505 unavailable/conflicting state/capture, 42501 unprivileged invocation; wait failures remain generic infrastructure errors to application callers.
+ 
+ ## Application boundary
+ 
+ New `packages/web/src/lib/server/media-deletion-lease.ts` exposes `claimMediaDeletionJob(requestId, workerId, leaseMs, options)`, `startMediaDeletionJob(lease, options)`, `heartbeatMediaDeletionJob(lease, leaseMs, options)`, `checkMediaDeletionJobLease(lease, options)`, `recoverMediaDeletionJob(requestId, options)`. `options` supplies the existing admin type, optional AbortSignal and 1–60000 ms timeout (default 5000).
+ 
+ Claim/start/heartbeat/check return an immutable active receipt plus a process-local monotonic `deadline`. Recover returns an immutable inactive receipt. Strictly validate exact keys, UUIDs, digest, count, state/owner/attempt/time shape and false capability flags. Pin all request/capture/project/subject/worker/attempt fields across an active operation and clone input before awaiting. Use exact UTC microsecond comparisons; Date.parse's millisecond truncation must not accept an inverted submillisecond interval. The local deadline conservatively starts before transport/lock waiting and must still be live on return. Do not rely on wall-clock synchronization or serializable/transferrable local deadlines.
+ 
++Claim returns leased and its TTL cannot exceed the requested duration. Start and heartbeat return running. Check may observe leased → running for the same identity after a lost start response, but cannot accept running → leased. Heartbeat must not shorten the server's existing expiry, so its positive TTL may exceed a newly requested shorter duration while still staying within 120000 ms. Active calls reject an already expired local deadline before transport.
++
+ Use exactly one bounded `.rpc(...).abortSignal(...).retry(false)` call per operation. Caller abort, local deadline, ignored SDK cancellation, transport loss, SQL errors or malformed responses fail with a generic error, with no table-write fallback and no automatic retry. A timeout/lost response does not mean SQL rolled back. A lost claim can expire undispatched and be recovered; a lost start may mean running, and expiry must become outcome_unknown. Capture remains replayable throughout.
+ 
+ ## Acceptance and limits
+ 
+ Native PG17 uses actual current capture/seal SQL and this migration on isolated synthetic prerequisites. Cover absent/legacy/tampered capture, same-request concurrent claims, different requests, wait-then-tamper/revocation, old worker/attempt rejection, all five actions, undispatched recovery through exhaustion, running unknown recovery, restart/new-connection and lost-result behavior, two non-RC modes, real lock timeout, actual role ACL/RLS, suppressed/tampered job/attempt writes and unchanged capture/other data/bytes. Preserve complete rows and actual wait evidence, not only success flags.
+ 
+ Application tests cover exact action arguments, strict receipts, microseconds, mutated inputs, monotonic deadline, hanging transport, cancellation, response loss, and generic errors. A separate native runner compiles the actual adapter, calls real SQL through the explicit local pg transport substitution, and retains capture replay plus whole-row comparisons. That substitution is not live PostgREST qualification.
+ 
+ Final acceptance requires task reviews, one whole-change review, `npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra`, source fingerprints and preservation of previous accepted source/evidence. Migration inventory tests prove file order only. The full G1 remains 0/9; physical deletion, reference-safe GC, late Storage writes, real backup/restore, full migration chain, hosted and actual device qualification stay open.
+ 
+diff --git a/experiments/pg17-deletion-leases/README.md b/experiments/pg17-deletion-leases/README.md
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/README.md
+@@ -0,0 +1,33 @@
++# Local PG17 deletion lease rehearsal
++
++Run from the repository root:
++
++```bash
++node experiments/pg17-deletion-leases/verify.mjs
++node experiments/pg17-deletion-leases/verify.mjs --without-migration
++```
++
++The second command intentionally fails with PostgreSQL `42883` after an actual published synthetic recording is captured by the accepted deletion-capture RPC. It is the retained RED control, not a passing verification command.
++
++The runner uses the existing fingerprinted PostgreSQL 17.4 Unix-socket harness, isolated synthetic prerequisites, actual seal/capture migrations and the new `20261106000004_media_deletion_leases.sql`. No remote configuration is loaded. It starts and removes its local cluster and synthetic files, retaining full row/byte snapshots, source fingerprints, SQLSTATE diagnostics, receipts and observed blocking PIDs in a uniquely named `docs/research/evidence/2026-11-06-g1-deletion-leases/native-*/results.json`.
++
++Coverage includes all five actions, unchanged start/recovery replay, no shortening on a shorter heartbeat, three **real server-clock** undispatched expiries through exhaustion, a discarded start response leading to `outcome_unknown`, reconnecting workers, stale worker/attempt rejection, closed capture validation, malformed complete attempt history, actual role permissions/RLS, two disallowed isolation modes, INSERT/UPDATE suppression and alteration, capture changes during writes, competing claims, different-request progress, actual capture-lock waits, queued tampering, requester removal during a wait, and the real three-second lock timeout. Every lifecycle group replays the actual accepted capture and compares complete snapshots including synthetic bytes. Invalid history is injected only into local rollback transactions; no valid expiry is fabricated.
++
++`fixture.mjs` exports `setup(h, source, migrate=true)`, `lease(client, requestId, action, workerId=null, attempt=null, leaseMs=null)` and `snapshot(h)` for the separate application runner. `setup` fingerprints SQL through the supplied `source` reader. `snapshot` extends the unchanged accepted capture fixture with the two private lease tables. The native runner also fingerprints the transitive local fixture import graph.
++
++A transaction holding an uncommitted capture uses the local rehearsal administrator so its full snapshot can include private prerequisite tables; contending lease calls and permission tests use independent non-superuser, non-bypass-RLS service/anon/authenticated connections. Fault triggers use explicit `public` names because the production routine fixes its search path to `pg_catalog, pg_temp`.
++
++This validates local durable ownership and conservative recovery only. Every receipt has `canDeleteStorage:false` and `physicalDeletionComplete:false`. No physical deletion, metadata purge, GC, hosted PostgREST, full migration-chain, backup/restore or device qualification is claimed. Reference safety and late-write reconciliation remain prerequisites for any destructive executor.
++
++## Actual application adapter rehearsal
++
++```bash
++node experiments/pg17-deletion-leases/verify-adapter.mjs
++npm test --workspace=packages/web -- --runInBand src/lib/server/__tests__/media-deletion-lease.test.ts
++```
++
++The separate runner compiles the actual `media-deletion-lease.ts` into CommonJS and substitutes only the Supabase RPC transport with the exported local `lease` SQL helper. Each operation asserts one `.abortSignal(...)` and one `.retry(false)` call. The runner fingerprints the transitive fixture graph, SQL and application source, and retains the compiled artifact, transport arguments, server receipts, full before/after rows, capture replay and synthetic file bytes under a unique `adapter-*/` evidence directory. It cleans up its isolated local cluster and synthetic files.
++
++The native scenarios exercise claim, start, idempotent start, heartbeat with a shorter requested duration, checks, recovery and denied reclaim. A deliberately lost claim result remains durably leased, expires using the actual PostgreSQL clock, and is recovered over a new worker connection before attempt 2. A start that commits before its response is lost can be observed as running using the previous leased receipt; after expiry it becomes `outcome_unknown` and cannot be reclaimed. Lost responses are never interpreted as rollback.
++
++The adapter returns immutable closed receipts, adds a process-local monotonic deadline only to active receipts, and never returns Storage coordinates. UTC calendar validation and exact integer microsecond comparisons reject inverted or oversized submillisecond intervals. Inputs and options are copied before transport. Calls using an active receipt are bounded by its pinned existing deadline. Returned active deadlines include transport and lock waiting; only heartbeat may extend the previous local deadline. SDK cancellation is backed by a local rejection race, and every failure is generic with no automatic retry. Jest covers malformed receipts, changing identities, caller mutations, hung transports, aborts, timeout bounds and lost results. This transport substitution does not qualify hosted PostgREST cancellation or production networks.
+diff --git a/experiments/pg17-deletion-leases/faults.mjs b/experiments/pg17-deletion-leases/faults.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/faults.mjs
+@@ -0,0 +1,139 @@
++import { lease, snapshot, PROJECT } from './fixture.mjs'
++import { captured, replay, step, rejected, expire, WORKER } from './scenarios.mjs'
++
++// Admin fixtures deliberately violate invariants only inside a rollback transaction.
++// A savepoint preserves the malformed pre-call snapshot after the RPC aborts.
++async function malformed(h, label, mutate, call) {
++  await h.db.query('BEGIN')
++  try {
++    await mutate()
++    await h.db.query('SAVEPOINT malformed_fixture')
++    await rejected(h, async () => {
++      try { await call() } catch (error) { await h.db.query('ROLLBACK TO malformed_fixture'); throw error }
++    }, '23505', label)
++  } finally { await h.db.query('ROLLBACK') }
++}
++async function triggerCase(h, service, f, table, event, body, action, label) {
++  await h.db.query(`CREATE FUNCTION public.lease_fault() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN ${body} END; $$;
++    CREATE TRIGGER lease_fault BEFORE ${event} ON public.${table} FOR EACH ROW EXECUTE FUNCTION public.lease_fault();`)
++  try { await rejected(h, () => lease(service, f.requestId, action, action === 'recover' ? null : WORKER, action === 'claim' || action === 'recover' ? null : 1, action === 'claim' || action === 'heartbeat' ? 1000 : null), '23505', label) }
++  finally { await h.db.query(`DROP TRIGGER lease_fault ON public.${table}; DROP FUNCTION public.lease_fault();`) }
++}
++export async function faults(h, service, prepare) {
++  await h.scenario('legacy, identity, digest/count and closed target shape corruption cannot create jobs', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    const captureMutations = [
++      ['legacy request', 'capture_version=NULL,subject_type=NULL,capture_target_count=NULL,capture_targets_sha256=NULL'],
++      ['noncanonical subject', 'subject_id=upper(subject_id)'],
++      ['capture state', "state='processing'"], ['capture attempt', 'attempt=1'],
++      ['infinite capture timestamp', "requested_at='infinity',tombstone_at='infinity'"],
++      ['future capture timestamp', "requested_at=clock_timestamp()+interval '1 day',tombstone_at=clock_timestamp()+interval '1 day'"],
++      ['mismatched capture times', "requested_at=tombstone_at+interval '1 second'"],
++      ['capture execution error', "error_code='tampered'"], ['capture execution time', 'processing_at=tombstone_at'],
++      ['capture completion time', 'completed_at=tombstone_at'], ['digest drift', "capture_targets_sha256=repeat('a',64)"],
++      ['count drift', 'capture_target_count=capture_target_count+1'],
++    ]
++    for (const [label, set] of captureMutations) await malformed(h, label, () => h.db.query(`UPDATE public.deletion_requests SET ${set} WHERE id=$1`, [f.requestId]), () => lease(h.db, f.requestId, 'claim', WORKER, null, 1000))
++    const targetMutations = [
++      ['unsafe traversal path', "object_key='x/../secret',target_id='storage:saga:x/../secret',bucket='saga'", "kind='storage_object'"],
++      ['unsafe bucket', "bucket='private-backup'", "kind='storage_object'"],
++      ['storage ID mismatch', "target_id='storage:saga:other/file'", "kind='storage_object'"],
++      ['metadata contains storage', "bucket='saga',object_key='other/file'", "kind='story'"],
++      ['unknown metadata kind', "kind='derived_artifact'", "kind='story'"],
++      ['target state', "state='deleted'", "kind='story'"],
++      ['target error', "error_code='tampered'", "kind='story'"],
++      ['target time', "updated_at=updated_at+interval '1 second'", "kind='story'"],
++      ['metadata identity', "target_id='story:00000000-0000-0000-0000-000000000000'", "kind='story'"],
++      ['metadata ID suffix', "target_id=target_id||':suffix'", "kind='story'"],
++      ['null storage path', 'object_key=NULL', "kind='storage_object'"],
++    ]
++    for (const [label, set, predicate] of targetMutations) await malformed(h, label, async () => {
++      await h.db.query(`UPDATE public.deletion_targets SET ${set} WHERE id=(SELECT id FROM deletion_targets WHERE deletion_request_id=$1 AND ${predicate} LIMIT 1)`, [f.requestId])
++      // An attacker recomputing the digest must still fail the independent shape check.
++      await h.db.query("UPDATE public.deletion_requests SET capture_targets_sha256=(SELECT encode(sha256(convert_to(jsonb_agg(to_jsonb(t) ORDER BY t.target_id)::text,'UTF8')),'hex') FROM deletion_targets t WHERE t.deletion_request_id=$1) WHERE id=$1", [f.requestId])
++    }, () => lease(h.db, f.requestId, 'claim', WORKER, null, 1000))
++    await malformed(h, 'ambiguous same-subject legacy tombstone', () => h.db.query('INSERT INTO deletion_requests(project_id,subject_id,requested_by) SELECT project_id,subject_id,requested_by FROM deletion_requests WHERE id=$1', [f.requestId]), () => lease(h.db, f.requestId, 'claim', WORKER, null, 1000))
++    await replay(h, service, f)
++  })
++  await h.scenario('INSERT suppression and alteration plus capture tampering roll back the whole claim', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    for (const table of ['media_deletion_jobs', 'media_deletion_attempts']) {
++      await triggerCase(h, service, f, table, 'INSERT', 'RETURN NULL;', 'claim', `${table} INSERT suppression`)
++      await triggerCase(h, service, f, table, 'INSERT', "NEW.worker_id:='changed-worker'; RETURN NEW;", 'claim', `${table} INSERT altered worker`)
++      await triggerCase(h, service, f, table, 'INSERT', "UPDATE public.deletion_requests SET error_code='changed-by-trigger' WHERE id=NEW.request_id; RETURN NEW;", 'claim', `${table} INSERT mutates capture request`)
++      await triggerCase(h, service, f, table, 'INSERT', "UPDATE public.deletion_targets SET error_code='changed-by-trigger' WHERE deletion_request_id=NEW.request_id; RETURN NEW;", 'claim', `${table} INSERT mutates capture targets`)
++    }
++    await replay(h, service, f)
++  })
++  await h.scenario('UPDATE suppression and alteration abort start heartbeat and recovery', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    await step(h, service, f, 'claim', WORKER, null, 120000)
++    for (const table of ['media_deletion_jobs', 'media_deletion_attempts']) {
++      await triggerCase(h, service, f, table, 'UPDATE', 'RETURN NULL;', 'start', `${table} start suppression`)
++      await triggerCase(h, service, f, table, 'UPDATE', "NEW.worker_id:='changed-worker'; RETURN NEW;", 'start', `${table} start altered worker`)
++      await triggerCase(h, service, f, table, 'UPDATE', "UPDATE public.deletion_requests SET error_code='changed-by-trigger' WHERE id=NEW.request_id; RETURN NEW;", 'start', `${table} start mutates capture request`)
++      await triggerCase(h, service, f, table, 'UPDATE', "UPDATE public.deletion_targets SET error_code='changed-by-trigger' WHERE deletion_request_id=NEW.request_id; RETURN NEW;", 'start', `${table} start mutates capture targets`)
++    }
++    await step(h, service, f, 'start')
++    for (const table of ['media_deletion_jobs', 'media_deletion_attempts']) {
++      await triggerCase(h, service, f, table, 'UPDATE', 'RETURN NULL;', 'heartbeat', `${table} heartbeat suppression`)
++      await triggerCase(h, service, f, table, 'UPDATE', "NEW.worker_id:='changed-worker'; RETURN NEW;", 'heartbeat', `${table} heartbeat altered worker`)
++    }
++    await replay(h, service, f)
++    const expired = await captured(h, service, prepare)
++    await replay(h, service, expired)
++    await step(h, service, expired, 'claim', WORKER, null, 1000)
++    await expire(h, expired)
++    for (const table of ['media_deletion_jobs', 'media_deletion_attempts']) {
++      await triggerCase(h, service, expired, table, 'UPDATE', 'RETURN NULL;', 'recover', `${table} recovery suppression`)
++      const body = table === 'media_deletion_jobs' ? "NEW.updated_at:=NEW.updated_at+interval '1 microsecond'; RETURN NEW;" : "NEW.finished_at:=NEW.finished_at+interval '1 microsecond'; RETURN NEW;"
++      await triggerCase(h, service, expired, table, 'UPDATE', body, 'recover', `${table} recovery altered finish time`)
++    }
++    await step(h, service, expired, 'recover', null, null)
++    await replay(h, service, expired)
++  })
++  await h.scenario('complete old attempts and current binding reject malformed history before every operation', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    await step(h, service, f, 'claim', WORKER, null, 1000)
++    await expire(h, f); await step(h, service, f, 'recover', null, null)
++    const historyMutations = [
++      ['old attempt worker', "worker_id='bad worker'"], ['old attempt number gap', 'attempt_no=3'],
++      ['old attempt future claim', "claimed_at=clock_timestamp()+interval '1 day'"],
++      ['old attempt infinite claim', "claimed_at='infinity'"], ['old attempt before tombstone', "claimed_at=claimed_at-interval '1 day'"],
++      ['old attempt invalid state', "state='running'"], ['old attempt dispatched', 'started_at=claimed_at'],
++      ['old attempt heartbeat', 'heartbeat_at=claimed_at'], ['old attempt missing finish', 'finished_at=NULL'],
++      ['old attempt future finish', "finished_at=clock_timestamp()+interval '1 day'"],
++      ['old attempt finish before expiry', "finished_at=lease_expires_at-interval '1 microsecond'"],
++      ['old attempt inverted expiry', "lease_expires_at=claimed_at-interval '1 second'"],
++    ]
++    for (const [label, set] of historyMutations) await malformed(h, label, async () => {
++      const constraints = (await h.db.query("SELECT conname FROM pg_constraint WHERE conrelid='media_deletion_attempts'::regclass AND contype='c'")).rows
++      for (const { conname } of constraints) await h.db.query(`ALTER TABLE media_deletion_attempts DROP CONSTRAINT ${conname}`)
++      await h.db.query(`UPDATE public.media_deletion_attempts SET ${set} WHERE request_id=$1`, [f.requestId])
++    }, () => lease(h.db, f.requestId, 'claim', WORKER, null, 1000))
++    for (const [label, set] of [
++      ['job subject drift', "subject_id='00000000-0000-0000-0000-000000000000'"],
++      ['job subject type drift', "subject_type='media_asset'"], ['job digest drift', "capture_targets_sha256=repeat('f',64)"],
++      ['job count drift', 'target_count=target_count+1'], ['job created time drift', "created_at=created_at-interval '1 second'"],
++      ['job updated time drift', "updated_at=updated_at+interval '1 microsecond'"],
++    ]) await malformed(h, label, () => h.db.query(`UPDATE media_deletion_jobs SET ${set} WHERE request_id=$1`, [f.requestId]), () => lease(h.db, f.requestId, 'recover'))
++    // Real second claim must preserve first attempt even if its INSERT trigger edits it.
++    const prior = (await snapshot(h)).media_deletion_attempts.filter(a => a.request_id === f.requestId)
++    await triggerCase(h, service, f, 'media_deletion_attempts', 'INSERT', "UPDATE public.media_deletion_attempts SET worker_id='altered-old-owner' WHERE request_id=NEW.request_id AND attempt_no<NEW.attempt_no; RETURN NEW;", 'claim', 'new attempt insertion must not rewrite old attempt')
++    await step(h, service, f, 'claim', WORKER, null, 120000)
++    h.eq((await snapshot(h)).media_deletion_attempts.filter(a => a.request_id === f.requestId && a.attempt_no === 1), prior, 'full first attempt remains unchanged after reassignment')
++    for (const action of ['start', 'heartbeat', 'check', 'recover']) await malformed(h, `malformed prior state blocks ${action}`, async () => {
++      await h.db.query('ALTER TABLE media_deletion_attempts DROP CONSTRAINT media_deletion_attempt_shape')
++      await h.db.query("UPDATE public.media_deletion_attempts SET started_at=claimed_at WHERE request_id=$1 AND attempt_no=1", [f.requestId])
++    }, () => lease(h.db, f.requestId, action, action === 'recover' ? null : WORKER, action === 'recover' ? null : 2, action === 'heartbeat' ? 1000 : null))
++    await malformed(h, 'job project drift', async () => {
++      await h.db.query("INSERT INTO projects(id,facilitator_id) SELECT '99999999-9999-9999-9999-999999999999',facilitator_id FROM projects WHERE id=$1", [PROJECT])
++      await h.db.query("UPDATE media_deletion_jobs SET project_id='99999999-9999-9999-9999-999999999999' WHERE request_id=$1", [f.requestId])
++    }, () => lease(h.db, f.requestId, 'check', WORKER, 2))
++    await replay(h, service, f)
++  })
++}
+diff --git a/experiments/pg17-deletion-leases/fixture.mjs b/experiments/pg17-deletion-leases/fixture.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/fixture.mjs
+@@ -0,0 +1,24 @@
++import { setup as setupCapture, snapshot as captureSnapshot } from '../pg17-deletion-capture/fixture.mjs'
++export { fresh, capture, materialize, USER, OTHER, PROJECT } from '../pg17-deletion-capture/fixture.mjs'
++export const MIGRATION = 'supabase/migrations/20261106000004_media_deletion_leases.sql'
++export const RPC = 'SELECT public.media_deletion_job_lease($1::uuid,$2::text,$3::text,$4::integer,$5::integer) AS value'
++export async function setup(h, source, migrate = true) {
++  await setupCapture(h, source)
++  if (migrate) {
++    await h.db.query(await source(MIGRATION))
++    h.report.fixture.fullMigrations.push(MIGRATION)
++  }
++}
++export async function lease(client, requestId, action, workerId = null, attempt = null, leaseMs = null) {
++  return (await client.query(RPC, [requestId, action, workerId, attempt, leaseMs])).rows[0].value
++}
++export async function snapshot(h) {
++  // to_jsonb(timestamptz) uses the observer session's timezone. Normalize the
++  // observer, never the data, so independent connections compare exact rows.
++  await h.db.query("SET timezone='UTC'")
++  const result = await captureSnapshot(h)
++  for (const table of ['media_deletion_jobs', 'media_deletion_attempts']) {
++    result[table] = (await h.db.query(`SELECT to_jsonb(t) AS row FROM public.${table} t ORDER BY to_jsonb(t)::text`)).rows.map(r => r.row)
++  }
++  return result
++}
+diff --git a/experiments/pg17-deletion-leases/lifecycle.mjs b/experiments/pg17-deletion-leases/lifecycle.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/lifecycle.mjs
+@@ -0,0 +1,113 @@
++import { randomUUID } from 'node:crypto'
++import { lease, snapshot, USER, OTHER, PROJECT, RPC } from './fixture.mjs'
++import { captured, replay, step, receipt, rejected, expire, WORKER } from './scenarios.mjs'
++export async function lifecycle(h, service, prepare) {
++  await h.scenario('all live actions, start replay, monotone heartbeat and explicit recovery fence', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    const claim = await step(h, service, f, 'claim', WORKER, null, 120000)
++    receipt(h, claim, 'leased', 1)
++    h.eq([claim.requestId, claim.projectId, claim.subjectId, claim.subjectType, claim.targetCount], [f.requestId, PROJECT, f.storyId, 'story', f.capture.targetCount], 'capture receipt binds identities and count')
++    await rejected(h, () => lease(service, f.requestId, 'claim', WORKER, null, 1000), '23505', 'same worker cannot reclaim live ownership')
++    await rejected(h, () => lease(service, f.requestId, 'heartbeat', WORKER, 1, 1000), '23505', 'undispatched attempt cannot heartbeat')
++    await rejected(h, () => lease(service, f.requestId, 'recover'), '23505', 'live lease cannot recover')
++    receipt(h, await step(h, service, f, 'check'), 'leased', 1)
++    receipt(h, await step(h, service, f, 'start'), 'running', 1)
++    const before = await snapshot(h)
++    receipt(h, await step(h, service, f, 'start'), 'running', 1)
++    h.eq(await snapshot(h), before, 'repeated start preserves original start timestamp and complete ledger')
++    const heartbeat = await step(h, service, f, 'heartbeat', WORKER, 1, 1000)
++    receipt(h, heartbeat, 'running', 1)
++    h.eq(heartbeat.leaseExpiresAt, claim.leaseExpiresAt, 'shorter heartbeat does not shorten expiry')
++    h.ok(Date.parse(heartbeat.leaseExpiresAt) - Date.parse(heartbeat.serverNow) > 1000, 'retained TTL may exceed new request duration')
++    receipt(h, await step(h, service, f, 'check'), 'running', 1)
++    await replay(h, service, f)
++  })
++  await h.scenario('three actual undispatched expiries retain all attempts and exhaust into failed', async () => {
++    const f = await captured(h, service, prepare, 'media_asset')
++    await replay(h, service, f)
++    for (let attempt = 1; attempt <= 3; attempt++) {
++      const worker = `${WORKER}-${attempt}`
++      const previous = (await snapshot(h)).media_deletion_attempts.filter(a => a.request_id === f.requestId)
++      receipt(h, await step(h, service, f, 'claim', worker, null, 1000), 'leased', attempt, worker)
++      h.eq((await snapshot(h)).media_deletion_attempts.filter(a => a.request_id === f.requestId && a.attempt_no < attempt), previous, 'claim preserves complete prior attempt rows')
++      if (attempt > 1) for (const action of ['start', 'heartbeat', 'check']) {
++        await rejected(h, () => lease(service, f.requestId, action, `${WORKER}-${attempt - 1}`, attempt - 1, action === 'heartbeat' ? 1000 : null), '23505', `old worker/attempt fenced for ${action}`)
++      }
++      await expire(h, f)
++      await rejected(h, () => lease(service, f.requestId, 'claim', worker, null, 1000), '23505', 'expired lease still requires explicit recovery')
++      for (const action of ['start', 'heartbeat', 'check']) await rejected(h, () => lease(service, f.requestId, action, worker, attempt, action === 'heartbeat' ? 1000 : null), '23505', `expired ownership cannot ${action}`)
++      const reconnected = await h.actorClient('service_role', USER)
++      const state = attempt === 3 ? 'failed' : 'retry_wait'
++      receipt(h, await step(h, reconnected, f, 'recover', null, null), state, attempt)
++      await h.close(reconnected)
++      const before = await snapshot(h)
++      receipt(h, await step(h, service, f, 'recover', null, null), state, attempt)
++      h.eq(await snapshot(h), before, 'repeated recover retains full stable ledger')
++      await replay(h, service, f)
++    }
++    await rejected(h, () => lease(service, f.requestId, 'claim', WORKER, null, 1000), '23505', 'failed job never reclaims')
++  })
++  await h.scenario('lost start response persists running and real expiry becomes outcome_unknown', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    receipt(h, await step(h, service, f, 'claim', WORKER, null, 1000), 'leased', 1)
++    const disconnected = await h.actorClient('service_role', USER)
++    await step(h, disconnected, f, 'start') // The caller deliberately discards its receipt.
++    await h.close(disconnected)
++    receipt(h, await step(h, service, f, 'check'), 'running', 1)
++    const heartbeat = await step(h, service, f, 'heartbeat', WORKER, 1, 1000)
++    receipt(h, heartbeat, 'running', 1)
++    await expire(h, f)
++    await rejected(h, () => lease(service, f.requestId, 'heartbeat', WORKER, 1, 1000), '23505', 'running expiry cannot renew')
++    receipt(h, await step(h, service, f, 'recover', null, null), 'outcome_unknown', 1)
++    const before = await snapshot(h)
++    receipt(h, await step(h, service, f, 'recover', null, null), 'outcome_unknown', 1)
++    h.eq(await snapshot(h), before, 'unknown recovery replay is read-only')
++    await rejected(h, () => lease(service, f.requestId, 'claim', WORKER, null, 1000), '23505', 'unknown outcome never retries')
++    await replay(h, service, f)
++  })
++  await h.scenario('strict arguments, missing capture, actual role denial and READ COMMITTED requirement', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    const bad = [
++      [null, 'claim', WORKER, null, 1000], [f.requestId, null, WORKER, null, 1000],
++      ...['delete', 'complete', 'finish', 'succeeded', 'CLAIM'].map(action => [f.requestId, action, WORKER, null, 1000]),
++      ...[null, '', 'worker bad', 'w'.repeat(129)].map(w => [f.requestId, 'claim', w, null, 1000]),
++      ...[null, 999, 120001, -1].map(ms => [f.requestId, 'claim', WORKER, null, ms]),
++      [f.requestId, 'claim', WORKER, 1, 1000], [f.requestId, 'start', WORKER, 0, null],
++      [f.requestId, 'check', WORKER, 4, null], [f.requestId, 'start', WORKER, null, null],
++      [f.requestId, 'start', WORKER, 1, 1000], [f.requestId, 'check', WORKER, 1, 1000],
++      [f.requestId, 'recover', WORKER, null, null], [f.requestId, 'recover', null, 1, null],
++      [f.requestId, 'recover', null, null, 1000], [f.requestId, 'heartbeat', WORKER, 1, 999],
++    ]
++    for (const args of bad) await rejected(h, () => service.query(RPC, args), '22023', `malformed input ${JSON.stringify(args.slice(1))}`)
++    await rejected(h, () => lease(service, randomUUID(), 'claim', WORKER, null, 1000), '23505', 'absent request rejected')
++    for (const role of ['anon', 'authenticated']) {
++      const client = await h.actorClient(role, OTHER)
++      await rejected(h, () => lease(client, f.requestId, 'claim', WORKER, null, 1000), '42501', `${role} cannot call RPC`)
++      for (const table of ['media_deletion_jobs', 'media_deletion_attempts']) await rejected(h, () => client.query(`SELECT * FROM ${table}`), '42501', `${role} cannot read ${table}`)
++      await h.close(client)
++    }
++    for (const isolation of ['REPEATABLE READ', 'SERIALIZABLE']) {
++      await service.query(`BEGIN ISOLATION LEVEL ${isolation}`)
++      let outcome
++      try { await lease(service, f.requestId, 'claim', WORKER, null, 1000); outcome = '00000' } catch (error) { outcome = error.code }
++      await service.query('ROLLBACK')
++      h.eq(outcome, '22023', `${isolation} rejected`)
++      h.report.isolation ??= []; h.report.isolation.push({ isolation, outcome })
++    }
++    const functionRecord = (await h.db.query("SELECT prosecdef,provolatile,proconfig,proacl::text FROM pg_proc WHERE oid='public.media_deletion_job_lease(uuid,text,text,integer,integer)'::regprocedure")).rows[0]
++    h.eq([functionRecord.prosecdef, functionRecord.provolatile], [true, 'v'], 'volatile SECURITY DEFINER')
++    h.eq(functionRecord.proconfig, ['search_path=pg_catalog, pg_temp', 'TimeZone=UTC', 'lock_timeout=3s'], 'fixed function execution settings')
++    h.report.functionRecord = functionRecord
++    receipt(h, await step(h, service, f, 'claim', WORKER, null, 120000), 'leased', 1)
++    for (const table of ['media_deletion_jobs', 'media_deletion_attempts']) {
++      h.ok((await service.query(`SELECT * FROM ${table} WHERE request_id=$1`, [f.requestId])).rowCount > 0, 'service can read own ledger')
++      for (const sql of [`UPDATE ${table} SET worker_id='tamper' WHERE request_id=$1`, `DELETE FROM ${table} WHERE request_id=$1`, `INSERT INTO ${table} SELECT * FROM ${table} WHERE request_id=$1`]) {
++        await rejected(h, () => service.query(sql, [f.requestId]), '42501', `service lacks direct ${sql.split(' ')[0]} on ${table}`)
++      }
++    }
++    await replay(h, service, f)
++  })
++}
+diff --git a/experiments/pg17-deletion-leases/locks.mjs b/experiments/pg17-deletion-leases/locks.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/locks.mjs
+@@ -0,0 +1,136 @@
++import { performance } from 'node:perf_hooks'
++import { randomUUID } from 'node:crypto'
++import { lease, snapshot, fresh, materialize, capture, USER, PROJECT } from './fixture.mjs'
++import { captured, replay, receipt, WORKER, withoutLedger } from './scenarios.mjs'
++const settle = promise => promise.then(value => ({ code: '00000', value }), error => ({ code: error.code ?? 'ERROR' }))
++async function observedWait(h, client, type, relation = null) {
++  const pid = (await client.query('SELECT pg_backend_pid() AS pid')).rows[0].pid
++  return async () => {
++    const start = performance.now()
++    while (performance.now() - start < 2000) {
++      const rows = (await h.db.query(`SELECT a.pid,a.wait_event_type,a.wait_event,l.locktype,l.mode,l.granted,l.relation::regclass::text AS relation,l.classid,l.objid,pg_blocking_pids(a.pid) AS blockers
++        FROM pg_stat_activity a JOIN pg_locks l ON l.pid=a.pid WHERE a.pid=$1 AND NOT l.granted`, [pid])).rows
++      const row = rows.find(r => r.wait_event_type === 'Lock' && r.locktype === type && (relation === null || r.relation === relation))
++      if (row) { h.report.lockObservations ??= []; h.report.lockObservations.push({ ...row, observedAt: new Date().toISOString() }); h.ok(row.blockers.length > 0, 'actual PostgreSQL blocking PID observed'); return row }
++      await new Promise(resolve => setTimeout(resolve, 10))
++    }
++    throw Object.assign(new Error('expected actual lock wait'), { code: 'WAIT_NOT_OBSERVED' })
++  }
++}
++export async function locks(h, service, prepare) {
++  await h.scenario('same-request competing claims serialize but different requests proceed', async () => {
++    const f = await captured(h, service, prepare), other = await captured(h, service, prepare)
++    await replay(h, service, f); await replay(h, service, other)
++    const owner = await h.actorClient('service_role', USER), contender = await h.actorClient('service_role', USER)
++    const waiting = await observedWait(h, contender, 'advisory'), before = await snapshot(h)
++    await owner.query('BEGIN')
++    try {
++      const first = await lease(owner, f.requestId, 'claim', WORKER, null, 120000)
++      const pending = settle(lease(contender, f.requestId, 'claim', 'competing-worker', null, 120000))
++      await waiting()
++      const independent = await lease(service, other.requestId, 'claim', 'independent-worker', null, 120000)
++      receipt(h, independent, 'leased', 1, 'independent-worker')
++      await owner.query('COMMIT')
++      const result = await pending
++      h.eq(result.code, '23505', 'second same-request claim loses after first commits')
++      const after = await snapshot(h)
++      h.eq(withoutLedger(after), withoutLedger(before), 'concurrent claims preserve capture and bytes')
++      h.eq(after.media_deletion_jobs.filter(j => j.request_id === f.requestId).length, 1, 'one job owner')
++      h.eq(after.media_deletion_attempts.filter(a => a.request_id === f.requestId).length, 1, 'one claimed attempt')
++      h.report.concurrent = { before, after, first, independent, contender: result }
++    } finally { await owner.query('ROLLBACK'); await h.close(owner); await h.close(contender) }
++    await replay(h, service, f); await replay(h, service, other)
++  })
++  await h.scenario('lease waits behind actual capture and sees newly committed capture', async () => {
++    const f = await fresh(h, service, prepare); await materialize(h, f)
++    f.args = { subjectId: f.storyId, requestId: randomUUID() }; f.requestId = f.args.requestId
++    // Admin lock holder can snapshot all uncommitted private prerequisite rows;
++    // the contender remains a real unprivileged service-role connection.
++    const blocker = await h.client(), contender = await h.actorClient('service_role', USER)
++    const waiting = await observedWait(h, contender, 'relation', 'deletion_requests'), before = await snapshot(h)
++    await blocker.query('BEGIN')
++    try {
++      f.capture = await capture(blocker, f.args)
++      const captureRows = await snapshot({ ...h, db: blocker })
++      const pending = settle(lease(contender, f.requestId, 'claim', WORKER, null, 120000))
++      const lock = await waiting()
++      h.eq(lock.mode, 'ShareLock', 'first requested capture fence is SHARE')
++      await blocker.query('COMMIT')
++      const outcome = await pending
++      h.eq(outcome.code, '00000', 'post-wait request snapshot is fresh')
++      receipt(h, outcome.value, 'leased', 1)
++      const after = await snapshot(h)
++      h.report.captureWait = { before, captureRows, outcome, after }
++      h.eq(withoutLedger(after), withoutLedger(captureRows), 'waiting claim preserves newly committed actual capture')
++    } finally { await blocker.query('ROLLBACK'); await h.close(blocker); await h.close(contender) }
++    await replay(h, service, f)
++  })
++  await h.scenario('target SHARE wait and queued capture tampering fail without a job', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    for (const relation of ['deletion_requests', 'deletion_targets']) {
++      const blocker = await h.client(), contender = await h.actorClient('service_role', USER)
++      const waiting = await observedWait(h, contender, 'relation', relation)
++      await blocker.query('BEGIN')
++      try {
++        await blocker.query(`LOCK TABLE ${relation} IN EXCLUSIVE MODE`)
++        const pending = settle(lease(contender, f.requestId, 'claim', WORKER, null, 120000))
++        const lock = await waiting(); h.eq(lock.mode, 'ShareLock', 'capture tables use SHARE fence')
++        if (relation === 'deletion_requests') await blocker.query("UPDATE deletion_requests SET error_code='changed-during-wait' WHERE id=$1", [f.requestId])
++        else await blocker.query("UPDATE deletion_targets SET error_code='changed-during-wait' WHERE deletion_request_id=$1", [f.requestId])
++        const before = await snapshot({ ...h, db: blocker })
++        await blocker.query('COMMIT')
++        const outcome = await pending, after = await snapshot(h)
++        h.eq(outcome.code, '23505', 'fresh validation rejects committed queued tamper')
++        h.eq(after, before, 'rejected queued claim preserves full tampered state and all bytes')
++        h.report.queuedTamper ??= []; h.report.queuedTamper.push({ relation, before, after, outcome })
++      } finally { await blocker.query('ROLLBACK'); await h.close(blocker); await h.close(contender) }
++      await h.db.query('UPDATE deletion_requests SET error_code=NULL WHERE id=$1', [f.requestId])
++      await h.db.query('UPDATE deletion_targets SET error_code=NULL WHERE deletion_request_id=$1', [f.requestId])
++      await replay(h, service, f)
++    }
++  })
++  await h.scenario('requester membership removal during wait does not revoke persistent deletion work order', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    const blocker = await h.client(), contender = await h.actorClient('service_role', USER)
++    const waiting = await observedWait(h, contender, 'relation', 'deletion_requests')
++    const original = (await h.db.query('SELECT facilitator_id FROM projects WHERE id=$1', [PROJECT])).rows[0].facilitator_id
++    await blocker.query('BEGIN')
++    try {
++      await blocker.query('LOCK TABLE deletion_requests IN EXCLUSIVE MODE')
++      const pending = settle(lease(contender, f.requestId, 'claim', WORKER, null, 120000))
++      await waiting()
++      await blocker.query('UPDATE projects SET facilitator_id=$1 WHERE id=$2', [USER, PROJECT])
++      const before = await snapshot({ ...h, db: blocker })
++      await blocker.query('COMMIT')
++      const outcome = await pending, after = await snapshot(h)
++      h.eq(outcome.code, '00000', 'persisted capture needs no current requester membership')
++      receipt(h, outcome.value, 'leased', 1)
++      h.eq(withoutLedger(after), withoutLedger(before), 'claim preserves all rows after membership removal')
++      h.report.requesterRevocation = { before, after, outcome }
++    } finally {
++      await blocker.query('ROLLBACK'); await h.close(blocker); await h.close(contender)
++      await h.db.query('UPDATE projects SET facilitator_id=$1 WHERE id=$2', [original, PROJECT])
++    }
++    await replay(h, service, f)
++  })
++  await h.scenario('real three-second lock timeout retains all rows and files', async () => {
++    const f = await captured(h, service, prepare)
++    await replay(h, service, f)
++    const blocker = await h.client(), contender = await h.actorClient('service_role', USER)
++    const waiting = await observedWait(h, contender, 'relation', 'deletion_requests'), before = await snapshot(h)
++    await blocker.query('BEGIN')
++    try {
++      await blocker.query('LOCK TABLE deletion_requests IN EXCLUSIVE MODE')
++      const started = performance.now(), pending = settle(lease(contender, f.requestId, 'claim', WORKER, null, 120000))
++      await waiting()
++      const outcome = await pending, elapsedMs = performance.now() - started, after = await snapshot(h)
++      h.eq(outcome.code, '55P03', 'actual database lock timeout SQLSTATE')
++      h.ok(elapsedMs >= 2800 && elapsedMs < 6000, 'three-second function lock timeout observed')
++      h.eq(after, before, 'timeout cannot change any rows or bytes')
++      h.report.timeout = { outcome, elapsedMs, before, after }
++    } finally { await blocker.query('ROLLBACK'); await h.close(blocker); await h.close(contender) }
++    await replay(h, service, f)
++  })
++}
+diff --git a/experiments/pg17-deletion-leases/scenarios.mjs b/experiments/pg17-deletion-leases/scenarios.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/scenarios.mjs
+@@ -0,0 +1,62 @@
++import { randomUUID } from 'node:crypto'
++import { fresh, capture, materialize, lease, snapshot } from './fixture.mjs'
++import { lifecycle } from './lifecycle.mjs'
++import { faults } from './faults.mjs'
++import { locks } from './locks.mjs'
++
++export const WORKER = 'delete-worker'
++export const ledgerTables = ['media_deletion_jobs', 'media_deletion_attempts']
++export function withoutLedger(rows) { return Object.fromEntries(Object.entries(rows).filter(([name]) => !ledgerTables.includes(name))) }
++export async function captured(h, service, prepare, subjectType = 'story') {
++  const f = await fresh(h, service, prepare)
++  await materialize(h, f)
++  f.args = { subjectId: subjectType === 'story' ? f.storyId : f.assetId, subjectType, requestId: randomUUID() }
++  f.capture = await capture(service, f.args)
++  f.requestId = f.capture.id
++  h.report.captures ??= []
++  h.report.captures.push({ fixture: { requestId: f.requestId, storyId: f.storyId, assetId: f.assetId }, capture: f.capture, rows: await snapshot(h) })
++  return f
++}
++export async function replay(h, service, f) {
++  const before = await snapshot(h), result = await capture(service, f.args), after = await snapshot(h)
++  h.eq(result, f.capture, 'accepted actual capture receipt replays identically')
++  h.eq(after, before, 'capture replay leaves all rows and synthetic files unchanged')
++  h.report.replays ??= []; h.report.replays.push({ requestId: f.requestId, result, before, after })
++}
++export function receipt(h, result, state, attempt, worker = WORKER) {
++  h.eq(Object.keys(result).sort(), ['schemaVersion', 'requestId', 'projectId', 'subjectId', 'subjectType', 'captureTargetsSha256', 'targetCount', 'state', 'attempt', 'workerId', 'leaseExpiresAt', 'serverNow', 'canDeleteStorage', 'physicalDeletionComplete'].sort(), 'closed receipt keys')
++  h.eq([result.schemaVersion, result.state, result.attempt, result.canDeleteStorage, result.physicalDeletionComplete], [1, state, attempt, false, false], 'lease state and capabilities')
++  if (['leased', 'running'].includes(state)) {
++    h.eq(result.workerId, worker, 'active worker')
++    h.ok(Date.parse(result.leaseExpiresAt) > Date.parse(result.serverNow), 'active expiry after server clock')
++    h.ok(Date.parse(result.leaseExpiresAt) - Date.parse(result.serverNow) <= 120000, 'bounded TTL')
++  } else h.eq([result.workerId, result.leaseExpiresAt], [null, null], 'inactive receipt has no owner or expiry')
++}
++export async function step(h, service, f, action, worker = WORKER, attempt = 1, ms = null) {
++  const before = await snapshot(h)
++  const result = await lease(service, f.requestId, action, worker, attempt, ms), after = await snapshot(h)
++  h.eq(withoutLedger(after), withoutLedger(before), `${action} preserves complete capture/other rows and bytes`)
++  if (action === 'check') h.eq(after, before, 'check writes nothing')
++  h.report.steps ??= []; h.report.steps.push({ requestId: f.requestId, action, result, before, after })
++  return result
++}
++export async function rejected(h, fn, expected = '23505', label = 'conflicting operation', connection = h.db) {
++  const before = await snapshot({ ...h, db: connection })
++  let outcome, diagnostic
++  try { await fn(); outcome = '00000' } catch (error) { outcome = error.code ?? 'ERROR'; diagnostic = { message: error.message, where: error.where, detail: error.detail } }
++  const after = await snapshot({ ...h, db: connection })
++  h.report.rejections ??= []; h.report.rejections.push({ label, expected, outcome, diagnostic, before, after })
++  h.eq(outcome, expected, label)
++  h.eq(after, before, `${label} rolls back all row and byte changes`)
++}
++export async function expire(h, f) {
++  const result = await h.db.query('SELECT clock_timestamp() AS before, lease_expires_at, pg_sleep(greatest(0,extract(epoch FROM lease_expires_at-clock_timestamp()))::double precision),clock_timestamp() AS after FROM media_deletion_jobs WHERE request_id=$1', [f.requestId])
++  h.report.realExpiries ??= []; h.report.realExpiries.push({ requestId: f.requestId, ...result.rows[0] })
++  h.ok(result.rows[0].after >= result.rows[0].lease_expires_at, 'actual PostgreSQL clock reaches expiry')
++}
++export async function scenarios(h, service, prepare, source) {
++  for (const file of ['lifecycle.mjs', 'faults.mjs', 'locks.mjs']) await source(`experiments/pg17-deletion-leases/${file}`)
++  await lifecycle(h, service, prepare)
++  await faults(h, service, prepare)
++  await locks(h, service, prepare)
++}
+diff --git a/experiments/pg17-deletion-leases/verify-adapter.mjs b/experiments/pg17-deletion-leases/verify-adapter.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/verify-adapter.mjs
+@@ -0,0 +1,201 @@
++import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { join, posix } from 'node:path'
++import { randomUUID } from 'node:crypto'
++import { createRequire } from 'node:module'
++import { Harness, root, digest } from '../pg17-routines/runtime.mjs'
++import { compileModules } from '../pg17-recording-worker/fixture.mjs'
++import { setup, fresh, capture, materialize, lease, snapshot, USER } from './fixture.mjs'
++
++const require = createRequire(import.meta.url), ts = require('typescript')
++const directory = join(root, 'docs/research/evidence/2026-11-06-g1-deletion-leases', `adapter-${Date.now()}-${randomUUID()}`)
++const report = {
++  status: 'running', assertions: 0, actorConnections: [], scenarios: [], sources: {},
++  observations: [], transport: [], replays: [], expiries: [],
++  command: 'node experiments/pg17-deletion-leases/verify-adapter.mjs',
++  transportSubstitution: 'Only Supabase RPC transport is replaced by local pg; actual adapter is compiled unchanged.',
++  livePostgrest: false, g1MilestoneSatisfied: false, canDeleteStorage: false, physicalDeletionComplete: false,
++}
++const h = new Harness(report)
++await mkdir(directory, { recursive: true })
++async function source(path) {
++  const bytes = await readFile(join(root, path)); report.sources[path] = digest(bytes); return bytes.toString()
++}
++async function graph(path, seen = new Set()) {
++  if (seen.has(path)) return
++  seen.add(path)
++  const text = await source(path)
++  for (const [, dependency] of text.matchAll(/(?:from\s*|import\s*\()['"]([^'"]+\.mjs)['"]/g)) {
++    if (dependency.startsWith('.')) await graph(posix.normalize(posix.join(posix.dirname(path), dependency)), seen)
++  }
++}
++function withoutLedger(rows) {
++  return Object.fromEntries(Object.entries(rows).filter(([table]) => !['media_deletion_jobs', 'media_deletion_attempts'].includes(table)))
++}
++
++// This is a transport, not a model of lease behavior: every subscribed request
++// executes the exact five-argument SQL helper on an actual service connection.
++function applicationAdmin(service, loseAction = null) {
++  return { rpc(name, args) {
++    h.eq(name, 'media_deletion_job_lease', 'actual adapter selects lease RPC')
++    h.eq(Object.keys(args).sort(), ['p_request_id', 'p_action', 'p_worker_id', 'p_attempt', 'p_lease_ms'].sort(), 'closed SQL arguments')
++    const entry = { name, args: { ...args }, backendPid: service.processID, calls: 0, abortSignalCalls: 0, retryCalls: 0 }
++    report.transport.push(entry)
++    const query = {
++      abortSignal(signal) {
++        h.ok(signal instanceof AbortSignal, 'actual adapter supplies AbortSignal')
++        entry.abortSignalCalls++; entry.signalInitiallyAborted = signal.aborted
++        signal.addEventListener('abort', () => { entry.signalEventuallyAborted = true }, { once: true })
++        return query
++      },
++      retry(enabled) {
++        h.eq(enabled, false, 'actual adapter disables SDK retries')
++        entry.retryCalls++; entry.retry = enabled; return query
++      },
++      then(resolve, reject) {
++        entry.calls++
++        return lease(service, args.p_request_id, args.p_action, args.p_worker_id, args.p_attempt, args.p_lease_ms)
++          .then(data => {
++            entry.sqlReceipt = data
++            if (args.p_action === loseAction) {
++              entry.responseLostAfterCommit = true
++              throw new Error('synthetic response lost after SQL commit')
++            }
++            return { data, error: null }
++          }, error => {
++            entry.sqlError = { code: error.code, message: error.message }
++            return { data: null, error: { code: error.code, message: error.message } }
++          }).then(resolve, reject)
++      },
++    }
++    return query
++  } }
++}
++async function captured(service, prepare, subjectType = 'story') {
++  const f = await fresh(h, service, prepare)
++  await materialize(h, f)
++  f.args = { requestId: randomUUID(), subjectId: subjectType === 'story' ? f.storyId : f.assetId, subjectType }
++  f.capture = await capture(service, f.args); f.requestId = f.capture.id
++  report.observations.push({ label: 'actual immutable capture', requestId: f.requestId, capture: f.capture, rows: await snapshot(h) })
++  return f
++}
++async function replay(service, f) {
++  const before = await snapshot(h), result = await capture(service, f.args), after = await snapshot(h)
++  h.eq(result, f.capture, 'actual capture replays its original receipt')
++  h.eq(after, before, 'capture replay preserves full ledger, source rows and synthetic bytes')
++  report.replays.push({ requestId: f.requestId, result, before, after })
++}
++async function observed(label, f, fn, { error = false, readOnly = false } = {}) {
++  const before = await snapshot(h), callsBefore = report.transport.length
++  let result, caught
++  try { result = await fn() } catch (exception) { caught = { message: exception.message } }
++  const after = await snapshot(h)
++  report.observations.push({ label, requestId: f.requestId, result, error: caught, callsBefore, callsAfter: report.transport.length, before, after })
++  h.eq(caught, error ? { message: 'media_deletion_lease_unavailable' } : undefined, `${label}: generic failure or successful receipt`)
++  h.eq(withoutLedger(after), withoutLedger(before), `${label}: complete capture, other rows and bytes unchanged`)
++  if (readOnly) h.eq(after, before, `${label}: all rows unchanged`)
++  if (result) {
++    h.ok(Object.isFrozen(result), `${label}: actual adapter freezes receipt`)
++    h.eq([result.canDeleteStorage, result.physicalDeletionComplete], [false, false], `${label}: no destructive capabilities`)
++    const active = ['leased', 'running'].includes(result.state)
++    h.eq(Object.keys(result).length, active ? 15 : 14, `${label}: closed application receipt`)
++    if (active) h.ok(result.deadline > performance.now(), `${label}: local monotonic deadline live`)
++    else h.ok(!Object.hasOwn(result, 'deadline'), `${label}: recovery has no deadline`)
++  }
++  return result
++}
++async function expire(f) {
++  const rows = (await h.db.query(`SELECT clock_timestamp()::text AS before, lease_expires_at::text,
++    pg_sleep(greatest(0,extract(epoch FROM lease_expires_at-clock_timestamp()))::double precision),
++    clock_timestamp()::text AS after, lease_expires_at <= clock_timestamp() AS expired
++    FROM public.media_deletion_jobs WHERE request_id=$1`, [f.requestId])).rows
++  report.expiries.push({ requestId: f.requestId, rows })
++  h.eq(rows.length, 1, 'one durable job waited on'); h.eq(rows[0].expired, true, 'real database clock reaches expiry')
++}
++
++try {
++  await graph('experiments/pg17-deletion-leases/verify-adapter.mjs')
++  await h.start(); await setup(h, source)
++  const compiled = ts.transpileModule(await source('packages/web/src/lib/server/media-deletion-lease.ts'), {
++    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS }, reportDiagnostics: true,
++  })
++  h.eq(compiled.diagnostics.filter(d => d.category === ts.DiagnosticCategory.Error).length, 0, 'actual adapter transpiles without errors')
++  h.ok(!/require\(/.test(compiled.outputText), 'actual adapter has no runtime dependency substitution')
++  const artifact = join(directory, 'adapter.compiled.cjs')
++  await writeFile(artifact, compiled.outputText)
++  report.compiledAdapter = { artifact: 'adapter.compiled.cjs', sha256: digest(compiled.outputText), typescriptVersion: ts.version }
++  const adapter = require(artifact)
++  const { claimMediaDeletionJob: claim, startMediaDeletionJob: start, heartbeatMediaDeletionJob: heartbeat,
++    checkMediaDeletionJobLease: check, recoverMediaDeletionJob: recover } = adapter
++  const { prepareRecordingSessionSeal: prepare } = await compileModules(h, source)
++  const service = await h.actorClient('service_role', USER), options = { admin: applicationAdmin(service) }
++
++  await h.scenario('actual adapter claim/start/replay/heartbeat/check and conservative running recovery', async () => {
++    const f = await captured(service, prepare)
++    const owned = await observed('claim', f, () => claim(f.requestId, 'adapter-worker', 1500, options))
++    h.eq([owned.state, owned.attempt], ['leased', 1], 'first claim')
++    await observed('check leased', f, () => check(owned, options), { readOnly: true })
++    const running = await observed('start', f, () => start(owned, options))
++    h.eq(running.state, 'running', 'start runs')
++    await observed('running start replay', f, () => start(running, options), { readOnly: true })
++    const renewed = await observed('shorter heartbeat', f, () => heartbeat(running, 1000, options))
++    h.eq(renewed.leaseExpiresAt, running.leaseExpiresAt, 'shorter heartbeat preserves server expiry')
++    await observed('check running', f, () => check(renewed, options), { readOnly: true })
++    await observed('premature recovery', f, () => recover(f.requestId, options), { error: true, readOnly: true })
++    await replay(service, f); await expire(f)
++    const recovered = await observed('expired running recovery', f, () => recover(f.requestId, options))
++    h.eq(recovered.state, 'outcome_unknown', 'running cannot be retried')
++    await observed('recovery replay', f, () => recover(f.requestId, options), { readOnly: true })
++    await observed('unknown cannot claim', f, () => claim(f.requestId, 'new-worker', 1000, options), { error: true, readOnly: true })
++    await replay(service, f)
++  })
++
++  await h.scenario('lost undispatched claim survives connection restart and new worker recovers', async () => {
++    const oldService = await h.actorClient('service_role', USER)
++    const f = await captured(oldService, prepare, 'media_asset')
++    await observed('lost claim result', f, () => claim(f.requestId, 'old-process', 1000, { admin: applicationAdmin(oldService, 'claim') }), { error: true })
++    const oldPid = oldService.processID
++    await h.close(oldService); await expire(f)
++    const restarted = await h.actorClient('service_role', USER), restartedOptions = { admin: applicationAdmin(restarted) }
++    h.ok(restarted.processID !== oldPid, 'worker restart uses a new native connection')
++    report.restart = { oldPid, newPid: restarted.processID, requestId: f.requestId }
++    const recovered = await observed('new process recovers undispatched', f, () => recover(f.requestId, restartedOptions))
++    h.eq([recovered.state, recovered.attempt], ['retry_wait', 1], 'undispatched claim becomes retryable')
++    const next = await observed('new worker claims next attempt', f, () => claim(f.requestId, 'new-process', 1000, restartedOptions))
++    h.eq([next.workerId, next.attempt, next.state], ['new-process', 2, 'leased'], 'attempt and worker advance')
++    await observed('new worker checks', f, () => check(next, restartedOptions), { readOnly: true })
++    const ledger = (await snapshot(h)).media_deletion_attempts.filter(row => row.request_id === f.requestId)
++    h.eq(ledger.map(row => [row.attempt_no, row.state, row.worker_id]), [[1, 'expired', 'old-process'], [2, 'leased', 'new-process']], 'whole attempt history survives restart')
++    await replay(restarted, f)
++  })
++
++  await h.scenario('lost start is observable as running and becomes outcome_unknown after expiry', async () => {
++    const f = await captured(service, prepare)
++    const owned = await observed('claim before lost start', f, () => claim(f.requestId, 'lost-start-worker', 1000, options))
++    await observed('start committed response lost', f, () => start(owned, { admin: applicationAdmin(service, 'start') }), { error: true })
++    const checked = await observed('old leased receipt observes running', f, () => check(owned, options), { readOnly: true })
++    h.eq(checked.state, 'running', 'leased to running check reconciles a lost start response')
++    await replay(service, f); await expire(f)
++    const callsBefore = report.transport.length
++    await observed('expired old local receipt rejected before transport', f, () => heartbeat(checked, 1000, options), { error: true, readOnly: true })
++    h.eq(report.transport.length, callsBefore, 'expired local ownership starts no RPC')
++    const recovered = await observed('lost start outcome unknown', f, () => recover(f.requestId, options))
++    h.eq(recovered.state, 'outcome_unknown', 'lost start never returns to retry_wait')
++    await observed('lost start cannot reclaim', f, () => claim(f.requestId, 'other-worker', 1000, options), { error: true, readOnly: true })
++    await replay(service, f)
++  })
++
++  for (const entry of report.transport) {
++    h.eq([entry.calls, entry.abortSignalCalls, entry.retryCalls, entry.retry], [1, 1, 1, false], 'one bounded no-retry RPC per operation')
++    h.eq(entry.signalEventuallyAborted, true, 'operation disposes its transport signal')
++  }
++  report.finalRows = await snapshot(h)
++  report.status = 'passed'
++} catch (error) {
++  report.status = 'failed'; report.error = { code: error.code ?? 'ERROR', label: error.label ?? error.message }
++  process.exitCode = 1
++} finally {
++  await h.cleanup()
++  if (report.status !== 'passed') process.exitCode = 1
++  await writeFile(join(directory, 'results.json'), JSON.stringify(report, null, 2))
++  console.log(JSON.stringify({ directory, status: report.status, assertions: report.assertions, error: report.error, cleanup: report.cleanup }, null, 2))
++}
+diff --git a/experiments/pg17-deletion-leases/verify.mjs b/experiments/pg17-deletion-leases/verify.mjs
+new file mode 100644
+--- /dev/null
++++ b/experiments/pg17-deletion-leases/verify.mjs
+@@ -0,0 +1,49 @@
++import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { join, posix } from 'node:path'
++import { randomUUID } from 'node:crypto'
++import { Harness, root, digest } from '../pg17-routines/runtime.mjs'
++import { compileModules } from '../pg17-recording-worker/fixture.mjs'
++import { setup, fresh, capture, materialize, lease, USER } from './fixture.mjs'
++import { snapshot as captureSnapshot } from '../pg17-deletion-capture/fixture.mjs'
++import { scenarios, replay, step } from './scenarios.mjs'
++const red = process.argv.includes('--without-migration')
++const directory = join(root, 'docs/research/evidence/2026-11-06-g1-deletion-leases', `native-${red ? 'red-' : ''}${Date.now()}-${randomUUID()}`)
++const report = { status: 'running', assertions: 0, actorConnections: [], scenarios: [], sources: {}, command: `node experiments/pg17-deletion-leases/verify.mjs ${process.argv.slice(2).join(' ')}`.trim(), g1MilestoneSatisfied: false, canDeleteStorage: false, physicalDeletionComplete: false }
++const h = new Harness(report)
++await mkdir(directory, { recursive: true })
++async function source(path) { const bytes = await readFile(join(root, path)); report.sources[path] = digest(bytes); return bytes.toString() }
++async function graph(path, seen = new Set()) {
++  if (seen.has(path)) return
++  seen.add(path)
++  const text = await source(path)
++  for (const [, dependency] of text.matchAll(/(?:from\s*|import\s*\()['"]([^'"]+\.mjs)['"]/g)) {
++    if (dependency.startsWith('.')) await graph(posix.normalize(posix.join(posix.dirname(path), dependency)), seen)
++  }
++}
++try {
++  await graph('experiments/pg17-deletion-leases/verify.mjs')
++  await h.start(); await setup(h, source, !red)
++  const service = await h.actorClient('service_role', USER), { prepareRecordingSessionSeal: prepare } = await compileModules(h, source)
++  await h.scenario('actual capture permits durable claim without granting physical deletion', async () => {
++    const f = await fresh(h, service, prepare)
++    await materialize(h, f)
++    report.beforeFirstCapture = await captureSnapshot(h)
++    f.args = { subjectId: f.storyId, requestId: randomUUID() }
++    f.capture = await capture(service, f.args); f.requestId = f.capture.id
++    report.firstCapture = { receipt: f.capture, rows: await captureSnapshot(h) }
++    if (!red) await replay(h, service, f)
++    const claimed = red ? await lease(service, f.requestId, 'claim', 'worker-1', null, 120000)
++      : await step(h, service, f, 'claim', 'worker-1', null, 120000)
++    report.firstClaim = claimed
++    h.eq([claimed.state, claimed.attempt, claimed.canDeleteStorage, claimed.physicalDeletionComplete], ['leased', 1, false, false], 'claim is coordination only')
++    if (!red) await replay(h, service, f)
++  })
++  await scenarios(h, service, prepare, source)
++  report.status = 'passed'
++} catch (error) {
++  report.status = 'failed'; report.error = { code: error.code ?? 'ERROR', label: error.label ?? error.message, position: error.position, where: error.where, internalQuery: error.internalQuery }; process.exitCode = 1
++} finally {
++  await h.cleanup(); if (report.status !== 'passed') process.exitCode = 1
++  await writeFile(join(directory, 'results.json'), JSON.stringify(report, null, 2))
++  console.log(JSON.stringify({ directory, status: report.status, assertions: report.assertions, error: report.error, cleanup: report.cleanup }, null, 2))
++}
+diff --git a/packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts b/packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/web/src/lib/server/__tests__/media-deletion-lease.test.ts
+@@ -0,0 +1,273 @@
++/** @jest-environment node */
++import {
++  claimMediaDeletionJob, startMediaDeletionJob, heartbeatMediaDeletionJob,
++  checkMediaDeletionJobLease, recoverMediaDeletionJob,
++  type MediaDeletionLease, type MediaDeletionLeaseReceipt,
++} from '../media-deletion-lease'
++import type { getSupabaseAdmin } from '@/lib/supabase'
++
++const requestId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc'
++const projectId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
++const subjectId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'
++const receipt = {
++  schemaVersion: 1, requestId, projectId, subjectId, subjectType: 'story',
++  captureTargetsSha256: 'a'.repeat(64), targetCount: 4,
++  state: 'leased', attempt: 1, workerId: 'worker-1',
++  serverNow: '2026-11-06T00:00:00.123456+00:00', leaseExpiresAt: '2026-11-06T00:01:00.123456+00:00',
++  canDeleteStorage: false, physicalDeletionComplete: false,
++} as const
++const failure = { message: 'media_deletion_lease_unavailable' }
++function client(...values: [] | [unknown]) {
++  const data = values.length ? values[0] : receipt
++  const retry = jest.fn<Promise<unknown>, [boolean]>(() => Promise.resolve({ data, error: null }))
++  const abortSignal = jest.fn((_signal: AbortSignal) => ({ retry }))
++  const rpc = jest.fn((_name: string, _args: Record<string, unknown>) => ({ abortSignal }))
++  return { rpc, retry, abortSignal, admin: { rpc } as unknown as ReturnType<typeof getSupabaseAdmin> }
++}
++function active(overrides: Record<string, unknown> = {}): MediaDeletionLease {
++  return { ...receipt, deadline: performance.now() + 60000, ...overrides } as MediaDeletionLease
++}
++function deferred(c: ReturnType<typeof client>) {
++  let resolve!: (value: unknown) => void
++  c.retry.mockImplementation(() => new Promise(done => { resolve = done }))
++  return (data: unknown) => resolve({ data, error: null })
++}
++afterEach(() => { jest.useRealTimers(); jest.restoreAllMocks() })
++
++describe('durable deletion lease application boundary', () => {
++  it('claims once with all five exact arguments and an immutable 14-key receipt plus local deadline', async () => {
++    const c = client(), started = performance.now()
++    const value: MediaDeletionLease = await claimMediaDeletionJob(requestId, 'worker-1', 60000, c)
++    expect(c.rpc).toHaveBeenCalledTimes(1)
++    expect(c.rpc).toHaveBeenCalledWith('media_deletion_job_lease', {
++      p_request_id: requestId, p_action: 'claim', p_worker_id: 'worker-1', p_attempt: null, p_lease_ms: 60000,
++    })
++    expect(c.abortSignal).toHaveBeenCalledTimes(1)
++    expect(c.abortSignal.mock.calls[0][0]).toBeInstanceOf(AbortSignal)
++    expect(c.retry).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledWith(false)
++    expect(value).toEqual({ ...receipt, deadline: expect.any(Number) })
++    expect(value.deadline).toBeGreaterThanOrEqual(started + 60000)
++    expect(value.deadline).toBeLessThanOrEqual(performance.now() + 60000)
++    expect(Object.isFrozen(value)).toBe(true); expect(Object.keys(value)).toHaveLength(15)
++  })
++
++  it.each(['start', 'heartbeat', 'check'] as const)('forwards exact %s arguments and preserves identity', async action => {
++    const lease = active({ state: action === 'heartbeat' ? 'running' : 'leased' })
++    const data = { ...receipt, state: 'running' }, c = client(data)
++    const value = action === 'start' ? await startMediaDeletionJob(lease, c)
++      : action === 'heartbeat' ? await heartbeatMediaDeletionJob(lease, 1000, c)
++        : await checkMediaDeletionJobLease(lease, c)
++    expect(value).toMatchObject(data); expect(Object.isFrozen(value)).toBe(true)
++    expect(c.rpc).toHaveBeenCalledWith('media_deletion_job_lease', {
++      p_request_id: requestId, p_action: action, p_worker_id: 'worker-1', p_attempt: 1,
++      p_lease_ms: action === 'heartbeat' ? 1000 : null,
++    })
++    expect(c.retry).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledWith(false)
++  })
++
++  it('allows live running start replay and same-state check', async () => {
++    for (const operation of [startMediaDeletionJob, checkMediaDeletionJobLease]) {
++      expect(await operation(active({ state: 'running' }), client({ ...receipt, state: 'running' }))).toMatchObject({ state: 'running' })
++    }
++    expect(await checkMediaDeletionJobLease(active(), client())).toMatchObject({ state: 'leased' })
++  })
++
++  it.each([
++    ['retry_wait', 1], ['retry_wait', 2], ['failed', 3],
++    ['outcome_unknown', 1], ['outcome_unknown', 2], ['outcome_unknown', 3],
++  ] as const)('recovers %s at attempt %i with null SQL fields and no local deadline', async (state, attempt) => {
++    const data = { ...receipt, state, attempt, workerId: null, leaseExpiresAt: null }, c = client(data)
++    const value: MediaDeletionLeaseReceipt = await recoverMediaDeletionJob(requestId, c)
++    expect(value).toEqual(data); expect(Object.keys(value)).toHaveLength(14); expect(Object.isFrozen(value)).toBe(true)
++    expect(c.rpc).toHaveBeenCalledWith('media_deletion_job_lease', {
++      p_request_id: requestId, p_action: 'recover', p_worker_id: null, p_attempt: null, p_lease_ms: null,
++    })
++  })
++
++  it.each([
++    ['failed', 1], ['failed', 2], ['retry_wait', 3],
++  ] as const)('rejects impossible recovered %s at attempt %i', async (state, attempt) => {
++    const c = client({ ...receipt, state, attempt, workerId: null, leaseExpiresAt: null })
++    await expect(recoverMediaDeletionJob(requestId, c)).rejects.toMatchObject(failure)
++  })
++
++  it.each([
++    { extra: true }, { deadline: 999999 }, { schemaVersion: 2 }, { requestId: projectId },
++    { projectId: projectId.toUpperCase() }, { subjectId: 'private/path' }, { subjectType: 'recording' },
++    { captureTargetsSha256: 'A'.repeat(64) }, { captureTargetsSha256: 'a'.repeat(63) },
++    { targetCount: 0 }, { targetCount: -1 }, { targetCount: 1.1 }, { targetCount: '4' }, { targetCount: Number.MAX_SAFE_INTEGER + 1 },
++    { state: 'completed' }, { state: 'running' }, { state: 'cancelled' },
++    { workerId: null }, { workerId: 'bad worker' }, { workerId: 'worker-2' }, { workerId: 'x'.repeat(129) },
++    { attempt: 0 }, { attempt: 4 }, { attempt: 1.1 }, { attempt: '1' },
++    { canDeleteStorage: true }, { physicalDeletionComplete: true }, { leaseExpiresAt: null },
++    { leaseExpiresAt: 'infinity' }, { serverNow: 'yesterday' },
++    { serverNow: '2026-02-30T00:00:00Z' }, { serverNow: '2026-11-06T24:00:00Z' },
++    { serverNow: '2026-11-06 00:00:00+00' }, { serverNow: '2026-11-06T00:00:00+01:00' },
++    { serverNow: '0001-01-01T00:00:00+00:00 BC' }, { serverNow: '10000-01-01T00:00:00Z' },
++    { serverNow: '2026-11-06T00:00:00.1234567Z' },
++    { leaseExpiresAt: '2026-11-06T00:00:00.123455Z' },
++    { leaseExpiresAt: receipt.serverNow }, { leaseExpiresAt: '2026-11-06T00:01:00.123457Z' },
++  ])('rejects malformed, overlong or overprivileged claim receipt %j', async mutation => {
++    await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, client({ ...receipt, ...mutation }))).rejects.toMatchObject(failure)
++  })
++
++  it('rejects every missing receipt key and all nonobject receipts', async () => {
++    const missing = Object.keys(receipt).map(key => Object.fromEntries(Object.entries(receipt).filter(([k]) => k !== key)))
++    for (const data of [null, undefined, [], 'receipt', 1, {}, ...missing]) {
++      await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, client(data))).rejects.toMatchObject(failure)
++    }
++  })
++
++  it('compares exact UTC microseconds even for dates beyond safe integer epoch microseconds', async () => {
++    jest.spyOn(performance, 'now').mockReturnValue(100)
++    const data = { ...receipt, serverNow: '9999-12-31T00:00:00.123455Z', leaseExpiresAt: '9999-12-31T00:00:00.123456+00:00' }
++    expect((await claimMediaDeletionJob(requestId, 'worker-1', 1000, client(data))).deadline).toBeCloseTo(100.001, 9)
++    await expect(claimMediaDeletionJob(requestId, 'worker-1', 1000, client({ ...data, serverNow: data.leaseExpiresAt, leaseExpiresAt: data.serverNow }))).rejects.toMatchObject(failure)
++  })
++
++  it('accepts canonical historical years without depending on client wall-clock synchronization', async () => {
++    for (const year of ['0001', '0099', '1900']) {
++      const data = { ...receipt, serverNow: `${year}-01-01T00:00:00Z`, leaseExpiresAt: `${year}-01-01T00:01:00Z` }
++      expect(await claimMediaDeletionJob(requestId, 'worker-1', 60000, client(data))).toMatchObject(data)
++    }
++  })
++
++  it.each(['requestId', 'projectId', 'subjectId', 'subjectType', 'captureTargetsSha256', 'targetCount', 'workerId', 'attempt'])('pins %s on every active operation', async key => {
++    const changes: Record<string, unknown> = { requestId: projectId, projectId: subjectId, subjectId: projectId, subjectType: 'media_asset', captureTargetsSha256: 'b'.repeat(64), targetCount: 5, workerId: 'worker-2', attempt: 2 }
++    for (const operation of [startMediaDeletionJob, checkMediaDeletionJobLease, (l: MediaDeletionLease, c: ReturnType<typeof client>) => heartbeatMediaDeletionJob(l, 60000, c)]) {
++      const c = client(), deliver = deferred(c), input = active({ state: 'running' })
++      const pending = operation(input, c)
++      Object.assign(input, { [key]: changes[key] })
++      deliver({ ...receipt, state: 'running', [key]: changes[key] })
++      await expect(pending).rejects.toMatchObject(failure)
++    }
++  })
++
++  it('uses the original cloned lease and options when caller objects are mutated during transport', async () => {
++    const c = client(), deliver = deferred(c), input = active(), controller = new AbortController()
++    const options = { ...c, signal: controller.signal, timeoutMs: 5000 }
++    const pending = startMediaDeletionJob(input, options)
++    Object.assign(input, { requestId: projectId, state: 'failed', deadline: 0, workerId: 'other' })
++    options.timeoutMs = 0; options.signal = new AbortController().signal
++    deliver({ ...receipt, state: 'running' })
++    expect(await pending).toMatchObject({ requestId, state: 'running', workerId: 'worker-1' })
++  })
++
++  it('clones the transport receipt before returning the immutable lease', async () => {
++    const data = { ...receipt }, value = await claimMediaDeletionJob(requestId, 'worker-1', 60000, client(data))
++    data.targetCount = 99 as 4
++    expect(value.targetCount).toBe(4); expect(value).not.toBe(data)
++  })
++
++  it('rejects state regressions, heartbeat before start and active recovery receipts', async () => {
++    await expect(checkMediaDeletionJobLease(active({ state: 'running' }), client())).rejects.toMatchObject(failure)
++    await expect(startMediaDeletionJob(active(), client())).rejects.toMatchObject(failure)
++    const c = client(); await expect(heartbeatMediaDeletionJob(active(), 1000, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    await expect(recoverMediaDeletionJob(requestId, client())).rejects.toMatchObject(failure)
++    for (const mutation of [{ workerId: 'worker-1' }, { leaseExpiresAt: receipt.leaseExpiresAt }, { requestId: projectId }, { deadline: 100 }]) {
++      await expect(recoverMediaDeletionJob(requestId, client({ ...receipt, state: 'retry_wait', workerId: null, leaseExpiresAt: null, ...mutation }))).rejects.toMatchObject(failure)
++    }
++  })
++
++  it('allows shorter heartbeat requests without shortening server expiry and rejects TTL above 120000 ms', async () => {
++    const input = active({ state: 'running' }), data = { ...receipt, state: 'running' }
++    expect(await heartbeatMediaDeletionJob(input, 1000, client(data))).toMatchObject(data)
++    await expect(heartbeatMediaDeletionJob(input, 1000, client({ ...data, leaseExpiresAt: '2026-11-06T00:00:59.123456Z' }))).rejects.toMatchObject(failure)
++    await expect(heartbeatMediaDeletionJob(input, 120000, client({ ...data, leaseExpiresAt: '2026-11-06T00:02:00.123457Z' }))).rejects.toMatchObject(failure)
++  })
++
++  it('rejects bad request/worker/duration/options values before transport', async () => {
++    for (const id of [null, undefined, '', requestId.toUpperCase(), 'x', {}, 1]) {
++      const c = client(); await expect(claimMediaDeletionJob(id as string, 'worker-1', 60000, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++      await expect(recoverMediaDeletionJob(id as string, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++    for (const worker of ['', 'bad worker', 'a'.repeat(129), null, {}, 1]) {
++      const c = client(); await expect(claimMediaDeletionJob(requestId, worker as string, 60000, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++    for (const duration of [0, 999, 120001, 1000.1, NaN, Infinity, '1000', null]) {
++      const c = client(); await expect(claimMediaDeletionJob(requestId, 'worker-1', duration as number, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++      await expect(heartbeatMediaDeletionJob(active({ state: 'running' }), duration as number, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++    for (const timeoutMs of [0, 60001, 1.1, NaN, Infinity, null, '1000']) {
++      const c = client(); await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, { ...c, timeoutMs: timeoutMs as number })).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++  })
++
++  it.each(['start', 'heartbeat', 'check'] as const)('rejects expired or malformed %s input before transport', async action => {
++    const operation = (value: MediaDeletionLease, c: ReturnType<typeof client>) => action === 'start' ? startMediaDeletionJob(value, c)
++      : action === 'heartbeat' ? heartbeatMediaDeletionJob(value, 60000, c) : checkMediaDeletionJobLease(value, c)
++    for (const input of [null, undefined, {}, active({ state: 'running', deadline: 0 }), active({ deadline: NaN }), active({ deadline: Infinity }), active({ extra: true }), active({ state: 'failed' }), active({ physicalDeletionComplete: true })]) {
++      const c = client(); await expect(operation(input as MediaDeletionLease, c)).rejects.toMatchObject(failure); expect(c.rpc).not.toHaveBeenCalled()
++    }
++  })
++
++  it('counts transport waiting against the returned local deadline and rejects a reply after local expiry', async () => {
++    let now = 100
++    jest.spyOn(performance, 'now').mockImplementation(() => now)
++    const c = client(), deliver = deferred(c), pending = claimMediaDeletionJob(requestId, 'worker-1', 60000, c)
++    now = 400; deliver(receipt)
++    expect((await pending).deadline).toBe(60100)
++    const late = client(), reply = deferred(late), waiting = claimMediaDeletionJob(requestId, 'worker-1', 60000, late)
++    now = 60400; reply(receipt)
++    await expect(waiting).rejects.toMatchObject(failure)
++  })
++
++  it('bounds a hung transport by the pinned active deadline even if caller mutates it', async () => {
++    jest.useFakeTimers()
++    const c = client(), input = active({ state: 'running', deadline: performance.now() + 5 })
++    c.retry.mockImplementation(() => new Promise(() => {}))
++    const pending = heartbeatMediaDeletionJob(input, 60000, { ...c, timeoutMs: 5000 })
++    const checked = expect(pending).rejects.toMatchObject(failure)
++    Object.assign(input, { deadline: performance.now() + 120000 })
++    await jest.advanceTimersByTimeAsync(5); await checked
++    expect(c.rpc).toHaveBeenCalledTimes(1); expect(c.abortSignal.mock.calls[0][0].aborted).toBe(true)
++  })
++
++  it.each([false, true])('rejects ignored cancellation promptly (caller=%s) with no retry', async caller => {
++    jest.useFakeTimers()
++    const c = client(), controller = new AbortController()
++    c.retry.mockImplementation(() => new Promise(() => {}))
++    const options = { ...c, timeoutMs: 10, signal: controller.signal }
++    const pending = claimMediaDeletionJob(requestId, 'worker-1', 60000, options)
++    const checked = expect(pending).rejects.toMatchObject(failure)
++    options.signal = new AbortController().signal
++    if (caller) controller.abort(); else await jest.advanceTimersByTimeAsync(10)
++    await checked
++    expect(c.rpc).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledTimes(1)
++    expect(c.abortSignal.mock.calls[0][0].aborted).toBe(true)
++  })
++
++  it('rejects pre-abort before transport and expiry after response even when timers have not fired', async () => {
++    const controller = new AbortController(); controller.abort(); const c = client()
++    await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, { ...c, signal: controller.signal })).rejects.toMatchObject(failure)
++    expect(c.rpc).not.toHaveBeenCalled()
++    let now = 0; jest.spyOn(performance, 'now').mockImplementation(() => now)
++    const slow = client(), deliver = deferred(slow), pending = claimMediaDeletionJob(requestId, 'worker-1', 60000, { ...slow, timeoutMs: 5 })
++    now = 5; deliver(receipt); await expect(pending).rejects.toMatchObject(failure)
++  })
++
++  it('also enforces the timeout after validating a recovery receipt', async () => {
++    let now = 0
++    jest.spyOn(performance, 'now').mockImplementation(() => now)
++    const data = { ...receipt, state: 'retry_wait', workerId: null, leaseExpiresAt: null,
++      get serverNow() { now = 5; return receipt.serverNow },
++    }
++    await expect(recoverMediaDeletionJob(requestId, { ...client(data), timeoutMs: 5 })).rejects.toMatchObject(failure)
++  })
++
++  it.each(['42501', '23505', '22023', '55P03', 'XX000'])('hides SQL %s details with a single no-retry call', async code => {
++    const c = client(); c.retry.mockResolvedValue({ error: { code, message: 'private/path' }, data: null })
++    await expect(claimMediaDeletionJob(requestId, 'worker-1', 60000, c)).rejects.toMatchObject(failure)
++    expect(c.rpc).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledTimes(1)
++  })
++
++  it('lost claim/start responses fail generically, allow explicit observation, and never auto-retry', async () => {
++    for (const start of [false, true]) {
++      const c = client(); c.retry.mockRejectedValue(new Error('lost private/path response'))
++      await expect(start ? startMediaDeletionJob(active(), c) : claimMediaDeletionJob(requestId, 'worker-1', 60000, c)).rejects.toMatchObject(failure)
++      expect(c.rpc).toHaveBeenCalledTimes(1); expect(c.retry).toHaveBeenCalledTimes(1)
++    }
++    expect(await checkMediaDeletionJobLease(active(), client({ ...receipt, state: 'running' }))).toMatchObject({ state: 'running' })
++    expect(await recoverMediaDeletionJob(requestId, client({ ...receipt, state: 'outcome_unknown', workerId: null, leaseExpiresAt: null }))).toMatchObject({ state: 'outcome_unknown' })
++  })
++})
+diff --git a/packages/web/src/lib/server/media-deletion-lease.ts b/packages/web/src/lib/server/media-deletion-lease.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/web/src/lib/server/media-deletion-lease.ts
+@@ -0,0 +1,160 @@
++import type { getSupabaseAdmin } from '@/lib/supabase'
++
++type Options = { admin: ReturnType<typeof getSupabaseAdmin>; signal?: AbortSignal; timeoutMs?: number }
++type Action = 'claim' | 'start' | 'heartbeat' | 'check' | 'recover'
++type InactiveState = 'retry_wait' | 'failed' | 'outcome_unknown'
++
++export type MediaDeletionLeaseReceipt = Readonly<{
++  schemaVersion: 1
++  requestId: string; projectId: string; subjectId: string; subjectType: 'media_asset' | 'story'
++  captureTargetsSha256: string; targetCount: number
++  state: 'leased' | 'running' | InactiveState
++  attempt: number; workerId: string | null; leaseExpiresAt: string | null; serverNow: string
++  canDeleteStorage: false; physicalDeletionComplete: false
++}>
++export type MediaDeletionLease = Readonly<Omit<MediaDeletionLeaseReceipt, 'state' | 'workerId' | 'leaseExpiresAt'> & {
++  state: 'leased' | 'running'; workerId: string; leaseExpiresAt: string
++  // A monotonic value valid only in this process; never persist or transfer it.
++  deadline: number
++}>
++type RecoveredReceipt = Readonly<MediaDeletionLeaseReceipt & {
++  state: InactiveState; workerId: null; leaseExpiresAt: null
++}>
++
++const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
++const WORKER = /^[A-Za-z0-9_-]{1,128}$/
++const KEYS = ['schemaVersion', 'requestId', 'projectId', 'subjectId', 'subjectType', 'captureTargetsSha256',
++  'targetCount', 'state', 'attempt', 'workerId', 'leaseExpiresAt', 'serverNow', 'canDeleteStorage', 'physicalDeletionComplete']
++const IDENTITY = ['requestId', 'projectId', 'subjectId', 'subjectType', 'captureTargetsSha256', 'targetCount', 'workerId', 'attempt'] as const
++
++function unavailable(): never { throw new Error('media_deletion_lease_unavailable') }
++function uuid(value: unknown): value is string { return typeof value === 'string' && UUID.test(value) }
++function worker(value: unknown): value is string { return typeof value === 'string' && WORKER.test(value) }
++function duration(value: unknown): value is number {
++  return typeof value === 'number' && Number.isInteger(value) && value >= 1000 && value <= 120000
++}
++function exactObject(value: unknown, keys: readonly string[]): Record<string, unknown> {
++  if (!value || typeof value !== 'object' || Array.isArray(value) || Reflect.ownKeys(value).length !== keys.length ||
++    keys.some(key => !Object.prototype.hasOwnProperty.call(value, key))) unavailable()
++  // Read each field once and detach from caller/transport-owned mutable objects.
++  return Object.fromEntries(keys.map(key => [key, (value as Record<string, unknown>)[key]]))
++}
++function utcMicroseconds(value: unknown): bigint {
++  if (typeof value !== 'string') unavailable()
++  const match = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d{1,6}))?(?:Z|\+00:00)$/.exec(value)
++  if (!match || value.startsWith('0000-')) unavailable()
++  const milliseconds = Date.parse(`${match[1]}Z`)
++  if (!Number.isFinite(milliseconds) || new Date(milliseconds).toISOString().slice(0, 19) !== match[1]) unavailable()
++  // Whole-second Date parsing validates the calendar only. BigInt preserves
++  // microseconds even for historical/future dates outside safe integer epochs.
++  return BigInt(milliseconds) * BigInt(1000) + BigInt((match[2] ?? '').padEnd(6, '0'))
++}
++function parseReceipt(value: unknown): MediaDeletionLeaseReceipt {
++  const row = exactObject(value, KEYS)
++  if (row.schemaVersion !== 1 || row.canDeleteStorage !== false || row.physicalDeletionComplete !== false ||
++    !uuid(row.requestId) || !uuid(row.projectId) || !uuid(row.subjectId) ||
++    (row.subjectType !== 'media_asset' && row.subjectType !== 'story') ||
++    typeof row.captureTargetsSha256 !== 'string' || !/^[0-9a-f]{64}$/.test(row.captureTargetsSha256) ||
++    !Number.isSafeInteger(row.targetCount) || Number(row.targetCount) < 1 ||
++    !Number.isSafeInteger(row.attempt) || Number(row.attempt) < 1 || Number(row.attempt) > 3) unavailable()
++  const now = utcMicroseconds(row.serverNow)
++  if (row.state === 'leased' || row.state === 'running') {
++    if (!worker(row.workerId)) unavailable()
++    const ttl = utcMicroseconds(row.leaseExpiresAt) - now
++    if (ttl <= BigInt(0) || ttl > BigInt(120000000)) unavailable()
++  } else if ((row.state !== 'retry_wait' && row.state !== 'failed' && row.state !== 'outcome_unknown') ||
++    (row.state === 'failed' && row.attempt !== 3) || (row.state === 'retry_wait' && row.attempt === 3) ||
++    row.workerId !== null || row.leaseExpiresAt !== null) unavailable()
++  return Object.freeze(row) as MediaDeletionLeaseReceipt
++}
++function pinLease(value: MediaDeletionLease): MediaDeletionLease {
++  const row = exactObject(value, [...KEYS, 'deadline'])
++  const { deadline, ...fields } = row
++  const receipt = parseReceipt(fields)
++  if ((receipt.state !== 'leased' && receipt.state !== 'running') || typeof deadline !== 'number' ||
++    !Number.isFinite(deadline) || deadline <= performance.now()) unavailable()
++  return Object.freeze({ ...receipt, deadline }) as MediaDeletionLease
++}
++
++async function request(requestId: string, action: Action, workerId: string | null, attempt: number | null,
++  leaseMs: number | null, options: Options, expected?: MediaDeletionLease): Promise<MediaDeletionLease | RecoveredReceipt> {
++  const started = performance.now()
++  if (typeof window !== 'undefined' || !uuid(requestId) ||
++    (action !== 'recover' && !worker(workerId)) ||
++    ((action === 'claim' || action === 'heartbeat') && !duration(leaseMs))) unavailable()
++  // Options are also pinned: mutating an options object cannot replace the
++  // original caller's cancellation signal while a transport is outstanding.
++  const { admin, signal, timeoutMs = 5000 } = options
++  if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000 || signal?.aborted) unavailable()
++  const stopAt = Math.min(started + timeoutMs, expected?.deadline ?? Infinity)
++  if (stopAt <= started) unavailable()
++  const controller = new AbortController()
++  const abort = () => controller.abort()
++  let rejectAbort = () => {}
++  const interrupted = new Promise<never>((_, reject) => {
++    rejectAbort = () => reject(new Error('media_deletion_lease_unavailable'))
++    controller.signal.addEventListener('abort', rejectAbort, { once: true })
++  })
++  signal?.addEventListener('abort', abort, { once: true })
++  const timer = setTimeout(abort, Math.max(0, stopAt - performance.now()))
++  try {
++    const query = admin.rpc('media_deletion_job_lease', {
++      p_request_id: requestId, p_action: action, p_worker_id: workerId, p_attempt: attempt, p_lease_ms: leaseMs,
++    }).abortSignal(controller.signal).retry(false)
++    const result = await Promise.race([query, interrupted])
++    if (controller.signal.aborted || signal?.aborted || performance.now() >= stopAt || !result || result.error) unavailable()
++    const receipt = parseReceipt(result.data)
++    if (receipt.requestId !== requestId || (expected && IDENTITY.some(key => receipt[key] !== expected[key]))) unavailable()
++    if (action === 'recover') {
++      if (receipt.state === 'leased' || receipt.state === 'running' ||
++        performance.now() >= stopAt || signal?.aborted) unavailable()
++      return receipt as RecoveredReceipt
++    }
++    if ((receipt.state !== 'leased' && receipt.state !== 'running') || receipt.workerId !== workerId ||
++      (attempt !== null && receipt.attempt !== attempt) ||
++      (action === 'claim' && receipt.state !== 'leased') ||
++      ((action === 'start' || action === 'heartbeat') && receipt.state !== 'running') ||
++      (action === 'check' && expected?.state === 'running' && receipt.state !== 'running')) unavailable()
++    const expiry = utcMicroseconds(receipt.leaseExpiresAt)
++    const ttl = expiry - utcMicroseconds(receipt.serverNow)
++    if ((action === 'claim' && ttl > BigInt(leaseMs!) * BigInt(1000)) ||
++      (action === 'heartbeat' && expiry < utcMicroseconds(expected!.leaseExpiresAt))) unavailable()
++    // Start before transport/lock waits. Observation/start cannot extend the
++    // caller's previous local deadline; only a heartbeat may renew it.
++    const deadline = Math.min(started + Number(ttl) / 1000,
++      action === 'heartbeat' ? Infinity : expected?.deadline ?? Infinity)
++    if (deadline <= performance.now() || performance.now() >= stopAt || signal?.aborted) unavailable()
++    return Object.freeze({ ...receipt, deadline }) as MediaDeletionLease
++  } catch { return unavailable() }
++  finally {
++    clearTimeout(timer)
++    signal?.removeEventListener('abort', abort)
++    controller.signal.removeEventListener('abort', rejectAbort)
++    controller.abort()
++  }
++}
++
++export async function claimMediaDeletionJob(requestId: string, workerId: string, leaseMs: number, options: Options): Promise<MediaDeletionLease> {
++  try { return await request(requestId, 'claim', workerId, null, leaseMs, options) as MediaDeletionLease }
++  catch { unavailable() }
++}
++async function activeRequest(lease: MediaDeletionLease, action: 'start' | 'heartbeat' | 'check', leaseMs: number | null, options: Options): Promise<MediaDeletionLease> {
++  try {
++    const pinned = pinLease(lease)
++    if (action === 'heartbeat' && pinned.state !== 'running') unavailable()
++    return await request(pinned.requestId, action, pinned.workerId, pinned.attempt, leaseMs, options, pinned) as MediaDeletionLease
++  } catch { unavailable() }
++}
++export async function startMediaDeletionJob(lease: MediaDeletionLease, options: Options): Promise<MediaDeletionLease> {
++  return activeRequest(lease, 'start', null, options)
++}
++export async function heartbeatMediaDeletionJob(lease: MediaDeletionLease, leaseMs: number, options: Options): Promise<MediaDeletionLease> {
++  return activeRequest(lease, 'heartbeat', leaseMs, options)
++}
++export async function checkMediaDeletionJobLease(lease: MediaDeletionLease, options: Options): Promise<MediaDeletionLease> {
++  return activeRequest(lease, 'check', null, options)
++}
++export async function recoverMediaDeletionJob(requestId: string, options: Options): Promise<RecoveredReceipt> {
++  try { return await request(requestId, 'recover', null, null, null, options) as RecoveredReceipt }
++  catch { unavailable() }
++}
+diff --git a/scripts/__tests__/deployment-config.test.js b/scripts/__tests__/deployment-config.test.js
+--- a/scripts/__tests__/deployment-config.test.js
++++ b/scripts/__tests__/deployment-config.test.js
+@@ -131,20 +131,21 @@
+     '20261030000001_upload_observations.sql',
+     '20261030000002_deployment_collection_coverage.sql',
+     '20261102000001_recording_seal_manifest.sql',
+     '20261103000001_recording_worker_leases.sql',
+     '20261103000002_recording_output_candidates.sql',
+     '20261104000001_recording_job_finalization.sql',
+     '20261105000001_recording_session_snapshot.sql',
+     '20261106000001_recording_story_save.sql',
+     '20261106000002_media_deletion_capture.sql',
+     '20261106000003_recording_seal_deletion_fence.sql',
++    '20261106000004_media_deletion_leases.sql',
+   ])
+ 
+   assert.equal(
+     read('supabase/migrations/20260611000000_agent_phase1.sql'),
+     read('packages/web/supabase/agent-phase1.sql'),
+   )
+   assert.equal(
+     read('supabase/migrations/20260612000000_agent_phase2_public_archive.sql'),
+     read('packages/web/supabase/agent-phase2-public-archive.sql'),
+   )
+diff --git a/supabase/migrations/20261106000004_media_deletion_leases.sql b/supabase/migrations/20261106000004_media_deletion_leases.sql
+new file mode 100644
+--- /dev/null
++++ b/supabase/migrations/20261106000004_media_deletion_leases.sql
+@@ -0,0 +1,291 @@
++-- Ownership only: immutable capture remains the work order, never a delete permit.
++BEGIN;
++CREATE TABLE public.media_deletion_jobs (
++  request_id uuid PRIMARY KEY REFERENCES public.deletion_requests(id) ON DELETE RESTRICT,
++  project_id uuid NOT NULL REFERENCES public.projects(id) ON DELETE RESTRICT,
++  subject_id uuid NOT NULL,
++  subject_type text NOT NULL CHECK (subject_type IN ('media_asset','story')),
++  capture_targets_sha256 text NOT NULL CHECK (capture_targets_sha256 ~ '^[0-9a-f]{64}$'),
++  target_count integer NOT NULL CHECK (target_count > 0),
++  state text NOT NULL CHECK (state IN ('leased','running','retry_wait','failed','outcome_unknown')),
++  attempt_no integer NOT NULL CHECK (attempt_no BETWEEN 1 AND 3),
++  worker_id text,
++  lease_expires_at timestamptz,
++  created_at timestamptz NOT NULL,
++  updated_at timestamptz NOT NULL,
++  CONSTRAINT media_deletion_job_shape CHECK (
++    isfinite(created_at) AND isfinite(updated_at) AND updated_at >= created_at
++    AND ((state IN ('leased','running') AND worker_id IS NOT NULL AND worker_id ~ '^[A-Za-z0-9_-]{1,128}$'
++      AND lease_expires_at IS NOT NULL AND isfinite(lease_expires_at) AND lease_expires_at > updated_at
++      AND lease_expires_at <= updated_at + interval '120 seconds')
++      OR (state IN ('retry_wait','failed','outcome_unknown') AND worker_id IS NULL AND lease_expires_at IS NULL))
++    AND (state <> 'retry_wait' OR attempt_no < 3) AND (state <> 'failed' OR attempt_no = 3))
++);
++CREATE TABLE public.media_deletion_attempts (
++  request_id uuid NOT NULL REFERENCES public.media_deletion_jobs(request_id) ON DELETE RESTRICT,
++  attempt_no integer NOT NULL CHECK (attempt_no BETWEEN 1 AND 3),
++  worker_id text NOT NULL CHECK (worker_id ~ '^[A-Za-z0-9_-]{1,128}$'),
++  state text NOT NULL CHECK (state IN ('leased','running','expired','outcome_unknown')),
++  claimed_at timestamptz NOT NULL,
++  started_at timestamptz,
++  heartbeat_at timestamptz,
++  lease_expires_at timestamptz NOT NULL,
++  finished_at timestamptz,
++  PRIMARY KEY (request_id,attempt_no),
++  CONSTRAINT media_deletion_attempt_shape CHECK (
++    isfinite(claimed_at) AND isfinite(lease_expires_at)
++    AND lease_expires_at >= coalesce(heartbeat_at,claimed_at) + interval '1 second'
++    AND lease_expires_at <= coalesce(heartbeat_at,claimed_at) + interval '120 seconds'
++    AND (started_at IS NULL OR (isfinite(started_at) AND started_at >= claimed_at AND started_at < lease_expires_at))
++    AND (heartbeat_at IS NULL OR (started_at IS NOT NULL AND isfinite(heartbeat_at) AND heartbeat_at >= started_at))
++    AND ((state IN ('leased','expired') AND started_at IS NULL AND heartbeat_at IS NULL)
++      OR (state IN ('running','outcome_unknown') AND started_at IS NOT NULL))
++    AND ((state IN ('leased','running') AND finished_at IS NULL)
++      OR (state IN ('expired','outcome_unknown') AND finished_at IS NOT NULL AND isfinite(finished_at) AND finished_at >= lease_expires_at)))
++);
++ALTER TABLE public.media_deletion_jobs ENABLE ROW LEVEL SECURITY;
++ALTER TABLE public.media_deletion_attempts ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON public.media_deletion_jobs,public.media_deletion_attempts FROM PUBLIC,anon,authenticated,service_role;
++GRANT SELECT ON public.media_deletion_jobs,public.media_deletion_attempts TO service_role;
++CREATE POLICY media_deletion_jobs_service_read ON public.media_deletion_jobs FOR SELECT TO service_role USING (true);
++CREATE POLICY media_deletion_attempts_service_read ON public.media_deletion_attempts FOR SELECT TO service_role USING (true);
++
++CREATE FUNCTION public.media_deletion_job_lease(
++  p_request_id uuid, p_action text, p_worker_id text, p_attempt integer, p_lease_ms integer
++) RETURNS jsonb
++LANGUAGE plpgsql VOLATILE SECURITY DEFINER
++SET search_path = pg_catalog, pg_temp
++SET timezone = 'UTC'
++SET lock_timeout = '3s'
++AS $$
++DECLARE
++  v_request public.deletion_requests%ROWTYPE;
++  v_job public.media_deletion_jobs%ROWTYPE;
++  v_attempt public.media_deletion_attempts%ROWTYPE;
++  v_prior public.media_deletion_attempts%ROWTYPE;
++  v_now timestamptz;
++  v_return_now timestamptz;
++  v_previous_finish timestamptz;
++  v_first_claim timestamptz;
++  v_expected_job jsonb;
++  v_expected_attempts jsonb;
++  v_capture jsonb;
++  v_targets jsonb;
++  v_actual jsonb;
++  v_target public.deletion_targets%ROWTYPE;
++  v_count integer;
++  v_index integer := 0;
++  v_exists boolean;
++  v_write boolean := false;
++  v_uuid text := '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
++BEGIN
++  IF p_request_id IS NULL OR p_action IS NULL OR p_action NOT IN ('claim','start','heartbeat','check','recover')
++    OR current_setting('transaction_isolation') <> 'read committed' THEN
++    RAISE EXCEPTION 'Invalid deletion lease arguments' USING ERRCODE = '22023';
++  END IF;
++  IF p_action='recover' THEN
++    IF p_worker_id IS NOT NULL OR p_attempt IS NOT NULL OR p_lease_ms IS NOT NULL THEN
++      RAISE EXCEPTION 'Invalid deletion recovery arguments' USING ERRCODE = '22023';
++    END IF;
++  ELSIF p_worker_id IS NULL OR p_worker_id !~ '^[A-Za-z0-9_-]{1,128}$'
++    OR (p_action='claim' AND p_attempt IS NOT NULL)
++    OR (p_action<>'claim' AND (p_attempt IS NULL OR p_attempt NOT BETWEEN 1 AND 3))
++    OR (p_action IN ('claim','heartbeat') AND (p_lease_ms IS NULL OR p_lease_ms NOT BETWEEN 1000 AND 120000))
++    OR (p_action IN ('start','check') AND p_lease_ms IS NOT NULL) THEN
++    RAISE EXCEPTION 'Invalid deletion ownership arguments' USING ERRCODE = '22023';
++  END IF;
++
++  -- Same first fence as capture/publication; do not read capture before waiting.
++  LOCK TABLE public.deletion_requests IN SHARE MODE;
++  LOCK TABLE public.deletion_targets IN SHARE MODE;
++  PERFORM pg_advisory_xact_lock(hashtextextended('media-deletion-lease:'||p_request_id::text,0));
++  SELECT j.* INTO v_job FROM public.media_deletion_jobs j WHERE j.request_id=p_request_id FOR UPDATE;
++  v_exists := FOUND;
++  PERFORM 1 FROM public.media_deletion_attempts a WHERE a.request_id=p_request_id ORDER BY a.attempt_no FOR UPDATE;
++  v_now := clock_timestamp();
++  SELECT r.* INTO v_request FROM public.deletion_requests r WHERE r.id=p_request_id;
++  IF NOT FOUND OR v_request.capture_version IS DISTINCT FROM 1
++    OR v_request.subject_id !~ v_uuid OR v_request.subject_type IS NULL OR v_request.subject_type NOT IN ('media_asset','story')
++    OR v_request.state IS DISTINCT FROM 'requested' OR v_request.attempt IS DISTINCT FROM 0
++    OR v_request.tombstone_at IS NULL OR NOT isfinite(v_request.tombstone_at) OR v_request.tombstone_at > v_now
++    OR v_request.requested_at IS DISTINCT FROM v_request.tombstone_at
++    OR v_request.processing_at IS NOT NULL OR v_request.completed_at IS NOT NULL OR v_request.error_code IS NOT NULL
++    OR v_request.capture_target_count IS NULL OR v_request.capture_target_count < 1
++    OR v_request.capture_targets_sha256 IS NULL OR v_request.capture_targets_sha256 !~ '^[0-9a-f]{64}$'
++    OR (SELECT count(*) FROM public.deletion_requests r WHERE r.project_id=v_request.project_id AND r.subject_id=v_request.subject_id) <> 1 THEN
++    RAISE EXCEPTION 'Deletion capture unavailable' USING ERRCODE = '23505';
++  END IF;
++  v_capture := to_jsonb(v_request);
++  SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY t.target_id),'[]'::jsonb) INTO v_targets
++    FROM public.deletion_targets t WHERE t.deletion_request_id=p_request_id;
++  IF jsonb_array_length(v_targets) <> v_request.capture_target_count
++    OR encode(sha256(convert_to(v_targets::text,'UTF8')),'hex') IS DISTINCT FROM v_request.capture_targets_sha256 THEN
++    RAISE EXCEPTION 'Deletion capture digest conflict' USING ERRCODE = '23505';
++  END IF;
++  FOR v_target IN SELECT t.* FROM public.deletion_targets t WHERE t.deletion_request_id=p_request_id LOOP
++    IF v_target.state IS DISTINCT FROM 'pending' OR v_target.error_code IS NOT NULL
++      OR v_target.updated_at IS DISTINCT FROM v_request.tombstone_at
++      OR v_target.kind NOT IN ('media_asset','story','storage_object')
++      OR (v_target.kind IN ('media_asset','story') AND (v_target.bucket IS NOT NULL OR v_target.object_key IS NOT NULL
++        OR split_part(v_target.target_id,':',2) !~ v_uuid
++        OR v_target.target_id IS DISTINCT FROM CASE WHEN v_target.kind='story' THEN 'story:' ELSE 'asset:' END||split_part(v_target.target_id,':',2)
++        OR (v_target.kind='story' AND (v_request.subject_type<>'story' OR v_target.target_id<>'story:'||v_request.subject_id))
++        OR (v_target.kind='media_asset' AND v_request.subject_type='media_asset' AND v_target.target_id<>'asset:'||v_request.subject_id)))
++      OR (v_target.kind='storage_object' AND (v_target.bucket IS NULL OR v_target.bucket NOT IN ('saga','audio-recordings','recording-candidates')
++        OR v_target.object_key IS NULL OR length(v_target.object_key)>1024
++        OR v_target.object_key !~ '^[A-Za-z0-9_-]+(/[A-Za-z0-9_.-]+)+$' OR v_target.object_key ~ '(^|/)\.{1,2}(/|$)'
++        OR v_target.target_id IS DISTINCT FROM 'storage:'||v_target.bucket||':'||v_target.object_key)) THEN
++      RAISE EXCEPTION 'Deletion target shape conflict' USING ERRCODE = '23505';
++    END IF;
++  END LOOP;
++  IF (SELECT count(*) FROM public.deletion_targets t WHERE t.deletion_request_id=p_request_id
++    AND t.target_id=CASE WHEN v_request.subject_type='story' THEN 'story:' ELSE 'asset:' END||v_request.subject_id) <> 1
++    OR EXISTS (SELECT 1 FROM public.deletion_targets t WHERE t.deletion_request_id=p_request_id GROUP BY t.target_id HAVING count(*)>1)
++    OR EXISTS (SELECT 1 FROM public.deletion_targets t WHERE t.deletion_request_id=p_request_id AND t.kind='storage_object'
++      GROUP BY t.bucket,t.object_key HAVING count(*)>1) THEN
++    RAISE EXCEPTION 'Deletion target identity conflict' USING ERRCODE = '23505';
++  END IF;
++
++  SELECT coalesce(jsonb_agg(to_jsonb(a) ORDER BY a.attempt_no),'[]'::jsonb) INTO v_expected_attempts
++    FROM public.media_deletion_attempts a WHERE a.request_id=p_request_id;
++  v_count := jsonb_array_length(v_expected_attempts);
++  IF NOT v_exists THEN
++    IF v_count<>0 OR p_action<>'claim' THEN RAISE EXCEPTION 'Deletion job unavailable' USING ERRCODE='23505'; END IF;
++  ELSE
++    -- Validate history before deriving any new row; no malformed old attempt may
++    -- be cleaned up by claim/recover. Every prior attempt was undispatched.
++    IF v_job.project_id IS DISTINCT FROM v_request.project_id OR v_job.subject_id::text IS DISTINCT FROM v_request.subject_id
++      OR v_job.subject_type IS DISTINCT FROM v_request.subject_type OR v_job.capture_targets_sha256 IS DISTINCT FROM v_request.capture_targets_sha256
++      OR v_job.target_count IS DISTINCT FROM v_request.capture_target_count OR v_count IS DISTINCT FROM v_job.attempt_no
++      OR v_job.attempt_no NOT BETWEEN 1 AND 3 OR v_job.state NOT IN ('leased','running','retry_wait','failed','outcome_unknown')
++      OR NOT isfinite(v_job.created_at) OR NOT isfinite(v_job.updated_at) OR v_job.updated_at > v_now
++      OR v_job.created_at < v_request.tombstone_at OR v_job.updated_at < v_job.created_at THEN
++      RAISE EXCEPTION 'Deletion job binding conflict' USING ERRCODE='23505';
++    END IF;
++    FOR v_prior IN SELECT a.* FROM public.media_deletion_attempts a WHERE a.request_id=p_request_id ORDER BY a.attempt_no LOOP
++      v_index := v_index+1;
++      IF v_index=1 THEN v_first_claim:=v_prior.claimed_at; END IF;
++      IF v_prior.attempt_no<>v_index OR v_prior.worker_id IS NULL OR v_prior.worker_id !~ '^[A-Za-z0-9_-]{1,128}$'
++        OR v_prior.state NOT IN ('leased','running','expired','outcome_unknown')
++        OR v_prior.claimed_at IS NULL OR NOT isfinite(v_prior.claimed_at) OR v_prior.claimed_at>v_now OR v_prior.claimed_at<v_request.tombstone_at
++        OR (v_previous_finish IS NOT NULL AND v_prior.claimed_at<v_previous_finish)
++        OR v_prior.lease_expires_at IS NULL OR NOT isfinite(v_prior.lease_expires_at)
++        OR v_prior.lease_expires_at<coalesce(v_prior.heartbeat_at,v_prior.claimed_at)+interval '1 second'
++        OR v_prior.lease_expires_at>coalesce(v_prior.heartbeat_at,v_prior.claimed_at)+interval '120 seconds'
++        OR (v_prior.started_at IS NOT NULL AND (NOT isfinite(v_prior.started_at) OR v_prior.started_at<v_prior.claimed_at
++          OR v_prior.started_at>v_now OR v_prior.started_at>=v_prior.lease_expires_at))
++        OR (v_prior.heartbeat_at IS NOT NULL AND (v_prior.started_at IS NULL OR NOT isfinite(v_prior.heartbeat_at)
++          OR v_prior.heartbeat_at<v_prior.started_at OR v_prior.heartbeat_at>v_now))
++        OR (v_prior.state IN ('leased','expired') AND (v_prior.started_at IS NOT NULL OR v_prior.heartbeat_at IS NOT NULL))
++        OR (v_prior.state IN ('running','outcome_unknown') AND v_prior.started_at IS NULL)
++        OR (v_prior.state IN ('leased','running') AND v_prior.finished_at IS NOT NULL)
++        OR (v_prior.state IN ('expired','outcome_unknown') AND (v_prior.finished_at IS NULL OR NOT isfinite(v_prior.finished_at)
++          OR v_prior.finished_at<v_prior.lease_expires_at OR v_prior.finished_at>v_now))
++        OR (v_index<v_count AND v_prior.state<>'expired') THEN
++        RAISE EXCEPTION 'Deletion attempt history conflict' USING ERRCODE='23505';
++      END IF;
++      v_previous_finish:=v_prior.finished_at;
++      v_attempt:=v_prior;
++    END LOOP;
++    IF v_job.created_at IS DISTINCT FROM v_first_claim
++      OR v_job.updated_at IS DISTINCT FROM coalesce(v_attempt.finished_at,v_attempt.heartbeat_at,v_attempt.started_at,v_attempt.claimed_at)
++      OR (v_job.state IN ('leased','running') AND (v_attempt.state IS DISTINCT FROM v_job.state
++        OR v_job.worker_id IS DISTINCT FROM v_attempt.worker_id OR v_job.lease_expires_at IS DISTINCT FROM v_attempt.lease_expires_at))
++      OR (v_job.state IN ('retry_wait','failed','outcome_unknown') AND (v_job.worker_id IS NOT NULL OR v_job.lease_expires_at IS NOT NULL
++        OR v_attempt.state IS DISTINCT FROM CASE WHEN v_job.state='outcome_unknown' THEN 'outcome_unknown' ELSE 'expired' END))
++      OR (v_job.state='retry_wait' AND v_job.attempt_no>=3) OR (v_job.state='failed' AND v_job.attempt_no<>3) THEN
++      RAISE EXCEPTION 'Deletion current attempt conflict' USING ERRCODE='23505';
++    END IF;
++  END IF;
++
++  v_now := clock_timestamp();
++  IF p_action='claim' THEN
++    IF v_exists AND (v_job.state<>'retry_wait' OR v_job.attempt_no>=3) THEN
++      RAISE EXCEPTION 'Deletion job cannot be claimed' USING ERRCODE='23505';
++    END IF;
++    IF NOT v_exists THEN
++      v_job.request_id:=p_request_id; v_job.project_id:=v_request.project_id; v_job.subject_id:=v_request.subject_id::uuid;
++      v_job.subject_type:=v_request.subject_type; v_job.capture_targets_sha256:=v_request.capture_targets_sha256;
++      v_job.target_count:=v_request.capture_target_count; v_job.attempt_no:=0; v_job.created_at:=v_now;
++    END IF;
++    v_job.attempt_no:=v_job.attempt_no+1; v_job.state:='leased'; v_job.worker_id:=p_worker_id;
++    v_job.lease_expires_at:=v_now+p_lease_ms*interval '1 millisecond'; v_job.updated_at:=v_now;
++    v_attempt:=NULL; v_attempt.request_id:=p_request_id; v_attempt.attempt_no:=v_job.attempt_no;
++    v_attempt.worker_id:=p_worker_id; v_attempt.state:='leased'; v_attempt.claimed_at:=v_now; v_attempt.lease_expires_at:=v_job.lease_expires_at;
++    v_expected_attempts:=v_expected_attempts||jsonb_build_array(to_jsonb(v_attempt));
++    v_write:=true;
++  ELSIF p_action='recover' THEN
++    IF v_job.state IN ('leased','running') THEN
++      IF v_job.lease_expires_at>v_now THEN RAISE EXCEPTION 'Deletion lease has not expired' USING ERRCODE='23505'; END IF;
++      v_attempt.state:=CASE WHEN v_job.state='running' THEN 'outcome_unknown' ELSE 'expired' END;
++      v_attempt.finished_at:=v_now;
++      v_job.state:=CASE WHEN v_job.state='running' THEN 'outcome_unknown' WHEN v_job.attempt_no=3 THEN 'failed' ELSE 'retry_wait' END;
++      v_job.worker_id:=NULL; v_job.lease_expires_at:=NULL; v_job.updated_at:=v_now; v_write:=true;
++    END IF;
++  ELSE
++    IF v_job.state NOT IN ('leased','running') OR v_job.worker_id IS DISTINCT FROM p_worker_id
++      OR v_job.attempt_no IS DISTINCT FROM p_attempt OR v_job.lease_expires_at<=v_now THEN
++      RAISE EXCEPTION 'Deletion lease fence rejected' USING ERRCODE='23505';
++    END IF;
++    IF p_action='start' AND v_job.state='leased' THEN
++      v_job.state:='running'; v_job.updated_at:=v_now; v_attempt.state:='running'; v_attempt.started_at:=v_now; v_write:=true;
++    ELSIF p_action='heartbeat' THEN
++      IF v_job.state<>'running' THEN RAISE EXCEPTION 'Deletion attempt not running' USING ERRCODE='23505'; END IF;
++      v_job.lease_expires_at:=greatest(v_job.lease_expires_at,v_now+p_lease_ms*interval '1 millisecond');
++      v_job.updated_at:=v_now; v_attempt.lease_expires_at:=v_job.lease_expires_at; v_attempt.heartbeat_at:=v_now; v_write:=true;
++    END IF;
++  END IF;
++  v_expected_job:=to_jsonb(v_job);
++  IF v_write THEN
++    IF p_action<>'claim' THEN
++      v_expected_attempts:=jsonb_set(v_expected_attempts,ARRAY[(v_job.attempt_no-1)::text],to_jsonb(v_attempt));
++    END IF;
++    IF NOT v_exists THEN
++      INSERT INTO public.media_deletion_jobs SELECT (v_job).*;
++    ELSE
++      UPDATE public.media_deletion_jobs SET state=v_job.state,attempt_no=v_job.attempt_no,worker_id=v_job.worker_id,
++        lease_expires_at=v_job.lease_expires_at,updated_at=v_job.updated_at WHERE request_id=p_request_id;
++    END IF;
++    GET DIAGNOSTICS v_count = ROW_COUNT;
++    IF v_count<>1 THEN RAISE EXCEPTION 'Deletion job write suppressed' USING ERRCODE='23505'; END IF;
++    SELECT to_jsonb(j) INTO v_actual FROM public.media_deletion_jobs j WHERE j.request_id=p_request_id;
++    IF v_actual IS DISTINCT FROM v_expected_job THEN RAISE EXCEPTION 'Deletion job write altered' USING ERRCODE='23505'; END IF;
++    IF p_action='claim' THEN
++      INSERT INTO public.media_deletion_attempts SELECT (v_attempt).*;
++    ELSE
++      UPDATE public.media_deletion_attempts SET state=v_attempt.state,started_at=v_attempt.started_at,heartbeat_at=v_attempt.heartbeat_at,
++        lease_expires_at=v_attempt.lease_expires_at,finished_at=v_attempt.finished_at WHERE request_id=p_request_id AND attempt_no=v_job.attempt_no;
++    END IF;
++    GET DIAGNOSTICS v_count = ROW_COUNT;
++    IF v_count<>1 THEN RAISE EXCEPTION 'Deletion attempt write suppressed' USING ERRCODE='23505'; END IF;
++  END IF;
++  -- Compare independent complete expectations after ALL triggers, including the
++  -- untouched attempts. RETURNING alone misses suppression and cross-row edits.
++  SELECT to_jsonb(j) INTO v_actual FROM public.media_deletion_jobs j WHERE j.request_id=p_request_id;
++  IF v_actual IS DISTINCT FROM v_expected_job THEN RAISE EXCEPTION 'Deletion job write conflict' USING ERRCODE='23505'; END IF;
++  SELECT coalesce(jsonb_agg(to_jsonb(a) ORDER BY a.attempt_no),'[]'::jsonb) INTO v_actual
++    FROM public.media_deletion_attempts a WHERE a.request_id=p_request_id;
++  IF v_actual IS DISTINCT FROM v_expected_attempts THEN RAISE EXCEPTION 'Deletion attempt write conflict' USING ERRCODE='23505'; END IF;
++  SELECT to_jsonb(r) INTO v_actual FROM public.deletion_requests r WHERE r.id=p_request_id;
++  IF v_actual IS DISTINCT FROM v_capture OR (SELECT count(*) FROM public.deletion_requests r
++    WHERE r.project_id=v_request.project_id AND r.subject_id=v_request.subject_id)<>1 THEN
++    RAISE EXCEPTION 'Deletion capture write conflict' USING ERRCODE='23505';
++  END IF;
++  SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY t.target_id),'[]'::jsonb) INTO v_actual
++    FROM public.deletion_targets t WHERE t.deletion_request_id=p_request_id;
++  IF v_actual IS DISTINCT FROM v_targets THEN RAISE EXCEPTION 'Deletion targets write conflict' USING ERRCODE='23505'; END IF;
++  v_return_now:=clock_timestamp();
++  IF v_job.state IN ('leased','running') AND (v_job.lease_expires_at<=v_return_now
++    OR v_job.lease_expires_at>v_return_now+interval '120 seconds'
++    OR (p_action='claim' AND v_job.lease_expires_at>v_return_now+p_lease_ms*interval '1 millisecond')) THEN
++    RAISE EXCEPTION 'Deletion lease expired during operation' USING ERRCODE='23505';
++  END IF;
++  RETURN jsonb_build_object('schemaVersion',1,'requestId',p_request_id,'projectId',v_job.project_id,'subjectId',v_job.subject_id,
++    'subjectType',v_job.subject_type,'captureTargetsSha256',v_job.capture_targets_sha256,'targetCount',v_job.target_count,
++    'state',v_job.state,'attempt',v_job.attempt_no,'workerId',v_job.worker_id,'leaseExpiresAt',v_job.lease_expires_at,
++    'serverNow',v_return_now,'canDeleteStorage',false,'physicalDeletionComplete',false);
++END;
++$$;
++REVOKE ALL ON FUNCTION public.media_deletion_job_lease(uuid,text,text,integer,integer) FROM PUBLIC,anon,authenticated;
++GRANT EXECUTE ON FUNCTION public.media_deletion_job_lease(uuid,text,text,integer,integer) TO service_role;
++COMMIT;

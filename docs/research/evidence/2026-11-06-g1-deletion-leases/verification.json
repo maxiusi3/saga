@@ -1,0 +1,99 @@
+{
+  "status": "passed",
+  "completedAt": "2026-11-06T17:30:14.627678+00:00",
+  "batch": "G1 durable deletion execution leases",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "branch": "codex/october-upgrade-p0",
+  "localLeaseBoundaryComplete": true,
+  "gate": {
+    "record": "final-gate-02.json",
+    "exitCode": 0,
+    "webSuites": 161,
+    "webTests": 3344,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 23,
+    "buildPages": 184,
+    "measuredSources": 907,
+    "sourceDrift": []
+  },
+  "sqlNative": {
+    "record": "native-1793981704070-21b57f37-c7a4-496a-9ed9-2e2c45fcb5fc/results.json",
+    "scenarios": 14,
+    "assertions": 578,
+    "expectedRejections": 134,
+    "realExpiries": 6,
+    "actualLockWaits": 6
+  },
+  "adapterNative": {
+    "record": "adapter-1793985490922-059af2d5-4041-4b95-b02d-28033c060bee/results.json",
+    "scenarios": 3,
+    "assertions": 281,
+    "contractTests": 85,
+    "transportSubstitution": "local pg RPC transport",
+    "livePostgrest": false,
+    "osProcessRestartTested": false
+  },
+  "reviews": {
+    "task1": "reviews/task-1-review.md",
+    "task2BeforeFinalCorrection": "reviews/task-2-review.md",
+    "wholeChange": "reviews/whole-review.md",
+    "finalCorrection": "reviews/final-fix-review.md",
+    "spec": "PASS",
+    "quality": "PASS",
+    "resolvedFindings": [
+      "M1"
+    ],
+    "openFindings": []
+  },
+  "sourceLock": "final-gate-02-source-lock.json",
+  "sourceArchive": "final-gate-02-source.tar.gz",
+  "sourceArchiveSha256": "dbd99dd5771f454a585fd49ad158f158edfc15aebc10ba3c1bc78bf306ac9bc2",
+  "measuredSources": 922,
+  "integrity": "final-gate-02-integrity.json",
+  "nativeManifest": "final-gate-02-native.json",
+  "finalPatch": "reviews/final-batch.patch",
+  "finalPatchSha256": "635e5defb917d8ac52a4ad9b3979b01d09714fd92e601b38d22bab7fc9a0c5c3",
+  "nextEnvRestoration": "next-env-restoration-02.json",
+  "preservation": {
+    "priorEvidenceFiles": 4866,
+    "priorEvidenceDrift": [],
+    "takeoverFiles": 1365,
+    "unexpectedChanges": [],
+    "preCorrectionImmutableArtifacts": 71,
+    "versionedLiveEvidenceIndex": "reviews/pre-final-evidence-index.md",
+    "headUnchanged": true,
+    "indexUnchanged": true,
+    "stagedEmpty": true,
+    "diffCheckPassed": true
+  },
+  "g1ItemsClosed": 0,
+  "g1ItemsTotal": 9,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "canDeleteStorage": false,
+  "physicalDeletionComplete": false,
+  "automaticDeletionWorkerEnabled": false,
+  "referenceSafeGcQualified": false,
+  "lateWritesReconciled": false,
+  "realBackupRestoreQualified": false,
+  "fullMigrationChainQualified": false,
+  "cloudQualified": false,
+  "deviceQualified": false,
+  "remoteMigrationPerformed": false,
+  "deploymentPerformed": false,
+  "committed": false,
+  "pushed": false,
+  "remainingEngineering": [
+    "reference-safe operation planning",
+    "late-write reconciliation",
+    "persistent physical execution outcomes",
+    "real object backup/restore",
+    "full migration-chain rehearsal"
+  ],
+  "remainingQualification": [
+    "hosted PostgREST and service/RLS/storage behavior",
+    "target-device long recordings and manual listening"
+  ],
+  "recoveryWorkspace": ".superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/"
+}

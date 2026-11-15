@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
@@ -147,22 +147,29 @@ function ProjectDetailContent({ mediaAssetsEnabled }: { mediaAssetsEnabled: bool
     loadProject()
   }, [projectId, user?.id])
 
+  // A ref closes the interval before React renders the disabled button.
+  const deletingRef = useRef(new Set<string>())
+  const [deletingStories, setDeletingStories] = useState<Set<string>>(new Set())
+
   // Handle story deletion
   const handleDeleteStory = async (storyId: string) => {
-    if (!confirm('Are you sure you want to delete this story? This action cannot be undone.')) {
-      return
-    }
-
+    if (!mediaAssetsEnabled || deletingRef.current.has(storyId)) return
+    if (!confirm(tProjects('detail.deleteConfirm'))) return
+    deletingRef.current.add(storyId)
+    setDeletingStories(new Set(deletingRef.current))
     try {
-      const success = await storyService.deleteStory(storyId)
-      if (success) {
+      const accepted = await storyService.deleteStory(storyId, projectId)
+      if (accepted) {
         setStories(prev => prev.filter(story => story.id !== storyId))
-        toast.success('Story deleted successfully')
+        toast.success(tProjects('detail.deleteAccepted'))
       } else {
-        toast.error('Story deletion is temporarily unavailable. Your story has been kept.')
+        toast.error(tProjects('detail.deleteUnconfirmed'))
       }
-    } catch (error) {
-      toast.error('Story deletion is temporarily unavailable. Your story has been kept.')
+    } catch {
+      toast.error(tProjects('detail.deleteUnconfirmed'))
+    } finally {
+      deletingRef.current.delete(storyId)
+      setDeletingStories(new Set(deletingRef.current))
     }
   }
 
@@ -511,6 +518,9 @@ function ProjectDetailContent({ mediaAssetsEnabled }: { mediaAssetsEnabled: bool
                             })
                           : undefined
                         }
+                        onDelete={mediaAssetsEnabled && permissions.canDeleteStories ? () => handleDeleteStory(story.id) : undefined}
+                        deleting={deletingStories.has(story.id)}
+                        deleteLabel={tProjects(deletingStories.has(story.id) ? 'detail.deletePending' : 'detail.deleteAction')}
                         onPlay={() => window.location.href = withLocale(`/dashboard/projects/${projectId}/stories/${story.id}`)}
                         onComment={() => window.location.href = withLocale(`/dashboard/projects/${projectId}/stories/${story.id}#comments`)}
                         className="cursor-pointer hover:shadow-lg transition-shadow"

@@ -1,12 +1,211 @@
 # Handoff：UR Saga 十月升级继续执行
 
-- 更新时间：2026-11-02（Asia/Taipei）
+- 更新时间：2026-11-14（Asia/Taipei）
 - 工作目录：`/Users/eat/Documents/eatpotato/saga传奇`
 - 当前分支：`codex/october-upgrade-p0`
-- 本轮接手基线 HEAD：`1ca1e06dd`（上一批可靠封口登记检查点，领先远端跟踪基线 `1921766c2` 5 个本地提交；本批从完整验证中断处续接，21 项源码与中断前已测版本一致。提交身份与最终干净状态以 Git 为准）
+- 本轮接手基线及当前 HEAD：`c0669e805`，领先远端跟踪基线 6 个本地提交。原有和本批工作保持未暂存／未提交，最新能力与验证见下节；Git 状态为准。
 - **通用开发中途中断接手提示词**：见 [`docs/AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md`](AGENT-MIDFLIGHT-TAKEOVER-PROMPT.md)（适用于在任意开发、测试或验证中途断开时直接复制给新 Agent 无缝续接）
 
-## 11 月 2 日 G1-01 持久封口清单与统一上传路径（当前状态，以本节为准）
+## 11 月 14 日审计修复续接（当前）
+
+**聊天「40」授权修复的 Q1–Q3／S1–S3 六项缺口已按本地工程口径修复并验收。** [逐项关闭报告](research/2026-11-14-audit-repair.md) · [汇总回执](research/evidence/2026-11-13-audit-repair/resume-2026-11-14/verification.json) · [证据索引](research/evidence/2026-11-13-audit-repair/resume-2026-11-14/README.md)。恢复、AI 编辑与独立事实复核、语义检索、90／30天提醒和依赖升级实现均保留在当前未提交工作区。
+
+- 最终 Web **188套／3798项**、shared **4套／16项**、infra **30项**、类型／lint／**187页**构建，以及安全门 **0 high／0 critical** 全部通过（仍有26 moderate／3 low）。
+- 完整41份bootstrap／迁移下，G1删除＋G2＋恢复＋AI＋语义＋G3／Chrome **2479项**、G4／Chrome **188项**、提醒／CSS／Chrome **228项**、备份恢复／墓碑／Chrome **597项**通过；四份报告受测源码均与当前匹配。
+- 归档并发清理、旧音频指针、AI 纠正作者与同文修改后的检索遗漏均经复审关闭；通知行操作可见性和新增 AI／提醒记录的恢复／防复活检查已补齐，最终无本批剩余 P1／P2。
+- 运行说明：[恢复](processing-recovery.md)、[AI](story-ai-edit.md)、[语义](semantic-search.md)、[提醒](hosting-reminders.md)。实际供应商／模型质量、邮件送达、家庭／手机／支付／托管验证仍按已有放行登记后补；通知页既有窄屏页头溢出另列观察，不声称整页手机验收。
+
+本批未暂存、提交、推送、远端迁移或部署。下一步是按既有后补清单补真实质量／平台证据和部署配置，不重复修复上述六项，也不将本地通过等同上线放行。下列11月11日结果保留为历史批次证据。
+
+## 11 月 11 日 G4 试点工程交付（历史批次）
+
+**G4 台账已按当批本地 PostgreSQL／安装版 Chrome Web 工程口径交付。** [报告](research/2026-11-11-g4-pilot.md) · [操作说明](pilot-cohort.md) · [证据回执](research/evidence/2026-11-11-g4-pilot/verification.json)。此前将整体本地工程估为100%的口径已被11月13日审计纠正；真实纵向试点仍没有实际20–30户观察，`g4GateReady=false`，不能据此公开收费或扩张。
+
+- 带来源/运营编号/原因的版本台账，幂等请求、并发更正、固定家庭身份和关闭招募名册；普通登录无跨家庭管理访问权。通过服务器脚本录入、导出HTML/JSON报告，当前是人工对账入口而非自动遥测。
+- 完整7/28/14天窗口；未接受、退出、未完成均保留，真实US$59金额核对；全批经济、未知工时/费用、质量计数、NPS与推荐分离；价格/国家/版本/渠道/支持方式/双入口分组。
+- 删除项目或故事内容同时清除试点历史证据，并披露批次匿名样本损失。实际双向锁等待和dump/restore墓碑回放均通过，不能靠恢复或并发写入复活证据。
+- 最终G4＋Chrome＋备份 **667项断言**，完整37份bootstrap/迁移；G3回归 **672项**。Web **181套/3717项**、shared **4/16**、infra **28**、类型/lint/**187页**构建通过。独立审查发现全部关闭。
+- 实测数据均为synthetic，只能触发 `simulationReady`；真实招募、观察、结算、生产托管和供应商验证仍按已有后补边界执行。未暂存、未提交、未推送、未部署，HEAD保持 `c0669e805`。
+
+## 11 月 11 日 G3 交付与验收（已完成）
+
+**G3 已按本地 PostgreSQL／安装版 Chrome Web 口径完成。** [报告](research/2026-11-11-g3-delivery.md) · [最终回执](research/evidence/2026-11-11-g3-delivery/verification.json) · [证据索引](research/evidence/2026-11-11-g3-delivery/README.md) · [后补清单](research/2026-11-11-g3-manual-follow-up.md)。人工门禁继续 `waived_by_user`；真实收费、托管与家庭质量没有标为通过。
+
+- T09 读取 G2 已批准正文，原文独立保存；完整中文 PDF、持久快照／任务、私有共享磁盘流式归档、`worker:publications`、状态／重试／受保护下载、G1 删除及恢复后的实际文件清理已接通。下载不创造托管期限，测试订单分配窗口由 payment_project_rights 保存。
+- T10 直接查询当前权威来源，真实时间码可播放，补充／异议无伪造时间；播放签名前后复核身份与权限，纠正后旧引用失效。语义检索为 unavailable_unmeasured。
+- T11 仅显式 test 模式；固定订单、真实 Stripe SDK 原始签名、严格身份／金额绑定、重复／并发／乱序退款处理、来源权益与项目分配。旧钱包不再发未验证权益，直接 INSERT 建项目旁路已封。部分退款先到和超期未知支付保持待对账。
+- 最终 G3 综合原生／Chrome **672**、备份 **556**、G2 **543**、G1 删除 **250** 断言；Web **179/3609**、shared **4/16**、infra **28**、类型/lint/**186页**构建全部通过。完整 bootstrap +35 根迁移（36 文件），受测源码无漂移；独立交叉复审发现均修复并复核。
+- 501 篇故事＋27 MiB 有效 WAV、28 页中文 PDF 实测。Chrome 157.0.8103.39 验证生产组件／路由的完整交付和支付流程，离线独立浏览器播放实际本地音频；合成 Auth/PostgREST/Storage 与支付 HTTP 边界明确。字体已确认进入 Next 产物。
+- 旧 G3 设备标签／手工索引／直接权益 RPC 证据已标明历史，旧 JSON 不改写。全部改动保持未暂存／未提交，HEAD仍 c0669e805，无 push／远端迁移／部署。
+
+下一步可推进 G4 实现复核和试点准备；不要重复研究／重做已完成 G1–G3 本地验收，也不要用旧常量冒充真实家庭成熟观察数据。部署必须配置长驻 Worker 和共享私有卷；线上邀请 RPC schema 暴露、真实支付／SCA、额度条款及家庭／手机验证见后补清单。
+
+## 11 月 11 日 G2 中断续接与归档（G3 前基线）
+
+**G2 本地工程和 Chrome 验收完成；人工门禁继续放行并登记后补。** [报告](research/2026-11-10-g2-review-and-transcription.md) · [最终回执](research/evidence/2026-11-10-g2-review/verification.json) · [人工后补清单](research/2026-11-10-g2-manual-follow-up.md)。
+
+聊天「37」中断在最终归档：实现与分项测试已经完成，汇总回执、证据索引及源码快照未写入。11 月 11 日已补齐并复跑 G2 原生／Chrome **543**、Web **173/3567**、shared **4/16**、infra **25**、类型/lint/**184 页**构建，全部通过；1,204 个源码及配置文件无变化。G1 删除 **244**、备份 **493**、独立原生 **486** 的既有回执与源码指纹重新核对通过，本次未复跑这些分项。当前 Chrome 为 **157.0.8103.39**，详见[续接回执](research/evidence/2026-11-11-g2-resume/verification.json)。以下保留 11 月 10 日实施批结果。
+
+- 实际故事详情已接入审阅面板。服务专用事务把来源、逐段决定、正文／摘要／署名与不可变批准快照一起保存；修改与异议各保留原作者，纠正转写生成新版本。CAS、幂等、来源捕获锁、当前权限／删除／音频指纹检查与 G1 清除链已验证。
+- ElevenLabs Scribe v2 适配器需配置政策证据与显式同意。真实生产适配器、route、SDK 与原生 PG 通过本地受控 HTTP 和实际 Chrome；只发生 3 次本地供应商 multipart 请求，无真实外部调用。未知结果持久 pending，不重发；运营对账界面尚未实现。
+- 最终完整 schema 33 文件，G2原生/Chrome **542**，独立原生审查 **486**，G1删除/Chrome **244**，备份恢复 **493**；Web **173/3567**、shared **4/16**、infra **25**、类型/lint/**184页**构建通过。独立规格、质量和 helper 跨作者复核无剩余阻断项。
+- Chrome 使用生产组件与路由的测试外壳，真实页面接线经类型／构建验证；不声明完整托管登录测试。合成 WAV 证明字节与定位传输，不能证明真实 ASR 准确性。中文／英文面板已实现，其余locale暂回退英文。
+- 旧“10户/200错误/100回听/G2=true”属于历史合成或常量评测，当前不得作为真实质量证据。历史JSON保留，新基准明确synthetic/unmeasured，真实质量后补独立跟踪。G1既有人工后补继续保留。
+- 继续 G3 时从现有未提交工作出发；不用重做 G1/G2 本地验收或重新询问已放行人工项。HEAD仍`c0669e805`、暂存区为空，未提交、推送、远端迁移或部署。
+
+## 11 月 10 日 G1 中断续接核验（G2 前基线）
+
+聊天「36」已完成 G1 实现但未送达最终汇报。本次核对 1,159 份归档源码全部一致，恢复缺失的本地 PG17.4 运行时，并重跑 Chrome **241**、备份恢复 **493**、Web **166/3421**、shared **4/16**、infra **25** 和 **184 页**构建，全部通过。产品代码及迁移未修改，生成声明已恢复，暂存区仍为空。详见[续接报告](research/2026-11-10-g1-resume-verification.md)及[新回执](research/evidence/2026-11-10-g1-resume/verification.json)。G1 本地验收已收尾，人工后补保持放行；下一阶段为 G2，先核对现有实现和实际验收缺口。
+
+## 11 月 9 日 G1 整故事删除与本地验收（实施批）
+
+**按用户Chrome Web验收口径，本地G1已完成；所有人工门禁已放行并列后补。** [本批报告](research/2026-11-09-g1-story-deletion.md) · [回执](research/evidence/2026-11-09-g1-story-deletion/verification.json) · [人工清单](research/2026-11-09-g1-manual-follow-up.md)。此前“整故事入口/数据库清除待做”和0/9状态均为历史，不再作为当前阻塞。
+
+- 实际项目页删除按钮、单事务捕获+正文/派生清除、刷新隐藏、不可变捕获重放及迟到写入阻断已接通；公开聚合来源校验、撤回兼容、仅资产ID快照、访谈来源关联均已补齐。
+- 原生全schema+实际产品页Chrome **241断言**；完整备份恢复 **493断言**，恢复后正文/保存意图再清除，幸存录音播放。bootstrap+31根迁移（32文件）。Web **166/3421**、shared **4/16**、infra **25**、类型/lint/**184页**通过。
+- 独立复审无剩余P1/P2；首次错误/RED日志保留。未知旧媒体引用拒绝新删除，历史未关联访谈不猜测归属；二者及供应商底层对象/手机实测列人工后补。
+- `physicalDeletionComplete:false`仍保留。身份/坐标/部分元数据用于重放；本地通过不宣称托管资格或全库法定抹除。原分支/HEAD/空暂存区保持，未提交推送、远端迁移或部署。下一阶段可从G2计划推进；不用再重做本地G1或等待人工项。
+
+## 11 月 9 日 G1 在线媒体删除（前批）
+
+按用户“人工门禁都放行”授权继续，人工项统一登记为 `waived_by_user`，不再等待环境/账号/手机操作。当前入口：[报告](research/2026-11-09-g1-deletion-execution.md) · [回执](research/evidence/2026-11-09-g1-deletion-execution/verification.json) · [人工清单](research/2026-11-09-g1-manual-follow-up.md) · [Worker 操作说明](media-deletion-worker.md)。
+
+- 新增永久引用/地址守卫、执行/对象/事件账本，捕获清单不变；已知现代 URL 正确解析，转挂资产和迟到引用拒绝。真实 Storage 精确删除与 API 可见迟到对象复查已接通 `worker:deletions`。
+- 未知/丢响应/竞争 not_found 结果永久保留为物理未知；API404 不会覆盖成完成。原生测试真实区分元数据和底层文件，包含故意保留 raw orphan 的反例。
+- 最终原生/Chrome **184 断言**；Chrome 所有者202→实际磁盘删除→回放409，讲述者403，无关文件保留。使用声明的测试操作页与实际 route/worker，未声称旧项目页整故事删除按钮已接通。
+- 完整 schema bootstrap+30根迁移，实际备份恢复 **491断言**；恢复后阻止ready复活、Chrome幸存件播放通过。Web **164/3398**、shared **4/16**、infra **25**、类型/lint/**184页**通过。
+- 独立审查所发现的现代URL误阻断、捕获后转挂、offset分页遗漏、竞争not_found漏记未知、选中故事旧媒体漏检均修复并复测。原始失败日志保留。
+
+本批在线媒体删除验收完成，`physicalDeletionComplete:false` 保留诚实边界。**后续工程是整故事产品入口和正文/派生数据库内容清除；供应商底层孤儿/保留期由人工后补，不阻塞当前本地推进。** 当前旧 `storyService.deleteStory` 仍关闭。未暂存、提交、推送、远端迁移或部署；HEAD仍c0669e805。以下均为历史。
+
+## 11 月 8 日 G1 修复与恢复验收（历史）
+
+用户要求先修复问题再继续 G1。中断 WebM 和空库迁移已修复；已继续完成 Chrome AI 故障／保存分离矩阵，以及完整 schema 的真实本地数据库与对象备份恢复。当前入口：[报告](research/2026-11-07-g1-fixes-and-recovery.md) · [证据索引](research/evidence/2026-11-07-g1-fixes/README.md) · [最终回执](research/evidence/2026-11-07-g1-fixes/verification.json) · [九项差距](research/2026-11-02-g1-gap-register.md)。
+
+- 中断块含完整音频包和不完整的下一容器头。独立解码副本关闭容器边界，发布原件／hash 不变，严格 FFmpeg 规则不放宽。65 秒中断运行恢复持久的约 60 秒；Chrome 刷新、断网、账号切换、reserve/seal/confirm 响应丢失、重复保存、回放及清理回滚全部通过。
+- bootstrap 补齐四个历史兼容表，新前向迁移关闭旧 blanket grants；全部根迁移真实执行通过，历史行保留，真实客户端权限反例通过。restore-new-project 脚本执行全部迁移并在首个错误处停止。
+- Chrome AI 9 组通过，包含请求持续未返回时原录音照常保存、迟到响应不改写已保存内容。前批真实 5/20/30 分钟原件和本批中断件重做完整性／严格解码／连续音检查通过。
+- 完整迁移数据库上保存两个真实 Chrome 原件，实际 pg_dump／新库 pg_restore、对象复制／核 hash、冻结后删除捕获精确重放通过；被删件拒绝回放、幸存件在 Chrome 播放。属于停止写入后的本地维护演练，不是在线 GC 实现。
+- 最终完整门禁 Web **162/3382**、shared **4/16**、infra **24**、类型/lint/**184 页**通过。next-env 仅生成引用已恢复，HEAD 未移动，暂存区为空；本批没有独立子代理审查。
+
+**G1 仍未关闭。下一步集中完成引用安全删除操作规划、晚到写入对账、持久物理执行结果。** 原租约仍 canDeleteStorage:false；不可把恢复演练的本地文件删除步骤当作生产执行器。手机由用户后补，不再等待环境、账号或设备清单。未暂存、提交、推送、远端迁移或部署。以下均为历史记录，以本节与当前差距表为准。
+
+## 11 月 7 日 G1 Chrome 首轮验收（历史，两个失败已在本次续接修复）
+
+用户已明确：本地环境与虚构账号由 Agent 按需搭建；版本参考竞品；当前以 Chrome 自动化 Web 结果验收，手机手测延期。**不再等待用户提供环境、账号或设备清单。** 详见 [本轮报告](research/2026-11-07-g1-chrome-acceptance.md)、[实际回执](research/evidence/2026-11-07-g1-chrome/verification.json)、[更新后的九项差距](research/2026-11-02-g1-gap-register.md)。
+
+- Chrome 156.0.8078.80／macOS 13.7.4 的原生 5／20／30 分钟实际录音均通过保存、刷新恢复、Worker、确认、回放、清理回滚及重试；完整原件 hash／拼接／全流解码与无整秒静音检查通过，解码时长 300.48／1200.24／1800.18 秒。
+- 修复受保护播放 URL 的新录音无法导出：精确匹配同项目、同故事、原声资产 ID，仍核来源/hash/删除。回归 RED 保留，最终 74 项通过；Chrome + 实际导出/播放 handler 的五身份、坏件/缺件、撤权、墓碑矩阵，以及独立离线 Chrome 的本地档案回放通过。
+- 完整门禁 Web **161／3352**、shared **4／16**、infra **23**、类型/lint/**184 页构建**通过。HEAD 未移动、暂存区为空、next-env 已恢复。没有独立子代理复审；本轮为直接实现和自动验证。
+- **新暴露的实际未解问题**：中断的一分钟 WebM 前缀有 `File ended prematurely`，严格解码器拒绝，Worker 进入 unknown；空环境完整迁移在 P1 缺失 `public.story_artifacts` 失败。两者都有原始失败记录，不能用正常长录音通过替代。
+
+下一步优先处理中断容器与空环境迁移，再接引用安全删除／晚到写入／物理结果与备份恢复。G1 整门仍 false，手机延期不作为本轮阻塞。复跑命令见 [本地环境](../experiments/g1-local/README.md)。以下章节是历史批次状态；旧“0/9”和“等待用户环境”不覆盖当前授权与实测。
+
+## 11 月 7 日 G1 持久删除租约（前批本地完成）
+
+本批承接原子删除清单，新增独立任务／尝试账本与领取、开始、续租、检查、过期恢复。当前入口：[报告](research/2026-11-06-g1-deletion-leases.md) · [规格](superpowers/specs/2026-11-06-g1-deletion-leases-design.md) · [计划](superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md) · [证据索引](research/evidence/2026-11-06-g1-deletion-leases/README.md) · [最终回执](research/evidence/2026-11-06-g1-deletion-leases/verification.json)。两个实现任务通过独立审查；整批唯一 M1/P3 回执校验问题已修复，限定复审 Spec／Quality PASS，无剩余发现。
+
+- 原请求与目标完整行不变。未开始的过期尝试最多重试三次；开始后过期为 outcome_unknown，不能自动再次领取。已授权的删除工作单在申请人退出项目后仍保留。
+- 严格服务端适配器使用微秒时间和进程内单调截止时间；一次 RPC、禁用重试，超时／取消／响应丢失不假设 SQL 回滚。所有回执均为 canDeleteStorage:false、physicalDeletionComplete:false，没有删除宿主或 Storage 删除接线。
+- SQL 原生 **14 组／578 断言**，最终适配器原生 **3／281**、Jest **85 项**通过；真实到期、锁等待、新连接接手、丢失开始响应和完整清单／字节重放均有证据。局部 pg transport 为明确替代，不是线上 PostgREST 或 OS 进程重启资格。
+- 修复后完整门禁 **Web161／3344、shared4／16、infra23、184 页构建**通过，907 个受测源码无漂移。生成的 next-env 单行已核实恢复，4,866 个前批证据保留，源码归档／完整性见最终回执。
+
+下一步是引用安全的操作规划、晚到写入对账和物理执行结果持久化，再补真实备份恢复与完整迁移链；云端和真机资格另验。G1 正式关闭仍 **0/9**，推送资格 false。未暂存、提交、推送、远端迁移或部署。中断恢复目录 `.superpowers/sdd/2026-11-06-upgrade-g1-deletion-leases/` 保留；不要重做已验收的捕获、封口 I1 或租约 M1 修复。
+
+## 11 月 6 日 G1 删除目标与候选备份（前批本地完成）
+
+当前入口：[本批报告](research/2026-11-06-g1-deletion-capture.md) · [设计](superpowers/specs/2026-11-06-g1-deletion-capture-design.md) · [实施计划](superpowers/plans/2026-11-06-upgrade-g1-deletion-capture.md) · [证据索引](research/evidence/2026-11-06-g1-deletion-capture/README.md) · [G1 gap](research/2026-11-02-g1-gap-register.md)。本批本地验收完成：整批审查发现的封口/删除竞态 I1 已通过新增迁移修复，限定复审规格与质量均 Approved，修复后的原生矩阵、完整门禁和最终完整性已验收。详见[最终回执](research/evidence/2026-11-06-g1-deletion-capture/verification.json)。
+
+- 删除 API 改为一次原子捕获：锁内重查权限、写墓碑、持久化资产/分块/reserved/prepared 候选目标、请求取消未结束任务。物理地址去重，重复请求恢复原清单，目标篡改和事务错误拒绝；回执始终 `physicalDeletionComplete:false`。
+- 复审已解决合法 seal 后未登记会话被拒绝、全库正文在锁内序列化两个问题。现捕获未登记会话的实际分块；无关正文 0／8／32 MiB 均不被序列化。全局锁/关联扫描的规模表现仍待验收。
+- TS/CJS 和实际 CLI 接受 recording-candidates 清单；以真实删除目标 bucket/key 重放，四对象清单仅排除目标候选，保留三个无关条目。只证明结构及恢复集合兼容，不证明真实备份、对象下载/hash 或 `pg_restore`。
+- 最终封口迁移先取得删除 SHARE 锁，再做权限／来源检查；要求 READ COMMITTED、显式 VOLATILE，锁等待上限三秒。历史迁移不变；原始竞态 RED 和修复后两向并发、旧快照、超时回滚及 ACL 证据完整保留。
+- 修复后删除 **21 组／759 断言、12 次真实等待**、备份 **3 组／82 断言**通过，源码无漂移、临时资源已清理；定向应用 **4 套／125 项**、部署清单 **7 项**通过。父级冻结后完整门禁 **Web160／3259、shared4／16、infra23、184 页构建**通过，906 个受测源码无漂移，next-env 已恢复原字节。
+
+下一步工程依赖是持久删除执行器、引用安全 GC 与晚到写入对账，再补真实对象备份恢复和完整迁移链；专用云端环境与真机资格另验。G1 正式关闭仍 **0/9**，G1 与条件推送资格 false，未暂存、提交、推送、远端迁移或部署。
+
+## 11 月 6 日 G1 录音保存与恢复流程（前批本地完成）
+
+当前入口：[按用户操作列出的进展与剩余 gap](research/2026-11-06-g1-recording-flow.md) · [实施计划](superpowers/plans/2026-11-05-upgrade-g1-recording-flow.md) · [Worker 运行说明](recording-worker.md) · [手机宽度结果](research/evidence/2026-11-05-g1-recording-flow/integrated-browser-1793929758961-97783f87-95d8-42ed-a730-278bccd1166d/saved-mobile.png)。
+
+- 录音中断或完成后重开，可从每条本机草稿继续保存。先持久化元数据、预留唯一故事，再核验分片、封口、处理和确认；预留／封口／确认响应丢失后均沿用同一会话及故事，不走整 Blob 回退。
+- 页面显示检查、上传核验、处理、确认与结果，提供受权限检查的故事回放。账号／项目改变取消旧操作；原声保存不依赖 AI 成功。只有独立确认后才能显式清理本机录音，失败回滚并可重试。
+- `npm run worker:recordings` 提供离线 `--check`、`--once` 及连续运行；明确配置 HTTPS 服务与 FFmpeg，不加载 `.env`。过期未派发租约可重试，已派发的未知结果不自动重放；坏任务不会挡住后续任务，信号停止等待清理。
+- 修复后冻结源码的完整门禁通过：Web **159 套／3204 项**、shared **4／16**、infra **20**、**184 页**；903 个受测源码无漂移。真实页面普通流程 **310**、中断／故障 **341**、实际宿主／PG／FFmpeg **723** 条断言通过。三个实现任务、整批审查及最终修复复审均已通过；以[最终回执](research/evidence/2026-11-05-g1-recording-flow/verification.json)为准。
+- 修复了损坏身份先写 ready、平方级重复整段哈希、移动端溢出及错误保留文案；原生 15 场景验证线性字节工作量、晚到篡改拒绝与事务回滚。最终审查另发现历史重试／时间域校验缺口：旧 SQL 在 88 例中有 35 例先提交后报错；修复后 **88/88** 在写入前拒绝且完整状态不变，原生 **1091** 断言通过，真实两次／三次重试可正常确认。旧证据和旧源码归档保留，新版门禁与归档使用 `02` 版本；构建生成的已知 next-env 引用已恢复。
+
+G1 正式关闭仍 **0/9**。这次补齐 G1-01 的本地产品接线；专用环境、真机 5/20/30 分钟与核听、部署态权限撤权删除、第二设备离线档案、真实 AI 失败组合仍待验收。本批已继续补齐原子删除目标和候选清单兼容，见上节；引用安全 GC、物理删除、真实对象备份恢复和完整迁移链仍需本地工程推进。无远端迁移、部署、付费调用或家庭资料传输，G1 与条件推送资格仍 false。
+
+## 11 月 5 日 G1-01 只读终态查询与显式对账（前批本地切片完成）
+
+详见[设计](superpowers/specs/2026-11-05-g1-recording-status-design.md)、[实施清单](superpowers/plans/2026-11-05-upgrade-g1-recording-status.md)、[报告](research/2026-11-05-g1-recording-status.md)、[最终回执](research/evidence/2026-11-05-g1-recording-status/verification.json)。新增 service-only STABLE 快照 RPC、严格服务端校验和认证 GET，在同一语句视图中重核身份、权限、删除状态和完整终态元组。
+
+- 已提交发布的响应丢失后，可显式单次读取确认成功／确定永久失败；合法处理中或尚未登记状态返回 unresolved。查询不重放封口／发布、不恢复任务、不签名、不修改或删除副本。回执不暴露原始行、路径或内部 Worker／候选身份。
+- 定向 **5 套 / 564 项**，含 **225 项新增**；旧 verifier/candidate 编译图通过。原输入模块所有原字节保留，只追加纯解析／hash 导出。fixture 移至现有 test-support 后，默认发现 153 套，新增 225 项复测通过。
+- 完整门禁 02 退出 0：Web **153/3100**、shared **4/16**、infra **14**、**184 页构建**；724 个受测源码无漂移，next-env 原字节恢复。首轮空夹具套件失败完整保留；既有配置警告不作为生产配置合格证明。
+- 原生 SQL **5 场景 / 191 断言**，实际 SDK／本地 HTTP／PG **4 场景 / 585 断言**通过。READ ONLY、无写锁、同语句快照／下一语句看到发布与撤权／墓碑，以及响应丢失对账均有实测；所有读取前后完整合成行及实际合成副本字节不变。
+- 修复并保留编译模块漏归档与超时夹具错误的 RED。最终 HTTP 捕获 13 个实际编译模块，100ms 真超时约 101.61ms，调用方未取消；主动取消单独验证。SQL/HTTP 合计 189 个压缩档案可验 hash，临时 PG、HTTP socket/handler 全部清理。
+- 两项分项及整批独立规格／质量审查均 Approved，无待修项；3,393 个旧证据未变，4,447 个接手路径仅四项计划内修改。完整记录以本批[证据索引](research/evidence/2026-11-05-g1-recording-status/README.md)及最终完整性回执为准。所有旧证据保留，HEAD 未移动，暂存区为空。
+
+下一步接浏览器显式确认、幂等故事保存，再设计安全清理。原子删除目标／引用安全 GC、候选备份、完整迁移链、云端与真机长录音／核听仍待验收；本地 HTTP 是合成 PostgREST 替代。状态仅代表该语句时点，不授予访问 URL 或清理许可。`canClearLocalDrafts:false`，G1 与条件推送资格仍 false；无暂存／提交／推送／远端迁移／部署。
+
+## 11 月 5 日 G1-01 Worker 终态接线（前批本地切片完成）
+
+详见[设计](superpowers/specs/2026-11-05-g1-terminal-worker-design.md)、[实施清单](superpowers/plans/2026-11-05-upgrade-g1-terminal-worker.md)、[报告](research/2026-11-05-g1-terminal-worker.md)、[最终回执](research/evidence/2026-11-05-g1-terminal-worker/verification.json)。本批承接原子终态接口，新增显式单次 `finalizeLeasedRecordingJob`，在本地清理、输入复查、心跳排空和最后租约检查全部完成后才发布或记录确定永久失败。
+
+- 复用候选准备流程；旧入口仍只准备候选。新入口使用最终租约与原始取消信号，不在终态写入后继续检查活跃租约；未知结果不重试、不回退成失败、不删除副本。
+- 定向 **7 套 / 303 项**，含 **46 项新增**；类型检查、旧 verifier/candidate 编译图通过。Task 1 独立规格与质量通过，无阻塞发现。
+- 完整门禁退出 0：Web **151/2875**、shared **4/16**、infra **14**、**184 页构建**，717 个受测源码摘要无漂移。规范 lint 通过，构建保留既有配置警告；额外直接 workspace ESLint 调用的工具错误单独保留。next-env 原字节已恢复。
+- 原生 PG/HTTP/FFmpeg **8 场景 / 11,391 断言通过**，112 份源码、17 份编译模块、137 个压缩档案均已验 hash；失败注入与中间采集缺口记录保留，最终快照完整，临时资源清理通过。数据库是真实隔离 PG17，HTTP/Storage 是合成适配器，不等于云端验收。
+- Worker、原生验证及整批最终独立规格／质量审查均 **Approved**，无待修项。2,744 个旧证据未变，3,800 个接手路径无缺失；本轮只修改候选准备入口和当前交接／索引三份继承文件，新增源码与证据另列。HEAD 未移动、暂存区为空。
+
+下一步是专门的只读终态查询与响应丢失对账，再接客户端确认、幂等故事保存和安全清理。终态会话继续不能通过旧 seal 重放确认；删除目标原子捕获／引用安全 GC、候选备份覆盖、完整迁移链、云端与真机仍待验收。`canClearLocalDrafts:false`，G1 与条件推送资格仍 false。
+
+## 11 月 4–5 日 G1-01 原子发布与永久失败边界（前批已完成）
+
+详见[设计](superpowers/specs/2026-11-04-g1-recording-finalization-design.md)、[实施清单](superpowers/plans/2026-11-04-upgrade-g1-recording-finalization.md)、[报告](research/2026-11-04-g1-recording-finalization.md)、[最终回执](research/evidence/2026-11-04-g1-recording-finalization/verification.json)。数据库、应用层及整批独立审查均为规格 **PASS**、质量 **APPROVED**，无待修发现；原始日志、完整性与源码清单已封存。
+
+- service-only `finalize_recording_job` 在单事务内更新资产、任务、attempt、会话；发布将资产原地指向私有 prepared 候选。永久失败只接受六个已有确定代码，且整个 job 不得存在候选。完整落库元组核验和写后租约检查防止虚假成功。
+- 删除表 SHARE 锁先于租约/行锁，协调旧墓碑 INSERT；要求 READ COMMITTED，三秒锁等待上限。严格调用端拒绝坏回执/未知结果，不自动重试。候选回放/导出校验谱系及项目/会话墓碑；旧 URL 解析与终态 seal 冲突保留。
+- 定向 **16 套 / 677 项**；原生 SQL **15 场景 / 492 断言**；实际 Supabase JS + 本地 HTTP/PG **8 场景 / 278 断言 / 13 请求**，覆盖提交后响应丢失与取消。该 HTTP 为 PostgREST 本地替代，没有 Storage 音频字节或完整 Worker 验收。
+- 完整门禁退出 0：Web **150/2829**、shared **4/16**、infra **14**、**184 页构建**，类型/lint/旧 Worker 编译兼容通过。SQL 21 份、HTTP 25 份快照与当前源码一致；临时资源清理完毕，next-env 原字节恢复，2,542 既有证据及 1,471 历史输入未变。
+
+下一批先接 Worker 清理、复查与心跳排空后的终态调用，随后实现只读终态查询/响应丢失显式对账、客户端确认与幂等故事保存。旧删除路径会提前捕获可能过时的对象地址，仍需原子目标捕获、执行与引用安全 GC；候选 bucket 备份、云端/真机及表级锁争用/大清单性能也待验收。所有回执 `canClearLocalDrafts:false`，G1 与条件推送资格仍 false，未暂存/提交/推送/远端迁移/部署。
+
+## 11 月 3–4 日 G1-01 Worker 私有候选产物（前批状态）
+
+负责人已在聊天「31」同意候选持久化边界，本次续接实现。详见[设计](superpowers/specs/2026-11-03-g1-worker-candidates-design.md)、[实施清单](superpowers/plans/2026-11-03-upgrade-g1-worker-candidates.md)、[报告](research/2026-11-03-g1-worker-candidates.md)、[证据](research/evidence/2026-11-03-g1-worker-candidates/README.md)。保留所有前批改动与证据。
+
+- 已接专用候选 RPC、私有 bucket、先登记后不可覆盖上传、完整回读 bytes/hash 后 prepare；候选工作入口独立于旧只读 Worker，租约监督覆盖整个合并与持久化过程。
+- 修复并保留 RED：微秒回执倒序接受、跨 job 同 ID 唯一索引等待越过租期、原生 POST ack 先 abort 后 cancel；候选入口分离保持旧 Worker 编译依赖图。最终定向 **6/377**，SQL **15/426**，原生 HTTP/PG/FFmpeg **31 场景 / 21,697 断言**；独立质量复跑 **31/21,682**（心跳计数可变）。
+- **本地切片完成**：独立规格 **PASS** 后质量 **Approved**；冻结完整门禁 Web **148/2672**、shared **4/16**、infra **14**、**184 页构建**通过。源码无漂移，next-env 原字节恢复；2,285 既有证据及 1,471 历史输入未变，所有中间失败保留。
+- **prepared 不发布 ready，不结束 job，不授权本地清理**；未知回执保留候选。下一批仍需原子发布/失败终态、统一删除撤权屏障，再接客户端确认。新 bucket 备份/删除覆盖、真实云端/真机和大清单性能未验收。
+- HEAD 仍 `c0669e805`；不暂存/提交/推送、不远端迁移或部署。`g1Item01Complete:false`、`g1MilestoneSatisfied:false`、`pushConditionSatisfied:false`。
+
+## 11 月 3 日 G1-01 Worker 持久领取与租约监督（前批状态）
+
+详见[报告](research/2026-11-03-g1-worker-lease.md)、[实施清单](superpowers/plans/2026-11-03-upgrade-g1-worker-lease.md)、[证据](research/evidence/2026-11-03-g1-worker-lease/README.md)。保留前七批 272 个既有证据文件，本节只推进正式 claim/attempt/lease/heartbeat 与输入核验接线。
+
+- 专用五动作 `recording_job_lease` RPC 原子维护正式 job/attempt，重核固定输入与当前权限，锁后数据库时钟控制租期；旧 owner/attempt、重复领取和未知结果自动重试均拒绝。未派发到期可显式 retry（三次耗尽 failed），已派发到期 outcome_unknown；撤权/删除/取消的活跃任务 recover 为 cancelled。
+- 严格回执和保守单调时钟截止时间；running 读取保留全部输入检查，只容许心跳的两项 job 字段变化。Worker claim → start → 实际核验 → 最终 check，串行续租，失租/取消会中止并等待 I/O/FFmpeg/临时文件及心跳清理。
+- 最终应用定向 **4/293**，独立扩大回归 **6/362**；真实 PG/进程/原生 FFmpeg **17 场景 / 1943 断言**，独立 SQL 两轮各 **13/329**。冻结完整链 exit 0：Web **146/2588**、shared **4/16**、infra **14**、**184 页构建**；源码无漂移，next-env 原字节恢复。先前失败和 harness-only 漂移记录全部保留，不覆写成通过。
+- 独立规格 **PASS** 后质量 **Approved**，无待修阻塞；质量审查独立 PG/FFmpeg 复跑 **17/1933**（心跳计数可变，保留为独立证据）。272 既有证据及 1471 历史输入均未变，本地切片完成；未暂存或提交。
+- **成功仍只是 input_verified，job 保持 running，canClearLocalDrafts:false**；返回后心跳停止，未来发布层未承接则到期显式恢复为 unknown。无候选输出、ready/终态成功、常驻调度器或客户端确认清理接线。
+- **G1-01 仍 partial、G1 未通过**：injected fetch/Storage 夹具不等于真实云端/RLS/TLS；2 秒合成音频不是真机长录音/核听。缺失 tombstone 非原子屏障；旧删除 route 可留下 unfinished attempt 观测残留，本批 fail closed；大清单二次读取成本和部署隔离仍待验证。
+- **下一批入口**：在现有 fence 上设计候选输出、原子发布与失败终态，统一撤权/删除的最终屏障，再接客户端 seal/status、持久确认和安全清理。`g1Item01Complete:false`、`g1MilestoneSatisfied:false`、`pushConditionSatisfied:false`；不暂存/提交/推送、不 main 合并、不远端迁移/部署、不付费调用或外发家庭资料。
+
+## 11 月 3 日 G1-01 Worker 可信输入读取与音频核验（前批状态）
+
+详见[报告](research/2026-11-03-g1-worker-input.md)、[证据](research/evidence/2026-11-03-g1-worker-input/README.md)及[本地实验说明](../experiments/recording-job-input/README.md)。前六批和历史 gap 清单保持原证据；本节只推进 G1-01 只读核验边界。
+
+- `loadRecordingJobInput` 只凭 job ID 从固定 session/chunk 清单及任务/资产读取，校验身份、状态、版本、规范 hash、物理路径、当前讲述者/故事归属和删除状态。`verifyRecordingJobInput` 按清单流式读取真实分块，经原合并器验证 bytes/SHA-256 和 FFmpeg 全流解码；关键异步边界重新检查。
+- 本次审查修复 scope 超时后复查仍继续发送数据库请求的问题：取消信号下传并保留原 caller 信号；两个行为 RED 均复现 7 个迟到后续请求，四个回归现通过。只返回 `input_verified` 和 `canClearLocalDrafts:false`，无临时路径、不领取/心跳/上传/ready/客户端清理。
+- 最终定向 **4/295**；原生 fetch + 实际 Supabase JS 客户端 + 本地 HTTP 夹具 + FFmpeg 集成 **21 场景 / 250 检查 / 3 格式**。完整链 exit 0：Web **144/2521**、shared **4/16**、infra **14**、构建 **184 页**；源码摘要稳定，next-env 原字节恢复，audit 未重跑、既有警告保留。独立规格 **PASS**、质量 **Approved**，无待修阻塞；前六批 **216 个证据文件**未变，中间失败日志全部保留。
+- **G1-01 仍 partial，G1 未通过**：只读复查非原子屏障，客户端 abort 不证明远端 SQL 已终止；真实云端、真机长录音/尾部核听、FFmpeg 部署隔离尚未验收。2000 块只测试账本分页，完整 verifier 仅测试 13 块；逐块全账本重读的数据量二次增长，需后续压测/有界化。
+- **下一批入口**：在此核验边界上通过专用授权 RPC 接持久领取、租约/心跳、失败落库和原子发布，再接客户端 seal/status、最终确认与安全清理。不恢复账本广泛直接写权限，不把只读核验结果冒充云端确认。
+- `g1Item01Complete:false`、`g1MilestoneSatisfied:false`、`pushConditionSatisfied:false`。本批本地切片已完成但尚未暂存/提交；不推送、不合并 main、不远端迁移/repair、不部署、不外发家庭资料。
+
+## 11 月 2 日 G1-01 持久封口清单与统一上传路径（前批状态）
 
 详见[报告](research/2026-11-02-g1-durable-manifest.md)、[实施清单](superpowers/plans/2026-11-02-upgrade-g1-durable-manifest.md)、[证据](research/evidence/2026-11-02-g1-durable-manifest/README.md)。前五批及 [9 项 gap 清单](research/2026-11-02-g1-gap-register.md)保持原证据，本节只更新 G1-01 输入层进度。
 

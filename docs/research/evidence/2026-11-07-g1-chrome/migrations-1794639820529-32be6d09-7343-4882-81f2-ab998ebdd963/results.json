@@ -1,0 +1,1097 @@
+{
+  "status": "passed",
+  "assertions": 597,
+  "actorConnections": [
+    {
+      "current_user": "anon",
+      "session_user": "anon",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "authenticated",
+      "session_user": "authenticated",
+      "rolsuper": false,
+      "rolbypassrls": false
+    },
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": true
+    }
+  ],
+  "sources": {
+    "experiments/g1-local/verify-migrations.mjs": "6f42d929d820874a742143442a195b0b9264465a660c72e01bb1c54815d83556",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "873f2328cb136db24e26c8736e1fe94b6a43082436b9559eca095329ec551a81",
+    "supabase/migrations/20250731012532_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250731015259_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250802015525_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20250802015612_remote_history_placeholder.sql": "2ab9093cabcff377fd22cdb3f7dc5153a701b33932409cce15c1dc5a72718ffe",
+    "supabase/migrations/20260611000000_agent_phase1.sql": "77fa360a9174c3af2e27e7b63fefaf3e3cc420ea785d3422f41051731638f2f9",
+    "supabase/migrations/20260612000000_agent_phase2_public_archive.sql": "cb9545b79425861d5ee5ab9a8fc7d71c48358983ab6c9a8f66b467ffa5c62834",
+    "supabase/migrations/20260621000000_storage_policies.sql": "6cfc526f0c3ea4245eb1847748d61d2e8f37db03cd8c10f9cb79f3b16b6188bc",
+    "supabase/migrations/20260625081000_dashboard_support_tables.sql": "526130a7fe84dca1327fd3b8cc7546c3445eadf0d6d29b896499ccfcb73a32de",
+    "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql": "8aa01d232796c63c56e4e6d85bfbf262741d1ff908b2d17c1e95c1332895752b",
+    "supabase/migrations/20261007000001_create_waitlist.sql": "20d2193287988a84de23b9224df8cbd7513fb93439a740da2dc0cce0e0c11a1c",
+    "supabase/migrations/20261007000002_improve_storage_rls.sql": "d0375b2abbeff1b4f8357c5704dc6de37c3ecb64f3fcaae1cfeead949b3e8cff",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql": "d7a77d28cd49780b1bbad5d5efea81a0cc241fda48eaca2dd3180f73a49e8992",
+    "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql": "7480f7d06542275ec9d14cb26757e23030d6fef4a6dd8d5e8d1925d3ce3afe78",
+    "supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql": "4f57e7fed1bf9d7c7f061cddb7e9951f28a4502521d7839d7f9ebf262bc0150f",
+    "supabase/migrations/20261029000001_operational_snapshot.sql": "089d98f6818cead43d108b34dab5bb41d885cb6648a8a78698acc4adfc4158ab",
+    "supabase/migrations/20261029000002_export_observations.sql": "4d5005e04b89a82e2a4e901e084474bed38c7b701568f3fc6291ec0f74170056",
+    "supabase/migrations/20261030000001_upload_observations.sql": "68e8d4ec610185db89a2f2fcec0d29fe9e2b86cf5f34988762f8982b565b4c78",
+    "supabase/migrations/20261030000002_deployment_collection_coverage.sql": "23bb279edc8b9f6d44617f75d3eb532607c70d699578072701e4b436c20f32de",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af",
+    "supabase/migrations/20261106000001_recording_story_save.sql": "20ba20cdda0ec79c997cf1a0eafc38e7d7c022ad95b6146e7658d4208b8d5569",
+    "supabase/migrations/20261106000002_media_deletion_capture.sql": "8c4873a4cf980bb6912508d387ac2a6d509cf5c27894298a8277e7f7d0f52b32",
+    "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql": "cb1d15de2782ed2c0fde5c69b1ee2684b8a5a941e46623c6092a4003c1784628",
+    "supabase/migrations/20261106000004_media_deletion_leases.sql": "b09325de38514d56789d8bb8d0c43e12223328f9c72a8a055cff9f01e3146063",
+    "supabase/migrations/20261107000001_legacy_compatibility_acl.sql": "0ede8cadbff29f74faa9523113186ac7235c45401a278c20c9d936e4efcc2522",
+    "supabase/migrations/20261109000001_media_deletion_execution.sql": "318c1e1c6dbb191d57baa0729eb3f849162a4f4acb8fbc1627f0a55535f75b28",
+    "supabase/migrations/20261109000002_story_content_deletion.sql": "720cf6c0c934aa8a2ef12a12a8c89f43a543f62d34a33c3fd4080f5f812e3552",
+    "supabase/migrations/20261110000001_story_review_workflow.sql": "b76cb7624050576e57eaaabfc86d436699427f86b5e8a95b05eda39d31e92a48",
+    "supabase/migrations/20261111000001_publication_delivery.sql": "b79cd6d7302ce86f271a29f172945e7bdeb977424997d2739908259fd689b763",
+    "supabase/migrations/20261111000002_authoritative_search.sql": "49be47d0d675fe4785376a0364b34580fb38ab7c7f9a1be088a0dac980b8dcd1",
+    "supabase/migrations/20261111000003_payment_orders.sql": "1e5bf48134b943d021ae9cc64b417637504dc2a19eab5908f1367d5234fa327e",
+    "supabase/migrations/20261111000004_pilot_observation_ledger.sql": "65b0668f2b1b76b95f25f14689ae8b6f716d5d68f2bd1fb5d9111db2e0505ed5",
+    "supabase/migrations/20261113000001_processing_recovery.sql": "c3e97220d7ffb13b5b24234391fef2a9265fd7adf0f22baadeeee6fbef5b3d94",
+    "supabase/migrations/20261113000002_story_ai_edit.sql": "7314dae125ea99305762f9392d6453bc6c449776f42da93d5183dfbc77341512",
+    "supabase/migrations/20261113000003_semantic_sources.sql": "51d523f0fc304823eacdc546e3e9a3d51ca532bc63186faaf3c63ad0fdc39cc9",
+    "supabase/migrations/20261113000004_hosting_reminders.sql": "d345d55a750b3df8930ecec8fa1c03914f1d224d0776e80e28021360c48d3fd0",
+    "experiments/g1-local/backup-rehearsal.mjs": "bf5ae0c7d83d92e1de1d0af49bb59d1d7212606720996b9e8cc3bf03b7e798c3",
+    "packages/web/src/app/api/recordings/sessions/[sessionId]/save/route.ts": "aba17daf51b76d208b477c0c7d398a46f0ffc9de13cd89ba6baa8f399f686770",
+    "packages/web/src/lib/server/project-access.ts": "c6dd6eeeef8fd9030dad1ef9fd7664f2b66db2bc3181b36d8e33542fe9aa395e",
+    "packages/web/src/lib/server/media-access.ts": "6f781e6a31c04622737cb1a87ef4fedbd427dd4ff5ca176442e16248bb9d9c0f",
+    "packages/web/src/lib/recording-save-contract.ts": "d91a75dfe466802ea5e86db651752d44c9c04979a0907b384c7978f45fb8f55c",
+    "packages/web/src/lib/server/recording-story-save.ts": "9190f81e532d4c45fc8fb74c228b29232ce6f5fa75b7e6cbf00682f9a4bf817e",
+    "packages/web/src/lib/server/recording-status-validation.ts": "5c4ae82b3d5648113a5afd4fcbe1a839cde00df0e0f2b3df4fcdc8534ee2fae7",
+    "packages/web/src/lib/server/recording-job-input.ts": "0fe100b20eb886bddbd52eb27cb0eb1b2764188e615536012b5c34f6e97ed42d",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "bc311f822e8e70db695d10b40efa87d34f08eba0a50ec81aa8e8e3da5b41a201",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-webm-envelope.ts": "a6e49a85f0abd264618c59f8b5f32f9264cd742355e68e35225cab63a495c77b",
+    "packages/web/src/lib/server/recording-job-lease.ts": "8ddc4c5cb8bb11231dc15ecb451b6caed595181ce1615d2f75d684f0ae7024da",
+    "packages/web/src/lib/server/recording-output-candidate.ts": "33c46538e150372327dddfe583f89838b2e6c34626331f0a5436523611163eb8",
+    "packages/web/src/app/api/recordings/sessions/[sessionId]/seal/route.ts": "522c241e88d470338d446d37581e9321e59a72eeab50eaf0942ab93fc5362f53",
+    "packages/web/src/lib/server/recording-seal-registration.ts": "020afdf2200790cc637fa0c76bae7f219b3ca4098e014f53fe7a0a73c4c26542",
+    "packages/web/src/lib/server/recording-manifest-ledger.ts": "79b26bf340767f9cb40c82c0939f51d656fa1edb31c63888f14d8931266852da",
+    "packages/web/src/lib/server/media-asset-guard.ts": "b79501912ea13b8fa0644e3997ec4c3bf23a187e1db28c2a359d39b6f489de30",
+    "packages/web/src/lib/server/recording-asset-lineage.ts": "c803c61daf7394bb211b9ee4d7afa1fa1e8f7781cc79e9dbe44ae90744e6d2f1",
+    "packages/web/src/app/api/recordings/sessions/[sessionId]/status/route.ts": "a12f0e0d3a0e6a079d9ad11b13e341701db5ed906b858d98e4f09a665133c4c3",
+    "packages/web/src/lib/server/recording-session-status.ts": "7aee7e9b61dedb652f518b8d495d20dd02ff9319a47b6023620801ad6e89b41d",
+    "packages/web/src/app/api/media/assets/[assetId]/play/route.ts": "51cbf64d48339fb3321120f6663f464ab6b672b7d932daca374841629378b1d4",
+    "packages/web/src/app/api/media/assets/[assetId]/access/route.ts": "fa3f3f9959b1376a320a5c464a5466b702a26ab1aafccd1657dcf3646288a97e",
+    "packages/web/src/lib/server/recording-terminal-worker.ts": "12ca08db9c58411088565fc2fdcde76b852f9b5df75fd231c3c6bcc494f02037",
+    "packages/web/src/lib/server/recording-candidate-worker.ts": "61831dfc257c75a75c5e5736c26ade78c510483d367bd98f1094eee109fa5a7d",
+    "packages/web/src/lib/server/recording-job-verifier.ts": "86d08b98f8572b5b36c077fdaae1794fe4ab3e5a89c1e1fb80f402454538cead",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-job-worker.ts": "0f965112f08d4cb0b3178600b75ea48c53718b875b1be93f21f778f8e41f2f1d",
+    "packages/web/src/lib/server/recording-candidate-storage.ts": "ae0a4948e9cd68de1bc24eac92c2186078a68e6b62d15fb5371bf741f5b6668a",
+    "packages/web/src/lib/server/recording-job-finalization.ts": "f28f28e8cb04d16d7bdc639d9fabea13e9d3bf5cda09ff95752ca31964b4e89f",
+    "packages/web/src/lib/server/recording-worker-host.ts": "7069c461f32be473bb2a703764abae5a6cd1a36a9656bdcb2806c4b88e097997",
+    "experiments/g1-local/durable-records-backup.mjs": "420b120d51f3e061c5890940bc1c8f1de71740b99bc5fba1d5484c7018148dec",
+    "experiments/g1-local/g3-backup.mjs": "17db45b04b6e329a309ea30711f0b67d1334e614d6ea9aae94a6910f46abea12",
+    "packages/web/src/lib/server/publication-source-service.ts": "ab8fee3fae2ed5d3845b55dbd7447a0ad1c42f8cfd5dbca7e56b0e9141ebc519",
+    "packages/web/src/lib/legacy-story-media.ts": "1fe15dd0e88a62a04b75eab107658ea777c58598639816a6f62646627243158e",
+    "packages/web/src/lib/legacy-media-reference.ts": "896631ce8e2e32ad2968663d3d97e9701bd3df41367041ab838b6a2acd1af30c",
+    "packages/web/src/lib/server/publication-delivery-service.ts": "413cea5c198b0235773150edcf3000ad1185b95501a40efc1f8223939b491255",
+    "packages/web/src/lib/server/publication-delivery-worker.ts": "03d2b89db4ecb6d45cc9aa6e01089abce8b38cf1bd611985fcef9ec306dbe8db",
+    "packages/web/src/lib/media-assets.ts": "bd8d0a6ca204b0a8ae59bd3d5898549390bfa1d244efaf29048c11d8e5846cda",
+    "packages/web/src/lib/server/archival-export-service.ts": "723e01bf472ed3487ae0b96d4fa86dc50f2b92618159bfe52b3ea707f9a8428d",
+    "packages/web/src/lib/server/media-export.ts": "fd184a20aa4f8ae1a03bfda51958736028c9f0647a70336a3f1498f82278aafe",
+    "packages/web/src/lib/server/scheme-b-backup.ts": "1c5edc5e4de767a2bbb587ed77cdb2f4a3dfa1b4bfcad6041eb23e17619ba01c"
+  },
+  "migrations": [
+    {
+      "path": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+      "status": "passed",
+      "elapsedMs": 63
+    },
+    {
+      "path": "supabase/migrations/20250731012532_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20250731015259_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20250802015525_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20250802015612_remote_history_placeholder.sql",
+      "status": "passed",
+      "elapsedMs": 0
+    },
+    {
+      "path": "supabase/migrations/20260611000000_agent_phase1.sql",
+      "status": "passed",
+      "elapsedMs": 21
+    },
+    {
+      "path": "supabase/migrations/20260612000000_agent_phase2_public_archive.sql",
+      "status": "passed",
+      "elapsedMs": 28
+    },
+    {
+      "path": "supabase/migrations/20260621000000_storage_policies.sql",
+      "status": "passed",
+      "elapsedMs": 3
+    },
+    {
+      "path": "supabase/migrations/20260625081000_dashboard_support_tables.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261006000001_fix_wallet_rls_and_rpcs.sql",
+      "status": "passed",
+      "elapsedMs": 9
+    },
+    {
+      "path": "supabase/migrations/20261007000001_create_waitlist.sql",
+      "status": "passed",
+      "elapsedMs": 7
+    },
+    {
+      "path": "supabase/migrations/20261007000002_improve_storage_rls.sql",
+      "status": "passed",
+      "elapsedMs": 6
+    },
+    {
+      "path": "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql",
+      "status": "passed",
+      "elapsedMs": 38
+    },
+    {
+      "path": "supabase/migrations/20261024000002_p2_transcript_provenance_and_review.sql",
+      "status": "passed",
+      "elapsedMs": 20
+    },
+    {
+      "path": "supabase/migrations/20261024000003_p3_archive_search_and_entitlements.sql",
+      "status": "passed",
+      "elapsedMs": 20
+    },
+    {
+      "path": "supabase/migrations/20261024000004_p4_pilot_cohort_and_g4_analytics.sql",
+      "status": "passed",
+      "elapsedMs": 6
+    },
+    {
+      "path": "supabase/migrations/20261029000001_operational_snapshot.sql",
+      "status": "passed",
+      "elapsedMs": 2
+    },
+    {
+      "path": "supabase/migrations/20261029000002_export_observations.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261030000001_upload_observations.sql",
+      "status": "passed",
+      "elapsedMs": 5
+    },
+    {
+      "path": "supabase/migrations/20261030000002_deployment_collection_coverage.sql",
+      "status": "passed",
+      "elapsedMs": 9
+    },
+    {
+      "path": "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "status": "passed",
+      "elapsedMs": 2
+    },
+    {
+      "path": "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "status": "passed",
+      "elapsedMs": 3
+    },
+    {
+      "path": "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "status": "passed",
+      "elapsedMs": 6
+    },
+    {
+      "path": "supabase/migrations/20261104000001_recording_job_finalization.sql",
+      "status": "passed",
+      "elapsedMs": 2
+    },
+    {
+      "path": "supabase/migrations/20261105000001_recording_session_snapshot.sql",
+      "status": "passed",
+      "elapsedMs": 1
+    },
+    {
+      "path": "supabase/migrations/20261106000001_recording_story_save.sql",
+      "status": "passed",
+      "elapsedMs": 7
+    },
+    {
+      "path": "supabase/migrations/20261106000002_media_deletion_capture.sql",
+      "status": "passed",
+      "elapsedMs": 4
+    },
+    {
+      "path": "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql",
+      "status": "passed",
+      "elapsedMs": 1
+    },
+    {
+      "path": "supabase/migrations/20261106000004_media_deletion_leases.sql",
+      "status": "passed",
+      "elapsedMs": 8
+    },
+    {
+      "path": "supabase/migrations/20261107000001_legacy_compatibility_acl.sql",
+      "status": "passed",
+      "elapsedMs": 1
+    },
+    {
+      "path": "supabase/migrations/20261109000001_media_deletion_execution.sql",
+      "status": "passed",
+      "elapsedMs": 14
+    },
+    {
+      "path": "supabase/migrations/20261109000002_story_content_deletion.sql",
+      "status": "passed",
+      "elapsedMs": 12
+    },
+    {
+      "path": "supabase/migrations/20261110000001_story_review_workflow.sql",
+      "status": "passed",
+      "elapsedMs": 18
+    },
+    {
+      "path": "supabase/migrations/20261111000001_publication_delivery.sql",
+      "status": "passed",
+      "elapsedMs": 9
+    },
+    {
+      "path": "supabase/migrations/20261111000002_authoritative_search.sql",
+      "status": "passed",
+      "elapsedMs": 4
+    },
+    {
+      "path": "supabase/migrations/20261111000003_payment_orders.sql",
+      "status": "passed",
+      "elapsedMs": 37
+    },
+    {
+      "path": "supabase/migrations/20261111000004_pilot_observation_ledger.sql",
+      "status": "passed",
+      "elapsedMs": 11
+    },
+    {
+      "path": "supabase/migrations/20261113000001_processing_recovery.sql",
+      "status": "passed",
+      "elapsedMs": 3
+    },
+    {
+      "path": "supabase/migrations/20261113000002_story_ai_edit.sql",
+      "status": "passed",
+      "elapsedMs": 11
+    },
+    {
+      "path": "supabase/migrations/20261113000003_semantic_sources.sql",
+      "status": "passed",
+      "elapsedMs": 3
+    },
+    {
+      "path": "supabase/migrations/20261113000004_hosting_reminders.sql",
+      "status": "passed",
+      "elapsedMs": 7
+    }
+  ],
+  "boundary": "Actual complete repository bootstrap/migration files on native PG17.4 with real extensions. Minimal synthetic Supabase auth/storage platform schemas; no hosted PostgREST/Auth/Storage qualification.",
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binaryDirectory": "/tmp/saga-g1-runtime/install/bin",
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "binarySha256": {
+      "postgres": "074523d272d09fbc667f14035f1008c2d979af0228e1b63e00deb5a6df7b5173",
+      "pg_ctl": "86e1dc855e1c2f78180c2571def7a4ca7cb50437f999a6aa68c6d4417a2e0d96",
+      "initdb": "e8cc3243f29f3e7fd74aa16a99309b79947816a95da49edff1c71560933fafbb",
+      "pg_dump": "2832ddd54327964f26717decf3d8fc1efd4d40b051133f90c765392fdbfd2db5",
+      "pg_restore": "cbdd24399b63a5b0de6a7fd5ca67204b7d2b2cf3b0ea735cfda0035112a078e3"
+    }
+  },
+  "scratch": "/tmp/saga-g1-chain-c9kyJn",
+  "catalog": [
+    {
+      "schemaname": "auth",
+      "tablename": "users"
+    },
+    {
+      "schemaname": "entitlement_candidate",
+      "tablename": "events"
+    },
+    {
+      "schemaname": "entitlement_candidate",
+      "tablename": "sources"
+    },
+    {
+      "schemaname": "invitation_candidate",
+      "tablename": "bindings"
+    },
+    {
+      "schemaname": "invitation_candidate",
+      "tablename": "requests"
+    },
+    {
+      "schemaname": "invitation_candidate",
+      "tablename": "trusted_seat_sources"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "agent_artifacts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "agent_runs"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "archive_assembly_attempts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "archive_attempt_builds"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "archive_observation_coverage"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "browser_upload_attempts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "chapters"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "consent_records"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "deletion_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "deletion_targets"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "deployment_collection_coverage"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "entitlement_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "entitlement_sources"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "hosting_reminders"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "interactions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "interview_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "interview_sessions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "invitations"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "legacy_media_references"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_assets"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_attempts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_executions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_fences"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_jobs"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "media_deletion_objects"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "notification_settings"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "notifications"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "payment_order_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "payment_order_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "payment_orders"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "payment_project_rights"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "pilot_cohort_batches"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "pilot_cohort_entries"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "pilot_households"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "pilot_observation_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "pilot_observation_revisions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "platform_roles"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "privacy_agreements"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "processing_attempts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "processing_jobs"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "profiles"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_members"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_prompt_state"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "project_roles"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "projects"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "prompts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_archive_audit_events"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_archive_entries"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_contribution_elements"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_contribution_invitations"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_contributions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_event_clusters"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "public_event_contributions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "publication_artifact_cleanup"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "publication_delivery_jobs"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "publication_snapshots"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "recording_chunks"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "recording_output_candidates"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "recording_sessions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "recording_story_intents"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "search_index_entries"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "seat_transactions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "stories"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_ai_edit_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_artifacts"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_assertions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_content_purges"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_deletion_context"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_deletion_fences"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_elements"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_review_context"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_review_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_revisions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "story_transcription_requests"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "subscriptions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "transcript_segments"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "transcript_versions"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "upload_attempt_builds"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "upload_observation_coverage"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "user_resource_wallets"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "user_settings"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "waitlist"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "waitlist_signups"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "buckets"
+    },
+    {
+      "schemaname": "storage",
+      "tablename": "objects"
+    }
+  ],
+  "extensions": [
+    {
+      "extname": "pgcrypto",
+      "extversion": "1.3"
+    },
+    {
+      "extname": "plpgsql",
+      "extversion": "1.0"
+    },
+    {
+      "extname": "uuid-ossp",
+      "extversion": "1.1"
+    }
+  ],
+  "backup": {
+    "status": "passed",
+    "checks": [
+      "full migrated schema serves two actual recordings",
+      "real pg_dump custom archive",
+      "real pg_restore to separate database",
+      "all object bytes restored and hashed",
+      "post-freeze capture and targets replayed exactly",
+      "restored story and intent prose purged",
+      "AI and reminder durable states restored with source and lease fences",
+      "post-freeze story/project tombstones erase AI drafts and reminder receipts",
+      "selected chunk/candidate omitted from restored store",
+      "deleted playback denied by actual route",
+      "unrelated restored audio plays in Chrome"
+    ],
+    "boundary": "Real PG17 custom dump/restored database, real captured Chrome audio bytes, local object backup/restore and post-freeze durable tombstones. Quiesced local writers. Offline maintenance replay, not the production physical deletion executor or hosted Storage.",
+    "input": {
+      "path": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-07-g1-chrome/integrated-browser-1794059710258-2f76707e-5601-44f0-9829-05ded2ec89fb",
+      "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449",
+      "bytes": 2434217
+    },
+    "recordingResponses": [
+      {
+        "name": "save",
+        "action": "reserve",
+        "status": 200,
+        "value": {
+          "schemaVersion": 1,
+          "actorId": "11111111-1111-4111-8111-111111111111",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sessionId": "c2429012-a908-4d00-91ac-9c1d251527db",
+          "intent": {
+            "storyId": "a9537489-d280-4ddd-87e8-4c506ff7c505",
+            "metadata": {
+              "title": "Delete after freeze",
+              "content": "Synthetic backup test",
+              "isPublic": false,
+              "happenedAt": "2000-01-01T00:00:00.000Z",
+              "transcript": "Synthetic caption",
+              "recordingMode": "chat"
+            },
+            "manifestSha256": null,
+            "assetId": null,
+            "confirmed": false
+          },
+          "canClearLocalDrafts": false
+        }
+      },
+      {
+        "name": "seal",
+        "status": 202,
+        "value": {
+          "asset": {
+            "id": "2f31538c-3ff3-851a-9d58-de4b89094817",
+            "kind": "original_audio",
+            "state": "verifying",
+            "bucket": "audio-recordings",
+            "sha256": null,
+            "version": 1,
+            "story_id": "a9537489-d280-4ddd-87e8-4c506ff7c505",
+            "byte_size": 2434217,
+            "mime_type": "audio/webm;codecs=opus",
+            "created_at": "2026-11-14T07:03:43.728728+00:00",
+            "created_by": "11111111-1111-4111-8111-111111111111",
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/2f31538c-3ff3-851a-9d58-de4b89094817/original",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "updated_at": "2026-11-14T07:03:43.728728+00:00",
+            "duration_ms": null,
+            "verified_at": null,
+            "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"2f31538c-3ff3-851a-9d58-de4b89094817\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=c2429012-a908-4d00-91ac-9c1d251527db:chunks=33168dbd94f99427161728386e1ac4608a65e8906ac0615995f5f12fb353f3c6",
+            "parent_asset_id": null,
+            "original_filename": "unnamed-asset",
+            "verification_error": null,
+            "content_verified_at": null
+          },
+          "job": {
+            "id": "dd6dd75f-ca5c-4906-ae76-10a83e37f2f7",
+            "state": "queued",
+            "asset_id": "2f31538c-3ff3-851a-9d58-de4b89094817",
+            "job_type": "recording_merge",
+            "created_at": "2026-11-14T07:03:43.82949+00:00",
+            "created_by": "11111111-1111-4111-8111-111111111111",
+            "error_code": null,
+            "not_before": null,
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "result_ref": null,
+            "updated_at": "2026-11-14T07:03:43.82949+00:00",
+            "lease_owner": null,
+            "max_attempts": 3,
+            "attempt_count": 0,
+            "input_version": 1,
+            "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"2f31538c-3ff3-851a-9d58-de4b89094817\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=c2429012-a908-4d00-91ac-9c1d251527db:chunks=33168dbd94f99427161728386e1ac4608a65e8906ac0615995f5f12fb353f3c6",
+            "lease_expires_at": null,
+            "parameter_version": "default",
+            "processor_version": "ffmpeg-merge-v1",
+            "cancel_requested_at": null,
+            "model_config_version": "none"
+          },
+          "idempotentReplay": false,
+          "canClearLocalDrafts": false,
+          "manifestSha256": "8bb90a45694d7167e44a78369a289a64f18a2b2b0f5c4fc50c7d0e6ebbca7d10"
+        }
+      },
+      {
+        "name": "save",
+        "action": "confirm",
+        "status": 200,
+        "value": {
+          "schemaVersion": 1,
+          "actorId": "11111111-1111-4111-8111-111111111111",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sessionId": "c2429012-a908-4d00-91ac-9c1d251527db",
+          "storyId": "a9537489-d280-4ddd-87e8-4c506ff7c505",
+          "assetId": "2f31538c-3ff3-851a-9d58-de4b89094817",
+          "manifestSha256": "8bb90a45694d7167e44a78369a289a64f18a2b2b0f5c4fc50c7d0e6ebbca7d10",
+          "playbackUrl": "/api/media/assets/2f31538c-3ff3-851a-9d58-de4b89094817/play",
+          "canClearLocalDrafts": true
+        }
+      },
+      {
+        "name": "save",
+        "action": "reserve",
+        "status": 200,
+        "value": {
+          "schemaVersion": 1,
+          "actorId": "11111111-1111-4111-8111-111111111111",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sessionId": "b6f4821a-fb35-430a-bcc7-207e26800f1b",
+          "intent": {
+            "storyId": "061247d1-be99-4821-a716-a9cc4ebf8c45",
+            "metadata": {
+              "title": "Keep after restore",
+              "content": "Synthetic backup test",
+              "isPublic": false,
+              "happenedAt": "2000-01-01T00:00:00.000Z",
+              "transcript": "Synthetic caption",
+              "recordingMode": "chat"
+            },
+            "manifestSha256": null,
+            "assetId": null,
+            "confirmed": false
+          },
+          "canClearLocalDrafts": false
+        }
+      },
+      {
+        "name": "seal",
+        "status": 202,
+        "value": {
+          "asset": {
+            "id": "432f8a9b-c62c-8eb0-be04-b658ed7abf26",
+            "kind": "original_audio",
+            "state": "verifying",
+            "bucket": "audio-recordings",
+            "sha256": null,
+            "version": 1,
+            "story_id": "061247d1-be99-4821-a716-a9cc4ebf8c45",
+            "byte_size": 2434217,
+            "mime_type": "audio/webm;codecs=opus",
+            "created_at": "2026-11-14T07:03:46.30932+00:00",
+            "created_by": "11111111-1111-4111-8111-111111111111",
+            "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/assets/432f8a9b-c62c-8eb0-be04-b658ed7abf26/original",
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "updated_at": "2026-11-14T07:03:46.30932+00:00",
+            "duration_ms": null,
+            "verified_at": null,
+            "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"432f8a9b-c62c-8eb0-be04-b658ed7abf26\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=b6f4821a-fb35-430a-bcc7-207e26800f1b:chunks=8108840aabcd9bc77311ebe5ea471103d25aa82ff2266ec6cddf176093cda915",
+            "parent_asset_id": null,
+            "original_filename": "unnamed-asset",
+            "verification_error": null,
+            "content_verified_at": null
+          },
+          "job": {
+            "id": "f6978180-ba91-40b5-b3c5-1d574412778d",
+            "state": "queued",
+            "asset_id": "432f8a9b-c62c-8eb0-be04-b658ed7abf26",
+            "job_type": "recording_merge",
+            "created_at": "2026-11-14T07:03:46.412321+00:00",
+            "created_by": "11111111-1111-4111-8111-111111111111",
+            "error_code": null,
+            "not_before": null,
+            "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "result_ref": null,
+            "updated_at": "2026-11-14T07:03:46.412321+00:00",
+            "lease_owner": null,
+            "max_attempts": 3,
+            "attempt_count": 0,
+            "input_version": 1,
+            "idempotency_key": "processing-job-v1:[\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"432f8a9b-c62c-8eb0-be04-b658ed7abf26\",1,\"recording_merge\",\"ffmpeg-merge-v1\",\"none\",\"default\"]:mime=audio/webm;codecs=opus:session=b6f4821a-fb35-430a-bcc7-207e26800f1b:chunks=8108840aabcd9bc77311ebe5ea471103d25aa82ff2266ec6cddf176093cda915",
+            "lease_expires_at": null,
+            "parameter_version": "default",
+            "processor_version": "ffmpeg-merge-v1",
+            "cancel_requested_at": null,
+            "model_config_version": "none"
+          },
+          "idempotentReplay": false,
+          "canClearLocalDrafts": false,
+          "manifestSha256": "04217bb8c9497d0bba2ed53e62d4a06f0cccec96b80f511e188e1ccc14488711"
+        }
+      },
+      {
+        "name": "save",
+        "action": "confirm",
+        "status": 200,
+        "value": {
+          "schemaVersion": 1,
+          "actorId": "11111111-1111-4111-8111-111111111111",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sessionId": "b6f4821a-fb35-430a-bcc7-207e26800f1b",
+          "storyId": "061247d1-be99-4821-a716-a9cc4ebf8c45",
+          "assetId": "432f8a9b-c62c-8eb0-be04-b658ed7abf26",
+          "manifestSha256": "04217bb8c9497d0bba2ed53e62d4a06f0cccec96b80f511e188e1ccc14488711",
+          "playbackUrl": "/api/media/assets/432f8a9b-c62c-8eb0-be04-b658ed7abf26/play",
+          "canClearLocalDrafts": true
+        }
+      }
+    ],
+    "durableRecords": {
+      "status": "passed",
+      "tables": [
+        "story_ai_edit_requests",
+        "story_revisions",
+        "story_assertions",
+        "transcript_versions",
+        "transcript_segments",
+        "consent_records",
+        "hosting_reminders",
+        "notifications"
+      ],
+      "storyIds": [
+        "a9537489-d280-4ddd-87e8-4c506ff7c505",
+        "061247d1-be99-4821-a716-a9cc4ebf8c45"
+      ],
+      "reminderProjectIds": [
+        "3fec9724-44e2-4251-bb92-a028e44eb290",
+        "65e9d6b5-c779-4f72-aa75-b14af34478c7"
+      ],
+      "checks": [
+        "exact state restoration",
+        "AI lease/source/revision fences",
+        "unknown outbound not repeated",
+        "reminder expiry/token fences",
+        "story erasure and late completion blocked",
+        "project tombstone erasure and reissue blocked",
+        "unrelated state preserved"
+      ],
+      "boundary": "Real native PG dump/restore and production SQL RPCs/triggers. Synthetic AI output, payment allocation and email receipt; project-scope tombstone inserted by local maintenance fixture. No external provider or real recipient."
+    },
+    "g3": {
+      "status": "passed",
+      "schemaTables": [
+        "invitation_candidate.trusted_seat_sources",
+        "invitation_candidate.bindings",
+        "invitation_candidate.requests",
+        "entitlement_candidate.sources",
+        "entitlement_candidate.events",
+        "public.payment_orders",
+        "public.payment_order_requests",
+        "public.payment_order_events",
+        "public.payment_project_rights",
+        "public.publication_snapshots",
+        "public.publication_delivery_jobs",
+        "public.publication_artifact_cleanup"
+      ],
+      "artifacts": [
+        {
+          "jobId": "c58447be-ce13-4907-a8f2-32800bf9f92d",
+          "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "relativePath": "c58447be-ce13-4907-a8f2-32800bf9f92d/5e092708-f70f-4ec2-ae73-41771abd8fe2/archive.zip",
+          "sha256": "3806279bb4c30129e733d56ba55f341cc24a8d3e96d692270f4b41c886b366f5",
+          "bytes": 3699753
+        },
+        {
+          "jobId": "149fa490-6b11-4f97-8d65-a12db6a6c9d7",
+          "projectId": "a7206c9a-2d21-47df-9868-20c2659ab081",
+          "relativePath": "149fa490-6b11-4f97-8d65-a12db6a6c9d7/a492463b-2e11-4846-994d-21f153c1ff64/archive.zip",
+          "sha256": "0f50fdcb9efdfbd2bf7f493b6ae7c4ddc20e7270b21d69c4ad8223008ffac118",
+          "bytes": 62115
+        }
+      ],
+      "replayedPublicationRemoved": true,
+      "unrelatedPublicationPreserved": true,
+      "boundary": "Real production publication worker, database snapshot and private spool copies; local synthetic payment fulfillment fixture, no live provider."
+    },
+    "browser": "157.0.8103.78",
+    "dump": {
+      "sha256": "8a5d2ed580211511db2ec2ed923823d697b456248d2db51aae9344312290d4c4",
+      "bytes": 898919
+    },
+    "manifest": {
+      "freezeTimestamp": "2026-11-14T07:03:50.707Z",
+      "dumpSha256": "8a5d2ed580211511db2ec2ed923823d697b456248d2db51aae9344312290d4c4",
+      "dumpSizeBytes": 898919,
+      "objects": [
+        {
+          "id": "b4037ac7-9d01-4309-a718-421e75bfc5c1",
+          "bucket": "audio-recordings",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/c2429012-a908-4d00-91ac-9c1d251527db/0",
+          "byteSize": 2434217,
+          "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+        },
+        {
+          "id": "e7f260bc-c8d8-4546-892a-a360abaa0e9c",
+          "bucket": "recording-candidates",
+          "key": "jobs/dd6dd75f-ca5c-4906-ae76-10a83e37f2f7/attempts/1/61901ddb-2b91-4710-9a6a-eb2215d92bec",
+          "byteSize": 2434217,
+          "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+        },
+        {
+          "id": "3f0c87fe-c5da-4ac1-8e34-7533b9a71b33",
+          "bucket": "audio-recordings",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/b6f4821a-fb35-430a-bcc7-207e26800f1b/0",
+          "byteSize": 2434217,
+          "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+        },
+        {
+          "id": "01236ee2-e73b-42d3-84ea-794e4c2a4906",
+          "bucket": "recording-candidates",
+          "key": "jobs/f6978180-ba91-40b5-b3c5-1d574412778d/attempts/1/b0a2726f-2709-49f0-9276-491959c67141",
+          "byteSize": 2434217,
+          "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+        },
+        {
+          "id": "356b5ee6-7285-473b-9c09-0077d5915446",
+          "bucket": "saga",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/sample.txt",
+          "byteSize": 32,
+          "sha256": "e66d6eea1c018972b6d2d02a994d45ad3487ec9e30f883419aee7d7530c9da2b"
+        }
+      ]
+    },
+    "survivors": {
+      "purgedCount": 2,
+      "survivingObjects": [
+        {
+          "id": "3f0c87fe-c5da-4ac1-8e34-7533b9a71b33",
+          "bucket": "audio-recordings",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/b6f4821a-fb35-430a-bcc7-207e26800f1b/0",
+          "byteSize": 2434217,
+          "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+        },
+        {
+          "id": "01236ee2-e73b-42d3-84ea-794e4c2a4906",
+          "bucket": "recording-candidates",
+          "key": "jobs/f6978180-ba91-40b5-b3c5-1d574412778d/attempts/1/b0a2726f-2709-49f0-9276-491959c67141",
+          "byteSize": 2434217,
+          "sha256": "d10f49d2efe6541955f0c6d70adb6d8ac9c52df13e617686a90a7f1c81120449"
+        },
+        {
+          "id": "356b5ee6-7285-473b-9c09-0077d5915446",
+          "bucket": "saga",
+          "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/legacy/sample.txt",
+          "byteSize": 32,
+          "sha256": "e66d6eea1c018972b6d2d02a994d45ad3487ec9e30f883419aee7d7530c9da2b"
+        }
+      ],
+      "survivingTotalBytes": 4868466
+    },
+    "capture": {
+      "id": "6523aeab-66e8-4089-87b0-45f2416a9ab0",
+      "state": "requested",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "subjectId": "a9537489-d280-4ddd-87e8-4c506ff7c505",
+      "subjectType": "story",
+      "targetCount": 4,
+      "tombstoneAt": "2026-11-14T07:03:50.930105+00:00",
+      "physicalDeletionComplete": false
+    }
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  },
+  "sourceDrift": []
+}

@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-11-07T16:08:44.724854+00:00",
+  "sourceFiles": 949,
+  "sourceArchiveRoundTripPassed": true,
+  "currentDocumentationLinks": 24,
+  "brokenLinks": [],
+  "stagedFiles": [],
+  "diffCheckPassed": true,
+  "documents": {
+    "docs/research/2026-11-07-g1-fixes-and-recovery.md": "176b269cc37cc924b7043bf35e2c134d63a729bd8112e76f0a63ca577696ff58",
+    "docs/research/2026-11-02-g1-gap-register.md": "cb25bc03a2c674e9f949d59039f0c6f7bd7a029c13e971a9d1d3886a362dba72",
+    "docs/research/evidence/2026-11-07-g1-fixes/README.md": "61cdab572d1632f702ee9a4c5c78d2d8f564d59b9377a0e30246cbc971f9eb29",
+    "experiments/g1-local/README.md": "225db0b6b31cdb38d20cd8bb7467acfc9b227372999b2eb0adbdec849355c7fa",
+    "docs/HANDOFF-2026-10-13-upgrade.md": "1dfee66e9c535316c942ccdc7826d4fa2acd854cae409b35e83660a7f1107e63",
+    "docs/README.md": "2746c205bea50f6c6d039edea125d175eb3b128e1cd0c5c33809e190150c643c"
+  }
+}

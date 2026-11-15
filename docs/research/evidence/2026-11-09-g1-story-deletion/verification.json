@@ -1,0 +1,163 @@
+{
+  "completedAt": "2026-11-09T12:58:51.369280+00:00",
+  "timezone": "Asia/Taipei",
+  "status": "passed",
+  "scope": "G1 local Chrome Web acceptance with user-waived human gates; whole-story content and derivative deletion",
+  "g1LocalWebAcceptance": "passed",
+  "g1AcceptanceBasis": "Chrome Web automation plus explicitly waived human-operated gates; not hosted/mobile/provider qualification",
+  "wholeStoryDeletionAccepted": true,
+  "manualGates": {
+    "status": "waived_by_user",
+    "checklist": "docs/research/2026-11-09-g1-manual-follow-up.md",
+    "blocksLocalProgress": false,
+    "unexecutedMarkedTested": false
+  },
+  "records": {
+    "nativeAndProductChrome": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794225437686-989f6d06-1df3-4c07-b245-010145d2175a/results.json",
+      "sha256": "1bbb71e98c83363a5ec6e79d0e5dce9737c0f9c7834d928b918b82dd2a5f4d17",
+      "assertions": 241,
+      "status": "passed",
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "migrationsAndBackup": {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794225801813-9ca27747-b443-41b7-ad29-94a9e5ecb52c/results.json",
+      "sha256": "f89b72c418bf7042bfa23aa67965a778aa85565f477fa8cc3bc49c177adc319c",
+      "assertions": 493,
+      "status": "passed",
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "independentNative": {
+      "path": "docs/research/evidence/2026-11-09-g1-story-deletion/review-native.json",
+      "sha256": "6cbcda82cd47ebafd4bf86478c254ceb06aaa724693b37fd22f259c38c0ed8b6",
+      "assertions": 205,
+      "status": "passed",
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    "independentProbes": {
+      "path": "docs/research/evidence/2026-11-09-g1-story-deletion/review-probes.json",
+      "sha256": "c59fe5523614255b5c8e1078a7f4eca61dec4f0a31096ba120e140c453de7801",
+      "assertions": 93,
+      "status": "passed",
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  },
+  "gate": {
+    "verifyExitCode": 0,
+    "webSuites": 166,
+    "webTests": 3421,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 25,
+    "infraExitCode": 0,
+    "buildPages": 184,
+    "finalTargetedSuites": 2,
+    "finalTargetedTests": 21
+  },
+  "boundaries": {
+    "physicalDeletionComplete": false,
+    "hostedStorageQualified": false,
+    "mobileExecuted": false,
+    "databaseIdentityAndReconciliationMetadataRetained": true,
+    "legacyUnmappedMediaNewDelete": "rejected_atomically",
+    "historicalUnlinkedInterviews": "manual_mapping_required",
+    "restoredContentPurge": "tested_before_reopening"
+  },
+  "priorEvidenceVerified": [
+    {
+      "path": "docs/research/evidence/2026-11-09-g1-deletion-execution/native-1794162300864-2c7e9820-df17-463e-b4f6-756313df1f3c/results.json",
+      "sha256": "97e3864cf1e38cb1542bbae144a13a669d5a51458abb5308e4abe3642bc19d22"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794162170300-ae2193f2-0207-41c3-8c28-73f05212e305/results.json",
+      "sha256": "17e1004f932b7cfed0a4181d1c76dd3ed5ef6abe6253a77a6710df54e78b2acf"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/interrupted-browser-1794066185867-ac613c97-6cd1-485a-8cd7-7f831171d8cb/results.json",
+      "sha256": "8dc8a182dee3ff4ad0cfff54b723d9754434eff10d32112d20a7d40df6c99f88"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-07-g1-fixes/ai-1794066594425-a6982664-d810-45ac-be23-4a0decc4a326/results.json",
+      "sha256": "30019bd7520497dde375105b0ed961a6e6c2cee851804f9bd1a4b449784bbb53"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/audio-1794066593597-a7048455-bb94-4fc9-9796-7091b3d41b8b/results.json",
+      "sha256": "0f71bff8acd1d3721a9283b675b7497d8320f4b9d70a02d4416fea0f46575c7e"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-07-g1-fixes/envelope-1794066595672-83b3e6e2-5bb2-474d-8c5f-31cac325d242/results.json",
+      "sha256": "f4cf7bff0ac46fc505e3916e261c030150b7f28c05434d339909c3a90b5868bb"
+    },
+    {
+      "path": "docs/research/evidence/2026-11-07-g1-chrome/migrations-1794066887638-762c32a5-09e5-475c-8886-854591e60253/results.json",
+      "sha256": "996f3dc05d7d624f05f71cf7f9b284ccfab3dadd8ec0e17b2c556dbe256429b6"
+    }
+  ],
+  "priorLogsVerified": 6,
+  "priorSourceArchiveUnchanged": true,
+  "sourceArchive": {
+    "path": "source.tar.gz",
+    "sha256": "8c74b46747984baa8945a611caee50058c33d6515ca63ed853126afff3e4b1fe",
+    "manifest": "source-manifest.json",
+    "files": 1159,
+    "roundTripPassed": true
+  },
+  "logs": {
+    "final-targeted.log": "f0c0575f471721a3e1741dce80afc662a02b74ef4571f78d99db8f2f8788b9d7",
+    "verify.log": "6890bd4d42e7d534dbf56257b06268246df192fed4d581834115817995758228",
+    "client.log": "4d7dc424285fb2b305833c7c185259a7041f05d171c99d8114f9077852f93719",
+    "red.log": "da2f89043d0640e30111f320753bd1bcef85d270df626be51835a2a615d369ca",
+    "native-initial.log": "901e475954339b8ec39fbacefd26e1b836263d16852674f151f9f489a87f91e1",
+    "interview-provenance.log": "daff6edcfbf831fcf62f3b511d9b6d5f51d626e1063fcdb3411e8bda6f765acd",
+    "native-3.log": "b54a6e370451bcca70cc41dc2c89e1c878662e9eaba2e93218c2671b928874ae",
+    "review-fixes.log": "3265c1252384943f46ae4ca0cda77da04ff9f9ce7864c211cff7c6eada87ba14",
+    "native-2.log": "da53758ff168d2d4e8d8fed9547c9c9ae84fd4d91949ed971bc89b7e0841d1a8",
+    "type-initial.log": "6096d610ac3f63cdd32e2b1e498d6cd9874b0341e7193944ee329b9e7650d1b6",
+    "native-4.log": "33452acb9016c52e57c9f5db19468fbc1ce7b79f3a07fe51f1bd3bfb3f593920",
+    "verify-initial.log": "f4c351f2dcd945799eae20fe564beed69249706e445b8ad63261bdeb89905010",
+    "native-final-candidate.log": "76d09dbd386da2b159a395c0f04330b897ac14f4f498f7742f9d22b4f28e7540",
+    "chrome-2.log": "dc879aec56810300998fef571a13a7674d5e287d316c7b13e905ca91743db6f0",
+    "withdraw-fix.log": "2fcd1e21517ff70586e8c4669ed4935878514673dc13ee7c5a2f52af53221dd7",
+    "backup.log": "0e91e98e5319863f264aad34de09144dc4211b8e81b3bf129e5e2169ef1f5934",
+    "shared.log": "10bc51fe863c78c503d08bd4936cbef92f4218ee27fe3c2d723ea2eb99eb5543",
+    "client-red.log": "275059307e96698d53eee2cc28762ed7d40832cd7ac7df05778e91c1de16db7a",
+    "final-verify.log": "4f03319538665407955ae1b91433fc0d9eae45a42e77e9d52e959207459c0da1",
+    "infra.log": "44ee9fd67e23d16f8f9cb0aef1fa0d2bd8de76ea7fd2017a46a7219d30b1cec0",
+    "chrome-initial.log": "d7faf7408c85e921480db849905ead07f7eb78f4bb465ffe10f6ed8be9201be9",
+    "late-cluster-red.log": "82609e2deb272a111b74de284f4e9926b0556ea4102f5cd329357aaf979af21f"
+  },
+  "review": "review.md",
+  "git": {
+    "branch": "codex/october-upgrade-p0",
+    "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+    "stagedFiles": [],
+    "diffCheckPassed": true,
+    "committed": false,
+    "pushed": false,
+    "remoteMigrationOrDeployment": false
+  }
+}

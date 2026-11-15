@@ -70,9 +70,19 @@ export async function GET(
       return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 
+    // Bearer-authenticated reads may use BYPASSRLS. Recheck tombstones after
+    // fetching rows so an accepted deletion cannot be returned from that snapshot.
+    const { data: deletions, error: deletionError } = await db.from('deletion_requests')
+      .select('subject_id').eq('project_id', projectId).not('tombstone_at', 'is', null)
+    if (deletionError || !Array.isArray(deletions)) {
+      return NextResponse.json({ error: 'Unable to verify story visibility' }, { status: 503, headers: { 'Cache-Control': 'no-store' } })
+    }
+    const deleted = new Set(deletions.map((row: any) => row.subject_id))
+    const visibleStories = deleted.has(projectId) ? [] : stories.filter((story: any) => !deleted.has(story.id))
+
     // For each story, get the interaction summary
     const storiesWithDetails = await Promise.all(
-      stories.map(async (story: any) => {
+      visibleStories.map(async (story: any) => {
         const { data: interactions, error: interactionsError } = await db
           .from('interactions')
           .select('id, type, created_at')
@@ -105,7 +115,7 @@ export async function GET(
       })
     )
 
-    return NextResponse.json({ stories: storiesWithDetails || [] })
+    return NextResponse.json({ stories: storiesWithDetails || [] }, { headers: { 'Cache-Control': 'no-store' } })
   } catch (err) {
     console.error('GET /api/projects/[id]/stories unexpected error:', err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

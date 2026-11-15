@@ -1,0 +1,12 @@
+{
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "sourceHashesMatch": true,
+  "changedPriorFiles": [
+    "packages/web/src/app/api/media/delete-request/route.ts",
+    "packages/web/src/app/api/media/delete-request/__tests__/route.test.ts"
+  ],
+  "missingPriorFiles": [],
+  "stagedChanges": [],
+  "diffCheckExit": 0,
+  "nativeSourceHashesMatch": true
+}

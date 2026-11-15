@@ -1,6 +1,7 @@
 import { RecordingProcessingError, isRecordingProcessingError } from './recording-processing-error'
 import { createHash } from 'node:crypto'
-import { mkdtemp, open, rm } from 'node:fs/promises'
+import { mkdtemp, open, readFile, rm, writeFile } from 'node:fs/promises'
+import { closeWebmEnvelope } from './recording-webm-envelope'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import {
@@ -21,7 +22,7 @@ interface MergeDependencies {
   signal?: AbortSignal
 }
 
-interface VerifiedRecordingArtifact {
+export interface VerifiedRecordingArtifact {
   filePath: string
   mimeType: string
   completion: RecordingMergeCompletionEvidence
@@ -102,7 +103,17 @@ export async function withVerifiedRecordingMerge<T>(
       await output.close()
     }
     signal?.throwIfAborted()
-    const { durationMs } = await dependencies.decodeAudio(filePath, task.mimeType, signal)
+    let decodingPath = filePath
+    if (/^audio\/webm(?:;|$)/i.test(task.mimeType) && outputByteSize <= 100 * 1024 * 1024) {
+      const envelope = closeWebmEnvelope(await readFile(filePath))
+      signal?.throwIfAborted()
+      if (envelope) {
+        decodingPath = join(directory, 'decode.webm')
+        await writeFile(decodingPath, envelope.bytes, { flag: 'wx', mode: 0o600 })
+      }
+    }
+    signal?.throwIfAborted()
+    const { durationMs } = await dependencies.decodeAudio(decodingPath, task.mimeType, signal)
     signal?.throwIfAborted()
     const completion: RecordingMergeCompletionEvidence = {
       projectId: task.projectId, sessionId: task.sessionId, assetId: task.assetId,

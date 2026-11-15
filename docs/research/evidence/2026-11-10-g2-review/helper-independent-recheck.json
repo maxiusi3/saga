@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "case": "A qualifier/context removal",
+      "source": "Perhaps John won the race.",
+      "status": "blocked"
+    },
+    {
+      "case": "A qualifier/context removal",
+      "source": "It is not true that John won the race.",
+      "status": "blocked"
+    },
+    {
+      "case": "A qualifier/context removal",
+      "source": "John won the race. Or perhaps he only watched it.",
+      "status": "blocked"
+    },
+    {
+      "case": "B unsupported primary dispute",
+      "status": "blocked"
+    },
+    {
+      "case": "C paired claim/sourceQuote edit",
+      "status": "blocked"
+    },
+    {
+      "case": "D fabricated candidate and later title",
+      "status": "neutralized"
+    },
+    {
+      "case": "full unchanged self-correction",
+      "status": "preserved"
+    },
+    {
+      "case": "modify/dispute/accept distinct authors",
+      "status": "preserved",
+      "body": "Family supplement (Clara): John planted an oak tree.\nFamily alternative (Ben): I remember an apple tree."
+    },
+    {
+      "case": "approved snapshot detached and superseded rewrite denied",
+      "status": "preserved"
+    },
+    {
+      "case": "benchmark remains explicitly synthetic",
+      "status": "passed"
+    }
+  ],
+  "hashes": {
+    "packages/web/src/lib/server/ai-capability-gateway.ts": "c36d79f6bc472101f6ec75b3c771c3116486e08c39dcf4fc28b38e544257d3c5",
+    "packages/web/src/lib/server/provenance-editor.ts": "661fbde1b8473cc3d88a448c0356b2c87183205925e3fb8b74e695a39c01d31e",
+    "packages/web/src/lib/eval/g2-fidelity-benchmark.ts": "ba84524a11376d882da785b9c65d166d75d98839d36e0ad30c062eb76e65c919",
+    "packages/web/src/lib/server/__tests__/ai-capability-gateway.test.ts": "bb144dfe7ae0061ce0a85fefa917fe007251bedd37463cb19bb5f2e557a55389",
+    "packages/web/src/lib/server/__tests__/provenance-editor.test.ts": "9173b14d552967818563aae11a8a6c483129d316c2d32e7ec94dca9fe488bc13",
+    "packages/web/src/lib/eval/__tests__/g2-fidelity-benchmark.test.ts": "162e7cec2615dd94b886975996e7f200a74615b65b2c99d8a32c6b6a830efde6"
+  }
+}

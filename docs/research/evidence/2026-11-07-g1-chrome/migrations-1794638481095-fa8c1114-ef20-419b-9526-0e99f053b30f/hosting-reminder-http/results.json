@@ -1,0 +1,116 @@
+{
+  "status": "running",
+  "rpc": [
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email",
+    "begin_hosting_reminder_email",
+    "complete_hosting_reminder_email",
+    "claim_hosting_reminder_email",
+    "tick_hosting_reminders",
+    "claim_hosting_reminder_email"
+  ],
+  "provider": [
+    {
+      "path": "/emails",
+      "method": "POST",
+      "key": "hosting-reminder/c648905f-e08c-4152-8807-3f1cf7884840",
+      "payload": {
+        "from": "sender@example.invalid",
+        "to": [
+          "http-reminder@example.invalid"
+        ],
+        "subject": "Your project hosting period ends soon",
+        "text": "Your project hosting period ends on 2026-12-06 (UTC). Review your project and download your archive before that date.\nhttps://synthetic-app.invalid/en/dashboard/projects/0f6c3d14-d826-43d8-8444-70f7cfa1627d"
+      }
+    }
+  ],
+  "browserErrors": [],
+  "boundary": "Actual worker, notification routes/page/hook/client and Supabase SDK over controlled local HTTP to real PG roles; synthetic verified Auth identity and Resend transport. No real email, inbox receipt or hosted PostgREST claim.",
+  "chrome": "157.0.8103.78",
+  "stylesheet": {
+    "loaded": true,
+    "hiddenProbeOpacity": "0"
+  },
+  "visualActions": [
+    {
+      "label": "desktop default",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop default",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop hover",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop hover",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop keyboard Mark as read",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop keyboard Mark as read",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop keyboard Delete notification",
+      "name": "Mark as read",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    },
+    {
+      "label": "desktop keyboard Delete notification",
+      "name": "Delete notification",
+      "opacity": 1,
+      "width": 36,
+      "height": 40.5,
+      "inViewport": true,
+      "insideRow": true,
+      "hitTarget": true
+    }
+  ]
+}

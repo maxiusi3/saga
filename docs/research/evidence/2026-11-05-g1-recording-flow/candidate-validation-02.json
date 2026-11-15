@@ -1,0 +1,149 @@
+{
+  "createdAt": "2026-11-06T01:52:30.537965+00:00",
+  "status": "passed",
+  "gate": "final-gate-02.json",
+  "runs": [
+    {
+      "path": "docs/research/evidence/2026-11-05-g1-recording-flow/integrated-browser-1793929758961-97783f87-95d8-42ed-a730-278bccd1166d/results.json",
+      "sha256": "b8f547d9c784791ca3e210bed815bac9ae981417b77c8a7019e65b8a651bea22",
+      "assertions": 310,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action",
+        "recovered draft saves through actual API, PG, worker and confirmation",
+        "saved original decodes in browser",
+        "saved recording player actually advances playback",
+        "native IDB cleanup abort preserves local copy and retry",
+        "explicit local cleanup removes only confirmed local copy"
+      ],
+      "sourceCount": 118,
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-11-05-g1-recording-flow/interrupted-browser-1793929758962-7260df22-824e-4ab0-98f1-b5fb43391537/results.json",
+      "sha256": "7a66631d7747df93ba48aa3302cd06fc4a295fe6fbe5a3fe0a00aa8fe4f290ce",
+      "assertions": 341,
+      "checks": [
+        "native active recording persists a requested chunk before interrupted reload",
+        "real page reload discovers draft with continue-saving action",
+        "offline save keeps durable intent and all local chunks",
+        "account change during auth await cancels stale save without remote write",
+        "reserve committed response lost, page reopened, same draft recovered",
+        "seal committed response lost, page reopened, same draft recovered",
+        "paused worker gives actionable pending state without cleanup",
+        "lost confirmation retains copy and resumes same ready story after reload",
+        "recovered draft saves through actual API, PG, worker and confirmation",
+        "saved original decodes in browser",
+        "saved recording player actually advances playback",
+        "native IDB cleanup abort preserves local copy and retry",
+        "explicit local cleanup removes only confirmed local copy"
+      ],
+      "sourceCount": 118,
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-11-05-g1-recording-flow/integrated-server-1793929757727-7a493cbd-7e64-4219-95f3-d0aa3719e36a/results.json",
+      "sha256": "5ae3612692eaadcb86fcd51775d9e2eca863fe391fe78caf3373f87072f58662",
+      "assertions": 723,
+      "checks": [
+        "reserve through actual route and SQL",
+        "seal through actual route registration and SQL",
+        "production host selection, native HTTP bytes, FFmpeg verification and worker publication",
+        "strict status, confirm and duplicate replay through actual handlers",
+        "guarded playback full bytes",
+        "real database lease expiry distinguishes retryable pre-dispatch from non-retried outcome_unknown",
+        "actual query cursor passes rejected row and excludes future jobs"
+      ],
+      "sourceCount": 44,
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  ],
+  "confirmationRegression": {
+    "path": "docs/research/evidence/2026-11-05-g1-recording-flow/native-1793929246225-f153d6c1-189c-460b-b827-6fb505ec038d/results.json",
+    "sha256": "6ecf8308b60d770cc28bbbb1a87d400a5eb8eb2a8dedee68eebdfb55dcf7e58d",
+    "assertions": 1091,
+    "checks": [
+      {
+        "name": "atomic reservation exists and replays one story with immutable metadata",
+        "status": "passed",
+        "assertions": 6
+      },
+      {
+        "name": "service-only function and ledger deny unprivileged callers and direct ledger writes",
+        "status": "passed",
+        "assertions": 10
+      },
+      {
+        "name": "lookup recovers lost seal hash; pending confirmation leaves story processing",
+        "status": "passed",
+        "assertions": 4
+      },
+      {
+        "name": "confirmed publication replays without rewriting user edits",
+        "status": "passed",
+        "assertions": 10
+      },
+      {
+        "name": "corrupt published chain never makes a story ready",
+        "status": "passed",
+        "assertions": 18
+      },
+      {
+        "name": "application rejection of corrupt immutable identities leaves story and intent untouched",
+        "status": "passed",
+        "assertions": 42
+      },
+      {
+        "name": "revoke, ownership change and every deletion subject reject replay and confirmation",
+        "status": "passed",
+        "assertions": 11
+      },
+      {
+        "name": "concurrent reserve converges, and a tombstone committing during the wait blocks confirmation",
+        "status": "passed",
+        "assertions": 7
+      },
+      {
+        "name": "real two- and three-attempt publication confirms and replays through the actual service",
+        "status": "passed",
+        "assertions": 30
+      },
+      {
+        "name": "finite early AD timestamps and non-UTC caller timezone remain compatible",
+        "status": "passed",
+        "assertions": 8
+      },
+      {
+        "name": "all history and timestamp corruptions reject before story or intent writes",
+        "status": "passed",
+        "assertions": 907
+      }
+    ],
+    "sourceCount": 26,
+    "currentSourceDrift": [],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    }
+  }
+}

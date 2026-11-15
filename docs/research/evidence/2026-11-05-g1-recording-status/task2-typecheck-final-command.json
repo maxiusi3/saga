@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "type-check",
+    "--workspace=packages/web"
+  ],
+  "exitCode": 0
+}

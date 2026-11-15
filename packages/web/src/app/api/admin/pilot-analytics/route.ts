@@ -1,62 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireCronSecret } from '@/lib/server/cron'
 import { getSupabaseAdmin } from '@/lib/supabase'
-import { evaluatePilotCohortMetrics, type PilotHouseholdEntry } from '@/lib/server/pilot-cohort-analytics'
+import { evaluatePilotCohortMetrics } from '@/lib/server/pilot-cohort-analytics'
+import { parsePilotObservation, toPilotEntry } from '@/lib/server/pilot-ledger'
+import { renderPilotReportHtml } from '@/lib/server/pilot-report-html'
 
+const headers = { 'Cache-Control': 'no-store' }
 export async function GET(request: NextRequest) {
-  if (process.env.MEDIA_ASSETS_ENABLED !== 'true') {
-    return NextResponse.json({ error: 'Pilot cohort analytics is not enabled' }, { status: 503 })
-  }
-
+  if (process.env.MEDIA_ASSETS_ENABLED !== 'true') return NextResponse.json({ error: 'Pilot cohort analytics is not enabled' }, { status: 503, headers })
   const auth = requireCronSecret(request)
-  if (!auth.ok) return auth.response
-
-  let admin: ReturnType<typeof getSupabaseAdmin>
+  if (!auth.ok) { auth.response.headers.set('Cache-Control', 'no-store'); return auth.response }
+  const cohortKey = request.nextUrl.searchParams.get('cohort')
+  const observationKind = request.nextUrl.searchParams.get('kind') ?? 'observed'
+  const format = request.nextUrl.searchParams.get('format') ?? 'json'
+  if (!cohortKey || !/^[a-zA-Z0-9_.:-]{1,100}$/.test(cohortKey) || !['synthetic', 'observed'].includes(observationKind) || !['json', 'html'].includes(format)) return NextResponse.json({ error: 'Specify a cohort, observed/synthetic kind and json/html format' }, { status: 400, headers })
+  let admin
+  try { admin = getSupabaseAdmin() }
+  catch { return NextResponse.json({ error: 'Pilot cohort database is not configured' }, { status: 503, headers }) }
   try {
-    admin = getSupabaseAdmin()
-  } catch {
-    return NextResponse.json({ error: 'Pilot cohort database is not configured' }, { status: 503 })
-  }
-
-  const { data: rows, error } = await admin
-    .from('pilot_households')
-    .select('*')
-    .order('enrolled_at', { ascending: true })
-
-  if (error) {
-    return NextResponse.json({ error: 'Failed to load pilot cohort ledger' }, { status: 500 })
-  }
-
-  const entries: PilotHouseholdEntry[] = (rows || []).map((r: any) => ({
-    id: r.id,
-    projectId: r.project_id,
-    cohortType: r.cohort_type,
-    pricingTier: r.pricing_tier,
-    supportMode: r.support_mode,
-    acquisitionChannel: r.acquisition_channel,
-    country: r.country,
-    productVersion: r.product_version,
-    enrolledAt: r.enrolled_at,
-    inviteAcceptedAt: r.invite_accepted_at,
-    firstRecordingSavedAt: r.first_recording_saved_at,
-    firstApprovedDownloadAt: r.first_approved_download_at,
-    projectCompletedAt: r.project_completed_at,
-    deliveredAt: r.delivered_at,
-    replayedWithin14dAt: r.replayed_within_14d_at,
-    withdrawnAt: r.withdrawn_at,
-    incompleteReason: r.incomplete_reason,
-    familyRevisionMinutes: Number(r.family_revision_minutes ?? 0),
-    opsSupportMinutes: Number(r.ops_support_minutes ?? 0),
-    paidAmountCents: Number(r.paid_amount_cents ?? 0),
-    refundedAmountCents: Number(r.refunded_amount_cents ?? 0),
-    paymentFeeCents: Number(r.payment_fee_cents ?? 0),
-    aiAndStorageCostCents: Number(r.ai_and_storage_cost_cents ?? 0),
-    npsScore: r.nps_score,
-    wouldRecommend: r.would_recommend,
-    referralsCount: Number(r.referrals_count ?? 0),
-    severeDataIncidents: Number(r.severe_data_incidents ?? 0),
-  }))
-
-  const report = evaluatePilotCohortMetrics(entries)
-  return NextResponse.json(report, { status: 200, headers: { 'Cache-Control': 'no-store' } })
+    // A single RPC gives one consistent snapshot, independent of the PostgREST table row cap.
+    const { data, error } = await admin.rpc('read_pilot_cohort', { p_cohort: cohortKey, p_kind: observationKind })
+    if (error || !data || !Array.isArray(data.entries) || !data.batch) return NextResponse.json({ error: 'Failed to load complete pilot cohort ledger' }, { status: 500, headers })
+    const entries = data.entries.map((row: Record<string, unknown>) => {
+      const { revision, recordedAt, ...fields } = row
+      if (!Number.isInteger(revision) || typeof recordedAt !== 'string' || !Number.isFinite(Date.parse(recordedAt)) || Date.parse(recordedAt) > Date.now()) throw new Error('Invalid persisted pilot observation')
+      const command = parsePilotObservation({ ...fields, action: 'record', expectedRevision: Number(revision) - 1, requestId: '00000000-0000-4000-8000-000000000000' }, new Date(recordedAt))
+      if (command.action !== 'record' || command.cohortKey !== cohortKey || command.observationKind !== observationKind) throw new Error('Pilot cohort mismatch')
+      return toPilotEntry(command)
+    })
+    const report = evaluatePilotCohortMetrics(entries, { cohortKey, observationKind: observationKind as 'observed' | 'synthetic', cohortClosedAt: data.batch.closedAt, erasedHouseholds: data.batch.erasedHouseholds })
+    const legacyCount = Number(data.legacyUnclassifiedCount ?? 0)
+    if (format === 'html') return new NextResponse(renderPilotReportHtml(report, legacyCount), { headers: { ...headers, 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'", 'X-Content-Type-Options': 'nosniff' } })
+    return NextResponse.json({ ...report, legacyUnclassifiedCount: legacyCount, collectionMethod: 'operator_verified_evidence_ledger' }, { headers })
+  } catch { return NextResponse.json({ error: 'Pilot ledger is unavailable or contains invalid evidence' }, { status: 500, headers }) }
 }

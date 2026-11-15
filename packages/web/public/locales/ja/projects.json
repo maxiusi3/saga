@@ -155,7 +155,11 @@
     "loadMore": "さらに物語を読み込む",
     "deleteConfirm": "この物語を削除してもよろしいですか？この操作は元に戻せません。",
     "deleteSuccess": "物語が正常に削除されました",
-    "deleteFailed": "物語の削除に失敗しました"
+    "deleteFailed": "物語の削除に失敗しました",
+    "deleteAction": "ストーリーを削除",
+    "deletePending": "送信中…",
+    "deleteAccepted": "削除リクエストを受け付けました。",
+    "deleteUnconfirmed": "削除を確認できませんでした。更新して状態を確認し、再試行してください。"
   },
   "status": {
     "new": "新規",

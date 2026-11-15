@@ -1,0 +1,28 @@
+{
+  "snapshotId": "d1933f39-d93d-4b9a-a603-ed9009adc4fc",
+  "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "snapshotVersion": 1,
+  "createdBy": "11111111-1111-4111-8111-111111111111",
+  "createdAt": "2026-11-07T14:18:56.482Z",
+  "storyRevisionIds": [],
+  "chapters": [
+    {
+      "chapterNumber": 1,
+      "title": "Chapter 1: Family Memories & Oral History",
+      "storyIds": [
+        "dc5a0baa-dfa0-4977-b67a-59a483884ea4"
+      ],
+      "summary": "Synthetic recording"
+    }
+  ],
+  "pdfSha256": "2bd584714dfca6ed12bf7252a3b158cc0a37f99db7413fe86afbe6d94a1ef9cb",
+  "archiveManifestSha256": "328fbd5d5311f31d5a92c8e23d04597846a67c6bc40083574cdf0588b8dc147f",
+  "hostingRetention": {
+    "hostingMonths": 12,
+    "exportedAt": "2026-11-07T14:18:56.482Z",
+    "retentionExpiresAt": "2027-11-07T14:18:56.482Z",
+    "reminder90dAt": "2027-08-09T14:18:56.482Z",
+    "reminder30dAt": "2027-10-08T14:18:56.482Z",
+    "offlineIndependentCopyIncluded": true
+  }
+}

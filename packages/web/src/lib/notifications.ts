@@ -286,7 +286,9 @@ export class NotificationService {
             filter: `recipient_id=eq.${userId}`
           },
           (payload: any) => {
-            onNotification(payload.new as SagaNotification)
+            const row = payload.new
+            onNotification({ ...row, notification_type: row.type, project_id: row.data?.project_id || row.data?.hosting_project_id || null,
+              story_id: row.data?.story_id, preview_text: row.data?.preview_text } as SagaNotification)
           }
         )
 

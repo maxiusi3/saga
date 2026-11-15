@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import { SemanticSearchClientError } from '@/lib/project-hub-client'
+import { SemanticSearchControl } from './SemanticSearchControl'
 import type { ProvenanceSearchCitation } from '@/lib/server/provenance-search'
 
 export interface TwoEntryProjectHubProps {
@@ -10,13 +12,17 @@ export interface TwoEntryProjectHubProps {
   onSelectUploadExisting?: () => void
   onSelectRecordOrInvite?: () => void
   onTriggerExport?: () => Promise<void> | void
+  showArchiveExport?: boolean
   onSearch?: (params: {
     query: string
+    mode?: 'literal' | 'semantic'
+    consent?: boolean
+    policyVersion?: string
     person?: string
     date?: string
     place?: string
   }) => Promise<{
-    status: 'grounded_answer' | 'no_matching_sources'
+    status: 'source_matches' | 'no_matching_sources'
     answerText: string
     citations: ProvenanceSearchCitation[]
   }>
@@ -30,6 +36,7 @@ export function TwoEntryProjectHub({
   onSelectUploadExisting,
   onSelectRecordOrInvite,
   onTriggerExport,
+  showArchiveExport = true,
   onSearch,
   onSeekAudioCitation,
 }: TwoEntryProjectHubProps) {
@@ -39,7 +46,7 @@ export function TwoEntryProjectHub({
   const [placeFilter, setPlaceFilter] = useState('')
   const [searching, setSearching] = useState(false)
   const [searchResult, setSearchResult] = useState<{
-    status: 'grounded_answer' | 'no_matching_sources'
+    status: 'source_matches' | 'no_matching_sources'
     answerText: string
     citations: ProvenanceSearchCitation[]
   } | null>(null)
@@ -51,6 +58,9 @@ export function TwoEntryProjectHub({
 
   async function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault()
+    await runSearch()
+  }
+  async function runSearch(policyVersion?: string) {
     if (!onSearch) return
     const version = ++requestVersion.current
     setSearchError(null)
@@ -59,13 +69,14 @@ export function TwoEntryProjectHub({
     try {
       const res = await onSearch({
         query,
+        ...(policyVersion ? { mode: 'semantic' as const, consent: true, policyVersion } : {}),
         person: personFilter || undefined,
         date: dateFilter || undefined,
         place: placeFilter || undefined,
       })
       if (requestVersion.current === version) setSearchResult(res)
-    } catch {
-      if (requestVersion.current === version) setSearchError('Search is unavailable. Please try again.')
+    } catch (cause) {
+      if (requestVersion.current === version) setSearchError(cause instanceof SemanticSearchClientError ? cause.message : 'Search is unavailable. Please try again.')
     } finally {
       if (requestVersion.current === version) setSearching(false)
     }
@@ -149,15 +160,17 @@ export function TwoEntryProjectHub({
       {/* Permission-Filtered Provenance Search (T10) */}
       <section aria-label="Search family archive with provenance" className="rounded-lg border border-stone-200 p-5">
         <h3 className="text-lg font-semibold text-stone-900">
-          Search Verified Memories (People, Years, Places)
+          Search Family Sources (People, Years, Places)
         </h3>
+        <p className="mt-1 text-sm text-stone-600">Matches words in current sources. Family edits and disputes are labelled; these matches do not establish historical facts.</p>
         <form onSubmit={handleSearchSubmit} className="mt-3 space-y-3">
           <div className="grid gap-3 sm:grid-cols-4">
             <input
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search keywords or questions..."
+              placeholder="Search literal keywords..."
+              maxLength={240}
               aria-label="Search query"
               data-testid="provenance-search-query-input"
               className="min-h-[44px] rounded-md border border-stone-300 px-3 py-2 text-sm sm:col-span-2"
@@ -167,6 +180,7 @@ export function TwoEntryProjectHub({
               value={personFilter}
               onChange={e => setPersonFilter(e.target.value)}
               placeholder="Person (e.g. Grandma Eleanor)"
+              maxLength={80}
               aria-label="Filter by person"
               data-testid="provenance-search-person-input"
               className="min-h-[44px] rounded-md border border-stone-300 px-3 py-2 text-sm"
@@ -176,6 +190,8 @@ export function TwoEntryProjectHub({
               value={dateFilter}
               onChange={e => setDateFilter(e.target.value)}
               placeholder="Year (e.g. 1968)"
+              maxLength={4}
+              inputMode="numeric"
               aria-label="Filter by year"
               data-testid="provenance-search-year-input"
               className="min-h-[44px] rounded-md border border-stone-300 px-3 py-2 text-sm"
@@ -187,6 +203,7 @@ export function TwoEntryProjectHub({
               value={placeFilter}
               onChange={e => setPlaceFilter(e.target.value)}
               placeholder="Place (e.g. Chicago)"
+              maxLength={80}
               aria-label="Filter by place"
               data-testid="provenance-search-place-input"
               className="min-h-[44px] min-w-0 flex-1 rounded-md border border-stone-300 px-3 py-2 text-sm"
@@ -201,6 +218,7 @@ export function TwoEntryProjectHub({
             </button>
           </div>
         </form>
+        {onSearch && <SemanticSearchControl projectId={projectId} busy={searching} hasQuery={!!query.trim()} onSearch={policy => { void runSearch(policy) }} />}
         {searchError && <p role="alert" className="mt-3 text-sm text-red-700">{searchError}</p>}
 
         {searchResult && (
@@ -217,9 +235,10 @@ export function TwoEntryProjectHub({
                   >
                     <div>
                       <span className="font-semibold text-stone-900">{citation.storyTitle}</span>
+                      <p className="text-xs text-stone-600">{citation.sourceKind === 'family_supplement' ? 'Family supplement' : citation.sourceKind === 'disputed_memory' ? 'Disputed memory' : citation.sourceKind === 'dispute_alternative' ? 'Family dispute alternative' : 'Original transcript'} · {citation.reviewStatus === 'approved' ? 'Approved revision' : 'Source only; not an approved revision'}</p>
                       <p className="text-stone-700">&ldquo;{citation.quotedText}&rdquo;</p>
                     </div>
-                    <button
+                    {citation.sourceKind === 'original_transcript' && citation.startMs !== null && citation.endMs !== null && citation.mediaAssetId ? <button
                       type="button"
                       onClick={() => onSeekAudioCitation?.(citation)}
                       disabled={!onSeekAudioCitation || !citation.mediaAssetId}
@@ -227,7 +246,7 @@ export function TwoEntryProjectHub({
                       className="min-h-[40px] rounded bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-900 hover:bg-amber-200"
                     >
                       Play Audio ({(citation.startMs / 1000).toFixed(1)}s–{(citation.endMs / 1000).toFixed(1)}s)
-                    </button>
+                    </button> : <span className="text-xs text-stone-600">No aligned audio for this excerpt</span>}
                   </li>
                 ))}
               </ul>
@@ -237,7 +256,7 @@ export function TwoEntryProjectHub({
       </section>
 
       {/* Complete Self-Contained Archive & Reading Booklet PDF Export (T09 / D11 / D12) */}
-      <section
+      {showArchiveExport && <section
         aria-label="Offline archive and PDF booklet export"
         className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-stone-200 bg-stone-50 p-5"
       >
@@ -260,7 +279,7 @@ export function TwoEntryProjectHub({
           {exporting ? 'Preparing Archive...' : 'Download Verified Archive (.zip with .pdf)'}
         </button>
         {exportError && <p role="alert" className="w-full text-sm text-red-700">{exportError}</p>}
-      </section>
+      </section>}
     </div>
   )
 }

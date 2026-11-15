@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "jobId": "e3b04293-6c18-446a-84d2-4fea1cdf5586",
+      "projectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "relativePath": "e3b04293-6c18-446a-84d2-4fea1cdf5586/89b7cf0d-111d-4b20-b9fc-d56af78b63c3/archive.zip",
+      "sha256": "39b3e7f0ba0296f8fc858cc6c5e75e90b5ae360a3723199aae67737cc2b6c5f3",
+      "bytes": 3698249,
+      "saved": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-11-g4-pilot/migrations-1794393274088-3eb651e5-2190-4e9a-907f-9aeef13b1a4e/backup-publications/e3b04293-6c18-446a-84d2-4fea1cdf5586/89b7cf0d-111d-4b20-b9fc-d56af78b63c3/archive.zip"
+    },
+    {
+      "jobId": "05a566f8-4d49-4777-9d28-ac4c3b141092",
+      "projectId": "a69e5a6c-6ab5-40ab-a2d2-988a3a96c2f3",
+      "relativePath": "05a566f8-4d49-4777-9d28-ac4c3b141092/64016320-9ab9-4664-a8dd-db29bd69f5b9/archive.zip",
+      "sha256": "7a04f6973f13241903ea64c7b7b6ff8dc2e2cb79eabec8b595be3a358114f200",
+      "bytes": 60895,
+      "saved": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-11-g4-pilot/migrations-1794393274088-3eb651e5-2190-4e9a-907f-9aeef13b1a4e/backup-publications/05a566f8-4d49-4777-9d28-ac4c3b141092/64016320-9ab9-4664-a8dd-db29bd69f5b9/archive.zip"
+    }
+  ],
+  "tables": [
+    "invitation_candidate.trusted_seat_sources",
+    "invitation_candidate.bindings",
+    "invitation_candidate.requests",
+    "entitlement_candidate.sources",
+    "entitlement_candidate.events",
+    "public.payment_orders",
+    "public.payment_order_requests",
+    "public.payment_order_events",
+    "public.payment_project_rights",
+    "public.publication_snapshots",
+    "public.publication_delivery_jobs",
+    "public.publication_artifact_cleanup"
+  ]
+}

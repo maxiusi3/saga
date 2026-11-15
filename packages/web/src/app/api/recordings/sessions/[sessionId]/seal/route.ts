@@ -92,7 +92,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       const status = error instanceof Error && error.message.startsWith('recording_quota_exceeded') ? 413 : 400
       return reply({ error: 'Invalid recording manifest or recording quota exceeded' }, status, auth.headers)
     }
-    await persistRecordingManifest(admin, sealed, request.signal)
+    const manifestSha256 = await persistRecordingManifest(admin, sealed, request.signal)
     // The RPC may outlive a permission change; do not publish jobs on its receipt alone.
     await checkScope(sealed.assetRecord.id)
     const revalidate = async (asset: Record<string, unknown>) => {
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
     const registered = await registerRecordingSeal(admin, sealed, revalidate)
     await revalidate(registered.asset)
-    return reply(registered, registered.asset.state === 'ready' ? 200 : 202, auth.headers)
+    return reply({ ...registered, manifestSha256 }, registered.asset.state === 'ready' ? 200 : 202, auth.headers)
   } catch (error) {
     if (error instanceof RecordingSealRegistrationError) return reply({ error: error.message }, error.status, auth.headers)
     return reply({ error: 'Recording registration is unavailable' }, 500, auth.headers)

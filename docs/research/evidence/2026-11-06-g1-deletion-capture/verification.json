@@ -1,0 +1,98 @@
+{
+  "status": "passed",
+  "scope": "Local G1 durable deletion capture and recording-candidate manifest compatibility, including final seal/capture I1 correction",
+  "completedAt": "2026-11-06T23:16:12.795188+08:00",
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "workingTreeContainsUncommittedChanges": true,
+  "review": {
+    "wholeChangeReview": "reviews/whole-change-review.md",
+    "finalFixReview": "reviews/final-fix-review.md",
+    "finding": "I1",
+    "findingStatus": "addressed",
+    "spec": "approved",
+    "quality": "approved",
+    "remainingFindings": []
+  },
+  "gate": {
+    "record": "final-gate-02.json",
+    "exitCode": 0,
+    "web": {
+      "suites": 160,
+      "tests": 3259
+    },
+    "shared": {
+      "suites": 4,
+      "tests": 16
+    },
+    "infraTests": 23,
+    "productionPages": 184,
+    "sourceCount": 906,
+    "sourceDrift": []
+  },
+  "native": {
+    "sealFence": {
+      "groups": 5,
+      "assertions": 87,
+      "actualLockWaits": 4
+    },
+    "defaultCapture": {
+      "groups": 21,
+      "assertions": 759,
+      "actualLockWaits": 12
+    },
+    "backupCompatibility": {
+      "groups": 3,
+      "assertions": 82
+    },
+    "resultsIndex": "final-gate-02-native.json",
+    "allTemporaryResourcesCleaned": true,
+    "syntheticPrerequisites": true
+  },
+  "targeted": {
+    "jestSuites": 4,
+    "jestTests": 125,
+    "deploymentInventoryTests": 7,
+    "rootEslint": "passed",
+    "syntax": "passed"
+  },
+  "integrity": {
+    "frozenInputs": 923,
+    "finalBatchFiles": 30,
+    "historicalEvidenceFilesUnchanged": 4680,
+    "preBatchFilesChecked": 1344,
+    "resumeFilesChecked": 6206,
+    "headUnchanged": true,
+    "stagedEmpty": true,
+    "diffCheckPassed": true,
+    "historicalSealMigrationUnchanged": true
+  },
+  "artifacts": {
+    "final-gate-02.json": "16bc5c4493c6b6f49f1a5a29d89990f64c8719619b6964cec3dc1982f3b1d6c5",
+    "final-gate-02-source-lock.json": "772c85c61d3c6e2b7e4b202e0c413f9baf87ee65cfdc4e4ba9ccaf7e715309a2",
+    "final-gate-02-integrity.json": "b3c2637546403836d0fb51559baba1f189f6e09d6097b34ffb68163625f7cfcd",
+    "final-gate-02-native.json": "ac2f8afbbaf8034503a0552cf535559a838492808580ff27a560d6187c279663",
+    "resume-integrity-01.json": "34d6cb9d80efd4196d15c7db77b379510115762f66eed2a6d8e83bf48260273c",
+    "next-env-restore-02.json": "a287b8fc390baf599cabdac23d1a22b1c8d856413bfd46574fd90b2f4493c319",
+    "reviews/final-fix-review.md": "5e63b905d424d48679c961d3a23e05570646dc8854a18881b1954f4401b38af2",
+    "reviews/final-fix-report.md": "734843a41bbda85896943bec14afe8bc4e6708137cc1a37755d67bb28bd31ae7",
+    "reviews/final-change.patch": "696f704e949ae036ba67555f0c31ec770f90bb3e9f02da5c503af0bf56124bfe",
+    "reviews/final-source-hashes.json": "51ad789b45544cdae48ee02c8d6a23cdb531bcb54266c8481010e7e1be9800c1"
+  },
+  "g1MilestoneSatisfied": false,
+  "g1AcceptanceItemsClosed": 0,
+  "g1AcceptanceItemsTotal": 9,
+  "pushConditionSatisfied": false,
+  "physicalDeletionComplete": false,
+  "qualifiedBackupRestore": false,
+  "qualifiedFullMigrationChain": false,
+  "qualifiedCloudDevices": false,
+  "remaining": [
+    "durable physical deletion executor",
+    "reference-safe garbage collection and late Storage-write reconciliation",
+    "actual object backup and pg_restore rehearsal",
+    "full migration-chain qualification",
+    "authorized cloud and actual device recording qualification"
+  ],
+  "nextEngineeringDependency": "durable deletion executor with reference safety and late-write reconciliation",
+  "externalActionsPerformed": []
+}

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "test:infra"
+  ],
+  "startedAt": "2026-11-11T10:41:33.743428+08:00",
+  "completedAt": "2026-11-11T10:41:47.500726+08:00",
+  "exitCode": 0
+}

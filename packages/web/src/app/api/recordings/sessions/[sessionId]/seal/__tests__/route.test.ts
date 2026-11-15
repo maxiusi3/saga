@@ -97,6 +97,7 @@ it('registers once and replays the actual filtered asset/job without duplicate r
   const first = await seal()
   expect(first.status).toBe(202)
   const created = await first.json()
+  expect(created.manifestSha256).toBe('b'.repeat(64))
   const second = await seal()
   expect(second.status).toBe(202)
   expect(await second.json()).toMatchObject({ idempotentReplay: true, canClearLocalDrafts: false,

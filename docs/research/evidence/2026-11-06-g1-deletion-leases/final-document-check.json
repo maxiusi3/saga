@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-11-06T17:30:57.711231+00:00",
+  "localLinksChecked": 147,
+  "linkScope": "full batch report/evidence/plan/gap and current sections of handoff/docs index",
+  "brokenLinks": [],
+  "frozenSourcesRechecked": 922,
+  "sourceDrift": [],
+  "priorEvidenceRechecked": 4866,
+  "priorEvidenceDrift": [],
+  "headUnchanged": true,
+  "stagedDiffEmpty": true,
+  "diffCheckPassed": true,
+  "files": {
+    "docs/research/2026-11-06-g1-deletion-leases.md": "b677ac53247a29997578e8b1b5391d3e2fbdd0e019c13f2c6ebb1a7a66b56705",
+    "docs/research/evidence/2026-11-06-g1-deletion-leases/README.md": "f905483a8bb4a7740bf8b7022a062580c85eea5e55ed862217e9c15aa49d004a",
+    "docs/research/2026-11-02-g1-gap-register.md": "64e8ebf34746fd1afaacd6335e2551527f11af76bb97eb3623d270635f36d7d4",
+    "docs/superpowers/plans/2026-11-06-upgrade-g1-deletion-leases.md": "7d6b916377bfe542a50a62331ac04f161975b49e6e4aea91ed71a1d50942c9d0",
+    "docs/README.md": "c8ff829e118cd1eb67c97270f830e3f5b97400a021c1f647d183ed7322225312",
+    "docs/HANDOFF-2026-10-13-upgrade.md": "7d4866625b14d8f4275b4ea514a93ff7f5f8b6c0f52c3acdd2ed3b9172ae9675",
+    "docs/research/evidence/2026-11-06-g1-deletion-leases/verification.json": "f848c1d6c1be57371bdff6f9a454e9e591e85133ca9e542af89925c36db45ca2",
+    "docs/research/evidence/2026-11-06-g1-deletion-leases/reviews/whole-review.md": "060fdc8da81a4dd4228e5410123f9bc59201fd7a5cf94da721d0f6803544ebd7",
+    "docs/research/evidence/2026-11-06-g1-deletion-leases/reviews/final-fix-review.md": "4673349a9bf0f430648d1e54a219e18b5087382f9921bfef50ec0451cbfa625d",
+    "docs/research/evidence/2026-11-06-g1-deletion-leases/reviews/final-batch.patch": "635e5defb917d8ac52a4ad9b3979b01d09714fd92e601b38d22bab7fc9a0c5c3",
+    "docs/research/evidence/2026-11-06-g1-deletion-leases/final-gate-02-source-lock.json": "6d6cfe52767d5db77225e85efad2d5a21f269b7bf25669fd87ac8bb95b9cb18b",
+    "docs/research/evidence/2026-11-06-g1-deletion-leases/final-gate-02-integrity.json": "b38ce228e839e9dafa4fc978c30228993af9d0dd5635be33312f5a2685fb7ad9"
+  }
+}

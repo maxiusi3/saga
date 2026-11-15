@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "project": "90fedef4-9992-46ba-a908-fe8c7904e164",
+  "story": "eebbebce-79d5-4e84-a51c-61ec197d1f3f",
+  "asset": "98fc171a-506c-449f-85fa-c7797d22c671",
+  "providerCalls": [
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "document",
+      "count": 2
+    },
+    {
+      "path": "/v1/rerank",
+      "inputType": null,
+      "count": 2
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "document",
+      "count": 2
+    },
+    {
+      "path": "/v1/rerank",
+      "inputType": null,
+      "count": 2
+    },
+    {
+      "path": "/v1/embeddings",
+      "inputType": "query",
+      "count": 1
+    }
+  ],
+  "sdkRequests": 50,
+  "boundary": "Actual routes and Supabase SDK over controlled PostgREST/Storage and provider HTTP, native PG17. Synthetic vectors establish computation/wiring, not live Voyage retrieval quality."
+}

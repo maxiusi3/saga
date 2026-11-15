@@ -1,6 +1,14 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { InterventionLevel } from '@saga/shared/types/agents'
 
+jest.mock('next-intl', () => ({
+  useLocale: () => 'en',
+  useTranslations: (namespace: string) => (key: string) => {
+    const messages = require('../../../../public/locales/en/recording.json')
+    const path = namespace.replace(/^recording\.?/, '')
+    return [...(path ? path.split('.') : []),...key.split('.')].reduce((value, part) => value?.[part], messages) ?? key
+  },
+}))
 const mockCreateInterviewSession = jest.fn()
 const mockSmartRecorder = jest.fn(() => <div data-testid="smart-recorder" />)
 const mockRecoveryPanel = jest.fn(() => <div data-testid="recording-recovery" />)
@@ -9,6 +17,9 @@ const mockUpdateStory = jest.fn()
 const mockProcessStoryWithEditorAgent = jest.fn()
 const mockGenerateContent = jest.fn()
 const mockUploadStoryAudio = jest.fn()
+const mockSaveLocalRecording = jest.fn()
+const mockClearSavedLocalRecording = jest.fn()
+jest.mock('@/lib/recording-save-flow', () => ({ saveLocalRecording: (...args: unknown[]) => mockSaveLocalRecording(...args), clearSavedLocalRecording: (...args: unknown[]) => mockClearSavedLocalRecording(...args) }))
 
 jest.setTimeout(30000)
 
@@ -240,12 +251,14 @@ describe('recording review truthfulness', () => {
   const originalCreateObjectURL = URL.createObjectURL
   const originalRevokeObjectURL = URL.revokeObjectURL
   const originalResizeObserver = global.ResizeObserver
-  type Completion = (result: { audioBlob: Blob; transcript?: string; duration: number }) => Promise<void>
+  type Completion = (result: { sessionId: string; audioBlob: Blob; transcript?: string; duration: number }) => Promise<void>
 
   beforeEach(() => {
     mockCreateInterviewSession.mockResolvedValue({ id: 'interview-1' })
     mockSmartRecorder.mockClear()
     mockGenerateContent.mockReset()
+    mockSaveLocalRecording.mockReset().mockResolvedValue({state:'pending'})
+    mockClearSavedLocalRecording.mockReset()
     mockUploadStoryAudio.mockReset().mockResolvedValue({ success: true, url: 'user-1/projects/test-project-id/stories/temp/audio.webm' })
     mockCreateStory.mockReset().mockResolvedValue({ id: 'saved-story' })
     mockProcessStoryWithEditorAgent.mockResolvedValue({})
@@ -277,21 +290,21 @@ describe('recording review truthfulness', () => {
     render(<Page />)
     const finish = await startRecording()
     const audio = new Blob(['first recording'])
-    await act(async () => { await finish({ audioBlob: audio, transcript: 'The actual words.', duration: 12 }) })
+    await act(async () => { await finish({ sessionId: 'local-session', audioBlob: audio, transcript: 'The actual words.', duration: 12 }) })
 
     expect(screen.getByRole('alert')).toHaveTextContent(/draft could not be prepared/i)
     expect(screen.getByText(/original recording/i)).toBeInTheDocument()
     expect(screen.queryByText(/auto-leveling applied/i)).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /save to timeline/i }))
 
-    await waitFor(() => expect(mockCreateStory).toHaveBeenCalledWith(expect.objectContaining({
-      transcript: 'The actual words.',
-      content: '',
-      audio_url: 'user-1/projects/test-project-id/stories/temp/audio.webm',
-      ai_summary: undefined,
-      ai_confidence_score: undefined,
+    await waitFor(() => expect(mockSaveLocalRecording).toHaveBeenCalledWith(expect.objectContaining({
+      identity: { actorId:'user-1', projectId:'test-project-id', sessionId:'local-session' },
+      metadata: expect.objectContaining({transcript:'The actual words.',content:''}),
     })))
-    expect(mockUploadStoryAudio).toHaveBeenCalledWith(audio, 'test-project-id')
+    expect(mockUploadStoryAudio).not.toHaveBeenCalled()
+    expect(mockCreateStory).not.toHaveBeenCalled()
+    expect(await screen.findByRole('button',{name:/continue saving/i})).toBeInTheDocument()
+
   })
 
   it('does not save old transcript or late AI content into the next recording', async () => {
@@ -301,11 +314,11 @@ describe('recording review truthfulness', () => {
     render(<Page />)
     const finishOld = await startRecording()
     let oldProcessing!: Promise<void>
-    act(() => { oldProcessing = finishOld({ audioBlob: new Blob(['old audio']), transcript: 'Old transcript', duration: 10 }) })
+    act(() => { oldProcessing = finishOld({ sessionId: 'old-session', audioBlob: new Blob(['old audio']), transcript: 'Old transcript', duration: 10 }) })
     fireEvent.click(screen.getByRole('button', { name: /discard/i }))
     const finishNew = await startRecording()
     const newAudio = new Blob(['new audio'])
-    await act(async () => { await finishNew({ audioBlob: newAudio, duration: 15 }) })
+    await act(async () => { await finishNew({ sessionId: 'new-session', audioBlob: newAudio, duration: 15 }) })
     expect(screen.getByRole('status')).toHaveTextContent(/no transcript is available/i)
     expect(mockGenerateContent).toHaveBeenCalledTimes(1)
     await act(async () => {
@@ -314,10 +327,11 @@ describe('recording review truthfulness', () => {
     })
     fireEvent.click(screen.getByRole('button', { name: /save to timeline/i }))
 
-    await waitFor(() => expect(mockCreateStory).toHaveBeenCalledWith(expect.objectContaining({
-      transcript: '', content: '', ai_summary: undefined, ai_generated_title: undefined,
+    await waitFor(() => expect(mockSaveLocalRecording).toHaveBeenCalledWith(expect.objectContaining({
+      identity: expect.objectContaining({sessionId:'new-session'}), metadata: expect.objectContaining({transcript:'',content:''}),
     })))
-    expect(mockUploadStoryAudio).toHaveBeenCalledWith(newAudio, 'test-project-id')
+    expect(mockUploadStoryAudio).not.toHaveBeenCalled()
+
   })
 
   it('ignores an old failed request while the current draft is still processing', async () => {
@@ -330,11 +344,11 @@ describe('recording review truthfulness', () => {
     render(<Page />)
     const finishOld = await startRecording()
     let oldProcessing!: Promise<void>
-    act(() => { oldProcessing = finishOld({ audioBlob: new Blob(['old']), transcript: 'Old words', duration: 10 }) })
+    act(() => { oldProcessing = finishOld({ sessionId: 'old-session', audioBlob: new Blob(['old']), transcript: 'Old words', duration: 10 }) })
     fireEvent.click(screen.getByRole('button', { name: /discard/i }))
     const finishNew = await startRecording()
     let newProcessing!: Promise<void>
-    act(() => { newProcessing = finishNew({ audioBlob: new Blob(['new']), transcript: 'New words', duration: 12 }) })
+    act(() => { newProcessing = finishNew({ sessionId: 'new-session', audioBlob: new Blob(['new']), transcript: 'New words', duration: 12 }) })
     await act(async () => { rejectOld(new Error('old failure')); await oldProcessing })
 
     expect(screen.getByRole('status')).toHaveTextContent(/preparing a draft/i)
@@ -345,6 +359,35 @@ describe('recording review truthfulness', () => {
       await newProcessing
     })
     fireEvent.click(screen.getByRole('button', { name: /save to timeline/i }))
-    await waitFor(() => expect(mockCreateStory).toHaveBeenCalledWith(expect.objectContaining({ transcript: 'New words', ai_summary: 'New account' })))
+    await waitFor(() => expect(mockSaveLocalRecording).toHaveBeenCalledWith(expect.objectContaining({metadata:expect.objectContaining({transcript:'New words',content:'New account'})})))
   })
+  it('continues a recovered draft with its pinned metadata and unknown duration', async () => {
+    const Page = (await import('@/app/[locale]/dashboard/projects/[id]/record/page')).default
+    render(<Page />)
+    await screen.findByTestId('recording-recovery')
+    const recovered={session:{id:'recovered',saveIntent:{metadata:{title:'Pinned title',content:'Pinned draft',transcript:'Pinned words',happenedAt:'2026-11-06T00:00:00.000Z',recordingMode:'chat',isPublic:false}}},blob:new Blob(['tone']),chunkCount:1}
+    act(() => (mockRecoveryPanel.mock.lastCall?.[0] as {onContinue:(r:unknown)=>void}).onContinue(recovered))
+    expect(screen.getByDisplayValue('Pinned title')).toBeDisabled()
+    expect(screen.queryByText(/duration invalid/i)).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button',{name:/continue saving/i}))
+    await waitFor(() => expect(mockSaveLocalRecording).toHaveBeenCalledWith(expect.objectContaining({identity:expect.objectContaining({sessionId:'recovered'}),metadata:recovered.session.saveIntent.metadata})))
+  })
+  it('shows a confirmed story and guarded playback with explicit cleanup only', async () => {
+    mockSaveLocalRecording.mockResolvedValue({state:'saved',receipt:{storyId:'saved-story',playbackUrl:'/api/media/assets/asset/play'}})
+    const Page = (await import('@/app/[locale]/dashboard/projects/[id]/record/page')).default
+    render(<Page />)
+    const finish=await startRecording()
+    await act(async()=>{await finish({sessionId:'local-session',audioBlob:new Blob(['tone']),duration:1})})
+    fireEvent.click(screen.getByRole('button',{name:/save to timeline/i}))
+    expect(await screen.findByRole('link',{name:/open saved story/i})).toHaveAttribute('href','/en/dashboard/projects/test-project-id/stories/saved-story')
+    expect(screen.getByLabelText(/saved recording/i)).toHaveAttribute('src','/api/media/assets/asset/play')
+    expect(mockClearSavedLocalRecording).not.toHaveBeenCalled()
+    expect(screen.getByRole('button',{name:'Saved',exact:true})).toBeDisabled()
+    fireEvent.click(screen.getByRole('button',{name:/clear local copy/i}))
+    await waitFor(()=>expect(mockClearSavedLocalRecording).toHaveBeenCalledTimes(1))
+    expect(await screen.findByText('Local copy cleared. Your saved story is available.')).toBeInTheDocument()
+    expect(screen.queryByText(/your local copy is still available/i)).not.toBeInTheDocument()
+    expect(screen.getByRole('button',{name:'Saved',exact:true})).toBeDisabled()
+  })
+
 })

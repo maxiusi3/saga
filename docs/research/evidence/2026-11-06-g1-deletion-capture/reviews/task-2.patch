@@ -1,0 +1,549 @@
+--- before/packages/web/src/lib/server/scheme-b-backup.ts
++++ after/packages/web/src/lib/server/scheme-b-backup.ts
+@@ -1,13 +1,13 @@
+ import { createHash } from 'node:crypto'
+ 
+ export interface StorageObjectEntry {
+   id: string
+-  bucket: 'saga' | 'audio-recordings'
++  bucket: 'saga' | 'audio-recordings' | 'recording-candidates'
+   key: string
+   byteSize: number
+   sha256: string
+ }
+ 
+ export interface SchemeBStorageManifest {
+   freezeTimestamp: string
+   dumpSha256: string
+@@ -48,17 +48,17 @@
+       reason:
+         | 'scheme_b_backup_not_rehearsed_or_verified'
+         | 'invalid_backup_ledger'
+         | 'storage_or_database_drift_detected'
+     }
+ 
+ const ISO_UTC_REGEX = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d:[0-5]\d(\.\d{3})?Z$/
+ const HEX_SHA256_REGEX = /^[a-f0-9]{64}$/
+-const ALLOWED_BUCKETS = new Set(['saga', 'audio-recordings'])
++const ALLOWED_BUCKETS = new Set(['saga', 'audio-recordings', 'recording-candidates'])
+ const CONTROL_CHAR_REGEX = /[\x00-\x1F\x7F]/
+ const PG_DUMP_MAGIC = Buffer.from([0x50, 0x47, 0x44, 0x4d, 0x50]) // 'PGDMP'
+ const MIN_PG_DUMP_HEADER_BYTES = 12 // 5 bytes magic + 3 bytes version + int_size + off_t_size + format + flags
+ const MAX_OBJECT_ID_LENGTH = 128
+ const MAX_STORAGE_KEY_LENGTH = 512
+ const MAX_MANIFEST_OBJECTS = 100_000
+ const MAX_TOMBSTONES = 50_000
+ const MAX_CLOCK_SKEW_MS = 5 * 60 * 1000 // 5 minutes
+--- before/scripts/verify-scheme-b-backup.cjs
++++ after/scripts/verify-scheme-b-backup.cjs
+@@ -9,17 +9,17 @@
+ const fs = require('node:fs');
+ const path = require('node:path');
+ const { createHash } = require('node:crypto');
+ 
+ const PG_DUMP_MAGIC = Buffer.from([0x50, 0x47, 0x44, 0x4d, 0x50]); // 'PGDMP'
+ const MIN_PG_DUMP_HEADER_BYTES = 12;
+ const ISO_UTC_REGEX = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d:[0-5]\d(\.\d{3})?Z$/;
+ const HEX_SHA256_REGEX = /^[a-f0-9]{64}$/;
+-const ALLOWED_BUCKETS = new Set(['saga', 'audio-recordings']);
++const ALLOWED_BUCKETS = new Set(['saga', 'audio-recordings', 'recording-candidates']);
+ const CONTROL_CHAR_REGEX = /[\x00-\x1F\x7F]/;
+ const MAX_OBJECT_ID_LENGTH = 128;
+ const MAX_STORAGE_KEY_LENGTH = 512;
+ const MAX_MANIFEST_OBJECTS = 100_000;
+ const MAX_TOMBSTONES = 50_000;
+ 
+ function validateIsoUtcTimestamp(timestamp) {
+   if (typeof timestamp !== 'string' || !ISO_UTC_REGEX.test(timestamp)) {
+--- before/packages/web/src/lib/server/__tests__/scheme-b-backup.test.ts
++++ after/packages/web/src/lib/server/__tests__/scheme-b-backup.test.ts
+@@ -15,16 +15,82 @@
+     // 5 bytes magic + 7 bytes header info = 12 bytes minimum header
+     const versionHeader = Buffer.from([0x01, 0x0f, 0x00, 0x04, 0x08, 0x01, 0x00])
+     const payload = Buffer.from(content, 'utf8')
+     return Buffer.concat([PG_DUMP_MAGIC, versionHeader, payload])
+   }
+ 
+   const sha256Hex = (buf: Buffer | string) =>
+     createHash('sha256').update(buf).digest('hex')
++
++  describe('recording candidate manifest compatibility', () => {
++    // Synthetic unit coordinates. The native runner uses actual durable capture rows.
++    const dump = createMockDump('SYNTHETIC_HEADER_ONLY_NOT_A_RESTORABLE_DUMP')
++    const manifest: SchemeBStorageManifest = {
++      freezeTimestamp: '2026-11-06T00:00:00.000Z',
++      dumpSha256: sha256Hex(dump),
++      dumpSizeBytes: dump.length,
++      objects: [
++        { id: 'original-chunk', bucket: 'audio-recordings', key: 'user/sessions/keep/0', byteSize: 11, sha256: '1'.repeat(64) },
++        { id: 'published-candidate', bucket: 'recording-candidates', key: 'project/job/remove.webm', byteSize: 22, sha256: '2'.repeat(64) },
++        { id: 'retained-candidate', bucket: 'recording-candidates', key: 'project/job/keep.webm', byteSize: 33, sha256: '3'.repeat(64) },
++        { id: 'legacy-object', bucket: 'saga', key: 'project/photo.jpg', byteSize: 44, sha256: '4'.repeat(64) },
++      ],
++    }
++    const tombstones: SchemeBTombstoneRecord[] = [{
++      targetType: 'storage_object',
++      targetId: 'durable-target-id-different-from-manifest-id',
++      bucket: 'recording-candidates',
++      key: 'project/job/remove.webm',
++      tombstonedAt: '2026-11-06T00:00:01.000Z',
++      reason: 'synthetic_candidate_capture',
++    }]
++
++    it('accepts a mixed four-object manifest and removes only the candidate named by bucket/key', () => {
++      expect(verifyStorageManifest(manifest, manifest.dumpSha256)).toEqual({
++        valid: true, objectCount: 4, totalBytes: 110,
++      })
++      const before = JSON.stringify({ manifest, tombstones })
++      expect(replayTombstonesAndComputeSurvivingSet(manifest, tombstones)).toEqual({
++        purgedCount: 1,
++        survivingObjects: [manifest.objects[0], manifest.objects[2], manifest.objects[3]],
++        survivingTotalBytes: 88,
++      })
++      expect(JSON.stringify({ manifest, tombstones })).toBe(before)
++    })
++
++    it.each([
++      [{ bucket: 'unknown-candidates' }, 'DISALLOWED_BUCKET_NAME'],
++      [{ key: '../escape' }, 'INVALID_STORAGE_KEY'],
++      [{ key: '/absolute' }, 'INVALID_STORAGE_KEY'],
++      [{ key: 'bad\\key' }, 'INVALID_STORAGE_KEY'],
++      [{ key: 'bad\0key' }, 'INVALID_STORAGE_KEY'],
++      [{ id: '' }, 'INVALID_OBJECT_ID'],
++      [{ sha256: 'bad-hash' }, 'INVALID_SHA256_FORMAT'],
++      [{ byteSize: 0 }, 'INVALID_OBJECT_SIZE'],
++      [{ byteSize: 1.5 }, 'INVALID_OBJECT_SIZE'],
++      [{ byteSize: Number.MAX_SAFE_INTEGER + 1 }, 'INVALID_OBJECT_SIZE'],
++    ])('retains validation for candidate entry %j', (override, error) => {
++      expect(() => verifyStorageManifest({
++        ...manifest, objects: [{ ...manifest.objects[1], ...override }],
++      }, manifest.dumpSha256)).toThrow(error)
++    })
++
++    it('rejects a duplicate candidate physical address with a different logical id', () => {
++      expect(() => verifyStorageManifest({
++        ...manifest, objects: [...manifest.objects, { ...manifest.objects[1], id: 'alias' }],
++      }, manifest.dumpSha256)).toThrow('DUPLICATE_STORAGE_OBJECT_KEY')
++    })
++
++    it('retains the candidate when its tombstone precedes the freeze', () => {
++      expect(replayTombstonesAndComputeSurvivingSet(manifest, [{
++        ...tombstones[0], tombstonedAt: '2026-11-05T23:59:59.000Z',
++      }])).toEqual({ purgedCount: 0, survivingObjects: manifest.objects, survivingTotalBytes: 110 })
++    })
++  })
+ 
+   describe('verifyPgDumpCustomArchive', () => {
+     it('successfully verifies a valid pg_dump custom archive buffer', () => {
+       const dumpBuf = createMockDump()
+       const result = verifyPgDumpCustomArchive(dumpBuf)
+       expect(result.valid).toBe(true)
+       expect(result.dumpSizeBytes).toBe(dumpBuf.length)
+       expect(result.dumpSha256).toBe(sha256Hex(dumpBuf))
+--- before/scripts/__tests__/verify-scheme-b-backup.test.js
++++ after/scripts/__tests__/verify-scheme-b-backup.test.js
+@@ -1,11 +1,11 @@
+ const test = require('node:test')
+ const assert = require('node:assert/strict')
+-const { execFileSync } = require('node:child_process')
++const { execFileSync, spawnSync } = require('node:child_process')
+ const path = require('node:path')
+ const fs = require('node:fs')
+ const os = require('node:os')
+ const { createHash } = require('node:crypto')
+ const {
+   verifyPgDumpCustomArchiveBuffer,
+   verifyStorageManifestObject,
+   replayTombstones,
+@@ -18,16 +18,99 @@
+ 
+ function createMockDump(content = 'TEST_PG17_RESTORE_DATA') {
+   return Buffer.concat([
+     PG_DUMP_MAGIC,
+     Buffer.from([0x01, 0x0f, 0x00, 0x04, 0x08, 0x01, 0x00]),
+     Buffer.from(content, 'utf8'),
+   ])
+ }
++
++// Synthetic unit coordinates; durable SQL coordinates are covered by the native runner.
++function candidateFixture() {
++  const dump = createMockDump('SYNTHETIC_HEADER_ONLY_NOT_A_RESTORABLE_DUMP')
++  const manifest = {
++    freezeTimestamp: '2026-11-06T00:00:00.000Z',
++    dumpSha256: createHash('sha256').update(dump).digest('hex'),
++    dumpSizeBytes: dump.length,
++    objects: [
++      { id: 'original-chunk', bucket: 'audio-recordings', key: 'user/sessions/keep/0', byteSize: 11, sha256: '1'.repeat(64) },
++      { id: 'published-candidate', bucket: 'recording-candidates', key: 'project/job/remove.webm', byteSize: 22, sha256: '2'.repeat(64) },
++      { id: 'retained-candidate', bucket: 'recording-candidates', key: 'project/job/keep.webm', byteSize: 33, sha256: '3'.repeat(64) },
++      { id: 'legacy-object', bucket: 'saga', key: 'project/photo.jpg', byteSize: 44, sha256: '4'.repeat(64) },
++    ],
++  }
++  const tombstones = [{ targetType: 'storage_object', targetId: 'durable-target-id-different-from-manifest-id',
++    bucket: manifest.objects[1].bucket, key: manifest.objects[1].key,
++    tombstonedAt: '2026-11-06T00:00:01.000Z', reason: 'synthetic_candidate_capture' }]
++  return { dump, manifest, tombstones }
++}
++
++test('candidate-aware manifest preserves unrelated chunk, candidate and legacy entries', () => {
++  const { dump, manifest, tombstones } = candidateFixture()
++  const before = JSON.stringify({ manifest, tombstones })
++  const report = runSchemeBVerification({ dumpBuffer: dump, manifest, tombstones })
++  assert.deepEqual(report.manifest, { valid: true, objectCount: 4, totalBytes: 110 })
++  assert.deepEqual(report.tombstoneReplay, {
++    purgedCount: 1, survivingObjects: [manifest.objects[0], manifest.objects[2], manifest.objects[3]], survivingTotalBytes: 88,
++  })
++  assert.equal(JSON.stringify({ manifest, tombstones }), before)
++})
++
++test('candidate manifests retain malformed, duplicate, size, hash and unknown-bucket checks', () => {
++  const { manifest } = candidateFixture()
++  const cases = [
++    [{ bucket: 'unknown-candidates' }, 'DISALLOWED_BUCKET_NAME'],
++    [{ key: '../escape' }, 'INVALID_STORAGE_KEY'],
++    [{ key: '/absolute' }, 'INVALID_STORAGE_KEY'],
++    [{ key: 'bad\\key' }, 'INVALID_STORAGE_KEY'],
++    [{ key: 'bad\0key' }, 'INVALID_STORAGE_KEY'],
++    [{ id: '' }, 'INVALID_OBJECT_ID'],
++    [{ sha256: 'bad-hash' }, 'INVALID_SHA256_FORMAT'],
++    [{ byteSize: 0 }, 'INVALID_OBJECT_SIZE'],
++    [{ byteSize: 1.5 }, 'INVALID_OBJECT_SIZE'],
++    [{ byteSize: Number.MAX_SAFE_INTEGER + 1 }, 'INVALID_OBJECT_SIZE'],
++  ]
++  for (const [override, error] of cases) {
++    assert.throws(() => verifyStorageManifestObject({
++      ...manifest, objects: [{ ...manifest.objects[1], ...override }],
++    }, manifest.dumpSha256), { message: error })
++  }
++  assert.throws(() => verifyStorageManifestObject({
++    ...manifest, objects: [...manifest.objects, { ...manifest.objects[1], id: 'alias' }],
++  }, manifest.dumpSha256), { message: 'DUPLICATE_STORAGE_OBJECT_KEY' })
++})
++
++test('CLI file mode accepts candidate replay and rejects an unsafe candidate key', () => {
++  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'scheme-b-candidates-'))
++  try {
++    const { dump, manifest, tombstones } = candidateFixture()
++    const dumpPath = path.join(temporary, 'synthetic-header.dump')
++    const manifestPath = path.join(temporary, 'manifest.json')
++    const tombstonesPath = path.join(temporary, 'tombstones.json')
++    fs.writeFileSync(dumpPath, dump)
++    fs.writeFileSync(manifestPath, JSON.stringify(manifest))
++    fs.writeFileSync(tombstonesPath, JSON.stringify(tombstones))
++    const args = [SCRIPT_PATH, '--dump', dumpPath, '--manifest', manifestPath, '--tombstones', tombstonesPath]
++    const valid = spawnSync(process.execPath, args, { encoding: 'utf8' })
++    assert.equal(valid.status, 0, valid.stderr)
++    const output = JSON.parse(valid.stdout)
++    assert.equal(output.mode, 'file_verification')
++    assert.equal(output.status, 'pass')
++    assert.deepEqual(output.report, runSchemeBVerification({ dumpBuffer: dump, manifest, tombstones }))
++    fs.writeFileSync(manifestPath, JSON.stringify({ ...manifest,
++      objects: manifest.objects.map(object => object.id === 'published-candidate' ? { ...object, key: '../escape' } : object),
++    }))
++    const invalid = spawnSync(process.execPath, args, { encoding: 'utf8' })
++    assert.equal(invalid.status, 1)
++    assert.deepEqual(JSON.parse(invalid.stderr), { mode: 'verification_failed', error: 'INVALID_STORAGE_KEY' })
++  } finally {
++    fs.rmSync(temporary, { recursive: true, force: true })
++  }
++})
+ 
+ test('Scheme B CLI & verification engine', async (t) => {
+   await t.test('verifies custom pg_dump archive magic and hash', () => {
+     const dump = createMockDump()
+     const info = verifyPgDumpCustomArchiveBuffer(dump)
+     assert.equal(info.valid, true)
+     assert.equal(info.magic, 'PGDMP')
+     assert.equal(info.dumpSizeBytes, dump.length)
+--- before/scripts/__tests__/deployment-config.test.js
++++ after/scripts/__tests__/deployment-config.test.js
+@@ -131,16 +131,17 @@
+     '20261030000001_upload_observations.sql',
+     '20261030000002_deployment_collection_coverage.sql',
+     '20261102000001_recording_seal_manifest.sql',
+     '20261103000001_recording_worker_leases.sql',
+     '20261103000002_recording_output_candidates.sql',
+     '20261104000001_recording_job_finalization.sql',
+     '20261105000001_recording_session_snapshot.sql',
+     '20261106000001_recording_story_save.sql',
++    '20261106000002_media_deletion_capture.sql',
+   ])
+ 
+   assert.equal(
+     read('supabase/migrations/20260611000000_agent_phase1.sql'),
+     read('packages/web/supabase/agent-phase1.sql'),
+   )
+   assert.equal(
+     read('supabase/migrations/20260612000000_agent_phase2_public_archive.sql'),
+--- before/experiments/pg17-deletion-capture/verify-backup.mjs
++++ after/experiments/pg17-deletion-capture/verify-backup.mjs
+@@ -0,0 +1,217 @@
++import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { join } from 'node:path'
++import { randomUUID } from 'node:crypto'
++import { createRequire } from 'node:module'
++import { spawnSync } from 'node:child_process'
++import { Harness, root, digest } from '../pg17-routines/runtime.mjs'
++import { compileModules } from '../pg17-recording-worker/fixture.mjs'
++import { setup, fresh, prepareCandidate, materialize, capture, snapshot, USER, PROJECT } from './fixture.mjs'
++
++// This is a manifest/restore-set compatibility check, not pg_dump/pg_restore or Storage I/O.
++const directory = join(root, 'docs/research/evidence/2026-11-06-g1-deletion-capture', `native-backup-${Date.now()}-${randomUUID()}`)
++const report = {
++  status: 'running', assertions: 0, actorConnections: [], scenarios: [], sources: {}, artifacts: {},
++  command: 'node experiments/pg17-deletion-capture/verify-backup.mjs',
++  qualification: {
++    scope: 'candidate manifest and computed restore-set compatibility',
++    dump: 'synthetic PGDMP header and payload, not a restorable custom archive',
++    objects: 'local synthetic files only; byte/hash fields computed by fixture, not verified by backup validators',
++    pgRestoreExecuted: false, storageDownloadsVerified: false, backupLedgerQualified: false,
++    physicalDeletionComplete: false, referenceSafeGcQualified: false, fullMigrationChainQualified: false,
++    cloudOrDeviceQualified: false, g1MilestoneSatisfied: false, pushReady: false,
++  },
++}
++const h = new Harness(report)
++const require = createRequire(import.meta.url)
++await mkdir(directory, { recursive: true })
++
++async function source(path) {
++  const bytes = await readFile(join(root, path))
++  report.sources[path] = digest(bytes)
++  return bytes.toString()
++}
++
++async function artifact(name, value) {
++  const bytes = Buffer.isBuffer(value) ? value : Buffer.from(JSON.stringify(value, null, 2) + '\n')
++  await writeFile(join(directory, name), bytes, { flag: 'wx' })
++  report.artifacts[name] = { sha256: digest(bytes), byteSize: bytes.length }
++}
++
++function outcome(fn) {
++  try { return { ok: true, value: fn() } }
++  catch (error) { return { ok: false, error: error.message } }
++}
++
++try {
++  for (const path of [
++    'experiments/pg17-deletion-capture/verify-backup.mjs',
++    'experiments/pg17-deletion-capture/fixture.mjs',
++    'experiments/pg17-routines/runtime.mjs',
++    'experiments/pg17-routines/runtime-pins.json',
++    'experiments/pg17-recording-flow/fixture.mjs',
++    'experiments/pg17-recording-worker/fixture.mjs',
++    'experiments/pg17-recording-candidates/fixture.mjs',
++    'experiments/pg17-recording-finalization/fixture.mjs',
++    'experiments/pg17-recording-status/fixture.mjs',
++    'scripts/verify-scheme-b-backup.cjs',
++  ]) await source(path)
++  await h.start()
++  await setup(h, source)
++  const service = await h.actorClient('service_role', USER)
++  const { prepareRecordingSessionSeal } = await compileModules(h, source)
++  const ts = require('typescript')
++  const compiled = ts.transpileModule(await source('packages/web/src/lib/server/scheme-b-backup.ts'), {
++    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS }, reportDiagnostics: true,
++  })
++  h.eq(compiled.diagnostics.filter(d => d.category === ts.DiagnosticCategory.Error).length, 0, 'actual backup TypeScript transpiles')
++  const compiledPath = join(h.scratch, 'scheme-b-backup.cjs')
++  await writeFile(compiledPath, compiled.outputText)
++  const typescript = require(compiledPath)
++  const standalone = require(join(root, 'scripts/verify-scheme-b-backup.cjs'))
++
++  let manifest, tombstones, dump
++  await h.scenario('actual published capture supplies durable candidate addresses to a mixed manifest', async () => {
++    const selected = await fresh(h, service, prepareRecordingSessionSeal)
++    const retained = await fresh(h, service, prepareRecordingSessionSeal, false)
++    await prepareCandidate(h, service, retained, 'reserved')
++    await materialize(h, selected)
++    await materialize(h, retained)
++
++    // A separate synthetic legacy object has no relationship to the deleted story.
++    const legacyKey = `projects/${PROJECT}/legacy/${randomUUID()}.jpg`
++    const legacyBytes = Buffer.from('synthetic-legacy-object-not-a-family-photo')
++    await h.db.query("INSERT INTO storage.buckets(id,name) VALUES('saga','saga') ON CONFLICT DO NOTHING")
++    const legacy = (await h.db.query("INSERT INTO storage.objects(bucket_id,name,metadata) VALUES('saga',$1,$2::jsonb) RETURNING *", [
++      legacyKey, JSON.stringify({ synthetic: true, byteSize: legacyBytes.length, sha256: digest(legacyBytes) }),
++    ])).rows[0]
++    const legacyPath = join(h.scratch, 'synthetic-legacy-object')
++    await writeFile(legacyPath, legacyBytes)
++    h.syntheticFiles.set(`saga:${legacyKey}`, legacyPath)
++
++    const before = await snapshot(h)
++    const selectedCandidate = before.recording_output_candidates.find(c => c.id === selected.candidateId)
++    const retainedCandidate = before.recording_output_candidates.find(c => c.id === retained.candidateId)
++    const retainedChunk = before.recording_chunks.find(c => c.session_id === retained.sessionId)
++    const selectedAsset = before.media_assets.find(a => a.id === selected.assetId)
++    h.eq([selectedAsset.bucket, selectedAsset.object_key], [selectedCandidate.bucket, selectedCandidate.object_key], 'published asset uses actual candidate address')
++    h.eq(retainedCandidate.state, 'reserved', 'retained candidate has actual reserved evidence')
++    h.ok(selected.storyId !== retained.storyId, 'survivors belong to an unrelated story')
++
++    dump = Buffer.concat([Buffer.from('PGDMP'), Buffer.from([1, 15, 0, 4, 8, 1, 0]), Buffer.from('SYNTHETIC_HEADER_ONLY_NOT_A_RESTORABLE_DUMP')])
++    const freezeTimestamp = (await service.query('SELECT clock_timestamp() AS frozen')).rows[0].frozen.toISOString()
++    const inputs = [
++      { id: 'retained-original-chunk', bucket: retainedChunk.bucket, key: retainedChunk.object_key },
++      { id: 'published-candidate-manifest-id', bucket: selectedCandidate.bucket, key: selectedCandidate.object_key },
++      { id: 'retained-reserved-candidate', bucket: retainedCandidate.bucket, key: retainedCandidate.object_key },
++      { id: legacy.id, bucket: legacy.bucket_id, key: legacy.name },
++    ]
++    const objects = []
++    for (const entry of inputs) {
++      const bytes = await readFile(h.syntheticFiles.get(`${entry.bucket}:${entry.key}`))
++      objects.push({ ...entry, byteSize: bytes.length, sha256: digest(bytes) })
++    }
++    manifest = { freezeTimestamp, dumpSha256: digest(dump), dumpSizeBytes: dump.length, objects }
++    await artifact('synthetic-header.dump', dump)
++    await artifact('manifest.json', manifest)
++
++    const receipt = await capture(service, { subjectId: selected.storyId, requestId: randomUUID() })
++    const after = await snapshot(h)
++    const request = after.deletion_requests.find(r => r.id === receipt.id)
++    const targets = after.deletion_targets.filter(t => t.deletion_request_id === receipt.id)
++    const storageTargets = targets.filter(t => t.kind === 'storage_object')
++    const candidateTarget = storageTargets.find(t => t.bucket === selectedCandidate.bucket && t.object_key === selectedCandidate.object_key)
++    h.ok(candidateTarget, 'capture persisted exact published candidate address')
++    h.eq(storageTargets.length, 2, 'actual capture includes selected candidate and its original chunk')
++    h.eq(storageTargets.filter(t => t.bucket === selectedCandidate.bucket && t.object_key === selectedCandidate.object_key).length, 1, 'published physical alias is deduplicated')
++    h.eq(receipt.physicalDeletionComplete, false, 'capture does not claim physical deletion')
++    const tombstonedAt = new Date(request.tombstone_at).toISOString()
++    h.ok(Date.parse(tombstonedAt) > Date.parse(freezeTimestamp), 'durable capture is strictly after manifest freeze')
++    tombstones = storageTargets.map(target => ({
++      targetType: 'storage_object', targetId: target.target_id, bucket: target.bucket, key: target.object_key,
++      tombstonedAt, reason: 'actual_durable_capture_storage_target',
++    }))
++    h.ok(tombstones.every(t => manifest.objects.every(o => t.targetId !== o.id)), 'replay must match captured bucket/key rather than fabricated object IDs')
++    h.eq(after.synthetic_files, before.synthetic_files, 'capture preserves all local synthetic bytes')
++    h.eq(after['storage.objects'], before['storage.objects'], 'capture preserves all synthetic Storage metadata')
++    report.capture = {
++      receipt, request, targets, selectedFixture: selected, retainedFixture: retained,
++      candidateTarget, before, after,
++      selection: 'Four-object subset: selected published candidate, unrelated original chunk, unrelated reserved candidate, standalone legacy object. The selected story original chunk is captured but absent from this manifest subset.',
++      timestampConversion: 'Durable UTC microsecond timestamp retained in request; tombstone adapter normalizes to ISO UTC milliseconds required by existing Scheme B contract.',
++    }
++    await artifact('capture.json', report.capture)
++    await artifact('tombstones.json', tombstones)
++  })
++
++  await h.scenario('actual TypeScript, CJS and CLI file mode agree on captured candidate exclusion', async () => {
++    const inputBefore = JSON.stringify({ manifest, tombstones })
++    const tsDump = typescript.verifyPgDumpCustomArchive(dump)
++    const cjsDump = standalone.verifyPgDumpCustomArchiveBuffer(dump)
++    h.eq(tsDump, cjsDump, 'synthetic header inspection parity')
++    const tsManifest = outcome(() => typescript.verifyStorageManifest(manifest, tsDump.dumpSha256))
++    const cjsManifest = outcome(() => standalone.verifyStorageManifestObject(manifest, cjsDump.dumpSha256))
++    const tsReplay = typescript.replayTombstonesAndComputeSurvivingSet(manifest, tombstones)
++    const cjsReplay = standalone.replayTombstones(manifest, tombstones)
++    const cliArgs = ['scripts/verify-scheme-b-backup.cjs', '--dump', join(directory, 'synthetic-header.dump'), '--manifest', join(directory, 'manifest.json'), '--tombstones', join(directory, 'tombstones.json')]
++    const cli = spawnSync(process.execPath, cliArgs, { cwd: root, encoding: 'utf8', timeout: 10000 })
++    report.compatibility = { tsManifest, cjsManifest, tsReplay, cjsReplay,
++      cli: { command: [process.execPath, ...cliArgs], status: cli.status, signal: cli.signal, stdout: cli.stdout, stderr: cli.stderr } }
++    await artifact('compatibility.json', report.compatibility)
++    h.eq(tsManifest, cjsManifest, 'TypeScript/CJS manifest result parity')
++    h.eq(tsManifest, { ok: true, value: { valid: true, objectCount: 4, totalBytes: manifest.objects.reduce((n, o) => n + o.byteSize, 0) } }, 'candidate mixed manifest accepted')
++    const survivors = [manifest.objects[0], manifest.objects[2], manifest.objects[3]]
++    h.eq(tsReplay, { purgedCount: 1, survivingObjects: survivors, survivingTotalBytes: survivors.reduce((n, o) => n + o.byteSize, 0) }, 'exactly selected candidate excluded; unrelated records unchanged')
++    h.eq(tsReplay, cjsReplay, 'TypeScript/CJS full restore-set parity')
++    h.eq(cli.status, 0, 'actual file CLI exit status')
++    h.eq(cli.stderr, '', 'actual file CLI stderr empty')
++    h.eq(JSON.parse(cli.stdout), { mode: 'file_verification', status: 'pass', report: { verified: true, dump: tsDump, manifest: tsManifest.value, tombstoneReplay: tsReplay } }, 'actual file CLI complete output parity')
++    h.eq(JSON.stringify({ manifest, tombstones }), inputBefore, 'validation and replay leave inputs unchanged')
++    const after = await snapshot(h)
++    h.eq(after, report.capture.after, 'backup compatibility run does not mutate database or physical bytes')
++    await artifact('after-replay.json', after)
++  })
++
++  await h.scenario('candidate corruption is rejected identically and pre-freeze ledger behavior is unchanged', async () => {
++    const candidate = manifest.objects[1]
++    const cases = [
++      ['unknown_bucket', { ...candidate, bucket: 'unknown-candidates' }, 'DISALLOWED_BUCKET_NAME'],
++      ['path_traversal', { ...candidate, key: '../escape' }, 'INVALID_STORAGE_KEY'],
++      ['absolute_key', { ...candidate, key: '/escape' }, 'INVALID_STORAGE_KEY'],
++      ['backslash_key', { ...candidate, key: 'bad\\key' }, 'INVALID_STORAGE_KEY'],
++      ['control_key', { ...candidate, key: 'bad\0key' }, 'INVALID_STORAGE_KEY'],
++      ['empty_id', { ...candidate, id: '' }, 'INVALID_OBJECT_ID'],
++      ['malformed_entry', null, 'INVALID_STORAGE_OBJECT_ENTRY'],
++      ['invalid_hash', { ...candidate, sha256: 'bad' }, 'INVALID_SHA256_FORMAT'],
++      ['zero_size', { ...candidate, byteSize: 0 }, 'INVALID_OBJECT_SIZE'],
++      ['fractional_size', { ...candidate, byteSize: 1.5 }, 'INVALID_OBJECT_SIZE'],
++      ['unsafe_size', { ...candidate, byteSize: Number.MAX_SAFE_INTEGER + 1 }, 'INVALID_OBJECT_SIZE'],
++    ].map(([name, entry, error]) => ({ name, value: { ...manifest, objects: [entry] }, error }))
++    cases.push({ name: 'duplicate_candidate_address', value: { ...manifest, objects: [...manifest.objects, { ...candidate, id: 'other-id' }] }, error: 'DUPLICATE_STORAGE_OBJECT_KEY' })
++    cases.push({ name: 'total_bytes_overflow', value: { ...manifest, objects: [{ ...candidate, byteSize: Number.MAX_SAFE_INTEGER }, manifest.objects[0]] }, error: 'TOTAL_BYTES_OVERFLOW' })
++    cases.push({ name: 'dump_hash_mismatch', value: { ...manifest, dumpSha256: '0'.repeat(64) }, error: 'DUMP_HASH_MANIFEST_MISMATCH' })
++    report.validationParity = []
++    for (const { name, value, error } of cases) {
++      const tsResult = outcome(() => typescript.verifyStorageManifest(value, manifest.dumpSha256))
++      const cjsResult = outcome(() => standalone.verifyStorageManifestObject(value, manifest.dumpSha256))
++      report.validationParity.push({ name, tsResult, cjsResult })
++      h.eq(tsResult, { ok: false, error }, `${name} rejected by TypeScript`)
++      h.eq(cjsResult, tsResult, `${name} CJS parity`)
++    }
++    const preFreeze = tombstones.map(t => ({ ...t, tombstonedAt: new Date(Date.parse(manifest.freezeTimestamp) - 1).toISOString() }))
++    const expected = { purgedCount: 0, survivingObjects: manifest.objects, survivingTotalBytes: manifest.objects.reduce((n, o) => n + o.byteSize, 0) }
++    h.eq(typescript.replayTombstonesAndComputeSurvivingSet(manifest, preFreeze), expected, 'TypeScript historical tombstones retain all four objects')
++    h.eq(standalone.replayTombstones(manifest, preFreeze), expected, 'CJS historical tombstones retain all four objects')
++    h.eq(typescript.evaluateSchemeBBackupStatus(null), { status: 'unverified', verified: false, reason: 'scheme_b_backup_not_rehearsed_or_verified' }, 'no qualified backup ledger created by this rehearsal')
++    await artifact('validation-parity.json', report.validationParity)
++  })
++  report.status = 'passed'
++} catch (error) {
++  report.status = 'failed'
++  report.error = { code: error.code ?? 'ERROR', label: error.label ?? error.message, where: error.where }
++  process.exitCode = 1
++} finally {
++  await h.cleanup()
++  if (report.status !== 'passed') process.exitCode = 1
++  await writeFile(join(directory, 'results.json'), JSON.stringify(report, null, 2) + '\n', { flag: 'wx' })
++  console.log(JSON.stringify({ directory, status: report.status, assertions: report.assertions, error: report.error, cleanup: report.cleanup }, null, 2))
++}
+--- before/experiments/pg17-deletion-capture/BACKUP.md
++++ after/experiments/pg17-deletion-capture/BACKUP.md
+@@ -0,0 +1,49 @@
++# Candidate-aware Scheme B compatibility
++
++Run from the repository root:
++
++```sh
++node experiments/pg17-deletion-capture/verify-backup.mjs
++```
++
++Each run creates a unique `native-backup-*` evidence directory under
++`docs/research/evidence/2026-11-06-g1-deletion-capture/`, including failed runs.
++The existing Task1 harness files remain unchanged. This runner uses their local
++PG17 setup, actual recording reserve/seal/candidate reserve/prepare/publication
++routines, and actual deletion-capture RPC with a real unprivileged service-role
++connection. Asset/job registration follows the existing fixture's inserts.
++
++The four-object manifest contains the selected story's published candidate,
++another story's original chunk and reserved candidate, and a synthetic legacy
++object. Recording addresses come from persisted rows. A real post-freeze capture
++produces both the selected candidate target and its original-chunk target. All
++captured storage targets become existing `SchemeBTombstoneRecord` values; the
++selected story's original chunk is intentionally absent from this four-object
++subset. Replay must exclude exactly the selected candidate and preserve the
++other three complete entries. Logical manifest IDs differ from target IDs, so
++the assertion requires the durable bucket/key match. The raw microsecond UTC
++request timestamp remains in capture evidence; the adapter normalizes it to
++milliseconds for the existing Scheme B timestamp contract.
++
++The runner compiles the actual TypeScript validator, loads the actual CJS
++validator, and executes the actual CLI with `--dump`, `--manifest`, and
++`--tombstones`. Full manifest and survivor results must agree. Fourteen malformed,
++unknown-bucket, path, size, hash, duplicate, and overflow cases retain the same
++rejections in both validators. Historical pre-freeze tombstones preserve every
++object. Database rows and local synthetic bytes remain unchanged during replay.
++
++Evidence includes `capture.json` (durable request/targets and complete before/
++after synthetic database/file snapshots), `manifest.json`, `tombstones.json`,
++`synthetic-header.dump`, `compatibility.json` (raw CLI stdout/stderr and both
++validator results), `after-replay.json`, `validation-parity.json`, and
++`results.json` with source/artifact hashes and cluster cleanup status.
++
++The dump is a **synthetic PGDMP header and payload**, not a restorable archive.
++Object bytes are **local synthetic files**. The fixture computes their byte sizes
++and hashes, but the backup validators only inspect manifest fields and the dump
++header/hash; they do not download or verify Storage object bytes. The CLI's
++existing `verified: true` means its existing structural checks passed. This run
++does not create or qualify a backup ledger, execute `pg_restore`, perform any
++Storage removal, qualify physical deletion/reference-safe GC, or qualify the full
++migration chain, cloud/device behavior, G1, or push readiness. The isolated local
++cluster and scratch files are removed after each run.

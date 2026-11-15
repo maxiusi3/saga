@@ -1,5 +1,7 @@
 # P3 完整产品交付与履约（`T09 → T10 → T11`，含 `T12` 收口）及 G3 里程碑验收报告
 
+> **2026-11-11 证据校正：以下为历史记录，旧 G3=true 不代表当前实测结论。** 旧脚本的三种“设备”只断言设备名称非空，没有启动浏览器；PDF 没有通过完整正文提取与实际渲染验收；检索使用手工插入行，支付直接调用旧权益 RPC，未验证真实 Stripe 签名/订单绑定及产品页面。本批已用完整迁移、生产组件/路由、实际 Chrome、全文 PDF、持久 Worker 和受控 Stripe SDK 重新验证。当前结果以 [G3 新报告](2026-11-11-g3-delivery.md) 为准。旧 JSON 原样保留，不再借它声称手机、多设备、真实家庭或支付结算通过。
+
 - **日期**：2026-10-24（Asia/Taipei）
 - **分支**：`codex/october-upgrade-p0`
 - **关联计划**：[`docs/2026-10-10-integrated-upgrade-plan.md`](../2026-10-10-integrated-upgrade-plan.md) §5 Phase P3、§7.1 G3、§8 T09–T12、§9.2 队列单位经济；[`docs/superpowers/plans/2026-10-24-upgrade-p3-g3-integration.md`](../superpowers/plans/2026-10-24-upgrade-p3-g3-integration.md)

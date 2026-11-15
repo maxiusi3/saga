@@ -1,0 +1,494 @@
+--- before/supabase/migrations/20261106000002_media_deletion_capture.sql
++++ after/supabase/migrations/20261106000002_media_deletion_capture.sql
+@@ -25,16 +25,20 @@
+ AS $$
+ DECLARE
+   v_request public.deletion_requests%ROWTYPE;
+   v_assets uuid[];
+   v_sessions uuid[];
+   v_jobs uuid[];
+   v_candidates uuid[];
+   v_stories uuid[];
++  v_intended_assets text[];
++  v_population uuid[];
++  v_scope jsonb;
++  v_query text;
+   v_targets jsonb;
+   v_actual jsonb;
+   v_expected jsonb := '{}'::jsonb;
+   v_rows jsonb;
+   v_table text;
+   v_now timestamptz;
+   v_expected_request jsonb;
+   v_subject_story uuid;
+@@ -99,38 +103,51 @@
+       RAISE EXCEPTION 'Deletion target snapshot changed' USING ERRCODE = '23505';
+     END IF;
+     RETURN jsonb_build_object('id',v_request.id,'projectId',p_project_id,'subjectId',p_subject_id,'subjectType',p_subject_type,
+       'state','requested','tombstoneAt',v_request.tombstone_at,'targetCount',jsonb_array_length(v_actual),'physicalDeletionComplete',false);
+   END IF;
+ 
+   -- Select only the explicit asset or the actual story population. Parent/child
+   -- references do not implicitly expand an asset request into unrelated assets.
+-  SELECT coalesce(array_agg(a.id),'{}'::uuid[]) INTO v_assets FROM public.media_assets a
++  SELECT coalesce(array_agg(a.id ORDER BY a.id),'{}'::uuid[]) INTO v_assets FROM public.media_assets a
+     WHERE (p_subject_type='media_asset' AND a.id=p_subject_id) OR (p_subject_type='story' AND a.story_id=p_subject_id);
+-  SELECT coalesce(array_agg(j.id),'{}'::uuid[]) INTO v_jobs FROM public.processing_jobs j WHERE j.asset_id=ANY(v_assets);
+-  SELECT coalesce(array_agg(s.id),'{}'::uuid[]) INTO v_sessions FROM public.recording_sessions s
++  SELECT coalesce(array_agg(j.id ORDER BY j.id),'{}'::uuid[]) INTO v_jobs FROM public.processing_jobs j WHERE j.asset_id=ANY(v_assets);
++  SELECT coalesce(array_agg(s.id ORDER BY s.id),'{}'::uuid[]) INTO v_sessions FROM public.recording_sessions s
+     WHERE (p_subject_type='story' AND s.story_id=p_subject_id) OR s.confirmed_asset_id=ANY(v_assets)
+       OR s.seal_input->>'assetId'=ANY(v_assets::text[]) OR s.merge_job_id=ANY(v_jobs);
+-  SELECT coalesce(array_agg(c.id),'{}'::uuid[]) INTO v_candidates FROM public.recording_output_candidates c
+-    WHERE c.asset_id=ANY(v_assets) OR c.session_id=ANY(v_sessions) OR c.job_id=ANY(v_jobs);
++  SELECT coalesce(array_agg(DISTINCT s.seal_input->>'assetId') FILTER (WHERE s.seal_input IS NOT NULL),'{}'::text[])
++    INTO v_intended_assets FROM public.recording_sessions s WHERE s.id=ANY(v_sessions);
++  SELECT coalesce(array_agg(c.id ORDER BY c.id),'{}'::uuid[]) INTO v_candidates FROM public.recording_output_candidates c
++    WHERE c.asset_id=ANY(v_assets) OR c.session_id=ANY(v_sessions) OR c.job_id=ANY(v_jobs)
++      OR c.asset_id::text=ANY(v_intended_assets);
+   SELECT coalesce(array_agg(DISTINCT a.story_id) FILTER (WHERE a.story_id IS NOT NULL),'{}'::uuid[]) INTO v_stories
+     FROM public.media_assets a WHERE a.id=ANY(v_assets);
+   IF v_subject_story IS NOT NULL THEN v_stories := array_append(v_stories,v_subject_story); END IF;
+   IF EXISTS (SELECT 1 FROM public.stories s WHERE s.id=ANY(v_stories) AND s.project_id<>p_project_id)
+     OR EXISTS (SELECT 1 FROM public.media_assets a WHERE a.id=ANY(v_assets) AND (a.project_id<>p_project_id OR a.state IN ('deleting','deleted')))
+     OR EXISTS (SELECT 1 FROM public.processing_jobs j WHERE j.id=ANY(v_jobs) AND j.project_id<>p_project_id)
+     OR EXISTS (SELECT 1 FROM public.recording_sessions s WHERE s.id=ANY(v_sessions) AND (s.project_id<>p_project_id
+       OR (s.story_id IS NOT NULL AND NOT s.story_id=ANY(v_stories))
+       OR (s.confirmed_asset_id IS NOT NULL AND NOT s.confirmed_asset_id=ANY(v_assets))
+       OR (s.seal_input IS NOT NULL AND (s.seal_input->>'projectId' IS DISTINCT FROM p_project_id::text
+         OR s.seal_input->>'sessionId' IS DISTINCT FROM s.id::text
+         OR s.seal_input->>'userId' IS DISTINCT FROM s.user_id::text
+         OR s.seal_input->>'storyId' IS DISTINCT FROM s.story_id::text
+-        OR NOT coalesce(s.seal_input->>'assetId'=ANY(v_assets::text[]),false)))
++        OR NOT coalesce(s.seal_input->>'assetId' ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',false)
++        -- Seal persists before asset/job registration. A missing intended asset
++        -- is valid only for a story-bound session; it creates no phantom target.
++        OR (NOT s.seal_input->>'assetId'=ANY(v_assets::text[]) AND (p_subject_type<>'story' OR s.story_id IS DISTINCT FROM p_subject_id))
++        OR EXISTS (SELECT 1 FROM public.media_assets intended WHERE intended.id::text=s.seal_input->>'assetId'
++          AND (NOT intended.id=ANY(v_assets) OR intended.project_id IS DISTINCT FROM s.project_id
++            OR intended.story_id IS DISTINCT FROM s.story_id OR intended.created_by IS DISTINCT FROM s.user_id
++            OR intended.kind IS DISTINCT FROM 'original_audio'))
++        OR EXISTS (SELECT 1 FROM public.recording_sessions other WHERE other.id<>s.id
++          AND (other.seal_input->>'assetId'=s.seal_input->>'assetId'
++            OR other.confirmed_asset_id::text=s.seal_input->>'assetId'))))
+       OR (s.merge_job_id IS NOT NULL AND NOT s.merge_job_id=ANY(v_jobs))))
+     OR EXISTS (SELECT 1 FROM public.recording_chunks c JOIN public.recording_sessions s ON s.id=c.session_id
+       WHERE c.session_id=ANY(v_sessions) AND (c.project_id<>p_project_id OR c.bucket<>'audio-recordings'
+         OR c.object_key IS DISTINCT FROM s.user_id::text||'/projects/'||p_project_id::text||'/sessions/'||s.id::text||'/'||c.chunk_index::text))
+     OR EXISTS (SELECT 1 FROM public.recording_output_candidates c WHERE c.id=ANY(v_candidates) AND
+       (c.project_id<>p_project_id OR NOT c.asset_id=ANY(v_assets) OR NOT c.session_id=ANY(v_sessions) OR NOT c.job_id=ANY(v_jobs)
+         OR NOT EXISTS (SELECT 1 FROM public.processing_jobs j WHERE j.id=c.job_id AND j.project_id=c.project_id AND j.asset_id=c.asset_id)
+         OR NOT EXISTS (SELECT 1 FROM public.recording_sessions s WHERE s.id=c.session_id AND s.project_id=c.project_id
+@@ -175,27 +192,45 @@
+       ON a.bucket=t->>'bucket' AND a.object_key=t->>'object_key' WHERE NOT a.id=ANY(v_assets))
+     OR EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t JOIN public.recording_chunks c
+       ON c.bucket=t->>'bucket' AND c.object_key=t->>'object_key' WHERE NOT c.session_id=ANY(v_sessions))
+     OR EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t JOIN public.recording_output_candidates c
+       ON c.bucket=t->>'bucket' AND c.object_key=t->>'object_key' WHERE NOT c.id=ANY(v_candidates)) THEN
+     RAISE EXCEPTION 'Deletion address belongs to another chain' USING ERRCODE = '23505';
+   END IF;
+ 
+-  -- Full tuple/population oracle, including unchanged evidence. This correctness
+-  -- slice intentionally scans locked source tables; O(total metadata) memory and
+-  -- global writer contention require redesign before throughput qualification.
+-  FOREACH v_table IN ARRAY ARRAY['projects','project_roles','stories','media_assets','recording_sessions','recording_chunks',
+-    'processing_jobs','processing_attempts','recording_output_candidates','recording_story_intents','deletion_requests','deletion_targets'] LOOP
+-    EXECUTE format('SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY coalesce(to_jsonb(t)->>''id'',to_jsonb(t)->>''session_id'')),''[]''::jsonb) FROM public.%I t',v_table) INTO v_rows;
++  -- Preserve complete relevant tuples only. In particular an unrelated story's
++  -- content/transcript never enters a JSON snapshot. Population locks stay global;
++  -- the postwrite queries below independently rediscover membership and aliases.
++  v_scope := jsonb_build_object(
++    'projects', 't.id=$1',
++    'project_roles', 't.project_id=$1 AND t.user_id=$2',
++    'users', 't.id=$2',
++    'stories', 't.id=ANY($9)',
++    'media_assets', 't.id=ANY($5)',
++    'recording_sessions', 't.id=ANY($6)',
++    'recording_chunks', 't.session_id=ANY($6)',
++    'processing_jobs', 't.id=ANY($7)',
++    'processing_attempts', 't.job_id=ANY($7)',
++    'recording_output_candidates', 't.id=ANY($8)',
++    'recording_story_intents', 't.session_id=ANY($6) OR t.story_id=ANY($9)',
++    'deletion_requests', 't.id=$10 OR (t.project_id=$1 AND (t.subject_id=$1::text OR t.subject_id=ANY($5::text[]) OR t.subject_id=ANY($6::text[]) OR t.subject_id=ANY($9::text[])))',
++    'deletion_targets', 't.deletion_request_id=$10');
++  FOR v_table IN SELECT key FROM jsonb_each_text(v_scope) ORDER BY key LOOP
++    v_query := format('SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY t.%I),''[]''::jsonb) FROM %I.%I t WHERE %s',
++      CASE WHEN v_table='recording_story_intents' THEN 'session_id' ELSE 'id' END,
++      CASE WHEN v_table='users' THEN 'auth' ELSE 'public' END,v_table,v_scope->>v_table);
++    EXECUTE v_query INTO v_rows USING p_project_id,p_actor_id,p_subject_id,p_subject_type,v_assets,v_sessions,v_jobs,v_candidates,v_stories,p_request_id;
+     IF v_table='media_assets' THEN
+-      SELECT coalesce(jsonb_agg(CASE WHEN (r->>'id')::uuid=ANY(v_assets) THEN r||jsonb_build_object('state','deleting','updated_at',v_now) ELSE r END ORDER BY r->>'id'),'[]'::jsonb) INTO v_rows FROM jsonb_array_elements(v_rows) r;
++      SELECT coalesce(jsonb_agg(r||jsonb_build_object('state','deleting','updated_at',v_now) ORDER BY r->>'id'),'[]'::jsonb)
++        INTO v_rows FROM jsonb_array_elements(v_rows) r;
+     ELSIF v_table='processing_jobs' THEN
+-      SELECT coalesce(jsonb_agg(CASE WHEN (r->>'id')::uuid=ANY(v_jobs) AND r->>'state' NOT IN ('succeeded','failed','cancelled')
+-        AND r->'cancel_requested_at'='null'::jsonb THEN r||jsonb_build_object('cancel_requested_at',v_now,'updated_at',v_now) ELSE r END ORDER BY r->>'id'),'[]'::jsonb) INTO v_rows FROM jsonb_array_elements(v_rows) r;
++      SELECT coalesce(jsonb_agg(CASE WHEN r->>'state' NOT IN ('succeeded','failed','cancelled') AND r->'cancel_requested_at'='null'::jsonb
++        THEN r||jsonb_build_object('cancel_requested_at',v_now,'updated_at',v_now) ELSE r END ORDER BY r->>'id'),'[]'::jsonb)
++        INTO v_rows FROM jsonb_array_elements(v_rows) r;
+     END IF;
+     v_expected := v_expected||jsonb_build_object(v_table,v_rows);
+   END LOOP;
+   v_expected_request := jsonb_build_object('id',p_request_id,'project_id',p_project_id,'subject_id',p_subject_id::text,'requested_by',p_actor_id,
+     'state','requested','tombstone_at',v_now,'attempt',0,'requested_at',v_now,'processing_at',NULL,'completed_at',NULL,'error_code',NULL,
+     'capture_version',1,'subject_type',p_subject_type,'capture_target_count',jsonb_array_length(v_targets),
+     'capture_targets_sha256',encode(sha256(convert_to(v_targets::text,'UTF8')),'hex'));
+   INSERT INTO public.deletion_requests(id,project_id,subject_id,requested_by,state,tombstone_at,requested_at,capture_version,subject_type,capture_target_count,capture_targets_sha256)
+@@ -206,19 +241,54 @@
+   UPDATE public.processing_jobs SET cancel_requested_at=v_now,updated_at=v_now
+     WHERE id=ANY(v_jobs) AND state NOT IN ('succeeded','failed','cancelled') AND cancel_requested_at IS NULL;
+   -- Compare after every write/trigger has run, so later triggers cannot alter an
+   -- earlier validated tuple, insert a missed source, or suppress target writes.
+   v_expected := jsonb_set(v_expected,'{deletion_requests}',(SELECT jsonb_agg(r ORDER BY r->>'id')
+     FROM jsonb_array_elements((v_expected->'deletion_requests')||jsonb_build_array(v_expected_request)) r));
+   v_expected := jsonb_set(v_expected,'{deletion_targets}',(SELECT jsonb_agg(r ORDER BY r->>'id')
+     FROM jsonb_array_elements((v_expected->'deletion_targets')||v_targets) r));
+-  FOREACH v_table IN ARRAY ARRAY['projects','project_roles','stories','media_assets','recording_sessions','recording_chunks',
+-    'processing_jobs','processing_attempts','recording_output_candidates','recording_story_intents','deletion_requests','deletion_targets'] LOOP
+-    EXECUTE format('SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY coalesce(to_jsonb(t)->>''id'',to_jsonb(t)->>''session_id'')),''[]''::jsonb) FROM public.%I t',v_table) INTO v_actual;
++  -- Rediscover the graph after all DML. Fixed-ID tuple comparisons alone would
++  -- miss a trigger inserting a same-story source or registering a formerly absent
++  -- intended asset. These queries also catch removal/rebinding out of the scope.
++  SELECT coalesce(array_agg(a.id ORDER BY a.id),'{}'::uuid[]) INTO v_population FROM public.media_assets a
++    WHERE (p_subject_type='media_asset' AND a.id=p_subject_id) OR (p_subject_type='story' AND a.story_id=p_subject_id)
++      OR a.id::text=ANY(v_intended_assets);
++  IF v_population IS DISTINCT FROM v_assets THEN
++    RAISE EXCEPTION 'Deletion asset population changed' USING ERRCODE = '23505';
++  END IF;
++  SELECT coalesce(array_agg(j.id ORDER BY j.id),'{}'::uuid[]) INTO v_population FROM public.processing_jobs j WHERE j.asset_id=ANY(v_assets);
++  IF v_population IS DISTINCT FROM v_jobs THEN
++    RAISE EXCEPTION 'Deletion job population changed' USING ERRCODE = '23505';
++  END IF;
++  SELECT coalesce(array_agg(s.id ORDER BY s.id),'{}'::uuid[]) INTO v_population FROM public.recording_sessions s
++    WHERE (p_subject_type='story' AND s.story_id=p_subject_id) OR s.confirmed_asset_id=ANY(v_assets)
++      OR s.seal_input->>'assetId'=ANY(v_assets::text[]) OR s.merge_job_id=ANY(v_jobs)
++      OR s.seal_input->>'assetId'=ANY(v_intended_assets);
++  IF v_population IS DISTINCT FROM v_sessions THEN
++    RAISE EXCEPTION 'Deletion session population changed' USING ERRCODE = '23505';
++  END IF;
++  SELECT coalesce(array_agg(c.id ORDER BY c.id),'{}'::uuid[]) INTO v_population FROM public.recording_output_candidates c
++    WHERE c.asset_id=ANY(v_assets) OR c.session_id=ANY(v_sessions) OR c.job_id=ANY(v_jobs) OR c.asset_id::text=ANY(v_intended_assets);
++  IF v_population IS DISTINCT FROM v_candidates THEN
++    RAISE EXCEPTION 'Deletion candidate population changed' USING ERRCODE = '23505';
++  END IF;
++  IF EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t JOIN public.media_assets a
++      ON a.bucket=t->>'bucket' AND a.object_key=t->>'object_key' WHERE NOT a.id=ANY(v_assets))
++    OR EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t JOIN public.recording_chunks c
++      ON c.bucket=t->>'bucket' AND c.object_key=t->>'object_key' WHERE NOT c.session_id=ANY(v_sessions))
++    OR EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t JOIN public.recording_output_candidates c
++      ON c.bucket=t->>'bucket' AND c.object_key=t->>'object_key' WHERE NOT c.id=ANY(v_candidates)) THEN
++    RAISE EXCEPTION 'Deletion address ownership changed' USING ERRCODE = '23505';
++  END IF;
++  FOR v_table IN SELECT key FROM jsonb_each_text(v_scope) ORDER BY key LOOP
++    v_query := format('SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY t.%I),''[]''::jsonb) FROM %I.%I t WHERE %s',
++      CASE WHEN v_table='recording_story_intents' THEN 'session_id' ELSE 'id' END,
++      CASE WHEN v_table='users' THEN 'auth' ELSE 'public' END,v_table,v_scope->>v_table);
++    EXECUTE v_query INTO v_actual USING p_project_id,p_actor_id,p_subject_id,p_subject_type,v_assets,v_sessions,v_jobs,v_candidates,v_stories,p_request_id;
+     IF v_actual IS DISTINCT FROM v_expected->v_table THEN
+       RAISE EXCEPTION 'Deletion capture write verification failed' USING ERRCODE = '23505';
+     END IF;
+   END LOOP;
+   RETURN jsonb_build_object('id',p_request_id,'projectId',p_project_id,'subjectId',p_subject_id,'subjectType',p_subject_type,
+     'state','requested','tombstoneAt',v_now,'targetCount',jsonb_array_length(v_targets),'physicalDeletionComplete',false);
+ END;
+ $$;
+--- before/experiments/pg17-deletion-capture/fixture.mjs
++++ after/experiments/pg17-deletion-capture/fixture.mjs
+@@ -9,17 +9,18 @@
+   h.ok(ddl, 'actual foundation deletion_targets DDL extracted unchanged')
+   await h.db.query(ddl)
+   await h.db.query(`ALTER TABLE deletion_targets ENABLE ROW LEVEL SECURITY;
+     REVOKE ALL ON deletion_targets FROM PUBLIC,anon,authenticated;
+     GRANT ALL ON deletion_targets TO service_role;
+     CREATE POLICY deletion_targets_service ON deletion_targets FOR ALL TO service_role USING (true) WITH CHECK (true);`)
+   const requestPolicy=(await source(FOUNDATION)).match(/CREATE POLICY "deletion_requests_select_active_member"[\s\S]*?;/)?.[0]
+   h.ok(requestPolicy,'actual foundation request read policy found')
+-  await h.db.query(`ALTER TABLE deletion_requests ENABLE ROW LEVEL SECURITY; GRANT SELECT ON deletion_requests TO authenticated; ${requestPolicy}`)
++  await h.db.query(`ALTER TABLE deletion_requests ENABLE ROW LEVEL SECURITY; GRANT SELECT ON deletion_requests TO authenticated; ${requestPolicy}
++    CREATE POLICY deletion_requests_service_read ON deletion_requests FOR SELECT TO service_role USING (true);`)
+   h.report.fixture.actualRequestReadPolicy=requestPolicy
+   h.report.fixture.actualDeletionTargetsDdl = ddl
+   if (migrate) { await h.db.query(await source(MIGRATION)); h.report.fixture.fullMigrations.push(MIGRATION) }
+ }
+ export async function capture(client, { actorId = OTHER, projectId = PROJECT, subjectId, subjectType = 'story', requestId }) {
+   return (await client.query('SELECT public.request_media_deletion($1::uuid,$2::uuid,$3::uuid,$4::text,$5::uuid) AS value', [actorId,projectId,subjectId,subjectType,requestId])).rows[0].value
+ }
+ export async function snapshot(h) {
+@@ -58,28 +59,30 @@
+   f.attemptCount=f.attemptCount??1
+   await service.query("SELECT recording_job_lease($1,'claim',$2,NULL,120000)",[f.jobId,WORKER])
+   await service.query("SELECT recording_job_lease($1,'start',$2,$3,NULL)",[f.jobId,WORKER,f.attemptCount])
+   f.candidateId=randomUUID();f.output={byteSize:f.bytes.length,sha256:digest(f.bytes),mimeType:'audio/webm',durationMs:1250}
+   await candidateRpc(service,[f.jobId,'reserve',WORKER,f.attemptCount,f.manifestSha256,f.candidateId,f.output])
+   if(state==='prepared')await candidateRpc(service,[f.jobId,'prepare',WORKER,f.attemptCount,f.manifestSha256,f.candidateId,f.output])
+   return f
+ }
+-export async function multipleChunks(h, service, prepare, count=3, existingStory=null) {
++export async function multipleChunks(h, service, prepare, count=3, existingStory=null, register=true) {
+   const { randomUUID }=await import('node:crypto'), { digest }=await import('../pg17-routines/runtime.mjs'), { save,METADATA }=await import('../pg17-recording-flow/fixture.mjs')
+   const sessionId=randomUUID(),jobId=randomUUID(),storyId=existingStory??(await save(service,sessionId,'reserve',METADATA)).lookup.intent.storyId
+   const chunkBodies=Array.from({length:count},(_,i)=>Buffer.from(`synthetic-chunk-${i}`)),bytes=Buffer.concat(chunkBodies)
+   const chunks=chunkBodies.map((body,index)=>({index,chunkId:`chunk-${index}`,bucket:'audio-recordings',objectKey:`projects/${PROJECT}/sessions/${sessionId}/${index}`,byteSize:body.length,sha256:digest(body)}))
+   const sealed=prepare({jobId,projectId:PROJECT,sessionId,actorId:USER,actorRole:'storyteller',actorActive:true,storyId,mimeType:'audio/webm',chunks})
+   const manifest={schemaVersion:1,projectId:PROJECT,sessionId,userId:USER,storyId,assetId:sealed.task.assetId,mimeType:'audio/webm',chunks:chunks.map(c=>({...c,storageObjectKey:`${USER}/${c.objectKey}`}))}
+   const seal=(await service.query('SELECT seal_recording_manifest($1::jsonb) AS value',[JSON.stringify(manifest)])).rows[0].value
++  if (register) {
+   const columns=Object.keys(sealed.assetRecord)
+   await service.query(`INSERT INTO media_assets(${columns.join(',')}) VALUES(${columns.map((_,i)=>`$${i+1}`).join(',')})`,Object.values(sealed.assetRecord))
+   await service.query(`INSERT INTO processing_jobs(id,project_id,asset_id,created_by,input_version,job_type,processor_version,model_config_version,parameter_version,idempotency_key,state)
+     VALUES($1,$2,$3,$4,1,'recording_merge','ffmpeg-merge-v1','none','default',$5,'queued')`,[jobId,PROJECT,sealed.task.assetId,USER,sealed.task.idempotencyKey])
++  }
+   return {sessionId,jobId,storyId,assetId:sealed.task.assetId,sealed,manifest,manifestSha256:seal.manifestSha256,bytes,chunkBodies,attemptCount:1}
+ }
+ export async function materialize(h, f) {
+   const { writeFile }=await import('node:fs/promises'), { join }=await import('node:path'), { digest }=await import('../pg17-routines/runtime.mjs')
+   h.syntheticFiles??=new Map()
+   const sources=(await h.db.query(`SELECT bucket,object_key FROM media_assets WHERE id=$1 UNION SELECT bucket,object_key FROM recording_chunks WHERE session_id=$2
+     UNION SELECT bucket,object_key FROM recording_output_candidates WHERE asset_id=$1`,[f.assetId,f.sessionId])).rows
+   for(const row of sources) {
+--- before/experiments/pg17-deletion-capture/verify.mjs
++++ after/experiments/pg17-deletion-capture/verify.mjs
+@@ -1,15 +1,16 @@
+ import { mkdir, readFile, writeFile } from 'node:fs/promises'
+ import { join } from 'node:path'
+ import { randomUUID } from 'node:crypto'
+ import { Harness, root, digest } from '../pg17-routines/runtime.mjs'
+ import { compileModules } from '../pg17-recording-worker/fixture.mjs'
+ import { setup, fresh, capture, snapshot, compileCapture, applicationAdmin, USER } from './fixture.mjs'
+ import { scenarios } from './scenarios.mjs'
++import { fix1Regressions } from './fix-1-regressions.mjs'
+ const red = process.argv.includes('--without-migration')
+ const directory = join(root,'docs/research/evidence/2026-11-06-g1-deletion-capture',`native-${red?'red-':''}${Date.now()}-${randomUUID()}`)
+ const report = {status:'running',assertions:0,actorConnections:[],scenarios:[],sources:{},command:`node experiments/pg17-deletion-capture/verify.mjs ${process.argv.slice(2).join(' ')}`.trim(),g1MilestoneSatisfied:false,physicalDeletionComplete:false}
+ const h = new Harness(report)
+ await mkdir(directory,{recursive:true})
+ async function source(path) { const bytes=await readFile(join(root,path)); report.sources[path]=digest(bytes); return bytes.toString() }
+ try {
+   await source('experiments/pg17-deletion-capture/fixture.mjs');await source('experiments/pg17-deletion-capture/verify.mjs')
+@@ -23,11 +24,14 @@
+     report.publishedCapture={receipt,before,after}
+     h.eq(receipt.physicalDeletionComplete,false,'capture never reports physical removal')
+     h.eq('capture_targets' in after.deletion_requests.find(r=>r.id===receipt.id),false,'member-visible request contains only digest/count, never candidate paths')
+     h.eq(after.deletion_targets.filter(t=>t.deletion_request_id===receipt.id).length,4,'story asset candidate chunk persisted')
+   })
+   const app=await compileCapture(h,source)
+   await source('experiments/pg17-deletion-capture/scenarios.mjs')
+   await scenarios(h,service,prepareRecordingSessionSeal,app,applicationAdmin(h,service))
++  await source('experiments/pg17-deletion-capture/fix-1-regressions.mjs')
++  await source('experiments/pg17-deletion-capture/registration-check.mjs')
++  await fix1Regressions(h,service,prepareRecordingSessionSeal,source)
+   report.status='passed'
+ } catch(error) {report.status='failed'; report.error={code:error.code??'ERROR',label:error.label??error.message,position:error.position,where:error.where,internalQuery:error.internalQuery};process.exitCode=1}
+ finally {await h.cleanup();if(report.status!=='passed')process.exitCode=1;await writeFile(join(directory,'results.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({directory,status:report.status,assertions:report.assertions,error:report.error,cleanup:report.cleanup},null,2))}
+--- before/experiments/pg17-deletion-capture/README.md
++++ after/experiments/pg17-deletion-capture/README.md
+@@ -8,19 +8,34 @@
+ ```
+ 
+ Every invocation writes a unique `docs/research/evidence/2026-11-06-g1-deletion-capture/native-*` directory, including failures. The local PG17 runtime has TCP disabled, synthetic identities/content, real unprivileged service-role connections, and automatic cluster cleanup. `--without-migration` deliberately reproduces the missing-RPC RED. Existing recording migrations are applied unchanged. `deletion_targets` DDL and the authenticated deletion-request read policy are extracted from the actual foundation migration; the story table comes from the actual bootstrap. Auth/project/storage prerequisites remain explicitly synthetic. This is not the full migration-chain qualification.
+ 
+ `fixture.mjs` exports reusable `setup(h, source, migrate=true)`, `fresh(h, service, prepareRecordingSessionSeal, publish=true)`, `capture(client, { actorId=OTHER, projectId=PROJECT, subjectId, subjectType='story', requestId })`, `snapshot(h)`, `materialize(h, fixture)`, `compileCapture(h, source)` and `applicationAdmin(h, service)`. `fresh` uses the existing published-recording fixture. `capture` calls the actual SQL RPC. A follow-on backup check can consume its actual `deletion_targets` bucket/object_key tuples without hand-writing coordinates. The native report's `publishedCapture` contains the public receipt, complete durable request and target rows, plus full database snapshots.
+ 
+ The application adapter is compiled from its actual TypeScript source. Only its PostgREST transport is replaced with a real `pg` service-role connection; abort/retry wiring is asserted. This does not exercise a live PostgREST server. Focused Jest covers deadline/cancellation/network failure without fallback writes.
+ 
+-The final native matrix contains 14 scenario groups. Per-group assertion counts include full-row comparisons of all previously existing assets/jobs; they are not independent test-case counts. `observations` retain the full before/after rows, source coordinates and synthetic file bytes; `waits` retain `pg_stat_activity`, actual blocking backend IDs and `pg_locks`. Publication in both orders, reservation overlap, two submissions, request-ID collision and owner/facilitator/subject changes during waits all use independent transactions. Rollback injections cover errors, suppressed request/target/asset/cancellation writes, altered request/target rows, later changes to assets/candidates, and a newly inserted source phantom.
++The default native matrix now contains the original 14 scenario groups plus two registration-gap regression groups. Per-group assertion counts include full-row comparisons of all previously existing assets/jobs; they are not independent test-case counts. `observations` retain the full before/after rows, source coordinates and synthetic file bytes; `waits` retain `pg_stat_activity`, actual blocking backend IDs and `pg_locks`. Publication in both orders, reservation overlap, two submissions, request-ID collision and owner/facilitator/subject changes during waits all use independent transactions. Rollback injections cover errors, suppressed request/target/asset/cancellation writes, altered request/target rows, later changes to assets/candidates, and a newly inserted source phantom.
+ 
+ The request stores a target count and SHA256 of the complete canonical JSONB target rows ordered by logical target ID. This includes target row ID, request ID, kind, bucket/key, state, error and timestamp. The full rows remain private in `deletion_targets`; adding a JSON snapshot to the existing member-readable request table would expose reserved candidate paths. The first write compares actual full rows with expected full rows after all triggers. Replay validates count and full-row digest. Native authenticated reads exercise the actual request read policy and confirm that targets remain unreadable.
+ 
+ A subject replay may return its original durable request ID when the caller generates a new ID. SQL checks supplied request-ID collisions before subject lookup, then pins project, subject, subject kind and original actor. The application pins project/subject/kind and validates the returned UUID; it cannot require equality with a newly generated request ID.
+ 
+-The capture locks `deletion_requests` first against the publication/confirmation SHARE fence, then authority and source populations. Conservative global locks and full-table metadata comparisons are deliberate local correctness choices: writer throughput, O(total metadata) memory/time, production data volume and cloud latency are unqualified. Legacy reverse lock orders can safely abort with a deadlock or bounded lock timeout. A client abort/lost result does not prove SQL rollback; resubmission recovers a committed capture.
++The capture locks `deletion_requests` first against the publication/confirmation SHARE fence, then authority and source populations. Conservative global locks remain deliberate local correctness choices. Complete tuple snapshots are scoped to relevant authority, stories, assets, sessions, chunks, jobs, attempts, candidates, intents and requests/targets. After writes the RPC rediscovers source membership and physical aliases, then compares scoped complete tuples. It does not JSON-serialize unrelated story content or global history. Discovery/alias scans and global writer contention still require throughput, data-volume and cloud qualification. Legacy reverse lock orders can safely abort with a deadlock or bounded lock timeout. A client abort/lost result does not prove SQL rollback; resubmission recovers a committed capture.
+ 
+ A running candidate's expired attempt becomes `outcome_unknown` and cannot be automatically reclaimed. The positive mixed-candidate fixture therefore uses two real sessions in one story (one published prepared candidate and one retained reserved candidate), with genuine sealed chunks. It never rewrites attempts to fabricate a retry history.
+ 
+ No Storage removal is invoked. Local synthetic files stand in for physical bytes and are compared unchanged while capture runs; only the local harness cluster/scratch is cleaned up at exit. Metadata capture does not qualify object downloads, reference-safe GC, late noncooperating Storage writes, actual physical deletion, remote migrations, device recovery, cloud/device testing, backup-ledger qualification, G1 completion or push readiness.
++
++## Review fix 1 regressions
++
++```sh
++node experiments/pg17-deletion-capture/verify-fix-1.mjs --before-fix-1
++node experiments/pg17-deletion-capture/verify-fix-1.mjs
++node experiments/pg17-deletion-capture/verify-snapshot-cost.mjs --before-fix-1
++node experiments/pg17-deletion-capture/verify-snapshot-cost.mjs
++```
++
++The `--before-fix-1` option reads the SQL saved in this plan workspace's `task-1-fix-1-before/` snapshot. It never rewrites the current migration. The first runner isolates the legitimate reserve → seal → capture interval before asset/job registration, the mixed case and conflicting existing intended-asset identities. It also compiles the actual seal HTTP route and dependencies; only auth/access for the synthetic user and a real PostgreSQL service-role transport replace external services. The route must return 409 before registrar asset/job access. Actual SQL seal replay and publication also reject. All full database and synthetic-file snapshots remain in the evidence.
++
++The cost runner holds one target constant in size and varies one unrelated story body across exactly 0/8/32 MiB. It times the **unmodified actual RPC**. Separately, a diagnostic copy replaces only `to_jsonb` with a transparent serializer/logger, reporting payload byte counts and whether the unrelated body was serialized. This supplemental instrumentation is not the production behavior oracle. The complete derived SQL and hashes are retained; full before/after database snapshots are archived as gzip JSON with raw/archive hashes. The pre-fix SQL serializes the unrelated body four times; repaired SQL records no such calls and approximately 3.7 KiB of scoped tuple serialization for all three samples. These are local diagnostics, not a throughput benchmark or SLA.
++
++A story-bound sealed session can legitimately name an asset that has not been registered yet. Its actual persisted chunks and story metadata are captured without guessing an asset address or creating an asset/job target. An existing intended asset must match the session's project, story, owner and recording chain. The local service-role SELECT policy on deletion requests models the hosted service role's existing read capability while keeping the test role NOBYPASSRLS, so the actual registration route can read its tombstone.
+--- before/experiments/pg17-deletion-capture/registration-check.mjs
++++ after/experiments/pg17-deletion-capture/registration-check.mjs
+@@ -0,0 +1,46 @@
++import { createRequire } from 'node:module'
++import { posix } from 'node:path'
++import { USER } from './fixture.mjs'
++const require=createRequire(import.meta.url),ts=require('typescript')
++
++// Actual seal route and dependencies; only auth/access and PostgREST transport
++// are supplied for the synthetic local service-role session. Mutation calls
++// deliberately throw: the tombstone must reject before registrar entry.
++export async function blockedRegistration(h,source,service,f) {
++  const calls=[],cache=new Map(),admin={from(table){
++    h.ok(['project_roles','stories','deletion_requests'].includes(table),'registration stops before any asset/job access')
++    const clauses=[],values=[];let columns='*'
++    const execute=async(single=false)=>{
++      calls.push({table,columns,clauses,values})
++      try {const rows=(await service.query(`SELECT ${columns} FROM public.${table} WHERE ${clauses.join(' AND ')}`,values)).rows;return{data:single?rows[0]??null:rows,error:null}}
++      catch(error){return{data:null,error:{code:error.code}}}
++    }
++    const q={select(fields){columns=fields;return q},eq(field,value){values.push(value);clauses.push(`${field}=$${values.length}`);return q},
++      in(field,items){values.push(items);clauses.push(`${field}=ANY($${values.length})`);return q},
++      not(field,operator,value){h.eq([operator,value],['is',null],'route checks nonnull tombstone');clauses.push(`${field} IS NOT NULL`);return q},
++      maybeSingle(){return execute(true)},then(resolve,reject){return execute().then(resolve,reject)}}
++    return q
++  },rpc(){throw new Error('Tombstoned registration must stop before seal RPC')}}
++  const overrides={
++    'lib/server/auth':{getAuthenticatedUser:async()=>({ok:true,user:{id:USER},headers:new Headers()})},
++    'lib/server/project-access':{requireProjectAccess:async()=>({ok:true})},
++    'lib/supabase':{getSupabaseAdmin:()=>admin},
++  }
++  async function load(name) {
++    if(overrides[name])return overrides[name]
++    if(cache.has(name))return cache.get(name)
++    const text=await source(`packages/web/src/${name}.ts`)
++    const output=ts.transpileModule(text,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,esModuleInterop:true}}).outputText
++    const imports=new Map()
++    for(const [,id] of output.matchAll(/require\(["']([^"']+)["']\)/g)) {
++      imports.set(id,id.startsWith('@/')?await load(id.slice(2)):id.startsWith('.')?await load(posix.normalize(posix.join(posix.dirname(name),id))):require(id))
++    }
++    const module={exports:{}};new Function('require','module','exports',output)(id=>imports.get(id),module,module.exports);cache.set(name,module.exports);return module.exports
++  }
++  const route=await load('app/api/recordings/sessions/[sessionId]/seal/route'),{NextRequest}=require('next/server')
++  const previous=process.env.MEDIA_ASSETS_ENABLED;process.env.MEDIA_ASSETS_ENABLED='true'
++  try {
++    const response=await route.POST(new NextRequest(`http://localhost/api/recordings/sessions/${f.sessionId}/seal`,{method:'POST',body:JSON.stringify({projectId:f.manifest.projectId,storyId:f.storyId,mimeType:f.manifest.mimeType,chunks:f.manifest.chunks.map(({storageObjectKey,...c})=>c)})}),{params:Promise.resolve({sessionId:f.sessionId})})
++    return{status:response.status,body:await response.json(),queries:calls}
++  } finally {if(previous===undefined)delete process.env.MEDIA_ASSETS_ENABLED;else process.env.MEDIA_ASSETS_ENABLED=previous}
++}
+--- before/experiments/pg17-deletion-capture/fix-1-regressions.mjs
++++ after/experiments/pg17-deletion-capture/fix-1-regressions.mjs
+@@ -0,0 +1,46 @@
++import { randomUUID } from 'node:crypto'
++import { capture,fresh,multipleChunks,materialize,snapshot,USER,OTHER,PROJECT } from './fixture.mjs'
++import { rpc as finalize,args as finalArgs } from '../pg17-recording-finalization/fixture.mjs'
++import { blockedRegistration } from './registration-check.mjs'
++const FOREIGN='eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee'
++async function outcome(fn){try{return{code:'00000',value:await fn()}}catch(e){return{code:e.code??'ERROR',message:e.message}}}
++export async function fix1Regressions(h,service,prepare,source) {
++  h.report.fix1Observations=[]
++  await h.scenario('I1 actual reserve then seal before registration captures chunks with no invented asset/job',async()=>{
++    for(const mixed of [false,true]) {
++      const registered=mixed?await fresh(h,service,prepare):null
++      const f=await multipleChunks(h,service,prepare,2,registered?.storyId??null,false)
++      await materialize(h,f);if(registered)await materialize(h,registered)
++      const before=await snapshot(h),result=await outcome(()=>capture(service,{subjectId:f.storyId,requestId:randomUUID()})),after=await snapshot(h)
++      h.report.fix1Observations.push({name:mixed?'mixed registered and sealed-only':'sealed-only',fixture:f,before,result,after})
++      h.eq(result.code,'00000','legitimate sealed-before-registration story capture succeeds')
++      const request=result.value,targets=after.deletion_targets.filter(t=>t.deletion_request_id===request.id)
++      const coordinates=[...before.recording_chunks.filter(c=>c.session_id===f.sessionId),...(registered?before.recording_chunks.filter(c=>c.session_id===registered.sessionId):[]),...(registered?before.media_assets.filter(a=>a.id===registered.assetId):[])]
++      const expected=[`story:${f.storyId}`,...(registered?[`asset:${registered.assetId}`]:[]),...coordinates.map(c=>`storage:${c.bucket}:${c.object_key}`)].sort()
++      h.eq(targets.map(t=>t.target_id).sort(),expected,'only actual story/assets/chunks/candidate coordinates are captured')
++      h.eq(after.media_assets.some(a=>a.id===f.assetId),false,'no phantom media asset');h.eq(after.processing_jobs.some(j=>j.id===f.jobId),false,'no phantom processing job')
++      for(const table of ['stories','recording_sessions','recording_chunks','recording_output_candidates','processing_attempts','recording_story_intents','storage.objects','synthetic_files'])h.eq(after[table],before[table],`${table}: complete evidence unchanged`)
++      if(!registered){h.eq(after.media_assets,before.media_assets,'no asset mutations in sealed-only capture');h.eq(after.processing_jobs,before.processing_jobs,'no job mutations in sealed-only capture')}
++      const seal=await outcome(()=>service.query('SELECT seal_recording_manifest($1::jsonb)',[JSON.stringify(f.manifest)]))
++      const registration=await blockedRegistration(h,source,service,f)
++      const publication=await outcome(()=>finalize(service,finalArgs({...f,candidateId:randomUUID(),output:{byteSize:f.bytes.length,sha256:f.manifest.chunks[0].sha256,mimeType:'audio/webm',durationMs:1}})))
++      h.report.fix1Observations.push({name:'post-capture blockers',before:after,seal,registration,publication,after:await snapshot(h)})
++      h.eq(seal.code,'23505','actual seal replay blocked');h.eq(registration.status,409,'actual seal endpoint blocks before registration');h.eq(publication.code,'23505','actual publication cannot create an absent job/asset')
++      h.eq(await snapshot(h),after,'blocked seal/registration/publication preserve every row and physical synthetic byte')
++    }
++  })
++  await h.scenario('I1 existing intended asset with another project/story/chain is rejected',async()=>{
++    await h.db.query('INSERT INTO projects(id,facilitator_id) VALUES($1,$2) ON CONFLICT DO NOTHING',[FOREIGN,OTHER])
++    for(const binding of ['foreign_project','foreign_story','foreign_owner','another_session']) {
++      const f=await multipleChunks(h,service,prepare,1,null,false),other=binding==='foreign_story'?await fresh(h,service,prepare,false):null
++      const a={...f.sealed.assetRecord,project_id:binding==='foreign_project'?FOREIGN:PROJECT,story_id:binding==='foreign_story'?other.storyId:f.storyId,created_by:binding==='foreign_owner'?OTHER:USER}
++      const keys=Object.keys(a);await h.db.query(`INSERT INTO media_assets(${keys.join(',')}) VALUES(${keys.map((_,i)=>`$${i+1}`).join(',')})`,Object.values(a))
++      if(binding==='another_session') {
++        const duplicate=await multipleChunks(h,service,prepare,1,f.storyId,false)
++        await h.db.query("UPDATE recording_sessions SET seal_input=jsonb_set(seal_input,'{assetId}',to_jsonb($2::text)) WHERE id=$1",[duplicate.sessionId,f.assetId])
++      }
++      const before=await snapshot(h),result=await outcome(()=>capture(service,{subjectId:f.storyId,requestId:randomUUID()})),after=await snapshot(h)
++      h.report.fix1Observations.push({name:binding,before,result,after});h.eq(result.code,'23505','existing conflicting asset fails closed');h.eq(after,before,'conflict rejects without writes')
++    }
++  })
++}
+--- before/experiments/pg17-deletion-capture/verify-fix-1.mjs
++++ after/experiments/pg17-deletion-capture/verify-fix-1.mjs
+@@ -0,0 +1,18 @@
++import {mkdir,readFile,writeFile} from 'node:fs/promises'
++import {join} from 'node:path'
++import {randomUUID} from 'node:crypto'
++import {Harness,root,digest} from '../pg17-routines/runtime.mjs'
++import {compileModules} from '../pg17-recording-worker/fixture.mjs'
++import {setup,MIGRATION,USER} from './fixture.mjs'
++import {fix1Regressions} from './fix-1-regressions.mjs'
++const before=process.argv.includes('--before-fix-1')
++const directory=join(root,'docs/research/evidence/2026-11-06-g1-deletion-capture',`native-fix1-${before?'red-':''}${Date.now()}-${randomUUID()}`)
++const report={status:'running',assertions:0,actorConnections:[],scenarios:[],sources:{},command:`node experiments/pg17-deletion-capture/verify-fix-1.mjs ${process.argv.slice(2).join(' ')}`.trim(),g1MilestoneSatisfied:false,physicalDeletionComplete:false}
++const h=new Harness(report);await mkdir(directory,{recursive:true})
++async function source(path){const actual=before&&path===MIGRATION?`.superpowers/sdd/2026-11-06-upgrade-g1-deletion-capture/task-1-fix-1-before/${path}`:path;const bytes=await readFile(join(root,actual));report.sources[actual]=digest(bytes);return bytes.toString()}
++try {
++  for(const p of ['fixture','registration-check','fix-1-regressions','verify-fix-1'])await source(`experiments/pg17-deletion-capture/${p}.mjs`)
++  await h.start();await setup(h,source);const service=await h.actorClient('service_role',USER),{prepareRecordingSessionSeal}=await compileModules(h,source)
++  await fix1Regressions(h,service,prepareRecordingSessionSeal,source);report.status='passed'
++}catch(e){report.status='failed';report.error={code:e.code??'ERROR',label:e.label??e.message,where:e.where,internalQuery:e.internalQuery};process.exitCode=1}
++finally{await h.cleanup();if(report.status!=='passed')process.exitCode=1;await writeFile(join(directory,'results.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({directory,status:report.status,assertions:report.assertions,error:report.error,cleanup:report.cleanup},null,2))}
+--- before/experiments/pg17-deletion-capture/verify-snapshot-cost.mjs
++++ after/experiments/pg17-deletion-capture/verify-snapshot-cost.mjs
+@@ -0,0 +1,51 @@
++import {mkdir,readFile,writeFile} from 'node:fs/promises'
++import {join} from 'node:path'
++import {randomUUID} from 'node:crypto'
++import {gzipSync} from 'node:zlib'
++import {Harness,root,digest} from '../pg17-routines/runtime.mjs'
++import {setup,MIGRATION,capture,snapshot,USER,OTHER,PROJECT} from './fixture.mjs'
++import {save,METADATA} from '../pg17-recording-flow/fixture.mjs'
++const before=process.argv.includes('--before-fix-1'),directory=join(root,'docs/research/evidence/2026-11-06-g1-deletion-capture',`snapshot-cost-${before?'red-':''}${Date.now()}-${randomUUID()}`)
++const report={status:'running',assertions:0,actorConnections:[],scenarios:[],sources:{},samples:[],command:`node experiments/pg17-deletion-capture/verify-snapshot-cost.mjs ${process.argv.slice(2).join(' ')}`.trim(),g1MilestoneSatisfied:false,physicalDeletionComplete:false}
++const h=new Harness(report);await mkdir(directory,{recursive:true})
++async function source(path){const actual=before&&path===MIGRATION?`.superpowers/sdd/2026-11-06-upgrade-g1-deletion-capture/task-1-fix-1-before/${path}`:path;const bytes=await readFile(join(root,actual));report.sources[actual]=digest(bytes);return bytes.toString()}
++async function artifact(name,rows){const raw=Buffer.from(JSON.stringify(rows,null,2)),archive=gzipSync(raw);await writeFile(join(directory,`${name}.json.gz`),archive);return{path:`${name}.json.gz`,rawBytes:raw.length,rawSha256:digest(raw),archiveSha256:digest(archive)}}
++try {
++  await source('experiments/pg17-deletion-capture/fixture.mjs');await source('experiments/pg17-deletion-capture/verify-snapshot-cost.mjs')
++  await h.start();await setup(h,source);const service=await h.actorClient('service_role',USER)
++  await service.query("SET statement_timeout='30s'")
++  const sql=await source(MIGRATION)
++  const original=sql.match(/CREATE FUNCTION public\.request_media_deletion\([\s\S]*?\n\$\$;/)?.[0];h.ok(original,'exact actual capture function extracted for supplemental serializer probe')
++  const probe=original.replace('FUNCTION public.request_media_deletion(', 'FUNCTION public.request_media_deletion_json_probe(').replaceAll('to_jsonb(', 'public.deletion_json_probe(')
++  const wrapper=`CREATE TABLE public.deletion_json_probe_log(type_name text, serialized_bytes bigint, contains_unrelated_body boolean);
++    CREATE FUNCTION public.deletion_json_probe(value anyelement) RETURNS jsonb LANGUAGE plpgsql VOLATILE AS $p$
++    DECLARE result jsonb; BEGIN result := pg_catalog.to_jsonb(value);
++      INSERT INTO public.deletion_json_probe_log VALUES(pg_typeof(value)::text,octet_length(result::text),coalesce(left(result->>'content',21)='UNRELATED_BODY_PROBE:',false));
++      RETURN result; END; $p$;`
++  await h.db.query(wrapper);await h.db.query(probe)
++  await h.db.query('REVOKE ALL ON FUNCTION public.request_media_deletion_json_probe(uuid,uuid,uuid,text,uuid) FROM PUBLIC; GRANT EXECUTE ON FUNCTION public.request_media_deletion_json_probe(uuid,uuid,uuid,text,uuid) TO service_role')
++  await writeFile(join(directory,'serializer-probe.sql'),wrapper+'\n'+probe)
++  report.instrumentation={actualSqlSha256:digest(sql),derivedProbeSha256:digest(probe),wrapperSha256:digest(wrapper),note:'Timings below execute the unmodified actual function. A separate diagnostic copy substitutes only to_jsonb with a transparent serializer/logger to count serialized payload bytes and unrelated-body hits. It is supplemental, not the production behavior oracle.'}
++  const unrelated=(await save(service,randomUUID(),'reserve',METADATA)).lookup.intent.storyId
++  await h.scenario('I2 unrelated 0/8/32 MiB content is excluded from capture JSON serialization',async()=>{
++    for(const mib of [0,8,32]) {
++      const target=(await save(service,randomUUID(),'reserve',METADATA)).lookup.intent.storyId
++      await h.db.query("UPDATE stories SET content=CASE WHEN $2::int=0 THEN '' ELSE 'UNRELATED_BODY_PROBE:'||repeat('x',$2::int-21) END WHERE id=$1",[unrelated,mib*1024*1024])
++      h.eq(Number((await h.db.query('SELECT octet_length(content) AS bytes FROM stories WHERE id=$1',[unrelated])).rows[0].bytes),mib*1024*1024,'exact unrelated body byte size')
++      const initial=await snapshot(h),beforeRows=await artifact(`mib-${mib}-before`,initial)
++      const start=performance.now(),receipt=await capture(service,{subjectId:target,requestId:randomUUID()}),elapsedMs=performance.now()-start
++      const final=await snapshot(h),afterRows=await artifact(`mib-${mib}-after`,final)
++      for(const table of Object.keys(initial).filter(t=>!['deletion_requests','deletion_targets'].includes(t)))h.eq(final[table],initial[table],`${mib} MiB ${table}: full source rows unchanged`)
++      h.eq(receipt.targetCount,1,'actual function captures one metadata target')
++      const probeTarget=(await save(service,randomUUID(),'reserve',METADATA)).lookup.intent.storyId
++      await h.db.query('TRUNCATE public.deletion_json_probe_log')
++      const probeReceipt=(await service.query({text:'SELECT public.request_media_deletion_json_probe($1,$2,$3,$4,$5) AS value',values:[OTHER,PROJECT,probeTarget,'story',randomUUID()],query_timeout:30000})).rows[0].value
++      const probeRows=(await h.db.query('SELECT type_name,count(*)::int AS calls,sum(serialized_bytes)::bigint::text AS serialized_bytes,count(*) FILTER (WHERE contains_unrelated_body)::int AS unrelated_body_calls FROM public.deletion_json_probe_log GROUP BY type_name ORDER BY type_name')).rows
++      report.samples.push({unrelatedStoryBodyMiB:mib,elapsedMs,targetCount:receipt.targetCount,receipt,beforeRows,afterRows,probeReceipt,serializer:probeRows,totalSerializedBytes:probeRows.reduce((n,r)=>n+Number(r.serialized_bytes),0),unrelatedBodyCalls:probeRows.reduce((n,r)=>n+r.unrelated_body_calls,0)})
++    }
++    h.eq(report.samples.map(s=>s.unrelatedBodyCalls),[0,0,0],'no unrelated story body serialized at any size')
++    const work=report.samples.map(s=>s.totalSerializedBytes)
++    h.ok(Math.max(...work)-Math.min(...work)<8192,'serializer work stays scoped while unrelated content grows by 32 MiB')
++  });report.status='passed'
++}catch(e){report.status='failed';report.error={code:e.code??'ERROR',label:e.label??e.message,where:e.where};process.exitCode=1}
++finally{await h.cleanup();if(report.status!=='passed')process.exitCode=1;await writeFile(join(directory,'results.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({directory,status:report.status,assertions:report.assertions,samples:report.samples.map(({unrelatedStoryBodyMiB,elapsedMs,totalSerializedBytes,unrelatedBodyCalls})=>({unrelatedStoryBodyMiB,elapsedMs,totalSerializedBytes,unrelatedBodyCalls})),error:report.error,cleanup:report.cleanup},null,2))}

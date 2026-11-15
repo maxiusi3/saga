@@ -4,8 +4,8 @@ import {
   SyntheticProbeResult,
 } from './cutover-readiness'
 
-export type SupportedProvider = 'elevenlabs' | 'anthropic' | 'voyage'
-export type SupportedCapability = 'asr_transcribe' | 'story_extract_edit' | 'semantic_retrieval'
+export type SupportedProvider = 'elevenlabs' | 'anthropic' | 'voyage' | 'openai'
+export type SupportedCapability = 'asr_transcribe' | 'story_extract_edit' | 'story_fact_review' | 'semantic_retrieval'
 
 export interface ProviderPolicyEvidence {
   provider: SupportedProvider
@@ -47,22 +47,26 @@ export const APPROVED_CAPABILITY_CONFIG: Record<
   story_extract_edit: {
     capability: 'story_extract_edit',
     provider: 'anthropic',
-    defaultModelId: 'claude-opus-4-20250514',
+    defaultModelId: 'claude-opus-5-5',
     approvedModels: ['claude-opus-4-20250514', 'claude-opus-5-5'],
     defaultRegion: 'us',
     apiKeyEnvVar: 'ANTHROPIC_API_KEY',
+  },
+  story_fact_review: {
+    capability: 'story_fact_review', provider: 'openai', defaultModelId: 'gpt-6-astra',
+    approvedModels: ['gpt-6-astra'], defaultRegion: 'us', apiKeyEnvVar: 'OPENAI_API_KEY',
   },
   semantic_retrieval: {
     capability: 'semantic_retrieval',
     provider: 'voyage',
     defaultModelId: 'voyage-4-large',
-    approvedModels: ['voyage-4-large'],
+    approvedModels: ['voyage-4-large', 'rerank-2.5'],
     defaultRegion: 'us',
     apiKeyEnvVar: 'VOYAGE_API_KEY',
   },
 }
 
-const SUPPORTED_PROVIDERS: readonly SupportedProvider[] = ['elevenlabs', 'anthropic', 'voyage']
+const SUPPORTED_PROVIDERS: readonly SupportedProvider[] = ['elevenlabs', 'anthropic', 'voyage', 'openai']
 const CONTROL_CHAR_REGEX = /[\x00-\x1F\x7F]/
 const ISO_8601_UTC_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/
 const MAX_CLOCK_SKEW_MS = 5 * 60 * 1000 // 5 minutes

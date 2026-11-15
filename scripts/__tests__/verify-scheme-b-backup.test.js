@@ -1,6 +1,6 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { execFileSync } = require('node:child_process')
+const { execFileSync, spawnSync } = require('node:child_process')
 const path = require('node:path')
 const fs = require('node:fs')
 const os = require('node:os')
@@ -23,6 +23,89 @@ function createMockDump(content = 'TEST_PG17_RESTORE_DATA') {
     Buffer.from(content, 'utf8'),
   ])
 }
+
+// Synthetic unit coordinates; durable SQL coordinates are covered by the native runner.
+function candidateFixture() {
+  const dump = createMockDump('SYNTHETIC_HEADER_ONLY_NOT_A_RESTORABLE_DUMP')
+  const manifest = {
+    freezeTimestamp: '2026-11-06T00:00:00.000Z',
+    dumpSha256: createHash('sha256').update(dump).digest('hex'),
+    dumpSizeBytes: dump.length,
+    objects: [
+      { id: 'original-chunk', bucket: 'audio-recordings', key: 'user/sessions/keep/0', byteSize: 11, sha256: '1'.repeat(64) },
+      { id: 'published-candidate', bucket: 'recording-candidates', key: 'project/job/remove.webm', byteSize: 22, sha256: '2'.repeat(64) },
+      { id: 'retained-candidate', bucket: 'recording-candidates', key: 'project/job/keep.webm', byteSize: 33, sha256: '3'.repeat(64) },
+      { id: 'legacy-object', bucket: 'saga', key: 'project/photo.jpg', byteSize: 44, sha256: '4'.repeat(64) },
+    ],
+  }
+  const tombstones = [{ targetType: 'storage_object', targetId: 'durable-target-id-different-from-manifest-id',
+    bucket: manifest.objects[1].bucket, key: manifest.objects[1].key,
+    tombstonedAt: '2026-11-06T00:00:01.000Z', reason: 'synthetic_candidate_capture' }]
+  return { dump, manifest, tombstones }
+}
+
+test('candidate-aware manifest preserves unrelated chunk, candidate and legacy entries', () => {
+  const { dump, manifest, tombstones } = candidateFixture()
+  const before = JSON.stringify({ manifest, tombstones })
+  const report = runSchemeBVerification({ dumpBuffer: dump, manifest, tombstones })
+  assert.deepEqual(report.manifest, { valid: true, objectCount: 4, totalBytes: 110 })
+  assert.deepEqual(report.tombstoneReplay, {
+    purgedCount: 1, survivingObjects: [manifest.objects[0], manifest.objects[2], manifest.objects[3]], survivingTotalBytes: 88,
+  })
+  assert.equal(JSON.stringify({ manifest, tombstones }), before)
+})
+
+test('candidate manifests retain malformed, duplicate, size, hash and unknown-bucket checks', () => {
+  const { manifest } = candidateFixture()
+  const cases = [
+    [{ bucket: 'unknown-candidates' }, 'DISALLOWED_BUCKET_NAME'],
+    [{ key: '../escape' }, 'INVALID_STORAGE_KEY'],
+    [{ key: '/absolute' }, 'INVALID_STORAGE_KEY'],
+    [{ key: 'bad\\key' }, 'INVALID_STORAGE_KEY'],
+    [{ key: 'bad\0key' }, 'INVALID_STORAGE_KEY'],
+    [{ id: '' }, 'INVALID_OBJECT_ID'],
+    [{ sha256: 'bad-hash' }, 'INVALID_SHA256_FORMAT'],
+    [{ byteSize: 0 }, 'INVALID_OBJECT_SIZE'],
+    [{ byteSize: 1.5 }, 'INVALID_OBJECT_SIZE'],
+    [{ byteSize: Number.MAX_SAFE_INTEGER + 1 }, 'INVALID_OBJECT_SIZE'],
+  ]
+  for (const [override, error] of cases) {
+    assert.throws(() => verifyStorageManifestObject({
+      ...manifest, objects: [{ ...manifest.objects[1], ...override }],
+    }, manifest.dumpSha256), { message: error })
+  }
+  assert.throws(() => verifyStorageManifestObject({
+    ...manifest, objects: [...manifest.objects, { ...manifest.objects[1], id: 'alias' }],
+  }, manifest.dumpSha256), { message: 'DUPLICATE_STORAGE_OBJECT_KEY' })
+})
+
+test('CLI file mode accepts candidate replay and rejects an unsafe candidate key', () => {
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'scheme-b-candidates-'))
+  try {
+    const { dump, manifest, tombstones } = candidateFixture()
+    const dumpPath = path.join(temporary, 'synthetic-header.dump')
+    const manifestPath = path.join(temporary, 'manifest.json')
+    const tombstonesPath = path.join(temporary, 'tombstones.json')
+    fs.writeFileSync(dumpPath, dump)
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest))
+    fs.writeFileSync(tombstonesPath, JSON.stringify(tombstones))
+    const args = [SCRIPT_PATH, '--dump', dumpPath, '--manifest', manifestPath, '--tombstones', tombstonesPath]
+    const valid = spawnSync(process.execPath, args, { encoding: 'utf8' })
+    assert.equal(valid.status, 0, valid.stderr)
+    const output = JSON.parse(valid.stdout)
+    assert.equal(output.mode, 'file_verification')
+    assert.equal(output.status, 'pass')
+    assert.deepEqual(output.report, runSchemeBVerification({ dumpBuffer: dump, manifest, tombstones }))
+    fs.writeFileSync(manifestPath, JSON.stringify({ ...manifest,
+      objects: manifest.objects.map(object => object.id === 'published-candidate' ? { ...object, key: '../escape' } : object),
+    }))
+    const invalid = spawnSync(process.execPath, args, { encoding: 'utf8' })
+    assert.equal(invalid.status, 1)
+    assert.deepEqual(JSON.parse(invalid.stderr), { mode: 'verification_failed', error: 'INVALID_STORAGE_KEY' })
+  } finally {
+    fs.rmSync(temporary, { recursive: true, force: true })
+  }
+})
 
 test('Scheme B CLI & verification engine', async (t) => {
   await t.test('verifies custom pg_dump archive magic and hash', () => {

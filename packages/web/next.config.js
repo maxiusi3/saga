@@ -5,6 +5,9 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['@saga/shared'],
+  outputFileTracingIncludes: {
+    '/api/projects/*/export': ['./assets/fonts/**/*'],
+  },
   eslint: {
     ignoreDuringBuilds: false,
   },

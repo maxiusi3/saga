@@ -157,4 +157,29 @@ describe('T06 AI capability gateway and versioned transcript builder', () => {
     expect(entry.estimatedCostUsd).toBe(0.134)
     expect(entry.providerRequestId).toBe('req-123')
   })
+
+  const buildSegment = (confidence?: number | null) => buildVersionedTranscript({
+    projectId: 'proj-alpha', storyId: 'story-1', version: 1, language: 'en',
+    provider: 'imported', model: 'legacy-import', createdBy: 'user-1',
+    rawSegments: [{ text: 'A source excerpt without measured confidence.', confidence }],
+  })
+
+  it.each([undefined, null])('keeps unknown confidence %s unknown instead of fabricating certainty', confidence => {
+    expect(buildSegment(confidence).segments[0].confidence).toBeNull()
+  })
+
+  it.each([NaN, Infinity, -Infinity, -0.1, 1.1])('rejects invalid measured confidence %s', confidence => {
+    expect(() => buildSegment(confidence)).toThrow(/confidence/)
+  })
+
+  it('generates distinct persistable UUIDs without changing the transcript content hash', () => {
+    const first = buildSegment(0)
+    const second = buildSegment(0)
+    const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
+    expect(first.id).toMatch(uuid)
+    expect(first.segments[0].id).toMatch(uuid)
+    expect(second.segments[0].id).not.toBe(first.segments[0].id)
+    expect(first.segments[0].confidence).toBe(0)
+    expect(first.contentSha256).toBe(second.contentSha256)
+  })
 })

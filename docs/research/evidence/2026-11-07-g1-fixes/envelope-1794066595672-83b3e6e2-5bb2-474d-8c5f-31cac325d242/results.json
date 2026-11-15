@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "sources": {
+    "experiments/g1-local/verify-webm-envelope.mjs": "4c8e60a1c1a5dbc9f76f8c8d5247490c3d6e6eb6335ebc1344a3398c9496c075",
+    "packages/web/src/lib/server/recording-webm-envelope.ts": "a6e49a85f0abd264618c59f8b5f32f9264cd742355e68e35225cab63a495c77b"
+  },
+  "checks": [
+    "original unchanged",
+    "same decoded PCM before/after container closure",
+    "zero strict decoder diagnostics after closure",
+    "truncated audio packet rejected"
+  ],
+  "boundary": "Actual saved Chrome minute chunk; original bytes retained. Strict FFmpeg on the detached container envelope. No missing audio is invented.",
+  "input": {
+    "directory": "/Users/eat/Documents/eatpotato/saga传奇/docs/research/evidence/2026-11-07-g1-chrome/integrated-browser-1794059710258-2f76707e-5601-44f0-9829-05ded2ec89fb",
+    "filename": "object-e8c1ac25d36eccc4.audio",
+    "sha256": "0c9c6f8d33724c5aded12399061f61151bcd4467e724b38951472359ac85be3e",
+    "bytes": 486178
+  },
+  "decoded": {
+    "originalExit": 0,
+    "originalDiagnostic": "[matroska,webm @ 0x7f89b2b04600] File ended prematurely at pos. 486178 (0x76b22)\n",
+    "closedExit": 0,
+    "closedDiagnosticBytes": 0,
+    "pcmSha256": "808aa1608d326c97b284a1f1eaf652e3cade952292e140642edb42b173cf956f",
+    "durationMs": 60000
+  },
+  "envelope": {
+    "sha256": "5ded1a57d7eac0f7713ef1eb238784f1c57ecd0a7046001dc1bfa17de6dea88a",
+    "bytes": 486177,
+    "removedContainerHeaderBytes": 1,
+    "audioBlocks": 1000
+  },
+  "sourceDrift": []
+}

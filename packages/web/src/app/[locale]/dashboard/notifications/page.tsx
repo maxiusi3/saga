@@ -26,6 +26,8 @@ export default function NotificationsPage() {
     unreadCount, 
     loading, 
     error, 
+    markAsRead,
+    deleteNotification,
     markAllAsRead,
     refresh 
   } = useNotifications()
@@ -192,6 +194,8 @@ export default function NotificationsPage() {
             <NotificationItem
               key={notification.id}
               notification={notification}
+                markAsRead={markAsRead}
+                deleteNotification={deleteNotification}
               onClick={() => handleNotificationClick(notification.action_url)}
               showActions={true}
             />

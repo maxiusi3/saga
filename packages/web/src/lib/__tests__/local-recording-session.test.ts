@@ -2,6 +2,7 @@
 import { webcrypto } from 'node:crypto'
 import { createLocalRecordingSession } from '../local-recording-session'
 
+jest.mock('../recording-session-lock', () => ({ acquireRecordingSessionLock: async () => () => {} }))
 const mockSave = jest.fn()
 const mockChunks = jest.fn()
 const mockMark = jest.fn()
@@ -37,7 +38,7 @@ it.each(['audio/webm;codecs=opus', 'audio/mp4', 'audio/ogg'])('uploads %s withou
   await session.sync()
   expect(mockUpload).toHaveBeenCalledWith(blob, {
     bucket: 'audio-recordings', folder: 'projects/project-1/sessions/session-1', fileName: '0',
-    allowedTypes: [mimeType.split(';')[0]], expectedUserId: 'user-1',
+    allowedTypes: [mimeType.split(';')[0]], expectedUserId: 'user-1', isCurrent: expect.any(Function),
   })
   expect(mockMark).toHaveBeenCalledWith('session-1', 0)
 })

@@ -27,6 +27,8 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
     unreadCount, 
     loading, 
     error, 
+    markAsRead,
+    deleteNotification,
     markAllAsRead 
   } = useNotifications()
 
@@ -117,6 +119,8 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
               <NotificationItem
                 key={notification.id}
                 notification={notification}
+                markAsRead={markAsRead}
+                deleteNotification={deleteNotification}
                 onClick={() => handleNotificationClick(notification.action_url)}
               />
             ))}

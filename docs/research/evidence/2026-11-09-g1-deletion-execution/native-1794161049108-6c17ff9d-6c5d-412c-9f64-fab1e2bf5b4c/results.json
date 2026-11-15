@@ -1,0 +1,204 @@
+{
+  "status": "passed",
+  "assertions": 98,
+  "actorConnections": [
+    {
+      "current_user": "service_role",
+      "session_user": "service_role",
+      "rolsuper": false,
+      "rolbypassrls": false
+    }
+  ],
+  "sources": {
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/bootstrap/20260624000000_app_base_schema.sql": "873f2328cb136db24e26c8736e1fe94b6a43082436b9559eca095329ec551a81",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662",
+    "supabase/migrations/20261103000001_recording_worker_leases.sql": "b00caf176c41975d5246e2365e9ffcaf15cd5fbf00ed667356df88ee872c1cdb",
+    "supabase/migrations/20261103000002_recording_output_candidates.sql": "eea0a02f6156b52e02ab51159e39e1c72d05e4919c96f829201c1f8f84eccb9e",
+    "supabase/migrations/20261104000001_recording_job_finalization.sql": "a1e9d438abb610870534da4dd832b1304fc706ea2f7b07b0e8ecb01b26f8662b",
+    "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af",
+    "supabase/migrations/20261106000001_recording_story_save.sql": "20ba20cdda0ec79c997cf1a0eafc38e7d7c022ad95b6146e7658d4208b8d5569",
+    "supabase/migrations/20261106000002_media_deletion_capture.sql": "8c4873a4cf980bb6912508d387ac2a6d509cf5c27894298a8277e7f7d0f52b32",
+    "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql": "cb1d15de2782ed2c0fde5c69b1ee2684b8a5a941e46623c6092a4003c1784628",
+    "supabase/migrations/20261106000004_media_deletion_leases.sql": "b09325de38514d56789d8bb8d0c43e12223328f9c72a8a055cff9f01e3146063",
+    "supabase/migrations/20261109000001_media_deletion_execution.sql": "32e9376c5e3d72caa433e13d92c26a2438e810aece9b98e97629a4ed591ec457",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "bc311f822e8e70db695d10b40efa87d34f08eba0a50ec81aa8e8e3da5b41a201",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-webm-envelope.ts": "a6e49a85f0abd264618c59f8b5f32f9264cd742355e68e35225cab63a495c77b",
+    "packages/web/src/lib/server/media-deletion-worker.ts": "e693532332137943d041fbc8e188026e6dfe72b33adbd3ad2a87cdc040d237e2",
+    "packages/web/src/lib/server/media-deletion-execution.ts": "a536ab6e3b68781e667cae6519a1ba4a9f87293fec258cdd2b82a1e104996389",
+    "packages/web/src/lib/server/media-deletion-storage.ts": "54f920daa35b6b5086cc52a3de1d8dd762d2fb6b7da7abae263aa33e56375db8"
+  },
+  "scenarios": [
+    {
+      "name": "cannot delete without present observation",
+      "status": "passed",
+      "assertions": 1
+    },
+    {
+      "name": "actual SQL and HTTP worker deletes disk bytes and preserves unrelated files",
+      "status": "passed",
+      "assertions": 30
+    },
+    {
+      "name": "metadata loss does not launder unknown backend cleanup into physical success",
+      "status": "passed",
+      "assertions": 21
+    },
+    {
+      "name": "crash after dispatch is reconciled before another delete",
+      "status": "passed",
+      "assertions": 15
+    }
+  ],
+  "runtime": {
+    "node": "v22.22.2",
+    "pg": "8.16.3",
+    "scrubbedEnvironmentKeys": [],
+    "binarySha256": {
+      "postgres": "81214d9c55486f6babdc14f772d2d938870f9b985d7b31aa577e66af0ccba36d",
+      "pg_ctl": "dd6336c6c606e49c025644a76a10f7b76b3f376387332167d71eb77e6651ff1c",
+      "initdb": "bf990cda74de0e93e810e7f177b9209e92efeb699f258183440feebac7559c87"
+    },
+    "postgres": "postgres (PostgreSQL) 17.4",
+    "nodeExecutableSha256": "0b8f2f0b030bb443caa2a6781bc2d2e7069e173143726a1627bf527b3ef3126b",
+    "pgEntrySha256": "a012ecbe7fdefed8d2b36c3658e33dc4c291d0bb60df18d382300061211052b7",
+    "clusterStartAttempted": true,
+    "serverPid": 63439,
+    "variableConflict": "error",
+    "connection": {
+      "host": "/tmp/saga-pg17-XjuMVS/socket",
+      "database": "saga_pg17_rehearsal",
+      "port": 5432,
+      "ssl": false,
+      "transport": "unix_socket",
+      "statementTimeoutMs": 8000,
+      "lockTimeoutMs": 4000
+    }
+  },
+  "scratch": "/tmp/saga-pg17-XjuMVS",
+  "fixture": {
+    "actualStorySchema": "supabase/bootstrap/20260624000000_app_base_schema.sql",
+    "fullMigrations": [
+      "supabase/migrations/20261102000001_recording_seal_manifest.sql",
+      "supabase/migrations/20261103000001_recording_worker_leases.sql",
+      "supabase/migrations/20261103000002_recording_output_candidates.sql",
+      "supabase/migrations/20261104000001_recording_job_finalization.sql",
+      "supabase/migrations/20261105000001_recording_session_snapshot.sql",
+      "supabase/migrations/20261106000001_recording_story_save.sql",
+      "supabase/migrations/20261106000002_media_deletion_capture.sql",
+      "supabase/migrations/20261106000003_recording_seal_deletion_fence.sql",
+      "supabase/migrations/20261106000004_media_deletion_leases.sql"
+    ],
+    "syntheticPrerequisites": [
+      "auth",
+      "projects",
+      "project_roles",
+      "project_members",
+      "storage"
+    ],
+    "actualRequestReadPolicy": "CREATE POLICY \"deletion_requests_select_active_member\" ON public.deletion_requests\n  FOR SELECT TO authenticated\n  USING (public.is_active_project_member(project_id, auth.uid()));",
+    "actualDeletionTargetsDdl": "CREATE TABLE IF NOT EXISTS public.deletion_targets (\n  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),\n  deletion_request_id uuid NOT NULL REFERENCES public.deletion_requests(id) ON DELETE CASCADE,\n  target_id text NOT NULL,\n  kind text NOT NULL CHECK (kind IN ('media_asset', 'storage_object', 'story', 'derived_artifact')),\n  bucket text,\n  object_key text,\n  state text NOT NULL DEFAULT 'pending'\n    CHECK (state IN ('pending', 'processing', 'failed', 'deleted', 'not_found')),\n  error_code text,\n  updated_at timestamptz NOT NULL DEFAULT now(),\n  UNIQUE (deletion_request_id, target_id)\n);"
+  },
+  "plan": {
+    "runId": "6de2bf14-7cc4-46b4-9916-6f4ec731c65b",
+    "state": "scanning",
+    "objects": [
+      {
+        "bucket": "audio-recordings",
+        "objectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/d0696c96-6ae3-467a-8099-ceddd754397a/0"
+      },
+      {
+        "bucket": "recording-candidates",
+        "objectKey": "jobs/7141ea34-cac8-4e83-a045-483fbc1d683c/attempts/1/6c03b1a8-6938-44fe-905a-bb8518348e14"
+      }
+    ],
+    "prefixes": [
+      {
+        "bucket": "audio-recordings",
+        "objectKey": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/d0696c96-6ae3-467a-8099-ceddd754397a"
+      }
+    ],
+    "requestId": "e8dd45e0-8369-4e2f-98fb-475d47bb76fa",
+    "serverNow": "2026-11-08T18:04:11.991026+00:00",
+    "nextScanAt": "2026-11-08T18:06:11.989746+00:00",
+    "operationId": null,
+    "lastVerifiedAt": null,
+    "leaseExpiresAt": "2026-11-08T18:06:11.989745+00:00",
+    "unresolvedPhysicalCount": 0,
+    "physicalDeletionComplete": false
+  },
+  "workerSuccess": {
+    "requestId": "549b8972-ecfd-4cf8-8c59-8ae1a1b43079",
+    "result": {
+      "runId": "fce6bbe1-60ac-4533-b684-ff0c30ebe1a2",
+      "state": "observed_absent",
+      "objects": [],
+      "prefixes": [],
+      "requestId": "549b8972-ecfd-4cf8-8c59-8ae1a1b43079",
+      "serverNow": "2026-11-08T18:04:12.580411+00:00",
+      "nextScanAt": "2026-11-08T18:09:12.579407+00:00",
+      "operationId": null,
+      "lastVerifiedAt": "2026-11-08T18:04:12.57941+00:00",
+      "leaseExpiresAt": null,
+      "unresolvedPhysicalCount": 0,
+      "physicalDeletionComplete": false
+    },
+    "again": {
+      "runId": "2a421d41-e317-49b1-8453-815da72d8470",
+      "state": "observed_absent",
+      "objects": [],
+      "prefixes": [],
+      "requestId": "549b8972-ecfd-4cf8-8c59-8ae1a1b43079",
+      "serverNow": "2026-11-08T18:04:12.828847+00:00",
+      "nextScanAt": "2026-11-08T18:09:12.825991+00:00",
+      "operationId": null,
+      "lastVerifiedAt": "2026-11-08T18:04:12.825993+00:00",
+      "leaseExpiresAt": null,
+      "unresolvedPhysicalCount": 0,
+      "physicalDeletionComplete": false
+    }
+  },
+  "backendUnknown": {
+    "requestId": "1e38bfdc-9156-493e-b5c6-1de8b7ffcce0",
+    "first": {
+      "runId": "6cea1509-cd7e-42ca-ba0e-466b411674fd",
+      "state": "reconcile",
+      "objects": [],
+      "prefixes": [],
+      "requestId": "1e38bfdc-9156-493e-b5c6-1de8b7ffcce0",
+      "serverNow": "2026-11-08T18:04:13.090815+00:00",
+      "nextScanAt": "2026-11-08T18:09:13.088237+00:00",
+      "operationId": null,
+      "lastVerifiedAt": null,
+      "leaseExpiresAt": null,
+      "unresolvedPhysicalCount": 1,
+      "physicalDeletionComplete": false
+    },
+    "second": {
+      "runId": "678b7453-9104-4953-b396-cc36ca665f1d",
+      "state": "reconcile",
+      "objects": [],
+      "prefixes": [],
+      "requestId": "1e38bfdc-9156-493e-b5c6-1de8b7ffcce0",
+      "serverNow": "2026-11-08T18:04:13.306276+00:00",
+      "nextScanAt": "2026-11-08T18:09:13.305146+00:00",
+      "operationId": null,
+      "lastVerifiedAt": null,
+      "leaseExpiresAt": null,
+      "unresolvedPhysicalCount": 1,
+      "physicalDeletionComplete": false
+    },
+    "orphanBytesRemain": true
+  },
+  "cleanup": {
+    "clusterStopped": true,
+    "tempDirectoryRemoved": true,
+    "clientsRemaining": 0,
+    "errors": []
+  }
+}

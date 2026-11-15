@@ -1,0 +1,156 @@
+[
+  {
+    "name": "unknown_bucket",
+    "tsResult": {
+      "ok": false,
+      "error": "DISALLOWED_BUCKET_NAME"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "DISALLOWED_BUCKET_NAME"
+    }
+  },
+  {
+    "name": "path_traversal",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_KEY"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_KEY"
+    }
+  },
+  {
+    "name": "absolute_key",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_KEY"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_KEY"
+    }
+  },
+  {
+    "name": "backslash_key",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_KEY"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_KEY"
+    }
+  },
+  {
+    "name": "control_key",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_KEY"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_KEY"
+    }
+  },
+  {
+    "name": "empty_id",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_OBJECT_ID"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_OBJECT_ID"
+    }
+  },
+  {
+    "name": "malformed_entry",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_OBJECT_ENTRY"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_STORAGE_OBJECT_ENTRY"
+    }
+  },
+  {
+    "name": "invalid_hash",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_SHA256_FORMAT"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_SHA256_FORMAT"
+    }
+  },
+  {
+    "name": "zero_size",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_OBJECT_SIZE"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_OBJECT_SIZE"
+    }
+  },
+  {
+    "name": "fractional_size",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_OBJECT_SIZE"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_OBJECT_SIZE"
+    }
+  },
+  {
+    "name": "unsafe_size",
+    "tsResult": {
+      "ok": false,
+      "error": "INVALID_OBJECT_SIZE"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "INVALID_OBJECT_SIZE"
+    }
+  },
+  {
+    "name": "duplicate_candidate_address",
+    "tsResult": {
+      "ok": false,
+      "error": "DUPLICATE_STORAGE_OBJECT_KEY"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "DUPLICATE_STORAGE_OBJECT_KEY"
+    }
+  },
+  {
+    "name": "total_bytes_overflow",
+    "tsResult": {
+      "ok": false,
+      "error": "TOTAL_BYTES_OVERFLOW"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "TOTAL_BYTES_OVERFLOW"
+    }
+  },
+  {
+    "name": "dump_hash_mismatch",
+    "tsResult": {
+      "ok": false,
+      "error": "DUMP_HASH_MANIFEST_MISMATCH"
+    },
+    "cjsResult": {
+      "ok": false,
+      "error": "DUMP_HASH_MANIFEST_MISMATCH"
+    }
+  }
+]

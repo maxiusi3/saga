@@ -1,0 +1,132 @@
+{
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "checks": {
+    "scope-abort-green-final": {
+      "exitCode": 0,
+      "sourcesMatch": true,
+      "logHashesMatch": true
+    },
+    "final-integration": {
+      "exitCode": 0,
+      "sourcesMatch": true,
+      "logHashesMatch": true
+    },
+    "final-full-chain": {
+      "exitCode": 0,
+      "sourcesMatch": true,
+      "logHashesMatch": true
+    },
+    "priorEvidence": {
+      "files": 216,
+      "mismatches": []
+    },
+    "whitespace": {
+      "tracked": "passed",
+      "newTextFiles": "passed"
+    },
+    "newReportLinks": "passed"
+  },
+  "web": {
+    "suites": 144,
+    "tests": 2521
+  },
+  "shared": {
+    "suites": 4,
+    "tests": 16
+  },
+  "infraTests": 14,
+  "buildPages": 184,
+  "focused": {
+    "suites": 4,
+    "tests": 295
+  },
+  "integration": {
+    "cases": 21,
+    "checks": 250
+  },
+  "staged": false,
+  "committedThisTurn": false,
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "sha256": {
+    "docs/HANDOFF-2026-10-13-upgrade.md": "6a96441e4a3fc9c34b700ca3bef6c7cb4bbcf9451af7770c68a2451fe3dbdaf2",
+    "docs/README.md": "8626a8845f6589b3198bbf48f4a6955077746a9469b5442fa7ed1e8038001a49",
+    "docs/research/2026-11-03-g1-worker-input.md": "b1f7f2df00af365f2d30439b9ba8d53062e4e62463e55bf5ebbd8c58cd154d00",
+    "docs/research/evidence/2026-11-03-g1-worker-input/README.md": "becf8fcaea7d59c306c19e4f262e9fbf713bfd44f8ad54635104906e81980570",
+    "docs/research/evidence/2026-11-03-g1-worker-input/cleanup-green.json": "37fe65c2810ba35ff8d36389032479d6d3bb79f07b5cf36d4ce3912da8dd73b6",
+    "docs/research/evidence/2026-11-03-g1-worker-input/cleanup-red.json": "10a43b3cf1110658ff426bc97ee4d32cfafbfa36cad308e175bcf2fefdac2b60",
+    "docs/research/evidence/2026-11-03-g1-worker-input/final-full-chain.json": "407700996202a8ba476a98cd0d17a96337a86a91689a01e9421ed6c733791b9e",
+    "docs/research/evidence/2026-11-03-g1-worker-input/final-integration.json": "a24d788d9c5c22413a451d691340a2b18a9be2d6940b30f893468a28cd19ffda",
+    "docs/research/evidence/2026-11-03-g1-worker-input/final-next-env-check.json": "00ee13edef2f97267933eb3ec47d814411171ddd7db6f9730d01863abd4cd6ec",
+    "docs/research/evidence/2026-11-03-g1-worker-input/focused-1.json": "4ae7d0f452d9e3231106ed992bbfbf16e3fa1ab2190ff034b9c58be37b800ecc",
+    "docs/research/evidence/2026-11-03-g1-worker-input/full-chain.json": "81fe73db1efc57b36695b118c9d92b61d6a0aed8404020a43caf989e498792e7",
+    "docs/research/evidence/2026-11-03-g1-worker-input/input-ffmpeg-events.json": "0c27198c0ef8845ce58a2b40260a09f444ef2b217ca8bff56a44c45b2bb92c7e",
+    "docs/research/evidence/2026-11-03-g1-worker-input/input-http-requests.json": "9937acc6966d99574c8dcb57dc0d7279ecac81262afb6d257a5cd97269434c38",
+    "docs/research/evidence/2026-11-03-g1-worker-input/input-results.json": "452a72e10a4d255650d4ecbe3a5921c19f9bed4f51d9717529ba40398aafe401",
+    "docs/research/evidence/2026-11-03-g1-worker-input/next-env-check.json": "3de739a7a33bd5e73cfefb659c754870d828fe0ab8cbcb8990a8d47aa6e8f22b",
+    "docs/research/evidence/2026-11-03-g1-worker-input/prior-evidence-check.json": "09e54893e6accba246ab123266a71338282c3f092556f2fb6fe7f0fc03b46145",
+    "docs/research/evidence/2026-11-03-g1-worker-input/prior-ledger-golden.sql": "cd4ca6bd435a07944b9a2fdad810287516cd24acb76ba9cb8184f2f3fa239454",
+    "docs/research/evidence/2026-11-03-g1-worker-input/prior-log-recovery.json": "9d3e0e862dd181a23c75228e473f20300621a3036a07f6337c63fb5406fae647",
+    "docs/research/evidence/2026-11-03-g1-worker-input/quality-review.md": "564f6efbb001d77f8f6aeaf7054afa91ac0fd8c1f30cf00c4efcd04ac147c6aa",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/cleanup-green.log.gz": "55b23fec7177662f48ffb6720a9d632a585b7035cf1c17aed4570b790c721c3d",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/cleanup-red.log.gz": "cb17c4f29c40baae78b52ebe2a0a6ef431216bf68daee19a972c67abea161932",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/final-full-chain.log.gz": "88649633603d510ffd4fbbfcea43a800bc3b3b00b26c3da65b0ea61894152c22",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/final-integration.log.gz": "320cd21b2d5d10ddc8de293e54fdbca9c1400136273519db7957fb8f3d7c5e39",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/focused-1.log.gz": "10fa3252e5f049baedc0b5a7596bf8df9159bbc35d23d27e734ed4e5e9c1de22",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/full-chain.log.gz": "7f8de5f6ae87aff599ebb813c9a197301279e584a79e2a29dd9dabb29a82e5e7",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/prior-ledger-evidence.log.gz": "ba41cc302d7d9ced6120ddd6a8c26bd020c8b02e67c23f37f7f19282c971e192",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/prior-ledger-green-final.log.gz": "d2714c918f252f6adffb93132ccb0e07a15064b1cb3fa0cd44ce82cd93daf43a",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/prior-ledger-pg-golden.log.gz": "47f3d5d31daf08b26caf608e4f574e55088a61b73eef9b809138fa0f6a9b0bf0",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/prior-ledger-pg-init.log.gz": "d20ad9cf4f6aef8fbc64d91e7c670fb5b5ab0704e5978a80562a7614040f1811",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/prior-ledger-red.log.gz": "06136ca2577e048e314787f1a59c27d57f4b1bd29fd464ffe5fb21b7c1c9a5ab",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/prior-verifier-green-1.log.gz": "5cbe72727979c250c99709c051ed0a17107dbfabc45cd08d3f69ea6ca9437745",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/prior-verifier-red.log.gz": "6127d58030508685bc61455c1f4628cc9999c395f12bdf1a6843a5b51850b8e3",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/resume-focused.log.gz": "454398a9ff675683e2e3ce59b56a8ef607a1ea555845ab14e020506e79f59fed",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/resume-full-chain.log.gz": "e8382bc90418b30865df6e5e2d806d820d946b80159c795051b25491c3377980",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/resume-integration.log.gz": "09ee6a0cf8652d22059d36bb74ac0f67c3446dee2de645c874df0960adb054ee",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/scope-abort-green-2.log.gz": "70fd4985198279007649b8d2a40f1cfc4f2d7ba57181e9754fbc65419a7236e0",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/scope-abort-green-final.log.gz": "8d41372abf9f3ff891c8032c03503da0566ee95514490a5ec36209be494b8c84",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/scope-abort-green.log.gz": "520d52a581954456fb7a2dcfcaf83c24c80394dd58dc0d500bdf279f1139c8a5",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/scope-abort-red.log.gz": "fd0edd1660815d6f6f247d7e687eb48e1ff83ff14fec0af44d10eb8b1a9a6de3",
+    "docs/research/evidence/2026-11-03-g1-worker-input/raw/scope-signals-red.log.gz": "cde5a0816aace9e2eb0d10d70f8d9df26c2b1724ebde617bec4ac5d4250aa14f",
+    "docs/research/evidence/2026-11-03-g1-worker-input/resume-focused.json": "061706b7738b2891b9759a43f64790465eb1e90cbdc0364152054e68d95d6f1b",
+    "docs/research/evidence/2026-11-03-g1-worker-input/resume-full-chain.json": "cd44e0a9103e890caca2f1a71f6b484d57781e5e776023b1d2f8ec526bd11e3c",
+    "docs/research/evidence/2026-11-03-g1-worker-input/resume-integration.json": "e920bd8e150e8c14d4185e3455eb017fbe0e7f4bc906536170a5a438bf66d3ac",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T01-53-30-255Z-79489/input-ffmpeg-events.json": "e08be2b79d2fc974a3cf1c850083a55cc88307888bca6ee6fd054c6bb7ade903",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T01-53-30-255Z-79489/input-http-requests.json": "b5490fed4397d8eeaf52cfc07209f399a7dcbd867936e1d5cc4e0cb6755c22fc",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T01-53-30-255Z-79489/input-results.json": "217f8e09aca9d58b7992a9b2b12998ff7a3d6335ef703ba1d0889a6e461eee2c",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T10-00-25-964Z-55290/input-ffmpeg-events.json": "58c9726f1fb1e38522bf2d20699c2cf83185b2ddfc06b7b77b6654c61ec5b5c7",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T10-00-25-964Z-55290/input-http-requests.json": "b5490fed4397d8eeaf52cfc07209f399a7dcbd867936e1d5cc4e0cb6755c22fc",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T10-00-25-964Z-55290/input-results.json": "b36f88c1dae2c20430864cfb2cfdbededfad2152e318073c39877c35b56fb7ba",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T10-11-23-042Z-59878/input-ffmpeg-events.json": "80d4f3d9f7c8a33f7df5863f5f3438383da9877692988539788fbfffcb3f866d",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T10-11-23-042Z-59878/input-http-requests.json": "e158fd4307f6434eccfb12a6cbe0be0e17eb384b69f7e4697a9f595e6d6e12d1",
+    "docs/research/evidence/2026-11-03-g1-worker-input/run-2026-11-03T10-11-23-042Z-59878/input-results.json": "f0802f3b5bdc3852f898061bc6c0cd538b96c2f760c21eb88a556ace24e216f3",
+    "docs/research/evidence/2026-11-03-g1-worker-input/scope-abort-green-2.json": "9884c5a0e961d67623fa90383dc45d651bb85013beb4426822234c9c7bf78bf3",
+    "docs/research/evidence/2026-11-03-g1-worker-input/scope-abort-green-final.json": "bea6b57a3a8e1e1f28e345e8750c898cd9d6763e08133899ed5ea81677355b85",
+    "docs/research/evidence/2026-11-03-g1-worker-input/scope-abort-green.json": "5db6b608004b00261b0a91bf96261cfb10666207340726903f5ecc27e0665bc8",
+    "docs/research/evidence/2026-11-03-g1-worker-input/scope-abort-red.json": "bdd159baa4cf4cec127be760d5c5a69881a3f158ee39e7d92fe117d4dfb3ea44",
+    "docs/research/evidence/2026-11-03-g1-worker-input/scope-signals-red.json": "849ced0d8ed22019e7efc3f55b5554b05f1da79bd8a1909c82a061497cf640be",
+    "docs/research/evidence/2026-11-03-g1-worker-input/spec-review.md": "58e0ad859f0ce150c63f71c1077f2c3c5170dddec06608d6bcfb7040211052cf",
+    "experiments/recording-job-input/README.md": "d6d374e08abbce2fc55a7f863978610b44882114918ab0dc5c2d246c1818062f",
+    "package-lock.json": "e7107a320f21819660d34139162d5774caefc8d2381b52370cc19187345b969f",
+    "packages/web/jest.config.js": "49e39f226ba3b7f3d7e42da10c8fc89b2429e11338079dfd8ea3464e5a231e16",
+    "packages/web/package.json": "7266c3b55d289c3262300940aa0eab80b47da071f5174302790b2607d851a9ea",
+    "packages/web/src/lib/recording-chunk-location.ts": "eb7ab5be0b807ebae6fb45bd652bb8ce42e6e67289b581037fa1a30220b439b7",
+    "packages/web/src/lib/server/__tests__/recording-job-input.test.ts": "f15dfeaf15fc61f5074f7ce5fc0b14cfb2080994c9e3d4a1f3b7bad4f9574d0d",
+    "packages/web/src/lib/server/__tests__/recording-job-verifier.test.ts": "df5970f41ef2aa85ab2b42136ef5a08fefc2a1f9e71551f3b55d59d05b80228c",
+    "packages/web/src/lib/server/consent-deletion.ts": "8516400ed183b714beea6bfe06a20de7c360f5b5930f733c751c517f585c7f33",
+    "packages/web/src/lib/server/processing-jobs.ts": "c6336ad62e1d38c98f35e1321b1ed1767452703128e58267d68e7be6b56f6eb1",
+    "packages/web/src/lib/server/recording-audio-decoder.ts": "3eea74f88074b37539dfb175e9256e3fe27c359ab711c7a8211bfa7a68e03c03",
+    "packages/web/src/lib/server/recording-job-input.ts": "7aa966b1acae25ff8c06d1a725ea832076bf9f447f6f3571048d700ec0796881",
+    "packages/web/src/lib/server/recording-job-verifier.ts": "a1c58f7b778863c5646de139a3afcf9b2679cc63a0c467a08a4602d4146fbcc9",
+    "packages/web/src/lib/server/recording-merge-executor.ts": "a25bab6a153dcc9db14b867a69f3d75e493526d5157d58c0f01845f5b384e76b",
+    "packages/web/src/lib/server/recording-merge.ts": "6f9fd03c0ebab3fe7f4ed8f84364b597d3f740f5122f4eebf1ed51b3e2f4b7c8",
+    "packages/web/src/lib/server/recording-processing-error.ts": "1e918d317291d940c4d535c75103712a741cc19d0a94d01a1bdb97f064309a4e",
+    "packages/web/src/lib/server/recording-session-service.ts": "d91276b8d32df5a39f29c4d6587cb616f955d91386bc2f1e3608b823dc97d9e1",
+    "packages/web/tsconfig.json": "070f8df0873e47cda4081284776dbcb1b6c7462fd904078b78a3849a26d5b04a",
+    "scripts/verify-recording-job-input.cjs": "ca1dc2f789ceac582cce44ac55efb01c3cb9f351f965040d12904fd6d41e55ad",
+    "supabase/migrations/20261024000001_p1_foundation_and_reconciliation.sql": "08783f906f994e9c7e8ebc4e745e687f77d08c476a40c176e0aa472d8d3c8ff1",
+    "supabase/migrations/20261102000001_recording_seal_manifest.sql": "73022a504372e430beb4711d1c27cfc39d370a0c3dbabeec39ab15c11f4f0662"
+  }
+}

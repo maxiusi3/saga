@@ -1,0 +1,11 @@
+{
+  "files": {
+    "supabase/migrations/20261106000001_recording_story_save.sql": "7f1d3c78ed2175e73d5a8809bb5bd28902fda453727120304f3f75d311d80612",
+    "experiments/pg17-recording-flow/fixture.mjs": "3944124c7f078e3f280e6cfcdefb4bc249805a53bdb2cb7d7998ed83b03c361d",
+    "experiments/pg17-recording-flow/verify.mjs": "aef3dc1292bc06f0195be7cef4f796e451b49ddc4d663de355dd7f579cf17570",
+    "experiments/pg17-recording-flow/README.md": "d73c94705cfbf513aacc04f76505fee3add563aec93f32031a6ec0794fe311b1"
+  },
+  "newFiles": [
+    "experiments/pg17-recording-flow/confirmation-regressions.mjs"
+  ]
+}

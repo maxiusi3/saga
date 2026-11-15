@@ -27,6 +27,7 @@ const INTERVIEW_PHASES = [
 ] as const
 
 interface InterviewInterventionRequest {
+  recordingSessionId?: unknown
   projectId?: unknown
   interviewSessionId?: unknown
   storytellerId?: unknown
@@ -117,6 +118,7 @@ export async function POST(request: NextRequest) {
       interviewSessionId: input.interviewSessionId,
       createdBy: auth.user.id,
       input: {
+        recordingSessionId: input.recordingSessionId,
         interventionLevel: sessionInterventionLevel,
         phase: input.phase,
         storytellerName: input.storytellerName,
@@ -212,6 +214,7 @@ async function parseRequest(request: NextRequest) {
 
   const {
     projectId,
+    recordingSessionId,
     interviewSessionId,
     storytellerId,
     interventionLevel,
@@ -228,6 +231,7 @@ async function parseRequest(request: NextRequest) {
 
   if (
     typeof projectId !== 'string' ||
+    (recordingSessionId != null && (typeof recordingSessionId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(recordingSessionId))) ||
     typeof interviewSessionId !== 'string' ||
     typeof storytellerId !== 'string' ||
     !isInterventionLevel(interventionLevel) ||
@@ -250,6 +254,7 @@ async function parseRequest(request: NextRequest) {
     ok: true as const,
     input: {
       projectId,
+      recordingSessionId: typeof recordingSessionId === 'string' ? recordingSessionId : null,
       interviewSessionId,
       storytellerId,
       interventionLevel,

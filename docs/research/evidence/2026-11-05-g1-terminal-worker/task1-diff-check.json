@@ -1,0 +1,43 @@
+[
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--check",
+      "/dev/null",
+      "packages/web/src/lib/server/recording-terminal-worker.ts"
+    ],
+    "exitCode": 1
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--check",
+      "/dev/null",
+      "packages/web/src/lib/server/recording-candidate-worker.ts"
+    ],
+    "exitCode": 1
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--check",
+      "/dev/null",
+      "packages/web/src/lib/server/__tests__/recording-terminal-worker.test.ts"
+    ],
+    "exitCode": 1
+  }
+]

@@ -29,7 +29,9 @@ export async function GET(request: NextRequest) {
 
     // 解析需要补充的 sender/story/project id 集合
     const senderIds = Array.from(new Set(list.map((n: any) => n.sender_id).filter(Boolean)))
-    const projectIds = Array.from(new Set(list.map((n: any) => n.data?.project_id).filter(Boolean)))
+    // Hosting reminders store their project under hosting_project_id.
+    const projectIdOf = (data: any): string | null => data?.project_id || data?.hosting_project_id || null
+    const projectIds = Array.from(new Set(list.map((n: any) => projectIdOf(n.data)).filter(Boolean)))
     const storyIds = Array.from(new Set(list.map((n: any) => n.data?.story_id).filter(Boolean)))
 
     // 批量拉取 sender profiles
@@ -47,9 +49,9 @@ export async function GET(request: NextRequest) {
     if (projectIds.length > 0) {
       const { data: projects } = await db
         .from('projects')
-        .select('id, title')
+        .select('id, name')
         .in('id', projectIds)
-      projectTitles = Object.fromEntries((projects || []).map((p: any) => [p.id, p.title]))
+      projectTitles = Object.fromEntries((projects || []).map((p: any) => [p.id, p.name || p.title]))
     }
 
     let storyTitles: Record<string, string> = {}
@@ -63,6 +65,7 @@ export async function GET(request: NextRequest) {
 
     const formattedNotifications = list.map((n: any) => {
       const data = n.data || {}
+      const projectId = projectIdOf(data)
       const sender = (n.sender_id && senderProfiles[n.sender_id]) || {}
       const actionUrl = n.action_url || (data.project_id && data.story_id ? `/dashboard/projects/${data.project_id}/stories/${data.story_id}` : null)
       return {
@@ -71,7 +74,7 @@ export async function GET(request: NextRequest) {
         sender_id: n.sender_id,
         sender_name: sender.name || sender.email || 'System',
         sender_avatar: sender.avatar_url || null,
-        project_id: data.project_id || null,
+        project_id: projectId,
         story_id: data.story_id || null,
         comment_id: data.interaction_id || null,
         notification_type: n.type,
@@ -83,7 +86,7 @@ export async function GET(request: NextRequest) {
         read_at: n.read_at,
         created_at: n.created_at,
         updated_at: n.updated_at,
-        project_title: data.project_id ? projectTitles[data.project_id] || null : null,
+        project_title: projectId ? projectTitles[projectId] || null : null,
         story_title: data.story_id ? storyTitles[data.story_id] || null : null
       }
     })

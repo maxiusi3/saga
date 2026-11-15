@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { EnhancedButton } from '@/components/ui/enhanced-button'
@@ -8,11 +8,10 @@ import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader } from '@/compone
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { ArrowLeft, BookOpen, Users, Sparkles, Crown, Mic } from 'lucide-react'
+import { ArrowLeft, BookOpen, Users, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { useAuthStore } from '@/stores/auth-store'
 import { projectService } from '@/lib/projects'
-import { useResourceWallet } from '@/hooks/use-resource-wallet'
 import { toast } from 'react-hot-toast'
 
 export default function CreateProjectPage() {
@@ -25,81 +24,39 @@ export default function CreateProjectPage() {
     return `/${locale}${normalized}`
   }
   const { user } = useAuthStore()
-  const { wallet, loading: walletLoading, hasResources } = useResourceWallet()
+  const submitting = useRef(false)
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
-    theme: 'family-memories',
-    role: 'storyteller' // 默认选择 storyteller
+    description: ''
   })
 
-  // 在钱包加载完成且有数据前，禁止提交，避免“看似失败”的体验
-  const submitDisabled = loading || walletLoading || !wallet || !formData.name
+  const submitDisabled = loading || !user?.id || !formData.name.trim()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (!user?.id) {
-      console.error('User not authenticated')
-      return
-    }
-
-    // 检查资源余额
-    if (!wallet) {
-      toast.error(t('errors.fetchBalance'))
-      return
-    }
-
-    // 检查项目券
-    if (!hasResources('project_vouchers', 1)) {
-      // Redirect to purchase page when resources are insufficient
-      toast.error(t('errors.insufficientVouchers'))
-      router.push(withLocale('/dashboard/purchase'))
-      return
-    }
-
-    // 检查角色席位
-    const seatType = formData.role === 'facilitator' ? 'facilitator_seats' : 'storyteller_seats'
-    if (!hasResources(seatType, 1)) {
-      const roleName = formData.role === 'facilitator' ? t('roles.facilitator.name') : t('roles.storyteller.name')
-      toast.error(t('errors.insufficientSeats', { role: roleName }))
-      router.push(withLocale('/dashboard/purchase'))
-      return
-    }
-
+    if (!user?.id || submitting.current || !formData.name.trim()) return
+    submitting.current = true
     setLoading(true)
-
+    setError(null)
     try {
-      console.log('Creating project:', formData)
-
-      // 使用数据库函数创建项目并消耗资源
       const project = await projectService.createProjectWithRole({
-        name: formData.name,
+        name: formData.name.trim(),
         description: formData.description,
         facilitator_id: user.id,
-        role: formData.role as 'facilitator' | 'storyteller'
+        role: 'facilitator'
       })
-
-      if (project) {
-        console.log('Project created successfully:', project)
-        toast.success(t('success.created'))
-        // 重定向到新创建的项目页面
-        router.push(withLocale(`/dashboard/projects/${project.id}`))
-      } else {
-        throw new Error('Failed to create project')
-      }
-    } catch (error: any) {
-      console.error('Error creating project:', error)
-
-      // Handle specific error messages
-      if (error.message?.includes('Insufficient project vouchers')) {
-        toast.error(t('errors.insufficientVouchers'))
-      } else if (error.message?.includes('Insufficient')) {
-        toast.error(t('errors.insufficientSeats', { role: '' }))
-      } else {
-        toast.error(t('errors.createFailed'))
-      }
+      if (!project) throw new Error('Failed to create project')
+      toast.success(t('success.created'))
+      router.push(withLocale(`/dashboard/projects/${project.id}`))
+    } catch (failure) {
+      const missingRight = failure instanceof Error && /Purchase a project first|purchased project allocation/i.test(failure.message)
+      setError(missingRight
+        ? 'A verified, unused project purchase is required. Check your purchases below, then try again.'
+        : 'Project creation could not be confirmed. Your details are kept; check your purchases before retrying.')
+    } finally {
+      submitting.current = false
       setLoading(false)
     }
   }
@@ -110,33 +67,6 @@ export default function CreateProjectPage() {
       [field]: value
     }))
   }
-
-  const themes = [
-    {
-      id: 'family-memories',
-      name: t('themes.familyMemories.name'),
-      description: t('themes.familyMemories.description'),
-      icon: '👨‍👩‍👧‍👦'
-    },
-    {
-      id: 'life-journey',
-      name: t('themes.lifeJourney.name'),
-      description: t('themes.lifeJourney.description'),
-      icon: '🛤️'
-    },
-    {
-      id: 'cultural-heritage',
-      name: t('themes.culturalHeritage.name'),
-      description: t('themes.culturalHeritage.description'),
-      icon: '🏛️'
-    },
-    {
-      id: 'professional-legacy',
-      name: t('themes.professionalLegacy.name'),
-      description: t('themes.professionalLegacy.description'),
-      icon: '💼'
-    }
-  ]
 
   return (
     <div className="container-narrow responsive-padding container max-w-2xl py-8">
@@ -198,95 +128,11 @@ export default function CreateProjectPage() {
                 />
               </div>
 
-              {/* Theme Selection */}
-              <div className="space-y-4">
-                <Label className="text-base font-medium">{t('form.projectTheme')}</Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {themes.map((theme) => (
-                    <div
-                      key={theme.id}
-                      className={`group p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${formData.theme === theme.id
-                          ? 'border-primary bg-primary/5 shadow-sm'
-                          : 'border-border hover:border-primary/50 hover:bg-muted/30'
-                        }`}
-                      onClick={() => handleInputChange('theme', theme.id)}
-                    >
-                      <div className="flex items-start space-x-4">
-                        <div className="text-3xl group-hover:scale-110 transition-transform">{theme.icon}</div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">{theme.name}</h3>
-                          <p className="text-base text-muted-foreground mt-1">{theme.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="space-y-2 rounded-lg bg-muted/30 p-5">
+                <p className="text-sm text-muted-foreground">Creating a project uses one verified project purchase. You will manage the project and can invite its storyteller after creation.</p>
+                <Link className="inline-flex min-h-[44px] items-center font-medium underline" href={withLocale('/dashboard/purchase')}>View purchases and project rights</Link>
               </div>
-
-              {/* Role Selection */}
-              <div className="space-y-4">
-                <Label className="text-base font-medium">{t('form.yourRole')}</Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div
-                    className={`p-4 border rounded-lg cursor-pointer transition-all ${formData.role === 'storyteller'
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border hover:border-primary/50'
-                      }`}
-                    onClick={() => handleInputChange('role', 'storyteller')}
-                  >
-                    <div className="flex items-start space-x-4">
-                      <Mic className="w-8 h-8 text-primary mt-1" />
-                      <div>
-                        <h3 className="font-semibold text-lg text-foreground">{t('roles.storyteller.name')}</h3>
-                        <p className="text-base text-muted-foreground">{t('roles.storyteller.description')}</p>
-                        <div className="mt-2 text-sm text-muted-foreground">
-                          {t('roles.storyteller.resourceCost')}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    className={`p-4 border rounded-lg cursor-pointer transition-all ${formData.role === 'facilitator'
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border hover:border-primary/50'
-                      }`}
-                    onClick={() => handleInputChange('role', 'facilitator')}
-                  >
-                    <div className="flex items-start space-x-4">
-                      <Crown className="w-8 h-8 text-primary mt-1" />
-                      <div>
-                        <h3 className="font-semibold text-lg text-foreground">{t('roles.facilitator.name')}</h3>
-                        <p className="text-base text-muted-foreground">{t('roles.facilitator.description')}</p>
-                        <div className="mt-2 text-sm text-muted-foreground">
-                          {t('roles.facilitator.resourceCost')}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Resource Status */}
-              {wallet && (
-                <div className="bg-muted/30 rounded-lg p-6">
-                  <h4 className="text-base font-medium text-foreground mb-3">{t('form.currentBalance')}</h4>
-                  <div className="grid grid-cols-3 gap-6 text-base">
-                    <div className="text-center">
-                      <div className="font-bold text-xl text-foreground">{wallet.project_vouchers}</div>
-                      <div className="text-muted-foreground">{t('form.projectVouchers')}</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-xl text-foreground">{wallet.facilitator_seats}</div>
-                      <div className="text-muted-foreground">{t('form.facilitatorSeats')}</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-xl text-foreground">{wallet.storyteller_seats}</div>
-                      <div className="text-muted-foreground">{t('form.storytellerSeats')}</div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
 
               {/* Submit Button */}
               <div className="flex justify-end space-x-4 pt-8">

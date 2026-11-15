@@ -1,6 +1,7 @@
 import type { User } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 import type { getSupabaseAdmin } from '@/lib/supabase'
+import { recordingAssetDeletionSubjects } from './recording-asset-lineage'
 import { requireProjectAccess, type ProjectAccessResult } from './project-access'
 
 const pinnedFields = ['id', 'project_id', 'bucket', 'object_key', 'kind', 'state', 'version'] as const
@@ -36,10 +37,12 @@ export async function requireCurrentMediaAsset(
       return deny('Asset changed or is no longer eligible', 409)
     }
 
+    const sessions = await recordingAssetDeletionSubjects(admin, current)
+
     // The shipped asset table has no tombstone_at column: select('*') tolerates
     // optional evidence, while deletion_requests is the authoritative ledger.
     // Keep this the final await; callers must publish synchronously on success.
-    const subjects = [expected.id, expected.story_id].filter((id): id is string => typeof id === 'string')
+    const subjects = [expected.id, expected.story_id, expected.project_id, ...sessions].filter((id): id is string => typeof id === 'string')
     const { data: tombstones, error: deletionError } = await admin.from('deletion_requests')
       .select('subject_id, tombstone_at').eq('project_id', expected.project_id)
       .in('subject_id', subjects).not('tombstone_at', 'is', null)

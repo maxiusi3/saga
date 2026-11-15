@@ -403,6 +403,7 @@ describe('/api/agents/interview/intervention', () => {
       body: JSON.stringify({
         projectId: 'project-1',
         interviewSessionId: 'session-1',
+        recordingSessionId: '11111111-1111-4111-8111-111111111111',
         storytellerId: 'host-1',
         interventionLevel: 'high',
         phase: 'opening',
@@ -445,6 +446,7 @@ describe('/api/agents/interview/intervention', () => {
       interviewSessionId: 'session-1',
       createdBy: 'host-1',
       input: expect.objectContaining({
+        recordingSessionId: '11111111-1111-4111-8111-111111111111',
         phase: 'opening',
         interventionLevel: 'high',
       }),

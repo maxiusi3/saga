@@ -1,0 +1,101 @@
+{
+  "status": "running",
+  "requests": [
+    {
+      "path": "/api/stories/8d5a9128-cb56-4d6a-a5df-b05dd5fc6d04/review",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/media/assets/23527ae0-8a8c-41b0-80c3-fa38242eed3e/play",
+      "method": "GET",
+      "status": 307
+    },
+    {
+      "path": "/api/stories/8d5a9128-cb56-4d6a-a5df-b05dd5fc6d04/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/8d5a9128-cb56-4d6a-a5df-b05dd5fc6d04/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/8d5a9128-cb56-4d6a-a5df-b05dd5fc6d04/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/8d5a9128-cb56-4d6a-a5df-b05dd5fc6d04/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/8d5a9128-cb56-4d6a-a5df-b05dd5fc6d04/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/search?q=Chicago",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/search/source",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/search?q=%E4%BA%AC%E9%83%BD",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/search?q=Mercury",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/export?durable=true",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "path": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/export/jobs/bbc16892-1467-4111-b4d5-13f676d69e57",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/export/jobs/bbc16892-1467-4111-b4d5-13f676d69e57/download",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "actual G2 review decisions and long Unicode approval",
+    "source-backed literal search and original audio playback",
+    "supplement null timing and rejected text exclusion"
+  ],
+  "source": {
+    "project": "57c7420b-c773-4da3-b4b0-9bbfb777624c",
+    "story": "8d5a9128-cb56-4d6a-a5df-b05dd5fc6d04",
+    "asset": "23527ae0-8a8c-41b0-80c3-fa38242eed3e",
+    "transcript": "7c51c98e-424c-42e0-9903-4b9bb15f58f9",
+    "sha256": "38d4fe14e5f89f543e875da3c70ad9b1bfc9f3bf6503216e2266891bd9fcd5fe"
+  },
+  "boundary": "Actual StoryReviewPanel, ConnectedProjectHub and PublicationDeliveryPanel; actual routes, Supabase SDK and native PG17.4. Synthetic local authentication and PostgREST/Storage transport, generated tone WAV and explicitly synthetic timed transcript. Installed Chrome. No real ASR, household fidelity, hosted deployment or payment settlement claim.",
+  "browser": "157.0.8103.39",
+  "revision": "71d67eee-54ca-451a-95e2-a7c2e4cafab6",
+  "job": {
+    "jobId": "bbc16892-1467-4111-b4d5-13f676d69e57",
+    "snapshotId": "bbc16892-1467-4111-b4d5-13f676d69e57",
+    "snapshotVersion": 1,
+    "status": "queued",
+    "attempt": 0,
+    "errorCode": null,
+    "statusUrl": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/export/jobs/bbc16892-1467-4111-b4d5-13f676d69e57",
+    "downloadUrl": "/api/projects/57c7420b-c773-4da3-b4b0-9bbfb777624c/export/jobs/bbc16892-1467-4111-b4d5-13f676d69e57/download"
+  }
+}

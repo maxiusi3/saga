@@ -1,0 +1,70 @@
+import { randomUUID } from 'node:crypto'
+export async function paymentScenarios({ h, source, evidence }) {
+ await source('experiments/pg17-g3-delivery/payment-scenarios.mjs')
+ h.ok((await h.db.query("SELECT to_regprocedure('public.reserve_payment_order(uuid,uuid,text)') r")).rows[0].r,'durable payment order RPC exists')
+ const payer=randomUUID(),other=randomUUID()
+ await h.db.query('INSERT INTO auth.users(id,email,email_confirmed_at) VALUES($1,$3,now()),($2,$4,now())',[payer,other,'payment-a@example.invalid','payment-b@example.invalid'])
+ const reserve=async(id=randomUUID(),user=payer)=>{const r=await h.actor('service_role',user,'SELECT reserve_payment_order($1,$2,$3) r',[user,id,'digital_project_59']);h.eq(r.sqlstate,'00000','reserve order');return r.rows[0].r}
+ const rid=randomUUID(),order=await reserve(rid)
+ h.eq((await reserve(rid)).id,order.id,'same persisted request uses same order')
+ h.eq((await reserve()).id,order.id,'concurrent tab cannot create second pending order')
+ const apply=(o,id,type='payment_intent.succeeded',refund=0,over={})=>h.actor('service_role',payer,'SELECT apply_verified_payment_event($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) r',[o.id,id,type,over.intent??'pi_'+o.id.replaceAll('-',''),over.payer??payer,over.amount??5900,over.currency??'usd',over.live??false,id.padEnd(64,'a').slice(0,64),refund])
+ const bind=async o=>{const r=await h.actor('service_role',payer,'SELECT bind_payment_intent($1,$2,$3) r',[o.id,payer,'pi_'+o.id.replaceAll('-','')]);h.eq(r.sqlstate,'00000','bind provider identity')}
+ await bind(order)
+ for(const over of [{payer:other},{amount:1},{currency:'eur'},{live:true},{intent:'pi_other'}])h.eq((await apply(order,'evt_invalid','payment_intent.succeeded',0,over)).sqlstate,'22023','mismatched verified event denied')
+ const race=await Promise.all([apply(order,'evt_success'),apply(order,'evt_success')]);h.eq(race.map(r=>r.sqlstate),['00000','00000'],'concurrent event replay')
+ h.eq((await h.db.query('SELECT storyteller_seats FROM user_resource_wallets WHERE user_id=$1',[payer])).rows[0].storyteller_seats,1,'grant once in wallet mirror')
+ h.eq((await h.db.query('SELECT count(*)::int n FROM invitation_candidate.trusted_seat_sources WHERE payer_id=$1',[payer])).rows[0].n,2,'grant backed by two trusted sources')
+ const foreign=randomUUID();await h.db.query('INSERT INTO projects(id,name,facilitator_id) VALUES($1,$2,$3)',[foreign,'Foreign',other])
+ const allocateSql='SELECT allocate_payment_project($1,$2,$3,$4,$5) r'
+ h.eq((await h.actor('service_role',payer,allocateSql,[payer,order.id,foreign,null,null])).sqlstate,'42501','cannot allocate other family project')
+ const allocated=await h.actor('service_role',payer,allocateSql,[payer,order.id,null,'Purchased family',null]);h.eq(allocated.sqlstate,'00000','paid order creates usable project')
+ const right=allocated.rows[0].r.rights,project=right.project_id
+ h.eq((await h.actor('service_role',payer,allocateSql,[payer,order.id,null,'Purchased family',null])).rows[0].r.rights,right,'allocation retry preserves project and hosting dates')
+ h.eq((await h.actor('service_role',payer,allocateSql,[payer,order.id,null,'Different family',null])).sqlstate,'22023','order cannot reallocate to another project')
+ const member=randomUUID(),invitee=randomUUID();await h.db.query('INSERT INTO auth.users(id,email,email_confirmed_at) VALUES($1,$3,now()),($2,$4,now())',[member,invitee,'member-'+member+'@example.invalid','invitee-'+invitee+'@example.invalid'])
+ const sources=(await h.db.query("SELECT resource_type,source_id FROM entitlement_candidate.sources WHERE source_key LIKE $1",['pi_'+order.id.replaceAll('-','')+':%'])).rows
+ const sendSql='SELECT * FROM invitation_candidate.send($1,$2,$3,$4,$5,NULL)'
+ const send=async(role,email)=>{const r=await h.actor('authenticated',payer,sendSql,[project,randomUUID(),email,role,sources.find(s=>s.resource_type===role+'_seat').source_id]);if(r.sqlstate!=='00000'){const c=await h.actorClient('authenticated',payer);try{await c.query(sendSql,[project,randomUUID(),email,role,sources.find(s=>s.resource_type===role+'_seat').source_id])}catch(e){h.report.paymentInvitationError={message:e.message,code:e.code,where:e.where}}finally{await h.close(c)}}h.eq(r.sqlstate,'00000','purchased source actually spends in invitation '+role);return r.rows[0]}
+ const accepted=await send('storyteller','member-'+member+'@example.invalid'),reserved=await send('facilitator','invitee-'+invitee+'@example.invalid')
+ h.eq((await h.actor('authenticated',member,'SELECT * FROM invitation_candidate.accept($1)',[accepted.token])).sqlstate,'00000','purchased storyteller invitation accepts')
+ const unrelated=await reserve();await bind(unrelated);h.eq((await apply(unrelated,'evt_unrelated')).sqlstate,'00000','second genuine purchase')
+ const refunded=await apply(order,'evt_refund','charge.refunded',5900)
+ if(refunded.sqlstate!=='00000'){const c=await h.actorClient('service_role',payer);try{await c.query('SELECT apply_verified_payment_event($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',[order.id,'evt_refund','charge.refunded','pi_'+order.id.replaceAll('-',''),payer,5900,'usd',false,'a'.repeat(64),5900])}catch(e){h.report.paymentRefundError={message:e.message,code:e.code,where:e.where}}finally{await h.close(c)}}
+ h.eq(refunded.sqlstate,'00000','completed refund')
+ h.eq((await h.db.query('SELECT storyteller_seats FROM user_resource_wallets WHERE user_id=$1',[payer])).rows[0].storyteller_seats,1,'refund preserves other purchased balance')
+ h.eq((await h.db.query('SELECT status FROM project_roles WHERE project_id=$1 AND user_id=$2',[project,member])).rows[0].status,'removed','refund revokes only membership created from its source')
+ h.eq((await h.db.query('SELECT status FROM project_roles WHERE project_id=$1 AND user_id=$2',[project,payer])).rows[0].status,'active','refund preserves preexisting owner access')
+ h.eq((await h.actor('authenticated',payer,"SELECT * FROM invitation_candidate.release($1,'cancelled')",[reserved.invitation_id])).sqlstate,'00000','refunded reservation can be cleaned up')
+ h.eq((await h.db.query('SELECT facilitator_seats FROM user_resource_wallets WHERE user_id=$1',[payer])).rows[0].facilitator_seats,1,'release cannot restore refunded credit or remove unrelated purchase')
+ h.eq((await h.actor('service_role',payer,allocateSql,[payer,order.id,null,'Purchased family',null])).sqlstate,'42501','refunded right cannot allocate again')
+ h.eq((await apply(order,'evt_late_success')).sqlstate,'00000','late success safely suppressed')
+ h.eq((await h.db.query('SELECT status FROM payment_orders WHERE id=$1',[order.id])).rows[0].status,'refunded','refund terminal')
+ const early=await reserve();await bind(early);h.eq((await apply(early,'evt_early_refund','charge.refunded',5900)).sqlstate,'00000','refund before success')
+ h.eq((await apply(early,'evt_early_success')).sqlstate,'00000','out of order success suppressed')
+ const failure=await reserve();await bind(failure);h.eq((await apply(failure,'evt_failure','payment_intent.payment_failed')).sqlstate,'00000','failure recorded')
+ h.eq((await h.db.query('SELECT storyteller_seats FROM user_resource_wallets WHERE user_id=$1',[payer])).rows[0].storyteller_seats,1,'failure never grants')
+ h.eq((await h.actor('authenticated',other,"INSERT INTO projects(name,facilitator_id) VALUES('Unpaid direct bypass',$1)",[other])).sqlstate,'42501','direct insertion cannot bypass paid source')
+ h.eq((await h.actor('authenticated',other,'SELECT create_project_with_role($1,$2,$3,$4)',['Bypass','',other,'facilitator'])).sqlstate,'42501','legacy RPC cannot mint paid project without trusted purchase')
+ h.eq((await h.actor('authenticated',other,'SELECT create_project_with_role($1,$2,$3,$4)',['Spoof','',payer,'facilitator'])).sqlstate,'42501','legacy RPC rejects forged creator')
+ const legacyArgs=['Purchased through compatibility','',payer,'facilitator']
+ const wrapper=await h.actor('authenticated',payer,'SELECT create_project_with_role($1,$2,$3,$4) p',legacyArgs);h.eq(wrapper.sqlstate,'00000','legacy caller can consume trusted paid order')
+ h.eq((await h.actor('authenticated',payer,'SELECT create_project_with_role($1,$2,$3,$4) p',legacyArgs)).rows,wrapper.rows,'legacy retry retains allocation')
+ h.eq((await apply(unrelated,'evt_failed_after_paid','payment_intent.payment_failed')).sqlstate,'00000','old failure event recorded')
+ h.eq((await h.db.query('SELECT status FROM payment_orders WHERE id=$1',[unrelated.id])).rows[0].status,'paid','late failure cannot remove paid rights')
+ h.eq((await apply(failure,'evt_cancel','payment_intent.canceled')).sqlstate,'00000','cancellation recorded')
+ h.eq((await apply(failure,'evt_success_after_cancel')).sqlstate,'00000','late success after cancellation suppressed')
+ const racing=await reserve();await bind(racing)
+ const finalRace=await Promise.all([apply(racing,'evt_race_grant'),apply(racing,'evt_race_refund','charge.refunded',5900)])
+ h.eq(finalRace.map(r=>r.sqlstate),['00000','00000'],'success and refund serialize')
+ h.eq((await h.db.query('SELECT status FROM payment_orders WHERE id=$1',[racing.id])).rows[0].status,'refunded','refund dominates either concurrent event order')
+ h.eq((await h.db.query('SELECT storyteller_seats FROM user_resource_wallets WHERE user_id=$1',[payer])).rows[0].storyteller_seats,1,'race preserves unrelated purchase only')
+ const partial=await reserve();await bind(partial)
+ h.eq((await apply(partial,'evt_partial_before','charge.refunded',590)).sqlstate,'00000','partial refund before fulfillment recorded')
+ h.eq((await apply(partial,'evt_partial_success')).sqlstate,'00000','late success after partial refund accepted without grant')
+ h.eq((await h.db.query('SELECT status FROM payment_orders WHERE id=$1',[partial.id])).rows[0].status,'refund_review','partial refund requires reconciliation, not fully refunded')
+ h.eq((await h.db.query('SELECT storyteller_seats FROM user_resource_wallets WHERE user_id=$1',[payer])).rows[0].storyteller_seats,1,'any refund before first success suppresses new entitlement')
+ for(const role of ['anon','authenticated'])h.eq((await h.actor(role,payer,'SELECT reserve_payment_order($1,$2,$3)',[payer,randomUUID(),'digital_project_59'])).sqlstate,'42501','browser cannot mint order')
+ const http=await import('./payment-http.mjs');await http.paymentHttpScenarios({h,source,evidence,payer,other})
+ h.report.payment={status:'passed',payer,other,boundary:'Native full schema and actual Stripe SDK against controlled local HTTP; no external provider calls or settlement.'}
+}

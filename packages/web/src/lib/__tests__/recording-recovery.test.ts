@@ -4,7 +4,7 @@ import { listLocalRecordings, loadLocalRecording } from '../recording-recovery'
 import { recorderDB, type RecorderSessionRecord, type RecorderChunkRecord } from '../recorder-db'
 
 jest.mock('../recorder-db', () => ({ recorderDB: {
-  getRecoverableSessions: jest.fn(), getSession: jest.fn(), getChunksBySession: jest.fn(),
+  readSave: jest.fn(), getRecoverableSessions: jest.fn(), getSession: jest.fn(), getChunksBySession: jest.fn(),
 } }))
 
 const session: RecorderSessionRecord = {
@@ -129,4 +129,11 @@ it('still detects a session change that occurs during hash verification', async 
     await expect(loadLocalRecording('draft', 'project', 'user')).rejects.toMatchObject({ code: 'changed' })
     expect(digest).toHaveBeenCalled()
   } finally { digest.mockRestore() }
+})
+
+it('refuses corrupted durable save metadata before returning it to the recovery form', async () => {
+  const metadata={title:'Saved title',content:'',transcript:'',happenedAt:'invalid-date',recordingMode:'chat' as const,isPublic:false}
+  jest.mocked(recorderDB.getSession).mockResolvedValue({...session,saveIntent:{metadata,chunkIdentity:'bad',remote:null,confirmation:null}})
+  jest.mocked(recorderDB.readSave).mockRejectedValue(new Error('invalid_recording_save'))
+  await expect(loadLocalRecording('draft','project','user')).rejects.toMatchObject({code:'damaged'})
 })

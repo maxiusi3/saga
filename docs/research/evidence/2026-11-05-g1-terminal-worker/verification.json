@@ -1,0 +1,69 @@
+{
+  "status": "passed",
+  "localSliceComplete": true,
+  "g1Item01Complete": false,
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "canClearLocalDrafts": false,
+  "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+  "checkedAt": "2026-11-05T03:32:12.877308+00:00",
+  "focused": {
+    "suites": 7,
+    "tests": 303,
+    "newTests": 46
+  },
+  "fullGate": {
+    "receipt": "full-gate-01.json",
+    "sha256": "68de1e944acc799016935317afb1a02286366c1d8c83ad7ad9e5fd4d0718d3ef",
+    "webSuites": 151,
+    "webTests": 2875,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 14,
+    "builtPages": 184,
+    "exitCode": 0
+  },
+  "native": {
+    "receipt": "native-2026-11-05T03-06-28.682Z-bcabfa65-b516-4ccb-a452-4ff91d9e66f9/results.json",
+    "sha256": "10723b84ff0e4f5dc0486aea7ab4fad47c4cb8fa297284be1aaa726e3e6f0948",
+    "scenarios": 8,
+    "assertions": 11391,
+    "sources": 112,
+    "compiledModules": 17
+  },
+  "reviews": {
+    "task-1-review.md": {
+      "receipt": "task-1-review.md",
+      "sha256": "81f8ced82fa42916d915f34f45df10c08167ec6f7c6e644dc6a99e546ec3bdae"
+    },
+    "task-2-review.md": {
+      "receipt": "task-2-review.md",
+      "sha256": "c4bc579eeb72d871f7ee4e70d34f73f27d1bf118d7792f0f2626d4fcc602e953"
+    },
+    "final-review.md": {
+      "receipt": "final-review.md",
+      "sha256": "5085eaee04039797f7f35edcd9fa30f0280c47a57eeb18792cbf22d9c1d8353f"
+    }
+  },
+  "integrity": {
+    "receipt": "integrity.json",
+    "sha256": "74b86859c3138e539588d3f44bee9c3ac4d70aafb6361586c559bae25b3eb0ad"
+  },
+  "sourceLock": {
+    "receipt": "source-lock.json",
+    "sha256": "6894e00fa5b5e2ca17b82c9c94858b19f8bcb33fe16ee391efe557a2868a81fe"
+  },
+  "remaining": [
+    "status and explicit reconciliation",
+    "browser confirmation and idempotent story save",
+    "safe local draft cleanup",
+    "atomic deletion targets and reference-safe GC",
+    "candidate backup coverage",
+    "full migrations and deployment isolation",
+    "cloud/PostgREST/Storage and real-device G1 qualification"
+  ],
+  "staged": false,
+  "committed": false,
+  "pushed": false,
+  "deployed": false
+}

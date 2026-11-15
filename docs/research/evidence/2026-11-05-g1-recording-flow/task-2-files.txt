@@ -1,0 +1,6 @@
+package.json
+scripts/recording-worker.cjs
+scripts/__tests__/recording-worker-cli.test.js
+packages/web/src/lib/server/recording-worker-host.ts
+packages/web/src/lib/server/__tests__/recording-worker-host.test.ts
+docs/recording-worker.md

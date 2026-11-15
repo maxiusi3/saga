@@ -697,3 +697,53 @@ create index if not exists stories_project_id_idx on public.stories(project_id);
 create index if not exists stories_user_id_idx on public.stories(user_id);
 create index if not exists interactions_story_id_idx on public.interactions(story_id);
 create index if not exists invitations_token_idx on public.invitations(token);
+
+-- Historical installations had these tables before the tracked migration
+-- chain. Later wallet/P1 functions still reference them. A fresh project needs
+-- the same compatibility relations; existing restored tables and rows remain.
+-- These are distinct from agent_artifacts and public_contributions.
+create table if not exists public.project_members (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid not null references public.projects(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  role text default 'member',
+  status text default 'active',
+  created_at timestamptz default now()
+);
+
+create table if not exists public.story_artifacts (
+  id uuid primary key default gen_random_uuid(),
+  story_id uuid not null references public.stories(id) on delete cascade,
+  project_id uuid not null references public.projects(id) on delete cascade,
+  artifact_type text not null,
+  payload jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.public_archive_entries (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid not null references public.projects(id) on delete cascade,
+  story_id uuid not null references public.stories(id) on delete cascade,
+  slug text not null unique,
+  title text not null,
+  summary text not null,
+  visibility text not null default 'unlisted',
+  created_at timestamptz not null default now()
+);
+
+alter table public.project_members enable row level security;
+alter table public.story_artifacts enable row level security;
+alter table public.public_archive_entries enable row level security;
+revoke all on public.project_members, public.story_artifacts, public.public_archive_entries from public, anon, authenticated;
+grant all on public.project_members, public.story_artifacts, public.public_archive_entries to service_role;
+
+-- Historical waitlist is separate from the later waitlist_signups table.
+create table if not exists public.waitlist (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  status text default 'pending',
+  created_at timestamptz default now()
+);
+alter table public.waitlist enable row level security;
+revoke all on public.waitlist from public, anon, authenticated;
+grant all on public.waitlist to service_role;

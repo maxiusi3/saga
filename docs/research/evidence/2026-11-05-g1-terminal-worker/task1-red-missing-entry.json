@@ -1,0 +1,11 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--workspace=packages/web",
+    "--",
+    "--runInBand",
+    "src/lib/server/__tests__/recording-terminal-worker.test.ts"
+  ],
+  "exitCode": 1
+}

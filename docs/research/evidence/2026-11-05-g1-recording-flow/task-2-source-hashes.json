@@ -1,0 +1,8 @@
+{
+  "package.json": "404f7f4fd43823347d4447ca28b0f1316e7c65c28e59434d205ec0c87064aee8",
+  "scripts/recording-worker.cjs": "14bdb5fb964177ae03805270471baad63ba36393cf918c0f325963b6c58b3440",
+  "scripts/__tests__/recording-worker-cli.test.js": "f49c1f82c400cfebfb8515b9223473e1ef2e28bb66966b12dfa329421f9a5caa",
+  "packages/web/src/lib/server/recording-worker-host.ts": "7069c461f32be473bb2a703764abae5a6cd1a36a9656bdcb2806c4b88e097997",
+  "packages/web/src/lib/server/__tests__/recording-worker-host.test.ts": "b8e5ab075797729414f7e117eeda20eb1ff373ec32c63db5b11eb6463e74b533",
+  "docs/recording-worker.md": "95a3ae86b7a9737b8e85c412654d72e2f15c5fe07c6dc4ab3a0af289104b1909"
+}

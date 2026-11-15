@@ -1,0 +1,78 @@
+{
+  "createdAt": "2026-11-05T18:05:07.858445+00:00",
+  "status": "native_passed_full_gate_pending",
+  "runs": [
+    {
+      "path": "docs/research/evidence/2026-11-05-g1-recording-flow/integrated-browser-1793901807013-361344fb-b612-4171-8cbf-b399291156da/results.json",
+      "sha256": "b0372b9c0d26a3e20641d20b2d4e9b07aee6f0c9af263f84fe478d34e0b7346f",
+      "assertions": 297,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action",
+        "recovered draft saves through actual API, PG, worker and confirmation",
+        "saved original decodes in browser",
+        "saved recording player actually advances playback",
+        "native IDB cleanup abort preserves local copy and retry",
+        "explicit local cleanup removes only confirmed local copy"
+      ],
+      "sourceCount": 118,
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-11-05-g1-recording-flow/interrupted-browser-1793901807026-1863cacc-16d9-4739-8c5e-0f29c67b5756/results.json",
+      "sha256": "8a67a286167c002e844dd803ea8e60a93786b82a4032d9b5c3aabffa47df12c4",
+      "assertions": 329,
+      "checks": [
+        "native active recording persists a requested chunk before interrupted reload",
+        "real page reload discovers draft with continue-saving action",
+        "offline save keeps durable intent and all local chunks",
+        "account change during auth await cancels stale save without remote write",
+        "reserve committed response lost, page reopened, same draft recovered",
+        "seal committed response lost, page reopened, same draft recovered",
+        "paused worker gives actionable pending state without cleanup",
+        "lost confirmation retains copy and resumes same ready story after reload",
+        "recovered draft saves through actual API, PG, worker and confirmation",
+        "saved original decodes in browser",
+        "saved recording player actually advances playback",
+        "native IDB cleanup abort preserves local copy and retry",
+        "explicit local cleanup removes only confirmed local copy"
+      ],
+      "sourceCount": 118,
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "docs/research/evidence/2026-11-05-g1-recording-flow/integrated-server-1793901806798-86cf43f9-38f6-4412-9dab-b2f6658ed151/results.json",
+      "sha256": "e76d48923ef5e66d0af26af94d5af2766df491db0d6f8b49836628e8809c92d0",
+      "assertions": 723,
+      "checks": [
+        "reserve through actual route and SQL",
+        "seal through actual route registration and SQL",
+        "production host selection, native HTTP bytes, FFmpeg verification and worker publication",
+        "strict status, confirm and duplicate replay through actual handlers",
+        "guarded playback full bytes",
+        "real database lease expiry distinguishes retryable pre-dispatch from non-retried outcome_unknown",
+        "actual query cursor passes rejected row and excludes future jobs"
+      ],
+      "sourceCount": 44,
+      "currentSourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  ]
+}

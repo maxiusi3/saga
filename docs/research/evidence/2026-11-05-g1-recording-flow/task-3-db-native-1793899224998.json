@@ -1,0 +1,16 @@
+{
+  "checks": [
+    "intent commits before close/reopen and remains discoverable",
+    "metadata is immutable across resume",
+    "freeze rejects later capture chunks, overwrites and generic cleanup",
+    "wrong account and wrong project cannot freeze or clear",
+    "local bytes corruption with unchanged metadata is rejected",
+    "confirmation write failure rolls back and draft remains recoverable",
+    "cleanup failure after chunk delete rolls back both stores",
+    "scope cancellation during transactional hashing retains all data",
+    "forged cleanup receipt never removes audio",
+    "valid explicit cleanup atomically removes session and chunks",
+    "live cross-tab capture lock rejects save until owner releases"
+  ],
+  "total": 11
+}

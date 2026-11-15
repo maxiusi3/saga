@@ -1,0 +1,181 @@
+{
+  "status": "passed",
+  "requests": [
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?mode=semantic&readiness=1",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/032af046-f93a-44a1-9009-46a2f686db3f/review",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/media/assets/04fdf783-35d4-4d7a-9e14-5a487b2d622b/play",
+      "method": "GET",
+      "status": 307
+    },
+    {
+      "path": "/api/stories/032af046-f93a-44a1-9009-46a2f686db3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/032af046-f93a-44a1-9009-46a2f686db3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/032af046-f93a-44a1-9009-46a2f686db3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/032af046-f93a-44a1-9009-46a2f686db3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/032af046-f93a-44a1-9009-46a2f686db3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?q=Chicago",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search/source",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?q=%E4%BA%AC%E9%83%BD",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?q=Mercury",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/export?durable=true",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/export/jobs/1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/export/jobs/1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f/download",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/stories/032af046-f93a-44a1-9009-46a2f686db3f/review",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?q=Chicago",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?q=Toronto",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search/source",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/export/jobs/1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f/download",
+      "method": "GET",
+      "status": 409
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?q=Toronto",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search/source",
+      "method": "POST",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/export/jobs/1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f/download",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?q=Toronto",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search/source",
+      "method": "POST",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/export/jobs/1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f/download",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/search?q=Toronto",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "actual G2 review decisions and long Unicode approval",
+    "source-backed literal search and original audio playback",
+    "supplement null timing and rejected text exclusion",
+    "durable UI prepare/status and worker completion",
+    "browser protected ZIP download",
+    "offline HTML and original audio playback independent of network",
+    "full paginated Chinese PDF and original audio SHA-256",
+    "correction supersedes source and denies stale playback/download",
+    "family isolation and member revocation",
+    "G1 deletion clears search/publication"
+  ],
+  "source": {
+    "project": "6bf24721-e2fa-42f1-9743-ae7e18abdae1",
+    "story": "032af046-f93a-44a1-9009-46a2f686db3f",
+    "asset": "04fdf783-35d4-4d7a-9e14-5a487b2d622b",
+    "transcript": "6d1524d2-5139-4055-bcf0-58bd4dedc811",
+    "sha256": "38d4fe14e5f89f543e875da3c70ad9b1bfc9f3bf6503216e2266891bd9fcd5fe"
+  },
+  "boundary": "Actual StoryReviewPanel, ConnectedProjectHub and PublicationDeliveryPanel; actual routes, Supabase SDK and native PG17.4. Synthetic local authentication and PostgREST/Storage transport, generated tone WAV and explicitly synthetic timed transcript. Installed Chrome. No real ASR, household fidelity, hosted deployment or payment settlement claim.",
+  "browser": "157.0.8103.78",
+  "revision": "2ba9bd7d-6d74-4000-8d8f-d9bdf2d00610",
+  "job": {
+    "jobId": "1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f",
+    "snapshotId": "1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f",
+    "snapshotVersion": 1,
+    "status": "queued",
+    "attempt": 0,
+    "errorCode": null,
+    "statusUrl": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/export/jobs/1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f",
+    "downloadUrl": "/api/projects/6bf24721-e2fa-42f1-9743-ae7e18abdae1/export/jobs/1c56dc96-a992-4ed8-b5ed-9f8da7f00b6f/download"
+  },
+  "offlineAudio": {
+    "src": "file:///Users/eat/Documents/eatpotato/saga%E4%BC%A0%E5%A5%87/docs/research/evidence/2026-11-11-g3-delivery/migrations-1794640344909-f2282e03-2097-4bfe-a27f-397dc03fba5a/chrome-delivery/offline/media/04fdf783-35d4-4d7a-9e14-5a487b2d622b/family-original.wav",
+    "time": 0.370148,
+    "duration": 12,
+    "paused": false
+  },
+  "pdfPages": 6,
+  "archiveBytes": 80787
+}

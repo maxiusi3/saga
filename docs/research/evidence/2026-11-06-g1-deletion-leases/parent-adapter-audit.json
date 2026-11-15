@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-06T16:56:23.907159+00:00",
+  "result": "docs/research/evidence/2026-11-06-g1-deletion-leases/adapter-1793983734238-ec199cb7-0fcd-4216-86d3-09f8b17213f4/results.json",
+  "sha256": "d7680194c7d5b25472af648b2a8aacf853698741287aad6b5df707f320c1606c",
+  "completeNonLedgerComparisons": 20,
+  "completeReplayComparisons": 5,
+  "singleNoRetryTransports": 19,
+  "realExpiries": 3,
+  "newConnectionVerified": true,
+  "sourcesMatched": 29,
+  "compiledArtifactMatched": true,
+  "cleanupVerified": true
+}

@@ -1,0 +1,702 @@
+--- /dev/null
++++ b/experiments/pg17-recording-status/README.md
+@@ -0,0 +1,15 @@
++# Native recording status verification
++
++Run `node experiments/pg17-recording-status/verify.mjs --without-migration`
++for the expected missing-function RED. Run without arguments for SQL evidence,
++or with `--http` for the actual production reader through installed Supabase JS,
++native loopback HTTP and isolated PostgreSQL 17.4.
++
++Every run writes a new timestamp/UUID directory under
++`docs/research/evidence/2026-11-05-g1-recording-status/`; failures are retained.
++Earlier fixture modules are imported; earlier evidence writers never execute.
++No remote database, cloud service, paid API or family data is used. PostgreSQL
++prerequisites and candidate audio metadata are synthetic; this slice does not
++repeat earlier native FFmpeg qualification. The HTTP peer is a PostgREST-shaped
++substitute, not managed PostgREST/Storage. A status result describes a statement
++snapshot; later revocation/deletion remains possible. No receipt permits cleanup.
+--- /dev/null
++++ b/experiments/pg17-recording-status/application.mjs
+@@ -0,0 +1,157 @@
++import { createRequire } from 'node:module'
++import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { dirname, join, posix } from 'node:path'
++import { setTimeout as delay } from 'node:timers/promises'
++import { USER, PROJECT, STORY, OTHER, rpc as leaseRpc } from '../pg17-recording-worker/fixture.mjs'
++import { args as finalArgs, rpc as finalize, state, PERMANENT_CODES } from '../pg17-recording-finalization/fixture.mjs'
++import { fresh, input, allState } from './fixture.mjs'
++import { statusHttp } from './http.mjs'
++import { digest } from '../pg17-routines/runtime.mjs'
++
++const require = createRequire(import.meta.url), ts = require('typescript')
++async function compileTree(h, source) {
++  const compiled = new Set(), compiledRoot = join(h.scratch, 'compiled')
++  async function compile(name) {
++    if (compiled.has(name)) return
++    compiled.add(name)
++    const text = await source(`packages/web/src/${name}.ts`)
++    const result = ts.transpileModule(text, { compilerOptions: {
++      target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, esModuleInterop: true,
++    }, reportDiagnostics: true })
++    h.eq(result.diagnostics.filter(item => item.category === ts.DiagnosticCategory.Error).length, 0, `${name} transpiles`)
++    for (const match of result.outputText.matchAll(/require\(["']([^"']+)["']\)/g)) {
++      const target = match[1]
++      if (target.startsWith('@/')) await compile(target.slice(2))
++      else if (target.startsWith('.')) await compile(posix.normalize(posix.join(posix.dirname(name), target)))
++    }
++    const output = result.outputText.replace(/require\((['"])@\/([^'"]+)\1\)/g,
++      (_match, _quote, alias) => `require(${JSON.stringify(join(compiledRoot, alias))})`)
++    const destination = join(compiledRoot, `${name}.js`)
++    await mkdir(dirname(destination), { recursive: true }); await writeFile(destination, output)
++  }
++  for (const name of ['recording-session-status', 'recording-job-finalization']) await compile(`lib/server/${name}`)
++  h.report.productionCompilerGraph = [...compiled].sort()
++  return { ...require(join(compiledRoot, 'lib/server/recording-session-status.js')),
++    ...require(join(compiledRoot, 'lib/server/recording-job-finalization.js')) }
++}
++
++export async function applicationScenarios(h, base, source, evidence, ownHttp) {
++  for (const path of ['package-lock.json', 'node_modules/@supabase/supabase-js/package.json', 'node_modules/@supabase/postgrest-js/package.json']) await source(path)
++  h.report.sdkVersions = { supabase: require('@supabase/supabase-js/package.json').version, postgrest: require('@supabase/postgrest-js/package.json').version, typescript: ts.version }
++  const modules = await compileTree(h, source), service = await h.actorClient('service_role', USER)
++  const http = await statusHttp(h); ownHttp(http)
++  const make = async options => {
++    const f = await fresh(h, service, base.prepareRecordingSessionSeal, options)
++    const copies = join(h.scratch, 'retained-copies', f.sessionId)
++    await mkdir(copies, { recursive: true })
++    f.copyPaths = ['local-draft.bin', 'source-object.bin', ...(f.candidateId ? ['candidate-object.bin'] : [])].map(name => join(copies, name))
++    for (const path of f.copyPaths) await writeFile(path, f.bytes, { flag: 'wx' })
++    const artifact = `synthetic-${f.sessionId}.bin`
++    await writeFile(join(evidence, artifact), f.bytes, { flag: 'wx' })
++    ;(h.report.copyFixtures ??= []).push({ sessionId: f.sessionId, artifact, byteSize: f.bytes.length, sha256: digest(f.bytes),
++      roles: f.copyPaths.map(path => path.split('/').at(-1)), synthetic: true })
++    return f
++  }
++  async function copyState(f) {
++    return Promise.all(f.copyPaths.map(async path => {
++      const bytes = await readFile(path)
++      return { role: path.split('/').at(-1), byteSize: bytes.length, sha256: digest(bytes) }
++    }))
++  }
++  async function read(f, { name = 'normal', mode = 'normal', expected = 'succeeded', values = input(f), timeoutMs = 2000, preAborted = false } = {}) {
++    const controller = new AbortController()
++    if (preAborted) controller.abort()
++    http.configure({ name, mode, checkpoint: () => controller.abort() })
++    const before = await allState(h), copiesBefore = await copyState(f), first = http.events.length, firstTransport = http.transports.length, began = performance.now()
++    let receipt, error
++    try { receipt = await modules.readRecordingSessionStatus(values, { admin: http.admin, signal: controller.signal, timeoutMs }) }
++    catch (caught) { error = caught }
++    const elapsedMs = performance.now() - began
++    await http.drain()
++    const count = http.events.length
++    await delay(30)
++    const after = await allState(h), copiesAfter = await copyState(f), events = http.events.slice(first)
++    h.eq(after, before, 'actual production read leaves all full tuples and retained copies unchanged')
++    h.eq(copiesAfter, copiesBefore, 'all actual synthetic local/source/candidate files retain exact bytes')
++    h.eq(http.events.length, count, 'no delayed fallback, replay or retry after status returns')
++    h.eq(events.length, preAborted ? 0 : 1, 'at most one actual status RPC request')
++    h.eq(http.transports.length - firstTransport, preAborted ? 0 : 1, 'actual installed SDK performs at most one native fetch')
++    h.ok(events.every(event => event.path === '/rest/v1/rpc/read_recording_session_snapshot' && event.readOnly), 'status only enters actual READ ONLY transaction')
++    if (expected === 'unavailable') {
++      h.eq(receipt, undefined, 'untrusted or unavailable observation never returns receipt')
++      h.eq(error?.message, 'recording_status_unavailable', 'SDK/SQL/body diagnostics stay non-disclosing')
++    } else {
++      h.eq(error?.message ?? null, null, 'production strict validator accepts actual native snapshot')
++      h.eq(receipt.state, expected, 'compact receipt classifies persisted outcome')
++      h.eq(Object.keys(receipt).sort(), ['schemaVersion', 'projectId', 'sessionId', 'assetId', 'jobId', 'manifestSha256', 'observedAt', 'state', 'content', 'errorCode', 'finishedAt', 'canClearLocalDrafts'].sort(), 'exact compact 13-key receipt')
++      h.eq(receipt.canClearLocalDrafts, false, 'every status retains local drafts')
++      h.ok(!/bucket|objectKey|candidateId|workerId|https?:|SECRET/.test(JSON.stringify(receipt)), 'no private location, raw row or diagnostics escape')
++      if (expected === 'succeeded') h.eq(receipt.content, f.output, 'content uses exact verified candidate metadata')
++      else h.eq([receipt.content, receipt.finishedAt, receipt.errorCode], expected === 'unresolved' ? [null, null, null] : [null, receipt.finishedAt, f.failureCode], 'non-success receipt keeps bounded content/error fields')
++    }
++    if (mode === 'timeout' || mode === 'abort') {
++      h.ok(elapsedMs < 1500, 'abort/timeout returns within bounded wall clock')
++      h.eq(http.transports.at(-1).aborted, true, 'caller or timeout abort reaches native fetch signal')
++      h.eq(events[0].peerClosed, true, 'native peer observes abort')
++    }
++    h.report.tuples.push({ label: name, before, after, copiesBefore, copiesAfter, receipt, error: error?.message ?? null, elapsedMs, requests: events.length })
++    return { receipt, error }
++  }
++  await h.scenario('Committed publish with lost native response reconciles through actual reader without a new mutation', async () => {
++    const f = await make(), before = await state(h, f)
++    http.configure({ name: 'publish-response-loss', mode: 'publish-response-loss' })
++    let error
++    try { await modules.publishRecordingJob(f.lease, f.candidate, { admin: http.admin, timeoutMs: 2000 }) }
++    catch (caught) { error = caught }
++    await http.drain()
++    h.eq(error?.message, 'recording_finalization_unavailable', 'actual finalizer cannot claim success after lost response')
++    h.eq(http.events.length, 1, 'lost publication performs exactly one mutation request')
++    h.eq(http.events[0].committed, true, 'native server commits actual atomic publication before destroying response')
++    const published = await state(h, f)
++    h.eq([published.job.state, published.asset.state, published.session.state], ['succeeded', 'ready', 'cloud_confirmed'], 'real PG holds full success tuple')
++    h.eq([published.chunks, published.candidates], [before.chunks, before.candidates], 'publication retains immutable source and candidate evidence')
++    await read(f, { name: 'reconcile-lost-publish' })
++    h.eq(http.events.filter(event => event.path.includes('finalize_recording_job')).length, 1, 'explicit read never replays terminal mutation')
++  })
++  await h.scenario('Every permanent failure and legitimate nonterminal checkpoint classifies without mutation', async () => {
++    for (const code of PERMANENT_CODES) {
++      const f = await make({ candidate: false }); f.failureCode = code
++      await finalize(service, finalArgs(f, 'fail', code))
++      await read(f, { name: code, expected: 'failed' })
++    }
++    const queued = await make({ running: false, candidate: false })
++    await read(queued, { name: 'queued', expected: 'unresolved' })
++    await h.db.query('DELETE FROM processing_jobs WHERE id=$1', [queued.jobId])
++    await read(queued, { name: 'asset-before-job', expected: 'unresolved' })
++    await h.db.query('DELETE FROM media_assets WHERE id=$1', [queued.assetId])
++    const sealed = await read(queued, { name: 'sealed-before-registration', expected: 'unresolved' })
++    h.eq(sealed.receipt.jobId, null, 'no registered job returns null jobId')
++    const running = await make({ candidate: false, ttl: 1000 })
++    await read(running, { name: 'running-live', expected: 'unresolved' })
++    await delay(1050)
++    h.eq((await h.db.query('SELECT lease_expires_at < clock_timestamp() AS expired FROM processing_jobs WHERE id=$1', [running.jobId])).rows[0].expired, true, 'actual database lease expires')
++    await read(running, { name: 'running-expired', expected: 'unresolved' })
++    await leaseRpc(service, running.jobId, 'recover')
++    await read(running, { name: 'explicit-outcome-unknown', expected: 'unresolved' })
++  })
++  await h.scenario('Malformed receipts, read errors, abort and timeout remain bounded and non-disclosing', async () => {
++    const f = await make(); await finalize(service, finalArgs(f))
++    for (const mode of ['bad-envelope', 'bad-identity', 'read-error', 'abort', 'timeout']) await read(f, { name: mode, mode, expected: 'unavailable', timeoutMs: mode === 'timeout' ? 100 : 2000 })
++    await read(f, { name: 'already-aborted', expected: 'unavailable', preAborted: true })
++    for (const [field, value] of [['actorId', OTHER], ['projectId', OTHER], ['manifestSha256', 'f'.repeat(64)]]) await read(f, { name: `wrong-${field}`, expected: 'unavailable', values: { ...input(f), [field]: value } })
++    await h.db.query("UPDATE project_roles SET status='inactive' WHERE user_id=$1 AND project_id=$2", [USER, PROJECT])
++    await read(f, { name: 'revoked-role', expected: 'unavailable' })
++    await h.db.query("UPDATE project_roles SET status='active' WHERE user_id=$1 AND project_id=$2", [USER, PROJECT])
++    await h.db.query('INSERT INTO deletion_requests(project_id,subject_id,requested_by) VALUES($1,$2,$3)', [PROJECT, STORY, USER])
++    await read(f, { name: 'story-tombstone', expected: 'unavailable' })
++    await h.db.query('DELETE FROM deletion_requests WHERE project_id=$1 AND subject_id=$2', [PROJECT, STORY])
++    for (const [name, sql, values, restore] of [
++      ['foreign-candidate', 'UPDATE recording_output_candidates SET session_id=$1 WHERE id=$2', [OTHER, f.candidateId], [f.sessionId, f.candidateId]],
++      ['partial-terminal', 'UPDATE recording_sessions SET confirmed_at=$1 WHERE id=$2', [null, f.sessionId], [(await state(h, f)).session.confirmed_at, f.sessionId]],
++      ['wrong-job-owner', 'UPDATE processing_jobs SET created_by=$1 WHERE id=$2', [OTHER, f.jobId], [USER, f.jobId]],
++    ]) { await h.db.query(sql, values); await read(f, { name, expected: 'unavailable' }); await h.db.query(sql, restore) }
++  })
++  h.eq(http.events.filter(event => event.path.includes('finalize_recording_job')).length, 1, 'only explicit lost publication request mutates across HTTP scenarios')
++  h.eq(h.clients.size, 2, 'all HTTP request PG clients drained')
++  await h.close(service)
++}
+--- /dev/null
++++ b/experiments/pg17-recording-status/database.mjs
+@@ -0,0 +1,164 @@
++import { randomUUID } from 'node:crypto'
++import { setTimeout as delay } from 'node:timers/promises'
++import { USER, OTHER, PROJECT, STORY } from '../pg17-recording-worker/fixture.mjs'
++import { args as finalArgs, rpc as finalize, state } from '../pg17-recording-finalization/fixture.mjs'
++import { SIGNATURE, args, snapshot, outcome, fresh, allState } from './fixture.mjs'
++
++export async function databaseScenarios(h, prepare) {
++  const service = await h.actorClient('service_role', USER)
++  const make = options => fresh(h, service, prepare, options)
++  async function observe(f, client = service) {
++    const before = await allState(h), value = await snapshot(client, args(f)), after = await allState(h)
++    h.eq(after, before, 'read leaves every full database tuple unchanged')
++    h.report.tuples.push({ label: 'read-only full database comparison', before, after, snapshot: value })
++    return value
++  }
++  async function denied(f, values = args(f), client = service, code = '42501') {
++    const before = await allState(h), result = await outcome(client, values), after = await allState(h)
++    h.eq(result.code, code, 'read rejects unavailable authorization or isolation')
++    h.eq(result.message, 'recording_status_unavailable', 'authorization error has one non-disclosing message')
++    h.eq(after, before, 'rejection leaves all complete tuples unchanged')
++    h.report.tuples.push({ label: 'rejected read', before, after, error: result })
++  }
++  await h.scenario('STABLE service-only authority is read-only and does not acquire write/advisory locks', async () => {
++    const proc = (await h.db.query(`SELECT prosecdef,provolatile,proconfig,prosrc,
++      (SELECT count(*)::int FROM aclexplode(proacl) WHERE grantee=0) AS public_grants
++      FROM pg_proc WHERE oid=$1::regprocedure`, [SIGNATURE])).rows[0]
++    h.eq([proc.prosecdef, proc.provolatile, proc.public_grants], [true, 's', 0], 'stable security definer without public execution')
++    h.eq(proc.proconfig, ['search_path=pg_catalog, pg_temp', 'TimeZone=UTC'], 'fixed trusted path and UTC')
++    h.ok(!/\b(UPDATE|INSERT|DELETE|LOCK|PERFORM|EXECUTE)\b|pg_advisory|recording_job_lease\s*\(/i.test(proc.prosrc.replace(/--[^\n]*/g, '')), 'function body contains no write, lock or mutating helper')
++    const f = await make()
++    for (const role of ['anon', 'authenticated', 'metadata_reader']) {
++      const actor = await h.actorClient(role, USER, 'service_role')
++      h.eq((await outcome(actor, args(f))).code, '42501', 'forged JWT cannot grant SQL execute')
++      await h.close(actor)
++    }
++    await service.query("SET timezone='Pacific/Honolulu'; SET search_path=pg_temp")
++    await service.query('BEGIN READ ONLY')
++    const value = await observe(f)
++    h.eq(Object.keys(value).sort(), ['schemaVersion', 'actorId', 'projectId', 'sessionId', 'manifestSha256', 'observedAt', 'matchingSessionCount', 'session', 'asset', 'jobs', 'attempts', 'candidates', 'chunks'].sort(), 'exact 13-key envelope')
++    h.eq([value.schemaVersion, value.actorId, value.projectId, value.sessionId, value.manifestSha256, value.matchingSessionCount], [1, USER, PROJECT, f.sessionId, f.manifestSha256, 1], 'exact authorized identities')
++    const complete = await state(h, f)
++    h.eq([value.session, value.asset, value.jobs, value.attempts, value.candidates, value.chunks],
++      [complete.session, complete.asset, [complete.job], complete.attempts, complete.candidates, complete.chunks], 'whole rows preserved in envelope')
++    h.ok(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,6})?\+00:00$/.test(value.observedAt), 'observedAt UTC microseconds')
++    const locks = (await h.db.query('SELECT locktype,mode FROM pg_locks WHERE pid=$1 AND granted AND locktype IN (\'relation\',\'advisory\',\'tuple\') ORDER BY 1,2', [service.processID])).rows
++    h.ok(locks.length > 0 && locks.every(lock => lock.locktype === 'relation' && lock.mode === 'AccessShareLock'), 'only ordinary MVCC AccessShare locks')
++    h.report.readLocks = locks
++    h.eq((await service.query('SHOW transaction_read_only')).rows[0].transaction_read_only, 'on', 'RPC executed inside explicit READ ONLY transaction')
++    await service.query('COMMIT')
++    h.eq((await service.query('SHOW timezone')).rows[0].TimeZone, 'Pacific/Honolulu', 'function restores caller timezone')
++    await service.query("SET timezone='UTC'; SET search_path=pg_catalog,public,auth")
++  })
++  await h.scenario('Current actor identity, role/story ownership and all deletion subjects reject uniformly', async () => {
++    const f = await make()
++    for (const [index, value] of [[0, null], [0, OTHER], [0, randomUUID()], [1, randomUUID()], [2, randomUUID()], [3, 'f'.repeat(64)], [3, null], [3, 'BAD']]) {
++      const values = args(f); values[index] = value; await denied(f, values)
++    }
++    for (const [sql, values] of [
++      ["UPDATE project_roles SET status='inactive' WHERE user_id=$1 AND project_id=$2", [USER, PROJECT]],
++      ["UPDATE project_roles SET role='facilitator' WHERE user_id=$1 AND project_id=$2", [USER, PROJECT]],
++      ['DELETE FROM project_roles WHERE user_id=$1 AND project_id=$2', [USER, PROJECT]],
++      ['UPDATE stories SET storyteller_id=$1 WHERE id=$2', [OTHER, STORY]],
++      ['UPDATE recording_sessions SET user_id=$1 WHERE id=$2', [OTHER, f.sessionId]],
++      ["UPDATE media_assets SET state='deleting' WHERE id=$1", [f.assetId]],
++      ["UPDATE media_assets SET state='deleted' WHERE id=$1", [f.assetId]],
++    ]) {
++      await h.db.query('BEGIN'); await h.db.query(sql, values)
++      await h.db.query('SAVEPOINT rejection')
++      const result = await outcome(h.db, args(f))
++      h.eq(result, { code: '42501', message: 'recording_status_unavailable' }, 'authorization mutation is visible to next statement')
++      await h.db.query('ROLLBACK TO SAVEPOINT rejection'); await h.db.query('ROLLBACK')
++    }
++    for (const subject of [PROJECT, STORY, f.sessionId, f.assetId]) {
++      await h.db.query('INSERT INTO deletion_requests(project_id,subject_id,requested_by) VALUES($1,$2,$3)', [PROJECT, subject, USER])
++      await denied(f)
++      await h.db.query('DELETE FROM deletion_requests WHERE project_id=$1 AND subject_id=$2', [PROJECT, subject])
++    }
++    // Optional blocker columns emulate present/future fields without changing production schema.
++    for (const [table, id] of [['auth.users', USER], ['projects', PROJECT], ['project_roles', null], ['stories', STORY], ['recording_sessions', f.sessionId], ['media_assets', f.assetId]]) {
++      for (const key of ['tombstone_at', 'deletion_requested_at', 'deleted_at', 'cancel_requested_at']) {
++        await h.db.query(`ALTER TABLE ${table} ADD COLUMN ${key} timestamptz`)
++        await h.db.query(`UPDATE ${table} SET ${key}=clock_timestamp() WHERE ${id ? 'id=$1' : 'user_id=$1'}`, [id ?? USER])
++        await denied(f)
++        await h.db.query(`ALTER TABLE ${table} DROP COLUMN ${key}`)
++      }
++    }
++    for (const isolation of ['REPEATABLE READ', 'SERIALIZABLE']) {
++      const stale = await h.actorClient('service_role', USER)
++      await stale.query(`BEGIN ISOLATION LEVEL ${isolation} READ ONLY`)
++      await denied(f, args(f), stale, '22023')
++      await stale.query('ROLLBACK'); await h.close(stale)
++    }
++  })
++  await h.scenario('One statement snapshot remains consistent across real atomic publication; later reads see commit and revocation', async () => {
++    const f = await make(), writer = await h.actorClient('service_role', USER), reader = await h.actorClient('service_role', USER)
++    const before = await state(h, f)
++    await writer.query('BEGIN')
++    const publication = await finalize(writer, finalArgs(f))
++    await reader.query('BEGIN READ ONLY')
++    const pending = reader.query(`WITH first AS MATERIALIZED (
++      SELECT public.read_recording_session_snapshot($1,$2,$3,$4) AS value
++    ), pause AS MATERIALIZED (SELECT pg_sleep(0.8) FROM first)
++    SELECT first.value AS first, public.read_recording_session_snapshot($1,$2,$3,$4) AS second FROM first,pause`, args(f))
++    let sleeping = false
++    for (let i = 0; i < 100; i++) {
++      const row = (await h.db.query('SELECT wait_event,wait_event_type FROM pg_stat_activity WHERE pid=$1', [reader.processID])).rows[0]
++      if (row.wait_event === 'PgSleep') { sleeping = true; break }
++      await delay(5)
++    }
++    h.eq(sleeping, true, 'independent backend reached synchronization after first snapshot despite writer row locks')
++    await writer.query('COMMIT')
++    const pair = (await pending).rows[0]
++    h.eq(pair.first, pair.second, 'STABLE calls inside one statement observe identical old snapshot despite intervening commit')
++    h.eq([pair.first.jobs[0].state, pair.first.asset.state, pair.first.session.state], ['running', 'verifying', 'sealing'], 'no mixed terminal tuple')
++    const after = await snapshot(reader, args(f))
++    h.eq([after.jobs[0].state, after.asset.state, after.session.state], ['succeeded', 'ready', 'cloud_confirmed'], 'next explicit read in same READ COMMITTED transaction sees complete published tuple')
++    const times = [after.jobs[0].updated_at, after.asset.updated_at, after.attempts[0].finished_at, after.session.confirmed_at]
++    h.ok(times.every(value => value === publication.finishedAt), 'all atomic publication finish timestamps retain exact equality')
++    h.eq((await h.db.query('SELECT $1::timestamptz < $2::timestamptz AS ordered', [pair.first.observedAt, after.observedAt])).rows[0].ordered, true, 'next statement advances observation at full database precision')
++    h.report.snapshotRace = { before, publication, pair, after, persisted: await state(h, f) }
++    await h.db.query("UPDATE project_roles SET status='inactive' WHERE project_id=$1 AND user_id=$2", [PROJECT, USER])
++    await denied(f, args(f), reader)
++    await reader.query('ROLLBACK')
++    await h.db.query("UPDATE project_roles SET status='active' WHERE project_id=$1 AND user_id=$2", [PROJECT, USER])
++    await reader.query('BEGIN READ ONLY'); await snapshot(reader, args(f))
++    await h.db.query('INSERT INTO deletion_requests(project_id,subject_id,requested_by) VALUES($1,$2,$3)', [PROJECT, f.sessionId, USER])
++    await denied(f, args(f), reader)
++    await reader.query('ROLLBACK')
++    await h.db.query('DELETE FROM deletion_requests WHERE subject_id=$1', [f.sessionId])
++    await h.close(reader); await h.close(writer)
++  })
++  await h.scenario('Bounded arrays expose extra or foreign identity rows without silently certifying truncated sets', async () => {
++    const f = await make(), other = await make({ running: false, candidate: false })
++    await h.db.query('BEGIN')
++    try {
++      // The authorized session is fixed, while corrupt related rows remain raw for the app validator.
++      await h.db.query('UPDATE processing_jobs SET created_by=$1 WHERE id=$2', [OTHER, f.jobId])
++      await h.db.query("UPDATE recording_output_candidates SET job_id=$1::uuid,object_key='jobs/'||$1::text||'/attempts/'||attempt_no::text||'/'||id::text WHERE id=$2", [other.jobId, f.candidateId])
++      let value = await snapshot(h.db, args(f))
++      h.eq(value.jobs[0].created_by, OTHER, 'foreign job ownership is not filtered away')
++      h.eq(value.candidates[0].job_id, other.jobId, 'candidate linked through asset/session remains visible with foreign job')
++      await h.db.query('INSERT INTO recording_sessions SELECT (jsonb_populate_record(NULL::recording_sessions,to_jsonb(s)||jsonb_build_object(\'id\',gen_random_uuid()))).* FROM recording_sessions s WHERE id=$1', [f.sessionId])
++      await h.db.query('INSERT INTO recording_sessions SELECT (jsonb_populate_record(NULL::recording_sessions,to_jsonb(s)||jsonb_build_object(\'id\',gen_random_uuid()))).* FROM recording_sessions s WHERE id=$1', [f.sessionId])
++      for (let i = 2; i <= 6; i++) await h.db.query("INSERT INTO processing_attempts SELECT (jsonb_populate_record(NULL::processing_attempts,to_jsonb(a)||jsonb_build_object('id',gen_random_uuid(),'attempt_no',$2::integer))).* FROM processing_attempts a WHERE job_id=$1 AND attempt_no=1", [f.jobId, i])
++      h.eq((await snapshot(h.db, args(f))).attempts.length, 4, 'six persisted attempts expose bounded fourth-row sentinel')
++      for (let i = 0; i < 3; i++) await h.db.query("INSERT INTO processing_jobs SELECT (jsonb_populate_record(NULL::processing_jobs,to_jsonb(j)||jsonb_build_object('id',gen_random_uuid(),'idempotency_key',gen_random_uuid()::text))).* FROM processing_jobs j WHERE id=$1", [f.jobId])
++      // All clones retain the session link, so even jobs beyond the bounded job set cannot hide them.
++      for (let i = 0; i < 5; i++) {
++        const id = randomUUID(), jobId = randomUUID()
++        await h.db.query("INSERT INTO recording_output_candidates SELECT (jsonb_populate_record(NULL::recording_output_candidates,to_jsonb(c)||jsonb_build_object('id',$2::uuid,'job_id',$3::uuid,'object_key','jobs/'||$3::text||'/attempts/1/'||$2::text))).* FROM recording_output_candidates c WHERE id=$1", [f.candidateId, id, jobId])
++      }
++      await h.db.query("INSERT INTO recording_chunks(session_id,project_id,chunk_index,bucket,object_key,byte_size,sha256) SELECT $1::uuid,$2::uuid,n,'audio-recordings','oversize-'||$1::text||'-'||n,1,repeat('a',64) FROM generate_series(3,2004) n", [f.sessionId, PROJECT])
++      value = await snapshot(h.db, args(f))
++      h.eq(value.matchingSessionCount, 2, 'duplicate sealed asset count capped at ambiguity sentinel two')
++      h.eq(value.jobs.length, 2, 'jobs bounded at two, exposes unsupported multiplicity')
++      h.ok(value.attempts.length <= 4, 'attempts globally bounded at four')
++      h.eq(value.candidates.length, 4, 'candidates bounded at four even with corrupt foreign job ids')
++      h.eq(value.chunks.length, 2001, 'chunks expose one over legal max rather than silently truncating at 2000')
++      h.eq(value.chunks.map(row => row.chunk_index), Array.from({ length: 2001 }, (_, index) => index), 'chunk arrays sorted by index')
++      h.report.boundedSnapshot = value
++    } finally { await h.db.query('ROLLBACK') }
++  })
++  await h.close(service)
++}
+--- /dev/null
++++ b/experiments/pg17-recording-status/fixture.mjs
+@@ -0,0 +1,44 @@
++import { randomUUID } from 'node:crypto'
++import { digest } from '../pg17-routines/runtime.mjs'
++import { fixture, rpc as leaseRpc, USER, PROJECT } from '../pg17-recording-worker/fixture.mjs'
++import { candidateRpc } from '../pg17-recording-candidates/fixture.mjs'
++import { WORKER } from '../pg17-recording-finalization/fixture.mjs'
++
++export const SNAPSHOT = 'supabase/migrations/20261105000001_recording_session_snapshot.sql'
++export const SIGNATURE = 'public.read_recording_session_snapshot(uuid,uuid,uuid,text)'
++export const RPC = 'SELECT public.read_recording_session_snapshot($1::uuid,$2::uuid,$3::uuid,$4::text) AS snapshot'
++export const args = f => [USER, PROJECT, f.sessionId, f.manifestSha256]
++export const input = f => ({ actorId: USER, projectId: PROJECT, sessionId: f.sessionId, manifestSha256: f.manifestSha256 })
++export async function snapshot(client, values) { return (await client.query(RPC, values)).rows[0].snapshot }
++export async function outcome(client, values) {
++  try { return { code: '00000', snapshot: await snapshot(client, values) } }
++  catch (error) { return { code: error.code ?? 'QUERY_FAILED', message: error.message } }
++}
++export async function fresh(h, service, prepare, { running = true, candidate = true, ttl = 120000 } = {}) {
++  const f = await fixture(h, service, prepare)
++  if (running) {
++    const began = performance.now()
++    await leaseRpc(service, f.jobId, 'claim', WORKER, null, ttl)
++    const lease = await leaseRpc(service, f.jobId, 'start', WORKER, 1)
++    f.lease = { ...lease, deadline: began + ttl - Math.min(100, ttl / 10) }
++  }
++  if (candidate) {
++    f.candidateId = randomUUID()
++    f.output = { byteSize: f.bytes.length, sha256: digest(f.bytes), mimeType: f.mimeType, durationMs: 1250 }
++    await candidateRpc(service, [f.jobId, 'reserve', WORKER, 1, f.manifestSha256, f.candidateId, f.output])
++    f.candidate = await candidateRpc(service, [f.jobId, 'prepare', WORKER, 1, f.manifestSha256, f.candidateId, f.output])
++  }
++  return f
++}
++
++// JSON is built by PG, preserving every tuple field and timestamp microsecond.
++// Compare the entire synthetic database, including authorization and Storage.
++export async function allState(h) {
++  const tables = ['auth.users', 'public.projects', 'public.project_roles', 'public.stories',
++    'public.deletion_requests', 'public.media_assets', 'public.processing_jobs', 'public.processing_attempts',
++    'public.recording_sessions', 'public.recording_chunks', 'public.recording_output_candidates',
++    'storage.buckets', 'storage.objects']
++  const rows = {}
++  for (const table of tables) rows[table] = (await h.db.query(`SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY to_jsonb(t)::text),'[]') AS rows FROM ${table} t`)).rows[0].rows
++  return rows
++}
+--- /dev/null
++++ b/experiments/pg17-recording-status/http.mjs
+@@ -0,0 +1,101 @@
++import { createServer } from 'node:http'
++import { once } from 'node:events'
++import { createRequire } from 'node:module'
++import { USER } from '../pg17-recording-worker/fixture.mjs'
++import { rpc as finalize } from '../pg17-recording-finalization/fixture.mjs'
++import { snapshot } from './fixture.mjs'
++
++const require = createRequire(import.meta.url)
++const { createClient } = require('@supabase/supabase-js')
++const SECRET = 'synthetic-status-loopback-only'
++const READ_KEYS = ['p_actor_id', 'p_project_id', 'p_session_id', 'p_manifest_sha256']
++const WRITE_KEYS = ['p_job_id', 'p_action', 'p_worker_id', 'p_attempt', 'p_manifest_sha256', 'p_candidate_id', 'p_output', 'p_failure_code']
++
++/** Restricted native substitute. Status requests run actual RPC inside READ ONLY. */
++export async function statusHttp(h) {
++  const events = h.report.httpRequests = [], transports = h.report.sdkRequests = []
++  const pending = new Set(), sockets = new Set(), errors = []
++  let current
++  function json(res, status, value) {
++    res.writeHead(status, { 'content-type': 'application/json', connection: 'close' }); res.end(JSON.stringify(value))
++  }
++  async function handle(req, res) {
++    const config = current
++    const event = { case: config?.name, method: req.method, path: req.url, committed: false, readOnly: false,
++      peerClosed: false, finished: false, responseFinished: false }
++    events.push(event)
++    const disconnected = new AbortController()
++    const closed = () => { event.peerClosed = true; disconnected.abort() }
++    res.once('close', closed); req.once('aborted', closed)
++    res.once('finish', () => { event.responseFinished = true })
++    let client, transaction = false
++    try {
++      h.ok(config, 'explicit HTTP scenario configured')
++      h.eq(req.method, 'POST', 'SDK uses parameterized RPC POST')
++      h.eq(req.headers.authorization, `Bearer ${SECRET}`, 'synthetic bearer stays inside loopback')
++      const reading = req.url === '/rest/v1/rpc/read_recording_session_snapshot'
++      h.ok(reading || (config.mode === 'publish-response-loss' && req.url === '/rest/v1/rpc/finalize_recording_job'), 'only explicit snapshot or lost-publication RPC allowed')
++      const parts = []; let length = 0
++      for await (const chunk of req) { length += chunk.length; h.ok(length <= 65536, 'bounded request body'); parts.push(chunk) }
++      const input = JSON.parse(Buffer.concat(parts).toString())
++      const keys = reading ? READ_KEYS : WRITE_KEYS
++      h.eq(Object.keys(input).sort(), [...keys].sort(), 'exact RPC argument names from real SDK')
++      event.input = input
++      client = await h.actorClient('service_role', USER)
++      await client.query(reading ? 'BEGIN READ ONLY' : 'BEGIN'); transaction = true
++      event.readOnly = (await client.query('SHOW transaction_read_only')).rows[0].transaction_read_only === 'on'
++      const value = reading ? await snapshot(client, keys.map(key => input[key])) : await finalize(client, keys.map(key => input[key]))
++      event.receipt = value
++      await client.query('COMMIT'); transaction = false; event.committed = true
++      if (config.mode === 'publish-response-loss') { h.eq(reading, false, 'lost response follows actual publication'); res.destroy(); return }
++      if (config.mode === 'timeout' || config.mode === 'abort') {
++        config.checkpoint?.()
++        if (!disconnected.signal.aborted) await once(disconnected.signal, 'abort')
++        return
++      }
++      if (config.mode === 'read-error') { json(res, 503, { message: 'SECRET database response' }); return }
++      json(res, 200, config.mode === 'bad-envelope' ? { ...value, secretExtra: 'SECRET private value' } :
++        config.mode === 'bad-identity' ? { ...value, actorId: '22222222-2222-4222-8222-222222222222' } : value)
++    } catch (error) {
++      if (transaction && client) await client.query('ROLLBACK')
++      event.sqlstate = error.code ?? 'FIXTURE_FAILED'
++      if (error.label || !/^[0-9A-Z]{5}$/.test(event.sqlstate)) errors.push(error.label ?? event.sqlstate)
++      if (!res.destroyed) json(res, 400, { code: event.sqlstate, message: 'SECRET synthetic SQL diagnostic' })
++    } finally {
++      if (client) await h.close(client)
++      res.removeListener('close', closed); req.removeListener('aborted', closed)
++      event.finished = true
++    }
++  }
++  const server = createServer((req, res) => {
++    const task = handle(req, res).catch(error => { errors.push(error.label ?? error.code ?? 'HANDLER_FAILED'); res.destroy() })
++    pending.add(task); void task.finally(() => pending.delete(task))
++  })
++  server.on('connection', socket => { sockets.add(socket); socket.once('close', () => sockets.delete(socket)) })
++  server.listen(0, '127.0.0.1'); await once(server, 'listening')
++  const origin = `http://127.0.0.1:${server.address().port}`
++  const admin = createClient(origin, SECRET, {
++    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }, db: { retry: false },
++    global: { fetch: async (input, init) => {
++      const request = new Request(input, init)
++      h.eq(new URL(request.url).origin, origin, 'actual SDK transport stays on disposable loopback')
++      const event = { case: current?.name, path: new URL(request.url).pathname, method: request.method, aborted: false, settled: false }
++      transports.push(event)
++      const abort = () => { event.aborted = true }
++      request.signal.addEventListener('abort', abort, { once: true })
++      try { return await fetch(request) }
++      finally { event.settled = true; request.signal.removeEventListener('abort', abort) }
++    } },
++  })
++  return { admin, events, transports, configure: config => { current = config },
++    async drain() { await Promise.all([...pending]); h.eq(errors, [], 'native HTTP has no hidden fixture errors') },
++    async close() {
++      server.closeAllConnections()
++      await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()))
++      await Promise.all([...pending])
++      h.report.httpCleanup = { listening: server.listening, pending: pending.size, sockets: sockets.size, errors,
++        everyHandlerFinished: events.every(event => event.finished), everyTransportSettled: transports.every(event => event.settled) }
++      h.eq(h.report.httpCleanup, { listening: false, pending: 0, sockets: 0, errors: [], everyHandlerFinished: true, everyTransportSettled: true }, 'all HTTP sockets, handlers and native fetch requests close')
++    },
++  }
++}
+--- /dev/null
++++ b/experiments/pg17-recording-status/verify.mjs
+@@ -0,0 +1,95 @@
++import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { join, relative, isAbsolute } from 'node:path'
++import { randomUUID } from 'node:crypto'
++import { createRequire } from 'node:module'
++import { gzipSync } from 'node:zlib'
++import { Harness, root, digest, exists } from '../pg17-routines/runtime.mjs'
++import { compileModules } from '../pg17-recording-worker/fixture.mjs'
++import { setup, FINALIZATION } from '../pg17-recording-finalization/fixture.mjs'
++import { SNAPSHOT, SIGNATURE, RPC } from './fixture.mjs'
++import { databaseScenarios } from './database.mjs'
++
++const require = createRequire(import.meta.url)
++const mode = process.argv.includes('--without-migration') ? 'red-without-migration' : process.argv.includes('--http') ? 'native-http' : 'native-sql'
++const evidence = join(root, 'docs/research/evidence/2026-11-05-g1-recording-status', `${mode}-${new Date().toISOString().replaceAll(':', '-')}-${randomUUID()}`)
++const report = { startedAt: new Date().toISOString(), mode, command: `node experiments/pg17-recording-status/verify.mjs ${process.argv.slice(2).join(' ')}`.trim(), status: 'running', assertions: 0,
++  actorConnections: [], scenarios: [], sources: {}, snapshots: {}, tuples: [],
++  limits: ['Native isolated PostgreSQL 17.4 with synthetic prerequisites and candidate data. Local PostgREST-shaped HTTP substitute, not managed PostgREST/Storage, device or cloud G1 qualification.',
++    'A receipt observes one statement snapshot. Later revoke/delete can change authorization; no access URL or cleanup permission.',
++    'This slice reuses prior terminal worker byte verification and does not rerun FFmpeg.'],
++  g1Item01Complete: false, g1MilestoneSatisfied: false, pushConditionSatisfied: false }
++const h = new Harness(report)
++await mkdir(evidence, { recursive: true })
++async function source(path) {
++  const bytes = await readFile(join(root, path))
++  if (report.sources[path]) { h.eq(digest(bytes), report.sources[path], `source unchanged at reuse: ${path}`); return bytes.toString() }
++  report.sources[path] = digest(bytes)
++  const name = `${Object.keys(report.snapshots).length}-${path.split('/').at(-1)}.gz`, compressed = gzipSync(bytes)
++  await writeFile(join(evidence, name), compressed, { flag: 'wx' })
++  report.snapshots[path] = { path: name, sha256: digest(compressed), decodedSha256: digest(bytes) }
++  return bytes.toString()
++}
++let http
++for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { h.signal ??= signal })
++try {
++  for (const path of ['verify.mjs', 'fixture.mjs', 'database.mjs', 'README.md']) await source(`experiments/pg17-recording-status/${path}`)
++  for (const path of ['experiments/pg17-recording-finalization/fixture.mjs', 'experiments/pg17-recording-candidates/fixture.mjs',
++    'experiments/pg17-recording-worker/fixture.mjs', 'experiments/pg17-routines/runtime.mjs', 'experiments/pg17-routines/runtime-pins.json']) await source(path)
++  await h.start(); await setup(h, source)
++  await h.db.query(await source(FINALIZATION)); report.fixture.fullMigrations.push(FINALIZATION)
++  const tableAcls = async () => (await h.db.query("SELECT n.nspname,c.relname,c.relacl::text FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('public','auth','storage') AND c.relkind='r' ORDER BY 1,2")).rows
++  const beforeAcls = await tableAcls()
++  if (mode !== 'red-without-migration') { await h.db.query(await source(SNAPSHOT)); report.fixture.fullMigrations.push(SNAPSHOT) }
++  h.eq(await tableAcls(), beforeAcls, 'snapshot migration never widens any table ACL')
++  await h.scenario('Actual service role invocation proves snapshot RPC exists', async () => {
++    const client = await h.actorClient('service_role')
++    try {
++      try { await client.query(RPC, [null, null, null, 'a'.repeat(64)]); report.rpcInvocationSqlstate = '00000' }
++      catch (error) { report.rpcInvocationSqlstate = error.code; report.rpcInvocationMessage = error.message }
++    } finally { await h.close(client) }
++    report.rpcProbe = (await h.db.query('SELECT to_regprocedure($1)::text AS rpc', [SIGNATURE])).rows[0].rpc
++    h.ok(report.rpcInvocationSqlstate !== '42883', 'actual service invocation must not be undefined-function 42883')
++    h.eq(report.rpcProbe, 'read_recording_session_snapshot(uuid,uuid,uuid,text)', 'exact four argument signature')
++  })
++  const modules = await compileModules(h, source)
++  if (mode === 'native-http') {
++    for (const path of ['http.mjs', 'application.mjs']) await source(`experiments/pg17-recording-status/${path}`)
++    const { applicationScenarios } = await import('./application.mjs')
++    await applicationScenarios(h, modules, source, evidence, value => { http = value })
++  } else await databaseScenarios(h, modules.prepareRecordingSessionSeal)
++  report.status = 'passed'
++} catch (error) {
++  report.status = 'failed'; report.error = { code: error.code ?? 'ERROR', label: error.label ?? error.message }; process.exitCode = 1
++} finally {
++  if (http) try { await http.close() } catch (error) { report.status = 'failed'; report.httpCleanupError = error.label ?? error.message; process.exitCode = 1 }
++  // Snapshot all actually loaded CommonJS dependencies and generated runtime.
++  for (const file of Object.keys(require.cache)) {
++    const path = relative(root, file)
++    if (!path.startsWith('..') && !isAbsolute(path)) await source(path)
++    else if (h.scratch && file.startsWith(join(h.scratch, 'compiled'))) {
++      const bytes = await readFile(file), compressed = gzipSync(bytes)
++      const name = `runtime-${Object.keys(report.snapshots).length}-${file.split('/').at(-1)}.gz`
++      await writeFile(join(evidence, name), compressed, { flag: 'wx' })
++      report.snapshots[relative(h.scratch, file)] = { path: name, sha256: digest(compressed), decodedSha256: digest(bytes) }
++    }
++  }
++  if (h.scratch && await exists(join(h.scratch, 'postgres.log'))) {
++    const bytes = await readFile(join(h.scratch, 'postgres.log')), compressed = gzipSync(bytes)
++    await writeFile(join(evidence, 'postgres.log.gz'), compressed, { flag: 'wx' })
++    report.postgresLog = { path: 'postgres.log.gz', sha256: digest(compressed), decodedSha256: digest(bytes) }
++  }
++  await h.cleanup()
++  report.cleanup.socketDirectoryRemoved = !h.config?.host || !await exists(h.config.host)
++  if (report.runtime.serverPid) {
++    try { process.kill(report.runtime.serverPid, 0); report.cleanup.serverPidGone = false }
++    catch (error) { report.cleanup.serverPidGone = error.code === 'ESRCH' }
++  }
++  report.sourcesChangedDuringRun = []
++  for (const [path, hash] of Object.entries(report.sources)) if (digest(await readFile(join(root, path))) !== hash) report.sourcesChangedDuringRun.push(path)
++  if (report.sourcesChangedDuringRun.length || !report.cleanup.socketDirectoryRemoved ||
++    (report.runtime.serverPid && !report.cleanup.serverPidGone) || report.status !== 'passed') { report.status = 'failed'; process.exitCode = 1 }
++  report.finishedAt = new Date().toISOString()
++  await writeFile(join(evidence, 'results.json'), `${JSON.stringify(report, null, 2)}\n`, { flag: 'wx' })
++  console.log(JSON.stringify({ evidence, status: report.status, assertions: report.assertions, scenarios: report.scenarios,
++    cleanup: report.cleanup, httpCleanup: report.httpCleanup, error: report.error ?? null }, null, 2))
++}
+--- a/scripts/__tests__/deployment-config.test.js
++++ b/scripts/__tests__/deployment-config.test.js
+@@ -134,6 +134,7 @@
+     '20261103000001_recording_worker_leases.sql',
+     '20261103000002_recording_output_candidates.sql',
+     '20261104000001_recording_job_finalization.sql',
++    '20261105000001_recording_session_snapshot.sql',
+   ])
+ 
+   assert.equal(
+--- /dev/null
++++ b/supabase/migrations/20261105000001_recording_session_snapshot.sql
+@@ -0,0 +1,95 @@
++-- Authorized point-in-time reconciliation. This routine grants no cleanup or
++-- access capability and never replays seal, lease, candidate or terminal writes.
++BEGIN;
++
++CREATE FUNCTION public.read_recording_session_snapshot(
++  p_actor_id uuid, p_project_id uuid, p_session_id uuid, p_manifest_sha256 text
++) RETURNS jsonb
++LANGUAGE plpgsql
++STABLE
++SECURITY DEFINER
++SET search_path = pg_catalog, pg_temp
++SET timezone = 'UTC'
++AS $$
++DECLARE
++  v_snapshot jsonb;
++BEGIN
++  IF current_setting('transaction_isolation') <> 'read committed' THEN
++    RAISE EXCEPTION 'recording_status_unavailable' USING ERRCODE = '22023';
++  END IF;
++  IF p_actor_id IS NULL OR p_project_id IS NULL OR p_session_id IS NULL
++    OR p_manifest_sha256 IS NULL OR p_manifest_sha256 !~ '^[0-9a-f]{64}$' THEN
++    RAISE EXCEPTION 'recording_status_unavailable' USING ERRCODE = '42501';
++  END IF;
++
++  -- STABLE holds the calling statement's snapshot across every SELECT. No
++  -- mutation helper is called and an explicit READ ONLY transaction is valid.
++  WITH authorized AS MATERIALIZED (
++    SELECT s AS session_row, a AS asset_row, s.seal_input ->> 'assetId' AS asset_id
++    FROM public.recording_sessions s
++    JOIN auth.users u ON u.id = p_actor_id
++    JOIN public.projects p ON p.id = p_project_id
++    JOIN public.project_roles pr ON pr.project_id = p.id AND pr.user_id = u.id
++      AND pr.role = 'storyteller' AND pr.status = 'active'
++    LEFT JOIN public.stories st ON st.id = s.story_id
++    LEFT JOIN public.media_assets a ON a.id::text = s.seal_input ->> 'assetId'
++    WHERE s.id = p_session_id AND s.project_id = p_project_id
++      AND s.user_id = p_actor_id AND s.manifest_sha256 = p_manifest_sha256
++      AND (s.story_id IS NULL OR (st.project_id = p_project_id AND st.storyteller_id = p_actor_id))
++      AND (a.id IS NULL OR a.state NOT IN ('deleting', 'deleted'))
++      AND NOT EXISTS (
++        SELECT 1 FROM (VALUES (to_jsonb(u)), (to_jsonb(p)), (to_jsonb(pr)),
++          (to_jsonb(st)), (to_jsonb(s)), (to_jsonb(a))) subject(body)
++        WHERE jsonb_strip_nulls(subject.body) ?| ARRAY[
++          'tombstone_at', 'deletion_requested_at', 'deleted_at', 'cancel_requested_at']
++      )
++      AND NOT EXISTS (
++        SELECT 1 FROM public.deletion_requests d
++        WHERE d.project_id = p_project_id AND d.tombstone_at IS NOT NULL
++          AND d.subject_id IN (p_project_id::text, p_session_id::text,
++            s.seal_input ->> 'assetId', s.story_id::text)
++      )
++  ), jobs AS MATERIALIZED (
++    SELECT j.* FROM public.processing_jobs j, authorized z
++    WHERE j.asset_id::text = z.asset_id ORDER BY j.id LIMIT 2
++  ), attempts AS MATERIALIZED (
++    SELECT a.* FROM public.processing_attempts a
++    WHERE a.job_id IN (SELECT j.id FROM jobs j)
++    ORDER BY a.job_id, a.attempt_no, a.id LIMIT 4
++  ), candidates AS MATERIALIZED (
++    SELECT c.* FROM public.recording_output_candidates c, authorized z
++    WHERE c.job_id IN (SELECT j.id FROM jobs j)
++      OR c.asset_id::text = z.asset_id OR c.session_id = p_session_id
++    ORDER BY c.id LIMIT 4
++  ), chunks AS MATERIALIZED (
++    SELECT c.* FROM public.recording_chunks c
++    WHERE c.session_id = p_session_id ORDER BY c.chunk_index, c.id LIMIT 2001
++  )
++  SELECT jsonb_build_object(
++    'schemaVersion', 1, 'actorId', p_actor_id, 'projectId', p_project_id,
++    'sessionId', p_session_id, 'manifestSha256', p_manifest_sha256,
++    'observedAt', statement_timestamp(),
++    'matchingSessionCount', (SELECT count(*) FROM (
++      SELECT 1 FROM public.recording_sessions s
++      WHERE s.seal_input ->> 'assetId' = z.asset_id LIMIT 2
++    ) matching),
++    'session', to_jsonb(z.session_row), 'asset', to_jsonb(z.asset_row),
++    'jobs', (SELECT coalesce(jsonb_agg(to_jsonb(j) ORDER BY j.id), '[]'::jsonb) FROM jobs j),
++    'attempts', (SELECT coalesce(jsonb_agg(to_jsonb(a) ORDER BY a.job_id, a.attempt_no, a.id), '[]'::jsonb) FROM attempts a),
++    'candidates', (SELECT coalesce(jsonb_agg(to_jsonb(c) ORDER BY c.id), '[]'::jsonb) FROM candidates c),
++    'chunks', (SELECT coalesce(jsonb_agg(to_jsonb(c) ORDER BY c.chunk_index, c.id), '[]'::jsonb) FROM chunks c)
++  ) INTO v_snapshot FROM authorized z;
++
++  IF v_snapshot IS NULL THEN
++    RAISE EXCEPTION 'recording_status_unavailable' USING ERRCODE = '42501';
++  END IF;
++  RETURN v_snapshot;
++END;
++$$;
++
++REVOKE ALL ON FUNCTION public.read_recording_session_snapshot(uuid, uuid, uuid, text)
++  FROM PUBLIC, anon, authenticated;
++GRANT EXECUTE ON FUNCTION public.read_recording_session_snapshot(uuid, uuid, uuid, text)
++  TO service_role;
++
++COMMIT;

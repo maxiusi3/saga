@@ -1,0 +1,741 @@
+;
+; Archive created at 2026-11-07 23:43:23 CST
+;     dbname: saga_pg17_rehearsal
+;     TOC Entries: 730
+;     Compression: none
+;     Dump Version: 1.16-0
+;     Format: CUSTOM
+;     Integer: 4 bytes
+;     Offset: 8 bytes
+;     Dumped from database version: 17.4
+;     Dumped by pg_dump version: 17.4
+;
+;
+; Selected TOC Entries:
+;
+7; 2615 16385 SCHEMA - auth rehearsal_admin
+4163; 0 0 ACL - SCHEMA auth rehearsal_admin
+9; 2615 16387 SCHEMA - extensions rehearsal_admin
+4164; 0 0 ACL - SCHEMA extensions rehearsal_admin
+4165; 0 0 ACL - SCHEMA public pg_database_owner
+8; 2615 16386 SCHEMA - storage rehearsal_admin
+4166; 0 0 ACL - SCHEMA storage rehearsal_admin
+2; 3079 16426 EXTENSION - pgcrypto 
+4167; 0 0 COMMENT - EXTENSION pgcrypto 
+3; 3079 16463 EXTENSION - uuid-ossp 
+4168; 0 0 COMMENT - EXTENSION "uuid-ossp" 
+291; 1255 16400 FUNCTION auth role() rehearsal_admin
+290; 1255 16399 FUNCTION auth uid() rehearsal_admin
+363; 1255 17356 FUNCTION public accept_project_invitation(text, uuid) rehearsal_admin
+4169; 0 0 ACL public FUNCTION accept_project_invitation(p_token text, p_user_id uuid) rehearsal_admin
+371; 1255 17983 FUNCTION public apply_entitlement_event(text, text, text, text, text, uuid, integer, uuid) rehearsal_admin
+4170; 0 0 ACL public FUNCTION apply_entitlement_event(p_provider text, p_event_id text, p_source_key text, p_event_kind text, p_package_id text, p_payer_id uuid, p_amount_cents integer, p_project_id uuid) rehearsal_admin
+355; 1255 18066 FUNCTION public begin_archive_assembly_attempt(uuid) rehearsal_admin
+4171; 0 0 ACL public FUNCTION begin_archive_assembly_attempt(p_attempt_id uuid) rehearsal_admin
+382; 1255 18143 FUNCTION public begin_archive_assembly_attempt_v2(uuid, text) rehearsal_admin
+4172; 0 0 ACL public FUNCTION begin_archive_assembly_attempt_v2(p_attempt_id uuid, p_build_hash text) rehearsal_admin
+376; 1255 18094 FUNCTION public begin_browser_upload_attempt(uuid, text) rehearsal_admin
+4173; 0 0 ACL public FUNCTION begin_browser_upload_attempt(p_attempt_id uuid, p_binding_hash text) rehearsal_admin
+383; 1255 18144 FUNCTION public begin_browser_upload_attempt_v2(uuid, text, text) rehearsal_admin
+4174; 0 0 ACL public FUNCTION begin_browser_upload_attempt_v2(p_attempt_id uuid, p_binding_hash text, p_build_hash text) rehearsal_admin
+364; 1255 17357 FUNCTION public cleanup_expired_invitations() rehearsal_admin
+4175; 0 0 ACL public FUNCTION cleanup_expired_invitations() rehearsal_admin
+353; 1255 16833 FUNCTION public create_project_with_role(text, text, uuid, text) rehearsal_admin
+358; 1255 17312 FUNCTION public enforce_public_archive_story_consistency() rehearsal_admin
+386; 1255 18191 FUNCTION public finalize_recording_job(uuid, text, text, integer, text, uuid, jsonb, text) rehearsal_admin
+4176; 0 0 ACL public FUNCTION finalize_recording_job(p_job_id uuid, p_action text, p_worker_id text, p_attempt integer, p_manifest_sha256 text, p_candidate_id uuid, p_output jsonb, p_failure_code text) rehearsal_admin
+356; 1255 18067 FUNCTION public finish_archive_assembly_attempt(uuid, text) rehearsal_admin
+4177; 0 0 ACL public FUNCTION finish_archive_assembly_attempt(p_attempt_id uuid, p_outcome text) rehearsal_admin
+377; 1255 18095 FUNCTION public finish_browser_upload_attempt(uuid, text, text) rehearsal_admin
+4178; 0 0 ACL public FUNCTION finish_browser_upload_attempt(p_attempt_id uuid, p_binding_hash text, p_outcome text) rehearsal_admin
+354; 1255 16854 FUNCTION public get_unread_notification_count(uuid) rehearsal_admin
+373; 1255 18062 FUNCTION public guard_archive_assembly_attempt() rehearsal_admin
+4179; 0 0 ACL public FUNCTION guard_archive_assembly_attempt() rehearsal_admin
+379; 1255 18136 FUNCTION public guard_attempt_build_attribution() rehearsal_admin
+4180; 0 0 ACL public FUNCTION guard_attempt_build_attribution() rehearsal_admin
+375; 1255 18090 FUNCTION public guard_browser_upload_attempt() rehearsal_admin
+4181; 0 0 ACL public FUNCTION guard_browser_upload_attempt() rehearsal_admin
+378; 1255 18134 FUNCTION public guard_deployment_collection_coverage() rehearsal_admin
+4182; 0 0 ACL public FUNCTION guard_deployment_collection_coverage() rehearsal_admin
+340; 1255 16834 FUNCTION public handle_new_user() rehearsal_admin
+361; 1255 17350 FUNCTION public initialize_user_wallet(uuid) rehearsal_admin
+4183; 0 0 ACL public FUNCTION initialize_user_wallet(p_user_id uuid) rehearsal_admin
+369; 1255 17397 FUNCTION public is_active_project_member(uuid, uuid) rehearsal_admin
+4184; 0 0 ACL public FUNCTION is_active_project_member(p_project_id uuid, p_user_id uuid) rehearsal_admin
+368; 1255 17396 FUNCTION public is_project_facilitator(uuid, uuid) rehearsal_admin
+4185; 0 0 ACL public FUNCTION is_project_facilitator(p_project_id uuid, p_user_id uuid) rehearsal_admin
+360; 1255 16853 FUNCTION public mark_notifications_as_read(uuid, uuid[]) rehearsal_admin
+391; 1255 18278 FUNCTION public media_deletion_job_lease(uuid, text, text, integer, integer) rehearsal_admin
+4186; 0 0 ACL public FUNCTION media_deletion_job_lease(p_request_id uuid, p_action text, p_worker_id text, p_attempt integer, p_lease_ms integer) rehearsal_admin
+370; 1255 17828 FUNCTION public prevent_approved_story_revision_overwrite() rehearsal_admin
+367; 1255 17864 FUNCTION public prevent_publication_snapshot_mutation() rehearsal_admin
+366; 1255 17351 FUNCTION public process_package_purchase(uuid, text, integer, integer, text) rehearsal_admin
+4187; 0 0 ACL public FUNCTION process_package_purchase(p_user_id uuid, p_package_code text, p_standard_hours integer, p_premium_hours integer, p_payment_reference text) rehearsal_admin
+372; 1255 18041 FUNCTION public read_operational_snapshot() rehearsal_admin
+4188; 0 0 COMMENT public FUNCTION read_operational_snapshot() rehearsal_admin
+4189; 0 0 ACL public FUNCTION read_operational_snapshot() rehearsal_admin
+374; 1255 18068 FUNCTION public read_operational_snapshot_v2() rehearsal_admin
+4190; 0 0 COMMENT public FUNCTION read_operational_snapshot_v2() rehearsal_admin
+4191; 0 0 ACL public FUNCTION read_operational_snapshot_v2() rehearsal_admin
+357; 1255 18096 FUNCTION public read_operational_snapshot_v3() rehearsal_admin
+4192; 0 0 COMMENT public FUNCTION read_operational_snapshot_v3() rehearsal_admin
+4193; 0 0 ACL public FUNCTION read_operational_snapshot_v3() rehearsal_admin
+380; 1255 18145 FUNCTION public read_operational_snapshot_v4() rehearsal_admin
+4194; 0 0 COMMENT public FUNCTION read_operational_snapshot_v4() rehearsal_admin
+4195; 0 0 ACL public FUNCTION read_operational_snapshot_v4() rehearsal_admin
+388; 1255 18195 FUNCTION public read_recording_session_snapshot(uuid, uuid, uuid, text) rehearsal_admin
+4196; 0 0 ACL public FUNCTION read_recording_session_snapshot(p_actor_id uuid, p_project_id uuid, p_session_id uuid, p_manifest_sha256 text) rehearsal_admin
+384; 1255 18156 FUNCTION public recording_job_lease(uuid, text, text, integer, integer) rehearsal_admin
+4197; 0 0 ACL public FUNCTION recording_job_lease(p_job_id uuid, p_action text, p_worker_id text, p_attempt integer, p_lease_ms integer) rehearsal_admin
+385; 1255 18186 FUNCTION public recording_output_candidate(uuid, text, text, integer, text, uuid, jsonb) rehearsal_admin
+4198; 0 0 ACL public FUNCTION recording_output_candidate(p_job_id uuid, p_action text, p_worker_id text, p_attempt integer, p_manifest_sha256 text, p_candidate_id uuid, p_output jsonb) rehearsal_admin
+389; 1255 18224 FUNCTION public recording_story_save(uuid, uuid, uuid, text, jsonb, text) rehearsal_admin
+4199; 0 0 ACL public FUNCTION recording_story_save(p_actor_id uuid, p_project_id uuid, p_session_id uuid, p_action text, p_metadata jsonb, p_manifest_sha256 text) rehearsal_admin
+365; 1255 17358 FUNCTION public request_data_export(uuid, uuid, boolean, boolean) rehearsal_admin
+4200; 0 0 ACL public FUNCTION request_data_export(p_user_id uuid, p_project_id uuid, p_include_audio boolean, p_include_photos boolean) rehearsal_admin
+390; 1255 18230 FUNCTION public request_media_deletion(uuid, uuid, uuid, text, uuid) rehearsal_admin
+4201; 0 0 ACL public FUNCTION request_media_deletion(p_actor_id uuid, p_project_id uuid, p_subject_id uuid, p_subject_type text, p_request_id uuid) rehearsal_admin
+381; 1255 18142 FUNCTION public seal_deployment_collection_coverage(text, text) rehearsal_admin
+4202; 0 0 ACL public FUNCTION seal_deployment_collection_coverage(p_scope text, p_release_hash text) rehearsal_admin
+387; 1255 18151 FUNCTION public seal_recording_manifest(jsonb) rehearsal_admin
+4203; 0 0 ACL public FUNCTION seal_recording_manifest(p_manifest jsonb) rehearsal_admin
+362; 1255 17355 FUNCTION public send_project_invitation(uuid, uuid, text, text, text) rehearsal_admin
+4204; 0 0 ACL public FUNCTION send_project_invitation(p_project_id uuid, p_inviter_id uuid, p_invitee_email text, p_role text, p_token text) rehearsal_admin
+341; 1255 17107 FUNCTION public set_agent_phase1_updated_at() rehearsal_admin
+359; 1255 17315 FUNCTION public set_public_archive_updated_at() rehearsal_admin
+339; 1255 16474 FUNCTION public set_updated_at() rehearsal_admin
+292; 1255 16401 FUNCTION storage foldername(text) rehearsal_admin
+222; 1259 16391 TABLE auth users rehearsal_admin
+250; 1259 17045 TABLE public agent_artifacts rehearsal_admin
+4205; 0 0 ACL public TABLE agent_artifacts rehearsal_admin
+247; 1259 16963 TABLE public agent_runs rehearsal_admin
+4206; 0 0 ACL public TABLE agent_runs rehearsal_admin
+279; 1259 18042 TABLE public archive_assembly_attempts rehearsal_admin
+4207; 0 0 COMMENT public TABLE archive_assembly_attempts rehearsal_admin
+4208; 0 0 ACL public TABLE archive_assembly_attempts rehearsal_admin
+284; 1259 18108 TABLE public archive_attempt_builds rehearsal_admin
+4209; 0 0 COMMENT public TABLE archive_attempt_builds rehearsal_admin
+4210; 0 0 ACL public TABLE archive_attempt_builds rehearsal_admin
+280; 1259 18053 TABLE public archive_observation_coverage rehearsal_admin
+4211; 0 0 COMMENT public TABLE archive_observation_coverage rehearsal_admin
+4212; 0 0 ACL public TABLE archive_observation_coverage rehearsal_admin
+281; 1259 18069 TABLE public browser_upload_attempts rehearsal_admin
+4213; 0 0 COMMENT public TABLE browser_upload_attempts rehearsal_admin
+4214; 0 0 ACL public TABLE browser_upload_attempts rehearsal_admin
+238; 1259 16736 TABLE public chapters rehearsal_admin
+4215; 0 0 ACL public TABLE chapters rehearsal_admin
+263; 1259 17472 TABLE public consent_records rehearsal_admin
+4216; 0 0 ACL public TABLE consent_records rehearsal_admin
+264; 1259 17493 TABLE public deletion_requests rehearsal_admin
+4217; 0 0 ACL public TABLE deletion_requests rehearsal_admin
+265; 1259 17518 TABLE public deletion_targets rehearsal_admin
+4218; 0 0 ACL public TABLE deletion_targets rehearsal_admin
+283; 1259 18097 TABLE public deployment_collection_coverage rehearsal_admin
+4219; 0 0 COMMENT public TABLE deployment_collection_coverage rehearsal_admin
+4220; 0 0 ACL public TABLE deployment_collection_coverage rehearsal_admin
+277; 1259 17958 TABLE public entitlement_events rehearsal_admin
+4221; 0 0 ACL public TABLE entitlement_events rehearsal_admin
+276; 1259 17914 TABLE public entitlement_sources rehearsal_admin
+4222; 0 0 ACL public TABLE entitlement_sources rehearsal_admin
+230; 1259 16573 TABLE public interactions rehearsal_admin
+4223; 0 0 ACL public TABLE interactions rehearsal_admin
+249; 1259 17019 TABLE public interview_events rehearsal_admin
+4224; 0 0 ACL public TABLE interview_events rehearsal_admin
+248; 1259 16991 TABLE public interview_sessions rehearsal_admin
+4225; 0 0 ACL public TABLE interview_sessions rehearsal_admin
+234; 1259 16646 TABLE public invitations rehearsal_admin
+4226; 0 0 ACL public TABLE invitations rehearsal_admin
+262; 1259 17447 TABLE public legacy_media_references rehearsal_admin
+4227; 0 0 ACL public TABLE legacy_media_references rehearsal_admin
+261; 1259 17401 TABLE public media_assets rehearsal_admin
+4228; 0 0 ACL public TABLE media_assets rehearsal_admin
+289; 1259 18260 TABLE public media_deletion_attempts rehearsal_admin
+4229; 0 0 ACL public TABLE media_deletion_attempts rehearsal_admin
+288; 1259 18237 TABLE public media_deletion_jobs rehearsal_admin
+4230; 0 0 ACL public TABLE media_deletion_jobs rehearsal_admin
+236; 1259 16695 TABLE public notification_settings rehearsal_admin
+4231; 0 0 ACL public TABLE notification_settings rehearsal_admin
+235; 1259 16673 TABLE public notifications rehearsal_admin
+4232; 0 0 ACL public TABLE notifications rehearsal_admin
+278; 1259 17992 TABLE public pilot_households rehearsal_admin
+4233; 0 0 ACL public TABLE pilot_households rehearsal_admin
+252; 1259 17122 TABLE public platform_roles rehearsal_admin
+4234; 0 0 ACL public TABLE platform_roles rehearsal_admin
+241; 1259 16796 TABLE public privacy_agreements rehearsal_admin
+4235; 0 0 ACL public TABLE privacy_agreements rehearsal_admin
+267; 1259 17574 TABLE public processing_attempts rehearsal_admin
+4236; 0 0 ACL public TABLE processing_attempts rehearsal_admin
+266; 1259 17537 TABLE public processing_jobs rehearsal_admin
+4237; 0 0 ACL public TABLE processing_jobs rehearsal_admin
+225; 1259 16475 TABLE public profiles rehearsal_admin
+4238; 0 0 ACL public TABLE profiles rehearsal_admin
+243; 1259 16861 TABLE public project_members rehearsal_admin
+4239; 0 0 ACL public TABLE project_members rehearsal_admin
+240; 1259 16765 TABLE public project_prompt_state rehearsal_admin
+4240; 0 0 ACL public TABLE project_prompt_state rehearsal_admin
+228; 1259 16516 TABLE public project_roles rehearsal_admin
+4241; 0 0 ACL public TABLE project_roles rehearsal_admin
+227; 1259 16493 TABLE public projects rehearsal_admin
+4242; 0 0 ACL public TABLE projects rehearsal_admin
+239; 1259 16748 TABLE public prompts rehearsal_admin
+4243; 0 0 ACL public TABLE prompts rehearsal_admin
+258; 1259 17286 TABLE public public_archive_audit_events rehearsal_admin
+4244; 0 0 ACL public TABLE public_archive_audit_events rehearsal_admin
+245; 1259 16902 TABLE public public_archive_entries rehearsal_admin
+4245; 0 0 ACL public TABLE public_archive_entries rehearsal_admin
+255; 1259 17222 TABLE public public_contribution_elements rehearsal_admin
+4246; 0 0 ACL public TABLE public_contribution_elements rehearsal_admin
+253; 1259 17142 TABLE public public_contribution_invitations rehearsal_admin
+4247; 0 0 ACL public TABLE public_contribution_invitations rehearsal_admin
+254; 1259 17173 TABLE public public_contributions rehearsal_admin
+4248; 0 0 ACL public TABLE public_contributions rehearsal_admin
+256; 1259 17242 TABLE public public_event_clusters rehearsal_admin
+4249; 0 0 ACL public TABLE public_event_clusters rehearsal_admin
+257; 1259 17264 TABLE public public_event_contributions rehearsal_admin
+4250; 0 0 ACL public TABLE public_event_contributions rehearsal_admin
+274; 1259 17834 TABLE public publication_snapshots rehearsal_admin
+4251; 0 0 ACL public TABLE publication_snapshots rehearsal_admin
+269; 1259 17632 TABLE public recording_chunks rehearsal_admin
+4252; 0 0 ACL public TABLE recording_chunks rehearsal_admin
+286; 1259 18162 TABLE public recording_output_candidates rehearsal_admin
+4253; 0 0 ACL public TABLE recording_output_candidates rehearsal_admin
+268; 1259 17593 TABLE public recording_sessions rehearsal_admin
+4254; 0 0 ACL public TABLE recording_sessions rehearsal_admin
+287; 1259 18198 TABLE public recording_story_intents rehearsal_admin
+275; 1259 17866 TABLE public search_index_entries rehearsal_admin
+4255; 0 0 ACL public TABLE search_index_entries rehearsal_admin
+233; 1259 16626 TABLE public seat_transactions rehearsal_admin
+4256; 0 0 ACL public TABLE seat_transactions rehearsal_admin
+229; 1259 16546 TABLE public stories rehearsal_admin
+4257; 0 0 ACL public TABLE stories rehearsal_admin
+244; 1259 16882 TABLE public story_artifacts rehearsal_admin
+4258; 0 0 ACL public TABLE story_artifacts rehearsal_admin
+272; 1259 17732 TABLE public story_assertions rehearsal_admin
+4259; 0 0 ACL public TABLE story_assertions rehearsal_admin
+251; 1259 17077 TABLE public story_elements rehearsal_admin
+4260; 0 0 ACL public TABLE story_elements rehearsal_admin
+231; 1259 16603 VIEW public story_interactions rehearsal_admin
+4261; 0 0 ACL public TABLE story_interactions rehearsal_admin
+273; 1259 17785 TABLE public story_revisions rehearsal_admin
+4262; 0 0 ACL public TABLE story_revisions rehearsal_admin
+242; 1259 16811 TABLE public subscriptions rehearsal_admin
+4263; 0 0 ACL public TABLE subscriptions rehearsal_admin
+271; 1259 17703 TABLE public transcript_segments rehearsal_admin
+4264; 0 0 ACL public TABLE transcript_segments rehearsal_admin
+270; 1259 17665 TABLE public transcript_versions rehearsal_admin
+4265; 0 0 ACL public TABLE transcript_versions rehearsal_admin
+285; 1259 18121 TABLE public upload_attempt_builds rehearsal_admin
+4266; 0 0 COMMENT public TABLE upload_attempt_builds rehearsal_admin
+4267; 0 0 ACL public TABLE upload_attempt_builds rehearsal_admin
+282; 1259 18081 TABLE public upload_observation_coverage rehearsal_admin
+4268; 0 0 COMMENT public TABLE upload_observation_coverage rehearsal_admin
+4269; 0 0 ACL public TABLE upload_observation_coverage rehearsal_admin
+226; 1259 16489 VIEW public user_profiles rehearsal_admin
+4270; 0 0 ACL public TABLE user_profiles rehearsal_admin
+232; 1259 16607 TABLE public user_resource_wallets rehearsal_admin
+4271; 0 0 ACL public TABLE user_resource_wallets rehearsal_admin
+237; 1259 16719 TABLE public user_settings rehearsal_admin
+4272; 0 0 ACL public TABLE user_settings rehearsal_admin
+246; 1259 16924 TABLE public waitlist rehearsal_admin
+4273; 0 0 ACL public TABLE waitlist rehearsal_admin
+259; 1259 17359 TABLE public waitlist_signups rehearsal_admin
+4274; 0 0 COMMENT public TABLE waitlist_signups rehearsal_admin
+4275; 0 0 COMMENT public COLUMN waitlist_signups.email rehearsal_admin
+4276; 0 0 COMMENT public COLUMN waitlist_signups.user_id rehearsal_admin
+4277; 0 0 COMMENT public COLUMN waitlist_signups.package_interest rehearsal_admin
+4278; 0 0 COMMENT public COLUMN waitlist_signups.message rehearsal_admin
+4279; 0 0 COMMENT public COLUMN waitlist_signups.source rehearsal_admin
+4280; 0 0 COMMENT public COLUMN waitlist_signups.notified_at rehearsal_admin
+4281; 0 0 COMMENT public COLUMN waitlist_signups.converted_at rehearsal_admin
+4282; 0 0 ACL public TABLE waitlist_signups rehearsal_admin
+260; 1259 17382 VIEW public waitlist_stats rehearsal_admin
+4283; 0 0 COMMENT public VIEW waitlist_stats rehearsal_admin
+4284; 0 0 ACL public TABLE waitlist_stats rehearsal_admin
+223; 1259 16402 TABLE storage buckets rehearsal_admin
+4285; 0 0 ACL storage TABLE buckets rehearsal_admin
+224; 1259 16410 TABLE storage objects rehearsal_admin
+4286; 0 0 ACL storage TABLE objects rehearsal_admin
+4092; 0 16391 TABLE DATA auth users rehearsal_admin
+4118; 0 17045 TABLE DATA public agent_artifacts rehearsal_admin
+4115; 0 16963 TABLE DATA public agent_runs rehearsal_admin
+4146; 0 18042 TABLE DATA public archive_assembly_attempts rehearsal_admin
+4151; 0 18108 TABLE DATA public archive_attempt_builds rehearsal_admin
+4147; 0 18053 TABLE DATA public archive_observation_coverage rehearsal_admin
+4148; 0 18069 TABLE DATA public browser_upload_attempts rehearsal_admin
+4106; 0 16736 TABLE DATA public chapters rehearsal_admin
+4130; 0 17472 TABLE DATA public consent_records rehearsal_admin
+4131; 0 17493 TABLE DATA public deletion_requests rehearsal_admin
+4132; 0 17518 TABLE DATA public deletion_targets rehearsal_admin
+4150; 0 18097 TABLE DATA public deployment_collection_coverage rehearsal_admin
+4144; 0 17958 TABLE DATA public entitlement_events rehearsal_admin
+4143; 0 17914 TABLE DATA public entitlement_sources rehearsal_admin
+4099; 0 16573 TABLE DATA public interactions rehearsal_admin
+4117; 0 17019 TABLE DATA public interview_events rehearsal_admin
+4116; 0 16991 TABLE DATA public interview_sessions rehearsal_admin
+4102; 0 16646 TABLE DATA public invitations rehearsal_admin
+4129; 0 17447 TABLE DATA public legacy_media_references rehearsal_admin
+4128; 0 17401 TABLE DATA public media_assets rehearsal_admin
+4156; 0 18260 TABLE DATA public media_deletion_attempts rehearsal_admin
+4155; 0 18237 TABLE DATA public media_deletion_jobs rehearsal_admin
+4104; 0 16695 TABLE DATA public notification_settings rehearsal_admin
+4103; 0 16673 TABLE DATA public notifications rehearsal_admin
+4145; 0 17992 TABLE DATA public pilot_households rehearsal_admin
+4120; 0 17122 TABLE DATA public platform_roles rehearsal_admin
+4109; 0 16796 TABLE DATA public privacy_agreements rehearsal_admin
+4134; 0 17574 TABLE DATA public processing_attempts rehearsal_admin
+4133; 0 17537 TABLE DATA public processing_jobs rehearsal_admin
+4095; 0 16475 TABLE DATA public profiles rehearsal_admin
+4111; 0 16861 TABLE DATA public project_members rehearsal_admin
+4108; 0 16765 TABLE DATA public project_prompt_state rehearsal_admin
+4097; 0 16516 TABLE DATA public project_roles rehearsal_admin
+4096; 0 16493 TABLE DATA public projects rehearsal_admin
+4107; 0 16748 TABLE DATA public prompts rehearsal_admin
+4126; 0 17286 TABLE DATA public public_archive_audit_events rehearsal_admin
+4113; 0 16902 TABLE DATA public public_archive_entries rehearsal_admin
+4123; 0 17222 TABLE DATA public public_contribution_elements rehearsal_admin
+4121; 0 17142 TABLE DATA public public_contribution_invitations rehearsal_admin
+4122; 0 17173 TABLE DATA public public_contributions rehearsal_admin
+4124; 0 17242 TABLE DATA public public_event_clusters rehearsal_admin
+4125; 0 17264 TABLE DATA public public_event_contributions rehearsal_admin
+4141; 0 17834 TABLE DATA public publication_snapshots rehearsal_admin
+4136; 0 17632 TABLE DATA public recording_chunks rehearsal_admin
+4153; 0 18162 TABLE DATA public recording_output_candidates rehearsal_admin
+4135; 0 17593 TABLE DATA public recording_sessions rehearsal_admin
+4154; 0 18198 TABLE DATA public recording_story_intents rehearsal_admin
+4142; 0 17866 TABLE DATA public search_index_entries rehearsal_admin
+4101; 0 16626 TABLE DATA public seat_transactions rehearsal_admin
+4098; 0 16546 TABLE DATA public stories rehearsal_admin
+4112; 0 16882 TABLE DATA public story_artifacts rehearsal_admin
+4139; 0 17732 TABLE DATA public story_assertions rehearsal_admin
+4119; 0 17077 TABLE DATA public story_elements rehearsal_admin
+4140; 0 17785 TABLE DATA public story_revisions rehearsal_admin
+4110; 0 16811 TABLE DATA public subscriptions rehearsal_admin
+4138; 0 17703 TABLE DATA public transcript_segments rehearsal_admin
+4137; 0 17665 TABLE DATA public transcript_versions rehearsal_admin
+4152; 0 18121 TABLE DATA public upload_attempt_builds rehearsal_admin
+4149; 0 18081 TABLE DATA public upload_observation_coverage rehearsal_admin
+4100; 0 16607 TABLE DATA public user_resource_wallets rehearsal_admin
+4105; 0 16719 TABLE DATA public user_settings rehearsal_admin
+4114; 0 16924 TABLE DATA public waitlist rehearsal_admin
+4127; 0 17359 TABLE DATA public waitlist_signups rehearsal_admin
+4093; 0 16402 TABLE DATA storage buckets rehearsal_admin
+4094; 0 16410 TABLE DATA storage objects rehearsal_admin
+3438; 2606 16398 CONSTRAINT auth users users_pkey rehearsal_admin
+3524; 2606 17061 CONSTRAINT public agent_artifacts agent_artifacts_pkey rehearsal_admin
+3511; 2606 16975 CONSTRAINT public agent_runs agent_runs_pkey rehearsal_admin
+3646; 2606 18052 CONSTRAINT public archive_assembly_attempts archive_assembly_attempts_pkey rehearsal_admin
+3656; 2606 18115 CONSTRAINT public archive_attempt_builds archive_attempt_builds_pkey rehearsal_admin
+3648; 2606 18061 CONSTRAINT public archive_observation_coverage archive_observation_coverage_pkey rehearsal_admin
+3650; 2606 18080 CONSTRAINT public browser_upload_attempts browser_upload_attempts_pkey rehearsal_admin
+3487; 2606 16747 CONSTRAINT public chapters chapters_pkey rehearsal_admin
+3576; 2606 17481 CONSTRAINT public consent_records consent_records_pkey rehearsal_admin
+3580; 2606 17506 CONSTRAINT public deletion_requests deletion_requests_pkey rehearsal_admin
+3583; 2606 17531 CONSTRAINT public deletion_targets deletion_targets_deletion_request_id_target_id_key rehearsal_admin
+3585; 2606 17529 CONSTRAINT public deletion_targets deletion_targets_pkey rehearsal_admin
+3654; 2606 18107 CONSTRAINT public deployment_collection_coverage deployment_collection_coverage_pkey rehearsal_admin
+3639; 2606 17972 CONSTRAINT public entitlement_events entitlement_events_pkey rehearsal_admin
+3635; 2606 17945 CONSTRAINT public entitlement_sources entitlement_sources_pkey rehearsal_admin
+3637; 2606 17947 CONSTRAINT public entitlement_sources entitlement_sources_provider_source_key_key rehearsal_admin
+3462; 2606 16582 CONSTRAINT public interactions interactions_pkey rehearsal_admin
+3522; 2606 17029 CONSTRAINT public interview_events interview_events_pkey rehearsal_admin
+3519; 2606 17003 CONSTRAINT public interview_sessions interview_sessions_pkey rehearsal_admin
+3472; 2606 16660 CONSTRAINT public invitations invitations_pkey rehearsal_admin
+3475; 2606 16662 CONSTRAINT public invitations invitations_token_key rehearsal_admin
+3572; 2606 17459 CONSTRAINT public legacy_media_references legacy_media_references_pkey rehearsal_admin
+3574; 2606 17461 CONSTRAINT public legacy_media_references legacy_media_references_project_id_source_table_source_row__key rehearsal_admin
+3566; 2606 17422 CONSTRAINT public media_assets media_assets_bucket_object_key_key rehearsal_admin
+3568; 2606 17420 CONSTRAINT public media_assets media_assets_pkey rehearsal_admin
+3570; 2606 17424 CONSTRAINT public media_assets media_assets_project_id_idempotency_key_key rehearsal_admin
+3672; 2606 18270 CONSTRAINT public media_deletion_attempts media_deletion_attempts_pkey rehearsal_admin
+3670; 2606 18249 CONSTRAINT public media_deletion_jobs media_deletion_jobs_pkey rehearsal_admin
+3479; 2606 16706 CONSTRAINT public notification_settings notification_settings_pkey rehearsal_admin
+3481; 2606 16708 CONSTRAINT public notification_settings notification_settings_user_id_project_id_notification_type_key rehearsal_admin
+3477; 2606 16684 CONSTRAINT public notifications notifications_pkey rehearsal_admin
+3642; 2606 18026 CONSTRAINT public pilot_households pilot_households_pkey rehearsal_admin
+3644; 2606 18028 CONSTRAINT public pilot_households pilot_households_project_id_cohort_type_key rehearsal_admin
+3532; 2606 17131 CONSTRAINT public platform_roles platform_roles_pkey rehearsal_admin
+3495; 2606 16805 CONSTRAINT public privacy_agreements privacy_agreements_pkey rehearsal_admin
+3593; 2606 17587 CONSTRAINT public processing_attempts processing_attempts_job_id_attempt_no_key rehearsal_admin
+3595; 2606 17585 CONSTRAINT public processing_attempts processing_attempts_pkey rehearsal_admin
+3589; 2606 17556 CONSTRAINT public processing_jobs processing_jobs_idempotency_key_key rehearsal_admin
+3591; 2606 17554 CONSTRAINT public processing_jobs processing_jobs_pkey rehearsal_admin
+3446; 2606 16485 CONSTRAINT public profiles profiles_pkey rehearsal_admin
+3448; 2606 16487 CONSTRAINT public profiles profiles_user_id_key rehearsal_admin
+3499; 2606 16871 CONSTRAINT public project_members project_members_pkey rehearsal_admin
+3491; 2606 16775 CONSTRAINT public project_prompt_state project_prompt_state_pkey rehearsal_admin
+3493; 2606 16777 CONSTRAINT public project_prompt_state project_prompt_state_project_id_key rehearsal_admin
+3454; 2606 16529 CONSTRAINT public project_roles project_roles_pkey rehearsal_admin
+3452; 2606 16504 CONSTRAINT public projects projects_pkey rehearsal_admin
+3489; 2606 16759 CONSTRAINT public prompts prompts_pkey rehearsal_admin
+3554; 2606 17296 CONSTRAINT public public_archive_audit_events public_archive_audit_events_pkey rehearsal_admin
+3503; 2606 16911 CONSTRAINT public public_archive_entries public_archive_entries_pkey rehearsal_admin
+3505; 2606 16913 CONSTRAINT public public_archive_entries public_archive_entries_slug_key rehearsal_admin
+3544; 2606 17236 CONSTRAINT public public_contribution_elements public_contribution_elements_pkey rehearsal_admin
+3534; 2606 17152 CONSTRAINT public public_contribution_invitations public_contribution_invitations_pkey rehearsal_admin
+3539; 2606 17188 CONSTRAINT public public_contributions public_contributions_pkey rehearsal_admin
+3541; 2606 17190 CONSTRAINT public public_contributions public_contributions_public_ref_key rehearsal_admin
+3546; 2606 17258 CONSTRAINT public public_event_clusters public_event_clusters_pkey rehearsal_admin
+3551; 2606 17275 CONSTRAINT public public_event_contributions public_event_contributions_pkey rehearsal_admin
+3624; 2606 17850 CONSTRAINT public publication_snapshots publication_snapshots_pkey rehearsal_admin
+3626; 2606 17852 CONSTRAINT public publication_snapshots publication_snapshots_project_id_snapshot_version_key rehearsal_admin
+3599; 2606 17649 CONSTRAINT public recording_chunks recording_chunks_bucket_object_key_key rehearsal_admin
+3601; 2606 17645 CONSTRAINT public recording_chunks recording_chunks_pkey rehearsal_admin
+3603; 2606 17647 CONSTRAINT public recording_chunks recording_chunks_session_id_chunk_index_key rehearsal_admin
+3660; 2606 18184 CONSTRAINT public recording_output_candidates recording_output_candidates_bucket_object_key_key rehearsal_admin
+3662; 2606 18182 CONSTRAINT public recording_output_candidates recording_output_candidates_job_id_attempt_no_key rehearsal_admin
+3664; 2606 18180 CONSTRAINT public recording_output_candidates recording_output_candidates_pkey rehearsal_admin
+3597; 2606 17606 CONSTRAINT public recording_sessions recording_sessions_pkey rehearsal_admin
+3666; 2606 18206 CONSTRAINT public recording_story_intents recording_story_intents_pkey rehearsal_admin
+3668; 2606 18208 CONSTRAINT public recording_story_intents recording_story_intents_story_id_key rehearsal_admin
+3633; 2606 17883 CONSTRAINT public search_index_entries search_index_entries_pkey rehearsal_admin
+3470; 2606 16635 CONSTRAINT public seat_transactions seat_transactions_pkey rehearsal_admin
+3458; 2606 16557 CONSTRAINT public stories stories_pkey rehearsal_admin
+3501; 2606 16891 CONSTRAINT public story_artifacts story_artifacts_pkey rehearsal_admin
+3616; 2606 17753 CONSTRAINT public story_assertions story_assertions_pkey rehearsal_admin
+3529; 2606 17091 CONSTRAINT public story_elements story_elements_pkey rehearsal_admin
+3619; 2606 17799 CONSTRAINT public story_revisions story_revisions_pkey rehearsal_admin
+3621; 2606 17801 CONSTRAINT public story_revisions story_revisions_story_id_revision_number_key rehearsal_admin
+3497; 2606 16822 CONSTRAINT public subscriptions subscriptions_pkey rehearsal_admin
+3611; 2606 17718 CONSTRAINT public transcript_segments transcript_segments_pkey rehearsal_admin
+3613; 2606 17720 CONSTRAINT public transcript_segments transcript_segments_transcript_version_id_segment_index_key rehearsal_admin
+3606; 2606 17679 CONSTRAINT public transcript_versions transcript_versions_pkey rehearsal_admin
+3608; 2606 17681 CONSTRAINT public transcript_versions transcript_versions_story_id_version_key rehearsal_admin
+3658; 2606 18128 CONSTRAINT public upload_attempt_builds upload_attempt_builds_pkey rehearsal_admin
+3652; 2606 18089 CONSTRAINT public upload_observation_coverage upload_observation_coverage_pkey rehearsal_admin
+3466; 2606 16617 CONSTRAINT public user_resource_wallets user_resource_wallets_pkey rehearsal_admin
+3468; 2606 16619 CONSTRAINT public user_resource_wallets user_resource_wallets_user_id_key rehearsal_admin
+3483; 2606 16728 CONSTRAINT public user_settings user_settings_pkey rehearsal_admin
+3485; 2606 16730 CONSTRAINT public user_settings user_settings_user_id_key rehearsal_admin
+3507; 2606 16935 CONSTRAINT public waitlist waitlist_email_key rehearsal_admin
+3509; 2606 16933 CONSTRAINT public waitlist waitlist_pkey rehearsal_admin
+3560; 2606 17370 CONSTRAINT public waitlist_signups waitlist_signups_email_key rehearsal_admin
+3562; 2606 17368 CONSTRAINT public waitlist_signups waitlist_signups_pkey rehearsal_admin
+3440; 2606 16409 CONSTRAINT storage buckets buckets_pkey rehearsal_admin
+3442; 2606 16419 CONSTRAINT storage objects objects_bucket_id_name_key rehearsal_admin
+3444; 2606 16417 CONSTRAINT storage objects objects_pkey rehearsal_admin
+3578; 1259 18229 INDEX public deletion_capture_subject rehearsal_admin
+3525; 1259 17117 INDEX public idx_agent_artifacts_story_id rehearsal_admin
+3512; 1259 17112 INDEX public idx_agent_runs_agent_type rehearsal_admin
+3513; 1259 17113 INDEX public idx_agent_runs_completed_editor_story_content_hash_unique rehearsal_admin
+3514; 1259 17114 INDEX public idx_agent_runs_completed_editor_story_hash_completed_at rehearsal_admin
+3515; 1259 17110 INDEX public idx_agent_runs_project_id rehearsal_admin
+3516; 1259 17111 INDEX public idx_agent_runs_story_id rehearsal_admin
+3577; 1259 17492 INDEX public idx_consent_records_lookup rehearsal_admin
+3581; 1259 17517 INDEX public idx_deletion_requests_subject_tombstone rehearsal_admin
+3520; 1259 17116 INDEX public idx_interview_events_session_id rehearsal_admin
+3517; 1259 17115 INDEX public idx_interview_sessions_project_id rehearsal_admin
+3563; 1259 17445 INDEX public idx_media_assets_project_state rehearsal_admin
+3564; 1259 17446 INDEX public idx_media_assets_story_id rehearsal_admin
+3640; 1259 18039 INDEX public idx_pilot_households_cohort_pricing rehearsal_admin
+3530; 1259 17318 INDEX public idx_platform_roles_active_reviewer_unique rehearsal_admin
+3586; 1259 17573 INDEX public idx_processing_jobs_asset_id rehearsal_admin
+3587; 1259 17572 INDEX public idx_processing_jobs_project_state rehearsal_admin
+3552; 1259 17326 INDEX public idx_public_archive_audit_contribution rehearsal_admin
+3542; 1259 17322 INDEX public idx_public_contribution_elements_contribution rehearsal_admin
+3535; 1259 17320 INDEX public idx_public_contributions_active_story_user_unique rehearsal_admin
+3536; 1259 17321 INDEX public idx_public_contributions_active_wiki rehearsal_admin
+3537; 1259 17319 INDEX public idx_public_contributions_story_user rehearsal_admin
+3547; 1259 17325 INDEX public idx_public_event_contributions_active_unique rehearsal_admin
+3548; 1259 17323 INDEX public idx_public_event_contributions_cluster rehearsal_admin
+3549; 1259 17324 INDEX public idx_public_event_contributions_contribution rehearsal_admin
+3622; 1259 17863 INDEX public idx_publication_snapshots_project rehearsal_admin
+3627; 1259 17912 INDEX public idx_search_index_entries_dates rehearsal_admin
+3628; 1259 17911 INDEX public idx_search_index_entries_people rehearsal_admin
+3629; 1259 17913 INDEX public idx_search_index_entries_places rehearsal_admin
+3630; 1259 17909 INDEX public idx_search_index_entries_project_active rehearsal_admin
+3631; 1259 17910 INDEX public idx_search_index_entries_tsv rehearsal_admin
+3614; 1259 17784 INDEX public idx_story_assertions_story_version rehearsal_admin
+3526; 1259 17119 INDEX public idx_story_elements_project_type rehearsal_admin
+3527; 1259 17118 INDEX public idx_story_elements_story_id rehearsal_admin
+3617; 1259 17827 INDEX public idx_story_revisions_story_status rehearsal_admin
+3609; 1259 17731 INDEX public idx_transcript_segments_version rehearsal_admin
+3604; 1259 17702 INDEX public idx_transcript_versions_story_current rehearsal_admin
+3555; 1259 17378 INDEX public idx_waitlist_signups_created_at rehearsal_admin
+3556; 1259 17376 INDEX public idx_waitlist_signups_email rehearsal_admin
+3557; 1259 17379 INDEX public idx_waitlist_signups_notified_at rehearsal_admin
+3558; 1259 17377 INDEX public idx_waitlist_signups_user_id rehearsal_admin
+3464; 1259 17354 INDEX public idx_wallet_payment_ref rehearsal_admin
+3463; 1259 16859 INDEX public interactions_story_id_idx rehearsal_admin
+3473; 1259 16860 INDEX public invitations_token_idx rehearsal_admin
+3449; 1259 16488 INDEX public profiles_user_id_unique rehearsal_admin
+3455; 1259 16545 INDEX public project_roles_project_user_unique rehearsal_admin
+3456; 1259 16856 INDEX public project_roles_user_id_idx rehearsal_admin
+3450; 1259 16855 INDEX public projects_facilitator_id_idx rehearsal_admin
+3459; 1259 16857 INDEX public stories_project_id_idx rehearsal_admin
+3460; 1259 16858 INDEX public stories_user_id_idx rehearsal_admin
+3801; 2620 16945 TRIGGER auth users on_auth_user_created rehearsal_admin
+3810; 2620 18063 TRIGGER public archive_assembly_attempts archive_assembly_attempt_transition rehearsal_admin
+3813; 2620 18137 TRIGGER public archive_attempt_builds archive_attempt_builds_immutable_guard rehearsal_admin
+3811; 2620 18091 TRIGGER public browser_upload_attempts browser_upload_attempt_transition rehearsal_admin
+3812; 2620 18135 TRIGGER public deployment_collection_coverage deployment_collection_coverage_guard rehearsal_admin
+3804; 2620 17314 TRIGGER public public_contribution_invitations enforce_public_contribution_invitations_story_consistency rehearsal_admin
+3805; 2620 17313 TRIGGER public public_contributions enforce_public_contributions_story_consistency rehearsal_admin
+3802; 2620 17108 TRIGGER public agent_artifacts set_agent_artifacts_updated_at rehearsal_admin
+3806; 2620 17316 TRIGGER public public_contribution_elements set_public_contribution_elements_updated_at rehearsal_admin
+3807; 2620 17317 TRIGGER public public_event_clusters set_public_event_clusters_updated_at rehearsal_admin
+3803; 2620 17109 TRIGGER public story_elements set_story_elements_updated_at rehearsal_admin
+3808; 2620 17829 TRIGGER public story_revisions trg_prevent_approved_story_revision_overwrite rehearsal_admin
+3809; 2620 17865 TRIGGER public publication_snapshots trg_prevent_publication_snapshot_mutation rehearsal_admin
+3814; 2620 18138 TRIGGER public upload_attempt_builds upload_attempt_builds_immutable_guard rehearsal_admin
+3718; 2606 17062 FK CONSTRAINT public agent_artifacts agent_artifacts_agent_run_id_fkey rehearsal_admin
+3719; 2606 17067 FK CONSTRAINT public agent_artifacts agent_artifacts_project_id_fkey rehearsal_admin
+3720; 2606 17072 FK CONSTRAINT public agent_artifacts agent_artifacts_story_id_fkey rehearsal_admin
+3709; 2606 16986 FK CONSTRAINT public agent_runs agent_runs_created_by_fkey rehearsal_admin
+3710; 2606 17014 FK CONSTRAINT public agent_runs agent_runs_interview_session_fk rehearsal_admin
+3711; 2606 16976 FK CONSTRAINT public agent_runs agent_runs_project_id_fkey rehearsal_admin
+3712; 2606 16981 FK CONSTRAINT public agent_runs agent_runs_story_id_fkey rehearsal_admin
+3793; 2606 18116 FK CONSTRAINT public archive_attempt_builds archive_attempt_builds_attempt_id_fkey rehearsal_admin
+3747; 2606 17487 FK CONSTRAINT public consent_records consent_records_grantor_id_fkey rehearsal_admin
+3748; 2606 17482 FK CONSTRAINT public consent_records consent_records_project_id_fkey rehearsal_admin
+3749; 2606 17507 FK CONSTRAINT public deletion_requests deletion_requests_project_id_fkey rehearsal_admin
+3750; 2606 17512 FK CONSTRAINT public deletion_requests deletion_requests_requested_by_fkey rehearsal_admin
+3751; 2606 17532 FK CONSTRAINT public deletion_targets deletion_targets_deletion_request_id_fkey rehearsal_admin
+3789; 2606 17973 FK CONSTRAINT public entitlement_events entitlement_events_payer_id_fkey rehearsal_admin
+3790; 2606 17978 FK CONSTRAINT public entitlement_events entitlement_events_source_id_fkey rehearsal_admin
+3787; 2606 17948 FK CONSTRAINT public entitlement_sources entitlement_sources_payer_id_fkey rehearsal_admin
+3788; 2606 17953 FK CONSTRAINT public entitlement_sources entitlement_sources_project_id_fkey rehearsal_admin
+3682; 2606 16598 FK CONSTRAINT public interactions interactions_answer_story_id_fkey rehearsal_admin
+3683; 2606 16593 FK CONSTRAINT public interactions interactions_facilitator_id_fkey rehearsal_admin
+3684; 2606 16583 FK CONSTRAINT public interactions interactions_story_id_fkey rehearsal_admin
+3685; 2606 16588 FK CONSTRAINT public interactions interactions_user_id_fkey rehearsal_admin
+3715; 2606 17030 FK CONSTRAINT public interview_events interview_events_interview_session_id_fkey rehearsal_admin
+3716; 2606 17035 FK CONSTRAINT public interview_events interview_events_project_id_fkey rehearsal_admin
+3717; 2606 17040 FK CONSTRAINT public interview_events interview_events_storyteller_id_fkey rehearsal_admin
+3713; 2606 17004 FK CONSTRAINT public interview_sessions interview_sessions_project_id_fkey rehearsal_admin
+3714; 2606 17009 FK CONSTRAINT public interview_sessions interview_sessions_storyteller_id_fkey rehearsal_admin
+3689; 2606 16668 FK CONSTRAINT public invitations invitations_inviter_id_fkey rehearsal_admin
+3690; 2606 16663 FK CONSTRAINT public invitations invitations_project_id_fkey rehearsal_admin
+3745; 2606 17467 FK CONSTRAINT public legacy_media_references legacy_media_references_asset_id_fkey rehearsal_admin
+3746; 2606 17462 FK CONSTRAINT public legacy_media_references legacy_media_references_project_id_fkey rehearsal_admin
+3741; 2606 17440 FK CONSTRAINT public media_assets media_assets_created_by_fkey rehearsal_admin
+3742; 2606 17435 FK CONSTRAINT public media_assets media_assets_parent_asset_id_fkey rehearsal_admin
+3743; 2606 17425 FK CONSTRAINT public media_assets media_assets_project_id_fkey rehearsal_admin
+3744; 2606 17430 FK CONSTRAINT public media_assets media_assets_story_id_fkey rehearsal_admin
+3800; 2606 18271 FK CONSTRAINT public media_deletion_attempts media_deletion_attempts_request_id_fkey rehearsal_admin
+3798; 2606 18255 FK CONSTRAINT public media_deletion_jobs media_deletion_jobs_project_id_fkey rehearsal_admin
+3799; 2606 18250 FK CONSTRAINT public media_deletion_jobs media_deletion_jobs_request_id_fkey rehearsal_admin
+3693; 2606 16714 FK CONSTRAINT public notification_settings notification_settings_project_id_fkey rehearsal_admin
+3694; 2606 16709 FK CONSTRAINT public notification_settings notification_settings_user_id_fkey rehearsal_admin
+3691; 2606 16685 FK CONSTRAINT public notifications notifications_recipient_id_fkey rehearsal_admin
+3692; 2606 16690 FK CONSTRAINT public notifications notifications_sender_id_fkey rehearsal_admin
+3791; 2606 18034 FK CONSTRAINT public pilot_households pilot_households_household_user_id_fkey rehearsal_admin
+3792; 2606 18029 FK CONSTRAINT public pilot_households pilot_households_project_id_fkey rehearsal_admin
+3724; 2606 17137 FK CONSTRAINT public platform_roles platform_roles_granted_by_fkey rehearsal_admin
+3725; 2606 17132 FK CONSTRAINT public platform_roles platform_roles_user_id_fkey rehearsal_admin
+3700; 2606 16806 FK CONSTRAINT public privacy_agreements privacy_agreements_user_id_fkey rehearsal_admin
+3755; 2606 17588 FK CONSTRAINT public processing_attempts processing_attempts_job_id_fkey rehearsal_admin
+3752; 2606 17562 FK CONSTRAINT public processing_jobs processing_jobs_asset_id_fkey rehearsal_admin
+3753; 2606 17567 FK CONSTRAINT public processing_jobs processing_jobs_created_by_fkey rehearsal_admin
+3754; 2606 17557 FK CONSTRAINT public processing_jobs processing_jobs_project_id_fkey rehearsal_admin
+3703; 2606 16872 FK CONSTRAINT public project_members project_members_project_id_fkey rehearsal_admin
+3704; 2606 16877 FK CONSTRAINT public project_members project_members_user_id_fkey rehearsal_admin
+3697; 2606 16783 FK CONSTRAINT public project_prompt_state project_prompt_state_current_chapter_id_fkey rehearsal_admin
+3698; 2606 16788 FK CONSTRAINT public project_prompt_state project_prompt_state_current_prompt_id_fkey rehearsal_admin
+3699; 2606 16778 FK CONSTRAINT public project_prompt_state project_prompt_state_project_id_fkey rehearsal_admin
+3676; 2606 16540 FK CONSTRAINT public project_roles project_roles_invited_by_fkey rehearsal_admin
+3677; 2606 16530 FK CONSTRAINT public project_roles project_roles_project_id_fkey rehearsal_admin
+3678; 2606 16535 FK CONSTRAINT public project_roles project_roles_user_id_fkey rehearsal_admin
+3674; 2606 16505 FK CONSTRAINT public projects projects_facilitator_id_fkey rehearsal_admin
+3675; 2606 16510 FK CONSTRAINT public projects projects_storyteller_id_fkey rehearsal_admin
+3696; 2606 16760 FK CONSTRAINT public prompts prompts_chapter_id_fkey rehearsal_admin
+3737; 2606 17297 FK CONSTRAINT public public_archive_audit_events public_archive_audit_events_actor_user_id_fkey rehearsal_admin
+3738; 2606 17302 FK CONSTRAINT public public_archive_audit_events public_archive_audit_events_public_contribution_id_fkey rehearsal_admin
+3739; 2606 17307 FK CONSTRAINT public public_archive_audit_events public_archive_audit_events_public_event_cluster_id_fkey rehearsal_admin
+3707; 2606 16914 FK CONSTRAINT public public_archive_entries public_archive_entries_project_id_fkey rehearsal_admin
+3708; 2606 16919 FK CONSTRAINT public public_archive_entries public_archive_entries_story_id_fkey rehearsal_admin
+3733; 2606 17237 FK CONSTRAINT public public_contribution_elements public_contribution_elements_public_contribution_id_fkey rehearsal_admin
+3726; 2606 17168 FK CONSTRAINT public public_contribution_invitations public_contribution_invitations_invited_by_fkey rehearsal_admin
+3727; 2606 17163 FK CONSTRAINT public public_contribution_invitations public_contribution_invitations_invited_storyteller_id_fkey rehearsal_admin
+3728; 2606 17158 FK CONSTRAINT public public_contribution_invitations public_contribution_invitations_project_id_fkey rehearsal_admin
+3729; 2606 17153 FK CONSTRAINT public public_contribution_invitations public_contribution_invitations_story_id_fkey rehearsal_admin
+3730; 2606 17206 FK CONSTRAINT public public_contributions public_contributions_source_project_fk rehearsal_admin
+3731; 2606 17211 FK CONSTRAINT public public_contributions public_contributions_source_story_fk rehearsal_admin
+3732; 2606 17216 FK CONSTRAINT public public_contributions public_contributions_source_user_fk rehearsal_admin
+3734; 2606 17259 FK CONSTRAINT public public_event_clusters public_event_clusters_reviewed_by_fkey rehearsal_admin
+3735; 2606 17281 FK CONSTRAINT public public_event_contributions public_event_contributions_public_contribution_id_fkey rehearsal_admin
+3736; 2606 17276 FK CONSTRAINT public public_event_contributions public_event_contributions_public_event_cluster_id_fkey rehearsal_admin
+3780; 2606 17858 FK CONSTRAINT public publication_snapshots publication_snapshots_created_by_fkey rehearsal_admin
+3781; 2606 17853 FK CONSTRAINT public publication_snapshots publication_snapshots_project_id_fkey rehearsal_admin
+3761; 2606 17655 FK CONSTRAINT public recording_chunks recording_chunks_project_id_fkey rehearsal_admin
+3762; 2606 17650 FK CONSTRAINT public recording_chunks recording_chunks_session_id_fkey rehearsal_admin
+3756; 2606 17622 FK CONSTRAINT public recording_sessions recording_sessions_confirmed_asset_id_fkey rehearsal_admin
+3757; 2606 17627 FK CONSTRAINT public recording_sessions recording_sessions_merge_job_id_fkey rehearsal_admin
+3758; 2606 17607 FK CONSTRAINT public recording_sessions recording_sessions_project_id_fkey rehearsal_admin
+3759; 2606 17617 FK CONSTRAINT public recording_sessions recording_sessions_story_id_fkey rehearsal_admin
+3760; 2606 17612 FK CONSTRAINT public recording_sessions recording_sessions_user_id_fkey rehearsal_admin
+3795; 2606 18214 FK CONSTRAINT public recording_story_intents recording_story_intents_actor_id_fkey rehearsal_admin
+3796; 2606 18209 FK CONSTRAINT public recording_story_intents recording_story_intents_project_id_fkey rehearsal_admin
+3797; 2606 18219 FK CONSTRAINT public recording_story_intents recording_story_intents_story_id_fkey rehearsal_admin
+3782; 2606 17884 FK CONSTRAINT public search_index_entries search_index_entries_project_id_fkey rehearsal_admin
+3783; 2606 17904 FK CONSTRAINT public search_index_entries search_index_entries_segment_id_fkey rehearsal_admin
+3784; 2606 17889 FK CONSTRAINT public search_index_entries search_index_entries_story_id_fkey rehearsal_admin
+3785; 2606 17899 FK CONSTRAINT public search_index_entries search_index_entries_story_revision_id_fkey rehearsal_admin
+3786; 2606 17894 FK CONSTRAINT public search_index_entries search_index_entries_transcript_version_id_fkey rehearsal_admin
+3687; 2606 16641 FK CONSTRAINT public seat_transactions seat_transactions_project_id_fkey rehearsal_admin
+3688; 2606 16636 FK CONSTRAINT public seat_transactions seat_transactions_user_id_fkey rehearsal_admin
+3679; 2606 16558 FK CONSTRAINT public stories stories_project_id_fkey rehearsal_admin
+3680; 2606 16568 FK CONSTRAINT public stories stories_storyteller_id_fkey rehearsal_admin
+3681; 2606 16563 FK CONSTRAINT public stories stories_user_id_fkey rehearsal_admin
+3705; 2606 16897 FK CONSTRAINT public story_artifacts story_artifacts_project_id_fkey rehearsal_admin
+3706; 2606 16892 FK CONSTRAINT public story_artifacts story_artifacts_story_id_fkey rehearsal_admin
+3769; 2606 17774 FK CONSTRAINT public story_assertions story_assertions_disputed_by_fkey rehearsal_admin
+3770; 2606 17754 FK CONSTRAINT public story_assertions story_assertions_project_id_fkey rehearsal_admin
+3771; 2606 17779 FK CONSTRAINT public story_assertions story_assertions_reviewed_by_fkey rehearsal_admin
+3772; 2606 17769 FK CONSTRAINT public story_assertions story_assertions_segment_id_fkey rehearsal_admin
+3773; 2606 17759 FK CONSTRAINT public story_assertions story_assertions_story_id_fkey rehearsal_admin
+3774; 2606 17764 FK CONSTRAINT public story_assertions story_assertions_transcript_version_id_fkey rehearsal_admin
+3721; 2606 17102 FK CONSTRAINT public story_elements story_elements_agent_run_id_fkey rehearsal_admin
+3722; 2606 17092 FK CONSTRAINT public story_elements story_elements_project_id_fkey rehearsal_admin
+3723; 2606 17097 FK CONSTRAINT public story_elements story_elements_story_id_fkey rehearsal_admin
+3775; 2606 17822 FK CONSTRAINT public story_revisions story_revisions_approved_by_fkey rehearsal_admin
+3776; 2606 17817 FK CONSTRAINT public story_revisions story_revisions_created_by_fkey rehearsal_admin
+3777; 2606 17802 FK CONSTRAINT public story_revisions story_revisions_project_id_fkey rehearsal_admin
+3778; 2606 17807 FK CONSTRAINT public story_revisions story_revisions_story_id_fkey rehearsal_admin
+3779; 2606 17812 FK CONSTRAINT public story_revisions story_revisions_transcript_version_id_fkey rehearsal_admin
+3701; 2606 16823 FK CONSTRAINT public subscriptions subscriptions_project_id_fkey rehearsal_admin
+3702; 2606 16828 FK CONSTRAINT public subscriptions subscriptions_user_id_fkey rehearsal_admin
+3767; 2606 17721 FK CONSTRAINT public transcript_segments transcript_segments_project_id_fkey rehearsal_admin
+3768; 2606 17726 FK CONSTRAINT public transcript_segments transcript_segments_transcript_version_id_fkey rehearsal_admin
+3763; 2606 17692 FK CONSTRAINT public transcript_versions transcript_versions_asset_id_fkey rehearsal_admin
+3764; 2606 17697 FK CONSTRAINT public transcript_versions transcript_versions_created_by_fkey rehearsal_admin
+3765; 2606 17682 FK CONSTRAINT public transcript_versions transcript_versions_project_id_fkey rehearsal_admin
+3766; 2606 17687 FK CONSTRAINT public transcript_versions transcript_versions_story_id_fkey rehearsal_admin
+3794; 2606 18129 FK CONSTRAINT public upload_attempt_builds upload_attempt_builds_attempt_id_fkey rehearsal_admin
+3686; 2606 16620 FK CONSTRAINT public user_resource_wallets user_resource_wallets_user_id_fkey rehearsal_admin
+3695; 2606 16731 FK CONSTRAINT public user_settings user_settings_user_id_fkey rehearsal_admin
+3740; 2606 17371 FK CONSTRAINT public waitlist_signups waitlist_signups_user_id_fkey rehearsal_admin
+3673; 2606 16420 FK CONSTRAINT storage objects objects_bucket_id_fkey rehearsal_admin
+4039; 3256 17380 POLICY public waitlist_signups Anyone can sign up for waitlist rehearsal_admin
+4040; 3256 17381 POLICY public waitlist_signups Users can view their own waitlist signup rehearsal_admin
+3988; 0 17045 ROW SECURITY public agent_artifacts rehearsal_admin
+3985; 0 16963 ROW SECURITY public agent_runs rehearsal_admin
+4016; 0 18042 ROW SECURITY public archive_assembly_attempts rehearsal_admin
+4081; 3256 18064 POLICY public archive_assembly_attempts archive_assembly_attempts_service_read rehearsal_admin
+4021; 0 18108 ROW SECURITY public archive_attempt_builds rehearsal_admin
+4086; 3256 18140 POLICY public archive_attempt_builds archive_attempt_builds_service_select rehearsal_admin
+4017; 0 18053 ROW SECURITY public archive_observation_coverage rehearsal_admin
+4082; 3256 18065 POLICY public archive_observation_coverage archive_observation_coverage_service_read rehearsal_admin
+4018; 0 18069 ROW SECURITY public browser_upload_attempts rehearsal_admin
+4083; 3256 18092 POLICY public browser_upload_attempts browser_upload_attempts_service_read rehearsal_admin
+3976; 0 16736 ROW SECURITY public chapters rehearsal_admin
+4063; 3256 17347 POLICY public chapters chapters_select_authenticated rehearsal_admin
+4000; 0 17472 ROW SECURITY public consent_records rehearsal_admin
+4067; 3256 17661 POLICY public consent_records consent_records_select_active_member rehearsal_admin
+4001; 0 17493 ROW SECURITY public deletion_requests rehearsal_admin
+4068; 3256 17662 POLICY public deletion_requests deletion_requests_select_active_member rehearsal_admin
+4002; 0 17518 ROW SECURITY public deletion_targets rehearsal_admin
+4020; 0 18097 ROW SECURITY public deployment_collection_coverage rehearsal_admin
+4085; 3256 18139 POLICY public deployment_collection_coverage deployment_collection_coverage_service_select rehearsal_admin
+4014; 0 17958 ROW SECURITY public entitlement_events rehearsal_admin
+4013; 0 17914 ROW SECURITY public entitlement_sources rehearsal_admin
+3969; 0 16573 ROW SECURITY public interactions rehearsal_admin
+3987; 0 17019 ROW SECURITY public interview_events rehearsal_admin
+3986; 0 16991 ROW SECURITY public interview_sessions rehearsal_admin
+3972; 0 16646 ROW SECURITY public invitations rehearsal_admin
+3999; 0 17447 ROW SECURITY public legacy_media_references rehearsal_admin
+4027; 3256 16936 POLICY public project_members legacy_permissive rehearsal_admin
+4029; 3256 16938 POLICY public public_archive_entries legacy_permissive rehearsal_admin
+4028; 3256 16937 POLICY public story_artifacts legacy_permissive rehearsal_admin
+4030; 3256 16939 POLICY public waitlist legacy_permissive rehearsal_admin
+3998; 0 17401 ROW SECURITY public media_assets rehearsal_admin
+4066; 3256 17660 POLICY public media_assets media_assets_select_active_member rehearsal_admin
+4026; 0 18260 ROW SECURITY public media_deletion_attempts rehearsal_admin
+4091; 3256 18277 POLICY public media_deletion_attempts media_deletion_attempts_service_read rehearsal_admin
+4025; 0 18237 ROW SECURITY public media_deletion_jobs rehearsal_admin
+4090; 3256 18276 POLICY public media_deletion_jobs media_deletion_jobs_service_read rehearsal_admin
+3974; 0 16695 ROW SECURITY public notification_settings rehearsal_admin
+4057; 3256 17341 POLICY public notification_settings notification_settings_select_self rehearsal_admin
+4059; 3256 17343 POLICY public notification_settings notification_settings_update_self rehearsal_admin
+4058; 3256 17342 POLICY public notification_settings notification_settings_write_self rehearsal_admin
+3973; 0 16673 ROW SECURITY public notifications rehearsal_admin
+4056; 3256 17340 POLICY public notifications notifications_delete_self rehearsal_admin
+4052; 3256 17338 POLICY public notifications notifications_select_self rehearsal_admin
+4055; 3256 17339 POLICY public notifications notifications_update_self rehearsal_admin
+4079; 3256 17991 POLICY public entitlement_events p3_entitlement_events_select_payer rehearsal_admin
+4078; 3256 17990 POLICY public entitlement_sources p3_entitlement_sources_select_payer rehearsal_admin
+4076; 3256 17987 POLICY public publication_snapshots p3_publication_snapshots_select_member rehearsal_admin
+4077; 3256 17988 POLICY public search_index_entries p3_search_index_entries_select_member rehearsal_admin
+4080; 3256 18040 POLICY public pilot_households p4_pilot_households_select_facilitator rehearsal_admin
+4015; 0 17992 ROW SECURITY public pilot_households rehearsal_admin
+3990; 0 17122 ROW SECURITY public platform_roles rehearsal_admin
+3979; 0 16796 ROW SECURITY public privacy_agreements rehearsal_admin
+4004; 0 17574 ROW SECURITY public processing_attempts rehearsal_admin
+4003; 0 17537 ROW SECURITY public processing_jobs rehearsal_admin
+4069; 3256 17663 POLICY public processing_jobs processing_jobs_select_active_member rehearsal_admin
+3965; 0 16475 ROW SECURITY public profiles rehearsal_admin
+4036; 3256 16951 POLICY public profiles profiles_select_self rehearsal_admin
+4037; 3256 16952 POLICY public profiles profiles_update_self rehearsal_admin
+3981; 0 16861 ROW SECURITY public project_members rehearsal_admin
+3978; 0 16765 ROW SECURITY public project_prompt_state rehearsal_admin
+4065; 3256 17349 POLICY public project_prompt_state project_prompt_state_select_members rehearsal_admin
+3967; 0 16516 ROW SECURITY public project_roles rehearsal_admin
+4033; 3256 16948 POLICY public project_roles project_roles_select_self rehearsal_admin
+3966; 0 16493 ROW SECURITY public projects rehearsal_admin
+4032; 3256 16947 POLICY public projects projects_insert_authenticated rehearsal_admin
+4031; 3256 16946 POLICY public projects projects_select_members rehearsal_admin
+3977; 0 16748 ROW SECURITY public prompts rehearsal_admin
+4064; 3256 17348 POLICY public prompts prompts_select_authenticated rehearsal_admin
+3996; 0 17286 ROW SECURITY public public_archive_audit_events rehearsal_admin
+3983; 0 16902 ROW SECURITY public public_archive_entries rehearsal_admin
+3993; 0 17222 ROW SECURITY public public_contribution_elements rehearsal_admin
+3991; 0 17142 ROW SECURITY public public_contribution_invitations rehearsal_admin
+3992; 0 17173 ROW SECURITY public public_contributions rehearsal_admin
+3994; 0 17242 ROW SECURITY public public_event_clusters rehearsal_admin
+3995; 0 17264 ROW SECURITY public public_event_contributions rehearsal_admin
+4011; 0 17834 ROW SECURITY public publication_snapshots rehearsal_admin
+4089; 3256 18185 POLICY public recording_output_candidates recording_candidates_service_read rehearsal_admin
+4006; 0 17632 ROW SECURITY public recording_chunks rehearsal_admin
+4054; 3256 18150 POLICY public recording_chunks recording_chunks_service_read rehearsal_admin
+4023; 0 18162 ROW SECURITY public recording_output_candidates rehearsal_admin
+4005; 0 17593 ROW SECURITY public recording_sessions rehearsal_admin
+4070; 3256 17664 POLICY public recording_sessions recording_sessions_select_owner_or_member rehearsal_admin
+4053; 3256 18149 POLICY public recording_sessions recording_sessions_service_read rehearsal_admin
+4024; 0 18198 ROW SECURITY public recording_story_intents rehearsal_admin
+4012; 0 17866 ROW SECURITY public search_index_entries rehearsal_admin
+3971; 0 16626 ROW SECURITY public seat_transactions rehearsal_admin
+3968; 0 16546 ROW SECURITY public stories rehearsal_admin
+4035; 3256 16950 POLICY public stories stories_insert_members rehearsal_admin
+4034; 3256 16949 POLICY public stories stories_select_members rehearsal_admin
+3982; 0 16882 ROW SECURITY public story_artifacts rehearsal_admin
+4009; 0 17732 ROW SECURITY public story_assertions rehearsal_admin
+4074; 3256 17832 POLICY public story_assertions story_assertions_select_active_member rehearsal_admin
+3989; 0 17077 ROW SECURITY public story_elements rehearsal_admin
+4010; 0 17785 ROW SECURITY public story_revisions rehearsal_admin
+4075; 3256 17833 POLICY public story_revisions story_revisions_select_active_member rehearsal_admin
+3980; 0 16811 ROW SECURITY public subscriptions rehearsal_admin
+4008; 0 17703 ROW SECURITY public transcript_segments rehearsal_admin
+4072; 3256 17831 POLICY public transcript_segments transcript_segments_select_active_member rehearsal_admin
+4007; 0 17665 ROW SECURITY public transcript_versions rehearsal_admin
+4071; 3256 17830 POLICY public transcript_versions transcript_versions_select_active_member rehearsal_admin
+4022; 0 18121 ROW SECURITY public upload_attempt_builds rehearsal_admin
+4087; 3256 18141 POLICY public upload_attempt_builds upload_attempt_builds_service_select rehearsal_admin
+4019; 0 18081 ROW SECURITY public upload_observation_coverage rehearsal_admin
+4084; 3256 18093 POLICY public upload_observation_coverage upload_observation_coverage_service_read rehearsal_admin
+3970; 0 16607 ROW SECURITY public user_resource_wallets rehearsal_admin
+3975; 0 16719 ROW SECURITY public user_settings rehearsal_admin
+4060; 3256 17344 POLICY public user_settings user_settings_select_self rehearsal_admin
+4062; 3256 17346 POLICY public user_settings user_settings_update_self rehearsal_admin
+4061; 3256 17345 POLICY public user_settings user_settings_write_self rehearsal_admin
+3984; 0 16924 ROW SECURITY public waitlist rehearsal_admin
+3997; 0 17359 ROW SECURITY public waitlist_signups rehearsal_admin
+4038; 3256 16953 POLICY public user_resource_wallets wallet_select_self rehearsal_admin
+4041; 3256 17387 POLICY storage objects Project facilitators can delete project files rehearsal_admin
+4287; 0 0 COMMENT storage POLICY "Project facilitators can delete project files" ON objects rehearsal_admin
+4042; 3256 17389 POLICY storage objects Project facilitators can update project files rehearsal_admin
+4288; 0 0 COMMENT storage POLICY "Project facilitators can update project files" ON objects rehearsal_admin
+4043; 3256 17391 POLICY storage objects Project facilitators can upload project files rehearsal_admin
+4289; 0 0 COMMENT storage POLICY "Project facilitators can upload project files" ON objects rehearsal_admin
+4046; 3256 17399 POLICY storage objects Project members can upload project files rehearsal_admin
+4045; 3256 17398 POLICY storage objects Project members can view project files rehearsal_admin
+4047; 3256 17400 POLICY storage objects Project owners and facilitators can delete project files rehearsal_admin
+4044; 3256 17393 POLICY storage objects Storytellers can upload story files rehearsal_admin
+4290; 0 0 COMMENT storage POLICY "Storytellers can upload story files" ON objects rehearsal_admin
+4051; 3256 17330 POLICY storage objects Users can delete their own files rehearsal_admin
+4050; 3256 17329 POLICY storage objects Users can update their own files rehearsal_admin
+4048; 3256 17327 POLICY storage objects Users can upload files to their own folders rehearsal_admin
+4049; 3256 17328 POLICY storage objects Users can view their own files rehearsal_admin
+3963; 0 16402 ROW SECURITY storage buckets rehearsal_admin
+3964; 0 16410 ROW SECURITY storage objects rehearsal_admin
+4088; 3256 18161 POLICY storage buckets recording_candidates_private_bucket rehearsal_admin
+4073; 3256 18160 POLICY storage objects recording_candidates_private_objects rehearsal_admin
+2407; 826 16425 DEFAULT ACL public DEFAULT PRIVILEGES FOR TABLES rehearsal_admin

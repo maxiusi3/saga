@@ -1,0 +1,489 @@
+{
+  "date": "2026-11-07",
+  "timezone": "Asia/Taipei",
+  "status": "scoped_web_acceptance_passed_with_open_g1_failures",
+  "g1MilestoneSatisfied": false,
+  "pushConditionSatisfied": false,
+  "phoneManualTests": "deferred_by_user",
+  "recordings": [
+    {
+      "seconds": 300,
+      "path": "integrated-browser-1794059710258-2f76707e-5601-44f0-9829-05ded2ec89fb/results.json",
+      "browser": "156.0.8078.80",
+      "elapsedMs": 300004,
+      "chunks": 6,
+      "bytes": 2434217,
+      "decodedDurationSeconds": 300.479977324263
+    },
+    {
+      "seconds": 1200,
+      "path": "integrated-browser-1794059620040-7b72da01-571f-4974-95a6-7f54da20b2f8/results.json",
+      "browser": "156.0.8078.80",
+      "elapsedMs": 1200008,
+      "chunks": 20,
+      "bytes": 9722783,
+      "decodedDurationSeconds": 1200.239977324263
+    },
+    {
+      "seconds": 1800,
+      "path": "integrated-browser-1794059561107-a5ddc481-a071-4761-b3b5-099b597a82fb/results.json",
+      "browser": "156.0.8078.80",
+      "elapsedMs": 1800008,
+      "chunks": 30,
+      "bytes": 14582637,
+      "decodedDurationSeconds": 1800.18
+    }
+  ],
+  "export": {
+    "path": "export-1794061127634-17ddd1dc-2336-47c9-84e0-b3cc79b0cb08/results.json",
+    "sha256": "d1a4961d1dd593e2ed3ddbce2179feae96e388fb1cde79da4ca6a80da2a92cb3",
+    "status": "passed",
+    "seconds": null,
+    "checks": [
+      "Chrome requests enforce anonymous, family B, pending, removed, owner and active role matrix",
+      "complete ZIP CRC and every original hash verified; file URL playback advances in a separate offline Chrome context",
+      "corrupt/missing originals, actual role revocation and session tombstone block subsequent export/playback"
+    ],
+    "sourceDrift": [],
+    "cleanup": {
+      "clusterStopped": true,
+      "tempDirectoryRemoved": true,
+      "clientsRemaining": 0,
+      "errors": []
+    }
+  },
+  "audio": {
+    "path": "audio-1794061514370-ea593ef1-cc6a-42b6-b6b7-258d11084895/results.json",
+    "sha256": "a89bfbee4393e6381e92be105fcb0d3713be63101c6eb14713816716a4eb2d6f",
+    "status": "passed",
+    "seconds": null,
+    "checks": [
+      "all saved object hashes",
+      "contiguous chunks equal published bytes",
+      "full strict FFmpeg decode",
+      "elapsed duration within five seconds",
+      "no one-second tone gaps"
+    ],
+    "sourceDrift": [],
+    "cleanup": null
+  },
+  "gate": {
+    "command": "npm run verify && npm test --workspace=packages/shared -- --runInBand && npm run test:infra",
+    "exitCode": 0,
+    "webSuites": 161,
+    "webTests": 3352,
+    "sharedSuites": 4,
+    "sharedTests": 16,
+    "infraTests": 23,
+    "productionPages": 184,
+    "rawLog": "raw/saga-g1-final-gate.log.gz"
+  },
+  "allRuns": [
+    {
+      "path": "audio-1794061514370-ea593ef1-cc6a-42b6-b6b7-258d11084895/results.json",
+      "sha256": "a89bfbee4393e6381e92be105fcb0d3713be63101c6eb14713816716a4eb2d6f",
+      "status": "passed",
+      "seconds": null,
+      "checks": [
+        "all saved object hashes",
+        "contiguous chunks equal published bytes",
+        "full strict FFmpeg decode",
+        "elapsed duration within five seconds",
+        "no one-second tone gaps"
+      ],
+      "sourceDrift": [],
+      "cleanup": null
+    },
+    {
+      "path": "export-1794060573899-8cfd3850-65c1-4e3a-94d3-349e9f6a0bee/results.json",
+      "sha256": "7fd8a268ba70e98dfaffc7003418cd8232b431a638fcc0d3320bf4c853272539",
+      "status": "failed",
+      "seconds": null,
+      "checks": [],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "export-1794060799085-e6476cc3-5e62-4831-b4b7-6b507bd93fc1/results.json",
+      "sha256": "d856f1d4b92265250e5f3c421547d19b38c21d80a3f16ea50282a69be6333fd4",
+      "status": "failed",
+      "seconds": null,
+      "checks": [],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "export-1794060931472-7d56868b-bf54-477a-a2b7-e7b877a2a298/results.json",
+      "sha256": "0208c08fee1185da72fd3abf99f15f62a35ffe2842ce59b7ea8b7ec2eb56b1b1",
+      "status": "failed",
+      "seconds": null,
+      "checks": [],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "export-1794061127634-17ddd1dc-2336-47c9-84e0-b3cc79b0cb08/results.json",
+      "sha256": "d1a4961d1dd593e2ed3ddbce2179feae96e388fb1cde79da4ca6a80da2a92cb3",
+      "status": "passed",
+      "seconds": null,
+      "checks": [
+        "Chrome requests enforce anonymous, family B, pending, removed, owner and active role matrix",
+        "complete ZIP CRC and every original hash verified; file URL playback advances in a separate offline Chrome context",
+        "corrupt/missing originals, actual role revocation and session tombstone block subsequent export/playback"
+      ],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "integrated-browser-1794058360788-4a2b3b5d-fb70-40db-bcb7-8cdd84b21f10/results.json",
+      "sha256": "21a369f45cace00c941a61654ecf1f5af625428041dceb9054dc986f69724d9a",
+      "status": "passed",
+      "seconds": 3,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action",
+        "recovered draft saves through actual API, PG, worker and confirmation",
+        "saved original decodes in browser",
+        "saved recording player actually advances playback",
+        "native IDB cleanup abort preserves local copy and retry",
+        "explicit local cleanup removes only confirmed local copy"
+      ],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "integrated-browser-1794058553829-ddb6415e-2ec1-47b2-ba9f-8c25eacf9917/results.json",
+      "sha256": "6c86ebfa81f6cd7dbf6b462b0d78bd07a2d0b4c9f90528ff8415be2ce7692bad",
+      "status": "failed",
+      "seconds": 300,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action"
+      ],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "integrated-browser-1794058590929-201bcc38-4251-4703-9e71-603b22090bf9/results.json",
+      "sha256": "bd9399363b20b5857b0c72bbeb7992327d2b7085e29ea4fd38f265340fd218ad",
+      "status": "failed",
+      "seconds": 1200,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action"
+      ],
+      "sourceDrift": [
+        "experiments/recording-flow-browser/verify-browser.mjs"
+      ],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "integrated-browser-1794058622537-8df3feab-d741-472d-b44a-623c2305ed66/results.json",
+      "sha256": "6d6223091dcb65a6ce86d864011fb2ff2212de27c179649ae0bb417ff557f193",
+      "status": "failed",
+      "seconds": 1800,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action"
+      ],
+      "sourceDrift": [
+        "experiments/recording-flow-browser/verify-browser.mjs"
+      ],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "integrated-browser-1794059561107-a5ddc481-a071-4761-b3b5-099b597a82fb/results.json",
+      "sha256": "01de4c1f29f4bf1b927f2a986a892c26477acc6755b0823f0b7d995dfde10aee",
+      "status": "passed",
+      "seconds": 1800,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action",
+        "clicked visible Continue saving after processing wait",
+        "clicked visible Continue saving after processing wait",
+        "clicked visible Continue saving after processing wait",
+        "clicked visible Continue saving after processing wait",
+        "clicked visible Continue saving after processing wait",
+        "recovered draft saves through actual API, PG, worker and confirmation",
+        "saved original decodes in browser",
+        "saved recording player actually advances playback",
+        "native IDB cleanup abort preserves local copy and retry",
+        "explicit local cleanup removes only confirmed local copy"
+      ],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "integrated-browser-1794059620040-7b72da01-571f-4974-95a6-7f54da20b2f8/results.json",
+      "sha256": "939ff63973c4da4f34c2a13e0c17ef7802840f5fc02c710539909050f5333f94",
+      "status": "passed",
+      "seconds": 1200,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action",
+        "clicked visible Continue saving after processing wait",
+        "clicked visible Continue saving after processing wait",
+        "clicked visible Continue saving after processing wait",
+        "recovered draft saves through actual API, PG, worker and confirmation",
+        "saved original decodes in browser",
+        "saved recording player actually advances playback",
+        "native IDB cleanup abort preserves local copy and retry",
+        "explicit local cleanup removes only confirmed local copy"
+      ],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "integrated-browser-1794059710258-2f76707e-5601-44f0-9829-05ded2ec89fb/results.json",
+      "sha256": "243b2f5a420560ba73d32ef2c36dd870b8a3dc409dfa7367a5c3a3a6daf8df95",
+      "status": "passed",
+      "seconds": 300,
+      "checks": [
+        "native recording completes and persists before save",
+        "real page reload discovers draft with continue-saving action",
+        "clicked visible Continue saving after processing wait",
+        "recovered draft saves through actual API, PG, worker and confirmation",
+        "saved original decodes in browser",
+        "saved recording player actually advances playback",
+        "native IDB cleanup abort preserves local copy and retry",
+        "explicit local cleanup removes only confirmed local copy"
+      ],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "interrupted-browser-1794059739920-fb256466-6ba6-4723-996b-c0e579c13d75/results.json",
+      "sha256": "14c90f8327574a6f53e3088e2a58bf86ff55306d5afba6600c7fdb3feb18fd9e",
+      "status": "failed",
+      "seconds": 65,
+      "checks": [
+        "native active recording persists a requested chunk before interrupted reload",
+        "real page reload discovers draft with continue-saving action",
+        "offline save keeps durable intent and all local chunks",
+        "account change during auth await cancels stale save without remote write",
+        "reserve committed response lost, page reopened, same draft recovered",
+        "seal committed response lost, page reopened, same draft recovered",
+        "paused worker gives actionable pending state without cleanup"
+      ],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    },
+    {
+      "path": "migrations-1794059993726-041f1979-cb28-46b9-b502-8605fa9561ea/results.json",
+      "sha256": "774af8dc8b1641244dbff3ca186688af6de6cab3b90142422d37a0e65b7bc157",
+      "status": "failed",
+      "seconds": null,
+      "checks": [],
+      "sourceDrift": [],
+      "cleanup": {
+        "clusterStopped": true,
+        "tempDirectoryRemoved": true,
+        "clientsRemaining": 0,
+        "errors": []
+      }
+    }
+  ],
+  "logs": [
+    {
+      "file": "raw/saga-g1-audio.log.gz",
+      "rawSha256": "25bc69d6ed8d364a39fd929c17fa65209b779f61698b385e33ac9fb50e0931cc",
+      "compressedSha256": "b76442c7aa41d19e6fcbe575087a50da86e8dc455ee44ccccc01043b9a2adc2d",
+      "rawBytes": 4085
+    },
+    {
+      "file": "raw/saga-g1-chrome-20m-final.log.gz",
+      "rawSha256": "8c952b212a595bf02b2c871f3f7c685989778fe6c85be5313116ca557eb4f329",
+      "compressedSha256": "8d512a24608202104e74310cb5f33fc37b6aa7143d1726f29c54af2e95b68a74",
+      "rawBytes": 12763
+    },
+    {
+      "file": "raw/saga-g1-chrome-20m.log.gz",
+      "rawSha256": "06e983058c302a4a6a6abb04f15bcb571bffa00ec5a1a92595c5cc56683048e5",
+      "compressedSha256": "697388cb2732192808f6bf56b61d90d8576d448145ad35ede500310fc9cd1bb9",
+      "rawBytes": 12635
+    },
+    {
+      "file": "raw/saga-g1-chrome-30m-final.log.gz",
+      "rawSha256": "d28c5a6d50975687bdf4cbaa3eeee1a45454980ef7a311a65ccd65ec13b937b9",
+      "compressedSha256": "d6a7ebadca1991c940552611337544a8335c0700a9e66d85ac3576c915651d95",
+      "rawBytes": 18844
+    },
+    {
+      "file": "raw/saga-g1-chrome-30m.log.gz",
+      "rawSha256": "4f4b9593f19da0dd6b436b1b2bd74ae3de57140d4422a4bbcf41919e502f58ce",
+      "compressedSha256": "0f792a74bb8bb00c6d1af0f7b137caf84a3f85cbf25658eb4d96bcb3189887b1",
+      "rawBytes": 18595
+    },
+    {
+      "file": "raw/saga-g1-chrome-5m-final.log.gz",
+      "rawSha256": "8ceee04a9182adb039b4daa856b7e8efee800f56a23ee75660274d17feb9fd81",
+      "compressedSha256": "63e2813455a04c5424f38cfbb35e9a4858dee5378fbb579660d67c9214b0a4f7",
+      "rawBytes": 3746
+    },
+    {
+      "file": "raw/saga-g1-chrome-5m.log.gz",
+      "rawSha256": "0202696029bca6e85ed2a990c992095c17f969f8189946b53f346e68dbfb5992",
+      "compressedSha256": "a1f08574cff1960449a79c3eb3ae8c8b3d57fe840b6f8faf53fd6ec3fcf3b174",
+      "rawBytes": 3740
+    },
+    {
+      "file": "raw/saga-g1-chrome-interruptions.log.gz",
+      "rawSha256": "703364721753fc5ca71a8d2ae8ad34f0106288ca8de3f5f55232e9b7c81e5796",
+      "compressedSha256": "ae8fc8523bd63c73b280fa4f808634efd5e9c2f082896178f5515ed313be2fcb",
+      "rawBytes": 1763
+    },
+    {
+      "file": "raw/saga-g1-chrome-smoke.log.gz",
+      "rawSha256": "97a7222c6a36d353f136135db4dfb1acc078d37131ccf982006e0e045aa12f01",
+      "compressedSha256": "ca680fd81e4e8ed0cd0e3f763545591ff372eaf805a8b98689bc8af20b560259",
+      "rawBytes": 771
+    },
+    {
+      "file": "raw/saga-g1-export-green.log.gz",
+      "rawSha256": "11f756cffb6bffce5265792e860f7d260bc10cdde21e84e163f0ecb884e87b2e",
+      "compressedSha256": "dce03d924c412eb950e50d7176ca022006f63f1dab013a08bad6fb153c0e2f8b",
+      "rawBytes": 350
+    },
+    {
+      "file": "raw/saga-g1-export-native-02.log.gz",
+      "rawSha256": "07bfd75f1ebe92d676b5e573df83e2e3e419bf61abdc628faf0f40c4f73836d1",
+      "compressedSha256": "8e0d0fd156ebde247ed02e8e711cb8eabacdb0eda5fe18b0e0fc218b9944d691",
+      "rawBytes": 825
+    },
+    {
+      "file": "raw/saga-g1-export-native-03.log.gz",
+      "rawSha256": "1daa679e96585f29007eec03f469056f9953622448684d13578d8b0d4f8d769f",
+      "compressedSha256": "a04a3de9ac367714bf048a38c611598df1e3c733134f47347f75c00755805072",
+      "rawBytes": 1036
+    },
+    {
+      "file": "raw/saga-g1-export-native-04.log.gz",
+      "rawSha256": "6b207100fdbb3acd4ae440a9cfd87ffae29bc7aba68f41edbd3131fd7691961b",
+      "compressedSha256": "e8b75963f708cac9ab401fb1b08ecc7535166db4d322c8fa936cfdf895228d06",
+      "rawBytes": 663
+    },
+    {
+      "file": "raw/saga-g1-export-native.log.gz",
+      "rawSha256": "f792f23ca2535c275c7ad5372f1aea80f88f1dc585c5e9e549203907efeb7788",
+      "compressedSha256": "83bfc391496c21645a64f8c750b798ce7f444adf4b58f5e6d128cbcbfb029182",
+      "rawBytes": 833
+    },
+    {
+      "file": "raw/saga-g1-export-red.log.gz",
+      "rawSha256": "58ef818315c5b0208fe6f552d66d1368190a3bbb8681125cfd2891ce5ea4f2f8",
+      "compressedSha256": "ad95cfa6ea718afec8415c97746a4ebe756e7ee213fdc1a45cf5d991e0232a5a",
+      "rawBytes": 1627
+    },
+    {
+      "file": "raw/saga-g1-final-gate.log.gz",
+      "rawSha256": "8f073b332d8e93bd806a11c8a7bf3111181e50bb45581c57dad6f2ad6db46090",
+      "compressedSha256": "0831cfbdc6760d24d02a07740f2c73425140a78caac374574b8ffb9c0f80a4bc",
+      "rawBytes": 21382
+    },
+    {
+      "file": "raw/saga-g1-migrations.log.gz",
+      "rawSha256": "69d39e9c248d75348b6036d11961a0531818ad5ed5e3458f92a0c7e99df71c30",
+      "compressedSha256": "5d910e3d19307f659fd8da6c55391670433d676fd798edda2fa229bfc728c167",
+      "rawBytes": 2330
+    }
+  ],
+  "changedSourceSha256": {
+    "packages/web/src/app/api/projects/[id]/export/route.ts": "ba0ec6b68191f7aa14faeac8841202c7d485c50431b3cee8c443ac48321a6a29",
+    "packages/web/src/app/api/projects/[id]/export/__tests__/route.test.ts": "77b9d7b3c378e32759a92ac3d5e1fa2e8bc810e2357ae7747013d7c1d68785ed",
+    "experiments/recording-flow-browser/verify-browser.mjs": "5ff9e2c2b13eb8427fc909c89ae9cafa3d060590357ee804bad0dd40bf816bc7",
+    "experiments/recording-flow-browser/chrome-options.mjs": "79de6cee11a3d0747e9c858d4e40eb1cf8f0732bccaf8b1af1936e79ba68c12b",
+    "experiments/g1-local/prepare-runtime.sh": "b9f76198211c1a27a1183756fca237a5df31b6fddeb3a02a9cfff7ba594e1337",
+    "experiments/g1-local/compile-module.mjs": "35e3863a6a21dcb9921eb775e387f24d0445160e8ec318b2c413dfb126823dd5",
+    "experiments/g1-local/README.md": "34282b69faaec1b6a2df4f59e07944fb150666f874b92acaafdc3ed49c46ade4",
+    "experiments/g1-local/verify-migrations.mjs": "1e311c5a7c99fadab5179f4771fa99ffd8f889bb2083db239c2b5586ef774a64",
+    "experiments/g1-local/verify-audio.mjs": "8209bddd3f2cc8cd51fc4e529ea192972f4ff58bff0354d3afe0ec4e9bc9c173",
+    "experiments/g1-local/verify-export.mjs": "f9dcc5ec2042b70a75a1e03767086595794c60f3b776c64e13c0ac2d746f3858"
+  },
+  "nextEnvRestored": {
+    "beforeSha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "generatedSha256": "1862ac4bbbc5192d4bf562161df66ea547ed3e67173100656ab606ae9797db2b"
+  },
+  "openEngineering": [
+    "native interrupted minute WebM fails strict decoder and reaches outcome_unknown",
+    "clean full migration chain fails on missing public.story_artifacts at P1",
+    "reference-safe physical deletion and late-write reconciliation",
+    "complete candidate object backup and restore tombstone replay",
+    "remaining AI failure integration matrix"
+  ],
+  "git": {
+    "head": "c0669e8058343f91deba8e468b03e4bf817b1ca5",
+    "staged": []
+  },
+  "finalVerification": {
+    "sourceAndEvidenceHashes": "matched",
+    "syntaxChecks": "passed",
+    "diffCheck": "passed",
+    "stagedFiles": [],
+    "documentationSha256": {
+      "docs/research/2026-11-07-g1-chrome-acceptance.md": "784ea457c3eb322e5ce6a1f10882a7a9162af652c942f98bafecafd9d72d47be",
+      "docs/research/2026-11-02-g1-gap-register.md": "78a9d2178ac494bf07883277d04084947a02da1fc64d3d11c59a7d2595872f7f",
+      "docs/HANDOFF-2026-10-13-upgrade.md": "0b6fd8258367e6c53c07adcc66f83caa4ab87c83fb907e6e76331f5a568cb459",
+      "docs/README.md": "2e1f67d4957d8339696e30e22cb16d46cae0be9d3a9e5b61ff59dc5be93ccfa7"
+    }
+  }
+}

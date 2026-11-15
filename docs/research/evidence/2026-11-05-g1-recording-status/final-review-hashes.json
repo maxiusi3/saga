@@ -1,0 +1,17 @@
+{
+  "experiments/pg17-recording-status/README.md": "0dff9c55c6361e8eb8f90b8ea210bbd9fa10447a4949808d3457ebd316bd69ea",
+  "experiments/pg17-recording-status/application.mjs": "2e136a58ef7b61a9b4f584376d1a6b04d188f5b494cfd4740fa439ecac934166",
+  "experiments/pg17-recording-status/database.mjs": "43ca60f84e5db9421dd8db3a2e0fdf63267b0259a625dca3d201b1bb2dd11bad",
+  "experiments/pg17-recording-status/fixture.mjs": "08d04babdb7ffbdcfef4b365a8599e82d25ca40d6807a6a3bcea71e16adee6fb",
+  "experiments/pg17-recording-status/http.mjs": "4dd9f926ccf9772a7c346be937a5bff4991b7844e8677c9d4a6443c39eb28463",
+  "experiments/pg17-recording-status/verify.mjs": "f6221b7d1b2781c5aba5ce2a7855c2797f3f9084d08727e8be2e02d6455b0652",
+  "packages/web/src/app/api/recordings/sessions/[sessionId]/status/__tests__/route.test.ts": "15b014e57371602de7b1b72dca9deb102ce865606c0cc0bb241c40c32a908b37",
+  "packages/web/src/app/api/recordings/sessions/[sessionId]/status/route.ts": "a12f0e0d3a0e6a079d9ad11b13e341701db5ed906b858d98e4f09a665133c4c3",
+  "packages/web/src/lib/server/__tests__/recording-session-status.test.ts": "5498a174a23b32802c23d17ebc7b12f35ed7cf62e1a62a8463ee3f9d9b42559c",
+  "packages/web/src/lib/server/recording-job-input.ts": "0fe100b20eb886bddbd52eb27cb0eb1b2764188e615536012b5c34f6e97ed42d",
+  "packages/web/src/lib/server/recording-session-status.ts": "7aee7e9b61dedb652f518b8d495d20dd02ff9319a47b6023620801ad6e89b41d",
+  "packages/web/src/lib/server/recording-status-validation.ts": "5c4ae82b3d5648113a5afd4fcbe1a839cde00df0e0f2b3df4fcdc8534ee2fae7",
+  "packages/web/src/lib/server/test-support/recording-status-fixture.ts": "c0cccc4e2669e495d2600fc2fd6f1a78028a1342ed0922f032be443e139c90f8",
+  "scripts/__tests__/deployment-config.test.js": "035ea556299f752fef904f0bad88fcd6b0aab90550be542274883a227f192098",
+  "supabase/migrations/20261105000001_recording_session_snapshot.sql": "7e303f64a6d7abd2893a1d4f537901d14849bbc35594073a4cb57817ea1f91af"
+}

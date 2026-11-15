@@ -13,7 +13,7 @@ export async function persistRecordingManifest(
   admin: ReturnType<typeof getSupabaseAdmin>,
   sealed: SealedRecordingSessionBundle,
   caller?: AbortSignal,
-): Promise<void> {
+): Promise<string> {
   if (caller?.aborted) unavailable()
   const task = sealed.task
   const userId = sealed.assetRecord.created_by
@@ -55,9 +55,10 @@ export async function persistRecordingManifest(
       receipt.schemaVersion !== 1 || receipt.sessionId !== task.sessionId || receipt.state !== 'sealing' ||
       receipt.canClearLocalDrafts !== false || typeof receipt.manifestSha256 !== 'string' ||
       !/^[a-f0-9]{64}$/.test(receipt.manifestSha256) || !isDeepStrictEqual(receipt.manifest, manifest)) unavailable()
+    return receipt.manifestSha256
   } catch (error) {
     if (error instanceof RecordingSealRegistrationError) throw error
-    unavailable()
+    return unavailable()
   } finally {
     clearTimeout(timer)
     caller?.removeEventListener('abort', abort)

@@ -1,0 +1,321 @@
+[
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/story_review",
+    "status": 200,
+    "rpc": "story_review",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/storage/v1/object/sign/audio-recordings/76c3cc10-98ea-4168-bb45-165174bd8a85/projects/9ac0ec1d-e937-4353-b0f2-c1f35a453a39/g3-original.wav",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/story_review",
+    "status": 200,
+    "rpc": "story_review",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/storage/v1/object/sign/audio-recordings/76c3cc10-98ea-4168-bb45-165174bd8a85/projects/9ac0ec1d-e937-4353-b0f2-c1f35a453a39/g3-original.wav",
+    "status": 206,
+    "range": "bytes=0-"
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/story_review",
+    "status": 200,
+    "rpc": "story_review",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/story_review",
+    "status": 200,
+    "rpc": "story_review",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/story_review",
+    "status": 200,
+    "rpc": "story_review",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/story_review",
+    "status": 200,
+    "rpc": "story_review",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/search_project_sources",
+    "status": 200,
+    "rpc": "search_project_sources",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/resolve_search_citation",
+    "status": 200,
+    "rpc": "resolve_search_citation",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/storage/v1/object/sign/audio-recordings/76c3cc10-98ea-4168-bb45-165174bd8a85/projects/9ac0ec1d-e937-4353-b0f2-c1f35a453a39/g3-original.wav",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/resolve_search_citation",
+    "status": 200,
+    "rpc": "resolve_search_citation",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/storage/v1/object/sign/audio-recordings/76c3cc10-98ea-4168-bb45-165174bd8a85/projects/9ac0ec1d-e937-4353-b0f2-c1f35a453a39/g3-original.wav",
+    "status": 206,
+    "range": "bytes=0-"
+  },
+  {
+    "method": "GET",
+    "path": "/storage/v1/object/sign/audio-recordings/76c3cc10-98ea-4168-bb45-165174bd8a85/projects/9ac0ec1d-e937-4353-b0f2-c1f35a453a39/g3-original.wav",
+    "status": 206,
+    "range": "bytes=360448-"
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/search_project_sources",
+    "status": 200,
+    "rpc": "search_project_sources",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/search_project_sources",
+    "status": 200,
+    "rpc": "search_project_sources",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_artifact_cleanup",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/publication_delivery_jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/stories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/media_assets",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/deletion_requests",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/transcript_versions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/story_revisions",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/storage/v1/object/audio-recordings/76c3cc10-98ea-4168-bb45-165174bd8a85/projects/9ac0ec1d-e937-4353-b0f2-c1f35a453a39/g3-original.wav",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "GET",
+    "path": "/rest/v1/projects",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  },
+  {
+    "method": "POST",
+    "path": "/rest/v1/rpc/publication_delivery",
+    "status": 200,
+    "rpc": "publication_delivery",
+    "committed": true
+  }
+]

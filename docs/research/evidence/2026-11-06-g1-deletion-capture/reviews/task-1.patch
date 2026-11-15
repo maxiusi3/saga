@@ -1,0 +1,1081 @@
+--- before/supabase/migrations/20261106000002_media_deletion_capture.sql
++++ after/supabase/migrations/20261106000002_media_deletion_capture.sql
+@@ -0,0 +1,227 @@
++-- Atomic metadata capture only. No Storage deletion or GC authorization.
++BEGIN;
++-- Existing authenticated table SELECT also covers added columns. Store only a
++-- digest/count here; candidate coordinates stay in the private targets table.
++ALTER TABLE public.deletion_requests
++  ADD COLUMN capture_version integer,
++  ADD COLUMN subject_type text,
++  ADD COLUMN capture_target_count integer,
++  ADD COLUMN capture_targets_sha256 text;
++ALTER TABLE public.deletion_requests ADD CONSTRAINT deletion_capture_shape CHECK (
++  (capture_version IS NULL AND subject_type IS NULL AND capture_target_count IS NULL AND capture_targets_sha256 IS NULL)
++  OR (capture_version IS NOT NULL AND capture_version = 1 AND subject_type IS NOT NULL
++    AND subject_type IN ('media_asset','story') AND capture_target_count IS NOT NULL AND capture_target_count > 0
++    AND capture_targets_sha256 IS NOT NULL AND capture_targets_sha256 ~ '^[0-9a-f]{64}$'));
++CREATE UNIQUE INDEX deletion_capture_subject ON public.deletion_requests(project_id, subject_id)
++  WHERE capture_version = 1;
++
++CREATE FUNCTION public.request_media_deletion(
++  p_actor_id uuid, p_project_id uuid, p_subject_id uuid, p_subject_type text, p_request_id uuid
++) RETURNS jsonb
++LANGUAGE plpgsql VOLATILE SECURITY DEFINER
++SET search_path = pg_catalog, pg_temp
++SET timezone = 'UTC'
++SET lock_timeout = '3s'
++AS $$
++DECLARE
++  v_request public.deletion_requests%ROWTYPE;
++  v_assets uuid[];
++  v_sessions uuid[];
++  v_jobs uuid[];
++  v_candidates uuid[];
++  v_stories uuid[];
++  v_targets jsonb;
++  v_actual jsonb;
++  v_expected jsonb := '{}'::jsonb;
++  v_rows jsonb;
++  v_table text;
++  v_now timestamptz;
++  v_expected_request jsonb;
++  v_subject_story uuid;
++  v_count integer;
++BEGIN
++  IF p_actor_id IS NULL OR p_project_id IS NULL OR p_subject_id IS NULL OR p_request_id IS NULL
++    OR p_subject_type IS NULL OR p_subject_type NOT IN ('media_asset','story')
++    OR current_setting('transaction_isolation') <> 'read committed' THEN
++    RAISE EXCEPTION 'Invalid deletion capture arguments' USING ERRCODE = '22023';
++  END IF;
++  -- First lock matches publication/confirmation's deletion-table SHARE fence.
++  -- EXCLUSIVE serializes captures, conflicts with all tombstone DML and SHARE,
++  -- and still permits plain readers. Never read source addresses before waiting.
++  LOCK TABLE public.deletion_requests IN EXCLUSIVE MODE;
++  -- Conservative population locks cover absent roles, source inserts, rebinding
++  -- and candidate reservation. Row-only locks cannot protect those phantoms.
++  -- Existing legacy reverse orders can deadlock/timeout; such calls abort.
++  LOCK TABLE public.projects, public.project_roles, auth.users IN SHARE MODE;
++  LOCK TABLE public.stories, public.media_assets, public.recording_sessions,
++    public.recording_chunks, public.processing_jobs, public.processing_attempts,
++    public.recording_output_candidates, public.recording_story_intents,
++    public.deletion_targets IN SHARE ROW EXCLUSIVE MODE;
++
++  IF NOT EXISTS (SELECT 1 FROM public.projects p WHERE p.id=p_project_id AND
++    (p.facilitator_id=p_actor_id OR EXISTS (SELECT 1 FROM public.project_roles r
++      WHERE r.project_id=p_project_id AND r.user_id=p_actor_id AND r.role='facilitator' AND r.status='active')))
++    OR NOT EXISTS (SELECT 1 FROM auth.users u WHERE u.id=p_actor_id) THEN
++    RAISE EXCEPTION 'Deletion access denied' USING ERRCODE = '42501';
++  END IF;
++  IF p_subject_type='story' THEN
++    IF NOT EXISTS (SELECT 1 FROM public.stories s WHERE s.id=p_subject_id AND s.project_id=p_project_id) THEN
++      RAISE EXCEPTION 'Deletion subject unavailable' USING ERRCODE = '42501';
++    END IF;
++    v_subject_story := p_subject_id;
++  ELSE
++    SELECT a.story_id INTO v_subject_story FROM public.media_assets a WHERE a.id=p_subject_id AND a.project_id=p_project_id;
++    IF NOT FOUND THEN RAISE EXCEPTION 'Deletion subject unavailable' USING ERRCODE = '42501'; END IF;
++  END IF;
++
++  -- Check supplied ID collisions BEFORE subject replay; no identity can borrow
++  -- a different request's key just because its own subject was already captured.
++  SELECT r.* INTO v_request FROM public.deletion_requests r WHERE r.id=p_request_id;
++  IF FOUND AND (v_request.project_id IS DISTINCT FROM p_project_id OR v_request.subject_id IS DISTINCT FROM p_subject_id::text
++    OR v_request.requested_by IS DISTINCT FROM p_actor_id OR v_request.subject_type IS DISTINCT FROM p_subject_type) THEN
++    RAISE EXCEPTION 'Deletion request identity conflict' USING ERRCODE = '23505';
++  END IF;
++  SELECT count(*) INTO v_count FROM public.deletion_requests r WHERE r.project_id=p_project_id AND r.subject_id=p_subject_id::text;
++  IF v_count > 0 THEN
++    SELECT r.* INTO v_request FROM public.deletion_requests r WHERE r.project_id=p_project_id AND r.subject_id=p_subject_id::text;
++    IF v_count <> 1 OR v_request.capture_version IS DISTINCT FROM 1 OR v_request.subject_type IS DISTINCT FROM p_subject_type
++      OR v_request.requested_by IS DISTINCT FROM p_actor_id OR v_request.state IS DISTINCT FROM 'requested'
++      OR v_request.attempt IS DISTINCT FROM 0 OR NOT isfinite(v_request.tombstone_at)
++      OR v_request.requested_at IS DISTINCT FROM v_request.tombstone_at OR v_request.processing_at IS NOT NULL
++      OR v_request.completed_at IS NOT NULL OR v_request.error_code IS NOT NULL
++      OR v_request.capture_target_count IS NULL OR v_request.capture_target_count < 1 OR v_request.capture_targets_sha256 IS NULL THEN
++      RAISE EXCEPTION 'Deletion capture cannot be replayed' USING ERRCODE = '23505';
++    END IF;
++    SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY t.target_id),'[]'::jsonb) INTO v_actual
++      FROM public.deletion_targets t WHERE t.deletion_request_id=v_request.id;
++    IF jsonb_array_length(v_actual) IS DISTINCT FROM v_request.capture_target_count
++      OR encode(sha256(convert_to(v_actual::text,'UTF8')),'hex') IS DISTINCT FROM v_request.capture_targets_sha256 THEN
++      RAISE EXCEPTION 'Deletion target snapshot changed' USING ERRCODE = '23505';
++    END IF;
++    RETURN jsonb_build_object('id',v_request.id,'projectId',p_project_id,'subjectId',p_subject_id,'subjectType',p_subject_type,
++      'state','requested','tombstoneAt',v_request.tombstone_at,'targetCount',jsonb_array_length(v_actual),'physicalDeletionComplete',false);
++  END IF;
++
++  -- Select only the explicit asset or the actual story population. Parent/child
++  -- references do not implicitly expand an asset request into unrelated assets.
++  SELECT coalesce(array_agg(a.id),'{}'::uuid[]) INTO v_assets FROM public.media_assets a
++    WHERE (p_subject_type='media_asset' AND a.id=p_subject_id) OR (p_subject_type='story' AND a.story_id=p_subject_id);
++  SELECT coalesce(array_agg(j.id),'{}'::uuid[]) INTO v_jobs FROM public.processing_jobs j WHERE j.asset_id=ANY(v_assets);
++  SELECT coalesce(array_agg(s.id),'{}'::uuid[]) INTO v_sessions FROM public.recording_sessions s
++    WHERE (p_subject_type='story' AND s.story_id=p_subject_id) OR s.confirmed_asset_id=ANY(v_assets)
++      OR s.seal_input->>'assetId'=ANY(v_assets::text[]) OR s.merge_job_id=ANY(v_jobs);
++  SELECT coalesce(array_agg(c.id),'{}'::uuid[]) INTO v_candidates FROM public.recording_output_candidates c
++    WHERE c.asset_id=ANY(v_assets) OR c.session_id=ANY(v_sessions) OR c.job_id=ANY(v_jobs);
++  SELECT coalesce(array_agg(DISTINCT a.story_id) FILTER (WHERE a.story_id IS NOT NULL),'{}'::uuid[]) INTO v_stories
++    FROM public.media_assets a WHERE a.id=ANY(v_assets);
++  IF v_subject_story IS NOT NULL THEN v_stories := array_append(v_stories,v_subject_story); END IF;
++  IF EXISTS (SELECT 1 FROM public.stories s WHERE s.id=ANY(v_stories) AND s.project_id<>p_project_id)
++    OR EXISTS (SELECT 1 FROM public.media_assets a WHERE a.id=ANY(v_assets) AND (a.project_id<>p_project_id OR a.state IN ('deleting','deleted')))
++    OR EXISTS (SELECT 1 FROM public.processing_jobs j WHERE j.id=ANY(v_jobs) AND j.project_id<>p_project_id)
++    OR EXISTS (SELECT 1 FROM public.recording_sessions s WHERE s.id=ANY(v_sessions) AND (s.project_id<>p_project_id
++      OR (s.story_id IS NOT NULL AND NOT s.story_id=ANY(v_stories))
++      OR (s.confirmed_asset_id IS NOT NULL AND NOT s.confirmed_asset_id=ANY(v_assets))
++      OR (s.seal_input IS NOT NULL AND (s.seal_input->>'projectId' IS DISTINCT FROM p_project_id::text
++        OR s.seal_input->>'sessionId' IS DISTINCT FROM s.id::text
++        OR s.seal_input->>'userId' IS DISTINCT FROM s.user_id::text
++        OR s.seal_input->>'storyId' IS DISTINCT FROM s.story_id::text
++        OR NOT coalesce(s.seal_input->>'assetId'=ANY(v_assets::text[]),false)))
++      OR (s.merge_job_id IS NOT NULL AND NOT s.merge_job_id=ANY(v_jobs))))
++    OR EXISTS (SELECT 1 FROM public.recording_chunks c JOIN public.recording_sessions s ON s.id=c.session_id
++      WHERE c.session_id=ANY(v_sessions) AND (c.project_id<>p_project_id OR c.bucket<>'audio-recordings'
++        OR c.object_key IS DISTINCT FROM s.user_id::text||'/projects/'||p_project_id::text||'/sessions/'||s.id::text||'/'||c.chunk_index::text))
++    OR EXISTS (SELECT 1 FROM public.recording_output_candidates c WHERE c.id=ANY(v_candidates) AND
++      (c.project_id<>p_project_id OR NOT c.asset_id=ANY(v_assets) OR NOT c.session_id=ANY(v_sessions) OR NOT c.job_id=ANY(v_jobs)
++        OR NOT EXISTS (SELECT 1 FROM public.processing_jobs j WHERE j.id=c.job_id AND j.project_id=c.project_id AND j.asset_id=c.asset_id)
++        OR NOT EXISTS (SELECT 1 FROM public.recording_sessions s WHERE s.id=c.session_id AND s.project_id=c.project_id
++          AND s.seal_input->>'assetId'=c.asset_id::text AND s.manifest_sha256=c.manifest_sha256)
++        OR c.bucket<>'recording-candidates' OR c.object_key IS DISTINCT FROM 'jobs/'||c.job_id::text||'/attempts/'||c.attempt_no::text||'/'||c.id::text)) THEN
++    RAISE EXCEPTION 'Deletion source identity conflict' USING ERRCODE = '23505';
++  END IF;
++  IF EXISTS (SELECT 1 FROM public.deletion_requests r WHERE r.project_id=p_project_id AND r.tombstone_at IS NOT NULL
++    AND (r.subject_id=p_project_id::text OR r.subject_id=ANY(v_stories::text[]) OR r.subject_id=ANY(v_assets::text[])
++      OR r.subject_id=ANY(v_sessions::text[]))) THEN
++    RAISE EXCEPTION 'Deletion subject already blocked' USING ERRCODE = '23505';
++  END IF;
++  -- Candidate paths must be backed by the actual candidate identity. Ordinary
++  -- assets must use their owner's project namespace, never a foreign prefix.
++  IF EXISTS (SELECT 1 FROM public.media_assets a WHERE a.id=ANY(v_assets) AND
++    ((a.bucket='recording-candidates' AND NOT EXISTS (SELECT 1 FROM public.recording_output_candidates c
++      WHERE c.id=ANY(v_candidates) AND c.asset_id=a.id AND c.bucket=a.bucket AND c.object_key=a.object_key))
++    OR (a.bucket<>'recording-candidates' AND (a.bucket NOT IN ('audio-recordings','saga')
++      OR left(a.object_key,length(a.created_by::text||'/projects/'||p_project_id::text||'/')) <> a.created_by::text||'/projects/'||p_project_id::text||'/')))) THEN
++    RAISE EXCEPTION 'Unsafe deletion asset address' USING ERRCODE = '23505';
++  END IF;
++
++  v_now := clock_timestamp();
++  WITH coordinates AS (
++    SELECT a.bucket,a.object_key FROM public.media_assets a WHERE a.id=ANY(v_assets)
++    UNION SELECT c.bucket,c.object_key FROM public.recording_chunks c WHERE c.session_id=ANY(v_sessions)
++    UNION SELECT c.bucket,c.object_key FROM public.recording_output_candidates c WHERE c.id=ANY(v_candidates)
++  ), targets AS (
++    SELECT 'storage:'||c.bucket||':'||c.object_key AS target_id,'storage_object' AS kind,c.bucket,c.object_key FROM coordinates c
++    UNION ALL SELECT 'asset:'||a.id::text,'media_asset',NULL,NULL FROM public.media_assets a WHERE a.id=ANY(v_assets)
++    UNION ALL SELECT 'story:'||p_subject_id::text,'story',NULL,NULL WHERE p_subject_type='story'
++  ) SELECT coalesce(jsonb_agg(jsonb_build_object('id',gen_random_uuid(),'deletion_request_id',p_request_id,
++    'target_id',t.target_id,'kind',t.kind,'bucket',t.bucket,'object_key',t.object_key,'state','pending','error_code',NULL,'updated_at',v_now)
++    ORDER BY t.target_id),'[]'::jsonb) INTO v_targets FROM targets t;
++  IF jsonb_array_length(v_targets)<1 OR EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t WHERE t->>'kind'='storage_object'
++    AND (length(t->>'object_key')>1024 OR t->>'object_key' !~ '^[A-Za-z0-9_-]+(/[A-Za-z0-9_.-]+)+$'
++      OR t->>'object_key' ~ '(^|/)\.{1,2}(/|$)')) THEN
++    RAISE EXCEPTION 'Unsafe deletion address' USING ERRCODE = '23505';
++  END IF;
++  -- Reject physical aliases in unselected chains (even within this project).
++  IF EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t JOIN public.media_assets a
++      ON a.bucket=t->>'bucket' AND a.object_key=t->>'object_key' WHERE NOT a.id=ANY(v_assets))
++    OR EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t JOIN public.recording_chunks c
++      ON c.bucket=t->>'bucket' AND c.object_key=t->>'object_key' WHERE NOT c.session_id=ANY(v_sessions))
++    OR EXISTS (SELECT 1 FROM jsonb_array_elements(v_targets) t JOIN public.recording_output_candidates c
++      ON c.bucket=t->>'bucket' AND c.object_key=t->>'object_key' WHERE NOT c.id=ANY(v_candidates)) THEN
++    RAISE EXCEPTION 'Deletion address belongs to another chain' USING ERRCODE = '23505';
++  END IF;
++
++  -- Full tuple/population oracle, including unchanged evidence. This correctness
++  -- slice intentionally scans locked source tables; O(total metadata) memory and
++  -- global writer contention require redesign before throughput qualification.
++  FOREACH v_table IN ARRAY ARRAY['projects','project_roles','stories','media_assets','recording_sessions','recording_chunks',
++    'processing_jobs','processing_attempts','recording_output_candidates','recording_story_intents','deletion_requests','deletion_targets'] LOOP
++    EXECUTE format('SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY coalesce(to_jsonb(t)->>''id'',to_jsonb(t)->>''session_id'')),''[]''::jsonb) FROM public.%I t',v_table) INTO v_rows;
++    IF v_table='media_assets' THEN
++      SELECT coalesce(jsonb_agg(CASE WHEN (r->>'id')::uuid=ANY(v_assets) THEN r||jsonb_build_object('state','deleting','updated_at',v_now) ELSE r END ORDER BY r->>'id'),'[]'::jsonb) INTO v_rows FROM jsonb_array_elements(v_rows) r;
++    ELSIF v_table='processing_jobs' THEN
++      SELECT coalesce(jsonb_agg(CASE WHEN (r->>'id')::uuid=ANY(v_jobs) AND r->>'state' NOT IN ('succeeded','failed','cancelled')
++        AND r->'cancel_requested_at'='null'::jsonb THEN r||jsonb_build_object('cancel_requested_at',v_now,'updated_at',v_now) ELSE r END ORDER BY r->>'id'),'[]'::jsonb) INTO v_rows FROM jsonb_array_elements(v_rows) r;
++    END IF;
++    v_expected := v_expected||jsonb_build_object(v_table,v_rows);
++  END LOOP;
++  v_expected_request := jsonb_build_object('id',p_request_id,'project_id',p_project_id,'subject_id',p_subject_id::text,'requested_by',p_actor_id,
++    'state','requested','tombstone_at',v_now,'attempt',0,'requested_at',v_now,'processing_at',NULL,'completed_at',NULL,'error_code',NULL,
++    'capture_version',1,'subject_type',p_subject_type,'capture_target_count',jsonb_array_length(v_targets),
++    'capture_targets_sha256',encode(sha256(convert_to(v_targets::text,'UTF8')),'hex'));
++  INSERT INTO public.deletion_requests(id,project_id,subject_id,requested_by,state,tombstone_at,requested_at,capture_version,subject_type,capture_target_count,capture_targets_sha256)
++    VALUES(p_request_id,p_project_id,p_subject_id::text,p_actor_id,'requested',v_now,v_now,1,p_subject_type,
++      jsonb_array_length(v_targets),encode(sha256(convert_to(v_targets::text,'UTF8')),'hex'));
++  INSERT INTO public.deletion_targets SELECT * FROM jsonb_populate_recordset(NULL::public.deletion_targets,v_targets);
++  UPDATE public.media_assets SET state='deleting',updated_at=v_now WHERE id=ANY(v_assets);
++  UPDATE public.processing_jobs SET cancel_requested_at=v_now,updated_at=v_now
++    WHERE id=ANY(v_jobs) AND state NOT IN ('succeeded','failed','cancelled') AND cancel_requested_at IS NULL;
++  -- Compare after every write/trigger has run, so later triggers cannot alter an
++  -- earlier validated tuple, insert a missed source, or suppress target writes.
++  v_expected := jsonb_set(v_expected,'{deletion_requests}',(SELECT jsonb_agg(r ORDER BY r->>'id')
++    FROM jsonb_array_elements((v_expected->'deletion_requests')||jsonb_build_array(v_expected_request)) r));
++  v_expected := jsonb_set(v_expected,'{deletion_targets}',(SELECT jsonb_agg(r ORDER BY r->>'id')
++    FROM jsonb_array_elements((v_expected->'deletion_targets')||v_targets) r));
++  FOREACH v_table IN ARRAY ARRAY['projects','project_roles','stories','media_assets','recording_sessions','recording_chunks',
++    'processing_jobs','processing_attempts','recording_output_candidates','recording_story_intents','deletion_requests','deletion_targets'] LOOP
++    EXECUTE format('SELECT coalesce(jsonb_agg(to_jsonb(t) ORDER BY coalesce(to_jsonb(t)->>''id'',to_jsonb(t)->>''session_id'')),''[]''::jsonb) FROM public.%I t',v_table) INTO v_actual;
++    IF v_actual IS DISTINCT FROM v_expected->v_table THEN
++      RAISE EXCEPTION 'Deletion capture write verification failed' USING ERRCODE = '23505';
++    END IF;
++  END LOOP;
++  RETURN jsonb_build_object('id',p_request_id,'projectId',p_project_id,'subjectId',p_subject_id,'subjectType',p_subject_type,
++    'state','requested','tombstoneAt',v_now,'targetCount',jsonb_array_length(v_targets),'physicalDeletionComplete',false);
++END;
++$$;
++REVOKE ALL ON FUNCTION public.request_media_deletion(uuid,uuid,uuid,text,uuid) FROM PUBLIC,anon,authenticated;
++GRANT EXECUTE ON FUNCTION public.request_media_deletion(uuid,uuid,uuid,text,uuid) TO service_role;
++COMMIT;
+--- before/packages/web/src/lib/server/media-deletion-capture.ts
++++ after/packages/web/src/lib/server/media-deletion-capture.ts
+@@ -0,0 +1,57 @@
++import type { getSupabaseAdmin } from '@/lib/supabase'
++
++export type MediaDeletionInput = { actorId: string; projectId: string; subjectId: string; subjectType: 'media_asset' | 'story'; requestId: string }
++export type MediaDeletionReceipt = { id: string; projectId: string; subjectId: string; subjectType: 'media_asset' | 'story'; state: 'requested'; tombstoneAt: string; targetCount: number; physicalDeletionComplete: false }
++type Options = { admin: ReturnType<typeof getSupabaseAdmin>; signal?: AbortSignal; timeoutMs?: number }
++export class MediaDeletionCaptureError extends Error {
++  constructor(public readonly status: number) { super('Media deletion request is unavailable') }
++}
++function unavailable(status = 503): never { throw new MediaDeletionCaptureError(status) }
++export function isDeletionUuid(value: unknown): value is string {
++  return typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value)
++}
++function validTimestamp(value: unknown): value is string {
++  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,6})?(Z|\+00:00)$/.test(value)) return false
++  const time = Date.parse(value)
++  return Number.isFinite(time) && new Date(time).toISOString().slice(0,19) === value.slice(0,19)
++}
++export async function submitMediaDeletionRequest(input: MediaDeletionInput, options: Options): Promise<MediaDeletionReceipt> {
++  if (!input || !['actorId','projectId','subjectId','requestId'].every(key => isDeletionUuid(input[key as keyof MediaDeletionInput])) ||
++    !['media_asset','story'].includes(input.subjectType)) unavailable(400)
++  const pinned = Object.freeze({ ...input })
++  const { admin, signal, timeoutMs = 5000 } = options
++  if (typeof window !== 'undefined' || signal?.aborted || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) unavailable()
++  const controller = new AbortController(), abort = () => controller.abort()
++  let rejectAbort = () => {}
++  const interrupted = new Promise<never>((_, reject) => {
++    rejectAbort = () => reject(new MediaDeletionCaptureError(503))
++    controller.signal.addEventListener('abort', rejectAbort, { once: true })
++  })
++  signal?.addEventListener('abort', abort, { once: true })
++  const timer = setTimeout(abort, timeoutMs)
++  try {
++    const result = await Promise.race([admin.rpc('request_media_deletion', {
++      p_actor_id: pinned.actorId, p_project_id: pinned.projectId, p_subject_id: pinned.subjectId,
++      p_subject_type: pinned.subjectType, p_request_id: pinned.requestId,
++    }).abortSignal(controller.signal).retry(false), interrupted])
++    if (controller.signal.aborted || signal?.aborted || !result) unavailable()
++    if (result.error) unavailable(result.error.code === '42501' ? 403 : ['23505','23514'].includes(result.error.code) ? 409 : ['22023','22P02'].includes(result.error.code) ? 400 : 503)
++    const value = result.data
++    const keys = ['id','projectId','subjectId','subjectType','state','tombstoneAt','targetCount','physicalDeletionComplete']
++    if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).length !== keys.length ||
++      !keys.every(key=>Object.prototype.hasOwnProperty.call(value,key)) || !isDeletionUuid(value.id) ||
++      value.projectId !== pinned.projectId || value.subjectId !== pinned.subjectId || value.subjectType !== pinned.subjectType ||
++      value.state !== 'requested' || value.physicalDeletionComplete !== false || !validTimestamp(value.tombstoneAt) ||
++      !Number.isSafeInteger(value.targetCount) || value.targetCount < 1) unavailable()
++    // A subject replay returns its original capture ID, including when this
++    // caller generated a new request ID after losing the previous response.
++    return { id: value.id, projectId: value.projectId, subjectId: value.subjectId, subjectType: value.subjectType,
++      state: 'requested', tombstoneAt: value.tombstoneAt, targetCount: value.targetCount, physicalDeletionComplete: false }
++  } catch (error) {
++    if (error instanceof MediaDeletionCaptureError) throw error
++    return unavailable()
++  } finally {
++    clearTimeout(timer); signal?.removeEventListener('abort',abort)
++    controller.signal.removeEventListener('abort',rejectAbort); abort()
++  }
++}
+--- before/packages/web/src/app/api/media/delete-request/route.ts
++++ after/packages/web/src/app/api/media/delete-request/route.ts
+@@ -1,138 +1,37 @@
++import { randomUUID } from 'crypto'
+ import { NextRequest, NextResponse } from 'next/server'
+ import { getAuthenticatedUser } from '@/lib/server/auth'
+ import { requireProjectAccess } from '@/lib/server/project-access'
+-import { prepareDeletionTombstone } from '@/lib/server/deletion-service'
++import { isDeletionUuid, MediaDeletionCaptureError, submitMediaDeletionRequest } from '@/lib/server/media-deletion-capture'
+ import { getSupabaseAdmin } from '@/lib/supabase'
+ 
+ export const runtime = 'nodejs'
+-
+ function reply(body: unknown, status: number, headers: Headers) {
+   const response = NextResponse.json(body, { status })
+-  headers.forEach((value, key) => response.headers.set(key, value))
+-  response.headers.set('Cache-Control', 'no-store')
++  headers.forEach((value,key)=>response.headers.set(key,value))
++  response.headers.set('Cache-Control','no-store')
+   return response
+ }
+-
+-function isRecord(value: unknown): value is Record<string, unknown> {
+-  return !!value && typeof value === 'object' && !Array.isArray(value)
+-}
+-
+ export async function POST(request: NextRequest) {
+   const auth = await getAuthenticatedUser(request)
+-  if (!auth.ok) return auth.response
+-
+-  if (process.env.MEDIA_ASSETS_ENABLED !== 'true') {
+-    return reply({ error: 'Media asset deletion is not enabled' }, 404, auth.headers)
++  if (!auth.ok) { auth.response.headers.set('Cache-Control','no-store'); return auth.response }
++  if (process.env.MEDIA_ASSETS_ENABLED !== 'true') return reply({ error: 'Media asset deletion is not enabled' },404,auth.headers)
++  let body: unknown
++  try { body = await request.json() } catch { return reply({ error: 'Invalid request' },400,auth.headers) }
++  if (!body || typeof body !== 'object' || Array.isArray(body)) return reply({ error: 'Invalid request' },400,auth.headers)
++  const value = body as Record<string,unknown>
++  const hasAsset = Object.prototype.hasOwnProperty.call(value,'assetId'), hasStory = Object.prototype.hasOwnProperty.call(value,'storyId')
++  const subjectId = hasAsset ? value.assetId : value.storyId
++  if (hasAsset === hasStory || !isDeletionUuid(value.projectId) || !isDeletionUuid(subjectId) ||
++    (Object.prototype.hasOwnProperty.call(value,'requestId') && !isDeletionUuid(value.requestId))) return reply({ error: 'Invalid request' },400,auth.headers)
++  const access = await requireProjectAccess(value.projectId,auth.user)
++  if (!access.ok) return reply(await access.response.json(),access.response.status,auth.headers)
++  try {
++    const deletionRequest = await submitMediaDeletionRequest({ actorId: auth.user.id, projectId: value.projectId,
++      subjectId, subjectType: hasAsset ? 'media_asset' : 'story', requestId: typeof value.requestId === 'string' ? value.requestId : randomUUID(),
++    }, { admin: getSupabaseAdmin(), signal: request.signal })
++    return reply({ deletionRequest },202,auth.headers)
++  } catch (error) {
++    return reply({ error: 'Media deletion request is unavailable' },error instanceof MediaDeletionCaptureError ? error.status : 503,auth.headers)
+   }
+-
+-  let body: unknown
+-  try {
+-    body = await request.json()
+-  } catch {
+-    return reply({ error: 'Invalid request' }, 400, auth.headers)
+-  }
+-  if (!isRecord(body)) return reply({ error: 'Invalid request' }, 400, auth.headers)
+-
+-  const projectId = typeof body.projectId === 'string' ? body.projectId.trim() : ''
+-  const assetId = typeof body.assetId === 'string' ? body.assetId.trim() : ''
+-  const storyId = typeof body.storyId === 'string' ? body.storyId.trim() : ''
+-  if (!projectId || (!assetId && !storyId)) {
+-    return reply({ error: 'projectId and either assetId or storyId are required' }, 400, auth.headers)
+-  }
+-
+-  const access = await requireProjectAccess(projectId, auth.user)
+-  if (!access.ok) {
+-    const errBody = await access.response.json()
+-    return reply(errBody, access.response.status, auth.headers)
+-  }
+-
+-  let admin: ReturnType<typeof getSupabaseAdmin>
+-  try {
+-    admin = getSupabaseAdmin()
+-  } catch {
+-    return reply({ error: 'Database service not configured' }, 503, auth.headers)
+-  }
+-
+-  const { data: project, error: projectError } = await admin
+-    .from('projects')
+-    .select('id, facilitator_id')
+-    .eq('id', projectId)
+-    .maybeSingle()
+-  if (projectError || !project) return reply({ error: 'Project not found' }, 404, auth.headers)
+-
+-  const isProjectOwner = project.facilitator_id === auth.user.id
+-  let actorRole: 'facilitator' | 'storyteller' | 'member' = isProjectOwner ? 'facilitator' : 'member'
+-  if (!isProjectOwner) {
+-    const { data: roleRow } = await admin
+-      .from('project_roles')
+-      .select('role, status')
+-      .eq('project_id', projectId)
+-      .eq('user_id', auth.user.id)
+-      .eq('status', 'active')
+-      .maybeSingle()
+-    if (roleRow?.role === 'facilitator') actorRole = 'facilitator'
+-    else if (roleRow?.role === 'storyteller') actorRole = 'storyteller'
+-  }
+-
+-  const assetQuery = admin
+-    .from('media_assets')
+-    .select('id, project_id, story_id, bucket, object_key, state')
+-    .eq('project_id', projectId)
+-  if (assetId) assetQuery.eq('id', assetId)
+-  else assetQuery.eq('story_id', storyId)
+-
+-  const { data: assets, error: assetsError } = await assetQuery
+-  if (assetsError) return reply({ error: 'Failed to load target assets' }, 500, auth.headers)
+-  if (!assets || assets.length === 0) return reply({ error: 'Target assets not found' }, 404, auth.headers)
+-
+-  const now = new Date().toISOString()
+-  let prepared
+-  try {
+-    prepared = prepareDeletionTombstone({
+-      projectId,
+-      subjectId: assetId || storyId,
+-      actorId: auth.user.id,
+-      actorRole,
+-      actorActive: true,
+-      isProjectOwner,
+-      now,
+-      assets,
+-    })
+-  } catch (err) {
+-    const message = err instanceof Error ? err.message : 'Deletion not permitted'
+-    const status = message.includes('not permitted') ? 403 : 409
+-    return reply({ error: message }, status, auth.headers)
+-  }
+-
+-  const { data: savedRequest, error: insertError } = await admin
+-    .from('deletion_requests')
+-    .insert({
+-      id: prepared.request.id,
+-      project_id: projectId,
+-      subject_id: prepared.request.subjectId,
+-      requested_by: auth.user.id,
+-      state: prepared.request.state,
+-      tombstone_at: prepared.request.tombstoneAt,
+-      attempt: prepared.request.attempt,
+-      requested_at: prepared.request.requestedAt,
+-    })
+-    .select('*')
+-    .single()
+-  if (insertError || !savedRequest) {
+-    return reply({ error: 'Failed to persist deletion tombstone' }, 500, auth.headers)
+-  }
+-
+-  await admin
+-    .from('media_assets')
+-    .update({ state: 'deleting', updated_at: now })
+-    .in('id', prepared.transitionedAssets.map(a => a.id))
+-    .eq('project_id', projectId)
+-
+-  await admin
+-    .from('processing_jobs')
+-    .update({ state: 'cancelled', cancel_requested_at: now, lease_owner: null, lease_expires_at: null, updated_at: now })
+-    .in('asset_id', prepared.transitionedAssets.map(a => a.id))
+-    .in('state', ['queued', 'leased', 'running', 'retry_wait', 'outcome_unknown', 'awaiting_review'])
+-
+-  return reply({ deletionRequest: prepared.request }, 202, auth.headers)
+ }
+--- before/packages/web/src/lib/server/__tests__/media-deletion-capture.test.ts
++++ after/packages/web/src/lib/server/__tests__/media-deletion-capture.test.ts
+@@ -0,0 +1,62 @@
++/** @jest-environment node */
++import { submitMediaDeletionRequest, MediaDeletionCaptureError } from '../media-deletion-capture'
++import type { getSupabaseAdmin } from '@/lib/supabase'
++const input = { actorId: '11111111-1111-4111-8111-111111111111', projectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', subjectId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', subjectType: 'media_asset' as const, requestId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc' }
++const receipt = { id: input.requestId, projectId: input.projectId, subjectId: input.subjectId, subjectType: input.subjectType, state: 'requested', tombstoneAt: '2026-11-06T00:00:00+00:00', targetCount: 4, physicalDeletionComplete: false }
++function client(result: unknown = { data: receipt, error: null }) {
++  const retry = jest.fn(() => Promise.resolve(result)), abortSignal = jest.fn(() => ({ retry })), rpc = jest.fn(() => ({ abortSignal }))
++  return { rpc, retry, abortSignal, admin: { rpc } as unknown as ReturnType<typeof getSupabaseAdmin> }
++}
++describe('strict atomic deletion service', () => {
++  it('uses bounded, single no-retry RPC and copies the validated receipt', async () => {
++    const c = client(), value = await submitMediaDeletionRequest(input, c)
++    expect(value).toEqual(receipt); expect(value).not.toBe(receipt)
++    expect(c.rpc).toHaveBeenCalledWith('request_media_deletion', { p_actor_id: input.actorId, p_project_id: input.projectId, p_subject_id: input.subjectId, p_subject_type: 'media_asset', p_request_id: input.requestId })
++    expect(c.retry).toHaveBeenCalledWith(false); expect(c.abortSignal.mock.calls[0][0]).toBeInstanceOf(AbortSignal)
++  })
++  it.each(['actorId','projectId','subjectId','requestId','subjectType'])('rejects invalid primitive %s without SQL', async key => {
++    for (const invalid of [null, undefined, 1, {}, '', ' invalid ']) {
++      const c = client(); await expect(submitMediaDeletionRequest({ ...input, [key]: invalid }, c)).rejects.toMatchObject({ status: 400 }); expect(c.rpc).not.toHaveBeenCalled()
++    }
++  })
++  it.each([{ extra: true }, { id: 'x' }, { projectId: input.actorId }, { subjectId: input.actorId }, { subjectType: 'story' }, { state: 'completed' }, { physicalDeletionComplete: true }, { targetCount: -1 }, { targetCount: 1.5 }, { targetCount: '4' }, { tombstoneAt: 'yesterday' }, { tombstoneAt: '2026-02-30T00:00:00Z' }, { bucket: 'private' }])('rejects invalid receipt %j', async mutation => {
++    await expect(submitMediaDeletionRequest(input, client({ data: { ...receipt, ...mutation }, error: null }))).rejects.toMatchObject({ status: 503 })
++  })
++  it('rejects missing fields, legacy receipts and nonobjects', async () => {
++    for (const data of [null, [], {}, { id: receipt.id }, ...Object.keys(receipt).map(key => Object.fromEntries(Object.entries(receipt).filter(([k])=>k!==key)))]) {
++      await expect(submitMediaDeletionRequest(input, client({ data, error: null }))).rejects.toBeInstanceOf(MediaDeletionCaptureError)
++    }
++  })
++  it.each([['42501',403],['23505',409],['23514',409],['22023',400],['22P02',400],['55P03',503],['XX000',503]])('categorizes %s without leaking details', async (code,status) => {
++    const c = client({ data: null, error: { code, message: 'private storage/path' } })
++    await expect(submitMediaDeletionRequest(input,c)).rejects.toMatchObject({ status, message: 'Media deletion request is unavailable' })
++  })
++  it('accepts the original durable id when replaying the same subject', async () => {
++    expect(await submitMediaDeletionRequest({ ...input, requestId: input.actorId },client())).toEqual(receipt)
++  })
++  it('pins inputs while the response is pending', async () => {
++    const identity = { ...input }, c = client(); let deliver!: (value: unknown) => void
++    c.retry.mockImplementation(() => new Promise(resolve=>{ deliver=resolve }))
++    const pending = submitMediaDeletionRequest(identity,c); identity.subjectId=input.actorId
++    deliver({ data: { ...receipt, subjectId: input.actorId }, error: null })
++    await expect(pending).rejects.toMatchObject({ status: 503 })
++  })
++  it('bounds timeouts and preaborted requests without starting SQL', async () => {
++    for (const timeoutMs of [0,-1,60001,1.5,NaN]) { const c=client(); await expect(submitMediaDeletionRequest(input,{...c,timeoutMs})).rejects.toMatchObject({status:503});expect(c.rpc).not.toHaveBeenCalled() }
++    const controller=new AbortController();controller.abort();const c=client()
++    await expect(submitMediaDeletionRequest(input,{...c,signal:controller.signal})).rejects.toMatchObject({status:503});expect(c.rpc).not.toHaveBeenCalled()
++  })
++  it('timeout and caller abort reject a noncooperating SDK without fallback or retry', async () => {
++    for(const useCaller of [false,true]) {
++      const c=client(),controller=new AbortController();c.retry.mockImplementation(()=>new Promise(()=>{}))
++      const pending=submitMediaDeletionRequest(input,{...c,timeoutMs:useCaller?1000:5,signal:controller.signal})
++      if(useCaller)controller.abort()
++      await expect(pending).rejects.toMatchObject({status:503});expect(c.rpc).toHaveBeenCalledTimes(1);expect(c.retry).toHaveBeenCalledTimes(1)
++    }
++  })
++  it('a lost response fails closed and a later independent request can recover', async () => {
++    const c=client();c.retry.mockRejectedValueOnce(new Error('network lost private details'))
++    await expect(submitMediaDeletionRequest(input,c)).rejects.toMatchObject({status:503})
++    expect(c.rpc).toHaveBeenCalledTimes(1);expect(await submitMediaDeletionRequest(input,c)).toEqual(receipt)
++  })
++})
+--- before/packages/web/src/app/api/media/delete-request/__tests__/route.test.ts
++++ after/packages/web/src/app/api/media/delete-request/__tests__/route.test.ts
+@@ -1,126 +1,51 @@
+ /** @jest-environment node */
+-
+ import { NextRequest, NextResponse } from 'next/server'
+ import { POST } from '../route'
+-
+-const mockAuth = jest.fn()
+-const mockProjectAccess = jest.fn()
+-const mockFrom = jest.fn()
+-
++const mockAuth = jest.fn(), mockProjectAccess = jest.fn(), mockFrom = jest.fn(), mockRpc = jest.fn()
+ jest.mock('@/lib/server/auth', () => ({ getAuthenticatedUser: (...args: unknown[]) => mockAuth(...args) }))
+ jest.mock('@/lib/server/project-access', () => ({ requireProjectAccess: (...args: unknown[]) => mockProjectAccess(...args) }))
+-jest.mock('@/lib/supabase', () => ({
+-  getSupabaseAdmin: () => ({
+-    from: (...args: unknown[]) => mockFrom(...args),
+-  }),
+-}))
+-
+-const user = { id: 'alice' } as any
++jest.mock('@/lib/supabase', () => ({ getSupabaseAdmin: () => ({ from: mockFrom, rpc: mockRpc }) }))
++const actorId = '11111111-1111-4111-8111-111111111111', projectId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
++const assetId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', storyId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', requestId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd'
+ const headers = new Headers({ 'Set-Cookie': 'session=refreshed' })
+-
+-function makeRequest(body: unknown) {
+-  return new NextRequest('http://localhost/api/media/delete-request', {
+-    method: 'POST',
+-    headers: { 'content-type': 'application/json' },
+-    body: JSON.stringify(body),
++function request(body: unknown) { return new NextRequest('http://localhost/api/media/delete-request', { method: 'POST', body: JSON.stringify(body) }) }
++function receipt(id = requestId, subjectId = assetId, subjectType = 'media_asset') { return { id, projectId, subjectId, subjectType, state: 'requested', tombstoneAt: '2026-11-06T00:00:00.000Z', targetCount: 4, physicalDeletionComplete: false } }
++describe('atomic media deletion route', () => {
++  beforeEach(() => {
++    jest.clearAllMocks(); process.env.MEDIA_ASSETS_ENABLED = 'true'
++    mockAuth.mockResolvedValue({ ok: true, user: { id: actorId }, headers }); mockProjectAccess.mockResolvedValue({ ok: true })
++    mockRpc.mockImplementation((_name, args) => { const q = { abortSignal: jest.fn(() => q), retry: jest.fn(() => Promise.resolve({ data: receipt(args.p_request_id, args.p_subject_id, args.p_subject_type), error: null })) }; return q })
+   })
+-}
+-
+-describe('POST /api/media/delete-request', () => {
+-  beforeEach(() => {
+-    jest.clearAllMocks()
+-    process.env.MEDIA_ASSETS_ENABLED = 'true'
+-    mockAuth.mockResolvedValue({ ok: true, user, headers })
+-    mockProjectAccess.mockResolvedValue({ ok: true })
++  afterEach(() => { delete process.env.MEDIA_ASSETS_ENABLED })
++  it('uses only one atomic RPC, preserves auth headers and returns the closed 202 receipt', async () => {
++    const response = await POST(request({ projectId, assetId, requestId }))
++    expect(response.status).toBe(202); expect(await response.json()).toEqual({ deletionRequest: receipt() })
++    expect(response.headers.get('cache-control')).toBe('no-store'); expect(response.headers.get('set-cookie')).toBe('session=refreshed')
++    expect(mockFrom).not.toHaveBeenCalled(); expect(mockRpc).toHaveBeenCalledTimes(1)
++    expect(mockRpc).toHaveBeenCalledWith('request_media_deletion', { p_actor_id: actorId, p_project_id: projectId, p_subject_id: assetId, p_subject_type: 'media_asset', p_request_id: requestId })
+   })
+-
+-  afterEach(() => {
+-    delete process.env.MEDIA_ASSETS_ENABLED
++  it('generates a UUID for a story request', async () => {
++    const response = await POST(request({ projectId, storyId })); expect(response.status).toBe(202)
++    expect((await response.json()).deletionRequest).toMatchObject({ subjectId: storyId, subjectType: 'story', id: expect.stringMatching(/^[0-9a-f-]{36}$/) })
+   })
+-
+-  it('returns 404 when MEDIA_ASSETS_ENABLED is not enabled', async () => {
+-    delete process.env.MEDIA_ASSETS_ENABLED
+-    const response = await POST(makeRequest({ projectId: 'proj-1', assetId: 'asset-1' }))
+-    expect(response.status).toBe(404)
++  it.each([{ projectId, assetId, storyId }, { projectId }, { projectId, assetId, storyId: null }, { projectId, assetId, requestId: null }, { projectId, assetId, requestId: '' }, { projectId, assetId: 7 }, { projectId: ` ${projectId}`, assetId }])('rejects malformed or ambiguous request %j', async body => {
++    const response = await POST(request(body)); expect(response.status).toBe(400); expect(mockRpc).not.toHaveBeenCalled(); expect(mockFrom).not.toHaveBeenCalled()
++    expect(response.headers.get('cache-control')).toBe('no-store')
+   })
+-
+-  it('rejects cross-family or revoked access before reading assets', async () => {
+-    mockProjectAccess.mockResolvedValue({
+-      ok: false,
+-      response: NextResponse.json({ error: 'Access denied' }, { status: 403 }),
+-    })
+-    const response = await POST(makeRequest({ projectId: 'proj-beta', assetId: 'asset-1' }))
+-    expect(response.status).toBe(403)
+-    expect(mockFrom).not.toHaveBeenCalled()
++  it('keeps access checks before SQL', async () => {
++    mockProjectAccess.mockResolvedValue({ ok: false, response: NextResponse.json({ error: 'Access denied' }, { status: 403 }) })
++    const response = await POST(request({ projectId, assetId })); expect(response.status).toBe(403); expect(mockRpc).not.toHaveBeenCalled()
+   })
+-
+-  it('creates a deletion tombstone, transitions assets to deleting, and cancels active jobs', async () => {
+-    const updatedTables: string[] = []
+-    mockFrom.mockImplementation((table: string) => {
+-      if (table === 'projects') {
+-        const chain: any = {
+-          select: jest.fn(() => chain),
+-          eq: jest.fn(() => chain),
+-          maybeSingle: jest.fn(async () => ({ data: { id: 'proj-1', facilitator_id: 'alice' }, error: null })),
+-        }
+-        return chain
+-      }
+-      if (table === 'media_assets') {
+-        const chain: any = {
+-          select: jest.fn(() => chain),
+-          eq: jest.fn(() => chain),
+-          update: jest.fn(() => {
+-            updatedTables.push('media_assets')
+-            return chain
+-          }),
+-          in: jest.fn(() => chain),
+-          then: (resolve: (val: unknown) => void) =>
+-            resolve({
+-              data: [
+-                {
+-                  id: 'asset-1',
+-                  project_id: 'proj-1',
+-                  story_id: 'story-1',
+-                  bucket: 'audio-recordings',
+-                  object_key: 'alice/projects/proj-1/assets/asset-1/original',
+-                  state: 'ready',
+-                },
+-              ],
+-              error: null,
+-            }),
+-        }
+-        return chain
+-      }
+-      if (table === 'deletion_requests') {
+-        const chain: any = {
+-          insert: jest.fn(() => chain),
+-          select: jest.fn(() => chain),
+-          single: jest.fn(async () => ({
+-            data: { id: 'del-1', project_id: 'proj-1', subject_id: 'asset-1', state: 'requested' },
+-            error: null,
+-          })),
+-        }
+-        return chain
+-      }
+-      if (table === 'processing_jobs') {
+-        const chain: any = {
+-          update: jest.fn(() => {
+-            updatedTables.push('processing_jobs')
+-            return chain
+-          }),
+-          in: jest.fn(() => chain),
+-          then: (resolve: (val: unknown) => void) => resolve({ data: [], error: null }),
+-        }
+-        return chain
+-      }
+-      return {}
+-    })
+-
+-    const response = await POST(makeRequest({ projectId: 'proj-1', assetId: 'asset-1' }))
+-    expect(response.status).toBe(202)
+-    const payload = await response.json()
+-    expect(payload.deletionRequest.subjectId).toBe('asset-1')
+-    expect(payload.deletionRequest.tombstoneAt).toBeTruthy()
+-    expect(updatedTables).toEqual(['media_assets', 'processing_jobs'])
++  it('disables endpoint without table or RPC access', async () => {
++    delete process.env.MEDIA_ASSETS_ENABLED; expect((await POST(request({ projectId, assetId }))).status).toBe(404); expect(mockRpc).not.toHaveBeenCalled()
++  })
++  it('returns no-store and refreshed headers on authentication rejection', async () => {
++    mockAuth.mockResolvedValue({ ok: false, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers }) })
++    const response = await POST(request({ projectId, assetId })); expect(response.status).toBe(401); expect(response.headers.get('cache-control')).toBe('no-store'); expect(response.headers.get('set-cookie')).toBe('session=refreshed')
++  })
++  it('reports SQL reauthorization failure without fallback table writes', async () => {
++    mockRpc.mockImplementation(() => { const q = { abortSignal: () => q, retry: () => Promise.resolve({ data: null, error: { code: '42501', message: 'private coordinates' } }) }; return q })
++    const response = await POST(request({ projectId, assetId })); expect(response.status).toBe(403)
++    expect(JSON.stringify(await response.json())).not.toContain('private coordinates'); expect(mockFrom).not.toHaveBeenCalled()
+   })
+ })
+--- before/experiments/pg17-deletion-capture/fixture.mjs
++++ after/experiments/pg17-deletion-capture/fixture.mjs
+@@ -0,0 +1,93 @@
++import { setup as setupFlow, fresh, USER, OTHER, PROJECT } from '../pg17-recording-flow/fixture.mjs'
++import { FOUNDATION } from '../pg17-recording-worker/fixture.mjs'
++export { fresh, USER, OTHER, PROJECT }
++export const MIGRATION = 'supabase/migrations/20261106000002_media_deletion_capture.sql'
++export async function setup(h, source, migrate = true) {
++  await setupFlow(h, source)
++  await h.db.query("SET timezone='UTC'")
++  const ddl = (await source(FOUNDATION)).match(/CREATE TABLE IF NOT EXISTS public\.deletion_targets \([\s\S]*?\n\);/)?.[0]
++  h.ok(ddl, 'actual foundation deletion_targets DDL extracted unchanged')
++  await h.db.query(ddl)
++  await h.db.query(`ALTER TABLE deletion_targets ENABLE ROW LEVEL SECURITY;
++    REVOKE ALL ON deletion_targets FROM PUBLIC,anon,authenticated;
++    GRANT ALL ON deletion_targets TO service_role;
++    CREATE POLICY deletion_targets_service ON deletion_targets FOR ALL TO service_role USING (true) WITH CHECK (true);`)
++  const requestPolicy=(await source(FOUNDATION)).match(/CREATE POLICY "deletion_requests_select_active_member"[\s\S]*?;/)?.[0]
++  h.ok(requestPolicy,'actual foundation request read policy found')
++  await h.db.query(`ALTER TABLE deletion_requests ENABLE ROW LEVEL SECURITY; GRANT SELECT ON deletion_requests TO authenticated; ${requestPolicy}`)
++  h.report.fixture.actualRequestReadPolicy=requestPolicy
++  h.report.fixture.actualDeletionTargetsDdl = ddl
++  if (migrate) { await h.db.query(await source(MIGRATION)); h.report.fixture.fullMigrations.push(MIGRATION) }
++}
++export async function capture(client, { actorId = OTHER, projectId = PROJECT, subjectId, subjectType = 'story', requestId }) {
++  return (await client.query('SELECT public.request_media_deletion($1::uuid,$2::uuid,$3::uuid,$4::text,$5::uuid) AS value', [actorId,projectId,subjectId,subjectType,requestId])).rows[0].value
++}
++export async function snapshot(h) {
++  const result = {}
++  for (const table of ['projects','project_roles','stories','media_assets','recording_sessions','recording_chunks','processing_jobs','processing_attempts','recording_output_candidates','recording_story_intents','deletion_requests','deletion_targets','storage.objects']) {
++    result[table] = (await h.db.query(`SELECT to_jsonb(t) AS row FROM ${table} t ORDER BY to_jsonb(t)::text`)).rows.map(r=>r.row)
++  }
++  result.synthetic_files={}
++  const {readFile}=await import('node:fs/promises')
++  for(const [key,path] of h.syntheticFiles??[])result.synthetic_files[key]=(await readFile(path)).toString('base64')
++  return result
++}
++
++/** Compile the actual adapter; SQL transport below replaces only PostgREST. */
++export async function compileCapture(h, source) {
++  const { createRequire }=await import('node:module'), { writeFile }=await import('node:fs/promises'), { join }=await import('node:path')
++  const require=createRequire(import.meta.url), ts=require('typescript')
++  const text=await source('packages/web/src/lib/server/media-deletion-capture.ts')
++  const result=ts.transpileModule(text,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS},reportDiagnostics:true})
++  h.eq(result.diagnostics.filter(d=>d.category===ts.DiagnosticCategory.Error).length,0,'actual deletion adapter transpiles')
++  const destination=join(h.scratch,'media-deletion-capture.cjs');await writeFile(destination,result.outputText)
++  return require(destination)
++}
++export function applicationAdmin(h, service) {
++  return {rpc(name,args) {
++    h.eq(name,'request_media_deletion','actual application selects capture RPC')
++    const q={abortSignal(signal){h.ok(signal instanceof AbortSignal,'application forwards abort signal');return q},retry(value){h.eq(value,false,'application disables retries');return q},
++      then(resolve,reject){return capture(service,{actorId:args.p_actor_id,projectId:args.p_project_id,subjectId:args.p_subject_id,subjectType:args.p_subject_type,requestId:args.p_request_id})
++        .then(data=>({data,error:null}),error=>({data:null,error:{code:error.code}})).then(resolve,reject)}}
++    return q
++  }}
++}
++export async function prepareCandidate(h, service, f, state='prepared') {
++  const { randomUUID }=await import('node:crypto'), { digest }=await import('../pg17-routines/runtime.mjs')
++  const { candidateRpc }=await import('../pg17-recording-candidates/fixture.mjs'), { WORKER }=await import('../pg17-recording-finalization/fixture.mjs')
++  f.attemptCount=f.attemptCount??1
++  await service.query("SELECT recording_job_lease($1,'claim',$2,NULL,120000)",[f.jobId,WORKER])
++  await service.query("SELECT recording_job_lease($1,'start',$2,$3,NULL)",[f.jobId,WORKER,f.attemptCount])
++  f.candidateId=randomUUID();f.output={byteSize:f.bytes.length,sha256:digest(f.bytes),mimeType:'audio/webm',durationMs:1250}
++  await candidateRpc(service,[f.jobId,'reserve',WORKER,f.attemptCount,f.manifestSha256,f.candidateId,f.output])
++  if(state==='prepared')await candidateRpc(service,[f.jobId,'prepare',WORKER,f.attemptCount,f.manifestSha256,f.candidateId,f.output])
++  return f
++}
++export async function multipleChunks(h, service, prepare, count=3, existingStory=null) {
++  const { randomUUID }=await import('node:crypto'), { digest }=await import('../pg17-routines/runtime.mjs'), { save,METADATA }=await import('../pg17-recording-flow/fixture.mjs')
++  const sessionId=randomUUID(),jobId=randomUUID(),storyId=existingStory??(await save(service,sessionId,'reserve',METADATA)).lookup.intent.storyId
++  const chunkBodies=Array.from({length:count},(_,i)=>Buffer.from(`synthetic-chunk-${i}`)),bytes=Buffer.concat(chunkBodies)
++  const chunks=chunkBodies.map((body,index)=>({index,chunkId:`chunk-${index}`,bucket:'audio-recordings',objectKey:`projects/${PROJECT}/sessions/${sessionId}/${index}`,byteSize:body.length,sha256:digest(body)}))
++  const sealed=prepare({jobId,projectId:PROJECT,sessionId,actorId:USER,actorRole:'storyteller',actorActive:true,storyId,mimeType:'audio/webm',chunks})
++  const manifest={schemaVersion:1,projectId:PROJECT,sessionId,userId:USER,storyId,assetId:sealed.task.assetId,mimeType:'audio/webm',chunks:chunks.map(c=>({...c,storageObjectKey:`${USER}/${c.objectKey}`}))}
++  const seal=(await service.query('SELECT seal_recording_manifest($1::jsonb) AS value',[JSON.stringify(manifest)])).rows[0].value
++  const columns=Object.keys(sealed.assetRecord)
++  await service.query(`INSERT INTO media_assets(${columns.join(',')}) VALUES(${columns.map((_,i)=>`$${i+1}`).join(',')})`,Object.values(sealed.assetRecord))
++  await service.query(`INSERT INTO processing_jobs(id,project_id,asset_id,created_by,input_version,job_type,processor_version,model_config_version,parameter_version,idempotency_key,state)
++    VALUES($1,$2,$3,$4,1,'recording_merge','ffmpeg-merge-v1','none','default',$5,'queued')`,[jobId,PROJECT,sealed.task.assetId,USER,sealed.task.idempotencyKey])
++  return {sessionId,jobId,storyId,assetId:sealed.task.assetId,sealed,manifest,manifestSha256:seal.manifestSha256,bytes,chunkBodies,attemptCount:1}
++}
++export async function materialize(h, f) {
++  const { writeFile }=await import('node:fs/promises'), { join }=await import('node:path'), { digest }=await import('../pg17-routines/runtime.mjs')
++  h.syntheticFiles??=new Map()
++  const sources=(await h.db.query(`SELECT bucket,object_key FROM media_assets WHERE id=$1 UNION SELECT bucket,object_key FROM recording_chunks WHERE session_id=$2
++    UNION SELECT bucket,object_key FROM recording_output_candidates WHERE asset_id=$1`,[f.assetId,f.sessionId])).rows
++  for(const row of sources) {
++    const key=`${row.bucket}:${row.object_key}`,path=join(h.scratch,`synthetic-${digest(key)}`)
++    if(h.syntheticFiles.has(key))continue
++    const chunk=f.manifest.chunks.find(c=>c.storageObjectKey===row.object_key),body=chunk?f.chunkBodies?.[chunk.index]??f.bytes:f.bytes
++    await writeFile(path,body);h.syntheticFiles.set(key,path)
++    await h.db.query('INSERT INTO storage.buckets(id,name) VALUES($1,$1) ON CONFLICT DO NOTHING',[row.bucket])
++    await h.db.query('INSERT INTO storage.objects(bucket_id,name,metadata) VALUES($1,$2,$3::jsonb) ON CONFLICT DO NOTHING',[row.bucket,row.object_key,JSON.stringify({synthetic:true,byteSize:body.length,sha256:digest(body)})])
++  }
++}
+--- before/experiments/pg17-deletion-capture/verify.mjs
++++ after/experiments/pg17-deletion-capture/verify.mjs
+@@ -0,0 +1,33 @@
++import { mkdir, readFile, writeFile } from 'node:fs/promises'
++import { join } from 'node:path'
++import { randomUUID } from 'node:crypto'
++import { Harness, root, digest } from '../pg17-routines/runtime.mjs'
++import { compileModules } from '../pg17-recording-worker/fixture.mjs'
++import { setup, fresh, capture, snapshot, compileCapture, applicationAdmin, USER } from './fixture.mjs'
++import { scenarios } from './scenarios.mjs'
++const red = process.argv.includes('--without-migration')
++const directory = join(root,'docs/research/evidence/2026-11-06-g1-deletion-capture',`native-${red?'red-':''}${Date.now()}-${randomUUID()}`)
++const report = {status:'running',assertions:0,actorConnections:[],scenarios:[],sources:{},command:`node experiments/pg17-deletion-capture/verify.mjs ${process.argv.slice(2).join(' ')}`.trim(),g1MilestoneSatisfied:false,physicalDeletionComplete:false}
++const h = new Harness(report)
++await mkdir(directory,{recursive:true})
++async function source(path) { const bytes=await readFile(join(root,path)); report.sources[path]=digest(bytes); return bytes.toString() }
++try {
++  await source('experiments/pg17-deletion-capture/fixture.mjs');await source('experiments/pg17-deletion-capture/verify.mjs')
++  await h.start(); await setup(h,source,!red)
++  const service=await h.actorClient('service_role',USER), {prepareRecordingSessionSeal}=await compileModules(h,source)
++  await h.scenario('actual published recording atomically captures candidate and original chunk',async()=>{
++    const f=await fresh(h,service,prepareRecordingSessionSeal), before=await snapshot(h)
++    report.before=before
++    const receipt=await capture(service,{subjectId:f.storyId,requestId:randomUUID()})
++    const after=await snapshot(h)
++    report.publishedCapture={receipt,before,after}
++    h.eq(receipt.physicalDeletionComplete,false,'capture never reports physical removal')
++    h.eq('capture_targets' in after.deletion_requests.find(r=>r.id===receipt.id),false,'member-visible request contains only digest/count, never candidate paths')
++    h.eq(after.deletion_targets.filter(t=>t.deletion_request_id===receipt.id).length,4,'story asset candidate chunk persisted')
++  })
++  const app=await compileCapture(h,source)
++  await source('experiments/pg17-deletion-capture/scenarios.mjs')
++  await scenarios(h,service,prepareRecordingSessionSeal,app,applicationAdmin(h,service))
++  report.status='passed'
++} catch(error) {report.status='failed'; report.error={code:error.code??'ERROR',label:error.label??error.message,position:error.position,where:error.where,internalQuery:error.internalQuery};process.exitCode=1}
++finally {await h.cleanup();if(report.status!=='passed')process.exitCode=1;await writeFile(join(directory,'results.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({directory,status:report.status,assertions:report.assertions,error:report.error,cleanup:report.cleanup},null,2))}
+--- before/experiments/pg17-deletion-capture/scenarios.mjs
++++ after/experiments/pg17-deletion-capture/scenarios.mjs
+@@ -0,0 +1,231 @@
++import { randomUUID } from 'node:crypto'
++import { setTimeout as delay } from 'node:timers/promises'
++import { fresh,capture,snapshot,multipleChunks,prepareCandidate,materialize,USER,OTHER,PROJECT } from './fixture.mjs'
++import { save,METADATA } from '../pg17-recording-flow/fixture.mjs'
++import { candidateRpc } from '../pg17-recording-candidates/fixture.mjs'
++import { rpc as finalize,args as finalArgs,WORKER } from '../pg17-recording-finalization/fixture.mjs'
++import { digest } from '../pg17-routines/runtime.mjs'
++const THIRD='33333333-3333-4333-8333-333333333333', FOREIGN='eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee'
++async function outcome(fn) {try{return{code:'00000',value:await fn()}}catch(e){return{code:e.code??'ERROR',message:e.message}}}
++export async function scenarios(h,service,prepare,app,admin) {
++  const report=h.report;report.observations??=[];report.waits=[]
++  const record=(name,before,after,result)=>report.observations.push({name,before,after,result})
++  async function waiting(client,label) {
++    for(let n=0;n<300;n++) {
++      const row=(await h.db.query('SELECT pid,wait_event_type,wait_event,pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid=$1',[client.processID])).rows[0]
++      if(row.wait_event_type==='Lock'&&row.blockers.length) {
++        report.waits.push({label,...row,locks:(await h.db.query('SELECT pid,relation::regclass::text AS relation,locktype,mode,granted FROM pg_locks WHERE pid=$1 ORDER BY locktype,relation,mode',[client.processID])).rows});h.ok(true,label);return
++      }
++      await delay(5)
++    }
++    h.ok(false,`${label}: actual lock wait required`)
++  }
++  async function deny(name,fn,codes=['23505']) {
++    const before=await snapshot(h),result=await outcome(fn),after=await snapshot(h);record(name,before,after,result)
++    h.ok(codes.includes(result.code),`${name}: rejected expected SQLSTATE`);h.eq(after,before,`${name}: every full row and physical synthetic byte unchanged`)
++  }
++  function targetsFrom(before,assetIds,sessionIds,kind,subject) {
++    const targets=new Map()
++    for(const a of before.media_assets.filter(a=>assetIds.includes(a.id))) {
++      targets.set(`asset:${a.id}`,{target_id:`asset:${a.id}`,kind:'media_asset',bucket:null,object_key:null})
++    }
++    const sources=[...before.media_assets.filter(a=>assetIds.includes(a.id)),...before.recording_chunks.filter(c=>sessionIds.includes(c.session_id)),...before.recording_output_candidates.filter(c=>assetIds.includes(c.asset_id))]
++    for(const c of sources)targets.set(`storage:${c.bucket}:${c.object_key}`,{target_id:`storage:${c.bucket}:${c.object_key}`,kind:'storage_object',bucket:c.bucket,object_key:c.object_key})
++    if(kind==='story')targets.set(`story:${subject}`,{target_id:`story:${subject}`,kind:'story',bucket:null,object_key:null})
++    return [...targets.values()].sort((a,b)=>a.target_id.localeCompare(b.target_id))
++  }
++  function assertCapture(before,after,receipt,assetIds,sessionIds,kind,subject) {
++    const selected=after.deletion_targets.filter(t=>t.deletion_request_id===receipt.id)
++    const minimal=selected.map(({target_id,kind,bucket,object_key})=>({target_id,kind,bucket,object_key})).sort((a,b)=>a.target_id.localeCompare(b.target_id))
++    h.eq(minimal,targetsFrom(before,assetIds,sessionIds,kind,subject),'durable targets equal complete observed source coordinates')
++    h.eq(receipt.targetCount,selected.length,'receipt reports exact durable count');h.eq(receipt.physicalDeletionComplete,false,'capture only')
++    const request=after.deletion_requests.find(r=>r.id===receipt.id)
++    h.eq(request.capture_version,1,'explicit capture version');h.eq(request.subject_type,kind,'explicit subject kind')
++    h.eq(request.capture_target_count,selected.length,'durable target count');h.ok(/^[a-f0-9]{64}$/.test(request.capture_targets_sha256),'durable full tuple digest');h.eq('capture_targets' in request,false,'member-visible request has no target coordinates')
++    const normalize=t=>Date.parse(t)
++    h.eq(normalize(request.tombstone_at),normalize(receipt.tombstoneAt),'receipt keeps tombstone timestamp')
++    for(const table of ['stories','recording_sessions','recording_chunks','recording_output_candidates','processing_attempts','recording_story_intents','storage.objects','synthetic_files'])h.eq(after[table],before[table],`${table}: existing evidence unchanged`)
++    for(const a of before.media_assets) {
++      const actual=after.media_assets.find(r=>r.id===a.id)
++      h.eq(actual,assetIds.includes(a.id)?{...a,state:'deleting',updated_at:request.tombstone_at}:a,'asset exact transition or unchanged sibling')
++    }
++    for(const j of before.processing_jobs) {
++      const actual=after.processing_jobs.find(r=>r.id===j.id),cancel=assetIds.includes(j.asset_id)&&!['succeeded','failed','cancelled'].includes(j.state)&&j.cancel_requested_at===null
++      h.eq(actual,cancel?{...j,cancel_requested_at:request.tombstone_at,updated_at:request.tombstone_at}:j,'unfinished job cancellation flag only; terminal tuple unchanged')
++    }
++  }
++  await h.scenario('actual service accepts full native capture and exact same-ID or subject replay',async()=>{
++    const f=await fresh(h,service,prepare);await materialize(h,f)
++    const input={actorId:OTHER,projectId:PROJECT,subjectId:f.storyId,subjectType:'story',requestId:randomUUID()}
++    const before=await snapshot(h),receipt=await app.submitMediaDeletionRequest(input,{admin}),after=await snapshot(h)
++    record('published via actual adapter',before,after,receipt);report.publishedCapture={receipt,request:after.deletion_requests.find(r=>r.id===receipt.id),targets:after.deletion_targets.filter(t=>t.deletion_request_id===receipt.id),before,after}
++    assertCapture(before,after,receipt,[f.assetId],[f.sessionId],'story',f.storyId)
++    for(const requestId of [input.requestId,randomUUID()]) {
++      const replay=await app.submitMediaDeletionRequest({...input,requestId},{admin});h.eq(replay,receipt,'immutable public receipt replay');h.eq(await snapshot(h),after,'replay changes no source/request/target row')
++    }
++    record('exact replays',after,await snapshot(h),receipt)
++    const member=await h.actorClient('authenticated',USER)
++    const visible=(await member.query('SELECT * FROM deletion_requests WHERE id=$1',[receipt.id])).rows
++    h.eq(visible.length,1,'foundation RLS permits current member to read request')
++    h.eq(JSON.stringify(visible).includes('jobs/'),false,'member-visible request does not expose candidate paths')
++    const readTargets=await outcome(()=>member.query('SELECT * FROM deletion_targets'))
++    h.eq(readTargets.code,'42501','private deletion targets remain unreadable to members')
++    report.requestVisibility={memberVisibleRows:visible,targetsReadCode:readTargets.code};await h.close(member)
++    await deny('confirmation after tombstone',()=>save(service,f.sessionId,'confirm',null,f.manifestSha256),['42501'])
++  })
++  await h.scenario('three real sealed chunks plus a separate retained reserved candidate deduplicate published alias',async()=>{
++    const f=await multipleChunks(h,service,prepare),pending=await multipleChunks(h,service,prepare,1,f.storyId)
++    await prepareCandidate(h,service,f);await finalize(service,finalArgs(f))
++    await prepareCandidate(h,service,pending,'reserved');await materialize(h,f);await materialize(h,pending)
++    const before=await snapshot(h),receipt=await capture(service,{subjectId:f.storyId,requestId:randomUUID()}),after=await snapshot(h)
++    record('multiple chunks retained and published candidates',before,after,receipt);assertCapture(before,after,receipt,[f.assetId,pending.assetId],[f.sessionId,pending.sessionId],'story',f.storyId)
++    h.eq(receipt.targetCount,10,'story + two assets + four chunks + two candidates + actual pending asset address')
++    h.eq(after.deletion_targets.filter(t=>t.deletion_request_id===receipt.id&&t.object_key===`jobs/${f.jobId}/attempts/1/${f.candidateId}`).length,1,'published asset/candidate alias appears once')
++  })
++  await h.scenario('pending candidate capture preserves live lease/attempt and requests cancellation without finalizing',async()=>{
++    const f=await fresh(h,service,prepare,false);await prepareCandidate(h,service,f);await materialize(h,f)
++    const before=await snapshot(h),receipt=await capture(service,{subjectId:f.storyId,requestId:randomUUID()}),after=await snapshot(h)
++    record('pending prepared candidate capture',before,after,receipt);assertCapture(before,after,receipt,[f.assetId],[f.sessionId],'story',f.storyId)
++    await deny('publication after capture',()=>finalize(service,finalArgs(f)),['42501'])
++    await deny('pending confirmation after capture',()=>save(service,f.sessionId,'confirm',null,f.manifestSha256),['42501'])
++  })
++  await h.scenario('story scope includes actual legacy assets; asset scope leaves a same-story sibling and other story untouched',async()=>{
++    for(const kind of ['story','media_asset']) {
++      const f=await fresh(h,service,prepare),other=await fresh(h,service,prepare),sibling=randomUUID()
++      await h.db.query(`INSERT INTO media_assets(id,project_id,story_id,created_by,bucket,object_key,kind,mime_type,state) VALUES($1,$2,$3,$4,'saga',$5,'original_image','image/png','ready')`,[sibling,PROJECT,f.storyId,USER,`${USER}/projects/${PROJECT}/assets/${sibling}/original`])
++      await materialize(h,f);await materialize(h,other)
++      const subject=kind==='story'?f.storyId:f.assetId,before=await snapshot(h),receipt=await capture(service,{subjectId:subject,subjectType:kind,requestId:randomUUID()}),after=await snapshot(h)
++      record(`${kind} scope`,before,after,receipt);assertCapture(before,after,receipt,kind==='story'?[f.assetId,sibling]:[f.assetId],[f.sessionId],kind,subject)
++      h.eq(after.media_assets.find(a=>a.id===other.assetId),before.media_assets.find(a=>a.id===other.assetId),'other story asset untouched')
++    }
++    const reservation=await save(service,randomUUID(),'reserve',METADATA),story=reservation.lookup.intent.storyId
++    const before=await snapshot(h),receipt=await capture(service,{subjectId:story,requestId:randomUUID()}),after=await snapshot(h)
++    record('metadata-only story',before,after,receipt);assertCapture(before,after,receipt,[],[],'story',story);h.eq(receipt.targetCount,1,'empty story still captures actual metadata')
++  })
++  await h.scenario('manager authorization and malformed or legacy identity fail closed',async()=>{
++    const f=await fresh(h,service,prepare,false)
++    for(const args of [{actorId:USER},{actorId:randomUUID()},{projectId:FOREIGN},{subjectId:randomUUID()},{subjectType:'session'},{subjectType:null},{requestId:null}])
++      await deny(`invalid identity ${JSON.stringify(args)}`,()=>capture(service,{subjectId:f.storyId,requestId:randomUUID(),...args}),['42501','22023'])
++    await h.db.query('INSERT INTO auth.users VALUES($1);',[THIRD]);await h.db.query('INSERT INTO projects VALUES($1,$2)',[FOREIGN,THIRD])
++    await h.db.query("INSERT INTO project_roles(project_id,user_id,role,status) VALUES($1,$2,'facilitator','inactive')",[PROJECT,THIRD])
++    await deny('inactive facilitator',()=>capture(service,{actorId:THIRD,subjectId:f.storyId,requestId:randomUUID()}),['42501'])
++    await h.db.query("UPDATE project_roles SET status='active' WHERE user_id=$1",[THIRD])
++    const before=await snapshot(h),receipt=await capture(service,{actorId:THIRD,subjectId:f.storyId,requestId:randomUUID()}),after=await snapshot(h)
++    record('active facilitator allowed',before,after,receipt);assertCapture(before,after,receipt,[f.assetId],[f.sessionId],'story',f.storyId)
++    const legacy=await fresh(h,service,prepare,false)
++    await h.db.query('INSERT INTO deletion_requests(project_id,subject_id,requested_by) VALUES($1,$2,$3)',[PROJECT,legacy.storyId,OTHER])
++    await deny('legacy request without capture rejected',()=>capture(service,{subjectId:legacy.storyId,requestId:randomUUID()}))
++    const block=await fresh(h,service,prepare,false)
++    await h.db.query('INSERT INTO deletion_requests(project_id,subject_id,requested_by) VALUES($1,$2,$3)',[PROJECT,block.sessionId,OTHER])
++    await deny('session blocker',()=>capture(service,{subjectId:block.storyId,requestId:randomUUID()}))
++    for(const role of ['anon','authenticated','metadata_reader']) {
++      const client=await h.actorClient(role,USER,'service_role')
++      await deny(`${role} cannot spoof RPC role`,()=>capture(client,{subjectId:block.storyId,requestId:randomUUID()}),['42501']);await h.close(client)
++    }
++    await h.db.query('BEGIN ISOLATION LEVEL REPEATABLE READ')
++    const result=await outcome(()=>capture(h.db,{subjectId:block.storyId,requestId:randomUUID()}));await h.db.query('ROLLBACK');h.eq(result.code,'22023','repeatable read rejected')
++  })
++  await h.scenario('unsafe paths, cross-project relationships and foreign physical aliases abort complete capture',async()=>{
++    const mutations=[
++      ['unsafe traversal',f=>h.db.query("UPDATE media_assets SET object_key=$2 WHERE id=$1",[f.assetId,`${USER}/projects/${PROJECT}/../foreign`])],
++      ['foreign asset prefix',f=>h.db.query('UPDATE media_assets SET object_key=$2 WHERE id=$1',[f.assetId,`${USER}/projects/${FOREIGN}/assets/${f.assetId}/original`])],
++      ['foreign candidate metadata',f=>h.db.query('UPDATE recording_output_candidates SET project_id=$2 WHERE id=$1',[f.candidateId,FOREIGN])],
++      ['foreign chunk relationship',f=>h.db.query('UPDATE recording_chunks SET project_id=$2 WHERE session_id=$1',[f.sessionId,FOREIGN])],
++      ['foreign asset alias of candidate',f=>h.db.query(`INSERT INTO media_assets(id,project_id,created_by,bucket,object_key,kind,mime_type,state) VALUES($1,$2,$3,'recording-candidates',$4,'original_audio','audio/webm','ready')`,[randomUUID(),FOREIGN,THIRD,`jobs/${f.jobId}/attempts/1/${f.candidateId}`])],
++      ['candidate rebind into another session',async f=>{const other=await fresh(h,service,prepare,false);await h.db.query('UPDATE recording_output_candidates SET session_id=$2 WHERE id=$1',[f.candidateId,other.sessionId])}],
++    ]
++    for(const [name,mutate] of mutations) {
++      const f=await fresh(h,service,prepare,false);await prepareCandidate(h,service,f);await materialize(h,f);await mutate(f)
++      await deny(name,()=>capture(service,{subjectId:f.storyId,requestId:randomUUID()}))
++    }
++  })
++  await h.scenario('missing or altered durable target rejects replay, and request IDs cannot cross subjects or actors',async()=>{
++    const a=await fresh(h,service,prepare),b=await fresh(h,service,prepare),id=randomUUID()
++    const first=await capture(service,{subjectId:a.storyId,requestId:id});await capture(service,{subjectId:b.storyId,requestId:randomUUID()})
++    await deny('collision checked before existing subject replay',()=>capture(service,{subjectId:b.storyId,requestId:id}))
++    await deny('different actor cannot reuse request id',()=>capture(service,{actorId:THIRD,subjectId:a.storyId,requestId:id}))
++    await h.db.query("UPDATE deletion_targets SET object_key=object_key||'/tampered' WHERE deletion_request_id=$1 AND kind='storage_object'",[first.id])
++    await deny('target tampering rejects replay',()=>capture(service,{subjectId:a.storyId,requestId:id}))
++    await h.db.query('DELETE FROM deletion_targets WHERE deletion_request_id=$1',[first.id])
++    await deny('missing target population rejects replay',()=>capture(service,{subjectId:a.storyId,requestId:id}))
++  })
++  await h.scenario('publication before deletion waits then captures committed candidate key without guessed old path',async()=>{
++    const f=await fresh(h,service,prepare,false);await prepareCandidate(h,service,f);await materialize(h,f)
++    const first=await h.actorClient('service_role',USER),second=await h.actorClient('service_role',OTHER),before=await snapshot(h)
++    await first.query('BEGIN');await finalize(first,finalArgs(f))
++    const pending=outcome(()=>capture(second,{subjectId:f.storyId,requestId:randomUUID()}))
++    await waiting(second,'delete waits for publication fence');await first.query('COMMIT');const result=await pending,after=await snapshot(h)
++    record('publication then deletion',before,after,result);h.eq(result.code,'00000','capture succeeds after committed publication')
++    const keys=after.deletion_targets.filter(t=>t.deletion_request_id===result.value.id&&t.kind==='storage_object').map(t=>t.object_key).sort()
++    h.eq(keys,[f.manifest.chunks[0].storageObjectKey,`jobs/${f.jobId}/attempts/1/${f.candidateId}`].sort(),'fresh snapshot captures committed addresses only')
++    h.eq(after.synthetic_files,before.synthetic_files,'publication/capture leaves physical bytes intact');await h.close(first);await h.close(second)
++  })
++  await h.scenario('deletion before publication makes waiting actual finalizer fail without mutation',async()=>{
++    const f=await fresh(h,service,prepare,false);await prepareCandidate(h,service,f);await materialize(h,f)
++    const first=await h.actorClient('service_role',OTHER),second=await h.actorClient('service_role',USER),before=await snapshot(h)
++    await first.query('BEGIN');const receipt=await capture(first,{subjectId:f.storyId,requestId:randomUUID()})
++    const pending=outcome(()=>finalize(second,finalArgs(f)));await waiting(second,'publication waits for deletion fence');await first.query('COMMIT')
++    const result=await pending,after=await snapshot(h);record('deletion then publication',before,after,{receipt,result})
++    h.eq(result.code,'42501','waiting publication rejected after tombstone');assertCapture(before,after,receipt,[f.assetId],[f.sessionId],'story',f.storyId)
++    await h.close(first);await h.close(second)
++  })
++  await h.scenario('candidate reservation before capture waits for source writer and includes new reserved address',async()=>{
++    const f=await fresh(h,service,prepare,false);await materialize(h,f)
++    await service.query("SELECT recording_job_lease($1,'claim',$2,NULL,120000)",[f.jobId,WORKER]);await service.query("SELECT recording_job_lease($1,'start',$2,1,NULL)",[f.jobId,WORKER])
++    const first=await h.actorClient('service_role',USER),second=await h.actorClient('service_role',OTHER),before=await snapshot(h),id=randomUUID(),output={byteSize:f.bytes.length,sha256:digest(f.bytes),mimeType:'audio/webm',durationMs:1250}
++    await first.query('BEGIN');await candidateRpc(first,[f.jobId,'reserve',WORKER,1,f.manifestSha256,id,output])
++    const pending=outcome(()=>capture(second,{subjectId:f.storyId,requestId:randomUUID()}));await waiting(second,'capture waits for reserved candidate source');await first.query('COMMIT')
++    const result=await pending,after=await snapshot(h);record('reserve then capture',before,after,result)
++    h.eq(result.code,'00000','capture sees committed reservation');h.eq(after.deletion_targets.filter(t=>t.deletion_request_id===result.value.id&&t.object_key===`jobs/${f.jobId}/attempts/1/${id}`).length,1,'reserved address captured once')
++    h.eq(after.processing_attempts,before.processing_attempts,'live attempt preserved');await h.close(first);await h.close(second)
++  })
++  await h.scenario('two concurrent submissions converge; concurrent request-ID collision cannot create second capture',async()=>{
++    for(const collision of [false,true]) {
++      const a=await fresh(h,service,prepare,false),b=collision?await fresh(h,service,prepare,false):a
++      const first=await h.actorClient('service_role',OTHER),second=await h.actorClient('service_role',OTHER),id=randomUUID(),before=await snapshot(h)
++      await first.query('BEGIN');const receipt=await capture(first,{subjectId:a.storyId,requestId:id})
++      const pending=outcome(()=>capture(second,{subjectId:b.storyId,requestId:collision?id:randomUUID()}));await waiting(second,collision?'collision waits for capture':'same subject waits for capture');await first.query('COMMIT')
++      const result=await pending,after=await snapshot(h);record(collision?'concurrent ID collision':'concurrent same subject',before,after,{receipt,result})
++      h.eq(result.code,collision?'23505':'00000','concurrent result');if(!collision)h.eq(result.value,receipt,'same subject gets identical capture')
++      assertCapture(before,after,receipt,[a.assetId],[a.sessionId],'story',a.storyId);await h.close(first);await h.close(second)
++    }
++  })
++  await h.scenario('current authority and subject ownership are read after actual lock waits',async()=>{
++    for(const kind of ['owner','facilitator','subject']) {
++      const f=await fresh(h,service,prepare,false),first=await h.client(),second=await h.actorClient('service_role',OTHER)
++      const sql=kind==='owner'?'UPDATE projects SET facilitator_id=$1 WHERE id=$2':kind==='facilitator'?"UPDATE project_roles SET status='inactive' WHERE user_id=$1 AND project_id=$2":'UPDATE stories SET project_id=$1 WHERE id=$2'
++      const values=kind==='owner'?[USER,PROJECT]:kind==='facilitator'?[THIRD,PROJECT]:[FOREIGN,f.storyId]
++      const before=await snapshot(h);await first.query('BEGIN');await first.query(sql,values)
++      const pending=outcome(()=>capture(second,{actorId:kind==='facilitator'?THIRD:OTHER,subjectId:f.storyId,requestId:randomUUID()}));await waiting(second,`${kind} revocation/binding wait`);await first.query('COMMIT')
++      const result=await pending,after=await snapshot(h);record(`${kind} change while waiting`,before,after,result);h.eq(result.code,'42501','fresh authorization/ownership rejects')
++      h.eq(after.deletion_requests,before.deletion_requests,'wait denial creates no request');h.eq(after.deletion_targets,before.deletion_targets,'wait denial creates no targets');h.eq(after.media_assets,before.media_assets,'wait denial changes no assets');h.eq(after.processing_jobs,before.processing_jobs,'wait denial changes no jobs')
++      if(kind==='owner')await first.query('UPDATE projects SET facilitator_id=$1 WHERE id=$2',[OTHER,PROJECT])
++      if(kind==='facilitator')await first.query("UPDATE project_roles SET status='active' WHERE user_id=$1 AND project_id=$2",[THIRD,PROJECT])
++      if(kind==='subject')await first.query('UPDATE stories SET project_id=$1 WHERE id=$2',[PROJECT,f.storyId])
++      await h.close(first);await h.close(second)
++    }
++  })
++  await h.scenario('target/asset/cancellation failures, suppressed writes and later trigger tampering roll back all tuples',async()=>{
++    const injections=[
++      ['target insert error','deletion_targets','BEFORE INSERT',"RAISE EXCEPTION 'synthetic target failure' USING ERRCODE='P0001';"],
++      ['asset update error','media_assets','BEFORE UPDATE',"RAISE EXCEPTION 'synthetic asset failure' USING ERRCODE='P0001';"],
++      ['cancellation update error','processing_jobs','BEFORE UPDATE',"RAISE EXCEPTION 'synthetic cancellation failure' USING ERRCODE='P0001';"],
++      ['suppressed request','deletion_requests','BEFORE INSERT','RETURN NULL;'],
++      ['suppressed target','deletion_targets','BEFORE INSERT','RETURN NULL;'],
++      ['suppressed asset','media_assets','BEFORE UPDATE','RETURN NULL;'],
++      ['suppressed cancellation','processing_jobs','BEFORE UPDATE','RETURN NULL;'],
++      ['altered target','deletion_targets','BEFORE INSERT',"NEW.object_key := CASE WHEN NEW.kind='storage_object' THEN NEW.object_key||'/changed' ELSE NEW.object_key END; RETURN NEW;"],
++      ['altered request','deletion_requests','BEFORE INSERT',"NEW.tombstone_at := NEW.tombstone_at + interval '1 second'; RETURN NEW;"],
++      ['later trigger alters asset','processing_jobs','AFTER UPDATE',"UPDATE public.media_assets SET state='ready' WHERE id=NEW.asset_id; RETURN NEW;"],
++      ['later trigger alters candidate','processing_jobs','AFTER UPDATE',"UPDATE public.recording_output_candidates SET sha256=repeat('f',64) WHERE job_id=NEW.id; RETURN NEW;"],
++      ['later trigger inserts source phantom','processing_jobs','AFTER UPDATE',"INSERT INTO public.media_assets(project_id,story_id,created_by,bucket,object_key,kind,mime_type) SELECT project_id,story_id,created_by,'saga',created_by::text||'/projects/'||project_id::text||'/injected/'||gen_random_uuid()::text,'original_image','image/png' FROM public.media_assets WHERE id=NEW.asset_id; RETURN NEW;"],
++    ]
++    for(const [name,table,timing,body] of injections) {
++      const f=await fresh(h,service,prepare,false);await prepareCandidate(h,service,f);await materialize(h,f)
++      const sql=`CREATE FUNCTION public.capture_test_trigger() RETURNS trigger LANGUAGE plpgsql AS $t$ BEGIN ${body} END $t$; CREATE TRIGGER capture_test_trigger ${timing} ON public.${table} FOR EACH ROW EXECUTE FUNCTION public.capture_test_trigger();`
++      await h.db.query(sql)
++      try {await deny(name,()=>capture(service,{subjectId:f.storyId,requestId:randomUUID()}),['23505','23503','P0001']);report.observations.at(-1).injectionSql=sql}
++      finally{await h.db.query(`DROP TRIGGER capture_test_trigger ON public.${table}; DROP FUNCTION public.capture_test_trigger();`)}
++    }
++  })
++}
+--- before/experiments/pg17-deletion-capture/README.md
++++ after/experiments/pg17-deletion-capture/README.md
+@@ -0,0 +1,26 @@
++# PG17 atomic deletion capture rehearsal
++
++Run from the repository root:
++
++```sh
++node experiments/pg17-deletion-capture/verify.mjs
++node experiments/pg17-deletion-capture/verify.mjs --without-migration
++```
++
++Every invocation writes a unique `docs/research/evidence/2026-11-06-g1-deletion-capture/native-*` directory, including failures. The local PG17 runtime has TCP disabled, synthetic identities/content, real unprivileged service-role connections, and automatic cluster cleanup. `--without-migration` deliberately reproduces the missing-RPC RED. Existing recording migrations are applied unchanged. `deletion_targets` DDL and the authenticated deletion-request read policy are extracted from the actual foundation migration; the story table comes from the actual bootstrap. Auth/project/storage prerequisites remain explicitly synthetic. This is not the full migration-chain qualification.
++
++`fixture.mjs` exports reusable `setup(h, source, migrate=true)`, `fresh(h, service, prepareRecordingSessionSeal, publish=true)`, `capture(client, { actorId=OTHER, projectId=PROJECT, subjectId, subjectType='story', requestId })`, `snapshot(h)`, `materialize(h, fixture)`, `compileCapture(h, source)` and `applicationAdmin(h, service)`. `fresh` uses the existing published-recording fixture. `capture` calls the actual SQL RPC. A follow-on backup check can consume its actual `deletion_targets` bucket/object_key tuples without hand-writing coordinates. The native report's `publishedCapture` contains the public receipt, complete durable request and target rows, plus full database snapshots.
++
++The application adapter is compiled from its actual TypeScript source. Only its PostgREST transport is replaced with a real `pg` service-role connection; abort/retry wiring is asserted. This does not exercise a live PostgREST server. Focused Jest covers deadline/cancellation/network failure without fallback writes.
++
++The final native matrix contains 14 scenario groups. Per-group assertion counts include full-row comparisons of all previously existing assets/jobs; they are not independent test-case counts. `observations` retain the full before/after rows, source coordinates and synthetic file bytes; `waits` retain `pg_stat_activity`, actual blocking backend IDs and `pg_locks`. Publication in both orders, reservation overlap, two submissions, request-ID collision and owner/facilitator/subject changes during waits all use independent transactions. Rollback injections cover errors, suppressed request/target/asset/cancellation writes, altered request/target rows, later changes to assets/candidates, and a newly inserted source phantom.
++
++The request stores a target count and SHA256 of the complete canonical JSONB target rows ordered by logical target ID. This includes target row ID, request ID, kind, bucket/key, state, error and timestamp. The full rows remain private in `deletion_targets`; adding a JSON snapshot to the existing member-readable request table would expose reserved candidate paths. The first write compares actual full rows with expected full rows after all triggers. Replay validates count and full-row digest. Native authenticated reads exercise the actual request read policy and confirm that targets remain unreadable.
++
++A subject replay may return its original durable request ID when the caller generates a new ID. SQL checks supplied request-ID collisions before subject lookup, then pins project, subject, subject kind and original actor. The application pins project/subject/kind and validates the returned UUID; it cannot require equality with a newly generated request ID.
++
++The capture locks `deletion_requests` first against the publication/confirmation SHARE fence, then authority and source populations. Conservative global locks and full-table metadata comparisons are deliberate local correctness choices: writer throughput, O(total metadata) memory/time, production data volume and cloud latency are unqualified. Legacy reverse lock orders can safely abort with a deadlock or bounded lock timeout. A client abort/lost result does not prove SQL rollback; resubmission recovers a committed capture.
++
++A running candidate's expired attempt becomes `outcome_unknown` and cannot be automatically reclaimed. The positive mixed-candidate fixture therefore uses two real sessions in one story (one published prepared candidate and one retained reserved candidate), with genuine sealed chunks. It never rewrites attempts to fabricate a retry history.
++
++No Storage removal is invoked. Local synthetic files stand in for physical bytes and are compared unchanged while capture runs; only the local harness cluster/scratch is cleaned up at exit. Metadata capture does not qualify object downloads, reference-safe GC, late noncooperating Storage writes, actual physical deletion, remote migrations, device recovery, cloud/device testing, backup-ledger qualification, G1 completion or push readiness.

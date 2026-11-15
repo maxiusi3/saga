@@ -6,6 +6,9 @@ import type { BrowserUploadOutcome } from '@/lib/server/upload-observations'
 import type { ProvenanceSearchCitation } from '@/lib/server/provenance-search'
 
 export interface ArchiveSearchFilters {
+  mode?: 'literal' | 'semantic'
+  consent?: boolean
+  policyVersion?: string
   query: string
   person?: string
   date?: string
@@ -13,10 +16,12 @@ export interface ArchiveSearchFilters {
 }
 
 export interface ArchiveSearchResult {
-  status: 'grounded_answer' | 'no_matching_sources'
+  status: 'source_matches' | 'no_matching_sources'
   answerText: string
   citations: ProvenanceSearchCitation[]
 }
+
+export class SemanticSearchClientError extends Error {}
 
 function record(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === 'object' && !Array.isArray(value)
@@ -30,7 +35,16 @@ async function request(path: string, init: RequestInit = {}): Promise<Response> 
   const response = await fetch(path, {
     ...init, headers, credentials: 'same-origin', cache: 'no-store', redirect: 'error',
   })
-  if (!response.ok) throw new Error('Archive request failed')
+  if (!response.ok) {
+    if (path.endsWith('/search') && init.method === 'POST') {
+      const messages: Record<number, string> = { 403: 'Current access or cloud AI consent is unavailable.',
+        409: 'Family sources or search policy changed. Reload and search again.',
+        422: 'Semantic search exceeds 256 sources, 1200 characters per source or 64 KiB. Use literal search.',
+        503: 'Semantic search is unavailable. Use literal search or try later.' }
+      throw new SemanticSearchClientError(messages[response.status] || 'Semantic search could not be completed. Try again.')
+    }
+    throw new Error('Archive request failed')
+  }
   return response
 }
 
@@ -39,12 +53,18 @@ async function json(response: Response): Promise<unknown> {
 }
 
 function citation(value: unknown): value is ProvenanceSearchCitation {
-  if (!record(value)) return false
-  return ['entryId', 'storyId', 'storyTitle', 'transcriptVersionId', 'segmentId', 'quotedText']
-    .every(key => typeof value[key] === 'string') &&
+  if (!record(value) || !['entryId', 'storyId', 'storyTitle', 'transcriptVersionId', 'quotedText']
+    .every(key => typeof value[key] === 'string') ||
+    !['original_transcript', 'family_supplement', 'disputed_memory', 'dispute_alternative'].includes(String(value.sourceKind)) ||
+    !['source_only', 'approved'].includes(String(value.reviewStatus)) ||
+    !['sourceHash', 'sourceFingerprint'].every(key => typeof value[key] === 'string' && /^[a-f0-9]{64}$/.test(value[key] as string)) ||
+    !(value.segmentId === null || typeof value.segmentId === 'string') ||
+    !(value.mediaAssetId === null || typeof value.mediaAssetId === 'string') ||
+    (value.reviewStatus === 'approved' && typeof value.storyRevisionId !== 'string')) return false
+  if (value.startMs === null && value.endMs === null) return value.mediaAssetId === null
+  return value.sourceKind === 'original_transcript' && typeof value.segmentId === 'string' && typeof value.mediaAssetId === 'string' &&
     Number.isSafeInteger(value.startMs) && Number.isSafeInteger(value.endMs) &&
-    Number(value.startMs) >= 0 && Number(value.endMs) > Number(value.startMs) &&
-    (value.mediaAssetId == null || typeof value.mediaAssetId === 'string')
+    Number(value.startMs) >= 0 && Number(value.endMs) > Number(value.startMs)
 }
 
 export async function searchProjectArchive(
@@ -54,17 +74,17 @@ export async function searchProjectArchive(
   for (const key of ['person', 'date', 'place'] as const) {
     if (filters[key]) query.set(key, filters[key])
   }
-  const body = await json(await request(`/api/projects/${encodeURIComponent(projectId)}/search?${query}`, { signal }))
-  if (!record(body) || !['grounded_answer', 'no_matching_sources'].includes(String(body.status)) ||
-    typeof body.answerText !== 'string' || !Array.isArray(body.citations) || !body.citations.every(citation) ||
+  const body = await json(await request(`/api/projects/${encodeURIComponent(projectId)}/search${filters.mode === 'semantic' ? '' : `?${query}`}`,
+    filters.mode === 'semantic' ? { signal, method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(filters) } : { signal }))
+  if (!record(body) || !['source_matches', 'no_matching_sources'].includes(String(body.status)) ||
+    typeof body.answerText !== 'string' || !Array.isArray(body.citations) || body.citations.length > 50 || !body.citations.every(citation) ||
     (body.status === 'no_matching_sources' && body.citations.length !== 0)) {
     throw new Error('Invalid archive response')
   }
   return { status: body.status as ArchiveSearchResult['status'], answerText: body.answerText, citations: body.citations }
 }
 
-export async function getCitationAudioUrl(assetId: string, signal?: AbortSignal): Promise<string> {
-  const body = await json(await request(`/api/media/assets/${encodeURIComponent(assetId)}/access`, { signal }))
+function sourceAudioUrl(body: unknown): string {
   try {
     if (!record(body) || typeof body.signedUrl !== 'string') throw new Error()
     const url = new URL(body.signedUrl)
@@ -72,6 +92,19 @@ export async function getCitationAudioUrl(assetId: string, signal?: AbortSignal)
     if ((url.protocol !== 'https:' && !localHttp) || url.username || url.password) throw new Error()
     return url.href
   } catch { throw new Error('Invalid audio response') }
+}
+export async function getCitationAudioUrl(assetId: string, signal?: AbortSignal): Promise<string> {
+  return sourceAudioUrl(await json(await request(`/api/media/assets/${encodeURIComponent(assetId)}/access`, { signal })))
+}
+export async function getSearchCitationAudioUrl(projectId: string, citation: ProvenanceSearchCitation, signal?: AbortSignal): Promise<string> {
+  if (citation.sourceKind !== 'original_transcript' || !citation.mediaAssetId || !citation.segmentId || citation.startMs === null || citation.endMs === null) {
+    throw new Error('This excerpt has no aligned audio')
+  }
+  const identity = Object.fromEntries(['entryId', 'storyId', 'storyRevisionId', 'transcriptVersionId', 'segmentId', 'mediaAssetId',
+    'sourceHash', 'sourceFingerprint', 'startMs', 'endMs'].map(key => [key, citation[key as keyof ProvenanceSearchCitation] ?? null]))
+  return sourceAudioUrl(await json(await request(`/api/projects/${encodeURIComponent(projectId)}/search/source`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(identity), signal,
+  })))
 }
 
 export async function downloadProjectArchive(projectId: string, signal?: AbortSignal): Promise<Blob> {

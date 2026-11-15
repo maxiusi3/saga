@@ -1,0 +1,20 @@
+const test=require('node:test')
+const assert=require('node:assert/strict')
+const {spawnSync}=require('node:child_process')
+const path=require('node:path')
+const fs=require('node:fs')
+const os=require('node:os')
+const cli=path.resolve(__dirname,'../media-deletion-worker.cjs')
+test('deletion CLI compiles actual worker offline and never reads implicit dotenv',()=>{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'saga-delete-cli-'))
+  try {
+    const noNetwork=path.join(dir,'no-network.cjs')
+    fs.writeFileSync(noNetwork,"require('node:net').Socket.prototype.connect=()=>{throw Error('NETWORK_FORBIDDEN')};global.fetch=()=>{throw Error('NETWORK_FORBIDDEN')}")
+    fs.writeFileSync(path.join(dir,'.env'),'SUPABASE_URL=https://example.invalid\nSUPABASE_SERVICE_ROLE_KEY=SECRET')
+    const run=env=>spawnSync(process.execPath,[cli,'--check'],{cwd:dir,env:{PATH:path.dirname(process.execPath),NODE_OPTIONS:'--require='+noNetwork,...env},encoding:'utf8',timeout:15000})
+    const missing=run({});assert.equal(missing.status,1);assert.match(missing.stderr,/media_deletion_worker_configuration/)
+    const ready=run({SUPABASE_URL:'https://synthetic.invalid',SUPABASE_SERVICE_ROLE_KEY:'synthetic-secret'})
+    assert.equal(ready.status,0,ready.stderr);assert.match(ready.stdout,/media_deletion_worker_ready/)
+    assert.doesNotMatch(ready.stdout+ready.stderr,/synthetic-secret|NETWORK_FORBIDDEN/)
+  }finally{fs.rmSync(dir,{recursive:true,force:true})}
+})

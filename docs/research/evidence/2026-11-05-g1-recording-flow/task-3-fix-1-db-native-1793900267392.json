@@ -1,0 +1,118 @@
+{
+  "checks": [
+    "intent commits before close/reopen and remains discoverable",
+    "metadata is immutable across resume",
+    "freeze rejects later capture chunks, overwrites and generic cleanup",
+    "wrong account and wrong project cannot freeze or clear",
+    "local bytes corruption with unchanged metadata is rejected",
+    "confirmation write failure rolls back and draft remains recoverable",
+    "cleanup failure after chunk delete rolls back both stores",
+    "scope cancellation during transactional hashing retains all data",
+    "forged cleanup receipt never removes audio",
+    "valid explicit cleanup atomically removes session and chunks",
+    "actual save flow hash work scales linearly at 4, 8 and 16 chunks",
+    "late raw same-metadata tamper rejected at last-upload",
+    "late raw same-metadata tamper rejected at before-confirm",
+    "late raw same-metadata tamper rejected at after-confirm",
+    "live cross-tab capture lock rejects save until owner releases"
+  ],
+  "measurements": [
+    {
+      "count": 4,
+      "hashes": 24,
+      "result": {
+        "state": "saved",
+        "receipt": {
+          "schemaVersion": 1,
+          "actorId": "ab01a6c8-4d09-4617-b436-d9f11992cf12",
+          "projectId": "9a0c1545-601d-45b1-bdc5-5e0a36cd8886",
+          "sessionId": "b9d62482-6466-490f-b1f3-76bbcc6b2d42",
+          "storyId": "25464c9c-106f-4df7-84b7-21abbf9e611d",
+          "assetId": "cd3c93ec-6ec1-4cf4-8f74-d8785bc320a6",
+          "manifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "playbackUrl": "/api/media/assets/cd3c93ec-6ec1-4cf4-8f74-d8785bc320a6/play",
+          "canClearLocalDrafts": true
+        }
+      },
+      "sealCalls": 1,
+      "confirmCalls": 1,
+      "confirmation": {
+        "schemaVersion": 1,
+        "actorId": "ab01a6c8-4d09-4617-b436-d9f11992cf12",
+        "projectId": "9a0c1545-601d-45b1-bdc5-5e0a36cd8886",
+        "sessionId": "b9d62482-6466-490f-b1f3-76bbcc6b2d42",
+        "storyId": "25464c9c-106f-4df7-84b7-21abbf9e611d",
+        "assetId": "cd3c93ec-6ec1-4cf4-8f74-d8785bc320a6",
+        "manifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "playbackUrl": "/api/media/assets/cd3c93ec-6ec1-4cf4-8f74-d8785bc320a6/play",
+        "canClearLocalDrafts": true
+      },
+      "localChunks": 4
+    },
+    {
+      "count": 8,
+      "hashes": 48,
+      "result": {
+        "state": "saved",
+        "receipt": {
+          "schemaVersion": 1,
+          "actorId": "09823bfe-58af-401f-882f-1e18f3fd4083",
+          "projectId": "2bcab332-56eb-4b9e-a87e-4ebba7871367",
+          "sessionId": "7feb7bcd-b238-41c8-a9f9-612fd8e5b48d",
+          "storyId": "ec674b36-a70d-4d0d-9676-d6292ffcfd3c",
+          "assetId": "baafd3a8-ff0e-470f-b604-36f3b0545f32",
+          "manifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "playbackUrl": "/api/media/assets/baafd3a8-ff0e-470f-b604-36f3b0545f32/play",
+          "canClearLocalDrafts": true
+        }
+      },
+      "sealCalls": 1,
+      "confirmCalls": 1,
+      "confirmation": {
+        "schemaVersion": 1,
+        "actorId": "09823bfe-58af-401f-882f-1e18f3fd4083",
+        "projectId": "2bcab332-56eb-4b9e-a87e-4ebba7871367",
+        "sessionId": "7feb7bcd-b238-41c8-a9f9-612fd8e5b48d",
+        "storyId": "ec674b36-a70d-4d0d-9676-d6292ffcfd3c",
+        "assetId": "baafd3a8-ff0e-470f-b604-36f3b0545f32",
+        "manifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "playbackUrl": "/api/media/assets/baafd3a8-ff0e-470f-b604-36f3b0545f32/play",
+        "canClearLocalDrafts": true
+      },
+      "localChunks": 8
+    },
+    {
+      "count": 16,
+      "hashes": 96,
+      "result": {
+        "state": "saved",
+        "receipt": {
+          "schemaVersion": 1,
+          "actorId": "a7add4c5-e75e-4524-ad39-3fa80ed3ec3c",
+          "projectId": "fb69e0a5-ad2e-4a7c-aa15-35833c6a7f84",
+          "sessionId": "b49a3644-4304-4054-9fca-be9ab55e74b9",
+          "storyId": "342d0c0a-6282-46ad-b7fd-0a0dfcd908bf",
+          "assetId": "0b69c603-f602-4a8e-a49b-92cc853bc69f",
+          "manifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "playbackUrl": "/api/media/assets/0b69c603-f602-4a8e-a49b-92cc853bc69f/play",
+          "canClearLocalDrafts": true
+        }
+      },
+      "sealCalls": 1,
+      "confirmCalls": 1,
+      "confirmation": {
+        "schemaVersion": 1,
+        "actorId": "a7add4c5-e75e-4524-ad39-3fa80ed3ec3c",
+        "projectId": "fb69e0a5-ad2e-4a7c-aa15-35833c6a7f84",
+        "sessionId": "b49a3644-4304-4054-9fca-be9ab55e74b9",
+        "storyId": "342d0c0a-6282-46ad-b7fd-0a0dfcd908bf",
+        "assetId": "0b69c603-f602-4a8e-a49b-92cc853bc69f",
+        "manifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "playbackUrl": "/api/media/assets/0b69c603-f602-4a8e-a49b-92cc853bc69f/play",
+        "canClearLocalDrafts": true
+      },
+      "localChunks": 16
+    }
+  ],
+  "total": 15
+}

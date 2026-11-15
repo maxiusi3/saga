@@ -1,0 +1,83 @@
+{
+  "request": {
+    "id": "b30a897c-5fb8-4084-8f1f-38e457f24962",
+    "state": "requested",
+    "attempt": 0,
+    "error_code": null,
+    "project_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "subject_id": "0ad240bd-22f9-47b7-b256-54b0988a703e",
+    "completed_at": null,
+    "requested_at": "2026-11-09T20:03:30.267552+08:00",
+    "requested_by": "22222222-2222-4222-8222-222222222222",
+    "subject_type": "story",
+    "tombstone_at": "2026-11-09T20:03:30.267552+08:00",
+    "processing_at": null,
+    "capture_version": 1,
+    "capture_target_count": 4,
+    "capture_targets_sha256": "f5c2065b4238b95b0ca921df9fee464672a3f113908540accbf7538711e6ec89"
+  },
+  "targets": [
+    {
+      "id": "a5b5ac92-b536-44c6-a845-bfa9f9492c28",
+      "kind": "media_asset",
+      "state": "pending",
+      "bucket": null,
+      "target_id": "asset:20122745-a4ee-8e4f-8d16-7d3d838f0518",
+      "error_code": null,
+      "object_key": null,
+      "updated_at": "2026-11-09T20:03:30.267552+08:00",
+      "deletion_request_id": "b30a897c-5fb8-4084-8f1f-38e457f24962"
+    },
+    {
+      "id": "b4df0297-9b10-4bf8-8fe2-7c99673fd1ec",
+      "kind": "storage_object",
+      "state": "pending",
+      "bucket": "audio-recordings",
+      "target_id": "storage:audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/7039b9c3-4e16-4121-9175-c01429eeccad/0",
+      "error_code": null,
+      "object_key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/7039b9c3-4e16-4121-9175-c01429eeccad/0",
+      "updated_at": "2026-11-09T20:03:30.267552+08:00",
+      "deletion_request_id": "b30a897c-5fb8-4084-8f1f-38e457f24962"
+    },
+    {
+      "id": "d548d9c9-16aa-4700-850b-c59d6b9103a7",
+      "kind": "storage_object",
+      "state": "pending",
+      "bucket": "recording-candidates",
+      "target_id": "storage:recording-candidates:jobs/601dc730-df70-4673-b7eb-5d609fa998af/attempts/1/06b07966-bcb0-4409-9829-be50528d6e8e",
+      "error_code": null,
+      "object_key": "jobs/601dc730-df70-4673-b7eb-5d609fa998af/attempts/1/06b07966-bcb0-4409-9829-be50528d6e8e",
+      "updated_at": "2026-11-09T20:03:30.267552+08:00",
+      "deletion_request_id": "b30a897c-5fb8-4084-8f1f-38e457f24962"
+    },
+    {
+      "id": "09e900bc-bc30-40a0-a76c-8cde62853f88",
+      "kind": "story",
+      "state": "pending",
+      "bucket": null,
+      "target_id": "story:0ad240bd-22f9-47b7-b256-54b0988a703e",
+      "error_code": null,
+      "object_key": null,
+      "updated_at": "2026-11-09T20:03:30.267552+08:00",
+      "deletion_request_id": "b30a897c-5fb8-4084-8f1f-38e457f24962"
+    }
+  ],
+  "tombstones": [
+    {
+      "targetType": "storage_object",
+      "targetId": "storage:audio-recordings:11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/7039b9c3-4e16-4121-9175-c01429eeccad/0",
+      "bucket": "audio-recordings",
+      "key": "11111111-1111-4111-8111-111111111111/projects/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/sessions/7039b9c3-4e16-4121-9175-c01429eeccad/0",
+      "tombstonedAt": "2026-11-09T12:03:30.267Z",
+      "reason": "actual_post_freeze_deletion_capture"
+    },
+    {
+      "targetType": "storage_object",
+      "targetId": "storage:recording-candidates:jobs/601dc730-df70-4673-b7eb-5d609fa998af/attempts/1/06b07966-bcb0-4409-9829-be50528d6e8e",
+      "bucket": "recording-candidates",
+      "key": "jobs/601dc730-df70-4673-b7eb-5d609fa998af/attempts/1/06b07966-bcb0-4409-9829-be50528d6e8e",
+      "tombstonedAt": "2026-11-09T12:03:30.267Z",
+      "reason": "actual_post_freeze_deletion_capture"
+    }
+  ]
+}

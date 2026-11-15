@@ -172,6 +172,7 @@ export async function createPublicArchiveAuditEvent(input: {
 }
 
 interface WikiEventClusterOutput {
+  activeContributionIds: string[]
   status: 'candidate' | 'draft' | 'approved' | 'rejected' | 'needs_reprocessing'
   eventLabel: string
   timeframe: string
@@ -248,6 +249,7 @@ export async function createOrUpdatePublicEventCluster(output: WikiEventClusterO
   const db = getSupabaseAdmin()
   const row = {
     status: output.status,
+    source_contribution_ids: output.activeContributionIds,
     event_label: output.eventLabel,
     timeframe: output.timeframe,
     place_scope: output.placeScope,
@@ -288,6 +290,10 @@ export async function emptyPublicEventCluster(clusterId: string) {
     .from('public_event_clusters')
     .update({
       status: 'rejected',
+      event_label: '',
+      timeframe: '',
+      place_scope: '',
+      source_contribution_ids: [],
       perspective_summary: '',
       historical_context_summary: '',
       representative_excerpts: [],
