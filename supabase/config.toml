@@ -38,7 +38,7 @@ api_url = "http://localhost:54321"
 
 # Email testing server. Emails sent with the local dev setup are not actually sent - rather, they
 # are monitored, and you can view the emails that would have been sent from the web interface.
-[inbucket]
+[local_smtp]
 enabled = true
 # Port to use for the email testing server web interface.
 port = 54324
@@ -170,7 +170,7 @@ secret = "env(SUPABASE_AUTH_EXTERNAL_KEYCLOAK_SECRET)"
 redirect_uri = ""
 url = ""
 
-[auth.external.linkedin]
+[auth.external.linkedin_oidc]
 enabled = false
 client_id = ""
 secret = "env(SUPABASE_AUTH_EXTERNAL_LINKEDIN_SECRET)"
@@ -198,7 +198,7 @@ secret = "env(SUPABASE_AUTH_EXTERNAL_TWITTER_SECRET)"
 redirect_uri = ""
 url = ""
 
-[auth.external.slack]
+[auth.external.slack_oidc]
 enabled = false
 client_id = ""
 secret = "env(SUPABASE_AUTH_EXTERNAL_SLACK_SECRET)"
