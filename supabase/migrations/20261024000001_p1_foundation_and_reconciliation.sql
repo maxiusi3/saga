@@ -13,6 +13,48 @@
 -- Part 1: Idempotent Reconciliation of Unregistered Root Migrations
 -- -----------------------------------------------------------------------------
 
+-- 1.0 Ensure historical compatibility tables exist on older remote installations
+-- (Fresh projects receive these from bootstrap; existing tables/rows remain intact.)
+CREATE TABLE IF NOT EXISTS public.project_members (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id uuid NOT NULL REFERENCES public.projects(id) ON DELETE CASCADE,
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  role text DEFAULT 'member',
+  status text DEFAULT 'active',
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public.story_artifacts (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  story_id uuid NOT NULL REFERENCES public.stories(id) ON DELETE CASCADE,
+  project_id uuid NOT NULL REFERENCES public.projects(id) ON DELETE CASCADE,
+  artifact_type text NOT NULL,
+  payload jsonb NOT NULL DEFAULT '{}'::jsonb,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public.public_archive_entries (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id uuid NOT NULL REFERENCES public.projects(id) ON DELETE CASCADE,
+  story_id uuid NOT NULL REFERENCES public.stories(id) ON DELETE CASCADE,
+  slug text NOT NULL UNIQUE,
+  title text NOT NULL,
+  summary text NOT NULL,
+  visibility text NOT NULL DEFAULT 'unlisted',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public.waitlist (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email text NOT NULL UNIQUE,
+  status text DEFAULT 'pending',
+  created_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE public.story_artifacts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.public_archive_entries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.waitlist ENABLE ROW LEVEL SECURITY;
+
 -- 1.1 Revoke blanket authenticated/anon DML grants re-opened by 20260625081000
 REVOKE INSERT, UPDATE, DELETE ON public.agent_runs FROM anon, authenticated;
 REVOKE INSERT, UPDATE, DELETE ON public.story_artifacts FROM anon, authenticated;
