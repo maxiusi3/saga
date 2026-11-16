@@ -64,6 +64,13 @@ The product is built around AI agents over recorded stories. Pure agent logic is
 - `packages/web/src/lib/public-archive/anonymizer.ts` - Phase 2 anonymization of opt-in public contributions.
 - Shared agent types live in `@saga/shared/types/agents` and `@saga/shared/types/public-archive`.
 
+LLM text tasks follow one pattern (see `packages/shared/src/ai/` and `packages/web/src/lib/server/ai-runner.ts`):
+- Each capability is a versioned `AiTaskDefinition` in `@saga/shared/ai/tasks/*` (pure: `buildMessages` + strict `parse`, plus `agentType`, tier, temperature and token limits). System prompts are composed from the shared base layer (`base.ts`: product principles, `INTERVIEW_QUESTION_PRINCIPLES`) and the single language policy (`language.ts`). Family content goes only in the user message, wrapped with `sourceMaterial()`.
+- Route handlers call `runAiTask(task, input, { audit })` (resolving optional `projectId` / `storyId` / `interviewSessionId` access via `resolveRouteAiAudit` in `lib/server/ai-audit.ts`); `runAiTask` owns the provider client, tier routing (`TEXT_MODEL_REALTIME|STANDARD|LONG_FORM`, falling back to `TEXT_MODEL`), timeouts, bounded retries, validation, optional `agent_runs` persistence via `agent-store.ts` (`contentHash: null`, metadata only—never raw prose) and content-free logging. Map failures with `aiTaskErrorResponse`.
+- Do not inline prompts or create OpenAI clients in routes. Bump a task's `version` whenever its wording, parsing or output changes. Orchestrate multi-step flows in code/workers, not with a free-roaming agent.
+- `story-ai-edit.ts` (`paragraphEditorTask` + `factReviewTask`, `STORY_EDIT_PROCESSOR_ID = 'paragraph-editor-v1'`) shares `SAGA_BASE_PRINCIPLES` and task parsers from `@saga/shared` (`ai/tasks/story-edit.ts`) while preserving its audited consent/RPC/policy-evidence flow.
+- Offline prompt/parser/safety eval fixtures live in `packages/shared/src/ai/eval/` and can be run after building `@saga/shared` via `node scripts/ai-eval.mjs`.
+
 Phasing matters: Phase 1 = private biography loop (Interview + Editor/Librarian agents, durable artifacts/elements). Phase 2 = opt-in anonymized public archive + Wiki Editor Agent (candidate -> draft events, reviewer approval). Design/plan docs are in `docs/superpowers/specs/` and `docs/superpowers/plans/` - read the relevant one before touching agent or public-archive features, and keep family sharing / story visibility / public-archive contribution as **separate concepts** (do not overload `stories.is_public`).
 
 ### Frontend

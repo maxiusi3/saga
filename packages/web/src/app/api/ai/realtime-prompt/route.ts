@@ -1,144 +1,64 @@
 import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
+import { fallbackRealtimeFollowup, realtimeFollowupTask } from '@saga/shared/ai'
+import { resolveRouteAiAudit } from '@/lib/server/ai-audit'
 import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
-import { getTextAiConfig } from '@/lib/server/text-ai-config'
+import { AiTaskError, isTextAiConfigured, runAiTask } from '@/lib/server/ai-runner'
 
-function createTextAiClient() {
-    const config = getTextAiConfig()
-    if (!config) return null
-
-    return {
-        client: new OpenAI({
-            apiKey: config.apiKey,
-            baseURL: config.baseURL,
-            defaultHeaders: {
-                'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
-                'X-Title': 'Saga Family Biography Platform'
-            }
-        }),
-        model: config.model,
-    }
-}
+const MIN_TRANSCRIPT_CHARS = 6
 
 export async function POST(request: NextRequest) {
     const guard = await requireAiRequest(request, 'realtime-prompt')
     if (!guard.ok) return guard.response
 
     try {
-        const { transcript, language = 'en', previousPrompts = [] } = await request.json()
+        const body = await request.json()
+        const transcript = typeof body?.transcript === 'string' ? body.transcript : ''
+        const language = typeof body?.language === 'string' ? body.language : 'en'
+        const previousPrompts: string[] = Array.isArray(body?.previousPrompts)
+            ? body.previousPrompts.filter((item: unknown): item is string => typeof item === 'string')
+            : []
 
-        // If no transcript (e.g. silence at start or STT failed), provide generic openers
-        const effectiveTranscript = transcript || ""
+        const auditResult = await resolveRouteAiAudit(guard.user, guard.headers, {
+            projectId: body?.projectId,
+            storyId: body?.storyId,
+            interviewSessionId: body?.interviewSessionId,
+            recordingSessionId: body?.recordingSessionId,
+            inputSummary: {
+                transcriptLength: transcript.length,
+                previousPromptsCount: previousPrompts.length,
+                locale: language,
+            },
+        })
+        if (!auditResult.ok) return auditResult.response
 
-        // Language-specific instructions
-        const languageInstructions: Record<string, string> = {
-            'zh-CN': '请用中文回复。',
-            'zh-TW': '請用繁體中文回覆。',
-            'en': 'Please respond in English.',
-            'ja': '日本語で返信してください。',
-            'ko': '한국어로 응답해주세요.',
-            'es': 'Por favor responde en español.',
-            'fr': 'Veuillez répondre en français.'
-        }
-        const langInstruction = languageInstructions[language] || languageInstructions['en']
-
-        const textAi = createTextAiClient()
-
-        // 1. Try Real AI if available
-        if (textAi && effectiveTranscript.length > 5) {
+        // 1. Model suggestion when configured and there is something to respond to.
+        if (isTextAiConfigured(realtimeFollowupTask.tier) && transcript.trim().length >= MIN_TRANSCRIPT_CHARS) {
             try {
-                const completion = await textAi.client.chat.completions.create({
-                    model: textAi.model,
-                    messages: [
-                        {
-                            role: 'system',
-                            content: `You are an empathetic listener helping someone tell their life story. 
-                            Your goal is to ask ONE short, encouraging follow-up question based on what they just said.
-                            Keep it under 15 words. Be natural and curious.
-                            Do NOT ask any of these questions: ${JSON.stringify(previousPrompts)}.
-                            ${langInstruction}`
-                        },
-                        { role: 'user', content: effectiveTranscript }
-                    ],
-                    temperature: 0.7,
-                    max_tokens: 50
-                })
-
-                const aiPrompt = completion.choices[0]?.message?.content?.trim()
-                if (aiPrompt) {
-                    return jsonWithRateLimit({
-                        prompt: aiPrompt.replace(/^["']|["']$/g, ''), // Remove quotes if present
-                        confidence: 0.9
-                    }, guard.headers)
-                }
+                const { output, metadata } = await runAiTask(
+                    realtimeFollowupTask,
+                    { transcript, locale: language, previousPrompts },
+                    { audit: auditResult.audit },
+                )
+                return jsonWithRateLimit(
+                    metadata.agentRunId
+                        ? { prompt: output, source: 'ai', agentRunId: metadata.agentRunId }
+                        : { prompt: output, source: 'ai' },
+                    guard.headers,
+                )
             } catch (error) {
-                console.warn('OpenAI call failed, falling back to smart mock:', error)
+                if (!(error instanceof AiTaskError)) throw error
+                console.warn('Realtime follow-up model call failed, using fallback:', error.code)
             }
         }
 
-        // 2. Smart Mock Fallback (Keyword based)
-        const t = effectiveTranscript.toLowerCase()
-        let prompts = [
-            "And then what happened?",
-            "How did that make you feel?",
-            "Tell me more about that.",
-            "What was going through your mind?",
-            "Can you describe the scene?",
-            "Who else was there?",
-            "Why was that important to you?"
-        ]
-
-        if (language === 'zh-CN' || language === 'zh') {
-            prompts = [
-                "然后发生了什么？",
-                "那让你感觉如何？",
-                "能多说一点吗？",
-                "当时你在想什么？",
-                "能描述一下当时的场景吗？",
-                "还有谁在那里？",
-                "为什么这对你很重要？"
-            ]
-
-            if (t.includes('小时候') || t.includes('童年') || t.includes('孩子')) {
-                prompts = ["那时候你最喜欢做什么？", "你还记得当时的朋友吗？", "那段时光给你留下了什么印象？"]
-            } else if (t.includes('工作') || t.includes('上班') || t.includes('职业')) {
-                prompts = ["第一天上班是什么感觉？", "同事们怎么样？", "那份工作教会了你什么？"]
-            } else if (t.includes('家') || t.includes('父母') || t.includes('妈妈') || t.includes('爸爸')) {
-                prompts = ["家里当时的气氛是怎样的？", "父母对你有什么影响？", "你们有什么家庭传统吗？"]
-            }
-        } else {
-            // English keywords
-            if (t.includes('child') || t.includes('young') || t.includes('school')) {
-                prompts = ["What did you like to do back then?", "Do you remember your friends?", "What was your favorite memory from that time?"]
-            } else if (t.includes('work') || t.includes('job') || t.includes('office')) {
-                prompts = ["How was your first day?", "What were your colleagues like?", "What did you learn from that job?"]
-            } else if (t.includes('family') || t.includes('mom') || t.includes('dad') || t.includes('parent')) {
-                prompts = ["What was the atmosphere like at home?", "How did your parents influence you?", "Did you have any family traditions?"]
-            }
-        }
-
-        // Filter out previous prompts
-        const availablePrompts = prompts.filter(p => !previousPrompts.includes(p))
-        // If all filtered out (rare), fallback to full list
-        const candidatePrompts = availablePrompts.length > 0 ? availablePrompts : prompts
-
-        const randomPrompt = candidatePrompts[Math.floor(Math.random() * candidatePrompts.length)]
-
-        // Simulate network delay for realism if mocking
-        if (!textAi) await new Promise(resolve => setTimeout(resolve, 500))
-
+        // 2. Deterministic interviewer nudge (suggestion only, never archive content).
         return jsonWithRateLimit({
-            prompt: randomPrompt,
-            confidence: 0.8
+            prompt: fallbackRealtimeFollowup(transcript, language, previousPrompts),
+            source: 'fallback',
         }, guard.headers)
-
     } catch (error) {
         console.error('Real-time prompt generation error:', error)
-        return jsonWithRateLimit(
-            { error: 'Failed to generate prompt' },
-            guard.headers,
-            500
-        )
+        return jsonWithRateLimit({ error: 'Failed to generate prompt' }, guard.headers, 500)
     }
 }
 

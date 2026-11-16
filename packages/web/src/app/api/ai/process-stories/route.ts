@@ -1,22 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
+import {
+  chapterDraftTask,
+  projectQuestionsTask,
+  projectSummaryTask,
+  type AiProjectContext,
+  type AiStorySource,
+} from '@saga/shared/ai'
+import { resolveRouteAiAudit } from '@/lib/server/ai-audit'
 import { jsonWithRateLimit, requireAiRequest } from '@/lib/server/ai-guard'
-import { getTextAiConfig } from '@/lib/server/text-ai-config'
+import { AiTaskError, aiTaskErrorResponse, runAiTask } from '@/lib/server/ai-runner'
+import { getTextAiConfigForTier } from '@/lib/server/text-ai-config'
 
-function createTextAiClient() {
-  const config = getTextAiConfig()
-  if (!config) return null
+const ACTIONS = {
+  generate_chapter: chapterDraftTask,
+  generate_summary: projectSummaryTask,
+  suggest_questions: projectQuestionsTask,
+} as const
 
+type StoryAction = keyof typeof ACTIONS
+
+const MAX_STORIES = 100
+
+function isAction(value: unknown): value is StoryAction {
+  return typeof value === 'string' && Object.prototype.hasOwnProperty.call(ACTIONS, value)
+}
+
+function optionalString(value: unknown): string | null {
+  return typeof value === 'string' ? value : null
+}
+
+function toStorySource(value: unknown): AiStorySource {
+  const story = (value && typeof value === 'object' ? value : {}) as Record<string, unknown>
   return {
-    client: new OpenAI({
-      apiKey: config.apiKey,
-      baseURL: config.baseURL,
-      defaultHeaders: {
-        'HTTP-Referer': process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
-        'X-Title': 'Saga Family Biography Platform'
-      }
-    }),
-    model: config.model,
+    title: optionalString(story.title),
+    content: optionalString(story.content),
+    transcript: optionalString(story.transcript),
+    createdAt: optionalString(story.createdAt),
   }
 }
 
@@ -25,192 +44,73 @@ export async function POST(request: NextRequest) {
   if (!guard.ok) return guard.response
 
   try {
-    const textAi = createTextAiClient()
-    if (!textAi) {
-      return jsonWithRateLimit(
-        { error: 'Text AI API key not configured' },
-        guard.headers,
-        500
-      )
-    }
-
     const body = await request.json()
-    const { 
-      stories, 
-      action, 
+    const {
+      stories,
+      action,
       language = 'zh-CN',
       projectTitle,
-      storytellerName 
-    } = body
+      storytellerName,
+      projectId,
+      storyId,
+      interviewSessionId,
+    } = body ?? {}
 
-    if (!stories || !Array.isArray(stories) || stories.length === 0) {
-      return jsonWithRateLimit(
-        { error: 'No stories provided' },
-        guard.headers,
-        400
-      )
+    if (!Array.isArray(stories) || stories.length === 0) {
+      return jsonWithRateLimit({ error: 'No stories provided' }, guard.headers, 400)
     }
-
+    if (stories.length > MAX_STORIES) {
+      return jsonWithRateLimit({ error: `Too many stories (max ${MAX_STORIES})` }, guard.headers, 400)
+    }
     if (!action) {
-      return jsonWithRateLimit(
-        { error: 'No action specified' },
-        guard.headers,
-        400
-      )
+      return jsonWithRateLimit({ error: 'No action specified' }, guard.headers, 400)
+    }
+    if (!isAction(action)) {
+      return jsonWithRateLimit({ error: 'Invalid action specified' }, guard.headers, 400)
     }
 
-    let systemPrompt = ''
-    let userPrompt = ''
-
-    switch (action) {
-      case 'generate_chapter':
-        systemPrompt = `You are a professional family biography editor, skilled at organizing multiple related stories into structured chapters.
-
-Your task is:
-1. Analyze the provided story content, finding common themes and timelines
-2. Create a meaningful chapter title for these stories
-3. Write a chapter introduction that summarizes the common themes of these stories
-4. Provide a chapter summary highlighting key information and emotional value
-5. Suggest relevant follow-up questions to help uncover more related memories
-
-Please return results in JSON format with the following fields:
-- title: Chapter title
-- introduction: Chapter introduction (100-200 words)
-- summary: Chapter summary (150-300 words)
-- themes: List of main themes (3-5 items)
-- timeline: Timeline information
-- followUpQuestions: Follow-up question suggestions (3-5 items)
-- confidence: Processing quality score (0.7-1.0)`
-
-        const storiesText = stories.map((story: any, index: number) => 
-          `Story ${index + 1}: ${story.title || 'Untitled'}\nContent: ${story.content || story.transcript || ''}\nTime: ${story.createdAt || 'Unknown'}\n`
-        ).join('\n---\n')
-
-        userPrompt = `项目: ${projectTitle || '家族传记'}
-讲述者: ${storytellerName || '家族成员'}
-
-以下是需要整理成章节的故事：
-
-${storiesText}
-
-请分析这些故事，创建一个有意义的章节。`
-        break
-
-      case 'generate_summary':
-        systemPrompt = `你是一位专业的家族传记编辑，擅长为整个项目创建精彩的总结。
-
-你的任务是：
-1. 分析所有提供的故事
-2. 识别主要主题和人生阶段
-3. 创建一个引人入胜的项目总结
-4. 突出最重要的人生经历和智慧
-5. 提供情感共鸣的结语
-
-请以JSON格式返回结果，包含以下字段：
-- title: 总结标题
-- overview: 项目概述（200-300字）
-- keyThemes: 主要主题（5-8个）
-- lifeStages: 人生阶段总结
-- wisdom: 人生智慧和教训
-- legacy: 传承价值
-- confidence: 处理质量评分（0.7-1.0）`
-
-        const allStoriesText = stories.map((story: any, index: number) => 
-          `${story.title || `故事 ${index + 1}`}: ${story.content || story.transcript || ''}`
-        ).join('\n\n')
-
-        userPrompt = `项目: ${projectTitle || '家族传记'}
-讲述者: ${storytellerName || '家族成员'}
-
-以下是所有的故事内容：
-
-${allStoriesText}
-
-请为这个家族传记项目创建一个全面的总结。`
-        break
-
-      case 'suggest_questions':
-        systemPrompt = `你是一位专业的家族史采访专家，擅长根据已有故事提出深入的后续问题。
-
-你的任务是：
-1. 分析已有的故事内容
-2. 识别可以深入探索的主题
-3. 提出能够引发更多回忆的问题
-4. 确保问题具有情感深度和个人意义
-
-请以JSON格式返回结果，包含以下字段：
-- categories: 问题分类（如童年、工作、家庭等）
-- questions: 具体问题列表，每个问题包含category和question字段
-- themes: 建议探索的主题
-- confidence: 建议质量评分（0.7-1.0）`
-
-        const storiesForQuestions = stories.map((story: any) => 
-          `${story.title || '故事'}: ${story.content || story.transcript || ''}`
-        ).join('\n\n')
-
-        userPrompt = `基于以下已有的故事内容，请提出20-30个深入的后续问题：
-
-${storiesForQuestions}
-
-请确保问题能够帮助挖掘更多有意义的家族记忆。`
-        break
-
-      default:
-        return jsonWithRateLimit(
-          { error: 'Invalid action specified' },
-          guard.headers,
-          400
-        )
-    }
-
-    console.log(`Processing ${action} for ${stories.length} stories`)
-
-    const completion = await textAi.client.chat.completions.create({
-      model: textAi.model,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
-      ],
-      temperature: 0.7,
-      max_tokens: 2000,
-      response_format: { type: 'json_object' }
-    })
-
-    const responseText = completion.choices[0]?.message?.content
-    if (!responseText) {
-      throw new Error('No response from text AI service')
-    }
-
-    console.log('Text AI response received')
-
-    // Parse and validate the response
-    let result
-    try {
-      result = JSON.parse(responseText)
-    } catch (parseError) {
-      console.error('Failed to parse DeepSeek response:', parseError)
-      throw new Error('Invalid response format from AI service')
-    }
-
-    // Add metadata
-    result.processedAt = new Date().toISOString()
-    result.action = action
-    result.storiesCount = stories.length
-    result.model = textAi.model
-
-    return jsonWithRateLimit(result, guard.headers)
-
-  } catch (error) {
-    console.error('Story processing error:', error)
-    
-    return jsonWithRateLimit(
-      { 
-        error: 'Failed to process stories',
-        details: error instanceof Error ? error.message : 'Unknown error'
+    const auditResult = await resolveRouteAiAudit(guard.user, guard.headers, {
+      projectId,
+      storyId,
+      interviewSessionId,
+      inputSummary: {
+        action,
+        storiesCount: stories.length,
+        locale: typeof language === 'string' ? language : 'zh-CN',
       },
-      guard.headers,
-      500
-    )
+    })
+    if (!auditResult.ok) return auditResult.response
+
+    const context: AiProjectContext = {
+      stories: stories.map(toStorySource),
+      locale: language,
+      projectTitle: optionalString(projectTitle),
+      storytellerName: optionalString(storytellerName),
+    }
+
+    const { output, metadata } = action === 'generate_chapter'
+      ? await runAiTask(chapterDraftTask, context, { audit: auditResult.audit })
+      : action === 'generate_summary'
+        ? await runAiTask(projectSummaryTask, context, { audit: auditResult.audit })
+        : await runAiTask(projectQuestionsTask, context, { audit: auditResult.audit })
+
+    return jsonWithRateLimit({
+      ...output,
+      processedAt: new Date().toISOString(),
+      action,
+      storiesCount: stories.length,
+      model: metadata.model,
+      taskVersion: metadata.taskVersion,
+      ...(metadata.agentRunId ? { agentRunId: metadata.agentRunId } : {}),
+    }, guard.headers)
+  } catch (error) {
+    if (error instanceof AiTaskError) {
+      const mapped = aiTaskErrorResponse(error)
+      if (mapped.status >= 500) console.error('Story processing failed:', error.code, error.cause)
+      return jsonWithRateLimit({ error: mapped.error }, guard.headers, mapped.status)
+    }
+    console.error('Story processing error:', error)
+    return jsonWithRateLimit({ error: 'Failed to process stories' }, guard.headers, 500)
   }
 }
 
@@ -218,12 +118,8 @@ ${storiesForQuestions}
 export async function GET() {
   return NextResponse.json({
     message: 'Story processing API is running',
-    supportedActions: [
-      'generate_chapter',
-      'generate_summary', 
-      'suggest_questions'
-    ],
-    model: process.env.TEXT_MODEL || 'openai/gpt-oss-20b:free'
+    supportedActions: Object.keys(ACTIONS),
+    model: getTextAiConfigForTier('long_form')?.model ?? null,
   })
 }
 

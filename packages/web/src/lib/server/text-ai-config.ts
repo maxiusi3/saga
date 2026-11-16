@@ -22,3 +22,19 @@ export function getTextAiConfig(): TextAiConfig | null {
     model: process.env.TEXT_MODEL || DEFAULT_TEXT_MODEL,
   }
 }
+
+export type TextAiTier = 'realtime' | 'standard' | 'long_form'
+
+const TIER_MODEL_ENV: Record<TextAiTier, string> = {
+  realtime: 'TEXT_MODEL_REALTIME',
+  standard: 'TEXT_MODEL_STANDARD',
+  long_form: 'TEXT_MODEL_LONG_FORM',
+}
+
+/** Same endpoint and key; an optional per-tier model override, falling back to TEXT_MODEL. */
+export function getTextAiConfigForTier(tier: TextAiTier): TextAiConfig | null {
+  const config = getTextAiConfig()
+  if (!config) return null
+  const override = process.env[TIER_MODEL_ENV[tier]]?.trim()
+  return override ? { ...config, model: override } : config
+}
