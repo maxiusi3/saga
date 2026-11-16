@@ -2,6 +2,7 @@ const assert = require('node:assert/strict')
 const test = require('node:test')
 const path = require('node:path')
 const fs = require('node:fs/promises')
+const os = require('node:os')
 const { spawn } = require('node:child_process')
 const { readRecordingWorkerConfig } = require('../recording-worker.cjs')
 const root = path.resolve(__dirname, '../..')
@@ -45,7 +46,7 @@ function command(args, env, cwd = root) {
 }
 
 test('CLI --check loads actual worker aliases/compiler and FFmpeg offline from unrelated CWD, never auto-loads .env', async () => {
-  const scratch = await fs.mkdtemp(path.join(root, '.superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/cli-readiness-'))
+  const scratch = await fs.mkdtemp(path.join(os.tmpdir(), 'saga-cli-readiness-'))
   try {
     const ffmpeg = path.join(scratch, 'ffmpeg')
     await fs.writeFile(ffmpeg, '#!/bin/sh\nprintf "ffmpeg version synthetic-readiness\\n"\n', { mode: 0o700 })
@@ -76,7 +77,7 @@ test('rejects embedded control characters in service URL and key before any disp
 })
 
 test('CLI --once executes one actual selection, reports unknown claim safely and SIGTERM stops idle polling', async () => {
-  const scratch = await fs.mkdtemp(path.join(root, '.superpowers/sdd/2026-11-05-upgrade-g1-recording-flow/cli-once-'))
+  const scratch = await fs.mkdtemp(path.join(os.tmpdir(), 'saga-cli-once-'))
   try {
     const ffmpeg = path.join(scratch, 'ffmpeg'), preload = path.join(scratch, 'transport.cjs'), calls = path.join(scratch, 'calls.jsonl')
     await fs.writeFile(ffmpeg, '#!/bin/sh\nprintf "ffmpeg version synthetic-readiness\\n"\n', { mode: 0o700 })
