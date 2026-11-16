@@ -1,0 +1,24 @@
+# Dependencies & build artifacts
+node_modules
+**/node_modules
+.next
+**/.next
+.vercel
+packages/*/dist
+packages/*/build
+coverage
+*.tsbuildinfo
+
+# Non-web monorepo directories not required by `npm run build:vercel`
+.git
+.github
+.claude
+.superpowers
+.vscode
+_archive_backend
+docs
+experiments
+scripts
+src
+supabase
+*.log
