@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'react-hot-toast'
-import { StoryPrompt, getNextPrompt } from '@saga/shared'
+import { StoryPrompt, getAlternateGentlePrompt, getNextPrompt } from '@saga/shared'
 import type { InterventionLevel } from '@saga/shared/types/agents'
 import { RecorderHub } from '@/components/recording/RecorderHub'
 import { SmartRecorder } from '@/components/recording/SmartRecorder'
@@ -329,6 +329,10 @@ function ScopedProjectRecordPage() {
               interventionLevel={interventionLevel}
               onInterventionLevelChange={setInterventionLevel}
               projectTitle={currentPrompt.text}
+              promptText={currentPrompt.text}
+              comfortTip={currentPrompt.comfortTip}
+              facilitatorNote={currentPrompt.facilitatorNote}
+              onSwitchPrompt={() => setCurrentPrompt(prev => getAlternateGentlePrompt(prev?.id))}
             />
           </div>
         )}
@@ -425,6 +429,7 @@ function ScopedProjectRecordPage() {
             duration={recordingDuration}
             recovered={recoveredDraft}
             transcript={transcript}
+            aiSummary={aiContent?.summary}
             onSave={handleSaveStory}
             onDiscard={handleReturnToHub}
             isProcessing={isSubmitting}

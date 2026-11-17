@@ -1,4 +1,8 @@
 import {
+  getAlternateGentlePrompt,
+  getNextPrompt,
+} from '../index'
+import {
   AI_TASKS,
   AUDITED_STORY_EDIT_TASKS,
   AiOutputError,
@@ -78,8 +82,9 @@ describe('story_metadata', () => {
   })
 
   it('accepts fenced JSON and passes through in-range confidence', () => {
-    const output = storyMetadataTask.parse('```json\n{"title":"T","summary":"S","confidence":0.2}\n```')
+    const output = storyMetadataTask.parse('```json\n{"title":"T","summary":"S","comfortNote":"Warm note","confidence":0.2}\n```')
     expect(output.confidence).toBe(0.2)
+    expect(output.comfortNote).toBe('Warm note')
   })
 
   it.each(['not json', '[]', '{"title":"","summary":"S"}', '{"title":"T","summary":"S","followUpQuestions":null}'])(
@@ -108,6 +113,27 @@ describe('followup_realtime', () => {
     expect(fallbackRealtimeFollowup('我小时候住在乡下', 'zh-CN', [], () => 0)).toBe('那时候你最喜欢做什么？')
     expect(fallbackRealtimeFollowup('my first job', 'en', ['How was your first day?'], () => 0))
       .toBe('What were your colleagues like?')
+    expect(fallbackRealtimeFollowup('我的生活平淡普通没什么好说的', 'zh-CN', [], () => 0))
+      .toContain('日常的小事最珍贵')
+    expect(fallbackRealtimeFollowup('Honestly nothing special happened', 'en', [], () => 0))
+      .toContain('Everyday moments matter most')
+  })
+})
+
+describe('gentle starter prompts', () => {
+  it('cycles across gentle starter prompts with comfort tips and facilitator notes', () => {
+    const first = getNextPrompt()
+    expect(first).not.toBeNull()
+    expect(first?.comfortTip).toBeTruthy()
+    expect(first?.facilitatorNote).toBeTruthy()
+
+    const alt1 = getAlternateGentlePrompt(first?.id)
+    expect(alt1.id).not.toBe(first?.id)
+    expect(alt1.isGentleStarter).toBe(true)
+
+    const alt2 = getAlternateGentlePrompt(alt1.id)
+    expect(alt2.id).not.toBe(alt1.id)
+    expect(alt2.isGentleStarter).toBe(true)
   })
 })
 

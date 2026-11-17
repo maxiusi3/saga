@@ -8,22 +8,26 @@ interface InterventionLevelSelectorProps {
 const OPTIONS: Array<{
   value: InterventionLevel
   label: string
+  companionTitle: string
   description: string
 }> = [
   {
     value: 'off',
     label: 'Off',
-    description: 'Record without interview prompts.',
+    companionTitle: 'Quiet Listener',
+    description: 'Record freely at your own pace without any prompts. Great when a family member is sitting with you.',
   },
   {
     value: 'low',
     label: 'Low',
-    description: 'Gentle help only when the story stalls.',
+    companionTitle: 'Gentle Companion (Recommended)',
+    description: 'Listens quietly and only offers a reassuring nudge if you pause for a long time or feel stuck.',
   },
   {
     value: 'high',
     label: 'High',
-    description: 'More active guidance and follow-up questions.',
+    companionTitle: 'Warm Host',
+    description: 'Guides the conversation step by step with gentle warmup and follow-up questions.',
   },
 ]
 
@@ -31,7 +35,7 @@ export function InterventionLevelSelector({ value, onChange }: InterventionLevel
   return (
     <fieldset className="w-full max-w-2xl rounded-2xl border border-stone-200 bg-white/80 p-4 shadow-sm dark:border-stone-800 dark:bg-stone-900/70">
       <legend className="px-1 text-sm font-medium text-stone-700 dark:text-stone-200">
-        Interview guidance
+        Choose your comfort &amp; guidance style
       </legend>
       <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3">
         {OPTIONS.map((option) => (
@@ -53,7 +57,7 @@ export function InterventionLevelSelector({ value, onChange }: InterventionLevel
                 onChange={() => onChange(option.value)}
                 className="h-4 w-4 accent-amber-600"
               />
-              <span className="font-medium">{option.label}</span>
+              <span className="font-medium">{option.companionTitle}</span>
             </span>
             <span className="mt-2 block text-xs leading-5 text-stone-500 dark:text-stone-400">
               {option.description}

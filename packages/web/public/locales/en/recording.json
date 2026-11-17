@@ -69,7 +69,11 @@
     "moreQuestions": "more questions available"
   },
   "aiHelper": {
-    "suggestion": "AI Suggestion"
+    "suggestion": "Gentle Companion",
+    "requestHint": "Need a gentle hint?",
+    "requestingHint": "Thinking of a gentle hint…",
+    "showOriginal": "Show original question",
+    "familyCoSit": "Sitting together? A family member can tap for a hint or ask in your own words."
   },
   "errors": {
     "missingData": "Missing required data for story submission.",

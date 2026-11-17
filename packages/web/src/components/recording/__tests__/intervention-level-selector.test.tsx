@@ -50,9 +50,30 @@ describe('RecorderHub intervention level selector', () => {
         onModeSelect={onModeSelect}
         interventionLevel="low"
         onInterventionLevelChange={onInterventionLevelChange}
+        promptText="Tell me about your favorite childhood meal."
+        comfortTip="Small everyday details matter most."
+        facilitatorNote="Ask gently over tea."
+        onSwitchPrompt={jest.fn()}
       />,
     )
 
     expect(screen.getByRole('radio', { name: 'Low' })).toBeInTheDocument()
+    expect(screen.getByText('Tell me about your favorite childhood meal.')).toBeInTheDocument()
+    expect(screen.getByText('Small everyday details matter most.')).toBeInTheDocument()
+    expect(screen.getByText('Ask gently over tea.')).toBeInTheDocument()
+  })
+
+  it('lets users switch to an alternate lighter question', () => {
+    const onSwitchPrompt = jest.fn()
+    render(
+      <RecorderHub
+        onModeSelect={jest.fn()}
+        promptText="What is your earliest memory?"
+        onSwitchPrompt={onSwitchPrompt}
+      />,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: /try a lighter question/i }))
+    expect(onSwitchPrompt).toHaveBeenCalledTimes(1)
   })
 })

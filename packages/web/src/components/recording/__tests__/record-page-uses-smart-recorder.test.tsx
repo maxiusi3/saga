@@ -358,8 +358,16 @@ describe('recording review truthfulness', () => {
       resolveNew({ title: 'New title', summary: 'New account', followUpQuestions: [], transcript: 'New words' })
       await newProcessing
     })
+    expect(screen.getByText('New account')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: '1970s' }))
     fireEvent.click(screen.getByRole('button', { name: /save to timeline/i }))
-    await waitFor(() => expect(mockSaveLocalRecording).toHaveBeenCalledWith(expect.objectContaining({metadata:expect.objectContaining({transcript:'New words',content:'New account'})})))
+    await waitFor(() => expect(mockSaveLocalRecording).toHaveBeenCalledWith(expect.objectContaining({
+      metadata: expect.objectContaining({
+        transcript: 'New words',
+        content: 'New account',
+        happenedAt: '1975-01-01T00:00:00.000Z',
+      }),
+    })))
   })
   it('continues a recovered draft with its pinned metadata and unknown duration', async () => {
     const Page = (await import('@/app/[locale]/dashboard/projects/[id]/record/page')).default

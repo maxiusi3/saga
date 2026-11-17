@@ -21,6 +21,7 @@ interface ReviewStageProps {
     audioUrl: string
     duration: number
     transcript?: string
+    aiSummary?: string
     onSave: (data: { title: string, happenedAt: Date, isPublic: boolean }) => void
     onDiscard: () => void
     isProcessing?: boolean
@@ -31,10 +32,20 @@ interface ReviewStageProps {
     recovered?: boolean
 }
 
+const DECADE_PRESETS = [
+    { label: '1950s', year: 1955 },
+    { label: '1960s', year: 1965 },
+    { label: '1970s', year: 1975 },
+    { label: '1980s', year: 1985 },
+    { label: '1990s', year: 1995 },
+    { label: '2000s', year: 2005 },
+] as const
+
 export function ReviewStage({
     audioUrl,
     duration,
     transcript,
+    aiSummary,
     onSave,
     onDiscard,
     isProcessing = false,
@@ -97,9 +108,48 @@ export function ReviewStage({
                     {draftStatus === 'idle' && 'No transcript is available, so a draft cannot be prepared. You can still save the recording.'}
                 </p>
 
+                {draftStatus === 'ready' && aiSummary && (
+                    <div className="rounded-lg border border-amber-200 bg-amber-50/70 p-4 space-y-1.5 dark:border-amber-900/50 dark:bg-amber-950/20">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-amber-900 dark:text-amber-300">
+                            Listener&apos;s Note · Why This Memory Matters
+                        </p>
+                        <p className="text-sm leading-relaxed text-stone-800 dark:text-stone-200">
+                            {aiSummary}
+                        </p>
+                        <p className="text-xs text-stone-500 dark:text-stone-400">
+                            Your original voice recording is preserved untouched alongside this draft.
+                        </p>
+                    </div>
+                )}
+
                 {/* Date Picker (Timeline Anchor) */}
-                <div className="space-y-2">
+                <div className="space-y-3">
                     <Label>When did this happen?</Label>
+                    <div className="flex flex-wrap gap-2">
+                        {DECADE_PRESETS.map((preset) => (
+                            <Button
+                                key={preset.label}
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                disabled={locked}
+                                onClick={() => setHappenedAt(new Date(Date.UTC(preset.year, 0, 1)))}
+                                className="h-auto px-2.5 py-1 text-xs"
+                            >
+                                {preset.label}
+                            </Button>
+                        ))}
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            disabled={locked}
+                            onClick={() => setHappenedAt(new Date())}
+                            className="h-auto px-2.5 py-1 text-xs"
+                        >
+                            Not sure (keep today&apos;s date for now)
+                        </Button>
+                    </div>
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
@@ -125,7 +175,7 @@ export function ReviewStage({
                         </PopoverContent>
                     </Popover>
                     <p className="text-xs text-stone-500">
-                        This helps us place your story on the timeline.
+                        Approximate eras or rough years are completely fine—your family can always refine this later.
                     </p>
                 </div>
 
@@ -144,10 +194,13 @@ export function ReviewStage({
 
                 {/* Visibility Toggle */}
                 <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between p-4 bg-stone-50 dark:bg-stone-800/50 rounded-lg border border-stone-100 dark:border-stone-800">
-                    <div className="min-w-0 space-y-0.5">
+                    <div className="min-w-0 space-y-1">
                         <Label className="text-base font-medium">Visibility</Label>
                         <p className="text-sm text-stone-500 dark:text-stone-400">
                             {isPublic ? 'Public - Visible to everyone' : 'Private - Visible to project members'}
+                        </p>
+                        <p className="text-xs text-stone-500 dark:text-stone-400">
+                            Nothing is shared outside your invited family circle unless you explicitly choose Public.
                         </p>
                     </div>
                     <div className="flex shrink-0 items-center gap-2">

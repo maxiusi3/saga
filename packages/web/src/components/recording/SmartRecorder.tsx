@@ -182,9 +182,6 @@ export function SmartRecorder({
     if (prompt) {
       setAiPrompt(prompt)
       setPreviousPrompts(prev => [...prev.slice(-4), prompt])
-      setTimeout(() => {
-        if (generation === generationRef.current && mountedRef.current) setAiPrompt('')
-      }, 10000)
     }
 
     return response
@@ -332,6 +329,31 @@ export function SmartRecorder({
       setIsGeneratingPrompt(false)
     }
   }, [recordingState, transcript, interimTranscript, isGeneratingPrompt, lastProcessedLength, requestInterviewPrompt, shouldRequestInterventions])
+
+  const handleRequestGentleHint = useCallback(async () => {
+    if ((recordingState !== 'recording' && recordingState !== 'paused') || isGeneratingPrompt || !shouldRequestInterventions()) {
+      return
+    }
+    const fullTranscript = transcript + interimTranscript
+    const newContent = fullTranscript.slice(lastProcessedLength)
+    setIsGeneratingPrompt(true)
+    try {
+      const response = await requestInterviewPrompt({
+        phase: 'story_listening',
+        recentTranscript: newContent,
+        silenceMs: 20000,
+        transcriptStartOffset: lastProcessedLength,
+        transcriptEndOffset: fullTranscript.length,
+      })
+      if (response) {
+        setLastProcessedLength(fullTranscript.length)
+      }
+    } catch (error) {
+      console.error('[SmartRecorder] Failed to request manual gentle hint:', error)
+    } finally {
+      setIsGeneratingPrompt(false)
+    }
+  }, [recordingState, isGeneratingPrompt, shouldRequestInterventions, transcript, interimTranscript, lastProcessedLength, requestInterviewPrompt])
 
   const { resetSilenceTimer } = useSilenceDetection({
     onSilence: handleSilence,
@@ -754,30 +776,59 @@ export function SmartRecorder({
         </div>
 
         {/* Dynamic Prompt Display */}
-        <div className="relative min-h-[100px]">
+        <div className="relative min-h-[100px] space-y-3">
           {aiPrompt ? (
-            <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-lg shadow-sm transition-all duration-300 ease-in-out animate-in fade-in slide-in-from-bottom-2">
-              <div className="flex items-start gap-3">
-                <div className="p-2 bg-indigo-100 rounded-full shrink-0">
-                  <Zap className="w-4 h-4 text-indigo-600" />
+            <div className="p-4 bg-amber-50/90 border border-amber-200 rounded-lg shadow-sm transition-all duration-300 ease-in-out animate-in fade-in slide-in-from-bottom-2">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-amber-100 rounded-full shrink-0">
+                    <Zap className="w-4 h-4 text-amber-700" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-amber-900 mb-1">
+                      {t('aiHelper.suggestion')}
+                    </p>
+                    <p className="text-stone-900 text-lg font-medium leading-relaxed">
+                      &ldquo;{aiPrompt}&rdquo;
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-indigo-900 mb-1">
-                    {t('aiHelper.suggestion')}
-                  </p>
-                  <p className="text-indigo-700 text-lg font-medium">
-                    "{aiPrompt}"
-                  </p>
-                </div>
+                {promptText && (
+                  <button
+                    type="button"
+                    onClick={() => setAiPrompt('')}
+                    className="shrink-0 text-xs font-medium text-amber-900 underline underline-offset-4 hover:text-amber-700"
+                  >
+                    {t('aiHelper.showOriginal')}
+                  </button>
+                )}
               </div>
             </div>
           ) : (
             promptText && (
               <div className="p-4 bg-muted/50 rounded-lg transition-all duration-300 ease-in-out animate-in fade-in">
                 <p className="text-sm text-muted-foreground mb-1">{t('prompt')}:</p>
-                <p className="text-foreground">{promptText}</p>
+                <p className="text-foreground text-base leading-relaxed">{promptText}</p>
               </div>
             )
+          )}
+
+          {(recordingState === 'recording' || recordingState === 'paused') && (
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+              <span>{t('aiHelper.familyCoSit')}</span>
+              {shouldRequestInterventions() && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={isGeneratingPrompt}
+                  onClick={() => void handleRequestGentleHint()}
+                  className="h-auto px-2.5 py-1 text-xs font-medium text-amber-800 hover:bg-amber-50 hover:text-amber-900"
+                >
+                  {isGeneratingPrompt ? t('aiHelper.requestingHint') : t('aiHelper.requestHint')}
+                </Button>
+              )}
+            </div>
           )}
         </div>
 

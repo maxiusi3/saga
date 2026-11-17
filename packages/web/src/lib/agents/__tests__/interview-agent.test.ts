@@ -179,4 +179,59 @@ describe('generateInterviewIntervention', () => {
     expect(result.shouldIntervene).toBe(true)
     expect(result.promptText).toBe('What were you feeling in that moment?')
   })
+
+  it('reassures storytellers who feel their ordinary life is not worth telling after 3s silence', () => {
+    const result = generateInterviewIntervention({
+      interventionLevel: 'low',
+      phase: 'story_listening',
+      storytellerName: 'Mary',
+      currentPrompt: 'Tell me about your childhood home.',
+      recentTranscript: 'Honestly my life was an ordinary life with nothing special to tell.',
+      previousStorySummary: null,
+      previousPrompts: [],
+      silenceMs: 3000,
+    })
+
+    expect(result.shouldIntervene).toBe(true)
+    expect(result.eventKind).toBe('emotional_support')
+    expect(result.triggerReason).toBe('self_deprecation_reassurance')
+    expect(result.promptText.toLowerCase()).toContain('everyday')
+    expect(result.promptText.length).toBeLessThanOrEqual(220)
+  })
+
+  it('does not interrupt fluent storytelling for self-deprecation when silenceMs is 0', () => {
+    const result = generateInterviewIntervention({
+      interventionLevel: 'low',
+      phase: 'story_listening',
+      storytellerName: 'Mary',
+      currentPrompt: 'Tell me about your childhood home.',
+      recentTranscript: 'It felt like an ordinary life, though we always cooked dumplings together on Sundays.',
+      previousStorySummary: null,
+      previousPrompts: [],
+      silenceMs: 0,
+    })
+
+    expect(result.shouldIntervene).toBe(false)
+    expect(result.triggerReason).toBe('listening_without_interrupting')
+  })
+
+  it('reassures storytellers experiencing memory uncertainty after 3s silence', () => {
+    const result = generateInterviewIntervention({
+      interventionLevel: 'low',
+      phase: 'story_listening',
+      storytellerName: 'Chen',
+      locale: 'zh-CN',
+      currentPrompt: 'Tell me about your first job.',
+      recentTranscript: '我记不清了，忘了哪一年进的厂子。',
+      previousStorySummary: null,
+      previousPrompts: [],
+      silenceMs: 3500,
+    })
+
+    expect(result.shouldIntervene).toBe(true)
+    expect(result.eventKind).toBe('emotional_support')
+    expect(result.triggerReason).toBe('memory_uncertainty_reassurance')
+    expect(result.promptText).toContain('这不是考试')
+    expect(result.promptText.length).toBeLessThanOrEqual(220)
+  })
 })

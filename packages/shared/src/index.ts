@@ -12,6 +12,7 @@ export {
   getAllPrompts,
   getPromptsByChapter,
   getNextPrompt,
+  getAlternateGentlePrompt,
   getPromptById,
   getChapterProgress,
   AI_PROMPT_CHAPTERS

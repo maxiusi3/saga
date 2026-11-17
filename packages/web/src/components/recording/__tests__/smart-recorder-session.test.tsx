@@ -3,6 +3,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-libra
 import { Blob as NodeBlob } from 'node:buffer'
 import { webcrypto } from 'node:crypto'
 import { SmartRecorder } from '../SmartRecorder'
+import { agentService } from '@/lib/agent-service'
 import type { RecorderChunkRecord, RecorderSessionRecord } from '@/lib/recorder-db'
 
 const mockSessions = new Map<string, RecorderSessionRecord>()
@@ -467,4 +468,53 @@ it('reacquires after the browser releases the active wake lock', async () => {
   await waitFor(() => expect(request).toHaveBeenCalledTimes(2))
   view.unmount()
   expect(nextLock.release).toHaveBeenCalledTimes(1)
+})
+
+it('keeps companion prompts visible past 10 seconds and supports on-demand gentle hints', async () => {
+  jest.useFakeTimers()
+  const mockRequestIntervention = jest.mocked(agentService.requestInterviewIntervention)
+  mockRequestIntervention
+    .mockResolvedValueOnce({
+      intervention: {
+        shouldIntervene: true,
+        eventKind: 'opening',
+        triggerReason: 'session_started',
+        promptText: 'Take your time—chat just like at the kitchen table.',
+      },
+      event: null,
+    })
+    .mockResolvedValueOnce({
+      intervention: {
+        shouldIntervene: true,
+        eventKind: 'gentle_probe',
+        triggerReason: 'long_silence',
+        promptText: 'Who else was in the room with you?',
+      },
+      event: null,
+    })
+
+  render(
+    <SmartRecorder
+      projectId="project-1"
+      storytellerId="user-1"
+      interviewSessionId="interview-1"
+      interventionLevel="low"
+      promptText="Tell me about the old house."
+      onRecordingComplete={jest.fn()}
+    />,
+  )
+
+  await start()
+  expect(await screen.findByText(/Take your time—chat just like at the kitchen table\./)).toBeInTheDocument()
+
+  act(() => {
+    jest.advanceTimersByTime(15000)
+  })
+  expect(screen.getByText(/Take your time—chat just like at the kitchen table\./)).toBeInTheDocument()
+
+  fireEvent.click(screen.getByRole('button', { name: 'aiHelper.showOriginal' }))
+  expect(screen.getByText('Tell me about the old house.')).toBeInTheDocument()
+
+  fireEvent.click(screen.getByRole('button', { name: 'aiHelper.requestHint' }))
+  expect(await screen.findByText(/Who else was in the room with you\?/)).toBeInTheDocument()
 })

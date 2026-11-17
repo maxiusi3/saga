@@ -68,6 +68,13 @@
     "followUpQuestions": "建议的后续问题：",
     "moreQuestions": "更多问题可用"
   },
+  "aiHelper": {
+    "suggestion": "温柔陪伴提示",
+    "requestHint": "需要一点小提示吗？",
+    "requestingHint": "正在准备温柔提示…",
+    "showOriginal": "回到原话题",
+    "familyCoSit": "如果家人在身旁，也可以看着提示一起聊，不用拘束。"
+  },
   "errors": {
     "missingData": "缺少提交故事所需的数据。",
     "saveFailed": "保存故事失败。请重试。",
@@ -109,7 +116,14 @@
     "playbackError": "此浏览器无法播放该副本。你仍可下载并尝试其他音频播放器。",
     "download": "下载此副本",
     "close": "关闭预览",
-    "errors": {
+    "aiHelper": {
+    "suggestion": "温柔陪伴提示",
+    "requestHint": "需要一点小提示吗？",
+    "requestingHint": "正在准备温柔提示…",
+    "showOriginal": "回到原话题",
+    "familyCoSit": "如果家人在身旁，也可以看着提示一起聊，不用拘束。"
+  },
+  "errors": {
       "empty": "这次录音尚未保存任何声音，草稿已保留。",
       "damaged": "部分声音缺失或损坏，无法打开此副本。草稿已保留。",
       "changed": "打开期间录音发生了变化。请先结束其他标签页的录音，再重试。",

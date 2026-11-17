@@ -420,7 +420,7 @@ function ManagementSession({
                     : 'Availability is checked again when you send.'}
             </p>
           </div>
-          <div>
+          <div className='space-y-2'>
             <Label htmlFor={`${id}-message`}>Message (optional)</Label>
             <Textarea
               id={`${id}-message`}
@@ -429,6 +429,38 @@ function ManagementSession({
               disabled={busy}
               onChange={event => setMessage(event.target.value)}
             />
+            <div className='space-y-1.5'>
+              <p className='text-xs text-muted-foreground'>
+                Not sure how to ask without making it feel like homework? Try a gentle icebreaker:
+              </p>
+              <div className='flex flex-wrap gap-2'>
+                {[
+                  {
+                    label: 'Low-pressure small memory',
+                    text: "No need for a formal biography—I'd just love to hear a 2-minute story in your own voice about our old home whenever you feel like chatting.",
+                  },
+                  {
+                    label: 'Chatting together',
+                    text: "Next time we're together, let's look at a couple of old photos and record a short memory here—no pressure or homework!",
+                  },
+                  {
+                    label: 'Everyday family stories',
+                    text: "We'd love to keep a few of your everyday stories and favorite recipes or memories safe in our private family space.",
+                  },
+                ].map(template => (
+                  <Button
+                    key={template.label}
+                    type='button'
+                    variant='outline'
+                    size='sm'
+                    disabled={busy}
+                    onClick={() => setMessage(template.text)}
+                  >
+                    {template.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
           </div>
           <Button
             disabled={

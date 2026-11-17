@@ -438,3 +438,12 @@ test('full history page advances with a UUID keyset cursor and keeps next-page a
   expect(screen.getByRole('button', { name: 'First page' })).toBeInTheDocument()
   expect(writes()).toHaveLength(0)
 })
+test('icebreaker template chips populate the optional invitation message without sending', async () => {
+  render(<InvitationsPage />)
+  await screen.findByText('invitee@example.invalid')
+  fireEvent.click(screen.getByRole('button', { name: 'Low-pressure small memory' }))
+  expect(screen.getByLabelText('Message (optional)')).toHaveValue(
+    "No need for a formal biography—I'd just love to hear a 2-minute story in your own voice about our old home whenever you feel like chatting."
+  )
+  expect(writes()).toHaveLength(0)
+})
